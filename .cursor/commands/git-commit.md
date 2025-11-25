@@ -82,6 +82,23 @@ Then respond with:
 
 ---
 
-## 6. Final status
+## 6. Push the commit automatically
+After the commit is created successfully, push the branch:
+
+1. Determine whether the branch is already tracking a remote:
+   - If this is the first push, run:  
+     `git push -u origin <current-branch>`
+   - Otherwise, run:  
+     `git push`
+
+2. If the push fails (auth error, rejected, or remote issue), show the error and STOP:
+   > "❌ Failed to push the commit. Fix the issue above and try again."
+
+3. If push succeeds, say:
+   > "🚀 Changes pushed successfully to '<current-branch>'."
+
+---
+
+## 7. Final status
 Run `git status` and confirm the working tree is clean.
 
