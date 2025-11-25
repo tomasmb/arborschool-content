@@ -1,55 +1,87 @@
 # /git-commit
 
-You are helping me create **clean, safe Git commits** in this repository.
+You are an autonomous Git assistant responsible for generating **safe, high-quality commits with minimal user intervention**, following professional engineering practices.
 
-## Goal
-Review my changes, warn me of any risk, run basic checks, and then create a descriptive commit with an emoji.
+Your goals:
+- Take ownership of analyzing changes.
+- Automatically decide the safest action unless a risk is detected.
+- Always run project checks (lint, format, type-check, tests) if available.
+- Generate a clear, descriptive commit message based on the actual diff.
 
-## Behavior
+---
 
-When I call `/git-commit`, follow these steps:
+## 1. Analyze the working tree
+1. Run `git status` and `git diff --stat`.
+2. If there are **no changes**, respond:
+   > "✨ No changes to commit. Working tree is clean."
+   Then stop.
 
-1. **Show Git status**
-   - Run: `git status`
-   - Show me:
-     - which files are modified
-     - which files are untracked
-   - Ask:
-     > "These are the current changes. Do you want to include ALL of them in this commit? (yes/no)"
+3. Generate a natural-language summary:
+   - Which files changed
+   - Nature of changes (added/removed/modified)
+   - Whether sensitive files were touched (`.gitignore`, `.cursor`, config files)
+   - Whether large or unexpected diffs exist
 
-2. **If I answer "no"**
-   - Help me choose which files to stage.
-   - Ask:
-     > "Which files do you want to stage? (you can list them by name)"
-   - Then run `git add <file1> <file2> ...` accordingly.
+4. If you detect *potential risk* (examples):
+   - deletion of many files
+   - changes in critical config
+   - unexpected binary changes  
+   → STOP and ask:
+   > "⚠️ I detected potentially risky changes. Do you want me to proceed with staging and committing? (yes/no)"
 
-3. **If I answer "yes"**
-   - Run: `git add .`
+If the user says **no**, stop.  
+If **yes**, continue.
 
-4. **(Optional) Run checks**
-   - If the project uses TypeScript, linting, or tests and I tell you which commands to use, run them here.
-   - For now, ask:
-     > "Do you want me to run any checks before committing? (e.g. tests, lint, TS compile) yes/no"
-   - If "yes", ask which command to run (e.g. `npm test`, `npm run lint`) and execute it.
-   - If checks fail, STOP and tell me:
-     > "❌ Checks failed. Fix the issues before committing."
+If **NO risks detected**, continue automatically.
 
-5. **Ask for a commit message**
-   - Ask:
-     > "Write a clear commit message (I will add an emoji in front if you want). For example:
-     >  - '📘 Add PAES KG structure'
-     >  - '🛠 Refactor atom granularity rules'
-     >  - '✅ Fix atom generation validation'"
-   - Wait for my message and use it as the commit message.
+---
 
-6. **Create the commit**
-   - Run:
-     - `git commit -m "<my-message>"`
-   - If Git reports no staged changes, notify me:
-     > "There were no staged changes to commit. Maybe you need to run `git add`?"
+## 2. Stage changes
+Run: `git add .`
 
-7. **Confirm**
-   - Run `git status` again.
-   - If everything is clean, say:
-     > "✅ Commit created successfully with message: `<my-message>`"
-   - If there are still unstaged changes, tell me what remains.
+---
+
+## 3. Run project checks (mandatory)
+1. Detect which checks exist:
+   - If `eslint` exists → run `npx eslint .`
+   - If TypeScript exists → run `npx tsc --noEmit`
+   - If Python project → run `flake8` or equivalent
+   - If tests exist → run test script
+
+2. If *no tools exist yet*, say:
+   > "No linting or test tools detected in this project. Skipping checks."
+
+3. If ANY check fails, STOP:
+   > "❌ Checks failed. Please fix the issues before committing."
+
+---
+
+## 4. Auto-generate the commit message
+Create a message using:
+- an emoji describing the type of change
+- conventional commit prefix (feat, fix, chore, docs, refactor)
+- human-readable summary based on the diff
+
+Examples:
+- `🛠 chore: update Cursor workflow commands and improve safety checks`
+- `📘 docs: add PAES-kg scaffold`
+- `✨ feat: introduce atom generation pipeline structure`
+
+Do **NOT** ask the user for a message unless there's ambiguity.
+
+---
+
+## 5. Create the commit
+Run: `git commit -m "<generated-message>"`
+
+Then respond with:
+> "✅ Commit created successfully."
+> "📄 Message: <generated-message>"
+> "📝 Summary of changes:"
+> <diff summary>
+
+---
+
+## 6. Final status
+Run `git status` and confirm the working tree is clean.
+
