@@ -3,7 +3,6 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List
 
 from PyPDF2 import PdfReader
 
@@ -23,7 +22,7 @@ class UnitConfig:
 class AxisConfig:
     key: str
     marker: str  # substring that marks the start of this eje block
-    units: List[UnitConfig]
+    units: list[UnitConfig]
 
 
 @dataclass
@@ -33,7 +32,7 @@ class TemarioConfig:
     temario_id: str
     tipo_aplicacion: str
     fuente_pdf: str
-    axes: List[AxisConfig]
+    axes: list[AxisConfig]
 
 
 HAB_HEADER = "Habilidad Descripción Criterios de evaluación"
@@ -158,7 +157,7 @@ TEMARIO_CONFIGS: List[TemarioConfig] = [
 ]
 
 
-def slice_habilidades(text: str) -> List[str]:
+def slice_habilidades(text: str) -> list[str]:
     """Return exact lines of the habilidades table from the raw text."""
     start = text.index(HAB_HEADER)
     try:
@@ -169,7 +168,7 @@ def slice_habilidades(text: str) -> List[str]:
     return block.splitlines()
 
 
-def parse_habilidades(lines: List[str]) -> Dict[str, Dict[str, List[str] | str]]:
+def parse_habilidades(lines: list[str]) -> dict[str, dict[str, list[str] | str]]:
     """
     Parse habilidades into a structured dict, preserving exact wording.
 
@@ -189,13 +188,13 @@ def parse_habilidades(lines: List[str]) -> Dict[str, Dict[str, List[str] | str]]
         ("argumentar", "ArgumentarEs la habilidad"),
     ]
 
-    segments: List[tuple[int, str]] = []
+    segments: list[tuple[int, str]] = []
     for key, marker in patterns:
         idx = block.index(marker)
         segments.append((idx, key))
     segments.sort(key=lambda t: t[0])
 
-    habilidades: Dict[str, Dict[str, object]] = {}
+    habilidades: dict[str, dict[str, object]] = {}
 
     for i, (start, key) in enumerate(segments):
         end = segments[i + 1][0] if i + 1 < len(segments) else len(block)
@@ -210,10 +209,10 @@ def parse_habilidades(lines: List[str]) -> Dict[str, Dict[str, List[str] | str]]
         desc_text = seg[desc_start:first_bullet_pos].rstrip("\n")
         bullets_region = seg[first_bullet_pos:]
 
-        bullets: List[str] = []
+        bullets: list[str] = []
         if bullets_region:
             b_lines = bullets_region.splitlines()
-            current: List[str] = []
+            current: list[str] = []
             header_prefixes = [
                 "===== PAGE BREAK =====",
                 "TEMARIO PRUEBA DE",
@@ -246,7 +245,7 @@ def slice_conocimientos(text: str) -> str:
     return text[start:]
 
 
-def parse_unit_block(block: str) -> Dict[str, object]:
+def parse_unit_block(block: str) -> dict[str, object]:
     """
     Given a substring that starts at the unit name marker and ends before the next unit,
     return:
@@ -267,10 +266,10 @@ def parse_unit_block(block: str) -> Dict[str, object]:
 
     nombre = " ".join(name_region.split())
 
-    bullets: List[str] = []
+    bullets: list[str] = []
     if bullets_region:
         lines = bullets_region.splitlines()
-        current: List[str] = []
+        current: list[str] = []
         header_prefixes = [
             "===== PAGE BREAK =====",
             "TEMARIO PRUEBA DE",
@@ -296,7 +295,7 @@ def parse_unit_block(block: str) -> Dict[str, object]:
 
     # Remove any trailing habilidades header accidentally glued to the last bullet
     if bullets:
-        cleaned: List[str] = []
+        cleaned: list[str] = []
         for b in bullets:
             if HAB_REPEAT_HEADER in b:
                 b = b.split(HAB_REPEAT_HEADER, 1)[0]
@@ -310,13 +309,13 @@ def parse_unit_block(block: str) -> Dict[str, object]:
     return {"nombre": nombre, "descripcion": bullets_plain}
 
 
-def parse_axes(text: str, cfg: TemarioConfig) -> Dict[str, object]:
+def parse_axes(text: str, cfg: TemarioConfig) -> dict[str, object]:
     """
     Parse ejes temáticos and unidades from the conocimientos block,
     using the axis/unit configuration, preserving exact wording.
     """
     conocimientos_text = slice_conocimientos(text)
-    axes_result: Dict[str, object] = {}
+    axes_result: dict[str, object] = {}
 
     # Pre-compute axis start positions within the conocimientos block
     axis_starts = [conocimientos_text.index(axis.marker) for axis in cfg.axes]
@@ -327,10 +326,10 @@ def parse_axes(text: str, cfg: TemarioConfig) -> Dict[str, object]:
         end = axis_starts[idx + 1]
         axis_block = conocimientos_text[start:end]
 
-        units_result: List[Dict[str, object]] = []
+        units_result: list[dict[str, object]] = []
 
         # for each unit within this axis, slice based on configured markers
-        unit_starts: List[int] = []
+        unit_starts: list[int] = []
         for ucfg in axis.units:
             pos = axis_block.index(ucfg.name_marker)
             unit_starts.append(pos)
@@ -344,17 +343,15 @@ def parse_axes(text: str, cfg: TemarioConfig) -> Dict[str, object]:
             unit_parsed = parse_unit_block(unit_block)
             units_result.append(unit_parsed)
 
-        axes_result[axis.key] = {
-            "unidades": units_result,
-        }
+        axes_result[axis.key] = {"unidades": units_result}
 
     return axes_result
 
 
-def build_structured_temario(cfg: TemarioConfig) -> Dict[str, object]:
+def build_structured_temario(cfg: TemarioConfig) -> dict[str, object]:
     pdf_path = PDF_DIR / f"{cfg.stem}.pdf"
     reader = PdfReader(str(pdf_path))
-    pages: List[str] = []
+    pages: list[str] = []
     for page in reader.pages:
         pages.append(page.extract_text() or "")
     text = "\n\n===== PAGE BREAK =====\n\n".join(pages)

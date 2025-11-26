@@ -1,0 +1,53 @@
+---
+description: "Project-wide rules for arborschool-content."
+alwaysApply: true
+globs:
+  - "**/*"
+---
+
+## Project rules for `arborschool-content`
+
+These rules guide AI and human contributors working in this repo.
+
+### 1. Hard constraints
+
+- Always keep **files < 500 lines**.
+- Always keep **lines < 150 characters**. Aim for ~100; Ruff enforces 120.
+- Never introduce speculative “fallback” behaviour. If a requirement is unclear, prefer asking the user
+  or updating docs rather than guessing a fallback.
+
+### 2. Python code conventions
+
+- All new functions (public and internal) must be **fully type-annotated**.
+- Use `from __future__ import annotations` in any typed module.
+- Use **built-in generic types** (`dict[str, str]`, `list[int]`, etc.), not `typing.Dict` / `typing.List`.
+- Prefer small, single-responsibility functions; avoid “god” modules that mix parsing, modeling and exporting.
+- Script entry points (`if __name__ == "__main__":`) should be **thin wrappers** that call well-typed helpers.
+
+### 3. Repository structure invariants
+
+- `app/` is the source of truth for Python code and data used by the application.
+- `app/temarios/parsing.py` is the canonical module for going from DEMRE temario PDFs to structured JSON.
+- `app/data/temarios/pdf/` contains official PDFs; `app/data/temarios/json/` contains JSON generated
+  exclusively by `app/temarios/parsing.py`.
+- `legacy/` is read-only for new work; do not add runtime dependencies on `legacy/` paths.
+
+### 4. Documentation expectations
+
+- Before making **non-trivial** changes, skim:
+  - `docs/python-best-practices.md`
+  - `docs/repo-structure-and-modules.md`
+  - plus the most relevant domain doc under `docs/` (e.g. `standards-from-temarios.md` for standards work).
+- When you change a public contract (e.g. JSON shape, module responsibilities, new top-level folders),
+  update the relevant docs in the same PR.
+- Docs describe **normative behaviour**. If code and docs disagree, prefer aligning the code to the docs or
+  updating the docs explicitly—never silently diverge.
+
+### 5. AI-specific guidance
+
+- When editing Python, prefer **updating existing helpers** and cleaning up unused code over adding near-duplicates.
+- When asked to change behaviour that touches temarios or standards, first check how that interacts with:
+  - `app/temarios/parsing.py`
+  - `docs/standards-from-temarios.md`
+- Do not add new external dependencies without a clear reason and without updating `pyproject.toml`.
+

@@ -43,12 +43,14 @@ packages until there is a strong reason to split further.
 
 ---
 
-## 3. Code style and structure
+## 3. Code style and structure (normative)
 
 - **Type hints**
-  - All new public functions must be type annotated.
+  - All new functions (public and internal) **must** be type annotated.
   - Use `from __future__ import annotations` in modules with hints.
-  - Prefer standard types (`dict[str, str]`) over `typing.Dict`.
+  - Prefer built-in generic types (`dict[str, str]`, `list[int]`, etc.) over `typing.Dict` / `typing.List`.
+  - When a function returns structured JSON, document the **shape** in the docstring using domain terms
+    (e.g. “habilidades”, “ejes”, “unidades”) and keep that shape stable.
 
 - **Functions**
   - Target **≤ 25–40 lines** per function.
@@ -129,18 +131,15 @@ Even if tests are written later, code should be **testable by design**:
 
 ---
 
-## 7. Style tools and linters
+## 7. Style tools and linters (enforced)
 
 We use a modern, minimal toolchain:
 
 - **Ruff** for linting (and optionally formatting) configured via `pyproject.toml`.
-  - Enforce:
-    - import order,
-    - unused imports/variables,
-    - simple style rules,
-    - complexity limits where useful.
-- Keep **line length < 150 chars** (project rule), but aim for ~100 chars for
-  readability.
+  - Currently selected rule families: `E`, `F`, `W`, `I` (pycodestyle errors/warnings, pyflakes, import sorting).
+  - Ruff line length is **120 characters**; the repo hard limit is **< 150 chars**. Aim for ~100 chars in practice.
+  - We can enable additional Ruff rules (e.g. complexity limits) if the codebase grows; until then we keep the
+    configuration minimal and explicit.
 
 Tools are helpers, not goals. If a rule hurts clarity in a specific case, we
 can selectively disable it with an inline comment **and document why**.

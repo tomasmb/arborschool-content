@@ -4,6 +4,12 @@ This document describes how we want to transform official DEMRE
 temarios into a richer, canonical standards representation suitable
 for building the knowledge graph.
 
+There are **two layers** to be aware of:
+
+- the **current, implemented pipeline**, which stops at structured temario JSON; and
+- the **target canonical standards layer**, which is not yet implemented and is documented here
+  so that future work follows a consistent design.
+
 ---
 
 ## 1. Inputs
@@ -82,7 +88,7 @@ Later, atoms will link back to these standard IDs.
 
 ---
 
-## 5. Next steps
+## 5. Next steps (not yet implemented)
 
 - Implement a minimal `app/standards/` module that:
   - loads temario JSON,
@@ -91,5 +97,7 @@ Later, atoms will link back to these standard IDs.
 
 - Iterate on the richness of each standard using domain expertise and
   the existing GPT-based markdown as a reference.
+
+Until this module exists, **the structured temario JSON is the only machine-readable artifact we rely on**.
 
 
