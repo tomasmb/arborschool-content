@@ -14,8 +14,9 @@
 5. [Output Format Control](#output-format-control)
 6. [Temperature and Configuration](#temperature-and-configuration)
 7. [Advanced Techniques](#advanced-techniques)
-8. [Common Pitfalls](#common-pitfalls)
-9. [Best Practices Checklist](#best-practices-checklist)
+8. [Avoiding Prompt Overfitting](#avoiding-prompt-overfitting)
+9. [Common Pitfalls](#common-pitfalls)
+10. [Best Practices Checklist](#best-practices-checklist)
 
 ---
 
@@ -355,6 +356,80 @@ For complex tasks, break into steps:
 
 ---
 
+## Avoiding Prompt Overfitting
+
+A critical mistake in prompt engineering is **overfitting** a prompt to solve one specific example or edge case, 
+which then degrades performance on the general task.
+
+### The Problem
+
+When debugging a prompt that fails on a specific input, it's tempting to add instructions that fix *that exact case*.
+This often introduces brittleness:
+
+- The prompt becomes too specific and fails on other valid inputs
+- Rules accumulate that contradict each other
+- The prompt grows verbose, confusing the model
+
+### Best Practices to Avoid Overfitting
+
+**1. Write Abstract, Generalizable Instructions**
+
+Instead of fixing a specific symptom, identify the **underlying principle** and express it generally.
+
+**❌ Overfitted:**
+```
+If the question mentions "función lineal", make sure to tag it as "linear-functions".
+```
+
+**✅ Generalized:**
+```
+Tag each question with the most specific applicable topic from the taxonomy.
+```
+
+**2. Use Diverse Examples in Few-Shot Prompts**
+
+When providing examples, include variety that covers different aspects of the task—not just the case you're debugging.
+
+- Include edge cases alongside typical cases
+- Show different valid output structures
+- Demonstrate the range of acceptable responses
+
+**3. Maintain a Separate Evaluation Set**
+
+Keep a set of test inputs that you **don't use** when developing the prompt. After making changes, verify
+the prompt still works on this unseen set. If it doesn't, you've likely overfitted.
+
+**4. Prefer Removing Over Adding**
+
+When a prompt fails:
+1. First, check if existing rules are conflicting or unclear
+2. Simplify before adding complexity
+3. Only add new rules if simplification doesn't work
+
+**5. Document the Intent, Not the Fix**
+
+When you must add a rule, write it as the **general principle** you want enforced, not the specific bug you're fixing.
+
+**❌ Bug-fix comment:**
+```
+# Added because question 47 was being split incorrectly
+```
+
+**✅ Intent comment:**
+```
+# Ensure multi-part questions remain grouped when they share context
+```
+
+### Red Flags That Suggest Overfitting
+
+- Prompt changes that reference specific IDs, values, or test cases
+- Rules that only make sense for one input
+- Frequent prompt changes after each failure
+- Accumulating "exception" rules
+- Prompt length growing without clear benefit
+
+---
+
 ## Common Pitfalls
 
 ### 1. Over-Engineering Prompts
@@ -392,6 +467,12 @@ For complex tasks, break into steps:
 **Problem**: Parsing free-form text when JSON would be better.
 
 **Solution**: Use `response_mime_type="application/json"` for structured data.
+
+### 7. Overfitting to Specific Examples
+
+**Problem**: Adding rules to fix one failing case, degrading general performance.
+
+**Solution**: Fix the underlying principle, not the symptom. Test on diverse inputs. See [Avoiding Prompt Overfitting](#avoiding-prompt-overfitting).
 
 ---
 
@@ -432,6 +513,14 @@ For complex tasks, break into steps:
 - [ ] Is output validated (schema, structure)?
 - [ ] Are errors handled gracefully?
 - [ ] Is logging in place for debugging?
+
+### Avoiding Overfitting
+
+- [ ] Does the fix address a general principle, not a specific symptom?
+- [ ] Have you tested on diverse inputs, not just the failing case?
+- [ ] Did you simplify existing rules before adding new ones?
+- [ ] Are there any rules that reference specific IDs or values?
+- [ ] Is the prompt growing without clear benefit?
 
 ---
 

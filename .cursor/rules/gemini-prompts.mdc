@@ -26,5 +26,12 @@ Cursor chat instructions), follow `docs/gemini-3-pro-prompt-engineering-best-pra
 - **Anchor to context**
   - For large inputs, put **context first, instructions last**, and use an
     anchor phrase such as:  
-    “Based on the information above, …”.
+    "Based on the information above, …".
+
+- **Avoid overfitting prompts to specific examples**
+  - When a prompt fails on one input, fix the **underlying principle**, not the symptom.
+  - Prefer simplifying existing rules over adding new exception rules.
+  - Maintain a separate evaluation set to verify changes generalize.
+  - Red flags: rules referencing specific IDs/values, accumulating exceptions,
+    frequent prompt changes after each failure.
 
