@@ -1,18 +1,24 @@
-## From DEMRE Temarios to Canonical Standards JSON
+## From DEMRE Temarios to Canonical Standards JSON (for Atom Generation)
 
-This document describes how we want to transform official DEMRE
-temarios into a richer, canonical standards representation suitable
-for building the knowledge graph.
+This document specifies how we transform official DEMRE temarios into a
+canonical standards JSON that is:
+
+- faithful to the official scope,
+- rich enough to support **granular atom generation** (see
+  `docs/learning-atom-granularity-guidelines.md`),
+- optimised as input for **Gemini 3 Pro** (see
+  `docs/gemini-3-pro-prompt-engineering-best-practices.md`).
 
 There are **two layers** to be aware of:
 
-- the **current, implemented pipeline**, which stops at structured temario JSON; and
-- the **target canonical standards layer**, which is not yet implemented and is documented here
-  so that future work follows a consistent design.
+- the **current, implemented pipeline**, which stops at structured
+  temario JSON; and
+- the **target canonical standards layer**, which this document defines
+  so we can later generate atoms from it using Gemini 3 Pro.
 
 ---
 
-## 1. Inputs
+## 1. Inputs and sources of truth
 
 - **Official temarios (PDF)**  
   Stored under `app/data/temarios/pdf/`.
@@ -24,80 +30,639 @@ There are **two layers** to be aware of:
     - habilidades (with criterios de evaluación),
     - ejes temáticos, unidades temáticas y descripciones.
 
-These inputs are the *only* source of truth for official scope.
+- **Content model for standards richness**  
+  `legacy/PAES-kg/standards-paes-m1-full-GPT.md` shows the *level of
+  detail* we want for each standard:
+  - descripción general,
+  - listas “Incluye / No incluye / Subcontenidos clave”,
+  - ejemplos conceptuales.
+
+The temario PDFs and their parsed JSON are the **only source of truth
+for scope**. Richer descriptions must stay within that scope.
 
 ---
 
-## 2. Target: canonical standards JSON
+## 2. Target artifact: canonical standards JSON
 
-We want a machine-friendly JSON that is as comprehensive as
-`legacy/PAES-kg/standards-paes-m1-full-GPT.md`, but structured
-for code. At a high level, a standard will include:
+The goal of the canonical standards JSON is to be the **best possible
+input** for later Gemini 3 Pro runs that generate **learning atoms**.
 
-- a stable **id** (e.g. `M1-NUM-01`),
-- a short **title**,
-- a rich **descripcion_general**,
-- structured **incluye** / **no_incluye** lists,
-- a list of **subcontenidos_clave**,
-- optional **ejemplos_conceptuales**.
+For atom generation, Gemini needs each standard to be:
 
-Later, atoms will link back to these standard IDs.
+- self-contained and readable in isolation,
+- explicit about what is included and excluded,
+- decomposed into key sub‑concepts that hint at natural atom
+  boundaries,
+- linked to DEMRE habilidades where relevant.
+
+We will store canonical standards under paths like:
+
+- `app/standards/paes_m1_regular_2026.json`
+- `app/standards/paes_m1_invierno_2026.json`
+
+### 2.1 High‑level JSON structure
+
+The canonical file is a single JSON object:
+
+- **metadata**: document‑level information.
+- **standards**: list of standard objects.
+
+Example (schema sketch, not exhaustive):
+
+```json
+{
+  "metadata": {
+    "id": "paes_m1_regular_2026",
+    "proceso_admision": 2026,
+    "tipo_aplicacion": "regular",
+    "nombre_prueba": "Prueba de Competencia Matemática 1 (M1)",
+    "source_temario_json": "app/data/temarios/json/2026-25-03-20-temario-paes-regular-m1.json",
+    "generated_with": "gemini-3-pro",
+    "version": "2025-11-26"
+  },
+  "standards": [
+    {
+      "id": "M1-NUM-01",
+      "eje": "numeros",
+      "unidad_temario": "Conjunto de los números enteros y racionales",
+      "titulo": "Conjunto de los números enteros y racionales",
+      "descripcion_general": "...",
+      "incluye": ["...", "..."],
+      "no_incluye": ["...", "..."],
+      "subcontenidos_clave": ["...", "..."],
+      "ejemplos_conceptuales": ["...", "..."],
+      "habilidades_relacionadas": [
+        {
+          "habilidad_id": "resolver_problemas",
+          "criterios_relevantes": ["...", "..."]
+        }
+      ],
+      "fuentes_temario": {
+        "conocimientos_path": "conocimientos.numeros.unidades[0]",
+        "descripciones_originales": [
+          "Operaciones y orden en el conjunto de los números enteros.",
+          "Operaciones y comparación..."
+        ]
+      }
+    }
+  ]
+}
+```
+
+### 2.2 Field semantics (per standard)
+
+Each standard in `standards` must include:
+
+- **id**: stable code (for PAES M1: `M1-<EJE>-NN`, e.g. `M1-NUM-01`).
+- **eje**: eje temático label, e.g. `numeros`, `algebra_y_funciones`.
+- **unidad_temario**: exact unidad name from the temario JSON.
+- **titulo**: short human‑readable title for the standard (can match
+  `unidad_temario` or refine it slightly, without changing scope).
+- **descripcion_general**: rich narrative description, similar in
+  depth and tone to `standards-paes-m1-full-GPT.md`.
+- **incluye**: list of bullet‑style strings describing what is inside
+  the scope of the standard.
+- **no_incluye**: list of bullet‑style strings describing explicit
+  exclusions (helps avoid scope creep during atom generation).
+- **subcontenidos_clave**: list of fine‑grained sub‑concepts and
+  skills. These should be written with **atom granularity in mind**:
+  - each item should be close to a potential atom (single cognitive
+    intention),
+  - but we do **not** generate atoms here.
+- **ejemplos_conceptuales**: list of conceptual example descriptions
+  (no full exercises), showing how the standard manifests in practice.
+- **habilidades_relacionadas**: optional list capturing the mapping to
+  DEMRE habilidades:
+  - `habilidad_id`: one of `resolver_problemas`, `modelar`,
+    `representar`, `argumentar`.
+  - `criterios_relevantes`: subset of criterios de evaluación texts
+    that are clearly aligned with this standard.
+- **fuentes_temario**: minimal traceability back to the original
+  temario JSON:
+  - `conocimientos_path`: JSON path string into the temario,
+  - `descripciones_originales`: list of the original description
+    strings used as input.
+
+Everything beyond this list should be added only if it clearly helps
+Gemini later when splitting into atoms.
 
 ---
 
-## 3. Transformation pipeline (conceptual)
+## 3. Transformation pipeline (conceptual, with Gemini 3 Pro)
 
-1. **Parse temario JSON**
-   - Read habilidades and ejes from `app/data/temarios/json/...`.
-   - Map each unidad temática to one or more draft standard IDs
-     (e.g. `M1-NUM-01`, `M1-NUM-02`, etc.).
+We separate the process into two stages:
 
-2. **Enrich from domain knowledge**
-   - Use documents like `legacy/PAES-kg/standards-paes-m1-full-GPT.md`
-     as *content models*:
-     - level of detail in descriptions,
-     - the way “Incluye / No incluye / Subcontenidos clave” are written.
-   - Write code or prompts that generate similar richness, while
-     remaining faithful to the DEMRE scope.
+1. **From temario JSON to canonical standards JSON**  
+   (this document; uses Gemini 3 Pro).
+2. **From canonical standards JSON to learning atoms**  
+   (future work; also uses Gemini 3 Pro and
+   `docs/learning-atom-granularity-guidelines.md`).
 
-3. **Normalize into JSON schema**
-   - Define a small schema (Python dataclasses or Pydantic models)
-     for a standard.
-   - Ensure every standard is valid against this schema before it is
-     committed.
+This section focuses on stage 1.
 
-4. **Export canonical JSON**
-   - Store results under something like:
-     - `app/standards/paes_m1_regular.json`
-     - `app/standards/paes_m1_invierno.json`
-   - Keep versions explicit (year, type: regular vs invierno).
+### 3.1 Parse and organise temario JSON
+
+- Load the temario JSON from `app/data/temarios/json/...`.
+- For each eje and unidad:
+  - collect:
+    - unidad name and description strings,
+    - relevant habilidades and criterios de evaluación,
+    - metadata such as proceso_admision, tipo_aplicacion.
+- Decide draft standard IDs (`M1-NUM-01`, etc.) and map each unidad to
+  one or more standards. For PAES M1 it is acceptable (and usually
+  simplest) to map **one unidad → one standard**.
+
+### 3.2 Use Gemini 3 Pro to enrich into standards
+
+We use Gemini 3 Pro to **write the rich fields** for each standard
+(`descripcion_general`, `incluye`, `no_incluye`,
+`subcontenidos_clave`, `ejemplos_conceptuales`,
+`habilidades_relacionadas`), following these constraints:
+
+- Inputs in the prompt:
+  - the **raw temario JSON slice** for the relevant eje/unidad,
+  - the **target JSON schema** for a standard (see section 2),
+  - 1–2 **worked examples** from
+    `legacy/PAES-kg/standards-paes-m1-full-GPT.md` rewritten into the
+    canonical schema,
+  - the **atom granularity guidelines**
+    (`docs/learning-atom-granularity-guidelines.md`),
+  - key parts of the Gemini best‑practices doc, especially:
+    - clear task description,
+    - explicit JSON schema,
+    - `response_mime_type="application/json"`,
+    - `temperature=0.0` for deterministic output.
+
+- Prompt structure (conceptual):
+  - Context first: temario excerpt + example standards in the target
+    schema.
+  - Then:
+    - task: “Generate standards in this schema that fully cover this
+      temario slice, staying inside its scope.”
+    - rules: “Faithful to DEMRE, no extra topics, Spanish language,
+      no exercises, only conceptual examples.”
+    - output_format: “ONLY JSON matching the schema.”
+    - atom hints: “Write `subcontenidos_clave` as potential atom‑level
+      units with a single cognitive intention each, but do not create
+      atoms yet.”
+
+Gemini returns either:
+
+- the full `standards` array for a given eje, or
+- individual standards which we later merge.
+
+### 3.3 Normalise and validate
+
+Before committing a standards file we:
+
+- Validate that the JSON:
+  - is syntactically valid,
+  - matches the required fields for each standard,
+  - uses stable IDs and eje labels consistently.
+- Run lightweight checks such as:
+  - every unidad in the temario is covered by at least one standard,
+  - every standard has non‑empty `descripcion_general`,
+    `incluye`, `subcontenidos_clave`.
+- Optionally, implement small Python helpers (dataclasses or Pydantic)
+  that mirror the schema and perform validation.
+
+### 3.4 Export canonical JSON
+
+Once validated, we write the file under `app/standards/` with a
+versioned name, for example:
+
+- `app/standards/paes_m1_regular_2026.json`
+
+This file becomes the **only input** for later atom generation for
+that prueba and proceso de admisión.
 
 ---
 
-## 4. Design principles for standards
+### 3.5 Gemini call granularity and prompt roles
+
+To keep Gemini 3 Pro focused and deterministic, we **work by small,
+well‑scoped parts** and separate **generation** from
+**model‑assisted validation**.
+
+#### 3.5.1 Granularity for standards generation
+
+- We generate standards **one unidad temática at a time**.
+- For each unidad in the temario (e.g. “Porcentaje”,
+  “Función cuadrática”):
+  - We prepare a prompt whose context includes:
+    - the temario JSON slice for that unidad
+      (name + descripción list),
+    - the four habilidades with their criterios de evaluación
+      (a small, reusable block),
+    - the target standard JSON schema (section 2),
+    - 1–2 example standards already written in the canonical schema.
+  - We ask Gemini to return:
+    - exactly one or a very small number of standards that together
+      cover **only that unidad**.
+- For small ejes like “Números”, it is optional (but not required) to
+  generate all its unidades in a single call. When in doubt, prefer
+  **unidad‑by‑unidad** to keep prompts short and avoid scope drift.
+
+This matches Gemini’s guidance to keep prompts precise and avoid
+over‑engineering large monolithic calls while still providing enough
+structured context for reasoning.
+
+#### 3.5.2 Inputs for standards generation vs validation
+
+- **Generation prompts (per unidad)** include:
+  - temario JSON slice for that unidad,
+  - habilidad descriptions and criterios de evaluación,
+  - canonical standard schema and 1–2 example standards,
+  - clear task: “Generate standards that fully cover this unidad,
+    in Spanish, without adding topics beyond the descriptions.”
+
+- **Validation prompts (per eje or per small batch of standards)**
+  include:
+  - list of unidades and their original descriptions for that eje,
+  - the candidate standards JSON for that eje (or subset),
+  - a short checklist:
+    - every unidad is covered by at least one standard;
+    - no standard introduces topics outside the temario descriptions;
+    - all required fields are present and non‑empty;
+    - `subcontenidos_clave` are consistent with the unidad scope.
+  - clear task: “Review these standards against the temario excerpt and
+    checklist; list issues and, if needed, return a corrected JSON
+    version.”
+
+In code, we will typically:
+
+- run **generation** unidad‑by‑unidad,
+- then run **validation** per eje (or per file) using Gemini as a
+  second‑pass reviewer before we trust the canonical standards JSON.
+
+---
+
+## 4. Design principles for standards (revisited)
 
 - **Faithful to DEMRE**  
-  Never introduce content that contradicts the official temario.
+  Never introduce content that contradicts or goes beyond the official
+  temario. `no_incluye` should be used to prevent scope creep.
 
 - **More explicit, not broader**  
-  We unpack and clarify, but we do not add entirely new topics.
+  We unpack and clarify; we do not widen the mathematical content.
 
 - **Stable codes**  
-  Standard IDs should remain stable even if wording is improved in
-  future passes.
+  Standard IDs (`M1-NUM-01`, etc.) should remain stable even if wording
+  is refined later.
+
+- **Atom‑friendly structure**  
+  `subcontenidos_clave` must already respect the atom granularity
+  criteria:
+  - single cognitive intention,
+  - manageable working‑memory load,
+  - separable assessment when needed.
+  Actual atoms will be derived from these lists, not invented from
+  scratch.
 
 ---
 
-## 5. Next steps (not yet implemented)
+## 5. Current status and next steps
 
-- Implement a minimal `app/standards/` module that:
-  - loads temario JSON,
-  - maps units to draft standard IDs,
-  - exports a first canonical JSON schema (even if initially small).
+- The **structured temario JSON** remains the only official,
+  machine‑readable source of scope.
+- The **canonical standards JSON** described here is the next layer
+  we want to build, using Gemini 3 Pro guided by this document.
+- Once at least one canonical standards file exists (for example,
+  `paes_m1_regular_2026.json`), we can design the separate pipeline
+  that:
+  - takes this standards JSON,
+  - applies `docs/learning-atom-granularity-guidelines.md`,
+  - uses Gemini 3 Pro to generate a consistent atoms JSON.
 
-- Iterate on the richness of each standard using domain expertise and
-  the existing GPT-based markdown as a reference.
+Until the standards pipeline is implemented, downstream work should
+continue to rely on the structured temario JSON.
 
-Until this module exists, **the structured temario JSON is the only machine-readable artifact we rely on**.
+---
+
+## 6. How DEMRE combines habilidades and conocimientos
+
+The official temario PDF
+(`app/data/temarios/pdf/2026-25-03-20-temario-paes-regular-m1.pdf`)
+clarifies how **habilidades** and **conocimientos** interact in the
+PAES M1 test.
+
+Key points from the document:
+
+- The test evaluates a single overarching construct:
+  **Competencia Matemática**, defined as the integration of habilidades
+  and conocimientos to solve problems in diverse contexts.
+- There are four habilidades, listed once and then visually
+  associated with every eje:
+  - Resolver problemas
+  - Modelar
+  - Representar
+  - Argumentar
+- Conocimientos are grouped by **ejes temáticos** and
+  **unidades temáticas** (e.g. “Conjunto de los números enteros
+  y racionales”, “Porcentaje”, “Función cuadrática”, etc.).
+- For each eje, the PDF repeats a row with the four habilidades before
+  listing unidades, which signals:
+  - any unidad may be assessed through any of the cuatro habilidades;
+  - items are not purely “content only” or “skill only”: they always
+    combine at least one habilidad with one or more conocimientos.
+
+Implications for our modelling:
+
+- **Standards** are primarily about **conocimientos** (content scope),
+  but must already encode links to the four habilidades via
+  `habilidades_relacionadas`.
+- **Atoms** should be the place where the integration becomes explicit:
+  each atom describes *a specific way* in which one or more standards
+  are exercised through one main habilidad (and optionally secondary
+  habilidades).
+- The knowledge graph should let us:
+  - start from a standard and see all atoms that realise it under
+    different habilidades and contexts;
+  - start from a habilidad and see all atoms that train or assess
+    that habilidad across content areas.
+
+This is consistent with the PAES description that all questions
+“evalúan la Competencia Matemática […] teniendo como referencia los
+conocimientos” and use the habilidades list as a transversal lens over
+each eje.
+
+---
+
+## 7. Target atoms JSON (conceptual)
+
+The atoms JSON is the main artifact we will later generate with
+Gemini 3 Pro using `learning-atom-granularity-guidelines.md`.
+
+### 7.1 High‑level structure
+
+We store atoms per prueba and proceso de admisión under paths like:
+
+- `app/atoms/paes_m1_regular_2026.json`
+
+The file is a single JSON object:
+
+- **metadata**: document‑level information.
+- **atoms**: list of atom objects.
+
+Example (schema sketch, not exhaustive):
+
+```json
+{
+  "metadata": {
+    "id": "paes_m1_regular_2026_atoms",
+    "proceso_admision": 2026,
+    "tipo_aplicacion": "regular",
+    "nombre_prueba": "Prueba de Competencia Matemática 1 (M1)",
+    "source_standards_json": "app/standards/paes_m1_regular_2026.json",
+    "generated_with": "gemini-3-pro",
+    "version": "2025-11-26"
+  },
+  "atoms": [
+    {
+      "id": "A-M1-NUM-01-01",
+      "eje": "numeros",
+      "standard_ids": ["M1-NUM-01"],
+      "habilidad_principal": "resolver_problemas",
+      "habilidades_secundarias": ["representar"],
+      "tipo_atomico": "concepto_procedimental",
+      "titulo": "Comparar enteros en la recta numérica",
+      "descripcion": "...",
+      "criterios_atomicos": [
+        "El estudiante puede ordenar enteros en la recta numérica.",
+        "El estudiante interpreta el signo como dirección respecto a 0."
+      ],
+      "ejemplos_conceptuales": ["...", "..."],
+      "prerrequisitos": ["A-M1-NUM-01-00"],
+      "notas_alcance": [
+        "No incluye fracciones ni decimales.",
+        "No incluye situaciones de porcentaje."
+      ]
+    }
+  ]
+}
+```
+
+### 7.2 Field semantics (per atom)
+
+Each atom in `atoms` should include:
+
+- **id**: stable identifier, e.g. `A-M1-<EJE>-NN-MM`, where:
+  - `<EJE>` matches the standards eje (NUM, ALG, GEO, PROB),
+  - `NN` references the standard index,
+  - `MM` is a local counter for atoms under that standard.
+- **eje**: eje temático, copied from the primary standard.
+- **standard_ids**: one or more standards that this atom directly
+  supports (usually one, but can be more when the atom is explicitly
+  cross‑standard).
+- **habilidad_principal**: one of:
+  - `resolver_problemas`
+  - `modelar`
+  - `representar`
+  - `argumentar`
+- **habilidades_secundarias**: optional list of other habilidades
+  that the atom also touches, when that is important.
+- **tipo_atomico**: short classification that helps with later item
+  generation and UX, e.g.:
+  - `concepto`
+  - `procedimiento`
+  - `representacion`
+  - `argumentacion`
+  - `modelizacion`
+- **titulo**: short, student‑facing title for the atom.
+- **descripcion**: concise but rich description of the cognitive
+  intention of the atom (should read like a learning objective).
+- **criterios_atomicos**: list of one or more success criteria that
+  clarify what it means to “master” this atom.
+- **ejemplos_conceptuales**: 1–3 non‑exercise examples that illustrate
+  the atom (similar style to the standards’ examples, but more granular
+  and focused).
+- **prerrequisitos**: list of other atom `id`s that are required
+  before this atom makes sense, following the criteria in
+  `learning-atom-granularity-guidelines.md` (prerequisite independence).
+- **notas_alcance**: optional list clarifying what is deliberately
+  excluded from this atom (helps prevent scope creep when generating
+  items or explanations).
+
+Atoms must respect the atom granularity checks:
+
+- one cognitive intention,
+- reasonable working‑memory load,
+- separable assessment,
+- clear generalisation boundary when similar skills differ across
+  contexts.
+
+---
+
+## 8. Pipeline: from standards JSON to atoms JSON (with Gemini 3 Pro)
+
+This section describes, at a design level, how we plan to use
+Gemini 3 Pro to generate atoms from the canonical standards JSON,
+taking into account the DEMRE use of habilidades and conocimientos.
+
+### 8.1 Inputs
+
+- Canonical standards JSON for a given prueba, e.g.:
+  - `app/standards/paes_m1_regular_2026.json`
+- DEMRE context from the temario PDF:
+  - description of competencias,
+  - global list of habilidades and their criterios de evaluación,
+  - list of ejes and unidades.
+- Atom design guidelines:
+  - `docs/learning-atom-granularity-guidelines.md`.
+- Gemini best‑practices:
+  - `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+
+### 8.2 High‑level steps
+
+1. **Load and group standards**  
+   - Read the standards JSON and group standards by eje.
+   - For each standard, keep:
+     - the full standard object,
+     - its `habilidades_relacionadas`.
+
+2. **Prepare DEMRE habilidad context**  
+   - Extract the four habilidades descriptions and their criterios de
+     evaluación from the temario (either from the PDF or from the
+     structured JSON representation).
+   - Represent them as a small JSON or markdown block that can be
+     reused in prompts.
+
+3. **Define atom schema for Gemini**  
+   - Translate section 7.2 into an explicit JSON schema description to
+     embed in prompts, with examples.
+
+4. **Call Gemini per standard or per eje**  
+   - For each standard (or small group of related standards):
+     - send a prompt that includes:
+       - the standard(s) in canonical JSON form,
+       - the habilidad descriptions,
+       - the atom granularity guidelines,
+       - the target atom JSON schema,
+       - 1–2 example standards with manually authored atoms as
+         few‑shot examples (once we have them).
+
+5. **Merge and validate atoms**  
+   - Combine Gemini outputs into a single atoms JSON.
+   - Run validation checks:
+     - JSON structure,
+     - required fields per atom,
+     - references to existing `standard_ids`,
+     - acyclic prerequisite graph where possible.
+
+6. **Iterate with human review**  
+   - Spot‑check atoms for a few standards.
+   - If needed, refine prompts or post‑processing.
+
+### 8.3 Prompt shape for atom generation
+
+At a high level, prompts to Gemini 3 Pro for atoms should follow
+the structure recommended in `docs/gemini-3-pro-prompt-engineering-best-practices.md`:
+
+- **Context first**:
+  - standard(s) JSON,
+  - habilidad descriptions and criterios de evaluación,
+  - atom guidelines,
+  - example atoms.
+- **Then instructions and schema**:
+  - clear task:
+    - “Generate a list of atoms that fully and minimally cover these
+      standards, respecting atom granularity rules and DEMRE scope.”
+  - rules:
+    - one cognitive intention per atom,
+    - do not add content beyond the standards’ `incluye`,
+    - align each atom with exactly one `habilidad_principal`,
+      using DEMRE definitions,
+    - keep text in Spanish.
+  - output_format:
+    - “ONLY JSON with the following structure: { ... schema ... }”
+    - use `response_mime_type="application/json"` and
+      `temperature=0.0` for determinism.
+
+Gemini should be asked to:
+
+- propose **candidate atoms**,
+- assign each atom to one or more `standard_ids`,
+- choose `habilidad_principal` based on DEMRE habilidad definitions
+  and the nature of the described skill,
+- suggest `prerrequisitos` only when clear from the standard text and
+  the guidelines (never invent long chains without justification).
+
+### 8.4 Relationship to later item generation
+
+This document only covers up to the atoms JSON. In later work:
+
+- items, explanations and practice activities will be generated using
+  atoms as the primary input (not directly from standards).
+- the combination of:
+  - `standard_ids`,
+  - `habilidad_principal`,
+  - `tipo_atomico`,
+  will be central to designing prompts for item generation that match
+  the PAES style.
+
+For now, the key requirement is that the atoms JSON be **clean,
+stable and faithful** to both the canonical standards JSON and the
+DEMRE descriptions of habilidades and conocimientos.
+
+---
+
+### 8.5 Call granularity and validation prompts for atoms
+
+As with standards, we keep Gemini focused by working in **small,
+conceptually coherent chunks** and distinguishing between
+**generation** and **validation** roles.
+
+#### 8.5.1 Granularity for atom generation
+
+- We generate atoms **one standard at a time**.
+  - Example: call Gemini with only `M1-NUM-01` and ask it to propose
+    all atoms needed to cover that standard.
+- In rare cases where two standards are tightly coupled and share
+  many `subcontenidos_clave`, we may pass a **small group of related
+  standards** in one call, but we avoid mixing many unrelated
+  standards or entire ejes.
+- For each call we:
+  - pass the full standard object(s),
+  - and explicitly instruct Gemini to:
+    - cover *all* `subcontenidos_clave`,
+    - avoid creating atoms that depend on content from other standards
+      unless that dependency is expressed via `prerrequisitos`.
+
+This “one‑standard‑per‑call” setup reflects the atom guidelines
+(`retrieval coherence`, `assessment independence`) and keeps the
+prompt small enough that Gemini can reason carefully about boundaries.
+
+#### 8.5.2 Inputs for atom generation vs validation
+
+- **Generation prompts (per standard)** include:
+  - the canonical standard JSON object for that `standard_id`,
+  - habilidad descriptions and criterios de evaluación,
+  - atom granularity guidelines text,
+  - atom JSON schema (section 7.2) and 1–2 example atoms,
+  - clear task:
+    - “Generate a minimal list of atoms that fully cover this
+      standard’s `subcontenidos_clave`, assigning one
+      `habilidad_principal` per atom and respecting DEMRE scope.”
+
+- **Validation prompts (per standard or small batch of atoms)** include:
+  - the original standard JSON,
+  - the candidate atoms for that standard,
+  - a checklist derived from `learning-atom-granularity-guidelines.md`:
+    - each atom has one cognitive intention,
+    - atoms are assessable independently,
+    - prerequisites go from simpler to more complex atoms,
+    - no atom introduces topics beyond the parent standard(s),
+    - all `standard_ids` and `habilidad_principal` values are valid.
+  - clear task:
+    - “Review these atoms against the standard and checklist; identify
+      any atoms that are too broad, out of scope or mis‑aligned with
+      habilidades, and return either (a) a list of issues or (b) an
+      improved atoms JSON.”
+
+In code, the typical flow per standard will be:
+
+1. generation call → candidate atoms for that standard;
+2. validation call → Gemini as reviewer using the checklist;
+3. optional human review before merging into the global atoms JSON.
 
 

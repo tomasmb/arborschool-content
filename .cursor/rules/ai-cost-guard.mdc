@@ -1,0 +1,81 @@
+---
+description: "Mandatory cost estimation before running any AI/LLM pipeline."
+alwaysApply: true
+globs:
+  - "**/*"
+---
+
+## AI Cost Guard – Mandatory Pre-Run Estimation
+
+Before executing **any** code, command, or pipeline that calls an AI/LLM API (Gemini, GPT,
+Claude, or any other paid model), you **MUST** follow this checklist:
+
+### 1. Identify the Model(s)
+
+- Determine which model(s) will be invoked (e.g. `gemini-3-pro`, `gpt-4o`, `claude-3-opus`).
+- If the code uses a wrapper (e.g. `app/gemini_client.py`), trace to the actual model string.
+
+### 2. Look Up Current Pricing
+
+- Use web search to fetch **current** pricing for the identified model.
+  - Example search: `"Gemini 3 Pro API pricing per token November 2025"`
+- Report the pricing in this format:
+  ```
+  Model: <model-name>
+  Input:  $X.XX per 1M tokens
+  Output: $Y.YY per 1M tokens
+  ```
+
+### 3. Estimate Token Usage
+
+Provide a **conservative** (upper-bound) estimate:
+
+| Item                | Tokens (approx) | Basis                                     |
+|---------------------|-----------------|-------------------------------------------|
+| Input per call      | …               | prompt size, context docs                 |
+| Output per call     | …               | expected generation length                |
+| Number of calls     | …               | loop count, retries, validation rounds    |
+| **Total Input**     | …               |                                           |
+| **Total Output**    | …               |                                           |
+
+### 4. Calculate Estimated Cost
+
+```
+Estimated Input Cost:  $X.XX
+Estimated Output Cost: $Y.YY
+─────────────────────────────
+TOTAL ESTIMATED COST:  $Z.ZZ
+```
+
+### 5. Request Explicit Approval
+
+Present the estimate and **ask**:
+
+> "This pipeline will cost approximately **$Z.ZZ** (upper-bound estimate).
+> Do you want me to proceed? [yes / no]"
+
+**Do NOT run the pipeline until the user explicitly confirms.**
+
+---
+
+### Quick Reference – Common Models (verify with web search)
+
+| Model           | Input (per 1M) | Output (per 1M) | Notes                     |
+|-----------------|----------------|-----------------|---------------------------|
+| gemini-3-pro    | (look up)      | (look up)       | thinking tokens may differ|
+| gpt-4o          | (look up)      | (look up)       | —                         |
+| gpt-4o-mini     | (look up)      | (look up)       | —                         |
+| claude-3-opus   | (look up)      | (look up)       | —                         |
+| claude-3-sonnet | (look up)      | (look up)       | —                         |
+
+Always verify pricing is current—API costs change frequently.
+
+---
+
+### Exceptions
+
+Skip this guard **only** if:
+- The user explicitly says "skip cost check" or "I don't care about cost".
+- The call is a single short test prompt (< 1K tokens total) **and** the user already knows.
+
+Otherwise, **always** estimate and ask.

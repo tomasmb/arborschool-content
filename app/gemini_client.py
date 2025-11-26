@@ -97,13 +97,3 @@ def load_default_gemini_service() -> GeminiService:
     config = GeminiConfig(api_key=api_key)
     return GeminiService(config)
 
-{
-  "cells": [],
-  "metadata": {
-    "language_info": {
-      "name": "python"
-    }
-  },
-  "nbformat": 4,
-  "nbformat_minor": 2
-}
