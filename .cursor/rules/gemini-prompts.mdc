@@ -1,0 +1,30 @@
+---
+description: "Guidelines for creating Gemini 3 Pro prompts in this repo."
+alwaysApply: false
+globs:
+  - "**/*"
+---
+
+## Gemini 3 Pro Prompting Rules
+
+When you create or modify prompts intended for **Gemini 3 Pro** (code, docs, or
+Cursor chat instructions), follow `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+
+- **Be precise and direct**
+  - Avoid over-engineered, verbose prompts.
+  - State the task in 1–3 clear sentences.
+
+- **Structure prompts**
+  - Use sections like `Role`, `Task`, `Rules`, `Output Format`, `Context`,
+    `Final Instruction` as recommended in the doc.
+
+- **Control thinking and output**
+  - Use `thinking_level="low"` for simple transforms; `thinking_level="high"`
+    for complex reasoning, code analysis or structured output.
+  - Be explicit about output format (JSON/XML/text) and verbosity.
+
+- **Anchor to context**
+  - For large inputs, put **context first, instructions last**, and use an
+    anchor phrase such as:  
+    “Based on the information above, …”.
+
