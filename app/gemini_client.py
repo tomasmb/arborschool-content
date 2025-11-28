@@ -4,8 +4,40 @@ import os
 from dataclasses import dataclass
 from typing import Any
 
+import google.generativeai as genai
 from dotenv import load_dotenv
-from google_gemini3_pro import GeminiClient
+
+# Temporary adapter until google_gemini3_pro package is available
+class GeminiClient:
+    """Temporary adapter for google-generativeai until google_gemini3_pro is available."""
+
+    def __init__(self, api_key: str, model: str) -> None:
+        genai.configure(api_key=api_key)
+        self._model = genai.GenerativeModel(model)
+
+    def generate_text(
+        self,
+        prompt: str,
+        *,
+        thinking_level: str | None = None,
+        response_mime_type: str | None = None,
+        temperature: float | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """Generate text using google-generativeai."""
+        generation_config: dict[str, Any] = {}
+        if temperature is not None:
+            generation_config["temperature"] = temperature
+        if response_mime_type:
+            generation_config["response_mime_type"] = response_mime_type
+
+        # Note: thinking_level may not be directly supported in google-generativeai
+        # This is a temporary adapter
+        response = self._model.generate_content(
+            prompt,
+            generation_config=generation_config if generation_config else None,
+        )
+        return type("Response", (), {"text": response.text})()
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
@@ -20,7 +52,7 @@ class GeminiConfig:
     """
 
     api_key: str
-    model: str = "gemini-3-pro"
+    model: str = "gemini-2.5-flash"  # Using 2.5-flash (free tier) until gemini-3-pro is available
     thinking_level: str = "high"  # "low" or "high" per Gemini docs
 
 
