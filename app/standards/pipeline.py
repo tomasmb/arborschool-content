@@ -290,10 +290,15 @@ def _build_canonical_file(
     source_path: Path,
 ) -> CanonicalStandardsFile:
     """Build canonical standards file from generated standards."""
+    # Handle tipo_aplicacion: can be string or list
+    tipo_aplicacion = temario.get("tipo_aplicacion", "unknown")
+    if isinstance(tipo_aplicacion, list):
+        tipo_aplicacion = ", ".join(tipo_aplicacion)  # Convert list to comma-separated string
+    
     metadata = StandardsMetadata(
         id=temario.get("id", "unknown"),
         proceso_admision=temario.get("proceso_admision", 2026),
-        tipo_aplicacion=temario.get("tipo_aplicacion", "unknown"),
+        tipo_aplicacion=tipo_aplicacion,
         nombre_prueba=temario.get("nombre_prueba", "Unknown"),
         source_temario_json=str(source_path),
         generated_with="gemini-2.5-flash",  # TODO: Change to "gemini-3-pro-preview" when available
