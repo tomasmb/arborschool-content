@@ -151,12 +151,26 @@ def validate_standards_eje_with_gemini(
 def validate_coverage_locally(
     standards: list[Standard],
     temario_conocimientos: dict[str, Any],
+    eje_key: str | None = None,
 ) -> list[ValidationIssue]:
-    """Check that all temario unidades are covered (fast, no Gemini)."""
-    temario_unidades: dict[str, list[str]] = {}
-    for eje_key, eje_data in temario_conocimientos.items():
+    """Check that all temario unidades are covered (fast, no Gemini).
+    
+    If eje_key is provided, only validates coverage for that specific eje.
+    Otherwise validates all ejes (for full pipeline validation).
+    """
+    if eje_key:
+        # Validate only the current eje
+        if eje_key not in temario_conocimientos:
+            return []
+        eje_data = temario_conocimientos[eje_key]
         unidades = eje_data.get("unidades", [])
-        temario_unidades[eje_key] = [u.get("nombre", "") for u in unidades]
+        temario_unidades = {eje_key: [u.get("nombre", "") for u in unidades]}
+    else:
+        # Validate all ejes
+        temario_unidades = {}
+        for eje, eje_data in temario_conocimientos.items():
+            unidades = eje_data.get("unidades", [])
+            temario_unidades[eje] = [u.get("nombre", "") for u in unidades]
 
     coverage_errors = validate_standards_coverage(standards, temario_unidades)
 
@@ -190,9 +204,9 @@ def run_full_eje_validation(
     """
     all_issues: list[ValidationIssue] = []
 
-    # Local coverage check
+    # Local coverage check (only for current eje)
     logger.info("Running local coverage validation for eje '%s'...", eje_key)
-    coverage_issues = validate_coverage_locally(standards, temario_conocimientos)
+    coverage_issues = validate_coverage_locally(standards, temario_conocimientos, eje_key=eje_key)
     all_issues.extend(coverage_issues)
 
     if coverage_issues:
