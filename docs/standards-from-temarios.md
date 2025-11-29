@@ -6,15 +6,17 @@ canonical standards JSON that is:
 - faithful to the official scope,
 - rich enough to support **granular atom generation** (see
   `docs/learning-atom-granularity-guidelines.md`),
-- optimised as input for **Gemini 3 Pro** (see
+- optimised as input for **Gemini** (currently `gemini-2.5-flash`, see
   `docs/gemini-3-pro-prompt-engineering-best-practices.md`).
+  TODO: Update to `gemini-3-pro-preview` when available.
 
 There are **two layers** to be aware of:
 
 - the **current, implemented pipeline**, which stops at structured
   temario JSON; and
 - the **target canonical standards layer**, which this document defines
-  so we can later generate atoms from it using Gemini 3 Pro.
+  so we can later generate atoms from it using Gemini (currently `gemini-2.5-flash`).
+  TODO: Update to `gemini-3-pro-preview` when available.
 
 ---
 
@@ -77,7 +79,7 @@ Example (schema sketch, not exhaustive):
     "tipo_aplicacion": "regular",
     "nombre_prueba": "Prueba de Competencia Matemática 1 (M1)",
     "source_temario_json": "app/data/temarios/json/2026-25-03-20-temario-paes-regular-m1.json",
-    "generated_with": "gemini-3-pro",
+    "generated_with": "gemini-2.5-flash",  # TODO: Change to "gemini-3-pro-preview" when available
     "version": "2025-11-26"
   },
   "standards": [
@@ -148,14 +150,14 @@ Gemini later when splitting into atoms.
 
 ---
 
-## 3. Transformation pipeline (conceptual, with Gemini 3 Pro)
+## 3. Transformation pipeline (conceptual, with Gemini)
 
 We separate the process into two stages:
 
 1. **From temario JSON to canonical standards JSON**  
-   (this document; uses Gemini 3 Pro).
+   (this document; uses Gemini, currently `gemini-2.5-flash`).
 2. **From canonical standards JSON to learning atoms**  
-   (future work; also uses Gemini 3 Pro and
+   (future work; also uses Gemini and
    `docs/learning-atom-granularity-guidelines.md`).
 
 This section focuses on stage 1.
@@ -172,9 +174,9 @@ This section focuses on stage 1.
   one or more standards. For PAES M1 it is acceptable (and usually
   simplest) to map **one unidad → one standard**.
 
-### 3.2 Use Gemini 3 Pro to enrich into standards
+### 3.2 Use Gemini to enrich into standards
 
-We use Gemini 3 Pro to **write the rich fields** for each standard
+We use Gemini (currently `gemini-2.5-flash`) to **write the rich fields** for each standard
 (`descripcion_general`, `incluye`, `no_incluye`,
 `subcontenidos_clave`, `ejemplos_conceptuales`,
 `habilidades_relacionadas`), following these constraints:
@@ -240,7 +242,7 @@ that prueba and proceso de admisión.
 
 ### 3.5 Gemini call granularity and prompt roles
 
-To keep Gemini 3 Pro focused and deterministic, we **work by small,
+To keep Gemini focused and deterministic, we **work by small,
 well‑scoped parts** and separate **generation** from
 **model‑assisted validation**.
 
@@ -326,13 +328,13 @@ In code, we will typically:
 - The **structured temario JSON** remains the only official,
   machine‑readable source of scope.
 - The **canonical standards JSON** described here is the next layer
-  we want to build, using Gemini 3 Pro guided by this document.
+  we want to build, using Gemini (currently `gemini-2.5-flash`) guided by this document.
 - Once at least one canonical standards file exists (for example,
   `paes_m1_regular_2026.json`), we can design the separate pipeline
   that:
   - takes this standards JSON,
   - applies `docs/learning-atom-granularity-guidelines.md`,
-  - uses Gemini 3 Pro to generate a consistent atoms JSON.
+  - uses Gemini (currently `gemini-2.5-flash`) to generate a consistent atoms JSON.
 
 Until the standards pipeline is implemented, downstream work should
 continue to rely on the structured temario JSON.
@@ -391,7 +393,7 @@ each eje.
 ## 7. Target atoms JSON (conceptual)
 
 The atoms JSON is the main artifact we will later generate with
-Gemini 3 Pro using `learning-atom-granularity-guidelines.md`.
+Gemini (currently `gemini-2.5-flash`) using `learning-atom-granularity-guidelines.md`.
 
 ### 7.1 High‑level structure
 
@@ -414,7 +416,7 @@ Example (schema sketch, not exhaustive):
     "tipo_aplicacion": "regular",
     "nombre_prueba": "Prueba de Competencia Matemática 1 (M1)",
     "source_standards_json": "app/standards/paes_m1_regular_2026.json",
-    "generated_with": "gemini-3-pro",
+    "generated_with": "gemini-2.5-flash",  # TODO: Change to "gemini-3-pro-preview" when available
     "version": "2025-11-26"
   },
   "atoms": [
@@ -493,10 +495,10 @@ Atoms must respect the atom granularity checks:
 
 ---
 
-## 8. Pipeline: from standards JSON to atoms JSON (with Gemini 3 Pro)
+## 8. Pipeline: from standards JSON to atoms JSON (with Gemini)
 
 This section describes, at a design level, how we plan to use
-Gemini 3 Pro to generate atoms from the canonical standards JSON,
+Gemini (currently `gemini-2.5-flash`) to generate atoms from the canonical standards JSON,
 taking into account the DEMRE use of habilidades and conocimientos.
 
 ### 8.1 Inputs
@@ -555,7 +557,7 @@ taking into account the DEMRE use of habilidades and conocimientos.
 
 ### 8.3 Prompt shape for atom generation
 
-At a high level, prompts to Gemini 3 Pro for atoms should follow
+At a high level, prompts to Gemini for atoms should follow
 the structure recommended in `docs/gemini-3-pro-prompt-engineering-best-practices.md`:
 
 - **Context first**:

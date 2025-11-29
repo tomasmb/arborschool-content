@@ -296,7 +296,7 @@ def _build_canonical_file(
         tipo_aplicacion=temario.get("tipo_aplicacion", "unknown"),
         nombre_prueba=temario.get("nombre_prueba", "Unknown"),
         source_temario_json=str(source_path),
-        generated_with="gemini-3-pro",
+        generated_with="gemini-2.5-flash",  # TODO: Change to "gemini-3-pro-preview" when available
         version=datetime.now().strftime("%Y-%m-%d"),
     )
 

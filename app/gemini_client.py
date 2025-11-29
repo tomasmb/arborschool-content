@@ -45,24 +45,30 @@ ENV_API_KEY = "GEMINI_API_KEY"
 
 @dataclass
 class GeminiConfig:
-    """Runtime configuration for the Gemini 3 Pro client.
+    """Runtime configuration for the Gemini client.
 
-    The default model and behaviour follow our Gemini 3 Pro best practices
-    documented in `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+    Currently using `gemini-2.5-flash` (free tier). The default model and behaviour
+    follow our Gemini best practices documented in
+    `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+
+    TODO: Change default to "gemini-3-pro-preview" when paid plan is available.
     """
 
     api_key: str
-    model: str = "gemini-2.5-flash"  # Using 2.5-flash (free tier) until gemini-3-pro is available
-    thinking_level: str = "high"  # "low" or "high" per Gemini docs
+    model: str = "gemini-2.5-flash"  # TODO: Change to "gemini-3-pro-preview" when available
+    thinking_level: str = "high"  # Note: not supported by gemini-2.5-flash, kept for future compatibility
 
 
 class GeminiService:
-    """Small, reusable wrapper around the Gemini 3 Pro Python client.
+    """Small, reusable wrapper around the Gemini client.
+
+    Currently using `gemini-2.5-flash` (free tier). TODO: Update to use
+    `gemini-3-pro-preview` when paid plan is available.
 
     This centralises how we talk to Gemini so that:
     - API keys are always read from the app-level `.env` file.
     - We consistently apply our prompt-engineering best practices.
-    - Callers can opt into different thinking levels or response formats.
+    - Callers can opt into different response formats (thinking_level not yet supported).
     """
 
     def __init__(self, config: GeminiConfig) -> None:
@@ -82,25 +88,27 @@ class GeminiService:
         temperature: float | None = None,
         **kwargs: Any,
     ) -> str:
-        """Generate a single text response from Gemini 3 Pro.
+        """Generate a single text response from Gemini.
+
+        Currently using `gemini-2.5-flash`. TODO: Update when `gemini-3-pro-preview`
+        is available.
 
         Callers are responsible for constructing prompts that follow the
         guidelines in `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
 
-        Parameters mirror the Gemini 3 configuration surface, but we keep the
-        wrapper intentionally small and opinionated:
-        - `thinking_level`: "low" for simple transformations, "high" for
-          complex reasoning (Gemini 3 default).
+        Parameters:
+        - `thinking_level`: Not yet supported by `gemini-2.5-flash`, kept for future
+          compatibility with `gemini-3-pro-preview`.
         - `response_mime_type`: e.g. "application/json" for structured output.
-        - `temperature`: use `0.0` for deterministic structured output; for most
-          other cases rely on the model default as recommended in the Gemini
-          3 docs (Nov–Dec 2025 guidance).
+        - `temperature`: use `0.0` for deterministic structured output.
         """
 
-        level = thinking_level or self._config.thinking_level
+        # Note: thinking_level is not supported by gemini-2.5-flash or current SDK
+        # Keeping it in the API for future compatibility
+        _ = thinking_level or self._config.thinking_level
 
         request_kwargs: dict[str, Any] = {
-            "thinking_level": level,
+            # thinking_level intentionally omitted - not supported yet
             **kwargs,
         }
         if response_mime_type is not None:
