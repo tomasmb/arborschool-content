@@ -31,7 +31,7 @@ from app.standards.validation import run_full_eje_validation
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "standards"
+DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "data" / "standards"
 
 
 # -----------------------------------------------------------------------------

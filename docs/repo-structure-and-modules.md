@@ -40,9 +40,11 @@ Current structure:
 Planned modules:
 
 - `app/standards/`  
-  Python code and JSON schemas that convert temarios into canonical
-  standards (similar in richness to `standards-paes-m1-full-GPT.md`,
-  but machine-friendly).
+  Python code that converts temarios into canonical standards.
+  
+- `app/data/standards/`  
+  Generated canonical standards JSON files (similar in richness to
+  `standards-paes-m1-full-GPT.md`, but machine-friendly).
 
 - `app/atoms/`  
   Atom definitions and prerequisite graphs, plus helpers to map

@@ -59,8 +59,8 @@ For atom generation, Gemini needs each standard to be:
 
 We will store canonical standards under paths like:
 
-- `app/standards/paes_m1_regular_2026.json`
-- `app/standards/paes_m1_invierno_2026.json`
+- `app/data/standards/paes_m1_regular_2026.json`
+- `app/data/standards/paes_m1_invierno_2026.json`
 
 ### 2.1 High‑level JSON structure
 
@@ -233,7 +233,7 @@ Before committing a standards file we:
 Once validated, we write the file under `app/standards/` with a
 versioned name, for example:
 
-- `app/standards/paes_m1_regular_2026.json`
+- `app/data/standards/paes_m1_regular_2026.json`
 
 This file becomes the **only input** for later atom generation for
 that prueba and proceso de admisión.
@@ -504,7 +504,7 @@ taking into account the DEMRE use of habilidades and conocimientos.
 ### 8.1 Inputs
 
 - Canonical standards JSON for a given prueba, e.g.:
-  - `app/standards/paes_m1_regular_2026.json`
+  - `app/data/standards/paes_m1_regular_2026.json`
 - DEMRE context from the temario PDF:
   - description of competencias,
   - global list of habilidades and their criterios de evaluación,
