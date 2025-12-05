@@ -177,7 +177,7 @@ class StandardsMetadata(BaseModel):
         description="Path to the source temario JSON file",
     )
     generated_with: str = Field(
-        default="gemini-2.5-flash",  # TODO: Change to "gemini-3-pro-preview" when available
+        default="gemini-3-pro-preview",
         description="Model used for generation",
     )
     version: str = Field(

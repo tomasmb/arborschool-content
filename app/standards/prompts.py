@@ -1,7 +1,7 @@
 """Prompt builders for standards generation and validation.
 
 Follows Gemini best practices from
-`docs/gemini-3-pro-prompt-engineering-best-practices.md`:
+`docs/gemini-3-pro-prompt-engineering-best-practices.md` for `gemini-3-pro-preview`:
 - Context first, then instructions
 - Explicit output format with JSON schema
 - Clear task description

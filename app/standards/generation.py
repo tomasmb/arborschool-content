@@ -1,6 +1,6 @@
 """Standards generation module.
 
-Handles unidad-by-unidad generation of canonical standards using Gemini (currently `gemini-2.5-flash`),
+Handles unidad-by-unidad generation of canonical standards using Gemini (`gemini-3-pro-preview`),
 with immediate per-unidad validation following the two-stage approach in
 `docs/standards-from-temarios.md` section 3.5.
 

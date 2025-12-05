@@ -3,9 +3,8 @@
 **Last Updated**: 2025-01-24  
 **Source**: [Gemini 3 Developer Guide](https://ai.google.dev/gemini-api/docs/gemini-3?thinking=high) and Google AI Documentation
 
-**Current model**: We use `gemini-2.5-flash` (free tier). These best practices are designed
-to work with both `gemini-2.5-flash` and `gemini-3-pro-preview`. TODO: Update references
-when `gemini-3-pro-preview` becomes available.
+**Current model**: We use `gemini-3-pro-preview`. These best practices are designed
+for `gemini-3-pro-preview` and apply to the Gemini 3 Pro family.
 
 ---
 
@@ -28,7 +27,7 @@ when `gemini-3-pro-preview` becomes available.
 
 ### 1. Be Precise and Direct
 
-Gemini models (including `gemini-2.5-flash` and `gemini-3-pro-preview`) respond best to
+Gemini 3 Pro models (including `gemini-3-pro-preview`) respond best to
 **direct, clear instructions**. Unlike older models that required verbose prompt engineering,
 modern Gemini models may over-analyze overly complex prompts.
 
@@ -80,9 +79,9 @@ Use phrases like "Based on the information above..." to anchor the model's reaso
 
 ## Thinking Levels
 
-**Note**: `thinking_level` is currently **not supported** by `gemini-2.5-flash` or the
-`google-generativeai` SDK adapter. This section documents the feature for future use
-with `gemini-3-pro-preview` when the official SDK is available.
+**Note**: `thinking_level` may not be directly supported by the
+`google-generativeai` SDK adapter. This section documents the feature for use
+with `gemini-3-pro-preview`.
 
 Gemini 3 Pro uses **dynamic thinking by default** (`high`). You can control the maximum
 depth of reasoning with the `thinking_level` parameter.
@@ -184,8 +183,7 @@ Return ONLY the raw XML string. No markdown blocks.
 
 ### 1. Large Context Windows
 
-Gemini models support large context windows (up to **1M tokens** for Gemini 3 Pro,
-smaller for `gemini-2.5-flash`). For large documents:
+Gemini 3 Pro models support large context windows (up to **1M tokens**). For large documents:
 
 1. **Provide all context first**
 2. **Place instructions at the end**
@@ -600,9 +598,7 @@ Based on the question content above, generate the QTI 3.0 XML following all rule
 
 ---
 
-**Note**: This document is designed to work with `gemini-2.5-flash` (current default, free tier)
-and `gemini-3-pro-preview` (when paid plan is available). The best practices are compatible
-across both models. TODO: Update when `gemini-3-pro-preview` becomes available. Best practices
+**Note**: This document is designed for `gemini-3-pro-preview`. Best practices
 may evolve as the models are updated.
 
 
