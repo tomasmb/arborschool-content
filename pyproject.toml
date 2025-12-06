@@ -5,9 +5,16 @@ description = "PAES M1 knowledge graph tooling: temarios, standards, atoms, and 
 requires-python = ">=3.10"
 dependencies = [
   "PyPDF2>=3.0.0",
-  "google-gemini3-pro>=1.0.0",
+  "google-generativeai>=0.8.0",
   "pydantic>=2.0.0",
   "python-dotenv>=1.0.0",
+]
+
+# TODO: When google-gemini3-pro package becomes available, replace
+# google-generativeai with it and remove the adapter in app/gemini_client.py
+[project.optional-dependencies]
+gemini3-pro = [
+  "google-gemini3-pro>=1.0.0",
 ]
 
 [tool.ruff]

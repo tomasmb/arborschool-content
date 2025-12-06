@@ -1,14 +1,16 @@
 ---
-description: "Guidelines for creating Gemini 3 Pro prompts in this repo."
+description: "Guidelines for creating Gemini prompts in this repo."
 alwaysApply: false
 globs:
   - "**/*"
 ---
 
-## Gemini 3 Pro Prompting Rules
+## Gemini Prompting Rules
 
-When you create or modify prompts intended for **Gemini 3 Pro** (code, docs, or
+When you create or modify prompts intended for **Gemini** (code, docs, or
 Cursor chat instructions), follow `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+
+**Current model**: We use `gemini-3-pro-preview`.
 
 - **Be precise and direct**
   - Avoid over-engineered, verbose prompts.
@@ -18,10 +20,9 @@ Cursor chat instructions), follow `docs/gemini-3-pro-prompt-engineering-best-pra
   - Use sections like `Role`, `Task`, `Rules`, `Output Format`, `Context`,
     `Final Instruction` as recommended in the doc.
 
-- **Control thinking and output**
-  - Use `thinking_level="low"` for simple transforms; `thinking_level="high"`
-    for complex reasoning, code analysis or structured output.
+- **Control output format**
   - Be explicit about output format (JSON/XML/text) and verbosity.
+  - Note: `thinking_level` may not be directly supported by the SDK adapter.
 
 - **Anchor to context**
   - For large inputs, put **context first, instructions last**, and use an
