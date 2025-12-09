@@ -41,6 +41,7 @@ def main() -> None:
         required=True,
         help="Standard ID to process (e.g. M1-NUM-01)",
     )
+    parser.add_argument("--temario", type=Path, help="Temario JSON file (if not in standards metadata)")
     parser.add_argument("--output", type=Path, help="Output JSON file (optional)")
     parser.add_argument("--max-retries", type=int, default=2, help="Retries on failure")
     parser.add_argument("-v", "--verbose", action="store_true")
@@ -59,9 +60,17 @@ def main() -> None:
     with args.standards.open(encoding="utf-8") as f:
         standards_data = json.load(f)
 
+    # Handle both formats: array directly or object with "standards" key
+    if isinstance(standards_data, list):
+        standards_list = standards_data
+        metadata = {}
+    else:
+        standards_list = standards_data.get("standards", [])
+        metadata = standards_data.get("metadata", {})
+
     # Find the requested standard
     standard_dict: dict[str, Any] | None = None
-    for std in standards_data.get("standards", []):
+    for std in standards_list:
         if std.get("id") == args.standard_id:
             standard_dict = std
             break
@@ -69,26 +78,25 @@ def main() -> None:
     if not standard_dict:
         logger.error("Standard '%s' not found in standards file", args.standard_id)
         logger.info("Available standards:")
-        for std in standards_data.get("standards", []):
+        for std in standards_list:
             logger.info("  - %s: %s", std.get("id"), std.get("titulo"))
         sys.exit(1)
-
-    # Load habilidades from the original temario
-    metadata = standards_data.get("metadata", {})
-    temario_path_str = metadata.get("source_temario_json", "")
-    
-    if not temario_path_str:
-        logger.error("No source_temario_json found in standards metadata")
-        sys.exit(1)
-
-    # Resolve temario path (could be relative or absolute)
-    temario_path = Path(temario_path_str)
-    if not temario_path.is_absolute():
-        # Try relative to standards file
-        temario_path = args.standards.parent.parent / temario_path
-        # Or try relative to project root
-        if not temario_path.exists():
-            temario_path = Path(temario_path_str)
+    # Determine temario path
+    if args.temario:
+        temario_path = args.temario
+    else:
+        temario_path_str = metadata.get("source_temario_json", "")
+        if not temario_path_str:
+            logger.error("No source_temario_json found in standards metadata and --temario not provided")
+            sys.exit(1)
+        # Resolve temario path (could be relative or absolute)
+        temario_path = Path(temario_path_str)
+        if not temario_path.is_absolute():
+            # Try relative to standards file
+            temario_path = args.standards.parent.parent / temario_path
+            # Or try relative to project root
+            if not temario_path.exists():
+                temario_path = Path(temario_path_str)
 
     if not temario_path.exists():
         logger.error("Temario file not found: %s", temario_path)
