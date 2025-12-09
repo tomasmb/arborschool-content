@@ -37,7 +37,30 @@ class GeminiClient:
             prompt,
             generation_config=generation_config if generation_config else None,
         )
-        return type("Response", (), {"text": response.text})()
+        
+        # Handle cases where response might be filtered or blocked
+        if not response.candidates or not response.candidates[0].content:
+            finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
+            raise ValueError(
+                f"Gemini response was filtered or blocked. Finish reason: {finish_reason}. "
+                f"This may be due to safety filters or content policy violations."
+            )
+        
+        # Check if text is available
+        try:
+            text = response.text
+        except ValueError as e:
+            # If text accessor fails, try to get text from parts
+            if response.candidates and response.candidates[0].content.parts:
+                text = "".join(part.text for part in response.candidates[0].content.parts if hasattr(part, "text"))
+            else:
+                finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
+                raise ValueError(
+                    f"Gemini response has no text content. Finish reason: {finish_reason}. "
+                    f"Original error: {e}"
+                ) from e
+        
+        return type("Response", (), {"text": text})()
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
