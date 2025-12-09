@@ -624,6 +624,51 @@ conceptuales cuando el estándar lo requiera.
     * La aclaración debe ser explícita: "Requiere el uso de [herramienta] como herramienta
       [tipo]. [Herramienta] se asume como conocimiento previo (no está explícitamente en
       este estándar, pero es herramienta necesaria según el estándar)."
+
+24. **Cobertura de procedimientos completos vs pasos intermedios (CRÍTICO)**: 
+    Cuando el estándar menciona en "subcontenidos_clave" un procedimiento o proceso completo,
+    el átomo debe cubrir el procedimiento COMPLETO, no solo un paso intermedio:
+    
+    * Si un subcontenido_clave menciona un procedimiento que requiere múltiples pasos
+      (preparación inicial, pasos intermedios, pasos finales), el átomo debe cubrir TODOS
+      los pasos necesarios para completar el procedimiento desde el inicio hasta el
+      resultado final
+    * Distingue entre:
+      - Procedimiento completo: requiere pasos iniciales + pasos intermedios + pasos finales
+        para obtener el resultado
+      - Paso intermedio: solo una parte del procedimiento (ej: simplificación, reducción,
+        transformación parcial)
+    * Si el estándar menciona "Procedimiento X", el átomo debe cubrir el procedimiento completo
+      desde el inicio (preparación, manejo de elementos iniciales) hasta el resultado final,
+      no solo un paso intermedio
+    * Si un subcontenido_clave menciona un procedimiento que requiere manejo de elementos
+      iniciales (preparación, organización, transformación inicial), pasos intermedios
+      (procesamiento, transformación) y pasos finales (simplificación, reducción, resultado),
+      el átomo debe cubrir TODOS
+    * **VERIFICACIÓN**: Antes de finalizar, revisa cada subcontenido_clave que mencione un
+      procedimiento y verifica que el átomo correspondiente cubra el procedimiento completo,
+      no solo un paso intermedio
+
+25. **Correspondencia con subcontenidos_clave (CRÍTICO)**: 
+    Si el estándar lista múltiples subcontenidos_clave como elementos separados, cada uno
+    debe tener su átomo correspondiente:
+    
+    * Revisa cada subcontenido_clave del estándar
+    * Si un subcontenido_clave está listado como elemento separado, generalmente debe
+      tener su átomo separado
+    * Si un subcontenido_clave combina múltiples conceptos (ej: "X y Y"), puede dividirse
+      según las reglas de granularidad (independencia de evaluación, estrategias cognitivas
+      diferentes)
+    * Solo combina subcontenidos_clave separados en un solo átomo si TODAS estas condiciones
+      se cumplen:
+      - Requieren la misma estrategia cognitiva fundamental
+      - No pueden evaluarse completamente de forma independiente
+      - Son variaciones del mismo procedimiento base (no procedimientos distintos)
+      - La diferencia es solo una regla o extensión, no un algoritmo diferente
+    * **VERIFICACIÓN**: Antes de finalizar, revisa cada subcontenido_clave y verifica que
+      tenga un átomo correspondiente. Si un subcontenido_clave está listado como elemento
+      separado, debe tener su átomo separado, a menos que puedas justificar claramente por
+      qué deben combinarse según los criterios anteriores
 </rules>
 
 <output_format>

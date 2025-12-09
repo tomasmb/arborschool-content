@@ -33,9 +33,13 @@ class GeminiClient:
 
         # Note: thinking_level may not be directly supported in google-generativeai
         # This is a temporary adapter
+        # Use longer timeout for large prompts (e.g., validation with many atoms)
+        # Default timeout is ~10 minutes, we extend it to 20 minutes for large validations
+        request_options = {"timeout": 1200}  # 20 minutes (1200 seconds)
         response = self._model.generate_content(
             prompt,
             generation_config=generation_config if generation_config else None,
+            request_options=request_options,
         )
         
         # Handle cases where response might be filtered or blocked
