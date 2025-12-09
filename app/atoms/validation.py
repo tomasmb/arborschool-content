@@ -16,8 +16,6 @@ from app.standards.helpers import parse_json_response
 
 logger = logging.getLogger(__name__)
 
-logger = logging.getLogger(__name__)
-
 
 def build_validation_prompt(standard: dict[str, Any], atoms: list[dict[str, Any]]) -> str:
     """Build the validation prompt for atom quality evaluation.

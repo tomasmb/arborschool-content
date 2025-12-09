@@ -249,7 +249,10 @@ def _call_gemini_validation(
             response_mime_type="application/json",
             temperature=0.0,
         )
-        response_dict = parse_json_response(raw_response)
+        parsed_response = parse_json_response(raw_response)
+        if not isinstance(parsed_response, dict):
+            raise ValueError(f"Expected dict from validation response, got {type(parsed_response)}")
+        response_dict = parsed_response
         return _convert_validation_response(response_dict, standard_id)
 
     except json.JSONDecodeError as e:
