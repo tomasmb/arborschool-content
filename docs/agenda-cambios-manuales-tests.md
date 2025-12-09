@@ -281,6 +281,80 @@ El modelo original combinó ambos en un solo átomo (A-16), pero deben ser átom
 
 ---
 
+## Átomos - Eje 3: Geometría (M1-GEO)
+
+### Estándar: M1-GEO-01 - Geometría Plana: Teorema de Pitágoras, Perímetros y Áreas
+
+**Archivo base**: `tests/atoms/generacion_automatica/atoms_M1_GEO_01_test.json`  
+**Archivo con cambios manuales**: `tests/atoms/cambios_manuales/atoms_M1_GEO_01_cambios_manuales.json`
+
+**Fecha de generación inicial**: 2025-12-09  
+**Fecha de cambios manuales**: 2025-12-09
+
+**Cambios realizados**:
+
+#### Cambio 1: Agregar prerrequisito A-04 a A-13 (Problemas integrados)
+
+**Fecha**: 2025-12-09  
+**Tipo**: Agregar prerrequisitos  
+**Razón**: El átomo A-13 (Resolución de problemas integrados de perímetro y área) requiere el uso del Teorema de Pitágoras como paso intermedio para calcular dimensiones faltantes antes de calcular área o perímetro. Muchos problemas integrados requieren calcular primero un lado faltante usando Pitágoras.
+
+**Átomo afectado**:
+- **A-M1-GEO-01-13** (Resolución de problemas integrados de perímetro y área)
+  - **Antes**: `["A-M1-GEO-01-05", "A-M1-GEO-01-06", "A-M1-GEO-01-07", "A-M1-GEO-01-08", "A-M1-GEO-01-09", "A-M1-GEO-01-10", "A-M1-GEO-01-11", "A-M1-GEO-01-12"]`
+  - **Después**: Agregado `A-M1-GEO-01-04` (Modelado de situaciones con Teorema de Pitágoras)
+
+**Fuente**: Validación Gemini - identificó que faltaba el prerrequisito de modelado con Pitágoras para problemas donde no se dan todas las dimensiones explícitamente.
+
+---
+
+## Átomos - Eje 4: Probabilidad y Estadística (M1-PROB)
+
+### Estándar: M1-PROB-01 - Representación de Datos y Medidas de Tendencia Central
+
+**Archivo base**: `tests/atoms/generacion_automatica/atoms_M1_PROB_01_test.json`  
+**Archivo con cambios manuales**: `tests/atoms/cambios_manuales/atoms_M1_PROB_01_cambios_manuales.json`
+
+**Fecha de generación inicial**: 2025-12-09  
+**Fecha de cambios manuales**: 2025-12-09
+
+**Cambios realizados**:
+
+#### Cambio 1: Quitar prerrequisito restrictivo de A-09 (Construcción de gráficos de línea)
+
+**Fecha**: 2025-12-09  
+**Tipo**: Ajustar prerrequisitos  
+**Razón**: El prerrequisito A-M1-PROB-01-02 (Cálculo de frecuencia absoluta) restringe innecesariamente el gráfico de línea a datos de frecuencia, cuando este gráfico suele usarse también para variables continuas o series de tiempo dadas directamente (sin conteo previo). Los gráficos de línea no siempre requieren cálculo previo de frecuencias.
+
+**Átomo afectado**:
+- **A-M1-PROB-01-09** (Construcción de gráficos de línea)
+  - **Antes**: `["A-M1-PROB-01-02", "A-M1-PROB-01-07"]`
+  - **Después**: `["A-M1-PROB-01-07"]` (solo características del gráfico de línea)
+
+**Fuente**: Validación Gemini - identificó que el prerrequisito era demasiado restrictivo para el uso general de gráficos de línea.
+
+---
+
+#### Cambio 2: Expandir A-12 para incluir comprensión del proceso de construcción
+
+**Fecha**: 2025-12-09  
+**Tipo**: Expansión de cobertura  
+**Razón**: El estándar menciona "construcción de gráficos circulares" en los subcontenidos_clave, pero el átomo A-12 solo cubría el cálculo matemático de ángulos. Sin embargo, dado que la PAES M1 es una prueba de selección múltiple, no se requiere construcción física manual con compás y transportador. El átomo debe cubrir el cálculo de ángulos (evaluable en selección múltiple) y la comprensión del proceso de construcción, pero no el trazado físico.
+
+**Átomo afectado**:
+- **A-M1-PROB-01-12** (originalmente "Cálculo de ángulos para gráficos circulares")
+  - **Título nuevo**: "Cálculo de ángulos para construcción de gráficos circulares"
+  - **Descripción**: Expandida para incluir cálculo de ángulos Y comprensión del proceso de construcción
+  - **Criterios agregados**:
+    - Identifica los pasos del proceso de construcción de un gráfico circular (cálculo de ángulos, trazado de sectores, etiquetado)
+    - Relaciona correctamente los ángulos calculados con las proporciones representadas en el gráfico circular
+  - **Ejemplos conceptuales**: Actualizados para enfocarse en cálculo y comprensión del proceso
+  - **Notas de alcance**: Actualizadas para reflejar que se enfoca en cálculo y comprensión, no en construcción física manual
+
+**Fuente**: Validación Gemini - identificó que faltaba la construcción procedimental de gráficos circulares. Ajustado para contexto de selección múltiple (no requiere construcción física manual).
+
+---
+
 ## Notas Generales
 
 - Todos los cambios manuales deben documentarse aquí
