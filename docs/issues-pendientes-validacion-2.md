@@ -25,19 +25,19 @@
 
 ### M1-GEO-01 (2 issues)
 
-#### Issue 3: A-M1-GEO-01-05 - Granularidad
+#### Issue 3: A-M1-GEO-01-05 - Granularidad ✅ RESUELTO
 **Categoría**: Granularidad (warning)  
 **Problema**: Mezcla dos estrategias cognitivas distintas: el algoritmo general de suma de lados (iterativo) y el uso de fórmulas simplificadas basadas en propiedades (multiplicativo, ej: 4L). Aunque el resultado es el mismo, la abstracción es diferente.
 
-**Acción requerida**: Evaluar si deben separarse según las reglas de granularidad (independencia de evaluación, estrategias cognitivas diferentes).
+**Decisión**: **Mantener integrado** - Ambas estrategias son válidas para el mismo objetivo y pueden evaluarse en el mismo contexto. La carga cognitiva es aceptable para un átomo integrador.
 
 ---
 
-#### Issue 4: A-M1-GEO-01-08 - Completitud
+#### Issue 4: A-M1-GEO-01-08 - Completitud ✅ RESUELTO
 **Categoría**: Completitud (warning)  
 **Problema**: La descripción lista 'cuadrados, rectángulos y romboides' pero omite 'rombos'. Aunque el rombo es un paralelogramo y la fórmula b*h aplica, la omisión explícita puede generar confusión dado que existe un átomo separado (A-09) para rombos con diagonales.
 
-**Acción requerida**: Agregar 'rombos' a la descripción y criterios atómicos de A-08 para mayor claridad, o justificar por qué se omite explícitamente.
+**Cambio aplicado**: Agregado 'rombos' explícitamente a la descripción, criterios atómicos, ejemplos y notas de alcance, aclarando que A-08 cubre rombos cuando se usa base y altura, mientras que A-09 cubre rombos cuando se usan diagonales.
 
 ---
 

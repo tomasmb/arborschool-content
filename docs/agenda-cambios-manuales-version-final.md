@@ -543,3 +543,123 @@ Los siguientes issues fueron identificados por el evaluador pero son **falsos po
 
 ---
 
+#### Cambio 5: Separar A-M1-ALG-06-01 (Resolución de ecuaciones cuadráticas por factorización)
+
+**Fecha**: 2025-12-10  
+**Tipo**: Granularidad (división de átomo)  
+**Razón**: El evaluador identificó que A-M1-ALG-06-01 agrupaba dos estrategias cognitivas distintas: 'Factor común' (para ecuaciones incompletas ax²+bx=0) y 'Factorización de trinomios' (para completas). Estas requieren procesos de reconocimiento de patrones distintos y pueden evaluarse independientemente, lo que justifica su separación según las reglas de granularidad.
+
+**Cambios aplicados**:
+
+1. **A-M1-ALG-06-01 (modificado)**: "Resolución de ecuaciones cuadráticas incompletas por factor común"
+   - **Título**: Cambiado de "Resolución de ecuaciones cuadráticas por factorización" a "Resolución de ecuaciones cuadráticas incompletas por factor común"
+   - **Descripción**: Enfocada en ecuaciones incompletas de la forma ax² + bx = 0
+   - **Criterios atómicos**: Específicos para identificar y extraer factor común, aplicar propiedad del producto nulo
+   - **Ejemplos**: Solo ecuaciones incompletas (ej: 3x² - 12x = 0)
+   - **Notas**: Limitado a ecuaciones incompletas sin término independiente
+
+2. **A-M1-ALG-06-02 (nuevo)**: "Resolución de ecuaciones cuadráticas completas por factorización de trinomios"
+   - **ID**: Nuevo átomo
+   - **Título**: "Resolución de ecuaciones cuadráticas completas por factorización de trinomios"
+   - **Descripción**: Enfocada en ecuaciones completas de la forma ax² + bx + c = 0
+   - **Criterios atómicos**: Específicos para reconocer patrones de productos notables, factorizar trinomios
+   - **Ejemplos**: Solo ecuaciones completas (ej: x² - 5x + 6 = 0)
+   - **Prerrequisitos**: `["A-M1-ALG-06-01"]` (el factor común es más simple y puede usarse como paso previo)
+   - **Notas**: Limitado a ecuaciones completas, excluye fórmula general
+
+**Renumeración de átomos posteriores**:
+- A-02 (original: Fórmula general) → A-03
+- A-03 (original: Concepto) → A-04
+- A-05 (original: Vértice) → A-06
+- A-06 (original: Ceros) → A-07
+- A-07 (original: Intersección Y) → A-08
+- A-09 (original: Análisis parámetros) → A-10
+- A-10 (original: Optimización) → A-11
+- A-11 (original: Problemas contextualizados) → A-12
+
+**Prerrequisitos actualizados**:
+- A-07 (Ceros): Agregado A-03 (Fórmula general) a la lista de prerrequisitos: `["A-M1-ALG-06-01", "A-M1-ALG-06-02", "A-M1-ALG-06-03"]`
+- A-11 (Optimización): Prerrequisitos actualizados de A-05, A-03 a A-06, A-04
+- A-12 (Problemas contextualizados): Prerrequisitos actualizados de A-06, A-01, A-02 a A-07, A-01, A-02, A-03
+
+**Fuente**: Validación segunda - issue de granularidad (A-M1-ALG-06-01).
+
+---
+
+#### Cambio 6: Separar A-M1-ALG-06-10 (Análisis de parámetros)
+
+**Fecha**: 2025-12-10  
+**Tipo**: Granularidad (división de átomo)  
+**Razón**: El evaluador identificó que A-M1-ALG-06-10 tenía alta carga cognitiva al analizar simultáneamente los efectos de 'a', 'b' y 'c'. El análisis de 'b' (desplazamiento horizontal/simetría) es significativamente más complejo que 'c' (vertical) y 'a' (forma), ya que requiere entender la fórmula x_v = -b/(2a) y su efecto en la simetría. Separar en dos átomos reduce la carga cognitiva y permite evaluar independientemente.
+
+**Cambios aplicados**:
+
+1. **A-M1-ALG-06-10 (modificado)**: "Análisis de los parámetros 'a' y 'c' en la función cuadrática"
+   - **Título**: Cambiado de "Análisis de la variación de parámetros en la función cuadrática" a "Análisis de los parámetros 'a' y 'c' en la función cuadrática"
+   - **Descripción**: Enfocada solo en 'a' (apertura/concavidad) y 'c' (traslación vertical)
+   - **Criterios atómicos**: Eliminados criterios relacionados con 'b', mantenidos solo para 'a' y 'c'
+   - **Ejemplos**: Solo ejemplos que muestran efectos de 'a' y 'c'
+   - **Notas**: Aclarado que el análisis de 'b' se cubre en A-11
+
+2. **A-M1-ALG-06-11 (nuevo)**: "Análisis del parámetro 'b' en la función cuadrática"
+   - **ID**: Nuevo átomo
+   - **Título**: "Análisis del parámetro 'b' en la función cuadrática"
+   - **Descripción**: Enfocada específicamente en 'b' (posición horizontal del vértice y simetría)
+   - **Criterios atómicos**: Específicos para describir el efecto de 'b' usando x_v = -b/(2a)
+   - **Ejemplos**: Solo ejemplos que muestran efectos de 'b' en la posición horizontal del vértice
+   - **Prerrequisitos**: `["A-M1-ALG-06-04", "A-M1-ALG-06-06"]` (concepto y cálculo del vértice, necesario para entender x_v = -b/(2a))
+   - **Notas**: Aclarado que requiere conocimiento del cálculo del vértice
+
+**Renumeración de átomos posteriores**:
+- A-11 (original: Optimización) → A-12
+- A-12 (original: Problemas contextualizados) → A-13
+
+**Prerrequisitos actualizados**:
+- A-12 (Optimización): Sin cambios, mantiene `["A-M1-ALG-06-06", "A-M1-ALG-06-04"]`
+- A-13 (Problemas contextualizados): Sin cambios, mantiene `["A-M1-ALG-06-07", "A-M1-ALG-06-01", "A-M1-ALG-06-02", "A-M1-ALG-06-03"]`
+
+**Fuente**: Validación segunda - issue de granularidad (A-M1-ALG-06-10, antes A-09).
+
+---
+
+### Decisiones sobre Issues de Granularidad
+
+**Fecha**: 2025-12-10
+
+#### Issue 3: A-M1-GEO-01-05 (Cálculo de perímetros de polígonos básicos)
+
+**Tipo**: Granularidad (warning)  
+**Problema reportado**: El evaluador identificó que el átomo mezcla dos estrategias cognitivas distintas: el algoritmo general de suma de lados (iterativo) y el uso de fórmulas simplificadas basadas en propiedades (multiplicativo, ej: 4L). Aunque el resultado es el mismo, la abstracción es diferente.
+
+**Decisión**: **Mantener integrado**
+
+**Razón**: 
+- Ambas estrategias (suma iterativa y fórmulas simplificadas) son válidas para el mismo objetivo (calcular perímetros)
+- El estudiante puede elegir la estrategia según el contexto y los datos disponibles
+- La carga cognitiva es aceptable para un átomo integrador que cubre múltiples métodos válidos
+- El estándar menciona "Cálculo del perímetro de..." como un subcontenido clave, no como subcontenidos separados por método
+- Ambas estrategias pueden evaluarse en el mismo contexto (diferentes problemas pueden requerir diferentes métodos)
+
+**Cambios aplicados**: Ninguno. El átomo se mantiene como está.
+
+**Fuente**: Validación segunda - issue de granularidad (A-M1-GEO-01-05).
+
+---
+
+#### Cambio 7: Agregar 'rombos' explícitamente a A-M1-GEO-01-08
+
+**Fecha**: 2025-12-10  
+**Tipo**: Completitud  
+**Razón**: El evaluador identificó que A-M1-GEO-01-08 omitía 'rombos' en su descripción, aunque el rombo es un paralelogramo y la fórmula b·h aplica cuando se usa base y altura. La omisión explícita puede generar confusión dado que existe un átomo separado (A-09) para rombos con diagonales. Agregar 'rombos' explícitamente aclara que A-08 cubre rombos cuando se usa base y altura, mientras que A-09 cubre rombos cuando se usan diagonales.
+
+**Cambios aplicados**:
+
+- **Descripción**: Agregado "rombos" a la lista: "El estudiante calcula el área de cuadrados, rectángulos, romboides y rombos utilizando la fórmula base por altura..."
+- **Criterios atómicos**: Agregado "rombos" a la lista: "Identifica la base y la altura en cuadrados, rectángulos, romboides o rombos."
+- **Ejemplos conceptuales**: Agregado ejemplo: "Calcular el área de un rombo dado su lado y altura perpendicular."
+- **Notas de alcance**: Actualizado para aclarar: "Cubre cuadrados, rectángulos, romboides y rombos donde se da la altura. Para rombos: cubre el caso cuando se usa base y altura. Si se usan diagonales, corresponde al átomo A-09."
+
+**Fuente**: Validación segunda - issue de completitud (A-M1-GEO-01-08).
+
+---
+
