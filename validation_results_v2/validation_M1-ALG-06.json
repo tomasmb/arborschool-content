@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 9,
-    "atoms_passing_all_checks": 8,
-    "atoms_with_issues": 1,
+    "atoms_passing_all_checks": 7,
+    "atoms_with_issues": 2,
     "overall_quality": "good",
     "coverage_assessment": "incomplete",
     "granularity_assessment": "appropriate"
@@ -10,16 +10,18 @@
   "atoms_evaluation": [
     {
       "atom_id": "A-M1-ALG-06-01",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "Agrupa estrategias cognitivas distintas: 'Factor común' (para ecuaciones incompletas ax²+bx=0) y 'Factorización de trinomios' (para completas) suelen requerir procesos de reconocimiento de patrones distintos."
+        ],
         "checks": {
-          "single_cognitive_intention": true,
+          "single_cognitive_intention": false,
           "reasonable_working_memory": true,
           "prerequisite_independence": true,
           "assessment_independence": true,
@@ -39,7 +41,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Considerar dividir en dos átomos: uno para ecuaciones incompletas (factor común) y otro para completas (trinomios), o asegurar que la instrucción cubra explícitamente la distinción."
+      ]
     },
     {
       "atom_id": "A-M1-ALG-06-02",
@@ -210,17 +214,17 @@
       "atom_id": "A-M1-ALG-06-09",
       "overall_score": "good",
       "fidelity": {
-        "score": "warning",
-        "issues": [
-          "El estándar menciona explícitamente la variación de parámetros (a, b, c). El átomo limita el análisis de 'b' y se centra en 'a' y 'c'. Aunque pedagógicamente razonable, es una cobertura parcial del requisito explícito."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "Alta carga cognitiva: Analizar simultáneamente los efectos de 'a', 'b' y 'c' es denso. El análisis de 'b' (desplazamiento horizontal/simetría) es significativamente más complejo que 'c' (vertical) y 'a' (forma)."
+        ],
         "checks": {
-          "single_cognitive_intention": true,
-          "reasonable_working_memory": true,
+          "single_cognitive_intention": false,
+          "reasonable_working_memory": false,
           "prerequisite_independence": true,
           "assessment_independence": true,
           "generalization_boundary": true,
@@ -240,7 +244,7 @@
         "issues": []
       },
       "recommendations": [
-        "Considerar incluir explícitamente el efecto de 'b' en el desplazamiento lateral del vértice o eje de simetría para cobertura completa."
+        "Considerar separar el análisis de traslaciones (b y c) del análisis de forma (a), o asegurar muchos ejemplos visuales para mitigar la carga."
       ]
     },
     {
@@ -278,7 +282,7 @@
     },
     {
       "atom_id": "A-M1-ALG-06-11",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -300,18 +304,14 @@
         "issues": []
       },
       "content_quality": {
-        "score": "warning",
-        "issues": [
-          "El título menciona 'evaluación', pero la descripción y criterios se centran exclusivamente en 'resolución' (encontrar x dado y). La evaluación simple (encontrar y dado x) es una operación cognitiva distinta (aritmética vs algebraica)."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Ajustar el título para reflejar que se trata de resolución de ecuaciones en contexto, o asegurar que los criterios incluyan explícitamente la evaluación directa si esa es la intención."
-      ]
+      "recommendations": []
     }
   ],
   "coverage_analysis": {
@@ -320,16 +320,16 @@
     ],
     "coverage_completeness": "incomplete",
     "missing_areas": [
-      "Tabulación de la función cuadrática (creación de tablas de valores)",
-      "Construcción de la gráfica (trazado manual de la parábola uniendo los puntos calculados)"
+      "Construcción de tablas de valores (explícito en estándar)",
+      "Procedimiento de graficación manual (trazado de la parábola a partir de puntos)"
     ],
     "duplication_issues": [],
     "conceptual_coverage": "present",
-    "procedural_coverage": "present",
+    "procedural_coverage": "missing",
     "standard_items_coverage": {
       "includes_covered": {
         "Resolución de ecuaciones de segundo grado...": "covered",
-        "Análisis de la función cuadrática a través de tablas de valores...": "partially_covered",
+        "Análisis de la función cuadrática a través de tablas de valores y gráficos...": "partially_covered",
         "Identificación y cálculo de los puntos especiales...": "covered",
         "Planteamiento y resolución de problemas...": "covered"
       },
@@ -338,21 +338,20 @@
         "Resolución de ecuaciones cuadráticas usando la fórmula general.": "covered",
         "Identificación y cálculo del vértice de una parábola.": "covered",
         "Determinación de los ceros (raíces) de una función cuadrática.": "covered",
-        "Interpretación de la gráfica de la función cuadrática y sus parámetros.": "partially_covered",
+        "Interpretación de la gráfica de la función cuadrática y sus parámetros.": "covered",
         "Modelado de situaciones contextualizadas con funciones cuadráticas.": "covered"
       },
       "habilidades_covered": {
         "resolver_problemas": "covered",
         "modelar": "covered",
         "representar": "partially_covered",
-        "argumentar": "covered"
+        "argumentar": "partially_covered"
       }
     }
   },
   "global_recommendations": [
-    "Crear un átomo procedimental específico para la 'Tabulación de la función cuadrática', ya que es un requisito explícito del estándar ('tablas de valores') que no está cubierto.",
-    "Crear un átomo procedimental para 'Construcción de la gráfica de la función cuadrática', que integre el cálculo de puntos (vértice, raíces, corte Y) para realizar el trazado manual de la curva. Los átomos actuales calculan los puntos pero no cubren la habilidad de graficar.",
-    "Revisar el átomo A-M1-ALG-06-09 para asegurar que la limitación del parámetro 'b' no impida el cumplimiento del estándar que pide analizar la variación de 'a, b, c'.",
-    "Alinear el título del átomo A-M1-ALG-06-11 con sus criterios para evitar confusión entre 'evaluar una función' y 'resolver una ecuación' en contexto."
+    "Crear un átomo procedimental específico para 'Tabulación y Graficación de la función cuadrática', que enseñe a sintetizar los puntos calculados (vértice, raíces, corte Y) y puntos adicionales mediante tabla para trazar la curva manualmente.",
+    "Refinar el átomo A-M1-ALG-06-01 para distinguir mejor entre la factorización por factor común (ecuaciones incompletas) y trinomios, ya que son procedimientos distintos.",
+    "Asegurar que el análisis de parámetros (A-M1-ALG-06-09) tenga suficiente andamiaje visual, dado que cubre tres variables distintas en un solo concepto."
   ]
 }

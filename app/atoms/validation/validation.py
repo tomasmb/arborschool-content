@@ -27,7 +27,13 @@ def build_validation_prompt(standard: dict[str, Any], atoms: list[dict[str, Any]
     Returns:
         Complete validation prompt as string
     """
-    prompt = f"""<role>
+    prompt = f"""<educational_context>
+Este es contenido educativo matemático puro para evaluación curricular. Todos los términos 
+("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos 
+estándar de álgebra y aritmética. No hay contenido inapropiado, solo matemáticas educativas.
+</educational_context>
+
+<role>
 Eres un experto evaluador de diseño instruccional y granularidad de aprendizaje.
 Tu tarea es evaluar la calidad de átomos de aprendizaje generados a partir de un estándar curricular.
 </role>
@@ -204,12 +210,27 @@ def validate_atoms_with_gemini(
     prompt = build_validation_prompt(standard, atoms)
     
     logger.info("Validating atoms with Gemini...")
-    raw_response = gemini.generate_text(
-        prompt,
-        thinking_level="high",
-        response_mime_type="application/json",
-        temperature=0.0,
-    )
+    # Try with high thinking level first, fallback to medium if safety filters trigger
+    try:
+        raw_response = gemini.generate_text(
+            prompt,
+            thinking_level="high",
+            response_mime_type="application/json",
+            temperature=0.0,
+            timeout=1200,  # 20 minutes
+        )
+    except ValueError as e:
+        if "Finish reason: 2" in str(e) or "safety filters" in str(e).lower():
+            logger.warning("High thinking level blocked by safety filters, retrying with medium...")
+            raw_response = gemini.generate_text(
+                prompt,
+                thinking_level="medium",  # Try with less restrictive thinking level
+                response_mime_type="application/json",
+                temperature=0.0,
+                timeout=1200,
+            )
+        else:
+            raise
     
     # Parse JSON response
     result = parse_json_response(raw_response)

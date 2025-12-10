@@ -12,6 +12,21 @@ Este archivo registra modificaciones manuales aplicadas después de la generaci�
 
 ---
 
+## Resumen de Primera Validación
+
+**Fecha de validación**: 2025-12-09  
+**Total de átomos validados**: 222  
+**Átomos que pasaron todas las pruebas**: 215 (96.8%)  
+**Átomos con issues identificados**: 7 (3.2%)
+
+**Distribución por estándar**:
+- 10 estándares con 100% de átomos pasando
+- 6 estándares con algunos issues (todos resueltos posteriormente)
+
+Todos los issues identificados en la primera validación fueron resueltos mediante cambios manuales documentados en esta agenda.
+
+---
+
 ## Átomos - Eje 1: Números (M1-NUM)
 
 ### Estándar: M1-NUM-01 - Números Enteros y Racionales
@@ -425,6 +440,106 @@ Todos los átomos desde el original A-02 en adelante fueron renumerados:
 - A-13 (Problemas contextualizados): Prerrequisitos actualizados de A-03, A-06, A-09, A-11 a A-04, A-07, A-10, A-12
 
 **Fuente**: Validación Gemini - identificó que A-M1-GEO-03-02 (original) cubría vectores pero asumía implícitamente el manejo de puntos sin un átomo dedicado a "Identificación de puntos", siendo que el estándar menciona explícitamente "Localización de puntos en el plano cartesiano" como subcontenido clave.
+
+---
+
+## Resumen de Segunda Validación
+
+**Fecha de validación**: 2025-12-10  
+**Total de átomos validados**: 225  
+**Átomos que pasaron todas las pruebas**: 208 (92.4%)  
+**Átomos con issues identificados**: 17 (7.6%) - todos "warning", ninguno "fail"
+
+**Distribución por estándar**:
+- 11 estándares con 100% de átomos pasando
+- 5 estándares con algunos issues (warnings)
+
+**Cambios aplicados**: Corrección de issues de prerrequisitos aplicando transitividad.
+
+---
+
+## Cambios de Segunda Validación
+
+### Correcciones de Prerrequisitos (Aplicando Transitividad)
+
+**Fecha**: 2025-12-10
+
+#### Cambio 1: A-M1-NUM-01-11 (Simplificación de fracciones)
+
+**Tipo**: Agregar prerrequisito directo  
+**Razón**: El evaluador identificó que faltaba el prerrequisito de división de enteros (A-07) o tablas de multiplicar (A-06). Aunque A-11 tiene A-10 (Concepto de Números Racionales) como prerrequisito, A-10 no tiene A-07 transitivamente. Como simplificar fracciones requiere dividir numerador y denominador, A-07 es un prerrequisito directo necesario.
+
+**Cambio aplicado**:
+- **Antes**: `["A-M1-NUM-01-10"]`
+- **Después**: `["A-M1-NUM-01-10", "A-M1-NUM-01-07"]`
+
+**Fuente**: Validación segunda - issue de prerrequisitos.
+
+---
+
+#### Cambio 2: A-M1-NUM-01-13 (Conversión de decimal finito a fracción)
+
+**Tipo**: Eliminar dependencia inversa innecesaria  
+**Razón**: El evaluador identificó que A-13 tenía A-12 (Fracción a Decimal) como prerrequisito, pero es una dependencia inversa innecesaria. Convertir decimal a fracción es un proceso independiente que no requiere saber el proceso inverso (fracción a decimal).
+
+**Cambio aplicado**:
+- **Antes**: `["A-M1-NUM-01-11", "A-M1-NUM-01-12"]`
+- **Después**: `["A-M1-NUM-01-11"]`
+
+**Fuente**: Validación segunda - issue de prerrequisitos (dependencia inversa innecesaria).
+
+---
+
+#### Cambio 3: A-M1-NUM-01-14 (Conversión de decimal periódico a fracción)
+
+**Tipo**: Eliminar dependencias innecesarias  
+**Razón**: 
+- El evaluador identificó que A-14 tenía A-12 (Fracción a Decimal) como prerrequisito, pero es una dependencia inversa innecesaria (mismo caso que A-13).
+- También tenía A-13 (Decimal Finito a Fracción) como prerrequisito, pero el evaluador señaló que aunque conceptualmente relacionado, el algoritmo algebraico para periódicos es distinto al de potencias de 10 para finitos, por lo que A-13 no es estrictamente necesario como prerrequisito directo.
+
+**Cambio aplicado**:
+- **Antes**: `["A-M1-NUM-01-11", "A-M1-NUM-01-12", "A-M1-NUM-01-13"]`
+- **Después**: `["A-M1-NUM-01-11"]`
+
+**Fuente**: Validación segunda - issues de prerrequisitos (dependencia inversa innecesaria y dependencia blanda).
+
+---
+
+#### Cambio 4: A-M1-NUM-03-17 (Problemas contextualizados con potencias y raíces)
+
+**Tipo**: Agregar prerrequisitos faltantes para átomo integrador  
+**Razón**: El evaluador identificó que faltaban prerrequisitos potenciales si los problemas integrados incluyen racionalización (A-14, A-15) o propiedades de igual exponente (A-05, A-06). Como A-17 es un átomo integrador que puede requerir cualquier combinación de propiedades y procedimientos del estándar, debe tener todos los prerrequisitos necesarios como prerrequisitos directos, ya que no están transitivamente cubiertos.
+
+**Cambio aplicado**:
+- **Antes**: `["A-M1-NUM-03-02", "A-M1-NUM-03-03", "A-M1-NUM-03-04", "A-M1-NUM-03-07", "A-M1-NUM-03-08", "A-M1-NUM-03-10", "A-M1-NUM-03-11", "A-M1-NUM-03-12", "A-M1-NUM-03-13"]`
+- **Después**: `["A-M1-NUM-03-02", "A-M1-NUM-03-03", "A-M1-NUM-03-04", "A-M1-NUM-03-05", "A-M1-NUM-03-06", "A-M1-NUM-03-07", "A-M1-NUM-03-08", "A-M1-NUM-03-10", "A-M1-NUM-03-11", "A-M1-NUM-03-12", "A-M1-NUM-03-13", "A-M1-NUM-03-14", "A-M1-NUM-03-15"]`
+
+**Fuente**: Validación segunda - issue de prerrequisitos (faltan prerrequisitos potenciales para átomo integrador).
+
+---
+
+### Falsos Positivos Identificados
+
+**Fecha**: 2025-12-10
+
+Los siguientes issues fueron identificados por el evaluador pero son **falsos positivos** que ya habíamos discutido anteriormente:
+
+#### M1-GEO-03: Limitaciones intencionales de procedimientos
+
+**Átomos afectados**: A-M1-GEO-03-07, A-M1-GEO-03-08, A-M1-GEO-03-10, A-M1-GEO-03-11
+
+**Issues reportados**:
+- A-07, A-08: Limitados a ejes coordenados X e Y, pero el estándar menciona reflexión "respecto a un eje" (general)
+- A-10, A-11: Limitados al origen (0,0), pero el estándar menciona rotación "en torno a un punto" (general)
+
+**Razón de falsos positivos**:
+- Los **conceptos** (A-M1-GEO-03-06 para reflexión, A-M1-GEO-03-09 para rotación) cubren correctamente el caso general (cualquier eje, cualquier punto).
+- Los **procedimientos** (A-07, A-08, A-10, A-11) están intencionalmente limitados a casos específicos (ejes coordenados, origen) para simplificar la enseñanza y evaluación en este nivel.
+- Esta es una decisión pedagógica válida: los conceptos son generales, los procedimientos son específicos para este nivel.
+
+**Decisión**: No se aplicaron cambios. Los issues se marcan como resueltos (falsos positivos).
+
+**Fuente**: Validación segunda - issues de fidelidad y completitud que ya habíamos identificado como falsos positivos en validaciones anteriores.
 
 ---
 

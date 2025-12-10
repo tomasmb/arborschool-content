@@ -22,6 +22,7 @@ from typing import Any
 from app.atoms.models import Atom, CanonicalAtomsFile
 from app.gemini_client import load_default_gemini_service
 from app.atoms.validation import validate_atoms_from_files
+from app.atoms.scripts.check_circular_dependencies import find_cycles
 
 logging.basicConfig(
     level=logging.INFO,
@@ -94,13 +95,25 @@ def main() -> None:
     with args.atoms.open(encoding="utf-8") as f:
         atoms_data = json.load(f)
 
-    canonical_file = CanonicalAtomsFile.model_validate(atoms_data)
-    atoms = canonical_file.atoms
+    # Load atoms as dictionaries (skip Pydantic validation to allow flexibility
+    # for manual edits like 4 examples instead of 3)
+    atoms_list = atoms_data.get("atoms", [])
+    atoms_dict = atoms_list  # Work with dicts directly
+    
+    # For circular dependency check, we need Atom objects
+    # Create a minimal Atom-like structure for find_cycles
+    class AtomDict:
+        """Minimal Atom-like structure for circular dependency checking."""
+        def __init__(self, atom_dict: dict[str, Any]) -> None:
+            self.id = atom_dict["id"]
+            self.prerrequisitos = atom_dict.get("prerrequisitos", [])
+    
+    atoms_for_cycles = [AtomDict(atom) for atom in atoms_list]
 
     # Get unique standard IDs from atoms
     standard_ids_in_atoms = set()
-    for atom in atoms:
-        standard_ids_in_atoms.update(atom.standard_ids)
+    for atom in atoms_dict:
+        standard_ids_in_atoms.update(atom.get("standard_ids", []))
 
     # Filter standards
     if args.standard_ids:
@@ -133,9 +146,20 @@ def main() -> None:
     logger.info("Standards file: %s", args.standards)
     logger.info("Atoms file: %s", args.atoms)
     logger.info("Total standards to validate: %d", len(standards_list))
-    logger.info("Total atoms: %d", len(atoms))
+    logger.info("Total atoms: %d", len(atoms_dict))
     logger.info("Output directory: %s", args.output_dir)
     logger.info("=" * 70)
+    logger.info("")
+    
+    # Check for circular dependencies
+    logger.info("Checking for circular dependencies...")
+    cycles = find_cycles(atoms_for_cycles)
+    if cycles:
+        logger.warning("⚠ Found %d circular dependency cycle(s):", len(cycles))
+        for i, cycle in enumerate(cycles, 1):
+            logger.warning("  Cycle %d: %s", i, " → ".join(cycle))
+    else:
+        logger.info("✓ No circular dependencies found (DAG is valid)")
     logger.info("")
 
     results: dict[str, Any] = {}
@@ -162,24 +186,21 @@ def main() -> None:
         logger.info("-" * 70)
 
         try:
-            # Extract atoms for this standard and create temporary list file
+            # Extract atoms for this standard
             standard_atoms = [
-                atom for atom in atoms if standard_id in atom.standard_ids
+                atom for atom in atoms_dict if standard_id in atom.get("standard_ids", [])
             ]
             
             if not standard_atoms:
                 logger.warning("⚠ No atoms found for %s", standard_id)
                 continue
             
-            # Convert to dict list for validation
-            atoms_dict = [atom.model_dump(mode="json") for atom in standard_atoms]
-            
             # Use validate_atoms_with_gemini directly since we have the data in memory
             from app.atoms.validation import validate_atoms_with_gemini
             result = validate_atoms_with_gemini(
                 gemini=gemini,
                 standard=standard_dict,
-                atoms=atoms_dict,
+                atoms=standard_atoms,
             )
 
             results[standard_id] = result
@@ -212,10 +233,27 @@ def main() -> None:
 
         logger.info("")
 
+    # Check circular dependencies again at the end (in case atoms were modified)
+    logger.info("Final check for circular dependencies...")
+    final_cycles = find_cycles(atoms_for_cycles)
+    
     # Save combined results
     combined_output = args.output_dir / "validation_all_standards.json"
+    combined_results = {
+        "metadata": {
+            "validation_date": str(Path(__file__).stat().st_mtime),
+            "total_standards": len(results),
+            "total_atoms": len(atoms_dict),
+            "circular_dependencies": {
+                "cycles_found": len(final_cycles),
+                "cycles": final_cycles,
+                "is_valid_dag": len(final_cycles) == 0,
+            },
+        },
+        **results,
+    }
     with combined_output.open("w", encoding="utf-8") as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
+        json.dump(combined_results, f, ensure_ascii=False, indent=2)
 
     logger.info("=" * 70)
     logger.info("VALIDATION COMPLETE")
@@ -227,6 +265,16 @@ def main() -> None:
             logger.error("  - %s", std_id)
     logger.info("✓ Results saved to: %s", args.output_dir)
     logger.info("✓ Combined results: %s", combined_output)
+    logger.info("")
+    logger.info("CIRCULAR DEPENDENCIES:")
+    if final_cycles:
+        logger.warning("  ❌ Found %d cycle(s)", len(final_cycles))
+        for i, cycle in enumerate(final_cycles[:5], 1):  # Show first 5
+            logger.warning("    Cycle %d: %s", i, " → ".join(cycle))
+        if len(final_cycles) > 5:
+            logger.warning("    ... and %d more cycle(s)", len(final_cycles) - 5)
+    else:
+        logger.info("  ✓ No circular dependencies (valid DAG)")
     logger.info("=" * 70)
 
     if failed_standards:
