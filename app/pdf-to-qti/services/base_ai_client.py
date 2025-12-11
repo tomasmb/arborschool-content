@@ -7,6 +7,8 @@ Provides common infrastructure for AI API clients:
 - Response parsing
 """
 
+from __future__ import annotations
+
 import json
 import time
 import random
@@ -14,8 +16,9 @@ import logging
 import threading
 import re
 from abc import ABC, abstractmethod
-from typing import Any, Optional, Dict, Callable
 from collections import deque
+from collections.abc import Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +74,7 @@ class BaseAIClient(ABC):
         temperature: float = 0.0,
         max_tokens: int = 8192,
         thinking_level: str = "high",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Generate JSON response from the AI model.
 
@@ -149,9 +152,9 @@ class BaseAIClient(ABC):
 
     def _generate_with_retry(
         self,
-        api_call: Callable,
+        api_call: Callable[[], Any],
         parse_json: bool = False,
-        max_retries: Optional[int] = None,
+        max_retries: int | None = None,
     ) -> Any:
         """Execute API call with retry logic, exponential backoff, and rate limiting."""
         max_retries = max_retries or self.max_retries
@@ -202,7 +205,7 @@ class BaseAIClient(ABC):
         jitter = random.uniform(0, 0.3 * current_delay)
         return min(current_delay + jitter, self.max_delay)
 
-    def _extract_retry_delay(self, error: Exception) -> Optional[float]:
+    def _extract_retry_delay(self, error: Exception) -> float | None:
         """Extract retry delay from error response if available."""
         error_str = str(error)
 

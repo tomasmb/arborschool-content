@@ -1,7 +1,8 @@
 """Prompts for split validation."""
 
+from __future__ import annotations
+
 import json
-from typing import List
 
 # Import from parent package
 try:
@@ -88,8 +89,8 @@ Return JSON with validation results. Be strict - incomplete questions must fail.
 
 
 def create_split_validation_prompt(
-    questions: List[QuestionChunk], 
-    shared_contexts: List[SharedContext] = None
+    questions: list[QuestionChunk], 
+    shared_contexts: list[SharedContext] | None = None
 ) -> str:
     """Create validation prompt with context at end."""
     questions_json = json.dumps([q.model_dump() for q in questions], indent=2)

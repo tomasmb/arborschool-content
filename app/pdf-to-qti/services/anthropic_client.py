@@ -4,11 +4,13 @@ Uses Claude Opus 4.5 via AWS Bedrock for complex segmentation tasks.
 Supports multimodal (vision) inputs for image-aware validation.
 """
 
+from __future__ import annotations
+
 import os
 import json
 import base64
 import logging
-from typing import Any, Dict, List
+from typing import Any
 
 from .base_ai_client import BaseAIClient
 
@@ -110,10 +112,10 @@ class AnthropicClient(BaseAIClient):
     def generate_json_with_images(
         self,
         prompt: str,
-        images: List[Dict[str, Any]],
+        images: list[dict[str, Any]],
         max_tokens: int = 8192,
         thinking_level: str = "high",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate JSON response with image context for multimodal validation."""
         return self._generate_with_retry(
             lambda: self._make_multimodal_request(prompt, images, max_tokens),
@@ -121,7 +123,7 @@ class AnthropicClient(BaseAIClient):
         )
 
     def _make_multimodal_request(
-        self, prompt: str, images: List[Dict[str, Any]], max_tokens: int
+        self, prompt: str, images: list[dict[str, Any]], max_tokens: int
     ) -> Any:
         """Build and execute multimodal request with text + images."""
         content_blocks = []

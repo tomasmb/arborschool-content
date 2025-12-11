@@ -17,9 +17,11 @@ DOES NOT VALIDATE:
 - Pedagogical completeness
 """
 
+from __future__ import annotations
+
 import logging
 import requests
-from typing import Optional, List, Dict, Any
+from typing import Any
 from xml.etree import ElementTree as ET
 
 # Import from parent package

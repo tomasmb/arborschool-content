@@ -1,5 +1,7 @@
 """Pipeline components for PDF to QTI conversion."""
 
+from __future__ import annotations
+
 from .pdf_parser import PDFParser
 from .segmenter import Segmenter
 from .generator import Generator

@@ -3,10 +3,12 @@
 This is the third step in the pipeline: Segmented Questions → QTI XML.
 """
 
+from __future__ import annotations
+
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any
 
 # Import from parent package
 try:
@@ -66,7 +68,7 @@ class Generator:
     def generate(
         self,
         segmenter_output: SegmenterOutput,
-        output_dir: Optional[str] = None,
+        output_dir: str | None = None,
         source_format: SourceFormat = "markdown"
     ) -> GeneratorOutput:
         """
@@ -136,7 +138,7 @@ class Generator:
     def generate_from_json(
         self,
         json_path: str,
-        output_dir: Optional[str] = None,
+        output_dir: str | None = None,
         source_format: SourceFormat = "markdown"
     ) -> GeneratorOutput:
         """
@@ -163,7 +165,7 @@ class Generator:
     def _process_question(
         self,
         question: QuestionChunk,
-        shared_contexts: Dict[str, SharedContext],
+        shared_contexts: dict[str, SharedContext],
         source_format: SourceFormat
     ) -> QTIItem:
         """Process a single question through the generation pipeline."""

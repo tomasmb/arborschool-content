@@ -1,6 +1,8 @@
 """Semantic Validator - Validates XML fidelity using AI."""
 
-from typing import Dict, Any
+from __future__ import annotations
+
+from typing import Any
 
 # Import from parent package
 try:
@@ -44,7 +46,7 @@ class SemanticValidator:
         except Exception as e:
             raise Exception(f"Semantic validation failed - API error: {e}")
 
-    def _parse_response(self, data: Dict[str, Any]) -> SemanticValidationResult:
+    def _parse_response(self, data: dict[str, Any]) -> SemanticValidationResult:
         """Parse and validate response."""
         if "is_valid" not in data or "fidelity_score" not in data:
             raise ValueError("Invalid semantic validation response structure")

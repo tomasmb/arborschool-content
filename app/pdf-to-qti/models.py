@@ -6,7 +6,10 @@ Contains all data models for:
 - QTI generation output
 """
 
-from typing import Optional, List, Dict, Any, Literal
+from __future__ import annotations
+
+from typing import Literal
+
 from pydantic import BaseModel, Field
 
 
@@ -25,11 +28,11 @@ ModelProvider = Literal["gemini", "gpt", "opus"]
 class BlockDetails(BaseModel):
     """Details for a block (varies by block type)."""
     
-    type: Optional[str] = None
-    imageUrl: Optional[str] = None
-    figureType: Optional[str] = None
-    rowCount: Optional[int] = None
-    columnCount: Optional[int] = None
+    type: str | None = None
+    imageUrl: str | None = None
+    figureType: str | None = None
+    rowCount: int | None = None
+    columnCount: int | None = None
     
     class Config:
         extra = "allow"
@@ -47,19 +50,19 @@ class BlockBoundingBox(BaseModel):
 class BlockMetadata(BaseModel):
     """Metadata for a block."""
     
-    page: Optional[Dict[str, Any]] = None
+    page: dict[str, object] | None = None
 
 
 class Block(BaseModel):
     """Represents a single block within a chunk."""
     
-    object: Optional[str] = "block"
-    id: Optional[str] = None
+    object: str | None = "block"
+    id: str | None = None
     type: str
     content: str
-    details: Optional[BlockDetails] = None
-    metadata: Optional[BlockMetadata] = None
-    boundingBox: Optional[BlockBoundingBox] = None
+    details: BlockDetails | None = None
+    metadata: BlockMetadata | None = None
+    boundingBox: BlockBoundingBox | None = None
     
     class Config:
         extra = "allow"
@@ -68,7 +71,7 @@ class Block(BaseModel):
 class ChunkMetadata(BaseModel):
     """Metadata for a chunk."""
     
-    pageRange: Optional[Dict[str, int]] = None
+    pageRange: dict[str, int] | None = None
     
     class Config:
         extra = "allow"
@@ -81,8 +84,8 @@ class Chunk(BaseModel):
     object: str = "chunk"
     type: str = "page"
     content: str
-    metadata: Optional[ChunkMetadata] = None
-    blocks: Optional[List[Block]] = None
+    metadata: ChunkMetadata | None = None
+    blocks: list[Block] | None = None
     
     class Config:
         extra = "allow"
@@ -93,9 +96,9 @@ class ParsedPdf(BaseModel):
 
     id: str
     object: str = "parser_run"
-    chunks: List[Chunk]
-    fileId: Optional[str] = None
-    status: Optional[str] = None
+    chunks: list[Chunk]
+    fileId: str | None = None
+    status: str | None = None
     
     class Config:
         extra = "allow"
@@ -117,9 +120,9 @@ class QuestionBoundary(BaseModel):
 
     start_block_id: str
     end_block_id: str
-    chunk_id: Optional[str] = None
-    start_marker: Optional[str] = None
-    end_marker: Optional[str] = None
+    chunk_id: str | None = None
+    start_marker: str | None = None
+    end_marker: str | None = None
 
 
 class QuestionChunk(BaseModel):
@@ -127,17 +130,17 @@ class QuestionChunk(BaseModel):
 
     id: str
     content: str
-    shared_context_id: Optional[str] = None
-    boundary: Optional[QuestionBoundary] = None
-    question_type: Optional[str] = None
-    images: List[str] = Field(default_factory=list)
+    shared_context_id: str | None = None
+    boundary: QuestionBoundary | None = None
+    question_type: str | None = None
+    images: list[str] = Field(default_factory=list)
 
 
 class SegmentationResult(BaseModel):
     """Result from segmentation step."""
 
-    shared_contexts: List[SharedContext] = Field(default_factory=list)
-    questions: List[QuestionChunk]
+    shared_contexts: list[SharedContext] = Field(default_factory=list)
+    questions: list[QuestionChunk]
 
 
 class SplitValidationError(BaseModel):
@@ -145,25 +148,25 @@ class SplitValidationError(BaseModel):
 
     question_id: str
     is_self_contained: bool
-    errors: List[str] = Field(default_factory=list)
-    warnings: List[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
 
 
 class SplitValidationResult(BaseModel):
     """Result from split validation step."""
 
     is_valid: bool
-    validation_results: List[SplitValidationError]
+    validation_results: list[SplitValidationError]
 
 
 class SegmenterOutput(BaseModel):
     """Final output from segmentation."""
 
     success: bool
-    shared_contexts: List[SharedContext] = Field(default_factory=list)
-    validated_questions: List[QuestionChunk] = Field(default_factory=list)
-    unvalidated_questions: List[QuestionChunk] = Field(default_factory=list)
-    errors: List[str] = Field(default_factory=list)
+    shared_contexts: list[SharedContext] = Field(default_factory=list)
+    validated_questions: list[QuestionChunk] = Field(default_factory=list)
+    unvalidated_questions: list[QuestionChunk] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
 
 
 # =============================================================================
@@ -175,7 +178,7 @@ class QTIItem(BaseModel):
 
     question_id: str
     qti_xml: str
-    question_type: Optional[str] = None
+    question_type: str | None = None
 
 
 class SemanticValidationResult(BaseModel):
@@ -183,16 +186,16 @@ class SemanticValidationResult(BaseModel):
 
     is_valid: bool
     fidelity_score: int
-    errors: List[str] = Field(default_factory=list)
-    warnings: List[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
 
 
 class GeneratorOutput(BaseModel):
     """Final output from QTI generation."""
 
     success: bool
-    qti_items: List[QTIItem] = Field(default_factory=list)
-    errors: List[str] = Field(default_factory=list)
+    qti_items: list[QTIItem] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
 
 
 # =============================================================================
@@ -210,8 +213,8 @@ class PipelineReport(BaseModel):
     segment_status: str = "pending"
     generate_status: str = "pending"
     validate_status: str = "pending"
-    errors: List[str] = Field(default_factory=list)
-    warnings: List[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
+    warnings: list[str] = Field(default_factory=list)
 
 
 # =============================================================================
@@ -221,26 +224,26 @@ class PipelineReport(BaseModel):
 class ImageInput(BaseModel):
     """Image reference for validation."""
     url: str = Field(..., description="URL of the image to validate")
-    alt_text: Optional[str] = Field(None, description="Alt text or description")
+    alt_text: str | None = Field(None, description="Alt text or description")
 
 
 class ValidationResult(BaseModel):
     """Result of a single validation check."""
     passed: bool = Field(..., description="Whether this validation check passed")
     score: int = Field(..., ge=0, le=100, description="Score from 0-100")
-    issues: List[str] = Field(default_factory=list, description="Issues found")
-    details: Optional[str] = Field(None, description="Additional details")
+    issues: list[str] = Field(default_factory=list, description="Issues found")
+    details: str | None = Field(None, description="Additional details")
 
 
 class MediaValidationDetail(BaseModel):
     """Detailed validation result for a single media item."""
     url: str = Field(..., description="URL of the media item")
     exists: bool = Field(..., description="Whether the media resource is accessible")
-    contextually_correct: Optional[bool] = Field(
+    contextually_correct: bool | None = Field(
         None, description="Whether the image matches the question context"
     )
-    issues: List[str] = Field(default_factory=list, description="Issues with this media")
-    ai_analysis: Optional[str] = Field(None, description="AI analysis of the image")
+    issues: list[str] = Field(default_factory=list, description="Issues with this media")
+    ai_analysis: str | None = Field(None, description="AI analysis of the image")
 
 
 class QTIValidationOutput(BaseModel):
@@ -278,16 +281,16 @@ class QTIValidationOutput(BaseModel):
     )
     
     # Optional detailed results
-    media_details: List[MediaValidationDetail] = Field(
+    media_details: list[MediaValidationDetail] = Field(
         default_factory=list, description="Detailed validation for each media item"
     )
     
-    detected_question_type: Optional[str] = Field(
+    detected_question_type: str | None = Field(
         None, description="Detected QTI interaction type"
     )
     
-    errors: List[str] = Field(default_factory=list, description="Errors during validation")
-    ai_reasoning: Optional[str] = Field(None, description="AI explanation of the result")
+    errors: list[str] = Field(default_factory=list, description="Errors during validation")
+    ai_reasoning: str | None = Field(None, description="AI explanation of the result")
     ai_validation_failed: bool = Field(
         default=False, description="True if AI validation failed - results incomplete"
     )
@@ -297,19 +300,19 @@ class AIValidationResponse(BaseModel):
     """Schema for AI validation response (internal use)."""
     is_complete: bool = Field(..., description="Whether all content was extracted")
     content_score: int = Field(..., ge=0, le=100)
-    content_issues: List[str] = Field(default_factory=list)
+    content_issues: list[str] = Field(default_factory=list)
     
     structure_valid: bool = Field(..., description="Whether structure is valid")
     structure_score: int = Field(..., ge=0, le=100)
-    structure_issues: List[str] = Field(default_factory=list)
+    structure_issues: list[str] = Field(default_factory=list)
     
     parse_clean: bool = Field(..., description="Whether parsing is clean")
     parse_score: int = Field(..., ge=0, le=100)
-    parse_issues: List[str] = Field(default_factory=list)
+    parse_issues: list[str] = Field(default_factory=list)
     
-    images_contextual: Optional[bool] = Field(None)
+    images_contextual: bool | None = Field(None)
     images_score: int = Field(default=100)
-    images_issues: List[str] = Field(default_factory=list)
+    images_issues: list[str] = Field(default_factory=list)
     
     detected_type: str = Field(..., description="Detected question/interaction type")
     reasoning: str = Field(..., description="AI reasoning for the validation")
@@ -318,10 +321,10 @@ class AIValidationResponse(BaseModel):
 class ValidatorOutput(BaseModel):
     """Output from validation step."""
     success: bool
-    validation_results: List[QTIValidationOutput] = Field(default_factory=list)
+    validation_results: list[QTIValidationOutput] = Field(default_factory=list)
     valid_count: int = 0
     invalid_count: int = 0
-    errors: List[str] = Field(default_factory=list)
+    errors: list[str] = Field(default_factory=list)
 
 
 # =============================================================================

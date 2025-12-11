@@ -1,5 +1,7 @@
 """Services for PDF to QTI pipeline."""
 
+from __future__ import annotations
+
 from .ai_client_factory import create_ai_client, AIClient, ModelProvider
 from .qti_service import QTIService
 from .xsd_validator import XSDValidator

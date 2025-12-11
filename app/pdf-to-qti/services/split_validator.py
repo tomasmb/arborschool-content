@@ -1,8 +1,10 @@
 """Split validation service."""
 
+from __future__ import annotations
+
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Dict, Any, List
+from typing import Any
 
 # Import from parent package
 try:
@@ -38,7 +40,7 @@ class SplitValidator:
         )
 
     def validate(
-        self, questions: List[QuestionChunk], shared_contexts: List[SharedContext] = None
+        self, questions: list[QuestionChunk], shared_contexts: list[SharedContext] | None = None
     ) -> SplitValidationResult:
         """Validate that all questions are self-contained."""
         if not questions:
@@ -96,7 +98,7 @@ class SplitValidator:
         return SplitValidationResult(is_valid=is_valid, validation_results=all_validation_results)
 
     def _log_failed_validations(
-        self, questions: List[QuestionChunk], validation_results: List[SplitValidationError]
+        self, questions: list[QuestionChunk], validation_results: list[SplitValidationError]
     ) -> None:
         """Log detailed info for questions that failed validation."""
         question_map = {q.id: q for q in questions}
@@ -131,9 +133,9 @@ class SplitValidator:
     def _validate_single(
         self, 
         question: QuestionChunk, 
-        all_questions: List[QuestionChunk], 
+        all_questions: list[QuestionChunk], 
         question_index: int,
-        all_shared_contexts: List[SharedContext] = None
+        all_shared_contexts: list[SharedContext] | None = None
     ) -> SplitValidationError:
         """Validate a single question with context from adjacent questions."""
         start_idx = max(0, question_index - 1)

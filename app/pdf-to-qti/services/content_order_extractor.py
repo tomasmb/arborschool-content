@@ -4,9 +4,11 @@ Uses chunk.content (correct multi-column reading order) with simple line
 numbering for reliable LLM-based segmentation.
 """
 
+from __future__ import annotations
+
 import logging
 import re
-from typing import Dict, List, Tuple, Any
+from typing import Any
 
 # Import from parent package
 try:
@@ -35,8 +37,8 @@ class ContentOrderExtractor:
     def extract(
         self,
         parsed_pdf: ParsedPdf,
-        raw_parsed_pdf_data: Dict[str, Any] = None
-    ) -> Tuple[str, Dict[str, Any]]:
+        raw_parsed_pdf_data: dict[str, Any] | None = None
+    ) -> tuple[str, dict[str, Any]]:
         """
         Extract text with line numbers in correct reading order.
         
@@ -100,7 +102,7 @@ class ContentOrderExtractor:
         
         return full_text, metadata
 
-    def _split_into_paragraphs(self, content: str) -> List[str]:
+    def _split_into_paragraphs(self, content: str) -> list[str]:
         """Split content into logical paragraphs."""
         content = content.replace('\r\n', '\n').replace('\r', '\n')
         raw_blocks = re.split(r'\n\s*\n', content)
@@ -140,7 +142,7 @@ class ContentOrderExtractor:
         page_range = chunk.metadata.pageRange if chunk.metadata else None
         return page_range.get('start', 0) if page_range else 0
 
-    def _build_image_url_map(self, raw_parsed_pdf_data: Dict[str, Any]) -> Dict[str, str]:
+    def _build_image_url_map(self, raw_parsed_pdf_data: dict[str, Any] | None) -> dict[str, str]:
         """Build map of block_id -> imageUrl from raw data."""
         if not raw_parsed_pdf_data:
             return {}
@@ -159,7 +161,7 @@ class ContentOrderExtractor:
         return url_map
 
     def _inject_image_urls(
-        self, content: str, chunk: Chunk, image_url_map: Dict[str, str]
+        self, content: str, chunk: Chunk, image_url_map: dict[str, str]
     ) -> str:
         """Inject image URLs into figure blocks in chunk content."""
         if not chunk.blocks or not image_url_map:
@@ -203,7 +205,7 @@ class ContentOrderExtractor:
         return content
 
     def _inject_image_for_plain_figure(
-        self, content: str, fig: Dict[str, str], markdown_image: str
+        self, content: str, fig: dict[str, str], markdown_image: str
     ) -> str:
         """Inject markdown image for a figure that appears as plain text."""
         inner = fig['content']
@@ -281,7 +283,7 @@ class ContentOrderExtractor:
         return "Figure"
 
     def extract_by_line_range(
-        self, line_index: Dict[int, str], start_line: int, end_line: int
+        self, line_index: dict[int, str], start_line: int, end_line: int
     ) -> str:
         """Extract content from a range of lines (inclusive)."""
         if start_line not in line_index:
@@ -298,7 +300,7 @@ class ContentOrderExtractor:
 
         return "\n\n".join(content_parts)
 
-    def get_total_lines(self, line_index: Dict[int, str]) -> int:
+    def get_total_lines(self, line_index: dict[int, str]) -> int:
         """Get total number of lines."""
         return max(line_index.keys()) if line_index else 0
 

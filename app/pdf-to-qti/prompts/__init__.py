@@ -1,5 +1,7 @@
 """Prompts for PDF to QTI pipeline."""
 
+from __future__ import annotations
+
 from .qti_generation import create_qti_generation_prompt
 from .qti_configs import get_question_config, get_available_question_types
 from .question_type_detection import create_detection_prompt

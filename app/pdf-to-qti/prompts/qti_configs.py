@@ -1,7 +1,8 @@
 """QTI 3.0 Configuration for all question types."""
 
 from __future__ import annotations
-from typing import Dict, List, Optional, Callable
+
+from collections.abc import Callable
 import re
 import base64
 
@@ -444,7 +445,7 @@ For media interactions:
 )
 
 # Map of all question type configurations
-QTI_TYPE_CONFIGS: Dict[str, QuestionConfig] = {
+QTI_TYPE_CONFIGS: dict[str, QuestionConfig] = {
     "choice": choice_config,
     "match": match_config,
     "text-entry": text_entry_config,
@@ -466,7 +467,7 @@ def get_question_config(question_type: str) -> QuestionConfig:
     return QTI_TYPE_CONFIGS.get(question_type, choice_config)
 
 
-def get_available_question_types() -> List[str]:
+def get_available_question_types() -> list[str]:
     """Get all available question types."""
     return list(QTI_TYPE_CONFIGS.keys())
 

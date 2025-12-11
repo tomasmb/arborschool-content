@@ -1,7 +1,8 @@
 """QTI Service - Generates QTI XML using AI."""
 
+from __future__ import annotations
+
 import re
-from typing import Optional, Dict
 
 # Import from parent package
 try:
@@ -26,7 +27,7 @@ class QTIService:
     def generate(
         self,
         question: QuestionChunk,
-        shared_contexts: Dict[str, SharedContext],
+        shared_contexts: dict[str, SharedContext],
         question_type: str = "choice",
         source_format: SourceFormat = "markdown",
     ) -> QTIItem:

@@ -3,9 +3,10 @@
 Loads settings from environment variables and/or .env file.
 """
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
-from typing import Optional
 
 # Try to load from .env file
 try:
@@ -28,16 +29,16 @@ class Config:
     """Configuration settings for the PDF to QTI pipeline."""
     
     # AI Provider API Keys
-    GEMINI_API_KEY: Optional[str] = os.environ.get("GEMINI_API_KEY")
-    OPENAI_API_KEY: Optional[str] = os.environ.get("OPENAI_API_KEY")
+    GEMINI_API_KEY: str | None = os.environ.get("GEMINI_API_KEY")
+    OPENAI_API_KEY: str | None = os.environ.get("OPENAI_API_KEY")
     
     # AWS Bedrock (for Anthropic Claude)
-    AWS_ACCESS_KEY_ID: Optional[str] = os.environ.get("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY: Optional[str] = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_ACCESS_KEY_ID: str | None = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY: str | None = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_REGION: str = os.environ.get("AWS_REGION", "us-east-1")
     
     # Extend.ai API
-    EXTEND_API_KEY: Optional[str] = os.environ.get("EXTEND_API_KEY")
+    EXTEND_API_KEY: str | None = os.environ.get("EXTEND_API_KEY")
     
     # Default settings
     DEFAULT_PROVIDER: str = os.environ.get("DEFAULT_PROVIDER", "gemini")

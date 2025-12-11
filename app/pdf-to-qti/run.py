@@ -25,11 +25,12 @@ The Extend.ai parser is deterministic - running it again will produce the same r
 Always save and reuse the parsed.json output to avoid wasting API calls.
 """
 
+from __future__ import annotations
+
 import sys
 import json
 import logging
 from pathlib import Path
-from typing import Optional
 
 try:
     import click
@@ -87,7 +88,7 @@ def setup_logging(verbose: bool) -> None:
 def main(
     input_file: str,
     output: str,
-    provider: Optional[str],
+    provider: str | None,
     step: str,
     skip_validation: bool,
     verbose: bool

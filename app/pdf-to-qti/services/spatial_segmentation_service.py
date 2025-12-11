@@ -4,9 +4,11 @@ Uses chunk.content (correct reading order) with simple line
 numbering for reliable question boundary detection.
 """
 
+from __future__ import annotations
+
 import re
 import logging
-from typing import Dict, Any, List
+from typing import Any
 
 # Import from parent package
 try:
@@ -46,7 +48,7 @@ class SpatialSegmentationService:
     def segment(
         self, 
         parsed_pdf: ParsedPdf,
-        raw_parsed_pdf_data: Dict[str, Any] = None
+        raw_parsed_pdf_data: dict[str, Any] | None = None
     ) -> SegmentationResult:
         """Segment document into questions using line-based extraction."""
         logger.info("Extracting text with line numbers...")
@@ -122,7 +124,7 @@ class SpatialSegmentationService:
         return '\n'.join(condensed)
 
     def _parse_response(
-        self, data: Dict[str, Any], line_index: Dict[int, str], max_line: int
+        self, data: dict[str, Any], line_index: dict[int, str], max_line: int
     ) -> SegmentationResult:
         """Parse LLM response and extract content using line numbers."""
         if "questions" not in data:
@@ -189,7 +191,7 @@ class SpatialSegmentationService:
         return SegmentationResult(shared_contexts=shared_contexts, questions=questions)
 
     def _adjust_boundaries(
-        self, questions_data: List[Dict[str, Any]], line_index: Dict[int, str], max_line: int
+        self, questions_data: list[dict[str, Any]], line_index: dict[int, str], max_line: int
     ) -> None:
         """Adjust boundaries to fix common issues."""
         for q_data in questions_data:
@@ -229,7 +231,7 @@ class SpatialSegmentationService:
                     current["end_line"] = new_end
 
     def _validate_boundaries(
-        self, questions: List[QuestionChunk], line_index: Dict[int, str]
+        self, questions: list[QuestionChunk], line_index: dict[int, str]
     ) -> None:
         """Validate question boundaries and log warnings."""
         for question in questions:

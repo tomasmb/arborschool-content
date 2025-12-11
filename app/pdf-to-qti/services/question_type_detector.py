@@ -3,7 +3,9 @@
 Detects the QTI 3.0 question type from question content using AI.
 """
 
-from typing import Dict, Any
+from __future__ import annotations
+
+from typing import Any
 
 # Import from parent package
 try:
@@ -43,7 +45,7 @@ class QuestionTypeDetector:
 
     def detect(
         self, question: QuestionChunk, source_format: SourceFormat = "markdown"
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Detect question type from question content.
 
@@ -67,7 +69,7 @@ class QuestionTypeDetector:
         except Exception as e:
             raise Exception(f"Question type detection failed - API error: {e}")
 
-    def _parse_response(self, data: Dict[str, Any]) -> Dict[str, Any]:
+    def _parse_response(self, data: dict[str, Any]) -> dict[str, Any]:
         """Parse and validate response."""
         can_represent = data.get("can_represent", False)
         question_type = data.get("question_type")

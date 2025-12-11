@@ -1,6 +1,6 @@
 """Prompts for QTI XML generation."""
 
-from typing import Optional
+from __future__ import annotations
 
 # Import from parent package
 try:
@@ -94,7 +94,7 @@ HTML PARSING NOTES:
 
 def create_qti_generation_prompt(
     question: QuestionChunk,
-    shared_context: Optional[SharedContext] = None,
+    shared_context: SharedContext | None = None,
     question_type: str = "choice",
     type_instructions: str = "",
     example_xml: str = "",

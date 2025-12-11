@@ -1,5 +1,7 @@
 """Prompt for line-based question segmentation."""
 
+from __future__ import annotations
+
 CONTENT_ORDER_SEGMENTATION_PROMPT = """<role>
 You are an expert educational test segmenter.
 </role>

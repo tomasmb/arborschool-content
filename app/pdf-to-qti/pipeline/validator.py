@@ -6,10 +6,12 @@ Validates extraction quality (was content correctly parsed from PDF),
 NOT assessment completeness (answer keys, feedback, etc.).
 """
 
+from __future__ import annotations
+
 import json
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, List
+from typing import Any
 
 # Import from parent package
 try:

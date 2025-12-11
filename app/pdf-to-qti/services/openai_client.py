@@ -4,9 +4,11 @@ Uses GPT-5.1 with adaptive reasoning for complex segmentation tasks.
 Supports multimodal (vision) inputs for image-aware validation.
 """
 
+from __future__ import annotations
+
 import os
 import logging
-from typing import Any, Optional, Dict, List, Literal
+from typing import Any, Literal
 
 from .base_ai_client import BaseAIClient
 
@@ -87,10 +89,10 @@ class OpenAIClient(BaseAIClient):
     def generate_json_with_images(
         self,
         prompt: str,
-        images: List[Dict[str, Any]],
+        images: list[dict[str, Any]],
         max_tokens: int = 8192,
         thinking_level: str = "high",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate JSON response with image context for multimodal validation."""
         return self._generate_with_retry(
             lambda: self._make_multimodal_request(prompt, images, max_tokens, thinking_level),
@@ -98,10 +100,10 @@ class OpenAIClient(BaseAIClient):
         )
 
     def _make_multimodal_request(
-        self, prompt: str, images: List[Dict[str, Any]], max_tokens: int, thinking_level: str
+        self, prompt: str, images: list[dict[str, Any]], max_tokens: int, thinking_level: str
     ) -> Any:
         """Build and execute multimodal request with text + images."""
-        content_parts: List[Dict[str, Any]] = []
+        content_parts: list[dict[str, Any]] = []
         
         for img in images:
             url = img.get("url") if isinstance(img, dict) else getattr(img, "url", None)

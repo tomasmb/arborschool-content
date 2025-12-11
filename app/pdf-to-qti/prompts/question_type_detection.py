@@ -1,5 +1,7 @@
 """Prompts for question type detection."""
 
+from __future__ import annotations
+
 from typing import Literal
 
 SourceFormat = Literal["markdown", "html"]

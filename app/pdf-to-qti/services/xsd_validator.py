@@ -1,10 +1,11 @@
 """XSD Validator - Validates QTI XML using external validation service."""
 
-import os
+from __future__ import annotations
+
 import time
 import json
 import logging
-from typing import Tuple, Dict, Any
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +23,7 @@ class XSDValidator:
         self.max_retries = 3
         self.retry_delay = 2
 
-    def validate(self, xml_string: str) -> Tuple[bool, str]:
+    def validate(self, xml_string: str) -> tuple[bool, str]:
         """
         Validate XML string using external validation service.
 
@@ -40,7 +41,7 @@ class XSDValidator:
             )
             return False, error_msg
 
-    def _validate_with_service(self, qti_xml: str) -> Dict[str, Any]:
+    def _validate_with_service(self, qti_xml: str) -> dict[str, Any]:
         """Validate QTI XML against the XSD schema using external service."""
         for attempt in range(self.max_retries):
             try:
@@ -93,7 +94,7 @@ class XSDValidator:
             "error": "Validation failed after all retry attempts."
         }
 
-    def _request_local(self, url: str, xml_data: str) -> Tuple[str, int]:
+    def _request_local(self, url: str, xml_data: str) -> tuple[str, int]:
         """Make HTTP request using requests library."""
         import requests
 
@@ -105,7 +106,7 @@ class XSDValidator:
         )
         return response.text, response.status_code
 
-    def _format_validation_errors(self, result: Dict[str, Any]) -> Dict[str, Any]:
+    def _format_validation_errors(self, result: dict[str, Any]) -> dict[str, Any]:
         """Format validation errors from the service response."""
         errors = result.get('errors', [])
         error_messages = []
@@ -137,7 +138,7 @@ class XSDValidator:
             "warnings": result.get('warnings', [])
         }
 
-    def _handle_error_response(self, response_data: str, status_code: int) -> Dict[str, Any]:
+    def _handle_error_response(self, response_data: str, status_code: int) -> dict[str, Any]:
         """Handle non-200 response from validation service."""
         try:
             error_data = json.loads(response_data)

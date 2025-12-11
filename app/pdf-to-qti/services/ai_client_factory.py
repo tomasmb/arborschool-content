@@ -6,8 +6,10 @@ Supports:
 - opus: Uses AnthropicClient (Claude Opus 4.5 via AWS Bedrock)
 """
 
+from __future__ import annotations
+
 import logging
-from typing import Literal, Protocol, Dict, Any, List
+from typing import Literal, Protocol, Any
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +26,7 @@ class AIClient(Protocol):
         temperature: float = 0.0,
         max_tokens: int = 8192,
         thinking_level: str = "high",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate JSON response from the AI model."""
         ...
 
@@ -41,10 +43,10 @@ class AIClient(Protocol):
     def generate_json_with_images(
         self,
         prompt: str,
-        images: List[Dict[str, Any]],
+        images: list[dict[str, Any]],
         max_tokens: int = 8192,
         thinking_level: str = "high",
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """Generate JSON response with image context."""
         ...
 

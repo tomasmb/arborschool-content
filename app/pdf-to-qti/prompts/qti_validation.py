@@ -21,6 +21,8 @@ DOES NOT VALIDATE:
 - Question adequacy or pedagogy
 """
 
+from __future__ import annotations
+
 import re
 import logging
 

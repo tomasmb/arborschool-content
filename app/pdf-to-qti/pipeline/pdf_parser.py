@@ -3,12 +3,14 @@
 This is the first step in the pipeline: PDF → Parsed JSON (markdown chunks).
 """
 
+from __future__ import annotations
+
 import os
 import json
 import time
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,7 @@ class PDFParser:
     - Table detection
     """
     
-    def __init__(self, api_key: Optional[str] = None):
+    def __init__(self, api_key: str | None = None):
         """
         Initialize PDF parser.
         
@@ -46,8 +48,8 @@ class PDFParser:
     def parse(
         self, 
         pdf_path: str, 
-        output_dir: Optional[str] = None
-    ) -> Dict[str, Any]:
+        output_dir: str | None = None
+    ) -> dict[str, Any]:
         """
         Parse a PDF file and return the parsed structure.
         
