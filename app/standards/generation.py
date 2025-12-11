@@ -1,6 +1,6 @@
 """Standards generation module.
 
-Handles unidad-by-unidad generation of canonical standards using Gemini 3 Pro,
+Handles unidad-by-unidad generation of canonical standards using Gemini (`gemini-3-pro-preview`),
 with immediate per-unidad validation following the two-stage approach in
 `docs/standards-from-temarios.md` section 3.5.
 
@@ -111,8 +111,11 @@ def generate_and_validate_standard_for_unidad(
 
     # Step 2: Parse JSON response
     try:
-        standard_dict = parse_json_response(raw_response)
-    except json.JSONDecodeError as e:
+        parsed_response = parse_json_response(raw_response)
+        if not isinstance(parsed_response, dict):
+            raise ValueError(f"Expected dict from standard generation, got {type(parsed_response)}")
+        standard_dict = parsed_response
+    except (json.JSONDecodeError, ValueError) as e:
         error_msg = f"Failed to parse JSON response: {e}"
         logger.error(error_msg)
         return GenerationResult(success=False, raw_response=raw_response, error=error_msg)

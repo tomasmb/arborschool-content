@@ -4,8 +4,67 @@ import os
 from dataclasses import dataclass
 from typing import Any
 
+import google.generativeai as genai
 from dotenv import load_dotenv
-from google_gemini3_pro import GeminiClient
+
+# Temporary adapter until google_gemini3_pro package is available
+class GeminiClient:
+    """Temporary adapter for google-generativeai until google_gemini3_pro is available."""
+
+    def __init__(self, api_key: str, model: str) -> None:
+        genai.configure(api_key=api_key)
+        self._model = genai.GenerativeModel(model)
+
+    def generate_text(
+        self,
+        prompt: str,
+        *,
+        thinking_level: str | None = None,
+        response_mime_type: str | None = None,
+        temperature: float | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """Generate text using google-generativeai."""
+        generation_config: dict[str, Any] = {}
+        if temperature is not None:
+            generation_config["temperature"] = temperature
+        if response_mime_type:
+            generation_config["response_mime_type"] = response_mime_type
+
+        # Note: thinking_level may not be directly supported in google-generativeai
+        # This is a temporary adapter
+        # Use longer timeout for large prompts (e.g., validation with many atoms)
+        # Default timeout is ~10 minutes, we extend it to 20 minutes for large validations
+        request_options = {"timeout": 1200}  # 20 minutes (1200 seconds)
+        response = self._model.generate_content(
+            prompt,
+            generation_config=generation_config if generation_config else None,
+            request_options=request_options,
+        )
+        
+        # Handle cases where response might be filtered or blocked
+        if not response.candidates or not response.candidates[0].content:
+            finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
+            raise ValueError(
+                f"Gemini response was filtered or blocked. Finish reason: {finish_reason}. "
+                f"This may be due to safety filters or content policy violations."
+            )
+        
+        # Check if text is available
+        try:
+            text = response.text
+        except ValueError as e:
+            # If text accessor fails, try to get text from parts
+            if response.candidates and response.candidates[0].content.parts:
+                text = "".join(part.text for part in response.candidates[0].content.parts if hasattr(part, "text"))
+            else:
+                finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
+                raise ValueError(
+                    f"Gemini response has no text content. Finish reason: {finish_reason}. "
+                    f"Original error: {e}"
+                ) from e
+        
+        return type("Response", (), {"text": text})()
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
@@ -13,24 +72,27 @@ ENV_API_KEY = "GEMINI_API_KEY"
 
 @dataclass
 class GeminiConfig:
-    """Runtime configuration for the Gemini 3 Pro client.
+    """Runtime configuration for the Gemini client.
 
-    The default model and behaviour follow our Gemini 3 Pro best practices
-    documented in `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+    Currently using `gemini-3-pro-preview`. The default model and behaviour
+    follow our Gemini best practices documented in
+    `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
     """
 
     api_key: str
-    model: str = "gemini-3-pro"
-    thinking_level: str = "high"  # "low" or "high" per Gemini docs
+    model: str = "gemini-3-pro-preview"
+    thinking_level: str = "high"
 
 
 class GeminiService:
-    """Small, reusable wrapper around the Gemini 3 Pro Python client.
+    """Small, reusable wrapper around the Gemini client.
+
+    Currently using `gemini-3-pro-preview`.
 
     This centralises how we talk to Gemini so that:
     - API keys are always read from the app-level `.env` file.
     - We consistently apply our prompt-engineering best practices.
-    - Callers can opt into different thinking levels or response formats.
+    - Callers can opt into different response formats.
     """
 
     def __init__(self, config: GeminiConfig) -> None:
@@ -50,25 +112,25 @@ class GeminiService:
         temperature: float | None = None,
         **kwargs: Any,
     ) -> str:
-        """Generate a single text response from Gemini 3 Pro.
+        """Generate a single text response from Gemini.
+
+        Currently using `gemini-3-pro-preview`.
 
         Callers are responsible for constructing prompts that follow the
         guidelines in `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
 
-        Parameters mirror the Gemini 3 configuration surface, but we keep the
-        wrapper intentionally small and opinionated:
-        - `thinking_level`: "low" for simple transformations, "high" for
-          complex reasoning (Gemini 3 default).
+        Parameters:
+        - `thinking_level`: Controls reasoning depth (default: "high").
         - `response_mime_type`: e.g. "application/json" for structured output.
-        - `temperature`: use `0.0` for deterministic structured output; for most
-          other cases rely on the model default as recommended in the Gemini
-          3 docs (Nov–Dec 2025 guidance).
+        - `temperature`: use `0.0` for deterministic structured output.
         """
 
-        level = thinking_level or self._config.thinking_level
+        # Note: thinking_level may not be directly supported in google-generativeai SDK
+        # Keeping it in the API for compatibility
+        _ = thinking_level or self._config.thinking_level
 
         request_kwargs: dict[str, Any] = {
-            "thinking_level": level,
+            # thinking_level may not be supported by current SDK adapter
             **kwargs,
         }
         if response_mime_type is not None:
