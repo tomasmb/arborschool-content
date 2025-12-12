@@ -169,21 +169,35 @@ def main(
             # Check if already parsed
             parsed_json_path = output_dir / 'parsed.json'
             if parsed_json_path.exists():
-                click.echo(
-                    f"⚠️  WARNING: parsed.json already exists at {parsed_json_path}\n"
-                    "   Extend.ai parsing is deterministic - re-parsing will give the same result.\n"
-                    "   Skipping parse step. Delete parsed.json to force re-parsing."
-                )
+                click.echo("")
+                click.echo("=" * 60)
+                click.echo("⚠️  PROTECCIÓN ACTIVADA: parsed.json ya existe")
+                click.echo("=" * 60)
+                click.echo(f"   Archivo: {parsed_json_path}")
+                click.echo("")
+                click.echo("   💡 Extend.ai parsing es determinístico:")
+                click.echo("      - El mismo PDF siempre da el mismo resultado")
+                click.echo("      - Re-parsear = gastar créditos innecesariamente")
+                click.echo("")
+                click.echo("   ✅ Usando parsed.json existente (sin gastar créditos)")
+                click.echo("   💾 Si necesitas re-parsear, borra el archivo primero")
+                click.echo("=" * 60)
+                click.echo("")
                 with open(parsed_json_path, 'r') as f:
                     parsed_data = json.load(f)
                 report.parse_status = "skipped (cached)"
             else:
                 click.echo(f"📄 Parsing PDF: {input_path.name}")
-                click.echo("   (Remember: only parse ONCE per PDF, then reuse parsed.json)")
+                click.echo("")
+                click.echo("   ⚠️  IMPORTANT: Extend.ai parsing uses credits!")
+                click.echo("   ⚠️  This is deterministic - parse ONCE per PDF only.")
+                click.echo("   ⚠️  Save and reuse parsed.json to avoid wasting credits.")
+                click.echo("")
                 parser = PDFParser()
                 parsed_data = parser.parse(str(input_path), str(output_dir))
                 report.parse_status = "completed"
                 click.echo(f"   ✓ Extracted {len(parsed_data.get('chunks', []))} pages")
+                click.echo("   💾 Remember to save parsed.json for future use!")
         
         # =====================================================================
         # STEP 2: SEGMENT (JSON → Questions)

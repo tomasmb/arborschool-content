@@ -118,6 +118,15 @@ will produce the exact same result. This means:
 2. **Store `parsed.json` alongside your PDFs** - Treat it as a cached artifact
 3. **Skip the parse step on reruns** - Use `--step segment` to start from cached data
 
+### 💰 Credit Management
+
+**Extend.ai has limited free credits.** The parser automatically prevents re-parsing:
+- If `parsed.json` exists, it will be reused automatically (no API call)
+- You'll see a clear warning if you try to re-parse
+- **Always save your `parsed.json` files** - they're your cache!
+
+See `ADVERTENCIA_EXTEND.md` for detailed best practices.
+
 ```bash
 # First time: Parse the PDF
 python run.py input.pdf --step parse --output ./output

@@ -12,15 +12,21 @@ from pathlib import Path
 try:
     from dotenv import load_dotenv
     
-    # Look for .env in current directory or parent directories
-    env_path = Path('.env')
-    if env_path.exists():
+    # Look for .env in current directory and all parent directories
+    current_dir = Path(__file__).parent.resolve()
+    env_path = None
+    
+    # Search up the directory tree
+    search_dir = current_dir
+    while search_dir != search_dir.parent:
+        potential_env = search_dir / '.env'
+        if potential_env.exists():
+            env_path = potential_env
+            break
+        search_dir = search_dir.parent
+    
+    if env_path:
         load_dotenv(env_path)
-    else:
-        # Try parent directory
-        parent_env = Path('..') / '.env'
-        if parent_env.exists():
-            load_dotenv(parent_env)
 except ImportError:
     pass  # python-dotenv not installed
 
