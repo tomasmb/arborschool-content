@@ -15,9 +15,10 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 # Extend.ai API endpoints
-EXTEND_API_BASE = "https://api.extend.ai/v1"
-EXTEND_UPLOAD_URL = f"{EXTEND_API_BASE}/files"
-EXTEND_PARSE_URL = f"{EXTEND_API_BASE}/parser-runs"
+EXTEND_API_BASE = "https://api.extend.ai"
+EXTEND_UPLOAD_URL = f"{EXTEND_API_BASE}/files/upload"
+EXTEND_PARSE_URL = f"{EXTEND_API_BASE}/parse"
+EXTEND_API_VERSION = "2025-04-21"  # Required API version header
 
 
 class PDFParser:
@@ -81,13 +82,20 @@ class PDFParser:
         file_id = self._upload_file(pdf_path)
         logger.info(f"Uploaded file, ID: {file_id}")
         
-        # Step 2: Create parser run
-        parser_run_id = self._create_parser_run(file_id)
-        logger.info(f"Created parser run, ID: {parser_run_id}")
-        
-        # Step 3: Wait for completion and get results
-        parsed_data = self._wait_for_completion(parser_run_id)
+        # Step 2: Parse the file using the new /parse endpoint
+        parsed_data = self._parse_file(file_id)
         logger.info(f"Parsing complete: {len(parsed_data.get('chunks', []))} chunks")
+        
+        # Step 3: Post-process to correct mathematical notation
+        try:
+            from .math_corrector import MathCorrector
+            corrector = MathCorrector()
+            parsed_data = corrector.correct_parsed_data(parsed_data)
+            logger.info("Applied mathematical notation corrections")
+        except ImportError:
+            logger.warning("MathCorrector not available, skipping corrections")
+        except Exception as e:
+            logger.warning(f"Mathematical correction failed: {e}, continuing with original data")
         
         # Save to file if output_dir specified
         if output_dir:
@@ -120,7 +128,10 @@ class PDFParser:
         """Upload PDF file to Extend.ai and return file ID."""
         import requests
         
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "x-extend-api-version": EXTEND_API_VERSION
+        }
         
         with open(pdf_path, 'rb') as f:
             files = {'file': (pdf_path.name, f, 'application/pdf')}
@@ -134,28 +145,52 @@ class PDFParser:
         if response.status_code != 200:
             raise Exception(f"Failed to upload file: {response.status_code} - {response.text}")
         
-        return response.json()["id"]
+        response_data = response.json()
+        # The /files/upload endpoint returns: {"success": True, "file": {"id": "..."}}
+        if "file" in response_data and "id" in response_data["file"]:
+            return response_data["file"]["id"]
+        # Fallback for other response formats
+        file_id = response_data.get("fileId") or response_data.get("id")
+        if not file_id:
+            raise Exception(f"Unexpected response format: {response_data}")
+        
+        return file_id
     
-    def _create_parser_run(self, file_id: str) -> str:
-        """Create a parser run for the uploaded file."""
+    def _parse_file(self, file_id: str) -> Dict[str, Any]:
+        """Parse the uploaded file using the /parse endpoint."""
         import requests
         
         headers = {
             "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "x-extend-api-version": EXTEND_API_VERSION
         }
         
         payload = {
-            "fileId": file_id,
-            "options": {
-                "chunking": {
-                    "strategy": "page",
-                    "maxChunkSize": 50000
+            "file": {
+                "fileId": file_id
+            },
+            "config": {
+                "target": "markdown",
+                "chunkingStrategy": {
+                    "type": "page",
+                    "options": {
+                        "minCharacters": 100,
+                        "maxCharacters": 50000
+                    }
                 },
-                "output": {
-                    "format": "markdown",
-                    "includeBlocks": True,
-                    "includeBoundingBoxes": True
+                "blockOptions": {
+                    "figures": {
+                        "enabled": True,
+                        "figureImageClippingEnabled": True
+                    },
+                    "tables": {
+                        "enabled": True,
+                        "targetFormat": "markdown"
+                    },
+                    "text": {
+                        "signatureDetectionEnabled": True
+                    }
                 }
             }
         }
@@ -164,13 +199,13 @@ class PDFParser:
             EXTEND_PARSE_URL,
             headers=headers,
             json=payload,
-            timeout=30
+            timeout=300  # Parsing can take a while
         )
         
         if response.status_code != 200:
-            raise Exception(f"Failed to create parser run: {response.status_code} - {response.text}")
+            raise Exception(f"Failed to parse file: {response.status_code} - {response.text}")
         
-        return response.json()["id"]
+        return response.json()
     
     def _wait_for_completion(
         self, 
@@ -181,7 +216,10 @@ class PDFParser:
         """Poll for parser run completion and return results."""
         import requests
         
-        headers = {"Authorization": f"Bearer {self.api_key}"}
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "x-extend-api-version": EXTEND_API_VERSION
+        }
         url = f"{EXTEND_PARSE_URL}/{parser_run_id}"
         
         start_time = time.time()
