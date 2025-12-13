@@ -1,0 +1,3 @@
+"""
+PDF Splitter modules package.
+""" 
