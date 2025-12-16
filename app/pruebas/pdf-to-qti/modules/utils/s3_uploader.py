@@ -29,21 +29,27 @@ def upload_image_to_s3(
     question_id: Optional[str] = None,
     bucket_name: Optional[str] = None,
     path_prefix: str = "images/",
+    test_name: Optional[str] = None,
 ) -> Optional[str]:
     """
     Upload a base64-encoded image to S3 and return the public URL.
+    
+    Images are organized by test name to avoid conflicts between different tests.
+    Structure: images/{test_name}/{question_id}.png
     
     Args:
         image_base64: Base64-encoded image data (with or without data: prefix)
         question_id: Optional question identifier for naming
         bucket_name: S3 bucket name (uses AWS_S3_BUCKET from env if None)
-        path_prefix: S3 path prefix (default: "images/")
+        path_prefix: S3 path prefix base (default: "images/")
+        test_name: Optional test/prueba name to organize images (e.g., "prueba-invierno-2026")
+                   If provided, images will be stored in images/{test_name}/
         
     Returns:
         Public S3 URL of uploaded image, or None if upload failed
     """
     if not BOTO3_AVAILABLE:
-        _logger.warning("boto3 not available, cannot upload to S3")
+        _logger.error("CRITICAL: boto3 not available, cannot upload to S3. Image upload will fail.")
         return None
     
     # Get bucket name from env if not provided
@@ -56,7 +62,7 @@ def upload_image_to_s3(
     aws_region = os.environ.get("AWS_REGION", "us-east-1")
     
     if not aws_access_key or not aws_secret_key:
-        _logger.warning("AWS credentials not found, cannot upload to S3")
+        _logger.error(f"CRITICAL: AWS credentials not found (bucket: {bucket_name}). Cannot upload to S3. Image upload will fail.")
         return None
     
     try:
@@ -85,6 +91,12 @@ def upload_image_to_s3(
         if path_prefix and not path_prefix.endswith("/"):
             path_prefix += "/"
         
+        # Add test_name to path if provided (for organization: images/{test_name}/filename.png)
+        if test_name:
+            # Sanitize test_name for use in S3 path
+            safe_test_name = "".join(c for c in test_name if c.isalnum() or c in "-_")
+            path_prefix = f"{path_prefix}{safe_test_name}/"
+        
         s3_key = f"{path_prefix}{filename}"
         
         # Create S3 client
@@ -112,19 +124,19 @@ def upload_image_to_s3(
         return s3_url
         
     except NoCredentialsError:
-        _logger.error("AWS credentials not configured")
+        _logger.error(f"CRITICAL: AWS credentials not configured. Cannot upload image to S3 bucket '{bucket_name}'. Pipeline will fail.")
         return None
     except ClientError as e:
         error_code = e.response.get("Error", {}).get("Code", "")
         if error_code == "NoSuchBucket":
-            _logger.error(f"S3 bucket '{bucket_name}' does not exist")
+            _logger.error(f"CRITICAL: S3 bucket '{bucket_name}' does not exist. Image upload failed. Pipeline will fail.")
         elif error_code == "AccessDenied":
-            _logger.error(f"Access denied to S3 bucket '{bucket_name}'")
+            _logger.error(f"CRITICAL: Access denied to S3 bucket '{bucket_name}'. Check AWS credentials and permissions. Pipeline will fail.")
         else:
-            _logger.error(f"S3 upload failed: {e}")
+            _logger.error(f"CRITICAL: S3 upload failed with error code '{error_code}': {e}. Pipeline will fail.")
         return None
     except Exception as e:
-        _logger.error(f"Unexpected error uploading to S3: {e}")
+        _logger.error(f"CRITICAL: Unexpected error uploading to S3 (bucket: {bucket_name}): {e}. Pipeline will fail.")
         return None
 
 
@@ -133,15 +145,19 @@ def upload_multiple_images_to_s3(
     question_id: Optional[str] = None,
     bucket_name: Optional[str] = None,
     path_prefix: str = "images/",
+    test_name: Optional[str] = None,
 ) -> dict[str, Optional[str]]:
     """
     Upload multiple images to S3 and return mapping of original to S3 URLs.
+    
+    Images are organized by test name to avoid conflicts between different tests.
     
     Args:
         images: List of image dicts with 'image_base64' key
         question_id: Optional question identifier
         bucket_name: S3 bucket name
-        path_prefix: S3 path prefix
+        path_prefix: S3 path prefix base (default: "images/")
+        test_name: Optional test/prueba name to organize images (e.g., "prueba-invierno-2026")
         
     Returns:
         Dictionary mapping original image identifiers to S3 URLs
@@ -161,6 +177,7 @@ def upload_multiple_images_to_s3(
             question_id=img_id,
             bucket_name=bucket_name,
             path_prefix=path_prefix,
+            test_name=test_name,
         )
         
         # Store mapping (use index or a unique identifier)

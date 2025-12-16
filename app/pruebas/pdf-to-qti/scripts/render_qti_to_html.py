@@ -95,8 +95,51 @@ def render_image_to_html(img_elem) -> str:
     else:
         return f'<img src="{src}" alt="{alt}" class="question-image" />'
 
-def render_table_to_html(table_elem) -> str:
-    """Renderiza una tabla a HTML."""
+def render_element_with_math(elem, math_ns: str) -> str:
+    """Renderiza un elemento XML preservando MathML y otros elementos inline."""
+    result = []
+    
+    # Texto inicial del elemento
+    if elem.text:
+        result.append(html.escape(elem.text))
+    
+    # Procesar hijos
+    for child in elem:
+        child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+        child_tag_lower = child_tag.lower()
+        
+        if 'math' in child_tag_lower:
+            result.append(render_mathml_to_html(child))
+        elif 'img' in child_tag_lower:
+            result.append(render_image_to_html(child))
+        else:
+            # Recursivamente procesar otros elementos
+            result.append(render_element_with_math(child, math_ns))
+        
+        # Tail del hijo
+        if child.tail:
+            result.append(html.escape(child.tail))
+    
+    return ''.join(result)
+
+def render_list_to_html(list_elem, math_ns: str) -> str:
+    """Renderiza una lista (ul/ol) preservando MathML en los items."""
+    tag_name = list_elem.tag.split('}')[-1] if '}' in list_elem.tag else list_elem.tag
+    list_type = 'ul' if 'ul' in tag_name.lower() else 'ol'
+    
+    html_parts = [f'<{list_type}>']
+    
+    for li in list_elem:
+        li_tag = li.tag.split('}')[-1] if '}' in li.tag else li.tag
+        if 'li' in li_tag.lower():
+            li_content = render_element_with_math(li, math_ns)
+            html_parts.append(f'<li>{li_content}</li>')
+    
+    html_parts.append(f'</{list_type}>')
+    return ''.join(html_parts)
+
+def render_table_to_html(table_elem, math_ns: str) -> str:
+    """Renderiza una tabla a HTML preservando MathML."""
     html_parts = ['<table class="question-table">']
     
     # Buscar thead - iterar por todos los elementos para evitar problemas de namespace
@@ -116,8 +159,9 @@ def render_table_to_html(table_elem) -> str:
                 for grandchild in child:
                     gc_tag = grandchild.tag.split('}')[-1] if '}' in grandchild.tag else grandchild.tag
                     if 'th' in gc_tag.lower():
-                        text = extract_text_from_element(grandchild)
-                        html_parts.append(f'<th>{html.escape(text)}</th>')
+                        # Renderizar preservando MathML
+                        cell_content = render_element_with_math(grandchild, math_ns)
+                        html_parts.append(f'<th>{cell_content}</th>')
                 html_parts.append('</tr>')
         html_parts.append('</thead>')
     
@@ -138,8 +182,9 @@ def render_table_to_html(table_elem) -> str:
                 for grandchild in child:
                     gc_tag = grandchild.tag.split('}')[-1] if '}' in grandchild.tag else grandchild.tag
                     if 'td' in gc_tag.lower():
-                        text = extract_text_from_element(grandchild)
-                        html_parts.append(f'<td>{html.escape(text)}</td>')
+                        # Renderizar preservando MathML
+                        cell_content = render_element_with_math(grandchild, math_ns)
+                        html_parts.append(f'<td>{cell_content}</td>')
                 html_parts.append('</tr>')
         html_parts.append('</tbody>')
     
@@ -157,11 +202,13 @@ def render_table_to_html(table_elem) -> str:
                 for grandchild in child:
                     gc_tag = grandchild.tag.split('}')[-1] if '}' in grandchild.tag else grandchild.tag
                     if 'th' in gc_tag.lower():
-                        text = extract_text_from_element(grandchild)
-                        html_parts.append(f'<th>{html.escape(text)}</th>')
+                        # Renderizar preservando MathML
+                        cell_content = render_element_with_math(grandchild, math_ns)
+                        html_parts.append(f'<th>{cell_content}</th>')
                     elif 'td' in gc_tag.lower():
-                        text = extract_text_from_element(grandchild)
-                        html_parts.append(f'<td>{html.escape(text)}</td>')
+                        # Renderizar preservando MathML
+                        cell_content = render_element_with_math(grandchild, math_ns)
+                        html_parts.append(f'<td>{cell_content}</td>')
                 html_parts.append('</tr>')
         
         if found_tr:
@@ -246,36 +293,36 @@ def render_qti_to_html(xml_path: Path) -> str:
                     break
             
             if prompt is not None:
-                # Renderizar el prompt del choice-interaction preservando MathML
-                prompt_html = '<p class="question-prompt"><strong>'
-                if prompt.text:
-                    prompt_html += html.escape(prompt.text)
+                # Renderizar el prompt del choice-interaction preservando MathML y listas
+                prompt_html = '<div class="question-prompt">'
                 
-                # Procesar hijos (puede incluir MathML)
+                # Procesar hijos del prompt (puede incluir párrafos, listas, MathML)
                 for child in prompt:
                     child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
                     child_tag_lower = child_tag.lower()
                     
-                    if 'math' in child_tag_lower:
+                    if 'p' in child_tag_lower:
+                        # Párrafo
+                        p_content = render_element_with_math(child, math_ns)
+                        prompt_html += f'<p>{p_content}</p>'
+                    elif 'ul' in child_tag_lower or 'ol' in child_tag_lower:
+                        # Lista
+                        prompt_html += render_list_to_html(child, math_ns)
+                    elif 'math' in child_tag_lower:
+                        # MathML directo
                         prompt_html += render_mathml_to_html(child)
                     else:
-                        # Otros elementos
-                        if child.text:
-                            prompt_html += html.escape(child.text)
-                        for grandchild in child:
-                            gc_tag = grandchild.tag.split('}')[-1] if '}' in grandchild.tag else grandchild.tag
-                            if 'math' in gc_tag.lower():
-                                prompt_html += render_mathml_to_html(grandchild)
-                            else:
-                                if grandchild.text:
-                                    prompt_html += html.escape(grandchild.text)
-                        if child.tail:
-                            prompt_html += html.escape(child.tail)
-                    
-                    if child.tail:
-                        prompt_html += html.escape(child.tail)
+                        # Otros elementos - renderizar con MathML
+                        content = render_element_with_math(child, math_ns)
+                        if content.strip():
+                            prompt_html += f'<p>{content}</p>'
                 
-                prompt_html += '</strong></p>'
+                # Si no hay hijos, procesar texto directo
+                if not any(True for _ in prompt):
+                    if prompt.text:
+                        prompt_html += f'<p>{html.escape(prompt.text)}</p>'
+                
+                prompt_html += '</div>'
                 html_parts.append(prompt_html)
             
             # Choices - buscar dentro del choice-interaction
@@ -315,37 +362,71 @@ def render_qti_to_html(xml_path: Path) -> str:
         
         elif 'p' in tag_lower or tag_name == 'p':
             # Párrafo - construir HTML preservando imágenes y MathML
-            p_html = '<p>'
-            if elem.text:
-                p_html += html.escape(elem.text)
+            # Detectar sistemas de ecuaciones (múltiples math con display="block" seguidos)
+            math_children = []
+            other_content = []
             
-            # Procesar hijos (puede incluir MathML o imágenes)
+            if elem.text:
+                other_content.append(('text', elem.text))
+            
             for child in elem:
                 child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
                 child_tag_lower = child_tag.lower()
                 
-                if 'math' in child_tag_lower:
-                    p_html += render_mathml_to_html(child)
-                elif 'img' in child_tag_lower:
-                    p_html += render_image_to_html(child)
+                if 'math' in child_tag_lower and child.get('display') == 'block':
+                    math_children.append(child)
                 else:
-                    # Otros elementos
-                    if child.text:
-                        p_html += html.escape(child.text)
-                    for grandchild in child:
-                        gc_tag = grandchild.tag.split('}')[-1] if '}' in grandchild.tag else grandchild.tag
-                        if 'math' in gc_tag.lower():
-                            p_html += render_mathml_to_html(grandchild)
-                        elif 'img' in gc_tag.lower():
-                            p_html += render_image_to_html(grandchild)
-                    if child.tail:
-                        p_html += html.escape(child.tail)
+                    if math_children:
+                        # Agrupar los math anteriores como sistema
+                        other_content.append(('system', math_children))
+                        math_children = []
+                    other_content.append(('child', child))
                 
                 if child.tail:
-                    p_html += html.escape(child.tail)
+                    if math_children:
+                        # Si hay math pendientes, agregar el tail después
+                        pass
+                    else:
+                        other_content.append(('text', child.tail))
             
-            p_html += '</p>'
-            html_parts.append(p_html)
+            # Si quedan math al final, agruparlos
+            if math_children:
+                other_content.append(('system', math_children))
+            
+            # Renderizar el contenido
+            if len(other_content) == 1 and other_content[0][0] == 'system':
+                # Solo sistema de ecuaciones
+                html_parts.append('<div class="equation-system">')
+                for math in other_content[0][1]:
+                    html_parts.append(render_mathml_to_html(math))
+                html_parts.append('</div>')
+            else:
+                # Contenido mixto
+                p_html = '<p>'
+                for item_type, item_data in other_content:
+                    if item_type == 'text':
+                        p_html += html.escape(item_data)
+                    elif item_type == 'system':
+                        # Cerrar p y abrir sistema
+                        p_html += '</p>'
+                        html_parts.append(p_html)
+                        html_parts.append('<div class="equation-system">')
+                        for math in item_data:
+                            html_parts.append(render_mathml_to_html(math))
+                        html_parts.append('</div>')
+                        p_html = '<p>'
+                    elif item_type == 'child':
+                        child = item_data
+                        child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+                        child_tag_lower = child_tag.lower()
+                        if 'math' in child_tag_lower:
+                            p_html += render_mathml_to_html(child)
+                        elif 'img' in child_tag_lower:
+                            p_html += render_image_to_html(child)
+                        else:
+                            p_html += render_element_with_math(child, math_ns)
+                p_html += '</p>'
+                html_parts.append(p_html)
         
         elif 'img' in tag_lower:
             # Imagen
@@ -353,14 +434,49 @@ def render_qti_to_html(xml_path: Path) -> str:
         
         elif 'table' in tag_lower:
             # Tabla
-            html_parts.append(render_table_to_html(elem))
+            html_parts.append(render_table_to_html(elem, math_ns))
         
         elif 'div' in tag_lower:
-            # Div (puede contener tablas)
+            # Div (puede contener tablas o sistemas de ecuaciones)
+            # Buscar sistemas de ecuaciones (múltiples math con display="block" seguidos)
+            math_children = []
+            other_children = []
             for child in elem:
                 child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
-                if 'table' in child_tag.lower():
-                    html_parts.append(render_table_to_html(child))
+                child_tag_lower = child_tag.lower()
+                if 'math' in child_tag_lower and child.get('display') == 'block':
+                    math_children.append(child)
+                else:
+                    if math_children:
+                        # Agrupar los math anteriores como sistema
+                        html_parts.append('<div class="equation-system">')
+                        for math in math_children:
+                            html_parts.append(render_mathml_to_html(math))
+                        html_parts.append('</div>')
+                        math_children = []
+                    if 'table' in child_tag_lower:
+                        html_parts.append(render_table_to_html(child, math_ns))
+                    else:
+                        other_children.append(child)
+            
+            # Si quedan math al final, agruparlos
+            if math_children:
+                html_parts.append('<div class="equation-system">')
+                for math in math_children:
+                    html_parts.append(render_mathml_to_html(math))
+                html_parts.append('</div>')
+            
+            # Procesar otros hijos
+            for child in other_children:
+                child_tag = child.tag.split('}')[-1] if '}' in child.tag else child.tag
+                child_tag_lower = child_tag.lower()
+                if 'p' in child_tag_lower:
+                    p_content = render_element_with_math(child, math_ns)
+                    html_parts.append(f'<p>{p_content}</p>')
+                else:
+                    content = render_element_with_math(child, math_ns)
+                    if content.strip():
+                        html_parts.append(f'<div>{content}</div>')
     
     html_parts.append('</div>')
     
@@ -447,12 +563,47 @@ def create_html_page(qti_html: str, question_num: str) -> str:
             color: #333;
         }}
         
+        .question-prompt ul,
+        .question-prompt ol {{
+            margin: 15px 0;
+            padding-left: 30px;
+        }}
+        
+        .question-prompt li {{
+            margin: 8px 0;
+            line-height: 1.6;
+        }}
+        
+        .question-prompt p {{
+            margin: 10px 0;
+        }}
+        
         .question-image {{
             max-width: 100%;
+            width: auto;
             height: auto;
             border-radius: 8px;
-            margin: 20px 0;
+            margin: 10px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: block;
+            object-fit: contain;
+        }}
+        
+        p img.question-image {{
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 15px auto;
+        }}
+        
+        .choice-item .question-image {{
+            max-width: 100%;
+            width: auto;
+            min-width: 200px;
+            height: auto;
+            display: block;
+            margin: 10px 0;
         }}
         
         .question-table {{
@@ -514,6 +665,7 @@ def create_html_page(qti_html: str, question_num: str) -> str:
             margin-right: 12px;
             margin-top: 3px;
             cursor: pointer;
+            flex-shrink: 0;
         }}
         
         .choice-item label {{
@@ -521,6 +673,16 @@ def create_html_page(qti_html: str, question_num: str) -> str:
             cursor: pointer;
             line-height: 1.5;
             font-size: 16px;
+            display: block;
+            min-width: 0;
+        }}
+        
+        .choice-item label img {{
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 10px 0;
         }}
         
         .choice-item label strong {{
@@ -535,6 +697,25 @@ def create_html_page(qti_html: str, question_num: str) -> str:
         .math-container {{
             display: inline-block;
             margin: 0 4px;
+            vertical-align: middle;
+        }}
+        
+        .math-container math {{
+            display: inline-block;
+        }}
+        
+        .equation-system {{
+            margin: 20px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }}
+        
+        .equation-system math {{
+            display: block;
+            margin: 8px 0;
+            text-align: center;
         }}
         
         p {{

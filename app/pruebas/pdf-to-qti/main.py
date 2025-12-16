@@ -131,6 +131,7 @@ def process_single_question_pdf(
         
         # Transform to QTI XML
         print("🔄 Transforming to QTI XML...")
+        print("📤 CRITICAL: All images will be uploaded to S3 (required, no base64 fallback)")
         # Generate question ID from title if available
         question_id = processed_content.get('title', 'question')
         if question_id:
@@ -138,13 +139,32 @@ def process_single_question_pdf(
             import re
             question_id = re.sub(r'[^a-zA-Z0-9_-]', '_', question_id)[:50]
         
+        # Extract test name from output_dir path (e.g., "prueba-invierno-2026" from path)
+        # This organizes images in S3 by test name to avoid conflicts
+        test_name = None
+        import re
+        test_match = re.search(r'prueba-[^/]+', output_dir)
+        if test_match:
+            test_name = test_match.group(0)
+            print(f"📁 Detected test name from path: {test_name}")
+        else:
+            # Try to extract from input path as fallback
+            test_match = re.search(r'prueba-[^/]+', input_pdf_path)
+            if test_match:
+                test_name = test_match.group(0)
+                print(f"📁 Detected test name from input path: {test_name}")
+        
+        if test_name:
+            print(f"📦 Images will be organized in S3 as: images/{test_name}/")
+        
         transformation_result = transform_to_qti(
             processed_content, 
             question_type, 
             api_key,
             question_id=question_id,
-            use_s3=True,  # Enable S3 upload for images
+            use_s3=True,  # REQUIRED: S3 upload is mandatory for all images
             paes_mode=paes_mode,  # Pass PAES mode flag
+            test_name=test_name,  # Organize images by test name in S3
         )
         
         if not transformation_result["success"]:

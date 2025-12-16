@@ -6,10 +6,13 @@ Transform PDF content to QTI 3.0 XML format using the detected question type.
 It leverages patterns from the existing HTML to QTI transformer.
 
 Refactored to use content_processor and prompt_builder for better separation.
+
+IMPORTANT: All images MUST be uploaded to S3. Base64 encoding in final XML is not allowed.
 """
 
 import json
 import re
+import logging
 from typing import Dict, Any, Optional
 
 # Local helpers
@@ -20,6 +23,8 @@ from .prompt_builder import (
     create_error_correction_prompt,
 )
 from .utils.s3_uploader import upload_image_to_s3, upload_multiple_images_to_s3
+
+_logger = logging.getLogger(__name__)
 
 
 # Mapeo de errores de codificación comunes a caracteres correctos
@@ -135,6 +140,7 @@ def transform_to_qti(
     question_id: Optional[str] = None,
     use_s3: bool = True,
     paes_mode: bool = False,
+    test_name: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Transform PDF content to QTI 3.0 XML format.
@@ -143,14 +149,19 @@ def transform_to_qti(
     Use the detected question type to transform the PDF content
     into valid QTI 3.0 XML.
     
+    CRITICAL: All images MUST be uploaded to S3. If any image upload fails,
+    the transformation will fail. Base64 encoding in final XML is not allowed.
+    
     Args:
         processed_content: Already processed PDF content with placeholders
         question_type: Detected question type
         openai_api_key: OpenAI API key
         validation_feedback: Optional feedback from validation errors
         question_id: Optional question identifier for S3 image naming
-        use_s3: If True, upload images to S3 and use URLs (default: True)
+        use_s3: If True, upload images to S3 and use URLs (default: True, REQUIRED)
         paes_mode: If True, optimizes for PAES format (math, 4 alternatives)
+        test_name: Optional test/prueba name to organize images in S3 (e.g., "prueba-invierno-2026")
+                   Images will be stored in images/{test_name}/ to avoid conflicts between tests
         
     Returns:
         Dictionary with transformation results
@@ -164,26 +175,82 @@ def transform_to_qti(
                 "error": f"Unsupported question type: {question_type}"
             }
         
-        # Upload images to S3 if enabled
-        image_url_mapping = {}
-        if use_s3:
-            # Upload main image
-            if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                s3_url = upload_image_to_s3(
-                    image_base64=processed_content['image_base64'],
-                    question_id=question_id or "main",
-                )
-                if s3_url:
-                    image_url_mapping['main_image'] = s3_url
-                    processed_content['image_s3_url'] = s3_url
-            
-            # Upload all additional images
-            if processed_content.get('all_images'):
-                s3_results = upload_multiple_images_to_s3(
-                    images=processed_content['all_images'],
-                    question_id=question_id,
-                )
-                image_url_mapping.update(s3_results)
+        # CRITICAL: S3 upload is REQUIRED - fail early if disabled
+        if not use_s3:
+            _logger.error("S3 upload is disabled, but it is REQUIRED for all images")
+            return {
+                "success": False,
+                "error": "S3 upload is required. use_s3 must be True."
+            }
+        
+        _logger.info("🚀 Starting S3 image upload process (REQUIRED)")
+        
+        # Upload images to S3 (REQUIRED - no fallback to base64)
+        image_url_mapping: Dict[str, str] = {}
+        failed_uploads: list[str] = []
+        
+        # Upload main image
+        if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
+            _logger.info(f"📤 Uploading main image to S3 (question_id: {question_id or 'main'}, test: {test_name or 'default'})")
+            s3_url = upload_image_to_s3(
+                image_base64=processed_content['image_base64'],
+                question_id=question_id or "main",
+                test_name=test_name,
+            )
+            if not s3_url:
+                failed_uploads.append("main image")
+                _logger.error("❌ Failed to upload main image to S3")
+            else:
+                image_url_mapping['main_image'] = s3_url
+                processed_content['image_s3_url'] = s3_url
+                _logger.info(f"✅ Main image uploaded to S3: {s3_url}")
+        
+        # Upload all additional images
+        if processed_content.get('all_images'):
+            _logger.info(f"📤 Uploading {len(processed_content['all_images'])} additional images to S3")
+            s3_results = upload_multiple_images_to_s3(
+                images=processed_content['all_images'],
+                question_id=question_id,
+                test_name=test_name,
+            )
+            # Validate that all images were uploaded successfully
+            for i, image_info in enumerate(processed_content['all_images']):
+                image_key = f"image_{i}"
+                if image_info.get('image_base64') and not image_info['image_base64'].startswith('CONTENT_PLACEHOLDER'):
+                    if image_key not in s3_results or not s3_results[image_key]:
+                        failed_uploads.append(f"image_{i}")
+                        _logger.error(f"❌ Failed to upload {image_key} to S3")
+                    else:
+                        _logger.info(f"✅ {image_key} uploaded to S3: {s3_results[image_key]}")
+            image_url_mapping.update({k: v for k, v in s3_results.items() if v})
+        
+        # CRITICAL: Fail if any image upload failed
+        if failed_uploads:
+            error_msg = f"Failed to upload {len(failed_uploads)} image(s) to S3: {', '.join(failed_uploads)}. S3 upload is REQUIRED - cannot proceed with base64 fallback."
+            _logger.error(f"❌ {error_msg}")
+            return {
+                "success": False,
+                "error": error_msg
+            }
+        
+        # Verify that we have at least one image uploaded if there were images to upload
+        expected_images = 0
+        if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
+            expected_images += 1
+        if processed_content.get('all_images'):
+            expected_images += sum(1 for img in processed_content['all_images'] 
+                                 if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER'))
+        
+        if expected_images > 0 and len(image_url_mapping) == 0:
+            error_msg = "Expected images but none were uploaded to S3. S3 upload is REQUIRED."
+            _logger.error(f"❌ {error_msg}")
+            return {
+                "success": False,
+                "error": error_msg
+            }
+        
+        if len(image_url_mapping) > 0:
+            _logger.info(f"✅ Successfully uploaded {len(image_url_mapping)} image(s) to S3")
         
         # Create the transformation prompt using the already processed content
         prompt = create_transformation_prompt(
@@ -264,13 +331,29 @@ def transform_to_qti(
             # Final encoding check after cleaning (in case cleaning introduced issues)
             result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
             
-            # Replace data URIs with S3 URLs if available
-            if use_s3 and image_url_mapping:
+            # Replace data URIs with S3 URLs (REQUIRED - S3 is mandatory)
+            if image_url_mapping:
                 result["qti_xml"] = replace_data_uris_with_s3_urls(
                     result["qti_xml"],
                     image_url_mapping,
                     processed_content
                 )
+            
+            # CRITICAL: Validate that no base64 data URIs remain in the XML
+            base64_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+'
+            remaining_base64 = re.findall(base64_pattern, result["qti_xml"])
+            if remaining_base64:
+                error_msg = f"CRITICAL: Found {len(remaining_base64)} base64 data URI(s) in final XML. All images MUST use S3 URLs. This is a pipeline error."
+                _logger.error(f"❌ {error_msg}")
+                # Try one more aggressive replacement pass
+                result["qti_xml"] = re.sub(base64_pattern, "[IMAGE_REMOVED_BASE64_NOT_ALLOWED]", result["qti_xml"])
+                _logger.warning("⚠️  Replaced remaining base64 URIs with placeholder - this indicates a serious issue")
+                return {
+                    "success": False,
+                    "error": error_msg
+                }
+            
+            _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
         
         return result
         
@@ -287,7 +370,10 @@ def replace_data_uris_with_s3_urls(
     processed_content: Dict[str, Any],
 ) -> str:
     """
-    Replace data URIs in QTI XML with S3 URLs.
+    Replace ALL data URIs in QTI XML with S3 URLs.
+    
+    This function aggressively replaces all base64 data URIs with S3 URLs.
+    It's called as a critical step to ensure no base64 remains in the final XML.
     
     Args:
         qti_xml: QTI XML string that may contain data URIs
@@ -295,21 +381,27 @@ def replace_data_uris_with_s3_urls(
         processed_content: Original processed content with image info
         
     Returns:
-        QTI XML with data URIs replaced by S3 URLs
+        QTI XML with ALL data URIs replaced by S3 URLs
     """
-    # Pattern to match data URIs in img src attributes
-    data_uri_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=]+'
+    # Pattern to match data URIs in img src attributes (more permissive to catch all)
+    # Matches data:image/<any-type>;base64,<base64-data>
+    data_uri_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+'
     
-    # Replace main image if available
-    if 'main_image' in image_url_mapping:
+    replacements_made = 0
+    
+    # Replace main image first
+    if 'main_image' in image_url_mapping and image_url_mapping['main_image']:
         main_s3_url = image_url_mapping['main_image']
-        # Replace any data URI with the main S3 URL
+        before = qti_xml
         qti_xml = re.sub(
             data_uri_pattern,
             main_s3_url,
             qti_xml,
             count=1,  # Replace first occurrence (main image)
         )
+        if before != qti_xml:
+            replacements_made += 1
+            _logger.debug(f"Replaced main image data URI with S3 URL: {main_s3_url}")
     
     # Replace additional images
     if processed_content.get('all_images'):
@@ -317,13 +409,30 @@ def replace_data_uris_with_s3_urls(
             image_key = f"image_{i}"
             if image_key in image_url_mapping and image_url_mapping[image_key]:
                 s3_url = image_url_mapping[image_key]
-                # Replace remaining data URIs
+                before = qti_xml
+                # Replace remaining data URIs (one at a time)
                 qti_xml = re.sub(
                     data_uri_pattern,
                     s3_url,
                     qti_xml,
                     count=1,
                 )
+                if before != qti_xml:
+                    replacements_made += 1
+                    _logger.debug(f"Replaced {image_key} data URI with S3 URL: {s3_url}")
+    
+    # If we still have data URIs but ran out of mapped URLs, log warning
+    remaining = re.findall(data_uri_pattern, qti_xml)
+    if remaining:
+        _logger.warning(f"⚠️  Found {len(remaining)} remaining data URI(s) after replacement. This should not happen.")
+        # Try to replace any remaining with first available S3 URL
+        if image_url_mapping:
+            first_s3_url = next(iter(image_url_mapping.values()))
+            qti_xml = re.sub(data_uri_pattern, first_s3_url, qti_xml)
+            _logger.warning(f"Replaced remaining data URIs with fallback S3 URL: {first_s3_url}")
+    
+    if replacements_made > 0:
+        _logger.info(f"✅ Replaced {replacements_made} data URI(s) with S3 URLs")
     
     return qti_xml
 
