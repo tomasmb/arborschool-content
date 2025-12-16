@@ -157,6 +157,48 @@ def process_single_question_pdf(
         if test_name:
             print(f"📦 Images will be organized in S3 as: images/{test_name}/")
         
+        # Load answer key if available
+        correct_answer = None
+        if test_name:
+            # Look for answer key file in multiple possible locations
+            possible_paths = [
+                # Standard location: app/data/pruebas/procesadas/{test_name}/respuestas_correctas.json
+                Path(output_dir).parent.parent.parent / "data" / "pruebas" / "procesadas" / test_name / "respuestas_correctas.json",
+                # Alternative: relative to output_dir
+                Path(output_dir).parent.parent / test_name / "respuestas_correctas.json",
+                # Alternative: same directory as output
+                Path(output_dir).parent / "respuestas_correctas.json",
+                # Also check in raw directory structure (for future organization)
+                Path(output_dir).parent.parent.parent / "data" / "pruebas" / "raw" / test_name / "respuestas_correctas.json",
+            ]
+            
+            answer_key_path = None
+            for path in possible_paths:
+                if path.exists():
+                    answer_key_path = path
+                    break
+            
+            if answer_key_path:
+                try:
+                    with open(answer_key_path, "r", encoding="utf-8") as f:
+                        answer_key_data = json.load(f)
+                    answers = answer_key_data.get("answers", {})
+                    
+                    # Extract question number from question_id (e.g., "Q3" -> "3", "question_017" -> "17")
+                    q_num_match = re.search(r'(\d+)', question_id or "")
+                    if q_num_match:
+                        q_num = q_num_match.group(1)
+                        correct_answer = answers.get(q_num)
+                        if correct_answer:
+                            print(f"✅ Found correct answer for question {q_num}: {correct_answer}")
+                        else:
+                            print(f"⚠️  No answer found in key for question {q_num} (key has {len(answers)} answers)")
+                except Exception as e:
+                    print(f"⚠️  Could not load answer key from {answer_key_path}: {e}")
+            else:
+                # Silently skip if no answer key found (optional feature)
+                pass
+        
         transformation_result = transform_to_qti(
             processed_content, 
             question_type, 
@@ -165,6 +207,7 @@ def process_single_question_pdf(
             use_s3=True,  # REQUIRED: S3 upload is mandatory for all images
             paes_mode=paes_mode,  # Pass PAES mode flag
             test_name=test_name,  # Organize images by test name in S3
+            correct_answer=correct_answer,  # Pass correct answer if available
         )
         
         if not transformation_result["success"]:

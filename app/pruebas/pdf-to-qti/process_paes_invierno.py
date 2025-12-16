@@ -68,6 +68,21 @@ def process_all_questions(
         "start_time": time.time()
     }
     
+    # Load answer key if available
+    answer_key_data = None
+    answer_key_path = Path(output_base_dir).parent.parent / "procesadas" / "prueba-invierno-2026" / "respuestas_correctas.json"
+    if not answer_key_path.exists():
+        # Try alternative location
+        answer_key_path = Path(output_base_dir).parent / "respuestas_correctas.json"
+    
+    if answer_key_path.exists():
+        try:
+            with open(answer_key_path, "r", encoding="utf-8") as f:
+                answer_key_data = json.load(f)
+            print(f"✅ Loaded answer key with {len(answer_key_data.get('answers', {}))} answers")
+        except Exception as e:
+            print(f"⚠️  Could not load answer key: {e}")
+    
     # Process each question
     for i, pdf_path in enumerate(question_pdfs, 1):
         question_id = pdf_path.stem  # e.g., "Q1" from "Q1.pdf"

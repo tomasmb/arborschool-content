@@ -13,6 +13,7 @@ IMPORTANT: All images MUST be uploaded to S3. Base64 encoding in final XML is no
 import json
 import re
 import logging
+import xml.etree.ElementTree as ET
 from typing import Dict, Any, Optional
 
 # Local helpers
@@ -132,6 +133,98 @@ def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
     return fixed_xml, True
 
 
+def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
+    """
+    Extract the correct answer from QTI XML.
+    
+    Args:
+        qti_xml: QTI XML string
+        
+    Returns:
+        Correct answer identifier (e.g., "ChoiceA") or None if not found
+    """
+    try:
+        root = ET.fromstring(qti_xml)
+        QTI_NS = "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}"
+        
+        response_decl = root.find(f".//{QTI_NS}qti-response-declaration")
+        if response_decl is None:
+            return None
+        
+        correct_response = response_decl.find(f"{QTI_NS}qti-correct-response")
+        if correct_response is None:
+            return None
+        
+        qti_value = correct_response.find(f"{QTI_NS}qti-value")
+        if qti_value is None or not qti_value.text:
+            return None
+        
+        return qti_value.text.strip()
+    except ET.ParseError:
+        # If XML parsing fails, try regex as fallback
+        match = re.search(
+            r'<qti-value>([^<]+)</qti-value>',
+            qti_xml
+        )
+        if match:
+            return match.group(1).strip()
+        return None
+    except Exception:
+        return None
+
+
+def update_correct_answer_in_qti_xml(qti_xml: str, correct_answer: str) -> str:
+    """
+    Update or add the correct answer in QTI XML.
+    
+    Args:
+        qti_xml: QTI XML string
+        correct_answer: Correct answer identifier (e.g., "ChoiceA")
+        
+    Returns:
+        Updated QTI XML string
+    """
+    try:
+        root = ET.fromstring(qti_xml)
+        QTI_NS = "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}"
+        
+        response_decl = root.find(f".//{QTI_NS}qti-response-declaration")
+        if response_decl is None:
+            # If no response declaration, return original (shouldn't happen)
+            return qti_xml
+        
+        correct_response = response_decl.find(f"{QTI_NS}qti-correct-response")
+        if correct_response is None:
+            # Create correct-response element if missing
+            correct_response = ET.SubElement(response_decl, f"{QTI_NS}qti-correct-response")
+        
+        qti_value = correct_response.find(f"{QTI_NS}qti-value")
+        if qti_value is None:
+            # Create value element if missing
+            qti_value = ET.SubElement(correct_response, f"{QTI_NS}qti-value")
+        
+        qti_value.text = correct_answer
+        
+        # Convert back to string
+        return ET.tostring(root, encoding="unicode")
+    except ET.ParseError:
+        # Fallback to regex replacement if XML parsing fails
+        # Try to replace existing value
+        pattern = r'(<qti-correct-response[^>]*>\s*<qti-value>)[^<]+(</qti-value>\s*</qti-correct-response>)'
+        if re.search(pattern, qti_xml):
+            return re.sub(pattern, r'\1' + correct_answer + r'\2', qti_xml)
+        
+        # If no correct-response found, try to add it after response-declaration
+        pattern = r'(<qti-response-declaration[^>]*>)'
+        replacement = r'\1\n    <qti-correct-response>\n      <qti-value>' + correct_answer + '</qti-value>\n    </qti-correct-response>'
+        if re.search(pattern, qti_xml):
+            return re.sub(pattern, replacement, qti_xml, count=1)
+        
+        return qti_xml
+    except Exception:
+        return qti_xml
+
+
 def transform_to_qti(
     processed_content: Dict[str, Any], 
     question_type: str, 
@@ -141,6 +234,7 @@ def transform_to_qti(
     use_s3: bool = True,
     paes_mode: bool = False,
     test_name: Optional[str] = None,
+    correct_answer: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Transform PDF content to QTI 3.0 XML format.
@@ -162,6 +256,8 @@ def transform_to_qti(
         paes_mode: If True, optimizes for PAES format (math, 4 alternatives)
         test_name: Optional test/prueba name to organize images in S3 (e.g., "prueba-invierno-2026")
                    Images will be stored in images/{test_name}/ to avoid conflicts between tests
+        correct_answer: Optional correct answer identifier (e.g., "ChoiceA", "ChoiceB", "ChoiceC", "ChoiceD")
+                       If provided, will be used in <qti-correct-response> instead of LLM inference
         
     Returns:
         Dictionary with transformation results
@@ -257,7 +353,8 @@ def transform_to_qti(
             processed_content, 
             question_type, 
             config,
-            validation_feedback
+            validation_feedback,
+            correct_answer=correct_answer
         )
         
         # Optimize prompt for PAES (mathematics, 4 alternatives)
@@ -354,6 +451,37 @@ def transform_to_qti(
                 }
             
             _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
+            
+            # Verify correct answer matches answer key (if provided)
+            if correct_answer:
+                xml_answer = extract_correct_answer_from_qti(result["qti_xml"])
+                if xml_answer:
+                    if xml_answer != correct_answer:
+                        _logger.warning(
+                            f"⚠️  Answer mismatch for {question_id or 'question'}: "
+                            f"Expected '{correct_answer}' from answer key, but XML has '{xml_answer}'. "
+                            f"Auto-correcting..."
+                        )
+                        # Auto-correct the answer in the XML
+                        result["qti_xml"] = update_correct_answer_in_qti_xml(
+                            result["qti_xml"], 
+                            correct_answer
+                        )
+                        _logger.info(f"✅ Corrected answer to '{correct_answer}'")
+                    else:
+                        _logger.info(f"✅ Answer verified: '{correct_answer}' matches answer key")
+                else:
+                    _logger.warning(
+                        f"⚠️  Could not extract correct answer from XML for {question_id or 'question'}. "
+                        f"Expected '{correct_answer}' from answer key. "
+                        f"Attempting to add correct answer..."
+                    )
+                    # Try to add the correct answer if it's missing
+                    result["qti_xml"] = update_correct_answer_in_qti_xml(
+                        result["qti_xml"], 
+                        correct_answer
+                    )
+                    _logger.info(f"✅ Added correct answer '{correct_answer}' from answer key")
         
         return result
         

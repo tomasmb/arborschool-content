@@ -235,7 +235,8 @@ def create_transformation_prompt(
     pdf_content: Dict[str, Any], 
     question_type: str, 
     question_config: Dict[str, str],
-    validation_feedback: Optional[str] = None
+    validation_feedback: Optional[str] = None,
+    correct_answer: Optional[str] = None
 ) -> str:
     """
     Create a sophisticated prompt for QTI XML transformation.
@@ -457,6 +458,9 @@ Example of a detailed description:
 - Each placeholder corresponds to a specific extracted image that will be restored later
 - **IMPORTANT**: Use simple <img> tags within <p> or <div> elements, NOT <qti-figure> elements
 - Images should be wrapped in block elements like: <p><img src="placeholder" alt="description"/></p>
+
+## CRITICAL: Correct Answer Specification
+{f"**The correct answer for this question is: {correct_answer}**\n- You MUST include this in the <qti-correct-response> element\n- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>\n- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD)\n" if correct_answer else "- Determine the correct answer from the question content and include it in <qti-correct-response>"}
 
 ## CRITICAL: QTI XML Structure Rules
 - **DO NOT use <qti-figure>** - use <img> tags within <p> or <div> instead
