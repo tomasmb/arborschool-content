@@ -1,5 +1,9 @@
-<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" identifier="Q35" title="Question 35" adaptive="false" time-dependent="false">
-  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier"/>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="choice-camisa-pantalon" title="Compra de camisa y pantalón" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
   <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
     <qti-default-value>
       <qti-value>0</qti-value>
@@ -7,17 +11,40 @@
   </qti-outcome-declaration>
   <qti-item-body>
     <p>Una persona compró una camisa y un pantalón, pagando en total $50 000.</p>
-    <p>La camisa costó un 30% del total pagado, mientras que el pantalón tenía ya un descuento de un 20 % sobre su precio original.</p>
+    <p>La camisa costó un 30 % del total pagado, mientras que el pantalón tenía ya un descuento de un 20 % sobre su precio original.</p>
     <p>En el siguiente sistema de ecuaciones se modela la situación anterior:</p>
-    <p>A 50 000 100 80 100 =</p>
-    <p>30</p>
-    <p>B . + A = 50 000</p>
+    <p>
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mfrac>
+          <mi>A</mi>
+          <mn>50000</mn>
+        </mfrac>
+        <mo>=</mo>
+        <mfrac>
+          <mn>30</mn>
+          <mn>100</mn>
+        </mfrac>
+      </math>
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mi>B</mi>
+        <mo>&#x22C5;</mo>
+        <mfrac>
+          <mn>80</mn>
+          <mn>100</mn>
+        </mfrac>
+        <mo>+</mo>
+        <mi>A</mi>
+        <mo>=</mo>
+        <mn>50000</mn>
+      </math>
+    </p>
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-prompt>¿Qué representa B en el sistema de ecuaciones?</qti-prompt>
-      <qti-simple-choice identifier="A">El precio original del pantalón</qti-simple-choice>
-      <qti-simple-choice identifier="B">El precio final del pantalón</qti-simple-choice>
-      <qti-simple-choice identifier="C">La suma del precio original de ambas prendas</qti-simple-choice>
-      <qti-simple-choice identifier="D">La suma del precio final de ambas prendas</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceA">El precio original del pantalón</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El precio final del pantalón</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La suma del precio original de ambas prendas</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La suma del precio final de ambas prendas</qti-simple-choice>
     </qti-choice-interaction>
   </qti-item-body>
+  <qti-response-processing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct.xml"/>
 </qti-assessment-item>
