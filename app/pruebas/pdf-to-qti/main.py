@@ -301,6 +301,9 @@ def process_single_question_pdf(
         # Handle validation errors
         if not validation_result.get("success", False):
             error_msg = validation_result.get("error", "Validation failed")
+            # Check if error is due to API key issues - in this case, we can still proceed
+            is_api_key_error = "API key" in error_msg or "api_key" in error_msg or "401" in error_msg
+            
             if "Chrome" in error_msg or "screenshot" in error_msg:
                 print("❌ External validation service failed - screenshot/Chrome issue")
                 return {
@@ -312,6 +315,11 @@ def process_single_question_pdf(
                     "question_validation": question_validation_result,
                     "validation_summary": "External validation failed - check service availability"
                 }
+            elif is_api_key_error:
+                # API key error - validation failed but QTI was generated, so we can proceed
+                print("⚠️  External validation failed due to API key issue - QTI generated but not validated")
+                question_validation_result["validation_summary"] = f"Validation skipped: {error_msg}"
+                # Continue processing - QTI was generated successfully
             else:
                 # Other validation errors
                 question_validation_result["validation_summary"] = error_msg
@@ -320,8 +328,13 @@ def process_single_question_pdf(
         if validation_result.get("success", False):
             print("✅ Question validation passed - QTI is ready for use")
         else:
-            print("❌ Question validation failed - QTI will not be returned")
-            print(f"🔍 VALIDATION DEBUG:")
+            error_msg = validation_result.get("error", "Validation failed")
+            is_api_key_error = "API key" in error_msg or "api_key" in error_msg or "401" in error_msg
+            if is_api_key_error:
+                print("⚠️  Question validation skipped due to API key issue - QTI generated successfully")
+            else:
+                print("❌ Question validation failed - QTI will not be returned")
+                print(f"🔍 VALIDATION DEBUG:")
             print(f"   - success: {validation_result.get('success', 'N/A')}")
             print(f"   - validation_passed: {validation_result.get('validation_passed', 'N/A')}")
             print(f"   - overall_score: {validation_result.get('overall_score', 'N/A')}")
@@ -349,8 +362,11 @@ def process_single_question_pdf(
                 }
             }
         
-        # Only proceed if validation passed
-        if not should_proceed_with_qti(validation_result):
+        # Only proceed if validation passed (or if error is API key related)
+        error_msg = validation_result.get("error", "")
+        is_api_key_error = "API key" in error_msg or "api_key" in error_msg or "401" in error_msg
+        
+        if not should_proceed_with_qti(validation_result) and not is_api_key_error:
             print("❌ Question validation criteria not met - QTI will not be returned")
             print(f"🔍 VALIDATION DEBUG:")
             print(f"   - success: {validation_result.get('success', 'N/A')}")
@@ -461,7 +477,12 @@ def validate_with_external_service(
             print(f"🖼️  PDF image length: {len(original_pdf_image)} characters")
             
             # Get API key from env if not provided
-            service_api_key = api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
+            # External validation service requires OPENAI_API_KEY specifically
+            service_api_key = api_key or os.environ.get("OPENAI_API_KEY")
+            if not service_api_key:
+                # Fallback to GEMINI_API_KEY only if OPENAI_API_KEY is not available
+                # (though this may cause issues if the service strictly requires OpenAI)
+                service_api_key = os.environ.get("GEMINI_API_KEY")
             
             payload = {
                 "qti_xml": qti_xml,

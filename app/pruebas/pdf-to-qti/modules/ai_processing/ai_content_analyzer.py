@@ -22,9 +22,7 @@ def analyze_pdf_content_with_ai(
     """
     Complete AI-powered analysis of PDF content following converter guidelines.
     
-    Two-step approach:
-    1. Assess QTI 3.0 compatibility 
-    2. Categorize content for intelligent extraction
+    OPTIMIZED: Uses a single comprehensive API call instead of multiple separate calls.
     
     Args:
         page: PyMuPDF page object
@@ -38,16 +36,30 @@ def analyze_pdf_content_with_ai(
         # Extract text blocks for analysis
         text_blocks = extract_text_blocks_for_analysis(structured_data)
         
+        # Extract question text for comprehensive analysis
+        question_text = " ".join(block.get("text", "") for block in text_blocks)
+        if len(question_text) > 2000:
+            question_text = question_text[:2000] + "..."
+        
         # Get page image for visual context
         page_image_bytes = get_page_image_for_ai(page)
         page_image_base64 = base64.b64encode(page_image_bytes).decode('utf-8')
         
-        # Step 1: Analyze QTI compatibility and visual content needs
+        # OPTIMIZATION: Use comprehensive analysis (single API call)
+        # Falls back to separate calls if comprehensive fails
+        comprehensive_result = comprehensive_content_analysis(
+            text_blocks, page_image_base64, openai_api_key, question_text=question_text
+        )
+        
+        if comprehensive_result.get("success", False):
+            return comprehensive_result
+        
+        # Fallback: Use original two-step approach
+        print("🧠 ⚠️ Comprehensive analysis failed, falling back to two-step approach")
         compatibility_result = assess_qti_compatibility(
             text_blocks, page_image_base64, openai_api_key
         )
         
-        # Step 2: If visual content is needed, categorize blocks intelligently
         categorization_result = {}
         if compatibility_result.get('visual_content_required', False):
             categorization_result = categorize_content_blocks(
@@ -72,6 +84,197 @@ def analyze_pdf_content_with_ai(
             "ai_categories": {},
             "has_visual_content": False
         }
+
+
+def comprehensive_content_analysis(
+    text_blocks: List[Dict[str, Any]],
+    page_image_base64: str,
+    openai_api_key: str,
+    question_text: Optional[str] = None
+) -> Dict[str, Any]:
+    """
+    OPTIMIZED: Comprehensive analysis combining QTI compatibility, content categorization,
+    and visual separation in a single API call.
+    
+    This reduces API calls from 3 to 1 for questions with visual content.
+    
+    Args:
+        text_blocks: List of text blocks from PDF
+        page_image_base64: Base64 encoded page image
+        openai_api_key: API key for LLM
+        question_text: Optional question text (extracted if not provided)
+        
+    Returns:
+        Dictionary with all analysis results
+    """
+    try:
+        # Extract question text if not provided
+        if not question_text:
+            question_text = " ".join(block.get("text", "") for block in text_blocks)
+            if len(question_text) > 2000:
+                question_text = question_text[:2000] + "..."
+        
+        # Prepare block information
+        block_info = []
+        for i, block in enumerate(text_blocks):
+            block_text = block.get("text", "")[:200]  # Limit for efficiency
+            bbox = block.get("bbox", [])
+            area = block.get("area", 0)
+            
+            block_info.append({
+                "block_number": i + 1,
+                "text": block_text,
+                "bbox": bbox,
+                "area": area,
+                "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})" if len(bbox) >= 4 else ""
+            })
+        
+        content_summary = prepare_content_summary(text_blocks)
+        
+        # Comprehensive prompt combining all three analyses
+        prompt = f"""Perform a comprehensive analysis of this educational question content.
+
+QUESTION TEXT:
+{question_text}
+
+CONTENT SUMMARY:
+{content_summary}
+
+TEXT BLOCKS ON PAGE:
+{block_info}
+
+ANALYSIS TASKS:
+
+1. QTI COMPATIBILITY ASSESSMENT:
+   - Can this be represented accurately in QTI 3.0 standard interaction types?
+   - Supported types: choice, match, text-entry, hotspot, extended-text, hot-text, gap-match, order, graphic-gap-match, inline-choice, select-point, media-interaction, composite
+   - Does it contain visual content (images, diagrams, maps)? Tables are NOT visual content.
+
+2. VISUAL CONTENT SEPARATION:
+   - Are there PROMPT VISUALS (essential for question understanding)?
+   - Are there CHOICE VISUALS (part of answer options A, B, C, D)?
+
+3. TEXT BLOCK CATEGORIZATION:
+   Categorize each text block as one of:
+   - "question_part_header": Part identifiers (e.g., "A.", "B.", "Part C")
+   - "question_text": Main question text, instructions, introductions
+   - "answer_choice": Multiple choice identifiers (A, B, C, D)
+   - "visual_content_title": Titles/captions for visual content
+   - "visual_content_label": Labels ON prompt visuals (including descriptive text explaining diagrams, empty blocks where visuals must be)
+   - "choice_visual_label": Labels ON choice visuals (labels within A, B, C, D diagrams)
+   - "other_label": Source citations, page numbers, legends NOT part of visuals
+
+CRITICAL RULES:
+- Empty blocks positioned where visual content must be should be "visual_content_label"
+- Text describing what's shown in diagrams should be "visual_content_label" to ensure inclusion
+- Tables are NOT choice visuals - don't mark has_choice_visuals=true just for table formats
+
+Respond with JSON in this exact format:
+{{
+    "qti_compatibility": {{
+        "can_represent": boolean,
+        "visual_content_required": boolean,
+        "question_type": "string or null",
+        "confidence": number,
+        "reasoning": "string"
+    }},
+    "visual_separation": {{
+        "has_prompt_visuals": boolean,
+        "has_choice_visuals": boolean,
+        "prompt_visual_description": "string",
+        "choice_visual_description": "string",
+        "separation_confidence": number,
+        "reasoning": "string"
+    }},
+    "block_categories": {{
+        "1": "category_name",
+        "2": "category_name"
+    }}
+}}"""
+
+        messages = [
+            {
+                "role": "system",
+                "content": "You are an expert in educational assessment and QTI 3.0 standards. Perform comprehensive content analysis combining compatibility assessment, visual separation, and block categorization. Respond only with valid JSON."
+            },
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}}
+                ]
+            }
+        ]
+        
+        print("🧠 ⚡ Using OPTIMIZED comprehensive analysis (single API call)")
+        response_text = chat_completion(
+            messages=messages,
+            api_key=openai_api_key,
+            json_only=True,
+            thinking_level="high",
+        )
+        
+        # Parse comprehensive response
+        import json
+        result = json.loads(response_text)
+        
+        qti_compat = result.get("qti_compatibility", {})
+        visual_sep = result.get("visual_separation", {})
+        block_cats = result.get("block_categories", {})
+        
+        # Validate and convert block categories to integers
+        block_categories = {}
+        for block_str, category in block_cats.items():
+            try:
+                block_num = int(block_str)
+                valid_categories = [
+                    "question_part_header", "question_text", "answer_choice",
+                    "visual_content_title", "visual_content_label",
+                    "choice_visual_label", "other_label"
+                ]
+                if 1 <= block_num <= len(text_blocks) and category in valid_categories:
+                    block_categories[block_num] = category
+            except (ValueError, TypeError):
+                continue
+        
+        # Fill missing blocks with default
+        for i in range(1, len(text_blocks) + 1):
+            if i not in block_categories:
+                block_categories[i] = "other_label"
+        
+        # Build categorization result format (compatible with old code)
+        question_answer_blocks = [
+            i for i, cat in block_categories.items()
+            if cat in ["question_text", "answer_choice", "question_part_header"]
+        ]
+        image_related_blocks = [
+            i for i, cat in block_categories.items()
+            if cat in ["visual_content_title", "visual_content_label"]
+        ]
+        
+        print(f"🧠 ✅ Comprehensive analysis complete:")
+        print(f"   QTI compatible: {qti_compat.get('can_represent', False)}")
+        print(f"   Visual content required: {qti_compat.get('visual_content_required', False)}")
+        print(f"   Prompt visuals: {visual_sep.get('has_prompt_visuals', False)}")
+        print(f"   Choice visuals: {visual_sep.get('has_choice_visuals', False)}")
+        print(f"   Blocks categorized: {len(block_categories)}")
+        
+        return {
+            "success": True,
+            "compatibility": qti_compat,
+            "categorization": {
+                "block_categories": block_categories,
+                "question_answer_blocks": question_answer_blocks,
+                "image_related_blocks": image_related_blocks
+            },
+            "visual_separation": visual_sep,
+            "ai_categories": block_categories,
+            "has_visual_content": qti_compat.get('visual_content_required', False)
+        }
+        
+    except Exception as e:
+        print(f"🧠 ⚠️ Comprehensive analysis failed: {e}")
+        return {"success": False, "error": str(e)}
 
 
 def assess_qti_compatibility(

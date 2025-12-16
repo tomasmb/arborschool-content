@@ -411,7 +411,7 @@ def extract_images_and_tables(
                 tables_info.append(reconstructed_table)
                 print(f"📊 ✅ Reconstructed table from scattered blocks")
     
-    # Step 2: AI-powered content analysis using two-step LLM approach (guideline #7)
+    # Step 2: AI-powered content analysis (OPTIMIZED: single comprehensive call)
     if openai_api_key:
         print(f"🧠 Step 2: AI-powered content analysis...")
         ai_analysis_result = analyze_pdf_content_with_ai(page, structured_data, openai_api_key)
@@ -432,19 +432,50 @@ def extract_images_and_tables(
         ai_categories = {}
         has_visual_content = should_use_ai_image_detection(all_blocks, None)
     
-    # Step 3: NEW APPROACH - Separate prompt and choice images intelligently
+    # Step 3: OPTIMIZED - Use visual separation from comprehensive analysis if available
     prompt_choice_analysis = None
     if has_visual_content:
-        print("📸 Step 3: Analyzing prompt vs choice visual content...")
+        # Check if comprehensive analysis already included visual separation
+        visual_separation = ai_analysis_result.get("visual_separation") if ai_analysis_result.get("success") else None
         
-        prompt_choice_analysis = separate_prompt_and_choice_images(
-            page, all_blocks, extract_question_text(all_blocks), ai_categories, openai_api_key
-        )
-        
-        print(f"🔍 Analysis results:")
-        print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
-        print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
-        print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
+        if visual_separation and visual_separation.get("has_prompt_visuals") is not None:
+            print("📸 Step 3: Using visual separation from comprehensive analysis (OPTIMIZED - no extra API call)")
+            # Need to process this through gap detection to get bboxes
+            # Create a mock analysis object for process_llm_analysis_with_gaps
+            class MockAnalysis:
+                def __init__(self, visual_sep_data):
+                    self.has_prompt_visuals = visual_sep_data.get("has_prompt_visuals", False)
+                    self.has_choice_visuals = visual_sep_data.get("has_choice_visuals", False)
+                    self.prompt_visual_description = visual_sep_data.get("prompt_visual_description", "")
+                    self.choice_visual_description = visual_sep_data.get("choice_visual_description", "")
+                    self.separation_confidence = visual_sep_data.get("separation_confidence", 0.8)
+                    self.reasoning = visual_sep_data.get("reasoning", "")
+            
+            from .image_processing.llm_analyzer import process_llm_analysis_with_gaps
+            mock_analysis = MockAnalysis(visual_separation)
+            text_blocks_for_gaps = extract_text_blocks(all_blocks)
+            prompt_choice_analysis = process_llm_analysis_with_gaps(
+                mock_analysis, page, text_blocks_for_gaps, ai_categories
+            )
+            prompt_choice_analysis["success"] = True
+            prompt_choice_analysis["confidence"] = visual_separation.get("separation_confidence", 0.8)
+            prompt_choice_analysis["ai_categories"] = ai_categories
+            
+            print(f"🔍 Analysis results (from comprehensive analysis):")
+            print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
+            print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
+            print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
+        else:
+            # Fallback: Separate call to analyze visual content
+            print("📸 Step 3: Analyzing prompt vs choice visual content (fallback API call)...")
+            prompt_choice_analysis = separate_prompt_and_choice_images(
+                page, all_blocks, extract_question_text(all_blocks), ai_categories, openai_api_key
+            )
+            
+            print(f"🔍 Analysis results:")
+            print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
+            print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
+            print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
     
     # Step 4: Process images based on separation analysis
     if prompt_choice_analysis and prompt_choice_analysis.get('success', False):

@@ -13,6 +13,7 @@ IMPORTANT: All images MUST be uploaded to S3. Base64 encoding in final XML is no
 import json
 import re
 import logging
+import hashlib
 import xml.etree.ElementTree as ET
 from typing import Dict, Any, Optional
 
@@ -362,11 +363,16 @@ def transform_to_qti(
             from .paes_optimizer import optimize_prompt_for_math
             prompt = optimize_prompt_for_math(prompt)
         
-        # Prepare messages for LLM (still use base64 for AI analysis)
+        # Prepare messages for LLM (still use base64 for AI analysis, but XML must use S3 URLs)
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert at converting educational content into QTI 3.0 XML format. You must respond with valid JSON format only."
+                "content": (
+                    "You are an expert at converting educational content into QTI 3.0 XML format. "
+                    "You must respond with valid JSON format only. "
+                    "CRITICAL: NEVER use base64 encoding (data:image/...;base64,...) in the QTI XML. "
+                    "Only use placeholder image names that will be replaced with S3 URLs."
+                )
             },
             {
                 "role": "user", 
@@ -436,21 +442,78 @@ def transform_to_qti(
                     processed_content
                 )
             
-            # CRITICAL: Validate that no base64 data URIs remain in the XML
-            base64_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+'
-            remaining_base64 = re.findall(base64_pattern, result["qti_xml"])
-            if remaining_base64:
-                error_msg = f"CRITICAL: Found {len(remaining_base64)} base64 data URI(s) in final XML. All images MUST use S3 URLs. This is a pipeline error."
-                _logger.error(f"❌ {error_msg}")
-                # Try one more aggressive replacement pass
-                result["qti_xml"] = re.sub(base64_pattern, "[IMAGE_REMOVED_BASE64_NOT_ALLOWED]", result["qti_xml"])
-                _logger.warning("⚠️  Replaced remaining base64 URIs with placeholder - this indicates a serious issue")
-                return {
-                    "success": False,
-                    "error": error_msg
-                }
+            # CRITICAL: Check for any remaining base64 and fix it by uploading to S3
+            # We don't want to fail here because the generation already used tokens.
+            # Instead, we'll extract base64, upload to S3, and replace locally.
+            base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
+            base64_matches = re.findall(base64_pattern, result["qti_xml"])
             
-            _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
+            if base64_matches:
+                _logger.warning(
+                    f"⚠️  Found {len(base64_matches)} base64 data URI(s) in XML. "
+                    "Uploading to S3 and replacing locally (to avoid wasting API tokens)..."
+                )
+                
+                # Upload each base64 image to S3 and replace
+                # (upload_image_to_s3 already imported at top of file)
+                
+                for match in base64_matches:
+                    full_prefix = match[0]  # data:image/png;base64,
+                    image_type = match[1]   # png, svg+xml, etc.
+                    base64_data = match[2]  # actual base64 data
+                    full_data_uri = full_prefix + base64_data
+                    
+                    # Generate a unique identifier for this image
+                    image_hash = hashlib.md5(base64_data.encode()).hexdigest()[:8]
+                    img_identifier = f"{question_id or 'img'}_base64_{image_hash}"
+                    
+                    _logger.info(f"  📤 Uploading base64 image to S3: {img_identifier}")
+                    
+                    # Upload to S3
+                    s3_url = upload_image_to_s3(
+                        image_base64=full_data_uri,
+                        question_id=img_identifier,
+                        test_name=test_name
+                    )
+                    
+                    if not s3_url:
+                        _logger.error(
+                            f"❌ Failed to upload base64 image to S3. "
+                            "This is a critical error - cannot proceed with base64."
+                        )
+                        return {
+                            "success": False,
+                            "error": f"Failed to upload {len(base64_matches)} base64 image(s) to S3. S3 upload is REQUIRED."
+                        }
+                    
+                    # Replace in XML - escape the URI for regex
+                    escaped_uri = re.escape(full_data_uri)
+                    result["qti_xml"] = re.sub(
+                        rf'src=["\']{escaped_uri}["\']',
+                        f'src="{s3_url}"',
+                        result["qti_xml"]
+                    )
+                    
+                    # Also try replacing without src quotes (in case it's in different format)
+                    result["qti_xml"] = result["qti_xml"].replace(full_data_uri, s3_url)
+                    
+                    _logger.info(f"  ✅ Replaced base64 with S3 URL: {s3_url}")
+                
+                # Verify no base64 remains
+                remaining = re.findall(base64_pattern, result["qti_xml"])
+                if remaining:
+                    _logger.error(
+                        f"❌ Still found {len(remaining)} base64 URIs after replacement. "
+                        "This should not happen."
+                    )
+                    return {
+                        "success": False,
+                        "error": f"Failed to replace {len(remaining)} base64 URI(s) with S3 URLs"
+                    }
+                
+                _logger.info(f"✅ Successfully fixed {len(base64_matches)} base64 image(s) by uploading to S3")
+            else:
+                _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
             
             # Verify correct answer matches answer key (if provided)
             if correct_answer:

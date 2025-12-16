@@ -1,0 +1,39 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="card-game-score" title="Cálculo de puntaje en juego de cartas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego hay dos tipos de cartas, unas tienen una estrella y las otras tienen un corazón, todas con un número.</p>
+    <p>El puntaje de cada jugador se calcula de la siguiente forma:</p>
+    <ul>
+      <li>Primero se extrae una carta al azar (carta inicial) y su valor se considera como puntaje inicial.</li>
+      <li>Luego, se extrae otra carta:
+        <ul>
+          <li>si esta tiene una estrella, le debe restar el valor de la carta a su puntaje;</li>
+          <li>si esta tiene un corazón, le debe sumar el valor de la carta a su puntaje.</li>
+        </ul>
+      </li>
+      <li>El puntaje final se obtiene al repetir el procedimiento anterior, hasta tener diez cartas.</li>
+    </ul>
+    <p>Un jugador extrae las siguientes cartas, en este orden:</p>
+    <p>Carta inicial</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2026/Q1_img1.png" alt="Secuencia de 10 cartas mostrada de izquierda a derecha. Carta 1 (Inicial): 10 Corazón. Carta 2: 6 Corazón. Carta 3: 3 Estrella. Carta 4: 9 Corazón. Carta 5: 10 Estrella. Carta 6: 5 Estrella. Carta 7: 8 Corazón. Carta 8: 2 Estrella. Carta 9: 10 Estrella. Carta 10: 7 Estrella."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es el puntaje final del jugador?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">−14</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">−4</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3</qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">11</qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+  <qti-response-processing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct.xml"/>
+</qti-assessment-item>

@@ -113,71 +113,30 @@ except Exception as error:
     print(f'Error reading QTI examples XML file: {error}')
 
 def hotspot_post_process(xml: str) -> str:
-    """Post-process function for hotspot interactions"""
-    # Only process if this is a hotspot interaction with SVG
-    if '<qti-hotspot-interaction' not in xml or '<svg' not in xml:
-        return xml
+    """
+    Post-process function for hotspot interactions.
     
-    # Convert SVG to base64 image if present
-    pattern = r'(<qti-hotspot-interaction[^>]*>)([\s\S]*?)(<svg[\s\S]*?</svg>)([\s\S]*?)(</qti-hotspot-interaction>)'
-    
-    def replace_svg(match):
-        interaction_start, before_svg, svg, after_svg, interaction_end = match.groups()
-        
-        # Extract width and height from SVG
-        width_match = re.search(r'width="(\d+)"', svg)
-        height_match = re.search(r'height="(\d+)"', svg)
-        width = width_match.group(1) if width_match else '254'
-        height = height_match.group(1) if height_match else '252'
-        
-        # Convert SVG to base64
-        base64_svg = base64.b64encode(svg.encode()).decode()
-        img_src = f'data:image/svg+xml;base64,{base64_svg}'
-        
-        # Create img tag with same dimensions
-        img = f'<img src="{img_src}" width="{width}" height="{height}" alt="Interactive hotspot area"/>'
-        
-        # Place the image as first child in the interaction, before hotspot choices
-        return f'{interaction_start}{img}{after_svg}{interaction_end}'
-    
-    return re.sub(pattern, replace_svg, xml)
+    NOTE: This function NO LONGER converts SVG to base64.
+    Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
+    The LLM should generate QTI with proper img tags using S3 URLs.
+    """
+    # Post-processing removed - base64 encoding is not allowed
+    # If SVG needs conversion, it should be done before this step
+    # and uploaded to S3 first
+    return xml
 
 def select_point_post_process(xml: str) -> str:
-    """Post-process function for select-point interactions"""
-    # Only process if this is a select-point interaction
-    if '<qti-select-point-interaction' not in xml:
-        return xml
+    """
+    Post-process function for select-point interactions.
     
-    # Convert SVG to base64 image if present
-    pattern = r'(<qti-select-point-interaction[^>]*>)([\s\S]*?)(<svg[\s\S]*?</svg>)([\s\S]*?)(</qti-select-point-interaction>)'
-    
-    def replace_svg(match):
-        start, before_svg, svg, after_svg, end = match.groups()
-        
-        # Extract width and height from SVG
-        width_match = re.search(r'width="(\d+)"', svg)
-        height_match = re.search(r'height="(\d+)"', svg)
-        width = width_match.group(1) if width_match else '400'
-        height = height_match.group(1) if height_match else '400'
-        
-        # Convert SVG to base64
-        base64_svg = base64.b64encode(svg.encode()).decode()
-        img_src = f'data:image/svg+xml;base64,{base64_svg}'
-        
-        # Create img tag with same dimensions
-        img = f'<img src="{img_src}" width="{width}" height="{height}" alt="Interactive graph"/>'
-        
-        # If there's a prompt, keep it before the image
-        if '<qti-prompt>' in before_svg:
-            prompt_end = before_svg.rfind('</qti-prompt>') + len('</qti-prompt>')
-            before_prompt = before_svg[:prompt_end]
-            after_prompt = before_svg[prompt_end:]
-            
-            return f'{start}{before_prompt}{img}{after_prompt}{after_svg}{end}'
-        else:
-            return f'{start}{img}{before_svg}{after_svg}{end}'
-    
-    return re.sub(pattern, replace_svg, xml)
+    NOTE: This function NO LONGER converts SVG to base64.
+    Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
+    The LLM should generate QTI with proper img tags using S3 URLs.
+    """
+    # Post-processing removed - base64 encoding is not allowed
+    # If SVG needs conversion, it should be done before this step
+    # and uploaded to S3 first
+    return xml
 
 # Configuration for choice questions (single or multiple)
 choice_config = QuestionConfig(
@@ -307,8 +266,8 @@ For hotspot interactions:
 
 For div-based layouts:
 1. Convert the div structure into an SVG with proper dimensions
-2. Convert the SVG to an image with base64 encoding
-3. Place the image FIRST in the interaction
+2. Convert the SVG to a PNG image and upload to S3 (NEVER use base64)
+3. Place the image FIRST in the interaction using the S3 URL
 4. Calculate hotspot coordinates based on the original div positions
 
 Example structure:

@@ -459,6 +459,14 @@ Example of a detailed description:
 - **IMPORTANT**: Use simple <img> tags within <p> or <div> elements, NOT <qti-figure> elements
 - Images should be wrapped in block elements like: <p><img src="placeholder" alt="description"/></p>
 
+## CRITICAL: Image Source Requirements - NO BASE64 ALLOWED
+**NEVER use base64 encoding for images in the QTI XML.**
+- **DO NOT** use `data:image/png;base64,...` or any base64 data URIs
+- **DO NOT** use `src="data:image/..."`
+- **MUST** use placeholder strings like "image1.png", "CONTENT_PLACEHOLDER_P0", etc.
+- Images will be replaced with S3 URLs automatically - you should only use placeholder names
+- Base64 encoding will cause the transformation to FAIL
+
 ## CRITICAL: Correct Answer Specification
 {f"**The correct answer for this question is: {correct_answer}**\n- You MUST include this in the <qti-correct-response> element\n- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>\n- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD)\n" if correct_answer else "- Determine the correct answer from the question content and include it in <qti-correct-response>"}
 
