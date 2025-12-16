@@ -18,7 +18,12 @@ Convert the question into valid QTI 3.0 XML using the "{question_type}" interact
 </task>
 
 <rules>
-1. Use namespace: xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+1. NAMESPACE (CRITICAL - NO PREFIXES):
+   - Use default namespace: xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+   - NEVER use namespace prefixes like ns0:, ns1:, etc.
+   - All QTI elements must be unprefixed: <qti-assessment-item>, <qti-item-body>, etc.
+   - Example: <qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0">
+   - WRONG: <ns0:qti-assessment-item xmlns:ns0="...">
 2. Root element: <qti-assessment-item>
 3. Required attributes: identifier, title, adaptive="false", time-dependent="false"
 4. Body: Use <qti-item-body> for content
@@ -32,6 +37,11 @@ Convert the question into valid QTI 3.0 XML using the "{question_type}" interact
    - Wrong: <qti-item-body><img src="..." alt="..."/></qti-item-body>
 9. IMAGE ALT TEXT: Use a brief, descriptive alt text (can be simplified from original)
 10. VISUAL CHOICES: If choices are shown in an image, keep the image and use labels as choice text
+11. MATHML (CRITICAL):
+    - Each <math> element MUST include xmlns="http://www.w3.org/1998/Math/MathML"
+    - Use unprefixed MathML elements: <math>, <mfrac>, <mn>, <mo>, etc.
+    - Example: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>2</mn></mfrac></math>
+    - WRONG: <ns2:math xmlns:ns2="..."><ns2:mfrac>...</ns2:mfrac></ns2:math>
 </rules>
 
 <output_format>

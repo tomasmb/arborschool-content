@@ -331,6 +331,29 @@ prompt = f"""... Examples: {{"1": "A"}} ...{all_text}..."""
 
 ## Resultados de la Prueba
 
+### Primera Extracción/Procesamiento de Preguntas
+
+**Fecha**: 2025-12-15  
+**Referencia**: `docs/qti-pipeline/ANALISIS-TIEMPO-PROCESAMIENTO.md`
+
+- **Inicio**: 17:30 (primera pregunta procesada)
+- **Fin**: 19:42 (última pregunta procesada)
+- **Duración total**: ~2 horas 12 minutos
+- **Tiempo promedio**: ~2 minutos por pregunta
+- **Total preguntas**: 65
+- **Procesadas exitosamente**: 59 (90.8%)
+- **Fallidas**: 6 (9.2%) - Preguntas: 53, 59, 62, 63, 64, 65
+
+**Desglose de tiempo por componente** (por pregunta):
+- Extracción de PDF: ~5-10 segundos (~10% del total)
+- Transformación a QTI: ~10-20 segundos (~20% del total)
+- **Validación externa completa**: ~60-90 segundos (~70% del total) ⚠️ cuello de botella
+- **TOTAL**: ~75-120 segundos por pregunta
+
+**Nota**: La validación externa fue el paso más lento porque requiere renderizado en Chrome headless, captura de screenshots y comparación visual con AI.
+
+---
+
 ### Extracción de Respuestas Correctas
 
 - **Archivo procesado**: `2026-25-07-18-clavijero-paes-invierno-m1.pdf`
