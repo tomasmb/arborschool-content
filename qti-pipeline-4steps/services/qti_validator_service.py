@@ -5,6 +5,7 @@ Validates that QTI 3.0 XML was correctly extracted/parsed from a source PDF.
 Focus: Extraction completeness, NOT assessment completeness.
 
 VALIDATES:
+- XSD schema compliance: XML conforms to QTI 3.0 XSD schema (mandatory)
 - Question content was fully extracted (stem, choices, interactive elements)
 - No parsing artifacts or encoding issues
 - Images match the question context
@@ -21,7 +22,7 @@ from __future__ import annotations
 
 import logging
 import requests
-from typing import Any
+from typing import Any, Dict, List
 from xml.etree import ElementTree as ET
 
 # Import from parent package
@@ -38,6 +39,7 @@ try:
         build_image_validation_prompt,
     )
     from services.ai_client_factory import AIClient
+    from services.xsd_validator import XSDValidator
 except ImportError:
     from ..models import (
         QTIValidationOutput,
@@ -51,6 +53,7 @@ except ImportError:
         build_image_validation_prompt,
     )
     from ..services.ai_client_factory import AIClient
+    from ..services.xsd_validator import XSDValidator
 
 logger = logging.getLogger(__name__)
 
@@ -85,6 +88,7 @@ class QTIValidatorService:
         """
         self.ai_client = ai_client
         self.model_provider = model_provider
+        self.xsd_validator = XSDValidator()
     
     def validate(
         self,
@@ -105,6 +109,20 @@ class QTIValidatorService:
         """
         images = images or []
         errors = []
+        
+        # Step 0: Validate XSD schema compliance (critical - must pass)
+        logger.debug(f"Validating XSD for {question_id}...")
+        is_valid_xsd, xsd_error = self.xsd_validator.validate(qti_xml)
+        xsd_result = ValidationResult(
+            passed=is_valid_xsd,
+            score=100 if is_valid_xsd else 0,
+            issues=[] if is_valid_xsd else [xsd_error],
+            details="QTI 3.0 XSD schema compliance"
+        )
+        
+        if not is_valid_xsd:
+            logger.error(f"XSD validation failed for {question_id}: {xsd_error}")
+            errors.append(f"XSD validation failed: {xsd_error}")
         
         # Step 1: Parse XML and extract basic structure
         try:
@@ -202,9 +220,10 @@ class QTIValidatorService:
             has_media=len(media_details) > 0
         )
         
-        # Overall valid if all critical extraction checks pass
+        # Overall valid if all critical extraction checks pass, including XSD
         is_valid = (
-            not ai_validation_failed
+            xsd_result.passed  # XSD validation is mandatory
+            and not ai_validation_failed
             and content_result.passed
             and structure_result.passed
             and parse_result.passed
@@ -220,6 +239,7 @@ class QTIValidatorService:
             media_integrity=media_result,
             structure_validity=structure_result,
             parse_quality=parse_result,
+            xsd_validity=xsd_result,
             media_details=media_details,
             detected_question_type=ai_result.detected_type,
             errors=errors,

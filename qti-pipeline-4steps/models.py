@@ -251,6 +251,7 @@ class QTIValidationOutput(BaseModel):
     Output schema for QTI extraction validation.
     
     Validates extraction quality:
+    - xsd_validity: Does XML conform to QTI 3.0 XSD schema? (mandatory)
     - content_completeness: Was all content extracted? (stem, choices, etc.)
     - structure_validity: Is structure correct for question type?
     - parse_quality: Is content clean? (no artifacts, no contamination)
@@ -278,6 +279,9 @@ class QTIValidationOutput(BaseModel):
     )
     parse_quality: ValidationResult = Field(
         ..., description="Is content clean? (no artifacts, encoding issues)"
+    )
+    xsd_validity: ValidationResult = Field(
+        ..., description="Does XML conform to QTI 3.0 XSD schema?"
     )
     
     # Optional detailed results
@@ -353,6 +357,7 @@ def create_error_validation_output(
         media_integrity=create_empty_validation_result(),
         structure_validity=create_empty_validation_result(),
         parse_quality=create_empty_validation_result(),
+        xsd_validity=create_empty_validation_result(),
         errors=[error_message],
     )
 
