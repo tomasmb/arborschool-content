@@ -15,10 +15,18 @@ from pathlib import Path
 
 # Load environment variables
 from dotenv import load_dotenv
-project_root = Path(__file__).parent.parent.parent
+# Go up from scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> root
+project_root = Path(__file__).parent.parent.parent.parent
 env_file = project_root / ".env"
 if env_file.exists():
     load_dotenv(env_file)
+    print(f"✅ Loaded environment variables from {env_file}")
+else:
+    # Try alternative path (if running from different location)
+    alt_env = Path(__file__).parent.parent.parent.parent.parent / ".env"
+    if alt_env.exists():
+        load_dotenv(alt_env)
+        print(f"✅ Loaded environment variables from {alt_env}")
 
 # Add modules to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
