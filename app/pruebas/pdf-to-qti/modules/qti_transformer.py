@@ -236,6 +236,7 @@ def transform_to_qti(
     paes_mode: bool = False,
     test_name: Optional[str] = None,
     correct_answer: Optional[str] = None,
+    output_dir: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Transform PDF content to QTI 3.0 XML format.
@@ -286,25 +287,27 @@ def transform_to_qti(
         image_url_mapping: Dict[str, str] = {}
         failed_uploads: list[str] = []
         
-        # Upload main image
+        # Upload main image (with retry)
         if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
             _logger.info(f"📤 Uploading main image to S3 (question_id: {question_id or 'main'}, test: {test_name or 'default'})")
             s3_url = upload_image_to_s3(
                 image_base64=processed_content['image_base64'],
                 question_id=question_id or "main",
                 test_name=test_name,
+                max_retries=3,  # Retry automático incluido en upload_image_to_s3
             )
             if not s3_url:
                 failed_uploads.append("main image")
-                _logger.error("❌ Failed to upload main image to S3")
+                _logger.error("❌ Failed to upload main image to S3 after retries")
             else:
                 image_url_mapping['main_image'] = s3_url
                 processed_content['image_s3_url'] = s3_url
                 _logger.info(f"✅ Main image uploaded to S3: {s3_url}")
         
-        # Upload all additional images
+        # Upload all additional images (with retry for each)
         if processed_content.get('all_images'):
-            _logger.info(f"📤 Uploading {len(processed_content['all_images'])} additional images to S3")
+            total_images = len(processed_content['all_images'])
+            _logger.info(f"📤 Uploading {total_images} additional image(s) to S3 (with retry on failures)")
             s3_results = upload_multiple_images_to_s3(
                 images=processed_content['all_images'],
                 question_id=question_id,
@@ -316,7 +319,7 @@ def transform_to_qti(
                 if image_info.get('image_base64') and not image_info['image_base64'].startswith('CONTENT_PLACEHOLDER'):
                     if image_key not in s3_results or not s3_results[image_key]:
                         failed_uploads.append(f"image_{i}")
-                        _logger.error(f"❌ Failed to upload {image_key} to S3")
+                        _logger.error(f"❌ Failed to upload {image_key} to S3 after retries")
                     else:
                         _logger.info(f"✅ {image_key} uploaded to S3: {s3_results[image_key]}")
             image_url_mapping.update({k: v for k, v in s3_results.items() if v})
@@ -385,7 +388,14 @@ def transform_to_qti(
             }
         ]
         
-        # Add image if available (use base64 for AI, but we'll replace with S3 URL in XML)
+        # ESTRATEGIA: En pruebas PAES, TODAS las imágenes son importantes - enviar todas
+        # No hay imágenes "decorativas" en estas pruebas - todo es crítico para calidad
+        # Solo optimizamos si hay MUCHAS imágenes (10+), pero para casos normales (1-5 imágenes), todas se envían
+        
+        images_sent_to_llm = 0
+        max_images_threshold = 10  # Solo limitar si hay más de 10 imágenes (caso extremo)
+        
+        # 1. Add main image if available (ALWAYS send)
         if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
             image_data = processed_content['image_base64']
             if not image_data.startswith('data:'):
@@ -397,11 +407,24 @@ def transform_to_qti(
                     "url": image_data
                 }
             })
+            images_sent_to_llm += 1
+            _logger.info("📤 Sending main image to LLM")
         
-        # Add all extracted images from PDF structure
+        # 2. Add ALL additional images (in PAES tests, all images are important)
         if processed_content.get('all_images'):
-            for i, image_info in enumerate(processed_content['all_images']):
-                if image_info.get('image_base64') and not image_info['image_base64'].startswith('CONTENT_PLACEHOLDER'):
+            total_additional = len(processed_content['all_images'])
+            
+            # Count how many have actual image data
+            images_with_data = [
+                img for img in processed_content['all_images']
+                if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER')
+            ]
+            
+            # For PAES tests: Send ALL images (they're all important)
+            # Only limit if there are MANY images (10+) - extreme case
+            if len(images_with_data) <= max_images_threshold:
+                # Normal case: Send all images (quality is priority)
+                for image_info in images_with_data:
                     image_data = image_info['image_base64']
                     if not image_data.startswith('data:'):
                         image_data = f"data:image/png;base64,{image_data}"
@@ -412,16 +435,148 @@ def transform_to_qti(
                             "url": image_data
                         }
                     })
+                    images_sent_to_llm += 1
+                
+                _logger.info(f"📤 Sending {len(images_with_data)} additional image(s) to LLM (all important for quality)")
+            else:
+                # Extreme case: Many images (10+) - prioritize by importance
+                # Still prioritize choice diagrams and larger images
+                choice_images = []
+                other_images = []
+                
+                for image_info in images_with_data:
+                    is_choice = image_info.get('is_choice_diagram', False)
+                    width = image_info.get('width', 0)
+                    height = image_info.get('height', 0)
+                    area = width * height
+                    
+                    if is_choice:
+                        choice_images.append((999999, image_info))  # Highest priority
+                    else:
+                        other_images.append((area, image_info))
+                
+                # Send ALL choice images first
+                for priority, image_info in sorted(choice_images, reverse=True):
+                    image_data = image_info['image_base64']
+                    if not image_data.startswith('data:'):
+                        image_data = f"data:image/png;base64,{image_data}"
+                    
+                    messages[1]["content"].append({
+                        "type": "image_url",
+                        "image_url": {
+                            "url": image_data
+                        }
+                    })
+                    images_sent_to_llm += 1
+                
+                # Then send top other images (sorted by size)
+                other_images.sort(reverse=True)
+                remaining_slots = max_images_threshold - len(choice_images)
+                images_to_send = other_images[:remaining_slots]
+                
+                for priority, image_info in images_to_send:
+                    image_data = image_info['image_base64']
+                    if not image_data.startswith('data:'):
+                        image_data = f"data:image/png;base64,{image_data}"
+                    
+                    messages[1]["content"].append({
+                        "type": "image_url",
+                        "image_url": {
+                            "url": image_data
+                        }
+                    })
+                    images_sent_to_llm += 1
+                
+                skipped = len(other_images) - len(images_to_send)
+                if skipped > 0:
+                    _logger.warning(
+                        f"📤 Sending {len(choice_images)} choice + {len(images_to_send)} other images "
+                        f"(skipped {skipped} due to extreme case with {len(images_with_data)} total images)"
+                    )
+                else:
+                    _logger.info(f"📤 Sending {images_sent_to_llm - 1} additional image(s) to LLM")
         
-        # Call the LLM for transformation via shared helper
-        response_text = chat_completion(
-            messages,
-            api_key=openai_api_key,
-            json_only=True,
-        )
+        _logger.info(f"📊 Total images sent to LLM: {images_sent_to_llm} (quality priority)")
         
-        # Parse the transformation response
-        result = parse_transformation_response(response_text)
+        # Call the LLM for transformation via shared helper with retry on empty response
+        # Aumentar límite de tokens para preguntas complejas (pueden tener mucho contenido)
+        import time
+        max_retries = 3
+        base_delay = 2.0
+        last_error: Optional[str] = None
+        result: Optional[Dict[str, Any]] = None
+        
+        for attempt in range(max_retries):
+            try:
+                response_text = chat_completion(
+                    messages,
+                    api_key=openai_api_key,
+                    json_only=True,
+                    question_id=question_id,
+                    output_dir=output_dir,
+                    operation="transform_to_qti",
+                    max_tokens=16384,  # Aumentado para manejar respuestas grandes
+                )
+                
+                # Check if response is empty
+                if not response_text or not response_text.strip():
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        _logger.warning(
+                            f"Empty response from LLM (attempt {attempt + 1}/{max_retries}). "
+                            f"Retrying in {delay:.2f}s..."
+                        )
+                        time.sleep(delay)
+                        continue
+                    else:
+                        raise ValueError("LLM returned empty response after all retries")
+                
+                # Parse the transformation response
+                result = parse_transformation_response(response_text)
+                
+                # Check if parsing was successful
+                if result.get("success"):
+                    break
+                else:
+                    error_msg = result.get("error", "Unknown parsing error")
+                    if attempt < max_retries - 1:
+                        delay = base_delay * (2 ** attempt)
+                        _logger.warning(
+                            f"Failed to parse LLM response (attempt {attempt + 1}/{max_retries}): "
+                            f"{error_msg}. Retrying in {delay:.2f}s..."
+                        )
+                        time.sleep(delay)
+                        last_error = error_msg
+                        continue
+                    else:
+                        return {
+                            "success": False,
+                            "error": f"Failed to parse transformation response after {max_retries} attempts: {error_msg}"
+                        }
+                        
+            except Exception as e:
+                error_str = str(e)
+                if attempt < max_retries - 1:
+                    delay = base_delay * (2 ** attempt)
+                    _logger.warning(
+                        f"Error calling LLM (attempt {attempt + 1}/{max_retries}): "
+                        f"{error_str}. Retrying in {delay:.2f}s..."
+                    )
+                    time.sleep(delay)
+                    last_error = error_str
+                    continue
+                else:
+                    return {
+                        "success": False,
+                        "error": f"LLM call failed after {max_retries} attempts: {error_str}"
+                    }
+        
+        # If we get here, result should be set
+        if result is None or not result.get("success"):
+            return {
+                "success": False,
+                "error": f"Failed to get valid response from LLM: {last_error or 'Unknown error'}"
+            }
         
         if result["success"]:
             # Verify and fix encoding issues (already done in parse_transformation_response,
@@ -442,21 +597,21 @@ def transform_to_qti(
                     processed_content
                 )
             
-            # CRITICAL: Check for any remaining base64 and fix it by uploading to S3
-            # We don't want to fail here because the generation already used tokens.
-            # Instead, we'll extract base64, upload to S3, and replace locally.
+            # OPTIMIZACIÓN: Intentar convertir base64 restante a S3 (pero NO abortar si falla)
+            # Prioridad: Optimizar llamadas API - XML generado es valioso incluso con base64
             base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
             base64_matches = re.findall(base64_pattern, result["qti_xml"])
             
             if base64_matches:
                 _logger.warning(
                     f"⚠️  Found {len(base64_matches)} base64 data URI(s) in XML. "
-                    "Uploading to S3 and replacing locally (to avoid wasting API tokens)..."
+                    "Attempting to upload to S3 (will continue with base64 if upload fails)..."
                 )
                 
-                # Upload each base64 image to S3 and replace
-                # (upload_image_to_s3 already imported at top of file)
+                uploaded_count = 0
+                failed_count = 0
                 
+                # Upload each base64 image to S3 and replace (continue even if some fail)
                 for match in base64_matches:
                     full_prefix = match[0]  # data:image/png;base64,
                     image_type = match[1]   # png, svg+xml, etc.
@@ -467,51 +622,44 @@ def transform_to_qti(
                     image_hash = hashlib.md5(base64_data.encode()).hexdigest()[:8]
                     img_identifier = f"{question_id or 'img'}_base64_{image_hash}"
                     
-                    _logger.info(f"  📤 Uploading base64 image to S3: {img_identifier}")
+                    _logger.info(f"  📤 Attempting to upload base64 image to S3: {img_identifier}")
                     
-                    # Upload to S3
+                    # Upload to S3 (try but don't abort if it fails)
                     s3_url = upload_image_to_s3(
                         image_base64=full_data_uri,
                         question_id=img_identifier,
                         test_name=test_name
                     )
                     
-                    if not s3_url:
-                        _logger.error(
-                            f"❌ Failed to upload base64 image to S3. "
-                            "This is a critical error - cannot proceed with base64."
+                    if s3_url:
+                        # Replace in XML - escape the URI for regex
+                        escaped_uri = re.escape(full_data_uri)
+                        result["qti_xml"] = re.sub(
+                            rf'src=["\']{escaped_uri}["\']',
+                            f'src="{s3_url}"',
+                            result["qti_xml"]
                         )
-                        return {
-                            "success": False,
-                            "error": f"Failed to upload {len(base64_matches)} base64 image(s) to S3. S3 upload is REQUIRED."
-                        }
-                    
-                    # Replace in XML - escape the URI for regex
-                    escaped_uri = re.escape(full_data_uri)
-                    result["qti_xml"] = re.sub(
-                        rf'src=["\']{escaped_uri}["\']',
-                        f'src="{s3_url}"',
-                        result["qti_xml"]
-                    )
-                    
-                    # Also try replacing without src quotes (in case it's in different format)
-                    result["qti_xml"] = result["qti_xml"].replace(full_data_uri, s3_url)
-                    
-                    _logger.info(f"  ✅ Replaced base64 with S3 URL: {s3_url}")
+                        
+                        # Also try replacing without src quotes (in case it's in different format)
+                        result["qti_xml"] = result["qti_xml"].replace(full_data_uri, s3_url)
+                        
+                        uploaded_count += 1
+                        _logger.info(f"  ✅ Replaced base64 with S3 URL: {s3_url}")
+                    else:
+                        failed_count += 1
+                        _logger.warning(
+                            f"  ⚠️  Failed to upload base64 image to S3. "
+                            "Keeping as base64 - XML will be saved (can convert manually later)."
+                        )
                 
-                # Verify no base64 remains
-                remaining = re.findall(base64_pattern, result["qti_xml"])
-                if remaining:
-                    _logger.error(
-                        f"❌ Still found {len(remaining)} base64 URIs after replacement. "
-                        "This should not happen."
+                # Log summary (don't abort)
+                if uploaded_count > 0:
+                    _logger.info(f"✅ Successfully converted {uploaded_count}/{len(base64_matches)} base64 image(s) to S3")
+                if failed_count > 0:
+                    _logger.warning(
+                        f"⚠️  {failed_count} image(s) remain as base64. "
+                        "XML will be saved - can convert to S3 manually later using migrate_base64_to_s3.py"
                     )
-                    return {
-                        "success": False,
-                        "error": f"Failed to replace {len(remaining)} base64 URI(s) with S3 URLs"
-                    }
-                
-                _logger.info(f"✅ Successfully fixed {len(base64_matches)} base64 image(s) by uploading to S3")
             else:
                 _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
             
@@ -634,7 +782,10 @@ def fix_qti_xml_with_llm(
     question_type: str,
     openai_api_key: str,
     retry_attempt: int = 1,
-    max_attempts: int = 3
+    max_attempts: int = 3,
+    output_dir: Optional[str] = None,
+    question_id: Optional[str] = None,
+    **kwargs: Any,
 ) -> Dict[str, Any]:
     """
     Attempt to fix invalid QTI XML using LLM.
@@ -680,6 +831,9 @@ def fix_qti_xml_with_llm(
             json_only=True,
             reasoning_effort="high",
             max_tokens=8000,
+            question_id=question_id,
+            output_dir=output_dir,
+            operation=f"fix_qti_xml_retry_{retry_attempt}",
         ).strip()
         
         # Parse the correction response

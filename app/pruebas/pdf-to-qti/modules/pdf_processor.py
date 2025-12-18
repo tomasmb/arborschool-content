@@ -436,14 +436,38 @@ def extract_images_and_tables(
     prompt_choice_analysis = None
     if has_visual_content:
         # Check if comprehensive analysis already included visual separation
-        visual_separation = ai_analysis_result.get("visual_separation") if ai_analysis_result.get("success") else None
+        # Robust handling: ensure ai_analysis_result is a dict
+        if not isinstance(ai_analysis_result, dict):
+            print(f"⚠️  Warning: ai_analysis_result is not a dict, type: {type(ai_analysis_result)}")
+            ai_analysis_result = {}
         
-        if visual_separation and visual_separation.get("has_prompt_visuals") is not None:
+        visual_separation_raw = None
+        if ai_analysis_result.get("success"):
+            visual_separation_raw = ai_analysis_result.get("visual_separation")
+        
+        # Ensure visual_separation is a dict, not a list
+        visual_separation = None
+        if visual_separation_raw:
+            if isinstance(visual_separation_raw, dict):
+                visual_separation = visual_separation_raw
+            elif isinstance(visual_separation_raw, list):
+                # If it's a list, try to extract dict from it
+                for item in visual_separation_raw:
+                    if isinstance(item, dict):
+                        visual_separation = item
+                        break
+                if visual_separation is None:
+                    print(f"⚠️  Warning: visual_separation is a list but no dict found inside")
+        
+        if visual_separation and isinstance(visual_separation, dict) and visual_separation.get("has_prompt_visuals") is not None:
             print("📸 Step 3: Using visual separation from comprehensive analysis (OPTIMIZED - no extra API call)")
             # Need to process this through gap detection to get bboxes
             # Create a mock analysis object for process_llm_analysis_with_gaps
             class MockAnalysis:
-                def __init__(self, visual_sep_data):
+                def __init__(self, visual_sep_data: dict):
+                    # Ensure visual_sep_data is a dict
+                    if not isinstance(visual_sep_data, dict):
+                        visual_sep_data = {}
                     self.has_prompt_visuals = visual_sep_data.get("has_prompt_visuals", False)
                     self.has_choice_visuals = visual_sep_data.get("has_choice_visuals", False)
                     self.prompt_visual_description = visual_sep_data.get("prompt_visual_description", "")
@@ -451,20 +475,44 @@ def extract_images_and_tables(
                     self.separation_confidence = visual_sep_data.get("separation_confidence", 0.8)
                     self.reasoning = visual_sep_data.get("reasoning", "")
             
-            from .image_processing.llm_analyzer import process_llm_analysis_with_gaps
-            mock_analysis = MockAnalysis(visual_separation)
-            text_blocks_for_gaps = extract_text_blocks(all_blocks)
-            prompt_choice_analysis = process_llm_analysis_with_gaps(
-                mock_analysis, page, text_blocks_for_gaps, ai_categories
-            )
-            prompt_choice_analysis["success"] = True
-            prompt_choice_analysis["confidence"] = visual_separation.get("separation_confidence", 0.8)
-            prompt_choice_analysis["ai_categories"] = ai_categories
+            try:
+                from .image_processing.llm_analyzer import process_llm_analysis_with_gaps
+                # Ensure visual_separation is a dict before passing to MockAnalysis
+                if not isinstance(visual_separation, dict):
+                    raise ValueError(f"visual_separation must be a dict, got {type(visual_separation)}")
+                
+                mock_analysis = MockAnalysis(visual_separation)
+                # extract_text_blocks expects a dict with "blocks" key, not a list
+                text_blocks_for_gaps = extract_text_blocks({"blocks": all_blocks})
+                prompt_choice_analysis = process_llm_analysis_with_gaps(
+                    mock_analysis, page, text_blocks_for_gaps, ai_categories
+                )
+                prompt_choice_analysis["success"] = True
+                prompt_choice_analysis["confidence"] = visual_separation.get("separation_confidence", 0.8) if isinstance(visual_separation, dict) else 0.8
+                prompt_choice_analysis["ai_categories"] = ai_categories
+                
+                # Only print results if processing was successful
+                print(f"🔍 Analysis results (from comprehensive analysis):")
+                print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
+                print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
+                print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
+            except Exception as e:
+                print(f"⚠️  Error procesando visual separation del análisis comprehensivo: {e}")
+                import traceback
+                traceback.print_exc()
+                prompt_choice_analysis = None  # Force fallback - will trigger separate API call below
             
-            print(f"🔍 Analysis results (from comprehensive analysis):")
-            print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
-            print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
-            print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
+            # If processing failed, activate fallback (requires separate API call)
+            if prompt_choice_analysis is None:
+                print("📸 Step 3: Fallback - Analyzing prompt vs choice visual content (separate API call)...")
+                prompt_choice_analysis = separate_prompt_and_choice_images(
+                    page, all_blocks, extract_question_text(all_blocks), ai_categories, openai_api_key
+                )
+                
+                print(f"🔍 Analysis results (from fallback):")
+                print(f"   Prompt visuals: {prompt_choice_analysis.get('has_prompt_visuals', False)}")
+                print(f"   Choice visuals: {prompt_choice_analysis.get('has_choice_visuals', False)}")
+                print(f"   Confidence: {prompt_choice_analysis.get('confidence', 0):.2f}")
         else:
             # Fallback: Separate call to analyze visual content
             print("📸 Step 3: Analyzing prompt vs choice visual content (fallback API call)...")
@@ -491,9 +539,21 @@ def extract_images_and_tables(
         # Process prompt images (essential for question understanding)
         if prompt_choice_analysis.get('has_prompt_visuals') and prompt_choice_analysis.get('prompt_bboxes'):
             prompt_bboxes = prompt_choice_analysis['prompt_bboxes']
+            # Ensure prompt_bboxes is a list
+            if not isinstance(prompt_bboxes, list):
+                print(f"⚠️  Warning: prompt_bboxes is not a list, type: {type(prompt_bboxes)}")
+                prompt_bboxes = []
+            
             print(f"📸 Processing {len(prompt_bboxes)} prompt image(s)...")
             
             for i, prompt_bbox in enumerate(prompt_bboxes):
+                # Ensure prompt_bbox is a list, not a dict
+                if isinstance(prompt_bbox, dict):
+                    prompt_bbox = prompt_bbox.get('bbox', [0, 0, 0, 0])
+                elif not isinstance(prompt_bbox, list) or len(prompt_bbox) < 4:
+                    print(f"⚠️  Warning: Invalid prompt_bbox format at index {i}, skipping")
+                    continue
+                
                 print(f"📸  - Processing prompt image #{i+1}: {prompt_bbox}")
                 # Render prompt image
                 rendered_prompt_image = render_image_area(page, prompt_bbox, prompt_bbox, i)

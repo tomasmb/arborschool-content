@@ -13,9 +13,48 @@ from __future__ import annotations
 
 import os
 import logging
+import time
+import random
 from typing import Any, Dict, List, Literal, Optional
 
 from openai import OpenAI  # type: ignore  # SDK provided in requirements.txt
+
+# Import retry handler
+try:
+    from ..utils.retry_handler import (
+        is_retryable_error,
+        extract_retry_after,
+        retry_with_backoff,
+    )
+except ImportError:
+    try:
+        from modules.utils.retry_handler import (
+            is_retryable_error,
+            extract_retry_after,
+            retry_with_backoff,
+        )
+    except ImportError:
+        # Fallback if retry handler not available
+        def is_retryable_error(e: Exception) -> bool:
+            return False
+        def extract_retry_after(e: Exception) -> Optional[float]:
+            return None
+        def retry_with_backoff(*args: Any, **kwargs: Any):
+            def decorator(func: Any) -> Any:
+                return func
+            return decorator
+
+# Import usage tracker
+try:
+    from ..utils.api_usage_tracker import log_api_usage
+    USAGE_TRACKING_AVAILABLE = True
+except ImportError:
+    try:
+        from modules.utils.api_usage_tracker import log_api_usage
+        USAGE_TRACKING_AVAILABLE = True
+    except ImportError:
+        USAGE_TRACKING_AVAILABLE = False
+        log_api_usage = None
 
 # Try to import Gemini SDK
 try:
@@ -214,12 +253,84 @@ def _call_openai(
         if "max_tokens" in kwargs:
             params["max_completion_tokens"] = kwargs.pop("max_tokens")
     
-    for key, value in kwargs.items():
+    # Filtrar parámetros internos de tracking antes de pasar a OpenAI
+    internal_params = {"_output_dir", "_question_id", "_operation"}
+    filtered_kwargs = {k: v for k, v in kwargs.items() if k not in internal_params}
+    
+    for key, value in filtered_kwargs.items():
         if is_gpt51 and key == "temperature":
             continue
         params[key] = value
     
-    response = client.chat.completions.create(**params)
+    # Retry logic with exponential backoff
+    max_retries = 3
+    base_delay = 2.0
+    max_delay = 60.0
+    last_exception: Optional[Exception] = None
+    
+    for attempt in range(max_retries):
+        try:
+            response = client.chat.completions.create(**params)
+            break
+        except Exception as e:
+            last_exception = e
+            
+            # Check if error is retryable
+            if not is_retryable_error(e):
+                _logger.error(f"Non-retryable error in OpenAI call: {e}")
+                raise
+            
+            # Don't retry on last attempt
+            if attempt == max_retries - 1:
+                _logger.error(
+                    f"Max retries ({max_retries}) reached for OpenAI call: {e}"
+                )
+                raise
+            
+            # Calculate delay
+            delay = extract_retry_after(e)
+            if delay is None:
+                # Exponential backoff with jitter
+                delay = min(base_delay * (2 ** attempt), max_delay)
+                jitter = random.uniform(0, delay * 0.1)
+                delay += jitter
+            
+            _logger.warning(
+                f"Retryable error in OpenAI call (attempt {attempt + 1}/{max_retries}): "
+                f"{e}. Retrying in {delay:.2f}s..."
+            )
+            time.sleep(delay)
+    
+    if last_exception and 'response' not in locals():
+        raise last_exception
+    
+    # Track API usage if available
+    if USAGE_TRACKING_AVAILABLE and hasattr(response, "usage"):
+        usage = response.usage
+        # Get output_dir from kwargs if provided (for per-question tracking)
+        output_dir = kwargs.get("_output_dir")
+        question_id = kwargs.get("_question_id")
+        operation = kwargs.get("_operation", "api_call")
+        
+        # Extract cached tokens safely
+        cached_tokens = 0
+        if hasattr(usage, "prompt_tokens_details"):
+            prompt_details = usage.prompt_tokens_details
+            if hasattr(prompt_details, "cached_tokens"):
+                cached_tokens = prompt_details.cached_tokens
+            elif isinstance(prompt_details, dict):
+                cached_tokens = prompt_details.get("cached_tokens", 0)
+        
+        log_api_usage(
+            provider="openai",
+            model=chosen_model,
+            input_tokens=usage.prompt_tokens,
+            output_tokens=usage.completion_tokens,
+            cached_input_tokens=cached_tokens,
+            question_id=question_id,
+            output_dir=output_dir,
+            operation=operation,
+        )
     
     content = response.choices[0].message.content
     if content is None:
@@ -228,6 +339,9 @@ def _call_openai(
     finish_reason = response.choices[0].finish_reason
     if finish_reason == "length":
         _logger.warning("Response hit token limit - may be truncated")
+        # Aún así, intentar usar el contenido parcial si existe
+        if not content or not content.strip():
+            raise RuntimeError("Response hit token limit and content is empty - increase max_tokens")
     
     if json_only:
         first_char = content.strip()[0] if content else ""
@@ -247,6 +361,9 @@ def chat_completion(
     thinking_level: str = "high",
     provider: str | None = None,
     max_tokens: int = 8192,
+    output_dir: str | None = None,
+    question_id: str | None = None,
+    operation: str = "api_call",
     **kwargs: Any,
 ) -> str:
     """Call the LLM and return the content of the first choice.
@@ -295,11 +412,18 @@ def chat_completion(
         else:
             openai_key = api_key
     
+    # Pass tracking parameters to kwargs
+    if output_dir:
+        kwargs["_output_dir"] = output_dir
+    if question_id:
+        kwargs["_question_id"] = question_id
+    kwargs["_operation"] = operation
+    
     # Try Gemini first (if provider is gemini or default)
     if provider == "gemini" or (provider is None and gemini_key):
         try:
             _logger.info("Using Gemini Preview 3")
-            return _call_gemini(
+            result = _call_gemini(
                 messages,
                 gemini_key or "",
                 json_only=json_only,
@@ -307,6 +431,8 @@ def chat_completion(
                 max_tokens=max_tokens,
                 **kwargs,
             )
+            # TODO: Track Gemini usage when response object is available
+            return result
         except Exception as e:
             _logger.warning(f"Gemini failed: {e}, falling back to OpenAI")
             # Fall through to OpenAI

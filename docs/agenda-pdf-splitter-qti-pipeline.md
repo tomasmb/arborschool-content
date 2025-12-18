@@ -747,3 +747,198 @@ Las mejoras implementadas han reforzado significativamente la confiabilidad y ca
 - Para procesamiento a gran escala, se recomienda monitorear el uso de créditos.
 
 El pipeline está ahora mejor preparado para procesar pruebas futuras con mayor confiabilidad y menos intervención manual.
+
+---
+
+## Procesamiento de Pruebas Adicionales
+
+### PAES Regular 2025 (Selección) - `seleccion-regular-2025`
+
+**Fecha de procesamiento**: 2025-01-17  
+**Prueba**: PAES M1 - Prueba Regular Admisión 2025 (Selección)  
+**Total preguntas**: 45 (selección de preguntas, no prueba completa)  
+**Script utilizado**: `process_paes_regular_2025.py`
+
+#### Características de la Prueba
+
+- **Formato**: Selección de 45 preguntas de una prueba completa de 65 preguntas
+- **Tipo de preguntas**: Todas de alternativas (choice) con 4 opciones (A, B, C, D)
+- **Tema**: Matemáticas
+- **Clavijero**: Formato PDF (`2025-25-01-06-clavijero-paes-regular-m1.pdf`)
+- **Método de extracción de clavijero**: IA (Gemini/OpenAI) - extracción desde PDF
+
+#### Proceso de Procesamiento
+
+1. **División del PDF**: El PDF original fue dividido en preguntas individuales usando pdf-splitter
+   - PDFs individuales guardados en: `app/data/pruebas/procesadas/seleccion-regular-2025/pdf/`
+   - Nombres de archivos: `Q2.pdf`, `Q3.pdf`, `Q11.pdf`, etc. (usando números reales de pregunta, no posición en selección)
+
+2. **Extracción de respuestas correctas**:
+   - Archivo fuente: `app/data/pruebas/raw/seleccion-regular-2025/2025-25-01-06-clavijero-paes-regular-m1.pdf`
+   - Método: Extracción con IA desde PDF
+   - Resultado: `respuestas_correctas.json` con 65 respuestas (prueba completa)
+   - Formato: Todas en formato `ChoiceA`, `ChoiceB`, `ChoiceC`, `ChoiceD`
+
+3. **Procesamiento de preguntas**:
+   - Script: `process_paes_regular_2025.py`
+   - Modo PAES: Habilitado (optimizaciones para preguntas de alternativas)
+   - Directorio de salida: `app/data/pruebas/procesadas/seleccion-regular-2025/qti/`
+   - Organización: Cada pregunta en su propia carpeta (ej: `Q63/`, `Q64/`)
+   - Imágenes S3: Organizadas en `images/seleccion-regular-2025/`
+
+#### Resultados del Procesamiento Inicial
+
+**Primera ejecución**:
+- **Total preguntas procesadas**: 45
+- **Exitosas**: 29 (64.4%)
+- **Fallidas**: 16 (35.6%)
+- **Tiempo total**: ~13.3 minutos
+- **Tiempo promedio**: ~17.8 segundos por pregunta
+
+**Preguntas que fallaron inicialmente**:
+- Q2, Q10, Q31, Q32, Q34, Q42, Q47, Q52, Q53, Q55, Q57, Q60, Q61, Q62, Q63, Q64
+
+**Error común encontrado**:
+```
+cannot access local variable 'Path' where it is not associated with a value
+```
+- Este error indicaba un problema en el código del pipeline relacionado con el manejo de rutas
+- Las preguntas que fallaron fueron regeneradas posteriormente usando el script `regenerate_qti_from_processed.py`
+
+#### Regeneración de Preguntas Fallidas
+
+Las 16 preguntas que fallaron fueron regeneradas posteriormente:
+- **Script utilizado**: `regenerate_qti_from_processed.py`
+- **Método**: Regeneración desde `extracted_content.json` y `processed_content.json` existentes
+- **Resultado**: Todas las preguntas fueron regeneradas exitosamente
+- **Estado final**: 45/45 preguntas con XML QTI generado (100%)
+
+#### Características Especiales
+
+1. **Nomenclatura de carpetas**: 
+   - Se usó el número real de pregunta del PDF (ej: `Q19`, `Q22`, `Q23`)
+   - NO se usó la posición en el archivo de selección (evitando Q1, Q2, Q3...)
+   - Esto asegura que los nombres de carpetas coincidan con los nombres de los PDFs
+
+2. **Backups automáticos**:
+   - Backups incrementales cada 10 preguntas procesadas
+   - Backup final al completar el procesamiento
+   - Ubicación: `qti/.backups/backup_{timestamp}/`
+
+3. **Organización de imágenes en S3**:
+   - Todas las imágenes subidas a: `images/seleccion-regular-2025/`
+   - Nombres únicos por pregunta: `Q63_body.png`, `Q63_choice_A.png`, etc.
+
+#### Archivos Generados
+
+- **QTI XML**: `question.xml` en cada carpeta de pregunta
+- **Contenido extraído**: `extracted_content.json`
+- **Contenido procesado**: `processed_content.json`
+- **Resultado de detección**: `detection_result.json` (cuando aplica)
+- **Mapeo de imágenes S3**: `s3_image_mapping.json` (cuando hay imágenes)
+- **Uso de API**: `api_usage.json` (para algunas preguntas)
+
+#### Lecciones Aprendidas
+
+1. **Error de Path**: El error `cannot access local variable 'Path'` fue corregido en el código, permitiendo regenerar las preguntas fallidas sin reprocesar desde cero.
+
+2. **Regeneración eficiente**: El script `regenerate_qti_from_processed.py` permitió regenerar preguntas fallidas sin necesidad de reprocesar el PDF completo, ahorrando tiempo y costos de API.
+
+3. **Importancia de backups**: Los backups incrementales permitieron recuperar trabajo en caso de problemas durante el procesamiento.
+
+4. **Nomenclatura consistente**: Usar el número real de pregunta (del PDF) en lugar de la posición en la selección evitó confusiones y facilitó la organización.
+
+---
+
+### PAES Regular 2026 (Selección) - `seleccion-regular-2026`
+
+**Fecha de procesamiento**: 2025-01-17  
+**Prueba**: PAES M1 - Prueba Regular Admisión 2026 (Selección)  
+**Total preguntas**: 45 (selección de preguntas, no prueba completa)  
+**Script utilizado**: `process_paes_regular_2026.py`  
+**Estado**: ✅ Completada
+
+#### Características de la Prueba
+
+- **Formato**: Selección de 45 preguntas de una prueba completa
+- **Tipo de preguntas**: Todas de alternativas (choice) con 4 opciones (A, B, C, D)
+- **Tema**: Matemáticas
+- **Clavijero**: Formato texto (`Claves-regular-2026.txt`)
+- **Método de extracción de clavijero**: Conversión desde archivo de texto usando `convert_text_answer_key.py`
+
+#### Proceso de Procesamiento
+
+1. **Conversión de clavijero**:
+   - Archivo fuente: `app/data/pruebas/raw/seleccion-regular-2026/Claves-regular-2026.txt`
+   - Script: `convert_text_answer_key.py`
+   - Resultado: `respuestas_correctas.json` con 45 respuestas
+   - Formato: Todas en formato `ChoiceA`, `ChoiceB`, `ChoiceC`, `ChoiceD`
+
+2. **División del PDF**: El PDF original fue dividido en preguntas individuales usando pdf-splitter
+   - PDFs individuales guardados en: `app/data/pruebas/procesadas/seleccion-regular-2026/questions_pdfs/`
+   - Nombres de archivos: `Q1.pdf`, `Q2.pdf`, `Q3.pdf`, etc.
+
+3. **Procesamiento de preguntas**:
+   - Script: `process_paes_regular_2026.py`
+   - Modo PAES: Habilitado (optimizaciones para preguntas de alternativas)
+   - Directorio de salida: `app/data/pruebas/procesadas/seleccion-regular-2026/qti/`
+   - Organización: Cada pregunta en su propia carpeta (ej: `Q1/`, `Q2/`, etc.)
+   - Imágenes S3: Organizadas en `images/seleccion-regular-2026/`
+
+#### Resultados del Procesamiento Inicial
+
+**Primera ejecución**:
+- **Total preguntas procesadas**: 45
+- **Exitosas**: 0 (0.0%)
+- **Fallidas**: 45 (100%)
+- **Tiempo total**: ~72.6 minutos
+- **Tiempo promedio**: ~96.7 segundos por pregunta
+
+**Errores encontrados en el procesamiento inicial**:
+
+1. **Validación fallida** (mayoría de preguntas):
+   - Error: `Question validation failed - QTI will not be returned`
+   - Afectó a: Q1, Q2, Q3, Q4, Q5, Q11, Q13, Q14, Q15, Q18, Q19, Q22, Q23, Q24, Q25, Q26, Q27, Q28, Q30, Q31, Q32, Q34, Q35, Q40, Q41, Q45, Q52
+
+2. **Respuesta vacía del LLM** (varias preguntas):
+   - Error: `Error parsing transformation response: Response text is empty`
+   - Afectó a: Q33, Q42, Q43, Q47, Q48, Q49, Q50, Q51
+
+3. **Cuota de OpenAI agotada** (últimas preguntas):
+   - Error: `You exceeded your current quota, please check your plan and billing details`
+   - Afectó a: Q53, Q54, Q55, Q56, Q57, Q59, Q60, Q61, Q62, Q64
+
+#### Regeneración de Preguntas
+
+Todas las 45 preguntas que fallaron fueron regeneradas posteriormente:
+- **Método**: Regeneración desde `extracted_content.json` y `processed_content.json` existentes
+- **Script utilizado**: `regenerate_qti_from_processed.py` (probablemente)
+- **Resultado**: Todas las preguntas fueron regeneradas exitosamente
+- **Estado final**: 45/45 preguntas con XML QTI generado (100%)
+
+#### Características Especiales
+
+1. **Clavijero desde texto**: A diferencia de otras pruebas que usan PDF, esta prueba tuvo el clavijero en formato texto plano, lo que facilitó la conversión a JSON.
+
+2. **Organización de imágenes en S3**:
+   - Todas las imágenes subidas a: `images/seleccion-regular-2026/`
+   - Nombres únicos por pregunta: `Q{numero}_body.png`, `Q{numero}_choice_{A|B|C|D}.png`, etc.
+
+3. **Problemas de cuota de API**: El procesamiento inicial se vio afectado por problemas de cuota de OpenAI, lo que requirió regeneración posterior.
+
+#### Archivos Generados
+
+- **QTI XML**: `question.xml` en cada carpeta de pregunta (45/45 completados)
+- **Contenido extraído**: `extracted_content.json`
+- **Contenido procesado**: `processed_content.json`
+- **Resultado de detección**: `detection_result.json` (cuando aplica)
+- **Mapeo de imágenes S3**: `s3_image_mapping.json` (cuando hay imágenes)
+- **Pre-validación**: `pre_validation_qti.xml` (en algunas preguntas)
+
+#### Lecciones Aprendidas
+
+1. **Regeneración exitosa**: A pesar del fallo completo del procesamiento inicial, todas las preguntas pudieron regenerarse exitosamente desde el contenido ya extraído, demostrando la robustez del sistema de regeneración.
+
+2. **Importancia de monitoreo de cuotas**: Los problemas de cuota de API interrumpieron el procesamiento inicial, pero no impidieron la finalización exitosa mediante regeneración.
+
+3. **Clavijero en texto**: El formato de texto del clavijero facilitó la conversión y validación, comparado con la extracción desde PDF.

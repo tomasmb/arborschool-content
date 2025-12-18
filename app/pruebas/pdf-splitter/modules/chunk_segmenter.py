@@ -7,6 +7,7 @@ with fallback to OpenAI's direct PDF upload if Gemini unavailable.
 import os
 import json
 import base64
+import re
 from typing import List, Dict, Any, Optional
 
 # Try to import Gemini SDK
@@ -161,22 +162,31 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 - Each number represents a distinct question
 - Multiple questions can appear on the same page
 - A single question can span multiple pages
-- You should find approximately 60-65 questions in a typical test
+- **IMPORTANT - Test Types**:
+  - **Invierno tests**: Always have 65 questions (Q1 through Q65, all present)
+  - **Regular/Seleccion tests**: Always have 45 questions, but numbers are NOT sequential!
+    - In selecciones, questions keep their original numbers from the full test
+    - Example: A seleccion might have Q2, Q3, Q4, Q6, Q19, Q23, Q45, etc.
+    - Gaps in numbering are NORMAL and EXPECTED in selecciones
+    - You should find exactly 45 questions, but their numbers may skip (Q1, Q2, Q5, Q10, etc.)
+- **A question NEVER spans more than 5 pages** - if a segment would span more, you've missed intermediate question numbers!
 
 **How to Identify Question Boundaries**:
-1. Look for question numbers: "1.", "2.", "3.", etc.
-2. Each question includes:
+1. **Systematically scan EVERY page** from page 3 onwards for question numbers
+2. Look for question numbers: "1.", "2.", "3.", "4.", "5.", etc. - search for patterns like "^\d+\." or standalone numbers followed by periods
+3. Each question includes:
    - The question text/prompt
    - Answer choices (typically A), B), C), D))
    - Any images, tables, or diagrams specific to that question
-3. A question ends when the next question number appears OR at the end of the document
-4. If a question references content above it (like a table or passage), include that content in the question segment UNLESS it's used by multiple questions
+4. **A question ALWAYS ends when the next question number appears** - if you see "7." and then later "8.", everything between them belongs to question 7
+5. If a question references content above it (like a table or passage), include that content in the question segment UNLESS it's used by multiple questions
 
 **CRITICAL - Do NOT**:
-- Combine multiple numbered questions into one segment
-- Skip question numbers (if you see 1., 2., 4., you're missing 3.)
+- Combine multiple numbered questions into one segment - THIS IS THE MOST COMMON ERROR
+- Skip question numbers - if you find "2.", "3.", "4.", "6." you MUST look harder for "5."
 - Include unrelated content (cover pages, general instructions) as questions
-- Stop after finding just a few questions - continue through the entire document
+- Stop after finding just a few questions - you MUST scan the ENTIRE document page by page
+- Allow any single question to span more than 5 pages - if it does, you've missed question numbers in between
 
 **Example**: If you see:
   "1. What is 2+2? A) 3 B) 4 C) 5 D) 6
@@ -216,9 +226,13 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
    - Link questions to their references
 
 5. **Validation**: 
-   - Count your questions - you should have approximately 60-65
+   - Count your questions:
+     - **Invierno tests**: You MUST find exactly 65 questions (Q1 through Q65, all present, sequential)
+     - **Regular/Seleccion tests**: You MUST find exactly 45 questions (numbers may skip, gaps are normal)
+   - **If you find fewer than expected, you have DEFINITELY missed some - scan again!**
+   - **For Invierno only**: Check for gaps - if you have Q2, Q3, Q4, Q6 but no Q5, you missed Q5
+   - **For Selecciones**: Gaps are EXPECTED - Q2, Q3, Q4, Q6 is valid (Q5 is not in this seleccion)
    - Ensure every question is self-contained
-   - Ensure no question numbers are skipped
 
 ## IDs and Markers
 
@@ -227,7 +241,16 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 - Unrelated: UC1, UC2, UC3... (cover pages, general instructions)
 - Start markers: First words of each segment - for questions, use the question number and first few words
 
-**CRITICAL REMINDER**: You must find and segment EVERY numbered question in the document. Do not stop after finding just a few questions. Scan the ENTIRE document systematically.
+**CRITICAL REMINDER**: 
+- You must find and segment EVERY numbered question in the document
+- Do not stop after finding just a few questions
+- Scan the ENTIRE document systematically, page by page
+- **Expected counts**: 
+  - If this is an "invierno" test, you MUST find exactly 65 questions (Q1 through Q65, all sequential)
+  - If this is a "seleccion" or "regular" test, you MUST find exactly 45 questions (numbers may skip)
+- If you only find 5-10 questions, you have DEFINITELY missed many more - keep searching!
+- Question numbers may appear as "1.", "2.", "3." or "1)", "2)", "3)" or just "1", "2", "3" followed by text
+- A single question typically spans 1-3 pages MAX - if a segment spans 10+ pages, you've combined multiple questions
 
 Return the JSON with all segments properly identified and associated.
 """
@@ -349,6 +372,91 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
     """
     # Process the PDF
     results = segment_pdf_document(pdf_path)
+    
+    # Detectar tipo de prueba desde el nombre del archivo/ruta
+    pdf_name_lower = pdf_path.lower()
+    is_seleccion = 'seleccion' in pdf_name_lower
+    is_invierno = 'invierno' in pdf_name_lower
+    expected_count = 45 if is_seleccion else (65 if is_invierno else None)
+    test_type = "seleccion" if is_seleccion else ("invierno" if is_invierno else "unknown")
+    
+    # VALIDACIÓN POST-SEGMENTACIÓN: Detectar problemas comunes
+    questions = results.get('questions', [])
+    total_questions = len(questions)
+    
+    # Verificar cantidad de preguntas según el tipo de prueba
+    if expected_count:
+        if total_questions < expected_count * 0.7:  # Menos del 70% esperado
+            print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
+            print(f"   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
+        elif total_questions < expected_count:
+            print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
+            print(f"   Faltan {expected_count - total_questions} pregunta(s).")
+        elif total_questions == expected_count:
+            print(f"\n✅ Correcto: Se encontraron {total_questions} pregunta(s) (esperado para {test_type})")
+        else:
+            print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s), más de las {expected_count} esperadas para {test_type}")
+    elif total_questions < 10:
+        print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s)")
+        print(f"   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
+        print(f"   Revisa el PDF - debería haber 45 (seleccion) o 65 (invierno) preguntas.")
+    
+    # Verificar si alguna pregunta abarca demasiadas páginas (indicador de que se combinaron múltiples)
+    oversized_questions = []
+    for q in questions:
+        page_count = len(q.get('page_nums', []))
+        if page_count > 5:
+            oversized_questions.append({
+                'id': q.get('id', 'unknown'),
+                'pages': page_count,
+                'page_nums': q.get('page_nums', [])[:10]  # Primeras 10 páginas para mostrar
+            })
+    
+    if oversized_questions:
+        print(f"\n⚠️  ADVERTENCIA: {len(oversized_questions)} pregunta(s) abarcan más de 5 páginas:")
+        for q_info in oversized_questions:
+            print(f"   - {q_info['id']}: {q_info['pages']} páginas (páginas {q_info['page_nums']}...)")
+            print(f"     Esto sugiere que se combinaron múltiples preguntas. Busca números de pregunta intermedios.")
+    
+    # Verificar gaps en la numeración SOLO para pruebas Invierno (en selecciones, gaps son normales)
+    if is_invierno and not is_seleccion:
+        question_numbers = []
+        for q in questions:
+            q_id = q.get('id', '')
+            # Extraer número de Q1, Q2, etc.
+            match = re.match(r'Q(\d+)', q_id)
+            if match:
+                question_numbers.append(int(match.group(1)))
+        
+        if question_numbers:
+            question_numbers.sort()
+            gaps = []
+            for i in range(len(question_numbers) - 1):
+                current = question_numbers[i]
+                next_num = question_numbers[i + 1]
+                if next_num - current > 1:
+                    missing = list(range(current + 1, next_num))
+                    gaps.extend(missing)
+            
+            if gaps:
+                print(f"\n⚠️  ADVERTENCIA (Invierno): Se detectaron gaps en la numeración de preguntas:")
+                print(f"   Preguntas encontradas: {question_numbers[:10]}{'...' if len(question_numbers) > 10 else ''}")
+                print(f"   Números faltantes detectados: {gaps[:10]}{'...' if len(gaps) > 10 else ''}")
+                print(f"   En pruebas Invierno, TODAS las preguntas Q1-Q65 deben estar presentes.")
+    elif is_seleccion:
+        # Para selecciones, los gaps son normales - solo informar
+        question_numbers = []
+        for q in questions:
+            q_id = q.get('id', '')
+            match = re.match(r'Q(\d+)', q_id)
+            if match:
+                question_numbers.append(int(match.group(1)))
+        
+        if question_numbers:
+            question_numbers.sort()
+            min_q = min(question_numbers)
+            max_q = max(question_numbers)
+            print(f"\nℹ️  Selección detectada: Preguntas encontradas van de Q{min_q} a Q{max_q} (gaps son normales)")
     
     # Save results if output file specified
     if output_file:

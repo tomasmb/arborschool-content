@@ -88,6 +88,7 @@ def process_all_questions(
     
     # Process each question
     generated_folders_with_xml = []  # Track folders with successfully generated XMLs
+    backup_batch_size = 10  # OPTIMIZACIÓN: Crear backup cada N preguntas procesadas
     
     for i, pdf_path in enumerate(question_pdfs, 1):
         # Use actual question number from PDF filename (e.g., "Q19" from "Q19.pdf")
@@ -104,22 +105,47 @@ def process_all_questions(
                 output_dir=str(output_dir),
                 openai_api_key=None,  # Use from .env
                 paes_mode=paes_mode,
+                skip_if_exists=True,  # OPTIMIZACIÓN: Saltarse si ya existe XML válido
             )
             
             elapsed = time.time() - start_time
             results["processing_times"].append(elapsed)
             
             if result.get("success"):
-                print(f"   ✅ Success ({elapsed:.1f}s)")
+                status_msg = "Skipped (exists)" if result.get("skipped") else "Success"
+                regenerated_msg = " (regenerated)" if result.get("regenerated") else ""
+                print(f"   ✅ {status_msg}{regenerated_msg} ({elapsed:.1f}s)")
                 results["successful"].append({
                     "question": question_id,
                     "time": elapsed,
-                    "title": result.get("title", "Unknown")
+                    "title": result.get("title", "Unknown"),
+                    "skipped": result.get("skipped", False),
+                    "regenerated": result.get("regenerated", False),
                 })
                 # Check if XML was actually generated
                 xml_file = output_dir / "question.xml"
-                if xml_file.exists():
+                if xml_file.exists() and not result.get("skipped"):
                     generated_folders_with_xml.append(question_id)
+                    
+                    # OPTIMIZACIÓN: Crear backup incremental cada N preguntas
+                    if len(generated_folders_with_xml) % backup_batch_size == 0:
+                        print(f"   💾 Creando backup incremental...")
+                        try:
+                            backup_metadata = {
+                                "test_name": "seleccion-regular-2026",
+                                "batch_number": len(generated_folders_with_xml) // backup_batch_size,
+                                "total_processed": i,
+                            }
+                            # Crear backup solo de las últimas N preguntas generadas
+                            last_batch = generated_folders_with_xml[-backup_batch_size:]
+                            backup_dir = create_qti_backup(
+                                output_dir=Path(output_base_dir),
+                                generated_folders=last_batch,
+                                backup_metadata=backup_metadata,
+                            )
+                            print(f"   ✅ Backup incremental creado: {backup_dir.name}")
+                        except Exception as e:
+                            print(f"   ⚠️  Error creando backup incremental: {e}")
             else:
                 print(f"   ❌ Failed: {result.get('error', 'Unknown error')} ({elapsed:.1f}s)")
                 results["failed"].append({

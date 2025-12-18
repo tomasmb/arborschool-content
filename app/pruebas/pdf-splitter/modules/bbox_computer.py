@@ -147,7 +147,14 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
                 page_width = page.rect.width
                 page_height = page.rect.height
             parsed_marker = parse_start_marker(segment["start_marker"])
-            res = find_start_block_index(page, {"marker": parsed_marker, "id": segment.get("id", "")}, segment, original_page, doc)
+            try:
+                res = find_start_block_index(page, {"marker": parsed_marker, "id": segment.get("id", "")}, segment, original_page, doc)
+            except ValueError as e:
+                # Segment not found - log and skip instead of aborting
+                print(f"⚠️  WARNING: {str(e)} - Skipping this segment")
+                segment["_bbox_compute_failed"] = True
+                segment["_bbox_failure_reason"] = str(e)
+                continue  # Skip this segment but continue with others
 
             # Handle tuple results to move page
             if isinstance(res, tuple) and res[0] in ("previous_page", "previous_previous_page", "next_page", "next_next_page"):
@@ -168,9 +175,11 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
                 start_page = original_page
                 start_block_idx = res
             else:
-                # If block finding fails (res is None), we can't process this segment.
-                # This is a critical error, as the segment start is invalid.
-                raise Exception(f"❌ CRITICAL: Could not find start block for segment '{segment.get('id', '')}'")
+                # If block finding fails (res is None), log and skip
+                print(f"⚠️  WARNING: Could not find start block for segment '{segment.get('id', '')}' - Skipping")
+                segment["_bbox_compute_failed"] = True
+                segment["_bbox_failure_reason"] = "find_start_block_index returned None"
+                continue  # Skip this segment but continue with others
 
             # Register boundary for this segment on start_page
             blocks = doc.load_page(start_page - 1).get_text("dict", sort=True)["blocks"]
