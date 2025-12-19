@@ -31,6 +31,7 @@ def upload_image_to_s3(
     path_prefix: str = "images/",
     test_name: Optional[str] = None,
     max_retries: int = 3,
+    force_upload: bool = False,  # NUEVO: Forzar re-subida incluso si existe
 ) -> Optional[str]:
     """
     Upload a base64-encoded image to S3 with retry logic and return the public URL.
@@ -122,13 +123,15 @@ def upload_image_to_s3(
             s3_client = session.client("s3")
             
             # Check if object already exists (avoid re-uploading)
-            try:
-                s3_client.head_object(Bucket=bucket_name, Key=s3_key)
-                # Object exists, return URL without re-uploading
-                s3_url = f"https://{bucket_name}.s3.{aws_region}.amazonaws.com/{s3_key}"
-                _logger.info(f"Image already exists in S3 (reusing): {s3_url}")
-                return s3_url
-            except ClientError as e:
+            # Skip check if force_upload is True
+            if not force_upload:
+                try:
+                    s3_client.head_object(Bucket=bucket_name, Key=s3_key)
+                    # Object exists, return URL without re-uploading
+                    s3_url = f"https://{bucket_name}.s3.{aws_region}.amazonaws.com/{s3_key}"
+                    _logger.info(f"Image already exists in S3 (reusing): {s3_url}")
+                    return s3_url
+                except ClientError as e:
                 error_code = e.response.get("Error", {}).get("Code", "")
                 if error_code != "404":  # 404 means doesn't exist, which is fine
                     # Other error, might be transient

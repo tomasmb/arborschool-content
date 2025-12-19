@@ -850,6 +850,178 @@ Las 16 preguntas que fallaron fueron regeneradas posteriormente:
 
 ---
 
+## PAES Invierno 2025 - `Prueba-invierno-2025`
+
+**Fecha de procesamiento**: 2025-12-19  
+**Prueba**: PAES M1 - Prueba de Invierno Admisión 2025  
+**Total preguntas**: 65  
+**Script utilizado**: `process_prueba_invierno_2025.py`
+
+### Características de la Prueba
+
+- **Formato**: Prueba completa de 65 preguntas
+- **Tipo de preguntas**: Todas de alternativas (choice) con 4 opciones (A, B, C, D)
+- **Tema**: Matemáticas
+- **Organización**: Imágenes en S3 bajo `images/Prueba-invierno-2025/`
+
+### Proceso de Procesamiento
+
+1. **División del PDF**: El PDF original fue dividido en preguntas individuales
+   - PDFs individuales guardados en: `app/data/pruebas/procesadas/Prueba-invierno-2025/pdf/`
+   - Nombres de archivos: `Q1.pdf`, `Q2.pdf`, ..., `Q65.pdf`
+
+2. **Procesamiento inicial**:
+   - Script: `process_prueba_invierno_2025.py`
+   - Modo PAES: Habilitado
+   - Directorio de salida: `app/data/pruebas/procesadas/Prueba-invierno-2025/qti/`
+   - Estado inicial: 65/65 preguntas procesadas
+
+### Problemas Identificados y Corregidos
+
+#### 1. Duplicación de Imágenes entre Preguntas
+
+**Problema**: 15 preguntas (Q6, Q7, Q8, Q9, Q29, Q31, Q33, Q35, Q43, Q45, Q46, Q48, Q51, Q54, Q56) mostraban la misma imagen (la de Q14).
+
+**Causa**: El `question_id` usado para nombrar imágenes en S3 se derivaba del título de la pregunta, que podía ser genérico ("question"), causando que múltiples preguntas compartieran el mismo nombre de imagen.
+
+**Solución**: Modificado `main.py` para priorizar el nombre del directorio/archivo sobre el título:
+- Prioridad 1: Nombre del directorio de salida (e.g., "Q14")
+- Prioridad 2: Nombre del archivo PDF sin extensión (e.g., "Q14")
+- Prioridad 3: Título de la pregunta (fallback)
+
+**Scripts de corrección**:
+- `fix_invierno_2025_images_local.py`: Corrección inicial de imágenes duplicadas
+- Corrección aplicada a todas las preguntas afectadas
+
+#### 2. Intercambio de Imágenes en Alternativas (Q38)
+
+**Problema**: Las imágenes de las alternativas A, B, C, D estaban en posiciones incorrectas (A↔B, C↔D).
+
+**Causa**: El orden de extracción de imágenes del PDF no coincidía con el orden esperado de las alternativas.
+
+**Solución**: 
+- Implementado mapeo explícito: `order_map = [1, 0, 3, 2]` para reordenar correctamente
+- Extensión de bbox para A y B: ±50px arriba/abajo para incluir leyendas de ejes
+- Extensión de bbox para C y D: ±30px arriba/abajo
+- Ajustes finos adicionales según especificaciones del usuario
+- **Solución final**: Uso de imágenes proporcionadas por el usuario para todas las alternativas
+
+**Scripts de corrección**:
+- `fix_q38_swapped_and_extended`: Intercambio y extensión inicial
+- `fix_q38_final_bbox.py`: Ajustes finos de bbox
+- `fix_q38_with_provided_images.py`: Uso de imágenes proporcionadas
+
+#### 3. Problemas de Bbox y Recorte
+
+**Q27**: 
+- Problema: Imagen cortada por la izquierda e incluía parte de la pregunta arriba
+- Solución: Ajustes de bbox y finalmente uso de imagen proporcionada por el usuario
+
+**Q50**:
+- Problema: Faltaba imagen del enunciado y texto incompleto
+- Solución: 
+  - Extracción manual de imagen del enunciado
+  - Restauración del texto completo desde el PDF original
+  - Reposicionamiento de imagen después de "tal como se representa en la siguiente figura:"
+
+**Q53**:
+- Problema: Imagen capturaba toda la página en lugar de solo el mapa de coordenadas
+- Solución: Recorte específico de la página 1 (donde está el mapa) y finalmente uso de imagen proporcionada por el usuario
+
+#### 4. Reutilización de Imágenes Existentes en S3
+
+**Problema**: Las imágenes no se actualizaban aunque se ejecutaran scripts de corrección debido a que el código reutilizaba imágenes existentes en S3.
+
+**Causa**: `s3_uploader.py` verifica si un objeto ya existe antes de subirlo y devuelve la URL existente sin re-subir.
+
+**Solución**: Creado script `force_upload_images.py` que usa timestamps en los nombres de archivo para forzar nuevas subidas cuando se corrigen imágenes.
+
+### Archivos de Corrección Creados
+
+1. `fix_invierno_2025_images_local.py`: Corrección inicial de imágenes duplicadas
+2. `fix_remaining_image_issues.py`: Corrección de problemas específicos (Q27, Q38, Q50, Q53, Q65)
+3. `fix_q50_manual.py`: Procesamiento manual de Q50
+4. `fix_final_image_issues.py`: Correcciones finales (v1)
+5. `fix_final_issues_v2.py`: Correcciones finales (v2)
+6. `fix_issues_final_v3.py`: Correcciones finales (v3)
+7. `force_upload_images.py`: Forzar re-subida con timestamps
+8. `fix_q38_final_bbox.py`: Ajustes finos de bbox para Q38
+9. `fix_q38_with_provided_images.py`: Uso de imágenes proporcionadas para Q38
+
+### Estado Final
+
+**Preguntas corregidas**:
+- ✅ Q27: Imagen proporcionada por usuario (regla con escalas)
+- ✅ Q38: 4 imágenes proporcionadas por usuario (gráficos con leyendas completas)
+- ✅ Q50: Texto completo restaurado, imagen del enunciado agregada y reposicionada
+- ✅ Q53: Imagen proporcionada por usuario (solo mapa de coordenadas)
+- ✅ Q6, Q7, Q8, Q9, Q29, Q31, Q33, Q35, Q43, Q45, Q46, Q48, Q51, Q54, Q56: Imágenes únicas corregidas
+
+**Total preguntas procesadas**: 65/65 (100%)  
+**Preguntas con correcciones manuales**: 19  
+**Tiempo total de corrección**: ~4 horas
+
+### Lecciones Aprendidas
+
+1. **Importancia del question_id único**: El uso de títulos genéricos causó duplicación masiva de imágenes. La priorización de nombres de archivo/directorio es crítica.
+
+2. **Validación post-procesamiento**: Se necesita validación automática para detectar:
+   - Imágenes duplicadas entre preguntas
+   - Intercambios de imágenes en alternativas
+   - Bbox que no incluyen leyendas completas
+
+3. **Manejo de S3**: La reutilización de imágenes existentes es útil para optimización, pero necesita un mecanismo para forzar re-subida cuando se corrigen problemas.
+
+4. **Casos especiales**: Algunas preguntas requieren procesamiento manual o ajustes específicos que no se pueden automatizar completamente.
+
+### Mejoras Implementadas en el Pipeline
+
+**Cambios en el código para prevenir problemas futuros:**
+
+1. **Mejora en generación de question_id** (`main.py` líneas 317-340):
+   - Prioriza siempre nombre de archivo/directorio sobre título
+   - Si el título es genérico ("question", "pregunta"), genera ID único con hash del contenido
+   - Previene duplicación masiva de imágenes
+
+2. **Flag force_upload en S3** (`s3_uploader.py`):
+   - Agregado parámetro `force_upload` a `upload_image_to_s3()`
+   - Permite forzar re-subida cuando se corrigen problemas
+   - Útil para scripts de corrección manual
+
+3. **Script de validación de unicidad** (`validate_image_uniqueness.py`):
+   - Detecta automáticamente imágenes duplicadas entre preguntas
+   - Detecta imágenes duplicadas dentro de una pregunta
+   - Detecta nombres genéricos que pueden causar problemas
+   - Genera reporte JSON con todos los problemas encontrados
+
+**Uso del script de validación:**
+```bash
+python app/pruebas/pdf-to-qti/scripts/validate_image_uniqueness.py \
+  --test-name Prueba-invierno-2025 \
+  --output-dir app/data/pruebas/procesadas/Prueba-invierno-2025/qti
+```
+
+### Mejoras Propuestas para Futuras Versiones
+
+1. Detección automática de intercambios de imágenes en alternativas
+2. Márgenes automáticos para gráficos (bbox extendido automáticamente)
+3. Logging mejorado con hash de imágenes para debugging
+4. Integración del script de validación en el pipeline principal
+
+### Archivos Generados
+
+- **QTI XML**: `question.xml` en cada carpeta de pregunta (65/65)
+- **Contenido extraído**: `extracted_content.json`
+- **Contenido procesado**: `processed_content.json`
+- **Mapeo de imágenes S3**: `s3_image_mapping.json` (cuando aplica)
+- **Imágenes S3**: Organizadas en `images/Prueba-invierno-2025/`
+
+### Estado: ✅ COMPLETADO
+
+Todas las preguntas han sido procesadas y corregidas. Las imágenes están correctamente asignadas y las correcciones manuales han sido aplicadas.
+
+---
+
 ### PAES Regular 2026 (Selección) - `seleccion-regular-2026`
 
 **Fecha de procesamiento**: 2025-01-17  

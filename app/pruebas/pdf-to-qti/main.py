@@ -314,10 +314,32 @@ def process_single_question_pdf(
         # Transform to QTI XML
         print("🔄 Transforming to QTI XML...")
         print("📤 CRITICAL: All images will be uploaded to S3 (required, no base64 fallback)")
-        # Generate question ID from title if available
-        question_id = processed_content.get('title', 'question')
+        # Generate question ID from output directory name or PDF filename (priority order)
+        # CRITICAL: Always prioritize file/directory names to avoid duplicate image names
+        question_id = None
+        output_path_obj = Path(output_dir)
+        if output_path_obj.name and output_path_obj.name != output_dir:
+            # Extract from output directory name (e.g., "Q14" from ".../Q14/")
+            question_id = output_path_obj.name
+        elif input_pdf_path:
+            # Extract from PDF filename (e.g., "Q14" from "Q14.pdf")
+            pdf_path_obj = Path(input_pdf_path)
+            question_id = pdf_path_obj.stem  # Gets filename without extension
+        else:
+            # Fallback to title, but add hash if title is generic to ensure uniqueness
+            title = processed_content.get('title', 'question')
+            if title.lower() in ['question', 'pregunta', '']:
+                # Generate unique ID based on content hash to avoid duplicates
+                import hashlib
+                content_str = str(processed_content.get('plain_text', ''))[:200]
+                content_hash = hashlib.md5(content_str.encode()).hexdigest()[:8]
+                question_id = f"question_{content_hash}"
+                print(f"⚠️  Warning: Using generic title, generated unique ID: {question_id}")
+            else:
+                question_id = title
+        
+        # Clean question_id for use in S3
         if question_id:
-            # Clean question_id for use in S3
             question_id = re.sub(r'[^a-zA-Z0-9_-]', '_', question_id)[:50]
         
         # Extract test name from output_dir path (e.g., "prueba-invierno-2026" from path)

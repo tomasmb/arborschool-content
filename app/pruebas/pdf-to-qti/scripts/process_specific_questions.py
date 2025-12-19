@@ -93,6 +93,7 @@ def main():
                 output_dir=str(output_dir),
                 openai_api_key=None,
                 paes_mode=True,
+                skip_if_exists=True,  # Skip if XML already exists
             )
             
             if result.get('success'):
