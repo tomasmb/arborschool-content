@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="homa-ir-inequality" title="Condición de insulinemia para ausencia de resistencia a la insulina" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El índice HOMA-IR es un modelo que sirve para evaluar la resistencia a la insulina y se mide utilizando la insulinemia y la glucemia, ambas medidas en ayunas, de acuerdo con la siguiente igualdad:</p>
+    <p>
+      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <mrow>
+          <mtext>HOMA-IR</mtext>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mtext>insulinemia</mtext>
+              <mo>(</mo>
+              <mtext>µU/mL</mtext>
+              <mo>)</mo>
+              <mo>⋅</mo>
+              <mtext>glucemia</mtext>
+              <mo>(</mo>
+              <mtext>mmol/L</mtext>
+              <mo>)</mo>
+            </mrow>
+            <mrow>
+              <mn>22,5</mn>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </math>
+    </p>
+    <p>En la siguiente tabla se presenta la interpretación de los distintos valores del índice HOMA-IR:</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Valores</th>
+            <th>Interpretación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inferiores a 1,96</td>
+            <td>Sin resistencia a la insulina</td>
+          </tr>
+          <tr>
+            <td>Entre 1,96 a 3</td>
+            <td>Sospecha de resistencia a la insulina</td>
+          </tr>
+          <tr>
+            <td>Superiores que 3</td>
+            <td>Resistencia a la insulina</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>Si una persona tiene una glucemia de <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5,6</mn><mo> </mo><mtext>mmol/L</mtext></mrow></math>, ¿cuál de las siguientes desigualdades representa la condición que debe tener su insulinemia (<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>), medida en <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>µU/mL</mtext></math>, para que la interpretación de su índice HOMA-IR sea sin resistencia a la insulina?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&lt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>22,5</mn>
+              </mrow>
+              <mn>5,6</mn>
+            </mfrac>
+          </mrow>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&lt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>5,6</mn>
+              </mrow>
+              <mn>22,5</mn>
+            </mfrac>
+          </mrow>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&gt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>22,5</mn>
+              </mrow>
+              <mn>5,6</mn>
+            </mfrac>
+          </mrow>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&gt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>5,6</mn>
+              </mrow>
+              <mn>22,5</mn>
+            </mfrac>
+          </mrow>
+        </math>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+  <qti-response-processing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct.xml" />
+</qti-assessment-item>

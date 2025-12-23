@@ -47,10 +47,24 @@ These rules guide AI and human contributors working in this repo.
 
 - When editing Python, prefer **updating existing helpers** and cleaning up unused code over adding near-duplicates.
 - When asked to change behaviour that touches temarios or standards, first check how that interacts with:
-  - `app/temarios/parsing.py`
-  - `docs/standards-from-temarios.md`
+ - `app/temarios/parsing.py`
+ - `docs/standards-from-temarios.md`
 - Do not add new external dependencies without a clear reason and without updating `pyproject.toml`.
 - When creating or updating prompts for **Gemini 3 Pro**, follow
-  `docs/gemini-3-pro-prompt-engineering-best-practices.md` and prefer concise,
-  direct instructions with explicit output format and thinking level.
+ `docs/gemini-3-pro-prompt-engineering-best-practices.md` and prefer concise,
+ direct instructions with explicit output format and thinking level.
+
+### 6. File deletion and backup rules (CRITICAL)
+
+- **NEVER delete or remove XML files or QTI folders without explicit user authorization**.
+  - Before deleting any `.xml` file or QTI folder, you MUST ask the user for explicit confirmation.
+  - Do not assume that files can be deleted even if they appear to be duplicates or incorrectly named.
+  - When renaming or reorganizing files, verify what will be lost before making changes.
+- For selection-based tests (e.g., 45-question tests with non-sequential numbering):
+  - Always use the **actual question number** (e.g., Q19, Q22, Q23) for folder and file names, NOT the position in the selection file (e.g., Q11, Q12, Q13).
+  - The folder name must match the PDF filename exactly (e.g., `Q19.pdf` → `Q19/` folder).
+- **Automatic backups**: When the QTI pipeline generates XML files, create a timestamped backup of all generated QTI folders.
+  - Backup location: `{output_dir}/.backups/backup_{timestamp}/`
+  - Backup should include all QTI folders with XML files generated in that run.
+  - Backups should only be deleted after explicit user confirmation that everything is correct.
 
