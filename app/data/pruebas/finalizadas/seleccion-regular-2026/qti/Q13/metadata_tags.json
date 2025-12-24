@@ -1,0 +1,32 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-NUM-03-01",
+      "relevance": "primary",
+      "reasoning": "Para decidir qué combinación de teclas genera 10^(10), el estudiante debe interpretar la expresión exponencial como una potencia de base 10 con exponente entero no negativo (10 ceros) y relacionarla con la cantidad total de ceros que añaden los botones [00] y [000].",
+      "atom_title": "Potencias de base racional con exponente entero no negativo",
+      "atom_eje": "numeros",
+      "atom_standard": "M1-NUM-03"
+    }
+  ],
+  "general_analysis": "La pregunta exige comprender que 10^(10) es el número 1 seguido de 10 ceros y, a partir de ello, contar cuántos ceros aporta cada pulsación de los botones [00] y [000] para alcanzar exactamente esos 10 ceros. Implica manejo básico de potencias de 10 y razonamiento combinatorio sencillo sobre sumas de ceros, más que cálculos numéricos complejos.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.45,
+    "analysis": "El problema exige traducir una expresión en notación científica/potencias de 10 (10^10) a una cantidad de ceros y luego descomponer ese número de ceros en grupos de 3 (botón 000) y de 2 (botón 00). No es solo aplicar un algoritmo rutinario: hay que interpretar el significado de 10^10, contar correctamente los ceros (1 seguido de 10 ceros) y razonar combinatoriamente cuántas veces usar cada botón. Implica varios pasos y coordinación de representaciones (potencias, número escrito, secuencia de teclas), pero sin requerir demostraciones formales ni razonamiento abstracto complejo."
+  },
+  "feedback": {
+    "general_guidance": "Para resolver ejercicios como este, conviene seguir tres pasos: (1) Traducir la potencia de 10 a su forma desarrollada: 10^n es un 1 seguido de n ceros. Por ejemplo, 10^4 = 10000 (1 y 4 ceros). (2) Identificar cuántos ceros aporta cada botón de la calculadora: [000] agrega 3 ceros, [00] agrega 2 ceros, y el [1] solo coloca el dígito inicial. (3) Plantear una pequeña suma: ¿con cuántos grupos de 3 ceros y cuántos grupos de 2 ceros llego exactamente al número de ceros que necesito? Puedes pensarlo como una ecuación sencilla: 3·a + 2·b = número de ceros deseado, donde a es el número de veces que pulsas [000] y b el número de veces que pulsas [00]. Finalmente, verifica siempre el resultado escribiendo mentalmente el número completo y contando los ceros para evitar errores de conteo.",
+    "per_option_feedback": {
+      "ChoiceA": "Presionar una vez [1] y siete veces [000] significa que, después del 1 inicial, estás agregando 7 grupos de 3 ceros. Eso da 7 × 3 = 21 ceros, es decir, el número formado sería 1 seguido de 21 ceros, que corresponde a 10^21. El error aquí es no relacionar correctamente la cantidad de ceros con el exponente de la potencia: para 10^10 solo necesitas 10 ceros, no 21. Antes de elegir una opción, cuenta explícitamente cuántos ceros estás añadiendo con cada pulsación para comprobar si coincide con el exponente.",
+      "ChoiceB": "Presionar una vez [1] y ocho veces [00] implica que, tras el 1, agregas 8 grupos de 2 ceros. Eso produce 8 × 2 = 16 ceros, por lo que el número resultante sería 1 seguido de 16 ceros, es decir, 10^16. Esta opción suele elegirse si se confunde el exponente 10 con otra cantidad o si no se verifica el total de ceros al final. Para evitar este fallo, recuerda: cada [00] suma exactamente 2 ceros; multiplica el número de pulsaciones por 2 y compáralo con los 10 ceros que necesitas para 10^10.",
+      "ChoiceC": "Presionar una vez [1], dos veces [000] y dos veces [00] es la combinación correcta porque reparte los 10 ceros que requiere 10^10 en grupos de 3 y de 2 de forma exacta. Dos pulsaciones de [000] aportan 2 × 3 = 6 ceros, y dos pulsaciones de [00] aportan 2 × 2 = 4 ceros; en total 6 + 4 = 10 ceros. Así, el número que se forma es un 1 seguido de 10 ceros, que es precisamente 10^10. Este procedimiento muestra una buena comprensión de la relación entre potencias de 10 y la cantidad de ceros, y de cómo descomponer ese número de ceros en sumas de 3 y 2.",
+      "ChoiceD": "Presionar una vez [1], tres veces [000] y una vez [00] genera más ceros de los necesarios. Tres pulsaciones de [000] dan 3 × 3 = 9 ceros, y una pulsación de [00] añade 2 ceros más, para un total de 11 ceros. El número resultante sería 1 seguido de 11 ceros, es decir, 10^11, no 10^10. Este error suele venir de sumar mal 9 + 2 o de no comprobar al final si el total de ceros coincide con el exponente deseado. Una buena práctica es escribir mentalmente la suma de ceros (por ejemplo, 3 + 3 + 3 + 2) y verificar que el resultado sea exactamente 10 antes de decidirte por la opción."
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "issues": [],
+    "score": 5
+  }
+}

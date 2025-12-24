@@ -1,0 +1,40 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-ALG-01-01",
+      "relevance": "primary",
+      "reasoning": "La tarea central es traducir la situación verbal (fichas blancas valen +1 punto y fichas negras −1 punto en cada partida) a una expresión simbólica que represente el puntaje total. El estudiante debe identificar las constantes (1 y −1), las cantidades (número de fichas de cada tipo) y las operaciones (suma y multiplicación) para construir la expresión algebraica correcta entre las alternativas dadas.",
+      "atom_title": "Traducción bidireccional entre lenguaje natural y algebraico",
+      "atom_eje": "algebra_y_funciones",
+      "atom_standard": "M1-ALG-01"
+    },
+    {
+      "atom_id": "A-M1-NUM-01-08",
+      "relevance": "secondary",
+      "reasoning": "El problema exige interpretar el contexto de juego en términos de números enteros (ganar +1, perder −1) y expresar el puntaje como suma de ganancias y pérdidas. Esto implica modelar la situación con enteros, aunque no se pida calcular explícitamente el valor numérico final.",
+      "atom_title": "Modelado de situaciones con números enteros",
+      "atom_eje": "numeros",
+      "atom_standard": "M1-NUM-01"
+    }
+  ],
+  "general_analysis": "La pregunta evalúa principalmente la capacidad de modelar una situación contextual con una expresión algebraica: para cada partida, el puntaje se representa como (número de fichas blancas · 1) + (número de fichas negras · −1), y luego se suman las tres partidas. El estudiante debe reconocer el rol del signo negativo asociado a las fichas negras y distinguir entre expresiones que usan correctamente la suma con −1 y aquellas que manejan mal los signos o ignoran las fichas negativas. La demanda cognitiva se centra en la traducción de lenguaje natural a lenguaje simbólico y en el manejo conceptual de números enteros en contexto, más que en cálculos complejos.",
+  "difficulty": {
+    "level": "Medium",
+    "score": 0.45,
+    "analysis": "La tarea exige traducir una situación de juego a una expresión algebraica con números enteros. El estudiante debe: (1) interpretar el valor de cada ficha (blanca = +1, negra = −1), (2) asociar correctamente la cantidad de fichas de cada tipo en cada partida con productos (por ejemplo, 5·1 y 5·−1), (3) sumar los resultados de las tres partidas. No requiere cálculos complejos, pero sí coordinar varios pasos y comprender el significado del signo negativo y de la multiplicación por números negativos. Por eso la demanda cognitiva es de nivel medio: hay interpretación y modelización, no solo un cálculo directo de un paso."
+  },
+  "feedback": {
+    "general_guidance": "Para resolver problemas como este, conviene seguir estos pasos:\n1. **Identificar qué representa cada elemento**: aquí, ficha blanca = +1 punto, ficha negra = −1 punto.\n2. **Modelar cada parte de la situación**: para cada partida, escribir el puntaje como (número de fichas blancas · 1) + (número de fichas negras · −1).\n3. **Respetar los signos**: una ficha negra no se resta después, sino que ya vale −1, por eso se multiplica por −1.\n4. **Sumar los resultados parciales**: juntar las expresiones de todas las partidas con signos de suma.\nSi dudas, puedes calcular el puntaje de cada partida por separado y verificar que la expresión que elijas dé esos mismos resultados.",
+    "per_option_feedback": {
+      "ChoiceA": "Opción A: (5·1−(5·−1))+(5·1−(4·−1))+(4·1−(2·−1))\n\nEn esta expresión se está **restando el valor de las fichas negras**, pero además esas fichas ya tienen valor negativo (−1). Eso produce una doble negación: −(5·−1) equivale a +5, como si las fichas negras sumaran puntos. El error conceptual es pensar que hay que \"restar\" las fichas negras, en lugar de asignarles directamente el valor −1 y sumarlas. Por eso esta opción no representa correctamente el puntaje.",
+      "ChoiceB": "Opción B (correcta): (5·1+5·−1)+(5·1+4·−1)+(4·1+2·−1)\n\nAquí se modela cada partida de forma adecuada:\n- Partida 1: 5 fichas blancas → 5·1, 5 fichas negras → 5·−1. El puntaje es 5·1 + 5·−1.\n- Partida 2: 5 blancas → 5·1, 4 negras → 4·−1.\n- Partida 3: 4 blancas → 4·1, 2 negras → 2·−1.\nLuego se **suman** los puntajes de las tres partidas. Se respeta que las fichas blancas aportan +1 y las negras −1, sin hacer dobles restas. Esta expresión representa correctamente el puntaje final del jugador.",
+      "ChoiceC": "Opción C: (5·−1+5·1)+(5·−1+4·1)+(4·−1+2·1)\n\nAunque el orden de los sumandos no altera el resultado (5·−1+5·1 es lo mismo que 5·1+5·−1), aquí el problema es que **no se respetan las cantidades de fichas** en todas las partidas:\n- En la partida 2, se escribe 5·−1 y 4·1, como si hubiera 5 fichas negras y 4 blancas, pero según el enunciado son 5 blancas y 4 negras.\n- En la partida 3, se escribe 4·−1 y 2·1, invirtiendo también los roles de blancas y negras.\nEl error típico aquí es **confundir o intercambiar las cantidades de fichas blancas y negras** al construir la expresión.",
+      "ChoiceD": "Opción D: (5·1+5·1)+(5·1+4·1)+(4·1+2·1)\n\nEn esta opción se está suponiendo que **todas las fichas valen +1**, porque solo se multiplica por 1 y nunca por −1. Es como si las fichas negras también sumaran puntos. El error conceptual es ignorar que las fichas negras representan −1 punto. Esta expresión solo contaría el número total de fichas, no el puntaje real del juego."
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "issues": [],
+    "score": 5
+  }
+}

@@ -89,6 +89,12 @@ Q1, Q2, Q5, Q6, Q7, Q11, Q12, Q13, Q14, Q15, Q17, Q18, Q21, Q22, Q24, Q27, Q28, 
 
 ### prueba-invierno-2026 (1 pregunta)
 Q1
+Q8 (Regenerado), Q65 (Regenerado)
+
+### Preguntas Reprocesadas (Correction Batch)
+- **Q13 (2025)**: Regenerada con feedback detallado.
+- **Q57 (2025)**: Regenerada con feedback detallado.
+- **Q9-Q202 (2026)**: En proceso final.
 
 ---
 *Documento generado automáticamente por Antigravity Agent.*

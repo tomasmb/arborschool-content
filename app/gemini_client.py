@@ -1,10 +1,13 @@
-from __future__ import annotations
-
 import os
+import base64
+import requests
+import io
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, List, Union, Dict, Optional
+from PIL import Image
 
 import google.generativeai as genai
+from google.api_core import exceptions as google_exceptions
 from dotenv import load_dotenv
 
 # Temporary adapter until google_gemini3_pro package is available
@@ -73,6 +76,75 @@ class GeminiClient:
         return type("Response", (), {"text": text})()
 
 
+class OpenAIClient:
+    """Lightweight client for OpenAI API with thinking support."""
+
+    def __init__(self, api_key: str, model: str = "gpt-5.1") -> None:
+        self._api_key = api_key
+        self._model = model
+        self._url = "https://api.openai.com/v1/chat/completions"
+
+    def _pil_to_base64(self, pil_img: Image.Image) -> str:
+        buffered = io.BytesIO()
+        # Ensure image is in a web-compatible format
+        if pil_img.mode in ("RGBA", "P"):
+            pil_img = pil_img.convert("RGB")
+        pil_img.save(buffered, format="JPEG")
+        return base64.b64encode(buffered.getvalue()).decode("utf-8")
+
+    def generate_text(
+        self,
+        prompt: Union[str, List[Any]],
+        *,
+        response_mime_type: Optional[str] = None,
+        temperature: float = 0.0,
+        **kwargs: Any,
+    ) -> str:
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json"
+        }
+
+        messages = []
+        content = []
+
+        # Handle multimodal prompt
+        if isinstance(prompt, list):
+            for part in prompt:
+                if isinstance(part, str):
+                    content.append({"type": "text", "text": part})
+                elif hasattr(part, "save"):  # Assume PIL Image
+                    base64_img = self._pil_to_base64(part)
+                    content.append({
+                        "type": "image_url",
+                        "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}
+                    })
+        else:
+            content.append({"type": "text", "text": str(prompt)})
+
+        messages.append({"role": "user", "content": content})
+
+        data = {
+            "model": self._model,
+            "messages": messages,
+            "temperature": temperature,
+        }
+
+        # Reasoning-capable models use max_completion_tokens
+        if "gpt-5" in self._model or "o1" in self._model:
+            data["max_completion_tokens"] = kwargs.get("max_tokens", 4000)
+        else:
+            data["max_tokens"] = kwargs.get("max_tokens", 4000)
+
+        if response_mime_type == "application/json":
+            data["response_format"] = {"type": "json_object"}
+
+        response = requests.post(self._url, headers=headers, json=data, timeout=300)
+        response.raise_for_status()
+        
+        return response.json()["choices"][0]["message"]["content"]
+
+
 ENV_API_KEY = "GEMINI_API_KEY"
 
 
@@ -104,6 +176,10 @@ class GeminiService:
     def __init__(self, config: GeminiConfig) -> None:
         self._config = config
         self._client = GeminiClient(api_key=config.api_key, model=config.model)
+        
+        # Initialize OpenAI fallback client
+        openai_key = os.getenv("OPENAI_API_KEY")
+        self._openai = OpenAIClient(api_key=openai_key) if openai_key else None
 
     @property
     def config(self) -> GeminiConfig:
@@ -145,8 +221,28 @@ class GeminiService:
         if temperature is not None:
             request_kwargs["temperature"] = temperature
 
-        response = self._client.generate_text(prompt, **request_kwargs)
-        return getattr(response, "text", str(response))
+        try:
+            response = self._client.generate_text(prompt, **request_kwargs)
+            return getattr(response, "text", str(response))
+        except google_exceptions.ResourceExhausted as e:
+            if self._openai:
+                print(f"\n⚠️ Gemini Quota Exhausted (429). Falling back to OpenAI ({self._openai._model})...")
+                try:
+                    return self._openai.generate_text(
+                        prompt, 
+                        response_mime_type=response_mime_type,
+                        temperature=temperature or 0.0,
+                        **kwargs
+                    )
+                except Exception as oa_err:
+                    print(f"❌ OpenAI Fallback also failed: {oa_err}")
+                    raise oa_err
+            else:
+                print("❌ Gemini Quota Exhausted and no OpenAI key found.")
+                raise e
+        except Exception as e:
+            # Re-raise other exceptions
+            raise e
 
 
 def load_default_gemini_service() -> GeminiService:

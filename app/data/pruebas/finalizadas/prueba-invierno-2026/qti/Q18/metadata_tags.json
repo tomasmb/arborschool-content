@@ -1,0 +1,48 @@
+{
+  "selected_atoms": [
+    {
+      "atom_id": "A-M1-NUM-03-01",
+      "relevance": "primary",
+      "reasoning": "Para resolver el problema se modela el crecimiento de las bacterias como una potencia de base 2 (duplicación cada hora) con exponente 24, partiendo de 100 bacterias iniciales: 100·2^24. Esto requiere interpretar y usar potencias como multiplicación reiterada de un número racional con exponente entero no negativo.",
+      "atom_title": "Potencias de base racional con exponente entero no negativo",
+      "atom_eje": "numeros",
+      "atom_standard": "M1-NUM-03"
+    },
+    {
+      "atom_id": "A-M1-ALG-01-01",
+      "relevance": "secondary",
+      "reasoning": "Es necesario traducir el enunciado verbal 'se duplica cada hora, partiendo de 100 bacterias, durante 24 horas' a una expresión algebraica del tipo 100·2^24, identificando la constante inicial y la operación de duplicar como multiplicación por 2 repetida.",
+      "atom_title": "Traducción bidireccional entre lenguaje natural y algebraico",
+      "atom_eje": "algebra_y_funciones",
+      "atom_standard": "M1-ALG-01"
+    },
+    {
+      "atom_id": "A-M1-NUM-03-17",
+      "relevance": "secondary",
+      "reasoning": "El contexto es un crecimiento (población de bacterias) que se modela mediante una expresión exponencial, lo que implica usar potencias para describir una situación de crecimiento repetido en el tiempo.",
+      "atom_title": "Modelado de situaciones con potencias y raíces",
+      "atom_eje": "numeros",
+      "atom_standard": "M1-NUM-03"
+    }
+  ],
+  "general_analysis": "La pregunta exige reconocer un proceso de crecimiento por duplicación como un modelo exponencial discreto y expresarlo simbólicamente. El estudiante debe identificar que cada hora se multiplica por 2, que esto ocurre 24 veces y que hay un valor inicial de 100, construyendo así la expresión 100·2^24. Además, debe discriminar entre distintas expresiones de potencia propuestas en las opciones, lo que implica comprensión de la estructura base–exponente y del significado del exponente como número de repeticiones.",
+  "difficulty": {
+    "level": "Low",
+    "score": 0.25,
+    "analysis": "La tarea principal es reconocer y aplicar un modelo de crecimiento exponencial sencillo: se parte de una cantidad inicial (100 bacterias) y se duplica cada hora. El estudiante solo necesita identificar que el número de bacterias después de t horas es 100·2^t y sustituir t = 24. No requiere varios pasos complejos, ni interpretación de gráficos, ni justificación formal; es un ejercicio de aplicación directa de una fórmula de progresión geométrica/crecimiento exponencial. La posible dificultad está en no confundir el número de horas con el número de duplicaciones y en escribir correctamente la expresión algebraica, pero la demanda cognitiva sigue siendo baja."
+  },
+  "feedback": {
+    "general_guidance": "En problemas de crecimiento (o decrecimiento) exponencial, identifica siempre:\n1) La cantidad inicial (en este caso, 100 bacterias).\n2) El factor de cambio por unidad de tiempo (aquí, se duplica → factor 2 por cada hora).\n3) El número de intervalos de tiempo transcurridos (24 horas → 24 duplicaciones).\n\nCon eso, la expresión general suele ser:\nCantidad(t) = Cantidad_inicial · (factor)^(número_de_intervalos)\n\nLuego sustituyes el tiempo dado y, si la pregunta es de opción múltiple, comparas tu expresión con las alternativas. Ten cuidado de no sumar ni restar 1 al exponente sin justificarlo, y de no cambiar la cantidad inicial (100) por otra (como 200) sin motivo.",
+    "per_option_feedback": {
+      "ChoiceA": "200^(25): Esta opción sugiere que la cantidad inicial fuera 200 y que el proceso se repitiera 25 veces. Hay dos errores aquí: 1) El cultivo comienza con 100 bacterias, no 200; 2) El número de horas (24) indica 24 duplicaciones, no 25. Probablemente aquí se confundió el dato inicial y se añadió una duplicación extra. Recuerda: si empieza con 100 y se duplica cada hora, la base debe ser 100 y el exponente debe coincidir con el número de horas (24).",
+      "ChoiceB": "200^(24): En esta opción se mantiene el número de intervalos (24), pero se cambia la cantidad inicial a 200. Esto suele venir de pensar que, como se duplica, se pasa de 100 a 200 y se toma 200 como nueva base, olvidando que la fórmula general debe partir de la cantidad inicial real. La expresión correcta debe conservar el 100 como factor inicial: 100·2^(24).",
+      "ChoiceC": "100·2^(24): Esta es la opción correcta. Se parte de 100 bacterias y, como se duplican cada hora, el factor de crecimiento por hora es 2. Después de 24 horas, se han producido 24 duplicaciones, por lo que la cantidad se expresa como 100·2^(24). No es necesario sumar ni restar 1 al exponente, porque a las 0 horas hay 100·2^0 = 100, y a las 24 horas hay 100·2^(24).",
+      "ChoiceD": "100·2^(25): Aquí se respeta la cantidad inicial (100) y el factor de duplicación (2), pero se usa un exponente 25 en lugar de 24. Este error suele venir de contar mal el número de intervalos de tiempo, como si hubiera una duplicación adicional. Observa la secuencia: a las 0 h hay 100, a la 1 h hay 100·2^1, a las 2 h hay 100·2^2, …, a las 24 h hay 100·2^(24). El exponente siempre coincide con el número de horas transcurridas desde el inicio."
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "issues": [],
+    "score": 5
+  }
+}
