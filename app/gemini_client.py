@@ -17,7 +17,7 @@ class GeminiClient:
 
     def generate_text(
         self,
-        prompt: str,
+        prompt: str | list[Any],
         *,
         thinking_level: str | None = None,
         response_mime_type: str | None = None,
@@ -31,15 +31,21 @@ class GeminiClient:
         if response_mime_type:
             generation_config["response_mime_type"] = response_mime_type
 
-        # Note: thinking_level may not be directly supported in google-generativeai
-        # This is a temporary adapter
-        # Use longer timeout for large prompts (e.g., validation with many atoms)
-        # Default timeout is ~10 minutes, we extend it to 20 minutes for large validations
+        # Relax safety filters to avoid false positives in math questions
+        safety_settings = {
+            genai.types.HarmCategory.HARM_CATEGORY_HARASSMENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+            genai.types.HarmCategory.HARM_CATEGORY_HATE_SPEECH: genai.types.HarmBlockThreshold.BLOCK_NONE,
+            genai.types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+            genai.types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: genai.types.HarmBlockThreshold.BLOCK_NONE,
+        }
+
+        # Use longer timeout for large prompts
         request_options = {"timeout": 1200}  # 20 minutes (1200 seconds)
         response = self._model.generate_content(
             prompt,
             generation_config=generation_config if generation_config else None,
             request_options=request_options,
+            safety_settings=safety_settings,
         )
         
         # Handle cases where response might be filtered or blocked
@@ -105,7 +111,7 @@ class GeminiService:
 
     def generate_text(
         self,
-        prompt: str,
+        prompt: str | list[Any],
         *,
         thinking_level: str | None = None,
         response_mime_type: str | None = None,
@@ -123,6 +129,7 @@ class GeminiService:
         - `thinking_level`: Controls reasoning depth (default: "high").
         - `response_mime_type`: e.g. "application/json" for structured output.
         - `temperature`: use `0.0` for deterministic structured output.
+        - `prompt`: Can be a string or a list of parts (including images).
         """
 
         # Note: thinking_level may not be directly supported in google-generativeai SDK
