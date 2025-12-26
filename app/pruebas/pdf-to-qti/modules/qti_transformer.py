@@ -51,6 +51,8 @@ ENCODING_FIXES = {
     'producif3n': 'producción',
     'tecnolf3gica': 'tecnológica',
     'cumplif3': 'cumplió',
+    'Funcif3n': 'Función',
+    'razf3n': 'razón',
     'me1s': 'más',
     'd1a': 'día',
     'd1as': 'días',
@@ -74,6 +76,7 @@ ENCODING_FIXES = {
     'produciredan': 'producirían',
     'comenzare1': 'comenzará',
     'restaurare1': 'restaurará',
+    'vaceda': 'vacía',
     
     # Comillas mal codificadas
     'ab bajabb': '"baja"',
