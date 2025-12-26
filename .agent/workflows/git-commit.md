@@ -17,7 +17,16 @@ description: Generate a safe, high-quality commit with minimal user intervention
    - If any check fails, STOP and ask the user to fix issues.
 
 4. **Auto-generate the commit message**
-   - Create a message with an emoji, conventional commit prefix (feat, fix, etc.), and a summary.
+   - Create a message **ALWAYS** starting with an emoji, followed by conventional commit prefix (feat, fix, etc.), and a summary.
+   - **Mandatory Emoji Mapping**:
+     - feat: ✨
+     - fix: 🐛
+     - docs: 📚
+     - style: 💎
+     - refactor: 📦
+     - perf: 🚀
+     - test: 🚨
+     - chore: 🛠
    - Example: `🛠 chore: update workflows`
 
 5. **Create the commit**
