@@ -175,9 +175,33 @@ $$SEE = 110 × \sqrt{1 - 0.72} = 110 × 0.53 ≈ 58 \text{ puntos}$$
 
 ---
 
-## 5. Diseño de la Prueba: 18 Preguntas
+## 5. Arquitecturas de Prueba: 3 Opciones
 
-### 5.1 Distribución por Eje (Proporcional al PAES)
+> [!IMPORTANT]
+> Se presentan 3 modelos de arquitectura, ordenados de menor a mayor complejidad técnica. Cada uno tiene trade-offs específicos.
+
+---
+
+### 5.1 Comparativa Rápida
+
+| Criterio | Opción 1: Forma Fija | Opción 2: MST | Opción 3: CAT |
+|----------|---------------------|---------------|---------------|
+| **Preguntas al alumno** | 18 fijas | 16 (8+8 adaptadas) | 10-15 variables |
+| **Preguntas a seleccionar** | 18 | 32 | Todo el banco |
+| **Complejidad técnica** | Baja | Media | Alta |
+| **Precisión teórica** | Buena | Mejor | Óptima |
+| **Precisión en extremos** | Limitada | Mejorada | Excelente |
+| **Requiere calibración IRT** | No | No (inicial) | Sí |
+| **Lógica de enrutamiento** | No | Sí (simple) | Sí (compleja) |
+| **Tiempo implementación** | Días | 1-2 semanas | Meses |
+
+---
+
+### 5.2 Opción 1: Forma Fija (18 preguntas)
+
+**Descripción:** Todos los alumnos responden las mismas 18 preguntas, seleccionadas para cubrir proporcionalmente los 4 ejes temáticos.
+
+**Distribución por Eje:**
 
 | Eje | % PAES | Preguntas | Desglose |
 |-----|--------|-----------|----------|
@@ -187,18 +211,145 @@ $$SEE = 110 × \sqrt{1 - 0.72} = 110 × 0.53 ≈ 58 \text{ puntos}$$
 | Geometría | 19% | **3** | 1 Low + 2 Med |
 | **Total** | 100% | **18** | 6 Low + 12 Med |
 
-### 5.2 Criterios de Selección de Preguntas
+**Criterios de Selección:**
+1. Cubrir átomos "núcleo" (alta frecuencia, muchos prerrequisitos)
+2. Tener validez diagnóstica (identifican déficits específicos)
+3. Evitar dependencia visual compleja (facilita UI mobile)
+4. No ser redundantes (máximo 1 pregunta por átomo)
 
-Para cada eje, seleccionar preguntas que:
+**Ventajas:**
+- ✅ Implementación inmediata
+- ✅ Sin lógica condicional
+- ✅ Fácil de mantener
 
-1. **Cubran átomos "núcleo"** (alta frecuencia, muchos prerrequisitos)
-2. **Tengan validez diagnóstica** (identifican déficits específicos)
-3. **Eviten dependencia visual compleja** (facilita UI mobile)
-4. **No sean redundantes** (máximo 1 pregunta por átomo)
+**Limitaciones:**
+- ⚠️ Menor precisión en extremos (muy alto/muy bajo)
+- ⚠️ Algunas preguntas "desperdiciadas" para alumnos de nivel muy diferente
 
-### 5.3 Átomos Prioritarios por Eje
+---
 
-#### Números (5 preguntas)
+### 5.3 Opción 2: MST - Multistage Test (16 preguntas)
+
+**Descripción:** Prueba en 2 etapas. La Etapa 1 (8 preguntas) determina qué módulo de Etapa 2 recibe el alumno.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  ETAPA 1: ROUTING (8 preguntas iguales para todos)          │
+│  - 2 Álgebra, 2 Números, 2 Geometría, 2 Prob/Est           │
+│  - Dificultad: 60% Medium, 40% Low                          │
+└─────────────────────────────────────────────────────────────┘
+                              ↓
+         Según puntaje Etapa 1 (0-3, 4-6, 7-8 correctas)
+                              ↓
+┌─────────────────┬─────────────────┬─────────────────────────┐
+│  RUTA A (bajo)  │  RUTA B (medio) │  RUTA C (medio-alto)    │
+│  8 preguntas    │  8 preguntas    │  8 preguntas            │
+│  Low / Low-Med  │  Medium         │  Medium / Medium+       │
+└─────────────────┴─────────────────┴─────────────────────────┘
+```
+
+**Distribución por Módulo:**
+
+| Módulo | ALG | NUM | GEO | PROB | Total |
+|--------|-----|-----|-----|------|-------|
+| R1 (Routing) | 2 | 2 | 2 | 2 | 8 |
+| A2/B2/C2 (Etapa 2) | 3 | 2 | 1 | 2 | 8 |
+| **Total por alumno** | 5 | 4 | 3 | 4 | **16** |
+
+**Regla de Enrutamiento:**
+- 0-3 correctas en R1 → Ruta A (bajo)
+- 4-6 correctas en R1 → Ruta B (medio)
+- 7-8 correctas en R1 → Ruta C (alto)
+
+**Ventajas:**
+- ✅ Mejor precisión que forma fija (especialmente en extremos)
+- ✅ 16 preguntas vs 18 (experiencia más corta)
+- ✅ Experiencia personalizada sin complejidad de CAT
+
+**Limitaciones:**
+- ⚠️ Requiere 32 preguntas seleccionadas (8 + 8×3)
+- ⚠️ Lógica de enrutamiento a implementar
+- ⚠️ Requiere taggear habilidades (RES/MOD/REP/ARG) en preguntas
+
+**Blueprint JSON (arquitectura):**
+```json
+{
+  "test_id": "paes_m1_mst16_diagnostic",
+  "total_items": 16,
+  "structure": {
+    "stage_1": {
+      "module_id": "R1",
+      "num_items": 8,
+      "axes_distribution": {"ALG": 2, "NUM": 2, "GEO": 2, "PROB": 2}
+    },
+    "stage_2": {
+      "modules": [
+        {"module_id": "A2", "route": "low", "num_items": 8},
+        {"module_id": "B2", "route": "medium", "num_items": 8},
+        {"module_id": "C2", "route": "high", "num_items": 8}
+      ]
+    }
+  },
+  "routing_rule": {
+    "cuts": {"low": "0-3", "medium": "4-6", "high": "7-8"}
+  }
+}
+```
+
+---
+
+### 5.4 Opción 3: CAT - Computerized Adaptive Testing
+
+**Descripción:** Cada pregunta se selecciona en tiempo real según las respuestas anteriores. El test termina cuando se alcanza precisión suficiente.
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Pregunta 1 → Respuesta → Estimar θ₁                        │
+│       ↓                                                      │
+│  Seleccionar pregunta óptima para θ₁                        │
+│       ↓                                                      │
+│  Pregunta 2 → Respuesta → Estimar θ₂                        │
+│       ↓                                                      │
+│  ... (repetir hasta SEM < 0.30 o máximo 15 preguntas)       │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Características:**
+- Cada alumno recibe preguntas diferentes
+- El algoritmo maximiza información en cada paso
+- Típicamente 10-15 preguntas para precisión equivalente a 30+ fijas
+
+**Ventajas:**
+- ✅ Máxima eficiencia (menos preguntas, igual precisión)
+- ✅ Excelente precisión en todos los niveles
+- ✅ Experiencia rápida (~15-20 min)
+
+**Limitaciones:**
+- ⚠️ Requiere calibración IRT de todo el banco (parámetros a, b, c)
+- ⚠️ Motor de cálculo en tiempo real
+- ⚠️ Datos de ~500+ respuestas por ítem para calibrar
+- ⚠️ Complejidad técnica alta
+
+**Estado:** ❌ No viable para MVP. Considerar como evolución futura.
+
+---
+
+### 5.5 Recomendación
+
+| Escenario | Opción Recomendada |
+|-----------|-------------------|
+| MVP inmediato (1-2 semanas) | **Opción 1: Forma Fija** |
+| V2 con más tiempo (1 mes) | **Opción 2: MST** |
+| Largo plazo con datos | **Opción 3: CAT** |
+
+> [!NOTE]
+> Las 3 opciones son **incrementales**: se puede empezar con Forma Fija, migrar a MST cuando se tenga más tiempo, y eventualmente a CAT cuando se tengan datos de calibración.
+
+---
+
+## 5.6 Átomos Prioritarios por Eje (Aplica a Opciones 1 y 2)
+
+#### Números (4-5 preguntas)
 | Prioridad | Átomo | Justificación |
 |-----------|-------|---------------|
 | 1 | NUM-01-25 | Resolución de problemas (integrador) |
@@ -207,7 +358,7 @@ Para cada eje, seleccionar preguntas que:
 | 4 | NUM-01-09 | Problemas con enteros |
 | 5 | NUM-02-06 | Cálculo directo de porcentaje |
 
-#### Álgebra y Funciones (6 preguntas)
+#### Álgebra y Funciones (5-6 preguntas)
 | Prioridad | Átomo | Justificación |
 |-----------|-------|---------------|
 | 1 | ALG-03-06 | Problemas con ecuaciones lineales |
