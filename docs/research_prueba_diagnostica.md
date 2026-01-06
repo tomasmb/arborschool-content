@@ -661,25 +661,96 @@ Además del puntaje y diagnóstico por eje, el sistema debe **registrar internam
 
 ---
 
-## 7. Validación y Calibración Futura
+## 7. Validación y Calibración
 
-### 7.1 Fase Piloto (Sin datos)
-- Usar fórmulas teóricas (Spearman-Brown, regresión estimada)
-- Comunicar al alumno que es "predicción preliminar"
+### 7.1 Protocolo de Validación en 3 Fases
 
-### 7.2 Post-PAES Real
-- Recolectar puntajes PAES reales de usuarios
-- Calcular correlación empírica
-- Ajustar coeficientes α, β
-- Actualizar pesos de dificultad
+#### Fase 1: Pilotaje de "Caja Blanca" (N = 30-50 alumnos)
 
-### 7.3 Métricas de Éxito
+**Objetivo:** Verificar inteligibilidad de enunciados y calcular fiabilidad inicial.
+
+**Métrica clave:** Alfa de Cronbach
+- Esperado: α ≥ 0.80
+- Si α < 0.80: Identificar ítems con correlación ítem-total < 0.15 y reemplazarlos
+
+**Acciones:**
+- Aplicar prueba a grupo piloto
+- Recopilar feedback cualitativo sobre claridad
+- Ajustar redacción si hay confusiones recurrentes
+
+---
+
+#### Fase 2: Análisis de Ítems y Calibración (N > 200 alumnos)
+
+**Objetivo:** Calcular parámetros psicométricos y filtrar ítems problemáticos.
+
+**Criterios de calidad por ítem:**
+
+| Métrica | Rango Aceptable | Acción si fuera de rango |
+|---------|-----------------|--------------------------|
+| Dificultad (p-value) | 0.30 – 0.70 | Ítems muy fáciles (>0.90) o muy difíciles (<0.20) no discriminan |
+| Discriminación (DI) | ≥ 0.30 | Calcular: Éxito grupo superior (27%) – Éxito grupo inferior (27%) |
+| Correlación ítem-total | > 0.15 | Ítems con correlación negativa deben eliminarse |
+| Pseudo-azar (c) | ~0.25 | PAES tiene 4 opciones, por diseño c ≈ 0.25 |
+
+**Acciones:**
+- Calcular matriz de correlaciones
+- Identificar ítems que "no funcionan"
+- Reemplazar o ajustar ítems problemáticos
+
+---
+
+#### Fase 3: Equiparación con Escala PAES (Post-PAES real)
+
+**Objetivo:** Ajustar la tabla de conversión con datos reales.
+
+**Método: Equiparación Lineal**
+
+```
+Puntaje_PAES = A × Aciertos_diagnóstica + B
+```
+
+Donde A y B se calculan mediante regresión para minimizar el Error Estándar de Predicción (SEE).
+
+**Proceso:**
+1. Aplicar diagnóstica a alumnos que luego rinden PAES real
+2. Recopilar puntajes PAES oficiales
+3. Calcular regresión: diagnóstica → PAES
+4. Ajustar tablas de conversión
+
+---
+
+### 7.2 Métricas de Éxito
 
 | Métrica | Objetivo Mínimo | Objetivo Ideal |
 |---------|-----------------|----------------|
-| Correlación r | 0.80 | 0.90 |
-| Error medio | < 80 pts | < 50 pts |
+| Alfa de Cronbach | 0.80 | 0.85+ |
+| Correlación r (con PAES) | 0.80 | 0.90 |
+| Error medio predicción | < 80 pts | < 50 pts |
+| Discriminación promedio | DI ≥ 0.30 | DI ≥ 0.40 |
 | Tiempo promedio | < 45 min | 30 min |
+
+---
+
+### 7.3 Niveles de Competencia M1 (Nomenclatura)
+
+| Nivel | Código | Rango PAES | Descripción |
+|-------|--------|------------|-------------|
+| Inicial | CM0 | < 450 | Manejo parcial de contenidos básicos |
+| Básico | CM1A | 450-550 | Contenidos básicos con errores |
+| Intermedio | CM1B | 550-650 | Buen dominio de M1 |
+| Avanzado | CM2 | 650-750 | Dominio sólido y consistente |
+| Superior | CM3 | 750+ | Alto desempeño |
+
+---
+
+### 7.4 Recomendaciones de Implementación (LMS)
+
+1. **Control de tiempo:** Limitar a 40-45 minutos para mantener validez de medición
+2. **Aleatorización de opciones:** Rotar alternativas (A, B, C, D) por alumno
+3. **Feedback inmediato:** Mostrar puntaje proyectado + 3 ejes a reforzar
+4. **Sin penalización por error:** Igual que PAES real
+5. **Una pregunta por pantalla:** Evitar scroll y facilitar UI mobile
 
 ---
 
