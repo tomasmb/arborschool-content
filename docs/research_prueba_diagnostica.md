@@ -270,6 +270,42 @@ Para cada eje, seleccionar preguntas que:
 
 > "Este es un **estimado** basado en 18 preguntas representativas. Tu puntaje real puede variar ±60 puntos. A medida que practiques más, afinaremos tu predicción."
 
+### 6.4 Diagnóstico por Átomo (Datos Internos)
+
+Además del puntaje y diagnóstico por eje, el sistema debe **registrar internamente** qué átomos domina el alumno y cuáles no. Esto permite:
+
+1. **Planes de estudio personalizados**: Priorizar contenido donde el alumno falló
+2. **Seguimiento de progreso**: Medir mejora átomo por átomo
+3. **Recomendaciones inteligentes**: "Debes reforzar: Ecuaciones Lineales"
+
+**Estructura de datos sugerida:**
+
+```python
+{
+    "alumno_id": "abc123",
+    "fecha_diagnostico": "2026-01-06",
+    "puntaje_predicho": {"min": 620, "max": 680},
+    "atomos": {
+        "A-M1-NUM-01-25": {"correcto": True, "dominio": "alto"},
+        "A-M1-ALG-03-06": {"correcto": False, "dominio": "bajo"},
+        "A-M1-GEO-01-13": {"correcto": True, "dominio": "alto"},
+        # ... más átomos
+    },
+    "ejes": {
+        "numeros": {"correctas": 4, "total": 5, "porcentaje": 80},
+        "algebra_y_funciones": {"correctas": 3, "total": 6, "porcentaje": 50},
+        # ...
+    },
+    "recomendaciones": [
+        "Reforzar: Ecuaciones Lineales (ALG-03)",
+        "Reforzar: Función Cuadrática (ALG-06)"
+    ]
+}
+```
+
+> [!IMPORTANT]
+> Este diagnóstico por átomo es la base para ofrecer **aprendizaje adaptativo** en el futuro.
+
 ---
 
 ## 7. Validación y Calibración Futura
@@ -297,9 +333,52 @@ Para cada eje, seleccionar preguntas que:
 ## 8. Próximos Pasos
 
 1. **[INMEDIATO]** Seleccionar las 18 preguntas específicas del banco
-2. **[CORTO PLAZO]** Implementar lógica de cálculo de puntaje
+2. **[CORTO PLAZO]** Implementar lógica de cálculo de puntaje y almacenamiento de diagnóstico por átomo
 3. **[MEDIANO PLAZO]** Diseñar UI de prueba diagnóstica
 4. **[LARGO PLAZO]** Validar con datos reales post-PAES
+
+---
+
+## 9. Roadmap de Mejoras Futuras
+
+> [!NOTE]
+> Las siguientes mejoras no son prioritarias para la versión inicial, pero deben considerarse para iteraciones futuras.
+
+### 9.1 Tests Adaptativos Computarizados (CAT)
+
+**¿Qué es?**  
+En lugar de 18 preguntas fijas, cada alumno recibe preguntas personalizadas en tiempo real según sus respuestas.
+
+**Beneficios potenciales:**
+- Reducir de 18 a ~10-12 preguntas manteniendo precisión
+- Mejor experiencia de usuario (menos frustración)
+- Mayor precisión en extremos (muy alto/muy bajo rendimiento)
+
+**Requisitos para implementar:**
+- Motor de cálculo TRI en tiempo real
+- Banco de ítems calibrado con parámetros a, b, c
+- Datos de respuestas de ~500+ alumnos por ítem
+
+**Estado:** ❌ No prioritario. Considerar cuando tengamos datos suficientes.
+
+---
+
+### 9.2 Actualización de Contenidos por Cambios Curriculares
+
+**Contexto:**  
+El DEMRE actualiza periódicamente el temario PAES. Algunos contenidos que hoy incluimos podrían salir del temario oficial en procesos futuros.
+
+**Cambios conocidos (2025-2026):**
+- Cilindros: Posible eliminación, foco en paralelepípedos y cubos
+- Mediana, moda, rango: Integrados en representación de datos, no como unidades independientes
+
+**Decisión actual:**  
+Mantener estos contenidos en el banco (mejor que sobre a que falte). Marcar con flag `revision_futura: true` para facilitar ajustes posteriores.
+
+**Acción futura:**  
+Antes de cada proceso de admisión, revisar temario oficial y desactivar átomos obsoletos.
+
+**Estado:** 🔶 Documentado, no activo. Revisar anualmente.
 
 ---
 
