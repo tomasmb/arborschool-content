@@ -35,7 +35,19 @@ Crear una prueba corta que:
 | Dificultad Medium | 117 (58%) |
 | Dificultad High | 0 (0%) |
 
-### 2.2 Distribución por Eje
+### 2.2 Distribución por Habilidad PAES
+
+| Habilidad | Código | Cantidad | % |
+|-----------|--------|----------|---|
+| Resolver problemas | **RES** | 99 | 49% |
+| Modelar | **MOD** | 33 | 16% |
+| Representar | **REP** | 28 | 14% |
+| Argumentar | **ARG** | 27 | 13% |
+
+> [!NOTE]
+> RES domina porque la PAES M1 prioriza aplicación de procedimientos. Las 4 habilidades están representadas.
+
+### 2.3 Distribución por Eje
 
 | Eje | Preguntas (átomos) | % Real PAES* |
 |-----|-------------------|--------------|
@@ -46,7 +58,7 @@ Crear una prueba corta que:
 
 *Proporción aproximada basada en temario oficial.
 
-### 2.3 Matriz Eje × Dificultad
+### 2.4 Matriz Eje × Dificultad
 
 |  | Low | Medium |
 |--|-----|--------|
@@ -296,6 +308,51 @@ $$SEE = 110 × \sqrt{1 - 0.72} = 110 × 0.53 ≈ 58 \text{ puntos}$$
 }
 ```
 
+#### Mapping de Puntajes PAES por Ruta (MST)
+
+> [!IMPORTANT]
+> Este mapping es **provisional**. Se calibrará con datos reales post-PAES.
+
+**Niveles Pedagógicos:**
+
+| Nivel | Descripción | Rango PAES |
+|-------|-------------|------------|
+| Muy Inicial | Manejo parcial de contenidos básicos | < 450 |
+| Inicial | Contenidos básicos con errores frecuentes | 450 – 500 |
+| Intermedio Bajo | Resuelve lo esencial, falla en integración | 500 – 550 |
+| Intermedio | Buen dominio de M1 | 550 – 600 |
+| Intermedio Alto | Dominio sólido y consistente | 600 – 650 |
+| Alto | Alto desempeño dentro de M1 | 650 – 700 |
+| Muy Alto | Tope del banco actual | 700+ (con cautela) |
+
+**Ruta A (desempeño bajo):**
+
+| Correctas /16 | Nivel | Puntaje Estimado | Rango |
+|---------------|-------|------------------|-------|
+| 0–3 | Muy Inicial | 420 | 380–460 |
+| 4–5 | Inicial | 470 | 440–500 |
+| 6–7 | Inicial | 495 | 460–525 |
+
+**Ruta B (desempeño medio) — Zona de máxima precisión:**
+
+| Correctas /16 | Nivel | Puntaje Estimado | Rango |
+|---------------|-------|------------------|-------|
+| 7–8 | Intermedio Bajo | 525 | 500–555 |
+| 9–10 | Intermedio | 565 | 540–595 |
+| 11–12 | Intermedio | 590 | 560–620 |
+| 13 | Intermedio Alto | 620 | 595–650 |
+
+**Ruta C (desempeño medio-alto) — Mayor incertidumbre por falta de ítems High:**
+
+| Correctas /16 | Nivel | Puntaje Estimado | Rango |
+|---------------|-------|------------------|-------|
+| 12–13 | Intermedio Alto | 635 | 600–670 |
+| 14 | Alto | 665 | 630–700 |
+| 15 | Alto | 690 | 650–730 |
+| 16 | Muy Alto* | 715 | 670–760 |
+
+*"Muy Alto" debe comunicarse con disclaimer: "Tu nivel es alto dentro del contenido evaluado. El rango puede ajustarse cuando trabajes contenidos avanzados."
+
 ---
 
 ### 5.4 Opción 3: CAT - Computerized Adaptive Testing
@@ -417,11 +474,31 @@ $$SEE = 110 × \sqrt{1 - 0.72} = 110 × 0.53 ≈ 58 \text{ puntos}$$
 └─────────────────────────────────────────────────────┘
 ```
 
-### 6.3 Comunicación de Incertidumbre
+### 6.3 Diagnóstico por Habilidad
+
+```
+┌─────────────────────────────────────────────────────┐
+│               HABILIDADES PAES M1                   │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│  Resolver problemas   ██████████████░░  87% ✓       │
+│  Representar          ████████████░░░░  75% ✓       │
+│  Modelar              ██████░░░░░░░░░░  40% ⚠️      │
+│  Argumentar           ████████░░░░░░░░  50%         │
+│                                                     │
+│  💡 Trabaja más ejercicios de modelación:           │
+│     plantear ecuaciones desde contextos reales      │
+└─────────────────────────────────────────────────────┘
+```
+
+> [!TIP]
+> El diagnóstico por habilidad permite dar recomendaciones más específicas: "Practica plantear ecuaciones desde contextos reales" vs solo "refuerza Álgebra".
+
+### 6.4 Comunicación de Incertidumbre
 
 > "Este es un **estimado** basado en 18 preguntas representativas. Tu puntaje real puede variar ±60 puntos. A medida que practiques más, afinaremos tu predicción."
 
-### 6.4 Diagnóstico por Átomo (Datos Internos)
+### 6.5 Diagnóstico por Átomo (Datos Internos)
 
 Además del puntaje y diagnóstico por eje, el sistema debe **registrar internamente** qué átomos domina el alumno y cuáles no. Esto permite:
 
