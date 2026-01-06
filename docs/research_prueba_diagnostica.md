@@ -529,7 +529,100 @@ Fase 3: CAT completo (10-12 ítems)
 
 ---
 
-## 5.6 Átomos Prioritarios por Eje (Aplica a Opciones 1 y 2)
+### 5.6 Requisitos para Lanzar Cada Opción
+
+#### Opción 1: Forma Fija (18 preguntas)
+
+| Requisito | Estado | Descripción |
+|-----------|--------|-------------|
+| Seleccionar 18 preguntas | ❌ Pendiente | Del banco de 202, según blueprint |
+| Implementar lógica de scoring | ❌ Pendiente | Puntaje ponderado → PAES |
+| UI de prueba | ❌ Pendiente | 1 pregunta por pantalla, timer |
+| Tabla de conversión | ✅ Documentada | Sección 4 del research |
+| **Tiempo estimado:** | **3-5 días** | |
+
+#### Opción 2: MST (16 preguntas, 2 etapas)
+
+| Requisito | Estado | Descripción |
+|-----------|--------|-------------|
+| Seleccionar 32 preguntas | ❌ Pendiente | 8 routing + 8×3 rutas |
+| Implementar routing | ❌ Pendiente | Cortes: 0-3/4-6/7-8 |
+| Tablas de conversión por ruta | ✅ Documentadas | Rutas A, B, C en sección 5.3 |
+| UI con transición entre etapas | ❌ Pendiente | Etapa 1 → Routing → Etapa 2 |
+| **Tiempo estimado:** | **1-2 semanas** | |
+
+#### Opción 3: CAT (12-18 preguntas)
+
+| Requisito | Estado | Descripción |
+|-----------|--------|-------------|
+| Etiquetar banco completo | ✅ Listo | 202 preguntas con eje, habilidad, dificultad |
+| Motor de selección adaptativa | ❌ Pendiente | Algoritmo heurístico documentado |
+| Sistema de penalización | ❌ Pendiente | Cuotas por eje/habilidad |
+| Mapping θ → PAES | ✅ Documentado | 7 buckets en sección 5.4 |
+| Control de exposición | ❌ Pendiente | Evitar sobre-usar mismas preguntas |
+| **Tiempo estimado:** | **2-3 semanas** | |
+
+---
+
+### 5.7 Tratamiento del Azar (Guessing)
+
+> [!IMPORTANT]
+> En la PAES real (4 opciones), la probabilidad de acertar por azar es **c ≈ 0.25** (25%).
+
+#### ¿Cómo afecta cada tipo de prueba?
+
+| Tipo | Tratamiento del Guessing |
+|------|--------------------------|
+| **Forma Fija** | No corrige. El alumno que adivina bien suma igual. Se mitiga con más preguntas (18). |
+| **MST** | El routing puede verse afectado si adivina en Etapa 1. Se mitiga con 8 preguntas de routing. |
+| **CAT** | El algoritmo ajusta θ en cada respuesta. Aciertos por azar "se limpian" con preguntas siguientes. |
+
+#### ¿Se penaliza la respuesta incorrecta?
+
+**No.** La PAES real no penaliza respuestas incorrectas, y nuestra prueba tampoco. Esto es estándar en evaluaciones modernas.
+
+#### ¿Cómo mitigamos el impacto del azar?
+
+1. **Más preguntas = menos impacto:** Con 16-18 preguntas, el azar se diluye estadísticamente
+2. **Preguntas discriminativas:** Seleccionar ítems con DI ≥ 0.30 que distinguen conocimiento real
+3. **Rangos amplios:** Comunicar ±60 puntos de incertidumbre incluye variabilidad por azar
+4. **En IRT (futuro):** El parámetro c modela explícitamente la probabilidad de acierto al azar
+
+---
+
+### 5.8 Correlación Esperada con PAES Real
+
+#### Estimaciones Teóricas (pre-validación)
+
+| Tipo de Prueba | Correlación Esperada (r) | Error Estándar (SEE) | Justificación |
+|----------------|--------------------------|----------------------|---------------|
+| **Forma Fija (18)** | 0.80 - 0.85 | ±60-70 pts | 28% de ítems, selección optimizada |
+| **MST (16)** | 0.82 - 0.87 | ±55-65 pts | Adaptación mejora precisión en extremos |
+| **CAT (12-18)** | 0.85 - 0.90 | ±50-60 pts | Máxima eficiencia por ítem |
+
+> [!WARNING]
+> Estas correlaciones son **estimaciones teóricas** basadas en literatura psicométrica. La correlación real se conocerá solo después de validar con puntajes PAES reales.
+
+#### Fórmula del Error Estándar
+
+```
+SEE = SD_PAES × √(1 - r²)
+
+Con SD_PAES ≈ 110 puntos:
+- r = 0.80 → SEE = 66 pts
+- r = 0.85 → SEE = 58 pts
+- r = 0.90 → SEE = 48 pts
+```
+
+#### ¿Qué significa en la práctica?
+
+Si predecimos 600 puntos con r = 0.85:
+- El puntaje real estará entre **542-658** (±58) el 68% de las veces
+- El puntaje real estará entre **484-716** (±116) el 95% de las veces
+
+---
+
+## 5.9 Átomos Prioritarios por Eje (Aplica a Opciones 1 y 2)
 
 #### Números (4-5 preguntas)
 | Prioridad | Átomo | Justificación |
