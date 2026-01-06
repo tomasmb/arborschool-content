@@ -367,27 +367,152 @@ $$SEE = 110 × \sqrt{1 - 0.72} = 110 × 0.53 ≈ 58 \text{ puntos}$$
 │       ↓                                                      │
 │  Pregunta 2 → Respuesta → Estimar θ₂                        │
 │       ↓                                                      │
-│  ... (repetir hasta SEM < 0.30 o máximo 15 preguntas)       │
+│  ... (repetir hasta SEM < 0.30 o máximo 18 preguntas)       │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Características:**
-- Cada alumno recibe preguntas diferentes
-- El algoritmo maximiza información en cada paso
-- Típicamente 10-15 preguntas para precisión equivalente a 30+ fijas
+#### ¿Por qué CAT es la opción más corta?
 
-**Ventajas:**
+CAT puede lograr con **10-15 ítems** lo que una prueba fija necesita con 25-40:
+- Cada ítem aporta **máxima información** cerca del θ estimado
+- No "desperdicia" preguntas demasiado fáciles o difíciles
+- Se detiene cuando **ya sabe lo suficiente**
+
+#### El problema: CAT sin control ignora el currículum
+
+Sin restricciones, CAT puede hacer 7 ítems de álgebra, 0 de geometría, y aún estimar θ bien. Eso es válido psicométricamente pero **inaceptable para PAES**.
+
+**Solución: Penalización por cuotas**
+
+En cada paso, el CAT penaliza ítems de ejes que ya cumplieron su cuota:
+- Si ya tenemos 4 de ALG y el mínimo es 4 → penalizar más ALG
+- Si ya tenemos 6 de ALG y el máximo es 6 → prohibir más ALG
+
+#### Blueprint CAT (12-18 ítems)
+
+**Mínimos por eje (para 12 ítems):**
+
+| Eje | Mínimo |
+|-----|--------|
+| ALG | 4 |
+| NUM | 3 |
+| GEO | 2 |
+| PROB | 3 |
+| **Total** | **12** |
+
+**Máximos (hard caps para 18 ítems):**
+
+| Eje | Máximo |
+|-----|--------|
+| ALG | 6 |
+| NUM | 5 |
+| GEO | 4 |
+| PROB | 5 |
+
+**Mínimos por habilidad:**
+
+| Habilidad | Mínimo |
+|-----------|--------|
+| REP | 2 |
+| MOD | 2 |
+| ARG | 1 |
+| RES | (resto) |
+
+#### Algoritmo CAT Heurístico (sin IRT)
+
+Mientras no tengamos parámetros IRT calibrados, usamos un enfoque heurístico:
+
+```python
+# Estado interno
+θ_est = 0.0      # Habilidad estimada (inicia en medio)
+step = 0.6       # Tamaño de ajuste
+decay = 0.85     # Factor de decaimiento
+
+# Loop principal
+while N < max_items and not stable:
+    # 1. Filtrar candidatos válidos
+    candidates = filter(
+        exclude=used_items,
+        exclude=forbidden_atoms,
+        exclude=axis_over_cap
+    )
+    
+    # 2. Calcular score base (match de dificultad)
+    for item in candidates:
+        item.score = difficulty_match(θ_est, item.difficulty)
+    
+    # 3. Aplicar penalizaciones
+    for item in candidates:
+        if axis_count[item.axis] >= blueprint_min:
+            item.score -= 0.3  # Penalización suave
+        if skill_count[item.skill] >= soft_cap:
+            item.score -= 0.25
+    
+    # 4. Seleccionar (con randomización)
+    selected = random_from_top_k(candidates, k=5)
+    
+    # 5. Actualizar θ
+    if correct:
+        θ_est += step
+    else:
+        θ_est -= step
+    step *= decay  # Decaer step
+```
+
+#### Regla de término
+
+El CAT se detiene cuando:
+1. `N >= 12` Y estabilidad (θ cambia < 0.15 en últimas 4 preguntas) Y mínimos cumplidos
+2. O `N == 18` (hard stop)
+
+#### Mapping θ → Puntaje PAES (CAT)
+
+| Rango θ | Nivel | Puntaje Estimado | Rango |
+|---------|-------|------------------|-------|
+| ≤ -1.0 | Muy Inicial | 420 | 380–460 |
+| -1.0 a -0.5 | Inicial | 470 | 440–500 |
+| -0.5 a 0.0 | Intermedio Bajo | 525 | 500–555 |
+| 0.0 a 0.5 | Intermedio | 585 | 560–620 |
+| 0.5 a 0.9 | Intermedio Alto | 635 | 600–670 |
+| 0.9 a 1.2 | Alto | 690 | 650–730 |
+| > 1.2 | Muy Alto* | 715 | 670–760 |
+
+#### Comparación CAT vs MST (honesta)
+
+| Criterio | CAT | MST |
+|----------|-----|-----|
+| Largo mínimo | ⭐⭐⭐⭐⭐ (10-12) | ⭐⭐⭐⭐ (16) |
+| Precisión | ⭐⭐⭐⭐⭐ | ⭐⭐⭐⭐ |
+| Control curricular | ⭐⭐ (requiere penalizaciones) | ⭐⭐⭐⭐ (explícito) |
+| Facilidad de implementación | ⭐⭐ | ⭐⭐⭐⭐ |
+| Robustez con banco imperfecto | ⭐⭐ | ⭐⭐⭐⭐ |
+| Requiere IRT calibrado | Sí (ideal) / Heurístico (MVP) | No |
+
+> [!WARNING]
+> **Conclusión:** CAT es superior **cuando el banco está maduro**. MST es superior **cuando estás construyendo el sistema**.
+
+**Ventajas CAT:**
 - ✅ Máxima eficiencia (menos preguntas, igual precisión)
 - ✅ Excelente precisión en todos los niveles
 - ✅ Experiencia rápida (~15-20 min)
 
-**Limitaciones:**
-- ⚠️ Requiere calibración IRT de todo el banco (parámetros a, b, c)
-- ⚠️ Motor de cálculo en tiempo real
-- ⚠️ Datos de ~500+ respuestas por ítem para calibrar
-- ⚠️ Complejidad técnica alta
+**Limitaciones CAT:**
+- ⚠️ Sin IRT, el "CAT heurístico" es similar en complejidad a MST
+- ⚠️ Control curricular requiere penalizaciones complejas
+- ⚠️ Mayor riesgo de sesgo con banco imperfecto
+- ⚠️ Sin ítems High, techo de medición igual que MST
 
-**Estado:** ❌ No viable para MVP. Considerar como evolución futura.
+**Estado:** 🔶 Viable como alternativa a MST, pero con trade-offs. Considerar si se prioriza menos preguntas sobre control curricular.
+
+#### Camino de migración recomendado
+
+```
+Fase 1: MST (16 ítems)
+    ↓ Recolectar datos
+Fase 2: Calibrar IRT (parámetros a, b, c)
+    ↓ Crear ítems High
+Fase 3: CAT completo (10-12 ítems)
+```
 
 ---
 
