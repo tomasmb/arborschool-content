@@ -231,7 +231,30 @@ Crear una prueba de **12-18 preguntas** (~30 min) que:
 
 ---
 
-## 6. Requisitos para Lanzar
+## 6. Diagnóstico por Átomo (Nuevo)
+
+### El Problema
+La predicción del puntaje global maneja bien el azar, pero ¿cómo marcamos átomos individuales? Con 25% de chance de acertar al azar, algunos aciertos pueden ser falsos.
+
+### Solución: Enfoque Conservador + Botón "No lo sé"
+
+**Principio:** El costo de enseñar algo ya sabido es **bajo**. El costo de no enseñar algo necesario es **alto**. Si hay duda → enseñar.
+
+**Feature recomendada:** Botón "No lo sé" en lugar de forzar una respuesta.
+
+### Sistema de 3 Estados por Átomo
+
+| Resultado | Estado | Acción en plan de estudio |
+|-----------|--------|---------------------------|
+| ✅ Correcto | `dominado` | No incluir |
+| ❓ "No lo sé" | `gap` | Enseñar desde cero |
+| ❌ Incorrecto | `misconception` | Corregir + enseñar |
+
+**Valor:** Permite instrucción diferenciada: no es lo mismo enseñar algo nuevo que corregir algo mal aprendido.
+
+---
+
+## 7. Requisitos para Lanzar
 
 ### Forma Fija
 - [ ] Seleccionar 18 preguntas según blueprint
@@ -254,7 +277,7 @@ Crear una prueba de **12-18 preguntas** (~30 min) que:
 
 ---
 
-## 7. Validación Futura
+## 8. Validación Futura
 
 ### Fase 1: Pilotaje (N = 30-50 alumnos)
 - Verificar inteligibilidad
@@ -272,7 +295,7 @@ Crear una prueba de **12-18 preguntas** (~30 min) que:
 
 ---
 
-## 8. Niveles de Competencia
+## 9. Niveles de Competencia
 
 | Nivel | Código | Rango PAES | Descripción |
 |-------|--------|------------|-------------|
@@ -284,7 +307,7 @@ Crear una prueba de **12-18 preguntas** (~30 min) que:
 
 ---
 
-## 9. Output al Alumno
+## 10. Output al Alumno
 
 ### Resultado Principal
 ```
@@ -314,7 +337,7 @@ Argumentar:   ████████░░░░░░░░  50%
 
 ---
 
-## 10. Camino de Migración Recomendado
+## 11. Camino de Migración Recomendado
 
 ```
 Fase 1: MST (16 ítems)
@@ -326,7 +349,7 @@ Fase 3: CAT completo (10-12 ítems)
 
 ---
 
-## 11. Decisión Final
+## 12. Decisión Final
 
 | Si tu prioridad es... | Elige | Preguntas | Tiempo |
 |----------------------|-------|-----------|--------|
