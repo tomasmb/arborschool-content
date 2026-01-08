@@ -2,7 +2,8 @@
 
 **Fecha:** 2026-01-08  
 **Arquitectura:** MST (Multistage Test)  
-**Total preguntas:** 32 (8 por módulo)
+**Total preguntas:** 32 (8 por módulo)  
+**Versión:** 2.0 (optimizada por score de dificultad)
 
 ---
 
@@ -11,7 +12,7 @@
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │  R1: ROUTING (8 preguntas iguales para todos)               │
-│  Dificultad: Medium                                         │
+│  Score promedio: 0.48                                       │
 └─────────────────────────────────────────────────────────────┘
                               ↓
          Correctas: 0-3        4-6          7-8
@@ -19,30 +20,43 @@
 ┌─────────────────┬─────────────────┬─────────────────────────┐
 │   RUTA A        │   RUTA B        │   RUTA C                │
 │   (bajo)        │   (medio)       │   (alto)                │
-│   8 preguntas   │   8 preguntas   │   8 preguntas           │
-│   Low           │   Medium        │   Medium                │
+│   Score: 0.21   │   Score: 0.45   │   Score: 0.64           │
 └─────────────────┴─────────────────┴─────────────────────────┘
 ```
 
 ---
 
+## Resumen de Dificultad por Score
+
+| Módulo | Score Promedio | Rango | Nivel |
+|--------|----------------|-------|-------|
+| **A2** | 0.21 | 0.15-0.25 | Bajo |
+| **B2** | 0.45 | 0.45 | Medio |
+| **R1** | 0.48 | 0.45-0.50 | Medio |
+| **C2** | 0.64 | 0.60-0.65 | Alto* |
+
+*C2 usa los Medium más difíciles disponibles (score 0.60-0.65)
+
+---
+
 ## R1: Routing (8 preguntas)
 
-Todos los estudiantes responden estas 8 preguntas primero.
+Todos los estudiantes responden estas 8 preguntas primero.  
+**Criterio:** Medium con score intermedio (~0.50)
 
-| # | Examen | ID | Eje | Dificultad | Habilidad |
-|---|--------|-----|-----|------------|-----------|
-| 1 | Prueba-invierno-2025 | Q27 | ALG | Medium | MOD |
-| 2 | seleccion-regular-2026 | Q34 | ALG | Medium | REP |
-| 3 | seleccion-regular-2026 | Q1 | NUM | Medium | RES |
-| 4 | Prueba-invierno-2025 | Q17 | NUM | Medium | ARG |
-| 5 | prueba-invierno-2026 | Q50 | GEO | Medium | REP |
-| 6 | prueba-invierno-2026 | Q48 | GEO | Medium | ARG |
-| 7 | prueba-invierno-2026 | Q60 | PROB | Medium | ARG |
-| 8 | prueba-invierno-2026 | Q63 | PROB | Medium | RES |
+| # | Examen | ID | Eje | Score | Habilidad |
+|---|--------|-----|-----|-------|-----------|
+| 1 | seleccion-regular-2025 | Q32 | ALG | 0.50 | RES |
+| 2 | Prueba-invierno-2025 | Q11 | ALG | 0.50 | RES |
+| 3 | prueba-invierno-2026 | Q7 | NUM | 0.50 | RES |
+| 4 | Prueba-invierno-2025 | Q18 | NUM | 0.50 | RES |
+| 5 | seleccion-regular-2026 | Q41 | GEO | 0.45 | RES |
+| 6 | seleccion-regular-2026 | Q45 | GEO | 0.45 | RES |
+| 7 | seleccion-regular-2026 | Q62 | PROB | 0.50 | RES |
+| 8 | seleccion-regular-2026 | Q60 | PROB | 0.45 | RES |
 
 **Distribución:** 2 ALG, 2 NUM, 2 GEO, 2 PROB  
-**Habilidades:** 2 RES, 1 MOD, 2 REP, 3 ARG
+**Score promedio:** 0.48
 
 ---
 
@@ -58,61 +72,64 @@ Todos los estudiantes responden estas 8 preguntas primero.
 
 ## A2: Ruta Bajo (8 preguntas)
 
-Para estudiantes con 0-3 correctas en R1.
+Para estudiantes con 0-3 correctas en R1.  
+**Criterio:** Low con score más bajo disponible
 
-| # | Examen | ID | Eje | Dificultad | Habilidad |
-|---|--------|-----|-----|------------|-----------|
-| 1 | seleccion-regular-2026 | Q35 | ALG | Low | MOD |
-| 2 | Prueba-invierno-2025 | Q32 | ALG | Low | RES |
-| 3 | seleccion-regular-2026 | Q57 | ALG | Low | MOD |
-| 4 | Prueba-invierno-2025 | Q12 | NUM | Low | RES |
-| 5 | seleccion-regular-2025 | Q2 | NUM | Low | REP |
-| 6 | prueba-invierno-2026 | Q22 | GEO | Low | RES |
-| 7 | seleccion-regular-2026 | Q55 | PROB | Low | REP |
-| 8 | seleccion-regular-2026 | Q56 | PROB | Low | RES |
+| # | Examen | ID | Eje | Score | Habilidad |
+|---|--------|-----|-----|-------|-----------|
+| 1 | prueba-invierno-2026 | Q37 | ALG | 0.20 | RES |
+| 2 | seleccion-regular-2025 | Q42 | ALG | 0.20 | RES |
+| 3 | seleccion-regular-2026 | Q30 | ALG | 0.25 | ARG |
+| 4 | prueba-invierno-2026 | Q19 | NUM | 0.15 | RES |
+| 5 | Prueba-invierno-2025 | Q19 | NUM | 0.15 | RES |
+| 6 | prueba-invierno-2026 | Q22 | GEO | 0.25 | RES |
+| 7 | prueba-invierno-2026 | Q53 | PROB | 0.20 | RES |
+| 8 | seleccion-regular-2026 | Q54 | PROB | 0.25 | REP |
 
 **Distribución:** 3 ALG, 2 NUM, 1 GEO, 2 PROB  
-**Habilidades:** 4 RES, 2 MOD, 2 REP, 0 ARG
+**Score promedio:** 0.21
 
 ---
 
 ## B2: Ruta Medio (8 preguntas)
 
-Para estudiantes con 4-6 correctas en R1.
+Para estudiantes con 4-6 correctas en R1.  
+**Criterio:** Medium con score intermedio (~0.45)
 
-| # | Examen | ID | Eje | Dificultad | Habilidad |
-|---|--------|-----|-----|------------|-----------|
-| 1 | seleccion-regular-2026 | Q42 | ALG | Medium | REP |
-| 2 | prueba-invierno-2026 | Q38 | ALG | Medium | REP |
-| 3 | seleccion-regular-2025 | Q29 | ALG | Medium | RES |
-| 4 | Prueba-invierno-2025 | Q1 | NUM | Medium | RES |
-| 5 | seleccion-regular-2026 | Q13 | NUM | Medium | RES |
-| 6 | Prueba-invierno-2025 | Q47 | GEO | Medium | ARG |
-| 7 | prueba-invierno-2026 | Q58 | PROB | Medium | REP |
-| 8 | Prueba-invierno-2025 | Q59 | PROB | Medium | ARG |
+| # | Examen | ID | Eje | Score | Habilidad |
+|---|--------|-----|-----|-------|-----------|
+| 1 | seleccion-regular-2026 | Q31 | ALG | 0.45 | RES |
+| 2 | seleccion-regular-2026 | Q47 | ALG | 0.45 | ARG |
+| 3 | seleccion-regular-2026 | Q14 | ALG | 0.45 | ARG |
+| 4 | seleccion-regular-2026 | Q1 | NUM | 0.45 | RES |
+| 5 | seleccion-regular-2026 | Q13 | NUM | 0.45 | RES |
+| 6 | prueba-invierno-2026 | Q52 | GEO | 0.45 | RES |
+| 7 | seleccion-regular-2026 | Q61 | PROB | 0.45 | REP |
+| 8 | prueba-invierno-2026 | Q54 | PROB | 0.45 | REP |
 
 **Distribución:** 3 ALG, 2 NUM, 1 GEO, 2 PROB  
-**Habilidades:** 3 RES, 0 MOD, 3 REP, 2 ARG
+**Score promedio:** 0.45
 
 ---
 
 ## C2: Ruta Alto (8 preguntas)
 
-Para estudiantes con 7-8 correctas en R1.
+Para estudiantes con 7-8 correctas en R1.  
+**Criterio:** Medium con score MÁS ALTO (0.60-0.65)
 
-| # | Examen | ID | Eje | Dificultad | Habilidad |
-|---|--------|-----|-----|------------|-----------|
-| 1 | seleccion-regular-2025 | Q6 | ALG | Medium | ARG |
-| 2 | prueba-invierno-2026 | Q31 | ALG | Medium | MOD |
-| 3 | seleccion-regular-2025 | Q32 | ALG | Medium | RES |
-| 4 | Prueba-invierno-2025 | Q22 | NUM | Medium | MOD |
-| 5 | prueba-invierno-2026 | Q23 | NUM | Medium | ARG |
-| 6 | seleccion-regular-2026 | Q64 | GEO | Medium | RES |
-| 7 | prueba-invierno-2026 | Q54 | PROB | Medium | REP |
-| 8 | Prueba-invierno-2025 | Q14 | PROB | Medium | ARG |
+| # | Examen | ID | Eje | Score | Habilidad |
+|---|--------|-----|-----|-------|-----------|
+| 1 | seleccion-regular-2026 | Q48 | ALG | 0.65 | MOD |
+| 2 | seleccion-regular-2026 | Q27 | ALG | 0.65 | RES |
+| 3 | seleccion-regular-2025 | Q57 | ALG | 0.65 | RES |
+| 4 | seleccion-regular-2025 | Q23 | NUM | 0.65 | MOD |
+| 5 | Prueba-invierno-2025 | Q56 | NUM | 0.65 | ARG |
+| 6 | seleccion-regular-2026 | Q50 | GEO | 0.60 | RES |
+| 7 | Prueba-invierno-2025 | Q60 | PROB | 0.65 | RES |
+| 8 | Prueba-invierno-2025 | Q61 | PROB | 0.65 | ARG |
 
 **Distribución:** 3 ALG, 2 NUM, 1 GEO, 2 PROB  
-**Habilidades:** 2 RES, 2 MOD, 1 REP, 3 ARG
+**Score promedio:** 0.64
 
 ---
 
@@ -131,37 +148,23 @@ Para estudiantes con 7-8 correctas en R1.
 
 | Habilidad | R1 | A2 | B2 | C2 | Total |
 |-----------|----|----|----|----|-------|
-| RES | 2 | 4 | 3 | 2 | **11** |
-| MOD | 1 | 2 | 0 | 2 | **5** |
-| REP | 2 | 2 | 3 | 1 | **8** |
-| ARG | 3 | 0 | 2 | 3 | **8** |
-
-### Por Dificultad (Total 32)
-
-| Dificultad | R1 | A2 | B2 | C2 | Total |
-|------------|----|----|----|----|-------|
-| Low | 0 | 8 | 0 | 0 | **8** |
-| Medium | 8 | 0 | 8 | 8 | **24** |
-| High | 0 | 0 | 0 | 0 | **0** |
+| RES | 8 | 6 | 4 | 4 | **22** |
+| MOD | 0 | 0 | 0 | 2 | **2** |
+| REP | 0 | 1 | 2 | 0 | **3** |
+| ARG | 0 | 1 | 2 | 2 | **5** |
 
 ---
 
-## Notas
-
-> [!WARNING]
-> No tenemos preguntas de dificultad High. La Ruta C usa Medium igual que B, limitando la discriminación en el extremo alto.
+## Notas de Optimización
 
 > [!TIP]
-> Para mejorar la prueba en el futuro, crear 8-10 preguntas de dificultad High para reemplazar en Ruta C.
+> La selección usa el score numérico de dificultad para crear una progresión clara:
+> - **A2 (0.21):** Preguntas más fáciles del banco
+> - **B2 (0.45):** Dificultad media
+> - **C2 (0.64):** Los Medium más difíciles (cercanos a High)
 
----
-
-## Próximos Pasos
-
-- [ ] Revisar y validar la selección manualmente
-- [ ] Verificar que las preguntas seleccionadas no tienen problemas conocidos
-- [ ] Implementar lógica de routing en el sistema
-- [ ] Diseñar UI de presentación
+> [!NOTE]
+> R1 tiene score similar a B2 para que funcione como punto de referencia neutral.
 
 ---
 
