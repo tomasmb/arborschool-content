@@ -145,11 +145,11 @@ FASE 3: Migración a CAT
 - [x] Verificar cobertura de habilidades
 
 ### Fase 2: Implementación Técnica
-- [ ] Implementar lógica de routing (cortes 0-3/4-6/7-8)
-- [ ] Implementar cálculo de puntaje ponderado
-- [ ] Implementar mapping a escala PAES
-- [ ] Implementar diagnóstico por átomo (3 estados)
-- [ ] Agregar botón "No lo sé"
+- [x] Implementar lógica de routing (cortes 0-3/4-6/7-8)
+- [x] Implementar cálculo de puntaje ponderado
+- [x] Implementar mapping a escala PAES
+- [x] Implementar diagnóstico por átomo (3 estados)
+- [x] Agregar soporte para botón "No lo sé"
 
 ### Fase 3: UI/UX
 - [ ] Diseñar UI de prueba (1 pregunta/pantalla)
