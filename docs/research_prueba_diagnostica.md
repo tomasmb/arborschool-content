@@ -622,7 +622,82 @@ Si predecimos 600 puntos con r = 0.85:
 
 ---
 
-## 5.9 Átomos Prioritarios por Eje (Aplica a Opciones 1 y 2)
+### 5.9 Diagnóstico por Átomo: Del Score Global al Conocimiento Específico
+
+> [!IMPORTANT]
+> La predicción del puntaje PAES maneja bien el azar a nivel global, pero el diagnóstico por átomo individual requiere un tratamiento diferente.
+
+#### El Problema
+
+Si un estudiante acierta una pregunta, ¿realmente "sabe" ese átomo o simplemente adivinó? Con 4 alternativas hay **25% de probabilidad de acertar al azar**.
+
+Para generar planes de estudio personalizados, necesitamos decidir qué átomos enseñar con la menor incertidumbre posible.
+
+#### Solución: Enfoque Conservador + Botón "No lo sé"
+
+**Principio guía:** El costo de enseñar algo que ya sabe es **bajo**. El costo de no enseñar algo que necesita es **alto**. Por lo tanto, si hay duda → enseñar.
+
+**Feature recomendada: Botón "No lo sé"**
+
+En lugar de forzar al estudiante a elegir una alternativa, darle la opción de decir "No lo sé":
+
+| Beneficios | Consideraciones |
+|------------|-----------------|
+| ✅ Reduce error de medición por guessing | ⚠️ Puede perjudicar a estudiantes aversos al riesgo |
+| ✅ Distingue "desconocimiento" de "misconception" | ⚠️ Algunos seguirán adivinando igual |
+| ✅ Datos más limpios sin modelos complejos | ⚠️ Diferente a experiencia PAES real |
+| ✅ El estudiante sabe que es para su beneficio → incentivo a ser honesto | |
+
+#### Sistema de 3 Estados por Átomo
+
+| Resultado de la pregunta | Estado del átomo | Acción en plan de estudio |
+|--------------------------|------------------|---------------------------|
+| ✅ Correcta | `dominado` | No incluir en plan |
+| ❓ "No lo sé" | `gap` | Incluir: enseñar desde cero |
+| ❌ Incorrecta | `misconception` | Incluir: corregir + enseñar |
+
+**Valor pedagógico:** No es lo mismo enseñar algo nuevo (gap) que corregir algo mal aprendido (misconception). El sistema de 3 estados permite **instrucción diferenciada**.
+
+#### Impacto en el Scoring
+
+Para la **predicción del puntaje PAES**:
+- "No lo sé" = 0 puntos (equivalente a incorrecto)
+- La predicción se basa solo en aciertos, sin cambios
+
+Para el **diagnóstico por átomo**:
+- Se usa el sistema de 3 estados
+- Enfoque conservador: en caso de duda, marcar como "por aprender"
+
+#### Estructura de Datos Sugerida
+
+```python
+{
+    "alumno_id": "abc123",
+    "atomos": {
+        "A-M1-NUM-01-25": {
+            "respuesta": "correcta",
+            "estado": "dominado",
+            "incluir_en_plan": False
+        },
+        "A-M1-ALG-03-06": {
+            "respuesta": "incorrecta", 
+            "estado": "misconception",
+            "incluir_en_plan": True,
+            "tipo_instruccion": "corregir"
+        },
+        "A-M1-GEO-01-13": {
+            "respuesta": "no_lo_se",
+            "estado": "gap",
+            "incluir_en_plan": True,
+            "tipo_instruccion": "enseñar"
+        }
+    }
+}
+```
+
+---
+
+## 5.10 Átomos Prioritarios por Eje (Aplica a Opciones 1 y 2)
 
 #### Números (4-5 preguntas)
 | Prioridad | Átomo | Justificación |
