@@ -137,12 +137,12 @@ FASE 3: Migración a CAT
 ## 6. Checklist de Implementación
 
 ### Fase 1: Selección de Preguntas
-- [ ] Seleccionar 8 preguntas para Routing (R1)
-- [ ] Seleccionar 8 preguntas para Ruta A (bajo)
-- [ ] Seleccionar 8 preguntas para Ruta B (medio)
-- [ ] Seleccionar 8 preguntas para Ruta C (alto)
-- [ ] Verificar cobertura de ejes en cada módulo
-- [ ] Verificar cobertura de habilidades
+- [x] Seleccionar 8 preguntas para Routing (R1)
+- [x] Seleccionar 8 preguntas para Ruta A (bajo)
+- [x] Seleccionar 8 preguntas para Ruta B (medio)
+- [x] Seleccionar 8 preguntas para Ruta C (alto)
+- [x] Verificar cobertura de ejes en cada módulo
+- [x] Verificar cobertura de habilidades
 
 ### Fase 2: Implementación Técnica
 - [ ] Implementar lógica de routing (cortes 0-3/4-6/7-8)
