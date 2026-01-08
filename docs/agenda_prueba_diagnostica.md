@@ -205,8 +205,65 @@ FASE 3: Migración a CAT
 
 ## 9. Historial de Decisiones
 
+### Decisiones de Arquitectura
+
 | Fecha | Decisión | Justificación |
 |-------|----------|---------------|
 | 2026-01-08 | Elegir MST sobre CAT | CAT sin IRT = complejidad similar, menos control |
+| 2026-01-08 | Elegir MST sobre Forma Fija | MST mejor precisión en extremos, 2 menos preguntas |
 | 2026-01-08 | Agregar botón "No lo sé" | Reduce guessing, mejora diagnóstico por átomo |
 | 2026-01-08 | Sistema de 3 estados | Permite instrucción diferenciada (gap vs misconception) |
+
+### Evolución de la Selección de Preguntas
+
+| Versión | Criterio Principal | Resultado | Problema |
+|---------|-------------------|-----------|----------|
+| v1.0 | Aleatorio dentro de dificultad | RES=69% | Muy desbalanceado en habilidades |
+| v2.0 | Score de dificultad | C2=0.64, RES=69% | Buena dificultad, pero sin diagnóstico válido de MOD/REP |
+| **v3.0** | Balance de habilidades | C2=0.62, RES=38% | ✅ Diagnóstico válido de todas las habilidades |
+
+### Decisión Clave: Score vs Balance
+
+**Pregunta:** ¿Priorizar dificultad máxima en C2 o balance de habilidades?
+
+**Análisis:**
+- Selección por score: C2=0.64, pero 69% RES → no podemos diagnosticar MOD/REP/ARG
+- Selección balanceada: C2=0.62 (-4%), pero 38% RES → diagnóstico válido de todas las habilidades
+
+**Decisión (2026-01-08):** Selección balanceada (v3.0)
+
+**Justificación:** 
+> "El objetivo principal es diagnosticar qué sabe el alumno. Si solo usamos RES, solo podemos diagnosticar RES. La diferencia de score (0.64 vs 0.62) es ~4%, no significativa."
+
+### Investigación que Respaldó la Decisión
+
+**Fuentes consultadas:**
+- Literature on "Attribute Balancing" en Cognitive Diagnostic Testing
+- Content Balancing en Multistage Tests (MST)
+- Bloom's Taxonomy en tests diagnósticos de matemáticas
+
+**Hallazgo clave:** 
+> "Attribute Balancing es crítico para diagnóstico válido. Si no medimos una habilidad, no podemos diagnosticarla."
+
+---
+
+## 10. Distribución Final de Habilidades (v3.0)
+
+| Habilidad | Total | % | Comparación PAES Real |
+|-----------|-------|---|----------------------|
+| RES | 12 | 38% | ~49% → Subrepresentada |
+| ARG | 10 | 31% | ~13% → Sobrerepresentada |
+| MOD | 6 | 19% | ~16% → OK |
+| REP | 4 | 12% | ~14% → OK |
+
+**Nota:** ARG está sobrerepresentada porque las preguntas Medium más difíciles tienden a ser ARG.
+
+---
+
+## 11. Documentación Relacionada
+
+- [Research completo](./research_prueba_diagnostica.md)
+- [Resumen ejecutivo](./research_prueba_diagnostica_resumen.md)
+- [Feedback del socio](./feedback_prueba_diagnostica.md)
+- [Selección de preguntas MST](./seleccion_mst.md)
+- [Análisis de cobertura de átomos](./analisis_cobertura_atomos.md)
