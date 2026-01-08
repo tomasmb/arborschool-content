@@ -267,3 +267,104 @@ FASE 3: Migración a CAT
 - [Feedback del socio](./feedback_prueba_diagnostica.md)
 - [Selección de preguntas MST](./seleccion_mst.md)
 - [Análisis de cobertura de átomos](./analisis_cobertura_atomos.md)
+
+---
+
+## 12. Requisitos para Migrar a CAT
+
+Una vez que MST esté en producción y se recolecten datos, estos son los 6 requisitos para migrar a CAT:
+
+### 12.1 Datos de Respuestas (~500 por pregunta)
+
+**¿Por qué 500?**
+- Con N<100, los errores de estimación IRT son ±0.3 en dificultad (muy alto)
+- 200-500 es el mínimo estadístico para parámetros estables
+- **Estimación:** Con 500 estudiantes haciendo MST (16 preguntas cada uno), cada pregunta acumula ~250 respuestas
+
+### 12.2 Calibración IRT (parámetros a, b, c)
+
+Cada pregunta se describe con 3 parámetros:
+
+| Parámetro | Símbolo | Significado | Rango típico |
+|-----------|---------|-------------|--------------|
+| Dificultad | b | ¿Qué tan difícil? | -3 a +3 |
+| Discriminación | a | ¿Distingue saber de no saber? | 0.5 a 2.5 |
+| Pseudo-azar | c | Prob. de acertar adivinando | ~0.25 |
+
+**Modelo 3PL:**
+```
+P(correcta | θ) = c + (1-c) / (1 + e^(-a(θ-b)))
+```
+
+### 12.3 Motor de Selección Adaptativa
+
+Algoritmo que elige la siguiente pregunta basándose en respuestas anteriores.
+
+**Criterio principal:** Máxima Información de Fisher
+```
+Siguiente pregunta = argmax I(θ̂, pregunta)
+```
+
+**Restricciones para evitar sesgos:**
+- Mínimo 2 preguntas por eje
+- Mínimo 2 habilidades diferentes
+- No repetir átomos ya evaluados
+
+### 12.4 Banco Expandido (60-100 preguntas)
+
+**Problema actual:** Solo 8 preguntas difíciles → no distinguimos entre θ=+1.5 y θ=+2.5
+
+**Necesidad:** Preguntas con b=+1, +1.5, +2, +2.5 para medir precisamente en extremos.
+
+**Distribución ideal:**
+```
+Cantidad │          ▓▓▓▓▓
+         │       ▓▓▓▓▓▓▓▓▓▓▓
+         │    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+         │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+         └─────────────────────────→ b
+            -2   -1    0    +1   +2
+```
+
+### 12.5 Estimador de Habilidad (θ)
+
+**Método recomendado:** Expected A Posteriori (EAP)
+```
+θ̂ = ∫ θ × P(θ | respuestas) dθ
+```
+
+**Ventajas de EAP:**
+- Funciona con 0% o 100% correctas
+- Estable desde la primera respuesta
+- Usado en CAT modernos (GRE, GMAT)
+
+**Ejemplo de actualización:**
+
+| Pregunta (b) | Respuesta | θ̂ nuevo |
+|--------------|-----------|---------|
+| b=0.5 | ✅ | +0.4 |
+| b=0.8 | ✅ | +0.9 |
+| b=1.2 | ❌ | +0.6 |
+| b=0.7 | ✅ | +0.8 |
+
+### 12.6 Criterio de Terminación
+
+**Criterio recomendado:** Híbrido
+```
+Terminar cuando: SE(θ̂) < 0.30 O preguntas >= 15
+```
+
+**Efecto:** Estudiantes típicos terminan en 10-12 preguntas, extremos pueden necesitar hasta 15.
+
+---
+
+### Orden de Implementación CAT
+
+| Paso | Requisito | Dependencia |
+|------|-----------|-------------|
+| 1 | Datos de respuestas | Lanzar MST primero |
+| 2 | Calibración IRT | Depende de (1) |
+| 3 | Banco expandido | Paralelo con (1) y (2) |
+| 4 | Estimador de θ | Depende de (2) |
+| 5 | Motor de selección | Depende de (2) y (4) |
+| 6 | Criterio terminación | Depende de (4) |
