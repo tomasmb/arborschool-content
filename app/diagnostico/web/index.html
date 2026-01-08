@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba Diagnóstica PAES M1</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-logo">
+                <span class="logo-icon">📐</span>
+                <span class="logo-text">PAES M1</span>
+            </div>
+            <div class="header-progress">
+                <span id="progress-text">Pregunta 1 de 8</span>
+                <span class="stage-badge" id="stage-badge">Etapa de Routing</span>
+            </div>
+            <div class="header-timer" id="timer">
+                <span class="timer-icon">⏱️</span>
+                <span id="timer-display">30:00</span>
+            </div>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar" style="width: 12.5%"></div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Screen -->
+            <div id="welcome-screen" class="screen active">
+                <div class="welcome-card">
+                    <h1>🎯 Prueba Diagnóstica PAES M1</h1>
+                    <p class="welcome-subtitle">Descubre tu nivel actual y recibe un plan de estudio personalizado</p>
+                    
+                    <div class="welcome-info">
+                        <div class="info-item">
+                            <span class="info-icon">📝</span>
+                            <span class="info-text">16 preguntas en total</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">⏱️</span>
+                            <span class="info-text">~30 minutos</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon">📊</span>
+                            <span class="info-text">Diagnóstico por eje y habilidad</span>
+                        </div>
+                    </div>
+
+                    <div class="welcome-tips">
+                        <h3>💡 Recomendaciones</h3>
+                        <ul>
+                            <li>Responde con honestidad para obtener un diagnóstico preciso</li>
+                            <li>Si no sabes la respuesta, usa el botón "No lo sé"</li>
+                            <li>No puedes volver a preguntas anteriores</li>
+                        </ul>
+                    </div>
+
+                    <button class="btn-primary btn-large" onclick="startTest()">
+                        Comenzar Prueba →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Question Screen -->
+            <div id="question-screen" class="screen">
+                <div class="question-card">
+                    <div class="question-content" id="question-content">
+                        <!-- Question HTML will be loaded here -->
+                    </div>
+                    
+                    <div class="options-container" id="options-container">
+                        <!-- Options will be generated here -->
+                    </div>
+
+                    <button class="btn-dont-know" id="btn-dont-know" onclick="selectDontKnow()">
+                        <span class="btn-icon">❓</span>
+                        No lo sé
+                    </button>
+
+                    <div class="navigation-buttons">
+                        <button class="btn-secondary" id="btn-next" onclick="nextQuestion()" disabled>
+                            Siguiente →
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transition Screen -->
+            <div id="transition-screen" class="screen">
+                <div class="transition-card">
+                    <div class="transition-icon">✅</div>
+                    <h2>Etapa 1 Completada</h2>
+                    <p>Hemos calibrado tu nivel de habilidad.</p>
+                    <p>Ahora verás <strong>8 preguntas adaptadas</strong> a tu desempeño.</p>
+                    
+                    <div class="transition-stats" id="transition-stats">
+                        <!-- Stats will be shown here -->
+                    </div>
+
+                    <button class="btn-primary btn-large" onclick="continueToStage2()">
+                        Continuar →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="screen">
+                <div class="results-container">
+                    <h1 class="results-title">Tu Diagnóstico PAES M1</h1>
+                    
+                    <!-- Score Card -->
+                    <div class="score-card">
+                        <div class="score-main">
+                            <span class="score-label">Puntaje Estimado</span>
+                            <span class="score-value" id="score-value">620 - 680</span>
+                        </div>
+                        <div class="score-level" id="score-level">
+                            Nivel: <span id="level-text">Intermedio Alto</span>
+                        </div>
+                    </div>
+
+                    <!-- Axis Performance -->
+                    <div class="diagnosis-section">
+                        <h2>📊 Desempeño por Eje Temático</h2>
+                        <div class="axis-bars" id="axis-bars">
+                            <!-- Will be generated -->
+                        </div>
+                    </div>
+
+                    <!-- Skill Performance -->
+                    <div class="diagnosis-section">
+                        <h2>🎯 Desempeño por Habilidad</h2>
+                        <div class="skill-bars" id="skill-bars">
+                            <!-- Will be generated -->
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="recommendations-card" id="recommendations">
+                        <h2>💡 Recomendaciones Personalizadas</h2>
+                        <div id="recommendations-content">
+                            <!-- Will be generated -->
+                        </div>
+                    </div>
+
+                    <button class="btn-primary btn-large" onclick="showStudyPlan()">
+                        Ver Plan de Estudio →
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
