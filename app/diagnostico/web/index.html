@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prueba Diagnóstica PAES M1</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
+
 <body>
     <div id="app">
         <!-- Header -->
@@ -36,7 +39,7 @@
                 <div class="welcome-card">
                     <h1>🎯 Prueba Diagnóstica PAES M1</h1>
                     <p class="welcome-subtitle">Descubre tu nivel actual y recibe un plan de estudio personalizado</p>
-                    
+
                     <div class="welcome-info">
                         <div class="info-item">
                             <span class="info-icon">📝</span>
@@ -73,7 +76,7 @@
                     <div class="question-content" id="question-content">
                         <!-- Question HTML will be loaded here -->
                     </div>
-                    
+
                     <div class="options-container" id="options-container">
                         <!-- Options will be generated here -->
                     </div>
@@ -98,7 +101,7 @@
                     <h2>Etapa 1 Completada</h2>
                     <p>Hemos calibrado tu nivel de habilidad.</p>
                     <p>Ahora verás <strong>8 preguntas adaptadas</strong> a tu desempeño.</p>
-                    
+
                     <div class="transition-stats" id="transition-stats">
                         <!-- Stats will be shown here -->
                     </div>
@@ -113,7 +116,7 @@
             <div id="results-screen" class="screen">
                 <div class="results-container">
                     <h1 class="results-title">Tu Diagnóstico PAES M1</h1>
-                    
+
                     <!-- Score Card -->
                     <div class="score-card">
                         <div class="score-main">
@@ -152,11 +155,25 @@
                     <button class="btn-primary btn-large" onclick="showStudyPlan()">
                         Ver Plan de Estudio →
                     </button>
+
+                    <!-- Skill Tree Section -->
+                    <div class="skill-tree-section">
+                        <h2>🌳 Árbol de Progreso</h2>
+                        <p class="skill-tree-desc">Visualiza qué conceptos dominas y cuáles te faltan.</p>
+                        <button class="btn-secondary" onclick="toggleSkillTree()">
+                            Ver Árbol de Conocimientos →
+                        </button>
+                        <div id="skill-tree-container" class="skill-tree-container" style="display: none;">
+                            <!-- Skill tree will render here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <script src="skill_tree.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>

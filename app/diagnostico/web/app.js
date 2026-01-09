@@ -577,6 +577,101 @@ function showStudyPlan() {
     alert('Plan de estudio próximamente...');
 }
 
+let skillTreeVisible = false;
+let skillTreeLoaded = false;
+let questionAtomsData = null;
+
+async function loadQuestionAtoms() {
+    if (questionAtomsData) return questionAtomsData;
+    try {
+        const response = await fetch('/data/question_atoms.json');
+        questionAtomsData = await response.json();
+        return questionAtomsData;
+    } catch (error) {
+        console.error('Error loading question atoms:', error);
+        return null;
+    }
+}
+
+async function toggleSkillTree() {
+    const container = document.getElementById('skill-tree-container');
+    const button = container.previousElementSibling;
+
+    if (!skillTreeVisible) {
+        // Show loading state
+        button.textContent = 'Cargando...';
+        button.disabled = true;
+
+        // Load data in parallel
+        await Promise.all([
+            skillTreeLoaded ? Promise.resolve() : SkillTree.load(),
+            loadQuestionAtoms()
+        ]);
+        skillTreeLoaded = true;
+
+        // Build mastery state from responses
+        const masteryState = buildMasteryStateFromDiagnostic();
+
+        // Show container and render tree
+        container.style.display = 'block';
+        SkillTree.render('skill-tree-container', masteryState);
+
+        button.textContent = 'Ocultar Árbol ↑';
+        button.disabled = false;
+        skillTreeVisible = true;
+    } else {
+        // Hide container
+        container.style.display = 'none';
+        button.textContent = 'Ver Árbol de Conocimientos →';
+        skillTreeVisible = false;
+    }
+}
+
+function buildMasteryStateFromDiagnostic() {
+    const masteryState = {};
+
+    if (!questionAtomsData || state.responses.length === 0) {
+        return masteryState;
+    }
+
+    // Process each response
+    for (const response of state.responses) {
+        const question = response.question;
+        const key = `${question.exam}/${question.id}`;
+        const questionData = questionAtomsData.question_atoms[key];
+
+        if (!questionData) {
+            console.warn('No atom data for question:', key);
+            continue;
+        }
+
+        // Map response to atom states
+        for (const atom of questionData.atoms) {
+            const atomId = atom.atom_id;
+
+            if (response.responseType === 'dont_know') {
+                // "No lo sé" = gap
+                masteryState[atomId] = 'notEvaluated'; // Could be 'gap'
+            } else if (response.isCorrect) {
+                // Correct = dominated (only if primary or first time seeing this atom)
+                if (!masteryState[atomId] || atom.relevance === 'primary') {
+                    masteryState[atomId] = 'dominated';
+                }
+            } else {
+                // Incorrect = not dominated (misconception if primary)
+                if (atom.relevance === 'primary') {
+                    masteryState[atomId] = 'misconception';
+                } else if (!masteryState[atomId]) {
+                    masteryState[atomId] = 'notDominated';
+                }
+            }
+        }
+    }
+
+    console.log('Mastery state:', masteryState);
+    return masteryState;
+}
+
 // ============================================================================
 // TIMER
 // ============================================================================
