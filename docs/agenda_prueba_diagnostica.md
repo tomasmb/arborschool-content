@@ -173,26 +173,70 @@ FASE 3: Migración a CAT
 |---------|-------------|
 | `app/atoms/scripts/export_skill_tree.py` | Exporta grafo de átomos a JSON |
 | `app/diagnostico/data/skill_tree.json` | 229 nodos, 317 edges, profundidad máx 6 |
-| `app/diagnostico/data/question_atoms.json` | Mapeo 32 preguntas → 47 átomos únicos |
+| `app/diagnostico/data/question_atoms.json` | Mapeo 32 preguntas → 61 átomos únicos |
 | `app/diagnostico/web/skill_tree.js` | Componente D3.js para visualización |
 | `app/diagnostico/web/tree_viewer.html` | Vista standalone del árbol completo |
 | `app/diagnostico/scripts/extract_question_atoms.py` | Extrae mapeo pregunta→átomo |
 
-**Estadísticas de cobertura:**
+**Estadísticas de cobertura (v3.0 optimizada):**
 - Total átomos en banco: 229
-- Átomos evaluados por MST: 47 (20.5%)
-- Asociaciones pregunta-átomo: 70
+- Átomos directos por MST: 61 (26.6%)
+- **Átomos transitivos: 190 (83.0%)** ← Optimizado desde 58%
 - Profundidad máxima del grafo: 6 niveles
 
 **Estados de dominio por respuesta:**
 | Respuesta | Estado del átomo |
 |-----------|------------------|
 | ✅ Correcta (átomo primary) | `dominated` (verde) |
+| ↻ Inferido por prerrequisito | `transitiveDominated` (cyan) |
 | ❌ Incorrecta (átomo primary) | `misconception` (naranja) |
 | ❌ Incorrecta (átomo secondary) | `notDominated` (rojo) |
 | ❓ "No lo sé" | `notEvaluated` (gris) |
 
----
+### Fase 6: Optimización de Selección ✅ (2026-01-09)
+
+**Objetivo:** Maximizar cobertura de átomos sin cambiar número de preguntas.
+
+**Resultado:**
+| Métrica | v1.0 | v3.0 | Mejora |
+|---------|------|------|--------|
+| Cobertura transitiva | 58% | **83%** | +25% |
+| Átomos directos | 47 | 61 | +14 |
+| Preguntas | 32 | 32 | = |
+
+**Validación vs blueprint:**
+- ✅ Distribución de ejes: R1=2-2-2-2, A2/B2/C2=3-2-1-2
+- ✅ Dificultad A2: 100% Low
+- ✅ Dificultad B2/C2: 100% Medium
+- ✅ 4 habilidades cubiertas por módulo
+
+### Fase 7: Fórmula Ponderada de Predicción ✅ (2026-01-09)
+
+**Objetivo:** Mejorar precisión de predicción PAES usando fórmula ponderada.
+
+**Fórmula implementada:**
+```
+PAES = 100 + 900 × score_ponderado × factor_ruta × factor_cobertura
+
+Donde:
+- score_ponderado = Σ(correcto × peso) / Σ(peso_max)
+- peso = 1.0 (Low) | 1.8 (Medium)
+- factor_ruta = 0.70 (A) | 0.85 (B) | 1.00 (C)
+- factor_cobertura = 0.90 (10% de átomos no inferibles)
+```
+
+**Archivos modificados:**
+| Archivo | Cambio |
+|---------|--------|
+| `app/diagnostico/web/app.js` | `calculatePAESScore()` reescrito |
+| `app/diagnostico/config.py` | Nueva función `get_paes_score_weighted()` |
+
+**Resultados (16/16 correctas):**
+| Ruta | Puntaje | Rango |
+|------|---------|-------|
+| A | 667 | 617-717 |
+| B | 789 | 739-839 |
+| C | 910 | 860-960 |
 
 ## 7. Especificaciones Técnicas
 

@@ -10,61 +10,66 @@
  */
 
 // ============================================================================
-// CONFIGURACIÓN - Las 32 preguntas seleccionadas
+// CONFIGURACIÓN - Las 32 preguntas seleccionadas (v2.0 - Optimizado 2026-01-09)
+// Cobertura: 83% de átomos (190/229)
 // ============================================================================
 const MST_CONFIG = {
     R1: [
-        { exam: "seleccion-regular-2025", id: "Q32", axis: "ALG", skill: "RES", score: 0.50 },
-        { exam: "seleccion-regular-2026", id: "Q33", axis: "ALG", skill: "MOD", score: 0.45 },
-        { exam: "prueba-invierno-2026", id: "Q7", axis: "NUM", skill: "RES", score: 0.50 },
+        { exam: "Prueba-invierno-2025", id: "Q28", axis: "ALG", skill: "RES", score: 0.45 },
+        { exam: "prueba-invierno-2026", id: "Q31", axis: "ALG", skill: "MOD", score: 0.55 },
         { exam: "prueba-invierno-2026", id: "Q23", axis: "NUM", skill: "ARG", score: 0.45 },
-        { exam: "seleccion-regular-2026", id: "Q41", axis: "GEO", skill: "RES", score: 0.45 },
-        { exam: "prueba-invierno-2026", id: "Q48", axis: "GEO", skill: "ARG", score: 0.45 },
-        { exam: "seleccion-regular-2026", id: "Q62", axis: "PROB", skill: "RES", score: 0.50 },
-        { exam: "seleccion-regular-2026", id: "Q61", axis: "PROB", skill: "REP", score: 0.45 },
+        { exam: "seleccion-regular-2025", id: "Q15", axis: "NUM", skill: "ARG", score: 0.55 },
+        { exam: "Prueba-invierno-2025", id: "Q46", axis: "GEO", skill: "ARG", score: 0.45 },
+        { exam: "prueba-invierno-2026", id: "Q45", axis: "GEO", skill: "ARG", score: 0.55 },
+        { exam: "prueba-invierno-2026", id: "Q58", axis: "PROB", skill: "REP", score: 0.45 },
+        { exam: "seleccion-regular-2026", id: "Q60", axis: "PROB", skill: "RES", score: 0.45 },
     ],
     A2: [
-        { exam: "prueba-invierno-2026", id: "Q37", axis: "ALG", skill: "RES", score: 0.20 },
-        { exam: "seleccion-regular-2026", id: "Q40", axis: "ALG", skill: "MOD", score: 0.25 },
-        { exam: "seleccion-regular-2026", id: "Q30", axis: "ALG", skill: "ARG", score: 0.25 },
-        { exam: "prueba-invierno-2026", id: "Q19", axis: "NUM", skill: "RES", score: 0.15 },
-        { exam: "prueba-invierno-2026", id: "Q18", axis: "NUM", skill: "MOD", score: 0.25 },
-        { exam: "prueba-invierno-2026", id: "Q22", axis: "GEO", skill: "RES", score: 0.25 },
-        { exam: "prueba-invierno-2026", id: "Q53", axis: "PROB", skill: "RES", score: 0.20 },
-        { exam: "seleccion-regular-2026", id: "Q54", axis: "PROB", skill: "REP", score: 0.25 },
+        { exam: "Prueba-invierno-2025", id: "Q40", axis: "ALG", skill: "RES", score: 0.25 },
+        { exam: "seleccion-regular-2026", id: "Q35", axis: "ALG", skill: "MOD", score: 0.25 },
+        { exam: "prueba-invierno-2026", id: "Q40", axis: "ALG", skill: "RES", score: 0.25 },
+        { exam: "seleccion-regular-2025", id: "Q10", axis: "NUM", skill: "RES", score: 0.30 },
+        { exam: "Prueba-invierno-2025", id: "Q6", axis: "NUM", skill: "RES", score: 0.30 },
+        { exam: "seleccion-regular-2025", id: "Q63", axis: "GEO", skill: "REP", score: 0.30 },
+        { exam: "prueba-invierno-2026", id: "Q64", axis: "PROB", skill: "ARG", score: 0.35 },
+        { exam: "seleccion-regular-2025", id: "Q54", axis: "PROB", skill: "RES", score: 0.25 },
     ],
     B2: [
-        { exam: "Prueba-invierno-2025", id: "Q11", axis: "ALG", skill: "RES", score: 0.50 },
-        { exam: "prueba-invierno-2026", id: "Q6", axis: "ALG", skill: "MOD", score: 0.45 },
-        { exam: "seleccion-regular-2026", id: "Q47", axis: "ALG", skill: "ARG", score: 0.45 },
-        { exam: "Prueba-invierno-2025", id: "Q18", axis: "NUM", skill: "RES", score: 0.50 },
-        { exam: "seleccion-regular-2026", id: "Q5", axis: "NUM", skill: "ARG", score: 0.55 },
-        { exam: "seleccion-regular-2026", id: "Q45", axis: "GEO", skill: "RES", score: 0.45 },
-        { exam: "prueba-invierno-2026", id: "Q54", axis: "PROB", skill: "REP", score: 0.45 },
-        { exam: "prueba-invierno-2026", id: "Q57", axis: "PROB", skill: "ARG", score: 0.45 },
+        { exam: "prueba-invierno-2026", id: "Q42", axis: "ALG", skill: "MOD", score: 0.45 },
+        { exam: "seleccion-regular-2025", id: "Q38", axis: "ALG", skill: "RES", score: 0.55 },
+        { exam: "seleccion-regular-2025", id: "Q36", axis: "ALG", skill: "MOD", score: 0.55 },
+        { exam: "seleccion-regular-2025", id: "Q3", axis: "NUM", skill: "ARG", score: 0.55 },
+        { exam: "Prueba-invierno-2025", id: "Q22", axis: "NUM", skill: "MOD", score: 0.45 },
+        { exam: "seleccion-regular-2025", id: "Q60", axis: "GEO", skill: "RES", score: 0.45 },
+        { exam: "seleccion-regular-2025", id: "Q55", axis: "PROB", skill: "RES", score: 0.55 },
+        { exam: "Prueba-invierno-2025", id: "Q65", axis: "PROB", skill: "REP", score: 0.45 },
     ],
     C2: [
-        { exam: "seleccion-regular-2026", id: "Q27", axis: "ALG", skill: "RES", score: 0.65 },
-        { exam: "seleccion-regular-2026", id: "Q48", axis: "ALG", skill: "MOD", score: 0.65 },
-        { exam: "prueba-invierno-2026", id: "Q36", axis: "ALG", skill: "ARG", score: 0.55 },
-        { exam: "seleccion-regular-2025", id: "Q23", axis: "NUM", skill: "MOD", score: 0.65 },
+        { exam: "seleccion-regular-2026", id: "Q59", axis: "ALG", skill: "RES", score: 0.60 },
+        { exam: "seleccion-regular-2026", id: "Q11", axis: "ALG", skill: "MOD", score: 0.55 },
+        { exam: "Prueba-invierno-2025", id: "Q33", axis: "ALG", skill: "MOD", score: 0.60 },
         { exam: "Prueba-invierno-2025", id: "Q56", axis: "NUM", skill: "ARG", score: 0.65 },
-        { exam: "seleccion-regular-2025", id: "Q65", axis: "GEO", skill: "ARG", score: 0.60 },
+        { exam: "seleccion-regular-2026", id: "Q23", axis: "NUM", skill: "RES", score: 0.55 },
+        { exam: "Prueba-invierno-2025", id: "Q50", axis: "GEO", skill: "REP", score: 0.55 },
         { exam: "Prueba-invierno-2025", id: "Q61", axis: "PROB", skill: "ARG", score: 0.65 },
-        { exam: "seleccion-regular-2026", id: "Q53", axis: "PROB", skill: "REP", score: 0.60 },
+        { exam: "prueba-invierno-2026", id: "Q60", axis: "PROB", skill: "ARG", score: 0.55 },
     ],
 };
 
-// Mapping de puntajes PAES
+// Mapping de puntajes PAES (v2.1 - Ajustado por cobertura real)
+// 10% de átomos no inferibles → techo real ~900
 const PAES_MAPPING = {
     A: {
-        ranges: [[0, 3, 420, 380, 460], [4, 5, 470, 440, 500], [6, 7, 495, 460, 525], [8, 9, 520, 490, 555], [10, 16, 545, 510, 580]],
+        // Ruta A: Solo preguntas fáciles → techo ~700
+        ranges: [[0, 2, 150, 100, 200], [3, 4, 250, 200, 300], [5, 6, 350, 300, 400], [7, 8, 450, 400, 500], [9, 10, 525, 475, 575], [11, 12, 575, 525, 625], [13, 14, 625, 575, 675], [15, 16, 675, 625, 700]],
     },
     B: {
-        ranges: [[0, 8, 525, 500, 555], [9, 10, 565, 540, 595], [11, 12, 590, 560, 620], [13, 14, 620, 595, 650], [15, 16, 650, 625, 680]],
+        // Ruta B: Preguntas medias → techo ~850
+        ranges: [[0, 5, 400, 350, 450], [6, 7, 475, 425, 525], [8, 9, 550, 500, 600], [10, 11, 625, 575, 675], [12, 13, 700, 650, 750], [14, 15, 775, 725, 825], [16, 16, 825, 775, 850]],
     },
     C: {
-        ranges: [[0, 13, 635, 600, 670], [14, 14, 665, 630, 700], [15, 15, 690, 650, 730], [16, 16, 715, 670, 760]],
+        // Ruta C: Preguntas medio-altas → techo ~900 (10% no inferible)
+        ranges: [[0, 8, 525, 475, 575], [9, 10, 600, 550, 650], [11, 12, 675, 625, 725], [13, 14, 775, 725, 825], [15, 15, 850, 800, 900], [16, 16, 900, 850, 950]],
     },
 };
 
@@ -426,16 +431,56 @@ function showResults() {
 }
 
 function calculatePAESScore(route, totalCorrect) {
-    const mapping = PAES_MAPPING[route];
+    // Nueva fórmula ponderada (v3.0)
+    // PAES = 100 + 900 × score_ponderado × factor_ruta × factor_cobertura
 
-    for (const [minC, maxC, score, min, max] of mapping.ranges) {
-        if (totalCorrect >= minC && totalCorrect <= maxC) {
-            return { score, min, max, level: getLevel(score) };
+    // 1. Calcular score ponderado basado en dificultad de cada pregunta
+    const PESO_LOW = 1.0;
+    const PESO_MEDIUM = 1.8;
+
+    let scorePonderado = 0;
+    let maxScorePonderado = 0;
+
+    // R1 responses (8 preguntas)
+    MST_CONFIG.R1.forEach((q, i) => {
+        const peso = q.score <= 0.35 ? PESO_LOW : PESO_MEDIUM;
+        maxScorePonderado += peso;
+        if (state.r1Responses[i] && state.r1Responses[i].isCorrect) {
+            scorePonderado += peso;
         }
-    }
+    });
 
-    // Default
-    return { score: 500, min: 450, max: 550, level: 'Intermedio' };
+    // Stage 2 responses (8 preguntas de la ruta asignada)
+    const routeModule = `${route}2`;
+    const stage2Questions = MST_CONFIG[routeModule];
+    stage2Questions.forEach((q, i) => {
+        const peso = q.score <= 0.35 ? PESO_LOW : PESO_MEDIUM;
+        maxScorePonderado += peso;
+        if (state.stage2Responses[i] && state.stage2Responses[i].isCorrect) {
+            scorePonderado += peso;
+        }
+    });
+
+    // Score normalizado (0-1)
+    const scoreNormalizado = maxScorePonderado > 0 ? scorePonderado / maxScorePonderado : 0;
+
+    // 2. Factor por ruta (nivel de dificultad evaluado)
+    const FACTOR_RUTA = { A: 0.70, B: 0.85, C: 1.00 };
+    const factorRuta = FACTOR_RUTA[route];
+
+    // 3. Factor de cobertura (10% de átomos no inferibles)
+    const FACTOR_COBERTURA = 0.90;
+
+    // 4. Calcular PAES
+    const paesRaw = 100 + 900 * scoreNormalizado * factorRuta * FACTOR_COBERTURA;
+    const score = Math.round(paesRaw);
+
+    // Margen de error típico: ±50 puntos
+    const margin = 50;
+    const min = Math.max(100, score - margin);
+    const max = Math.min(1000, score + margin);
+
+    return { score, min, max, level: getLevel(score) };
 }
 
 function getLevel(score) {
