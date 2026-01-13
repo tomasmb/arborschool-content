@@ -142,7 +142,7 @@ async function loadQuestion() {
     const progressPercent = (overallNum / 16) * 100;
     document.getElementById('progress-bar').style.width = `${progressPercent}%`;
 
-    // Load question XML - serve from app/ root
+    // Load question XML - use relative path for Vercel deployment
     const questionPath = `/data/pruebas/finalizadas/${question.exam}/qti/${question.id}/question.xml`;
 
     try {
