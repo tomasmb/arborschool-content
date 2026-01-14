@@ -171,17 +171,22 @@ async function loadQuestion() {
                     if (img) {
                         questionHtml += `<p><img src="${img.getAttribute('src')}" alt="${img.getAttribute('alt') || 'Imagen'}"></p>`;
                     } else {
-                        questionHtml += `<p>${p.textContent}</p>`;
+                        questionHtml += `<p>${p.innerHTML}</p>`;
                     }
                 });
             }
 
             // Add the prompt
             if (prompt) {
-                questionHtml += `<p class="question-prompt"><strong>${prompt.textContent}</strong></p>`;
+                questionHtml += `<p class="question-prompt"><strong>${prompt.innerHTML}</strong></p>`;
             }
 
             document.getElementById('question-content').innerHTML = questionHtml;
+
+            // Trigger MathJax to render any mathematical notation
+            if (window.MathJax && window.MathJax.typeset) {
+                MathJax.typeset();
+            }
 
             // Generate options from XML
             generateOptionsFromXML(choices, question);
@@ -237,9 +242,10 @@ function generateOptionsFromXML(choices, question) {
         let optionText = '';
         const mathElement = choice.querySelector('math, m\\:math');
         if (mathElement) {
-            optionText = parseMathML(mathElement);
+            // Keep the full MathML for MathJax to render
+            optionText = choice.innerHTML;
         } else {
-            optionText = choice.textContent.trim();
+            optionText = choice.innerHTML;
         }
 
         return `
