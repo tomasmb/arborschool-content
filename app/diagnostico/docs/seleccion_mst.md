@@ -32,12 +32,12 @@
 | # | Examen | ID | Eje | Score | Habilidad |
 |---|--------|-----|-----|-------|-----------|
 | 1 | Prueba-invierno-2025 | Q28 | ALG | 0.45 | RES |
-| 2 | seleccion-regular-2026 | Q3 | ALG | 0.45 | RES |
+| 2 | prueba-invierno-2026 | Q31 | ALG | 0.55 | MOD |
 | 3 | prueba-invierno-2026 | Q23 | NUM | 0.45 | ARG |
 | 4 | seleccion-regular-2025 | Q15 | NUM | 0.55 | ARG |
 | 5 | Prueba-invierno-2025 | Q46 | GEO | 0.45 | ARG |
 | 6 | prueba-invierno-2026 | Q45 | GEO | 0.55 | ARG |
-| 7 | seleccion-regular-2026 | Q62 | PROB | 0.50 | RES |
+| 7 | prueba-invierno-2026 | Q58 | PROB | 0.45 | REP |
 | 8 | seleccion-regular-2026 | Q60 | PROB | 0.45 | RES |
 
 **Distribución:** 2 ALG, 2 NUM, 2 GEO, 2 PROB ✅
@@ -89,7 +89,7 @@
 | 3 | Prueba-invierno-2025 | Q33 | ALG | 0.60 | MOD |
 | 4 | Prueba-invierno-2025 | Q56 | NUM | 0.65 | ARG |
 | 5 | seleccion-regular-2026 | Q23 | NUM | 0.55 | RES |
-| 6 | Prueba-invierno-2025 | Q43 | GEO | 0.60 | RES |
+| 6 | Prueba-invierno-2025 | Q50 | GEO | 0.55 | REP |
 | 7 | Prueba-invierno-2025 | Q61 | PROB | 0.65 | ARG |
 | 8 | prueba-invierno-2026 | Q60 | PROB | 0.55 | ARG |
 
