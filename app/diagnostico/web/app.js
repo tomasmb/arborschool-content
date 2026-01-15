@@ -333,12 +333,19 @@ function nextQuestion() {
     const questions = getCurrentQuestions();
     const question = questions[state.currentQuestionIndex];
 
+    // Determine if answer is correct by comparing with XML correct answer
+    let isCorrect = false;
+    if (selectedOption !== 'DONT_KNOW' && question.choiceMap && question.correctAnswerIdentifier) {
+        const selectedIdentifier = question.choiceMap[selectedOption]; // e.g., "ChoiceB"
+        isCorrect = selectedIdentifier === question.correctAnswerIdentifier;
+    }
+    // "No lo sé" counts as incorrect for scoring purposes
+
     const response = {
         question: question,
         responseType: selectedOption === 'DONT_KNOW' ? 'dont_know' : 'selected',
         selectedOption: selectedOption === 'DONT_KNOW' ? null : selectedOption,
-        // For demo purposes, we'll randomly determine if correct
-        isCorrect: selectedOption !== 'DONT_KNOW' && Math.random() > 0.5,
+        isCorrect: isCorrect,
     };
 
     if (state.currentStage === 1) {
