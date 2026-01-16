@@ -272,8 +272,79 @@ class MSTEngine:
         """
         Genera diagnósticos por átomo basados en las respuestas.
         
-        Nota: Requiere cargar metadata de las preguntas para obtener átomos.
-        Por ahora retorna lista vacía - se implementará con integración de metadata.
+        Para cada respuesta:
+        1. Carga metadata_tags.json de la pregunta
+        2. Extrae los átomos taggeados (primary y secondary)
+        3. Asigna estado según tipo de respuesta
+        
+        Returns:
+            Lista de AtomDiagnosis con estado por átomo
         """
-        # TODO: Implementar carga de átomos desde metadata_tags.json
-        return []
+        import json
+        from pathlib import Path
+        
+        # Base path for test data
+        BASE_PATH = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
+        
+        # Track atoms already diagnosed (avoid duplicates, keep worst status)
+        atom_status: Dict[str, AtomDiagnosis] = {}
+        
+        # Status priority: misconception > gap > dominado
+        status_priority = {
+            ResponseType.INCORRECT: 3,
+            ResponseType.DONT_KNOW: 2,
+            ResponseType.CORRECT: 1,
+        }
+        
+        for response in responses:
+            question = response.question
+            metadata_path = BASE_PATH / question.exam / "qti" / question.question_id / "metadata_tags.json"
+            
+            if not metadata_path.exists():
+                continue
+                
+            try:
+                with open(metadata_path, 'r', encoding='utf-8') as f:
+                    metadata = json.load(f)
+            except (json.JSONDecodeError, IOError):
+                continue
+            
+            selected_atoms = metadata.get("selected_atoms", [])
+            
+            for atom_info in selected_atoms:
+                atom_id = atom_info.get("atom_id", "")
+                atom_title = atom_info.get("atom_title", "")
+                relevance = atom_info.get("relevance", "secondary")
+                
+                if not atom_id:
+                    continue
+                
+                # For primary atoms, use the actual response type
+                # For secondary atoms, only mark as dominated if correct
+                if relevance == "primary":
+                    resp_type = response.response_type
+                else:
+                    # Secondary atoms: only mark dominated if correct, otherwise not evaluated
+                    if response.response_type == ResponseType.CORRECT:
+                        resp_type = ResponseType.CORRECT
+                    else:
+                        continue  # Don't diagnose secondary atoms on incorrect answers
+                
+                # Check if we already have this atom diagnosed
+                if atom_id in atom_status:
+                    existing = atom_status[atom_id]
+                    # Keep the worse status (higher priority)
+                    if status_priority[resp_type] > status_priority[existing.response_type]:
+                        atom_status[atom_id] = AtomDiagnosis(
+                            atom_id=atom_id,
+                            atom_title=atom_title,
+                            response_type=resp_type,
+                        )
+                else:
+                    atom_status[atom_id] = AtomDiagnosis(
+                        atom_id=atom_id,
+                        atom_title=atom_title,
+                        response_type=resp_type,
+                    )
+        
+        return list(atom_status.values())
