@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Progreso - Átomos Evaluados</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        /* Summary cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-card.dominated {
+            border-color: #10b981;
+        }
+
+        .summary-card.misconception {
+            border-color: #f59e0b;
+        }
+
+        .summary-card.not-dominated {
+            border-color: #ef4444;
+        }
+
+        .summary-card.not-evaluated {
+            border-color: #6b7280;
+        }
+
+        .summary-number {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .summary-card.dominated .summary-number {
+            color: #10b981;
+        }
+
+        .summary-card.misconception .summary-number {
+            color: #f59e0b;
+        }
+
+        .summary-card.not-dominated .summary-number {
+            color: #ef4444;
+        }
+
+        .summary-card.not-evaluated .summary-number {
+            color: #6b7280;
+        }
+
+        .summary-card.transitive {
+            border-color: #22d3ee;
+        }
+
+        .summary-card.transitive .summary-number {
+            color: #22d3ee;
+        }
+
+        .summary-label {
+            font-size: 12px;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        /* Eje sections */
+        .eje-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .eje-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .eje-header:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .eje-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .eje-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .eje-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #94a3b8;
+        }
+
+        .eje-stat .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .dot.green {
+            background: #10b981;
+        }
+
+        .dot.orange {
+            background: #f59e0b;
+        }
+
+        .dot.red {
+            background: #ef4444;
+        }
+
+        .eje-content {
+            padding: 0 20px 20px;
+            display: none;
+        }
+
+        .eje-section.open .eje-content {
+            display: block;
+        }
+
+        .eje-section.open .eje-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Atom cards */
+        .atoms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .atom-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .atom-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .atom-card.dominated {
+            border-left-color: #10b981;
+        }
+
+        .atom-card.transitiveDominated {
+            border-left-color: #22d3ee;
+        }
+
+        .atom-card.misconception {
+            border-left-color: #f59e0b;
+        }
+
+        .atom-card.not-dominated {
+            border-left-color: #ef4444;
+        }
+
+        .atom-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .atom-card.dominated .atom-icon {
+            background: rgba(16, 185, 129, 0.2);
+        }
+
+        .atom-card.transitiveDominated .atom-icon {
+            background: rgba(34, 211, 238, 0.2);
+        }
+
+        .atom-card.misconception .atom-icon {
+            background: rgba(245, 158, 11, 0.2);
+        }
+
+        .atom-card.not-dominated .atom-icon {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        .atom-info {
+            flex: 1;
+        }
+
+        .atom-title {
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .atom-id {
+            font-size: 11px;
+            color: #64748b;
+            font-family: monospace;
+        }
+
+        .atom-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .atom-card.dominated .atom-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .atom-card.transitiveDominated .atom-badge {
+            background: rgba(34, 211, 238, 0.2);
+            color: #22d3ee;
+        }
+
+        .atom-card.misconception .atom-badge {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .atom-card.not-dominated .atom-badge {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Expand icon */
+        .expand-icon {
+            font-size: 20px;
+            transition: transform 0.2s;
+        }
+
+        .eje-section.open .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+
+        .empty-state h2 {
+            margin-bottom: 10px;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 600px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎯 Tu Progreso de Aprendizaje</h1>
+        <p class="subtitle">Átomos evaluados en la prueba diagnóstica</p>
+
+        <div class="summary-grid" id="summary"></div>
+
+        <!-- Toggle for full tree -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button id="toggle-full-tree" style="
+                background: rgba(255,255,255,0.1);
+                border: 1px solid rgba(255,255,255,0.2);
+                color: white;
+                padding: 12px 24px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.2s;
+            " onmouseover="this.style.background='rgba(255,255,255,0.2)'"
+                onmouseout="this.style.background='rgba(255,255,255,0.1)'" onclick="toggleFullTree()">
+                🌳 Ver Árbol Completo (229 átomos)
+            </button>
+        </div>
+
+        <!-- Full tree container (hidden by default) -->
+        <div id="full-tree-container"
+            style="display: none; background: rgba(0,0,0,0.3); border-radius: 16px; margin-bottom: 20px; overflow: hidden;">
+            <div
+                style="padding: 15px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center;">
+                <span>🌳 Árbol Completo de Conocimientos</span>
+                <div style="display: flex; gap: 10px;">
+                    <button class="tree-filter active" data-filter="all" onclick="filterTree('all')">Todos</button>
+                    <button class="tree-filter" data-filter="evaluated" onclick="filterTree('evaluated')">Solo
+                        evaluados</button>
+                </div>
+            </div>
+            <div id="tree-svg-container" style="height: 500px;"></div>
+        </div>
+
+        <div id="eje-sections"></div>
+    </div>
+
+    <script>
+        const ejeNames = {
+            'algebra_y_funciones': { name: 'Álgebra y Funciones', icon: '📐' },
+            'numeros': { name: 'Números', icon: '🔢' },
+            'geometria': { name: 'Geometría', icon: '📏' },
+            'probabilidad_y_estadistica': { name: 'Probabilidad y Estadística', icon: '📊' }
+        };
+
+        // Mastery data
+        let masteryState = {};
+        let atomsData = null;
+        let questionAtomsData = null;
+
+        async function loadData() {
+            try {
+                const [skillTreeRes, questionAtomsRes] = await Promise.all([
+                    fetch('../data/skill_tree.json'),
+                    fetch('../data/question_atoms.json')
+                ]);
+
+                atomsData = await skillTreeRes.json();
+                questionAtomsData = await questionAtomsRes.json();
+
+                // Build node map for prereq lookup
+                const nodeMap = new Map(atomsData.flat.nodes.map(n => [n.id, n]));
+
+                // Get directly evaluated atoms
+                const evaluatedAtomIds = new Set(
+                    Object.values(questionAtomsData.question_atoms)
+                        .flatMap(q => q.atoms.map(a => a.atom_id))
+                );
+
+                // Generate sample mastery states for demo (directly evaluated only)
+                const states = ['dominated', 'misconception', 'notDominated'];
+                const directMastery = {};
+                evaluatedAtomIds.forEach(id => {
+                    directMastery[id] = states[Math.floor(Math.random() * states.length)];
+                });
+
+                // Apply TRANSITIVE mastery via prerequisites
+                masteryState = applyTransitiveMastery(directMastery, nodeMap);
+
+                render();
+            } catch (error) {
+                document.getElementById('eje-sections').innerHTML = `
+                    <div class="empty-state">
+                        <h2>Error cargando datos</h2>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        function applyTransitiveMastery(directMastery, nodeMap) {
+            const result = { ...directMastery };
+
+            // Get all prerequisites recursively
+            function getAllPrereqs(atomId, visited = new Set()) {
+                if (visited.has(atomId)) return visited;
+                visited.add(atomId);
+                const node = nodeMap.get(atomId);
+                if (node && node.prerequisites) {
+                    for (const prereq of node.prerequisites) {
+                        getAllPrereqs(prereq, visited);
+                    }
+                }
+                return visited;
+            }
+
+            // For each dominated atom, mark all prerequisites as transitively dominated
+            for (const [atomId, state] of Object.entries(directMastery)) {
+                if (state === 'dominated') {
+                    const prereqs = getAllPrereqs(atomId);
+                    for (const prereqId of prereqs) {
+                        if (prereqId !== atomId && !result[prereqId]) {
+                            result[prereqId] = 'transitiveDominated';
+                        }
+                    }
+                }
+            }
+
+            // For misconception/notDominated: DON'T infer prereqs (they might still know basics)
+            // Only mark unset prereqs as 'uncertain' if parent failed
+            for (const [atomId, state] of Object.entries(directMastery)) {
+                if (state === 'notDominated' || state === 'misconception') {
+                    // Mark this specific atom, but don't propagate failure backwards
+                    // The prereqs could still be dominated via other paths
+                }
+            }
+
+            return result;
+        }
+
+        function render() {
+            // Get all atoms with mastery state (including transitive)
+            const evaluatedAtoms = atomsData.flat.nodes.filter(n => masteryState[n.id]);
+
+            // Count states
+            const counts = { dominated: 0, transitiveDominated: 0, misconception: 0, notDominated: 0 };
+            evaluatedAtoms.forEach(a => {
+                const state = masteryState[a.id];
+                if (counts[state] !== undefined) counts[state]++;
+            });
+
+            // Render summary
+            document.getElementById('summary').innerHTML = `
+                <div class="summary-card dominated">
+                    <div class="summary-number">${counts.dominated}</div>
+                    <div class="summary-label">Dominado ✓</div>
+                </div>
+                <div class="summary-card transitive">
+                    <div class="summary-number">${counts.transitiveDominated}</div>
+                    <div class="summary-label">Inferido ↻</div>
+                </div>
+                <div class="summary-card misconception">
+                    <div class="summary-number">${counts.misconception}</div>
+                    <div class="summary-label">Revisar ⚠</div>
+                </div>
+                <div class="summary-card not-dominated">
+                    <div class="summary-number">${counts.notDominated}</div>
+                    <div class="summary-label">Aprender ✗</div>
+                </div>
+            `;
+
+            // Group by eje
+            const byEje = {};
+            evaluatedAtoms.forEach(atom => {
+                if (!byEje[atom.eje]) byEje[atom.eje] = [];
+                byEje[atom.eje].push(atom);
+            });
+
+            // Render eje sections
+            let sectionsHtml = '';
+            for (const [eje, atoms] of Object.entries(byEje)) {
+                const ejeInfo = ejeNames[eje] || { name: eje, icon: '📚' };
+                const ejeCounts = { dominated: 0, misconception: 0, notDominated: 0 };
+                atoms.forEach(a => {
+                    const state = masteryState[a.id];
+                    if (ejeCounts[state] !== undefined) ejeCounts[state]++;
+                });
+
+                sectionsHtml += `
+                    <div class="eje-section" data-eje="${eje}">
+                        <div class="eje-header" onclick="toggleEje('${eje}')">
+                            <span class="eje-title">${ejeInfo.icon} ${ejeInfo.name}</span>
+                            <div class="eje-stats">
+                                <span class="eje-stat"><span class="dot green"></span>${ejeCounts.dominated}</span>
+                                <span class="eje-stat"><span class="dot orange"></span>${ejeCounts.misconception}</span>
+                                <span class="eje-stat"><span class="dot red"></span>${ejeCounts.notDominated}</span>
+                                <span class="expand-icon">▼</span>
+                            </div>
+                        </div>
+                        <div class="eje-content">
+                            <div class="atoms-list">
+                                ${atoms.map(atom => {
+                    const state = masteryState[atom.id];
+                    const icon = state === 'dominated' ? '✓' :
+                        state === 'transitiveDominated' ? '↻' :
+                            state === 'misconception' ? '!' : '✗';
+                    const badge = state === 'dominated' ? 'Dominado' :
+                        state === 'transitiveDominated' ? 'Inferido' :
+                            state === 'misconception' ? 'Revisar' : 'Aprender';
+                    return `
+                                        <div class="atom-card ${state}">
+                                            <div class="atom-icon">${icon}</div>
+                                            <div class="atom-info">
+                                                <div class="atom-title">${atom.title}</div>
+                                                <div class="atom-id">${atom.id}</div>
+                                            </div>
+                                            <span class="atom-badge">${badge}</span>
+                                        </div>
+                                    `;
+                }).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('eje-sections').innerHTML = sectionsHtml;
+        }
+
+        function toggleEje(eje) {
+            const section = document.querySelector(`[data-eje="${eje}"]`);
+            section.classList.toggle('open');
+        }
+
+        let fullTreeVisible = false;
+        let fullTreeRendered = false;
+        let currentFilter = 'all';
+
+        function toggleFullTree() {
+            const container = document.getElementById('full-tree-container');
+            const btn = document.getElementById('toggle-full-tree');
+
+            if (!fullTreeVisible) {
+                container.style.display = 'block';
+                btn.textContent = '↑ Ocultar Árbol Completo';
+                if (!fullTreeRendered) {
+                    renderFullTree();
+                    fullTreeRendered = true;
+                }
+                fullTreeVisible = true;
+            } else {
+                container.style.display = 'none';
+                btn.textContent = '🌳 Ver Árbol Completo (229 átomos)';
+                fullTreeVisible = false;
+            }
+        }
+
+        function filterTree(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.tree-filter').forEach(b => b.classList.remove('active'));
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            renderFullTree();
+        }
+
+        const ejeColors = {
+            'algebra_y_funciones': '#8b5cf6',
+            'numeros': '#3b82f6',
+            'geometria': '#10b981',
+            'probabilidad_y_estadistica': '#f59e0b'
+        };
+
+        function renderFullTree() {
+            const container = document.getElementById('tree-svg-container');
+            container.innerHTML = '';
+
+            const width = container.clientWidth || 800;
+            const height = 500;
+
+            const svg = d3.select('#tree-svg-container')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            const g = svg.append('g');
+
+            // Zoom
+            const zoom = d3.zoom()
+                .scaleExtent([0.2, 3])
+                .on('zoom', (event) => g.attr('transform', event.transform));
+            svg.call(zoom);
+
+            // Filter nodes
+            let nodes = atomsData.flat.nodes.map(n => ({ ...n }));
+            let edges = atomsData.flat.edges.map(e => ({ ...e }));
+
+            if (currentFilter === 'evaluated') {
+                const evalIds = new Set(Object.keys(masteryState));
+                nodes = nodes.filter(n => evalIds.has(n.id));
+                edges = edges.filter(e => evalIds.has(e.source) && evalIds.has(e.target));
+            }
+
+            // Simulation
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(edges).id(d => d.id).distance(50))
+                .force('charge', d3.forceManyBody().strength(-100))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(15))
+                .stop();
+
+            for (let i = 0; i < 200; i++) simulation.tick();
+
+            // Links
+            g.selectAll('.link')
+                .data(edges)
+                .enter()
+                .append('line')
+                .attr('class', 'link')
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y)
+                .attr('stroke', 'rgba(255,255,255,0.1)')
+                .attr('stroke-width', 1);
+
+            // Nodes
+            const nodeG = g.selectAll('.node')
+                .data(nodes)
+                .enter()
+                .append('g')
+                .attr('class', 'node')
+                .attr('transform', d => `translate(${d.x},${d.y})`);
+
+            nodeG.append('circle')
+                .attr('r', d => masteryState[d.id] ? 8 : 5)
+                .attr('fill', d => {
+                    const state = masteryState[d.id];
+                    if (state === 'dominated') return '#10b981';
+                    if (state === 'transitiveDominated') return '#22d3ee';
+                    if (state === 'misconception') return '#f59e0b';
+                    if (state === 'notDominated') return '#ef4444';
+                    return ejeColors[d.eje] || '#6b7280';
+                })
+                .attr('stroke', 'rgba(255,255,255,0.3)')
+                .attr('stroke-width', d => masteryState[d.id] ? 2 : 1)
+                .style('cursor', 'pointer')
+                .on('mouseover', function (event, d) {
+                    d3.select(this).attr('r', masteryState[d.id] ? 12 : 8);
+                    showTreeTooltip(event, d);
+                })
+                .on('mouseout', function (event, d) {
+                    d3.select(this).attr('r', masteryState[d.id] ? 8 : 5);
+                    hideTreeTooltip();
+                });
+
+            // Initial zoom
+            svg.call(zoom.transform, d3.zoomIdentity.translate(0, 0).scale(0.8));
+        }
+
+        function showTreeTooltip(event, d) {
+            let tooltip = document.getElementById('tree-tooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.id = 'tree-tooltip';
+                tooltip.style.cssText = 'position:fixed;background:rgba(15,23,42,0.95);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:12px;max-width:280px;z-index:1000;color:white;font-size:13px;';
+                document.body.appendChild(tooltip);
+            }
+
+            const state = masteryState[d.id];
+            const stateText = state === 'dominated' ? '✅ Dominado' :
+                state === 'transitiveDominated' ? '↻ Inferido' :
+                    state === 'misconception' ? '⚠️ Revisar' :
+                        state === 'notDominated' ? '❌ Por aprender' : '⚪ No evaluado';
+
+            tooltip.innerHTML = `<b>${d.title}</b><br><span style="color:#64748b;font-size:11px;">${d.id}</span><br><br>${stateText}`;
+            tooltip.style.display = 'block';
+            tooltip.style.left = (event.pageX + 15) + 'px';
+            tooltip.style.top = (event.pageY + 10) + 'px';
+        }
+
+        function hideTreeTooltip() {
+            const tooltip = document.getElementById('tree-tooltip');
+            if (tooltip) tooltip.style.display = 'none';
+        }
+
+        loadData();
+    </script>
+</body>
+
+</html>

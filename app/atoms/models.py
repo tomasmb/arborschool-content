@@ -105,6 +105,10 @@ class Atom(BaseModel):
         default_factory=list,
         description="Optional list clarifying what is excluded from this atom",
     )
+    en_alcance_m1: bool = Field(
+        default=True,
+        description="Whether this atom is within the evaluable scope of current M1",
+    )
 
     @field_validator("eje")
     @classmethod

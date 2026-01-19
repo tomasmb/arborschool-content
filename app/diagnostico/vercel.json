@@ -1,0 +1,68 @@
+{
+    "version": 2,
+    "buildCommand": null,
+    "outputDirectory": ".",
+    "rewrites": [
+        {
+            "source": "/",
+            "destination": "/web/index.html"
+        },
+        {
+            "source": "/trees",
+            "destination": "/web/skill_trees.html"
+        },
+        {
+            "source": "/styles.css",
+            "destination": "/web/styles.css"
+        },
+        {
+            "source": "/app.js",
+            "destination": "/web/app.js"
+        },
+        {
+            "source": "/skill_tree.js",
+            "destination": "/web/skill_tree.js"
+        },
+        {
+            "source": "/skill_trees.js",
+            "destination": "/web/skill_trees.js"
+        },
+        {
+            "source": "/skill_trees.css",
+            "destination": "/web/skill_trees.css"
+        }
+    ],
+    "headers": [
+        {
+            "source": "/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                }
+            ]
+        },
+        {
+            "source": "/data/(.*).json",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                },
+                {
+                    "key": "Cache-Control",
+                    "value": "public, max-age=86400"
+                }
+            ]
+        },
+        {
+            "source": "/data/pruebas/(.*).xml",
+            "headers": [
+                {
+                    "key": "Content-Type",
+                    "value": "application/xml"
+                }
+            ]
+        }
+    ]
+}

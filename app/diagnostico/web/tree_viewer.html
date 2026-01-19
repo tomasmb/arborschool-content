@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Tree - Vista de Árbol</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .stats {
+            color: #a0aec0;
+            font-size: 14px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn.active {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+
+        .legend {
+            display: flex;
+            gap: 20px;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        #tree-container {
+            width: 100%;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 1.5px;
+        }
+
+        .node circle {
+            stroke-width: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .node circle:hover {
+            stroke-width: 4px;
+            filter: brightness(1.3);
+        }
+
+        .node text {
+            font-size: 10px;
+            fill: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+        }
+
+        .tooltip {
+            position: fixed;
+            background: rgba(26, 32, 44, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            max-width: 300px;
+            z-index: 1000;
+            display: none;
+            color: white;
+        }
+
+        .tooltip h4 {
+            color: #63b3ed;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .tooltip p {
+            font-size: 12px;
+            color: #a0aec0;
+            margin-bottom: 4px;
+        }
+
+        .tooltip .id {
+            font-family: monospace;
+            color: #68d391;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div>
+            <h1>🌳 Skill Tree PAES M1</h1>
+            <div class="stats" id="stats">Cargando...</div>
+        </div>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#8b5cf6"></div> Álgebra
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#3b82f6"></div> Números
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#10b981"></div> Geometría
+            </div>
+            <div class="legend-item">
+                <div class="legend-dot" style="background:#f59e0b"></div> Probabilidad
+            </div>
+        </div>
+        <div class="controls">
+            <button class="btn active" data-eje="all">Todos</button>
+            <button class="btn" data-eje="algebra_y_funciones">Álgebra</button>
+            <button class="btn" data-eje="numeros">Números</button>
+            <button class="btn" data-eje="geometria">Geometría</button>
+            <button class="btn" data-eje="probabilidad_y_estadistica">Prob/Est</button>
+        </div>
+    </div>
+
+    <div id="tree-container"></div>
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        const ejeColors = {
+            'algebra_y_funciones': '#8b5cf6',
+            'numeros': '#3b82f6',
+            'geometria': '#10b981',
+            'probabilidad_y_estadistica': '#f59e0b'
+        };
+
+        let treeData = null;
+        let currentEje = 'all';
+        let svg, g, zoom;
+
+        async function loadTree() {
+            try {
+                const response = await fetch('../data/skill_tree.json');
+                treeData = await response.json();
+
+                document.getElementById('stats').textContent =
+                    `${treeData.metadata.total_nodes} átomos | ${treeData.metadata.total_edges} conexiones`;
+
+                initSvg();
+                renderTree();
+            } catch (error) {
+                document.getElementById('stats').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        function initSvg() {
+            const container = document.getElementById('tree-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            svg = d3.select('#tree-container')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height);
+
+            // Add zoom behavior
+            zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on('zoom', (event) => {
+                    g.attr('transform', event.transform);
+                });
+
+            svg.call(zoom);
+            g = svg.append('g');
+
+            // Initial zoom out to see everything
+            svg.call(zoom.transform, d3.zoomIdentity.translate(width / 2, 50).scale(0.5));
+        }
+
+        function renderTree() {
+            g.selectAll('*').remove();
+
+            // Filter nodes by eje
+            let nodes = treeData.flat.nodes;
+            let edges = treeData.flat.edges;
+
+            if (currentEje !== 'all') {
+                const nodeIds = new Set(nodes.filter(n => n.eje === currentEje).map(n => n.id));
+                nodes = nodes.filter(n => nodeIds.has(n.id));
+                edges = edges.filter(e => nodeIds.has(e.source) && nodeIds.has(e.target));
+            }
+
+            // Create node map
+            const nodeMap = new Map(nodes.map(n => [n.id, { ...n }]));
+
+            // Calculate positions using force simulation
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(edges)
+                    .id(d => d.id)
+                    .distance(80)
+                    .strength(0.5))
+                .force('charge', d3.forceManyBody().strength(-200))
+                .force('center', d3.forceCenter(0, 300))
+                .force('y', d3.forceY(d => d.depth * 100).strength(0.8))
+                .force('collision', d3.forceCollide().radius(25))
+                .stop();
+
+            // Run simulation
+            for (let i = 0; i < 300; i++) simulation.tick();
+
+            // Draw links
+            const links = g.selectAll('.link')
+                .data(edges)
+                .enter()
+                .append('path')
+                .attr('class', 'link')
+                .attr('d', d => {
+                    const source = nodes.find(n => n.id === d.source) || d.source;
+                    const target = nodes.find(n => n.id === d.target) || d.target;
+                    return `M${source.x},${source.y} C${source.x},${(source.y + target.y) / 2} ${target.x},${(source.y + target.y) / 2} ${target.x},${target.y}`;
+                });
+
+            // Draw nodes
+            const nodeGroups = g.selectAll('.node')
+                .data(nodes)
+                .enter()
+                .append('g')
+                .attr('class', 'node')
+                .attr('transform', d => `translate(${d.x}, ${d.y})`)
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded));
+
+            nodeGroups.append('circle')
+                .attr('r', d => 8 + (6 - d.depth) * 1.5)
+                .attr('fill', d => ejeColors[d.eje] || '#6b7280')
+                .attr('stroke', 'rgba(255,255,255,0.3)')
+                .on('mouseover', showTooltip)
+                .on('mouseout', hideTooltip);
+
+            // Add labels for depth 0 nodes
+            nodeGroups.filter(d => d.depth === 0)
+                .append('text')
+                .attr('dy', -15)
+                .attr('text-anchor', 'middle')
+                .text(d => d.title.substring(0, 20) + (d.title.length > 20 ? '...' : ''));
+        }
+
+        function dragStarted(event, d) {
+            d3.select(this).raise();
+        }
+
+        function dragged(event, d) {
+            d.x = event.x;
+            d.y = event.y;
+            d3.select(this).attr('transform', `translate(${d.x}, ${d.y})`);
+            updateLinks();
+        }
+
+        function dragEnded(event, d) { }
+
+        function updateLinks() {
+            g.selectAll('.link')
+                .attr('d', d => {
+                    const source = treeData.flat.nodes.find(n => n.id === d.source) || d.source;
+                    const target = treeData.flat.nodes.find(n => n.id === d.target) || d.target;
+                    return `M${source.x},${source.y} C${source.x},${(source.y + target.y) / 2} ${target.x},${(source.y + target.y) / 2} ${target.x},${target.y}`;
+                });
+        }
+
+        function showTooltip(event, d) {
+            const prereqs = treeData.flat.edges.filter(e => e.target === d.id).map(e => e.source);
+            const unlocks = treeData.flat.edges.filter(e => e.source === d.id).map(e => e.target);
+
+            const tooltip = document.getElementById('tooltip');
+            tooltip.innerHTML = `
+                <h4>${d.title}</h4>
+                <p class="id">${d.id}</p>
+                <p><strong>Habilidad:</strong> ${d.habilidad}</p>
+                <p><strong>Profundidad:</strong> ${d.depth}</p>
+                ${prereqs.length ? `<p><strong>Requiere:</strong> ${prereqs.length} átomo(s)</p>` : '<p>🌱 Átomo raíz</p>'}
+                ${unlocks.length ? `<p><strong>Desbloquea:</strong> ${unlocks.length} átomo(s)</p>` : ''}
+            `;
+            tooltip.style.display = 'block';
+            tooltip.style.left = Math.min(event.pageX + 15, window.innerWidth - 320) + 'px';
+            tooltip.style.top = event.pageY + 10 + 'px';
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentEje = btn.dataset.eje;
+                renderTree();
+            });
+        });
+
+        loadTree();
+    </script>
+</body>
+
+</html>
