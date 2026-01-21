@@ -85,6 +85,64 @@ NOMBRES_EJES = {
 | Fortaleza en Geometría (65%) | "⭐ ¡Tienes ojo para la Geometría! 65% de dominio — ves las formas." |
 | Todas las áreas similares (55-60%) | "⭐ ¡Tienes un perfil equilibrado! Buen dominio en todas las áreas." |
 
+### 1.3 Modelo de Predicción PAES Calibrado
+
+El puntaje PAES proyectado se calcula usando una **escala promediada** de PAES M1 2025 e Invierno 2026 para mayor robustez:
+
+```python
+# Escala promediada PAES M1 (2025 + 2026) / 2
+# Diferencia entre ambas escalas: ~9-16 pts, muy consistentes
+PAES_SCALE = [
+    100, 172, 196, 219, 240, 260, 280, 296, 312, 326, 340,  # 0-10
+    356, 372, 386, 398, 408, 417, 428, 440, 454, 468,       # 11-20
+    480, 491, 499, 506, 513, 522, 534, 548, 562, 574,       # 21-30
+    584, 592, 598, 606, 615, 626, 640, 654, 667, 678,       # 31-40
+    686, 695, 704, 716, 730, 746, 760, 773, 786, 799,       # 41-50
+    814, 831, 849, 868, 887, 908, 930, 956, 984, 1000       # 51-60
+]
+
+TOTAL_PREGUNTAS = 60  # Excluyendo 5 pilotaje
+TOTAL_ATOMOS = 229
+
+def predecir_puntaje_por_atomos(atomos_dominados: int) -> dict:
+    """
+    Predice el puntaje PAES basado en átomos dominados.
+    
+    Modelo calibrado con escalas oficiales PAES M1 2025 y 2026 (promediadas).
+    
+    Hipótesis: % de átomos dominados ≈ % de preguntas correctas esperadas.
+    """
+    porcentaje = atomos_dominados / TOTAL_ATOMOS
+    correctas_esperadas = round(TOTAL_PREGUNTAS * porcentaje)
+    correctas_esperadas = min(max(correctas_esperadas, 0), 60)
+    
+    # Lookup directo en tabla promediada
+    puntaje = PAES_SCALE[correctas_esperadas]
+    
+    # Rango de incertidumbre (±3 preguntas de margen)
+    correctas_min = max(correctas_esperadas - 3, 0)
+    correctas_max = min(correctas_esperadas + 3, 60)
+    
+    return {
+        'puntaje_central': puntaje,
+        'rango': (PAES_SCALE[correctas_min], PAES_SCALE[correctas_max]),
+        'correctas_esperadas': correctas_esperadas
+    }
+```
+
+#### Tabla de Referencia: Átomos → PAES
+
+| Átomos | % Dominio | Correctas Esperadas | Puntaje | Rango |
+|--------|-----------|---------------------|---------|-------|
+| 0 | 0% | 0 | 100 | 100-219 |
+| 57 | 25% | 15 | 408 | 372-440 |
+| 115 | 50% | 30 | 574 | 534-598 |
+| 172 | 75% | 45 | 746 | 704-786 |
+| 229 | 100% | 60 | 1000 | 930-1000 |
+
+> [!NOTE]
+> La escala usa el **promedio de PAES M1 2025 y Regular 2026** para mayor estabilidad. La diferencia entre ambas escalas es ~9-16 pts, indicando alta consistencia.
+
 ---
 
 ## 2. Perfil de Dominio por Eje
@@ -257,44 +315,88 @@ def calcular_cascada(atom, skill_tree, dominados_actuales):
     return len(desbloqueados)
 ```
 
-### 3.4 Nombres Descriptivos para Rutas
+### 3.4 Nombres Descriptivos para Rutas (Formato Híbrido)
 
-Las rutas llevan nombres que comunican claramente su contenido:
+Las rutas usan un **título atractivo** + **subtítulo descriptivo** para ser más engaging sin perder claridad:
 
 ```python
 NOMBRES_RUTAS = {
     'algebra_y_funciones': {
-        'ALG-01': "Ruta: Expresiones Algebraicas",
-        'ALG-03': "Ruta: Ecuaciones e Inecuaciones",
-        'ALG-04': "Ruta: Sistemas de Ecuaciones",
-        'ALG-05': "Ruta: Funciones Lineales",
-        'ALG-06': "Ruta: Funciones Cuadráticas",
+        'ALG-01': {
+            "titulo": "🧮 Dominio Algebraico",
+            "subtitulo": "Expresiones, reducción y operaciones"
+        },
+        'ALG-03': {
+            "titulo": "🔓 Descifrando Ecuaciones",
+            "subtitulo": "Ecuaciones e inecuaciones lineales"
+        },
+        'ALG-04': {
+            "titulo": "⚔️ Sistemas de Poder",
+            "subtitulo": "Sistemas de ecuaciones 2x2"
+        },
+        'ALG-05': {
+            "titulo": "📈 Funciones en Acción",
+            "subtitulo": "Funciones lineales y pendiente"
+        },
+        'ALG-06': {
+            "titulo": "🎯 La Parábola Perfecta",
+            "subtitulo": "Funciones cuadráticas"
+        },
     },
     'numeros': {
-        'NUM-01': "Ruta: Dominio de Enteros",
-        'NUM-02': "Ruta: Fracciones y Racionales", 
-        'NUM-03': "Ruta: Potencias y Raíces",
+        'NUM-01': {
+            "titulo": "💪 El Poder de los Números",
+            "subtitulo": "Enteros: operaciones y orden"
+        },
+        'NUM-02': {
+            "titulo": "🔢 Dominio de Fracciones",
+            "subtitulo": "Racionales y operaciones"
+        },
+        'NUM-03': {
+            "titulo": "⚡ Potencias y Raíces",
+            "subtitulo": "Exponentes, raíces y notación científica"
+        },
     },
     'geometria': {
-        'GEO-01': "Ruta: Pitágoras y Áreas",
-        'GEO-02': "Ruta: Geometría Analítica",
-        'GEO-03': "Ruta: Transformaciones Isométricas",
+        'GEO-01': {
+            "titulo": "📐 El Ojo Geométrico",
+            "subtitulo": "Pitágoras, perímetros y áreas"
+        },
+        'GEO-02': {
+            "titulo": "🗺️ Geometría Analítica",
+            "subtitulo": "Coordenadas y distancias"
+        },
+        'GEO-03': {
+            "titulo": "🔄 Transformaciones",
+            "subtitulo": "Isometrías y simetrías"
+        },
     },
     'probabilidad_y_estadistica': {
-        'PROB-01': "Ruta: Análisis de Datos",
-        'PROB-02': "Ruta: Medidas de Tendencia Central",
-        'PROB-04': "Ruta: Probabilidades",
+        'PROB-01': {
+            "titulo": "📊 Datos y Decisiones",
+            "subtitulo": "Análisis de datos y gráficos"
+        },
+        'PROB-02': {
+            "titulo": "📉 Tendencias Centrales",
+            "subtitulo": "Media, mediana y moda"
+        },
+        'PROB-04': {
+            "titulo": "🎲 El Arte de la Probabilidad",
+            "subtitulo": "Probabilidades y combinatoria"
+        },
     }
 }
 
 def generar_nombre_ruta(eje, secuencia):
-    """Genera un nombre amigable basado en el estándar predominante."""
-    # Detectar el estándar más común en la secuencia
+    """Genera título y subtítulo basado en el estándar predominante."""
     standards = [atom['id'].split('-')[2] + '-' + atom['id'].split('-')[3] 
                  for atom in secuencia]
     standard_principal = Counter(standards).most_common(1)[0][0]
     
-    return NOMBRES_RUTAS.get(eje, {}).get(standard_principal, f"Ruta: {eje.title()}")
+    ruta_info = NOMBRES_RUTAS.get(eje, {}).get(standard_principal)
+    if ruta_info:
+        return ruta_info
+    return {"titulo": f"🎯 Ruta: {eje.title()}", "subtitulo": ""}
 ```
 
 ---
@@ -307,8 +409,11 @@ Cada ruta muestra métricas clave que ayudan al alumno a decidir cuál tomar:
 
 ```
 ╔════════════════════════════════════════════════════════════════════╗
-║  🎯 RUTA RECOMENDADA: Expresiones Algebraicas                      ║
+║  🎯 RUTA RECOMENDADA                                               ║
 ╠════════════════════════════════════════════════════════════════════╣
+║                                                                    ║
+║  🧮 Dominio Algebraico                                             ║
+║     "Expresiones, reducción y operaciones"                        ║
 ║                                                                    ║
 ║  📚 8 átomos a aprender                                            ║
 ║  🔓 +12 átomos desbloqueados (cascada)                            ║
@@ -316,7 +421,7 @@ Cada ruta muestra métricas clave que ayudan al alumno a decidir cuál tomar:
 ║  📈 +45 puntos PAES estimados                                      ║
 ║  📊 Álgebra: 58% → 78% (+20%)                                      ║
 ║                                                                    ║
-║  ⏱️ ~6-8 horas de estudio                                          ║
+║  ⏱️ ~2.5-3 horas de estudio                                        ║
 ║                                                                    ║
 ║  [Ver átomos de esta ruta]                                        ║
 ║                                                                    ║
@@ -405,15 +510,15 @@ Además de la ruta recomendada, mostramos 2-3 alternativas para dar flexibilidad
 ╠════════════════════════════════════════════════════════════════════╣
 ║                                                                    ║
 ║  ┌──────────────────────────────────────────────────────────────┐ ║
-║  │ 📐 Ruta: Pitágoras y Áreas                                    │ ║
-║  │    6 átomos | +35 pts | ~4-6 hrs | Geometría: 42% → 60%      │ ║
-║  │    "Ideal si te gustan los problemas visuales"               │ ║
+║  │ 📐 El Ojo Geométrico                                          │ ║
+║  │    "Pitágoras, perímetros y áreas"                           │ ║
+║  │    6 átomos | +35 pts | ~2 hrs | Geometría: 42% → 60%           │ ║
 ║  └──────────────────────────────────────────────────────────────┘ ║
 ║                                                                    ║
 ║  ┌──────────────────────────────────────────────────────────────┐ ║
-║  │ 🎲 Ruta: Probabilidades                                       │ ║
-║  │    5 átomos | +28 pts | ~3-4 hrs | Prob/Est: 68% → 80%       │ ║
-║  │    "Rápida de completar, buen balance esfuerzo/resultado"    │ ║
+║  │ 🎲 El Arte de la Probabilidad                                 │ ║
+║  │    "Probabilidades y combinatoria"                           │ ║
+║  │    5 átomos | +28 pts | ~1.5 hrs | Prob/Est: 68% → 80%          │ ║
 ║  └──────────────────────────────────────────────────────────────┘ ║
 ║                                                                    ║
 ║  💡 Puedes hacer más de una ruta. Al terminar una, desbloqueas   ║
@@ -429,17 +534,74 @@ Además de la ruta recomendada, mostramos 2-3 alternativas para dar flexibilidad
 
 **Mensaje para el alumno:**
 
+> "Las rutas no son excluyentes — ¡son acumulativas! Cada ruta que completas desbloquea nuevos átomos y abre más caminos de aprendizaje. Tu objetivo final: dominar todos los átomos y alcanzar tu máximo potencial en PAES. Empieza por una ruta, termínala, y verás cómo se abren nuevas posibilidades."
+
+### 5.2 Proyección de Potencial Máximo
+
+Mostramos al alumno una visión clara de su potencial total si domina todos los átomos restantes:
+
 ```
-🎮 ¡Esto es como un árbol de habilidades de videojuego!
-
-• Cada átomo que dominas desbloquea nuevos átomos
-• Cada ruta completada abre más caminos
-• Tu objetivo final: desbloquear TODO y alcanzar el máximo potencial
-
-🇺 Las rutas NO son excluyentes. Al terminar una, puedes empezar otra.
-El verdadero poder está en dominar todos los átomos — ¿puedes llegar al 100%?
+╔════════════════════════════════════════════════════════════════════╗
+║                   🏆 TU POTENCIAL MÁXIMO                           ║
+╠════════════════════════════════════════════════════════════════════╣
+║                                                                    ║
+║  📚 89 átomos por dominar                                         ║
+║  📈 Puntaje proyectado: 1000 pts (máximo PAES)                    ║
+║                                                                    ║
+║  ⏱️ ¿Cuánto tiempo toma?                                          ║
+║     • 30 min/día → ~10 semanas                                    ║
+║     • 45 min/día → ~7 semanas                                     ║
+║     • 1 hora/día → ~5 semanas                                     ║
+║                                                                    ║
+║  💡 "No tienes que hacerlo todo de una vez. Cada átomo que        ║
+║      dominas te acerca más a tu máximo potencial."                ║
+║                                                                    ║
+╚════════════════════════════════════════════════════════════════════╝
 ```
 
+#### Cálculo del Tiempo por Ritmo de Estudio
+
+```python
+def calcular_tiempo_potencial_maximo(atomos_restantes, minutos_por_atomo=20):
+    """
+    Calcula cuántas semanas tomaría dominar todos los átomos restantes
+    según diferentes ritmos de estudio diario.
+    
+    Args:
+        atomos_restantes: Cantidad de átomos no dominados
+        minutos_por_atomo: Tiempo promedio por átomo (default: 20 min)
+    
+    Returns:
+        Dict con proyecciones por ritmo de estudio
+    """
+    minutos_totales = atomos_restantes * minutos_por_atomo
+    
+    ritmos = {
+        '30_min_dia': 30,
+        '45_min_dia': 45,
+        '60_min_dia': 60
+    }
+    
+    proyecciones = {}
+    for ritmo, minutos_dia in ritmos.items():
+        dias = minutos_totales / minutos_dia
+        semanas = round(dias / 7)
+        proyecciones[ritmo] = {
+            'semanas': semanas,
+            'descripcion': f"~{semanas} semanas"
+        }
+    
+    return proyecciones
+
+# Ejemplo: Alumno con 89 átomos restantes
+# minutos_totales = 89 * 20 = 1780 min
+# 30 min/día → 1780/30 = 59 días = ~8-9 semanas
+# 45 min/día → 1780/45 = 40 días = ~6 semanas
+# 60 min/día → 1780/60 = 30 días = ~4-5 semanas
+```
+
+> [!TIP]
+> **Mensaje clave**: El tiempo se presenta como un compromiso diario manejable (30-60 min) en lugar de horas totales, lo cual se siente menos abrumador y más alcanzable.
 
 ---
 
@@ -628,8 +790,14 @@ Para tracking interno (no visible al alumno necesariamente):
         "mejora_puntos": 90
       },
       "potencial_maximo": {
-        "puntaje_proyectado": 700,
-        "nota": "Si dominas todos los átomos evaluables"
+        "atomos_restantes": 89,
+        "puntaje_proyectado": 1000,
+        "tiempo_por_ritmo": {
+          "30_min_dia": { "semanas": 10, "descripcion": "~10 semanas" },
+          "45_min_dia": { "semanas": 7, "descripcion": "~7 semanas" },
+          "60_min_dia": { "semanas": 5, "descripcion": "~5 semanas" }
+        },
+        "mensaje": "No tienes que hacerlo todo de una vez. Cada átomo que dominas te acerca más a tu máximo potencial."
       }
     },
     
