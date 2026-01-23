@@ -295,14 +295,7 @@ class VariantPipeline:
         
         os.makedirs(variant_path, exist_ok=True)
         
-        # Save QTI XML
-        xml_path = os.path.join(variant_path, "question.xml")
-        with open(xml_path, "w", encoding="utf-8") as f:
-            f.write(variant.qti_xml)
-        
-        # Save metadata
-        meta_path = os.path.join(variant_path, "metadata_tags.json")
-        
+        # Prepare content to save
         # Add validation result to metadata
         if variant.validation_result:
             variant.metadata["validation"] = {
@@ -314,19 +307,39 @@ class VariantPipeline:
                 "rejection_reason": variant.validation_result.rejection_reason
             }
         
-        with open(meta_path, "w", encoding="utf-8") as f:
-            json.dump(variant.metadata, f, ensure_ascii=False, indent=2)
-        
-        # Save variant info
-        info_path = os.path.join(variant_path, "variant_info.json")
-        info = {
+        variant_info = {
             "variant_id": variant.variant_id,
             "source_question_id": variant.source_question_id,
             "source_test_id": variant.source_test_id,
             "is_rejected": is_rejected
         }
-        with open(info_path, "w", encoding="utf-8") as f:
-            json.dump(info, f, ensure_ascii=False, indent=2)
+        
+        # Helper to save files to a path
+        def save_to_path(base_path: str):
+            os.makedirs(base_path, exist_ok=True)
+            
+            # Save QTI XML
+            with open(os.path.join(base_path, "question.xml"), "w", encoding="utf-8") as f:
+                f.write(variant.qti_xml)
+            
+            # Save metadata
+            with open(os.path.join(base_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
+                json.dump(variant.metadata, f, ensure_ascii=False, indent=2)
+            
+            # Save variant info
+            with open(os.path.join(base_path, "variant_info.json"), "w", encoding="utf-8") as f:
+                json.dump(variant_info, f, ensure_ascii=False, indent=2)
+        
+        # Save to primary location (by test)
+        save_to_path(variant_path)
+        
+        # Also save to consolidated diagnostic directory if configured (approved only)
+        if self.config.diagnostic_output_dir and not is_rejected:
+            diag_path = os.path.join(
+                self.config.diagnostic_output_dir,
+                variant.variant_id  # Flat structure: all variants in one folder
+            )
+            save_to_path(diag_path)
     
     def _save_report(self, report: GenerationReport):
         """Save generation report."""

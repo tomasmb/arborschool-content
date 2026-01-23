@@ -28,32 +28,47 @@ Crear un sistema que genere variantes confiables de preguntas PAES para:
 | Pregunta | Tipo | Generadas | Aprobadas | Notas |
 |----------|------|-----------|-----------|-------|
 | Q1 | Aritmética enteros | 2 | 2 | Aprobadas manualmente (falso negativo del validador) |
-| Q4 | Fracciones | 2 | 0 | Problema con extracción MathML `<mfrac>` |
+| Q4 | Fracciones | 2 | 2 | ✅ Aprobadas tras fix de MathML/XML element truthiness |
 | Q5 | Tabla + comparación | 2 | 2 | Aprobadas manualmente |
 
 ### 3. Correcciones al Validador
 - [x] Corregido `_element_to_text()` para incluir `<qti-prompt>`
 - [x] Corregido `_mathml_to_text()` para procesar `<mfrac>` como `(num/den)`
 - [x] Agregado `_process_mathml_element()` recursivo para MathML complejo
+- [x] Corregido bug de truthiness de XML Elements en `_find_correct_answer()` y `_extract_question_text()`
+      - Elementos XML sin hijos evalúan como `False` en Python - ahora usa `is not None` explícito
+
+---
+
+### 4. Generación Variantes Diagnóstico (Fase 1a: Sin Imagen) - ✅ COMPLETADO
+- [x] Configurar guardado en doble ubicación (original + carpeta diagnóstico)
+- [x] Ejecutar lote R1, A2, B2, C2 (preguntas sin imagen)
+- **Resultados**: 29/32 variantes aprobadas (91%)
+  - Q35 (3 intentos fallidos): Fallo en copia de MathML complejo
+  - Q3_v1: Aprobada manualmente (falso negativo)
+  - 27 Variantes generadas y validadas automáticamente
 
 ---
 
 ## 🔄 En Progreso / Por Probar
 
-### Validación Mejorada de MathML
-- [ ] Probar Q4 (fracciones) con el validador corregido
-- [ ] Verificar que `(11/6)` se muestra correctamente en el prompt de validación
+### Fase 1b: Imágenes Decorativas
+- [ ] Implementar lógica para reusar imágenes marcadas como decorativas
+- [ ] Generar variantes para Q46, Q60, Q6, Q63
+
+### Fase 2: Renderers de Gráficos
+- [ ] Investigar/Implementar Chart.js para gráficos de barras y circulares
+- [ ] Generar variantes para preguntas con gráficos estadísticos
 
 ### Generador
-- [ ] El generador también necesita mejor extracción de MathML para el prompt de generación
-- [ ] Considerar pasar el XML raw al LLM en lugar de texto extraído
+- [ ] Mejorar prompt para copiar estructuras MathML complejas (sistemas de ecuaciones, tablas)
+- [x] Corrección de extracción de MathML básico (fracciones) ✅
 
 ---
 
 ## 📋 Por Hacer
 
 ### Mejoras al Pipeline
-- [ ] Agregar soporte para imágenes (reuso de imágenes originales)
 - [ ] Implementar retry automático para variantes rechazadas
 - [ ] Agregar flag `--dry-run` para ver qué se generaría sin llamar a la API
 - [ ] Mejorar logging y reportes

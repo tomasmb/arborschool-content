@@ -105,13 +105,15 @@ class PipelineConfig:
         temperature: LLM temperature for generation (0.0 = deterministic)
         validate_variants: Whether to run validation phase
         save_rejected: Whether to save rejected variants for debugging
-        output_dir: Directory for saving generated variants
+        output_dir: Directory for saving generated variants (by test)
+        diagnostic_output_dir: Optional consolidated directory for diagnostic variants
     """
     variants_per_question: int = 3
     temperature: float = 0.3  # Slight variation for diversity
     validate_variants: bool = True
     save_rejected: bool = True
     output_dir: str = "app/data/pruebas/alternativas"
+    diagnostic_output_dir: Optional[str] = None  # e.g., "app/data/diagnostico/variantes"
 
 
 @dataclass

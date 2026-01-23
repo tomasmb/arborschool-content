@@ -9,8 +9,7 @@ This module validates generated variants to ensure they:
 """
 
 import json
-import re
-from typing import Optional, Dict, Any
+from typing import Optional
 import xml.etree.ElementTree as ET
 
 from app.gemini_client import load_default_gemini_service
@@ -219,8 +218,10 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
         """Extract question text from QTI XML, properly handling MathML."""
         try:
             root = ET.fromstring(xml_content)
-            # Find item body
-            item_body = root.find(".//{*}qti-item-body") or root.find(".//{*}itemBody")
+            # Find item body (use explicit 'is not None' to avoid Element truthiness bug)
+            item_body = root.find(".//{*}qti-item-body")
+            if item_body is None:
+                item_body = root.find(".//{*}itemBody")
             if item_body is not None:
                 return self._element_to_text(item_body)
             return ""
@@ -312,9 +313,15 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
         try:
             root = ET.fromstring(xml_content)
             # Find correct response value
-            correct_resp = root.find(".//{*}qti-correct-response") or root.find(".//{*}correctResponse")
+            # Note: Use explicit 'is not None' checks because XML Elements with no 
+            # children evaluate as False in boolean context (Python/ElementTree quirk)
+            correct_resp = root.find(".//{*}qti-correct-response")
+            if correct_resp is None:
+                correct_resp = root.find(".//{*}correctResponse")
             if correct_resp is not None:
-                value = correct_resp.find(".//{*}qti-value") or correct_resp.find(".//{*}value")
+                value = correct_resp.find(".//{*}qti-value")
+                if value is None:
+                    value = correct_resp.find(".//{*}value")
                 if value is not None and value.text:
                     correct_id = value.text.strip()
                     # Find the choice with this ID
