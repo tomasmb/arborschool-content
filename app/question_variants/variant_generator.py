@@ -186,6 +186,7 @@ IMPORTANTE: El QTI XML debe:
 - Tener un identifier único (diferente al original)
 - Mantener la estructura exacta de la pregunta original
 - Usar MathML para expresiones matemáticas si la original las usa
+- CRÍTICO: Si la pregunta contiene sistemas de ecuaciones o tablas (etiquetas <mtable>, <mtr>, <mtd>), DEBES INCLUIRLAS COMPLETAS en el XML de salida, adaptando los números según corresponda. NO omitas las ecuaciones.
 </restriccion_critica>
 """
         return prompt

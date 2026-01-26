@@ -279,6 +279,24 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             # Handle square roots
             inner = "".join(self._process_mathml_element(c) for c in elem)
             return f"sqrt({inner})"
+        elif tag == 'mtable':
+            # Handle tables/matrices (equation systems)
+            rows = []
+            for child in elem:
+                rows.append(self._process_mathml_element(child))
+            return "\n".join(rows)
+        elif tag == 'mtr':
+            # Handle table rows
+            cells = []
+            for child in elem:
+                cells.append(self._process_mathml_element(child))
+            return " ".join(cells)
+        elif tag == 'mtd':
+            # Handle table cells
+            parts = []
+            for child in elem:
+                parts.append(self._process_mathml_element(child))
+            return "".join(parts)
         elif tag in ('mn', 'mi', 'mo', 'mtext'):
             return (elem.text or "").strip()
         elif tag in ('mrow', 'math', 'mstyle'):

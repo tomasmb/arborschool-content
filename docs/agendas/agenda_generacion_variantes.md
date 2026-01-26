@@ -54,21 +54,28 @@ Crear un sistema que genere variantes confiables de preguntas PAES para:
 - [x] Etiquetar metadatos `image_type: decorative`
 - [x] Modificar generador para incluir instrucción de preservación de imagen
 - [x] Ejecutar lote Q46, Q60, Q6, Q63
-- **Resultados**: 6/8 variantes aprobadas (75%)
+- **Resultados**: 7/8 variantes aprobadas (87.5%)
   - Q46 (inv-25): 2/2 ✅
   - Q60 (sr-26): 2/2 ✅
-  - Q6 (inv-25): 1/2 ✅ (v1 aprobada, v2 rechazada)
-  - Q63 (sr-25): 1/2 ✅ (v2 aprobada, v1 rechazada)
+  - Q6 (inv-25): 2/2 ✅ (v2 aprobada manualmente - falso negativo)
+  - Q63 (sr-25): ✅ Resuelto con imágenes generadas por IA (3 variantes)
 
 ---
 
-## 🔄 En Progreso / Por Probar
+### 6. Fase 2: Preguntas con Gráficos e Imágenes Complejas - ✅ COMPLETADO
+- [x] Q33 (gráfico circular): 2/2 ✅ - Cambio de quién aporta dato conocido
+- [x] Q58 (tabla de goles): 2/2 ✅ - Cambio de datos de tabla
+- [x] Q63 (transformaciones): 3/3 ✅ - Imágenes generadas con IA
+  - v1: Taza - pregunta por traslación
+  - v2: Taza - pregunta por reflexión  
+  - v3: Velero - pregunta por reflexión (imágenes originales)
+- [x] Q65 (box plots): 2/2 ✅ - Datos modificados para diferentes respuestas correctas
+  - v1: Datos con Q3=4 → ChoiceA correcta
+  - v2: Datos con Med=2.5 → ChoiceD correcta
 
-### Fase 2: Renderers de Gráficos
-- [ ] Investigar/Implementar Chart.js para gráficos de barras y circulares
-- [ ] Generar variantes para preguntas con gráficos estadísticos
+---
 
-### Generador
+## 🔄 Pendientes (Casos Muy Complejos)
 - [ ] Mejorar prompt para copiar estructuras MathML complejas (sistemas de ecuaciones, tablas)
 - [x] Corrección de extracción de MathML básico (fracciones) ✅
 
