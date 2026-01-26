@@ -92,6 +92,12 @@ class VariantGenerator:
         diff = source.difficulty
         diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
         
+        # Check for image info and add instruction if decorative
+        image_info = source.metadata.get("image_info", {})
+        image_instruction = ""
+        if image_info.get("image_type") == "decorative":
+            image_instruction = "7. ESTA PREGUNTA CONTIENE UNA IMAGEN DECORATIVA (Support visual). DEBES INCLUIR LA ETIQUETA <img ...> EXACTAMENTE IGUAL QUE EN LA ORIGINAL dentro del texto."
+        
         prompt = f"""
 <role>
 Eres un profesor de matemáticas creando variantes de ejercicios para exámenes PAES.
@@ -112,6 +118,7 @@ NUNCA el concepto matemático evaluado.
    - El nivel de abstracción o complejidad
 5. La respuesta correcta DEBE poder calcularse con el MISMO procedimiento
 6. Los distractores DEBEN representar errores plausibles (NO valores aleatorios)
+{image_instruction}
 </reglas_estrictas>
 
 <pregunta_original>

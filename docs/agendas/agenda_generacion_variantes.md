@@ -50,11 +50,19 @@ Crear un sistema que genere variantes confiables de preguntas PAES para:
 
 ---
 
-## 🔄 En Progreso / Por Probar
+### 5. Fase 1b: Imágenes Decorativas - ✅ COMPLETADO
+- [x] Etiquetar metadatos `image_type: decorative`
+- [x] Modificar generador para incluir instrucción de preservación de imagen
+- [x] Ejecutar lote Q46, Q60, Q6, Q63
+- **Resultados**: 6/8 variantes aprobadas (75%)
+  - Q46 (inv-25): 2/2 ✅
+  - Q60 (sr-26): 2/2 ✅
+  - Q6 (inv-25): 1/2 ✅ (v1 aprobada, v2 rechazada)
+  - Q63 (sr-25): 1/2 ✅ (v2 aprobada, v1 rechazada)
 
-### Fase 1b: Imágenes Decorativas
-- [ ] Implementar lógica para reusar imágenes marcadas como decorativas
-- [ ] Generar variantes para Q46, Q60, Q6, Q63
+---
+
+## 🔄 En Progreso / Por Probar
 
 ### Fase 2: Renderers de Gráficos
 - [ ] Investigar/Implementar Chart.js para gráficos de barras y circulares
