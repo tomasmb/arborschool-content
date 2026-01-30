@@ -5,7 +5,7 @@ Ejecuta múltiples validaciones sin necesidad de llamadas API.
 
 Uso:
     python scripts/generate_quality_report.py <test_name> [--output OUTPUT_FILE.json]
-    
+
 Ejemplo:
     python scripts/generate_quality_report.py seleccion-regular-2026
     python scripts/generate_quality_report.py seleccion-regular-2026 --output report.json

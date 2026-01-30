@@ -35,16 +35,16 @@ def convert_base64_to_s3_manual(
 ) -> Optional[str]:
     """
     Conversión MANUAL de base64 a S3 (sin llamar a API LLM).
-    
+
     Detecta imágenes base64 en el XML, las sube a S3 usando upload_image_to_s3,
     y reemplaza los data URIs con URLs S3.
-    
+
     Args:
         qti_xml: XML del QTI que puede contener base64
         question_id: ID de la pregunta para nombrar las imágenes
         test_name: Nombre del test para organizar en S3
         output_dir: Directorio de salida para guardar mapeo S3
-        
+
     Returns:
         XML actualizado con URLs S3, o None si hubo error crítico
     """
@@ -72,9 +72,9 @@ def convert_base64_to_s3_manual(
     failed_count = 0
 
     for i, match in enumerate(base64_matches):
-        full_prefix = match.group(1)  # data:image/png;base64,
-        mime_type = match.group(2)  # png, svg+xml, etc.
-        base64_data = match.group(3)  # datos base64
+        match.group(1)  # data:image/png;base64,
+        match.group(2)  # png, svg+xml, etc.
+        match.group(3)  # datos base64
         full_data_uri = match.group(0)  # URI completo
 
         # Verificar si ya existe en mapeo S3
@@ -141,16 +141,16 @@ def process_single_question_pdf(
     skip_if_exists: bool = True,  # OPTIMIZACIÓN: Saltarse si ya existe XML válido
 ) -> Dict[str, Any]:
     """
-    Complete pipeline: extract PDF content, detect question type, 
+    Complete pipeline: extract PDF content, detect question type,
     transform to QTI, validate, and return results.
-    
+
     OPTIMIZACIÓN: Si skip_if_exists=True, verifica si ya existe question.xml válido
     y lo reutiliza sin reprocesar. También intenta regenerar desde processed_content.json
     si existe pero falta el XML.
-    
+
     Uses Gemini Preview 3 by default (from GEMINI_API_KEY env var),
     with automatic fallback to OpenAI GPT-5.1 if Gemini fails.
-    
+
     Args:
         input_pdf_path: Path to the input PDF file
         output_dir: Directory to save output files
@@ -158,7 +158,7 @@ def process_single_question_pdf(
         validation_endpoint: Optional QTI validation endpoint URL
         paes_mode: If True, optimizes for PAES format (choice questions, math, 4 alternatives)
         skip_if_exists: If True, skip processing if valid XML already exists (default: True)
-        
+
     Returns:
         Dictionary with processing results
     """
@@ -504,8 +504,8 @@ def process_single_question_pdf(
                     failed_uploads = []
 
                     for i, match in enumerate(base64_matches):
-                        full_prefix = match.group(1)
-                        base64_data = match.group(3)
+                        match.group(1)
+                        match.group(3)
                         full_data_uri = match.group(0)
 
                         # Verificar si ya existe en S3
@@ -905,7 +905,7 @@ def validate_with_external_service(
 ) -> Dict[str, Any]:
     """
     Validate QTI using external Node.js validation service with retry mechanism.
-    
+
     Args:
         qti_xml: QTI XML content to validate
         original_pdf_image: Base64 encoded original PDF image
@@ -913,7 +913,7 @@ def validate_with_external_service(
         validation_service_url: URL of external validation service
         max_retries: Maximum number of retries for 5xx errors
         backoff_factor: Factor to determine sleep time between retries
-        
+
     Returns:
         Dictionary with validation results
     """

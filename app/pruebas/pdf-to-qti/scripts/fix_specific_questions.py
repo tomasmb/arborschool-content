@@ -55,7 +55,7 @@ def fix_q34(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
     original_bbox = img0.get("bbox", [])
 
     # Buscar bloques de texto que están dentro o arriba de la imagen
-    img_y0 = original_bbox[1]
+    original_bbox[1]
     img_y1 = original_bbox[3]
 
     # Encontrar el último bloque de texto que claramente es pregunta (no parte de la imagen del chat)
@@ -66,7 +66,7 @@ def fix_q34(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
             continue
         block_bbox = block.get("bbox", [])
         if len(block_bbox) == 4:
-            block_y0 = block_bbox[1]
+            block_bbox[1]
             block_y1 = block_bbox[3]
 
             # Obtener texto para verificar si es parte del enunciado
@@ -92,7 +92,7 @@ def fix_q34(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
             continue
         block_bbox = block.get("bbox", [])
         if len(block_bbox) == 4:
-            block_y0 = block_bbox[1]
+            block_bbox[1]
             block_y1 = block_bbox[3]
 
             lines = block.get("lines", [])
@@ -405,20 +405,20 @@ def fix_q61(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
 
 def fix_q63(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any]:
     """Q63: Reorganizar imágenes.
-    
+
     Según el usuario:
     - La imagen del enunciado está en A (debe ir al body)
     - La de A está en B
     - La de B está en C
     - En D están C y D
-    
+
     Imágenes disponibles (ordenadas por posición y):
     - img0: y=10.0 (más arriba, probablemente enunciado)
     - img4: y=10.0 (también arriba, altura 54.0)
     - img1: y=208.4
     - img2: y=318.2
     - img3: y=428.5
-    
+
     El enunciado debería ser la imagen más pequeña arriba (img4, altura 54).
     Las opciones deberían ser img0, img1, img2, img3 en orden.
     """
@@ -524,9 +524,9 @@ def fix_q63(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
     # C: empezar después de "C)" (y~455.7) y excluir área izquierda
     # C: empezar un poco antes para que no se corte arriba, pero mask "C)" que está en y~428.5-455.7
     # Empezar en y~455 para capturar un poco más arriba, pero mask "C)"
-    img3_bbox_c = [125.0, 455.0, img3_bbox[2], split_point - 5]  # Parte superior (C), empezar un poco antes
+    [125.0, 455.0, img3_bbox[2], split_point - 5]  # Parte superior (C), empezar un poco antes
     # D: empezar antes del split para capturar más arriba, pero mask "D)" que está en y~539.9-567.1
-    img3_bbox_d = [125.0, max(split_point - 5, 530.0), img3_bbox[2], img3_y1]  # Parte inferior (D), empezar más arriba
+    [125.0, max(split_point - 5, 530.0), img3_bbox[2], img3_y1]  # Parte inferior (D), empezar más arriba
 
     # Renderizar A y B
     # Ajustar bboxes para excluir las letras de alternativas
@@ -694,8 +694,6 @@ def fix_q64(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
     text_blocks = page_data.get("structured_text", {}).get("blocks", [])
 
     # El texto intermedio es "El rey puede moverse... por ejemplo, a la flecha ↗ le corresponde..."
-    texto_intermedio_start = None
-    texto_intermedio_end = None
 
     for block in text_blocks:
         if block.get("type") != 0:
@@ -710,8 +708,8 @@ def fix_q64(question_dir: Path, pdf_path: Path, test_name: str) -> Dict[str, Any
 
             # Texto intermedio que separa los dos tableros
             if "El rey puede moverse" in block_text or "ejemplo" in block_text.lower():
-                texto_intermedio_start = block_bbox[1]
-                texto_intermedio_end = block_bbox[3]
+                block_bbox[1]
+                block_bbox[3]
                 break
 
     # Basado en análisis: texto intermedio en y~223-485, dibujos en y~265-641

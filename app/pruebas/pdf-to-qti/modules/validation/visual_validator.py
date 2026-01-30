@@ -30,14 +30,14 @@ def validate_visual_output(
 ) -> Dict[str, Any]:
     """
     Validate QTI XML by rendering it with amp-up and comparing visually.
-    
+
     Args:
         original_pdf_image: Base64 encoded original PDF image
         qti_xml: QTI XML to render and validate
         openai_api_key: OpenAI API key for visual comparison
         output_dir: Optional output directory to save screenshots
         amp_up_url: amp-up sandbox URL
-        
+
     Returns:
         Dictionary with visual validation results
     """
@@ -96,11 +96,11 @@ def validate_visual_output(
 def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
     """
     Render QTI XML using amp-up and capture screenshot.
-    
+
     Args:
         qti_xml: QTI XML content to render
         amp_up_url: amp-up sandbox URL
-        
+
     Returns:
         Base64 encoded screenshot or None if failed
     """
@@ -228,12 +228,12 @@ def compare_images_with_llm(
 ) -> Dict[str, Any]:
     """
     Compare original PDF image with rendered QTI using GPT-5.1.
-    
+
     Args:
         original_image: Base64 encoded original PDF image
         rendered_image: Base64 encoded rendered QTI image
         openai_api_key: OpenAI API key
-        
+
     Returns:
         Dictionary with comparison results
     """
@@ -299,7 +299,7 @@ def compare_images_with_llm(
 def create_comparison_prompt() -> str:
     """
     DEPRECATED: Use prompt_builder.create_visual_comparison_prompt() instead.
-    
+
     Returns:
         Comparison prompt string
     """
@@ -309,10 +309,10 @@ def create_comparison_prompt() -> str:
 def parse_comparison_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the comparison response from GPT-5.1.
-    
+
     Args:
         response_text: Raw response text
-        
+
     Returns:
         Parsed comparison result
     """
@@ -366,7 +366,7 @@ def parse_comparison_response(response_text: str) -> Dict[str, Any]:
 def setup_selenium_driver() -> Optional[webdriver.Chrome]:
     """
     Setup and return a configured Chrome WebDriver.
-    
+
     Returns:
         WebDriver instance or None if setup fails
     """
@@ -391,7 +391,7 @@ def setup_selenium_driver() -> Optional[webdriver.Chrome]:
 def is_selenium_available() -> bool:
     """
     Check if Selenium and Chrome are available.
-    
+
     Returns:
         True if available, False otherwise
     """

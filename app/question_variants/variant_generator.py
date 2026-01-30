@@ -18,7 +18,7 @@ class VariantGenerator:
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the generator.
-        
+
         Args:
             config: Pipeline configuration. Uses defaults if not provided.
         """
@@ -31,11 +31,11 @@ class VariantGenerator:
         num_variants: Optional[int] = None
     ) -> List[VariantQuestion]:
         """Generate variant questions from a source question.
-        
+
         Args:
             source: The source question to create variants from
             num_variants: Number of variants to generate (uses config default if not specified)
-            
+
         Returns:
             List of generated variant questions (unvalidated)
         """
@@ -100,7 +100,7 @@ class VariantGenerator:
         prompt = f"""
 <role>
 Eres un profesor de matemáticas creando variantes de ejercicios para exámenes PAES.
-Tu ÚNICA tarea es cambiar los NÚMEROS o el CONTEXTO de la pregunta, 
+Tu ÚNICA tarea es cambiar los NÚMEROS o el CONTEXTO de la pregunta,
 NUNCA el concepto matemático evaluado.
 </role>
 

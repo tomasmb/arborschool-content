@@ -16,10 +16,10 @@ __all__ = [
 def convert_table_to_html(data: List[List[str]]) -> str:
     """
     Convert PyMuPDF table data to HTML format.
-    
+
     Args:
         data: List of rows, where each row is a list of cell strings
-        
+
     Returns:
         HTML table string
     """

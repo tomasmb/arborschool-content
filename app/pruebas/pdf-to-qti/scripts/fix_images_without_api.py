@@ -39,12 +39,12 @@ def find_question_text_blocks_in_image(
 ) -> List[Dict[str, Any]]:
     """
     Encuentra bloques de texto que están dentro o muy cerca del área de la imagen.
-    
+
     Args:
         image_bbox: Bbox de la imagen [x0, y0, x1, y1]
         text_blocks: Lista de bloques de texto
         margin: Margen adicional para considerar solapamiento
-        
+
     Returns:
         Lista de bloques que están dentro del área de la imagen
     """
@@ -55,7 +55,6 @@ def find_question_text_blocks_in_image(
 
     # Expandir área de imagen con margen (especialmente hacia arriba)
     check_y0 = img_y0 - margin
-    check_y1 = img_y1
 
     overlapping_blocks = []
     for block in text_blocks:
@@ -100,12 +99,12 @@ def adjust_image_bbox_to_exclude_text(
 ) -> Tuple[List[float], bool]:
     """
     Ajusta el bbox de la imagen para excluir bloques de texto de pregunta.
-    
+
     Args:
         image_bbox: Bbox original de la imagen
         text_blocks: Bloques de texto que están dentro de la imagen
         margin: Margen adicional después del último bloque de texto
-        
+
     Returns:
         Tuple de (bbox_ajustado, fue_ajustado)
     """
@@ -116,9 +115,9 @@ def adjust_image_bbox_to_exclude_text(
         return image_bbox, False
 
     img_top = image_bbox[1]
-    img_bottom = image_bbox[3]
+    image_bbox[3]
     img_width = image_bbox[2] - image_bbox[0]
-    img_height = image_bbox[3] - image_bbox[1]
+    image_bbox[3] - image_bbox[1]
 
     # Si el bbox es pequeño (ancho < 70% de página), probablemente es un gráfico real
     # En ese caso, solo excluir texto que está claramente ARRIBA del gráfico, no dentro
@@ -345,13 +344,13 @@ def fix_image_for_question(
 ) -> Dict[str, Any]:
     """
     Corrige la imagen de una pregunta re-renderizándola con bbox ajustado.
-    
+
     Args:
         question_id: ID de la pregunta (ej: "Q2")
         question_dir: Directorio de la pregunta
         pdf_path: Ruta al PDF original
         test_name: Nombre del test para S3
-        
+
     Returns:
         Resultado de la corrección
     """
@@ -652,7 +651,6 @@ def fix_image_for_question(
 
         # Si NO hay bloques grandes superpuestos, usar el bbox PyMuPDF exacto
         if not overlapping_large:
-            use_exact_pymupdf = True
             adjusted_bbox = working_bbox.copy()
             was_adjusted = False  # No ajustar, usar exacto
             print(f"   ✅ Usando bbox PyMuPDF exacto sin ajustes: {[round(x, 1) for x in working_bbox]}")
@@ -909,7 +907,7 @@ def fix_image_for_question(
                                 })
                                 print(f"   ✅ Imagen para {label} subida: {s3_url}")
 
-                    has_option_images = len(option_images) >= 4
+                    len(option_images) >= 4
                 else:
                     # Si no hay suficientes clusters (4), usar drawings para encontrar las 4 áreas exactas
                     print(f"   ⚠️  Encontrados {len(option_clusters) if option_clusters else 0} clusters, buscando las 4 áreas usando drawings...")
@@ -979,15 +977,15 @@ def fix_image_for_question(
                                         })
                                         print(f"   ✅ Imagen para {label} subida: {s3_url}")
 
-                            has_option_images = len(option_images) >= 4
+                            len(option_images) >= 4
                         else:
-                            has_option_images = False
+                            pass
                     else:
-                        has_option_images = False
+                        pass
             else:
-                has_option_images = False
+                pass
         else:
-            has_option_images = False
+            pass
 
         # Para imágenes detectadas por AI sin PyMuPDF, verificar si el bbox está capturando área vacía
         # Buscar dibujos/paths en el PDF para encontrar el contenido visual real
@@ -1102,7 +1100,6 @@ def fix_image_for_question(
 
             # Buscar cada alternativa en el XML y agregar la imagen si no existe
             # Pattern para encontrar <qti-simple-choice identifier="ChoiceA"> o similar
-            choice_pattern = r'<qti-simple-choice[^>]*identifier="(Choice[A-D])"[^>]*>'
 
             # Reemplazar cada alternativa individualmente con su imagen correspondiente
             for choice_id in ["ChoiceA", "ChoiceB", "ChoiceC", "ChoiceD"]:

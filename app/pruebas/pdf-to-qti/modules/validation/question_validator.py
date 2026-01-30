@@ -3,7 +3,7 @@ Question Validator Module
 
 This module implements comprehensive question validation using GPT-5.1 to:
 1. Compare rendered QTI questions with original PDF content
-2. Validate question completeness and correctness  
+2. Validate question completeness and correctness
 3. Ensure proper rendering in the QTI sandbox
 4. Return pass/fail validation results
 
@@ -38,20 +38,20 @@ def validate_qti_question(
     """
     Comprehensive QTI question validation using GPT-5.1.
     CRITICAL: This function must work properly - validation cannot be skipped.
-    
+
     This is the main validation function that:
     1. Renders the QTI XML in the sandbox
     2. Takes a screenshot of the rendered question
     3. Uses GPT-5.1 to validate against original PDF
     4. Returns pass/fail with detailed analysis
-    
+
     Args:
         qti_xml: QTI XML content to validate
         original_pdf_image: Base64 encoded original PDF image
         openai_api_key: OpenAI API key for GPT-5.1 validation
         output_dir: Optional directory to save screenshots
         sandbox_url: QTI sandbox URL for rendering
-        
+
     Returns:
         Dictionary with validation results and pass/fail status
     """
@@ -155,11 +155,11 @@ def validate_qti_question(
 def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> Dict[str, Any]:
     """
     Capture screenshot of QTI question rendered in sandbox.
-    
+
     Args:
         qti_xml: QTI XML content to render
         sandbox_url: QTI sandbox URL
-        
+
     Returns:
         Dictionary with success status and screenshot data
     """
@@ -532,13 +532,13 @@ def perform_comprehensive_validation(
 ) -> Dict[str, Any]:
     """
     Perform comprehensive validation using GPT-5.1.
-    
+
     Args:
         original_pdf_image: Base64 encoded original PDF image
         rendered_image: Base64 encoded rendered QTI screenshot
         qti_xml: QTI XML content for context
         openai_api_key: OpenAI API key
-        
+
     Returns:
         Dictionary with detailed validation results
     """
@@ -607,7 +607,7 @@ def perform_comprehensive_validation(
 def create_validation_prompt() -> str:
     """
     Create comprehensive validation prompt for GPT-5.1.
-    
+
     Returns:
         Detailed validation prompt string
     """
@@ -628,7 +628,7 @@ VALIDATION FOCUS - ONLY CHECK THESE:
 
 IGNORE THESE (NOT QTI VALIDITY CONCERNS):
 ✗ Page numbers, headers, footers
-✗ "GO ON" or navigation indicators  
+✗ "GO ON" or navigation indicators
 ✗ PDF document formatting artifacts
 ✗ Minor spacing or font differences
 ✗ Test booklet metadata
@@ -674,10 +674,10 @@ Focus on whether a student can properly understand and answer the question, not 
 def parse_validation_response(response_text: str) -> Dict[str, Any]:
     """
     Parse GPT-5.1 validation response into structured result.
-    
+
     Args:
         response_text: Raw response from GPT-5.1
-        
+
     Returns:
         Structured validation result dictionary
     """
@@ -740,10 +740,10 @@ def should_proceed_with_qti(validation_result: Dict[str, Any]) -> bool:
     """
     Determine if QTI should be returned based on validation results.
     Focus on semantic correctness rather than perfect visual reproduction.
-    
+
     Args:
         validation_result: Result from comprehensive validation
-        
+
     Returns:
         Boolean indicating whether to proceed with QTI
     """

@@ -26,7 +26,7 @@ from main import process_single_question_pdf
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     AWS Lambda handler for PDF to QTI conversion service.
-    
+
     Expected event structure:
     {
         "pdf_url": "https://example.com/input.pdf",  # URL to download PDF
@@ -43,7 +43,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             "path_prefix": "qti-xml/"
         }
     }
-    
+
     Returns:
     {
         "statusCode": 200,
@@ -204,13 +204,13 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
 def upload_to_s3(qti_xml: str, title: str, aws_credentials: Dict[str, str], s3_config: Dict[str, str]) -> str:
     """
     Upload QTI XML to S3 and return the URL.
-    
+
     Args:
         qti_xml: QTI XML content
         title: Question title for filename
         aws_credentials: AWS credentials
         s3_config: S3 configuration
-        
+
     Returns:
         S3 URL of uploaded file
     """

@@ -105,15 +105,15 @@ ENCODING_FIXES = {
 def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
     """
     Verifica y corrige automáticamente problemas de codificación comunes en el QTI XML.
-    
+
     Detecta y corrige errores como:
     - Tildes mal codificados (e1cido → ácido, reflexif3n → reflexión)
     - Letra "ñ" mal codificada (af1o → año)
     - Signos de interrogación mal codificados (bfCue1l → ¿Cuál)
-    
+
     Args:
         qti_xml: El QTI XML a verificar y corregir
-        
+
     Returns:
         Tupla con (xml_corregido, se_encontraron_problemas)
     """
@@ -140,10 +140,10 @@ def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
 def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
     """
     Extract the correct answer from QTI XML.
-    
+
     Args:
         qti_xml: QTI XML string
-        
+
     Returns:
         Correct answer identifier (e.g., "ChoiceA") or None if not found
     """
@@ -180,11 +180,11 @@ def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
 def update_correct_answer_in_qti_xml(qti_xml: str, correct_answer: str) -> str:
     """
     Update or add the correct answer in QTI XML.
-    
+
     Args:
         qti_xml: QTI XML string
         correct_answer: Correct answer identifier (e.g., "ChoiceA")
-        
+
     Returns:
         Updated QTI XML string
     """
@@ -243,14 +243,14 @@ def transform_to_qti(
 ) -> Dict[str, Any]:
     """
     Transform PDF content to QTI 3.0 XML format.
-    
+
     This implements step 2 of the conversion guidelines:
     Use the detected question type to transform the PDF content
     into valid QTI 3.0 XML.
-    
+
     CRITICAL: All images MUST be uploaded to S3. If any image upload fails,
     the transformation will fail. Base64 encoding in final XML is not allowed.
-    
+
     Args:
         processed_content: Already processed PDF content with placeholders
         question_type: Detected question type
@@ -263,7 +263,7 @@ def transform_to_qti(
                    Images will be stored in images/{test_name}/ to avoid conflicts between tests
         correct_answer: Optional correct answer identifier (e.g., "ChoiceA", "ChoiceB", "ChoiceC", "ChoiceD")
                        If provided, will be used in <qti-correct-response> instead of LLM inference
-        
+
     Returns:
         Dictionary with transformation results
     """
@@ -415,7 +415,7 @@ def transform_to_qti(
 
         # 2. Add ALL additional images (in PAES tests, all images are important)
         if processed_content.get('all_images'):
-            total_additional = len(processed_content['all_images'])
+            len(processed_content['all_images'])
 
             # Count how many have actual image data
             images_with_data = [
@@ -617,7 +617,7 @@ def transform_to_qti(
                 # Upload each base64 image to S3 and replace (continue even if some fail)
                 for match in base64_matches:
                     full_prefix = match[0]  # data:image/png;base64,
-                    image_type = match[1]   # png, svg+xml, etc.
+                    match[1]   # png, svg+xml, etc.
                     base64_data = match[2]  # actual base64 data
                     full_data_uri = full_prefix + base64_data
 
@@ -713,15 +713,15 @@ def replace_data_uris_with_s3_urls(
 ) -> str:
     """
     Replace ALL data URIs in QTI XML with S3 URLs.
-    
+
     This function aggressively replaces all base64 data URIs with S3 URLs.
     It's called as a critical step to ensure no base64 remains in the final XML.
-    
+
     Args:
         qti_xml: QTI XML string that may contain data URIs
         image_url_mapping: Dictionary mapping image identifiers to S3 URLs
         processed_content: Original processed content with image info
-        
+
     Returns:
         QTI XML with ALL data URIs replaced by S3 URLs
     """
@@ -792,7 +792,7 @@ def fix_qti_xml_with_llm(
 ) -> Dict[str, Any]:
     """
     Attempt to fix invalid QTI XML using LLM.
-    
+
     Args:
         invalid_xml: The invalid QTI XML string (with placeholders, not images)
         validation_errors: String containing validation error messages
@@ -800,7 +800,7 @@ def fix_qti_xml_with_llm(
         openai_api_key: OpenAI API key
         retry_attempt: Current attempt number (1-based)
         max_attempts: Maximum number of attempts for context
-        
+
     Returns:
         Dictionary with success status and corrected XML
     """
@@ -880,10 +880,10 @@ def fix_qti_xml_with_llm(
 def parse_transformation_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the transformation response from the LLM.
-    
+
     Args:
         response_text: Raw response text
-        
+
     Returns:
         Parsed transformation result
     """
@@ -951,10 +951,10 @@ def parse_transformation_response(response_text: str) -> Dict[str, Any]:
 def parse_correction_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the correction response from the LLM.
-    
+
     Args:
         response_text: Raw response text
-        
+
     Returns:
         Parsed correction result
     """
@@ -1014,10 +1014,10 @@ def clean_qti_xml(xml_content: str) -> str:
     - Removes XML declaration if present
     - Strips leading/trailing whitespace
     - Removes invalid null characters that can exist in PDF text
-    
+
     Args:
         xml_content: Raw XML content
-        
+
     Returns:
         Cleaned XML content
     """

@@ -78,7 +78,7 @@ def main():
     with open(segmentation_file, 'r', encoding='utf-8') as f:
         segmentation = json.load(f)
 
-    questions_dict = {q.get('id'): q for q in segmentation.get('questions', [])}
+    {q.get('id'): q for q in segmentation.get('questions', [])}
 
     # Abrir PDF original
     doc = fitz.open(original_pdf)

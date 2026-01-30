@@ -32,12 +32,12 @@ def process_all_questions(
 ) -> Dict[str, Any]:
     """
     Process all question PDFs from a directory.
-    
+
     Args:
         questions_dir: Directory containing individual question PDFs
         output_base_dir: Base directory for outputs
         paes_mode: Use PAES optimizations
-        
+
     Returns:
         Summary of processing results
     """

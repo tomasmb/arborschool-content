@@ -34,14 +34,14 @@ def extract_large_content(
 ) -> Tuple[Dict[str, Any], List[ExtractedContent]]:
     """
     Extract large content from PDF data and replace with placeholders.
-    
+
     This is similar to the HTML transformer's extractLargeContent function
     but adapted for PDF content structure.
-    
+
     Args:
         pdf_content: PDF content dictionary
         prefix: Prefix for placeholder IDs
-        
+
     Returns:
         Tuple of (processed_content, extracted_content_list)
     """
@@ -195,14 +195,14 @@ def restore_large_content(
 ) -> str:
     """
     Restore placeholders with original content in QTI XML.
-    
+
     This handles both explicit placeholders (CONTENT_PLACEHOLDER_*) and
     simple image filenames (diagram.png, image1.png, etc.) that the LLM generates.
-    
+
     Args:
         qti_xml: QTI XML with content placeholders
         extracted_content: List of extracted content with placeholders
-        
+
     Returns:
         QTI XML with original content restored
     """
@@ -223,13 +223,13 @@ def restore_large_content(
 def embed_pdf_images_as_base64(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     """
     Ensure all PDF images are properly embedded as base64.
-    
+
     This is similar to the HTML transformer's embedImagesAsBase64 function
     but for PDF content that's already extracted.
-    
+
     Args:
         pdf_content: PDF content dictionary
-        
+
     Returns:
         PDF content with properly formatted base64 images
     """
@@ -273,10 +273,10 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
     """
     Create a comprehensive summary of PDF content for LLM processing.
     Enhanced to include structured table information.
-    
+
     Args:
         pdf_content: PDF content dictionary
-        
+
     Returns:
         Content summary string
     """
@@ -414,10 +414,10 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
 def extract_block_text(block: Dict[str, Any]) -> str:
     """
     Extract text from a PyMuPDF text block.
-    
+
     Args:
         block: PyMuPDF block dictionary
-        
+
     Returns:
         Extracted text string
     """
@@ -435,10 +435,10 @@ def extract_block_text(block: Dict[str, Any]) -> str:
 def clean_pdf_content_for_llm(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     """
     Clean and prepare PDF content for LLM processing.
-    
+
     Args:
         pdf_content: Raw PDF content
-        
+
     Returns:
         Cleaned PDF content suitable for LLM
     """

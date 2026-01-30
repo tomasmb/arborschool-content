@@ -14,11 +14,11 @@ def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> b
     Validates the segmentation results for a single part.
     A part is considered invalid if any of its segments (questions, references)
     could not be successfully located in the PDF.
-    
+
     Args:
         results: The segmentation results for the part.
         output_dir: The output directory for the part.
-        
+
     Returns:
         True if the part is valid, False otherwise.
     """

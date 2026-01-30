@@ -24,15 +24,15 @@ def detect_multipart_question_images(
 ) -> List[Dict[str, Any]]:
     """
     Detect if this is a multi-part question with part-specific images.
-    
+
     This function works WITH the existing image detection pipeline to identify
     which images belong to which parts, rather than replacing it entirely.
-    
+
     Args:
         text_blocks: All text blocks from PyMuPDF
         ai_categories: AI categorization of blocks
         question_text: Combined question text
-        
+
     Returns:
         List of part info with image indicators, empty if not applicable
     """
@@ -65,15 +65,15 @@ def detect_part_specific_images_with_ai(
 ) -> List[Dict[str, Any]]:
     """
     Use AI to specifically locate images for parts that have visual content.
-    
+
     This creates intelligent bboxes by finding text boundaries around visual content.
-    
+
     Args:
         page: PyMuPDF page object
         text_blocks: All text blocks from the page
         parts_with_visuals: List of part names that have visual references
         openai_api_key: OpenAI API key
-        
+
     Returns:
         List of detected image areas with part context
     """
@@ -112,11 +112,11 @@ def _find_visual_content_boundaries(
     """
     Find the boundaries of visual content by locating the text that references it
     and the text that follows it.
-    
+
     Args:
         text_blocks: All text blocks from the page
         part_name: The part name (e.g., 'C') to find visual content for
-        
+
     Returns:
         Bounding box [x1, y1, x2, y2] or None if not found
     """
@@ -174,12 +174,12 @@ def _create_bbox_between_text_blocks(
 ) -> List[float]:
     """
     Create a bounding box that captures the area between two text blocks.
-    
+
     Args:
         reference_block: Block containing visual reference text
         follow_up_block: Block containing follow-up text that uses the visual
         all_blocks: All text blocks for context
-        
+
     Returns:
         Bounding box [x1, y1, x2, y2]
     """
@@ -240,11 +240,11 @@ def _create_bbox_after_reference(
 ) -> List[float]:
     """
     Create a bounding box after the reference text when no clear follow-up is found.
-    
+
     Args:
         reference_block: Block containing visual reference text
         all_blocks: All text blocks for context
-        
+
     Returns:
         Bounding box [x1, y1, x2, y2]
     """
@@ -291,7 +291,7 @@ def filter_images_for_multipart_question(
 ) -> List[Dict[str, Any]]:
     """
     Filter detected images to only include those relevant to parts with visual content.
-    
+
     This is now mainly used as a fallback when specialized AI detection isn't available.
     """
 
@@ -368,7 +368,7 @@ def _find_parts_with_visual_references(
 ) -> List[str]:
     """
     Find which parts of the multi-part question have visual content references.
-    
+
     Returns:
         List of part names (e.g., ['C']) that have visual references
     """

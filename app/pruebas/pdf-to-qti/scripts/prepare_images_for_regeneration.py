@@ -141,11 +141,11 @@ def prepare_images_for_question(
 ) -> dict[str, any]:
     """
     Prepara imágenes para una pregunta subiéndolas a S3.
-    
+
     Args:
         question_dir: Directorio de la pregunta (ej: Q23/)
         test_name: Nombre del test para organizar imágenes en S3
-        
+
     Returns:
         Resultado del procesamiento con mapeo de placeholders a URLs
     """

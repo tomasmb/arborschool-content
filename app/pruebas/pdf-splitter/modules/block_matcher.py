@@ -34,12 +34,12 @@ BLOCK_MATCH_SCHEMA = {
 def find_block_with_llm_fallback(page, segment_data, page_num):
     """
     Use LLM to find which block contains the start marker when deterministic matching fails.
-    
+
     Args:
         page: PyMuPDF page object
         segment_data: Dict with segment info (id, start_marker, text, etc.)
         page_num: Page number for context
-        
+
     Returns:
         Block index (0-based) or None if no match found
     """
@@ -74,13 +74,11 @@ def find_block_with_llm_fallback(page, segment_data, page_num):
         # Use start_marker if available, otherwise fall back to first 10 words of text
         if start_marker and not (',' in start_marker and start_marker.replace(',', '').replace('.', '').replace('-', '').isdigit()):
             # Start marker is text (not coordinates), use it for matching
-            search_text = start_marker
-            first_10_words = start_marker
+            pass
         else:
             # Fall back to first 10 words of text content
             preview_words = preview.strip().split()[:10]
-            first_10_words = " ".join(preview_words)
-            search_text = first_10_words
+            " ".join(preview_words)
 
         # Let LLM handle all matching with full context
 
@@ -91,7 +89,7 @@ Example you have a identify 2 blocks that are part of the segment, both at same 
 
 Output a JSON object with:
 matched_block_index (integer or null)
-confidence (high, medium, low) 
+confidence (high, medium, low)
 reasoning (brief explanation)"""
 
         user_prompt = f"""Find which block this segment starts in:
@@ -155,10 +153,10 @@ reasoning (brief explanation)"""
 def parse_start_marker(marker_str):
     """
     Parse start marker string format.
-    
+
     Args:
         marker_str: Start marker string - either text or coordinates
-        
+
     Returns:
         Dict with type and parsed data
     """
@@ -173,14 +171,14 @@ def parse_start_marker(marker_str):
 def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, doc=None):
     """
     Find the block index that contains the start marker.
-    
+
     Args:
         page: PyMuPDF page object
         marker_obj: Parsed marker object
         segment_data: Full segment data for LLM fallback
         page_num: Current page number
         doc: Full document for adjacent page checks
-        
+
     Returns:
         Block index, tuple for adjacent page results, or None if not found
     """

@@ -33,7 +33,6 @@ def _find_nearby_text_for_image(
     min_horizontal_overlap_percentage: float = 0.1  # Reduced from 0.2 to be more inclusive
 ) -> str:
     """Finds text blocks near an image bbox and returns semantic context for placement."""
-    context_texts = []
     img_rect = fitz.Rect(image_bbox_coords)
 
     # Collect text blocks with their relative positions
@@ -140,10 +139,10 @@ def _find_nearby_text_for_image(
 def create_detection_prompt(pdf_content: Dict[str, Any]) -> str:
     """
     Create a sophisticated prompt for question type detection.
-    
+
     Args:
         pdf_content: Extracted PDF content
-        
+
     Returns:
         Detection prompt string
     """
@@ -242,15 +241,15 @@ def create_transformation_prompt(
 ) -> str:
     """
     Create a sophisticated prompt for QTI XML transformation.
-    
+
     Uses the exact same proven structure from the HTML transformer.
-    
+
     Args:
         pdf_content: Extracted PDF content (contains all images, including small ones, and page structure)
         question_type: Detected question type
         question_config: Configuration for the question type
         validation_feedback: Optional validation feedback for corrections
-        
+
     Returns:
         Transformation prompt string
     """
@@ -280,8 +279,8 @@ def create_transformation_prompt(
                 if placeholder and placeholder.startswith("CONTENT_PLACEHOLDER_"):
                     img_page_num = img_data.get('page_number', 0)
                     page_dims = pdf_content.get("pages", [])[img_page_num] if img_page_num < len(pdf_content.get("pages", [])) else {}
-                    page_w = page_dims.get("width", 612) # Default to standard PDF width
-                    page_h = page_dims.get("height", 792) # Default to standard PDF height
+                    page_dims.get("width", 612) # Default to standard PDF width
+                    page_dims.get("height", 792) # Default to standard PDF height
 
                     nearby_text = _find_nearby_text_for_image(
                         img_data.get('bbox', [0,0,0,0]),
@@ -380,6 +379,18 @@ def create_transformation_prompt(
 - Do NOT mix text and images in choices - choices should be image-only
 """
 
+    # Build correct answer instruction (avoiding backslash in f-string for Python 3.10 compatibility)
+    if correct_answer:
+        newline = "\n"
+        correct_answer_instruction = (
+            f"**The correct answer for this question is: {correct_answer}**{newline}"
+            f"- You MUST include this in the <qti-correct-response> element{newline}"
+            f"- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>{newline}"
+            f"- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD){newline}"
+        )
+    else:
+        correct_answer_instruction = "- Determine the correct answer from the question content and include it in <qti-correct-response>"
+
     prompt = f"""You are an expert at converting educational content into QTI 3.0 XML format.
 
 ## Task
@@ -455,7 +466,7 @@ Example of a detailed description:
 
 ## CRITICAL: For Images in QTI XML
 - If images are listed above, you MUST use their exact placeholder strings in <img src="..."> tags
-- Do NOT use generic filenames like "image1.png" 
+- Do NOT use generic filenames like "image1.png"
 - Use the EXACT placeholder strings provided (e.g., "CONTENT_PLACEHOLDER_P0")
 - Each placeholder corresponds to a specific extracted image that will be restored later
 - **IMPORTANT**: Use simple <img> tags within <p> or <div> elements, NOT <qti-figure> elements
@@ -470,7 +481,7 @@ Example of a detailed description:
 - Base64 encoding will cause the transformation to FAIL
 
 ## CRITICAL: Correct Answer Specification
-{f"**The correct answer for this question is: {correct_answer}**\n- You MUST include this in the <qti-correct-response> element\n- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>\n- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD)\n" if correct_answer else "- Determine the correct answer from the question content and include it in <qti-correct-response>"}
+{correct_answer_instruction}
 
 ## CRITICAL: QTI XML Structure Rules
 - **DO NOT use <qti-figure>** - use <img> tags within <p> or <div> instead
@@ -525,7 +536,7 @@ def create_error_correction_prompt(
 ) -> str:
     """
     Create a prompt for correcting QTI XML validation errors.
-    
+
     Args:
         qti_xml: Invalid QTI XML (potentially with base64 embedded images)
         validation_errors: Validation error messages
@@ -533,7 +544,7 @@ def create_error_correction_prompt(
         original_pdf_content: Original PDF content to give context about images if needed
         retry_attempt: Current attempt number (1-based)
         max_attempts: Maximum number of attempts
-        
+
     Returns:
         Error correction prompt
     """
@@ -613,7 +624,7 @@ Make sure your response ONLY contains this JSON.
 def create_visual_comparison_prompt() -> str:
     """
     Create a prompt for visual comparison between original PDF and rendered QTI.
-    
+
     Returns:
         Visual comparison prompt string
     """

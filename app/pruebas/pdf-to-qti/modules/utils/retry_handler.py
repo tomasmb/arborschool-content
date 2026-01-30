@@ -25,10 +25,10 @@ _logger = logging.getLogger(__name__)
 def is_retryable_error(error: Exception) -> bool:
     """
     Determine if an error is retryable.
-    
+
     Args:
         error: The exception to check
-        
+
     Returns:
         True if the error is retryable, False otherwise
     """
@@ -79,10 +79,10 @@ def is_retryable_error(error: Exception) -> bool:
 def extract_retry_after(error: Exception) -> Optional[float]:
     """
     Extract retry-after delay from error message if available.
-    
+
     Args:
         error: The exception to extract delay from
-        
+
     Returns:
         Delay in seconds, or None if not found
     """
@@ -120,7 +120,7 @@ def retry_with_backoff(
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Decorator for retrying functions with exponential backoff.
-    
+
     Args:
         max_retries: Maximum number of retry attempts (default: 3)
         base_delay: Initial delay in seconds (default: 1.0)
@@ -128,7 +128,7 @@ def retry_with_backoff(
         exponential_base: Base for exponential backoff (default: 2.0)
         jitter: Add random jitter to delays (default: True)
         retryable_check: Custom function to check if error is retryable
-        
+
     Returns:
         Decorated function with retry logic
     """
@@ -199,11 +199,11 @@ def retry_on_empty_response(
 ) -> Callable[[Callable[..., T]], Callable[..., T]]:
     """
     Specialized retry decorator for functions that may return empty responses.
-    
+
     Args:
         max_retries: Maximum number of retry attempts
         base_delay: Initial delay in seconds
-        
+
     Returns:
         Decorated function with retry logic for empty responses
     """

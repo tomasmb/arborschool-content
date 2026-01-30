@@ -55,7 +55,7 @@ def clean_text(raw: str) -> str:
     return s
 
 
-TEMARIO_CONFIGS: List[TemarioConfig] = [
+TEMARIO_CONFIGS: list[TemarioConfig] = [
     TemarioConfig(
         stem="2026-25-01-24-temario-paes-invierno-m1",
         out_name="2026-25-01-24-temario-paes-invierno-m1.json",

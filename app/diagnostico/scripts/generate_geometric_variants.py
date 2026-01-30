@@ -71,7 +71,7 @@ def draw_boxplot(stats, output_path, xlabel=""):
     }
 
     # Dibujar boxplot
-    bp = ax.bxp([item], vert=False, patch_artist=True,
+    ax.bxp([item], vert=False, patch_artist=True,
                 boxprops=box_props,
                 medianprops=median_props,
                 whiskerprops=whisker_props,
@@ -121,7 +121,6 @@ def draw_cylinders(output_path, h_val=10, r1_val=6, r2_val=8):
     scale_r = 4.0 / r2_val
     r2_draw = r2_val * scale_r / 2 # radio visual
     r1_draw = r1_val * scale_r / 2
-    h_draw = 2.0 # altura visual fija por cilindro para consistencia
 
     # Coordenadas
     # Cilindro abajo: Centro (2, 2) (mitad altura)

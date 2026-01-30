@@ -70,7 +70,7 @@ def log_api_usage(
 ) -> Dict[str, Any]:
     """
     Log API usage and save to file.
-    
+
     Args:
         provider: "openai" or "gemini"
         model: Model name
@@ -80,7 +80,7 @@ def log_api_usage(
         question_id: Optional question identifier
         output_dir: Optional output directory to save usage file
         operation: Description of the operation
-        
+
     Returns:
         Dictionary with usage information
     """

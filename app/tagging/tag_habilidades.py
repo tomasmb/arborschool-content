@@ -58,7 +58,7 @@ Responde SOLO con un JSON válido con la siguiente estructura:
     "justificacion": "Explicación breve de por qué esta es la habilidad principal (max 50 palabras)"
 }}
 
-IMPORTANTE: 
+IMPORTANTE:
 - Elige UNA SOLA habilidad principal
 - Si hay duda entre dos, elige la que mejor describe lo que el estudiante DEBE HACER para resolver la pregunta
 - No incluyas texto adicional fuera del JSON

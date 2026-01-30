@@ -5,7 +5,7 @@ y reemplazando el base64 con URLs de S3.
 
 Uso:
     python scripts/fix_base64_in_xmls.py <test_name> [--dry-run]
-    
+
 Ejemplo:
     python scripts/fix_base64_in_xmls.py seleccion-regular-2026
     python scripts/fix_base64_in_xmls.py seleccion-regular-2026 --dry-run
@@ -53,7 +53,7 @@ def find_xmls_with_base64(test_name: str) -> List[Path]:
 def extract_base64_from_xml(xml_content: str) -> List[Tuple[str, str]]:
     """
     Extract all base64 data URIs from XML content.
-    
+
     Returns:
         List of tuples: (full_data_uri, base64_data_without_prefix)
     """
@@ -65,7 +65,7 @@ def extract_base64_from_xml(xml_content: str) -> List[Tuple[str, str]]:
 
     for match in matches:
         full_prefix = match[0]  # data:image/png;base64,
-        image_type = match[1]    # png, svg+xml, etc.
+        match[1]    # png, svg+xml, etc.
         base64_data = match[2]   # actual base64 data
         full_data_uri = full_prefix + base64_data
 
@@ -98,7 +98,7 @@ def fix_xml_file(
 ) -> Dict[str, any]:
     """
     Fix a single XML file by uploading base64 images to S3 and replacing them.
-    
+
     Returns:
         Dictionary with results
     """

@@ -31,7 +31,7 @@ class VariantPipeline:
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the pipeline.
-        
+
         Args:
             config: Pipeline configuration. Uses defaults if not provided.
         """
@@ -46,12 +46,12 @@ class VariantPipeline:
         num_variants: Optional[int] = None
     ) -> List[GenerationReport]:
         """Run the variant generation pipeline.
-        
+
         Args:
             test_id: Test identifier (e.g., "Prueba-invierno-2025")
             question_ids: Specific question IDs to process. If None, processes all.
             num_variants: Override for number of variants per question.
-            
+
         Returns:
             List of GenerationReport, one per source question.
         """

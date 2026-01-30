@@ -22,7 +22,7 @@ def extract_choice_images(
 ) -> Dict[str, Any]:
     """
     Extract individual choice images by finding visual areas around each answer choice block.
-    
+
     For each answer choice (A, B, C, D), look for visual content below or around it.
     """
     print("🔍 🎯 EXTRACTING CHOICE IMAGES")

@@ -22,12 +22,12 @@ def calculate_paes_score(
 ) -> Dict:
     """
     Calcula el puntaje PAES estimado.
-    
+
     Args:
         route: Ruta del estudiante (A, B, C)
         r1_correct: Correctas en R1
         stage2_correct: Correctas en Etapa 2
-        
+
     Returns:
         Dict con puntaje estimado e intervalo de confianza
     """
@@ -65,13 +65,13 @@ def _get_level(score: int) -> str:
 def diagnose_atoms(responses: List[Response]) -> List[Dict]:
     """
     Genera diagnósticos por átomo basados en las respuestas.
-    
+
     Para cada pregunta, carga los átomos asociados y determina su estado
     basándose en la respuesta del estudiante.
-    
+
     Args:
         responses: Lista de respuestas del estudiante
-        
+
     Returns:
         Lista de diagnósticos por átomo
     """
@@ -132,7 +132,7 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
 def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
     """
     Genera diagnóstico por eje temático.
-    
+
     Returns:
         Dict con rendimiento por eje
     """
@@ -187,7 +187,7 @@ def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
 def generate_skill_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
     """
     Genera diagnóstico por habilidad PAES.
-    
+
     Returns:
         Dict con rendimiento por habilidad
     """
@@ -219,7 +219,7 @@ def generate_skill_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
 def generate_study_plan(atom_diagnoses: List[Dict]) -> Dict:
     """
     Genera un plan de estudio basado en los diagnósticos de átomos.
-    
+
     Returns:
         Dict con átomos a aprender y corregir
     """

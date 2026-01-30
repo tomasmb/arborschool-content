@@ -36,7 +36,7 @@ ENCODING_PATTERNS = [
 def check_question_encoding(xml_path: Path) -> dict:
     """
     Verifica problemas de codificación en un QTI XML.
-    
+
     Returns:
         Dict con información sobre problemas encontrados
     """

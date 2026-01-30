@@ -99,7 +99,7 @@ def _build_response_format(json_only: bool) -> Optional[Dict[str, Any]]:
 def _map_temperature_to_reasoning(temperature: Optional[float]) -> ReasoningEffort:
     """
     Map legacy temperature values to GPT-5.1 reasoning_effort.
-    
+
     Lower temperature (more deterministic) maps to higher reasoning effort.
     For QTI conversion, we generally want high accuracy, so default to "high".
     """
@@ -143,7 +143,7 @@ def _call_gemini(
         full_text = []
 
         for msg in messages:
-            role = msg.get("role", "user")
+            msg.get("role", "user")
             content = msg.get("content", "")
 
             if isinstance(content, list):
@@ -367,7 +367,7 @@ def chat_completion(
     **kwargs: Any,
 ) -> str:
     """Call the LLM and return the content of the first choice.
-    
+
     Uses Gemini Preview 3 by default, with automatic fallback to OpenAI GPT-5.1
     if Gemini fails (e.g., credits exhausted).
 

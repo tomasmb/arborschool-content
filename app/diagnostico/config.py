@@ -145,10 +145,10 @@ ROUTING_RULES = {
 def get_route(r1_correct: int) -> Route:
     """
     Determina la ruta según las respuestas correctas en R1.
-    
+
     Args:
         r1_correct: Número de respuestas correctas en R1 (0-8)
-        
+
     Returns:
         Route: La ruta asignada (A, B, o C)
     """
@@ -205,13 +205,13 @@ PAES_MAPPING = {
 def get_paes_score_weighted(responses: list, route: Route) -> tuple[int, int, int]:
     """
     Calcula el puntaje PAES usando fórmula ponderada (v3.0).
-    
+
     Fórmula: PAES = 100 + 900 × score_ponderado × factor_ruta × factor_cobertura
-    
+
     Args:
         responses: Lista de respuestas con metadata de la pregunta
         route: La ruta del estudiante (A, B, o C)
-        
+
     Returns:
         Tuple[int, int, int]: (puntaje_estimado, rango_min, rango_max)
     """
@@ -258,7 +258,7 @@ def get_paes_score(route: Route, total_correct: int) -> tuple[int, int, int]:
     # Si no hay match exacto, usar el límite más cercano
     all_ranges = list(route_mapping.keys())
     min_range = min(r[0] for r in all_ranges)
-    max_range = max(r[1] for r in all_ranges)
+    max(r[1] for r in all_ranges)
 
     if total_correct < min_range:
         return route_mapping[all_ranges[0]]

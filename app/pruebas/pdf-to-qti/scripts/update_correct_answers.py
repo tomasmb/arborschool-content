@@ -29,13 +29,13 @@ def extract_question_number(xml_path: Path) -> Optional[int]:
 def update_qti_correct_answer(xml_path: Path, correct_answer: str) -> tuple[bool, Optional[str]]:
     """
     Update the correct answer in a QTI XML file.
-    
+
     Returns (success, old_value) where old_value is None if not found.
     """
     try:
         # Read the file as text to preserve formatting
         with open(xml_path, "r", encoding="utf-8") as f:
-            content = f.read()
+            f.read()
 
         # Parse XML
         tree = ET.parse(str(xml_path))

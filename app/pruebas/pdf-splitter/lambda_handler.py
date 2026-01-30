@@ -23,7 +23,7 @@ from modules.pdf_processor import process_pdf_to_s3
 def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
     """
     AWS Lambda handler for PDF splitting service.
-    
+
     Expected event structure:
     {
         "pdf_url": "https://example.com/input.pdf",  # URL to download PDF
@@ -40,7 +40,7 @@ def lambda_handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
         },
         "initial_chunk_size": 10  # Optional, defaults to 20. Use smaller for complex PDFs
     }
-    
+
     Returns:
     {
         "statusCode": 200,

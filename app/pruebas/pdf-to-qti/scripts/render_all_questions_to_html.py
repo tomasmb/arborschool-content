@@ -100,14 +100,14 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             padding: 0;
             box-sizing: border-box;
         }}
-        
+
         body {{
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
         }}
-        
+
         .test-container {{
             max-width: 1000px;
             margin: 0 auto;
@@ -116,43 +116,43 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
         }}
-        
+
         .test-header {{
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 40px 30px;
             text-align: center;
         }}
-        
+
         .test-header h1 {{
             font-size: 32px;
             font-weight: 600;
             margin-bottom: 10px;
         }}
-        
+
         .test-header p {{
             font-size: 16px;
             opacity: 0.9;
         }}
-        
+
         .test-index {{
             padding: 30px;
             background: #f8f9fa;
             border-bottom: 2px solid #e0e0e0;
         }}
-        
+
         .test-index h2 {{
             font-size: 24px;
             margin-bottom: 20px;
             color: #333;
         }}
-        
+
         .index-grid {{
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             gap: 10px;
         }}
-        
+
         .index-item {{
             display: block;
             padding: 10px 15px;
@@ -165,23 +165,23 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             font-weight: 500;
             transition: all 0.3s ease;
         }}
-        
+
         .index-item:hover {{
             border-color: #667eea;
             background: #f0f0ff;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }}
-        
+
         .question-section {{
             padding: 30px;
             border-bottom: 3px solid #e0e0e0;
         }}
-        
+
         .question-section:last-child {{
             border-bottom: none;
         }}
-        
+
         .question-navigation {{
             display: flex;
             justify-content: space-between;
@@ -190,7 +190,7 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             background: #f8f9fa;
             border-radius: 8px;
         }}
-        
+
         .nav-link {{
             padding: 8px 16px;
             background: #667eea;
@@ -200,11 +200,11 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             font-weight: 500;
             transition: background 0.3s;
         }}
-        
+
         .nav-link:hover {{
             background: #5568d3;
         }}
-        
+
         .question-header {{
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -212,19 +212,19 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             border-radius: 8px;
             margin-bottom: 20px;
         }}
-        
+
         .question-title {{
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 10px;
         }}
-        
+
         .question-id {{
             font-size: 14px;
             opacity: 0.9;
             margin-bottom: 5px;
         }}
-        
+
         .correct-answer {{
             background: rgba(255,255,255,0.2);
             padding: 10px 15px;
@@ -232,18 +232,18 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             margin-top: 15px;
             font-size: 14px;
         }}
-        
+
         .question-content {{
             padding: 20px 0;
         }}
-        
+
         .question-prompt {{
             font-size: 18px;
             margin-bottom: 25px;
             line-height: 1.6;
             color: #333;
         }}
-        
+
         .question-image {{
             max-width: 100%;
             height: auto;
@@ -251,41 +251,41 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             margin: 20px 0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }}
-        
+
         .question-table {{
             width: 100%;
             border-collapse: collapse;
             margin: 20px 0;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }}
-        
+
         .question-table th,
         .question-table td {{
             padding: 12px;
             text-align: left;
             border: 1px solid #e0e0e0;
         }}
-        
+
         .question-table th {{
             background: #f5f5f5;
             font-weight: 600;
             color: #333;
         }}
-        
+
         .question-table tr:nth-child(even) {{
             background: #fafafa;
         }}
-        
+
         .choices-container {{
             margin-top: 30px;
         }}
-        
+
         .choices-list {{
             display: flex;
             flex-direction: column;
             gap: 15px;
         }}
-        
+
         .choice-item {{
             display: flex;
             align-items: flex-start;
@@ -295,51 +295,51 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             background: #f9f9f9;
             transition: all 0.3s ease;
         }}
-        
+
         .choice-item:hover {{
             border-color: #667eea;
             background: #f0f0ff;
             transform: translateX(5px);
         }}
-        
+
         .choice-item.correct-choice {{
             border-color: #4caf50;
             background: #e8f5e9;
         }}
-        
+
         .choice-item input[type="radio"] {{
             margin-right: 12px;
             margin-top: 3px;
             cursor: pointer;
         }}
-        
+
         .choice-item label {{
             flex: 1;
             cursor: pointer;
             line-height: 1.5;
             font-size: 16px;
         }}
-        
+
         .choice-item label strong {{
             color: #667eea;
             margin-right: 8px;
         }}
-        
+
         .correct-choice label strong {{
             color: #4caf50;
         }}
-        
+
         .math-container {{
             display: inline-block;
             margin: 0 4px;
         }}
-        
+
         p {{
             margin: 15px 0;
             line-height: 1.6;
             color: #444;
         }}
-        
+
         .back-to-top {{
             position: fixed;
             bottom: 30px;
@@ -353,7 +353,7 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             font-weight: 500;
             transition: all 0.3s;
         }}
-        
+
         .back-to-top:hover {{
             background: #5568d3;
             transform: translateY(-3px);
@@ -367,14 +367,14 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             <h1>PAES Invierno 2026 - M1</h1>
             <p>Visualización completa de todas las preguntas</p>
         </div>
-        
+
         <div id="index">
             {''.join(index_html)}
         </div>
-        
+
         {''.join(questions_html)}
     </div>
-    
+
     <a href="#index" class="back-to-top">↑ Índice</a>
 </body>
 </html>"""

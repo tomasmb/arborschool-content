@@ -32,7 +32,7 @@ def main():
     base_dir = Path(__file__).parent
     project_root = base_dir.parent.parent.parent
 
-    original_pdf = project_root / "app" / "data" / "pruebas" / "raw" / "Prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
+    project_root / "app" / "data" / "pruebas" / "raw" / "Prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
     source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf-splitter-output" / "part_1" / "questions"
     output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf"
 

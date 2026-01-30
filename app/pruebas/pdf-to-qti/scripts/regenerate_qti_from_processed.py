@@ -49,13 +49,13 @@ def regenerate_qti_from_processed(
 ) -> dict[str, any]:
     """
     Regenera QTI XML desde contenido ya procesado.
-    
+
     Args:
         question_dir: Directorio de la pregunta (ej: Q19/)
         api_key: API key para transformación
         paes_mode: Si True, usa modo PAES (choice, 4 alternativas)
         test_name: Nombre del test para organizar imágenes en S3
-        
+
     Returns:
         Resultado del procesamiento
     """

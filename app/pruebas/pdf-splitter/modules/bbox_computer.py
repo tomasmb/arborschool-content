@@ -17,12 +17,12 @@ def expand_blocks_from_start(page, start_block_idx, other_segment_blocks):
     """
     Expand from the start block to include all blocks to the right and bottom,
     stopping when hitting another segment's blocks.
-    
+
     Args:
         page: PyMuPDF page object
         start_block_idx: Index of the starting block
         other_segment_blocks: Set of block indices that belong to other segments
-        
+
     Returns:
         List of bbox coordinates [x1, y1, x2, y2] for all blocks in this segment
     """
@@ -134,7 +134,6 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
     """
     doc = fitz.open(pdf_path)
     page_width = None
-    page_height = None
 
     # Determine actual start page and block for each segment, register boundaries
     boundaries: Dict[int, List] = {}
@@ -148,7 +147,6 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
             page = doc.load_page(original_page - 1)
             if page_width is None:
                 page_width = page.rect.width
-                page_height = page.rect.height
             parsed_marker = parse_start_marker(segment["start_marker"])
             try:
                 res = find_start_block_index(page, {"marker": parsed_marker, "id": segment.get("id", "")}, segment, original_page, doc)
@@ -216,7 +214,6 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
         else:
             # Last segment goes to end of document
             next_start_page = doc.page_count + 1
-            next_start_y = 0
 
         # Compute page span: all pages from start until next segment starts
         if next_start_page > doc.page_count:
@@ -249,7 +246,6 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
 
                 # Find where this segment starts and ends on this page
                 segment_start_y = None
-                segment_end_y = page_rect.height  # Default to end of page
 
                 # Find this segment's start position on this page
                 for seg, _, y in bnds:

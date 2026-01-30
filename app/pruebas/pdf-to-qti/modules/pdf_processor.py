@@ -2,7 +2,7 @@
 PDF Content Processor
 
 This module extracts structured content and images from PDF files
-for use in QTI conversion. Uses PyMuPDF for structured data and 
+for use in QTI conversion. Uses PyMuPDF for structured data and
 GPT-5.1 vision for intelligent content categorization, following
 converter guidelines to avoid overfitting and leverage AI capabilities.
 """
@@ -58,16 +58,16 @@ class CustomJSONEncoder(JSONEncoder):
 def extract_pdf_content(doc: fitz.Document, openai_api_key: Optional[str] = None) -> Dict[str, Any]:
     """
     Extract comprehensive content from a PDF document using AI-powered analysis.
-    
+
     Following converter guidelines:
     - Use PyMuPDF first for structured data
     - Fallback to GPT-5.1 vision for image detection
     - Leverage AI categorization throughout the pipeline
-    
+
     Args:
         doc: PyMuPDF document object
         openai_api_key: OpenAI API key for AI-powered content analysis
-        
+
     Returns:
         Dictionary containing structured text, images, and metadata
     """
@@ -142,10 +142,10 @@ def extract_pdf_content(doc: fitz.Document, openai_api_key: Optional[str] = None
 def extract_text_blocks(structured_data: Dict[str, Any]) -> List[Dict[str, Any]]:
     """
     Extract text blocks from structured data.
-    
+
     Args:
         structured_data: PyMuPDF structured text data
-        
+
     Returns:
         List of text blocks with extracted text content
     """
@@ -165,10 +165,10 @@ def extract_text_blocks(structured_data: Dict[str, Any]) -> List[Dict[str, Any]]
 def extract_block_text(block: Dict[str, Any]) -> str:
     """
     Extract text from a PyMuPDF text block.
-    
+
     Args:
         block: PyMuPDF block dictionary
-        
+
     Returns:
         Extracted text string
     """
@@ -186,10 +186,10 @@ def extract_block_text(block: Dict[str, Any]) -> str:
 def extract_question_text(text_blocks: List[Dict[str, Any]]) -> str:
     """
     Extract combined question text from all text blocks for choice diagram detection.
-    
+
     Args:
         text_blocks: List of text blocks from PyMuPDF
-        
+
     Returns:
         Combined text string
     """
@@ -207,13 +207,13 @@ def extract_question_text(text_blocks: List[Dict[str, Any]]) -> str:
 def split_choice_blocks(structured_data: Dict[str, Any]) -> Dict[str, Any]:
     """
     Split blocks that contain multiple answer choices into separate blocks.
-    
-    This fixes the issue where PyMuPDF groups multiple choice letters (e.g., "A B") 
+
+    This fixes the issue where PyMuPDF groups multiple choice letters (e.g., "A B")
     into a single block, which causes problems with choice image extraction.
-    
+
     Args:
         structured_data: PyMuPDF structured text data containing blocks
-        
+
     Returns:
         Modified structured data with choice blocks split appropriately
     """
@@ -307,7 +307,7 @@ def split_choice_blocks(structured_data: Dict[str, Any]) -> Dict[str, Any]:
 
                 # Adjust bounding boxes based on the actual content
                 if "bbox" in block and len(block["bbox"]) >= 4:
-                    original_bbox = block["bbox"]
+                    block["bbox"]
 
                     # Calculate bboxes for each choice based on their spans
                     first_spans_bboxes = []
@@ -363,18 +363,18 @@ def extract_images_and_tables(
 ) -> Dict[str, Any]:
     """
     Extract images and tables using AI-powered analysis and PyMuPDF.
-    
+
     Following converter guidelines:
-    1. Use PyMuPDF first for table detection  
+    1. Use PyMuPDF first for table detection
     2. Use GPT-5.1 for two-step LLM approach: compatibility + categorization
     3. Build image BBOX using AI categorization results
     4. Ensure deterministic and explainable logic
-    
+
     Args:
         page: PyMuPDF page object
         structured_data: PyMuPDF structured text data
         openai_api_key: OpenAI API key for AI-powered analysis
-        
+
     Returns:
         Dictionary with images, tables, and AI analysis results
     """
@@ -894,7 +894,7 @@ def render_image_area(
 ) -> Optional[Dict[str, Any]]:
     """
     Render the final image area with optional text masking.
-    
+
     Args:
         page: PyMuPDF page object
         final_bbox: Final bounding box for the image

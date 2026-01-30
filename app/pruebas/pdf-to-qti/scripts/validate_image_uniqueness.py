@@ -13,13 +13,13 @@ import json
 import re
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 
 def validate_image_uniqueness(test_name: str, output_dir: str) -> Dict[str, Any]:
     """
     Validar que cada pregunta tenga imágenes únicas.
-    
+
     Returns:
         Dict con resultados de validación
     """

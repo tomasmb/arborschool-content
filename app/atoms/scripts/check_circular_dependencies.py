@@ -29,7 +29,7 @@ def find_cycles(
 ) -> list[list[str]]:
     """
     Find all cycles in the prerequisite graph using DFS.
-    
+
     Returns:
         List of cycles, where each cycle is a list of atom IDs forming a cycle.
     """

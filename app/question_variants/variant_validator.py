@@ -27,7 +27,7 @@ class VariantValidator:
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the validator.
-        
+
         Args:
             config: Pipeline configuration. Uses defaults if not provided.
         """
@@ -40,11 +40,11 @@ class VariantValidator:
         source: SourceQuestion
     ) -> ValidationResult:
         """Validate a variant question against its source.
-        
+
         Args:
             variant: The variant to validate
             source: The original source question
-            
+
         Returns:
             ValidationResult with verdict and details
         """
@@ -66,7 +66,7 @@ class VariantValidator:
 
     def _validate_xml(self, xml_content: str) -> tuple[bool, str]:
         """Validate that the XML is parseable.
-        
+
         Returns:
             Tuple of (is_valid, error_message)
         """
@@ -158,7 +158,7 @@ Responde en JSON:
 </formato_respuesta>
 
 <regla_critica>
-Si la respuesta marcada como correcta NO es matemáticamente correcta, 
+Si la respuesta marcada como correcta NO es matemáticamente correcta,
 el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
 </regla_critica>
 """

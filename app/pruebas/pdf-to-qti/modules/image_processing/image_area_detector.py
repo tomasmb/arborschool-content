@@ -97,7 +97,7 @@ def construct_image_area_including_labels(
 ) -> Optional[List[float]]:
     """
     Construct image area that INCLUDES the image label blocks and finds the visual content around them.
-    
+
     This is different from gap detection - instead of finding gaps between text,
     we find an area that encompasses the image labels and extends to capture the visual content.
     """

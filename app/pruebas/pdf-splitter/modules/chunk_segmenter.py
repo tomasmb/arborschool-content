@@ -190,7 +190,7 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 **Example**: If you see:
   "1. What is 2+2? A) 3 B) 4 C) 5 D) 6
    2. What is 3+3? A) 5 B) 6 C) 7 D) 8"
-  
+
   You must create TWO separate question segments: Q1 and Q2.
 
 ## Multi-Question Reference Rules
@@ -202,7 +202,7 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 
 ## Process - Step by Step
 
-1. **Initial Scan**: 
+1. **Initial Scan**:
    - Skip the first 2-3 pages (cover/instructions)
    - Find the FIRST question number (usually "1." or "1)")
    - This marks where questions begin
@@ -214,17 +214,17 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
      - Include all answer choices (A), B), C), D))
      - Include any images, tables, or diagrams that belong ONLY to this question
      - Continue until you reach the next question number or end of document
-   
-3. **Boundaries**: 
+
+3. **Boundaries**:
    - Each question segment starts at its question number
    - Each question segment ends at the start of the next question number (or end of document)
    - No gaps, no overlaps
 
-4. **References**: 
+4. **References**:
    - If content is used by multiple questions, make it a multi-question reference
    - Link questions to their references
 
-5. **Validation**: 
+5. **Validation**:
    - Count your questions:
      - **Invierno tests**: You MUST find exactly 65 questions (Q1 through Q65, all present, sequential)
      - **Regular/Seleccion tests**: You MUST find exactly 45 questions (numbers may skip, gaps are normal)
@@ -240,11 +240,11 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 - Unrelated: UC1, UC2, UC3... (cover pages, general instructions)
 - Start markers: First words of each segment - for questions, use the question number and first few words
 
-**CRITICAL REMINDER**: 
+**CRITICAL REMINDER**:
 - You must find and segment EVERY numbered question in the document
 - Do not stop after finding just a few questions
 - Scan the ENTIRE document systematically, page by page
-- **Expected counts**: 
+- **Expected counts**:
   - If this is an "invierno" test, you MUST find exactly 65 questions (Q1 through Q65, all sequential)
   - If this is a "seleccion" or "regular" test, you MUST find exactly 45 questions (numbers may skip)
 - If you only find 5-10 questions, you have DEFINITELY missed many more - keep searching!
@@ -257,10 +257,10 @@ Return the JSON with all segments properly identified and associated.
 def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
     """
     Segment PDF using OpenAI's direct PDF upload feature.
-    
+
     Args:
         pdf_path: Path to the PDF file
-        
+
     Returns:
         Dictionary containing questions and references with metadata
     """
@@ -361,11 +361,11 @@ def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
 def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Dict[str, Any]:
     """
     Main function to segment PDF and optionally save results.
-    
+
     Args:
         pdf_path: Path to input PDF file
         output_file: Optional path to save JSON results
-        
+
     Returns:
         Segmentation results dictionary
     """
@@ -468,12 +468,12 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
 def validate_coordinates(bbox: Dict[str, float], page_width: float = 612, page_height: float = 792) -> Dict[str, float]:
     """
     Validate and clamp coordinates to page boundaries.
-    
+
     Args:
         bbox: Bounding box coordinates
         page_width: Page width in points (default: 612 for US Letter)
         page_height: Page height in points (default: 792 for US Letter)
-        
+
     Returns:
         Validated bounding box
     """
@@ -487,10 +487,10 @@ def validate_coordinates(bbox: Dict[str, float], page_width: float = 612, page_h
 def get_question_statistics(results: Dict[str, Any]) -> Dict[str, Any]:
     """
     Generate statistics about the segmented questions.
-    
+
     Args:
         results: Segmentation results
-        
+
     Returns:
         Statistics dictionary
     """

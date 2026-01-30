@@ -10,14 +10,14 @@ from typing import Any
 def _fix_invalid_escapes(text: str) -> str:
     """
     Fix invalid escape sequences in JSON strings.
-    
+
     JSON only allows specific escape sequences. This function attempts to
     fix common invalid escapes by either escaping the backslash or removing
     the invalid escape sequence.
-    
+
     Args:
         text: JSON string that may contain invalid escapes
-        
+
     Returns:
         Text with fixed escape sequences
     """

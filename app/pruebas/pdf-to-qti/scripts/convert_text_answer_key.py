@@ -22,12 +22,12 @@ from typing import Dict
 def parse_text_answer_key(text_path: Path) -> Dict[str, str]:
     """
     Parse a text file with answer key in tabular format.
-    
+
     Format: Each line contains 3 pairs of question-answer separated by tabs:
     1	B	23	B	45	B
-    
+
     Questions with "-" are skipped.
-    
+
     Returns a dictionary mapping question numbers to answers (e.g., {"1": "ChoiceB", ...})
     """
     answers: Dict[str, str] = {}

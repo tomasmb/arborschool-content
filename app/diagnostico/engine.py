@@ -103,19 +103,19 @@ class TestResult:
 class MSTEngine:
     """
     Motor de la prueba diagnóstica MST.
-    
+
     Uso típico:
         engine = MSTEngine()
         r1_questions = engine.get_routing_questions()
-        
+
         # ... estudiante responde R1 ...
         engine.record_r1_responses(responses)
-        
+
         stage2_questions = engine.get_stage2_questions()
-        
+
         # ... estudiante responde Etapa 2 ...
         engine.record_stage2_responses(responses)
-        
+
         result = engine.get_result()
     """
 
@@ -131,10 +131,10 @@ class MSTEngine:
     def record_r1_responses(self, responses: List[Response]) -> Route:
         """
         Registra las respuestas de R1 y determina la ruta.
-        
+
         Args:
             responses: Lista de 8 respuestas para R1
-            
+
         Returns:
             Route: La ruta asignada
         """
@@ -155,10 +155,10 @@ class MSTEngine:
     def get_stage2_questions(self) -> List[Question]:
         """
         Obtiene las 8 preguntas de la Etapa 2 según la ruta.
-        
+
         Returns:
             List[Question]: Las preguntas del módulo correspondiente
-            
+
         Raises:
             ValueError: Si no se ha completado R1 primero
         """
@@ -176,7 +176,7 @@ class MSTEngine:
     def record_stage2_responses(self, responses: List[Response]) -> None:
         """
         Registra las respuestas de la Etapa 2.
-        
+
         Args:
             responses: Lista de 8 respuestas para la Etapa 2
         """
@@ -191,7 +191,7 @@ class MSTEngine:
     def get_result(self) -> TestResult:
         """
         Calcula y devuelve el resultado completo de la prueba.
-        
+
         Returns:
             TestResult: Resultado con puntaje PAES y diagnósticos
         """
@@ -270,12 +270,12 @@ class MSTEngine:
     def _calculate_atom_diagnoses(self, responses: List[Response]) -> List[AtomDiagnosis]:
         """
         Genera diagnósticos por átomo basados en las respuestas.
-        
+
         Para cada respuesta:
         1. Carga metadata_tags.json de la pregunta
         2. Extrae los átomos taggeados (primary y secondary)
         3. Asigna estado según tipo de respuesta
-        
+
         Returns:
             Lista de AtomDiagnosis con estado por átomo
         """

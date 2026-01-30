@@ -47,7 +47,7 @@ else:
 def extract_base64_images(qti_xml: str) -> List[Dict[str, str]]:
     """
     Extrae todas las imágenes base64 de un QTI XML.
-    
+
     Returns:
         Lista de diccionarios con 'data_uri', 'base64_data', 'mime_type'
     """
@@ -90,11 +90,11 @@ def fix_base64_padding(base64_data: str) -> str:
 def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[str, Optional[str]]:
     """
     Sube imágenes a S3 y retorna un mapeo de data URI a URL S3.
-    
+
     Args:
         images: Lista de imágenes con base64_data
         question_id: ID de la pregunta para nombrar las imágenes
-        
+
     Returns:
         Diccionario mapeando data_uri -> s3_url
     """
@@ -138,11 +138,11 @@ def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[
 def replace_data_uris_with_s3(qti_xml: str, uri_mapping: Dict[str, str]) -> str:
     """
     Reemplaza data URIs con URLs S3 en el QTI XML.
-    
+
     Args:
         qti_xml: XML del QTI
         uri_mapping: Mapeo de data_uri -> s3_url
-        
+
     Returns:
         XML actualizado con URLs S3
     """
@@ -176,11 +176,11 @@ def replace_data_uris_with_s3(qti_xml: str, uri_mapping: Dict[str, str]) -> str:
 def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
     """
     Migra un QTI de base64 a S3.
-    
+
     Args:
         qti_path: Ruta al archivo QTI
         dry_run: Si True, solo muestra lo que haría sin hacer cambios
-        
+
     Returns:
         Diccionario con resultados de la migración
     """

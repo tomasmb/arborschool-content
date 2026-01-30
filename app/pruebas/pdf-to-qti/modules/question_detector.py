@@ -39,14 +39,14 @@ SUPPORTED_QTI_TYPES = [
 def detect_question_type(pdf_content: Dict[str, Any], openai_api_key: str) -> Dict[str, Any]:
     """
     Detect the question type from PDF content, leveraging AI analysis results.
-    
+
     Following converter guidelines: use AI analysis from pdf_processor if available,
     otherwise fall back to direct analysis.
-    
+
     Args:
         pdf_content: Extracted PDF content with AI analysis results
         openai_api_key: OpenAI API key
-        
+
     Returns:
         Dictionary with detection results
     """
@@ -72,7 +72,7 @@ def detect_question_type(pdf_content: Dict[str, Any], openai_api_key: str) -> Di
 def extract_ai_analysis_from_content(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     """
     Extract AI analysis results from PDF content structure.
-    
+
     The new pdf_processor includes AI analysis in the page-level data.
     """
     # Look for AI analysis in pages
@@ -90,7 +90,7 @@ def extract_ai_analysis_from_content(pdf_content: Dict[str, Any]) -> Dict[str, A
 def build_detection_result_from_ai_analysis(ai_analysis: Dict[str, Any]) -> Dict[str, Any]:
     """
     Build question detection result from AI content analysis.
-    
+
     Following converter guidelines: leverage existing AI analysis instead of
     redundant LLM calls.
     """
@@ -123,7 +123,7 @@ def build_detection_result_from_ai_analysis(ai_analysis: Dict[str, Any]) -> Dict
 def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_key: str) -> Dict[str, Any]:
     """
     Perform direct question type detection as fallback.
-    
+
     This is the original logic, used when AI analysis is not available.
     """
     try:
@@ -189,10 +189,10 @@ def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_ke
 def parse_detection_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the JSON response from the detection LLM.
-    
+
     Args:
         response_text: Raw response text from LLM
-        
+
     Returns:
         Parsed detection result
     """
@@ -248,10 +248,10 @@ def parse_detection_response(response_text: str) -> Dict[str, Any]:
 def validate_question_type(question_type: str) -> bool:
     """
     Validate that a question type is supported.
-    
+
     Args:
         question_type: Question type string
-        
+
     Returns:
         True if supported, False otherwise
     """
@@ -261,10 +261,10 @@ def validate_question_type(question_type: str) -> bool:
 def get_question_type_description(question_type: str) -> str:
     """
     Get a description of a question type.
-    
+
     Args:
         question_type: Question type string
-        
+
     Returns:
         Description string
     """

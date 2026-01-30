@@ -43,7 +43,7 @@ def shorten_long_alt_text(alt_text: str, max_length: int = 120) -> str:
 def format_xml_file(filepath: Path, max_line_length: int = 120) -> tuple[bool, int]:
     """
     Format XML file to ensure lines are under max_line_length.
-    
+
     Returns:
         (success, max_line_length_found)
     """

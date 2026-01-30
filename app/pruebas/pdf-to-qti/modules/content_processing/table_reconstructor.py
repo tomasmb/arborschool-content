@@ -6,7 +6,7 @@ when PyMuPDF table detection fails. Uses spatial analysis to maintain proper
 row/column relationships.
 
 Following converter guidelines:
-- Clean, single-responsibility module  
+- Clean, single-responsibility module
 - Deterministic spatial logic
 - No overfitting to specific content
 """
@@ -24,10 +24,10 @@ __all__ = [
 def detect_scattered_table_blocks(text_blocks: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     """
     Detect if text blocks represent a scattered table structure.
-    
+
     Args:
         text_blocks: List of text blocks with bbox and text
-        
+
     Returns:
         Table structure info if detected, None otherwise
     """
@@ -67,10 +67,10 @@ def detect_scattered_table_blocks(text_blocks: List[Dict[str, Any]]) -> Optional
 def reconstruct_table_from_blocks(table_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """
     Reconstruct proper table structure using spatial analysis.
-    
+
     Args:
         table_info: Detected table structure from detect_scattered_table_blocks
-        
+
     Returns:
         Reconstructed table data or None if reconstruction fails
     """
@@ -135,10 +135,10 @@ def reconstruct_table_from_blocks(table_info: Dict[str, Any]) -> Optional[Dict[s
 def enhance_content_with_reconstructed_tables(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     """
     Enhance PDF content by detecting and reconstructing scattered tables.
-    
+
     Args:
         pdf_content: Original PDF content
-        
+
     Returns:
         Enhanced content with reconstructed tables
     """

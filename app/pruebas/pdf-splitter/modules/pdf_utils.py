@@ -31,10 +31,10 @@ def get_page_structured_text(page: fitz.Page) -> str:
     """
     Extracts structured text from a PyMuPDF page object.
     Uses the "dict" output and serializes it to a JSON string for the LLM.
-    
+
     Args:
         page: The fitz.Page object to extract text from.
-        
+
     Returns:
         A JSON string containing the structured text.
     """
@@ -46,11 +46,11 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
     """
     Creates an optimized representation of page content that prioritizes
     important elements while keeping the output size manageable.
-    
+
     Args:
         page: The fitz.Page object to process
         max_length: Target maximum length for the optimized content
-        
+
     Returns:
         A string containing the optimized representation of the page content
     """
@@ -146,11 +146,11 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
 def get_page_image(page: fitz.Page, scale: float = 2.0) -> bytes:
     """
     Renders a page as an image with fallback strategies for complex pages.
-    
+
     Args:
         page: The fitz.Page to render
         scale: Scale factor for resolution (higher = better quality but larger size)
-        
+
     Returns:
         PNG image data as bytes
     """
@@ -298,7 +298,7 @@ def merge_pdfs(pdf_paths: list[str], output_path: str):
 def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str, fail_on_validation_error: bool = False):
     """
     Create individual PDF files for each question using the segmentation results.
-    
+
     Args:
         results: The segmentation results
         original_pdf_path: Path to the original PDF

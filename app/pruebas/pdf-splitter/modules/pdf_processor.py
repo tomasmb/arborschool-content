@@ -53,13 +53,13 @@ def save_base64_pdf(base64_data: str, temp_path: str) -> None:
 def upload_file_to_s3(file_path: str, session: boto3.Session, bucket_name: str, s3_key: str) -> str:
     """
     Upload file to S3 and return the public URL.
-    
+
     Args:
         file_path: Local path to file to upload
         session: Boto3 session with AWS credentials
         bucket_name: S3 bucket name
         s3_key: S3 object key
-        
+
     Returns:
         Public S3 URL
     """
@@ -88,7 +88,7 @@ def process_pdf_to_s3(
 ) -> List[str]:
     """
     Process PDF and upload question PDFs to S3.
-    
+
     Args:
         pdf_source: URL or base64 encoded PDF data
         is_base64: True if pdf_source is base64 data, False if URL
@@ -97,7 +97,7 @@ def process_pdf_to_s3(
         path_prefix: S3 path prefix for uploaded files
         test_id: Unique identifier for this test
         initial_chunk_size: Optional chunk size parameter
-        
+
     Returns:
         List of S3 URLs for generated question PDFs
     """

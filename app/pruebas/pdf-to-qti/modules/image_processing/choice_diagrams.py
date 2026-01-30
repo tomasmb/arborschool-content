@@ -27,13 +27,13 @@ def detect_and_extract_choice_diagrams(
     """
     Detect if this is a multiple choice question with diagram options and extract
     each choice region separately.
-    
+
     Args:
         page: PDF page object
         text_blocks: All text blocks from the page
         ai_categories: AI categorization of text blocks
         question_text: The question text for additional context
-        
+
     Returns:
         List of image dictionaries for each choice, or None if not a choice diagram question
     """
@@ -111,15 +111,15 @@ def _is_choice_diagram_question(
 ) -> bool:
     """
     Determine if this is a multiple choice question with diagram options.
-    
+
     Looks for:
     1. Question text asking about visual elements ("shows", "diagram", "appears", etc.)
     2. Multiple answer choices with visual indicators
     3. AI categorization indicating visual content
-    
+
     IMPORTANT: Distinguishes between actual multiple choice questions and multi-part questions
     where A, B, C are question parts (e.g., "Part A", "A. Identify the three characteristics")
-    
+
     UPDATED: More conservative to avoid misidentifying prompt visual elements as choices
     """
 
@@ -234,7 +234,7 @@ def _find_choice_regions(
 ) -> List[Dict[str, Any]]:
     """
     Find the bounding box regions for each answer choice using spatial grouping.
-    
+
     Strategy:
     1. Find all potential choice labels (letters/numbers)
     2. For each choice label, find nearby text blocks that are part of the same choice
@@ -242,8 +242,6 @@ def _find_choice_regions(
     """
 
     choice_regions = []
-    page_width = page.rect.width
-    page_height = page.rect.height
 
     # Find question/answer text to avoid
     qa_blocks = []
@@ -389,8 +387,6 @@ def _calculate_choice_boundaries(
     # Track if we find neighbors in each direction
     has_left_neighbor = False
     has_right_neighbor = False
-    has_top_neighbor = False
-    has_bottom_neighbor = False
 
     # Adjust boundaries based on neighboring choices
     for i, other_choice in enumerate(choice_labels):
@@ -418,11 +414,9 @@ def _calculate_choice_boundaries(
         if other_y0 > current_y1 and horizontal_overlap:  # Other choice is below
             # Stop before the next choice to prevent overlap
             boundaries['bottom'] = min(boundaries['bottom'], other_y0 - 10)  # Stop 10px before next choice
-            has_bottom_neighbor = True
         elif other_y1 < current_y0 and horizontal_overlap:  # Other choice is above
             # Start after the previous choice to prevent overlap
             boundaries['top'] = max(boundaries['top'], other_y1 + 10)  # Start 10px after previous choice
-            has_top_neighbor = True
 
     # For vertical layouts (no side neighbors), be more generous horizontally
     if not has_left_neighbor and not has_right_neighbor:

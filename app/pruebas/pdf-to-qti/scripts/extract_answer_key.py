@@ -71,12 +71,12 @@ def extract_answer_key_with_ai(
 ) -> Dict[str, str]:
     """
     Use AI to extract answer key from PDF content.
-    
+
     Args:
         pdf_content: Dictionary with pages and text
         api_key: API key for AI
         focus_page: Optional page number to focus on (1-indexed). If provided, only that page will be analyzed.
-    
+
     Returns a dictionary mapping question numbers to correct answers (e.g., {"1": "A", "2": "C", ...})
     """
 

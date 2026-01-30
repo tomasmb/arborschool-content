@@ -29,13 +29,13 @@ def regenerate_question_pdf(
 ) -> bool:
     """
     Regenera un PDF individual para una pregunta usando datos de segmentación.
-    
+
     Args:
         question_data: Datos de la pregunta desde segmentation_results.json
         original_pdf_path: Ruta al PDF original
         output_path: Ruta donde guardar el PDF generado
         results: Resultados completos de segmentación (para referencias compartidas)
-    
+
     Returns:
         True si se generó exitosamente, False en caso contrario
     """

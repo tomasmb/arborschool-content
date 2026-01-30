@@ -27,7 +27,7 @@ __all__ = [
 def should_use_ai_image_detection(text_blocks: List[Dict[str, Any]], openai_api_key: Optional[str] = None) -> bool:
     """
     Determine if AI-powered image detection should be used.
-    
+
     This is a fallback function when the main AI content analyzer is not available.
     Prefers LLM analysis over keyword matching following converter guidelines.
     """
@@ -79,7 +79,7 @@ Use high confidence only when there are clear visual indicators."""
 def detect_images_with_ai(page: fitz.Page, text_blocks: List[Dict[str, Any]], openai_api_key: Optional[str] = None) -> List[Dict[str, Any]]:
     """
     Use AI to categorize text blocks and construct image areas intelligently.
-    
+
     This is a fallback when the main AI content analyzer is not available.
     """
     if openai_api_key is None:
@@ -202,7 +202,6 @@ def detect_potential_image_areas(page: fitz.Page, text_blocks: List[Dict[str, An
     """Detect potential image areas by looking for large empty spaces between text blocks."""
     potential_images = []
     page_width = page.rect.width
-    page_height = page.rect.height
 
     text_bboxes = []
     for block in text_blocks:
@@ -480,16 +479,16 @@ def expand_pymupdf_bbox_intelligently(
 ) -> List[float]:
     """
     Intelligently expand a PyMuPDF detected bbox to capture the full visual content.
-    
+
     This method starts with a small PyMuPDF detection (like just the "Sun" in a diagram)
     and expands it in all directions until it hits question/answer text or page boundaries.
-    
+
     Args:
         pymupdf_bbox: Original PyMuPDF detected bbox [x0, y0, x1, y1]
         page: PDF page object
         text_blocks: All text blocks from the page
         ai_categories: Optional AI categorization of text blocks
-        
+
     Returns:
         Expanded bbox that captures the full visual content
     """
@@ -638,16 +637,16 @@ def assess_pymupdf_image_adequacy(
 ) -> Dict[str, Any]:
     """
     Assess whether PyMuPDF detected images are adequate for the visual content requirements.
-    
+
     Uses AI analysis and size heuristics to determine if detected images capture
     the complete visual content or just partial elements.
-    
+
     Args:
         image_blocks: PyMuPDF detected image blocks
         page: The PDF page
         text_blocks: All text blocks from the page
         openai_api_key: OpenAI API key for AI assessment
-        
+
     Returns:
         Dictionary with adequacy assessment results
     """

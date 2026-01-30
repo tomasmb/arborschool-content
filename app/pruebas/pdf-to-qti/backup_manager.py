@@ -22,12 +22,12 @@ def create_qti_backup(
 ) -> Path:
     """
     Crea un backup de las carpetas QTI generadas.
-    
+
     Args:
         output_dir: Directorio base donde están las carpetas QTI
         generated_folders: Lista de nombres de carpetas que se generaron (e.g., ['Q1', 'Q19', 'Q22'])
         backup_metadata: Información adicional sobre el backup (opcional)
-        
+
     Returns:
         Path al directorio de backup creado
     """
@@ -102,10 +102,10 @@ def create_qti_backup(
 def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
     """
     Lista todos los backups disponibles.
-    
+
     Args:
         output_dir: Directorio base donde están los backups
-        
+
     Returns:
         Lista de diccionarios con información de cada backup
     """
@@ -139,11 +139,11 @@ def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
 def delete_backup(backup_dir: Path, require_confirmation: bool = True) -> bool:
     """
     Elimina un backup específico.
-    
+
     Args:
         backup_dir: Directorio del backup a eliminar
         require_confirmation: Si True, no elimina sin confirmación explícita
-        
+
     Returns:
         True si se eliminó, False si se canceló
     """
@@ -172,13 +172,13 @@ def restore_from_backup(
 ) -> Dict[str, Any]:
     """
     Restaura carpetas desde un backup.
-    
+
     Args:
         backup_dir: Directorio del backup
         output_dir: Directorio donde restaurar
         folders_to_restore: Lista de carpetas a restaurar (None = todas)
         overwrite: Si True, sobrescribe carpetas existentes
-        
+
     Returns:
         Diccionario con resultados de la restauración
     """

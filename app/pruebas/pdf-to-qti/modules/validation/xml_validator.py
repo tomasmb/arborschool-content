@@ -19,11 +19,11 @@ def validate_qti_xml(
 ) -> Dict[str, Any]:
     """
     Validate QTI XML against the XSD schema.
-    
+
     Args:
         qti_xml: QTI XML content to validate
         validation_endpoint: Validation endpoint URL
-        
+
     Returns:
         Dictionary with validation results
     """
@@ -210,10 +210,10 @@ def validate_qti_xml(
 def validate_xml_structure(qti_xml: str) -> Dict[str, Any]:
     """
     Perform basic XML structure validation without external service.
-    
+
     Args:
         qti_xml: QTI XML content to validate
-        
+
     Returns:
         Dictionary with basic validation results
     """
@@ -277,10 +277,10 @@ def validate_xml_structure(qti_xml: str) -> Dict[str, Any]:
 def format_validation_errors(errors: Any) -> str:
     """
     Format validation errors into a readable string.
-    
+
     Args:
         errors: Validation errors from the service
-        
+
     Returns:
         Formatted error string
     """
@@ -313,10 +313,10 @@ def format_validation_errors(errors: Any) -> str:
 def extract_validation_feedback(validation_result: Dict[str, Any]) -> str:
     """
     Extract validation feedback for use in LLM correction.
-    
+
     Args:
         validation_result: Result from validation
-        
+
     Returns:
         Formatted feedback string for LLM
     """
@@ -354,10 +354,10 @@ def extract_validation_feedback(validation_result: Dict[str, Any]) -> str:
 def is_validation_available(validation_endpoint: Optional[str] = None) -> bool:
     """
     Check if the validation service is available.
-    
+
     Args:
         validation_endpoint: Validation endpoint URL
-        
+
     Returns:
         True if service is available, False otherwise
     """

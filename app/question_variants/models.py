@@ -14,7 +14,7 @@ class ValidationVerdict(str, Enum):
 @dataclass
 class SourceQuestion:
     """A source question loaded from the finalized tests.
-    
+
     Attributes:
         question_id: Unique identifier (e.g., "Q1")
         test_id: Test identifier (e.g., "Prueba-invierno-2025")
@@ -53,7 +53,7 @@ class SourceQuestion:
 @dataclass
 class VariantQuestion:
     """A generated variant question.
-    
+
     Attributes:
         variant_id: Unique identifier (e.g., "Q1_v1")
         source_question_id: Original question ID
@@ -73,7 +73,7 @@ class VariantQuestion:
 @dataclass
 class ValidationResult:
     """Result of variant validation.
-    
+
     Attributes:
         verdict: APROBADA or RECHAZADA
         concept_aligned: Does it test the same concept?
@@ -99,7 +99,7 @@ class ValidationResult:
 @dataclass
 class PipelineConfig:
     """Configuration for the variant generation pipeline.
-    
+
     Attributes:
         variants_per_question: Number of variants to generate per source question
         temperature: LLM temperature for generation (0.0 = deterministic)
@@ -119,7 +119,7 @@ class PipelineConfig:
 @dataclass
 class GenerationReport:
     """Report of a generation run.
-    
+
     Attributes:
         source_question_id: Original question ID
         source_test_id: Original test ID

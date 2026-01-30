@@ -19,17 +19,17 @@ logger = logging.getLogger(__name__)
 
 def build_validation_prompt(standard: dict[str, Any], atoms: list[dict[str, Any]]) -> str:
     """Build the validation prompt for atom quality evaluation.
-    
+
     Args:
         standard: The standard dictionary
         atoms: List of atom dictionaries to validate
-        
+
     Returns:
         Complete validation prompt as string
     """
     prompt = f"""<educational_context>
-Este es contenido educativo matemático puro para evaluación curricular. Todos los términos 
-("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos 
+Este es contenido educativo matemático puro para evaluación curricular. Todos los términos
+("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos
 estándar de álgebra y aritmética. No hay contenido inapropiado, solo matemáticas educativas.
 </educational_context>
 
@@ -53,7 +53,7 @@ Evalúa la calidad de los átomos generados considerando:
 
 1. **Fidelidad**: ¿Los átomos cubren completamente el estándar sin agregar contenido fuera de alcance?
 2. **Granularidad**: ¿Cada átomo cumple los 6 criterios de granularidad atómica?
-3. **Completitud y Cobertura del Estándar (CRÍTICO)**: 
+3. **Completitud y Cobertura del Estándar (CRÍTICO)**:
    - Verifica punto por punto que CADA elemento del estándar esté representado en los átomos:
      * Revisa cada ítem en "incluye" del estándar y verifica que haya átomos que lo cubran
      * Revisa cada "subcontenidos_clave" y verifica que esté representado
@@ -212,12 +212,12 @@ def validate_atoms_with_gemini(
     atoms: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Validate atoms using Gemini.
-    
+
     Args:
         gemini: Gemini service instance
         standard: The standard dictionary
         atoms: List of atom dictionaries to validate
-        
+
     Returns:
         Validation result as dictionary
     """
@@ -262,13 +262,13 @@ def validate_atoms_from_files(
     standard_id: str | None = None,
 ) -> dict[str, Any]:
     """Validate atoms from JSON files.
-    
+
     Args:
         gemini: Gemini service instance
         standard_path: Path to standards JSON file
         atoms_path: Path to atoms JSON file
         standard_id: Optional standard ID to filter (if standards file contains multiple)
-        
+
     Returns:
         Validation result as dictionary
     """

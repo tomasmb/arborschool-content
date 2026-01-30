@@ -115,7 +115,7 @@ except Exception as error:
 def hotspot_post_process(xml: str) -> str:
     """
     Post-process function for hotspot interactions.
-    
+
     NOTE: This function NO LONGER converts SVG to base64.
     Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
     The LLM should generate QTI with proper img tags using S3 URLs.
@@ -128,7 +128,7 @@ def hotspot_post_process(xml: str) -> str:
 def select_point_post_process(xml: str) -> str:
     """
     Post-process function for select-point interactions.
-    
+
     NOTE: This function NO LONGER converts SVG to base64.
     Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
     The LLM should generate QTI with proper img tags using S3 URLs.
@@ -186,17 +186,17 @@ For text entry interactions:
 4. For pattern matching, consider using <qti-mapping> with pattern map entries
 5. Use proper integer values for expected-length (number of characters):
    - Short answers: expected-length="50"
-   - Medium answers: expected-length="200" 
+   - Medium answers: expected-length="200"
    - Long answers: expected-length="500"
    - Do NOT use descriptive words like "large", "medium", "small"
 6. IMPORTANT: The <qti-text-entry-interaction> MUST be wrapped in a block element (<p> or <div>).
    It CANNOT be a direct child of <qti-item-body>.
-   
+
    CORRECT structure:
    <div>
      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="100"/>
    </div>
-   
+
    INCORRECT structure (will fail XSD validation):
    <qti-item-body>
      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="100"/>
@@ -292,7 +292,7 @@ For extended text interactions:
 4. No correct response is typically provided as these are usually essay questions
 5. Use proper integer values for expected-length (number of characters):
    - Short responses: expected-length="200"
-   - Medium responses: expected-length="500" 
+   - Medium responses: expected-length="500"
    - Long essays: expected-length="2000"
    - Do NOT use descriptive words like "large", "medium", "small"
 """
@@ -473,10 +473,10 @@ question_configs: Dict[str, QuestionConfig] = {
 
 def get_question_config(question_type: str) -> QuestionConfig:
     """Get the configuration for a specific question type
-    
+
     Args:
         question_type: The question type to get configuration for
-        
+
     Returns:
         The question type configuration or the unknown type config if not found
     """
@@ -484,7 +484,7 @@ def get_question_config(question_type: str) -> QuestionConfig:
 
 def get_available_question_types() -> List[str]:
     """Get all available question types
-    
+
     Returns:
         List of question type names
     """

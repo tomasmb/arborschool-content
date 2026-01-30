@@ -23,13 +23,13 @@ def create_question_pdf(
 ) -> bool:
     """
     Create a PDF for a single question using bounding boxes.
-    
+
     Args:
         original_pdf_path: Path to original PDF
         question_data: Question data from segmented.json with page_nums and bboxes
         output_path: Where to save the question PDF
         margin: Margin in pixels to add around bboxes
-        
+
     Returns:
         True if successful, False otherwise
     """

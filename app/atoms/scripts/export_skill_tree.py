@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 def calculate_depths(atoms: list[dict]) -> dict[str, int]:
     """
     Calculate the depth of each atom using topological sort.
-    
+
     Atoms with no prerequisites have depth 0.
     Atoms with prerequisites have depth = max(prereq depths) + 1.
     """
@@ -72,7 +72,7 @@ def calculate_depths(atoms: list[dict]) -> dict[str, int]:
 def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[dict]:
     """
     Build a hierarchical tree structure for react-d3-tree.
-    
+
     Groups atoms by eje, with each eje being a root node.
     """
     # Group atoms by eje

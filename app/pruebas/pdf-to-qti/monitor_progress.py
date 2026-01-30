@@ -12,7 +12,7 @@ from pathlib import Path
 def monitor_progress(output_dir: str, questions_dir: str, refresh_interval: int = 5):
     """
     Monitorea el progreso del procesamiento.
-    
+
     Args:
         output_dir: Directorio de salida donde se guardan los resultados
         questions_dir: Directorio con los PDFs de preguntas

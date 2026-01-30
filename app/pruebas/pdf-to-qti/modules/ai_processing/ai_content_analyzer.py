@@ -2,7 +2,7 @@
 AI Content Analyzer
 
 This module implements the two-step LLM approach from converter guidelines:
-1. Analyze PDF content to determine QTI 3.0 compatibility  
+1. Analyze PDF content to determine QTI 3.0 compatibility
 2. Provide intelligent content categorization for image extraction
 
 Follows guideline #13: Prefer LLM analysis over text matching or 'dumb' methods.
@@ -23,14 +23,14 @@ def analyze_pdf_content_with_ai(
 ) -> Dict[str, Any]:
     """
     Complete AI-powered analysis of PDF content following converter guidelines.
-    
+
     OPTIMIZED: Uses a single comprehensive API call instead of multiple separate calls.
-    
+
     Args:
         page: PyMuPDF page object
         structured_data: PyMuPDF structured text data
         openai_api_key: OpenAI API key
-        
+
     Returns:
         Dictionary with compatibility assessment and content categorization
     """
@@ -97,15 +97,15 @@ def comprehensive_content_analysis(
     """
     OPTIMIZED: Comprehensive analysis combining QTI compatibility, content categorization,
     and visual separation in a single API call.
-    
+
     This reduces API calls from 3 to 1 for questions with visual content.
-    
+
     Args:
         text_blocks: List of text blocks from PDF
         page_image_base64: Base64 encoded page image
         openai_api_key: API key for LLM
         question_text: Optional question text (extracted if not provided)
-        
+
     Returns:
         Dictionary with all analysis results
     """
@@ -287,7 +287,7 @@ def assess_qti_compatibility(
     """
     Step 1: Use GPT-5.1 to assess if content can be represented in QTI 3.0.
     Following guideline #7: Two-step LLM approach.
-    
+
     GPT-5.1 provides better spatial reasoning for document layout understanding.
     """
 
@@ -305,7 +305,7 @@ ASSESSMENT CRITERIA:
 3. What interaction type would be most appropriate?
 4. How complex is the content structure?
 
-Supported QTI types: choice, match, text-entry, hotspot, extended-text, 
+Supported QTI types: choice, match, text-entry, hotspot, extended-text,
 hot-text, gap-match, order, graphic-gap-match, inline-choice, select-point, media-interaction,
 composite
 
@@ -364,7 +364,7 @@ def categorize_content_blocks(
     """
     Step 2: Intelligently categorize text blocks for image extraction.
     Following guideline #3: Build image BBOX using surrounding blocks with AI.
-    
+
     Uses GPT-5.1 for better spatial reasoning and layout understanding.
     """
 
@@ -385,12 +385,12 @@ TEXT BLOCKS:
 
 CATEGORIES:
 - "question_text": Main question stems, instructions, introductory text
-- "answer_choice": Multiple choice options (A, B, C, D, etc.)  
+- "answer_choice": Multiple choice options (A, B, C, D, etc.)
 - "visual_content_title": Titles or captions for visual content
 - "visual_content_label": Geographic labels, numbers, annotations on visual content
 - "other_label": Source citations, compass directions, legends
 
-GOAL: Identify which blocks are separate from visual content (question_text, answer_choice) 
+GOAL: Identify which blocks are separate from visual content (question_text, answer_choice)
 vs. which are part of visual content (visual_content_title, visual_content_label, other_label).
 
 Respond with JSON in this format:

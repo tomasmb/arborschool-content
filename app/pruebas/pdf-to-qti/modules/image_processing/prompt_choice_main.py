@@ -2,7 +2,7 @@
 Main orchestration for prompt vs choice visual content separation.
 
 This module contains the primary entry point and high-level logic for separating
-visual content that belongs to the question prompt from visual content that belongs 
+visual content that belongs to the question prompt from visual content that belongs
 to answer choices.
 """
 
@@ -23,14 +23,14 @@ def separate_prompt_and_choice_images(
     """
     Use LLM to separate visual content that belongs to the question prompt
     from visual content that belongs to answer choices.
-    
+
     Args:
         page: PDF page object
         text_blocks: All text blocks from the page
         question_text: The question text
         ai_categories: AI categorization of text blocks
         openai_api_key: OpenAI API key for LLM analysis
-        
+
     Returns:
         Dictionary with separated prompt and choice image information
     """
