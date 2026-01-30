@@ -36,15 +36,86 @@ sync = [
 [tool.ruff]
 line-length = 120
 target-version = "py310"
+
+[tool.ruff.lint]
 select = [
   "E",  # pycodestyle errors
   "F",  # pyflakes
   "W",  # pycodestyle warnings
   "I",  # import sorting
 ]
-ignore = []
+# E402: module level import not at top of file (many are intentional conditional imports)
+# E501: line too long (many are in prompts and strings)
+ignore = ["E402"]
 
-[tool.ruff.lint]
-extend-select = []
-
-
+[tool.ruff.lint.per-file-ignores]
+# Ignore line length in files with long prompts/strings (intentional)
+"app/pruebas/pdf-to-qti/modules/prompt_builder.py" = ["E501"]
+"app/tagging/tagger.py" = ["E501"]
+"app/atoms/prompts.py" = ["E501"]
+"app/diagnostico/prompts.py" = ["E501"]
+"app/question_variants/variant_generator.py" = ["E501"]
+"app/question_variants/variant_validator.py" = ["E501"]
+# Files with long lines due to prompts, configs, or complex logic
+"app/pruebas/pdf-splitter/modules/chunk_segmenter.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/quality_validator.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/image_processing/llm_analyzer.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/ai_processing/ai_content_analyzer.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/ai_processing/image_filter.py" = ["E501"]
+"app/atoms/validation/validation.py" = ["E501"]
+"app/tagging/tag_habilidades.py" = ["E501"]
+"app/diagnostico/scripts/generate_geometric_variants.py" = ["E501"]
+# Ignore unused imports in files that import for availability checking
+"app/pruebas/pdf-to-qti/modules/ai_processing/llm_client.py" = ["F401"]
+"app/pruebas/pdf-splitter/fix_and_organize_invierno_2025.py" = ["F401", "E501"]
+"app/pruebas/pdf-to-qti/modules/utils/s3_uploader.py" = ["F401", "E501"]
+"app/pruebas/pdf-to-qti/scripts/migrate_s3_images_by_test.py" = ["F401", "E501"]
+"app/pruebas/pdf-to-qti/scripts/prepare_images_for_regeneration.py" = ["F401", "E501"]
+# Additional files with justified long lines (configs, prompts, logging)
+"app/pruebas/pdf-to-qti/scripts/fix_images_without_api.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/qti_transformer.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/qti_configs.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/pdf_processor.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/bbox_computer.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/validation/question_validator.py" = ["E501"]
+"app/pruebas/pdf-to-qti/main.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/pdf_utils.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/image_processing/choice_extractor.py" = ["E501"]
+"app/pruebas/pdf-to-qti/validate_qti_output.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/validate_qti_output.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/fix_issues_final_v3.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/validation/xml_validator.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/ai_processing/table_filter.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/fix_specific_questions.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/image_processing/image_detection.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/image_processing/choice_diagrams.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/block_matcher.py" = ["E501"]
+"app/standards/prompts.py" = ["E501"]
+# Remaining scripts and modules with long lines
+"app/pruebas/pdf-to-qti/scripts/regenerate_qti_from_processed.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/force_upload_images.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/fix_final_issues_v2.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/question_evaluator.py" = ["E501"]
+"app/pruebas/pdf-splitter/main.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/render_qti_to_html.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/rename_qti_folders.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/fix_final_image_issues.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/extract_answer_key.py" = ["E501"]
+"app/pruebas/pdf-to-qti/process_prueba_invierno_2025.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/question_detector.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/content_processing/content_processor.py" = ["E501"]
+"app/pruebas/pdf-splitter/organize_invierno_2025_questions.py" = ["E501"]
+"app/pruebas/pdf-splitter/fix_invierno_2025_questions.py" = ["E501"]
+"app/standards/test_single_eje.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/process_missing_questions.py" = ["E501"]
+"app/pruebas/pdf-to-qti/scripts/fix_remaining_image_issues.py" = ["E501"]
+"app/pruebas/pdf-to-qti/process_paes_regular_2026.py" = ["E501"]
+"app/pruebas/pdf-to-qti/process_paes_regular_2025.py" = ["E501"]
+"app/pruebas/pdf-to-qti/process_paes_invierno.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/validation/visual_validator.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/utils/page_utils.py" = ["E501"]
+"app/pruebas/pdf-to-qti/modules/content_processing/table_reconstructor.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/pdf_processor.py" = ["E501"]
+"app/pruebas/pdf-splitter/modules/part_validator.py" = ["E501"]
+"app/pruebas/pdf-splitter/finalize_invierno_2025.py" = ["E501"]
+"app/atoms/scripts/generate_all_atoms.py" = ["E501"]
