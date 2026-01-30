@@ -1,10 +1,10 @@
 # Gemini Prompt Engineering Best Practices
 
 **Last Updated**: 2025-01-24  
-**Source**: [Gemini 3 Developer Guide](https://ai.google.dev/gemini-api/docs/gemini-3?thinking=high) and Google AI Documentation
+**Source**: [Gemini Developer Guide](https://ai.google.dev/gemini-api/docs) and Google AI Documentation
 
 **Current model**: We use `gemini-3-pro-preview`. These best practices are designed
-for `gemini-3-pro-preview` and apply to the Gemini 3 Pro family.
+for Gemini 3 Pro models.
 
 ---
 
@@ -27,7 +27,7 @@ for `gemini-3-pro-preview` and apply to the Gemini 3 Pro family.
 
 ### 1. Be Precise and Direct
 
-Gemini 3 Pro models (including `gemini-3-pro-preview`) respond best to
+Gemini 3 Pro models respond best to
 **direct, clear instructions**. Unlike older models that required verbose prompt engineering,
 modern Gemini models may over-analyze overly complex prompts.
 
@@ -83,8 +83,8 @@ Use phrases like "Based on the information above..." to anchor the model's reaso
 `google-generativeai` SDK adapter. This section documents the feature for use
 with `gemini-3-pro-preview`.
 
-Gemini 3 Pro uses **dynamic thinking by default** (`high`). You can control the maximum
-depth of reasoning with the `thinking_level` parameter.
+Gemini 3 Pro uses **dynamic reasoning**. You can control the maximum
+depth of reasoning with the `thinking_level` parameter (if supported by the wrapper).
 
 ### Available Levels
 

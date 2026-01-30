@@ -112,7 +112,7 @@ reasoning (brief explanation)"""
 
         # Make LLM call
         completion = openai_client.chat.completions.create(
-            model="gpt-4o",  # Using gpt-4o for precision matching
+            model="gpt-5.1",  # Using gpt-5.1 for precision matching
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}

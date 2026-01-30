@@ -410,7 +410,7 @@ def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str,
     print(f"🎉 Finished creating PDFs. See output in {questions_dir} and {failed_dir}")
 
 
-def split_pdf_by_ai(input_pdf_path: str, output_dir: str = None, model: str = "gpt-4o") -> list:
+def split_pdf_by_ai(input_pdf_path: str, output_dir: str = None, model: str = "gpt-5.1") -> list:
     """
     Use an LLM to suggest logical split points for a PDF, then split the PDF at those points.
     Returns a list of tuples: (chunk_path, chunk_start_page). If the PDF is already a single logical part, returns a list with the original path.

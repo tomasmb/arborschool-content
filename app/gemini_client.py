@@ -11,9 +11,8 @@ from google.api_core import exceptions as google_exceptions
 from PIL import Image
 
 
-# Temporary adapter until google_gemini3_pro package is available
 class GeminiClient:
-    """Temporary adapter for google-generativeai until google_gemini3_pro is available."""
+    """Wrapper for google-generativeai client."""
 
     def __init__(self, api_key: str, model: str) -> None:
         genai.configure(api_key=api_key)
@@ -153,9 +152,8 @@ ENV_API_KEY = "GEMINI_API_KEY"
 class GeminiConfig:
     """Runtime configuration for the Gemini client.
 
-    Currently using `gemini-3-pro-preview`. The default model and behaviour
-    follow our Gemini best practices documented in
-    `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+    The default model and behaviour follow our Gemini best practices documented in
+    `docs/specifications/gemini-prompt-engineering-best-practices.md`.
     """
 
     api_key: str
@@ -165,8 +163,6 @@ class GeminiConfig:
 
 class GeminiService:
     """Small, reusable wrapper around the Gemini client.
-
-    Currently using `gemini-3-pro-preview`.
 
     This centralises how we talk to Gemini so that:
     - API keys are always read from the app-level `.env` file.
