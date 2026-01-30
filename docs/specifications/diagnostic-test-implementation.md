@@ -65,6 +65,28 @@ Después de evaluar 3 opciones, elegimos **MST** para la primera versión de la 
 - **Desventajas:** Requiere grafo de prerrequisitos 100% validado. Puede ser más lento para estimar puntaje global.
 - **Estado:** 🔶 Alternativa estratégica a evaluar post-MVP.
 
+#### 🧠 Lógica de Navegación del Árbol (KG-CAT)
+
+El objetivo es encontrar la **Frontera de Conocimiento** del estudiante (el punto exacto donde deja de saber y empieza a desconocer) navegando la estructura de prerrequisitos.
+
+**1. Selección Inicial (Semillas):**
+El sistema selecciona "Nodos de Alto Nivel" (átomos que desbloquean muchos otros) de cada eje.
+*   *Ejemplo*: Ecuación Cuadrática (Álgebra), Teorema de Tales (Geometría).
+
+**2. Navegación Intra-Árbol (Drill-Down):**
+*   **Si responde CORRECTO (🟩):**
+    *   Asumimos dominio del átomo.
+    *   **Inferencia Transitiva (Pruning)**: Asumimos dominio de *todos* sus prerrequisitos hacia abajo. ¡Podamos gran parte del árbol de un solo golpe!
+    *   *Acción*: Saltamos a otro tema o subimos a un nivel de complejidad mayor en otra rama.
+*   **Si responde INCORRECTO (🟥):**
+    *   Detectamos una brecha.
+    *   *Acción*: **Bajamos inmediatamente** a preguntar por los prerrequisitos directos de ese átomo.
+    *   *¿Por qué?*: Para diagnosticar la causa raíz. ¿Falló en la Cuadrática porque no sabe factorizar (prerrequisito) o porque no entendió la fórmula?
+    *   Seguimos bajando hasta encontrar un acierto (su "piso") o llegar a un átomo hoja (concepto base).
+
+**3. Navegación Inter-Árbol (Balanceo):**
+El algoritmo alterna entre ejes (Álgebra → Geometría → Números) en cada paso inicial para no fatigar al estudiante con un solo tema y construir un perfil global rápidamente.
+
 ---
 
 ## 3. Por qué MST y no CAT
