@@ -11,6 +11,7 @@
 
 ## Especificaciones (Verdades del Repo)
 
+- [🔒 **Estándares de Código**](specifications/CODE_STANDARDS.md) ← *Documento maestro de calidad*
 - [Modelo de Datos](specifications/data-model-specification.md)
 - [Átomos de Aprendizaje](specifications/learning-atom-granularity-guidelines.md)
 - [Métodos de Aprendizaje](specifications/learning-method-specification.md)
