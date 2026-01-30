@@ -425,12 +425,12 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> Dict[str, Any]:
         try:
             question_area = driver.find_element(By.CSS_SELECTOR, ".col-lg-8 .qti3-player-container-fluid")
             print("   ✅ Found QTI container")
-        except:
+        except Exception:
             # Fallback to broader area
             try:
                 question_area = driver.find_element(By.CSS_SELECTOR, ".col-lg-8")
                 print("   ✅ Found question area (fallback)")
-            except:
+            except Exception:
                 question_area = driver.find_element(By.TAG_NAME, "body")
                 print("   ⚠️  Using body element as fallback")
 
@@ -468,7 +468,7 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> Dict[str, Any]:
                     elements = question_area.find_elements(By.CSS_SELECTOR, check_selector)
                     if elements:
                         qti_elements_in_area.append(f"{check_selector}({len(elements)})")
-                except:
+                except Exception:
                     pass
 
             if qti_elements_in_area:
@@ -520,7 +520,7 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> Dict[str, Any]:
             try:
                 driver.quit()
                 print("   🔧 Chrome driver closed")
-            except:
+            except Exception:
                 pass
 
 

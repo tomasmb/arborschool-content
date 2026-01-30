@@ -119,9 +119,12 @@ def extract_choice_images(
             median_y = y_coords[len(y_coords) // 2]
 
             def get_quadrant(bbox):
-                x = (bbox[0] + bbox[2]) / 2; y = (bbox[1] + bbox[3]) / 2
-                if y < median_y: return "top_left" if x < median_x else "top_right"
-                else: return "bottom_left" if x < median_x else "bottom_right"
+                x = (bbox[0] + bbox[2]) / 2
+                y = (bbox[1] + bbox[3]) / 2
+                if y < median_y:
+                    return "top_left" if x < median_x else "top_right"
+                else:
+                    return "bottom_left" if x < median_x else "bottom_right"
 
             choice_in_quadrant = {get_quadrant(cb['bbox']): cb for cb in choice_blocks}
 
@@ -143,7 +146,8 @@ def extract_choice_images(
                 print(f"🔍      - Label {label_idx+1}: '{label_text}'")
 
             all_content_bboxes = [block_bbox] + associated_labels
-            if not all_content_bboxes: continue
+            if not all_content_bboxes:
+                continue
 
             # --- Adaptive Padding Logic ---
             content_min_x = min(b[0] for b in all_content_bboxes)

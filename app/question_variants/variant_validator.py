@@ -225,7 +225,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             if item_body is not None:
                 return self._element_to_text(item_body)
             return ""
-        except:
+        except Exception:
             return ""
 
     def _element_to_text(self, element: ET.Element) -> str:
@@ -323,7 +323,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 choice_text = self._element_to_text(choice)
                 choices.append(choice_text)
             return choices
-        except:
+        except Exception:
             return []
 
     def _find_correct_answer(self, xml_content: str) -> str:
@@ -347,6 +347,6 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                         if choice.get("identifier") == correct_id:
                             return self._element_to_text(choice)
             return ""
-        except:
+        except Exception:
             return ""
 

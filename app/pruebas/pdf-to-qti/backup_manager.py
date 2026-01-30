@@ -125,7 +125,7 @@ def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
                 with open(metadata_file, "r", encoding="utf-8") as f:
                     metadata = json.load(f)
                 backups.append(metadata)
-            except:
+            except Exception:
                 # Si no se puede leer, crear metadata básica
                 backups.append({
                     "backup_dir": str(backup_folder),

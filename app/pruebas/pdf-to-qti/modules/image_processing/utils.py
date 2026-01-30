@@ -23,7 +23,7 @@ def get_block_text_from_bbox(page: fitz.Page, bbox: List[float]) -> str:
         text_rect = fitz.Rect(bbox[0], bbox[1], bbox[2], bbox[3])
         text = page.get_text("text", clip=text_rect)
         return text.strip()
-    except:
+    except Exception:
         return ""
 
 

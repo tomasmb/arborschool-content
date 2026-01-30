@@ -152,7 +152,7 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
             try:
                 render_button = driver.find_element(By.XPATH, f"//button[contains(text(), '{button_text}')]")
                 break
-            except:
+            except Exception:
                 continue
 
         if render_button:
@@ -161,12 +161,12 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
             # Try submitting the form or pressing Enter
             try:
                 xml_input.submit()
-            except:
+            except Exception:
                 # As last resort, try to find any button and click it
                 try:
                     any_button = driver.find_element(By.TAG_NAME, "button")
                     any_button.click()
-                except:
+                except Exception:
                     pass
 
         # Wait for rendering to complete
@@ -195,7 +195,7 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
                 try:
                     content_area = driver.find_element(By.CSS_SELECTOR, selector)
                     break
-                except:
+                except Exception:
                     continue
 
             if not content_area:
@@ -401,5 +401,5 @@ def is_selenium_available() -> bool:
             driver.quit()
             return True
         return False
-    except:
+    except Exception:
         return False

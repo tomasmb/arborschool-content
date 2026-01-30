@@ -371,5 +371,5 @@ def is_validation_available(validation_endpoint: Optional[str] = None) -> bool:
             timeout=5
         )
         return response.status_code < 500
-    except:
+    except Exception:
         return False

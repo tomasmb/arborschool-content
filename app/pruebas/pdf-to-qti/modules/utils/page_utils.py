@@ -51,7 +51,7 @@ def create_placeholder_image(page: fitz.Page) -> bytes:
 
         try:
             font = ImageFont.load_default()
-        except:
+        except Exception:
             font = None
 
         text = f"Page {page.number + 1}\nContent too complex to render\nText extraction available"

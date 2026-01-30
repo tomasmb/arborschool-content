@@ -33,7 +33,7 @@ def main():
             try:
                 q_num = int(q_id[1:])
                 qnum_to_position[q_num] = idx + 1  # Posición 1-indexed
-            except:
+            except ValueError:
                 pass
 
     if not qti_dir.exists():

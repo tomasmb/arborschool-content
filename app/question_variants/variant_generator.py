@@ -201,7 +201,7 @@ IMPORTANTE: El QTI XML debe:
             try:
                 data = json.loads(cleaned)
                 return data.get("variants", [])
-            except:
+            except json.JSONDecodeError:
                 print(f"  ⚠️ Failed to parse JSON response: {e}")
                 return []
 

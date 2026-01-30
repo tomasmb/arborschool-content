@@ -170,7 +170,7 @@ def main():
                 try:
                     num = int(q_id[1:])
                     questions_to_regenerate.append(num)
-                except:
+                except ValueError:
                     pass
 
     print(f"🔄 Regenerando {len(questions_to_regenerate)} preguntas...")

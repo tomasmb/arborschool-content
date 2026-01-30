@@ -205,7 +205,7 @@ def get_page_image(page: fitz.Page, scale: float = 2.0) -> bytes:
         try:
             # Try to use a default font
             font = ImageFont.load_default()
-        except:
+        except Exception:
             font = None
 
         text = f"Page {page.number + 1}\nContent too complex to render\nText extraction available"

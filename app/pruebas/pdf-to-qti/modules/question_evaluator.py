@@ -44,10 +44,14 @@ def evaluate_question_detail(
 
     # Determine allowed standards based on subject
     subj = subject.lower().strip() if subject else ''
-    if subj in ['math', 'ela', 'english language arts']:  standard_enum = ['CCSS']
-    elif subj == 'science':                             standard_enum = ['NGSS']
-    elif subj in ['social studies', 'socialstudies', 'social_studies', 'history']:    standard_enum = ['C3']
-    else:                                                standard_enum = ['CCSS','NGSS','C3']
+    if subj in ['math', 'ela', 'english language arts']:
+        standard_enum = ['CCSS']
+    elif subj == 'science':
+        standard_enum = ['NGSS']
+    elif subj in ['social studies', 'socialstudies', 'social_studies', 'history']:
+        standard_enum = ['C3']
+    else:
+        standard_enum = ['CCSS', 'NGSS', 'C3']
 
     # Step 2: Extract metrics using function-calling and JSON schema, passing the PDF file directly
     function_spec = {
