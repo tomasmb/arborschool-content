@@ -20,6 +20,7 @@
 - [Átomos de Aprendizaje](specifications/learning-atom-granularity-guidelines.md)
 - [Métodos de Aprendizaje](specifications/learning-method-specification.md)
 - [Pipeline de Variantes](specifications/variant-generation-pipeline.md)
+- [Diseño e Implementación Prueba Diagnóstica](specifications/diagnostic-test-implementation.md)
 - [Estructura del Repo](specifications/repo-structure-and-modules.md)
 - [Estándares de Código Python](specifications/python-best-practices.md)
 - [Transformación Temarios → Standards](specifications/standards-from-temarios.md)
@@ -32,8 +33,7 @@
 
 ## Agendas Activas
 
-- [Generación de Variantes](agendas/agenda_generacion_variantes.md)
-- [Prueba Diagnóstica](agendas/agenda_prueba_diagnostica.md)
+> Las agendas de trabajo han sido convertidas en especificaciones técnicas o archivadas. Ver `docs/archive/agendas/` para el histórico.
 
 ## Research
 

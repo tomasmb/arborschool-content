@@ -22,38 +22,36 @@ Este documento resume el estado actual del proyecto `arborschool-content`, los l
 
 ## ✅ Logros Recientes (Ready to Use)
 
-1.  **Limpieza de Código y Estándares**:
+1.  **Sistema de Generación de Variantes (Pipeline de Alternativas)**:
+    *   **Pipeline Operativo**: Se creo un sistema completo en `app/question_variants/` que genera, valida y guarda variantes de preguntas PAES.
+    *   **Cobertura Diagnóstica**: Se generaron **mínimo 2 variantes** para todas las preguntas de la prueba diagnóstica.
+        *   *Excepción*: **Q50 (Invierno 2025)** tiene 1 variante debido a la dificultad de crear un contexto alternativo equivalente sin cambiar la naturaleza de la pregunta.
+    *   **Soporte Avanzado**: El pipeline maneja preguntas con imágenes complejas, gráficos y distintos tipos de lógica matemática.
+
+2.  **Limpieza y Estándares**:
     *   Repo libre de errores de linting (Ruff).
-    *   Archivos obsoletos y agendas viejas archivados en `archive/`.
-    *   Configuración de `pyproject.toml` modernizada.
-
-2.  **Generación de Variantes (Diagnostic Test)**:
-    *   Pipeline operativo en `app/question_variants/`.
-    *   **Q50 (Invierno 2025)**: Finalizada con 1 variante robusta ("Radios como manecillas") y SVG corregido.
-    *   Soporte para preguntas con imágenes y gráficos complejos (boxplots, transformaciones isométricas).
-    *   Validación automática de respuestas correctas.
-
-3.  **Documentación**:
-    *   `docs/README.md` actualizado como índice central.
-    *   `docs/TECHNICAL_DEBT.md` creado para tracking de refactorización.
+    *   Documentación técnica centralizada en `docs/specifications/`.
+    *   Limpieza de archivos obsoletos.
 
 ---
 
 ## 🚧 Próximos Pasos (To-Do List)
 
-Basado en las agendas activas en `docs/agendas/`:
+### 1. Validación de Feedback (Prioridad Alta)
+*   [ ] **Correlación Feedback-Alternativa**: Se detectó que algunas preguntas diagnósticas tienen el feedback asignado a la alternativa incorrecta (dicen "incorrecto" cuando es la correcta).
+*   *Acción*: Integrar una validación en el pipeline que asegure que el feedback generado corresponda lógicamente a la alternativa marcada como correcta.
 
-### 1. Pipeline de Variantes (`docs/agendas/agenda_generacion_variantes.md`)
-*   [ ] **Mejorar Prompts MathML**: Refinar la copia de estructuras complejas (sistemas de ecuaciones).
-*   [ ] **Retry Automático**: Implementar reintentos si la API de Gemini falla o el validador rechaza.
-*   [ ] **Integración**: Definir flujo final hacia base de datos/frontend.
+### 2. Generalización del Pipeline
+*   [ ] **Clasificación de Preguntas**: Para evitar revisión manual intensiva, seleccionar 1-2 preguntas representativas de cada "tipo":
+    *   Con Imagen Clave (la imagen contiene la info).
+    *   Con Imagen de Apoyo (contextual).
+    *   Lógica Pura / Texto.
+    *   Gráficos/Tablas.
+*   *Meta*: Validar que el pipeline funcione robustamente para cada categoría y así confiar en la generación masiva.
 
-### 2. Prueba Diagnóstica (`docs/agendas/agenda_prueba_diagnostica.md`)
-*   [ ] **Finalizar Q50**: Confirmar visualización en frontend (SVG integrado).
-*   [ ] **Revisión Final**: Validar que todas las preguntas del diagnóstico tengan sus variantes generadas y aprobadas.
-
-### 3. Mantenimiento
-*   [ ] **Refactorización Gradual**: Consultar `docs/TECHNICAL_DEBT.md` antes de tocar archivos grandes como `main.py`.
+### 3. Deuda Técnica y Refactorización
+*   [ ] **Refactorización Gradual**: Existen archivos grandes (e.g., `main.py`) que deben modularizarse. Ver detalles en **[TECHNICAL_DEBT.md](TECHNICAL_DEBT.md)**.
+*   *Nota*: No refactorizar todo de una vez; hacerlo progresivamente al trabajar en esos archivos.
 
 ---
 

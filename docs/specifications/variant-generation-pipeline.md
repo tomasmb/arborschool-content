@@ -6,6 +6,18 @@
 ## Objetivo del Sistema
 Crear variantes robustas, matemáticamente equivalentes y contextualmente similares de preguntas PAES (Prueba de Acceso a la Educación Superior) para pruebas diagnósticas, usando LLMs (Gemini 3 Pro).
 
+## 🧠 Filosofía de Diseño y Racionale
+
+### ¿Por qué este sistema?
+1.  **Protección del Banco Oficial**: Las preguntas oficiales del DEMRE son un recurso finito y valioso. Al generar variantes, podemos evaluar el mismo "átomo de conocimiento" múltiples veces sin "quemar" la pregunta original.
+2.  **Diagnóstico Continuo**: Permite re-evaluar a un estudiante en el mismo tema con ejercicios frescos, evitando que memoricen la respuesta anterior.
+3.  **Escalabilidad Supervisada**: En lugar de redactar manual y lentamente cada ejercicio, usamos IA para generar el borrador inicial (bulk) y humanos/validadores automáticos para asegurar la calidad.
+
+### Principios de Generación
+*   **Isomorfismo Cognitivo**: La variante debe exigir el **mismo** razonamiento que la original. Si la original pide calcular área, la variante no puede pedir perímetro.
+*   **Contexto Paralelo**: Se cambia la "historia" (e.g., de manzanas a peras, de trenes a autos) y los valores numéricos, pero manteniendo la estructura lógica.
+*   **Validación Estricta**: Preferimos descartar una variante válida que aceptar una inválida ('False Negatives' > 'False Positives'). El sistema validador es conservador por diseño.
+
 ---
 
 ## 🏗️ Arquitectura
