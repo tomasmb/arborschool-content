@@ -58,6 +58,13 @@ Después de evaluar 3 opciones, elegimos **MST** para la primera versión de la 
 - **Correlación esperada:** r = 0.85-0.90 (con IRT)
 - **Decisión:** ❌ Rechazada para MVP, planificada para futuro
 
+### Opción 4: CAT basado en Grafo (KG-CAT) 🆕
+- **Descripción:** Navegación por prerrequisitos en el Knowledge Graph. Si fallas un átomo, el sistema evalúa su prerrequisito directo.
+- **Lógica:** Determinística (no estadística). "Si no sabes Ecuación Cuadrática, verifico Ecuación Lineal".
+- **Ventajas:** No requiere 500 datos para calibrar IRT. Diagnóstico remedial inmediato.
+- **Desventajas:** Requiere grafo de prerrequisitos 100% validado. Puede ser más lento para estimar puntaje global.
+- **Estado:** 🔶 Alternativa estratégica a evaluar post-MVP.
+
 ---
 
 ## 3. Por qué MST y no CAT

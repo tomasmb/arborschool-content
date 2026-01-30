@@ -53,10 +53,11 @@ Este documento resume el estado actual del proyecto `arborschool-content`, los l
 *   [ ] **Refactorización Gradual**: Existen archivos grandes (e.g., `main.py`) que deben modularizarse. Ver detalles en **[TECHNICAL_DEBT.md](TECHNICAL_DEBT.md)**.
 *   *Nota*: No refactorizar todo de una vez; hacerlo progresivamente al trabajar en esos archivos.
 
-### 4. Discusión Estratégica: MST vs CAT (Pendiente)
+### 4. Discusión Estratégica: MST vs KG-CAT (Pendiente)
 *   [ ] **Evaluar rendimiento MST (16 ítems)**: Analizar si la prueba actual logra la precisión esperada con sus 16 preguntas fijas por ruta.
-*   [ ] **Decisión de Migración**: Discutir con el socio si es necesario migrar a un modelo **CAT (Computerized Adaptive Testing)** para optimizar la longitud del test y la precisión.
-    *   *Contexto*: Ver comparativa detallada y roadmap en **[Diseño e Implementación Prueba Diagnóstica](specifications/diagnostic-test-implementation.md)** (Sección 3 y 5).
+*   [ ] **Decisión de Migración a KG-CAT**: Discutir migración a un **CAT basado en Grafo (Knowledge Graph Adaptive Test)**.
+    *   *Ventaja Clave*: **No requiere calibración estadística (IRT)** con 500 datos. Usa la lógica de prerrequisitos del grafo (e.g., *si fallas hijo, pruebas padre*).
+    *   *Contexto*: Ver detalle de la "Opción 4" en **[Diseño e Implementación Prueba Diagnóstica](specifications/diagnostic-test-implementation.md)**.
 
 ---
 
