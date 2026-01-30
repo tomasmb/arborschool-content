@@ -6,7 +6,6 @@
 
 | Carpeta | Descripción |
 |---------|-------------|
-| `agendas/` | Seguimiento de trabajo activo, changelogs de features |
 | `specifications/` | Verdades absolutas: modelos de datos, normas, specs |
 | `research/` | Investigación exploratoria y opciones de diseño |
 | `analysis/` | Análisis de contenido (cobertura, brechas) |
@@ -33,7 +32,9 @@
 
 ## Agendas Activas
 
-> Las agendas de trabajo han sido convertidas en especificaciones técnicas o archivadas. Ver `docs/archive/agendas/` para el histórico.
+Actualmente no hay agendas activas. Todo el trabajo pendiente se encuentra documentado en **[HANDOVER.md](HANDOVER.md)**.
+
+Para historial de trabajo anterior, ver `docs/archive/agendas/`.
 
 ## Research
 
