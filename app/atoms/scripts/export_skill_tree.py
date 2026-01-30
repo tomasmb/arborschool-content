@@ -17,7 +17,6 @@ import logging
 import sys
 from collections import defaultdict, deque
 from pathlib import Path
-from typing import Any
 
 logging.basicConfig(
     level=logging.INFO,
@@ -37,7 +36,7 @@ def calculate_depths(atoms: list[dict]) -> dict[str, int]:
     graph: dict[str, list[str]] = defaultdict(list)
     in_degree: dict[str, int] = defaultdict(int)
     atom_ids = {a["id"] for a in atoms}
-    
+
     for atom in atoms:
         atom_id = atom["id"]
         in_degree.setdefault(atom_id, 0)
@@ -45,28 +44,28 @@ def calculate_depths(atoms: list[dict]) -> dict[str, int]:
             if prereq in atom_ids:
                 graph[prereq].append(atom_id)
                 in_degree[atom_id] += 1
-    
+
     # Kahn's algorithm for topological sort with depth tracking
     depths: dict[str, int] = {}
     queue = deque()
-    
+
     # Start with nodes that have no prerequisites
     for atom_id in atom_ids:
         if in_degree[atom_id] == 0:
             queue.append(atom_id)
             depths[atom_id] = 0
-    
+
     while queue:
         current = queue.popleft()
         current_depth = depths[current]
-        
+
         for neighbor in graph[current]:
             in_degree[neighbor] -= 1
             # Update depth to be max of all prereq depths + 1
             depths[neighbor] = max(depths.get(neighbor, 0), current_depth + 1)
             if in_degree[neighbor] == 0:
                 queue.append(neighbor)
-    
+
     return depths
 
 
@@ -80,7 +79,7 @@ def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[d
     by_eje: dict[str, list[dict]] = defaultdict(list)
     for atom in atoms:
         by_eje[atom["eje"]].append(atom)
-    
+
     # Create root nodes for each eje
     eje_names = {
         "algebra_y_funciones": "Álgebra y Funciones",
@@ -88,12 +87,12 @@ def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[d
         "geometria": "Geometría",
         "probabilidad_y_estadistica": "Probabilidad y Estadística",
     }
-    
+
     roots = []
     for eje, eje_atoms in by_eje.items():
         # Sort by depth, then by id
         sorted_atoms = sorted(eje_atoms, key=lambda a: (depths.get(a["id"], 0), a["id"]))
-        
+
         children = []
         for atom in sorted_atoms:
             children.append({
@@ -105,13 +104,13 @@ def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[d
                 },
                 "children": [],  # Leaf nodes for now
             })
-        
+
         roots.append({
             "name": eje_names.get(eje, eje),
             "attributes": {"type": "eje", "count": len(eje_atoms)},
             "children": children,
         })
-    
+
     return roots
 
 
@@ -121,19 +120,19 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
     logger.info("Loading atoms from: %s", atoms_path)
     with atoms_path.open(encoding="utf-8") as f:
         data = json.load(f)
-    
+
     atoms = data["atoms"]
     logger.info("Loaded %d atoms", len(atoms))
-    
+
     # Calculate depths
     depths = calculate_depths(atoms)
     max_depth = max(depths.values()) if depths else 0
     logger.info("Max depth: %d", max_depth)
-    
+
     # Build flat format (nodes + edges)
     nodes = []
     edges = []
-    
+
     for atom in atoms:
         atom_id = atom["id"]
         nodes.append({
@@ -143,16 +142,16 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
             "habilidad": atom["habilidad_principal"],
             "depth": depths.get(atom_id, 0),
         })
-        
+
         for prereq in atom.get("prerrequisitos", []):
             edges.append({
                 "source": prereq,
                 "target": atom_id,
             })
-    
+
     # Build hierarchical format
     hierarchical = build_hierarchical_tree(atoms, depths)
-    
+
     # Statistics
     stats = {
         "total_nodes": len(nodes),
@@ -161,13 +160,13 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
         "nodes_by_eje": {},
         "nodes_by_depth": {},
     }
-    
+
     for node in nodes:
         eje = node["eje"]
         depth = node["depth"]
         stats["nodes_by_eje"][eje] = stats["nodes_by_eje"].get(eje, 0) + 1
         stats["nodes_by_depth"][depth] = stats["nodes_by_depth"].get(depth, 0) + 1
-    
+
     # Build output
     output = {
         "metadata": stats,
@@ -177,14 +176,14 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
         },
         "hierarchical": hierarchical,
     }
-    
+
     # Write output
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    
+
     logger.info("Skill tree exported to: %s", output_path)
-    
+
     # Print summary
     print("=" * 60)
     print("SKILL TREE EXPORT SUMMARY")

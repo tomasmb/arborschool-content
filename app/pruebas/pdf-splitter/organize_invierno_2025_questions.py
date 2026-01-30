@@ -10,8 +10,6 @@ Este script:
 
 from __future__ import annotations
 
-import json
-import os
 import shutil
 import sys
 from pathlib import Path
@@ -22,35 +20,34 @@ except ImportError:
     print("❌ PyMuPDF (fitz) no está instalado. Instala con: pip install pymupdf")
     sys.exit(1)
 
-from modules.pdf_utils import save_pdf_pages
 
 
 def main():
     """Punto de entrada principal."""
     base_dir = Path(__file__).parent
     project_root = base_dir.parent.parent.parent
-    
+
     original_pdf = project_root / "app" / "data" / "pruebas" / "raw" / "Prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
     source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf-splitter-output" / "part_1" / "questions"
     output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf"
-    
+
     # Crear directorio de salida
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     print("=" * 60)
     print("Organizando y corrigiendo PDFs de Prueba-invierno-2025")
     print("=" * 60)
     print()
-    
+
     # Abrir PDF original
     doc = fitz.open(original_pdf)
     print(f"📄 PDF original: {doc.page_count} páginas")
     print()
-    
+
     # Mapeo de preguntas correctas (1-27 están bien según el usuario)
     # Necesitamos copiar las que están bien y regenerar las problemáticas
     correct_questions = list(range(1, 28))  # Q1-Q27
-    
+
     # Copiar preguntas que están correctas
     print("📋 Copiando preguntas correctas (Q1-Q27)...")
     copied = 0
@@ -63,14 +60,14 @@ def main():
             print(f"   ✅ Q{q_num}")
         else:
             print(f"   ⚠️  Q{q_num} no encontrada en source")
-    
+
     print(f"   Copiadas: {copied}/{len(correct_questions)}")
     print()
-    
+
     # Para las preguntas problemáticas, necesitamos usar un enfoque diferente
     # El usuario indicó que las preguntas van de la página 3 a la 55
     # Pero necesitamos saber exactamente qué páginas corresponden a cada pregunta
-    
+
     print("⚠️  Las preguntas problemáticas (Q28-Q65) necesitan ser regeneradas")
     print("   usando las páginas correctas del PDF original.")
     print()
@@ -79,10 +76,10 @@ def main():
     print("   2. O extraer manualmente las páginas completas donde están")
     print("      las preguntas problemáticas")
     print()
-    
+
     # Cerrar documento
     doc.close()
-    
+
     print(f"📁 PDFs organizados en: {output_dir}")
     print(f"   Total copiados: {copied}")
 

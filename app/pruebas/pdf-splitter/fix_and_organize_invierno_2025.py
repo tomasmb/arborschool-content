@@ -16,8 +16,6 @@ Este script organiza las preguntas correctas y prepara la estructura para las co
 
 from __future__ import annotations
 
-import json
-import os
 import shutil
 import sys
 from pathlib import Path
@@ -33,28 +31,28 @@ def main():
     """Punto de entrada principal."""
     base_dir = Path(__file__).parent
     project_root = base_dir.parent.parent.parent
-    
+
     original_pdf = project_root / "app" / "data" / "pruebas" / "raw" / "Prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
     source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf-splitter-output" / "part_1" / "questions"
     output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf"
-    
+
     # Crear directorio de salida
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     print("=" * 60)
     print("Organizando PDFs de Prueba-invierno-2025")
     print("=" * 60)
     print()
-    
+
     # Verificar que el directorio source existe
     if not source_dir.exists():
         print(f"❌ Directorio source no encontrado: {source_dir}")
         sys.exit(1)
-    
+
     # Preguntas que están correctas según el usuario (Q1-Q27)
     correct_questions = list(range(1, 28))
-    
-    print(f"📋 Copiando preguntas correctas (Q1-Q27)...")
+
+    print("📋 Copiando preguntas correctas (Q1-Q27)...")
     copied = 0
     for q_num in correct_questions:
         source_file = source_dir / f"question_{q_num:03d}.pdf"
@@ -65,10 +63,10 @@ def main():
             print(f"   ✅ Q{q_num}")
         else:
             print(f"   ⚠️  Q{q_num} no encontrada")
-    
+
     print(f"   Copiadas: {copied}/{len(correct_questions)}")
     print()
-    
+
     # Listar preguntas problemáticas que necesitan corrección
     print("⚠️  Preguntas que necesitan corrección:")
     print("   - Q28: Falta alternativas (combinar con Q29)")
@@ -80,7 +78,7 @@ def main():
     print("💡 Recomendación: Re-ejecutar pdf-splitter para estas secciones")
     print("   o corregir manualmente usando el PDF original.")
     print()
-    
+
     print(f"📁 PDFs organizados en: {output_dir}")
     print(f"   Total copiados: {copied}")
     print()

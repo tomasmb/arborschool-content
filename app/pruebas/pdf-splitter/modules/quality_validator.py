@@ -4,14 +4,15 @@ AI-Powered Quality Validator Module
 This module uses an LLM to perform a semantic quality check on a generated question PDF.
 """
 
-import os
-import json
 import base64
+import json
+import os
+import random
+import time
+from typing import Tuple
+
 import fitz  # PyMuPDF
 from openai import OpenAI
-from typing import Tuple
-import time
-import random
 
 # OpenAI client will be initialized lazily
 client = None
@@ -83,10 +84,10 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
         - str: The reason for the validation decision.
     """
     print(f"🔬 Performing AI quality validation on: {os.path.basename(pdf_path)}")
-    
+
     # Convert PDF to image for better vision analysis (do this once)
     doc = fitz.open(pdf_path)
-    
+
     # Convert all pages to images and combine them
     images_base64 = []
     for page_num in range(len(doc)):
@@ -99,7 +100,7 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
             "type": "image_url",
             "image_url": {"url": f"data:image/png;base64,{img_base64}"}
         })
-    
+
     doc.close()
 
     # Prepare message content with images
@@ -150,7 +151,7 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
                 "bad gateway", "service unavailable", "gateway timeout", "internal server error",
                 "connection", "timeout", "network", "rate limit", "too many requests"
             ])
-            
+
             if is_retryable and attempt < max_retries - 1:
                 # Exponential backoff with jitter
                 delay = min(60, (2 ** attempt) + random.uniform(0, 1))
@@ -165,4 +166,4 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
                 return False, error_message
 
     # This should never be reached, but just in case
-    return False, "Max retries exceeded" 
+    return False, "Max retries exceeded"

@@ -55,7 +55,7 @@ def combine_questions_from_pages(
                 temp_path = os.path.join(tmpdir, f"page_{page_num}.pdf")
                 if extract_full_page_for_question(doc, page_num, temp_path):
                     page_paths.append(temp_path)
-            
+
             if page_paths:
                 merge_pdfs(page_paths, output_path)
                 return True
@@ -70,25 +70,25 @@ def main():
     original_pdf = Path("../../data/pruebas/raw/Prueba-invierno-2025/2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf")
     output_dir = Path("../../data/pruebas/procesadas/Prueba-invierno-2025/pdf")
     segmentation_file = Path("../../data/pruebas/procesadas/Prueba-invierno-2025/pdf-splitter-output/part_1/segmentation_results.json")
-    
+
     # Crear directorio de salida
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Cargar segmentación para obtener información de bboxes cuando sea posible
     with open(segmentation_file, 'r', encoding='utf-8') as f:
         segmentation = json.load(f)
-    
+
     questions_dict = {q.get('id'): q for q in segmentation.get('questions', [])}
-    
+
     # Abrir PDF original
     doc = fitz.open(original_pdf)
     print(f"📄 PDF abierto: {doc.page_count} páginas")
     print()
-    
+
     # Mapeo de correcciones basado en el análisis del usuario
     # Las preguntas van de la página 3 a la 55 según el usuario
     # Necesitamos re-extraer las problemáticas
-    
+
     print("🔧 Este script necesita ser completado con la lógica de corrección")
     print("   basada en el análisis manual de las páginas del PDF.")
     print()
@@ -97,7 +97,7 @@ def main():
     print("   2. O extraer manualmente las páginas completas donde están las preguntas problemáticas")
     print()
     print("   Recomendación: Re-ejecutar el pdf-splitter con mejor configuración")
-    
+
     doc.close()
 
 

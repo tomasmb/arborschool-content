@@ -1,14 +1,15 @@
-import os
 import base64
-import requests
 import io
+import os
 from dataclasses import dataclass
-from typing import Any, List, Union, Dict, Optional
-from PIL import Image
+from typing import Any, List, Optional, Union
 
 import google.generativeai as genai
-from google.api_core import exceptions as google_exceptions
+import requests
 from dotenv import load_dotenv
+from google.api_core import exceptions as google_exceptions
+from PIL import Image
+
 
 # Temporary adapter until google_gemini3_pro package is available
 class GeminiClient:
@@ -50,7 +51,7 @@ class GeminiClient:
             request_options=request_options,
             safety_settings=safety_settings,
         )
-        
+
         # Handle cases where response might be filtered or blocked
         if not response.candidates or not response.candidates[0].content:
             finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
@@ -58,7 +59,7 @@ class GeminiClient:
                 f"Gemini response was filtered or blocked. Finish reason: {finish_reason}. "
                 f"This may be due to safety filters or content policy violations."
             )
-        
+
         # Check if text is available
         try:
             text = response.text
@@ -72,7 +73,7 @@ class GeminiClient:
                     f"Gemini response has no text content. Finish reason: {finish_reason}. "
                     f"Original error: {e}"
                 ) from e
-        
+
         return type("Response", (), {"text": text})()
 
 
@@ -141,7 +142,7 @@ class OpenAIClient:
 
         response = requests.post(self._url, headers=headers, json=data, timeout=300)
         response.raise_for_status()
-        
+
         return response.json()["choices"][0]["message"]["content"]
 
 
@@ -176,7 +177,7 @@ class GeminiService:
     def __init__(self, config: GeminiConfig) -> None:
         self._config = config
         self._client = GeminiClient(api_key=config.api_key, model=config.model)
-        
+
         # Initialize OpenAI fallback client
         openai_key = os.getenv("OPENAI_API_KEY")
         self._openai = OpenAIClient(api_key=openai_key) if openai_key else None
@@ -229,7 +230,7 @@ class GeminiService:
                 print(f"\n⚠️ Gemini Quota Exhausted (429). Falling back to OpenAI ({self._openai._model})...")
                 try:
                     return self._openai.generate_text(
-                        prompt, 
+                        prompt,
                         response_mime_type=response_mime_type,
                         temperature=temperature or 0.0,
                         **kwargs

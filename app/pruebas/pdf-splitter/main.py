@@ -8,15 +8,17 @@ This is the main entry point for the PDF splitter application.
 Uses OpenAI's revolutionary direct PDF upload feature for maximum accuracy.
 """
 
-import os
 import argparse
 import json
+import os
 import shutil
-from modules.chunk_segmenter import segment_pdf_with_llm, get_question_statistics
+
 from modules.bbox_computer import compute_bboxes_for_segments
-from modules.pdf_utils import create_question_pdfs, split_pdf_by_ai
+from modules.chunk_segmenter import get_question_statistics, segment_pdf_with_llm
 from modules.part_validator import validate_segmentation_results
-from modules.split_decision import should_split_pdf, SPLIT_PAGE_THRESHOLD
+from modules.pdf_utils import create_question_pdfs, split_pdf_by_ai
+from modules.split_decision import SPLIT_PAGE_THRESHOLD, should_split_pdf
+
 
 def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: int = 1, run_summary: list = None, only_part: int = None):
     """
@@ -26,8 +28,8 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
     if not os.path.exists(input_pdf_path):
         print(f"❌ Error: Input PDF not found at {input_pdf_path}")
         return
-        
-    # Create output directory 
+
+    # Create output directory
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         print(f"📁 Created output directory: {output_dir}")
@@ -37,7 +39,7 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
     doc = fitz.open(input_pdf_path)
     total_pages = doc.page_count
     doc.close()
-    
+
     part_summary = {
         "part_name": os.path.basename(input_pdf_path),
         "status": "Skipped",
@@ -56,7 +58,7 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
             print(f"❌ Failed to split PDF with AI: {e}")
             # If splitting fails, treat the whole PDF as a single part
             ai_chunks = [(input_pdf_path, 1)]
-        
+
         if len(ai_chunks) > 1:
             print(f"🧩 Split into {len(ai_chunks)} parts. Processing each part independently...")
             # This is where the main processing now happens, in the main() function loop
@@ -74,7 +76,7 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
 
         # Compute bounding boxes using PyMuPDF and start_marker
         results = compute_bboxes_for_segments(results, input_pdf_path, start_page_in_original=start_page_in_original)
-        
+
         # --- Per-part validation ---
         is_valid = validate_segmentation_results(results, output_dir)
         if not is_valid:
@@ -87,31 +89,31 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
 
         # Generate statistics
         stats = get_question_statistics(results)
-        
-        print(f"\n📊 Processing Results:")
+
+        print("\n📊 Processing Results:")
         print(f"   📝 Questions found: {stats['total_questions']}")
         print(f"   📚 Multi-question references found: {stats['total_multi_question_references']}")
         print(f"   🚫 Unrelated content segments found: {stats['total_unrelated_content_segments']}")
         print(f"   📄 Pages with questions: {stats['pages_with_questions']}")
         print(f"   📑 Multi-page questions: {stats['multi_page_questions']}")
-        
+
         if stats['question_types']:
             print(f"   🔢 Question types: {dict(stats['question_types'])}")
         if stats['reference_types']:
             print(f"   📖 Reference types: {dict(stats['reference_types'])}")
         if stats['unrelated_content_types']:
             print(f"   🚫 Unrelated content types: {dict(stats['unrelated_content_types'])}")
-        
+
         # Save detailed statistics
         stats_file = os.path.join(output_dir, "processing_statistics.json")
         # Convert set to list for JSON serialization
         stats_copy = stats.copy()
         stats_copy['pages_with_questions'] = stats['pages_with_questions']
-        
+
         with open(stats_file, 'w', encoding='utf-8') as f:
             json.dump(stats_copy, f, indent=2, ensure_ascii=False, sort_keys=True)
         print(f"📈 Statistics saved to: {stats_file}")
-        
+
         # Create simple question list for easy access
         questions_list = []
         for i, question in enumerate(results.get('questions', []), 1):
@@ -123,12 +125,12 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
                 'type': question.get('type', 'question'),
                 'multi_page': question.get('multi_page', False)
             })
-        
+
         questions_file = os.path.join(output_dir, "questions_list.json")
         with open(questions_file, 'w', encoding='utf-8') as f:
             json.dump(questions_list, f, indent=2, ensure_ascii=False, sort_keys=True)
         print(f"📋 Questions list saved to: {questions_file}")
-        
+
         # Save per-question shared references detail
         question_refs = []
         for i, question in enumerate(results.get('questions', []), 1):
@@ -142,13 +144,13 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
         with open(refs_file, 'w', encoding='utf-8') as f:
             json.dump(question_refs, f, indent=2, ensure_ascii=False, sort_keys=True)
         print(f"🗂 Question references saved to: {refs_file}")
-        
+
         # Create self-contained question PDFs (questions + same-page references)
         # For single PDF processing (run_summary is None), fail immediately on validation errors
         fail_on_validation_error = (run_summary is None)
         create_question_pdfs(results, input_pdf_path, output_dir, fail_on_validation_error=fail_on_validation_error)
-        
-        print(f"🎯 Revolutionary approach used: Direct PDF Upload with o4-mini")
+
+        print("🎯 Revolutionary approach used: Direct PDF Upload with o4-mini")
 
         # Check for failed questions after PDF creation (only for per-part processing)
         failed_log_path = os.path.join(output_dir, "failed_questions_log.json")
@@ -171,9 +173,9 @@ def process_pdf(input_pdf_path: str, output_dir: str, start_page_in_original: in
             # Single PDF processing: all questions passed if we reach here
             part_summary["questions_passed"] = stats['total_questions']
             part_summary["questions_failed"] = 0
-        
+
         return results
-    
+
     except Exception as e:
         print(f"❌ Error processing PDF: {str(e)}")
         part_summary["status"] = "Failed"
@@ -189,7 +191,7 @@ def main():
     )
     parser.add_argument("input_pdf", help="Path to the input PDF file.")
     parser.add_argument("output_dir", help="Directory to save the output results.")
-    parser.add_argument("--clean", action="store_true", 
+    parser.add_argument("--clean", action="store_true",
                        help="Clean the output directory before processing.")
     parser.add_argument("--start-part", type=int, default=1,
                         help="Start processing from a specific part number.")
@@ -197,7 +199,7 @@ def main():
                         help="Process only a single specific part.")
 
     args = parser.parse_args()
-    
+
     # Smart cleaning logic
     if args.clean:
         if args.only_part is not None:
@@ -213,18 +215,18 @@ def main():
                 shutil.rmtree(args.output_dir)
 
     print("🚀 Starting PDF Segmentation with Direct PDF Upload Processing...")
-    
+
     # This is now the main processing controller
     run_summary = []
-    
+
     # First, get the chunks. This might return the original PDF path if it's small or splitting fails.
     chunks = process_pdf(args.input_pdf, args.output_dir)
-    
+
     if isinstance(chunks, list) and len(chunks) > 1:
         # We have multiple parts from a large PDF
         for i, (chunk_path, chunk_start_page) in enumerate(chunks, 1):
             part_num = i
-            
+
             # Handle --start-part and --only-part logic
             if args.only_part is not None:
                 if part_num != args.only_part:
@@ -234,7 +236,7 @@ def main():
 
             part_output_dir = os.path.join(args.output_dir, f"part_{part_num}")
             print(f"\n🚀 Processing part {part_num}/{len(chunks)}: {chunk_path}")
-            
+
             # Process this individual part
             process_pdf(chunk_path, part_output_dir, start_page_in_original=chunk_start_page, run_summary=run_summary, only_part=args.only_part)
 
@@ -276,4 +278,4 @@ def main():
         shutil.rmtree(chunks_dir)
 
 if __name__ == "__main__":
-    main() 
+    main()

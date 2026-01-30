@@ -7,9 +7,9 @@ Este archivo contiene:
 - Mapping de puntajes PAES
 """
 
-from typing import Dict, List, TypedDict
 from dataclasses import dataclass
 from enum import Enum
+from typing import List
 
 
 class Skill(Enum):
@@ -43,7 +43,7 @@ class Question:
     axis: Axis
     skill: Skill
     score: float
-    
+
     @property
     def full_path(self) -> str:
         return f"app/data/pruebas/finalizadas/{self.exam}/qti/{self.question_id}"
@@ -154,11 +154,11 @@ def get_route(r1_correct: int) -> Route:
     """
     if r1_correct < 0 or r1_correct > 8:
         raise ValueError(f"r1_correct debe estar entre 0 y 8, recibido: {r1_correct}")
-    
+
     for (min_val, max_val), route in ROUTING_RULES["cuts"].items():
         if min_val <= r1_correct <= max_val:
             return route
-    
+
     raise ValueError(f"No se encontró ruta para {r1_correct} correctas")
 
 
@@ -219,28 +219,28 @@ def get_paes_score_weighted(responses: list, route: Route) -> tuple[int, int, in
     PESO_MEDIUM = 1.8
     FACTOR_RUTA = {Route.A: 0.70, Route.B: 0.85, Route.C: 1.00}
     FACTOR_COBERTURA = 0.90  # 10% de átomos no inferibles
-    
+
     score_ponderado = 0
     max_score = 0
-    
+
     for resp in responses:
         pregunta = resp.get('question', {})
         peso = PESO_LOW if pregunta.get('score', 0.5) <= 0.35 else PESO_MEDIUM
         max_score += peso
         if resp.get('is_correct', False):
             score_ponderado += peso
-    
+
     score_normalizado = score_ponderado / max_score if max_score > 0 else 0
     factor_ruta = FACTOR_RUTA[route]
-    
+
     paes_raw = 100 + 900 * score_normalizado * factor_ruta * FACTOR_COBERTURA
     puntaje = round(paes_raw)
-    
+
     # Margen de error: ±50 puntos
     margin = 50
     rango_min = max(100, puntaje - margin)
     rango_max = min(1000, puntaje + margin)
-    
+
     return (puntaje, rango_min, rango_max)
 
 
@@ -250,16 +250,16 @@ def get_paes_score(route: Route, total_correct: int) -> tuple[int, int, int]:
     Mantiene compatibilidad con código existente usando tabla de lookup.
     """
     route_mapping = PAES_MAPPING[route]
-    
+
     for (min_val, max_val), scores in route_mapping.items():
         if min_val <= total_correct <= max_val:
             return scores
-    
+
     # Si no hay match exacto, usar el límite más cercano
     all_ranges = list(route_mapping.keys())
     min_range = min(r[0] for r in all_ranges)
     max_range = max(r[1] for r in all_ranges)
-    
+
     if total_correct < min_range:
         return route_mapping[all_ranges[0]]
     else:

@@ -6,7 +6,7 @@ Following converter guidelines: use PyMuPDF first, avoid overfitted heuristics.
 
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import List
 
 __all__ = [
     "convert_table_to_html",
@@ -25,13 +25,13 @@ def convert_table_to_html(data: List[List[str]]) -> str:
     """
     if not data or not data[0]:
         return ""
-        
+
     parts: List[str] = ["<table>"]
-    
+
     # Check if first row should be treated as header
     header = data[0]
     has_header = any((cell or "").strip() for cell in header)
-    
+
     if has_header:
         parts.append("  <thead>\n    <tr>")
         parts.extend(f"      <th>{(cell or '').strip()}</th>" for cell in header)
@@ -39,7 +39,7 @@ def convert_table_to_html(data: List[List[str]]) -> str:
         body_rows = data[1:]
     else:
         body_rows = data
-    
+
     # Add body rows
     parts.append("  <tbody>")
     for row in body_rows:
@@ -47,5 +47,5 @@ def convert_table_to_html(data: List[List[str]]) -> str:
         parts.extend(f"      <td>{(cell or '').strip()}</td>" for cell in row)
         parts.append("    </tr>")
     parts.append("  </tbody>\n</table>")
-    
-    return "\n".join(parts) 
+
+    return "\n".join(parts)

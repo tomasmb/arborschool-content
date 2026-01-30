@@ -3,7 +3,6 @@
 Wrapper script to run pdf-splitter with environment variables loaded.
 """
 
-import os
 import sys
 from pathlib import Path
 

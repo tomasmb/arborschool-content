@@ -6,7 +6,6 @@ from pathlib import Path
 
 from PyPDF2 import PdfReader
 
-
 BASE_DIR = Path(__file__).resolve().parents[1]  # points to app/
 DATA_DIR = BASE_DIR / "data" / "temarios"
 PDF_DIR = DATA_DIR / "pdf"

@@ -9,16 +9,15 @@ Incluye:
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass
+from typing import Dict, List
 
-from .config import Route, Axis, Skill, get_paes_score
-from .engine import Response, ResponseType, AtomDiagnosis
+from .config import Route, get_paes_score
+from .engine import Response, ResponseType
 
 
 def calculate_paes_score(
-    route: Route, 
-    r1_correct: int, 
+    route: Route,
+    r1_correct: int,
     stage2_correct: int
 ) -> Dict:
     """
@@ -34,7 +33,7 @@ def calculate_paes_score(
     """
     total_correct = r1_correct + stage2_correct
     score, range_min, range_max = get_paes_score(route, total_correct)
-    
+
     return {
         "puntaje_estimado": score,
         "rango_min": range_min,
@@ -78,29 +77,29 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
     """
     diagnoses = []
     base_path = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
-    
+
     for response in responses:
         question = response.question
         metadata_path = base_path / question.exam / "qti" / question.question_id / "metadata_tags.json"
-        
+
         if not metadata_path.exists():
             continue
-        
+
         try:
             with open(metadata_path) as f:
                 metadata = json.load(f)
-            
+
             atoms = metadata.get("selected_atoms", [])
-            
+
             for atom in atoms:
                 atom_id = atom.get("atom_id", "unknown")
                 atom_title = atom.get("atom_title", "Sin título")
                 relevance = atom.get("relevance", "primary")
-                
+
                 # Solo considerar átomos primarios para diagnóstico
                 if relevance != "primary":
                     continue
-                
+
                 # Determinar estado
                 if response.response_type == ResponseType.CORRECT:
                     status = "dominado"
@@ -114,7 +113,7 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
                     status = "misconception"
                     include_in_plan = True
                     instruction_type = "corregir"
-                
+
                 diagnoses.append({
                     "atom_id": atom_id,
                     "atom_title": atom_title,
@@ -123,10 +122,10 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
                     "incluir_en_plan": include_in_plan,
                     "tipo_instruccion": instruction_type,
                 })
-        
+
         except (json.JSONDecodeError, KeyError):
             continue
-    
+
     return diagnoses
 
 
@@ -138,10 +137,10 @@ def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
         Dict con rendimiento por eje
     """
     axis_stats: Dict[str, Dict] = {}
-    
+
     for response in responses:
         axis_name = response.question.axis.value
-        
+
         if axis_name not in axis_stats:
             axis_stats[axis_name] = {
                 "correct": 0,
@@ -149,21 +148,21 @@ def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
                 "dont_know": 0,
                 "incorrect": 0,
             }
-        
+
         axis_stats[axis_name]["total"] += 1
-        
+
         if response.response_type == ResponseType.CORRECT:
             axis_stats[axis_name]["correct"] += 1
         elif response.response_type == ResponseType.DONT_KNOW:
             axis_stats[axis_name]["dont_know"] += 1
         else:
             axis_stats[axis_name]["incorrect"] += 1
-    
+
     # Calcular porcentajes y estados
     result = {}
     for axis, stats in axis_stats.items():
         pct = (stats["correct"] / stats["total"] * 100) if stats["total"] > 0 else 0
-        
+
         if pct >= 75:
             status = "fortaleza"
             icon = "✓"
@@ -173,7 +172,7 @@ def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
         else:
             status = "reforzar"
             icon = "⚠️"
-        
+
         result[axis] = {
             "porcentaje": round(pct),
             "correctas": stats["correct"],
@@ -181,7 +180,7 @@ def generate_axis_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
             "status": status,
             "icon": icon,
         }
-    
+
     return result
 
 
@@ -193,27 +192,27 @@ def generate_skill_diagnosis(responses: List[Response]) -> Dict[str, Dict]:
         Dict con rendimiento por habilidad
     """
     skill_stats: Dict[str, Dict] = {}
-    
+
     for response in responses:
         skill_name = response.question.skill.value
-        
+
         if skill_name not in skill_stats:
             skill_stats[skill_name] = {"correct": 0, "total": 0}
-        
+
         skill_stats[skill_name]["total"] += 1
         if response.response_type == ResponseType.CORRECT:
             skill_stats[skill_name]["correct"] += 1
-    
+
     result = {}
     for skill, stats in skill_stats.items():
         pct = (stats["correct"] / stats["total"] * 100) if stats["total"] > 0 else 0
-        
+
         result[skill] = {
             "porcentaje": round(pct),
             "correctas": stats["correct"],
             "total": stats["total"],
         }
-    
+
     return result
 
 
@@ -226,21 +225,21 @@ def generate_study_plan(atom_diagnoses: List[Dict]) -> Dict:
     """
     to_learn = []
     to_correct = []
-    
+
     for diagnosis in atom_diagnoses:
         if not diagnosis["incluir_en_plan"]:
             continue
-        
+
         item = {
             "atom_id": diagnosis["atom_id"],
             "atom_title": diagnosis["atom_title"],
         }
-        
+
         if diagnosis["tipo_instruccion"] == "enseñar":
             to_learn.append(item)
         else:
             to_correct.append(item)
-    
+
     return {
         "por_aprender": to_learn,
         "por_corregir": to_correct,

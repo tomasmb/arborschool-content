@@ -7,8 +7,9 @@ AI analysis for content categorization decisions.
 
 from __future__ import annotations
 
-import fitz  # type: ignore
 from typing import Any, Dict, List, Optional
+
+import fitz  # type: ignore
 
 __all__ = [
     "MIN_IMAGE_WIDTH",
@@ -77,13 +78,13 @@ def expand_image_bbox_to_boundaries(
     max_expansion = 50
     expanded = list(image_bbox)
 
-    other_blocks = [b.get("bbox", []) for b in all_blocks 
+    other_blocks = [b.get("bbox", []) for b in all_blocks
                    if not bboxes_are_same(b.get("bbox", []), image_bbox)]
 
     # Left edge expansion
     tgt_left = max(0, image_bbox[0] - max_expansion)
     for ob in other_blocks:
-        if (ob[2] <= image_bbox[0] and 
+        if (ob[2] <= image_bbox[0] and
             not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3])):
             tgt_left = max(tgt_left, ob[2] + safety_margin)
     expanded[0] = tgt_left
@@ -91,7 +92,7 @@ def expand_image_bbox_to_boundaries(
     # Right edge expansion
     tgt_right = min(page.rect.width, image_bbox[2] + max_expansion)
     for ob in other_blocks:
-        if (ob[0] >= image_bbox[2] and 
+        if (ob[0] >= image_bbox[2] and
             not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3])):
             tgt_right = min(tgt_right, ob[0] - safety_margin)
     expanded[2] = tgt_right
@@ -99,7 +100,7 @@ def expand_image_bbox_to_boundaries(
     # Top edge expansion
     tgt_top = max(0, image_bbox[1] - max_expansion)
     for ob in other_blocks:
-        if (ob[3] <= image_bbox[1] and 
+        if (ob[3] <= image_bbox[1] and
             not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2])):
             tgt_top = max(tgt_top, ob[3] + safety_margin)
     expanded[1] = tgt_top
@@ -107,7 +108,7 @@ def expand_image_bbox_to_boundaries(
     # Bottom edge expansion
     tgt_bottom = min(page.rect.height, image_bbox[3] + max_expansion)
     for ob in other_blocks:
-        if (ob[1] >= image_bbox[3] and 
+        if (ob[1] >= image_bbox[3] and
             not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2])):
             tgt_bottom = min(tgt_bottom, ob[1] - safety_margin)
     expanded[3] = tgt_bottom
@@ -136,7 +137,7 @@ def check_bbox_overlap_with_text(
         return True
 
     question_answer_overlap = 0.0
-    
+
     for i, block in enumerate(text_blocks):
         if block.get("type") != 0:
             continue
@@ -195,7 +196,7 @@ def shrink_image_bbox_away_from_text(
 
     for iteration in range(8):
         # Check if we still have overlap
-        if not check_bbox_overlap_with_text(bbox, text_blocks, ai_categories, 
+        if not check_bbox_overlap_with_text(bbox, text_blocks, ai_categories,
                                            overlap_threshold=0.0):
             return bbox
 
@@ -207,7 +208,7 @@ def shrink_image_bbox_away_from_text(
             tb = block.get("bbox", [])
             if len(tb) < 4:
                 continue
-                
+
             # Check for intersection
             ix0 = max(bbox[0], tb[0])
             iy0 = max(bbox[1], tb[1])
@@ -219,7 +220,7 @@ def shrink_image_bbox_away_from_text(
             # Use AI categorization to determine if we should shrink away
             block_num = idx + 1
             should_shrink = False
-            
+
             if ai_categories and block_num in ai_categories:
                 category = ai_categories[block_num]
                 # Shrink away from question_text and answer_choice
@@ -240,7 +241,7 @@ def shrink_image_bbox_away_from_text(
                     bbox[1] = min(bbox[1] + safety, tb[3] + safety)
                 else:
                     bbox[3] = max(bbox[3] - safety, tb[1] - safety)
-                
+
                 made_adjustment = True
 
         # Clamp to page boundaries
@@ -248,13 +249,13 @@ def shrink_image_bbox_away_from_text(
         bbox[1] = max(0, bbox[1])
         bbox[2] = min(page.rect.width, bbox[2])
         bbox[3] = min(page.rect.height, bbox[3])
-        
+
         # Check minimum size
         if bbox[2] - bbox[0] < 40 or bbox[3] - bbox[1] < 40:
             break
-            
+
         # If no adjustments were made, we're done
         if not made_adjustment:
             break
 
-    return bbox 
+    return bbox

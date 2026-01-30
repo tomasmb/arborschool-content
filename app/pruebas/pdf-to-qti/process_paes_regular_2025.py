@@ -6,15 +6,15 @@ Esta prueba tiene solo 45 preguntas (no está completa).
 El clavijero está en formato PDF.
 """
 
-import os
-import sys
 import json
+import sys
 import time
 from pathlib import Path
-from typing import Dict, Any, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 # Load environment variables from .env file
 from dotenv import load_dotenv
+
 project_root = Path(__file__).parent.parent
 env_file = project_root / ".env"
 if env_file.exists():
@@ -24,8 +24,9 @@ if env_file.exists():
 # Add modules to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from main import process_single_question_pdf
 from backup_manager import create_qti_backup
+from main import process_single_question_pdf
+
 
 def process_all_questions(
     questions_dir: str,
@@ -49,20 +50,20 @@ def process_all_questions(
             "success": False,
             "error": f"Questions directory not found: {questions_dir}"
         }, []
-    
+
     # Find all PDF files
     question_pdfs = sorted(questions_path.glob("*.pdf"))
-    
+
     if not question_pdfs:
         return {
             "success": False,
             "error": f"No PDF files found in {questions_dir}"
         }, []
-    
+
     print(f"📋 Found {len(question_pdfs)} question PDFs")
     print(f"⚡ PAES mode: {'Enabled' if paes_mode else 'Disabled'}")
     print()
-    
+
     results = {
         "total": len(question_pdfs),
         "successful": [],
@@ -70,13 +71,13 @@ def process_all_questions(
         "processing_times": [],
         "start_time": time.time()
     }
-    
+
     # Load answer key if available
     answer_key_path = Path(output_base_dir).parent / "respuestas_correctas.json"
     if not answer_key_path.exists():
         # Try alternative location
         answer_key_path = Path(output_base_dir).parent.parent / "procesadas" / "seleccion-regular-2025" / "respuestas_correctas.json"
-    
+
     if answer_key_path.exists():
         try:
             with open(answer_key_path, "r", encoding="utf-8") as f:
@@ -84,20 +85,20 @@ def process_all_questions(
             print(f"✅ Loaded answer key with {len(answer_key_data.get('answers', {}))} answers")
         except Exception as e:
             print(f"⚠️  Could not load answer key: {e}")
-    
+
     # Process each question
     generated_folders_with_xml = []  # Track folders with successfully generated XMLs
     backup_batch_size = 10  # OPTIMIZACIÓN: Crear backup cada N preguntas procesadas
-    
+
     for i, pdf_path in enumerate(question_pdfs, 1):
         # Use actual question number from PDF filename (e.g., "Q19" from "Q19.pdf")
         # NOT the position in the selection file - this ensures folders match PDF names
         question_id = pdf_path.stem  # e.g., "Q2" or "Q19" from "Q2.pdf" or "Q19.pdf"
         output_dir = Path(output_base_dir) / question_id
-        
+
         print(f"[{i}/{len(question_pdfs)}] Processing {question_id}...")
         start_time = time.time()
-        
+
         try:
             result = process_single_question_pdf(
                 input_pdf_path=str(pdf_path),
@@ -106,10 +107,10 @@ def process_all_questions(
                 paes_mode=paes_mode,
                 skip_if_exists=True,  # OPTIMIZACIÓN: Saltarse si ya existe XML válido
             )
-            
+
             elapsed = time.time() - start_time
             results["processing_times"].append(elapsed)
-            
+
             if result.get("success"):
                 status_msg = "Skipped (exists)" if result.get("skipped") else "Success"
                 regenerated_msg = " (regenerated)" if result.get("regenerated") else ""
@@ -125,10 +126,10 @@ def process_all_questions(
                 xml_file = output_dir / "question.xml"
                 if xml_file.exists() and not result.get("skipped"):
                     generated_folders_with_xml.append(question_id)
-                    
+
                     # OPTIMIZACIÓN: Crear backup incremental cada N preguntas
                     if len(generated_folders_with_xml) % backup_batch_size == 0:
-                        print(f"   💾 Creando backup incremental...")
+                        print("   💾 Creando backup incremental...")
                         try:
                             backup_metadata = {
                                 "test_name": "seleccion-regular-2025",
@@ -152,7 +153,7 @@ def process_all_questions(
                     "time": elapsed,
                     "error": result.get("error", "Unknown error")
                 })
-                
+
         except Exception as e:
             elapsed = time.time() - start_time
             print(f"   ❌ Exception: {e} ({elapsed:.1f}s)")
@@ -161,13 +162,13 @@ def process_all_questions(
                 "time": elapsed,
                 "error": str(e)
             })
-        
+
         print()
-    
+
     # Calculate summary
     total_time = time.time() - results["start_time"]
     avg_time = sum(results["processing_times"]) / len(results["processing_times"]) if results["processing_times"] else 0
-    
+
     results["summary"] = {
         "total_questions": results["total"],
         "successful": len(results["successful"]),
@@ -177,14 +178,14 @@ def process_all_questions(
         "total_time_minutes": total_time / 60,
         "avg_time_per_question": avg_time
     }
-    
+
     return results, generated_folders_with_xml
 
 
 def main():
     """Main entry point."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description="Process PAES Regular 2025 (Selección)"
     )
@@ -209,16 +210,16 @@ def main():
         action="store_true",
         help="Disable PAES mode"
     )
-    
+
     args = parser.parse_args()
-    
+
     paes_mode = args.paes_mode and not args.no_paes_mode
-    
+
     print("=" * 60)
     print("PAES Regular 2025 (Selección) - Procesamiento")
     print("=" * 60)
     print()
-    
+
     # Check if questions directory exists
     questions_dir = Path(args.questions_dir)
     if not questions_dir.exists():
@@ -227,30 +228,30 @@ def main():
         print("💡 Necesitas primero dividir el PDF en preguntas individuales.")
         print("   Usa pdf-splitter para crear PDFs individuales.")
         return
-    
+
     # Create output directory
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Process all questions
     results, generated_folders_with_xml = process_all_questions(
         questions_dir=str(questions_dir),
         output_base_dir=str(output_dir),
         paes_mode=paes_mode
     )
-    
+
     # Save results
     results_file = output_dir / "processing_results.json"
     with open(results_file, "w") as f:
         json.dump(results, f, indent=2)
-    
+
     # Create backup of generated XMLs
     if generated_folders_with_xml:
         print("=" * 60)
         print("CREANDO BACKUP DE XMLs GENERADOS")
         print("=" * 60)
         print()
-        
+
         backup_metadata = {
             "test_name": "seleccion-regular-2025",
             "processing_results_file": str(results_file),
@@ -258,17 +259,17 @@ def main():
             "successful": results["summary"]["successful"],
             "failed": results["summary"]["failed"],
         }
-        
+
         backup_dir = create_qti_backup(
             output_dir=output_dir,
             generated_folders=generated_folders_with_xml,
             backup_metadata=backup_metadata,
         )
-        
-        print(f"💡 El backup permanecerá hasta que confirmes que todo está correcto.")
+
+        print("💡 El backup permanecerá hasta que confirmes que todo está correcto.")
         print(f"   Para eliminar el backup, usa: python3 backup_manager.py --delete {backup_dir.name}")
         print()
-    
+
     # Print summary
     print("=" * 60)
     print("RESUMEN DE PROCESAMIENTO")
@@ -280,16 +281,16 @@ def main():
     print(f"Tiempo total: {results['summary']['total_time_minutes']:.1f} minutos")
     print(f"Tiempo promedio: {results['summary']['avg_time_per_question']:.1f} seg/pregunta")
     print()
-    
+
     if results["failed"]:
         print("❌ Preguntas fallidas:")
         for fail in results["failed"]:
             print(f"   - {fail['question']}: {fail['error']}")
         print()
-    
+
     print(f"📄 Resultados guardados en: {results_file}")
     print()
-    
+
     # Exit with error code if any failed
     sys.exit(0 if results["summary"]["failed"] == 0 else 1)
 

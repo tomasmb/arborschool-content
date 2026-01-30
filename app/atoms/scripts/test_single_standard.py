@@ -13,9 +13,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from app.gemini_client import GeminiService, load_default_gemini_service
 from app.atoms.generation import generate_atoms_for_standard
-from app.standards.models import Standard
+from app.gemini_client import load_default_gemini_service
 
 logging.basicConfig(
     level=logging.INFO,

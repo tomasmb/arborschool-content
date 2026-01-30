@@ -11,11 +11,11 @@ Provides robust retry logic for:
 
 from __future__ import annotations
 
-import time
-import random
 import logging
-from typing import Callable, TypeVar, Any, Optional
+import random
+import time
 from functools import wraps
+from typing import Any, Callable, Optional, TypeVar
 
 T = TypeVar("T")
 
@@ -34,15 +34,15 @@ def is_retryable_error(error: Exception) -> bool:
     """
     error_str = str(error).lower()
     error_type = type(error).__name__.lower()
-    
+
     # Rate limiting and quota errors
     if any(code in error_str for code in ["429", "rate limit", "quota", "insufficient_quota"]):
         return True
-    
+
     # Server errors (5xx)
     if any(code in error_str for code in ["500", "502", "503", "504"]):
         return True
-    
+
     # Network and connection errors
     retryable_keywords = [
         "timeout",
@@ -58,11 +58,11 @@ def is_retryable_error(error: Exception) -> bool:
     ]
     if any(keyword in error_str for keyword in retryable_keywords):
         return True
-    
+
     # Empty response errors
     if "empty" in error_str or "no content" in error_str:
         return True
-    
+
     # Specific exception types that are retryable
     retryable_types = [
         "timeouterror",
@@ -72,7 +72,7 @@ def is_retryable_error(error: Exception) -> bool:
     ]
     if error_type in retryable_types:
         return True
-    
+
     return False
 
 
@@ -87,10 +87,10 @@ def extract_retry_after(error: Exception) -> Optional[float]:
         Delay in seconds, or None if not found
     """
     error_str = str(error)
-    
+
     # Look for "retry after" or "retry in" patterns
     import re
-    
+
     patterns = [
         r"retry[_\s]+after[:\s]+(\d+(?:\.\d+)?)",
         r"retry[_\s]+in[:\s]+(\d+(?:\.\d+)?)",
@@ -98,7 +98,7 @@ def extract_retry_after(error: Exception) -> Optional[float]:
         r'"retryafter":\s*"?(\d+(?:\.\d+)?)"?',
         r'"retry_after":\s*"?(\d+(?:\.\d+)?)"?',
     ]
-    
+
     for pattern in patterns:
         match = re.search(pattern, error_str, re.IGNORECASE)
         if match:
@@ -106,7 +106,7 @@ def extract_retry_after(error: Exception) -> Optional[float]:
                 return float(match.group(1))
             except (ValueError, IndexError):
                 continue
-    
+
     return None
 
 
@@ -136,25 +136,25 @@ def retry_with_backoff(
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> T:
             last_exception: Optional[Exception] = None
-            
+
             for attempt in range(max_retries):
                 try:
                     return func(*args, **kwargs)
                 except Exception as e:
                     last_exception = e
-                    
+
                     # Check if error is retryable
                     is_retryable = (
                         retryable_check(e) if retryable_check
                         else is_retryable_error(e)
                     )
-                    
+
                     if not is_retryable:
                         _logger.error(
                             f"Non-retryable error in {func.__name__}: {e}"
                         )
                         raise
-                    
+
                     # Don't retry on last attempt
                     if attempt == max_retries - 1:
                         _logger.error(
@@ -162,7 +162,7 @@ def retry_with_backoff(
                             f"{func.__name__}: {e}"
                         )
                         raise
-                    
+
                     # Calculate delay
                     delay = extract_retry_after(e)
                     if delay is None:
@@ -171,24 +171,24 @@ def retry_with_backoff(
                             base_delay * (exponential_base ** attempt),
                             max_delay
                         )
-                    
+
                     # Add jitter to avoid thundering herd
                     if jitter:
                         jitter_amount = random.uniform(0, delay * 0.1)
                         delay += jitter_amount
-                    
+
                     _logger.warning(
                         f"Retryable error in {func.__name__} "
                         f"(attempt {attempt + 1}/{max_retries}): {e}. "
                         f"Retrying in {delay:.2f}s..."
                     )
                     time.sleep(delay)
-            
+
             # Should never reach here, but just in case
             if last_exception:
                 raise last_exception
             raise RuntimeError(f"Unexpected error in {func.__name__}")
-        
+
         return wrapper
     return decorator
 
@@ -212,7 +212,7 @@ def retry_on_empty_response(
         def wrapper(*args: Any, **kwargs: Any) -> T:
             for attempt in range(max_retries):
                 result = func(*args, **kwargs)
-                
+
                 # Check if result is empty
                 is_empty = False
                 if result is None:
@@ -224,10 +224,10 @@ def retry_on_empty_response(
                         result.get("success") is False and
                         "empty" in str(result.get("error", "")).lower()
                     )
-                
+
                 if not is_empty:
                     return result
-                
+
                 if attempt == max_retries - 1:
                     _logger.error(
                         f"Max retries ({max_retries}) reached for "
@@ -236,7 +236,7 @@ def retry_on_empty_response(
                     if isinstance(result, dict):
                         return result
                     raise ValueError(f"Empty response from {func.__name__}")
-                
+
                 delay = base_delay * (2 ** attempt)
                 _logger.warning(
                     f"Empty response from {func.__name__} "
@@ -244,8 +244,8 @@ def retry_on_empty_response(
                     f"Retrying in {delay:.2f}s..."
                 )
                 time.sleep(delay)
-            
+
             raise RuntimeError(f"Unexpected error in {func.__name__}")
-        
+
         return wrapper
     return decorator

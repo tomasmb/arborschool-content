@@ -8,7 +8,6 @@ setting it to False for the 31 atoms identified as having no question coverage.
 import json
 from pathlib import Path
 
-
 # 31 atoms without coverage (from docs/analisis_cobertura_atomos.md)
 ATOMS_FUERA_DE_ALCANCE = {
     # Álgebra y Funciones (11)
@@ -52,14 +51,14 @@ def main():
     # Path relative to project root
     project_root = Path(__file__).parent.parent.parent.parent
     atoms_path = project_root / "app" / "data" / "atoms" / "paes_m1_2026_atoms.json"
-    
+
     print(f"Loading atoms from: {atoms_path}")
     with open(atoms_path, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     marked_count = 0
     in_scope_count = 0
-    
+
     for atom in data["atoms"]:
         atom_id = atom["id"]
         if atom_id in ATOMS_FUERA_DE_ALCANCE:
@@ -69,25 +68,25 @@ def main():
         else:
             atom["en_alcance_m1"] = True
             in_scope_count += 1
-    
+
     # Update metadata version
     data["metadata"]["version"] = "2025-12-29"
-    
-    print(f"\nSummary:")
+
+    print("\nSummary:")
     print(f"  - Total atoms: {len(data['atoms'])}")
     print(f"  - In scope (en_alcance_m1=True): {in_scope_count}")
     print(f"  - Out of scope (en_alcance_m1=False): {marked_count}")
-    
+
     if marked_count != len(ATOMS_FUERA_DE_ALCANCE):
         print(f"\n⚠️  WARNING: Expected {len(ATOMS_FUERA_DE_ALCANCE)} atoms to mark, but found {marked_count}")
         missing = ATOMS_FUERA_DE_ALCANCE - {a["id"] for a in data["atoms"]}
         if missing:
             print(f"  Missing atom IDs: {missing}")
-    
+
     # Write back
     with open(atoms_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
-    
+
     print(f"\n✅ Updated {atoms_path}")
 
 

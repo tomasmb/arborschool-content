@@ -13,9 +13,7 @@ import argparse
 import json
 import logging
 import sys
-from collections import defaultdict
 from pathlib import Path
-from typing import Any
 
 from app.atoms.models import Atom, CanonicalAtomsFile
 
@@ -38,36 +36,36 @@ def find_cycles(
     # Build graph: atom_id -> list of prerequisite IDs
     graph: dict[str, list[str]] = {}
     atom_ids = set()
-    
+
     for atom in atoms:
         atom_id = atom.id
         atom_ids.add(atom_id)
         graph[atom_id] = atom.prerrequisitos.copy()
-    
+
     # Verify all prerequisites exist
     all_prereqs = set()
     for prereqs in graph.values():
         all_prereqs.update(prereqs)
-    
+
     missing_prereqs = all_prereqs - atom_ids
     if missing_prereqs:
         logger.warning(
             "Found prerequisites that don't exist as atoms: %s",
             sorted(missing_prereqs),
         )
-    
+
     # Find cycles using DFS
     cycles: list[list[str]] = []
     visited: set[str] = set()
     rec_stack: set[str] = set()
     path: list[str] = []
-    
+
     def dfs(node: str) -> None:
         """DFS to detect cycles."""
         visited.add(node)
         rec_stack.add(node)
         path.append(node)
-        
+
         for neighbor in graph.get(node, []):
             if neighbor not in atom_ids:
                 # Skip missing prerequisites
@@ -83,15 +81,15 @@ def find_cycles(
                 normalized_cycle = cycle[min_idx:-1] + [cycle[min_idx]]
                 if normalized_cycle not in cycles:
                     cycles.append(normalized_cycle)
-        
+
         rec_stack.remove(node)
         path.pop()
-    
+
     # Run DFS on all nodes
     for atom_id in sorted(atom_ids):
         if atom_id not in visited:
             dfs(atom_id)
-    
+
     return cycles
 
 
@@ -154,7 +152,7 @@ def main() -> None:
             print(f"Ciclo {i}:")
             print("  " + " → ".join(cycle))
             print()
-        
+
         print("=" * 70)
         print("ANÁLISIS")
         print("=" * 70)

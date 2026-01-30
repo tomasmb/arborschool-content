@@ -19,10 +19,8 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from app.atoms.models import Atom, CanonicalAtomsFile
-from app.gemini_client import load_default_gemini_service
-from app.atoms.validation import validate_atoms_from_files
 from app.atoms.scripts.check_circular_dependencies import find_cycles
+from app.gemini_client import load_default_gemini_service
 
 logging.basicConfig(
     level=logging.INFO,
@@ -99,7 +97,7 @@ def main() -> None:
     # for manual edits like 4 examples instead of 3)
     atoms_list = atoms_data.get("atoms", [])
     atoms_dict = atoms_list  # Work with dicts directly
-    
+
     # For circular dependency check, we need Atom objects
     # Create a minimal Atom-like structure for find_cycles
     class AtomDict:
@@ -107,7 +105,7 @@ def main() -> None:
         def __init__(self, atom_dict: dict[str, Any]) -> None:
             self.id = atom_dict["id"]
             self.prerrequisitos = atom_dict.get("prerrequisitos", [])
-    
+
     atoms_for_cycles = [AtomDict(atom) for atom in atoms_list]
 
     # Get unique standard IDs from atoms
@@ -150,7 +148,7 @@ def main() -> None:
     logger.info("Output directory: %s", args.output_dir)
     logger.info("=" * 70)
     logger.info("")
-    
+
     # Check for circular dependencies
     logger.info("Checking for circular dependencies...")
     cycles = find_cycles(atoms_for_cycles)
@@ -190,11 +188,11 @@ def main() -> None:
             standard_atoms = [
                 atom for atom in atoms_dict if standard_id in atom.get("standard_ids", [])
             ]
-            
+
             if not standard_atoms:
                 logger.warning("⚠ No atoms found for %s", standard_id)
                 continue
-            
+
             # Use validate_atoms_with_gemini directly since we have the data in memory
             from app.atoms.validation import validate_atoms_with_gemini
             result = validate_atoms_with_gemini(
@@ -236,7 +234,7 @@ def main() -> None:
     # Check circular dependencies again at the end (in case atoms were modified)
     logger.info("Final check for circular dependencies...")
     final_cycles = find_cycles(atoms_for_cycles)
-    
+
     # Save combined results
     combined_output = args.output_dir / "validation_all_standards.json"
     combined_results = {

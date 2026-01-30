@@ -8,11 +8,11 @@ y solo permite eliminarlos con confirmación explícita del usuario.
 
 from __future__ import annotations
 
-import shutil
 import json
+import shutil
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 
 def create_qti_backup(
@@ -34,33 +34,33 @@ def create_qti_backup(
     # Crear directorio de backups si no existe
     backups_dir = output_dir / ".backups"
     backups_dir.mkdir(exist_ok=True)
-    
+
     # Crear directorio de backup con timestamp
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     backup_dir = backups_dir / f"backup_{timestamp}"
     backup_dir.mkdir(exist_ok=True)
-    
+
     print(f"📦 Creando backup en: {backup_dir}")
     print()
-    
+
     backed_up = []
     skipped = []
     errors = []
-    
+
     # Copiar cada carpeta generada
     for folder_name in generated_folders:
         source_folder = output_dir / folder_name
-        
+
         if not source_folder.exists():
             skipped.append(folder_name)
             continue
-        
+
         # Verificar que tenga XML (solo hacer backup de carpetas con XML generado)
         xml_file = source_folder / "question.xml"
         if not xml_file.exists():
             skipped.append(folder_name)
             continue
-        
+
         try:
             dest_folder = backup_dir / folder_name
             shutil.copytree(source_folder, dest_folder)
@@ -69,7 +69,7 @@ def create_qti_backup(
         except Exception as e:
             errors.append({"folder": folder_name, "error": str(e)})
             print(f"   ❌ {folder_name}: {e}")
-    
+
     # Guardar metadata del backup
     metadata = {
         "timestamp": timestamp,
@@ -79,14 +79,14 @@ def create_qti_backup(
         "errors": errors,
         "total_backed_up": len(backed_up),
     }
-    
+
     if backup_metadata:
         metadata.update(backup_metadata)
-    
+
     metadata_file = backup_dir / "backup_metadata.json"
     with open(metadata_file, "w", encoding="utf-8") as f:
         json.dump(metadata, f, indent=2, ensure_ascii=False)
-    
+
     print()
     print(f"✅ Backup completado: {len(backed_up)} carpetas respaldadas")
     if skipped:
@@ -95,7 +95,7 @@ def create_qti_backup(
         print(f"❌ Errores: {len(errors)}")
     print(f"📁 Ubicación: {backup_dir}")
     print()
-    
+
     return backup_dir
 
 
@@ -110,15 +110,15 @@ def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
         Lista de diccionarios con información de cada backup
     """
     backups_dir = output_dir / ".backups"
-    
+
     if not backups_dir.exists():
         return []
-    
+
     backups = []
     for backup_folder in sorted(backups_dir.glob("backup_*"), reverse=True):
         if not backup_folder.is_dir():
             continue
-        
+
         metadata_file = backup_folder / "backup_metadata.json"
         if metadata_file.exists():
             try:
@@ -132,7 +132,7 @@ def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
                     "timestamp": backup_folder.name.replace("backup_", ""),
                     "total_backed_up": len(list((backup_folder).glob("Q*"))),
                 })
-    
+
     return backups
 
 
@@ -154,7 +154,7 @@ def delete_backup(backup_dir: Path, require_confirmation: bool = True) -> bool:
         if response.strip().upper() != "SI":
             print("   ❌ Operación cancelada")
             return False
-    
+
     try:
         shutil.rmtree(backup_dir)
         print(f"✅ Backup eliminado: {backup_dir}")
@@ -187,27 +187,27 @@ def restore_from_backup(
             "success": False,
             "error": f"Backup directory does not exist: {backup_dir}",
         }
-    
+
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     restored = []
     skipped = []
     errors = []
-    
+
     # Obtener lista de carpetas en el backup
     backup_folders = [f.name for f in backup_dir.iterdir() if f.is_dir() and f.name.startswith("Q")]
-    
+
     if folders_to_restore:
         backup_folders = [f for f in backup_folders if f in folders_to_restore]
-    
+
     for folder_name in backup_folders:
         source_folder = backup_dir / folder_name
         dest_folder = output_dir / folder_name
-        
+
         if dest_folder.exists() and not overwrite:
             skipped.append(folder_name)
             continue
-        
+
         try:
             if dest_folder.exists():
                 shutil.rmtree(dest_folder)
@@ -217,7 +217,7 @@ def restore_from_backup(
         except Exception as e:
             errors.append({"folder": folder_name, "error": str(e)})
             print(f"   ❌ {folder_name}: {e}")
-    
+
     return {
         "success": True,
         "restored": restored,

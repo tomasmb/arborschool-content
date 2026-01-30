@@ -12,7 +12,7 @@ This module provides optimized functions and configurations for PAES.
 
 from __future__ import annotations
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict
 
 
 def get_paes_question_type() -> Dict[str, Any]:
@@ -99,12 +99,12 @@ def optimize_content_processing_for_paes(
     processed_content["paes_mode"] = True
     processed_content["expected_format"] = "choice_4_alternatives"
     processed_content["subject"] = "mathematics"
-    
+
     # Optimize: Skip table reconstruction if not needed
     if "tables" in processed_content:
         # Only keep tables if they're actually present and relevant
         tables = processed_content.get("tables", [])
         if not tables or len(tables) == 0:
             processed_content.pop("tables", None)
-    
+
     return processed_content

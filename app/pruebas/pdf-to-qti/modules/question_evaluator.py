@@ -4,9 +4,10 @@ Question Evaluator Module
 This module evaluates questions for detailed metrics using GPT-5.1.
 """
 import json
-from typing import Dict, Any
-from .ai_processing import chat_completion
+from typing import Any, Dict
+
 from openai import OpenAI
+
 
 def evaluate_question_detail(
     pdf_content: Dict[str, Any],
@@ -173,4 +174,4 @@ def evaluate_question_detail(
     dok_level = detail.get("dokLevel",0)
     detail["cognitiveRigorCell"] = bloom_rank + dok_level*2
     print(f"🔢 cognitiveRigorCell computed: {detail['cognitiveRigorCell']}")
-    return detail 
+    return detail

@@ -7,16 +7,15 @@ EXACT SAME concept with different numbers/context only.
 
 import json
 import re
-from typing import List, Optional, Dict, Any
-import xml.etree.ElementTree as ET
+from typing import Any, Dict, List, Optional
 
-from app.gemini_client import load_default_gemini_service, GeminiService
-from app.question_variants.models import SourceQuestion, VariantQuestion, PipelineConfig
+from app.gemini_client import load_default_gemini_service
+from app.question_variants.models import PipelineConfig, SourceQuestion, VariantQuestion
 
 
 class VariantGenerator:
     """Generates variant questions from source exemplars."""
-    
+
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the generator.
         
@@ -25,10 +24,10 @@ class VariantGenerator:
         """
         self.config = config or PipelineConfig()
         self.service = load_default_gemini_service()
-    
+
     def generate_variants(
-        self, 
-        source: SourceQuestion, 
+        self,
+        source: SourceQuestion,
         num_variants: Optional[int] = None
     ) -> List[VariantQuestion]:
         """Generate variant questions from a source question.
@@ -41,22 +40,22 @@ class VariantGenerator:
             List of generated variant questions (unvalidated)
         """
         n = num_variants or self.config.variants_per_question
-        
+
         # Build the restrictive prompt
         prompt = self._build_generation_prompt(source, n)
-        
+
         print(f"  Generating {n} variants for {source.question_id}...")
-        
+
         try:
             response = self.service.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 temperature=self.config.temperature
             )
-            
+
             # Parse the response
             variants_data = self._parse_response(response, source)
-            
+
             # Convert to VariantQuestion objects
             variants = []
             for i, vdata in enumerate(variants_data):
@@ -69,35 +68,35 @@ class VariantGenerator:
                     metadata=self._build_variant_metadata(source, vdata)
                 )
                 variants.append(variant)
-            
+
             print(f"  ✅ Generated {len(variants)} variants")
             return variants
-            
+
         except Exception as e:
             print(f"  ❌ Error generating variants: {e}")
             import traceback
             traceback.print_exc()
             return []
-    
+
     def _build_generation_prompt(self, source: SourceQuestion, n: int) -> str:
         """Build the restrictive generation prompt."""
-        
+
         # Extract atom info for context
         atoms_desc = []
         for atom in source.primary_atoms:
             atoms_desc.append(f"- {atom.get('atom_title', 'N/A')}: {atom.get('reasoning', '')}")
         atoms_text = "\n".join(atoms_desc) if atoms_desc else "No atoms specified"
-        
+
         # Get difficulty info
         diff = source.difficulty
         diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
-        
+
         # Check for image info and add instruction if decorative
         image_info = source.metadata.get("image_info", {})
         image_instruction = ""
         if image_info.get("image_type") == "decorative":
             image_instruction = "7. ESTA PREGUNTA CONTIENE UNA IMAGEN DECORATIVA (Support visual). DEBES INCLUIR LA ETIQUETA <img ...> EXACTAMENTE IGUAL QUE EN LA ORIGINAL dentro del texto."
-        
+
         prompt = f"""
 <role>
 Eres un profesor de matemáticas creando variantes de ejercicios para exámenes PAES.
@@ -190,7 +189,7 @@ IMPORTANTE: El QTI XML debe:
 </restriccion_critica>
 """
         return prompt
-    
+
     def _parse_response(self, response: str, source: SourceQuestion) -> List[Dict[str, Any]]:
         """Parse the LLM response into variant data."""
         try:
@@ -205,14 +204,14 @@ IMPORTANTE: El QTI XML debe:
             except:
                 print(f"  ⚠️ Failed to parse JSON response: {e}")
                 return []
-    
+
     def _build_variant_metadata(
-        self, 
-        source: SourceQuestion, 
+        self,
+        source: SourceQuestion,
         variant_data: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Build metadata for a variant, inheriting from source."""
-        
+
         # Start with inherited atoms (same concept = same atoms)
         metadata = {
             "selected_atoms": source.atoms.copy(),
@@ -227,5 +226,5 @@ IMPORTANTE: El QTI XML debe:
                 "change_description": variant_data.get("change_description", "")
             }
         }
-        
+
         return metadata

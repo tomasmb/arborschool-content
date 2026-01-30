@@ -4,15 +4,18 @@ PDF manipulation utilities.
 This module contains functions for reading, manipulating, and writing PDFs.
 """
 
-import fitz  # type: ignore # PyMuPDF
-import os
-import json
-from json import JSONEncoder
 import base64
-import tempfile
-import openai
+import json
+import os
 import shutil
+import tempfile
+from json import JSONEncoder
+
+import fitz  # type: ignore # PyMuPDF
+import openai
+
 from .quality_validator import validate_question_quality
+
 
 # Custom JSON encoder to handle bytes and other non-serializable types
 class CustomJSONEncoder(JSONEncoder):
@@ -54,28 +57,28 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
     import re
     # First, extract structured information using different methods
     blocks_data = page.get_text("dict", sort=True)
-    
+
     # Create a prioritized summary
     summary = {
         "page_size": {"width": page.rect.width, "height": page.rect.height},
         "blocks_count": len(blocks_data.get("blocks", [])),
         "page_description": "PDF page with the following elements:"
     }
-    
+
     # Extract and prioritize content:
     # 1. Headers and question identifiers (likely short, high value)
     # 2. First text block of each section (often contains important context)
     # 3. Sample of other text content
-    
+
     blocks = blocks_data.get("blocks", [])
-    
+
     # Extract text blocks and sort by position (top to bottom)
     text_blocks = [b for b in blocks if b.get("type") == 0]  # Type 0 is text
     text_blocks.sort(key=lambda b: b.get("bbox", [0, 0, 0, 0])[1])  # Sort by y0 (top)
-    
+
     important_texts = []
     question_markers = []
-    
+
     # First pass: identify question markers and headers
     for block in text_blocks:
         text = ""
@@ -83,11 +86,11 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
             for span in line.get("spans", []):
                 span_text = span.get("text", "").strip()
                 text += span_text + " "
-        
+
         text = text.strip()
         if not text:
             continue
-            
+
         # Check if this looks like a question marker or header
         if re.search(r'question\s+\d+|^\d+\.\s+', text.lower()) or text.upper() == text:
             question_markers.append({
@@ -101,10 +104,10 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
                 "bbox": block.get("bbox"),
                 "type": "header"
             })
-    
+
     # Second pass: get a representative sample of content
     remaining_length = max_length - len(json.dumps(summary)) - len(json.dumps(question_markers)) - len(json.dumps(important_texts))
-    
+
     content_samples = []
     if remaining_length > 1000:
         # Add a sample of content blocks
@@ -112,31 +115,31 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
         for block in text_blocks:
             if current_length > remaining_length:
                 break
-                
+
             text = ""
             for line in block.get("lines", []):
                 for span in line.get("spans", []):
                     text += span.get("text", "").strip() + " "
-            
+
             text = text.strip()
             if not text or any(text == item["text"] for item in question_markers + important_texts):
                 continue
-                
+
             block_summary = {
                 "text": text[:min(len(text), 200)],  # Limit individual block length
                 "bbox": block.get("bbox"),
                 "type": "content"
             }
-            
+
             content_samples.append(block_summary)
             current_length += len(json.dumps(block_summary))
-    
+
     # Combine everything into a final optimized representation
     summary["question_markers"] = question_markers
     summary["important_texts"] = important_texts
     summary["content_samples"] = content_samples
     summary["original_block_count"] = len(blocks)
-    
+
     return json.dumps(summary, cls=CustomJSONEncoder)
 
 
@@ -158,10 +161,10 @@ def get_page_image(page: fitz.Page, scale: float = 2.0) -> bytes:
         return pixmap.tobytes("png")
     except RuntimeError as e:
         if "Private data too large" in str(e):
-            print(f"⚠️  Complex page detected, trying fallback strategies...")
+            print("⚠️  Complex page detected, trying fallback strategies...")
         else:
             raise e
-    
+
     # Strategy 2: Reduce scale factor
     fallback_scales = [1.5, 1.0, 0.75, 0.5]
     for fallback_scale in fallback_scales:
@@ -174,7 +177,7 @@ def get_page_image(page: fitz.Page, scale: float = 2.0) -> bytes:
             if "Private data too large" not in str(e):
                 raise e
             continue
-    
+
     # Strategy 3: Try without display list (direct rendering)
     try:
         print("🔄 Trying direct rendering without display list...")
@@ -185,33 +188,34 @@ def get_page_image(page: fitz.Page, scale: float = 2.0) -> bytes:
     except RuntimeError as e:
         if "Private data too large" not in str(e):
             raise e
-    
+
     # Strategy 4: Create a minimal placeholder image
     print("⚠️  All rendering strategies failed, creating placeholder image")
     try:
         # Create a simple white image with text indicating the issue
         import io
-        from PIL import Image, ImageDraw, ImageFont # type: ignore
-        
+
+        from PIL import Image, ImageDraw, ImageFont  # type: ignore
+
         # Create a white image
         img = Image.new('RGB', (800, 600), color='white')
         draw = ImageDraw.Draw(img)
-        
+
         # Add text explaining the issue
         try:
             # Try to use a default font
             font = ImageFont.load_default()
         except:
             font = None
-            
+
         text = f"Page {page.number + 1}\nContent too complex to render\nText extraction available"
         draw.text((50, 250), text, fill='black', font=font)
-        
+
         # Convert to bytes
         img_bytes = io.BytesIO()
         img.save(img_bytes, format='PNG')
         return img_bytes.getvalue()
-        
+
     except Exception as fallback_error:
         print(f"❌ Even placeholder creation failed: {fallback_error}")
         # Return a minimal 1x1 white pixel as absolute fallback
@@ -305,7 +309,7 @@ def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str,
     if not questions:
         print("❌ No questions found to create PDFs")
         return
-    
+
     # Setup output directory
     questions_dir = os.path.join(output_dir, "questions")
     failed_dir = os.path.join(output_dir, "failed_questions")
@@ -319,10 +323,10 @@ def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str,
         os.remove(log_path)
 
     failed_questions_log = []
-    
+
     doc = fitz.open(original_pdf_path)
-    print(f"\n🔧 Creating self-contained question PDFs...")
-    
+    print("\n🔧 Creating self-contained question PDFs...")
+
     with tempfile.TemporaryDirectory() as tmpdir:
         for i, question in enumerate(questions, 1):
             ref_paths = []
@@ -381,7 +385,7 @@ def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str,
                     "pdf_name": os.path.basename(failed_pdf_path),
                     "reason": reason
                 })
-                
+
                 # If fail_on_validation_error is True, fail immediately
                 if fail_on_validation_error:
                     # Save the log immediately before failing
@@ -390,7 +394,7 @@ def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str,
                         with open(log_path, 'w', encoding='utf-8') as f:
                             json.dump(failed_questions_log, f, indent=2, ensure_ascii=False)
                         print(f"📓 Log of failed quality checks saved to: {log_path}")
-                    
+
                     doc.close()
                     raise Exception(f"Quality validation failed for question {i}: {reason}")
 
@@ -493,11 +497,11 @@ def split_pdf_by_ai(input_pdf_path: str, output_dir: str = None, model: str = "g
             print(f"⚠️ Saved invalid LLM response to {debug_path}")
         except Exception as write_err:
             print(f"⚠️ Could not save debug response: {write_err}")
-        
+
         raise ValueError(f"LLM returned non-parsable JSON for PDF splitting: {e}")
     except Exception as e:
         raise ValueError(f"LLM PDF splitting failed: {e}")
-    
+
     split_pages = sorted(set(split_pages))
 
     # Build chunks from split points
@@ -525,4 +529,4 @@ def split_pdf_by_ai(input_pdf_path: str, output_dir: str = None, model: str = "g
         chunk_doc.close()
         chunk_infos.append((chunk_path, start + 1))  # start+1 is the 1-based start page in original PDF
     doc.close()
-    return chunk_infos 
+    return chunk_infos

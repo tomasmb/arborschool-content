@@ -6,18 +6,17 @@ AWS Lambda Handler for Question Detail Evaluation Service.
 This function extracts detailed question metrics via GPT-5.1.
 """
 
+import base64
 import json
 import os
 import tempfile
-import base64
 import traceback
 from typing import Any, Dict
 
 import fitz  # type: ignore
 import requests
-
-from modules.utils.page_utils import create_combined_image
 from modules.question_evaluator import evaluate_question_detail
+from modules.utils.page_utils import create_combined_image
 
 
 def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
@@ -112,4 +111,4 @@ def handler(event: Dict[str, Any], context: Any) -> Dict[str, Any]:
             'statusCode': 500,
             'headers': {'Content-Type': 'application/json'},
             'body': json.dumps({'success': False, 'error': str(e)})
-        } 
+        }

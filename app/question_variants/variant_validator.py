@@ -9,22 +9,22 @@ This module validates generated variants to ensure they:
 """
 
 import json
-from typing import Optional
 import xml.etree.ElementTree as ET
+from typing import Optional
 
 from app.gemini_client import load_default_gemini_service
 from app.question_variants.models import (
-    SourceQuestion, 
-    VariantQuestion, 
-    ValidationResult, 
+    PipelineConfig,
+    SourceQuestion,
+    ValidationResult,
     ValidationVerdict,
-    PipelineConfig
+    VariantQuestion,
 )
 
 
 class VariantValidator:
     """Validates generated variant questions."""
-    
+
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the validator.
         
@@ -33,10 +33,10 @@ class VariantValidator:
         """
         self.config = config or PipelineConfig()
         self.service = load_default_gemini_service()
-    
+
     def validate(
-        self, 
-        variant: VariantQuestion, 
+        self,
+        variant: VariantQuestion,
         source: SourceQuestion
     ) -> ValidationResult:
         """Validate a variant question against its source.
@@ -49,7 +49,7 @@ class VariantValidator:
             ValidationResult with verdict and details
         """
         print(f"    Validating {variant.variant_id}...")
-        
+
         # Step 1: Basic XML validation
         xml_valid, xml_error = self._validate_xml(variant.qti_xml)
         if not xml_valid:
@@ -60,10 +60,10 @@ class VariantValidator:
                 answer_correct=False,
                 rejection_reason=f"XML inválido: {xml_error}"
             )
-        
+
         # Step 2: LLM-based validation
         return self._validate_with_llm(variant, source)
-    
+
     def _validate_xml(self, xml_content: str) -> tuple[bool, str]:
         """Validate that the XML is parseable.
         
@@ -76,19 +76,19 @@ class VariantValidator:
             return True, ""
         except ET.ParseError as e:
             return False, str(e)
-    
+
     def _validate_with_llm(
-        self, 
-        variant: VariantQuestion, 
+        self,
+        variant: VariantQuestion,
         source: SourceQuestion
     ) -> ValidationResult:
         """Use LLM to validate concept alignment, difficulty, and correctness."""
-        
+
         # Extract variant text for easier reading
         variant_text = self._extract_question_text(variant.qti_xml)
         variant_choices = self._extract_choices(variant.qti_xml)
         variant_correct = self._find_correct_answer(variant.qti_xml)
-        
+
         prompt = f"""
 <role>
 Eres un revisor de calidad de exámenes matemáticos PAES.
@@ -162,23 +162,23 @@ Si la respuesta marcada como correcta NO es matemáticamente correcta,
 el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
 </regla_critica>
 """
-        
+
         try:
             response = self.service.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 temperature=0.0  # Deterministic for validation
             )
-            
+
             result = self._parse_validation_response(response)
-            
+
             if result.is_approved:
                 print(f"    ✅ {variant.variant_id} APROBADA")
             else:
                 print(f"    ❌ {variant.variant_id} RECHAZADA: {result.rejection_reason}")
-            
+
             return result
-            
+
         except Exception as e:
             print(f"    ⚠️ Error validating: {e}")
             return ValidationResult(
@@ -188,14 +188,14 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 answer_correct=False,
                 rejection_reason=f"Error de validación: {str(e)}"
             )
-    
+
     def _parse_validation_response(self, response: str) -> ValidationResult:
         """Parse LLM validation response into ValidationResult."""
         try:
             data = json.loads(response)
-            
+
             verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
-            
+
             return ValidationResult(
                 verdict=verdict,
                 concept_aligned=data.get("concepto_alineado", False),
@@ -213,7 +213,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 answer_correct=False,
                 rejection_reason="No se pudo parsear respuesta de validación"
             )
-    
+
     def _extract_question_text(self, xml_content: str) -> str:
         """Extract question text from QTI XML, properly handling MathML."""
         try:
@@ -227,17 +227,17 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             return ""
         except:
             return ""
-    
+
     def _element_to_text(self, element: ET.Element) -> str:
         """Recursively extract text from an element, properly handling MathML."""
         parts = []
-        
+
         if element.text:
             parts.append(element.text.strip())
-        
+
         for child in element:
             tag = child.tag.split('}')[-1].lower()
-            
+
             if tag == 'math':
                 # Process MathML to readable text
                 parts.append(self._mathml_to_text(child))
@@ -247,20 +247,20 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             else:
                 # Include qti-prompt, qti-choice-interaction, and all other elements
                 parts.append(self._element_to_text(child))
-            
+
             if child.tail:
                 parts.append(child.tail.strip())
-        
+
         return " ".join(filter(None, parts))
-    
+
     def _mathml_to_text(self, math_elem: ET.Element) -> str:
         """Convert MathML element to readable text representation."""
         return self._process_mathml_element(math_elem)
-    
+
     def _process_mathml_element(self, elem: ET.Element) -> str:
         """Recursively process a MathML element to text."""
         tag = elem.tag.split('}')[-1].lower()
-        
+
         if tag == 'mfrac':
             # Handle fractions: numerator/denominator
             children = list(elem)
@@ -313,7 +313,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             for child in elem:
                 parts.append(self._process_mathml_element(child))
             return "".join(parts)
-    
+
     def _extract_choices(self, xml_content: str) -> list[str]:
         """Extract choice texts from QTI XML, properly handling MathML."""
         try:
@@ -325,13 +325,13 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             return choices
         except:
             return []
-    
+
     def _find_correct_answer(self, xml_content: str) -> str:
         """Find the correct answer from QTI XML, properly handling MathML."""
         try:
             root = ET.fromstring(xml_content)
             # Find correct response value
-            # Note: Use explicit 'is not None' checks because XML Elements with no 
+            # Note: Use explicit 'is not None' checks because XML Elements with no
             # children evaluate as False in boolean context (Python/ElementTree quirk)
             correct_resp = root.find(".//{*}qti-correct-response")
             if correct_resp is None:

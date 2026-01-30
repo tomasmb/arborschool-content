@@ -1,7 +1,7 @@
 
 import json
 import os
-from typing import Any, List, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 # Path to the atoms file
 # TODO: Make this configurable or dynamic if more files are added
@@ -24,7 +24,7 @@ class KGManager:
         try:
             with open(self.atoms_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                
+
             # Handle both list of atoms or wrapper object
             if isinstance(data, dict) and "atoms" in data:
                 self._atoms = data["atoms"]
@@ -35,9 +35,9 @@ class KGManager:
 
             # Create lookup index
             self._atoms_by_id = {atom["id"]: atom for atom in self._atoms if "id" in atom}
-            
+
             print(f"Loaded {len(self._atoms)} atoms from {self.atoms_path}")
-            
+
         except Exception as e:
             print(f"Error loading atoms: {e}")
             self._atoms = []
@@ -65,7 +65,7 @@ class KGManager:
         atom = self.get_atom_by_id(atom_id)
         if not atom:
             return ancestors
-            
+
         prereqs = atom.get("prerrequisitos", [])
         for p_id in prereqs:
             if p_id not in ancestors:
@@ -77,11 +77,11 @@ class KGManager:
         """Removes atoms that are prerequisites of other atoms in the list."""
         if not atom_ids:
             return []
-            
+
         all_implicit_prereqs = set()
         for aid in atom_ids:
             all_implicit_prereqs.update(self.get_ancestors(aid))
-            
+
         # Keep an atom only if it is NOT in the implied set of others
         # Edge case: Cycles? Assuming DAG.
         # Edge case: A is prereq of B. We select A and B. A is in ancestors of B. A is removed. Correct.

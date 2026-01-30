@@ -4,9 +4,10 @@ Part Validator Module
 This module provides functions to validate the results of a PDF segmentation part.
 """
 
-import os
 import json
-from typing import Dict, Any
+import os
+from typing import Any, Dict
+
 
 def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> bool:
     """
@@ -47,4 +48,4 @@ def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> b
             json.dump(results, f, indent=2, ensure_ascii=False)
         print(f"💾 Failed segmentation results saved to: {failed_path}")
 
-    return all_segments_valid 
+    return all_segments_valid

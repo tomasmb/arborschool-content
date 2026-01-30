@@ -18,10 +18,10 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
-from app.gemini_client import GeminiService
-from app.standards.helpers import parse_json_response
 from app.atoms.models import Atom, validate_atom_id_matches_eje
 from app.atoms.prompts import build_atom_generation_prompt
+from app.gemini_client import GeminiService
+from app.standards.helpers import parse_json_response
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,8 @@
 """Data models for the assessment variant generation pipeline."""
 
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Any
 from enum import Enum
+from typing import Any, Dict, List, Optional
 
 
 class ValidationVerdict(str, Enum):
@@ -33,17 +33,17 @@ class SourceQuestion:
     choices: List[str] = field(default_factory=list)
     correct_answer: str = ""
     image_urls: List[str] = field(default_factory=list)
-    
+
     @property
     def atoms(self) -> List[Dict[str, Any]]:
         """Get the selected atoms from metadata."""
         return self.metadata.get("selected_atoms", [])
-    
+
     @property
     def primary_atoms(self) -> List[Dict[str, Any]]:
         """Get only primary atoms."""
         return [a for a in self.atoms if a.get("relevance") == "primary"]
-    
+
     @property
     def difficulty(self) -> Dict[str, Any]:
         """Get difficulty info from metadata."""
@@ -90,7 +90,7 @@ class ValidationResult:
     calculation_steps: str = ""
     distractors_plausible: bool = True
     rejection_reason: str = ""
-    
+
     @property
     def is_approved(self) -> bool:
         return self.verdict == ValidationVerdict.APPROVED

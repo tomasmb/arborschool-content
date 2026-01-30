@@ -222,7 +222,7 @@ def validate_atoms_with_gemini(
         Validation result as dictionary
     """
     prompt = build_validation_prompt(standard, atoms)
-    
+
     logger.info("Validating atoms with Gemini...")
     # Try with high thinking level first, fallback to medium if safety filters trigger
     try:
@@ -245,13 +245,13 @@ def validate_atoms_with_gemini(
             )
         else:
             raise
-    
+
     # Parse JSON response
     result = parse_json_response(raw_response)
-    
+
     if not isinstance(result, dict):
         raise ValueError(f"Expected dict, got {type(result)}")
-    
+
     return result
 
 
@@ -275,7 +275,7 @@ def validate_atoms_from_files(
     # Load standard
     with open(standard_path, 'r', encoding='utf-8') as f:
         standards_data = json.load(f)
-    
+
     if isinstance(standards_data, list):
         if standard_id:
             standard = next((s for s in standards_data if s.get('id') == standard_id), None)
@@ -304,13 +304,13 @@ def validate_atoms_from_files(
                 standard = standards_list[0]
         else:
             standard = standards_data
-    
+
     # Load atoms
     with open(atoms_path, 'r', encoding='utf-8') as f:
         atoms = json.load(f)
-    
+
     if not isinstance(atoms, list):
         raise ValueError(f"Expected list of atoms, got {type(atoms)}")
-    
+
     return validate_atoms_with_gemini(gemini, standard, atoms)
 

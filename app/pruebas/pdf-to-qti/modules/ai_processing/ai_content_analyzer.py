@@ -9,8 +9,10 @@ Follows guideline #13: Prefer LLM analysis over text matching or 'dumb' methods.
 """
 
 import base64
+from typing import Any, Dict, List, Optional
+
 import fitz  # type: ignore
-from typing import Dict, Any, List, Optional, Tuple
+
 from .llm_client import chat_completion
 
 
@@ -35,37 +37,37 @@ def analyze_pdf_content_with_ai(
     try:
         # Extract text blocks for analysis
         text_blocks = extract_text_blocks_for_analysis(structured_data)
-        
+
         # Extract question text for comprehensive analysis
         question_text = " ".join(block.get("text", "") for block in text_blocks)
         if len(question_text) > 2000:
             question_text = question_text[:2000] + "..."
-        
+
         # Get page image for visual context
         page_image_bytes = get_page_image_for_ai(page)
         page_image_base64 = base64.b64encode(page_image_bytes).decode('utf-8')
-        
+
         # OPTIMIZATION: Use comprehensive analysis (single API call)
         # Falls back to separate calls if comprehensive fails
         comprehensive_result = comprehensive_content_analysis(
             text_blocks, page_image_base64, openai_api_key, question_text=question_text
         )
-        
+
         if comprehensive_result.get("success", False):
             return comprehensive_result
-        
+
         # Fallback: Use original two-step approach
         print("🧠 ⚠️ Comprehensive analysis failed, falling back to two-step approach")
         compatibility_result = assess_qti_compatibility(
             text_blocks, page_image_base64, openai_api_key
         )
-        
+
         categorization_result = {}
         if compatibility_result.get('visual_content_required', False):
             categorization_result = categorize_content_blocks(
                 text_blocks, page_image_base64, openai_api_key
             )
-        
+
         return {
             "success": True,
             "compatibility": compatibility_result,
@@ -73,7 +75,7 @@ def analyze_pdf_content_with_ai(
             "ai_categories": categorization_result.get("block_categories", {}),
             "has_visual_content": compatibility_result.get('visual_content_required', False)
         }
-        
+
     except Exception as e:
         print(f"🧠 ⚠️ AI content analysis failed: {e}")
         return {
@@ -113,14 +115,14 @@ def comprehensive_content_analysis(
             question_text = " ".join(block.get("text", "") for block in text_blocks)
             if len(question_text) > 2000:
                 question_text = question_text[:2000] + "..."
-        
+
         # Prepare block information
         block_info = []
         for i, block in enumerate(text_blocks):
             block_text = block.get("text", "")[:200]  # Limit for efficiency
             bbox = block.get("bbox", [])
             area = block.get("area", 0)
-            
+
             block_info.append({
                 "block_number": i + 1,
                 "text": block_text,
@@ -128,9 +130,9 @@ def comprehensive_content_analysis(
                 "area": area,
                 "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})" if len(bbox) >= 4 else ""
             })
-        
+
         content_summary = prepare_content_summary(text_blocks)
-        
+
         # Comprehensive prompt combining all three analyses
         prompt = f"""Perform a comprehensive analysis of this educational question content.
 
@@ -205,7 +207,7 @@ Respond with JSON in this exact format:
                 ]
             }
         ]
-        
+
         print("🧠 ⚡ Using OPTIMIZED comprehensive analysis (single API call)")
         response_text = chat_completion(
             messages=messages,
@@ -213,15 +215,15 @@ Respond with JSON in this exact format:
             json_only=True,
             thinking_level="high",
         )
-        
+
         # Parse comprehensive response
         import json
         result = json.loads(response_text)
-        
+
         qti_compat = result.get("qti_compatibility", {})
         visual_sep = result.get("visual_separation", {})
         block_cats = result.get("block_categories", {})
-        
+
         # Validate and convert block categories to integers
         block_categories = {}
         for block_str, category in block_cats.items():
@@ -236,12 +238,12 @@ Respond with JSON in this exact format:
                     block_categories[block_num] = category
             except (ValueError, TypeError):
                 continue
-        
+
         # Fill missing blocks with default
         for i in range(1, len(text_blocks) + 1):
             if i not in block_categories:
                 block_categories[i] = "other_label"
-        
+
         # Build categorization result format (compatible with old code)
         question_answer_blocks = [
             i for i, cat in block_categories.items()
@@ -251,14 +253,14 @@ Respond with JSON in this exact format:
             i for i, cat in block_categories.items()
             if cat in ["visual_content_title", "visual_content_label"]
         ]
-        
-        print(f"🧠 ✅ Comprehensive analysis complete:")
+
+        print("🧠 ✅ Comprehensive analysis complete:")
         print(f"   QTI compatible: {qti_compat.get('can_represent', False)}")
         print(f"   Visual content required: {qti_compat.get('visual_content_required', False)}")
         print(f"   Prompt visuals: {visual_sep.get('has_prompt_visuals', False)}")
         print(f"   Choice visuals: {visual_sep.get('has_choice_visuals', False)}")
         print(f"   Blocks categorized: {len(block_categories)}")
-        
+
         return {
             "success": True,
             "compatibility": qti_compat,
@@ -271,7 +273,7 @@ Respond with JSON in this exact format:
             "ai_categories": block_categories,
             "has_visual_content": qti_compat.get('visual_content_required', False)
         }
-        
+
     except Exception as e:
         print(f"🧠 ⚠️ Comprehensive analysis failed: {e}")
         return {"success": False, "error": str(e)}
@@ -288,10 +290,10 @@ def assess_qti_compatibility(
     
     GPT-5.1 provides better spatial reasoning for document layout understanding.
     """
-    
+
     # Prepare content summary for AI
     content_summary = prepare_content_summary(text_blocks)
-    
+
     prompt = f"""Analyze this educational content to determine QTI 3.0 compatibility.
 
 CONTENT SUMMARY:
@@ -321,7 +323,7 @@ Respond with JSON in this format:
     try:
         messages = [
             {
-                "role": "system", 
+                "role": "system",
                 "content": "You are an expert in educational assessment and QTI 3.0 standards. Analyze content for QTI compatibility. Respond only with valid JSON."
             },
             {
@@ -332,7 +334,7 @@ Respond with JSON in this format:
                 ]
             }
         ]
-        
+
         # Use unified LLM client (Gemini default, OpenAI fallback)
         response_text = chat_completion(
             messages=messages,
@@ -340,15 +342,15 @@ Respond with JSON in this format:
             json_only=True,
             reasoning_effort="high",
         )
-        
+
         # Parse structured JSON response
         analysis = parse_compatibility_response(response_text)
-        
+
         print(f"🧠 QTI Compatibility: {analysis.get('can_represent', False)}")
         print(f"   Visual content required: {analysis.get('visual_content_required', False)}")
-        
+
         return analysis
-        
+
     except Exception as e:
         print(f"🧠 ⚠️ QTI compatibility assessment failed: {e}")
         return {"can_represent": False, "visual_content_required": False}
@@ -365,7 +367,7 @@ def categorize_content_blocks(
     
     Uses GPT-5.1 for better spatial reasoning and layout understanding.
     """
-    
+
     # Prepare block information for AI
     block_info = []
     for i, block in enumerate(text_blocks):
@@ -375,7 +377,7 @@ def categorize_content_blocks(
             "bbox": block["bbox"],
             "area": block["area"]
         })
-    
+
     prompt = f"""Categorize text blocks on this educational page for intelligent image extraction.
 
 TEXT BLOCKS:
@@ -403,21 +405,21 @@ Respond with JSON in this format:
 
     try:
         import openai
-        
+
         messages = [
             {
                 "role": "system",
                 "content": "You are an expert in educational content analysis. Categorize text blocks for intelligent image extraction. Respond only with valid JSON."
             },
             {
-                "role": "user", 
+                "role": "user",
                 "content": [
                     {"type": "text", "text": prompt},
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}}
                 ]
             }
         ]
-        
+
         client = openai.OpenAI(api_key=openai_api_key)
         response = client.chat.completions.create(
             model="gpt-5.1",
@@ -426,25 +428,25 @@ Respond with JSON in this format:
             reasoning_effort="high",
             seed=42,
         )
-        
+
         # Parse categorization response
         response_text = response.choices[0].message.content
         categorization = parse_categorization_response(response_text, len(text_blocks))
-        
+
         print(f"🧠 Content categorization: {len(categorization)} blocks categorized")
-        
+
         return {
             "block_categories": categorization,
             "question_answer_blocks": [
-                i for i, cat in categorization.items() 
+                i for i, cat in categorization.items()
                 if cat in ["question_text", "answer_choice"]
             ],
             "image_related_blocks": [
                 i for i, cat in categorization.items()
-                if cat in ["visual_content_title", "visual_content_label", "other_label"]  
+                if cat in ["visual_content_title", "visual_content_label", "other_label"]
             ]
         }
-        
+
     except Exception as e:
         print(f"🧠 ⚠️ Content categorization failed: {e}")
         return {"block_categories": {}, "question_answer_blocks": [], "image_related_blocks": []}
@@ -454,7 +456,7 @@ def extract_text_blocks_for_analysis(structured_data: Dict[str, Any]) -> List[Di
     """Extract and prepare text blocks for AI analysis."""
     blocks = structured_data.get("blocks", [])
     text_blocks = []
-    
+
     for i, block in enumerate(blocks):
         if block.get("type") == 0:  # Text block
             bbox = block.get("bbox", [])
@@ -465,7 +467,7 @@ def extract_text_blocks_for_analysis(structured_data: Dict[str, Any]) -> List[Di
                     for span in line.get('spans', []):
                         block_text += span.get('text', '') + " "
                 block_text = block_text.strip()
-                
+
                 if block_text:  # Only include blocks with actual text
                     text_area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
                     text_blocks.append({
@@ -474,7 +476,7 @@ def extract_text_blocks_for_analysis(structured_data: Dict[str, Any]) -> List[Di
                         "bbox": bbox,
                         "area": text_area
                     })
-    
+
     return text_blocks
 
 
@@ -494,13 +496,13 @@ def prepare_content_summary(text_blocks: List[Dict[str, Any]]) -> str:
     """Prepare a concise summary of content for AI analysis."""
     if not text_blocks:
         return "No text content found."
-    
+
     all_text = " ".join(block["text"] for block in text_blocks)
-    
+
     # Limit text length for API efficiency
     if len(all_text) > 2000:
         all_text = all_text[:2000] + "..."
-    
+
     return f"""Text content ({len(text_blocks)} blocks):
 {all_text}
 
@@ -513,23 +515,23 @@ def parse_compatibility_response(response_text: str) -> Dict[str, Any]:
     try:
         import json
         result = json.loads(response_text)
-        
+
         # Validate and extract fields
         can_represent = result.get("can_represent", False)
         visual_required = result.get("visual_content_required", False)
         question_type = result.get("question_type")
         confidence = result.get("confidence", 0.8)
         reasoning = result.get("reasoning", "")
-        
+
         # Validate question type
-        valid_types = ["choice", "match", "text-entry", "hotspot", "extended-text", 
-                      "hot-text", "gap-match", "order", "graphic-gap-match", 
+        valid_types = ["choice", "match", "text-entry", "hotspot", "extended-text",
+                      "hot-text", "gap-match", "order", "graphic-gap-match",
                       "inline-choice", "select-point", "media-interaction", "composite"]
-        
+
         if question_type and question_type not in valid_types:
             question_type = None
             can_represent = False
-        
+
         return {
             "can_represent": can_represent,
             "visual_content_required": visual_required,
@@ -537,7 +539,7 @@ def parse_compatibility_response(response_text: str) -> Dict[str, Any]:
             "confidence": confidence,
             "reasoning": reasoning
         }
-        
+
     except json.JSONDecodeError as e:
         print(f"🧠 ⚠️ Failed to parse compatibility JSON: {e}")
         return {
@@ -554,13 +556,13 @@ def parse_categorization_response(response_text: str, num_blocks: int) -> Dict[i
     try:
         import json
         result = json.loads(response_text)
-        
+
         block_categories = result.get("block_categories", {})
         categorization = {}
-        
+
         # Convert string keys to integers and validate categories
         valid_categories = ["question_text", "answer_choice", "visual_content_title", "visual_content_label", "other_label"]
-        
+
         for block_str, category in block_categories.items():
             try:
                 block_num = int(block_str)
@@ -568,15 +570,15 @@ def parse_categorization_response(response_text: str, num_blocks: int) -> Dict[i
                     categorization[block_num] = category
             except (ValueError, TypeError):
                 continue
-        
+
         # Fill in any missing blocks with default category
         for i in range(1, num_blocks + 1):
             if i not in categorization:
                 categorization[i] = "other_label"
-        
+
         return categorization
-        
+
     except json.JSONDecodeError as e:
         print(f"🧠 ⚠️ Failed to parse categorization JSON: {e}")
         # Fallback to default categorization
-        return {i: "other_label" for i in range(1, num_blocks + 1)} 
+        return {i: "other_label" for i in range(1, num_blocks + 1)}
