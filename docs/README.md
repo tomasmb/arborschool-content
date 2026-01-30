@@ -1,5 +1,7 @@
 # Documentación del Proyecto arborschool-content
 
+> 🚨 **¿Recién llegado?** Empieza por aquí: [**Informe de Entrega (Handover)**](HANDOVER.md)
+
 ## Estructura
 
 | Carpeta | Descripción |
@@ -9,6 +11,7 @@
 | `research/` | Investigación exploratoria y opciones de diseño |
 | `analysis/` | Análisis de contenido (cobertura, brechas) |
 | `archive/` | Documentación histórica de trabajo completado |
+| `HANDOVER.md` | Resumen del estado actual y próximos pasos inmediatos |
 
 ## Especificaciones (Verdades del Repo)
 
@@ -16,6 +19,7 @@
 - [Modelo de Datos](specifications/data-model-specification.md)
 - [Átomos de Aprendizaje](specifications/learning-atom-granularity-guidelines.md)
 - [Métodos de Aprendizaje](specifications/learning-method-specification.md)
+- [Pipeline de Variantes](specifications/variant-generation-pipeline.md)
 - [Estructura del Repo](specifications/repo-structure-and-modules.md)
 - [Estándares de Código Python](specifications/python-best-practices.md)
 - [Transformación Temarios → Standards](specifications/standards-from-temarios.md)

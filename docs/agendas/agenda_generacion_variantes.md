@@ -91,6 +91,13 @@ Crear un sistema que genere variantes confiables de preguntas PAES para:
 
 ---
 
+## 📚 Documentación Técnica
+
+Para detalles de uso, CLI, arquitectura y estructura de archivos, ver:
+👉 [**Especificaciones del Pipeline de Variantes**](../specifications/variant-generation-pipeline.md)
+
+---
+
 ## 🔄 Pendientes (Casos Muy Complejos)
 - [ ] Mejorar prompt para copiar estructuras MathML complejas (sistemas de ecuaciones, tablas)
 - [x] Corrección de extracción de MathML básico (fracciones) ✅
@@ -113,40 +120,8 @@ Crear un sistema que genere variantes confiables de preguntas PAES para:
 
 ### Integración
 - [ ] Definir cómo se usarán las variantes en el sistema de diagnóstico
-- [ ] Documentar estructura de output para frontend
+- [ ] Documentar estructura de output para frontend (ver especificación)
 - [ ] Agregar variantes a la base de datos
-
----
-
-## Uso Actual
-
-```bash
-# Generar variantes para preguntas específicas
-python -m app.question_variants.run_variant_generation \
-  --source-test "Prueba-invierno-2025" \
-  --questions "Q1,Q5" \
-  --variants-per-question 2
-
-# Output en: app/data/pruebas/alternativas/
-```
-
----
-
-## Estructura de Output
-
-```
-app/data/pruebas/alternativas/
-└── Prueba-invierno-2025/
-    └── Q1/
-        ├── approved/
-        │   ├── Q1_v1/
-        │   │   ├── question.xml
-        │   │   ├── metadata_tags.json
-        │   │   └── variant_info.json
-        │   └── Q1_v2/
-        ├── rejected/
-        └── generation_report.json
-```
 
 ---
 
