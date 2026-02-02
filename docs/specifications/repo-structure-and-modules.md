@@ -111,15 +111,6 @@ configuration files).
 - `docs/analysis/`  
   Content analysis (coverage, gaps).
 
-- `docs/archive/`  
-  Historical documentation of completed work.
-
-- `docs/HANDOVER.md`  
-  Current state summary and immediate next steps.
-
-- `docs/TECHNICAL_DEBT.md`  
-  Files pending refactorization.
-
 ---
 
 ## 4. Adding a new module under `app/`
