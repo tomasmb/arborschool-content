@@ -8,6 +8,11 @@ Este script:
 3. Las sube a S3
 4. Reemplaza los data URIs con URLs S3
 5. Guarda los QTI actualizados
+
+Usage:
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --questions Q10 Q12
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --dry-run
 """
 
 import base64
@@ -19,15 +24,17 @@ from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
 
+# scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> repo root
+project_root = Path(__file__).resolve().parents[4]
+
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from modules.utils.s3_uploader import upload_image_to_s3
 
 # Load environment variables
-# Try multiple possible locations for .env
 possible_env_locations = [
-    Path(__file__).parent.parent.parent.parent / ".env",  # From scripts/ -> project root
+    project_root / ".env",
     Path(__file__).parent.parent.parent.parent.parent / ".env",  # Alternative
     Path.cwd() / ".env",  # Current directory
 ]
@@ -266,26 +273,37 @@ def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
         }
 
 
+def get_qti_dir(test_name: str) -> Path:
+    """Get the QTI directory for a test."""
+    return project_root / "app" / "data" / "pruebas" / "finalizadas" / test_name / "qti"
+
+
 def main():
     """Función principal."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Migrar QTI con imágenes base64 a S3")
-    parser.add_argument(
-        "--qti-dir", type=str, default="../../../data/pruebas/procesadas/prueba-invierno-2026/qti", help="Directorio con los QTI a migrar"
+    parser = argparse.ArgumentParser(
+        description="Migrar QTI con imágenes base64 a S3",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --questions Q10 Q12
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --dry-run
+        """,
     )
-    parser.add_argument("--questions", type=str, nargs="+", help="IDs específicos de preguntas a migrar (ej: Q10 Q12 Q13)")
-    parser.add_argument("--dry-run", action="store_true", help="Solo mostrar lo que haría sin hacer cambios")
+    parser.add_argument("--test-name", required=True, help="Name of the test (e.g., prueba-invierno-2026)")
+    parser.add_argument("--qti-dir", type=Path, help="Override: Directory with QTI files")
+    parser.add_argument("--questions", type=str, nargs="+", help="Specific question IDs to migrate (e.g., Q10 Q12)")
+    parser.add_argument("--dry-run", action="store_true", help="Only show what would be done")
 
     args = parser.parse_args()
 
-    # Resolver ruta del directorio
-    qti_dir = Path(__file__).parent / args.qti_dir
-    if not qti_dir.exists():
-        qti_dir = Path(args.qti_dir)
+    # Get QTI directory from test name or override
+    qti_dir = args.qti_dir or get_qti_dir(args.test_name)
 
     if not qti_dir.exists():
-        print(f"❌ Directorio no encontrado: {qti_dir}")
+        print(f"❌ Directory not found: {qti_dir}")
         return 1
 
     print("=" * 60)

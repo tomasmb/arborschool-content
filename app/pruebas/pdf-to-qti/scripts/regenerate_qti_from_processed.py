@@ -319,16 +319,26 @@ def regenerate_qti_from_processed(
     }
 
 
+def get_output_dir(test_name: str) -> Path:
+    """Get the QTI output directory for a test."""
+    return project_root / "app" / "data" / "pruebas" / "finalizadas" / test_name / "qti"
+
+
 def main():
     """Función principal."""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Regenerar QTI XML desde contenido ya procesado")
-    parser.add_argument("--question-numbers", nargs="+", type=int, required=True, help="Números de pregunta a procesar (ej: 19 22 23)")
-    parser.add_argument(
-        "--output-dir", default="../../data/pruebas/procesadas/seleccion-regular-2026/qti", help="Directorio base con las carpetas de preguntas"
+    parser = argparse.ArgumentParser(
+        description="Regenerar QTI XML desde contenido ya procesado",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python regenerate_qti_from_processed.py --test-name prueba-invierno-2026 --question-numbers 19 22 23
+        """,
     )
-    parser.add_argument("--test-name", default="seleccion-regular-2026", help="Nombre del test para cargar respuestas correctas")
+    parser.add_argument("--test-name", required=True, help="Nombre del test (e.g., prueba-invierno-2026)")
+    parser.add_argument("--question-numbers", nargs="+", type=int, required=True, help="Números de pregunta a procesar (ej: 19 22 23)")
+    parser.add_argument("--output-dir", type=Path, help="Override: Directorio base (default: auto-derived from test name)")
     parser.add_argument("--paes-mode", action="store_true", default=True, help="Usar modo PAES (default: True)")
 
     args = parser.parse_args()
@@ -339,7 +349,7 @@ def main():
         print("❌ No API key found. Set GEMINI_API_KEY or OPENAI_API_KEY in environment")
         sys.exit(1)
 
-    output_base_dir = Path(args.output_dir)
+    output_base_dir = args.output_dir or get_output_dir(args.test_name)
 
     print("=" * 60)
     print("Regeneración de QTI desde contenido procesado")
