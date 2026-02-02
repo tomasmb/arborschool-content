@@ -1,0 +1,325 @@
+# Code Quality Audit - TODO List
+
+> **Branch:** `refactor/code-quality-audit`  
+> **Created:** 2026-02-02  
+> **Goal:** Ensure codebase aligns with SOLID principles, file size limits, and code standards.
+
+---
+
+## Quick Reference: Standards
+
+| Metric | Limit | Ideal |
+|--------|-------|-------|
+| File size | < 500 lines | 300-400 lines |
+| Function size | < 40 lines | 25-30 lines |
+| Line length | < 150 chars | ~100 chars |
+
+---
+
+## Phase 1: Critical - Files Over 500 Lines
+
+These files exceed the hard limit and need immediate refactoring.
+
+### Priority 1: Files > 1000 Lines (Critical)
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/qti_transformer.py`** (1093 lines)
+  - [ ] Analyze responsibilities and identify logical splits
+  - [ ] Extract helper modules (e.g., `qti_builder.py`, `qti_utils.py`)
+  - [ ] Ensure no functionality loss after split
+
+- [ ] **`app/pruebas/pdf-to-qti/main.py`** (1092 lines)
+  - [ ] Extract orchestration logic vs processing logic
+  - [ ] Consider splitting into `pipeline.py` + `handlers.py`
+  - [ ] Move configuration handling to separate module if mixed
+
+### Priority 2: Files 800-1000 Lines (High)
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/pdf_processor.py`** (997 lines)
+  - [ ] Identify distinct processing stages
+  - [ ] Extract page processing, text extraction, layout analysis
+
+- [ ] **`app/atoms/prompts.py`** (862 lines)
+  - [ ] Split by prompt type/purpose
+  - [ ] Consider `prompts/generation.py`, `prompts/validation.py`, etc.
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/image_detection.py`** (826 lines)
+  - [ ] Separate detection algorithms from image utilities
+  - [ ] Extract boundary detection, region analysis, etc.
+
+- [ ] **`app/pruebas/pdf-to-qti/scripts/render_qti_to_html.py`** (806 lines)
+  - [ ] Split rendering logic from file I/O
+  - [ ] Extract template handling
+
+### Priority 3: Files 500-800 Lines (Medium)
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/validation/question_validator.py`** (787 lines)
+  - [ ] Split validation rules into separate modules
+  - [ ] Consider one file per validation type
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (685 lines)
+  - [ ] Group prompts by domain
+  - [ ] Extract prompt templates to separate file
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/ai_processing/ai_content_analyzer.py`** (584 lines)
+  - [ ] Separate analysis logic from LLM integration
+  - [ ] Extract content-specific analyzers
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/choice_diagrams.py`** (542 lines)
+  - [ ] Extract diagram detection vs processing
+
+- [ ] **`app/pruebas/pdf-splitter/modules/chunk_segmenter.py`** (534 lines)
+  - [ ] Split segmentation strategies
+
+- [ ] **`app/pruebas/pdf-splitter/modules/pdf_utils.py`** (532 lines)
+  - [ ] Group utilities by purpose
+
+- [ ] **`app/tagging/tagger.py`** (509 lines)
+  - [ ] Extract tagging strategies
+  - [ ] Separate I/O from core logic
+
+- [ ] **`app/pruebas/pdf-to-qti/scripts/migrate_s3_images_by_test.py`** (504 lines)
+  - [ ] Extract S3 utilities
+  - [ ] Separate migration logic from CLI
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/qti_configs.py`** (502 lines)
+  - [ ] Split configs by QTI version or type
+  - [ ] Consider YAML/JSON for static configs
+
+---
+
+## Phase 2: Line Length Violations (> 150 chars)
+
+Files with lines exceeding the 150-character limit.
+
+### High Priority (> 10 violations)
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (26 long lines)
+  - [ ] Break long strings using parentheses or multi-line
+  - [ ] Use variables for repeated long expressions
+
+### Medium Priority (5-10 violations)
+
+- [ ] **`app/pruebas/pdf-splitter/modules/quality_validator.py`** (9 violations)
+- [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/llm_analyzer.py`** (10 violations)
+- [ ] **`app/pruebas/pdf-splitter/modules/chunk_segmenter.py`** (9 violations)
+- [ ] **`app/atoms/validation/validation.py`** (8 violations)
+- [ ] **`app/tagging/tagger.py`** (7 violations)
+- [ ] **`app/pruebas/pdf-to-qti/modules/qti_configs.py`** (7 violations)
+
+### Lower Priority (< 5 violations)
+
+- [ ] `app/standards/prompts.py` (2 violations)
+- [ ] `app/tagging/tag_habilidades.py` (3 violations)
+- [ ] `app/question_variants/variant_generator.py` (2 violations)
+- [ ] `app/pruebas/pdf-splitter/modules/pdf_utils.py` (3 violations)
+- [ ] `app/pruebas/pdf-to-qti/scripts/force_upload_images.py` (2 violations)
+- [ ] `app/pruebas/pdf-splitter/modules/bbox_computer.py` (2 violations)
+- [ ] And others with 1 violation each...
+
+---
+
+## Phase 3: SOLID Principles Audit
+
+### S - Single Responsibility
+
+For each module, verify it has ONE clear purpose.
+
+- [ ] **`app/pruebas/pdf-to-qti/main.py`**
+  - Does it mix: CLI handling, orchestration, processing, error handling?
+  - Recommendation: Split into `cli.py`, `pipeline.py`, `orchestrator.py`
+
+- [ ] **`app/atoms/generation.py`**
+  - [ ] Review: Does it only generate atoms, or also validate/persist?
+  
+- [ ] **`app/tagging/tagger.py`**
+  - [ ] Review: Does it mix tagging logic with I/O operations?
+
+- [ ] **`app/diagnostico/engine.py`**
+  - [ ] Review: Single purpose or multiple responsibilities?
+
+### O - Open/Closed Principle
+
+Check if new features require modifying existing code or just adding new code.
+
+- [ ] **Question type handling**
+  - Can new question types be added without modifying core logic?
+  - Consider strategy pattern for extensibility
+
+- [ ] **Validation rules**
+  - Can new validators be added via registration/configuration?
+
+- [ ] **Prompt templates**
+  - Are prompts configurable without code changes?
+
+### L - Liskov Substitution
+
+Review any inheritance or protocol usage.
+
+- [ ] Scan for `class X(Y):` patterns
+- [ ] Verify derived classes don't break parent contracts
+- [ ] Check for proper use of abstract base classes
+
+### I - Interface Segregation
+
+Check for "god" modules or overly broad interfaces.
+
+- [ ] **`app/pruebas/pdf-to-qti/modules/qti_transformer.py`**
+  - Does it expose too many unrelated functions?
+  - Split into focused interfaces
+
+- [ ] **`app/utils/` modules**
+  - Are utilities properly segregated by concern?
+
+### D - Dependency Inversion
+
+High-level modules should depend on abstractions.
+
+- [ ] Check for hardcoded file paths in business logic
+- [ ] Review direct I/O calls in processing modules
+- [ ] Consider dependency injection for testability
+
+---
+
+## Phase 4: DRY Principle (Don't Repeat Yourself)
+
+### Potential Duplications to Investigate
+
+- [ ] **JSON load/save patterns**
+  - Search for repeated `json.load()` / `json.dump()` with same options
+  - Consider `app/common/io.py` helpers
+
+- [ ] **File path handling**
+  - Look for repeated path construction patterns
+  - Centralize in `app/common/paths.py`
+
+- [ ] **LLM client initialization**
+  - Multiple modules likely initialize similar clients
+  - Consider shared client factory
+
+- [ ] **Error handling patterns**
+  - Look for repeated try/except structures
+  - Consider decorators for common error handling
+
+- [ ] **Prompt construction**
+  - Multiple files build prompts similarly
+  - Centralize prompt utilities
+
+---
+
+## Phase 5: Type Hints Audit
+
+### Check for Missing Type Annotations
+
+- [ ] Run: `mypy app/ --ignore-missing-imports` (when available)
+- [ ] Or manually review public functions for missing hints
+
+### Priority Modules
+
+- [ ] **`app/atoms/`** - Core domain, should be fully typed
+- [ ] **`app/diagnostico/`** - User-facing, needs type safety
+- [ ] **`app/tagging/`** - Integration module, benefits from types
+- [ ] **`app/pruebas/pdf-to-qti/`** - Large module, prioritize public APIs
+
+### Specific Checks
+
+- [ ] Verify `from __future__ import annotations` in typed modules
+- [ ] Use `dict[str, T]` not `Dict[str, T]`
+- [ ] Use `list[T]` not `List[T]`
+
+---
+
+## Phase 6: Linting & Formatting
+
+### Setup (if not already)
+
+- [ ] Ensure `ruff` is installed: `pip install ruff`
+- [ ] Run full check: `ruff check app/`
+- [ ] Fix all errors before proceeding
+
+### Specific Ruff Rules
+
+- [ ] `E` - pycodestyle errors
+- [ ] `F` - Pyflakes
+- [ ] `W` - Warnings  
+- [ ] `I` - Import sorting
+
+### Optional Enhancements
+
+- [ ] Consider enabling complexity rules (`C901`)
+- [ ] Consider enabling docstring rules (`D`)
+
+---
+
+## Phase 7: Documentation Audit
+
+### Missing Documentation
+
+- [ ] Check all public functions have docstrings
+- [ ] Verify docstrings describe "why" not just "what"
+- [ ] Remove obsolete/outdated comments
+
+### README Files
+
+- [ ] **`app/pruebas/pdf-to-qti/README.md`** - Exists? Up to date?
+- [ ] **`app/atoms/README.md`** - Describes generation pipeline?
+- [ ] **`app/diagnostico/README.md`** - Documents engine behavior?
+
+---
+
+## Phase 8: Code Smells Checklist
+
+Review each refactored file for these smells:
+
+| Smell | Check | Fixed? |
+|-------|-------|--------|
+| Long Method | Functions > 40 lines | [ ] |
+| Large Module | Files > 500 lines | [ ] |
+| Duplicate Code | Same logic in 2+ places | [ ] |
+| Feature Envy | Function uses other module's data excessively | [ ] |
+| Magic Numbers | Hardcoded values without names | [ ] |
+| Dead Code | Commented or unused code | [ ] |
+| Long Parameter List | Functions with 5+ params | [ ] |
+
+---
+
+## Execution Order (Recommended)
+
+1. **Phase 6: Linting** - Quick wins, establishes baseline
+2. **Phase 2: Line Length** - Easy fixes, improves readability
+3. **Phase 1: File Splitting** - Most impactful, enables other changes
+4. **Phase 3: SOLID Audit** - Deep review during splitting
+5. **Phase 4: DRY** - Extract common patterns found during splitting
+6. **Phase 5: Type Hints** - Add as you touch files
+7. **Phase 7: Documentation** - Update after structural changes
+8. **Phase 8: Final Review** - Catch remaining smells
+
+---
+
+## Progress Tracking
+
+### Summary
+
+| Phase | Total Items | Completed | Progress |
+|-------|-------------|-----------|----------|
+| Phase 1 | 15 files | 0 | 0% |
+| Phase 2 | ~20 files | 0 | 0% |
+| Phase 3 | 5 principles | 0 | 0% |
+| Phase 4 | 5 areas | 0 | 0% |
+| Phase 5 | 4 modules | 0 | 0% |
+| Phase 6 | 1 task | 0 | 0% |
+| Phase 7 | 3 areas | 0 | 0% |
+| Phase 8 | Final | 0 | 0% |
+
+---
+
+## Notes
+
+- Reference: `docs/specifications/CODE_STANDARDS.md`
+- Reference: `docs/specifications/python-best-practices.md`
+- When splitting files, maintain backward compatibility with imports
+- Test thoroughly after each major refactoring
+- Commit frequently with descriptive messages
+
+---
+
+*Last updated: 2026-02-02*
