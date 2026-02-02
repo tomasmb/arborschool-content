@@ -461,11 +461,21 @@ These are improvements identified during the audit that enhance maintainability.
 - [x] **Removed duplicate function** `extract_block_text()` in `content_processor.py` - now imports from `pdf_text_processing.py`
 - [x] **Fixed path bugs** in 5 scripts that had incorrect `.parent.parent` calculation for finding `.env`
 
-### 9.3 Remaining Low-Priority Opportunities
+### 9.3 Type Safety Improvements ✅
 
-- [ ] **JSON utilities migration** - 42 files use raw `json.load/dump` instead of `data_loader.py` (optional DRY improvement)
-- [ ] **Missing READMEs** - `app/atoms/`, `app/tagging/`, `app/standards/` (optional documentation)
-- [ ] **mypy errors** - ~39 errors across priority modules (optional type safety improvement)
+- [x] **mypy errors fixed** - All 34 errors across priority modules resolved
+  - Fixed float/int type mismatches in `diagnostico/config.py`
+  - Added proper type annotations in `tagging/tag_habilidades.py`, `tagging/kg_utils.py`
+  - Fixed Protocol usage in `atoms/scripts/check_circular_dependencies.py`
+  - Added type annotations for collections in `atoms/scripts/export_skill_tree.py`
+  - Fixed None handling in `diagnostico/engine.py`, `tagging/tagger.py`
+  - Added `types-requests` to dev dependencies in `pyproject.toml`
+- [x] All mypy checks now pass: `mypy app/atoms/ app/diagnostico/ app/tagging/ --ignore-missing-imports`
+
+### 9.4 Remaining Low-Priority Opportunities
+
+- [ ] **JSON utilities migration** - 37 files use raw `json.load/dump` instead of `data_loader.py` (optional DRY improvement, better done incrementally)
+- [ ] **Missing READMEs** - `app/atoms/`, `app/tagging/`, `app/standards/` (optional, existing docs in `docs/specifications/` are sufficient)
 
 ---
 
@@ -479,11 +489,26 @@ These are improvements identified during the audit that enhance maintainability.
 
 ---
 
-*Last updated: 2026-02-02 (Session 9 - Dead Code Cleanup)*
+*Last updated: 2026-02-02 (Session 10 - Type Safety Improvements)*
 
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 10)
+- **Phase 9.3: Type Safety Improvements**
+  - Fixed all 34 mypy errors across priority modules (`app/atoms/`, `app/diagnostico/`, `app/tagging/`)
+  - Key fixes:
+    - `diagnostico/config.py`: Changed `score_ponderado` and `max_score` from int to float
+    - `tagging/tag_habilidades.py`: Refactored stats dict to use separate typed variables
+    - `tagging/kg_utils.py`: Added `set[str]` type annotation for ancestors
+    - `tagging/tagger.py`: Fixed None handling in `_save_result` and `_select_primary_heuristic`
+    - `atoms/scripts/check_circular_dependencies.py`: Added `AtomLike` Protocol with `Sequence` parameter
+    - `atoms/scripts/export_skill_tree.py`: Added type annotations for `queue` and stats dicts
+    - `diagnostico/engine.py`: Added None check for `_route` before using
+    - `gemini_client.py`: Added type annotations for `messages` and `content` lists
+  - Added `types-requests` to dev dependencies in `pyproject.toml`
+  - All checks pass: `ruff check app/`, `ruff format --check app/`, `mypy` on priority modules
 
 ### 2026-02-02 (Session 9)
 - **Phase 9.2: Dead Code Cleanup**

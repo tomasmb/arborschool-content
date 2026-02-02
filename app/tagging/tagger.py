@@ -60,7 +60,7 @@ class AtomTagger:
                         print(f"  ❌ Critical error saving raw response: {fatal}")
                 raise e
 
-    def _save_result(self, result: dict[str, Any], output_path: str, is_final: bool = False) -> None:
+    def _save_result(self, result: dict[str, Any], output_path: str | None, is_final: bool = False) -> None:
         """Saves current result state. Partial results go to a backup folder."""
         if not output_path:
             return
@@ -172,7 +172,7 @@ class AtomTagger:
         tier_2 = ["aplicar", "aplicación", "transformar", "construir", "determinación"]
         tier_3 = ["identificar", "reconocer", "evaluar", "interpretar", "representar"]
 
-        best_atom_id = ""
+        best_atom_id: str | None = None
         best_score = -1
 
         for atom in selected_atoms:
@@ -190,7 +190,11 @@ class AtomTagger:
                 best_score = score
                 best_atom_id = atom.get("atom_id")
 
-        return best_atom_id if best_atom_id else (selected_atoms[0].get("atom_id") if selected_atoms else "")
+        if best_atom_id:
+            return best_atom_id
+        if selected_atoms:
+            return selected_atoms[0].get("atom_id", "") or ""
+        return ""
 
     def tag_xml_file(self, xml_path: str, output_path: str | None = None) -> dict[str, Any] | None:
         """Tags a single XML file and optionally saves metadata."""
@@ -325,7 +329,7 @@ class AtomTagger:
 
     def _enrich_selections(self, result: dict[str, Any]) -> list[dict[str, Any]]:
         """Enrich selected atoms with full atom details."""
-        enriched = []
+        enriched: list[dict[str, Any]] = []
         if "selected_atoms" not in result or not isinstance(result["selected_atoms"], list):
             return enriched
 

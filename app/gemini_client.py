@@ -99,8 +99,8 @@ class OpenAIClient:
     ) -> str:
         headers = {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"}
 
-        messages = []
-        content = []
+        messages: list[dict[str, Any]] = []
+        content: list[dict[str, Any]] = []
 
         # Handle multimodal prompt
         if isinstance(prompt, list):

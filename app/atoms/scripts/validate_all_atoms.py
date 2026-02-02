@@ -102,8 +102,8 @@ def main() -> None:
         """Minimal Atom-like structure for circular dependency checking."""
 
         def __init__(self, atom_dict: dict[str, Any]) -> None:
-            self.id = atom_dict["id"]
-            self.prerrequisitos = atom_dict.get("prerrequisitos", [])
+            self.id: str = atom_dict["id"]
+            self.prerrequisitos: list[str] = atom_dict.get("prerrequisitos", [])
 
     atoms_for_cycles = [AtomDict(atom) for atom in atoms_list]
 

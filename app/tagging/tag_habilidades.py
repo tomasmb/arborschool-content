@@ -181,8 +181,11 @@ def process_all_questions(dry_run: bool = False):
     # Initialize service
     service = load_default_gemini_service()
 
-    # Statistics
-    stats = {"processed": 0, "skipped": 0, "errors": 0, "already_tagged": 0, "by_habilidad": {"RES": 0, "MOD": 0, "REP": 0, "ARG": 0}}
+    # Statistics - use separate typed variables to avoid union type issues
+    processed = 0
+    errors = 0
+    already_tagged = 0
+    by_habilidad: dict[str, int] = {"RES": 0, "MOD": 0, "REP": 0, "ARG": 0}
 
     for i, metadata_path in enumerate(metadata_files, 1):
         # Get question directory
@@ -194,15 +197,15 @@ def process_all_questions(dry_run: bool = False):
         # Load metadata
         metadata = load_metadata(str(metadata_path))
         if not metadata:
-            stats["errors"] += 1
+            errors += 1
             print("❌ Failed to load metadata")
             continue
 
         # Check if already tagged
         if "habilidad_principal" in metadata:
-            stats["already_tagged"] += 1
+            already_tagged += 1
             hab = metadata["habilidad_principal"].get("habilidad", "?")
-            stats["by_habilidad"][hab] = stats["by_habilidad"].get(hab, 0) + 1
+            by_habilidad[hab] = by_habilidad.get(hab, 0) + 1
             print(f"⏭️ Already tagged: {hab}")
             continue
 
@@ -221,18 +224,18 @@ def process_all_questions(dry_run: bool = False):
 
             if not dry_run:
                 if save_metadata(metadata, str(metadata_path)):
-                    stats["processed"] += 1
+                    processed += 1
                     hab = result["habilidad_principal"]
-                    stats["by_habilidad"][hab] = stats["by_habilidad"].get(hab, 0) + 1
+                    by_habilidad[hab] = by_habilidad.get(hab, 0) + 1
                     print(f"✅ {hab}")
                 else:
-                    stats["errors"] += 1
+                    errors += 1
                     print("❌ Save failed")
             else:
-                stats["processed"] += 1
+                processed += 1
                 print(f"🔍 Would tag: {result['habilidad_principal']}")
         else:
-            stats["errors"] += 1
+            errors += 1
             print("❌ Tagging failed")
 
     # Print summary
@@ -240,12 +243,12 @@ def process_all_questions(dry_run: bool = False):
     print("📊 RESUMEN DE TAGGEO DE HABILIDADES")
     print("=" * 50)
     print(f"  Total archivos:     {len(metadata_files)}")
-    print(f"  Procesados:         {stats['processed']}")
-    print(f"  Ya taggeados:       {stats['already_tagged']}")
-    print(f"  Errores:            {stats['errors']}")
+    print(f"  Procesados:         {processed}")
+    print(f"  Ya taggeados:       {already_tagged}")
+    print(f"  Errores:            {errors}")
     print("\n  Por habilidad:")
-    for hab, count in sorted(stats["by_habilidad"].items()):
-        pct = (count / max(1, stats["processed"] + stats["already_tagged"])) * 100
+    for hab, count in sorted(by_habilidad.items()):
+        pct = (count / max(1, processed + already_tagged)) * 100
         print(f"    {hab}: {count} ({pct:.1f}%)")
     print("=" * 50)
 

@@ -50,9 +50,9 @@ class KGManager:
         # Simple string match in standard_ids list
         return [atom for atom in self._atoms if standard_id in atom.get("standard_ids", [])]
 
-    def get_ancestors(self, atom_id: str) -> set:
+    def get_ancestors(self, atom_id: str) -> set[str]:
         """Returns a set of all recursive prerequisite IDs for an atom."""
-        ancestors = set()
+        ancestors: set[str] = set()
         atom = self.get_atom_by_id(atom_id)
         if not atom:
             return ancestors

@@ -203,6 +203,8 @@ class MSTEngine:
         """
         if not self.r1_responses or not self.stage2_responses:
             raise ValueError("Debe completar ambas etapas antes de obtener resultados")
+        if self._route is None:
+            raise ValueError("La ruta no ha sido determinada (falta completar R1)")
 
         all_responses = self.r1_responses + self.stage2_responses
 

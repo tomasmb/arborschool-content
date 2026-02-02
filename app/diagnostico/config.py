@@ -224,8 +224,8 @@ def get_paes_score_weighted(responses: list, route: Route) -> tuple[int, int, in
     FACTOR_RUTA = {Route.A: 0.70, Route.B: 0.85, Route.C: 1.00}
     FACTOR_COBERTURA = 0.90  # 10% de átomos no inferibles
 
-    score_ponderado = 0
-    max_score = 0
+    score_ponderado: float = 0.0
+    max_score: float = 0.0
 
     for resp in responses:
         pregunta = resp.get("question", {})
