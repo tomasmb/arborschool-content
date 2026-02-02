@@ -1,7 +1,7 @@
-"""Script para probar generación de estándares para un solo eje.
+"""CLI script to generate standards for a single eje.
 
 Usage:
-    python -m app.standards.test_single_eje --temario path/to/temario.json --eje numeros
+    python -m app.standards.run_single_eje --temario path/to/temario.json --eje numeros
 """
 
 from __future__ import annotations

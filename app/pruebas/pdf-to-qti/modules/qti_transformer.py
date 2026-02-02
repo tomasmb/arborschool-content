@@ -102,39 +102,96 @@ ENCODING_FIXES = {
 }
 
 
-def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
+def detect_encoding_errors(content: str) -> list[str]:
     """
-    Verifica y corrige automáticamente problemas de codificación comunes en el QTI XML.
+    Detect encoding error patterns in content.
 
-    Detecta y corrige errores como:
-    - Tildes mal codificados (e1cido → ácido, reflexif3n → reflexión)
-    - Letra "ñ" mal codificada (af1o → año)
-    - Signos de interrogación mal codificados (bfCue1l → ¿Cuál)
+    These patterns indicate PDF text extraction produced garbled Spanish
+    characters. The content should be REJECTED rather than auto-fixed,
+    because auto-fixing with string replacements is error-prone and could
+    introduce false positives (matching IDs, codes, URLs, etc.).
 
     Args:
-        qti_xml: El QTI XML a verificar y corregir
+        content: Text content to check (XML or plain text)
 
     Returns:
-        Tupla con (xml_corregido, se_encontraron_problemas)
+        List of found encoding error patterns (empty if clean)
+    """
+    if not content:
+        return []
+
+    found = []
+    for pattern in ENCODING_FIXES.keys():
+        if pattern in content:
+            found.append(pattern)
+        elif pattern.capitalize() in content:
+            found.append(pattern.capitalize())
+        elif pattern.upper() in content:
+            found.append(pattern.upper())
+
+    return found
+
+
+def validate_no_encoding_errors_or_raise(content: str, context: str = "content") -> None:
+    """
+    Validate that content has no encoding errors. Raises ValueError if errors found.
+
+    This should be called on content to ensure no encoding errors are present.
+    If errors are found, the pipeline should reject the content rather than
+    attempt auto-correction (which is error-prone).
+
+    Args:
+        content: Content to validate
+        context: Description of what's being validated (for error message)
+
+    Raises:
+        ValueError: If encoding errors are detected
+    """
+    errors = detect_encoding_errors(content)
+    if errors:
+        samples = errors[:5]
+        raise ValueError(
+            f"Encoding errors detected in {context}. "
+            f"Found patterns: {samples}. "
+            "This indicates PDF text extraction produced garbled Spanish characters. "
+            "The source PDF has non-standard font mappings and should be replaced."
+        )
+
+
+def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
+    """
+    DEPRECATED: Detects encoding errors but does NOT fix them.
+
+    Auto-fixing encoding errors via string replacement is error-prone
+    because it can match IDs, codes, URLs, etc. Instead, this function
+    now only DETECTS errors and logs a warning.
+
+    The pipeline should reject content with encoding errors rather than
+    attempt to fix them.
+
+    Args:
+        qti_xml: The QTI XML to check
+
+    Returns:
+        Tuple of (xml_unchanged, encoding_issues_found)
     """
     if not qti_xml:
         return qti_xml, False
 
-    # Verificar si hay problemas de codificación
-    has_issues = any(wrong in qti_xml for wrong in ENCODING_FIXES.keys())
-
-    if not has_issues:
+    errors = detect_encoding_errors_in_text(qti_xml)
+    if not errors:
         return qti_xml, False
 
-    # Aplicar correcciones en orden (más específicas primero)
-    fixed_xml = qti_xml
-    for wrong, correct in sorted(ENCODING_FIXES.items(), key=lambda x: -len(x[0])):
-        fixed_xml = fixed_xml.replace(wrong, correct)
-        # También buscar en mayúsculas/minúsculas
-        fixed_xml = fixed_xml.replace(wrong.capitalize(), correct.capitalize())
-        fixed_xml = fixed_xml.replace(wrong.upper(), correct.upper())
+    # Log warning but do NOT fix - fixing is error-prone
+    _logger.warning(
+        "Encoding errors detected in QTI XML. "
+        "Content should be rejected, not auto-fixed. "
+        f"Found {len(errors)} pattern(s): {errors[:5]}"
+    )
 
-    return fixed_xml, True
+    # Return unchanged XML with flag indicating errors were found
+    # The caller should reject this content
+    return qti_xml, True
 
 
 def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:

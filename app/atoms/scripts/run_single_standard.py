@@ -1,7 +1,7 @@
-"""Script para probar generación de átomos para un solo estándar.
+"""CLI script to generate atoms for a single standard.
 
 Usage:
-    python -m app.atoms.test_single_standard --standards path/to/standards.json --standard-id M1-NUM-01
+    python -m app.atoms.scripts.run_single_standard --standards path/to/standards.json --standard-id M1-NUM-01
 """
 
 from __future__ import annotations

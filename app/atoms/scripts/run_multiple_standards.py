@@ -1,7 +1,7 @@
-"""Script para probar generación de átomos para múltiples estándares simultáneamente.
+"""CLI script to generate atoms for multiple standards simultaneously.
 
 Usage:
-    python -m app.atoms.test_multiple_standards --standards path/to/standards.json --standard-ids M1-GEO-01 M1-PROB-01
+    python -m app.atoms.scripts.run_multiple_standards --standards path/to/standards.json --standard-ids M1-GEO-01 M1-PROB-01
 """
 
 from __future__ import annotations

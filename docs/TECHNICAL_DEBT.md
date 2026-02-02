@@ -45,23 +45,23 @@ Se recomienda refactorizarlos cuando se modifiquen, no como tarea separada.
 
 ---
 
-## Scripts Archivados
+## Scripts de Corrección - ELIMINADOS
 
-Los siguientes scripts fueron movidos a `app/pruebas/archive/fix_scripts/`:
+Los siguientes scripts de corrección fueron **eliminados** porque sus casos ahora
+son manejados por el pipeline con validación y rechazo:
 
-- `fix_images_without_api.py`
-- `fix_specific_questions.py`
-- `fix_and_organize_invierno_2025.py`
-- `fix_invierno_2025_questions.py`
-- `fix_q14_q56.py`
-- `fix_base64_in_xmls.py`
-- `fix_encoding_in_xml.py`
-- `fix_final_image_issues.py`
-- `fix_final_issues_v2.py`
-- `fix_issues_final_v3.py`
-- `fix_remaining_image_issues.py`
+| Script Eliminado | Solución en Pipeline |
+|------------------|---------------------|
+| `fix_base64_in_xmls.py` | `content_rules.validate_no_base64_images()` rechaza XML con base64 |
+| `fix_encoding_in_xml.py` | `pdf_processor.fix_encoding_in_text()` limpia texto al extraer |
+| `fix_q14_q56.py` | `output_validator.validate_single_page()` rechaza PDFs con múltiples páginas |
+| `fix_images_without_api.py` | Validación visual detecta imágenes con texto |
+| `fix_specific_questions.py` | Mismo que arriba |
+| `fix_final_image_issues.py` | Mismo que arriba |
+| `fix_*_invierno_2025.py` | `output_validator.validate_question_number_in_content()` |
 
-**Razón**: Scripts de corrección one-time que ya cumplieron su propósito.
+**Principio**: El pipeline rechaza contenido que necesitaría corrección,
+en lugar de corregirlo después de generado.
 
 ---
 

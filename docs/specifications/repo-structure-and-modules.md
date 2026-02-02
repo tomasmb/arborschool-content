@@ -76,8 +76,6 @@ configuration files).
   - `modules/`: AI processing, image processing, validation
   - `scripts/`: processing and migration scripts
 
-- `app/pruebas/archive/`  
-  Archived one-time fix scripts (historical reference only).
 
 ### Data directories
 

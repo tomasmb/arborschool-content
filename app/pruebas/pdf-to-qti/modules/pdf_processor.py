@@ -39,6 +39,7 @@ from .image_processing.multipart_images import (
     detect_part_specific_images_with_ai,
     filter_images_for_multipart_question,
 )
+from .qti_transformer import detect_encoding_errors
 from .utils import (
     combine_structured_data,
     convert_table_to_html,
@@ -89,6 +90,17 @@ def extract_pdf_content(doc: fitz.Document, openai_api_key: Optional[str] = None
 
         # Extract plain text
         plain_text = page.get_text()
+
+        # Check for encoding errors in extracted text (garbled Spanish characters)
+        # If found, log warning - the pipeline will validate and reject later
+        encoding_errors = detect_encoding_errors(plain_text)
+        if encoding_errors:
+            import logging
+            _logger = logging.getLogger(__name__)
+            _logger.warning(
+                f"PDF page {page_num} has encoding errors: {encoding_errors[:3]}. "
+                "This indicates non-standard font mappings in the PDF."
+            )
 
         # Get page image for AI analysis
         page_image = get_page_image(page)
@@ -166,11 +178,15 @@ def extract_block_text(block: Dict[str, Any]) -> str:
     """
     Extract text from a PyMuPDF text block.
 
+    Note: Does NOT auto-fix encoding errors because string replacement
+    is error-prone (could match IDs, codes, etc.). Encoding errors are
+    detected and the pipeline rejects content that has them.
+
     Args:
         block: PyMuPDF block dictionary
 
     Returns:
-        Extracted text string
+        Extracted text string (raw, without auto-correction)
     """
     text_parts = []
 
