@@ -16,11 +16,13 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..ai_processing.image_filter import get_indices_of_images_to_keep
 from ..ai_processing.table_filter import get_indices_of_tables_to_keep
+from ..pdf_text_processing import extract_block_text
 
 
 @dataclass
 class ExtractedContent:
     """Represents extracted content with placeholder information"""
+
     placeholder: str
     original_content: str
     content_type: str  # 'base64-image', 'svg', 'large-text'
@@ -28,9 +30,7 @@ class ExtractedContent:
 
 
 def extract_large_content(
-    pdf_content: Dict[str, Any],
-    prefix: str = 'P',
-    openai_api_key: Optional[str] = None
+    pdf_content: Dict[str, Any], prefix: str = "P", openai_api_key: Optional[str] = None
 ) -> Tuple[Dict[str, Any], List[ExtractedContent]]:
     """
     Extract large content from PDF data and replace with placeholders.
@@ -48,7 +48,7 @@ def extract_large_content(
     extracted_content: List[ExtractedContent] = []
     processed_content = pdf_content.copy()
 
-    images_to_process = processed_content.get('all_images', [])
+    images_to_process = processed_content.get("all_images", [])
     if images_to_process and openai_api_key:
         print(f"Filtering {len(images_to_process)} images to remove answer sheet elements...")
         indices_to_keep = get_indices_of_images_to_keep(images_to_process, openai_api_key)
@@ -57,21 +57,21 @@ def extract_large_content(
         images_to_keep_set = {id(images_to_process[i]) for i in indices_to_keep if i < len(images_to_process)}
 
         # Filter all_images and page-specific images
-        processed_content['all_images'] = [img for img in images_to_process if id(img) in images_to_keep_set]
+        processed_content["all_images"] = [img for img in images_to_process if id(img) in images_to_keep_set]
 
-        if 'pages' in processed_content:
-            for page in processed_content['pages']:
-                if 'extracted_images' in page:
-                    page['extracted_images'] = [img for img in page['extracted_images'] if id(img) in images_to_keep_set]
+        if "pages" in processed_content:
+            for page in processed_content["pages"]:
+                if "extracted_images" in page:
+                    page["extracted_images"] = [img for img in page["extracted_images"] if id(img) in images_to_keep_set]
 
         print(f"Kept {len(processed_content['all_images'])} images after filtering.")
 
     # 2. Handle extracted tables
     tables_to_process = []
-    if 'pages' in processed_content:
-        for page in processed_content['pages']:
-            if 'extracted_tables' in page:
-                tables_to_process.extend(page['extracted_tables'])
+    if "pages" in processed_content:
+        for page in processed_content["pages"]:
+            if "extracted_tables" in page:
+                tables_to_process.extend(page["extracted_tables"])
 
     if tables_to_process and openai_api_key:
         print(f"Filtering {len(tables_to_process)} tables to remove answer sheet elements...")
@@ -79,54 +79,56 @@ def extract_large_content(
 
         tables_to_keep_set = {id(tables_to_process[i]) for i in indices_to_keep if i < len(tables_to_process)}
 
-        for page in processed_content['pages']:
-            if 'extracted_tables' in page:
-                page['extracted_tables'] = [tbl for tbl in page['extracted_tables'] if id(tbl) in tables_to_keep_set]
+        for page in processed_content["pages"]:
+            if "extracted_tables" in page:
+                page["extracted_tables"] = [tbl for tbl in page["extracted_tables"] if id(tbl) in tables_to_keep_set]
 
         print(f"Kept {len(tables_to_keep_set)} tables after filtering.")
 
     # 1. Handle extracted images from PDF structure
-    if 'all_images' in processed_content and processed_content['all_images']:
+    if "all_images" in processed_content and processed_content["all_images"]:
         processed_images = []
 
-        for i, image_info in enumerate(processed_content['all_images']):
+        for i, image_info in enumerate(processed_content["all_images"]):
             # Extract ALL images as placeholders, not just large ones
-            if image_info.get('image_base64'):
+            if image_info.get("image_base64"):
                 # Create placeholder for any image with base64 data
                 placeholder_id = f"CONTENT_PLACEHOLDER_{prefix}{len(extracted_content)}"
 
-                alt_text = f'Extracted image {i+1} from page {image_info.get("page_number", 0)+1}'
-                if image_info.get('is_table'):
-                    alt_text = f'Rendered table {i+1} from page {image_info.get("page_number", 0)+1}'
+                alt_text = f"Extracted image {i + 1} from page {image_info.get('page_number', 0) + 1}"
+                if image_info.get("is_table"):
+                    alt_text = f"Rendered table {i + 1} from page {image_info.get('page_number', 0) + 1}"
 
-                extracted_content.append(ExtractedContent(
-                    placeholder=placeholder_id,
-                    original_content=f"data:image/png;base64,{image_info['image_base64']}",
-                    content_type='base64-image',
-                    metadata={
-                        'width': image_info.get('width', ''),
-                        'height': image_info.get('height', ''),
-                        'bbox': image_info.get('bbox', []),
-                        'page_number': image_info.get('page_number', 0),
-                        'ext': image_info.get('ext', 'png'),
-                        'is_table': image_info.get('is_table', False),
-                        'alt': alt_text
-                    }
-                ))
+                extracted_content.append(
+                    ExtractedContent(
+                        placeholder=placeholder_id,
+                        original_content=f"data:image/png;base64,{image_info['image_base64']}",
+                        content_type="base64-image",
+                        metadata={
+                            "width": image_info.get("width", ""),
+                            "height": image_info.get("height", ""),
+                            "bbox": image_info.get("bbox", []),
+                            "page_number": image_info.get("page_number", 0),
+                            "ext": image_info.get("ext", "png"),
+                            "is_table": image_info.get("is_table", False),
+                            "alt": alt_text,
+                        },
+                    )
+                )
 
                 # Replace image data with placeholder
                 processed_image = image_info.copy()
-                processed_image['image_base64'] = placeholder_id
+                processed_image["image_base64"] = placeholder_id
                 processed_images.append(processed_image)
             else:
                 # No image data - keep as is
                 processed_images.append(image_info)
 
-        processed_content['all_images'] = processed_images
+        processed_content["all_images"] = processed_images
 
     # 4. Process individual page images if they're large
-    if 'pages' in processed_content:
-        for i, page in enumerate(processed_content['pages']):
+    if "pages" in processed_content:
+        for i, page in enumerate(processed_content["pages"]):
             # DISABLED: Handle page_image_base64 - this was causing full page images to be embedded
             # We only want individual extracted images, not full page renders
             # if 'page_image_base64' in page and len(page['page_image_base64']) > 30000:
@@ -148,51 +150,50 @@ def extract_large_content(
             #     processed_content['pages'][i]['page_image_base64'] = placeholder_id
 
             # Handle extracted images within pages - extract ALL images
-            if 'extracted_images' in page:
+            if "extracted_images" in page:
                 processed_page_images = []
-                for j, img in enumerate(page['extracted_images']):
+                for j, img in enumerate(page["extracted_images"]):
                     # Extract ALL images as placeholders, not just large ones
-                    if img.get('image_base64'):
+                    if img.get("image_base64"):
                         placeholder_id = f"CONTENT_PLACEHOLDER_{prefix}{len(extracted_content)}"
 
-                        alt_text = f'Page {i+1} extracted image {j+1}'
-                        if img.get('is_table'):
-                            alt_text = f'Page {i+1} rendered table {j+1}'
+                        alt_text = f"Page {i + 1} extracted image {j + 1}"
+                        if img.get("is_table"):
+                            alt_text = f"Page {i + 1} rendered table {j + 1}"
 
-                        extracted_content.append(ExtractedContent(
-                            placeholder=placeholder_id,
-                            original_content=f"data:image/png;base64,{img['image_base64']}",
-                            content_type='base64-image',
-                            metadata={
-                                'width': img.get('width', ''),
-                                'height': img.get('height', ''),
-                                'bbox': img.get('bbox', []),
-                                'page_number': i,
-                                'ext': img.get('ext', 'png'),
-                                'is_table': img.get('is_table', False),
-                                'alt': alt_text
-                            }
-                        ))
+                        extracted_content.append(
+                            ExtractedContent(
+                                placeholder=placeholder_id,
+                                original_content=f"data:image/png;base64,{img['image_base64']}",
+                                content_type="base64-image",
+                                metadata={
+                                    "width": img.get("width", ""),
+                                    "height": img.get("height", ""),
+                                    "bbox": img.get("bbox", []),
+                                    "page_number": i,
+                                    "ext": img.get("ext", "png"),
+                                    "is_table": img.get("is_table", False),
+                                    "alt": alt_text,
+                                },
+                            )
+                        )
 
                         processed_img = img.copy()
-                        processed_img['image_base64'] = placeholder_id
+                        processed_img["image_base64"] = placeholder_id
                         processed_page_images.append(processed_img)
                     else:
                         processed_page_images.append(img)
 
-                processed_content['pages'][i]['extracted_images'] = processed_page_images
+                processed_content["pages"][i]["extracted_images"] = processed_page_images
 
     # Ensure AI analysis is preserved if it exists
-    if 'ai_analysis' in pdf_content:
-        processed_content['ai_analysis'] = pdf_content['ai_analysis']
+    if "ai_analysis" in pdf_content:
+        processed_content["ai_analysis"] = pdf_content["ai_analysis"]
 
     return processed_content, extracted_content
 
 
-def restore_large_content(
-    qti_xml: str,
-    extracted_content: List[ExtractedContent]
-) -> str:
+def restore_large_content(qti_xml: str, extracted_content: List[ExtractedContent]) -> str:
     """
     Restore placeholders with original content in QTI XML.
 
@@ -210,12 +211,9 @@ def restore_large_content(
 
     # First, handle explicit placeholders
     for content in extracted_content:
-        if content.content_type == 'base64-image':
+        if content.content_type == "base64-image":
             # Replace explicit placeholder with actual base64 data URL
-            restored_xml = restored_xml.replace(
-                content.placeholder,
-                content.original_content
-            )
+            restored_xml = restored_xml.replace(content.placeholder, content.original_content)
 
     return restored_xml
 
@@ -236,35 +234,35 @@ def embed_pdf_images_as_base64(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     processed_content = pdf_content.copy()
 
     # Ensure main image is properly formatted
-    if 'image_base64' in processed_content and processed_content['image_base64']:
-        image_data = processed_content['image_base64']
-        if not image_data.startswith('data:') and not image_data.startswith('CONTENT_PLACEHOLDER'):
-            processed_content['image_base64'] = f"data:image/png;base64,{image_data}"
+    if "image_base64" in processed_content and processed_content["image_base64"]:
+        image_data = processed_content["image_base64"]
+        if not image_data.startswith("data:") and not image_data.startswith("CONTENT_PLACEHOLDER"):
+            processed_content["image_base64"] = f"data:image/png;base64,{image_data}"
 
     # Process all extracted images
-    if 'all_images' in processed_content:
-        for image_info in processed_content['all_images']:
-            if 'image_base64' in image_info and image_info['image_base64']:
-                image_data = image_info['image_base64']
-                if not image_data.startswith('data:') and not image_data.startswith('CONTENT_PLACEHOLDER'):
-                    image_info['image_base64'] = f"data:image/png;base64,{image_data}"
+    if "all_images" in processed_content:
+        for image_info in processed_content["all_images"]:
+            if "image_base64" in image_info and image_info["image_base64"]:
+                image_data = image_info["image_base64"]
+                if not image_data.startswith("data:") and not image_data.startswith("CONTENT_PLACEHOLDER"):
+                    image_info["image_base64"] = f"data:image/png;base64,{image_data}"
 
     # Process page images
-    if 'pages' in processed_content:
-        for page in processed_content['pages']:
+    if "pages" in processed_content:
+        for page in processed_content["pages"]:
             # Handle page_image_base64 (renamed from image_base64)
-            if 'page_image_base64' in page and page['page_image_base64']:
-                image_data = page['page_image_base64']
-                if not image_data.startswith('data:') and not image_data.startswith('CONTENT_PLACEHOLDER'):
-                    page['page_image_base64'] = f"data:image/png;base64,{image_data}"
+            if "page_image_base64" in page and page["page_image_base64"]:
+                image_data = page["page_image_base64"]
+                if not image_data.startswith("data:") and not image_data.startswith("CONTENT_PLACEHOLDER"):
+                    page["page_image_base64"] = f"data:image/png;base64,{image_data}"
 
             # Handle extracted images within pages
-            if 'extracted_images' in page:
-                for image_info in page['extracted_images']:
-                    if 'image_base64' in image_info and image_info['image_base64']:
-                        image_data = image_info['image_base64']
-                        if not image_data.startswith('data:') and not image_data.startswith('CONTENT_PLACEHOLDER'):
-                            image_info['image_base64'] = f"data:image/png;base64,{image_data}"
+            if "extracted_images" in page:
+                for image_info in page["extracted_images"]:
+                    if "image_base64" in image_info and image_info["image_base64"]:
+                        image_data = image_info["image_base64"]
+                        if not image_data.startswith("data:") and not image_data.startswith("CONTENT_PLACEHOLDER"):
+                            image_info["image_base64"] = f"data:image/png;base64,{image_data}"
 
     return processed_content
 
@@ -303,7 +301,7 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
             extracted_tables = page.get("extracted_tables", [])
             for table in extracted_tables:
                 if table.get("html_content"):
-                    table_info = f"Page {page.get('page_number', 0)+1} table ({table.get('rows', '?')}x{table.get('cols', '?')} cells)"
+                    table_info = f"Page {page.get('page_number', 0) + 1} table ({table.get('rows', '?')}x{table.get('cols', '?')} cells)"
                     tables_found.append(table_info)
                     summary_parts.append(f"Table found: {table_info}")
                     summary_parts.append(f"Table content:\n{table.get('html_content', '')}")
@@ -333,7 +331,7 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
             priority_blocks = []
 
             # Check if we have AI categorization available
-            ai_categories = pdf_content.get('ai_analysis', {}).get('ai_categories', {})
+            ai_categories = pdf_content.get("ai_analysis", {}).get("ai_categories", {})
 
             # Initialize lists to hold categorized blocks
             answer_choice_blocks = []
@@ -347,17 +345,17 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
                     block_text = extract_block_text(block)
                     if block_text and len(block_text.strip()) > 1:
                         block_num = i + 1  # AI uses 1-indexed
-                        category = ai_categories.get(block_num, 'unknown')
+                        category = ai_categories.get(block_num, "unknown")
 
                         # Check for Part A/B patterns even in AI categorization
-                        part_patterns = [r'^[A-Z]\.\s', r'^[A-Z]\.\t', r'^Part\s+[A-Z]']
+                        part_patterns = [r"^[A-Z]\.\s", r"^[A-Z]\.\t", r"^Part\s+[A-Z]"]
                         is_part_block = any(re.match(pattern, block_text.strip()) for pattern in part_patterns)
 
                         if is_part_block:
                             part_blocks.append((i, block, block_text))
-                        elif category == 'answer_choice':
+                        elif category == "answer_choice":
                             answer_choice_blocks.append((i, block, block_text))
-                        elif category == 'question_text':
+                        elif category == "question_text":
                             question_blocks.append((i, block, block_text))
                         elif len(block_text.strip()) > 10:
                             other_blocks.append((i, block, block_text))
@@ -385,11 +383,11 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
 
             for i, (block_idx, block, block_text) in enumerate(blocks_to_show):
                 # Don't truncate Part A/B content - show more
-                if any(pattern in block_text for pattern in ['A.', 'B.', 'Part A', 'Part B']):
+                if any(pattern in block_text for pattern in ["A.", "B.", "Part A", "Part B"]):
                     display_text = block_text[:150] + "..." if len(block_text) > 150 else block_text
                 else:
                     display_text = block_text[:80] + "..." if len(block_text) > 80 else block_text
-                sample_texts.append(f"Block {block_idx+1}: {display_text}")
+                sample_texts.append(f"Block {block_idx + 1}: {display_text}")
 
             if sample_texts:
                 summary_parts.append("Sample content:")
@@ -405,31 +403,10 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
                 summary_parts.append(f"✓ Found {len(part_blocks)} multi-part question blocks (A/B) in sample")
 
     # Visual content
-    if pdf_content.get('image_base64'):
+    if pdf_content.get("image_base64"):
         summary_parts.append("Visual: PDF page image available")
 
     return "\n".join(summary_parts)
-
-
-def extract_block_text(block: Dict[str, Any]) -> str:
-    """
-    Extract text from a PyMuPDF text block.
-
-    Args:
-        block: PyMuPDF block dictionary
-
-    Returns:
-        Extracted text string
-    """
-    text_parts = []
-
-    for line in block.get('lines', []):
-        line_text = ""
-        for span in line.get('spans', []):
-            line_text += span.get('text', '')
-        text_parts.append(line_text)
-
-    return " ".join(text_parts).strip()
 
 
 def clean_pdf_content_for_llm(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
@@ -445,45 +422,40 @@ def clean_pdf_content_for_llm(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
     cleaned_content = pdf_content.copy()
 
     # Clean combined text
-    if 'combined_text' in cleaned_content:
-        text = cleaned_content['combined_text']
+    if "combined_text" in cleaned_content:
+        text = cleaned_content["combined_text"]
         # Remove excessive whitespace
-        text = ' '.join(text.split())
+        text = " ".join(text.split())
         # Remove control characters
-        text = ''.join(char for char in text if ord(char) >= 32 or char in '\n\t')
-        cleaned_content['combined_text'] = text
+        text = "".join(char for char in text if ord(char) >= 32 or char in "\n\t")
+        cleaned_content["combined_text"] = text
 
     # Clean structured data if present
-    if 'structured_data' in cleaned_content:
+    if "structured_data" in cleaned_content:
         # Process structured data for LLM consumption - NO ARBITRARY LIMITS
         # GPT-5.1 has large token context, so let it handle the full content
-        structured = cleaned_content['structured_data']
-        if isinstance(structured, dict) and 'blocks' in structured:
-            all_blocks = structured.get('blocks', [])
+        structured = cleaned_content["structured_data"]
+        if isinstance(structured, dict) and "blocks" in structured:
+            all_blocks = structured.get("blocks", [])
 
             # Process all blocks, just clean up the content format
             essential_blocks = []
             for block in all_blocks:
-                if block.get('type') == 0:  # Text block
-                    essential_blocks.append({
-                        'type': block.get('type'),
-                        'bbox': block.get('bbox'),
-                        'text': extract_block_text(block)  # Keep full text, no arbitrary truncation
-                    })
-                elif block.get('type') == 1:  # Image block
-                    essential_blocks.append({
-                        'type': block.get('type'),
-                        'bbox': block.get('bbox'),
-                        'width': block.get('width'),
-                        'height': block.get('height')
-                    })
+                if block.get("type") == 0:  # Text block
+                    essential_blocks.append(
+                        {
+                            "type": block.get("type"),
+                            "bbox": block.get("bbox"),
+                            "text": extract_block_text(block),  # Keep full text, no arbitrary truncation
+                        }
+                    )
+                elif block.get("type") == 1:  # Image block
+                    essential_blocks.append(
+                        {"type": block.get("type"), "bbox": block.get("bbox"), "width": block.get("width"), "height": block.get("height")}
+                    )
 
             print(f"📝 Processing {len(essential_blocks)} blocks for LLM analysis")
 
-            cleaned_content['structured_data'] = {
-                'width': structured.get('width'),
-                'height': structured.get('height'),
-                'blocks': essential_blocks
-            }
+            cleaned_content["structured_data"] = {"width": structured.get("width"), "height": structured.get("height"), "blocks": essential_blocks}
 
     return cleaned_content

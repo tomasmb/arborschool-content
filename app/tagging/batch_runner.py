@@ -13,7 +13,7 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
     # Recursive search for question.xml
     patterns = [
         os.path.join(base_dir, "**", "question.xml"),
-        os.path.join(base_dir, "**", "*.xml") # Catch flat files too
+        os.path.join(base_dir, "**", "*.xml"),  # Catch flat files too
     ]
 
     xml_files = set()
@@ -41,7 +41,7 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
             base_name = os.path.splitext(file_name)[0]
             output_path = os.path.join(dir_name, f"{base_name}_metadata_tags.json")
 
-        print(f"[{i+1}/{total_files}] Processing {xml_path}...")
+        print(f"[{i + 1}/{total_files}] Processing {xml_path}...")
 
         # Check if output exists (optional skip logic)
         if os.path.exists(output_path):
@@ -63,14 +63,15 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
         # Rate limiting sleep
         time.sleep(2)
 
-    print("\n" + "="*40)
+    print("\n" + "=" * 40)
     print("BATCH TAGGING COMPLETE")
-    print("="*40)
+    print("=" * 40)
     print(f"Total Files: {total_files}")
     print(f"Success:     {success_count}")
     print(f"Failed:      {fail_count}")
     print(f"Skipped:     {skipped_count}")
-    print("="*40)
+    print("=" * 40)
+
 
 if __name__ == "__main__":
     run_batch()

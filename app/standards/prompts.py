@@ -69,6 +69,7 @@ EXAMPLE_STANDARD = {
 # Generation prompt
 # -----------------------------------------------------------------------------
 
+
 def build_generation_prompt(
     unidad_data: dict[str, Any],
     eje_key: str,
@@ -130,8 +131,11 @@ Genera UN estándar canónico en JSON que cubra la unidad temática. Requisitos:
 4. Mínimo 3 items en "incluye", "no_incluye", "subcontenidos_clave".
 5. Mínimo 2 items en "ejemplos_conceptuales".
 6. NO usar LaTeX; usar texto plano para notación matemática.
-7. "subcontenidos_clave": cada item debe ser específico y atómico (ej: "Suma de números enteros con mismo signo" en vez de "Operaciones con enteros").
-8. "habilidades_relacionadas": revisa exhaustivamente las 4 habilidades (resolver_problemas, modelar, representar, argumentar) e incluye TODAS las que sean relevantes. Para cada habilidad incluida, selecciona TODOS los criterios de evaluación que apliquen, no solo uno o dos.
+7. "subcontenidos_clave": cada item debe ser específico y atómico (ej: "Suma de números
+   enteros con mismo signo" en vez de "Operaciones con enteros").
+8. "habilidades_relacionadas": revisa exhaustivamente las 4 habilidades (resolver_problemas,
+   modelar, representar, argumentar) e incluye TODAS las que sean relevantes. Para cada
+   habilidad incluida, selecciona TODOS los criterios de evaluación que apliquen.
 </rules>
 
 <output_format>
@@ -139,13 +143,16 @@ Responde SOLO con el objeto JSON del estándar. Sin markdown, sin explicaciones.
 </output_format>
 
 <final_instruction>
-Basándote en la unidad y habilidades del contexto, genera el estándar canónico en JSON. Revisa cuidadosamente todas las habilidades para identificar las relevantes y sus criterios aplicables.
+Basándote en la unidad y habilidades del contexto, genera el estándar canónico en JSON.
+Revisa cuidadosamente todas las habilidades para identificar las relevantes y sus
+criterios aplicables.
 </final_instruction>"""
 
 
 # -----------------------------------------------------------------------------
 # Per-unidad validation prompt
 # -----------------------------------------------------------------------------
+
 
 def build_single_standard_validation_prompt(
     standard_dict: dict[str, Any],
@@ -222,6 +229,7 @@ Revisa el estándar contra el checklist. Reporta problemas y corrige si hay erro
 # -----------------------------------------------------------------------------
 # Per-eje validation prompt
 # -----------------------------------------------------------------------------
+
 
 def build_eje_validation_prompt(
     standards: list[dict[str, Any]],

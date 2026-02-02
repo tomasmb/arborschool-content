@@ -11,9 +11,7 @@ import fitz  # type: ignore
 
 
 def construct_multiple_image_areas(
-    page: fitz.Page,
-    question_answer_blocks: List[List[float]],
-    image_label_blocks: List[List[float]]
+    page: fitz.Page, question_answer_blocks: List[List[float]], image_label_blocks: List[List[float]]
 ) -> List[List[float]]:
     """
     Constructs one or more image areas based on label clustering and the presence of
@@ -30,7 +28,7 @@ def construct_multiple_image_areas(
     if image_label_blocks:
         current_cluster = [image_label_blocks[0]]
         for i in range(1, len(image_label_blocks)):
-            prev_bbox = image_label_blocks[i-1]
+            prev_bbox = image_label_blocks[i - 1]
             current_bbox = image_label_blocks[i]
             vertical_gap = current_bbox[1] - prev_bbox[3]
 
@@ -91,9 +89,7 @@ def construct_multiple_image_areas(
 
 
 def construct_image_area_including_labels(
-    page: fitz.Page,
-    question_answer_blocks: List[List[float]],
-    image_label_blocks: List[List[float]]
+    page: fitz.Page, question_answer_blocks: List[List[float]], image_label_blocks: List[List[float]]
 ) -> Optional[List[float]]:
     """
     Construct image area that INCLUDES the image label blocks and finds the visual content around them.
@@ -191,9 +187,7 @@ def construct_image_area_including_labels(
 
 
 def construct_image_area_from_gaps_flexible(
-    page: fitz.Page,
-    question_answer_blocks: List[List[float]],
-    all_text_bboxes: List[List[float]]
+    page: fitz.Page, question_answer_blocks: List[List[float]], all_text_bboxes: List[List[float]]
 ) -> Optional[List[float]]:
     """
     Flexible gap detection for images without labels.
@@ -214,7 +208,7 @@ def construct_image_area_from_gaps_flexible(
 
     print(f"🔍 📋 Analyzing {len(qa_blocks_sorted)} Q&A blocks for gaps:")
     for i, bbox in enumerate(qa_blocks_sorted):
-        print(f"🔍   Block {i+1}: y={bbox[1]:.1f} to {bbox[3]:.1f} (height: {bbox[3]-bbox[1]:.1f})")
+        print(f"🔍   Block {i + 1}: y={bbox[1]:.1f} to {bbox[3]:.1f} (height: {bbox[3] - bbox[1]:.1f})")
 
     # Collect potential gaps with more flexible thresholds
     potential_gaps = []
@@ -222,13 +216,7 @@ def construct_image_area_from_gaps_flexible(
     # Gap from top of page to first block
     if qa_blocks_sorted[0][1] > margin:
         gap_size = qa_blocks_sorted[0][1] - margin
-        potential_gaps.append({
-            "size": gap_size,
-            "start": margin,
-            "end": qa_blocks_sorted[0][1] - margin,
-            "type": "top",
-            "priority": 2
-        })
+        potential_gaps.append({"size": gap_size, "start": margin, "end": qa_blocks_sorted[0][1] - margin, "type": "top", "priority": 2})
         print(f"🔍 📐 Top gap: {gap_size:.1f}px")
 
     # Gaps between consecutive blocks
@@ -238,14 +226,8 @@ def construct_image_area_from_gaps_flexible(
         gap_size = next_top - current_bottom
 
         if gap_size > 0:  # Any positive gap
-            potential_gaps.append({
-                "size": gap_size,
-                "start": current_bottom + margin,
-                "end": next_top - margin,
-                "type": "between",
-                "priority": 3
-            })
-            print(f"🔍 📐 Between gap {i+1}: {gap_size:.1f}px")
+            potential_gaps.append({"size": gap_size, "start": current_bottom + margin, "end": next_top - margin, "type": "between", "priority": 3})
+            print(f"🔍 📐 Between gap {i + 1}: {gap_size:.1f}px")
 
     # Gap from last block to page bottom (conservative)
     effective_page_bottom = page_height - margin
@@ -262,13 +244,9 @@ def construct_image_area_from_gaps_flexible(
     if qa_blocks_sorted[-1][3] < effective_page_bottom:
         gap_size = effective_page_bottom - qa_blocks_sorted[-1][3] - margin
         if gap_size > 0:
-            potential_gaps.append({
-                "size": gap_size,
-                "start": qa_blocks_sorted[-1][3] + margin,
-                "end": effective_page_bottom,
-                "type": "bottom",
-                "priority": 1
-            })
+            potential_gaps.append(
+                {"size": gap_size, "start": qa_blocks_sorted[-1][3] + margin, "end": effective_page_bottom, "type": "bottom", "priority": 1}
+            )
             print(f"🔍 📐 Bottom gap: {gap_size:.1f}px")
 
     # Use flexible thresholds based on context
@@ -324,10 +302,7 @@ def construct_image_area_from_gaps_flexible(
 
 
 def construct_image_bbox_from_gaps(
-    page: fitz.Page,
-    question_answer_blocks: List[List[float]],
-    image_label_blocks: List[List[float]],
-    all_page_text_bboxes: List[List[float]]
+    page: fitz.Page, question_answer_blocks: List[List[float]], image_label_blocks: List[List[float]], all_page_text_bboxes: List[List[float]]
 ) -> Optional[List[float]]:
     """Construct image bbox by finding gaps between question/answer text blocks."""
     if not question_answer_blocks:
@@ -344,26 +319,14 @@ def construct_image_bbox_from_gaps(
     # Check gap from top of page to first block
     if qa_blocks_sorted[0][1] > margin:
         gap_size = qa_blocks_sorted[0][1] - margin
-        potential_gaps.append({
-            "size": gap_size,
-            "start": margin,
-            "end": qa_blocks_sorted[0][1] - margin,
-            "type": "top",
-            "priority": 2
-        })
+        potential_gaps.append({"size": gap_size, "start": margin, "end": qa_blocks_sorted[0][1] - margin, "type": "top", "priority": 2})
 
     # Check gaps between consecutive blocks
     for i in range(len(qa_blocks_sorted) - 1):
         current_bottom = qa_blocks_sorted[i][3]
         next_top = qa_blocks_sorted[i + 1][1]
         gap_size = next_top - current_bottom
-        potential_gaps.append({
-            "size": gap_size,
-            "start": current_bottom + margin,
-            "end": next_top - margin,
-            "type": "between",
-            "priority": 3
-        })
+        potential_gaps.append({"size": gap_size, "start": current_bottom + margin, "end": next_top - margin, "type": "between", "priority": 3})
 
     # Determine effective page bottom considering all text blocks to avoid footer overlap
     effective_page_bottom_for_image = page_height - margin
@@ -373,24 +336,18 @@ def construct_image_bbox_from_gaps(
         # Consider text blocks that are strictly below the last QA block
         # Use a small buffer (margin / 2) to ensure clear separation before considering a block as "below"
         if text_bbox[1] > last_qa_block_bottom + (margin / 2):
-            potential_new_image_bottom = text_bbox[1] - margin # Image should end above this block
+            potential_new_image_bottom = text_bbox[1] - margin  # Image should end above this block
             if potential_new_image_bottom < effective_page_bottom_for_image:
                 effective_page_bottom_for_image = potential_new_image_bottom
 
     # Check gap from last block to determined effective bottom
-    if qa_blocks_sorted[-1][3] < effective_page_bottom_for_image: # Check if there's any space left
+    if qa_blocks_sorted[-1][3] < effective_page_bottom_for_image:  # Check if there's any space left
         gap_start_y = qa_blocks_sorted[-1][3] + margin
         gap_end_y = effective_page_bottom_for_image
 
         if gap_end_y > gap_start_y:  # Ensure there's a valid positive-sized gap
             gap_size = gap_end_y - gap_start_y
-            potential_gaps.append({
-                "size": gap_size,
-                "start": gap_start_y,
-                "end": gap_end_y,
-                "type": "bottom",
-                "priority": 1
-            })
+            potential_gaps.append({"size": gap_size, "start": gap_start_y, "end": gap_end_y, "type": "bottom", "priority": 1})
 
     # Filter gaps that are large enough
     valid_gaps = [gap for gap in potential_gaps if gap["size"] >= 100]
@@ -404,8 +361,7 @@ def construct_image_bbox_from_gaps(
     valid_gaps.sort(key=lambda g: (-g["priority"], -g["size"]))
 
     best_gap = valid_gaps[0]
-    print(f"🧠 ✅ Selected {best_gap['type']} gap: {best_gap['size']:.0f}px "
-          f"(priority {best_gap['priority']})")
+    print(f"🧠 ✅ Selected {best_gap['type']} gap: {best_gap['size']:.0f}px (priority {best_gap['priority']})")
 
     left_bound = margin
     right_bound = page_width - margin

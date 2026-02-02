@@ -2,14 +2,10 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from pathlib import Path
 
 from PyPDF2 import PdfReader
 
-BASE_DIR = Path(__file__).resolve().parents[1]  # points to app/
-DATA_DIR = BASE_DIR / "data" / "temarios"
-PDF_DIR = DATA_DIR / "pdf"
-JSON_DIR = DATA_DIR / "json"
+from app.utils.paths import TEMARIOS_JSON_DIR, TEMARIOS_PDF_DIR
 
 
 @dataclass
@@ -348,7 +344,7 @@ def parse_axes(text: str, cfg: TemarioConfig) -> dict[str, object]:
 
 
 def build_structured_temario(cfg: TemarioConfig) -> dict[str, object]:
-    pdf_path = PDF_DIR / f"{cfg.stem}.pdf"
+    pdf_path = TEMARIOS_PDF_DIR / f"{cfg.stem}.pdf"
     reader = PdfReader(str(pdf_path))
     pages: list[str] = []
     for page in reader.pages:
@@ -371,10 +367,10 @@ def build_structured_temario(cfg: TemarioConfig) -> dict[str, object]:
 
 
 def build_all_temarios() -> None:
-    JSON_DIR.mkdir(parents=True, exist_ok=True)
+    TEMARIOS_JSON_DIR.mkdir(parents=True, exist_ok=True)
     for cfg in TEMARIO_CONFIGS:
         data = build_structured_temario(cfg)
-        out_path = JSON_DIR / cfg.out_name
+        out_path = TEMARIOS_JSON_DIR / cfg.out_name
         out_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"Wrote {out_path}")
 
@@ -386,4 +382,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

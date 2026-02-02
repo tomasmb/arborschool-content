@@ -14,12 +14,7 @@ def check_question(question_num: int, output_dir: Path) -> dict:
     xml_path = output_dir / f"question_{question_num_str}" / "question.xml"
 
     if not xml_path.exists():
-        return {
-            "exists": False,
-            "encoding_issues": [],
-            "missing_content": [],
-            "mathml_issues": []
-        }
+        return {"exists": False, "encoding_issues": [], "missing_content": [], "mathml_issues": []}
 
     try:
         tree = ET.parse(xml_path)
@@ -28,36 +23,50 @@ def check_question(question_num: int, output_dir: Path) -> dict:
         # Extraer todo el texto del item-body
         item_body = None
         for elem in root.iter():
-            if 'item-body' in elem.tag.lower():
+            if "item-body" in elem.tag.lower():
                 item_body = elem
                 break
 
         if item_body is None:
-            return {
-                "exists": True,
-                "encoding_issues": [],
-                "missing_content": ["No se encontró item-body"],
-                "mathml_issues": []
-            }
+            return {"exists": True, "encoding_issues": [], "missing_content": ["No se encontró item-body"], "mathml_issues": []}
 
         # Extraer texto completo
-        text = ET.tostring(item_body, encoding='unicode', method='text')
+        text = ET.tostring(item_body, encoding="unicode", method="text")
 
         # Verificar problemas de codificación comunes
         encoding_issues = []
         problematic_patterns = [
-            ('e1', 'á'), ('f3', 'ó'), ('e9', 'é'), ('ed', 'í'), ('fa', 'ú'),
-            ('f1', 'ñ'), ('bfCue1l', '¿Cuál'), ('af1o', 'año'),
-            ('bfcue1ntos', '¿cuántos'), ('bfcue1les', '¿cuáles'),
-            ('producif3n', 'producción'), ('tecnolf3gica', 'tecnológica'),
-            ('sere1', 'será'), ('produciredan', 'producirían'),
-            ('cumplif3', 'cumplió'), ('me1s', 'más'), ('d1a', 'día'),
-            ('d1as', 'días'), ('Mi1rcoles', 'Miércoles'),
-            ('reflexif3n', 'reflexión'), ('traslacif3n', 'traslación'),
-            ('isome9tricas', 'isométricas'), ('ve9rtice', 'vértice'),
-            ('Gr1fico', 'Gráfico'), ('c1cido', 'ácido'), ('c1tomo', 'átomo'),
-            ('e1tomo', 'átomo'), ('oxedgeno', 'oxígeno'), ('hidrf3geno', 'hidrógeno'),
-            ('azufre', 'azufre'), ('sulffarico', 'sulfúrico')
+            ("e1", "á"),
+            ("f3", "ó"),
+            ("e9", "é"),
+            ("ed", "í"),
+            ("fa", "ú"),
+            ("f1", "ñ"),
+            ("bfCue1l", "¿Cuál"),
+            ("af1o", "año"),
+            ("bfcue1ntos", "¿cuántos"),
+            ("bfcue1les", "¿cuáles"),
+            ("producif3n", "producción"),
+            ("tecnolf3gica", "tecnológica"),
+            ("sere1", "será"),
+            ("produciredan", "producirían"),
+            ("cumplif3", "cumplió"),
+            ("me1s", "más"),
+            ("d1a", "día"),
+            ("d1as", "días"),
+            ("Mi1rcoles", "Miércoles"),
+            ("reflexif3n", "reflexión"),
+            ("traslacif3n", "traslación"),
+            ("isome9tricas", "isométricas"),
+            ("ve9rtice", "vértice"),
+            ("Gr1fico", "Gráfico"),
+            ("c1cido", "ácido"),
+            ("c1tomo", "átomo"),
+            ("e1tomo", "átomo"),
+            ("oxedgeno", "oxígeno"),
+            ("hidrf3geno", "hidrógeno"),
+            ("azufre", "azufre"),
+            ("sulffarico", "sulfúrico"),
         ]
 
         for pattern, correct in problematic_patterns:
@@ -66,8 +75,8 @@ def check_question(question_num: int, output_dir: Path) -> dict:
 
         # Verificar problemas de MathML
         mathml_issues = []
-        math_elements = item_body.findall('.//{http://www.w3.org/1998/Math/MathML}math')
-        math_elements.extend(item_body.findall('.//math'))
+        math_elements = item_body.findall(".//{http://www.w3.org/1998/Math/MathML}math")
+        math_elements.extend(item_body.findall(".//math"))
 
         # Verificar si hay sistemas de ecuaciones mal estructurados (pregunta 35)
         if question_num == 35:
@@ -76,10 +85,10 @@ def check_question(question_num: int, output_dir: Path) -> dict:
                 # Verificar si están en un mtable
                 mtable_found = False
                 for math in math_elements:
-                    if math.find('.//{http://www.w3.org/1998/Math/MathML}mtable') is not None:
+                    if math.find(".//{http://www.w3.org/1998/Math/MathML}mtable") is not None:
                         mtable_found = True
                         break
-                    if math.find('.//mtable') is not None:
+                    if math.find(".//mtable") is not None:
                         mtable_found = True
                         break
                 if not mtable_found and math_count >= 2:
@@ -88,40 +97,31 @@ def check_question(question_num: int, output_dir: Path) -> dict:
         # Verificar contenido faltante específico
         missing_content = []
         if question_num == 7:
-            if 'paso' not in text.lower() and 'step' not in text.lower():
+            if "paso" not in text.lower() and "step" not in text.lower():
                 missing_content.append("No se encontraron referencias a 'paso' o 'step'")
 
         if question_num == 9:
             # Verificar si hay imagen
-            img_elements = item_body.findall('.//img')
+            img_elements = item_body.findall(".//img")
             if len(img_elements) == 0:
                 missing_content.append("No se encontró imagen (gráfico)")
 
         if question_num == 36:
             # Verificar pasos
-            paso_count = text.lower().count('paso')
+            paso_count = text.lower().count("paso")
             if paso_count < 4:
                 missing_content.append(f"Solo se encontraron {paso_count} referencias a 'paso' (deberían ser 4)")
 
         if question_num == 63:
             # Verificar instrucciones del juego
-            if 'instrucc' not in text.lower() and 'regla' not in text.lower():
+            if "instrucc" not in text.lower() and "regla" not in text.lower():
                 missing_content.append("No se encontraron instrucciones o reglas del juego")
 
-        return {
-            "exists": True,
-            "encoding_issues": encoding_issues,
-            "missing_content": missing_content,
-            "mathml_issues": mathml_issues
-        }
+        return {"exists": True, "encoding_issues": encoding_issues, "missing_content": missing_content, "mathml_issues": mathml_issues}
 
     except Exception as e:
-        return {
-            "exists": True,
-            "encoding_issues": [],
-            "missing_content": [f"Error al procesar: {str(e)}"],
-            "mathml_issues": []
-        }
+        return {"exists": True, "encoding_issues": [], "missing_content": [f"Error al procesar: {str(e)}"], "mathml_issues": []}
+
 
 def main():
     """Main entry point."""
@@ -147,11 +147,7 @@ def main():
             print(f"❌ Pregunta {q_num}: Archivo no encontrado")
             continue
 
-        has_qti_issues = (
-            len(result["encoding_issues"]) > 0 or
-            len(result["missing_content"]) > 0 or
-            len(result["mathml_issues"]) > 0
-        )
+        has_qti_issues = len(result["encoding_issues"]) > 0 or len(result["missing_content"]) > 0 or len(result["mathml_issues"]) > 0
 
         if has_qti_issues:
             qti_issues.append(q_num)
@@ -193,6 +189,7 @@ def main():
         print("   en el pipeline de generación de QTI, no solo en el renderizado HTML.")
     else:
         print("✅ Todos los problemas reportados son solo de renderizado HTML.")
+
 
 if __name__ == "__main__":
     main()

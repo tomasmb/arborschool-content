@@ -8,18 +8,15 @@ Incluye:
 """
 
 import json
-from pathlib import Path
 from typing import Dict, List
+
+from app.utils.paths import get_question_metadata_path
 
 from .config import Route, get_paes_score
 from .engine import Response, ResponseType
 
 
-def calculate_paes_score(
-    route: Route,
-    r1_correct: int,
-    stage2_correct: int
-) -> Dict:
+def calculate_paes_score(route: Route, r1_correct: int, stage2_correct: int) -> Dict:
     """
     Calcula el puntaje PAES estimado.
 
@@ -76,11 +73,10 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
         Lista de diagnósticos por átomo
     """
     diagnoses = []
-    base_path = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
 
     for response in responses:
         question = response.question
-        metadata_path = base_path / question.exam / "qti" / question.question_id / "metadata_tags.json"
+        metadata_path = get_question_metadata_path(question.exam, question.question_id)
 
         if not metadata_path.exists():
             continue
@@ -114,14 +110,16 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
                     include_in_plan = True
                     instruction_type = "corregir"
 
-                diagnoses.append({
-                    "atom_id": atom_id,
-                    "atom_title": atom_title,
-                    "respuesta": response.response_type.value,
-                    "estado": status,
-                    "incluir_en_plan": include_in_plan,
-                    "tipo_instruccion": instruction_type,
-                })
+                diagnoses.append(
+                    {
+                        "atom_id": atom_id,
+                        "atom_title": atom_title,
+                        "respuesta": response.response_type.value,
+                        "estado": status,
+                        "incluir_en_plan": include_in_plan,
+                        "tipo_instruccion": instruction_type,
+                    }
+                )
 
         except (json.JSONDecodeError, KeyError):
             continue

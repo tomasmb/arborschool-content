@@ -13,7 +13,6 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
-from typing import Any
 
 from app.utils.mathml_parser import extract_math_tokens, process_mathml
 
@@ -228,20 +227,20 @@ def _extract_full_text(element: ET.Element) -> str:
         parts.append(element.text)
 
     for child in element:
-        tag = child.tag.split('}')[-1].lower()
-        if tag == 'math':
+        tag = child.tag.split("}")[-1].lower()
+        if tag == "math":
             parts.append(process_mathml(child))
-        elif tag == 'table':
+        elif tag == "table":
             parts.append(_process_html_table(child))
-        elif tag in ['p', 'div', 'li', 'br']:
+        elif tag in ["p", "div", "li", "br"]:
             # Add spacing for block elements
             content = _extract_full_text(child)
-            parts.append(f"\n{content}\n" if tag != 'br' else "\n")
-        elif tag in ['img', 'qti-img']:
-            alt = child.get('alt')
+            parts.append(f"\n{content}\n" if tag != "br" else "\n")
+        elif tag in ["img", "qti-img"]:
+            alt = child.get("alt")
             if alt:
                 parts.append(f" [Imagen: {alt}] ")
-        elif tag in ('qti-simple-choice', 'simplechoice'):
+        elif tag in ("qti-simple-choice", "simplechoice"):
             # Skip individual choices when extracting question text
             # (we extract them separately)
             pass
@@ -277,11 +276,11 @@ def _clean_text(text: str) -> str:
     if not text:
         return ""
     # Collapse multiple spaces but preserve single ones
-    text = re.sub(r'[ \t]+', ' ', text)
+    text = re.sub(r"[ \t]+", " ", text)
     # Collapse excessive newlines (more than 2) to 2
-    text = re.sub(r'\n{3,}', '\n\n', text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
     # Remove space at start/end of lines
-    text = re.sub(r'^ +| +$', '', text, flags=re.MULTILINE)
+    text = re.sub(r"^ +| +$", "", text, flags=re.MULTILINE)
     return text.strip()
 
 
@@ -290,10 +289,7 @@ def _clean_text(text: str) -> str:
 # -----------------------------------------------------------------------------
 
 
-def extract_text_recursive_simple(
-    element: ET.Element,
-    include_math_tokens: bool = True
-) -> str:
+def extract_text_recursive_simple(element: ET.Element, include_math_tokens: bool = True) -> str:
     """Recursively extract text from XML element with simple approach.
 
     This is a simpler extraction that doesn't do full MathML processing,
@@ -312,9 +308,9 @@ def extract_text_recursive_simple(
         parts.append(element.text.strip())
 
     for child in element:
-        tag = child.tag.split('}')[-1].lower()
+        tag = child.tag.split("}")[-1].lower()
 
-        if tag == 'math':
+        if tag == "math":
             if include_math_tokens:
                 tokens = extract_math_tokens(child)
                 parts.extend(tokens)

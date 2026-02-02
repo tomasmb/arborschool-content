@@ -10,10 +10,10 @@ from pydantic import BaseModel, Field, field_validator
 
 from app.models.constants import EJE_PREFIXES, VALID_EJES, VALID_HABILIDAD_IDS
 
-
 # -----------------------------------------------------------------------------
 # Standard components
 # -----------------------------------------------------------------------------
+
 
 class HabilidadRelacionada(BaseModel):
     """Link between a standard and a DEMRE habilidad."""
@@ -127,6 +127,7 @@ class Standard(BaseModel):
 # Top-level structures
 # -----------------------------------------------------------------------------
 
+
 class StandardsMetadata(BaseModel):
     """Document-level information for a canonical standards file."""
 
@@ -188,6 +189,7 @@ class CanonicalStandardsFile(BaseModel):
 # Validation helpers
 # -----------------------------------------------------------------------------
 
+
 def validate_standard_id_matches_eje(standard: Standard) -> None:
     """Ensure the standard ID prefix matches its eje."""
     expected_prefix = EJE_PREFIXES.get(standard.eje)
@@ -230,4 +232,3 @@ def validate_standards_coverage(
                 errors.append(f"Unidad '{unidad}' in eje '{eje}' not covered by any standard")
 
     return errors
-

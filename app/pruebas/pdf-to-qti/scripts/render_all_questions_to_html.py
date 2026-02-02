@@ -18,15 +18,15 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
     # Construir índice
     index_html = []
     index_html.append('<div class="test-index">')
-    index_html.append('<h2>Índice de Preguntas</h2>')
+    index_html.append("<h2>Índice de Preguntas</h2>")
     index_html.append('<div class="index-grid">')
 
     for i in range(1, num_questions + 1):
         question_num = f"{i:03d}"
         index_html.append(f'<a href="#question-{i}" class="index-item">Pregunta {i}</a>')
 
-    index_html.append('</div>')
-    index_html.append('</div>')
+    index_html.append("</div>")
+    index_html.append("</div>")
 
     # Construir contenido de todas las preguntas
     questions_html = []
@@ -40,11 +40,11 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             questions_html.append('<div class="question-header">')
             questions_html.append(f'<h1 class="question-title">Pregunta {i}</h1>')
             questions_html.append(f'<p class="question-id">ID: question_{question_num}</p>')
-            questions_html.append('</div>')
+            questions_html.append("</div>")
             questions_html.append('<div class="question-content">')
             questions_html.append('<p style="color: red;">❌ Pregunta no encontrada</p>')
-            questions_html.append('</div>')
-            questions_html.append('</div>')
+            questions_html.append("</div>")
+            questions_html.append("</div>")
             continue
 
         try:
@@ -53,26 +53,26 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
             # Agregar navegación
             nav_html = '<div class="question-navigation">'
             if i > 1:
-                nav_html += f'<a href="#question-{i-1}" class="nav-link">← Anterior</a>'
+                nav_html += f'<a href="#question-{i - 1}" class="nav-link">← Anterior</a>'
             nav_html += '<a href="#index" class="nav-link">↑ Índice</a>'
             if i < num_questions:
-                nav_html += f'<a href="#question-{i+1}" class="nav-link">Siguiente →</a>'
-            nav_html += '</div>'
+                nav_html += f'<a href="#question-{i + 1}" class="nav-link">Siguiente →</a>'
+            nav_html += "</div>"
 
             questions_html.append(f'<div id="question-{i}" class="question-section">')
             questions_html.append(nav_html)
             questions_html.append(qti_html)
-            questions_html.append('</div>')
+            questions_html.append("</div>")
 
         except Exception as e:
             questions_html.append(f'<div id="question-{i}" class="question-section">')
             questions_html.append('<div class="question-header">')
             questions_html.append(f'<h1 class="question-title">Pregunta {i}</h1>')
-            questions_html.append('</div>')
+            questions_html.append("</div>")
             questions_html.append('<div class="question-content">')
             questions_html.append(f'<p style="color: red;">❌ Error al renderizar: {html.escape(str(e))}</p>')
-            questions_html.append('</div>')
-            questions_html.append('</div>')
+            questions_html.append("</div>")
+            questions_html.append("</div>")
 
     # Combinar todo
     full_html = f"""<!DOCTYPE html>
@@ -369,10 +369,10 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
         </div>
 
         <div id="index">
-            {''.join(index_html)}
+            {"".join(index_html)}
         </div>
 
-        {''.join(questions_html)}
+        {"".join(questions_html)}
     </div>
 
     <a href="#index" class="back-to-top">↑ Índice</a>
@@ -381,29 +381,15 @@ def create_full_test_html(output_dir: Path, num_questions: int = 65) -> str:
 
     return full_html
 
+
 def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Renderizar todas las preguntas QTI a un único HTML"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="./output/paes-invierno-2026-new",
-        help="Directorio con los QTI generados"
-    )
-    parser.add_argument(
-        "--output-html",
-        default="./output/paes-invierno-2026-new/full_test_preview.html",
-        help="Archivo HTML de salida"
-    )
-    parser.add_argument(
-        "--num-questions",
-        type=int,
-        default=65,
-        help="Número total de preguntas"
-    )
+    parser = argparse.ArgumentParser(description="Renderizar todas las preguntas QTI a un único HTML")
+    parser.add_argument("--output-dir", default="./output/paes-invierno-2026-new", help="Directorio con los QTI generados")
+    parser.add_argument("--output-html", default="./output/paes-invierno-2026-new/full_test_preview.html", help="Archivo HTML de salida")
+    parser.add_argument("--num-questions", type=int, default=65, help="Número total de preguntas")
 
     args = parser.parse_args()
 
@@ -419,7 +405,7 @@ def main():
 
         output_path = Path(args.output_html)
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(output_path, 'w', encoding='utf-8') as f:
+        with open(output_path, "w", encoding="utf-8") as f:
             f.write(full_html)
 
         print(f"✅ HTML generado: {output_path}")
@@ -428,8 +414,10 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

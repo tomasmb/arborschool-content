@@ -27,13 +27,18 @@ Analiza la siguiente pregunta de matemáticas y determina cuál es la HABILIDAD 
 
 Las 4 habilidades PAES M1 son:
 
-1. **RES (Resolver problemas)**: Aplicar procedimientos, calcular, resolver ecuaciones, operar numéricamente. El foco está en EJECUTAR operaciones o procedimientos conocidos.
+1. **RES (Resolver problemas)**: Aplicar procedimientos, calcular, resolver ecuaciones,
+   operar numéricamente. El foco está en EJECUTAR operaciones o procedimientos conocidos.
 
-2. **MOD (Modelar)**: Plantear una ecuación, expresión o modelo matemático a partir de un contexto. El foco está en TRADUCIR una situación real a lenguaje matemático.
+2. **MOD (Modelar)**: Plantear una ecuación, expresión o modelo matemático a partir de
+   un contexto. El foco está en TRADUCIR una situación real a lenguaje matemático.
 
-3. **REP (Representar)**: Interpretar o construir gráficos, tablas, diagramas. El foco está en LEER o CREAR representaciones visuales de información.
+3. **REP (Representar)**: Interpretar o construir gráficos, tablas, diagramas.
+   El foco está en LEER o CREAR representaciones visuales de información.
 
-4. **ARG (Argumentar)**: Justificar procedimientos, validar afirmaciones, detectar errores, elegir la opción correcta con fundamento. El foco está en EVALUAR la validez de algo.
+4. **ARG (Argumentar)**: Justificar procedimientos, validar afirmaciones, detectar
+   errores, elegir la opción correcta con fundamento. El foco está en EVALUAR la
+   validez de algo.
 
 ## Pregunta a analizar:
 
@@ -68,7 +73,7 @@ IMPORTANTE:
 def load_metadata(metadata_path: str) -> Optional[Dict[str, Any]]:
     """Load existing metadata from file."""
     try:
-        with open(metadata_path, 'r', encoding='utf-8') as f:
+        with open(metadata_path, "r", encoding="utf-8") as f:
             return json.load(f)
     except Exception as e:
         print(f"  ⚠️ Error loading {metadata_path}: {e}")
@@ -78,7 +83,7 @@ def load_metadata(metadata_path: str) -> Optional[Dict[str, Any]]:
 def save_metadata(metadata: Dict[str, Any], metadata_path: str) -> bool:
     """Save metadata back to file."""
     try:
-        with open(metadata_path, 'w', encoding='utf-8') as f:
+        with open(metadata_path, "w", encoding="utf-8") as f:
             json.dump(metadata, f, ensure_ascii=False, indent=2)
         return True
     except Exception as e:
@@ -100,7 +105,7 @@ def extract_question_info(metadata: Dict[str, Any]) -> Dict[str, str]:
     return {
         "general_analysis": metadata.get("general_analysis", "No disponible"),
         "difficulty": difficulty_str,
-        "atoms": "\n".join(atoms_info) if atoms_info else "No disponible"
+        "atoms": "\n".join(atoms_info) if atoms_info else "No disponible",
     }
 
 
@@ -123,8 +128,8 @@ def load_question_text(qti_path: str) -> tuple[str, str]:
         # Extract choices
         choices = []
         for choice in root.iter():
-            if 'simpleChoice' in choice.tag or 'Choice' in choice.tag:
-                choice_text = ET.tostring(choice, encoding='unicode', method='text').strip()
+            if "simpleChoice" in choice.tag or "Choice" in choice.tag:
+                choice_text = ET.tostring(choice, encoding="unicode", method="text").strip()
                 if choice_text:
                     choices.append(choice_text)
 
@@ -141,19 +146,11 @@ def tag_habilidad(service, question_text: str, choices: str, metadata: Dict[str,
     info = extract_question_info(metadata)
 
     prompt = HABILIDADES_PROMPT.format(
-        question_text=question_text,
-        choices=choices,
-        general_analysis=info["general_analysis"],
-        difficulty=info["difficulty"],
-        atoms=info["atoms"]
+        question_text=question_text, choices=choices, general_analysis=info["general_analysis"], difficulty=info["difficulty"], atoms=info["atoms"]
     )
 
     try:
-        response = service.generate_text(
-            prompt,
-            response_mime_type="application/json",
-            temperature=0.0
-        )
+        response = service.generate_text(prompt, response_mime_type="application/json", temperature=0.0)
 
         # Parse response
         result = json.loads(response)
@@ -184,14 +181,11 @@ def process_all_questions(dry_run: bool = False):
     # Initialize service
     service = load_default_gemini_service()
 
-    # Statistics
-    stats = {
-        "processed": 0,
-        "skipped": 0,
-        "errors": 0,
-        "already_tagged": 0,
-        "by_habilidad": {"RES": 0, "MOD": 0, "REP": 0, "ARG": 0}
-    }
+    # Statistics - use separate typed variables to avoid union type issues
+    processed = 0
+    errors = 0
+    already_tagged = 0
+    by_habilidad: dict[str, int] = {"RES": 0, "MOD": 0, "REP": 0, "ARG": 0}
 
     for i, metadata_path in enumerate(metadata_files, 1):
         # Get question directory
@@ -203,15 +197,15 @@ def process_all_questions(dry_run: bool = False):
         # Load metadata
         metadata = load_metadata(str(metadata_path))
         if not metadata:
-            stats["errors"] += 1
+            errors += 1
             print("❌ Failed to load metadata")
             continue
 
         # Check if already tagged
         if "habilidad_principal" in metadata:
-            stats["already_tagged"] += 1
+            already_tagged += 1
             hab = metadata["habilidad_principal"].get("habilidad", "?")
-            stats["by_habilidad"][hab] = stats["by_habilidad"].get(hab, 0) + 1
+            by_habilidad[hab] = by_habilidad.get(hab, 0) + 1
             print(f"⏭️ Already tagged: {hab}")
             continue
 
@@ -230,37 +224,38 @@ def process_all_questions(dry_run: bool = False):
 
             if not dry_run:
                 if save_metadata(metadata, str(metadata_path)):
-                    stats["processed"] += 1
+                    processed += 1
                     hab = result["habilidad_principal"]
-                    stats["by_habilidad"][hab] = stats["by_habilidad"].get(hab, 0) + 1
+                    by_habilidad[hab] = by_habilidad.get(hab, 0) + 1
                     print(f"✅ {hab}")
                 else:
-                    stats["errors"] += 1
+                    errors += 1
                     print("❌ Save failed")
             else:
-                stats["processed"] += 1
+                processed += 1
                 print(f"🔍 Would tag: {result['habilidad_principal']}")
         else:
-            stats["errors"] += 1
+            errors += 1
             print("❌ Tagging failed")
 
     # Print summary
-    print("\n" + "="*50)
+    print("\n" + "=" * 50)
     print("📊 RESUMEN DE TAGGEO DE HABILIDADES")
-    print("="*50)
+    print("=" * 50)
     print(f"  Total archivos:     {len(metadata_files)}")
-    print(f"  Procesados:         {stats['processed']}")
-    print(f"  Ya taggeados:       {stats['already_tagged']}")
-    print(f"  Errores:            {stats['errors']}")
+    print(f"  Procesados:         {processed}")
+    print(f"  Ya taggeados:       {already_tagged}")
+    print(f"  Errores:            {errors}")
     print("\n  Por habilidad:")
-    for hab, count in sorted(stats["by_habilidad"].items()):
-        pct = (count / max(1, stats['processed'] + stats['already_tagged'])) * 100
+    for hab, count in sorted(by_habilidad.items()):
+        pct = (count / max(1, processed + already_tagged)) * 100
         print(f"    {hab}: {count} ({pct:.1f}%)")
-    print("="*50)
+    print("=" * 50)
 
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(description="Tag PAES skills to questions")
     parser.add_argument("--dry-run", action="store_true", help="Don't save changes")
     args = parser.parse_args()

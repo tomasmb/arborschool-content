@@ -1,17 +1,17 @@
-import os
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.utils.data_loader import load_atoms_file
+from app.utils.paths import get_atoms_file
 
-# Path to the atoms file
-# TODO: Make this configurable or dynamic if more files are added
-ATOMS_FILE_PATH = "app/data/atoms/paes_m1_2026_atoms.json"
+# Default atoms file path (uses centralized path resolution)
+DEFAULT_ATOMS_FILE = get_atoms_file("paes_m1_2026")
 
 
 class KGManager:
     """Manages access to Knowledge Graph atoms."""
 
-    def __init__(self, atoms_path: str = ATOMS_FILE_PATH):
+    def __init__(self, atoms_path: str | Path = DEFAULT_ATOMS_FILE):
         self.atoms_path = atoms_path
         self._atoms: List[Dict[str, Any]] = []
         self._atoms_by_id: Dict[str, Dict[str, Any]] = {}
@@ -19,8 +19,9 @@ class KGManager:
 
     def _load_atoms(self):
         """Loads atoms from the JSON file."""
-        if not os.path.exists(self.atoms_path):
-            raise FileNotFoundError(f"Atoms file not found at: {self.atoms_path}")
+        path = Path(self.atoms_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Atoms file not found at: {path}")
 
         try:
             # Use shared utility for loading (handles both list and dict formats)
@@ -47,14 +48,11 @@ class KGManager:
     def find_atoms_by_standard(self, standard_id: str) -> List[Dict[str, Any]]:
         """Returns atoms associated with a specific standard."""
         # Simple string match in standard_ids list
-        return [
-            atom for atom in self._atoms
-            if standard_id in atom.get("standard_ids", [])
-        ]
+        return [atom for atom in self._atoms if standard_id in atom.get("standard_ids", [])]
 
-    def get_ancestors(self, atom_id: str) -> set:
+    def get_ancestors(self, atom_id: str) -> set[str]:
         """Returns a set of all recursive prerequisite IDs for an atom."""
-        ancestors = set()
+        ancestors: set[str] = set()
         atom = self.get_atom_by_id(atom_id)
         if not atom:
             return ancestors
@@ -80,8 +78,10 @@ class KGManager:
         # Edge case: A is prereq of B. We select A and B. A is in ancestors of B. A is removed. Correct.
         return [aid for aid in atom_ids if aid not in all_implicit_prereqs]
 
+
 # Global instance for easy import
 _kg_manager = None
+
 
 def get_kg_manager() -> KGManager:
     global _kg_manager
@@ -89,11 +89,14 @@ def get_kg_manager() -> KGManager:
         _kg_manager = KGManager()
     return _kg_manager
 
+
 def get_all_atoms() -> List[Dict[str, Any]]:
     return get_kg_manager().get_all_atoms()
 
+
 def get_atom_by_id(atom_id: str) -> Optional[Dict[str, Any]]:
     return get_kg_manager().get_atom_by_id(atom_id)
+
 
 def filter_redundant_atoms(atom_ids: List[str]) -> List[str]:
     return get_kg_manager().filter_redundant_atoms(atom_ids)

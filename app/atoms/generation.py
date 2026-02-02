@@ -129,9 +129,7 @@ def generate_atoms_for_standard(
 
                 # Validate standard_ids reference the current standard
                 if standard_id not in atom.standard_ids:
-                    warnings.append(
-                        f"Atom {atom.id} standard_ids doesn't include {standard_id}"
-                    )
+                    warnings.append(f"Atom {atom.id} standard_ids doesn't include {standard_id}")
 
                 validated_atoms.append(atom)
                 logger.debug("Validated atom %s", atom.id)
@@ -189,24 +187,14 @@ def _validate_atom_granularity(atoms: list[Atom]) -> list[str]:
     for atom in atoms:
         # Check: one cognitive intention (heuristic: descripcion length)
         if len(atom.descripcion) > 300:
-            warnings.append(
-                f"Atom {atom.id}: descripcion may be too long "
-                f"({len(atom.descripcion)} chars), might contain multiple intentions"
-            )
+            warnings.append(f"Atom {atom.id}: descripcion may be too long ({len(atom.descripcion)} chars), might contain multiple intentions")
 
         # Check: reasonable working memory load (heuristic: criterios count)
         if len(atom.criterios_atomicos) > 5:
-            warnings.append(
-                f"Atom {atom.id}: too many criterios_atomicos "
-                f"({len(atom.criterios_atomicos)}), might overload working memory"
-            )
+            warnings.append(f"Atom {atom.id}: too many criterios_atomicos ({len(atom.criterios_atomicos)}), might overload working memory")
 
         # Check: assessment independence (heuristic: multiple habilidades principales)
         if len(atom.habilidades_secundarias) > 2:
-            warnings.append(
-                f"Atom {atom.id}: many habilidades_secundarias "
-                f"({len(atom.habilidades_secundarias)}), might need splitting"
-            )
+            warnings.append(f"Atom {atom.id}: many habilidades_secundarias ({len(atom.habilidades_secundarias)}), might need splitting")
 
     return warnings
-

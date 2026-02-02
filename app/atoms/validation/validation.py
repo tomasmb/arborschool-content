@@ -170,37 +170,65 @@ Identifica problemas específicos, especialmente relacionados con:
 - Separación correcta de variantes con algoritmos fundamentalmente distintos (ej: decimal finito vs periódico)
 
 **VERIFICACIÓN CRÍTICA - MÉTODOS EQUIVALENTES**:
-Antes de marcar como problema que un átomo menciona "múltiples métodos", DEBES verificar si son realmente métodos distintos o el mismo método explicado de forma diferente:
-- Si dos métodos mencionados son matemáticamente equivalentes y requieren la misma estrategia cognitiva, NO es un problema
+Antes de marcar como problema que un átomo menciona "múltiples métodos", DEBES
+verificar si son realmente métodos distintos o el mismo método explicado de
+forma diferente:
+- Si dos métodos mencionados son matemáticamente equivalentes y requieren la
+  misma estrategia cognitiva, NO es un problema
 - Ejemplos de métodos equivalentes (NO son problemas):
-  * "Multiplicar por el inverso multiplicativo" vs "Multiplicación cruzada" (división de fracciones) → Son el mismo método
-  * "Sumar opuestos" vs "Restar" (en enteros) → Pueden ser equivalentes según el contexto
-- Solo marca como problema si los métodos requieren algoritmos o estrategias cognitivas fundamentalmente distintos
+  * "Multiplicar por el inverso multiplicativo" vs "Multiplicación cruzada"
+    (división de fracciones) → Son el mismo método
+  * "Sumar opuestos" vs "Restar" (en enteros) → Pueden ser equivalentes según
+    el contexto
+- Solo marca como problema si los métodos requieren algoritmos o estrategias
+  cognitivas fundamentalmente distintos
 - Si tienes duda, asume que son equivalentes y NO marques como problema
 
 **VERIFICACIÓN CRÍTICA - TRANSITIVIDAD DE PRERREQUISITOS**:
-Los prerrequisitos son TRANSITIVOS. Si A es prerrequisito de B, y B es prerrequisito de C, entonces C solo necesita listar B como prerrequisito, NO necesita listar A explícitamente.
-- **REGLA DE ORO**: NO marques como problema si un átomo no lista un prerrequisito transitivo
-- Ejemplo: Si A-01 → A-04 → A-17, entonces A-17 solo necesita listar A-04, NO A-01
+Los prerrequisitos son TRANSITIVOS. Si A es prerrequisito de B, y B es
+prerrequisito de C, entonces C solo necesita listar B como prerrequisito,
+NO necesita listar A explícitamente.
+- **REGLA DE ORO**: NO marques como problema si un átomo no lista un
+  prerrequisito transitivo
+- Ejemplo: Si A-01 → A-04 → A-17, entonces A-17 solo necesita listar A-04,
+  NO A-01
 - Solo marca como problema si falta un prerrequisito DIRECTO (no transitivo)
-- Si un átomo requiere operar con enteros pero ya tiene un prerrequisito que a su vez requiere enteros, NO es un problema
-- Si tienes duda sobre si un prerrequisito es directo o transitivo, asume que es transitivo y NO marques como problema
+- Si un átomo requiere operar con enteros pero ya tiene un prerrequisito que
+  a su vez requiere enteros, NO es un problema
+- Si tienes duda sobre si un prerrequisito es directo o transitivo, asume que
+  es transitivo y NO marques como problema
 
 **PRINCIPIOS PEDAGÓGICOS GENERALES - NO MARCAR COMO PROBLEMAS**:
-Los siguientes casos representan decisiones pedagógicas válidas que pueden aplicarse a cualquier conjunto de átomos. NO los marques como problemas:
+Los siguientes casos representan decisiones pedagógicas válidas que pueden
+aplicarse a cualquier conjunto de átomos. NO los marques como problemas:
 
 1. **Limitaciones intencionales de procedimientos**:
-   - Cuando los procedimientos están limitados a casos específicos (ej: ejes coordenados, origen, casos simples) pero los conceptos correspondientes cubren el caso general, esto es una decisión pedagógica válida: conceptos generales, procedimientos específicos para el nivel educativo.
-   - **NO marques como problema** si un átomo procedimental está limitado a casos específicos mientras el átomo conceptual correspondiente cubre el caso general.
+   - Cuando los procedimientos están limitados a casos específicos (ej: ejes
+     coordenados, origen, casos simples) pero los conceptos correspondientes
+     cubren el caso general, esto es una decisión pedagógica válida: conceptos
+     generales, procedimientos específicos para el nivel educativo.
+   - **NO marques como problema** si un átomo procedimental está limitado a
+     casos específicos mientras el átomo conceptual correspondiente cubre el
+     caso general.
 
 2. **Estrategias integradas válidas**:
-   - Cuando un átomo integra múltiples estrategias o niveles de complejidad que son conceptualmente relacionados, parte de un mismo procedimiento general, y pueden evaluarse en el mismo contexto, esto es una decisión pedagógica válida.
-   - **NO marques como problema** si un átomo integra múltiples estrategias válidas para el mismo objetivo cognitivo, siempre que puedan evaluarse coherentemente en el mismo contexto.
+   - Cuando un átomo integra múltiples estrategias o niveles de complejidad
+     que son conceptualmente relacionados, parte de un mismo procedimiento
+     general, y pueden evaluarse en el mismo contexto, esto es una decisión
+     pedagógica válida.
+   - **NO marques como problema** si un átomo integra múltiples estrategias
+     válidas para el mismo objetivo cognitivo, siempre que puedan evaluarse
+     coherentemente en el mismo contexto.
 
 3. **Métodos equivalentes**:
-   - Si un átomo menciona métodos que son matemáticamente equivalentes (ej: "multiplicación cruzada" vs "inverso multiplicativo" en división de fracciones), NO marques como problema. Los métodos equivalentes son válidos y la elección puede ser pedagógica.
+   - Si un átomo menciona métodos que son matemáticamente equivalentes
+     (ej: "multiplicación cruzada" vs "inverso multiplicativo" en división de
+     fracciones), NO marques como problema. Los métodos equivalentes son
+     válidos y la elección puede ser pedagógica.
 
-**IMPORTANTE**: Si encuentras elementos del estándar que NO están cubiertos por ningún átomo, esto es un problema crítico que debe reportarse en "missing_areas" y debe afectar el "coverage_completeness" a "incomplete".
+**IMPORTANTE**: Si encuentras elementos del estándar que NO están cubiertos
+por ningún átomo, esto es un problema crítico que debe reportarse en
+"missing_areas" y debe afectar el "coverage_completeness" a "incomplete".
 </final_instruction>
 """
     return prompt
@@ -273,44 +301,37 @@ def validate_atoms_from_files(
         Validation result as dictionary
     """
     # Load standard
-    with open(standard_path, 'r', encoding='utf-8') as f:
+    with open(standard_path, "r", encoding="utf-8") as f:
         standards_data = json.load(f)
 
     if isinstance(standards_data, list):
         if standard_id:
-            standard = next((s for s in standards_data if s.get('id') == standard_id), None)
+            standard = next((s for s in standards_data if s.get("id") == standard_id), None)
             if not standard:
                 raise ValueError(f"Standard {standard_id} not found in {standard_path}")
         else:
             if len(standards_data) != 1:
-                raise ValueError(
-                    f"Multiple standards in file, must specify standard_id. "
-                    f"Found: {[s.get('id') for s in standards_data]}"
-                )
+                raise ValueError(f"Multiple standards in file, must specify standard_id. Found: {[s.get('id') for s in standards_data]}")
             standard = standards_data[0]
     else:
-        if 'standards' in standards_data:
-            standards_list = standards_data['standards']
+        if "standards" in standards_data:
+            standards_list = standards_data["standards"]
             if standard_id:
-                standard = next((s for s in standards_list if s.get('id') == standard_id), None)
+                standard = next((s for s in standards_list if s.get("id") == standard_id), None)
                 if not standard:
                     raise ValueError(f"Standard {standard_id} not found in {standard_path}")
             else:
                 if len(standards_list) != 1:
-                    raise ValueError(
-                        f"Multiple standards in file, must specify standard_id. "
-                        f"Found: {[s.get('id') for s in standards_list]}"
-                    )
+                    raise ValueError(f"Multiple standards in file, must specify standard_id. Found: {[s.get('id') for s in standards_list]}")
                 standard = standards_list[0]
         else:
             standard = standards_data
 
     # Load atoms
-    with open(atoms_path, 'r', encoding='utf-8') as f:
+    with open(atoms_path, "r", encoding="utf-8") as f:
         atoms = json.load(f)
 
     if not isinstance(atoms, list):
         raise ValueError(f"Expected list of atoms, got {type(atoms)}")
 
     return validate_atoms_with_gemini(gemini, standard, atoms)
-

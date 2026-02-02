@@ -111,9 +111,7 @@ def transform_atom(extracted: ExtractedAtom, subject_id: str = "paes_m1") -> Ato
     """
     # Transform habilidades
     primary_skill = HABILIDAD_TO_SKILL.get(extracted.habilidad_principal, SkillType.RESOLVER_PROBLEMAS)
-    secondary_skills = [
-        HABILIDAD_TO_SKILL[h] for h in extracted.habilidades_secundarias if h in HABILIDAD_TO_SKILL
-    ]
+    secondary_skills = [HABILIDAD_TO_SKILL[h] for h in extracted.habilidades_secundarias if h in HABILIDAD_TO_SKILL]
 
     # Transform tipo_atomico
     atom_type = TIPO_TO_ATOM_TYPE.get(extracted.tipo_atomico, AtomType.CONCEPTO)

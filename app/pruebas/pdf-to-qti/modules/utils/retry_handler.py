@@ -132,6 +132,7 @@ def retry_with_backoff(
     Returns:
         Decorated function with retry logic
     """
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> T:
@@ -144,44 +145,29 @@ def retry_with_backoff(
                     last_exception = e
 
                     # Check if error is retryable
-                    is_retryable = (
-                        retryable_check(e) if retryable_check
-                        else is_retryable_error(e)
-                    )
+                    is_retryable = retryable_check(e) if retryable_check else is_retryable_error(e)
 
                     if not is_retryable:
-                        _logger.error(
-                            f"Non-retryable error in {func.__name__}: {e}"
-                        )
+                        _logger.error(f"Non-retryable error in {func.__name__}: {e}")
                         raise
 
                     # Don't retry on last attempt
                     if attempt == max_retries - 1:
-                        _logger.error(
-                            f"Max retries ({max_retries}) reached for "
-                            f"{func.__name__}: {e}"
-                        )
+                        _logger.error(f"Max retries ({max_retries}) reached for {func.__name__}: {e}")
                         raise
 
                     # Calculate delay
                     delay = extract_retry_after(e)
                     if delay is None:
                         # Exponential backoff
-                        delay = min(
-                            base_delay * (exponential_base ** attempt),
-                            max_delay
-                        )
+                        delay = min(base_delay * (exponential_base**attempt), max_delay)
 
                     # Add jitter to avoid thundering herd
                     if jitter:
                         jitter_amount = random.uniform(0, delay * 0.1)
                         delay += jitter_amount
 
-                    _logger.warning(
-                        f"Retryable error in {func.__name__} "
-                        f"(attempt {attempt + 1}/{max_retries}): {e}. "
-                        f"Retrying in {delay:.2f}s..."
-                    )
+                    _logger.warning(f"Retryable error in {func.__name__} (attempt {attempt + 1}/{max_retries}): {e}. Retrying in {delay:.2f}s...")
                     time.sleep(delay)
 
             # Should never reach here, but just in case
@@ -190,6 +176,7 @@ def retry_with_backoff(
             raise RuntimeError(f"Unexpected error in {func.__name__}")
 
         return wrapper
+
     return decorator
 
 
@@ -207,6 +194,7 @@ def retry_on_empty_response(
     Returns:
         Decorated function with retry logic for empty responses
     """
+
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> T:
@@ -220,32 +208,23 @@ def retry_on_empty_response(
                 elif isinstance(result, str):
                     is_empty = not result.strip()
                 elif isinstance(result, dict):
-                    is_empty = not result or (
-                        result.get("success") is False and
-                        "empty" in str(result.get("error", "")).lower()
-                    )
+                    is_empty = not result or (result.get("success") is False and "empty" in str(result.get("error", "")).lower())
 
                 if not is_empty:
                     return result
 
                 if attempt == max_retries - 1:
-                    _logger.error(
-                        f"Max retries ({max_retries}) reached for "
-                        f"{func.__name__}: empty response"
-                    )
+                    _logger.error(f"Max retries ({max_retries}) reached for {func.__name__}: empty response")
                     if isinstance(result, dict):
                         return result
                     raise ValueError(f"Empty response from {func.__name__}")
 
-                delay = base_delay * (2 ** attempt)
-                _logger.warning(
-                    f"Empty response from {func.__name__} "
-                    f"(attempt {attempt + 1}/{max_retries}). "
-                    f"Retrying in {delay:.2f}s..."
-                )
+                delay = base_delay * (2**attempt)
+                _logger.warning(f"Empty response from {func.__name__} (attempt {attempt + 1}/{max_retries}). Retrying in {delay:.2f}s...")
                 time.sleep(delay)
 
             raise RuntimeError(f"Unexpected error in {func.__name__}")
 
         return wrapper
+
     return decorator

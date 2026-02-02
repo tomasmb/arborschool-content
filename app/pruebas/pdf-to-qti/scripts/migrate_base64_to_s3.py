@@ -8,6 +8,11 @@ Este script:
 3. Las sube a S3
 4. Reemplaza los data URIs con URLs S3
 5. Guarda los QTI actualizados
+
+Usage:
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --questions Q10 Q12
+    python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --dry-run
 """
 
 import base64
@@ -19,15 +24,17 @@ from typing import Dict, List, Optional
 
 from dotenv import load_dotenv
 
+# scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> repo root
+project_root = Path(__file__).resolve().parents[4]
+
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from modules.utils.s3_uploader import upload_image_to_s3
 
 # Load environment variables
-# Try multiple possible locations for .env
 possible_env_locations = [
-    Path(__file__).parent.parent.parent.parent / ".env",  # From scripts/ -> project root
+    project_root / ".env",
     Path(__file__).parent.parent.parent.parent.parent / ".env",  # Alternative
     Path.cwd() / ".env",  # Current directory
 ]
@@ -54,7 +61,7 @@ def extract_base64_images(qti_xml: str) -> List[Dict[str, str]]:
     images = []
 
     # Pattern para encontrar data URIs completos
-    data_uri_pattern = r'data:image/([^;]+);base64,([A-Za-z0-9+/=]+)'
+    data_uri_pattern = r"data:image/([^;]+);base64,([A-Za-z0-9+/=]+)"
 
     matches = re.finditer(data_uri_pattern, qti_xml)
     for match in matches:
@@ -62,11 +69,13 @@ def extract_base64_images(qti_xml: str) -> List[Dict[str, str]]:
         base64_data = match.group(2)
         full_data_uri = match.group(0)
 
-        images.append({
-            'data_uri': full_data_uri,
-            'base64_data': base64_data,
-            'mime_type': mime_type,
-        })
+        images.append(
+            {
+                "data_uri": full_data_uri,
+                "base64_data": base64_data,
+                "mime_type": mime_type,
+            }
+        )
 
     return images
 
@@ -77,12 +86,12 @@ def fix_base64_padding(base64_data: str) -> str:
     Base64 requiere que la longitud sea múltiplo de 4.
     """
     # Remover espacios y saltos de línea
-    base64_data = base64_data.strip().replace(' ', '').replace('\n', '')
+    base64_data = base64_data.strip().replace(" ", "").replace("\n", "")
 
     # Agregar padding si es necesario
     missing_padding = len(base64_data) % 4
     if missing_padding:
-        base64_data += '=' * (4 - missing_padding)
+        base64_data += "=" * (4 - missing_padding)
 
     return base64_data
 
@@ -101,8 +110,8 @@ def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[
     mapping = {}
 
     for i, image_info in enumerate(images):
-        base64_data = image_info['base64_data']
-        data_uri = image_info['data_uri']
+        base64_data = image_info["base64_data"]
+        data_uri = image_info["data_uri"]
 
         # Arreglar padding si es necesario
         try:
@@ -110,14 +119,14 @@ def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[
             # Verificar que es válido intentando decodificarlo
             base64.b64decode(base64_data, validate=True)
         except Exception as e:
-            print(f"   ⚠️  Base64 inválido para imagen {i+1}: {str(e)}")
+            print(f"   ⚠️  Base64 inválido para imagen {i + 1}: {str(e)}")
             print("   ⚠️  Saltando esta imagen (mantendrá base64)")
             continue
 
         # Generar ID único para esta imagen
         img_id = f"{question_id}_img{i}" if i > 0 else question_id
 
-        print(f"   📤 Subiendo imagen {i+1}/{len(images)} a S3...")
+        print(f"   📤 Subiendo imagen {i + 1}/{len(images)} a S3...")
 
         # Subir a S3 (la función acepta base64 con o sin prefijo)
         s3_url = upload_image_to_s3(
@@ -129,7 +138,7 @@ def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[
             mapping[data_uri] = s3_url
             print(f"   ✅ Subida exitosa: {s3_url}")
         else:
-            print(f"   ❌ Error al subir imagen {i+1} a S3")
+            print(f"   ❌ Error al subir imagen {i + 1} a S3")
             # Mantener el data URI original si falla
 
     return mapping
@@ -159,16 +168,12 @@ def replace_data_uris_with_s3(qti_xml: str, uri_mapping: Dict[str, str]) -> str:
 
         # Verificar si hay base64 residual después de la URL S3 (error de reemplazo parcial)
         # Buscar patrones como: s3_url + base64_data
-        pattern = s3_url.replace('.', r'\.').replace('/', r'\/')
+        pattern = s3_url.replace(".", r"\.").replace("/", r"\/")
         # Buscar si hay base64 después de la URL S3 en el mismo atributo src
-        residual_pattern = re.compile(rf'({pattern})([A-Za-z0-9+/=]{{50,}})')
+        residual_pattern = re.compile(rf"({pattern})([A-Za-z0-9+/=]{{50,}})")
         if residual_pattern.search(updated_xml):
             # Limpiar base64 residual después de URLs S3
-            updated_xml = re.sub(
-                rf'({pattern})([A-Za-z0-9+/=]{{50,}})',
-                r'\1',
-                updated_xml
-            )
+            updated_xml = re.sub(rf"({pattern})([A-Za-z0-9+/=]{{50,}})", r"\1", updated_xml)
 
     return updated_xml
 
@@ -190,21 +195,21 @@ def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
 
     # Leer QTI
     try:
-        qti_xml = qti_path.read_text(encoding='utf-8')
+        qti_xml = qti_path.read_text(encoding="utf-8")
     except Exception as e:
         return {
-            'success': False,
-            'error': f"Error leyendo archivo: {e}",
-            'question_id': question_id,
+            "success": False,
+            "error": f"Error leyendo archivo: {e}",
+            "question_id": question_id,
         }
 
     # Verificar si tiene base64
-    if 'data:image' not in qti_xml:
+    if "data:image" not in qti_xml:
         return {
-            'success': True,
-            'skipped': True,
-            'reason': 'No tiene imágenes base64',
-            'question_id': question_id,
+            "success": True,
+            "skipped": True,
+            "reason": "No tiene imágenes base64",
+            "question_id": question_id,
         }
 
     # Extraer imágenes base64
@@ -212,10 +217,10 @@ def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
 
     if not images:
         return {
-            'success': True,
-            'skipped': True,
-            'reason': 'No se encontraron imágenes base64 válidas',
-            'question_id': question_id,
+            "success": True,
+            "skipped": True,
+            "reason": "No se encontraron imágenes base64 válidas",
+            "question_id": question_id,
         }
 
     print(f"   🔍 Encontradas {len(images)} imagen(es) base64")
@@ -223,10 +228,10 @@ def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
     if dry_run:
         print(f"   🔍 [DRY RUN] Subiría {len(images)} imagen(es) a S3")
         return {
-            'success': True,
-            'dry_run': True,
-            'images_count': len(images),
-            'question_id': question_id,
+            "success": True,
+            "dry_run": True,
+            "images_count": len(images),
+            "question_id": question_id,
         }
 
     # Subir imágenes a S3
@@ -234,38 +239,43 @@ def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
 
     if not uri_mapping:
         return {
-            'success': False,
-            'error': 'No se pudo subir ninguna imagen a S3',
-            'question_id': question_id,
-            'images_count': len(images),
+            "success": False,
+            "error": "No se pudo subir ninguna imagen a S3",
+            "question_id": question_id,
+            "images_count": len(images),
         }
 
     # Reemplazar data URIs con URLs S3
     updated_xml = replace_data_uris_with_s3(qti_xml, uri_mapping)
 
     # Verificar que se reemplazaron
-    if 'data:image' in updated_xml:
-        remaining = len(re.findall(r'data:image/[^;]+;base64,', updated_xml))
+    if "data:image" in updated_xml:
+        remaining = len(re.findall(r"data:image/[^;]+;base64,", updated_xml))
         if remaining > 0:
             print(f"   ⚠️  Advertencia: {remaining} data URI(s) no fueron reemplazados")
 
     # Guardar QTI actualizado
     try:
-        qti_path.write_text(updated_xml, encoding='utf-8')
+        qti_path.write_text(updated_xml, encoding="utf-8")
         print("   ✅ QTI actualizado guardado")
 
         return {
-            'success': True,
-            'images_uploaded': len(uri_mapping),
-            'images_total': len(images),
-            'question_id': question_id,
+            "success": True,
+            "images_uploaded": len(uri_mapping),
+            "images_total": len(images),
+            "question_id": question_id,
         }
     except Exception as e:
         return {
-            'success': False,
-            'error': f"Error guardando archivo: {e}",
-            'question_id': question_id,
+            "success": False,
+            "error": f"Error guardando archivo: {e}",
+            "question_id": question_id,
         }
+
+
+def get_qti_dir(test_name: str) -> Path:
+    """Get the QTI directory for a test."""
+    return project_root / "app" / "data" / "pruebas" / "finalizadas" / test_name / "qti"
 
 
 def main():
@@ -273,35 +283,27 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Migrar QTI con imágenes base64 a S3"
+        description="Migrar QTI con imágenes base64 a S3",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --questions Q10 Q12
+  python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --dry-run
+        """,
     )
-    parser.add_argument(
-        '--qti-dir',
-        type=str,
-        default='../../../data/pruebas/procesadas/prueba-invierno-2026/qti',
-        help='Directorio con los QTI a migrar'
-    )
-    parser.add_argument(
-        '--questions',
-        type=str,
-        nargs='+',
-        help='IDs específicos de preguntas a migrar (ej: Q10 Q12 Q13)'
-    )
-    parser.add_argument(
-        '--dry-run',
-        action='store_true',
-        help='Solo mostrar lo que haría sin hacer cambios'
-    )
+    parser.add_argument("--test-name", required=True, help="Name of the test (e.g., prueba-invierno-2026)")
+    parser.add_argument("--qti-dir", type=Path, help="Override: Directory with QTI files")
+    parser.add_argument("--questions", type=str, nargs="+", help="Specific question IDs to migrate (e.g., Q10 Q12)")
+    parser.add_argument("--dry-run", action="store_true", help="Only show what would be done")
 
     args = parser.parse_args()
 
-    # Resolver ruta del directorio
-    qti_dir = Path(__file__).parent / args.qti_dir
-    if not qti_dir.exists():
-        qti_dir = Path(args.qti_dir)
+    # Get QTI directory from test name or override
+    qti_dir = args.qti_dir or get_qti_dir(args.test_name)
 
     if not qti_dir.exists():
-        print(f"❌ Directorio no encontrado: {qti_dir}")
+        print(f"❌ Directory not found: {qti_dir}")
         return 1
 
     print("=" * 60)
@@ -312,8 +314,8 @@ def main():
     print()
 
     # Verificar credenciales AWS
-    aws_key = os.environ.get('AWS_ACCESS_KEY_ID')
-    aws_secret = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    aws_key = os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
     if not args.dry_run and (not aws_key or not aws_secret):
         print("❌ Credenciales AWS no encontradas")
@@ -333,7 +335,7 @@ def main():
         qti_files = []
         for q_id in args.questions:
             # Aceptar Q10 o Q10.xml
-            q_id = q_id.replace('.xml', '')
+            q_id = q_id.replace(".xml", "")
             qti_file = qti_dir / f"{q_id}.xml"
             if qti_file.exists():
                 qti_files.append(qti_file)
@@ -342,9 +344,9 @@ def main():
     else:
         # Encontrar todos los QTI con base64
         qti_files = []
-        for xml_file in sorted(qti_dir.glob('Q*.xml')):
-            content = xml_file.read_text(encoding='utf-8')
-            if 'data:image' in content:
+        for xml_file in sorted(qti_dir.glob("Q*.xml")):
+            content = xml_file.read_text(encoding="utf-8")
+            if "data:image" in content:
                 qti_files.append(xml_file)
 
     if not qti_files:
@@ -356,20 +358,20 @@ def main():
 
     # Procesar cada QTI
     results = {
-        'successful': [],
-        'failed': [],
-        'skipped': [],
+        "successful": [],
+        "failed": [],
+        "skipped": [],
     }
 
     for qti_file in qti_files:
         result = migrate_qti_file(qti_file, dry_run=args.dry_run)
 
-        if result.get('skipped'):
-            results['skipped'].append(result)
-        elif result.get('success'):
-            results['successful'].append(result)
+        if result.get("skipped"):
+            results["skipped"].append(result)
+        elif result.get("success"):
+            results["successful"].append(result)
         else:
-            results['failed'].append(result)
+            results["failed"].append(result)
 
     # Resumen
     print()
@@ -381,17 +383,17 @@ def main():
     print(f"⏭️  Omitidos: {len(results['skipped'])}")
     print()
 
-    if results['failed']:
+    if results["failed"]:
         print("Errores:")
-        for result in results['failed']:
+        for result in results["failed"]:
             print(f"  - {result['question_id']}: {result.get('error', 'Error desconocido')}")
         print()
 
     if args.dry_run:
         print("⚠️  Este fue un DRY RUN. Ejecuta sin --dry-run para hacer la migración real.")
 
-    return 0 if not results['failed'] else 1
+    return 0 if not results["failed"] else 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

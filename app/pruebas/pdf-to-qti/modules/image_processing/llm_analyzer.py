@@ -15,12 +15,7 @@ from .image_area_detector import construct_image_area_from_gaps_flexible, constr
 from .utils import get_page_image
 
 
-def analyze_visual_content_with_llm(
-    page: fitz.Page,
-    text_blocks: List[Dict[str, Any]],
-    question_text: str,
-    openai_api_key: str
-) -> Dict[str, Any]:
+def analyze_visual_content_with_llm(page: fitz.Page, text_blocks: List[Dict[str, Any]], question_text: str, openai_api_key: str) -> Dict[str, Any]:
     """
     Use LLM to analyze and separate prompt vs choice visual content.
     """
@@ -59,20 +54,24 @@ def analyze_visual_content_with_llm(
             bbox = block.get("bbox", [0, 0, 0, 0])
 
             if block_text.strip():
-                block_info.append({
-                    "block_number": i + 1,
-                    "text": block_text.strip()[:200],  # Limit for efficiency
-                    "bbox": bbox,
-                    "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})"
-                })
+                block_info.append(
+                    {
+                        "block_number": i + 1,
+                        "text": block_text.strip()[:200],  # Limit for efficiency
+                        "bbox": bbox,
+                        "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})",
+                    }
+                )
             else:
                 # For empty text blocks, provide position info so LLM can categorize based on location
-                block_info.append({
-                    "block_number": i + 1,
-                    "text": "[Empty text block - likely contains visual elements]",
-                    "bbox": bbox,
-                    "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})"
-                })
+                block_info.append(
+                    {
+                        "block_number": i + 1,
+                        "text": "[Empty text block - likely contains visual elements]",
+                        "bbox": bbox,
+                        "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})",
+                    }
+                )
 
     print(f"🔍 📋 Prepared {text_block_count} text blocks for LLM analysis")
 
@@ -80,13 +79,15 @@ def analyze_visual_content_with_llm(
     print("🔍 📸 Capturing page image for LLM visual context...")
     try:
         page_image_bytes = get_page_image(page, scale=1.5)
-        page_image_base64 = base64.b64encode(page_image_bytes).decode('utf-8')
+        page_image_base64 = base64.b64encode(page_image_bytes).decode("utf-8")
         print(f"🔍 📸 Page image captured: {len(page_image_base64)} base64 chars")
     except Exception as e:
         print(f"🔍 ❌ Failed to capture page image: {e}")
         return {"success": False, "error": f"Page image capture failed: {e}"}
 
-    prompt = f"""Analyze this educational question to separate prompt visuals from choice visuals and categorize each text block. The question may have multiple parts (e.g., Part A, Part B).
+    prompt = f"""Analyze this educational question to separate prompt visuals from \
+choice visuals and categorize each text block. The question may have multiple \
+parts (e.g., Part A, Part B).
 
 QUESTION TEXT:
 {question_text}
@@ -105,22 +106,45 @@ VISUAL CONTENT TYPES:
 - CHOICE VISUALS: Visuals that are the answer options (e.g., diagrams for choices A, B, C, D).
 
 TEXT BLOCK CATEGORIES:
-- "question_part_header": Identifier for a part of a multi-part question (e.g., "A.", "B.", "Part C"). This is separate from the question text itself.
-- "question_text": The main text of a question or sub-question, instructions, and introductions that are NOT directly describing visual content.
-- "answer_choice": A multiple choice option identifier (e.g., "A", "B", "C", "D"). This may be a standalone letter or text that starts with the choice letter (e.g., "A) Diagram 1"). An answer choice is often located near its corresponding visual.
+- "question_part_header": Identifier for a part of a multi-part question
+  (e.g., "A.", "B.", "Part C"). This is separate from the question text itself.
+- "question_text": The main text of a question or sub-question, instructions,
+  and introductions that are NOT directly describing visual content.
+- "answer_choice": A multiple choice option identifier (e.g., "A", "B", "C", "D").
+  This may be a standalone letter or text that starts with the choice letter
+  (e.g., "A) Diagram 1"). An answer choice is often located near its corresponding visual.
 - "visual_content_title": A title or overall caption for a visual element.
-- "visual_content_label": Labels ON or pointing to parts of a diagram or image that are part of the PROMPT/QUESTION visuals. **IMPORTANT: This also includes descriptive text that explains what is shown in the diagrams (e.g., "The field is raised up and has a rounded surface to allow rainwater to run off into the drains"). Empty blocks that are clearly part of visual content (like embedded figures, charts, or diagrams) should also be categorized as visual_content_label, even if they contain no extractable text.**
-- "choice_visual_label": Labels ON or pointing to parts of diagrams that are part of the ANSWER CHOICE visuals (e.g., labels within choice A, B, C, D diagrams).
-- "other_label": Any other text like source citations, page numbers, or legends that are NOT part of visual content.
+- "visual_content_label": Labels ON or pointing to parts of a diagram or image that are
+  part of the PROMPT/QUESTION visuals. **IMPORTANT: This also includes descriptive text
+  that explains what is shown in the diagrams (e.g., "The field is raised up and has a
+  rounded surface to allow rainwater to run off into the drains"). Empty blocks that are
+  clearly part of visual content (like embedded figures, charts, or diagrams) should also
+  be categorized as visual_content_label, even if they contain no extractable text.**
+- "choice_visual_label": Labels ON or pointing to parts of diagrams that are part of
+  the ANSWER CHOICE visuals (e.g., labels within choice A, B, C, D diagrams).
+- "other_label": Any other text like source citations, page numbers, or legends that
+  are NOT part of visual content.
 
 IMPORTANT GUIDELINES:
 - A block containing just "A." or "Part A" should be "question_part_header".
-- For multiple-choice questions with visual answers, the choice identifiers (A, B, C, D) are often near the visuals. Categorize the block containing the identifier as "answer_choice". If the choice letter is combined with other text in the same block, it's still an "answer_choice".
-- **CRITICAL**: Empty blocks that are positioned where visual content (figures, charts, diagrams) must be categorized as "visual_content_label", NOT "other_label". These blocks represent embedded visual elements that failed to extract as text.
-- Text that describes or explains what is shown in diagrams should be categorized as "visual_content_label" to ensure it's included in the image extraction. This prevents cutting off important explanatory text that is part of the visual content.
-- EXCEPTION: Text that introduces or transitions to a new diagram (e.g., "The model below shows...", "The diagram below...") should be "question_text" as it separates visual elements.
-- The goal is to separate text that's part of an image from text that is not, to allow for clean image extraction.
-- **Tables are NOT choice visuals**. If choices are presented in a table format, the table structure itself is not a visual choice. Do not identify `has_choice_visuals` as true just because choices are in a table.
+- For multiple-choice questions with visual answers, the choice identifiers (A, B, C, D)
+  are often near the visuals. Categorize the block containing the identifier as
+  "answer_choice". If the choice letter is combined with other text in the same block,
+  it's still an "answer_choice".
+- **CRITICAL**: Empty blocks that are positioned where visual content (figures, charts,
+  diagrams) must be categorized as "visual_content_label", NOT "other_label". These
+  blocks represent embedded visual elements that failed to extract as text.
+- Text that describes or explains what is shown in diagrams should be categorized as
+  "visual_content_label" to ensure it's included in the image extraction. This prevents
+  cutting off important explanatory text that is part of the visual content.
+- EXCEPTION: Text that introduces or transitions to a new diagram (e.g., "The model
+  below shows...", "The diagram below...") should be "question_text" as it separates
+  visual elements.
+- The goal is to separate text that's part of an image from text that is not, to allow
+  for clean image extraction.
+- **Tables are NOT choice visuals**. If choices are presented in a table format, the
+  table structure itself is not a visual choice. Do not identify `has_choice_visuals`
+  as true just because choices are in a table.
 
 Categorize each block to help identify where visual content is located."""
 
@@ -133,15 +157,20 @@ Categorize each block to help identify where visual content is located."""
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert in educational content analysis. Analyze visual content to separate prompt elements from choice elements, and categorize each text block to help with image extraction."
+                    "content": (
+                        "You are an expert in educational content analysis. "
+                        "Analyze visual content to separate prompt elements from "
+                        "choice elements, and categorize each text block to help "
+                        "with image extraction."
+                    ),
                 },
                 {
                     "role": "user",
                     "content": [
                         {"type": "text", "text": prompt},
-                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}}
-                    ]
-                }
+                        {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}},
+                    ],
+                },
             ],
             response_format=VisualContentAnalysis,
             reasoning_effort="high",
@@ -181,16 +210,12 @@ Categorize each block to help identify where visual content is located."""
     except Exception as e:
         print(f"🔍 ❌ LLM analysis request failed: {str(e)}")
         import traceback
+
         print(f"🔍 📋 Full traceback: {traceback.format_exc()}")
         return {"success": False, "error": str(e)}
 
 
-def process_llm_analysis_with_gaps(
-    analysis,
-    page: fitz.Page,
-    text_blocks: List[Dict[str, Any]],
-    block_categories: Dict[int, str]
-) -> Dict[str, Any]:
+def process_llm_analysis_with_gaps(analysis, page: fitz.Page, text_blocks: List[Dict[str, Any]], block_categories: Dict[int, str]) -> Dict[str, Any]:
     """
     Process LLM analysis results and use gap detection to find visual areas.
     """
@@ -281,20 +306,16 @@ def process_llm_analysis_with_gaps(
                 first_choice_y = min(bbox[1] for bbox in answer_choice_bboxes)
                 print(f"🔍    Choice area identified to start at y={first_choice_y:.1f}")
 
-                separated_prompt_labels = [
-                    label_bbox for label_bbox in image_label_blocks if label_bbox[3] < first_choice_y
-                ]
+                separated_prompt_labels = [label_bbox for label_bbox in image_label_blocks if label_bbox[3] < first_choice_y]
 
                 if separated_prompt_labels and len(separated_prompt_labels) < len(image_label_blocks):
                     prompt_image_labels = separated_prompt_labels
                     print(f"🔍    Found {len(prompt_image_labels)} prompt-specific labels based on position.")
                 else:
-                    print("🔍 ⚠️  Could not find distinct prompt labels above the choice area. Using all labels for prompt detection for safety.")
+                    print("🔍 ⚠️  Could not find distinct prompt labels above the choice area. Using all labels for prompt detection.")
 
         # Collect choice visual labels (both leftover prompt labels and dedicated choice labels)
-        choice_image_labels = [
-            bbox for bbox in image_label_blocks if bbox not in prompt_image_labels
-        ]
+        choice_image_labels = [bbox for bbox in image_label_blocks if bbox not in prompt_image_labels]
 
         # Add explicitly categorized choice visual labels
         for block_num, category in block_categories.items():
@@ -310,22 +331,14 @@ def process_llm_analysis_with_gaps(
         # Use custom image area detection that includes image labels
         print("🔍 🔍 Running custom image area detection...")
         try:
-            prompt_bboxes = construct_multiple_image_areas(
-                page,
-                question_answer_blocks,
-                prompt_image_labels
-            )
+            prompt_bboxes = construct_multiple_image_areas(page, question_answer_blocks, prompt_image_labels)
 
             # If label-based detection failed (no labels), try gap detection with flexible thresholds
             if not prompt_bboxes and image_label_blocks:
                 print("🔍 🔄 Label-based detection failed, trying improved gap detection...")
                 from .image_area_detector import construct_image_bbox_from_gaps
-                prompt_bbox_single = construct_image_bbox_from_gaps(
-                    page,
-                    question_answer_blocks,
-                    image_label_blocks,
-                    all_text_bboxes
-                )
+
+                prompt_bbox_single = construct_image_bbox_from_gaps(page, question_answer_blocks, image_label_blocks, all_text_bboxes)
                 if prompt_bbox_single:
                     prompt_bboxes = [prompt_bbox_single]
 
@@ -343,11 +356,7 @@ def process_llm_analysis_with_gaps(
                 print(f"🔍    Using {len(question_text_bboxes)} question_text blocks for flexible gap detection")
                 # Determine source bboxes for gap detection
                 bbox_source = question_text_bboxes if question_text_bboxes else question_answer_blocks
-                prompt_bbox_single = construct_image_area_from_gaps_flexible(
-                    page,
-                    bbox_source,
-                    all_text_bboxes
-                )
+                prompt_bbox_single = construct_image_area_from_gaps_flexible(page, bbox_source, all_text_bboxes)
                 if prompt_bbox_single:
                     prompt_bboxes = [prompt_bbox_single]
 
@@ -355,7 +364,7 @@ def process_llm_analysis_with_gaps(
                 for i, p_bbox in enumerate(prompt_bboxes):
                     width = p_bbox[2] - p_bbox[0]
                     height = p_bbox[3] - p_bbox[1]
-                    print(f"🔍 ✅ FOUND prompt visual area #{i+1}:")
+                    print(f"🔍 ✅ FOUND prompt visual area #{i + 1}:")
                     print(f"🔍    Bbox: [{p_bbox[0]:.1f}, {p_bbox[1]:.1f}, {p_bbox[2]:.1f}, {p_bbox[3]:.1f}]")
                     print(f"🔍    Size: {width:.1f} x {height:.1f} pixels")
                     print(f"🔍    Area: {width * height:.0f} square pixels")
@@ -372,6 +381,7 @@ def process_llm_analysis_with_gaps(
         except Exception as e:
             print(f"🔍 ❌ Image area detection failed with exception: {e}")
             import traceback
+
             print(f"🔍 📋 Image area detection traceback: {traceback.format_exc()}")
             prompt_bboxes = []
     else:
@@ -385,12 +395,7 @@ def process_llm_analysis_with_gaps(
     if analysis.has_choice_visuals:
         print("🔍 🎯 LLM detected choice visuals - extracting individual choice images...")
         choice_extraction_result = extract_choice_images(
-            page,
-            text_blocks,
-            block_categories,
-            all_text_bboxes,
-            question_answer_blocks,
-            choice_image_labels
+            page, text_blocks, block_categories, all_text_bboxes, question_answer_blocks, choice_image_labels
         )
         choice_bboxes = choice_extraction_result["extracted_images"]
         total_choice_blocks = choice_extraction_result["total_choices_found"]
@@ -405,11 +410,9 @@ def process_llm_analysis_with_gaps(
     choice_regions = []
     if choice_bboxes:
         for choice_info in choice_bboxes:
-            choice_regions.append({
-                "bbox": choice_info["bbox"],
-                "description": choice_info["description"],
-                "choice_letter": choice_info["choice_letter"]
-            })
+            choice_regions.append(
+                {"bbox": choice_info["bbox"], "description": choice_info["description"], "choice_letter": choice_info["choice_letter"]}
+            )
 
     prompt_regions = []
     if prompt_bboxes:
@@ -427,7 +430,7 @@ def process_llm_analysis_with_gaps(
         "prompt_regions": prompt_regions,
         "choice_regions": choice_regions,
         "reasoning": analysis.reasoning,
-        "block_categories": block_categories
+        "block_categories": block_categories,
     }
 
     print("🔍 📊 FINAL SEPARATION RESULTS:")

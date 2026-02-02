@@ -29,27 +29,27 @@ def process_mathml(element: ET.Element) -> str:
         <msup><mi>x</mi><mn>2</mn></msup> -> "x^(2)"
         <msqrt><mn>4</mn></msqrt> -> "sqrt(4)"
     """
-    tag = element.tag.split('}')[-1].lower()  # Handle namespaced tags
+    tag = element.tag.split("}")[-1].lower()  # Handle namespaced tags
 
-    if tag == 'mfrac':
+    if tag == "mfrac":
         return _process_fraction(element)
-    elif tag == 'msup':
+    elif tag == "msup":
         return _process_superscript(element)
-    elif tag == 'msub':
+    elif tag == "msub":
         return _process_subscript(element)
-    elif tag in ('msqrt', 'mroot'):
+    elif tag in ("msqrt", "mroot"):
         return _process_root(element, tag)
-    elif tag == 'mfenced':
+    elif tag == "mfenced":
         return _process_fenced(element)
-    elif tag == 'mtable':
+    elif tag == "mtable":
         return _process_table(element)
-    elif tag == 'mtr':
+    elif tag == "mtr":
         return _process_table_row(element)
-    elif tag == 'mtd':
+    elif tag == "mtd":
         return _process_table_cell(element)
-    elif tag in ('mi', 'mn', 'mo', 'mtext'):
+    elif tag in ("mi", "mn", "mo", "mtext"):
         return (element.text or "").strip()
-    elif tag in ('mrow', 'math', 'mstyle'):
+    elif tag in ("mrow", "math", "mstyle"):
         # Container elements - process children
         return _process_children(element)
     else:
@@ -90,7 +90,7 @@ def _process_subscript(element: ET.Element) -> str:
 def _process_root(element: ET.Element, tag: str) -> str:
     """Process msqrt or mroot element (square root or nth root)."""
     children = list(element)
-    if tag == 'msqrt':
+    if tag == "msqrt":
         inner = "".join([process_mathml(c) for c in children])
         return f"sqrt({inner})"
     elif len(children) >= 2:
@@ -167,7 +167,7 @@ def extract_math_tokens(element: ET.Element) -> list[str]:
     """
     tokens = []
     for child in element.iter():
-        tag = child.tag.split('}')[-1].lower()
-        if tag in ('mn', 'mi', 'mo', 'mtext') and child.text:
+        tag = child.tag.split("}")[-1].lower()
+        if tag in ("mn", "mi", "mo", "mtext") and child.text:
             tokens.append(child.text.strip())
     return tokens

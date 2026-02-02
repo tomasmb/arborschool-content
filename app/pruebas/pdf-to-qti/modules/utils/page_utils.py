@@ -46,7 +46,7 @@ def create_placeholder_image(page: fitz.Page) -> bytes:
     try:
         from PIL import Image, ImageDraw, ImageFont  # type: ignore
 
-        img = Image.new('RGB', (800, 600), color='white')
+        img = Image.new("RGB", (800, 600), color="white")
         draw = ImageDraw.Draw(img)
 
         try:
@@ -55,16 +55,23 @@ def create_placeholder_image(page: fitz.Page) -> bytes:
             font = None
 
         text = f"Page {page.number + 1}\nContent too complex to render\nText extraction available"
-        draw.text((50, 250), text, fill='black', font=font)
+        draw.text((50, 250), text, fill="black", font=font)
 
         import io
+
         img_bytes = io.BytesIO()
-        img.save(img_bytes, format='PNG')
+        img.save(img_bytes, format="PNG")
         return img_bytes.getvalue()
 
     except Exception:
         # Return minimal 1x1 white pixel as absolute fallback
-        return b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\tpHYs\x00\x00\x0b\x13\x00\x00\x0b\x13\x01\x00\x9a\x9c\x18\x00\x00\x00\x12IDATx\x9cc```bPPP\x00\x02\xac\xea\x05\x1b\x00\x00\x00\x00IEND\xaeB`\x82'
+        # PNG header + IHDR + pHYs + IDAT + IEND chunks
+        return (
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+            b"\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\tpHYs\x00\x00\x0b\x13"
+            b"\x00\x00\x0b\x13\x01\x00\x9a\x9c\x18\x00\x00\x00\x12IDATx\x9cc```"
+            b"bPPP\x00\x02\xac\xea\x05\x1b\x00\x00\x00\x00IEND\xaeB`\x82"
+        )
 
 
 def create_combined_image(doc: fitz.Document) -> str:
@@ -87,7 +94,7 @@ def create_combined_image(doc: fitz.Document) -> str:
             max_width = max(max_width, img.width)
             total_height += img.height
 
-        combined = Image.new('RGB', (max_width, total_height), color='white')
+        combined = Image.new("RGB", (max_width, total_height), color="white")
 
         y_offset = 0
         for img in images:
@@ -95,14 +102,14 @@ def create_combined_image(doc: fitz.Document) -> str:
             y_offset += img.height
 
         img_bytes = io.BytesIO()
-        combined.save(img_bytes, format='PNG')
-        return base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+        combined.save(img_bytes, format="PNG")
+        return base64.b64encode(img_bytes.getvalue()).decode("utf-8")
 
     except Exception as e:
         print(f"Error creating combined image: {e}")
         page = doc.load_page(0)
         page_image = get_page_image(page)
-        return base64.b64encode(page_image).decode('utf-8')
+        return base64.b64encode(page_image).decode("utf-8")
 
 
 def combine_structured_data(pages: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -113,11 +120,7 @@ def combine_structured_data(pages: List[Dict[str, Any]]) -> Dict[str, Any]:
     if len(pages) == 1:
         return pages[0]["structured_text"]
 
-    combined = {
-        "width": max(page["width"] for page in pages),
-        "height": sum(page["height"] for page in pages),
-        "blocks": []
-    }
+    combined = {"width": max(page["width"] for page in pages), "height": sum(page["height"] for page in pages), "blocks": []}
 
     y_offset = 0
     for page in pages:

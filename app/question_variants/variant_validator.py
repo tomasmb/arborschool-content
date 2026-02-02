@@ -36,11 +36,7 @@ class VariantValidator:
         self.config = config or PipelineConfig()
         self.service = load_default_gemini_service()
 
-    def validate(
-        self,
-        variant: VariantQuestion,
-        source: SourceQuestion
-    ) -> ValidationResult:
+    def validate(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Validate a variant question against its source.
 
         Args:
@@ -60,7 +56,7 @@ class VariantValidator:
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
-                rejection_reason=f"XML inválido: {xml_error}"
+                rejection_reason=f"XML inválido: {xml_error}",
             )
 
         # Step 2: LLM-based validation
@@ -79,11 +75,7 @@ class VariantValidator:
         except ET.ParseError as e:
             return False, str(e)
 
-    def _validate_with_llm(
-        self,
-        variant: VariantQuestion,
-        source: SourceQuestion
-    ) -> ValidationResult:
+    def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Use LLM to validate concept alignment, difficulty, and correctness."""
 
         # Extract variant text for easier reading
@@ -104,9 +96,9 @@ Opciones: {json.dumps(source.choices, ensure_ascii=False)}
 
 Respuesta correcta: {source.correct_answer}
 
-Concepto evaluado: {json.dumps([a.get('atom_title') for a in source.primary_atoms], ensure_ascii=False)}
+Concepto evaluado: {json.dumps([a.get("atom_title") for a in source.primary_atoms], ensure_ascii=False)}
 
-Dificultad: {source.difficulty.get('level', 'Medium')}
+Dificultad: {source.difficulty.get("level", "Medium")}
 </pregunta_original>
 
 <variante_a_validar>
@@ -169,7 +161,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             response = self.service.generate_text(
                 prompt,
                 response_mime_type="application/json",
-                temperature=0.0  # Deterministic for validation
+                temperature=0.0,  # Deterministic for validation
             )
 
             result = self._parse_validation_response(response)
@@ -188,7 +180,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
-                rejection_reason=f"Error de validación: {str(e)}"
+                rejection_reason=f"Error de validación: {str(e)}",
             )
 
     def _parse_validation_response(self, response: str) -> ValidationResult:
@@ -205,7 +197,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 answer_correct=data.get("respuesta_correcta", False),
                 calculation_steps=data.get("tu_calculo", ""),
                 distractors_plausible=data.get("distractores_plausibles", False),
-                rejection_reason=data.get("razon_rechazo", "")
+                rejection_reason=data.get("razon_rechazo", ""),
             )
         except json.JSONDecodeError:
             return ValidationResult(
@@ -213,7 +205,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
-                rejection_reason="No se pudo parsear respuesta de validación"
+                rejection_reason="No se pudo parsear respuesta de validación",
             )
 
     def _extract_question_text(self, xml_content: str) -> str:
@@ -241,12 +233,12 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             parts.append(element.text.strip())
 
         for child in element:
-            tag = child.tag.split('}')[-1].lower()
+            tag = child.tag.split("}")[-1].lower()
 
-            if tag == 'math':
+            if tag == "math":
                 # Process MathML to readable text using shared utility
                 parts.append(process_mathml(child))
-            elif tag in ('qti-simple-choice', 'simplechoice'):
+            elif tag in ("qti-simple-choice", "simplechoice"):
                 # Skip individual choices (we extract them separately)
                 pass
             else:
@@ -266,4 +258,3 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
     def _find_correct_answer(self, xml_content: str) -> str:
         """Find the correct answer from QTI XML, properly handling MathML."""
         return get_correct_answer_text(xml_content)
-

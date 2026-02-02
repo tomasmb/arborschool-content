@@ -127,21 +127,13 @@ def main() -> None:
 
             # Summary statistics
             all_high_priority = sum(
-                len([i for i in combined_data[s].get("detailed_issues", []) if i.get("priority") == "high"])
-                for s in combined_data
+                len([i for i in combined_data[s].get("detailed_issues", []) if i.get("priority") == "high"]) for s in combined_data
             )
             all_medium_priority = sum(
-                len([i for i in combined_data[s].get("detailed_issues", []) if i.get("priority") == "medium"])
-                for s in combined_data
+                len([i for i in combined_data[s].get("detailed_issues", []) if i.get("priority") == "medium"]) for s in combined_data
             )
-            total_atoms_validated = sum(
-                combined_data[s].get("evaluation_summary", {}).get("total_atoms", 0)
-                for s in combined_data
-            )
-            total_atoms_passing = sum(
-                combined_data[s].get("evaluation_summary", {}).get("atoms_passing_all_checks", 0)
-                for s in combined_data
-            )
+            total_atoms_validated = sum(combined_data[s].get("evaluation_summary", {}).get("total_atoms", 0) for s in combined_data)
+            total_atoms_passing = sum(combined_data[s].get("evaluation_summary", {}).get("atoms_passing_all_checks", 0) for s in combined_data)
 
             print()
             print("Resumen general:")
@@ -195,4 +187,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -91,7 +91,8 @@ Examples:
     )
 
     parser.add_argument(
-        "--verbose", "-v",
+        "--verbose",
+        "-v",
         action="store_true",
         help="Print detailed progress information",
     )
@@ -222,6 +223,7 @@ def main() -> int:
         print(f"\n❌ Database error: {e}")
         if args.verbose:
             import traceback
+
             traceback.print_exc()
         return 1
 

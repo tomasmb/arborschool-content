@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """
 Script CLI para gestionar backups de QTI.
+
+Usage:
+    python manage_backups.py list --test-name prueba-invierno-2026
+    python manage_backups.py delete --test-name prueba-invierno-2026 --backup-name backup_20241216_143022
+    python manage_backups.py restore --test-name prueba-invierno-2026 --backup-name backup_20241216_143022
 """
 
 from __future__ import annotations
@@ -9,24 +14,46 @@ import argparse
 import sys
 from pathlib import Path
 
+# scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> repo root
+project_root = Path(__file__).resolve().parents[4]
+
 # Add parent directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from backup_manager import delete_backup, list_backups, restore_from_backup
 
 
+def get_output_dir(test_name: str) -> Path:
+    """Get the QTI output directory for a test."""
+    return project_root / "app" / "data" / "pruebas" / "finalizadas" / test_name / "qti"
+
+
 def main():
     """CLI para gestionar backups."""
-    parser = argparse.ArgumentParser(description="Manage QTI backups")
+    parser = argparse.ArgumentParser(
+        description="Manage QTI backups",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python manage_backups.py list --test-name prueba-invierno-2026
+  python manage_backups.py delete --test-name prueba-invierno-2026 --backup-name backup_20241216
+  python manage_backups.py restore --test-name prueba-invierno-2026 --backup-name backup_20241216
+        """,
+    )
     parser.add_argument(
         "action",
         choices=["list", "delete", "restore"],
         help="Action to perform",
     )
     parser.add_argument(
+        "--test-name",
+        required=True,
+        help="Name of the test (e.g., prueba-invierno-2026)",
+    )
+    parser.add_argument(
         "--output-dir",
-        default="../../data/pruebas/procesadas/seleccion-regular-2026/qti",
-        help="Base QTI output directory",
+        type=Path,
+        help="Override: Base QTI output directory (default: auto-derived from test name)",
     )
     parser.add_argument(
         "--backup-name",
@@ -50,7 +77,8 @@ def main():
 
     args = parser.parse_args()
 
-    output_dir = Path(args.output_dir).resolve()
+    output_dir = args.output_dir or get_output_dir(args.test_name)
+    output_dir = output_dir.resolve()
 
     if args.action == "list":
         backups = list_backups(output_dir)

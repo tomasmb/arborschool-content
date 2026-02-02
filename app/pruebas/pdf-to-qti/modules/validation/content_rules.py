@@ -59,7 +59,7 @@ def validate_no_base64_images(xml_content: str) -> ValidationResult:
     rule_name = "no_base64_images"
 
     # Pattern to detect base64 data URIs
-    base64_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=]+'
+    base64_pattern = r"data:image/[^;]+;base64,[A-Za-z0-9+/=]+"
 
     matches = re.findall(base64_pattern, xml_content)
 
@@ -103,8 +103,7 @@ def validate_no_encoding_errors(content: str) -> ValidationResult:
             passed=False,
             rule_name=rule_name,
             message=f"Found {len(found_errors)} encoding error pattern(s)",
-            details=f"Patterns like '{found_errors[0]}' indicate broken Spanish character encoding. "
-                    "The source PDF has non-standard font mappings.",
+            details=f"Patterns like '{found_errors[0]}' indicate broken Spanish character encoding. The source PDF has non-standard font mappings.",
         )
 
     return ValidationResult(
@@ -246,7 +245,4 @@ def validate_xml_or_raise(xml_content: str) -> None:
 
     if failures:
         error_messages = [str(f) for f in failures]
-        raise ValueError(
-            f"Content validation failed with {len(failures)} error(s):\n"
-            + "\n".join(error_messages)
-        )
+        raise ValueError(f"Content validation failed with {len(failures)} error(s):\n" + "\n".join(error_messages))

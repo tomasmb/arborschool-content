@@ -18,7 +18,7 @@ def separate_prompt_and_choice_images(
     text_blocks: List[Dict[str, Any]],
     question_text: str,
     ai_categories: Optional[Dict[int, str]] = None,
-    openai_api_key: Optional[str] = None
+    openai_api_key: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Use LLM to separate visual content that belongs to the question prompt
@@ -49,9 +49,7 @@ def separate_prompt_and_choice_images(
     try:
         # Analyze visual content with LLM
         print("🔍 🧠 Starting LLM-powered visual content analysis...")
-        analysis_result = analyze_visual_content_with_llm(
-            page, text_blocks, question_text, openai_api_key
-        )
+        analysis_result = analyze_visual_content_with_llm(page, text_blocks, question_text, openai_api_key)
 
         if not analysis_result.get("success", False):
             print(f"🔍 ❌ LLM analysis failed: {analysis_result.get('error', 'Unknown error')}")
@@ -68,10 +66,7 @@ def separate_prompt_and_choice_images(
 
 
 def _fallback_separation(
-    page: fitz.Page,
-    text_blocks: List[Dict[str, Any]],
-    question_text: str,
-    ai_categories: Optional[Dict[int, str]] = None
+    page: fitz.Page, text_blocks: List[Dict[str, Any]], question_text: str, ai_categories: Optional[Dict[int, str]] = None
 ) -> Dict[str, Any]:
     """
     Fallback separation logic when LLM is not available.
@@ -80,10 +75,7 @@ def _fallback_separation(
     print("🔍 " + "-" * 40)
 
     # Simple heuristic: if question text references visual content, assume prompt visuals exist
-    prompt_indicators = [
-        "shown", "diagram", "model", "figure", "image", "illustration",
-        "appears", "displays", "represents", "depicts"
-    ]
+    prompt_indicators = ["shown", "diagram", "model", "figure", "image", "illustration", "appears", "displays", "represents", "depicts"]
 
     has_prompt_visuals = any(indicator in question_text.lower() for indicator in prompt_indicators)
     print(f"🔍 Prompt visual indicators found: {has_prompt_visuals}")
@@ -113,7 +105,7 @@ def _fallback_separation(
         "choice_regions": [],
         "block_categories": ai_categories or {},
         "ai_categories": ai_categories or {},  # Added missing field to match main function
-        "reasoning": "Fallback heuristic analysis"
+        "reasoning": "Fallback heuristic analysis",
     }
 
     print("🔍 📊 FALLBACK RESULTS:")

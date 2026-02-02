@@ -46,7 +46,7 @@ def calculate_depths(atoms: list[dict]) -> dict[str, int]:
 
     # Kahn's algorithm for topological sort with depth tracking
     depths: dict[str, int] = {}
-    queue = deque()
+    queue: deque[str] = deque()
 
     # Start with nodes that have no prerequisites
     for atom_id in atom_ids:
@@ -94,21 +94,25 @@ def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[d
 
         children = []
         for atom in sorted_atoms:
-            children.append({
-                "name": atom["id"],
-                "attributes": {
-                    "title": atom["titulo"],
-                    "depth": depths.get(atom["id"], 0),
-                    "habilidad": atom["habilidad_principal"],
-                },
-                "children": [],  # Leaf nodes for now
-            })
+            children.append(
+                {
+                    "name": atom["id"],
+                    "attributes": {
+                        "title": atom["titulo"],
+                        "depth": depths.get(atom["id"], 0),
+                        "habilidad": atom["habilidad_principal"],
+                    },
+                    "children": [],  # Leaf nodes for now
+                }
+            )
 
-        roots.append({
-            "name": eje_names.get(eje, eje),
-            "attributes": {"type": "eje", "count": len(eje_atoms)},
-            "children": children,
-        })
+        roots.append(
+            {
+                "name": eje_names.get(eje, eje),
+                "attributes": {"type": "eje", "count": len(eje_atoms)},
+                "children": children,
+            }
+        )
 
     return roots
 
@@ -134,37 +138,44 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
 
     for atom in atoms:
         atom_id = atom["id"]
-        nodes.append({
-            "id": atom_id,
-            "title": atom["titulo"],
-            "eje": atom["eje"],
-            "habilidad": atom["habilidad_principal"],
-            "depth": depths.get(atom_id, 0),
-        })
+        nodes.append(
+            {
+                "id": atom_id,
+                "title": atom["titulo"],
+                "eje": atom["eje"],
+                "habilidad": atom["habilidad_principal"],
+                "depth": depths.get(atom_id, 0),
+            }
+        )
 
         for prereq in atom.get("prerrequisitos", []):
-            edges.append({
-                "source": prereq,
-                "target": atom_id,
-            })
+            edges.append(
+                {
+                    "source": prereq,
+                    "target": atom_id,
+                }
+            )
 
     # Build hierarchical format
     hierarchical = build_hierarchical_tree(atoms, depths)
 
-    # Statistics
-    stats = {
-        "total_nodes": len(nodes),
-        "total_edges": len(edges),
-        "max_depth": max_depth,
-        "nodes_by_eje": {},
-        "nodes_by_depth": {},
-    }
+    # Statistics - use typed dicts to avoid mypy issues
+    nodes_by_eje: dict[str, int] = {}
+    nodes_by_depth: dict[int, int] = {}
 
     for node in nodes:
         eje = node["eje"]
         depth = node["depth"]
-        stats["nodes_by_eje"][eje] = stats["nodes_by_eje"].get(eje, 0) + 1
-        stats["nodes_by_depth"][depth] = stats["nodes_by_depth"].get(depth, 0) + 1
+        nodes_by_eje[eje] = nodes_by_eje.get(eje, 0) + 1
+        nodes_by_depth[depth] = nodes_by_depth.get(depth, 0) + 1
+
+    stats = {
+        "total_nodes": len(nodes),
+        "total_edges": len(edges),
+        "max_depth": max_depth,
+        "nodes_by_eje": nodes_by_eje,
+        "nodes_by_depth": nodes_by_depth,
+    }
 
     # Build output
     output = {
@@ -192,11 +203,11 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
     print(f"Max depth: {stats['max_depth']}")
     print()
     print("Nodes by eje:")
-    for eje, count in sorted(stats["nodes_by_eje"].items()):
+    for eje, count in sorted(nodes_by_eje.items()):
         print(f"  {eje}: {count}")
     print()
     print("Nodes by depth:")
-    for depth, count in sorted(stats["nodes_by_depth"].items()):
+    for depth, count in sorted(nodes_by_depth.items()):
         print(f"  Depth {depth}: {count}")
     print("=" * 60)
 

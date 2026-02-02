@@ -12,16 +12,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-# -----------------------------------------------------------------------------
-# Path constants
-# -----------------------------------------------------------------------------
-
-REPO_ROOT = Path(__file__).parent.parent.parent
-DATA_DIR = REPO_ROOT / "app" / "data"
-ATOMS_DIR = DATA_DIR / "atoms"
-STANDARDS_DIR = DATA_DIR / "standards"
-PRUEBAS_FINALIZADAS_DIR = DATA_DIR / "pruebas" / "finalizadas"
-
+from app.utils.paths import (
+    ATOMS_DIR,
+    PRUEBAS_FINALIZADAS_DIR,
+    STANDARDS_DIR,
+)
 
 # -----------------------------------------------------------------------------
 # Extracted data containers (intermediate format before transform)
@@ -280,11 +275,13 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
         # Extract atoms info
         atoms_data: list[dict[str, Any]] = []
         for atom_info in metadata.get("selected_atoms", []):
-            atoms_data.append({
-                "atom_id": atom_info.get("atom_id"),
-                "relevance": atom_info.get("relevance", "primary").lower(),
-                "reasoning": atom_info.get("reasoning"),
-            })
+            atoms_data.append(
+                {
+                    "atom_id": atom_info.get("atom_id"),
+                    "relevance": atom_info.get("relevance", "primary").lower(),
+                    "reasoning": atom_info.get("reasoning"),
+                }
+            )
 
         # Extract difficulty
         difficulty = metadata.get("difficulty", {})

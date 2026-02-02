@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional
 
+from app.utils.paths import get_question_metadata_path
+
 from .config import (
     A2_QUESTIONS,
     B2_QUESTIONS,
@@ -28,6 +30,7 @@ from .config import (
 
 class ResponseType(Enum):
     """Tipos de respuesta posibles"""
+
     CORRECT = "correct"
     INCORRECT = "incorrect"
     DONT_KNOW = "dont_know"  # Botón "No lo sé"
@@ -36,6 +39,7 @@ class ResponseType(Enum):
 @dataclass
 class Response:
     """Representa una respuesta del estudiante"""
+
     question: Question
     response_type: ResponseType
     selected_option: Optional[str] = None  # La opción seleccionada (A, B, C, D)
@@ -48,6 +52,7 @@ class Response:
 @dataclass
 class AtomDiagnosis:
     """Diagnóstico de un átomo específico"""
+
     atom_id: str
     atom_title: str
     response_type: ResponseType
@@ -85,6 +90,7 @@ class AtomDiagnosis:
 @dataclass
 class TestResult:
     """Resultado completo de la prueba diagnóstica"""
+
     route: Route
     r1_correct: int
     stage2_correct: int
@@ -197,6 +203,8 @@ class MSTEngine:
         """
         if not self.r1_responses or not self.stage2_responses:
             raise ValueError("Debe completar ambas etapas antes de obtener resultados")
+        if self._route is None:
+            raise ValueError("La ruta no ha sido determinada (falta completar R1)")
 
         all_responses = self.r1_responses + self.stage2_responses
 
@@ -244,10 +252,7 @@ class MSTEngine:
             if response.is_correct:
                 axis_counts[axis]["correct"] += 1
 
-        return {
-            axis: counts["correct"] / counts["total"] if counts["total"] > 0 else 0
-            for axis, counts in axis_counts.items()
-        }
+        return {axis: counts["correct"] / counts["total"] if counts["total"] > 0 else 0 for axis, counts in axis_counts.items()}
 
     def _calculate_skill_performance(self, responses: List[Response]) -> Dict[Skill, float]:
         """Calcula el porcentaje de acierto por habilidad"""
@@ -262,10 +267,7 @@ class MSTEngine:
             if response.is_correct:
                 skill_counts[skill]["correct"] += 1
 
-        return {
-            skill: counts["correct"] / counts["total"] if counts["total"] > 0 else 0
-            for skill, counts in skill_counts.items()
-        }
+        return {skill: counts["correct"] / counts["total"] if counts["total"] > 0 else 0 for skill, counts in skill_counts.items()}
 
     def _calculate_atom_diagnoses(self, responses: List[Response]) -> List[AtomDiagnosis]:
         """
@@ -280,10 +282,6 @@ class MSTEngine:
             Lista de AtomDiagnosis con estado por átomo
         """
         import json
-        from pathlib import Path
-
-        # Base path for test data
-        BASE_PATH = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
 
         # Track atoms already diagnosed (avoid duplicates, keep worst status)
         atom_status: Dict[str, AtomDiagnosis] = {}
@@ -297,13 +295,13 @@ class MSTEngine:
 
         for response in responses:
             question = response.question
-            metadata_path = BASE_PATH / question.exam / "qti" / question.question_id / "metadata_tags.json"
+            metadata_path = get_question_metadata_path(question.exam, question.question_id)
 
             if not metadata_path.exists():
                 continue
 
             try:
-                with open(metadata_path, 'r', encoding='utf-8') as f:
+                with open(metadata_path, "r", encoding="utf-8") as f:
                     metadata = json.load(f)
             except (json.JSONDecodeError, IOError):
                 continue

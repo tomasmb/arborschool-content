@@ -268,9 +268,7 @@ def run_all_pdf_validations(
     ]
 
     if expected_question_number is not None:
-        results.append(
-            validate_question_number_in_content(pdf_path, expected_question_number)
-        )
+        results.append(validate_question_number_in_content(pdf_path, expected_question_number))
 
     return results
 
@@ -297,7 +295,4 @@ def validate_pdf_or_raise(
 
     if failures:
         error_messages = [str(f) for f in failures]
-        raise ValueError(
-            f"PDF validation failed for {pdf_path.name}:\n"
-            + "\n".join(error_messages)
-        )
+        raise ValueError(f"PDF validation failed for {pdf_path.name}:\n" + "\n".join(error_messages))

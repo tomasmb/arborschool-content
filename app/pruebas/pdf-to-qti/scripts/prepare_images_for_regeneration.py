@@ -22,11 +22,11 @@ if env_file.exists():
     load_dotenv(env_file, override=True)
 
     # Also manually parse and set to ensure they're available
-    with open(env_file, 'r', encoding='utf-8') as f:
+    with open(env_file, "r", encoding="utf-8") as f:
         for line in f:
             line = line.strip()
-            if line and not line.startswith('#') and '=' in line:
-                key, value = line.split('=', 1)
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
                 key = key.strip()
                 value = value.strip().strip('"').strip("'")
                 os.environ[key] = value
@@ -58,9 +58,10 @@ import re
 # Import boto3 directly to avoid import issues
 try:
     import boto3
-    from botocore.exceptions import ClientError, NoCredentialsError
+
     BOTO3_AVAILABLE = True
 except ImportError:
+    boto3 = None  # type: ignore[assignment]
     BOTO3_AVAILABLE = False
     print("❌ boto3 no está instalado. Instala con: pip install boto3")
 
@@ -153,16 +154,10 @@ def prepare_images_for_question(
     extracted_json = question_dir / "extracted_content.json"
 
     if not processed_json.exists():
-        return {
-            "success": False,
-            "error": f"processed_content.json no encontrado en {question_dir}"
-        }
+        return {"success": False, "error": f"processed_content.json no encontrado en {question_dir}"}
 
     if not extracted_json.exists():
-        return {
-            "success": False,
-            "error": f"extracted_content.json no encontrado en {question_dir}"
-        }
+        return {"success": False, "error": f"extracted_content.json no encontrado en {question_dir}"}
 
     # Cargar archivos
     print("📖 Cargando processed_content.json...")
@@ -178,29 +173,29 @@ def prepare_images_for_question(
     uploaded_count = 0
 
     # Procesar image_base64 si tiene placeholder
-    if processed_content.get('image_base64') and processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER_'):
-        placeholder = processed_content['image_base64']
+    if processed_content.get("image_base64") and processed_content["image_base64"].startswith("CONTENT_PLACEHOLDER_"):
+        placeholder = processed_content["image_base64"]
         print(f"\n🔄 Procesando placeholder: {placeholder}")
 
-        match = re.search(r'P(\d+)', placeholder)
+        match = re.search(r"P(\d+)", placeholder)
         if match:
             idx = int(match.group(1))
             base64_data = None
 
             # Buscar en all_images del extracted_content
-            if 'all_images' in extracted_content and idx < len(extracted_content['all_images']):
-                extracted_img = extracted_content['all_images'][idx]
-                if extracted_img.get('image_base64') and not extracted_img['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                    base64_data = extracted_img['image_base64']
+            if "all_images" in extracted_content and idx < len(extracted_content["all_images"]):
+                extracted_img = extracted_content["all_images"][idx]
+                if extracted_img.get("image_base64") and not extracted_img["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                    base64_data = extracted_img["image_base64"]
 
             # También intentar en image_base64 raíz del extracted_content si es P0
-            if not base64_data and idx == 0 and extracted_content.get('image_base64'):
-                if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                    base64_data = extracted_content['image_base64']
+            if not base64_data and idx == 0 and extracted_content.get("image_base64"):
+                if not extracted_content["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                    base64_data = extracted_content["image_base64"]
 
             if base64_data:
                 # Asegurar formato data URI
-                if not base64_data.startswith('data:'):
+                if not base64_data.startswith("data:"):
                     base64_data = f"data:image/png;base64,{base64_data}"
 
                 print("   📤 Subiendo imagen principal a S3...")
@@ -213,7 +208,7 @@ def prepare_images_for_question(
 
                 if s3_url:
                     placeholder_to_s3_url[placeholder] = s3_url
-                    placeholder_to_s3_url['main_image'] = s3_url
+                    placeholder_to_s3_url["main_image"] = s3_url
                     uploaded_count += 1
                     print(f"   ✅ Subida exitosa: {s3_url}")
                 else:
@@ -222,32 +217,32 @@ def prepare_images_for_question(
                 print("   ⚠️  No se encontró la imagen correspondiente en extracted_content")
 
     # Procesar all_images
-    if processed_content.get('all_images'):
+    if processed_content.get("all_images"):
         print(f"\n🔄 Procesando {len(processed_content['all_images'])} imagen(es) adicional(es)...")
-        for i, img_info in enumerate(processed_content['all_images']):
-            placeholder = img_info.get('image_base64', '')
-            if placeholder.startswith('CONTENT_PLACEHOLDER_'):
+        for i, img_info in enumerate(processed_content["all_images"]):
+            placeholder = img_info.get("image_base64", "")
+            if placeholder.startswith("CONTENT_PLACEHOLDER_"):
                 print(f"\n   📌 Imagen {i}: {placeholder}")
 
-                match = re.search(r'P(\d+)', placeholder)
+                match = re.search(r"P(\d+)", placeholder)
                 if match:
                     idx = int(match.group(1))
                     base64_data = None
 
                     # Buscar en all_images del extracted_content
-                    if 'all_images' in extracted_content and idx < len(extracted_content['all_images']):
-                        extracted_img = extracted_content['all_images'][idx]
-                        if extracted_img.get('image_base64') and not extracted_img['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                            base64_data = extracted_img['image_base64']
+                    if "all_images" in extracted_content and idx < len(extracted_content["all_images"]):
+                        extracted_img = extracted_content["all_images"][idx]
+                        if extracted_img.get("image_base64") and not extracted_img["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                            base64_data = extracted_img["image_base64"]
 
                     # Si no encontramos y es P0, buscar en image_base64 raíz
-                    if not base64_data and idx == 0 and extracted_content.get('image_base64'):
-                        if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                            base64_data = extracted_content['image_base64']
+                    if not base64_data and idx == 0 and extracted_content.get("image_base64"):
+                        if not extracted_content["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                            base64_data = extracted_content["image_base64"]
 
                     if base64_data:
                         # Asegurar formato data URI
-                        if not base64_data.startswith('data:'):
+                        if not base64_data.startswith("data:"):
                             base64_data = f"data:image/png;base64,{base64_data}"
 
                         img_id = f"{question_id}_img{i}" if question_id else f"img{i}"
@@ -280,8 +275,13 @@ def prepare_images_for_question(
         "success": True,
         "uploaded_count": uploaded_count,
         "mapping": placeholder_to_s3_url,
-        "mapping_file": str(question_dir / "s3_image_mapping.json") if placeholder_to_s3_url else None
+        "mapping_file": str(question_dir / "s3_image_mapping.json") if placeholder_to_s3_url else None,
     }
+
+
+def get_output_dir(test_name: str) -> Path:
+    """Get the QTI output directory for a test."""
+    return project_root / "app" / "data" / "pruebas" / "finalizadas" / test_name / "qti"
 
 
 def main():
@@ -289,29 +289,20 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Preparar imágenes subiéndolas a S3 antes de regenerar QTI"
+        description="Preparar imágenes subiéndolas a S3 antes de regenerar QTI",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python prepare_images_for_regeneration.py --test-name prueba-invierno-2026 --question-numbers 23 24
+        """,
     )
-    parser.add_argument(
-        "--question-numbers",
-        nargs="+",
-        type=int,
-        required=True,
-        help="Números de pregunta a procesar (ej: 23)"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="../../data/pruebas/procesadas/seleccion-regular-2026/qti",
-        help="Directorio base con las carpetas de preguntas"
-    )
-    parser.add_argument(
-        "--test-name",
-        default="seleccion-regular-2026",
-        help="Nombre del test para organizar imágenes en S3"
-    )
+    parser.add_argument("--test-name", required=True, help="Nombre del test (e.g., prueba-invierno-2026)")
+    parser.add_argument("--question-numbers", nargs="+", type=int, required=True, help="Números de pregunta a procesar (ej: 23)")
+    parser.add_argument("--output-dir", type=Path, help="Override: Directorio base (default: auto-derived from test name)")
 
     args = parser.parse_args()
 
-    output_base_dir = Path(args.output_dir)
+    output_base_dir = args.output_dir or get_output_dir(args.test_name)
 
     print("=" * 60)
     print("Preparación de imágenes para regeneración")
@@ -361,4 +352,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

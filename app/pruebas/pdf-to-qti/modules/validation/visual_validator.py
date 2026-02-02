@@ -26,7 +26,7 @@ def validate_visual_output(
     qti_xml: str,
     openai_api_key: str,
     output_dir: Optional[str] = None,
-    amp_up_url: str = "https://www.amp-up.io/testrunner/sandbox/"
+    amp_up_url: str = "https://www.amp-up.io/testrunner/sandbox/",
 ) -> Dict[str, Any]:
     """
     Validate QTI XML by rendering it with amp-up and comparing visually.
@@ -47,10 +47,7 @@ def validate_visual_output(
         rendered_image = render_qti_with_ampup(qti_xml, amp_up_url)
 
         if not rendered_image:
-            return {
-                "success": False,
-                "error": "Failed to render QTI XML with amp-up"
-            }
+            return {"success": False, "error": "Failed to render QTI XML with amp-up"}
 
         # Step 2: Save screenshots if output directory is provided
         screenshot_paths = {}
@@ -74,11 +71,7 @@ def validate_visual_output(
 
         # Step 3: Compare images using GPT-5.1
         print("Comparing rendered output with original PDF...")
-        comparison_result = compare_images_with_llm(
-            original_pdf_image,
-            rendered_image,
-            openai_api_key
-        )
+        comparison_result = compare_images_with_llm(original_pdf_image, rendered_image, openai_api_key)
 
         # Add screenshot paths to the result
         if screenshot_paths:
@@ -87,10 +80,7 @@ def validate_visual_output(
         return comparison_result
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Visual validation failed: {str(e)}"
-        }
+        return {"success": False, "error": f"Visual validation failed: {str(e)}"}
 
 
 def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
@@ -127,15 +117,11 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
         # Look for the specific XML input textarea (as specified in the question)
         try:
             # Try to find the specific sandbox textarea
-            xml_input = wait.until(
-                EC.presence_of_element_located((By.CLASS_NAME, "sandbox-item-xml-textarea"))
-            )
+            xml_input = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "sandbox-item-xml-textarea")))
         except TimeoutException:
             # Fallback to generic textarea
             try:
-                xml_input = wait.until(
-                    EC.presence_of_element_located((By.TAG_NAME, "textarea"))
-                )
+                xml_input = wait.until(EC.presence_of_element_located((By.TAG_NAME, "textarea")))
             except TimeoutException:
                 # Try alternative selectors
                 xml_input = driver.find_element(By.CSS_SELECTOR, "[contenteditable='true']")
@@ -146,7 +132,7 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
 
         # Look for render/preview button - try multiple common button texts
         render_button = None
-        button_texts = ['Render', 'Preview', 'Run', 'Submit', 'Execute', 'Test']
+        button_texts = ["Render", "Preview", "Run", "Submit", "Execute", "Test"]
 
         for button_text in button_texts:
             try:
@@ -174,21 +160,10 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
 
         # Look for the rendered content area (col-lg-8 as specified in guidelines)
         try:
-            content_area = wait.until(
-                EC.presence_of_element_located((By.CLASS_NAME, "col-lg-8"))
-            )
+            content_area = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "col-lg-8")))
         except TimeoutException:
             # Fallback to other common content selectors
-            content_selectors = [
-                ".col-lg-8",
-                ".question-content",
-                ".item-body",
-                ".qti-item-body",
-                ".content",
-                "#content",
-                ".main-content",
-                "main"
-            ]
+            content_selectors = [".col-lg-8", ".question-content", ".item-body", ".qti-item-body", ".content", "#content", ".main-content", "main"]
 
             content_area = None
             for selector in content_selectors:
@@ -206,7 +181,7 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
         screenshot = content_area.screenshot_as_png
 
         # Convert to base64
-        screenshot_base64 = base64.b64encode(screenshot).decode('utf-8')
+        screenshot_base64 = base64.b64encode(screenshot).decode("utf-8")
 
         return screenshot_base64
 
@@ -221,11 +196,7 @@ def render_qti_with_ampup(qti_xml: str, amp_up_url: str) -> Optional[str]:
             driver.quit()
 
 
-def compare_images_with_llm(
-    original_image: str,
-    rendered_image: str,
-    openai_api_key: str
-) -> Dict[str, Any]:
+def compare_images_with_llm(original_image: str, rendered_image: str, openai_api_key: str) -> Dict[str, Any]:
     """
     Compare original PDF image with rendered QTI using GPT-5.1.
 
@@ -247,31 +218,21 @@ def compare_images_with_llm(
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert in educational assessment and visual comparison. Your task is to compare two images of the same question - one from the original PDF and one rendered from QTI XML - and determine how accurately the QTI version represents the original."
+                "content": (
+                    "You are an expert in educational assessment and visual comparison. "
+                    "Your task is to compare two images of the same question - one from "
+                    "the original PDF and one rendered from QTI XML - and determine how "
+                    "accurately the QTI version represents the original."
+                ),
             },
             {
                 "role": "user",
                 "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{original_image}",
-                            "detail": "high"
-                        }
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{rendered_image}",
-                            "detail": "high"
-                        }
-                    }
-                ]
-            }
+                    {"type": "text", "text": prompt},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{original_image}", "detail": "high"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{rendered_image}", "detail": "high"}},
+                ],
+            },
         ]
 
         # Call GPT-5.1 for comparison with high reasoning effort for accurate analysis
@@ -290,20 +251,7 @@ def compare_images_with_llm(
         return result
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Image comparison failed: {str(e)}"
-        }
-
-
-def create_comparison_prompt() -> str:
-    """
-    DEPRECATED: Use prompt_builder.create_visual_comparison_prompt() instead.
-
-    Returns:
-        Comparison prompt string
-    """
-    return create_visual_comparison_prompt()
+        return {"success": False, "error": f"Image comparison failed: {str(e)}"}
 
 
 def parse_comparison_response(response_text: str) -> Dict[str, Any]:
@@ -318,8 +266,8 @@ def parse_comparison_response(response_text: str) -> Dict[str, Any]:
     """
     try:
         # Extract JSON from response
-        json_start = response_text.find('{')
-        json_end = response_text.rfind('}') + 1
+        json_start = response_text.find("{")
+        json_end = response_text.rfind("}") + 1
 
         if json_start >= 0 and json_end > json_start:
             json_text = response_text[json_start:json_end]
@@ -330,37 +278,31 @@ def parse_comparison_response(response_text: str) -> Dict[str, Any]:
                 raise ValueError("Response is not a dictionary")
 
             # Extract key metrics
-            overall_match = result.get('overall_match', False)
-            similarity_score = result.get('similarity_score', 0.0)
-            recommendation = result.get('recommendation', 'reject')
+            overall_match = result.get("overall_match", False)
+            similarity_score = result.get("similarity_score", 0.0)
+            recommendation = result.get("recommendation", "reject")
 
             return {
                 "success": True,
                 "overall_match": overall_match,
                 "similarity_score": similarity_score,
-                "content_accuracy": result.get('content_accuracy', 0.0),
-                "visual_layout": result.get('visual_layout', 0.0),
-                "functionality": result.get('functionality', 0.0),
-                "usability": result.get('usability', 0.0),
-                "issues_found": result.get('issues_found', []),
-                "positive_aspects": result.get('positive_aspects', []),
+                "content_accuracy": result.get("content_accuracy", 0.0),
+                "visual_layout": result.get("visual_layout", 0.0),
+                "functionality": result.get("functionality", 0.0),
+                "usability": result.get("usability", 0.0),
+                "issues_found": result.get("issues_found", []),
+                "positive_aspects": result.get("positive_aspects", []),
                 "recommendation": recommendation,
-                "notes": result.get('notes', ''),
-                "visual_validation_passed": overall_match and similarity_score >= 0.7
+                "notes": result.get("notes", ""),
+                "visual_validation_passed": overall_match and similarity_score >= 0.7,
             }
         else:
             raise ValueError("No JSON found in response")
 
     except json.JSONDecodeError as e:
-        return {
-            "success": False,
-            "error": f"Failed to parse comparison response: {str(e)}"
-        }
+        return {"success": False, "error": f"Failed to parse comparison response: {str(e)}"}
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Error parsing comparison response: {str(e)}"
-        }
+        return {"success": False, "error": f"Error parsing comparison response: {str(e)}"}
 
 
 def setup_selenium_driver() -> Optional[webdriver.Chrome]:

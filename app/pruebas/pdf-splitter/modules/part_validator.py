@@ -32,8 +32,11 @@ def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> b
             # The `compute_bboxes_for_segments` function is now responsible for NOT
             # adding a 'bboxes' key if it can't find the segment.
             if "bboxes" not in segment or not segment["bboxes"]:
-                segment_id = segment.get('id', f'index_{i}')
-                print(f"❌ VALIDATION FAILED: Segment '{segment_id}' (type: {seg_type}) could not be located in the PDF. It is missing bounding box information.")
+                segment_id = segment.get("id", f"index_{i}")
+                print(
+                    f"❌ VALIDATION FAILED: Segment '{segment_id}' (type: {seg_type}) "
+                    f"could not be located in the PDF. It is missing bounding box info."
+                )
                 all_segments_valid = False
 
     if all_segments_valid:
@@ -44,7 +47,7 @@ def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> b
         failed_dir = os.path.join(output_dir, "failed")
         os.makedirs(failed_dir, exist_ok=True)
         failed_path = os.path.join(failed_dir, "failed_segmentation_results.json")
-        with open(failed_path, 'w', encoding='utf-8') as f:
+        with open(failed_path, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
         print(f"💾 Failed segmentation results saved to: {failed_path}")
 

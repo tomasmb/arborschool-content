@@ -14,11 +14,7 @@ Following converter guidelines:
 import re
 from typing import Any, Dict, List, Optional, Tuple
 
-__all__ = [
-    "detect_scattered_table_blocks",
-    "reconstruct_table_from_blocks",
-    "enhance_content_with_reconstructed_tables"
-]
+__all__ = ["detect_scattered_table_blocks", "reconstruct_table_from_blocks", "enhance_content_with_reconstructed_tables"]
 
 
 def detect_scattered_table_blocks(text_blocks: List[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -57,11 +53,7 @@ def detect_scattered_table_blocks(text_blocks: List[Dict[str, Any]]) -> Optional
 
     print(f"📊 Detected potential scattered table: {len(header_candidates)} headers, {len(data_candidates)} data blocks")
 
-    return {
-        "headers": header_candidates,
-        "data": data_candidates,
-        "total_blocks": len(header_candidates) + len(data_candidates)
-    }
+    return {"headers": header_candidates, "data": data_candidates, "total_blocks": len(header_candidates) + len(data_candidates)}
 
 
 def reconstruct_table_from_blocks(table_info: Dict[str, Any]) -> Optional[Dict[str, Any]]:
@@ -115,7 +107,7 @@ def reconstruct_table_from_blocks(table_info: Dict[str, Any]) -> Optional[Dict[s
             row_data.append("")
 
         if len(row_data) >= len(columns):
-            table_data.append(row_data[:len(columns)])
+            table_data.append(row_data[: len(columns)])
 
     if len(table_data) < 2:  # Need at least header + 1 data row
         return None
@@ -128,7 +120,7 @@ def reconstruct_table_from_blocks(table_info: Dict[str, Any]) -> Optional[Dict[s
         "cols": len(columns),
         "content": table_data,
         "bbox": _calculate_table_bbox([b[1] for b in data_blocks + headers]),
-        "html_content": _convert_to_html(table_data)
+        "html_content": _convert_to_html(table_data),
     }
 
 
@@ -173,6 +165,7 @@ def enhance_content_with_reconstructed_tables(pdf_content: Dict[str, Any]) -> Di
 
 # Helper functions
 
+
 def _extract_block_text(block: Dict[str, Any]) -> str:
     """Extract text content from a PyMuPDF block."""
     if block.get("type") != 0:
@@ -197,8 +190,8 @@ def _is_table_header(text: str) -> bool:
 
     # Common table header patterns
     header_patterns = [
-        r'characteristic.*sample.*sample',
-        r'\w+.*\w+.*\w+',  # Three or more words
+        r"characteristic.*sample.*sample",
+        r"\w+.*\w+.*\w+",  # Three or more words
     ]
 
     text_lower = text.lower()
@@ -213,10 +206,10 @@ def _is_table_data(text: str) -> bool:
 
     # Look for data patterns
     data_patterns = [
-        r'^\d+\.?\d*$',  # Numbers
-        r'^\d+\.?\d*\s*\([^)]+\)$',  # Numbers with units
-        r'^(yes|no)$',  # Boolean values
-        r'density|magnetic|mass|temperature|melting',  # Property names
+        r"^\d+\.?\d*$",  # Numbers
+        r"^\d+\.?\d*\s*\([^)]+\)$",  # Numbers with units
+        r"^(yes|no)$",  # Boolean values
+        r"density|magnetic|mass|temperature|melting",  # Property names
     ]
 
     return any(re.search(pattern, text.strip(), re.IGNORECASE) for pattern in data_patterns)
@@ -227,7 +220,7 @@ def _parse_header_columns(header_text: str) -> List[str]:
     # Simple approach: split on multiple spaces or common separators
     if "Sample" in header_text:
         # Handle "Characteristic Iron Sample Rust Sample" pattern
-        parts = re.split(r'\s{2,}|\t', header_text)
+        parts = re.split(r"\s{2,}|\t", header_text)
         if len(parts) == 1:
             # Fallback: split on "Sample" boundaries
             words = header_text.split()
@@ -246,7 +239,7 @@ def _parse_header_columns(header_text: str) -> List[str]:
             return columns if len(columns) >= 2 else [header_text]
 
     # Generic fallback
-    return [col.strip() for col in re.split(r'\s{3,}|\t{2,}', header_text) if col.strip()]
+    return [col.strip() for col in re.split(r"\s{3,}|\t{2,}", header_text) if col.strip()]
 
 
 def _group_blocks_by_rows(data_blocks: List[Tuple], tolerance: float = 10.0) -> Dict[float, List[Tuple]]:
@@ -281,10 +274,10 @@ def _calculate_table_bbox(blocks: List[Dict[str, Any]]) -> List[float]:
     if not blocks:
         return [0, 0, 0, 0]
 
-    min_x = float('inf')
-    min_y = float('inf')
-    max_x = float('-inf')
-    max_y = float('-inf')
+    min_x = float("inf")
+    min_y = float("inf")
+    max_x = float("-inf")
+    max_y = float("-inf")
 
     for block in blocks:
         bbox = block.get("bbox", [])
