@@ -14,16 +14,8 @@ from __future__ import annotations
 import json
 from typing import Any
 
-# -----------------------------------------------------------------------------
-# Constants
-# -----------------------------------------------------------------------------
-
-EJE_PREFIX_MAP = {
-    "numeros": "NUM",
-    "algebra_y_funciones": "ALG",
-    "geometria": "GEO",
-    "probabilidad_y_estadistica": "PROB",
-}
+from app.models.constants import EJE_PREFIX_MAP
+from app.utils.prompt_helpers import format_habilidades_context
 
 # Example standard for few-shot learning (from standards-paes-m1-full-GPT.md)
 EXAMPLE_STANDARD = {
@@ -71,23 +63,6 @@ EXAMPLE_STANDARD = {
         ],
     },
 }
-
-
-# -----------------------------------------------------------------------------
-# Shared helpers
-# -----------------------------------------------------------------------------
-
-def format_habilidades_context(habilidades: dict[str, Any]) -> str:
-    """Format habilidades dict as readable context for prompts."""
-    lines: list[str] = []
-    for hab_id, hab_data in habilidades.items():
-        lines.append(f"### {hab_id}")
-        lines.append(f"Descripción: {hab_data['descripcion']}")
-        lines.append("Criterios de evaluación:")
-        for criterio in hab_data["criterios_evaluacion"]:
-            lines.append(f"  - {criterio}")
-        lines.append("")
-    return "\n".join(lines)
 
 
 # -----------------------------------------------------------------------------

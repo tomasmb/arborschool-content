@@ -15,11 +15,10 @@ from typing import Any
 
 from app.atoms.generation import generate_atoms_for_standard
 from app.gemini_client import load_default_gemini_service
+from app.utils.data_loader import find_items_by_ids, load_standards_file
+from app.utils.logging_config import setup_logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+setup_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -59,25 +58,12 @@ def main() -> None:
         logger.error("Please provide at least 2 standard IDs")
         sys.exit(1)
 
-    # Load standards JSON
+    # Load standards JSON (handles both list and dict formats)
     logger.info("Loading standards: %s", args.standards)
-    with args.standards.open(encoding="utf-8") as f:
-        standards_data = json.load(f)
-
-    # Handle both formats: array directly or object with "standards" key
-    if isinstance(standards_data, list):
-        standards_list = standards_data
-        metadata = {}
-    else:
-        standards_list = standards_data.get("standards", [])
-        metadata = standards_data.get("metadata", {})
+    standards_list, metadata = load_standards_file(args.standards)
 
     # Find the requested standards
-    standard_dicts: dict[str, dict[str, Any]] = {}
-    for std in standards_list:
-        std_id = std.get("id")
-        if std_id in args.standard_ids:
-            standard_dicts[std_id] = std
+    standard_dicts = find_items_by_ids(standards_list, args.standard_ids)
 
     missing = set(args.standard_ids) - set(standard_dicts.keys())
     if missing:

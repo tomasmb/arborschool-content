@@ -20,6 +20,8 @@ from app.question_variants.models import (
     ValidationVerdict,
     VariantQuestion,
 )
+from app.utils.mathml_parser import process_mathml
+from app.utils.qti_extractor import extract_choices_from_qti, get_correct_answer_text
 
 
 class VariantValidator:
@@ -215,7 +217,10 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             )
 
     def _extract_question_text(self, xml_content: str) -> str:
-        """Extract question text from QTI XML, properly handling MathML."""
+        """Extract question text from QTI XML, properly handling MathML.
+
+        Delegates to shared utility with local helper for element-to-text conversion.
+        """
         try:
             root = ET.fromstring(xml_content)
             # Find item body (use explicit 'is not None' to avoid Element truthiness bug)
@@ -239,8 +244,8 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             tag = child.tag.split('}')[-1].lower()
 
             if tag == 'math':
-                # Process MathML to readable text
-                parts.append(self._mathml_to_text(child))
+                # Process MathML to readable text using shared utility
+                parts.append(process_mathml(child))
             elif tag in ('qti-simple-choice', 'simplechoice'):
                 # Skip individual choices (we extract them separately)
                 pass
@@ -253,100 +258,12 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
 
         return " ".join(filter(None, parts))
 
-    def _mathml_to_text(self, math_elem: ET.Element) -> str:
-        """Convert MathML element to readable text representation."""
-        return self._process_mathml_element(math_elem)
-
-    def _process_mathml_element(self, elem: ET.Element) -> str:
-        """Recursively process a MathML element to text."""
-        tag = elem.tag.split('}')[-1].lower()
-
-        if tag == 'mfrac':
-            # Handle fractions: numerator/denominator
-            children = list(elem)
-            if len(children) >= 2:
-                num = self._process_mathml_element(children[0])
-                den = self._process_mathml_element(children[1])
-                return f"({num}/{den})"
-        elif tag == 'msup':
-            # Handle superscripts: base^exp
-            children = list(elem)
-            if len(children) >= 2:
-                base = self._process_mathml_element(children[0])
-                exp = self._process_mathml_element(children[1])
-                return f"{base}^{exp}"
-        elif tag == 'msqrt':
-            # Handle square roots
-            inner = "".join(self._process_mathml_element(c) for c in elem)
-            return f"sqrt({inner})"
-        elif tag == 'mtable':
-            # Handle tables/matrices (equation systems)
-            rows = []
-            for child in elem:
-                rows.append(self._process_mathml_element(child))
-            return "\n".join(rows)
-        elif tag == 'mtr':
-            # Handle table rows
-            cells = []
-            for child in elem:
-                cells.append(self._process_mathml_element(child))
-            return " ".join(cells)
-        elif tag == 'mtd':
-            # Handle table cells
-            parts = []
-            for child in elem:
-                parts.append(self._process_mathml_element(child))
-            return "".join(parts)
-        elif tag in ('mn', 'mi', 'mo', 'mtext'):
-            return (elem.text or "").strip()
-        elif tag in ('mrow', 'math', 'mstyle'):
-            # Container elements - process children
-            parts = []
-            for child in elem:
-                parts.append(self._process_mathml_element(child))
-            return "".join(parts)
-        else:
-            # Default: try to get text or process children
-            if elem.text:
-                return elem.text.strip()
-            parts = []
-            for child in elem:
-                parts.append(self._process_mathml_element(child))
-            return "".join(parts)
-
     def _extract_choices(self, xml_content: str) -> list[str]:
         """Extract choice texts from QTI XML, properly handling MathML."""
-        try:
-            root = ET.fromstring(xml_content)
-            choices = []
-            for choice in root.findall(".//{*}qti-simple-choice") + root.findall(".//{*}simpleChoice"):
-                choice_text = self._element_to_text(choice)
-                choices.append(choice_text)
-            return choices
-        except Exception:
-            return []
+        choices, _ = extract_choices_from_qti(xml_content)
+        return choices
 
     def _find_correct_answer(self, xml_content: str) -> str:
         """Find the correct answer from QTI XML, properly handling MathML."""
-        try:
-            root = ET.fromstring(xml_content)
-            # Find correct response value
-            # Note: Use explicit 'is not None' checks because XML Elements with no
-            # children evaluate as False in boolean context (Python/ElementTree quirk)
-            correct_resp = root.find(".//{*}qti-correct-response")
-            if correct_resp is None:
-                correct_resp = root.find(".//{*}correctResponse")
-            if correct_resp is not None:
-                value = correct_resp.find(".//{*}qti-value")
-                if value is None:
-                    value = correct_resp.find(".//{*}value")
-                if value is not None and value.text:
-                    correct_id = value.text.strip()
-                    # Find the choice with this ID
-                    for choice in root.findall(".//{*}qti-simple-choice") + root.findall(".//{*}simpleChoice"):
-                        if choice.get("identifier") == correct_id:
-                            return self._element_to_text(choice)
-            return ""
-        except Exception:
-            return ""
+        return get_correct_answer_text(xml_content)
 

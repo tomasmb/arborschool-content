@@ -1,11 +1,12 @@
-
-import json
 import os
 from typing import Any, Dict, List, Optional
+
+from app.utils.data_loader import load_atoms_file
 
 # Path to the atoms file
 # TODO: Make this configurable or dynamic if more files are added
 ATOMS_FILE_PATH = "app/data/atoms/paes_m1_2026_atoms.json"
+
 
 class KGManager:
     """Manages access to Knowledge Graph atoms."""
@@ -22,16 +23,8 @@ class KGManager:
             raise FileNotFoundError(f"Atoms file not found at: {self.atoms_path}")
 
         try:
-            with open(self.atoms_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-
-            # Handle both list of atoms or wrapper object
-            if isinstance(data, dict) and "atoms" in data:
-                self._atoms = data["atoms"]
-            elif isinstance(data, list):
-                self._atoms = data
-            else:
-                raise ValueError("Invalid atoms file structure")
+            # Use shared utility for loading (handles both list and dict formats)
+            self._atoms, _ = load_atoms_file(self.atoms_path)
 
             # Create lookup index
             self._atoms_by_id = {atom["id"]: atom for atom in self._atoms if "id" in atom}

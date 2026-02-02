@@ -28,6 +28,7 @@ from app.standards.models import (
 )
 from app.standards.prompts import EJE_PREFIX_MAP
 from app.standards.validation import run_full_eje_validation
+from app.utils.logging_config import setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -329,10 +330,7 @@ def main() -> None:
 
     args = parser.parse_args()
 
-    logging.basicConfig(
-        level=logging.DEBUG if args.verbose else logging.INFO,
-        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-    )
+    setup_logging(verbose=args.verbose)
 
     if not args.temario.exists():
         logger.error("File not found: %s", args.temario)

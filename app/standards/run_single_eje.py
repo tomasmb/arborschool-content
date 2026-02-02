@@ -16,11 +16,10 @@ from app.gemini_client import load_default_gemini_service
 from app.standards.generation import generate_standards_for_eje
 from app.standards.prompts import EJE_PREFIX_MAP
 from app.standards.validation import run_full_eje_validation
+from app.utils.data_loader import load_json_file
+from app.utils.logging_config import setup_logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+setup_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -54,8 +53,7 @@ def main() -> None:
 
     # Load temario
     logger.info("Loading temario: %s", args.temario)
-    with args.temario.open(encoding="utf-8") as f:
-        temario = json.load(f)
+    temario = load_json_file(args.temario)
 
     # Check eje exists
     if args.eje not in temario.get("conocimientos", {}):

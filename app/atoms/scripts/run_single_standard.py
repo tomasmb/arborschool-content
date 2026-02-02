@@ -15,11 +15,10 @@ from typing import Any
 
 from app.atoms.generation import generate_atoms_for_standard
 from app.gemini_client import load_default_gemini_service
+from app.utils.data_loader import find_item_by_id, load_standards_file
+from app.utils.logging_config import setup_logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+setup_logging()
 logger = logging.getLogger(__name__)
 
 
@@ -54,25 +53,12 @@ def main() -> None:
         logger.error("File not found: %s", args.standards)
         sys.exit(1)
 
-    # Load standards JSON
+    # Load standards JSON (handles both list and dict formats)
     logger.info("Loading standards: %s", args.standards)
-    with args.standards.open(encoding="utf-8") as f:
-        standards_data = json.load(f)
-
-    # Handle both formats: array directly or object with "standards" key
-    if isinstance(standards_data, list):
-        standards_list = standards_data
-        metadata = {}
-    else:
-        standards_list = standards_data.get("standards", [])
-        metadata = standards_data.get("metadata", {})
+    standards_list, metadata = load_standards_file(args.standards)
 
     # Find the requested standard
-    standard_dict: dict[str, Any] | None = None
-    for std in standards_list:
-        if std.get("id") == args.standard_id:
-            standard_dict = std
-            break
+    standard_dict = find_item_by_id(standards_list, args.standard_id)
 
     if not standard_dict:
         logger.error("Standard '%s' not found in standards file", args.standard_id)

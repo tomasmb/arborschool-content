@@ -8,39 +8,12 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 
-# -----------------------------------------------------------------------------
-# Constants for validation
-# -----------------------------------------------------------------------------
-
-VALID_EJES = frozenset({
-    "numeros",
-    "algebra_y_funciones",
-    "geometria",
-    "probabilidad_y_estadistica",
-})
-
-EJE_PREFIXES = {
-    "numeros": "NUM",
-    "algebra_y_funciones": "ALG",
-    "geometria": "GEO",
-    "probabilidad_y_estadistica": "PROB",
-}
-
-VALID_HABILIDAD_IDS = frozenset({
-    "resolver_problemas",
-    "modelar",
-    "representar",
-    "argumentar",
-})
-
-VALID_TIPO_ATOMICO = frozenset({
-    "concepto",
-    "procedimiento",
-    "representacion",
-    "argumentacion",
-    "modelizacion",
-    "concepto_procedimental",
-})
+from app.models.constants import (
+    EJE_PREFIXES,
+    VALID_EJES,
+    VALID_HABILIDAD_IDS,
+    VALID_TIPO_ATOMICO,
+)
 
 
 # -----------------------------------------------------------------------------

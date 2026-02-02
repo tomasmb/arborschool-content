@@ -9,7 +9,6 @@ This module orchestrates the full variant generation workflow:
 
 import json
 import os
-import xml.etree.ElementTree as ET
 from dataclasses import asdict
 from typing import Any, Dict, List, Optional
 
@@ -21,6 +20,7 @@ from app.question_variants.models import (
 )
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_validator import VariantValidator
+from app.utils.qti_extractor import parse_qti_xml
 
 
 class VariantPipeline:
@@ -123,97 +123,23 @@ class VariantPipeline:
             with open(meta_path, "r", encoding="utf-8") as f:
                 metadata = json.load(f)
 
-            # Extract text and choices from XML
-            parsed = self._parse_qti(qti_xml)
+            # Extract text and choices from XML using shared utility
+            parsed = parse_qti_xml(qti_xml)
 
             source = SourceQuestion(
                 question_id=q_dir,
                 test_id=test_id,
                 qti_xml=qti_xml,
                 metadata=metadata,
-                question_text=parsed["text"],
-                choices=parsed["choices"],
-                correct_answer=parsed["correct_answer"],
-                image_urls=parsed["image_urls"]
+                question_text=parsed.text,
+                choices=parsed.choices,
+                correct_answer=parsed.correct_answer_text or "",
+                image_urls=parsed.image_urls
             )
 
             sources.append(source)
 
         return sources
-
-    def _parse_qti(self, xml_content: str) -> Dict[str, Any]:
-        """Parse QTI XML to extract text, choices, and images."""
-        result = {
-            "text": "",
-            "choices": [],
-            "correct_answer": "",
-            "image_urls": []
-        }
-
-        try:
-            root = ET.fromstring(xml_content)
-
-            # Find correct answer ID
-            correct_id = None
-            correct_resp = root.find(".//{*}qti-correct-response") or root.find(".//{*}correctResponse")
-            if correct_resp is not None:
-                value = correct_resp.find(".//{*}qti-value") or correct_resp.find(".//{*}value")
-                if value is not None and value.text:
-                    correct_id = value.text.strip()
-
-            # Extract question text
-            item_body = root.find(".//{*}qti-item-body") or root.find(".//{*}itemBody")
-            if item_body is not None:
-                text_parts = []
-                self._extract_text_recursive(item_body, text_parts)
-                result["text"] = " ".join(filter(None, text_parts))
-
-            # Extract choices
-            choice_map = {}
-            for choice in root.findall(".//{*}qti-simple-choice") + root.findall(".//{*}simpleChoice"):
-                cid = choice.get("identifier")
-                text_parts = []
-                self._extract_text_recursive(choice, text_parts)
-                choice_text = " ".join(filter(None, text_parts))
-                result["choices"].append(choice_text)
-                if cid:
-                    choice_map[cid] = choice_text
-
-            # Set correct answer text
-            if correct_id and correct_id in choice_map:
-                result["correct_answer"] = choice_map[correct_id]
-
-            # Extract image URLs
-            for img in root.findall(".//{*}img") + root.findall(".//{*}qti-img"):
-                src = img.get("src")
-                if src:
-                    result["image_urls"].append(src)
-
-        except ET.ParseError:
-            pass
-
-        return result
-
-    def _extract_text_recursive(self, element: ET.Element, parts: List[str]):
-        """Recursively extract text from XML element."""
-        if element.text:
-            parts.append(element.text.strip())
-        for child in element:
-            # Handle MathML specially - just get the content
-            tag = child.tag.split('}')[-1].lower()
-            if tag == 'math':
-                self._extract_math_text(child, parts)
-            else:
-                self._extract_text_recursive(child, parts)
-            if child.tail:
-                parts.append(child.tail.strip())
-
-    def _extract_math_text(self, element: ET.Element, parts: List[str]):
-        """Extract text from MathML element."""
-        for child in element.iter():
-            tag = child.tag.split('}')[-1].lower()
-            if tag in ('mn', 'mi', 'mo', 'mtext') and child.text:
-                parts.append(child.text.strip())
 
     def _process_question(
         self,

@@ -17,11 +17,9 @@ from typing import Any
 from app.atoms.generation import generate_atoms_for_standard
 from app.atoms.models import Atom, AtomsMetadata, CanonicalAtomsFile
 from app.gemini_client import load_default_gemini_service
+from app.utils.logging_config import setup_logging
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+setup_logging()
 logger = logging.getLogger(__name__)
 
 

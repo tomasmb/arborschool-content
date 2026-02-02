@@ -18,10 +18,9 @@ import sys
 from collections import defaultdict, deque
 from pathlib import Path
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-)
+from app.utils.logging_config import setup_logging
+
+setup_logging()
 logger = logging.getLogger(__name__)
 
 
