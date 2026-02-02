@@ -44,17 +44,35 @@ These files exceed the hard limit and need immediate refactoring.
 
 ### Priority 2: Files 800-1000 Lines (High)
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/pdf_processor.py`** (997 lines)
-  - [ ] Identify distinct processing stages
-  - [ ] Extract page processing, text extraction, layout analysis
+- [x] **`app/pruebas/pdf-to-qti/modules/pdf_processor.py`** (997 → 184 lines) ✅
+  - [x] Extracted text processing module:
+    - `pdf_text_processing.py` (261 lines) - text block extraction, choice splitting
+  - [x] Extracted image utilities module:
+    - `pdf_image_utils.py` (207 lines) - rendering, trimming, meaningfulness check
+  - [x] Extracted table extraction:
+    - `pdf_table_extraction.py` (89 lines) - PyMuPDF table detection, reconstruction
+  - [x] Refactored visual content pipeline:
+    - `pdf_visual_pipeline.py` (399 lines) - main extraction orchestration
+    - `pdf_visual_separation.py` (283 lines) - prompt vs choice image separation
+  - [x] Main entry `pdf_processor.py` (184 lines) with backward-compatible exports
 
-- [ ] **`app/atoms/prompts.py`** (862 lines)
-  - [ ] Split by prompt type/purpose
-  - [ ] Consider `prompts/generation.py`, `prompts/validation.py`, etc.
+- [x] **`app/atoms/prompts.py`** (862 → 28 lines) ✅
+  - [x] Created `app/atoms/prompts/` package with focused modules:
+    - `atom_guidelines.py` (120 lines) - Granularity guidelines constant
+    - `atom_schema.py` (30 lines) - JSON schema example
+    - `atom_rules.py` (415 lines) - Generation rules
+    - `atom_final_instruction.py` (214 lines) - Final checklist instruction
+    - `atom_generation.py` (115 lines) - Main prompt builder
+  - [x] Backward-compatible re-exports in `prompts.py`
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/image_detection.py`** (826 lines)
-  - [ ] Separate detection algorithms from image utilities
-  - [ ] Extract boundary detection, region analysis, etc.
+- [x] **`app/pruebas/pdf-to-qti/modules/image_processing/image_detection.py`** (826 → 33 lines) ✅
+  - [x] Created 5 focused modules:
+    - `image_detection_ai.py` (198 lines) - AI-powered detection
+    - `image_detection_helpers.py` (119 lines) - Text extraction, categorization
+    - `image_bbox_construction.py` (207 lines) - Bbox from gaps
+    - `image_bbox_expansion.py` (202 lines) - Intelligent expansion
+    - `image_adequacy.py` (232 lines) - Adequacy assessment
+  - [x] Backward-compatible re-exports maintained
 
 - [ ] **`app/pruebas/pdf-to-qti/scripts/render_qti_to_html.py`** (806 lines)
   - [ ] Split rendering logic from file I/O
@@ -311,7 +329,7 @@ Review each refactored file for these smells:
 
 | Phase | Total Items | Completed | Progress |
 |-------|-------------|-----------|----------|
-| Phase 1 | 15 files | 2 | 13% |
+| Phase 1 | 15 files | 5 | 33% |
 | Phase 2 | ~20 files | 0 | 0% |
 | Phase 3 | 5 principles | 0 | 0% |
 | Phase 4 | 5 areas | 0 | 0% |
@@ -337,6 +355,27 @@ Review each refactored file for these smells:
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 3)
+- **image_detection.py** refactored: 826 → 33 lines (96% reduction)
+  - Created 5 focused modules for AI detection, helpers, bbox construction,
+    bbox expansion, and adequacy assessment
+  - All backward-compatible imports maintained
+
+- **atoms/prompts.py** refactored: 862 → 28 lines (97% reduction)
+  - Created `app/atoms/prompts/` package with 5 focused modules
+  - Separated guidelines, rules, schema, instructions, and generation logic
+  - All backward-compatible imports maintained
+
+- **pdf_processor.py** refactored: 997 → 184 lines (82% reduction)
+  - Created 5 new modules for clean separation of concerns:
+    - `pdf_text_processing.py` (261 lines) - text extraction, choice block splitting
+    - `pdf_image_utils.py` (207 lines) - image rendering, trimming utilities
+    - `pdf_table_extraction.py` (89 lines) - PyMuPDF table detection
+    - `pdf_visual_pipeline.py` (399 lines) - main extraction orchestration
+    - `pdf_visual_separation.py` (283 lines) - prompt/choice image separation
+  - Broke 440-line "god function" into focused step functions
+  - All backward-compatible imports maintained
 
 ### 2026-02-02 (Session 2)
 - **main.py** refactored: 1092 → 449 lines (59% reduction)
