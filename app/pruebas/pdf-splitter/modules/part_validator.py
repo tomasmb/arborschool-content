@@ -33,7 +33,10 @@ def validate_segmentation_results(results: Dict[str, Any], output_dir: str) -> b
             # adding a 'bboxes' key if it can't find the segment.
             if "bboxes" not in segment or not segment["bboxes"]:
                 segment_id = segment.get('id', f'index_{i}')
-                print(f"❌ VALIDATION FAILED: Segment '{segment_id}' (type: {seg_type}) could not be located in the PDF. It is missing bounding box information.")
+                print(
+                    f"❌ VALIDATION FAILED: Segment '{segment_id}' (type: {seg_type}) "
+                    f"could not be located in the PDF. It is missing bounding box info."
+                )
                 all_segments_valid = False
 
     if all_segments_valid:

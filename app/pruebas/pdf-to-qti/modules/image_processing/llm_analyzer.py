@@ -86,7 +86,9 @@ def analyze_visual_content_with_llm(
         print(f"🔍 ❌ Failed to capture page image: {e}")
         return {"success": False, "error": f"Page image capture failed: {e}"}
 
-    prompt = f"""Analyze this educational question to separate prompt visuals from choice visuals and categorize each text block. The question may have multiple parts (e.g., Part A, Part B).
+    prompt = f"""Analyze this educational question to separate prompt visuals from \
+choice visuals and categorize each text block. The question may have multiple \
+parts (e.g., Part A, Part B).
 
 QUESTION TEXT:
 {question_text}
@@ -105,22 +107,45 @@ VISUAL CONTENT TYPES:
 - CHOICE VISUALS: Visuals that are the answer options (e.g., diagrams for choices A, B, C, D).
 
 TEXT BLOCK CATEGORIES:
-- "question_part_header": Identifier for a part of a multi-part question (e.g., "A.", "B.", "Part C"). This is separate from the question text itself.
-- "question_text": The main text of a question or sub-question, instructions, and introductions that are NOT directly describing visual content.
-- "answer_choice": A multiple choice option identifier (e.g., "A", "B", "C", "D"). This may be a standalone letter or text that starts with the choice letter (e.g., "A) Diagram 1"). An answer choice is often located near its corresponding visual.
+- "question_part_header": Identifier for a part of a multi-part question
+  (e.g., "A.", "B.", "Part C"). This is separate from the question text itself.
+- "question_text": The main text of a question or sub-question, instructions,
+  and introductions that are NOT directly describing visual content.
+- "answer_choice": A multiple choice option identifier (e.g., "A", "B", "C", "D").
+  This may be a standalone letter or text that starts with the choice letter
+  (e.g., "A) Diagram 1"). An answer choice is often located near its corresponding visual.
 - "visual_content_title": A title or overall caption for a visual element.
-- "visual_content_label": Labels ON or pointing to parts of a diagram or image that are part of the PROMPT/QUESTION visuals. **IMPORTANT: This also includes descriptive text that explains what is shown in the diagrams (e.g., "The field is raised up and has a rounded surface to allow rainwater to run off into the drains"). Empty blocks that are clearly part of visual content (like embedded figures, charts, or diagrams) should also be categorized as visual_content_label, even if they contain no extractable text.**
-- "choice_visual_label": Labels ON or pointing to parts of diagrams that are part of the ANSWER CHOICE visuals (e.g., labels within choice A, B, C, D diagrams).
-- "other_label": Any other text like source citations, page numbers, or legends that are NOT part of visual content.
+- "visual_content_label": Labels ON or pointing to parts of a diagram or image that are
+  part of the PROMPT/QUESTION visuals. **IMPORTANT: This also includes descriptive text
+  that explains what is shown in the diagrams (e.g., "The field is raised up and has a
+  rounded surface to allow rainwater to run off into the drains"). Empty blocks that are
+  clearly part of visual content (like embedded figures, charts, or diagrams) should also
+  be categorized as visual_content_label, even if they contain no extractable text.**
+- "choice_visual_label": Labels ON or pointing to parts of diagrams that are part of
+  the ANSWER CHOICE visuals (e.g., labels within choice A, B, C, D diagrams).
+- "other_label": Any other text like source citations, page numbers, or legends that
+  are NOT part of visual content.
 
 IMPORTANT GUIDELINES:
 - A block containing just "A." or "Part A" should be "question_part_header".
-- For multiple-choice questions with visual answers, the choice identifiers (A, B, C, D) are often near the visuals. Categorize the block containing the identifier as "answer_choice". If the choice letter is combined with other text in the same block, it's still an "answer_choice".
-- **CRITICAL**: Empty blocks that are positioned where visual content (figures, charts, diagrams) must be categorized as "visual_content_label", NOT "other_label". These blocks represent embedded visual elements that failed to extract as text.
-- Text that describes or explains what is shown in diagrams should be categorized as "visual_content_label" to ensure it's included in the image extraction. This prevents cutting off important explanatory text that is part of the visual content.
-- EXCEPTION: Text that introduces or transitions to a new diagram (e.g., "The model below shows...", "The diagram below...") should be "question_text" as it separates visual elements.
-- The goal is to separate text that's part of an image from text that is not, to allow for clean image extraction.
-- **Tables are NOT choice visuals**. If choices are presented in a table format, the table structure itself is not a visual choice. Do not identify `has_choice_visuals` as true just because choices are in a table.
+- For multiple-choice questions with visual answers, the choice identifiers (A, B, C, D)
+  are often near the visuals. Categorize the block containing the identifier as
+  "answer_choice". If the choice letter is combined with other text in the same block,
+  it's still an "answer_choice".
+- **CRITICAL**: Empty blocks that are positioned where visual content (figures, charts,
+  diagrams) must be categorized as "visual_content_label", NOT "other_label". These
+  blocks represent embedded visual elements that failed to extract as text.
+- Text that describes or explains what is shown in diagrams should be categorized as
+  "visual_content_label" to ensure it's included in the image extraction. This prevents
+  cutting off important explanatory text that is part of the visual content.
+- EXCEPTION: Text that introduces or transitions to a new diagram (e.g., "The model
+  below shows...", "The diagram below...") should be "question_text" as it separates
+  visual elements.
+- The goal is to separate text that's part of an image from text that is not, to allow
+  for clean image extraction.
+- **Tables are NOT choice visuals**. If choices are presented in a table format, the
+  table structure itself is not a visual choice. Do not identify `has_choice_visuals`
+  as true just because choices are in a table.
 
 Categorize each block to help identify where visual content is located."""
 
@@ -133,7 +158,12 @@ Categorize each block to help identify where visual content is located."""
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert in educational content analysis. Analyze visual content to separate prompt elements from choice elements, and categorize each text block to help with image extraction."
+                    "content": (
+                        "You are an expert in educational content analysis. "
+                        "Analyze visual content to separate prompt elements from "
+                        "choice elements, and categorize each text block to help "
+                        "with image extraction."
+                    )
                 },
                 {
                     "role": "user",
@@ -289,7 +319,10 @@ def process_llm_analysis_with_gaps(
                     prompt_image_labels = separated_prompt_labels
                     print(f"🔍    Found {len(prompt_image_labels)} prompt-specific labels based on position.")
                 else:
-                    print("🔍 ⚠️  Could not find distinct prompt labels above the choice area. Using all labels for prompt detection for safety.")
+                    print(
+                        "🔍 ⚠️  Could not find distinct prompt labels above the "
+                        "choice area. Using all labels for prompt detection."
+                    )
 
         # Collect choice visual labels (both leftover prompt labels and dedicated choice labels)
         choice_image_labels = [

@@ -88,7 +88,14 @@ def evaluate_question_detail(
                 "correctAnswerKey": {
                     "type": "object",
                     "properties": {
-                        "obtentionMethod": {"type":"string","enum":["extractedFromQuestion","llmGuess"],"description": "If correct answer was directly marked as correct in the original image or was guessed by the LLM"},
+                        "obtentionMethod": {
+                            "type": "string",
+                            "enum": ["extractedFromQuestion", "llmGuess"],
+                            "description": (
+                                "If correct answer was directly marked as correct "
+                                "in the original image or was guessed by the LLM"
+                            )
+                        },
                         "answer": {"type":"string"}
                     },
                     "required":["obtentionMethod","answer"]

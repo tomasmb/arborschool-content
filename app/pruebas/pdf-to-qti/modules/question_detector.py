@@ -140,7 +140,12 @@ def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_ke
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert in educational assessment and QTI 3.0 standards. Your task is to analyze PDF question content and determine if it can be accurately represented using standard QTI 3.0 interaction types. You must respond with valid JSON format only."
+                "content": (
+                    "You are an expert in educational assessment and QTI 3.0 standards. "
+                    "Your task is to analyze PDF question content and determine if it can "
+                    "be accurately represented using standard QTI 3.0 interaction types. "
+                    "You must respond with valid JSON format only."
+                )
             },
             {
                 "role": "user",

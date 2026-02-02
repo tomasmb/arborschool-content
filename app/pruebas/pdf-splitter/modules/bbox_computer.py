@@ -298,11 +298,19 @@ def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_orig
                     y2 = y_end  # Extend all the way to the next segment's start
 
                     bboxes.append([x_min, y1, x_max, y2])
-                    print(f"📦 Final bbox for {segment.get('id')} on page {page_num}: [{x_min:.1f}, {y1:.1f}, {x_max:.1f}, {y2:.1f}] (y_start={y_start:.1f}, y_end={y_end:.1f})")
+                    print(
+                        f"📦 Final bbox for {segment.get('id')} on page {page_num}: "
+                        f"[{x_min:.1f}, {y1:.1f}, {x_max:.1f}, {y2:.1f}] "
+                        f"(y_start={y_start:.1f}, y_end={y_end:.1f})"
+                    )
                 else:
                     # No blocks: minimal region
                     bboxes.append([0.0, y_start, page_rect.width, y_end])
-                    print(f"📦 Final bbox for {segment.get('id')} on page {page_num}: [0.0, {y_start:.1f}, {page_rect.width:.1f}, {y_end:.1f}] (no blocks found)")
+                    print(
+                        f"📦 Final bbox for {segment.get('id')} on page {page_num}: "
+                        f"[0.0, {y_start:.1f}, {page_rect.width:.1f}, {y_end:.1f}] "
+                        f"(no blocks found)"
+                    )
             segment["bboxes"] = bboxes
     doc.close()
     return results

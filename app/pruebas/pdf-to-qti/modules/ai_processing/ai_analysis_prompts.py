@@ -38,7 +38,9 @@ ANALYSIS TASKS:
 
 1. QTI COMPATIBILITY ASSESSMENT:
    - Can this be represented accurately in QTI 3.0 standard interaction types?
-   - Supported types: choice, match, text-entry, hotspot, extended-text, hot-text, gap-match, order, graphic-gap-match, inline-choice, select-point, media-interaction, composite
+   - Supported types: choice, match, text-entry, hotspot, extended-text, hot-text,
+     gap-match, order, graphic-gap-match, inline-choice, select-point,
+     media-interaction, composite
    - Does it contain visual content (images, diagrams, maps)? Tables are NOT visual content.
 
 2. VISUAL CONTENT SEPARATION:
@@ -100,7 +102,8 @@ CONTENT SUMMARY:
 
 ASSESSMENT CRITERIA:
 1. Can this be represented accurately in QTI 3.0 standard interaction types?
-2. Does it contain any visual content (images, diagrams, maps)? If so, this visual content should be required. Tables are not considered visual content.
+2. Does it contain any visual content (images, diagrams, maps)? If so, this visual
+   content should be required. Tables are not considered visual content.
 3. What interaction type would be most appropriate?
 4. How complex is the content structure?
 

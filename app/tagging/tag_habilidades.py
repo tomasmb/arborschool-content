@@ -27,13 +27,18 @@ Analiza la siguiente pregunta de matemáticas y determina cuál es la HABILIDAD 
 
 Las 4 habilidades PAES M1 son:
 
-1. **RES (Resolver problemas)**: Aplicar procedimientos, calcular, resolver ecuaciones, operar numéricamente. El foco está en EJECUTAR operaciones o procedimientos conocidos.
+1. **RES (Resolver problemas)**: Aplicar procedimientos, calcular, resolver ecuaciones,
+   operar numéricamente. El foco está en EJECUTAR operaciones o procedimientos conocidos.
 
-2. **MOD (Modelar)**: Plantear una ecuación, expresión o modelo matemático a partir de un contexto. El foco está en TRADUCIR una situación real a lenguaje matemático.
+2. **MOD (Modelar)**: Plantear una ecuación, expresión o modelo matemático a partir de
+   un contexto. El foco está en TRADUCIR una situación real a lenguaje matemático.
 
-3. **REP (Representar)**: Interpretar o construir gráficos, tablas, diagramas. El foco está en LEER o CREAR representaciones visuales de información.
+3. **REP (Representar)**: Interpretar o construir gráficos, tablas, diagramas.
+   El foco está en LEER o CREAR representaciones visuales de información.
 
-4. **ARG (Argumentar)**: Justificar procedimientos, validar afirmaciones, detectar errores, elegir la opción correcta con fundamento. El foco está en EVALUAR la validez de algo.
+4. **ARG (Argumentar)**: Justificar procedimientos, validar afirmaciones, detectar
+   errores, elegir la opción correcta con fundamento. El foco está en EVALUAR la
+   validez de algo.
 
 ## Pregunta a analizar:
 

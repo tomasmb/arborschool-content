@@ -39,8 +39,10 @@ Specifically, the main question text should not be present in both a `<qti-promp
 # Choice label handling instructions
 CHOICE_LABEL_INSTRUCTIONS = """## CRITICAL: Choice Label Handling
 For choice interactions (A, B, C, D, etc.):
-- **Remove choice labels from choice text**: If the original content contains "A. This is the answer", the QTI choice text should only contain "This is the answer"
-- **Do NOT include** the letter labels (A., B., C., D.) or numbers (1., 2., 3., 4.) in the <qti-simple-choice> text content
+- **Remove choice labels from choice text**: If the original content contains
+  "A. This is the answer", the QTI choice text should only contain "This is the answer"
+- **Do NOT include** the letter labels (A., B., C., D.) or numbers (1., 2., 3., 4.)
+  in the <qti-simple-choice> text content
 - **Preserve choice order**: Keep choices in their original sequence, but remove the prefixed labels
 - **Use semantic identifiers**: Use identifiers like "ChoiceA", "ChoiceB", "ChoiceC", "ChoiceD" in the identifier attributes
 - **Example**: Original "A. The sky is blue" becomes `<qti-simple-choice identifier="ChoiceA">The sky is blue</qti-simple-choice>`"""
@@ -57,15 +59,26 @@ If the content includes structured table data (marked with HTML table tags), you
 
 # Text in images instructions
 TEXT_IN_IMAGES_INSTRUCTIONS = """## CRITICAL: Text in Images
-- If text is part of an essential image (e.g., labels on a diagram), that text should NOT be repeated in the `<qti-item-body>` as text. The image's alt text should describe the image including its text.
-- Conversely, if a piece of text is rendered in the body, it should have been removed from any accompanying image. The goal is to avoid information duplication."""
+- If text is part of an essential image (e.g., labels on a diagram), that text should
+  NOT be repeated in the `<qti-item-body>` as text. The image's alt text should
+  describe the image including its text.
+- Conversely, if a piece of text is rendered in the body, it should have been removed
+  from any accompanying image. The goal is to avoid information duplication."""
 
 # Description field requirements
 DESCRIPTION_REQUIREMENTS = """## Requirements for Description Field (only description field, not the QTI XML)
-The "description" field must be extremely detailed and comprehensive - someone should be able to recreate the a semantically equivalent question from the description alone without seeing the original content.
+The "description" field must be extremely detailed and comprehensive - someone should
+be able to recreate the a semantically equivalent question from the description alone
+without seeing the original content.
 
 Example of a detailed description:
-"Multiple choice question about genetic variation in animals. Shows a photograph of six different bulldog puppies sitting together, demonstrating visible differences in coat color, size, and facial features despite being from the same litter. The question asks why puppies from the same parents don't look identical, with four answer choices: A) they were produced by asexual cloning, B) some puppies have genetic material from only one parent, C) each puppy has a different combination of genetic material from sexual reproduction, D) all puppies developed from the same fertilized egg."
+"Multiple choice question about genetic variation in animals. Shows a photograph of
+six different bulldog puppies sitting together, demonstrating visible differences in
+coat color, size, and facial features despite being from the same litter. The question
+asks why puppies from the same parents don't look identical, with four answer choices:
+A) they were produced by asexual cloning, B) some puppies have genetic material from
+only one parent, C) each puppy has a different combination of genetic material from
+sexual reproduction, D) all puppies developed from the same fertilized egg."
 """
 
 # Image handling in QTI instructions
@@ -97,22 +110,36 @@ XML_VALIDATION_CHECKLIST = """## XML Validation Checklist (verify before finaliz
 - [ ] Root element <qti-assessment-item> is properly opened and closed
 - [ ] All nested elements have matching closing tags
 - [ ] No <qti-figure> elements used (use <img> in <p> or <div> instead)
-- [ ] All images listed in 'Relevant Extracted Images' (if any) are included using their EXACT placeholders (e.g., CONTENT_PLACEHOLDER_P0) if they are part of the question
-- [ ] All images are wrapped in block elements like <p> or <div> (e.g., <p><img src="placeholder" alt="description"/></p>)
+- [ ] All images listed in 'Relevant Extracted Images' (if any) are included using their
+      EXACT placeholders (e.g., CONTENT_PLACEHOLDER_P0) if they are part of the question
+- [ ] All images are wrapped in block elements like <p> or <div>
+      (e.g., <p><img src="placeholder" alt="description"/></p>)
 - [ ] Meaningful alt text is provided for all images (use or adapt the 'alt_suggestion')
-- [ ] Images are placed in the logical reading order and at semantically appropriate locations based on the guidelines
-- [ ] <qti-response-processing> is self-closed with /> syntax (e.g., <qti-response-processing template="..."/>)
+- [ ] Images are placed in the logical reading order and at semantically appropriate
+      locations based on the guidelines
+- [ ] <qti-response-processing> is self-closed with /> syntax
+      (e.g., <qti-response-processing template="..."/>)
 - [ ] All attributes (e.g., src, alt, identifier, title) are properly quoted
-- [ ] Interaction elements (e.g., <qti-choice-interaction>) are correctly placed within <qti-item-body> and after relevant content"""
+- [ ] Interaction elements (e.g., <qti-choice-interaction>) are correctly placed
+      within <qti-item-body> and after relevant content"""
 
 # Content fidelity checklist
 CONTENT_FIDELITY_CHECKLIST = """## Question Content and Fidelity Checklist (verify semantic accuracy)
-- [ ] All question text (stem, prompts, context, instructions) from the original content is accurately and completely included in the <qti-item-body>.
-- [ ] No text is repeated between <p>, <div>, and <qti-prompt> elements. Each sentence or phrase appears only once in the QTI XML.
-- [ ] All answer choices, options, or interactive elements described in the original content are present and accurately transcribed within the appropriate QTI interaction structure.
-- [ ] The question's core meaning, intent, and level of difficulty are preserved from the original PDF content.
-- [ ] No extraneous or irrelevant information (e.g., page numbers, headers/footers from the PDF, content from unrelated questions) has been included in the <qti-item-body>.
-- [ ] The 'description' field in your JSON response is detailed, comprehensive, and accurately summarizes the question, its components, and any included imagery as per the requirements."""
+- [ ] All question text (stem, prompts, context, instructions) from the original content
+      is accurately and completely included in the <qti-item-body>.
+- [ ] No text is repeated between <p>, <div>, and <qti-prompt> elements. Each sentence
+      or phrase appears only once in the QTI XML.
+- [ ] All answer choices, options, or interactive elements described in the original
+      content are present and accurately transcribed within the appropriate QTI
+      interaction structure.
+- [ ] The question's core meaning, intent, and level of difficulty are preserved
+      from the original PDF content.
+- [ ] No extraneous or irrelevant information (e.g., page numbers, headers/footers
+      from the PDF, content from unrelated questions) has been included in the
+      <qti-item-body>.
+- [ ] The 'description' field in your JSON response is detailed, comprehensive, and
+      accurately summarizes the question, its components, and any included imagery
+      as per the requirements."""
 
 # Response format specification
 RESPONSE_FORMAT_SPEC = """## Response Format
@@ -126,15 +153,29 @@ You must respond with valid JSON containing:
 # Image placement guidelines
 IMAGE_PLACEMENT_GUIDELINES = """
 ## Image Placement Guidelines:
-- **READING ORDER**: Place images in the SAME ORDER as listed above (Image 1 first, then Image 2, etc.) Try to infer the logical flow of the question.
-- **CONTEXTUAL PLACEMENT**: Use the 'Contextual Text' and your understanding of the question to determine WHERE each image belongs. Look for explicit references like 'see Figure 1', 'the diagram shows', or implicit needs for an image to understand a part of the text.
-  * If an image is referenced (e.g., 'As shown in the diagram...'), place it immediately after the sentence or paragraph containing that reference.
-  * If contextual text is part of the general question stem → place image generally AFTER the main question text but BEFORE answer choices, unless a more specific reference exists.
-  * If contextual text is clearly related to a specific answer choice → consider if the image should be near that choice (though typically images are part of the stem or general context).
-  * If contextual text consists of instructions that refer to the image → place image appropriately to make those instructions clear.
-- **SEMANTIC LOGIC**: Images should appear where they make the most sense for a student reading and answering the question. The flow should be natural.
-- **MULTIPLE IMAGES**: If multiple images exist, maintain their relative order (Image 1 before Image 2) but place each in its most logical semantic location within the question body.
-- **DEFAULT PLACEMENT**: If absolutely unclear, place images immediately after the main question prompt/text but before any answer choices or interaction elements."""
+- **READING ORDER**: Place images in the SAME ORDER as listed above (Image 1 first,
+  then Image 2, etc.) Try to infer the logical flow of the question.
+- **CONTEXTUAL PLACEMENT**: Use the 'Contextual Text' and your understanding of the
+  question to determine WHERE each image belongs. Look for explicit references like
+  'see Figure 1', 'the diagram shows', or implicit needs for an image to understand
+  a part of the text.
+  * If an image is referenced (e.g., 'As shown in the diagram...'), place it
+    immediately after the sentence or paragraph containing that reference.
+  * If contextual text is part of the general question stem → place image generally
+    AFTER the main question text but BEFORE answer choices, unless a more specific
+    reference exists.
+  * If contextual text is clearly related to a specific answer choice → consider if
+    the image should be near that choice (though typically images are part of the
+    stem or general context).
+  * If contextual text consists of instructions that refer to the image → place
+    image appropriately to make those instructions clear.
+- **SEMANTIC LOGIC**: Images should appear where they make the most sense for a
+  student reading and answering the question. The flow should be natural.
+- **MULTIPLE IMAGES**: If multiple images exist, maintain their relative order
+  (Image 1 before Image 2) but place each in its most logical semantic location
+  within the question body.
+- **DEFAULT PLACEMENT**: If absolutely unclear, place images immediately after the
+  main question prompt/text but before any answer choices or interaction elements."""
 
 # Visual comparison prompt template
 VISUAL_COMPARISON_PROMPT = """
@@ -210,8 +251,11 @@ Only classify the question as one of these supported QTI interaction types:
 - media-interaction: Questions involving audio or video media
 
 ## Special Classification Rules
-- IMPORTANT: If you see a question that looks like gap-match but has table structure with gaps inside table cells, classify it as "match" instead of "gap-match" because QTI 3.0 doesn't support gaps inside table cells.
-- For table-based matching exercises where items in one column need to be matched with items in another column, use "match" interaction type.
+- IMPORTANT: If you see a question that looks like gap-match but has table structure
+  with gaps inside table cells, classify it as "match" instead of "gap-match" because
+  QTI 3.0 doesn't support gaps inside table cells.
+- For table-based matching exercises where items in one column need to be matched
+  with items in another column, use "match" interaction type.
 - Gap-match should only be used for inline text with gaps, not for table-based layouts.
 
 ## Unsupported Types

@@ -42,14 +42,19 @@ def get_indices_of_images_to_keep(
 
     prompt = f"""
 You are an expert in educational content analysis.
-Based on the following list of image descriptions, identify which images are part of the question's content and which are interactive elements for answering, such as bubble sheets, numeric keypads for bubbling, or other answer areas not intrinsic to the question's content.
+Based on the following list of image descriptions, identify which images are part of the
+question's content and which are interactive elements for answering, such as bubble
+sheets, numeric keypads for bubbling, or other answer areas not intrinsic to the
+question's content.
 
-An image with `is_choice_image: true` is an image representing an answer choice (e.g. four different diagrams for choices A, B, C, D) and should almost always be kept.
+An image with `is_choice_image: true` is an image representing an answer choice
+(e.g. four different diagrams for choices A, B, C, D) and should almost always be kept.
 
 Here are the image descriptions:
 {json.dumps(image_descriptions, indent=2)}
 
-Please return a JSON object with a single key "indices_to_keep", which is a list of the integer IDs of the images that are part of the actual question content and should be kept.
+Please return a JSON object with a single key "indices_to_keep", which is a list of the
+integer IDs of the images that are part of the actual question content and should be kept.
 Exclude images that are purely for user interaction on a physical paper or a specific digital interface for bubbling answers.
 
 Example of what to exclude:
@@ -70,7 +75,12 @@ Example of what to keep:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert in educational content analysis. Your task is to distinguish between content images and interactive answering elements based on their descriptions. Respond only with valid JSON that conforms to the provided schema."
+                    "content": (
+                        "You are an expert in educational content analysis. "
+                        "Your task is to distinguish between content images and "
+                        "interactive answering elements based on their descriptions. "
+                        "Respond only with valid JSON that conforms to the provided schema."
+                    )
                 },
                 {
                     "role": "user",

@@ -264,7 +264,10 @@ def main():
     for summary in run_summary:
         passed = summary.get('questions_passed', 0)
         failed = summary.get('questions_failed', 0)
-        print(f"{summary.get('part_name', 'N/A'):<60} | {summary.get('status', 'Unknown'):<15} | {passed:<10} | {failed:<10} | {summary.get('reason', '')}")
+        part_name = summary.get('part_name', 'N/A')
+        status = summary.get('status', 'Unknown')
+        reason = summary.get('reason', '')
+        print(f"{part_name:<60} | {status:<15} | {passed:<10} | {failed:<10} | {reason}")
         total_passed += passed
         total_failed += failed
     print("-"*120)

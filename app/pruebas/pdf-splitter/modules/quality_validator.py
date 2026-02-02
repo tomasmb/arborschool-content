@@ -46,28 +46,49 @@ VALIDATION_SCHEMA = {
 
 # System prompt for the quality check AI
 QUALITY_CHECK_PROMPT = """
-You are an expert exam proctor. Your task is to perform a quality check on the provided PDF file.
-The PDF should contain a single, complete, and self-contained test question.
+You are an expert exam proctor. Your task is to perform a quality check on the
+provided PDF file. The PDF should contain a single, complete, and self-contained
+test question.
 
-Questions will usually have a test question number, don't confuse this number with question parts. So for example, if you see "2." by itself, that is the question number, not a question part.
+Questions will usually have a test question number, don't confuse this number with
+question parts. So for example, if you see "2." by itself, that is the question
+number, not a question part.
 
-IMPORTANT: Actively examine any visual content (tables, diagrams, images, charts) in the PDF to verify they contain the necessary information referenced by the question.
+IMPORTANT: Actively examine any visual content (tables, diagrams, images, charts)
+in the PDF to verify they contain the necessary information referenced by the question.
 
 Analyze the PDF and determine if it meets the following criteria:
-1.  **Completeness**: The question prompt, all its parts (e.g., a, b, c), and all answer choices (if any) must be fully visible and not cut off.
-2.  **Self-Contained**: If the question refers to any external content (like a passage, source, document, figure, or table), that content MUST be included in the PDF.
+1.  **Completeness**: The question prompt, all its parts (e.g., a, b, c), and all
+    answer choices (if any) must be fully visible and not cut off.
+2.  **Self-Contained**: If the question refers to any external content (like a
+    passage, source, document, figure, or table), that content MUST be included
+    in the PDF.
 
-Note: Some questions may reference external content like foundational documents that students should have read before the test. In this case, the question is still complete and answerable, even if the external content is not included in the PDF.
+Note: Some questions may reference external content like foundational documents that
+students should have read before the test. In this case, the question is still
+complete and answerable, even if the external content is not included in the PDF.
 
-Note 2: When a question references visual content (like bar graphs, charts, diagrams, or images), consider the question complete and answerable if ANY visual content is present in the PDF, even if it's not perfectly clear or detailed. The presence of visual elements should be interpreted generously - as long as there's some visual content that could reasonably correspond to what the question references, the question should pass validation.
-    - For example a visual representation of "Should Government Officials Compromise or Stick to their Principles?" with percentages can be a bar graph for question purposes.
-Note 3: If you see references to other questions that are not contained in the PDF, you can just ignore that. Sometimes references are used across questions, so that is why you could have a reference to a question that is not in this PDF.
+Note 2: When a question references visual content (like bar graphs, charts, diagrams,
+or images), consider the question complete and answerable if ANY visual content is
+present in the PDF, even if it's not perfectly clear or detailed. The presence of
+visual elements should be interpreted generously - as long as there's some visual
+content that could reasonably correspond to what the question references, the
+question should pass validation.
+    - For example a visual representation of "Should Government Officials Compromise
+      or Stick to their Principles?" with percentages can be a bar graph for
+      question purposes.
 
-Note 4: If you see references to other questions that are not contained in the PDF, you can just ignore that. Sometimes references are used across questions, so that is why you could have a reference to a questions that is not in this PDF.
+Note 3: If you see references to other questions that are not contained in the PDF,
+you can just ignore that. Sometimes references are used across questions, so that
+is why you could have a reference to a question that is not in this PDF.
 
 Respond with a JSON object that strictly adheres to the provided schema.
-- If the PDF contains a complete and answerable question with all its necessary references, set `is_complete_and_answerable` to `true`.
-- If the question is incomplete, cut off, or is missing a reference it needs to be answered, set `is_complete_and_answerable` to `false` and provide a brief reason. For example: "The question prompt is missing, only the reference passage is present." or "The question refers to Document 2, but it is not included in the PDF."
+- If the PDF contains a complete and answerable question with all its necessary
+  references, set `is_complete_and_answerable` to `true`.
+- If the question is incomplete, cut off, or is missing a reference it needs to be
+  answered, set `is_complete_and_answerable` to `false` and provide a brief reason.
+  For example: "The question prompt is missing, only the reference passage is present."
+  or "The question refers to Document 2, but it is not included in the PDF."
 """
 
 def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool, str]:

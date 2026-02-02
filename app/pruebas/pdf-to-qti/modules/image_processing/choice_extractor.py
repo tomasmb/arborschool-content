@@ -229,11 +229,20 @@ def extract_choice_images(
                 choice_identifier = choice_block.get('choice_identifier', extract_choice_identifier(block_text, i))
                 text_mask_areas = detect_mixed_choice_content(block_text, block_bbox, choice_identifier)
 
-                choice_info = { "bbox": choice_image_bbox, "choice_letter": choice_identifier, "description": f"Choice {choice_identifier} visual diagram", "block_num": block_num, "text_mask_areas": text_mask_areas }
+                choice_info = {
+                    "bbox": choice_image_bbox,
+                    "choice_letter": choice_identifier,
+                    "description": f"Choice {choice_identifier} visual diagram",
+                    "block_num": block_num,
+                    "text_mask_areas": text_mask_areas
+                }
                 choice_bboxes.append(choice_info)
 
                 print(f"🔍 ✅ Found choice image for {choice_info['choice_letter']}")
-                print(f"🔍    Bbox: [{choice_image_bbox[0]:.1f}, {choice_image_bbox[1]:.1f}, {choice_image_bbox[2]:.1f}, {choice_image_bbox[3]:.1f}]")
+                print(
+                    f"🔍    Bbox: [{choice_image_bbox[0]:.1f}, {choice_image_bbox[1]:.1f}, "
+                    f"{choice_image_bbox[2]:.1f}, {choice_image_bbox[3]:.1f}]"
+                )
                 print(f"🔍    Size: {choice_width:.1f} x {choice_height:.1f}")
             else:
                 print(f"🔍 ❌ Choice area too small: {choice_width:.1f} x {choice_height:.1f} (min: {min_width:.1f} x {min_height:.1f})")

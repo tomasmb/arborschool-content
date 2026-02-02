@@ -144,15 +144,21 @@ You are an expert at segmenting educational test PDFs. Return only validated JSO
 
 CRITICAL: When returning the `text` field for any segment, include ONLY the first 50 words (or full text if shorter).
 
-IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general instructions, and scoring information. These should be classified as UNRELATED CONTENT, not questions. Questions typically start after these initial pages.
+IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
+instructions, and scoring information. These should be classified as UNRELATED
+CONTENT, not questions. Questions typically start after these initial pages.
 
 ## Segment Types
 
-**QUESTIONS**: Complete test questions including all parts (A, B, C), answer choices, answer spaces, and any reference material used ONLY by this question. Questions usually start with a number (1., 2., 3., etc.) followed by the question text.
+**QUESTIONS**: Complete test questions including all parts (A, B, C), answer choices,
+answer spaces, and any reference material used ONLY by this question. Questions
+usually start with a number (1., 2., 3., etc.) followed by the question text.
 
 **MULTI-QUESTION REFERENCES**: Content shared by multiple questions (tables, figures, passages, citations that appear before multiple questions).
 
-**UNRELATED CONTENT**: Cover pages, general test instructions, section introductions unrelated to specific questions. This includes the first pages with test information, instructions, and scoring details.
+**UNRELATED CONTENT**: Cover pages, general test instructions, section introductions
+unrelated to specific questions. This includes the first pages with test information,
+instructions, and scoring details.
 
 ## Core Rules
 
@@ -164,7 +170,9 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 
 ## Question Identification - CRITICAL INSTRUCTIONS
 
-**MOST IMPORTANT**: Each numbered question (1., 2., 3., 4., ... 65.) is a SEPARATE question segment. You MUST create a separate segment for EACH numbered question you find.
+**MOST IMPORTANT**: Each numbered question (1., 2., 3., 4., ... 65.) is a SEPARATE
+question segment. You MUST create a separate segment for EACH numbered question
+you find.
 
 **Question Numbering Pattern**:
 - Questions start with a number followed by a period: "1.", "2.", "3.", etc.
@@ -187,8 +195,10 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
    - The question text/prompt
    - Answer choices (typically A), B), C), D))
    - Any images, tables, or diagrams specific to that question
-4. **A question ALWAYS ends when the next question number appears** - if you see "7." and then later "8.", everything between them belongs to question 7
-5. If a question references content above it (like a table or passage), include that content in the question segment UNLESS it's used by multiple questions
+4. **A question ALWAYS ends when the next question number appears** - if you see
+   "7." and then later "8.", everything between them belongs to question 7
+5. If a question references content above it (like a table or passage), include
+   that content in the question segment UNLESS it's used by multiple questions
 
 **CRITICAL - Do NOT**:
 - Combine multiple numbered questions into one segment - THIS IS THE MOST COMMON ERROR

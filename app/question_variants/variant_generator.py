@@ -95,7 +95,11 @@ class VariantGenerator:
         image_info = source.metadata.get("image_info", {})
         image_instruction = ""
         if image_info.get("image_type") == "decorative":
-            image_instruction = "7. ESTA PREGUNTA CONTIENE UNA IMAGEN DECORATIVA (Support visual). DEBES INCLUIR LA ETIQUETA <img ...> EXACTAMENTE IGUAL QUE EN LA ORIGINAL dentro del texto."
+            image_instruction = (
+                "7. ESTA PREGUNTA CONTIENE UNA IMAGEN DECORATIVA (Support visual). "
+                "DEBES INCLUIR LA ETIQUETA <img ...> EXACTAMENTE IGUAL QUE EN LA "
+                "ORIGINAL dentro del texto."
+            )
 
         prompt = f"""
 <role>
@@ -185,7 +189,9 @@ IMPORTANTE: El QTI XML debe:
 - Tener un identifier único (diferente al original)
 - Mantener la estructura exacta de la pregunta original
 - Usar MathML para expresiones matemáticas si la original las usa
-- CRÍTICO: Si la pregunta contiene sistemas de ecuaciones o tablas (etiquetas <mtable>, <mtr>, <mtd>), DEBES INCLUIRLAS COMPLETAS en el XML de salida, adaptando los números según corresponda. NO omitas las ecuaciones.
+- CRÍTICO: Si la pregunta contiene sistemas de ecuaciones o tablas (etiquetas <mtable>,
+  <mtr>, <mtd>), DEBES INCLUIRLAS COMPLETAS en el XML de salida, adaptando los números
+  según corresponda. NO omitas las ecuaciones.
 </restriccion_critica>
 """
         return prompt

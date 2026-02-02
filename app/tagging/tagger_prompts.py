@@ -72,9 +72,13 @@ Retorna un objeto JSON con:
 }}
 
 REGLAS DE RELEVANCIA:
-- **PRIMARY**: Asígnalo si el Átomo describe el OBJETIVO MATEMÁTICO CENTRAL de la pregunta. No te dejes llevar solo por el verbo del título (ej: si el átomo dice 'Construcción' pero el alumno debe 'Interpretar' ese objeto, sigue siendo PRIMARY).
-- **SECONDARY**: Asígnalo a habilidades de soporte o requisitos previos necesarios pero que no son el foco de la evaluación.
-- **IMPERATIVO**: DEBE HABER AL MENOS UN ÁTOMO MARCADO COMO 'PRIMARY'. Si dudas, elige el que mejor describa la acción principal que realiza el estudiante.
+- **PRIMARY**: Asígnalo si el Átomo describe el OBJETIVO MATEMÁTICO CENTRAL de la
+  pregunta. No te dejes llevar solo por el verbo del título (ej: si el átomo dice
+  'Construcción' pero el alumno debe 'Interpretar' ese objeto, sigue siendo PRIMARY).
+- **SECONDARY**: Asígnalo a habilidades de soporte o requisitos previos necesarios
+  pero que no son el foco de la evaluación.
+- **IMPERATIVO**: DEBE HABER AL MENOS UN ÁTOMO MARCADO COMO 'PRIMARY'. Si dudas,
+  elige el que mejor describa la acción principal que realiza el estudiante.
 - Debe haber al menos un átomo PRIMARY si la pregunta tiene sentido matemático.
 """
 
@@ -106,7 +110,8 @@ TAREA: Analizar en profundidad la siguiente pregunta.
 1. Evaluar su **Nivel de Dificultad** basado en la demanda cognitiva.
 2. Proveer **Feedback Instruccional** para el estudiante.
 **IMPORTANTE**: Todo el texto generado (análisis y explicaciones) debe estar en **ESPAÑOL**.
-**ADVERTENCIA**: Si generas feedback perezoso (solo repitiendo el texto de la opción), la respuesta será RECHAZADA automáticamente. Debes explicar pedagógicamente.
+**ADVERTENCIA**: Si generas feedback perezoso (solo repitiendo el texto de la opción),
+la respuesta será RECHAZADA automáticamente. Debes explicar pedagógicamente.
 
 PREGUNTA:
 {question_text}
@@ -136,7 +141,8 @@ Retorna un objeto JSON con:
       "score": 0.0 a 1.0,
       "analysis": "Explicación de la demanda cognitiva (en Español)..."
   }},
-  "thought_process": "Razonamiento paso a paso ANTES de generar el feedback. Analiza aquí la resolución del problema y por qué cada opción es correcta o incorrecta. Esto es tu 'borrador' mental.",
+  "thought_process": "Razonamiento paso a paso ANTES de generar el feedback. Analiza
+      aquí la resolución del problema y por qué cada opción es correcta o incorrecta.",
   "feedback": {{
       "general_guidance": "Cómo abordar este tipo de problemas (en Español)...",
       "per_option_feedback": {{
@@ -199,9 +205,13 @@ METADATOS GENERADOS:
 CHECKLIST (VERIFICAR):
 1. **Átomos**: ¿El átomo PRIMARY refleja el concepto central? (Ignora si el verbo no encaja perfecto, prioriza el concepto).
 2. **Dificultad**: ¿Es plausible la clasificación de dificultad?
-3. **Feedback**: ¿Es pedagógico? ¿Explica el error o el acierto? **RECHAZA (FAIL)** si el feedback solo repite el valor de la opción o es muy corto.
+3. **Feedback**: ¿Es pedagógico? ¿Explica el error o el acierto? **RECHAZA (FAIL)**
+   si el feedback solo repite el valor de la opción o es muy corto.
 4. **Idioma**: ¿Todo en ESPAÑOL fluido?
-5. **Exactitud Matemática**: Si se provee una RESPUESTA OFICIAL, asume que es CORRECTA (La Verdad Absoluta). NO cuestiones la aritmética básica (ej: 20*1.05 = 21, eso es un hecho, no un error de redondeo). Si tu cálculo difiere, asume que tú estás equivocado o te falta contexto.
+5. **Exactitud Matemática**: Si se provee una RESPUESTA OFICIAL, asume que es CORRECTA
+   (La Verdad Absoluta). NO cuestiones la aritmética básica (ej: 20*1.05 = 21, eso es
+   un hecho, no un error de redondeo). Si tu cálculo difiere, asume que tú estás
+   equivocado o te falta contexto.
 6. **Tipificación**: Verifica que el tipo de problema (ej: Ecuación Lineal vs Cuadrática) coincida con el Átomo seleccionado.
 7. **Existencia de Primary**: RECHAZA (FAIL) si no hay ningún átomo marcado como PRIMARY.
 

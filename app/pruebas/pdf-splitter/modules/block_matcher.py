@@ -85,7 +85,9 @@ def find_block_with_llm_fallback(page, segment_data, page_num):
         system_prompt = """Find the starting block of the given segment using the start marker and content preview.
 Once you identify the segment content, choose the block that represents the top-left start of that specific segment.
 
-Example you have a identify 2 blocks that are part of the segment, both at same y-coordinate, one to the left that has "1." and another block to the right that has "In this question, you must...", then the starting block is the one that has "1.".
+Example you have a identify 2 blocks that are part of the segment, both at same
+y-coordinate, one to the left that has "1." and another block to the right that has
+"In this question, you must...", then the starting block is the one that has "1.".
 
 Output a JSON object with:
 matched_block_index (integer or null)

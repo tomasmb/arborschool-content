@@ -139,34 +139,34 @@ These files exceed the hard limit and need immediate refactoring.
 
 ---
 
-## Phase 2: Line Length Violations (> 150 chars)
+## Phase 2: Line Length Violations (> 150 chars) ✅
 
-Files with lines exceeding the 150-character limit.
+All line length violations have been fixed.
 
 ### High Priority (> 10 violations)
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (26 long lines)
-  - [ ] Break long strings using parentheses or multi-line
-  - [ ] Use variables for repeated long expressions
+- [x] **`app/pruebas/pdf-to-qti/modules/prompt_templates.py`** (16 → 0 violations) ✅
+- [x] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (3 → 0 violations) ✅
 
 ### Medium Priority (5-10 violations)
 
-- [ ] **`app/pruebas/pdf-splitter/modules/quality_validator.py`** (9 violations)
-- [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/llm_analyzer.py`** (10 violations)
-- [ ] **`app/pruebas/pdf-splitter/modules/chunk_segmenter.py`** (9 violations)
-- [ ] **`app/atoms/validation/validation.py`** (8 violations)
-- [ ] **`app/tagging/tagger.py`** (7 violations)
-- [ ] **`app/pruebas/pdf-to-qti/modules/qti_configs.py`** (7 violations)
+- [x] **`app/pruebas/pdf-splitter/modules/quality_validator.py`** (9 → 0 violations) ✅
+- [x] **`app/pruebas/pdf-to-qti/modules/image_processing/llm_analyzer.py`** (11 → 0 violations) ✅
+- [x] **`app/pruebas/pdf-splitter/modules/chunk_segmenter_prompts.py`** (6 → 0 violations) ✅
+- [x] **`app/atoms/validation/validation.py`** (8 → 0 violations) ✅
+- [x] **`app/tagging/tagger_prompts.py`** (6 → 0 violations) ✅
+- [x] **`app/pruebas/pdf-to-qti/modules/qti_configs.py`** (7 → 0 violations) ✅
 
 ### Lower Priority (< 5 violations)
 
-- [ ] `app/standards/prompts.py` (2 violations)
-- [ ] `app/tagging/tag_habilidades.py` (3 violations)
-- [ ] `app/question_variants/variant_generator.py` (2 violations)
-- [ ] `app/pruebas/pdf-splitter/modules/pdf_utils.py` (3 violations)
-- [ ] `app/pruebas/pdf-to-qti/scripts/force_upload_images.py` (2 violations)
-- [ ] `app/pruebas/pdf-splitter/modules/bbox_computer.py` (2 violations)
-- [ ] And others with 1 violation each...
+- [x] `app/standards/prompts.py` (3 → 0 violations) ✅
+- [x] `app/tagging/tag_habilidades.py` (4 → 0 violations) ✅
+- [x] `app/question_variants/variant_generator.py` (2 → 0 violations) ✅
+- [x] `app/pruebas/pdf-to-qti/modules/ai_processing/image_filter.py` (4 → 0 violations) ✅
+- [x] `app/pruebas/pdf-to-qti/modules/ai_processing/table_filter.py` (3 → 0 violations) ✅
+- [x] `app/pruebas/pdf-to-qti/scripts/force_upload_images.py` (2 → 0 violations) ✅
+- [x] `app/pruebas/pdf-splitter/modules/bbox_computer.py` (2 → 0 violations) ✅
+- [x] All other files with 1-2 violations each ✅
 
 ---
 
@@ -354,7 +354,7 @@ Review each refactored file for these smells:
 | Phase | Total Items | Completed | Progress |
 |-------|-------------|-----------|----------|
 | Phase 1 | 15 files | 15 | 100% |
-| Phase 2 | ~20 files | 0 | 0% |
+| Phase 2 | ~20 files | ~20 | 100% |
 | Phase 3 | 5 principles | 0 | 0% |
 | Phase 4 | 5 areas | 0 | 0% |
 | Phase 5 | 4 modules | 0 | 0% |
@@ -374,11 +374,26 @@ Review each refactored file for these smells:
 
 ---
 
-*Last updated: 2026-02-02 (Session 5)*
+*Last updated: 2026-02-02 (Session 6)*
 
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 6)
+- **Phase 2 Complete**: All line length violations (> 150 chars) fixed
+  - Fixed ~20 files with line length violations
+  - Key files fixed:
+    - `prompt_templates.py` (16 → 0 violations)
+    - `llm_analyzer.py` (11 → 0 violations)
+    - `quality_validator.py` (9 → 0 violations)
+    - `validation.py` (8 → 0 violations)
+    - `qti_configs.py` (7 → 0 violations)
+    - `tagger_prompts.py` (6 → 0 violations)
+    - `chunk_segmenter_prompts.py` (6 → 0 violations)
+    - Plus 13 other files with 1-4 violations each
+  - Used multi-line strings and string concatenation to break long lines
+  - All prompts and instructions preserved semantically
 
 ### 2026-02-02 (Session 5)
 - **qti_configs.py** refactored: 502 → 497 lines (1% reduction)

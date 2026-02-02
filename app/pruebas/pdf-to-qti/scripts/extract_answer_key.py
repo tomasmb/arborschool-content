@@ -245,7 +245,9 @@ def main():
     print(f"✅ Answer key saved to: {output_path}")
     print("\n📊 Summary:")
     print(f"   Total questions: {len(answer_key)}")
-    print(f"   Question range: {min(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999)} - {max(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999)}")
+    min_q = min(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999)
+    max_q = max(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999)
+    print(f"   Question range: {min_q} - {max_q}")
     print("\n💡 Next step: Use this answer key when processing QTI questions")
 
 

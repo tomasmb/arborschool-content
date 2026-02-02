@@ -132,8 +132,11 @@ Convert the provided question content into valid QTI 3.0 XML format using the "{
 {content_summary}
 
 NOTE: Exclude page headers/footers, question numbers, test instructions or directions, fragments from other questions, and navigation elements.
-IMPORTANT: Include any question-specific formatting or response instructions (e.g., "use complete sentences", "no bulleted lists").
-IMPORTANT: If instructions refer to physical answering methods (e.g., "fill in the circles on the answer grid"), adapt or remove them to match the digital QTI interaction, as the physical answering elements have likely been removed.
+IMPORTANT: Include any question-specific formatting or response instructions
+(e.g., "use complete sentences", "no bulleted lists").
+IMPORTANT: If instructions refer to physical answering methods (e.g., "fill in the
+circles on the answer grid"), adapt or remove them to match the digital QTI
+interaction, as the physical answering elements have likely been removed.
 
 {image_info}
 
@@ -214,7 +217,8 @@ def _build_visual_choice_instructions(pdf_content: dict[str, Any]) -> str:
 ## CRITICAL: Visual Choice Handling
 **This question has CHOICE IMAGES (visual answer options):**
 - Each choice should contain ONLY an image, NO text content
-- Use format: `<qti-simple-choice identifier="ChoiceA"><img src="choice_image_placeholder" alt="Descriptive alt text for choice A"/></qti-simple-choice>`
+- Use format: `<qti-simple-choice identifier="ChoiceA"><img src="choice_image_placeholder"
+  alt="Descriptive alt text for choice A"/></qti-simple-choice>`
 - Alt text should describe what the choice shows (e.g., "Graph showing linear relationship between mass and kinetic energy")
 - Do NOT mix text and images in choices - choices should be image-only
 """
@@ -275,7 +279,8 @@ This is a "{question_type}" type question.
 ## Instructions
 1. Carefully analyze the validation errors and the XML structure.
 2. **CRITICAL XML STRUCTURE FIXES**:
-   - If the error mentions "qti-assessment-item must be terminated", check that the root element is properly closed with </qti-assessment-item> at the very end
+   - If the error mentions "qti-assessment-item must be terminated", check that the
+     root element is properly closed with </qti-assessment-item> at the very end
    - Ensure ALL opening tags have matching closing tags
    - The <qti-response-processing> element should be self-closed with /> (e.g., <qti-response-processing template="..."/>)
    - Check for any missing or malformed closing tags

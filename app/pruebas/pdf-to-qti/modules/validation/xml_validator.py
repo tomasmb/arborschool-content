@@ -191,7 +191,11 @@ def validate_qti_xml(
             }
         except Exception as e: # Catch-all for other errors within the try block
             if attempt < max_retries -1:
-                print(f"An unexpected error occurred during validation (attempt {attempt + 1}/{max_retries}): {str(e)}. Retrying in {retry_delay_seconds}s...")
+                print(
+                    f"An unexpected error occurred during validation "
+                    f"(attempt {attempt + 1}/{max_retries}): {str(e)}. "
+                    f"Retrying in {retry_delay_seconds}s..."
+                )
                 time.sleep(retry_delay_seconds)
                 continue
             return {

@@ -9,7 +9,13 @@ from pydantic import BaseModel, Field
 
 class FilteredTables(BaseModel):
     """A Pydantic model to structure the response for table filtering."""
-    indices_to_keep: List[int] = Field(..., description="A list of integer IDs of the tables that are part of the actual question content and should be kept.")
+    indices_to_keep: List[int] = Field(
+        ...,
+        description=(
+            "A list of integer IDs of the tables that are part of the actual "
+            "question content and should be kept."
+        )
+    )
 
 def get_indices_of_tables_to_keep(
     tables: List[Dict[str, Any]],
@@ -45,7 +51,8 @@ Based on the following list of HTML tables, identify which tables are part of th
 Here are the HTML tables:
 {json.dumps(table_html_contents, indent=2)}
 
-Please return a JSON object with a single key "indices_to_keep", which is a list of the integer IDs of the tables that are part of the actual question content and should be kept.
+Please return a JSON object with a single key "indices_to_keep", which is a list of the
+integer IDs of the tables that are part of the actual question content and should be kept.
 Exclude tables that are purely for user interaction on a physical paper or a specific digital interface for bubbling answers.
 
 Example of what to exclude:
@@ -71,7 +78,12 @@ Example response:
             messages=[
                 {
                     "role": "system",
-                    "content": "You are an expert in educational content analysis. Your task is to distinguish between content tables and interactive answering elements based on their HTML structure. Respond only with valid JSON that conforms to the provided schema."
+                    "content": (
+                        "You are an expert in educational content analysis. "
+                        "Your task is to distinguish between content tables and "
+                        "interactive answering elements based on their HTML structure. "
+                        "Respond only with valid JSON that conforms to the provided schema."
+                    )
                 },
                 {
                     "role": "user",

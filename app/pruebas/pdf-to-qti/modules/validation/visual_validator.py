@@ -247,7 +247,12 @@ def compare_images_with_llm(
         messages = [
             {
                 "role": "system",
-                "content": "You are an expert in educational assessment and visual comparison. Your task is to compare two images of the same question - one from the original PDF and one rendered from QTI XML - and determine how accurately the QTI version represents the original."
+                "content": (
+                    "You are an expert in educational assessment and visual comparison. "
+                    "Your task is to compare two images of the same question - one from "
+                    "the original PDF and one rendered from QTI XML - and determine how "
+                    "accurately the QTI version represents the original."
+                )
             },
             {
                 "role": "user",
