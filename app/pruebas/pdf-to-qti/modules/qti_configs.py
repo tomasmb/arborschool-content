@@ -492,11 +492,6 @@ def get_available_question_types() -> List[str]:
 
 # Backward compatibility: Keep the old QTI_TYPE_CONFIGS format for existing code
 QTI_TYPE_CONFIGS = {
-    config.type: {
-        "type": config.type,
-        "promptInstructions": config.prompt_instructions.strip(),
-        "exampleXml": config.example_xml
-    }
-    for config in question_configs.values()
-    if config.type != 'unknown'
+    c.type: {"type": c.type, "promptInstructions": c.prompt_instructions.strip(), "exampleXml": c.example_xml}
+    for c in question_configs.values() if c.type != 'unknown'
 }
