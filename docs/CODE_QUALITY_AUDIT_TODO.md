@@ -74,23 +74,35 @@ These files exceed the hard limit and need immediate refactoring.
     - `image_adequacy.py` (232 lines) - Adequacy assessment
   - [x] Backward-compatible re-exports maintained
 
-- [ ] **`app/pruebas/pdf-to-qti/scripts/render_qti_to_html.py`** (806 lines)
-  - [ ] Split rendering logic from file I/O
-  - [ ] Extract template handling
+- [x] **`app/pruebas/pdf-to-qti/scripts/render_qti_to_html.py`** (806 → 358 lines) ✅
+  - [x] Created 2 new modules for clean separation of concerns:
+    - `html_renderers.py` (220 lines) - element rendering utilities (MathML, tables, images)
+    - `html_template.py` (293 lines) - CSS styles and page wrapper
+  - [x] Extracted helpers for choice-interaction, paragraph, div processing
+  - [x] All backward-compatible imports maintained
 
 ### Priority 3: Files 500-800 Lines (Medium)
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/validation/question_validator.py`** (787 lines)
-  - [ ] Split validation rules into separate modules
-  - [ ] Consider one file per validation type
+- [x] **`app/pruebas/pdf-to-qti/modules/validation/question_validator.py`** (787 → 366 lines) ✅
+  - [x] Created 3 focused modules:
+    - `validation_chrome_setup.py` (230 lines) - Chrome/WebDriver setup
+    - `validation_sandbox.py` (295 lines) - Sandbox interaction utilities
+    - `validation_prompts.py` (190 lines) - Prompt creation and response parsing
+  - [x] Backward-compatible exports maintained
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (685 lines)
-  - [ ] Group prompts by domain
-  - [ ] Extract prompt templates to separate file
+- [x] **`app/pruebas/pdf-to-qti/modules/prompt_builder.py`** (685 → 351 lines) ✅
+  - [x] Created 2 new modules:
+    - `prompt_templates.py` (232 lines) - static template parts and guidelines
+    - `prompt_image_helpers.py` (292 lines) - image-related helper functions
+  - [x] Extracted all static instructions/templates to constants
+  - [x] All backward-compatible exports maintained
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/ai_processing/ai_content_analyzer.py`** (584 lines)
-  - [ ] Separate analysis logic from LLM integration
-  - [ ] Extract content-specific analyzers
+- [x] **`app/pruebas/pdf-to-qti/modules/ai_processing/ai_content_analyzer.py`** (584 → 375 lines) ✅
+  - [x] Created 2 new modules:
+    - `ai_analysis_prompts.py` (187 lines) - prompt templates for analysis
+    - `ai_analysis_parsers.py` (155 lines) - response parsing functions
+  - [x] Extracted all prompt strings and parsing logic
+  - [x] All backward-compatible exports maintained
 
 - [ ] **`app/pruebas/pdf-to-qti/modules/image_processing/choice_diagrams.py`** (542 lines)
   - [ ] Extract diagram detection vs processing
@@ -329,7 +341,7 @@ Review each refactored file for these smells:
 
 | Phase | Total Items | Completed | Progress |
 |-------|-------------|-----------|----------|
-| Phase 1 | 15 files | 5 | 33% |
+| Phase 1 | 15 files | 9 | 60% |
 | Phase 2 | ~20 files | 0 | 0% |
 | Phase 3 | 5 principles | 0 | 0% |
 | Phase 4 | 5 areas | 0 | 0% |
@@ -350,11 +362,40 @@ Review each refactored file for these smells:
 
 ---
 
-*Last updated: 2026-02-02*
+*Last updated: 2026-02-02 (Session 4)*
 
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 4)
+- **render_qti_to_html.py** refactored: 806 → 358 lines (56% reduction)
+  - Created 2 focused modules:
+    - `html_renderers.py` (220 lines) - MathML, table, image, list rendering
+    - `html_template.py` (293 lines) - CSS styles and page wrapper
+  - Extracted helper functions for choice-interaction, paragraph, div processing
+  - All backward-compatible imports maintained
+
+- **question_validator.py** refactored: 787 → 366 lines (54% reduction)
+  - Created 3 focused modules:
+    - `validation_chrome_setup.py` (230 lines) - Chrome/WebDriver setup
+    - `validation_sandbox.py` (295 lines) - Sandbox interaction utilities
+    - `validation_prompts.py` (190 lines) - Prompt creation and response parsing
+  - All backward-compatible exports maintained
+
+- **prompt_builder.py** refactored: 685 → 351 lines (49% reduction)
+  - Created 2 focused modules:
+    - `prompt_templates.py` (232 lines) - static template parts and guidelines
+    - `prompt_image_helpers.py` (292 lines) - image-related helper functions
+  - Extracted all static instructions/templates to constants
+  - All backward-compatible exports maintained
+
+- **ai_content_analyzer.py** refactored: 584 → 375 lines (36% reduction)
+  - Created 2 focused modules:
+    - `ai_analysis_prompts.py` (187 lines) - prompt templates for analysis
+    - `ai_analysis_parsers.py` (155 lines) - response parsing functions
+  - Extracted all prompt strings and parsing logic
+  - All backward-compatible exports maintained
 
 ### 2026-02-02 (Session 3)
 - **image_detection.py** refactored: 826 → 33 lines (96% reduction)
