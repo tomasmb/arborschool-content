@@ -2,14 +2,14 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass
-from pathlib import Path
 
 from PyPDF2 import PdfReader
 
-BASE_DIR = Path(__file__).resolve().parents[1]  # points to app/
-DATA_DIR = BASE_DIR / "data" / "temarios"
-PDF_DIR = DATA_DIR / "pdf"
-JSON_DIR = DATA_DIR / "json"
+from app.utils.paths import TEMARIOS_JSON_DIR, TEMARIOS_PDF_DIR
+
+# Backward-compatible aliases (deprecated - use imports from app.utils.paths)
+PDF_DIR = TEMARIOS_PDF_DIR
+JSON_DIR = TEMARIOS_JSON_DIR
 
 
 @dataclass

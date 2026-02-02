@@ -51,6 +51,8 @@ except ImportError:
     print("❌ boto3 not available. Install it with: pip install boto3")
     sys.exit(1)
 
+from app.utils.paths import PRUEBAS_PROCESADAS_DIR
+
 
 def migrate_images_to_test_folder(bucket_name: str, test_name: str, dry_run: bool = False, delete_originals: bool = False) -> dict[str, Any]:
     """
@@ -233,7 +235,7 @@ def _run_xml_update(args: argparse.Namespace, bucket_name: str, aws_region: str,
     if args.xml_dir:
         xml_dir = Path(args.xml_dir)
     else:
-        xml_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / args.test_name / "qti"
+        xml_dir = PRUEBAS_PROCESADAS_DIR / args.test_name / "qti"
         print(f"   Using inferred XML directory: {xml_dir}")
 
     return update_xml_urls(xml_dir=xml_dir, bucket_name=bucket_name, aws_region=aws_region, test_name=args.test_name, dry_run=dry_run)

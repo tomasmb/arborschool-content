@@ -12,16 +12,11 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-# -----------------------------------------------------------------------------
-# Path constants
-# -----------------------------------------------------------------------------
-
-REPO_ROOT = Path(__file__).parent.parent.parent
-DATA_DIR = REPO_ROOT / "app" / "data"
-ATOMS_DIR = DATA_DIR / "atoms"
-STANDARDS_DIR = DATA_DIR / "standards"
-PRUEBAS_FINALIZADAS_DIR = DATA_DIR / "pruebas" / "finalizadas"
-
+from app.utils.paths import (
+    ATOMS_DIR,
+    PRUEBAS_FINALIZADAS_DIR,
+    STANDARDS_DIR,
+)
 
 # -----------------------------------------------------------------------------
 # Extracted data containers (intermediate format before transform)

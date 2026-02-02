@@ -432,6 +432,35 @@ Review each refactored file for these smells:
 
 ---
 
+## Phase 9: Post-Audit Improvements (Optional)
+
+These are improvements identified during the audit that enhance maintainability.
+
+### 9.1 Centralized Paths Configuration ✅
+
+- [x] **Created `app/utils/paths.py`** - centralized path constants module
+  - `REPO_ROOT`, `APP_DIR`, `DATA_DIR` - base directories
+  - `ATOMS_DIR`, `STANDARDS_DIR`, `TEMARIOS_DIR` - data subdirectories
+  - `PRUEBAS_DIR`, `PRUEBAS_FINALIZADAS_DIR`, `PRUEBAS_PROCESADAS_DIR`
+  - Helper functions: `get_atoms_file()`, `get_standards_file()`, `get_question_metadata_path()`
+  
+- [x] **Updated modules to use centralized paths**:
+  - `app/temarios/parsing.py` - uses `TEMARIOS_PDF_DIR`, `TEMARIOS_JSON_DIR`
+  - `app/sync/extractors.py` - uses `REPO_ROOT`, `DATA_DIR`, `ATOMS_DIR`, etc.
+  - `app/standards/pipeline.py` - uses `STANDARDS_DIR`
+  - `app/diagnostico/scorer.py` - uses `get_question_metadata_path()`
+  - `app/diagnostico/engine.py` - uses `get_question_metadata_path()`
+  - `app/tagging/kg_utils.py` - uses `get_atoms_file()`
+  - `app/pruebas/pdf-to-qti/scripts/migrate_s3_images_by_test.py` - uses `PRUEBAS_PROCESADAS_DIR`
+
+### 9.2 Remaining Opportunities
+
+- [ ] **JSON utilities migration** - 42 files use raw `json.load/dump` instead of `data_loader.py`
+- [ ] **Missing READMEs** - `app/atoms/`, `app/tagging/`, `app/standards/`
+- [ ] **mypy errors** - ~39 errors across priority modules
+
+---
+
 ## Notes
 
 - Reference: `docs/specifications/CODE_STANDARDS.md`
@@ -442,11 +471,23 @@ Review each refactored file for these smells:
 
 ---
 
-*Last updated: 2026-02-02 (Session 7 - AUDIT COMPLETE)*
+*Last updated: 2026-02-02 (Session 8 - Post-Audit Improvements)*
 
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 8)
+- **Phase 9: Post-Audit Improvements**
+  - **Centralized Paths Configuration** ✅
+    - Created `app/utils/paths.py` (192 lines) with all common path constants
+    - Eliminated duplicate `Path(__file__)` patterns across ~8 files
+    - Added helper functions for common path patterns
+    - All backward-compatible (old constants still work)
+  - Updated 7 modules to use centralized paths:
+    - `temarios/parsing.py`, `sync/extractors.py`, `standards/pipeline.py`
+    - `diagnostico/scorer.py`, `diagnostico/engine.py`
+    - `tagging/kg_utils.py`, `pruebas/.../migrate_s3_images_by_test.py`
 
 ### 2026-02-02 (Session 7)
 - **Phase 6 Complete**: Linting & Formatting

@@ -1,17 +1,17 @@
-import os
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from app.utils.data_loader import load_atoms_file
+from app.utils.paths import get_atoms_file
 
-# Path to the atoms file
-# TODO: Make this configurable or dynamic if more files are added
-ATOMS_FILE_PATH = "app/data/atoms/paes_m1_2026_atoms.json"
+# Default atoms file path (uses centralized path resolution)
+DEFAULT_ATOMS_FILE = get_atoms_file("paes_m1_2026")
 
 
 class KGManager:
     """Manages access to Knowledge Graph atoms."""
 
-    def __init__(self, atoms_path: str = ATOMS_FILE_PATH):
+    def __init__(self, atoms_path: str | Path = DEFAULT_ATOMS_FILE):
         self.atoms_path = atoms_path
         self._atoms: List[Dict[str, Any]] = []
         self._atoms_by_id: Dict[str, Dict[str, Any]] = {}
@@ -19,8 +19,9 @@ class KGManager:
 
     def _load_atoms(self):
         """Loads atoms from the JSON file."""
-        if not os.path.exists(self.atoms_path):
-            raise FileNotFoundError(f"Atoms file not found at: {self.atoms_path}")
+        path = Path(self.atoms_path)
+        if not path.exists():
+            raise FileNotFoundError(f"Atoms file not found at: {path}")
 
         try:
             # Use shared utility for loading (handles both list and dict formats)

@@ -8,8 +8,9 @@ Incluye:
 """
 
 import json
-from pathlib import Path
 from typing import Dict, List
+
+from app.utils.paths import get_question_metadata_path
 
 from .config import Route, get_paes_score
 from .engine import Response, ResponseType
@@ -72,11 +73,10 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
         Lista de diagnósticos por átomo
     """
     diagnoses = []
-    base_path = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
 
     for response in responses:
         question = response.question
-        metadata_path = base_path / question.exam / "qti" / question.question_id / "metadata_tags.json"
+        metadata_path = get_question_metadata_path(question.exam, question.question_id)
 
         if not metadata_path.exists():
             continue

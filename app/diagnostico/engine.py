@@ -12,6 +12,8 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List, Optional
 
+from app.utils.paths import get_question_metadata_path
+
 from .config import (
     A2_QUESTIONS,
     B2_QUESTIONS,
@@ -278,10 +280,6 @@ class MSTEngine:
             Lista de AtomDiagnosis con estado por átomo
         """
         import json
-        from pathlib import Path
-
-        # Base path for test data
-        BASE_PATH = Path(__file__).parent.parent / "data" / "pruebas" / "finalizadas"
 
         # Track atoms already diagnosed (avoid duplicates, keep worst status)
         atom_status: Dict[str, AtomDiagnosis] = {}
@@ -295,7 +293,7 @@ class MSTEngine:
 
         for response in responses:
             question = response.question
-            metadata_path = BASE_PATH / question.exam / "qti" / question.question_id / "metadata_tags.json"
+            metadata_path = get_question_metadata_path(question.exam, question.question_id)
 
             if not metadata_path.exists():
                 continue
