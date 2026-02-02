@@ -11,19 +11,19 @@ configurations from the JavaScript SDK implementation.
 """
 
 from __future__ import annotations
-from typing import Dict, List, Optional, Callable
+
 import os
 import re
-import base64
+from typing import Callable, Dict, List, Optional
 
 # NOTE: Do **not** import heavy dependencies here – this file must stay
 # lightweight so it can be imported very early without side-effects.
 
 # Type definition for question config
 class QuestionConfig:
-    def __init__(self, 
-                 type: str, 
-                 example_xml: str, 
+    def __init__(self,
+                 type: str,
+                 example_xml: str,
                  prompt_instructions: str,
                  post_process: Optional[Callable[[str], str]] = None):
         self.type = type
@@ -54,11 +54,11 @@ def extract_example_xml(examples_xml: str, type: str, index: int = 0) -> str:
       <qti-response-processing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct.xml"/>
     </qti-assessment-item>'''
     }
-    
+
     # Return default example if examples file couldn't be read
     if not examples_xml:
         return default_examples.get(type, default_examples['choice'])
-    
+
     # Try to find the comment marking the start of the example
     type_markers = {
         'choice': ['<!-- Choice Interaction', '<!-- Multiple Choice'],
@@ -74,32 +74,32 @@ def extract_example_xml(examples_xml: str, type: str, index: int = 0) -> str:
         'select-point': ['<!-- Select Point -->'],
         'media-interaction': ['<!-- Media Interaction Video', '<!-- Media Interaction Audio']
     }
-    
+
     markers = type_markers.get(type, [])
     marker_to_use = markers[min(index, len(markers) - 1)] if markers else markers[0] if markers else None
-    
+
     if not marker_to_use:
         return default_examples.get(type, default_examples['choice'])
-    
+
     # Find the start of the example
     start_index = examples_xml.find(marker_to_use)
     if start_index == -1:
         return default_examples.get(type, default_examples['choice'])
-    
+
     # Find the next comment which would mark the end
     end_index = examples_xml.find('<!--', start_index + len(marker_to_use))
     if end_index == -1:
         # If no next comment, extract to the end of the file
         return examples_xml[start_index:].strip()
-    
+
     # Extract the XML between the markers
     extracted_xml = examples_xml[start_index:end_index].strip()
-    
+
     # Try to isolate just the qti-assessment-item tag
     item_match = re.search(r'<qti-assessment-item[\s\S]*?</qti-assessment-item>', extracted_xml)
     if item_match:
         return item_match.group(0)
-    
+
     return extracted_xml
 
 # Try to read the QTI examples XML file
@@ -115,7 +115,7 @@ except Exception as error:
 def hotspot_post_process(xml: str) -> str:
     """
     Post-process function for hotspot interactions.
-    
+
     NOTE: This function NO LONGER converts SVG to base64.
     Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
     The LLM should generate QTI with proper img tags using S3 URLs.
@@ -128,7 +128,7 @@ def hotspot_post_process(xml: str) -> str:
 def select_point_post_process(xml: str) -> str:
     """
     Post-process function for select-point interactions.
-    
+
     NOTE: This function NO LONGER converts SVG to base64.
     Base64 encoding is NOT ALLOWED - all images must use S3 URLs.
     The LLM should generate QTI with proper img tags using S3 URLs.
@@ -186,17 +186,17 @@ For text entry interactions:
 4. For pattern matching, consider using <qti-mapping> with pattern map entries
 5. Use proper integer values for expected-length (number of characters):
    - Short answers: expected-length="50"
-   - Medium answers: expected-length="200" 
+   - Medium answers: expected-length="200"
    - Long answers: expected-length="500"
    - Do NOT use descriptive words like "large", "medium", "small"
 6. IMPORTANT: The <qti-text-entry-interaction> MUST be wrapped in a block element (<p> or <div>).
    It CANNOT be a direct child of <qti-item-body>.
-   
+
    CORRECT structure:
    <div>
      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="100"/>
    </div>
-   
+
    INCORRECT structure (will fail XSD validation):
    <qti-item-body>
      <qti-text-entry-interaction response-identifier="RESPONSE" expected-length="100"/>
@@ -292,7 +292,7 @@ For extended text interactions:
 4. No correct response is typically provided as these are usually essay questions
 5. Use proper integer values for expected-length (number of characters):
    - Short responses: expected-length="200"
-   - Medium responses: expected-length="500" 
+   - Medium responses: expected-length="500"
    - Long essays: expected-length="2000"
    - Do NOT use descriptive words like "large", "medium", "small"
 """
@@ -462,7 +462,7 @@ question_configs: Dict[str, QuestionConfig] = {
     'inline-choice': inline_choice_config,
     'select-point': select_point_config,
     'media-interaction': media_interaction_config,
-    
+
     # Default fallback for unknown types
     'unknown': QuestionConfig(
         type='unknown',
@@ -473,10 +473,10 @@ question_configs: Dict[str, QuestionConfig] = {
 
 def get_question_config(question_type: str) -> QuestionConfig:
     """Get the configuration for a specific question type
-    
+
     Args:
         question_type: The question type to get configuration for
-        
+
     Returns:
         The question type configuration or the unknown type config if not found
     """
@@ -484,7 +484,7 @@ def get_question_config(question_type: str) -> QuestionConfig:
 
 def get_available_question_types() -> List[str]:
     """Get all available question types
-    
+
     Returns:
         List of question type names
     """
@@ -499,4 +499,4 @@ QTI_TYPE_CONFIGS = {
     }
     for config in question_configs.values()
     if config.type != 'unknown'
-} 
+}

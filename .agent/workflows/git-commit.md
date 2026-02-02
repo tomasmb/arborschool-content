@@ -1,5 +1,5 @@
 ---
-description: Generate a safe, high-quality commit with minimal user intervention.
+description: Generate a safe, high-quality commit with minimal user intervention. Runs code quality checks before committing.
 ---
 
 1. **Analyze the working tree**
@@ -11,12 +11,41 @@ description: Generate a safe, high-quality commit with minimal user intervention
 2. **Stage changes**
    - Run `git add .`
 
-3. **Run project checks (mandatory)**
-   - Check if `eslint` exists, if so run `npx eslint .` (or equivalent).
-   - Check for other linters/tests (TypeScript `tsc`, `flake8`, etc.) and run them.
-   - If any check fails, STOP and ask the user to fix issues.
+3. **Run CODE_STANDARDS checks (mandatory)**
+   
+   > Reference: `docs/specifications/CODE_STANDARDS.md`
+   
+   **a. Linting (Python)**
+   // turbo
+   - Run `ruff check app/` (or on modified Python files)
+   - If errors exist, STOP and list them. Ask user to fix before continuing.
+   
+   **b. File size limits**
+   - Check that all modified files are < 500 lines
+   - If any exceed 500 lines, STOP and warn user to refactor.
+   
+   **c. Type hints (quick check)**
+   - For new Python functions, verify they have type annotations
+   - This is a best-effort check; report findings but don't block.
+   
+   **d. Prompt quality (if prompt files modified)**
+   - If any prompt templates or LLM-related code was modified, verify:
+     - No redundancy in instructions
+     - No contradictions with existing rules
+     - Structure is clear and segmented
+   - Report findings but don't block (use judgment).
 
-4. **Auto-generate the commit message**
+4. **Summary of quality checks**
+   - Report status of all checks:
+     ```
+     ✅ Linting: passed
+     ✅ File sizes: all < 500 lines
+     ⚠️ Type hints: 2 functions missing annotations (non-blocking)
+     ✅ Prompts: N/A
+     ```
+   - If any blocking check fails, STOP here.
+
+5. **Auto-generate the commit message**
    - Create a message **ALWAYS** starting with an emoji, followed by conventional commit prefix (feat, fix, etc.), and a summary.
    - **Mandatory Emoji Mapping**:
      - feat: ✨
@@ -29,14 +58,15 @@ description: Generate a safe, high-quality commit with minimal user intervention
      - chore: 🛠
    - Example: `🛠 chore: update workflows`
 
-5. **Create the commit**
+6. **Create the commit**
    - Run `git commit -m "<generated-message>"`
 
-6. **Push the commit automatically**
+7. **Push the commit automatically**
    - Check if branch tracks a remote.
    - If first push: `git push -u origin <current-branch>`
    - Otherwise: `git push`
    - If push fails, stop and report error.
 
-7. **Final status**
+8. **Final status**
    - Run `git status` to confirm clean tree.
+   - Report that commit was successful with quality checks passed.

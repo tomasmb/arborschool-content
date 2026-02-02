@@ -1,17 +1,20 @@
-import json
-import re
-import os
-import requests
 import io
-from typing import Optional, Dict, Any, List
+import json
+import os
+import re
 import xml.etree.ElementTree as ET
+from typing import Any, Dict, List, Optional
+
+import requests
+
 try:
     from PIL import Image
 except ImportError:
     Image = None
 
-from app.gemini_client import load_default_gemini_service, GeminiService
-from app.tagging.kg_utils import get_all_atoms, get_atom_by_id, filter_redundant_atoms
+from app.gemini_client import GeminiService, load_default_gemini_service
+from app.tagging.kg_utils import filter_redundant_atoms, get_all_atoms, get_atom_by_id
+
 
 class AtomTagger:
     """Tags QTI questions with atoms using Gemini."""
@@ -49,7 +52,7 @@ class AtomTagger:
         """Saves current result state to file. Partial results go to a backup folder."""
         if not output_path:
             return
-        
+
         target_path = output_path
         if not is_final:
             # Route partial results to a backup directory, mirroring the structure
@@ -63,7 +66,7 @@ class AtomTagger:
                 target_path = os.path.join(backup_root, rel)
             except Exception:
                 target_path = os.path.join(backup_root, os.path.basename(output_path))
-            
+
             os.makedirs(os.path.dirname(target_path), exist_ok=True)
 
         try:
@@ -77,7 +80,7 @@ class AtomTagger:
     def _process_mathml(self, element: ET.Element) -> str:
         """Recursively converts MathML elements to a readable text representation."""
         tag = element.tag.split('}')[-1]  # Handle namespaced tags
-        
+
         if tag == 'mfrac':
             children = list(element)
             if len(children) == 2:
@@ -127,7 +130,7 @@ class AtomTagger:
             return "".join(parts)
         elif tag == 'mi' or tag == 'mn' or tag == 'mo' or tag == 'mtext':
             return (element.text or "").strip()
-        
+
         # Default: recursive join of all children text/processing
         parts = []
         if element.text:
@@ -152,7 +155,7 @@ class AtomTagger:
                 cols.append(cell_text)
             if cols:
                 rows.append(" | ".join(cols))
-        
+
         if rows:
             return "\n[ " + " | ".join(rows) if len(rows) == 1 else "\n" + "\n".join(rows) + "\n"
         return ""
@@ -162,7 +165,7 @@ class AtomTagger:
         parts = []
         if element.text:
             parts.append(element.text)
-        
+
         for child in element:
             tag = child.tag.split('}')[-1].lower()
             if tag == 'math':
@@ -179,10 +182,10 @@ class AtomTagger:
                     parts.append(f" [Imagen: {alt}] ")
             else:
                 parts.append(self._extract_full_text(child))
-            
+
             if child.tail:
                 parts.append(child.tail)
-        
+
         return "".join(parts)
 
     def _extract_text_from_xml(self, xml_content: str) -> Dict[str, Any]:
@@ -192,7 +195,7 @@ class AtomTagger:
         except ET.ParseError:
             # Fallback for very broken XML
             return {"text": "", "choices": [], "image_urls": [], "correct_answer_id": None, "choice_id_map": {}}
-        
+
         # Extract Correct Answer ID
         correct_answer_id = None
         # 3.0 Standard: responseDeclaration -> correctResponse -> value
@@ -204,7 +207,7 @@ class AtomTagger:
                 val_node = corr_resp.find(".//{*}value") or corr_resp.find(".//{*}qti-value")
                 if val_node is not None:
                     correct_answer_id = (val_node.text or "").strip()
-        
+
         # Fallback: literal search for value inside any correct response tag
         if not correct_answer_id:
             any_corr = root.find(".//{*}qti-correct-response") or root.find(".//{*}correctResponse")
@@ -242,13 +245,13 @@ class AtomTagger:
              src = img.get("src")
              if src:
                  image_urls.append(src)
-        
+
         # Fallback regex
         if not image_urls:
             image_urls = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', xml_content)
 
         return {
-            "text": question_text, 
+            "text": question_text,
             "choices": choices,
             "image_urls": sorted(list(set(image_urls))),
             "correct_answer_id": correct_answer_id,
@@ -272,21 +275,21 @@ class AtomTagger:
         if not Image:
             print("  ⚠️ PIL not installed, skipping image download.")
             return None
-            
+
         try:
             # print(f"  Fetching image: {url}")
             response = requests.get(url, timeout=10)
             response.raise_for_status() # This will raise an exception for 4xx/5xx responses
-            
+
             # Verify image integrity before using
             img_io = io.BytesIO(response.content)
             img = Image.open(img_io)
             img.verify() # Checks for truncation/corruption
-            
+
             # Re-open because verify() consumes the stream
             img_io.seek(0)
             img = Image.open(img_io)
-            
+
             return img
         except Exception as e:
             print(f"  ⚠️ Failed to download image {url}: {e}")
@@ -294,16 +297,16 @@ class AtomTagger:
 
     def _build_prompt(self, question_text: str, choices: List[str], atoms: List[Dict[str, Any]]) -> str:
         """Constructs the long-context prompt."""
-        
+
         # Format atoms efficiently
         atoms_text = []
         for atom in atoms:
             atoms_text.append(f"ID: {atom['id']}\nTitle: {atom.get('titulo', '')}\nDesc: {atom.get('descripcion', '')}\n")
-        
+
         atoms_block = "\n---\n".join(atoms_text)
-        
+
         choices_text = "\n".join([f"- {c}" for c in choices])
-        
+
         prompt = f"""
 
 Eres un experto en evaluación educativa y diseño curricular (matemáticas).
@@ -347,7 +350,7 @@ REGLAS DE RELEVANCIA:
 
     def _generate_analysis(self, question_text: str, choices: List[str], selected_atoms: List[Dict[str, Any]], images: Optional[List[Any]] = None, correct_answer: Optional[str] = None) -> Dict[str, Any]:
         """Generates difficulty evaluation AND instructional feedback."""
-        
+
         correct_info = f"\nRESPUESTA CORRECTA: {correct_answer}\n" if correct_answer else ""
 
         prompt = f"""
@@ -423,7 +426,7 @@ REGLA DE ORO DEL FEEDBACK:
 
     def _validate_output(self, question_text: str, choices: List[str], result: Dict[str, Any], images: Optional[List[Any]] = None, correct_answer: Optional[str] = None) -> Dict[str, Any]:
         """Validates the generated tags and feedback using an LLM Judge."""
-        
+
         correct_info = f"\nRESPUESTA CORRECTA OFICIAL (La Verdad Absoluta): {correct_answer}\n" if correct_answer else ""
 
         prompt = f"""
@@ -474,46 +477,46 @@ Retorna un objeto JSON:
 
     def _select_primary_heuristic(self, selected_atoms: List[Dict[str, Any]]) -> str:
         """Selects a Primary atom locally based on verb hierarchy constraints."""
-        
+
         # Hierarchy: "Doing" > "Understanding" > "Remembering"
         # We prioritize complex tasks over simple identification.
-        
+
         tier_1_keywords = ["resolución", "resolver", "calcular", "cálculo", "modelar", "modelado", "optimización"]
         tier_2_keywords = ["aplicar", "aplicación", "transformar", "construir", "determinación"]
         tier_3_keywords = ["identificar", "reconocer", "evaluar", "interpretar", "representar"]
-        
+
         best_atom_id = ""
         best_score = -1
-        
+
         for atom in selected_atoms:
             title = atom.get("atom_title", "").lower()
             score = 0
-            
+
             if any(k in title for k in tier_1_keywords):
                 score = 3
             elif any(k in title for k in tier_2_keywords):
                 score = 2
             elif any(k in title for k in tier_3_keywords):
                 score = 1
-            
+
             # Tie-breaker: prefer the one that appears earlier in the list (usually higher relevance in search)
             # strictly greater to keep the first high-score found
             if score > best_score:
                 best_score = score
                 best_atom_id = atom.get("atom_id")
-                
+
         return best_atom_id if best_atom_id else (selected_atoms[0].get("atom_id") if selected_atoms else "")
 
     def tag_xml_file(self, xml_path: str, output_path: Optional[str] = None) -> Optional[Dict[str, Any]]:
         """Tags a single XML file and optionally saves metadata."""
-        
+
         if not os.path.exists(xml_path):
             print(f"File not found: {xml_path}")
             return None
-            
+
         with open(xml_path, "r", encoding="utf-8") as f:
             xml_content = f.read()
-            
+
         parsed = self._extract_text_from_xml(xml_content)
         question_text = parsed["text"]
         choices = parsed["choices"]
@@ -533,44 +536,44 @@ Retorna un objeto JSON:
                 if img:
                     images_content.append(img)
             print(f"  Successfully loaded {len(images_content)} images.")
-        
+
         # Load ALL atoms for context
         atoms = get_all_atoms()
-        
+
         # 1. Identify Atoms
         print(f"Tagging atoms for {os.path.basename(xml_path)}...")
         prompt_text = self._build_prompt(question_text, choices, atoms)
-        
+
         full_prompt = [prompt_text]
         if images_content:
             full_prompt.extend(images_content)
 
         try:
             response_text = self.service.generate_text(
-                full_prompt, 
+                full_prompt,
                 response_mime_type="application/json",
                 temperature=0.0
             )
-            
+
             result = self._safe_json_loads(response_text, xml_path)
-            
+
             # Save progress: Selected Atoms (to backup)
             self._save_result(result, output_path, is_final=False)
-            
+
             # 1.5 Apply Transitivity Filter (Prerequisites)
             if "selected_atoms" in result and isinstance(result["selected_atoms"], list):
                 original_count = len(result["selected_atoms"])
                 atom_ids = [item.get("atom_id") for item in result["selected_atoms"] if item.get("atom_id")]
-                
+
                 # Filter out ancestors
                 filtered_ids = filter_redundant_atoms(atom_ids)
-                
+
                 # Update list retaining only survivors
                 result["selected_atoms"] = [
-                    item for item in result["selected_atoms"] 
+                    item for item in result["selected_atoms"]
                     if item.get("atom_id") in filtered_ids
                 ]
-                
+
                 if len(result["selected_atoms"]) < original_count:
                     print(f"  filtered {original_count - len(result['selected_atoms'])} redundant prerequisite atoms.")
                     print(f"  filtered {original_count - len(result['selected_atoms'])} redundant prerequisite atoms.")
@@ -579,7 +582,7 @@ Retorna un objeto JSON:
             # 1.6 INTELLIGENT REPAIR OF MISSING PRIMARY
             if "selected_atoms" in result and result["selected_atoms"]:
                 has_primary = any(a.get("relevance") == "primary" for a in result["selected_atoms"])
-                
+
                 # Check 1: If single atom, FORCE primary (Logic: Only one atom = It must be the primary)
                 if len(result["selected_atoms"]) == 1 and not has_primary:
                      print("  ⚠️ Only one atom found but marked Secondary. Auto-promoting to Primary.")
@@ -591,15 +594,15 @@ Retorna un objeto JSON:
                     print("  ⚠️ No PRIMARY atom found. Using Heuristic to decide...")
                     # We need titles for the heuristic, ensure they are present
                     for sel in result["selected_atoms"]:
-                        # Quick lookup 
+                        # Quick lookup
                         atom_id = sel.get("atom_id")
                         if atom_id and not sel.get("atom_title"):
                             atom_data = get_atom_by_id(atom_id)
                             if atom_data:
                                 sel["atom_title"] = atom_data.get("titulo")
-                    
+
                     target_id = self._select_primary_heuristic(result["selected_atoms"])
-                    
+
                     if target_id:
                         print(f"  ✅ Heuristic identified {target_id} as the Primary atom.")
                         for atom in result["selected_atoms"]:
@@ -628,13 +631,13 @@ Retorna un objeto JSON:
             if enriched_selections:
                 print(f"Generating analysis (Difficulty + Feedback) for {os.path.basename(xml_path)}...")
                 analysis_data = self._generate_analysis(
-                    question_text, 
-                    choices, 
-                    [s for s in enriched_selections], 
+                    question_text,
+                    choices,
+                    [s for s in enriched_selections],
                     images=images_content,
                     correct_answer=correct_answer_text
                 )
-                
+
                 # STRICT CHECK: If analysis failed (empty dict), abort.
                 if not analysis_data or not analysis_data.get("difficulty"):
                     print(f"  ❌ Analysis Generation FAILED (Empty response). Aborting tagging for {os.path.basename(xml_path)}.")
@@ -642,16 +645,16 @@ Retorna un objeto JSON:
 
                 result["difficulty"] = analysis_data.get("difficulty", {})
                 result["feedback"] = analysis_data.get("feedback", {})
-                
+
                 # Save progress: Difficulty + Feedback (to backup)
                 self._save_result(result, output_path, is_final=False)
-                
+
                 # 3. Validation Phase (multimodal)
                 print(f"Validating results for {os.path.basename(xml_path)}...")
                 validation_result = self._validate_output(
-                    question_text, 
-                    choices, 
-                    result, 
+                    question_text,
+                    choices,
+                    result,
                     images=images_content,
                     correct_answer=correct_answer_text
                 )

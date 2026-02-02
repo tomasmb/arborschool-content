@@ -6,11 +6,12 @@ visual content in educational materials.
 """
 
 import base64
-import fitz  # type: ignore
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List
 
-from .image_area_detector import construct_multiple_image_areas, construct_image_area_from_gaps_flexible
+import fitz  # type: ignore
+
 from .choice_extractor import extract_choice_images
+from .image_area_detector import construct_image_area_from_gaps_flexible, construct_multiple_image_areas
 from .utils import get_page_image
 
 
@@ -24,15 +25,15 @@ def analyze_visual_content_with_llm(
     Use LLM to analyze and separate prompt vs choice visual content.
     """
     print("🔍 🧠 Preparing LLM analysis request...")
-    
+
     import openai
     from pydantic import BaseModel
-    
+
     class TextBlockCategory(BaseModel):
         block_number: int
         category: str
         reasoning: str
-    
+
     class VisualContentAnalysis(BaseModel):
         has_prompt_visuals: bool
         has_choice_visuals: bool
@@ -41,7 +42,7 @@ def analyze_visual_content_with_llm(
         text_block_categories: List[TextBlockCategory]
         separation_confidence: float
         reasoning: str
-    
+
     # Prepare text blocks info
     block_info = []
     text_block_count = 0
@@ -51,12 +52,12 @@ def analyze_visual_content_with_llm(
             for line in block.get("lines", []):
                 for span in line.get("spans", []):
                     block_text += span.get("text", "") + " "
-            
+
             # Include all text blocks, even those with empty text
             # Empty text blocks may contain visual elements like axis labels
             text_block_count += 1
             bbox = block.get("bbox", [0, 0, 0, 0])
-            
+
             if block_text.strip():
                 block_info.append({
                     "block_number": i + 1,
@@ -72,9 +73,9 @@ def analyze_visual_content_with_llm(
                     "bbox": bbox,
                     "position": f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})"
                 })
-    
+
     print(f"🔍 📋 Prepared {text_block_count} text blocks for LLM analysis")
-    
+
     # Get page image for visual context
     print("🔍 📸 Capturing page image for LLM visual context...")
     try:
@@ -84,7 +85,7 @@ def analyze_visual_content_with_llm(
     except Exception as e:
         print(f"🔍 ❌ Failed to capture page image: {e}")
         return {"success": False, "error": f"Page image capture failed: {e}"}
-    
+
     prompt = f"""Analyze this educational question to separate prompt visuals from choice visuals and categorize each text block. The question may have multiple parts (e.g., Part A, Part B).
 
 QUESTION TEXT:
@@ -126,7 +127,7 @@ Categorize each block to help identify where visual content is located."""
     try:
         print("🔍 🧠 Sending request to OpenAI...")
         client = openai.OpenAI(api_key=openai_api_key)
-        
+
         response = client.beta.chat.completions.parse(
             model="gpt-5.1",
             messages=[
@@ -145,10 +146,10 @@ Categorize each block to help identify where visual content is located."""
             response_format=VisualContentAnalysis,
             reasoning_effort="high",
         )
-        
+
         print("🔍 ✅ Received response from OpenAI")
         analysis = response.choices[0].message.parsed
-        
+
         print("🔍 🧠 LLM ANALYSIS RESULTS:")
         print("🔍 " + "=" * 50)
         print(f"🔍 Prompt visuals detected: {analysis.has_prompt_visuals}")
@@ -158,25 +159,25 @@ Categorize each block to help identify where visual content is located."""
         print(f"🔍 Prompt description: {analysis.prompt_visual_description}")
         print(f"🔍 Choice description: {analysis.choice_visual_description}")
         print("🔍 " + "=" * 50)
-        
+
         # Process block categories
         block_categories = {}
         print("🔍 📋 TEXT BLOCK CATEGORIZATIONS:")
         for cat_info in analysis.text_block_categories:
             block_categories[cat_info.block_number] = cat_info.category
             print(f"🔍 Block {cat_info.block_number:2d} -> {cat_info.category:20s} | {cat_info.reasoning}")
-        
+
         print(f"🔍 📋 Categorized {len(block_categories)} blocks total")
-        
+
         # Process the analysis results using gap detection with block categories
         print("🔍 🔄 Processing LLM results with gap detection...")
         result = process_llm_analysis_with_gaps(analysis, page, text_blocks, block_categories)
         result["success"] = True
         result["confidence"] = analysis.separation_confidence
         result["ai_categories"] = block_categories
-        
+
         return result
-        
+
     except Exception as e:
         print(f"🔍 ❌ LLM analysis request failed: {str(e)}")
         import traceback
@@ -185,8 +186,8 @@ Categorize each block to help identify where visual content is located."""
 
 
 def process_llm_analysis_with_gaps(
-    analysis, 
-    page: fitz.Page, 
+    analysis,
+    page: fitz.Page,
     text_blocks: List[Dict[str, Any]],
     block_categories: Dict[int, str]
 ) -> Dict[str, Any]:
@@ -195,14 +196,14 @@ def process_llm_analysis_with_gaps(
     """
     print("🔍 🔄 PROCESSING LLM RESULTS WITH GAP DETECTION")
     print("🔍 " + "-" * 50)
-    
+
     # Initialize variables that will be used throughout the function
     prompt_bboxes = []
     choice_bboxes = []
     question_answer_blocks = []
     image_label_blocks = []
     all_text_bboxes = []
-    
+
     # Build text bbox list and categorize blocks - needed for both prompt and choice processing
     print("🔍 📋 Categorizing blocks for gap detection:")
     for i, block in enumerate(text_blocks):
@@ -210,17 +211,17 @@ def process_llm_analysis_with_gaps(
             bbox = block.get("bbox")
             if bbox and len(bbox) == 4:
                 all_text_bboxes.append(bbox)
-                
+
                 block_num = i + 1
                 category = block_categories.get(block_num, "unknown")
-                
+
                 # Extract block text for logging
                 block_text = ""
                 for line in block.get("lines", []):
                     for span in line.get("spans", []):
                         block_text += span.get("text", "") + " "
                 block_text = block_text.strip()[:50] + "..." if len(block_text.strip()) > 50 else block_text.strip()
-                
+
                 # Use LLM categories for more precise separation
                 if category in ["question_text", "answer_choice", "question_part_header"]:
                     question_answer_blocks.append(bbox)
@@ -241,13 +242,13 @@ def process_llm_analysis_with_gaps(
                     # Fallback for uncategorized blocks
                     question_answer_blocks.append(bbox)  # Be conservative - separate from images
                     print(f"🔍   Block {block_num:2d} ({category:15s}): FALLBACK handling | {block_text}")
-    
-    print(f"🔍 📊 Gap detection inputs:")
+
+    print("🔍 📊 Gap detection inputs:")
     print(f"🔍    Question/Answer blocks: {len(question_answer_blocks)}")
     print(f"🔍    Image label blocks: {len(image_label_blocks)}")
     print(f"🔍    All text blocks: {len(all_text_bboxes)}")
-    
-    # CRITICAL FIX: If LLM says "choice visuals" but no answer choice blocks exist, 
+
+    # CRITICAL FIX: If LLM says "choice visuals" but no answer choice blocks exist,
     # this is likely a misclassification - the visual content is actually part of the prompt
     if not analysis.has_prompt_visuals and analysis.has_choice_visuals:
         actual_answer_choice_blocks = [cat for cat in block_categories.values() if cat == "answer_choice"]
@@ -259,11 +260,11 @@ def process_llm_analysis_with_gaps(
             analysis.has_choice_visuals = False
             analysis.prompt_visual_description = analysis.choice_visual_description
             analysis.choice_visual_description = ""
-    
+
     # If LLM detects prompt visuals, use gap detection to find them
     if analysis.has_prompt_visuals:
         print("🔍 📸 LLM detected prompt visuals - starting gap detection...")
-        
+
         prompt_image_labels = list(image_label_blocks)
 
         if analysis.has_choice_visuals:
@@ -275,7 +276,7 @@ def process_llm_analysis_with_gaps(
                         block = text_blocks[block_num - 1]
                         if block.get("type") == 0 and block.get("bbox"):
                             answer_choice_bboxes.append(block["bbox"])
-            
+
             if answer_choice_bboxes:
                 first_choice_y = min(bbox[1] for bbox in answer_choice_bboxes)
                 print(f"🔍    Choice area identified to start at y={first_choice_y:.1f}")
@@ -294,7 +295,7 @@ def process_llm_analysis_with_gaps(
         choice_image_labels = [
             bbox for bbox in image_label_blocks if bbox not in prompt_image_labels
         ]
-        
+
         # Add explicitly categorized choice visual labels
         for block_num, category in block_categories.items():
             if category == "choice_visual_label":
@@ -302,7 +303,7 @@ def process_llm_analysis_with_gaps(
                     block = text_blocks[block_num - 1]
                     if block.get("type") == 0 and block.get("bbox"):
                         choice_image_labels.append(block["bbox"])
-        
+
         if analysis.has_choice_visuals:
             print(f"🔍    Found {len(choice_image_labels)} choice-specific labels for extraction.")
 
@@ -314,7 +315,7 @@ def process_llm_analysis_with_gaps(
                 question_answer_blocks,
                 prompt_image_labels
             )
-            
+
             # If label-based detection failed (no labels), try gap detection with flexible thresholds
             if not prompt_bboxes and image_label_blocks:
                 print("🔍 🔄 Label-based detection failed, trying improved gap detection...")
@@ -367,7 +368,7 @@ def process_llm_analysis_with_gaps(
                 if not image_label_blocks:
                     print("🔍 ⚠️  No image label blocks identified")
                 print(f"🔍 ⚠️  Total text blocks: {len(all_text_bboxes)}")
-                    
+
         except Exception as e:
             print(f"🔍 ❌ Image area detection failed with exception: {e}")
             import traceback
@@ -393,13 +394,13 @@ def process_llm_analysis_with_gaps(
         )
         choice_bboxes = choice_extraction_result["extracted_images"]
         total_choice_blocks = choice_extraction_result["total_choices_found"]
-        
+
         print(f"🔍 ✅ Extracted {len(choice_bboxes)} of {total_choice_blocks} choice images")
     else:
         print("🔍 🎯 LLM did not detect choice visuals")
         choice_bboxes = []
         total_choice_blocks = 0
-    
+
     # Build choice regions from extracted choice bboxes
     choice_regions = []
     if choice_bboxes:
@@ -414,7 +415,7 @@ def process_llm_analysis_with_gaps(
     if prompt_bboxes:
         for bbox in prompt_bboxes:
             prompt_regions.append({"bbox": bbox, "description": analysis.prompt_visual_description})
-    
+
     result = {
         "has_prompt_visuals": analysis.has_prompt_visuals,
         "has_choice_visuals": analysis.has_choice_visuals,
@@ -428,7 +429,7 @@ def process_llm_analysis_with_gaps(
         "reasoning": analysis.reasoning,
         "block_categories": block_categories
     }
-    
+
     print("🔍 📊 FINAL SEPARATION RESULTS:")
     print(f"🔍    Prompt visuals: {result['has_prompt_visuals']}")
     print(f"🔍    Choice visuals: {result['has_choice_visuals']}")
@@ -437,5 +438,5 @@ def process_llm_analysis_with_gaps(
     print(f"🔍    Total choice blocks: {result.get('total_choice_blocks', 'N/A')}")
     print(f"🔍    Block categories: {len(result['block_categories'])}")
     print("🔍 " + "=" * 60)
-    
-    return result 
+
+    return result

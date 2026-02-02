@@ -7,7 +7,6 @@ Tracks and logs API usage (tokens, costs) for OpenAI and Gemini API calls.
 from __future__ import annotations
 
 import json
-import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -45,17 +44,17 @@ def calculate_cost(
     """Calculate cost for API usage."""
     provider_pricing = PRICING.get(provider, {})
     model_pricing = provider_pricing.get(model, {})
-    
+
     if not model_pricing:
         return 0.0
-    
+
     input_cost = (input_tokens / 1_000_000) * model_pricing.get("input", 0)
     output_cost = (output_tokens / 1_000_000) * model_pricing.get("output", 0)
     cached_cost = (
         (cached_input_tokens / 1_000_000)
         * model_pricing.get("cached_input", 0)
     )
-    
+
     return input_cost + output_cost - cached_cost
 
 
@@ -71,7 +70,7 @@ def log_api_usage(
 ) -> Dict[str, Any]:
     """
     Log API usage and save to file.
-    
+
     Args:
         provider: "openai" or "gemini"
         model: Model name
@@ -81,13 +80,13 @@ def log_api_usage(
         question_id: Optional question identifier
         output_dir: Optional output directory to save usage file
         operation: Description of the operation
-        
+
     Returns:
         Dictionary with usage information
     """
     timestamp = datetime.now().isoformat()
     cost = calculate_cost(provider, model, input_tokens, output_tokens, cached_input_tokens)
-    
+
     usage_data = {
         "timestamp": timestamp,
         "provider": provider,
@@ -99,32 +98,32 @@ def log_api_usage(
         "cost_usd": round(cost, 6),
         "operation": operation,
     }
-    
+
     # Save per-question usage if question_id and output_dir provided
     if question_id and output_dir:
         usage_file = Path(output_dir) / "api_usage.json"
         usage_history = []
-        
+
         if usage_file.exists():
             try:
                 with open(usage_file, "r", encoding="utf-8") as f:
                     usage_history = json.load(f)
             except Exception:
                 usage_history = []
-        
+
         usage_history.append(usage_data)
-        
+
         try:
             with open(usage_file, "w", encoding="utf-8") as f:
                 json.dump(usage_history, f, indent=2)
         except Exception as e:
             print(f"⚠️  Warning: Could not save usage to {usage_file}: {e}")
-    
+
     # Print summary
     print(f"📊 API Usage: {provider}/{model} | "
           f"Input: {input_tokens:,} | Output: {output_tokens:,} | "
           f"Cost: ${cost:.4f}")
-    
+
     return usage_data
 
 
@@ -137,7 +136,7 @@ def get_usage_summary(
         usage_file = Path(output_dir) / question_id / "api_usage.json"
     else:
         usage_file = Path(output_dir) / "api_usage.json"
-    
+
     if not usage_file.exists():
         return {
             "total_calls": 0,
@@ -146,7 +145,7 @@ def get_usage_summary(
             "total_cost_usd": 0.0,
             "by_provider": {},
         }
-    
+
     try:
         with open(usage_file, "r", encoding="utf-8") as f:
             usage_history = json.load(f)
@@ -158,12 +157,12 @@ def get_usage_summary(
             "total_cost_usd": 0.0,
             "by_provider": {},
         }
-    
+
     total_calls = len(usage_history)
     total_input = sum(u.get("input_tokens", 0) for u in usage_history)
     total_output = sum(u.get("output_tokens", 0) for u in usage_history)
     total_cost = sum(u.get("cost_usd", 0) for u in usage_history)
-    
+
     by_provider = {}
     for usage in usage_history:
         provider = usage.get("provider", "unknown")
@@ -178,7 +177,7 @@ def get_usage_summary(
         by_provider[provider]["input_tokens"] += usage.get("input_tokens", 0)
         by_provider[provider]["output_tokens"] += usage.get("output_tokens", 0)
         by_provider[provider]["cost_usd"] += usage.get("cost_usd", 0)
-    
+
     return {
         "total_calls": total_calls,
         "total_input_tokens": total_input,
@@ -197,14 +196,14 @@ def print_usage_summary(summary: Dict[str, Any], title: str = "API Usage Summary
     print(f"Total input tokens: {summary['total_input_tokens']:,}")
     print(f"Total output tokens: {summary['total_output_tokens']:,}")
     print(f"Total cost: ${summary['total_cost_usd']:.4f}")
-    
+
     if summary.get("by_provider"):
-        print(f"\nBy provider:")
+        print("\nBy provider:")
         for provider, stats in summary["by_provider"].items():
             print(f"  {provider}:")
             print(f"    Calls: {stats['calls']}")
             print(f"    Input: {stats['input_tokens']:,} tokens")
             print(f"    Output: {stats['output_tokens']:,} tokens")
             print(f"    Cost: ${stats['cost_usd']:.4f}")
-    
+
     print(f"{'=' * 60}\n")

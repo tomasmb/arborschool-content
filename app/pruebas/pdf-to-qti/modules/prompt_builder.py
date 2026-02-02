@@ -9,9 +9,11 @@ This module handles the creation of sophisticated prompts for:
 Similar to the HTML transformer's prompt creation logic
 """
 
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
+import fitz  # type: ignore # For Rect operations
+
 from .content_processing.content_processor import create_content_summary
-import fitz # type: ignore # For Rect operations
 
 
 def _get_text_from_block(block: Dict[str, Any]) -> str:
@@ -31,7 +33,6 @@ def _find_nearby_text_for_image(
     min_horizontal_overlap_percentage: float = 0.1  # Reduced from 0.2 to be more inclusive
 ) -> str:
     """Finds text blocks near an image bbox and returns semantic context for placement."""
-    context_texts = []
     img_rect = fitz.Rect(image_bbox_coords)
 
     # Collect text blocks with their relative positions
@@ -43,7 +44,7 @@ def _find_nearby_text_for_image(
         text_bbox_coords = block.get("bbox")
         if not text_bbox_coords:
             continue
-        
+
         text_rect = fitz.Rect(text_bbox_coords)
         text_content = _get_text_from_block(block)
         if not text_content.strip():
@@ -91,32 +92,32 @@ def _find_nearby_text_for_image(
 
     # Sort by distance (closest first) and create semantic description
     text_blocks.sort(key=lambda x: x['distance'])
-    
+
     if text_blocks:
         # Group by relationship
         above_texts = [t['content'] for t in text_blocks if t['relationship'] == 'above']
         below_texts = [t['content'] for t in text_blocks if t['relationship'] == 'below']
         side_texts = [t['content'] for t in text_blocks if t['relationship'] in ['left', 'right']]
-        
+
         # Create semantic description
         context_parts = []
-        
+
         if above_texts:
             above_combined = " ".join(above_texts[:2])  # Take up to 2 closest text blocks
             context_parts.append(f"Text above: '{above_combined}'")
-            
+
         if below_texts:
             below_combined = " ".join(below_texts[:2])
             context_parts.append(f"Text below: '{below_combined}'")
-            
+
         if side_texts:
             side_combined = " ".join(side_texts[:1])
             context_parts.append(f"Adjacent text: '{side_combined}'")
-        
+
         # Analyze semantic meaning for placement hints
         all_text = " ".join([t['content'] for t in text_blocks[:3]]).lower()
         placement_hints = []
-        
+
         if any(word in all_text for word in ['question', 'which', 'what', 'how', 'why', 'when', 'where']):
             placement_hints.append("appears to be part of question stem")
         if any(word in all_text for word in ['a)', 'b)', 'c)', 'd)', 'choice', 'option']):
@@ -125,36 +126,36 @@ def _find_nearby_text_for_image(
             placement_hints.append("referenced by text")
         if any(word in all_text for word in ['instruction', 'direction', 'note', 'consider']):
             placement_hints.append("part of instructions")
-            
+
         result = " | ".join(context_parts)
         if placement_hints:
             result += f" | Context suggests: {', '.join(placement_hints)}"
-            
+
         return result
-    
+
     return "No nearby text context found"
 
 
 def create_detection_prompt(pdf_content: Dict[str, Any]) -> str:
     """
     Create a sophisticated prompt for question type detection.
-    
+
     Args:
         pdf_content: Extracted PDF content
-        
+
     Returns:
         Detection prompt string
     """
     content_summary = create_content_summary(pdf_content)
-    
+
     # Get basic content info without hardcoded keyword analysis
     combined_text = pdf_content.get('combined_text', '')
     text_length = len(combined_text)
-    
+
     # Check for visual content
-    has_images = bool(pdf_content.get('image_base64') or 
+    has_images = bool(pdf_content.get('image_base64') or
                      any(page.get('image_base64') for page in pdf_content.get('pages', [])))
-    
+
     prompt = f"""
 You are an expert in educational assessment formats, particularly QTI (Question and Test Interoperability).
 
@@ -227,33 +228,33 @@ QTI 3.0 supports COMPOSITE ITEMS with multiple interaction types in a single que
 
 Your response should ONLY contain this JSON.
 """
-    
+
     return prompt
 
 
 def create_transformation_prompt(
-    pdf_content: Dict[str, Any], 
-    question_type: str, 
+    pdf_content: Dict[str, Any],
+    question_type: str,
     question_config: Dict[str, str],
     validation_feedback: Optional[str] = None,
     correct_answer: Optional[str] = None
 ) -> str:
     """
     Create a sophisticated prompt for QTI XML transformation.
-    
+
     Uses the exact same proven structure from the HTML transformer.
-    
+
     Args:
         pdf_content: Extracted PDF content (contains all images, including small ones, and page structure)
         question_type: Detected question type
         question_config: Configuration for the question type
         validation_feedback: Optional validation feedback for corrections
-        
+
     Returns:
         Transformation prompt string
     """
     content_summary = create_content_summary(pdf_content)
-    
+
     # Prepare all document blocks for nearby text search, adding page_number to top-level blocks if not already there
     # This assumes pdf_content["pages"][page_num]["structured_text"]["blocks"] is the source of truth
     all_doc_blocks_with_page_info = []
@@ -269,27 +270,27 @@ def create_transformation_prompt(
         for img_data in pdf_content['all_images']:
             width = int(img_data.get('width', 0))
             height = int(img_data.get('height', 0))
-            
-            # Using a slightly more relaxed area filter for prompt inclusion, 
+
+            # Using a slightly more relaxed area filter for prompt inclusion,
             # as even moderately sized images might be contextually important for LLM
             # Include choice images regardless of size
             if width * height > 5000 or img_data.get('is_choice_diagram'): # Example: 50x100 or 70x70. Original was 10000.
-                placeholder = img_data.get('image_base64') 
+                placeholder = img_data.get('image_base64')
                 if placeholder and placeholder.startswith("CONTENT_PLACEHOLDER_"):
                     img_page_num = img_data.get('page_number', 0)
                     page_dims = pdf_content.get("pages", [])[img_page_num] if img_page_num < len(pdf_content.get("pages", [])) else {}
-                    page_w = page_dims.get("width", 612) # Default to standard PDF width
-                    page_h = page_dims.get("height", 792) # Default to standard PDF height
+                    page_dims.get("width", 612) # Default to standard PDF width
+                    page_dims.get("height", 792) # Default to standard PDF height
 
                     nearby_text = _find_nearby_text_for_image(
                         img_data.get('bbox', [0,0,0,0]),
                         img_page_num,
                         all_doc_blocks_with_page_info, # Pass all blocks from all pages
                     )
-                    
+
                     # Determine image type and description
                     alt_suggestion = f"Image {len(large_images_for_prompt) + 1} (size {width}x{height})"
-                    
+
                     large_images_for_prompt.append({
                         'placeholder': placeholder,
                         'width': width,
@@ -303,10 +304,10 @@ def create_transformation_prompt(
     image_info = ""
     if large_images_for_prompt:
         image_info = "\n## Relevant Extracted Images (Diagrams/Figures)\n"
-        
+
         # The incoming images are already sorted by reading order. Do not re-sort.
         images_in_order = large_images_for_prompt
-        
+
         image_info += f"Found {len(images_in_order)} image(s) in logical reading order:\n"
         for i, img_details in enumerate(images_in_order):
             bbox_coords = img_details['bbox']
@@ -314,7 +315,7 @@ def create_transformation_prompt(
             width = img_details['width']
             height = img_details['height']
             nearby_text_info = img_details.get('nearby_text', 'No nearby text context found.')
-            
+
             # Determine position description for better placement
             y_pos = bbox_coords[1]
             page_height = 792  # Standard PDF height, could be improved with actual page dimensions
@@ -323,12 +324,12 @@ def create_transformation_prompt(
                 position_desc = "top"
             elif y_pos > page_height * 0.7:
                 position_desc = "bottom"
-            
+
             image_info += (f"  Image {i+1}: Use placeholder '{img_details['placeholder']}'. "
                            f"Location: Page {page_num+1}, Position: {position_desc} of page, Size: {width}x{height}. "
                            f"Contextual Text: {nearby_text_info}. "
                            f"Alt text: '{img_details['alt_suggestion']}'.\n")
-        
+
         image_info += ("\n## Image Placement Guidelines:\n"
                        "- **READING ORDER**: Place images in the SAME ORDER as listed above (Image 1 first, then Image 2, etc.) Try to infer the logical flow of the question.\\n"
                        "- **CONTEXTUAL PLACEMENT**: Use the 'Contextual Text' and your understanding of the question to determine WHERE each image belongs. Look for explicit references like 'see Figure 1', 'the diagram shows', or implicit needs for an image to understand a part of the text.\\n"
@@ -345,10 +346,10 @@ def create_transformation_prompt(
     else:
         image_info = "\n## Visual Content\n"
         image_info += "No significant visual content detected or provided for transformation.\n"
-    
+
     retry_context = ""
     if validation_feedback:
-        retry_context = f"\n\n## RETRY ATTEMPT CONTEXT\nThis is correction attempt. Previous attempt failed validation. Please:\n"
+        retry_context = "\n\n## RETRY ATTEMPT CONTEXT\nThis is correction attempt. Previous attempt failed validation. Please:\n"
         retry_context += "- Pay extra attention to the specific validation errors listed below\n"
         retry_context += "- Be more conservative in your changes - make only the minimal fixes needed\n"
         retry_context += "- Double-check that all QTI 3.0 namespace and element requirements are met\n"
@@ -366,7 +367,7 @@ def create_transformation_prompt(
     has_choice_images = pdf_content.get('is_choice_diagram', False) or any(
         img.get('is_choice_diagram', False) for img in pdf_content.get('all_images', [])
     )
-    
+
     visual_choice_instructions = ""
     if has_choice_images:
         visual_choice_instructions = """
@@ -377,6 +378,18 @@ def create_transformation_prompt(
 - Alt text should describe what the choice shows (e.g., "Graph showing linear relationship between mass and kinetic energy")
 - Do NOT mix text and images in choices - choices should be image-only
 """
+
+    # Build correct answer instruction (avoiding backslash in f-string for Python 3.10 compatibility)
+    if correct_answer:
+        newline = "\n"
+        correct_answer_instruction = (
+            f"**The correct answer for this question is: {correct_answer}**{newline}"
+            f"- You MUST include this in the <qti-correct-response> element{newline}"
+            f"- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>{newline}"
+            f"- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD){newline}"
+        )
+    else:
+        correct_answer_instruction = "- Determine the correct answer from the question content and include it in <qti-correct-response>"
 
     prompt = f"""You are an expert at converting educational content into QTI 3.0 XML format.
 
@@ -453,7 +466,7 @@ Example of a detailed description:
 
 ## CRITICAL: For Images in QTI XML
 - If images are listed above, you MUST use their exact placeholder strings in <img src="..."> tags
-- Do NOT use generic filenames like "image1.png" 
+- Do NOT use generic filenames like "image1.png"
 - Use the EXACT placeholder strings provided (e.g., "CONTENT_PLACEHOLDER_P0")
 - Each placeholder corresponds to a specific extracted image that will be restored later
 - **IMPORTANT**: Use simple <img> tags within <p> or <div> elements, NOT <qti-figure> elements
@@ -468,7 +481,7 @@ Example of a detailed description:
 - Base64 encoding will cause the transformation to FAIL
 
 ## CRITICAL: Correct Answer Specification
-{f"**The correct answer for this question is: {correct_answer}**\n- You MUST include this in the <qti-correct-response> element\n- Use the exact identifier format: <qti-value>{correct_answer}</qti-value>\n- Ensure the answer identifier matches one of the choice identifiers (ChoiceA, ChoiceB, ChoiceC, ChoiceD)\n" if correct_answer else "- Determine the correct answer from the question content and include it in <qti-correct-response>"}
+{correct_answer_instruction}
 
 ## CRITICAL: QTI XML Structure Rules
 - **DO NOT use <qti-figure>** - use <img> tags within <p> or <div> instead
@@ -510,7 +523,7 @@ Example QTI XML for reference:
 {question_config.get('exampleXml', '')}
 
 Ensure your QTI XML follows QTI 3.0 standards exactly and includes proper namespaces, identifiers, and response processing."""
-    
+
     return prompt
 
 
@@ -523,7 +536,7 @@ def create_error_correction_prompt(
 ) -> str:
     """
     Create a prompt for correcting QTI XML validation errors.
-    
+
     Args:
         qti_xml: Invalid QTI XML (potentially with base64 embedded images)
         validation_errors: Validation error messages
@@ -531,7 +544,7 @@ def create_error_correction_prompt(
         original_pdf_content: Original PDF content to give context about images if needed
         retry_attempt: Current attempt number (1-based)
         max_attempts: Maximum number of attempts
-        
+
     Returns:
         Error correction prompt
     """
@@ -604,14 +617,14 @@ This is a "{question_type}" type question.
 
 Make sure your response ONLY contains this JSON.
 """
-    
+
     return prompt
 
 
 def create_visual_comparison_prompt() -> str:
     """
     Create a prompt for visual comparison between original PDF and rendered QTI.
-    
+
     Returns:
         Visual comparison prompt string
     """
@@ -669,4 +682,4 @@ Respond with ONLY a JSON object:
 ```
 
 Focus on whether the QTI version accurately represents the original question and would provide the same learning/assessment experience.
-""" 
+"""

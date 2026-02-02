@@ -11,15 +11,16 @@ Usage:
 
 from __future__ import annotations
 
-import os
-import sys
 import argparse
+import os
 import re
+import sys
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Dict, List
 
 # Load environment variables
 from dotenv import load_dotenv
+
 # Calculate project root: scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> arborschool-content/
 script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent.parent.parent.parent
@@ -41,10 +42,10 @@ def get_s3_client():
     aws_access_key = os.environ.get("AWS_ACCESS_KEY_ID")
     aws_secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
     aws_region = os.environ.get("AWS_REGION", "us-east-1")
-    
+
     if not aws_access_key or not aws_secret_key:
         raise ValueError("AWS credentials not found in environment. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY")
-    
+
     session = boto3.Session(
         aws_access_key_id=aws_access_key,
         aws_secret_access_key=aws_secret_key,
@@ -57,7 +58,7 @@ def list_images_in_prefix(s3_client, bucket_name: str, prefix: str) -> List[str]
     """List all image keys in S3 with the given prefix."""
     images = []
     paginator = s3_client.get_paginator("list_objects_v2")
-    
+
     try:
         for page in paginator.paginate(Bucket=bucket_name, Prefix=prefix):
             if "Contents" in page:
@@ -74,9 +75,9 @@ def list_images_in_prefix(s3_client, bucket_name: str, prefix: str) -> List[str]
 
 
 def copy_image_in_s3(
-    s3_client, 
-    bucket_name: str, 
-    source_key: str, 
+    s3_client,
+    bucket_name: str,
+    source_key: str,
     dest_key: str,
     dry_run: bool = False
 ) -> bool:
@@ -84,7 +85,7 @@ def copy_image_in_s3(
     if dry_run:
         print(f"  [DRY RUN] Would copy: s3://{bucket_name}/{source_key} -> s3://{bucket_name}/{dest_key}")
         return True
-    
+
     try:
         # Use copy_object to copy within the same bucket
         copy_source = {"Bucket": bucket_name, "Key": source_key}
@@ -110,7 +111,7 @@ def delete_image_from_s3(
     if dry_run:
         print(f"  [DRY RUN] Would delete: s3://{bucket_name}/{key}")
         return True
-    
+
     try:
         s3_client.delete_object(Bucket=bucket_name, Key=key)
         print(f"  ✅ Deleted: {key}")
@@ -128,12 +129,12 @@ def update_xml_urls(
     dry_run: bool = False
 ) -> Dict[str, any]:
     """Update S3 image URLs in XML files to use the new test folder structure."""
-    
-    print(f"📝 Updating URLs in XML files...")
+
+    print("📝 Updating URLs in XML files...")
     print(f"   XML directory: {xml_dir}")
     print(f"   Pattern: images/{{filename}} -> images/{test_name}/{{filename}}")
     print()
-    
+
     if not xml_dir.exists():
         print(f"⚠️  XML directory does not exist: {xml_dir}")
         return {
@@ -142,7 +143,7 @@ def update_xml_urls(
             "failed": 0,
             "files": []
         }
-    
+
     # Find all XML files
     xml_files = list(xml_dir.glob("*.xml"))
     if not xml_files:
@@ -153,43 +154,43 @@ def update_xml_urls(
             "failed": 0,
             "files": []
         }
-    
+
     print(f"   Found {len(xml_files)} XML file(s)")
     print()
-    
+
     # Pattern to match S3 URLs with images/ path
     # Matches: https://bucket.s3.region.amazonaws.com/images/filename.ext
     url_pattern = re.compile(
         rf'https://{re.escape(bucket_name)}\.s3\.{re.escape(aws_region)}\.amazonaws\.com/images/([^/"]+\.(?:png|jpg|jpeg|gif|svg))',
         re.IGNORECASE
     )
-    
+
     results = {
         "updated": 0,
         "failed": 0,
         "files": []
     }
-    
+
     for xml_file in sorted(xml_files):
         try:
             # Read XML file
             with open(xml_file, 'r', encoding='utf-8') as f:
                 xml_content = f.read()
-            
+
             original_content = xml_content
-            
+
             # Replace URLs
             def replace_url(match):
                 filename = match.group(1)
                 new_url = f'https://{bucket_name}.s3.{aws_region}.amazonaws.com/images/{test_name}/{filename}'
                 return new_url
-            
+
             xml_content = url_pattern.sub(replace_url, xml_content)
-            
+
             # Check if any replacements were made
             if xml_content != original_content:
                 replacements_count = len(url_pattern.findall(original_content))
-                
+
                 if not dry_run:
                     # Write updated XML
                     with open(xml_file, 'w', encoding='utf-8') as f:
@@ -197,7 +198,7 @@ def update_xml_urls(
                     print(f"✅ Updated {xml_file.name} ({replacements_count} URL(s))")
                 else:
                     print(f"  [DRY RUN] Would update {xml_file.name} ({replacements_count} URL(s))")
-                
+
                 results["updated"] += 1
                 results["files"].append({
                     "file": str(xml_file),
@@ -211,7 +212,7 @@ def update_xml_urls(
                     "replacements": 0,
                     "status": "no_change"
                 })
-                
+
         except Exception as e:
             print(f"❌ Failed to update {xml_file.name}: {e}")
             results["failed"] += 1
@@ -220,14 +221,14 @@ def update_xml_urls(
                 "status": "failed",
                 "error": str(e)
             })
-    
+
     print()
     print("=" * 60)
     print("XML UPDATE SUMMARY")
     print("=" * 60)
     print(f"Updated: {results['updated']}")
     print(f"Failed: {results['failed']}")
-    
+
     results["success"] = results["failed"] == 0
     return results
 
@@ -239,24 +240,24 @@ def migrate_images_to_test_folder(
     delete_originals: bool = False
 ) -> Dict[str, any]:
     """Migrate images from images/ to images/{test_name}/."""
-    
+
     print(f"📦 Migrating images to test folder: images/{test_name}/")
     print(f"   Bucket: {bucket_name}")
     print(f"   Dry run: {dry_run}")
     print()
-    
+
     s3_client, aws_region = get_s3_client()
-    
+
     # List all images in images/ (but not in subfolders)
-    print(f"🔍 Listing images in images/...")
+    print("🔍 Listing images in images/...")
     all_images = list_images_in_prefix(s3_client, bucket_name, "images/")
-    
+
     # Filter to only images directly in images/ (not in subfolders)
     root_images = [
-        img for img in all_images 
+        img for img in all_images
         if img.startswith("images/") and img.count("/") == 1
     ]
-    
+
     if not root_images:
         print("   ℹ️  No images found in images/")
         return {
@@ -265,10 +266,10 @@ def migrate_images_to_test_folder(
             "skipped": 0,
             "failed": 0
         }
-    
+
     print(f"   Found {len(root_images)} image(s) in images/")
     print()
-    
+
     # Migrate each image
     results = {
         "migrated": 0,
@@ -276,13 +277,13 @@ def migrate_images_to_test_folder(
         "failed": 0,
         "operations": []
     }
-    
+
     new_prefix = f"images/{test_name}/"
-    
+
     for source_key in sorted(root_images):
         filename = source_key.split("/")[-1]
         dest_key = f"{new_prefix}{filename}"
-        
+
         # Check if destination already exists
         try:
             s3_client.head_object(Bucket=bucket_name, Key=dest_key)
@@ -301,7 +302,7 @@ def migrate_images_to_test_folder(
                 results["failed"] += 1
                 continue
             # 404 means doesn't exist, which is good - we can proceed
-        
+
         # Copy the image
         print(f"📋 Processing: {filename}")
         if copy_image_in_s3(s3_client, bucket_name, source_key, dest_key, dry_run):
@@ -311,7 +312,7 @@ def migrate_images_to_test_folder(
                 "dest": dest_key,
                 "status": "copied"
             })
-            
+
             # Optionally delete original
             if delete_originals:
                 delete_image_from_s3(s3_client, bucket_name, source_key, dry_run)
@@ -323,7 +324,7 @@ def migrate_images_to_test_folder(
                 "dest": dest_key,
                 "status": "failed"
             })
-    
+
     print()
     print("=" * 60)
     print("MIGRATION SUMMARY")
@@ -331,11 +332,11 @@ def migrate_images_to_test_folder(
     print(f"Migrated: {results['migrated']}")
     print(f"Skipped: {results['skipped']}")
     print(f"Failed: {results['failed']}")
-    
+
     if dry_run:
         print()
         print("💡 This was a dry run. Use --no-dry-run to actually perform the migration.")
-    
+
     results["success"] = results["failed"] == 0
     return results
 
@@ -381,20 +382,20 @@ def main():
         action="store_true",
         help="Skip XML URL updates (only migrate images)"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Get bucket name
     bucket_name = args.bucket or os.environ.get("AWS_S3_BUCKET", "paes-question-images")
-    
+
     # Dry run logic
     dry_run = args.dry_run and not args.no_dry_run
-    
+
     print("=" * 60)
     print("S3 Image Migration Tool")
     print("=" * 60)
     print()
-    
+
     try:
         # Ensure .env is loaded (in case it wasn't loaded at module level)
         script_dir = Path(__file__).resolve().parent
@@ -402,7 +403,7 @@ def main():
         env_file = project_root / ".env"
         if env_file.exists():
             load_dotenv(env_file, override=True)
-        
+
         # Get AWS region for XML URL updates (need to get client to determine region)
         # Only get credentials if not dry-run or if we need to migrate images
         aws_region = os.environ.get("AWS_REGION", "us-east-1")
@@ -416,7 +417,7 @@ def main():
                     print("⚠️  AWS credentials not found, using default region for URL patterns")
                 else:
                     raise
-        
+
         # Step 1: Migrate images in S3 (only if not skipping)
         image_results = None
         if not args.skip_xml_update or not dry_run:
@@ -436,7 +437,7 @@ def main():
                     image_results = {"success": True, "migrated": 0, "skipped": 0, "failed": 0}
                 else:
                     raise
-        
+
         # Step 2: Update XML URLs if directory provided
         xml_results = None
         if not args.skip_xml_update:
@@ -444,7 +445,7 @@ def main():
             print()
             print("STEP 2: Updating URLs in XML files")
             print("=" * 60)
-            
+
             if args.xml_dir:
                 xml_dir = Path(args.xml_dir)
             else:
@@ -453,7 +454,7 @@ def main():
                 project_root = script_dir.parent.parent
                 xml_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / args.test_name / "qti"
                 print(f"   Using inferred XML directory: {xml_dir}")
-            
+
             xml_results = update_xml_urls(
                 xml_dir=xml_dir,
                 bucket_name=bucket_name,
@@ -464,7 +465,7 @@ def main():
         else:
             print()
             print("⏭️  Skipping XML URL updates (--skip-xml-update)")
-        
+
         # Final summary
         print()
         print()
@@ -475,13 +476,13 @@ def main():
             print(f"Images migrated: {image_results['migrated']}")
             print(f"Images skipped: {image_results['skipped']}")
             print(f"Images failed: {image_results['failed']}")
-        
+
         if xml_results:
             print(f"XML files updated: {xml_results['updated']}")
             print(f"XML files failed: {xml_results['failed']}")
-        
+
         overall_success = (image_results is None or image_results["success"]) and (xml_results is None or xml_results["success"])
-        
+
         if overall_success:
             print()
             print("✅ Migration completed successfully!")
@@ -491,7 +492,7 @@ def main():
             print()
             print("❌ Migration completed with errors")
             sys.exit(1)
-            
+
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback

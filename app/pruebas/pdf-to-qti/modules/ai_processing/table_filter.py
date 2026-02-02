@@ -1,8 +1,11 @@
 from __future__ import annotations
-from typing import List, Dict, Any
+
 import json
+from typing import Any, Dict, List
+
 from openai import OpenAI
 from pydantic import BaseModel, Field
+
 
 class FilteredTables(BaseModel):
     """A Pydantic model to structure the response for table filtering."""
@@ -90,4 +93,4 @@ Example response:
 
     except Exception as e:
         print(f"Error during table filtering LLM call: {e}. Keeping all tables.")
-        return list(range(len(tables))) 
+        return list(range(len(tables)))

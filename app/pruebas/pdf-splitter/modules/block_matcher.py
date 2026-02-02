@@ -6,7 +6,7 @@ including LLM-based fallback when deterministic matching fails.
 """
 
 import json
-import fitz  # type: ignore
+
 from .chunk_segmenter import get_openai_client
 
 # JSON Schema for LLM block matching
@@ -34,12 +34,12 @@ BLOCK_MATCH_SCHEMA = {
 def find_block_with_llm_fallback(page, segment_data, page_num):
     """
     Use LLM to find which block contains the start marker when deterministic matching fails.
-    
+
     Args:
         page: PyMuPDF page object
         segment_data: Dict with segment info (id, start_marker, text, etc.)
         page_num: Page number for context
-        
+
     Returns:
         Block index (0-based) or None if no match found
     """
@@ -47,7 +47,7 @@ def find_block_with_llm_fallback(page, segment_data, page_num):
         # Extract blocks from the page
         blocks = page.get_text("dict", sort=True).get("blocks", [])
         text_blocks = []
-        
+
         for i, block in enumerate(blocks):
             if block.get("type") == 0:  # Text block
                 block_text = " ".join(
@@ -55,35 +55,33 @@ def find_block_with_llm_fallback(page, segment_data, page_num):
                     for line in block.get("lines", [])
                     for span in line.get("spans", [])
                 ).strip()
-                
+
                 if block_text:  # Only include non-empty blocks
                     text_blocks.append({
                         "index": i,
                         "text": block_text,
                         "bbox": block.get("bbox", [0, 0, 0, 0])
                     })
-        
+
         if not text_blocks:
             print(f"❌ No text blocks found on page {page_num} for segment {segment_data.get('id', 'unknown')}")
             return None
-        
+
         # Prepare LLM prompt: prioritize start_marker over text for matching
         start_marker = segment_data.get('start_marker', '')
         preview = segment_data.get('text', '')
-        
+
         # Use start_marker if available, otherwise fall back to first 10 words of text
         if start_marker and not (',' in start_marker and start_marker.replace(',', '').replace('.', '').replace('-', '').isdigit()):
             # Start marker is text (not coordinates), use it for matching
-            search_text = start_marker
-            first_10_words = start_marker
+            pass
         else:
             # Fall back to first 10 words of text content
             preview_words = preview.strip().split()[:10]
-            first_10_words = " ".join(preview_words)
-            search_text = first_10_words
-        
+            " ".join(preview_words)
+
         # Let LLM handle all matching with full context
-        
+
         system_prompt = """Find the starting block of the given segment using the start marker and content preview.
 Once you identify the segment content, choose the block that represents the top-left start of that specific segment.
 
@@ -91,9 +89,9 @@ Example you have a identify 2 blocks that are part of the segment, both at same 
 
 Output a JSON object with:
 matched_block_index (integer or null)
-confidence (high, medium, low) 
+confidence (high, medium, low)
 reasoning (brief explanation)"""
-        
+
         user_prompt = f"""Find which block this segment starts in:
 
 **Segment ID:** {segment_data.get('id', 'unknown')}
@@ -103,18 +101,18 @@ reasoning (brief explanation)"""
 
 **Blocks on Page {page_num}:**
 """
-        
+
         for block in text_blocks:
             user_prompt += f"\nBlock {block['index']}: \"{block['text']}\"\n"
-        
-        user_prompt += f"\n**Instructions:** Identify which blocks belong to this segment, then choose the top-left block of that segment."
-        
+
+        user_prompt += "\n**Instructions:** Identify which blocks belong to this segment, then choose the top-left block of that segment."
+
         # Get OpenAI client
         openai_client = get_openai_client()
-        
+
         # Make LLM call
         completion = openai_client.chat.completions.create(
-            model="gpt-4o",  # Using gpt-4o for precision matching
+            model="gpt-5.1",  # Using gpt-5.1 for precision matching
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt}
@@ -130,15 +128,15 @@ reasoning (brief explanation)"""
             temperature=0.0,  # Low temperature for consistent results
             seed=42  # Deterministic output
         )
-        
+
         # Parse response
         response_content = completion.choices[0].message.content
         result = json.loads(response_content)
-        
+
         matched_index = result.get("matched_block_index")
         confidence = result.get("confidence", "unknown")
         reasoning = result.get("reasoning", "No reasoning provided")
-        
+
         if matched_index is not None:
             print(f"🤖 LLM found match for segment {segment_data.get('id', 'unknown')}: Block {matched_index} (confidence: {confidence})")
             print(f"   Reasoning: {reasoning}")
@@ -147,7 +145,7 @@ reasoning (brief explanation)"""
             print(f"🤖 LLM found no match for segment {segment_data.get('id', 'unknown')} (confidence: {confidence})")
             print(f"   Reasoning: {reasoning}")
             return None
-            
+
     except Exception as e:
         print(f"❌ LLM fallback failed for segment {segment_data.get('id', 'unknown')}: {str(e)}")
         return None
@@ -155,10 +153,10 @@ reasoning (brief explanation)"""
 def parse_start_marker(marker_str):
     """
     Parse start marker string format.
-    
+
     Args:
         marker_str: Start marker string - either text or coordinates
-        
+
     Returns:
         Dict with type and parsed data
     """
@@ -173,30 +171,30 @@ def parse_start_marker(marker_str):
 def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, doc=None):
     """
     Find the block index that contains the start marker.
-    
+
     Args:
         page: PyMuPDF page object
         marker_obj: Parsed marker object
         segment_data: Full segment data for LLM fallback
         page_num: Current page number
         doc: Full document for adjacent page checks
-        
+
     Returns:
         Block index, tuple for adjacent page results, or None if not found
     """
     blocks = page.get_text("dict", sort=True).get("blocks", [])
     marker = marker_obj["marker"] if "marker" in marker_obj else marker_obj
     segment_id = marker_obj.get("id", "unknown")
-    
+
     if marker["type"] == "text":
         # Always use LLM fallback for text segments
         print(f"⚠️  Trying LLM block matching for segment {segment_id} on page {page_num}...")
         matched = find_block_with_llm_fallback(page, segment_data, page_num)
         if isinstance(matched, int):
             return matched
-        
+
         print(f"🔍 Segment {segment_id} not found on page {page_num}, searching adjacent pages...")
-        
+
         # Try adjacent pages: previous, next, previous previous, next next
         # Previous page
         if doc and page_num > 1:
@@ -228,7 +226,7 @@ def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, d
                 return ("next_next_page", matched, page_num+2)
         # Not found anywhere
         raise ValueError(f"❌ CRITICAL: Could not find start block for segment '{segment_id}'")
-        
+
     elif marker["type"] == "coordinate":
         x, y = marker.get("x", 0), marker.get("y", 0)
         for idx, block in enumerate(blocks):
@@ -236,8 +234,8 @@ def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, d
             if bbox[0] <= x <= bbox[2] and bbox[1] <= y <= bbox[3]:
                 print(f"✅ Coordinate match found for segment {segment_id}: block {idx}")
                 return idx
-        
+
         print(f"❌ No block found at coordinates for segment {segment_id}")
         return None
-        
-    return None 
+
+    return None

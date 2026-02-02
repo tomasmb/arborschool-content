@@ -14,7 +14,6 @@ from __future__ import annotations
 import json
 from typing import Any
 
-
 # -----------------------------------------------------------------------------
 # Constants
 # -----------------------------------------------------------------------------
@@ -73,7 +72,7 @@ Un átomo debe cumplir TODOS estos criterios. Si falla en CUALQUIERA, debe divid
      No omitas prerrequisitos porque parecen "obvios" o porque el átomo es
      "integrador". Si requiere A, B y C, lista explícitamente los átomos que
      cubren A, B y C.
-   
+
    Si un átomo requiere más de 3-4 prerrequisitos complejos, probablemente
    esté intentando integrar demasiado y deba dividirse.
 
@@ -267,7 +266,7 @@ conceptuales cuando el estándar lo requiera.
 2. FIEL AL ESTÁNDAR: no agregar contenido fuera del alcance del estándar.
    Esto aplica también a "notas_alcance": no introduzcas conceptos que
    excedan el estándar original, incluso si parecen relacionados o útiles.
-   
+
    **VERIFICACIÓN DE FIDELIDAD (CRÍTICO)**: Antes de finalizar cada átomo:
    - Revisa descripción, criterios_atomicos y notas_alcance contra los campos
      "incluye" y "no_incluye" del estándar
@@ -301,16 +300,16 @@ conceptuales cuando el estándar lo requiera.
    habilidad del currículo.
 9. "prerrequisitos": solo incluir IDs de otros átomos si hay dependencia
    cognitiva clara (prerequisite independence).
-   
+
    **TRANSITIVIDAD DE PRERREQUISITOS (CRÍTICO)**: Los prerrequisitos son TRANSITIVOS.
    Si A es prerrequisito de B, y B es prerrequisito de C, entonces C solo necesita
    listar B como prerrequisito, NO necesita listar A explícitamente. La transitividad
    se asume automáticamente.
-   
+
    **REGLA DE ORO**: NO listes prerrequisitos transitivos. Solo lista prerrequisitos
    DIRECTOS. Si un átomo requiere un concepto o procedimiento que ya está cubierto
    transitivamente por otro prerrequisito, NO lo agregues como prerrequisito adicional.
-   
+
    **OPTIMIZACIÓN DE PRERREQUISITOS COMUNES**: Si muchos átomos necesitan el mismo
    conjunto de prerrequisitos (ej: todos los átomos de fracciones necesitan operaciones
    con enteros), considera agregar esos prerrequisitos a un punto común en la cadena
@@ -319,7 +318,7 @@ conceptuales cuando el estándar lo requiera.
    redundancia. Por ejemplo, si A-09 es prerrequisito de todos los átomos de fracciones
    y decimales, y todos necesitan operaciones con enteros, agrega las operaciones con
    enteros a A-09 en lugar de a cada átomo individual.
-   
+
    **VERIFICACIÓN**: Antes de agregar un prerrequisito, verifica si ya está cubierto
    transitivamente por otro prerrequisito. Si A → B → C, y C necesita A, solo lista B.
 10. "notas_alcance": incluir exclusiones relevantes para evitar scope creep.
@@ -340,7 +339,7 @@ conceptuales cuando el estándar lo requiera.
     evaluación o diferentes rúbricas. Esto aplica INCLUSO si comparten reglas,
     principios o procedimientos comunes. La relación conceptual NO justifica
     combinarlos si son evaluables independientemente.
-    
+
     **Conceptos inversos o complementarios (CRÍTICO)**: Si dos conceptos,
     procedimientos o habilidades son inversos o complementarios entre sí (uno
     es la operación inversa del otro, o son operaciones complementarias), pero
@@ -371,12 +370,12 @@ conceptuales cuando el estándar lo requiera.
     DEBEN ser átomos separados. No combines versiones simples y complejas
     del mismo procedimiento en un solo átomo, ya que requieren diferentes
     niveles de dominio y pueden evaluarse independientemente.
-    
+
     **Variantes con algoritmos distintos (CRÍTICO)**: Si un procedimiento tiene
     variantes que requieren algoritmos o métodos distintos (aunque compartan principios
     comunes), DEBEN ser átomos separados. Cada variante con algoritmo distinto debe
     ser evaluable por separado.
-    
+
     **Múltiples algoritmos en un solo átomo (CRÍTICO)**: Si un átomo menciona o requiere
     aplicar múltiples algoritmos DISTINTOS para el mismo procedimiento, DEBES evaluar si
     son realmente diferentes o si son el mismo método explicado de forma diferente. Si los
@@ -389,7 +388,7 @@ conceptuales cuando el estándar lo requiera.
     DEBES crear átomos separados. NO es válido tener un criterio que diga "Convierte X usando
     método A" y otro que diga "Convierte Y usando método B" si A y B son algoritmos
     fundamentalmente distintos. Cada algoritmo distinto debe tener su propio átomo.
-    
+
     **VERIFICACIÓN OBLIGATORIA DE CRITERIOS**: Antes de finalizar cada átomo, revisa los
     criterios_atomicos UNO POR UNO. Si encuentras que un criterio menciona un algoritmo/método
     A y otro criterio menciona un algoritmo/método B, y A y B requieren diferentes pasos,
@@ -398,7 +397,7 @@ conceptuales cuando el estándar lo requiera.
     algoritmos son fundamentalmente distintos, cada uno debe tener su propio átomo con sus
     propios criterios. **TEST RÁPIDO**: Si puedes crear dos preguntas de evaluación diferentes
     (una para algoritmo A y otra para algoritmo B) con rúbricas distintas, son átomos separados.
-    
+
     **Método estándar preferente**: Si existen múltiples métodos que son realmente distintos
     (no solo diferentes formas de explicar el mismo método), elige UNO como método preferente
     y descríbelo en el átomo. Si un método es estándar, claro y ampliamente aceptado, úsalo
@@ -414,7 +413,7 @@ conceptuales cuando el estándar lo requiera.
     es procedimental/regla, o uno usa un método A y otro un método B distinto),
     DEBEN ser átomos separados. Un estudiante puede dominar uno y fallar en el
     otro, violando la independencia de evaluación.
-    
+
     **Representaciones diferentes**: Si un procedimiento puede aplicarse a diferentes
     representaciones del mismo concepto (ej: representación A vs representación B), y
     cada representación requiere estrategias cognitivas diferentes o algoritmos distintos,
@@ -422,7 +421,7 @@ conceptuales cuando el estándar lo requiera.
     diferentes si requieren estrategias cognitivas diferentes o pueden evaluarse
     independientemente. Si puedes crear una pregunta de evaluación solo para la
     representación A y otra solo para la representación B, son átomos separados.
-    
+
     **Variantes con algoritmos fundamentalmente distintos (CRÍTICO)**: Si un procedimiento
     tiene variantes que requieren algoritmos fundamentalmente distintos (ej: un algoritmo
     basado en un principio A vs otro basado en un principio B completamente diferente),
@@ -430,7 +429,7 @@ conceptuales cuando el estándar lo requiera.
     debe ser evaluable por separado, ya que un estudiante puede dominar una variante y
     fallar en la otra. No combines variantes que requieren estrategias cognitivas
     fundamentalmente diferentes en un solo átomo.
-    
+
     **Criterios para identificar algoritmos fundamentalmente distintos**:
     - Si puedes crear una pregunta de evaluación solo para la variante A y otra solo
       para la variante B, con rúbricas diferentes, son átomos separados.
@@ -441,13 +440,13 @@ conceptuales cuando el estándar lo requiera.
     - Si las variantes se basan en principios completamente diferentes (ej: un algoritmo
       basado en valor posicional vs otro basado en transformaciones algebraicas), son
       átomos separados.
-    
+
     **IMPORTANTE**: Si dos métodos son en realidad el mismo método explicado de forma
     diferente (mismo algoritmo, misma estrategia cognitiva, solo diferente explicación o
     notación), NO es necesario separarlos. Solo separa cuando los algoritmos son realmente
     distintos y requieren diferentes estrategias cognitivas o diferentes rúbricas de
     evaluación.
-    
+
     **COMPLETITUD (CRÍTICO)**: Si identificas que un procedimiento tiene variantes con
     algoritmos fundamentalmente distintos (incluso si solo lo reconoces al escribir
     notas_alcance), DEBES crear átomos separados para TODAS las variantes relevantes del
@@ -455,7 +454,7 @@ conceptuales cuando el estándar lo requiera.
     algoritmo distinto y se excluye". Si reconoces que hay algoritmos distintos, DEBES
     crear el átomo separado para esa variante. El objetivo es cobertura completa y
     granularidad apropiada, no solo reconocer que existen variantes sin crearlas.
-    
+
     **INFERENCIA DE VARIANTES (CRÍTICO)**: Si creas un átomo para una variante de un
     procedimiento y reconoces que hay otra variante con algoritmo distinto, DEBES evaluar
     si esa variante es lógicamente necesaria para cubrir el contenido del estándar. Por
@@ -464,7 +463,7 @@ conceptuales cuando el estándar lo requiera.
     distinto que es el proceso inverso de A→B (que sí incluye ambas variantes), DEBES crear
     el átomo para la variante Y también. No te limites solo a lo explícitamente mencionado
     en el estándar si la lógica del contenido requiere ambas variantes.
-    
+
     **REGLA DE ORO PARA INFERENCIA**: Si en las notas_alcance de un átomo escribes que
     "excluye la variante Y porque requiere un algoritmo distinto", o "la variante Y requiere
     un algoritmo distinto", o "solo variante X (no variante Y) ya que el algoritmo es distinto",
@@ -473,7 +472,7 @@ conceptuales cuando el estándar lo requiera.
     distintos, DEBES crear TODOS los átomos correspondientes. Esta es una regla de completitud:
     reconocer que existen variantes con algoritmos distintos implica la obligación de crear átomos
     para todas esas variantes.
-    
+
     **VERIFICACIÓN FINAL OBLIGATORIA**: Antes de finalizar la generación de átomos, revisa TODAS
     las notas_alcance de TODOS los átomos generados. Si encuentras cualquier mención de que se
     excluye una variante porque requiere un algoritmo distinto, DEBES crear inmediatamente el
@@ -507,7 +506,7 @@ conceptuales cuando el estándar lo requiera.
         incluir el átomo procedimental que la cubre. Si el átomo integrador menciona
         o trabaja con un concepto fundamental, el átomo conceptual que define ese
         concepto es un prerrequisito OBLIGATORIO, sin excepciones.
-        
+
         **ALGORITMOS BASE Y CONCEPTOS FUNDAMENTALES**: Si el átomo integrador requiere
         aplicar un algoritmo o procedimiento que se basa en otro algoritmo o concepto
         fundamental (ej: un procedimiento que requiere un algoritmo base A, o un concepto
@@ -553,38 +552,38 @@ conceptuales cuando el estándar lo requiera.
     deben ser átomos separados. Cada algoritmo distinto = potencialmente un
     átomo separado.
 
-20. **Consistencia habilidad_principal (CRÍTICO - VERIFICACIÓN OBLIGATORIA)**: 
+20. **Consistencia habilidad_principal (CRÍTICO - VERIFICACIÓN OBLIGATORIA)**:
     La "habilidad_principal" declarada DEBE reflejarse claramente en los "criterios_atomicos".
-    
+
     **ANTES DE FINALIZAR CADA ÁTOMO, DEBES VERIFICAR**:
-    
+
     * Lee los criterios_atomicos y pregunta: "¿Un evaluador externo podría identificar
       claramente que el estudiante está desarrollando la habilidad declarada solo
       leyendo los criterios?" Si NO, ajusta la habilidad o los criterios.
-    
+
     * Si la habilidad requiere justificación/razonamiento/evaluación: los criterios deben
       incluir elementos explícitos de justificación, razonamiento o evaluación de validez.
       Si los criterios son principalmente procedimentales sin justificación, la habilidad
       probablemente no sea la apropiada.
-    
+
     * Si la habilidad requiere representación/traducción: los criterios deben incluir
       elementos explícitos de representación, traducción entre sistemas o interpretación
       de representaciones. Si los criterios son principalmente procedimentales sin
       representación explícita, la habilidad probablemente no sea la apropiada.
-    
+
     * Si la habilidad requiere aplicación/modelamiento: los criterios deben incluir
       elementos explícitos de modelamiento, selección de estrategias o interpretación
       contextual. Si los criterios son puramente algorítmicos sin modelamiento, la
       habilidad probablemente no sea la apropiada.
-    
+
     * Si los criterios son puramente procedimentales: la habilidad probablemente deba
       reflejar procedimientos o resolución de problemas, no una que requiera
       justificación o argumentación.
-    
+
     * Si los criterios son puramente conceptuales: la habilidad probablemente deba
       reflejar representación o comprensión conceptual, no una que requiera
       argumentación o resolución de problemas.
-    
+
     **TEST DE CONSISTENCIA**: Los criterios deben ser autosuficientes para demostrar
     la habilidad. No asumas que el título o descripción compensan criterios que no
     reflejan la habilidad. La habilidad declarada debe ser evidente y demostrable en
@@ -599,11 +598,11 @@ conceptuales cuando el estándar lo requiera.
     - Contextos específicos si aplica (ej: "solo en contextos Y")
     Esto es especialmente importante para átomos procedimentales e integradores.
 
-22. **Cobertura exhaustiva de estrategias del estándar (CRÍTICO)**: 
+22. **Cobertura exhaustiva de estrategias del estándar (CRÍTICO)**:
     El estándar puede mencionar múltiples estrategias, métodos o enfoques para un mismo
     procedimiento o concepto. DEBES asegurar que todas las estrategias mencionadas
     estén cubiertas:
-    
+
     * Revisa los campos "incluye" y "subcontenidos_clave" del estándar
     * Si el estándar menciona "utilizando diversas estrategias" o lista múltiples métodos,
       verifica que haya átomos que cubran todas las estrategias mencionadas, o que un
@@ -612,10 +611,10 @@ conceptuales cuando el estándar lo requiera.
     * **VERIFICACIÓN FINAL**: Antes de finalizar, revisa cada mención de estrategias/métodos
       en el estándar y verifica que estén representadas en los átomos generados
 
-23. **Herramientas y conocimientos previos (CRÍTICO)**: 
+23. **Herramientas y conocimientos previos (CRÍTICO)**:
     Si un átomo requiere una herramienta, concepto o procedimiento que NO está explícitamente
     en el estándar pero el estándar lo permite como herramienta auxiliar:
-    
+
     * DEBES aclarar explícitamente en notas_alcance que esa herramienta se asume como
       conocimiento previo
     * DEBES mencionar que no es objetivo de aprendizaje en este estándar, solo herramienta
@@ -625,10 +624,10 @@ conceptuales cuando el estándar lo requiera.
       [tipo]. [Herramienta] se asume como conocimiento previo (no está explícitamente en
       este estándar, pero es herramienta necesaria según el estándar)."
 
-24. **Cobertura de procedimientos completos vs pasos intermedios (CRÍTICO)**: 
+24. **Cobertura de procedimientos completos vs pasos intermedios (CRÍTICO)**:
     Cuando el estándar menciona en "subcontenidos_clave" un procedimiento o proceso completo,
     el átomo debe cubrir el procedimiento COMPLETO, no solo un paso intermedio:
-    
+
     * Si un subcontenido_clave menciona un procedimiento que requiere múltiples pasos
       (preparación inicial, pasos intermedios, pasos finales), el átomo debe cubrir TODOS
       los pasos necesarios para completar el procedimiento desde el inicio hasta el
@@ -649,10 +648,10 @@ conceptuales cuando el estándar lo requiera.
       procedimiento y verifica que el átomo correspondiente cubra el procedimiento completo,
       no solo un paso intermedio
 
-25. **Correspondencia con subcontenidos_clave (CRÍTICO)**: 
+25. **Correspondencia con subcontenidos_clave (CRÍTICO)**:
     Si el estándar lista múltiples subcontenidos_clave como elementos separados, cada uno
     debe tener su átomo correspondiente:
-    
+
     * Revisa cada subcontenido_clave del estándar
     * Si un subcontenido_clave está listado como elemento separado, generalmente debe
       tener su átomo separado
@@ -743,10 +742,10 @@ ANTES de generar cada átomo, aplica este checklist:
    **REGLA DE ORO**: No omitas ninguno porque parezcan "obvios", "opcionales",
    "básicos", "evidentes" o porque el átomo es "integrador". Si puede necesitarlo,
    DEBE estar en los prerrequisitos. Sin excepciones.
-   
+
    **ÁTOMOS INTEGRADORES - VERIFICACIÓN DE CARGA COGNITIVA (CRÍTICO)**:
    Si un átomo integra múltiples operaciones, representaciones, procedimientos o conceptos:
-   
+
    * Pregúntate: "¿Un estudiante puede fallar en este átomo por dominar algunas partes
      pero no otras?" Si SÍ, considera subdividir
    * Pregúntate: "¿Este átomo requiere mantener en memoria de trabajo más de 3-4 elementos

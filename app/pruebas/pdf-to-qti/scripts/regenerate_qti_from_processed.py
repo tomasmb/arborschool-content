@@ -16,6 +16,7 @@ from pathlib import Path
 
 # Load environment variables
 from dotenv import load_dotenv
+
 # Go up from scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> root
 project_root = Path(__file__).parent.parent.parent.parent
 env_file = project_root / ".env"
@@ -32,11 +33,12 @@ else:
 # Add modules to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from modules.qti_transformer import transform_to_qti
-from modules.validation import validate_qti_xml
-from modules.content_processing import restore_large_content, ExtractedContent
-from modules.utils.s3_uploader import upload_image_to_s3
 import re
+
+from modules.content_processing import ExtractedContent, restore_large_content
+from modules.qti_transformer import transform_to_qti
+from modules.utils.s3_uploader import upload_image_to_s3
+from modules.validation import validate_qti_xml
 
 
 def regenerate_qti_from_processed(
@@ -47,41 +49,41 @@ def regenerate_qti_from_processed(
 ) -> dict[str, any]:
     """
     Regenera QTI XML desde contenido ya procesado.
-    
+
     Args:
         question_dir: Directorio de la pregunta (ej: Q19/)
         api_key: API key para transformación
         paes_mode: Si True, usa modo PAES (choice, 4 alternativas)
         test_name: Nombre del test para organizar imágenes en S3
-        
+
     Returns:
         Resultado del procesamiento
     """
     processed_json = question_dir / "processed_content.json"
     detection_json = question_dir / "detection_result.json"
     extracted_json = question_dir / "extracted_content.json"
-    
+
     # Verificar que existe el archivo necesario
     if not processed_json.exists():
         return {
             "success": False,
             "error": f"processed_content.json no encontrado en {question_dir}"
         }
-    
+
     # Cargar contenido procesado (igual que el pipeline original)
-    print(f"📖 Cargando processed_content.json...")
+    print("📖 Cargando processed_content.json...")
     with open(processed_json, "r", encoding="utf-8") as f:
         processed_content = json.load(f)
-    
+
     # Preparar extracted_content_list para restore_large_content (igual que el pipeline original)
     extracted_content_list: list[ExtractedContent] = []
     question_id = question_dir.name
-    
+
     if extracted_json.exists():
-        print(f"📖 Cargando extracted_content.json para construir ExtractedContent...")
+        print("📖 Cargando extracted_content.json para construir ExtractedContent...")
         with open(extracted_json, "r", encoding="utf-8") as f:
             extracted_content = json.load(f)
-        
+
         # Construir lista de ExtractedContent desde el JSON
         # Buscar placeholders en processed_content y mapear con imágenes en extracted_content
         if processed_content.get('image_base64') and processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER_'):
@@ -99,7 +101,7 @@ def regenerate_qti_from_processed(
                 elif idx == 0 and extracted_content.get('image_base64'):
                     if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
                         base64_data = extracted_content['image_base64']
-                
+
                 if base64_data:
                     # Asegurar formato data URI
                     if not base64_data.startswith('data:'):
@@ -110,7 +112,7 @@ def regenerate_qti_from_processed(
                         content_type='base64-image',
                         metadata={}
                     ))
-        
+
         # Procesar all_images
         if processed_content.get('all_images'):
             for i, img_info in enumerate(processed_content['all_images']):
@@ -129,7 +131,7 @@ def regenerate_qti_from_processed(
                         elif idx == 0 and extracted_content.get('image_base64'):
                             if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
                                 base64_data = extracted_content['image_base64']
-                        
+
                         if base64_data:
                             # Asegurar formato data URI
                             if not base64_data.startswith('data:'):
@@ -140,7 +142,7 @@ def regenerate_qti_from_processed(
                                 content_type='base64-image',
                                 metadata={'image_index': i}
                             ))
-    
+
     # Determinar tipo de pregunta
     if paes_mode:
         question_type = "choice"
@@ -153,19 +155,19 @@ def regenerate_qti_from_processed(
     else:
         question_type = "choice"
         print("⚠️  detection_result.json no encontrado, usando 'choice' por defecto")
-    
+
     # Cargar respuesta correcta si existe
     correct_answer = None
     if test_name:
         answer_key_path = (
-            question_dir.parent.parent.parent / "data" / "pruebas" / "procesadas" 
+            question_dir.parent.parent.parent / "data" / "pruebas" / "procesadas"
             / test_name / "respuestas_correctas.json"
         )
         if answer_key_path.exists():
             with open(answer_key_path, "r", encoding="utf-8") as f:
                 answer_key_data = json.load(f)
             answers = answer_key_data.get("answers", {})
-            
+
             # Extraer número de pregunta del nombre de la carpeta
             q_num_match = re.search(r'(\d+)', question_dir.name)
             if q_num_match:
@@ -173,9 +175,9 @@ def regenerate_qti_from_processed(
                 correct_answer = answers.get(q_num)
                 if correct_answer:
                     print(f"✅ Respuesta correcta encontrada: {correct_answer}")
-    
+
     # Transformar a QTI
-    print(f"🔄 Transformando a QTI XML...")
+    print("🔄 Transformando a QTI XML...")
     transformation_result = transform_to_qti(
         processed_content,
         question_type,
@@ -187,24 +189,24 @@ def regenerate_qti_from_processed(
         correct_answer=correct_answer,
         output_dir=str(question_dir),
     )
-    
+
     if not transformation_result["success"]:
         return {
             "success": False,
             "error": f"Transformación falló: {transformation_result.get('error')}"
         }
-    
+
     qti_xml = transformation_result["qti_xml"]
-    
+
     # OPTIMIZACIÓN: Cargar s3_image_mapping.json si existe (imágenes ya subidas)
     s3_mapping_file = question_dir / "s3_image_mapping.json"
     s3_image_mapping: dict[str, str] = {}
     if s3_mapping_file.exists():
-        print(f"📖 Cargando mapeo de imágenes S3 existente...")
+        print("📖 Cargando mapeo de imágenes S3 existente...")
         with open(s3_mapping_file, "r", encoding="utf-8") as f:
             s3_image_mapping = json.load(f)
         print(f"   ✅ Encontradas {len(s3_image_mapping)} URL(s) S3 en mapeo")
-        
+
         # OPTIMIZACIÓN: Reemplazar placeholders directos en XML si ya tenemos URLs S3
         placeholder_pattern = r'CONTENT_PLACEHOLDER_([^"\'>\s]+)'
         placeholder_matches = re.findall(placeholder_pattern, qti_xml)
@@ -227,50 +229,50 @@ def regenerate_qti_from_processed(
                             if key in s3_image_mapping:
                                 s3_url = s3_image_mapping[key]
                                 break
-                
+
                 if s3_url:
                     qti_xml = qti_xml.replace(full_placeholder, s3_url)
                     replaced_count += 1
                     print(f"   🔄 Reemplazado {full_placeholder} → {s3_url}")
-            
+
             if replaced_count > 0:
                 print(f"   ✅ Reemplazados {replaced_count} placeholder(s) con URLs S3 existentes")
-    
+
     # Validar QTI XML (igual que el pipeline original - ANTES de restore_large_content)
-    print(f"🔍 Validando QTI XML...")
+    print("🔍 Validando QTI XML...")
     validation_result = validate_qti_xml(qti_xml)
-    
+
     # OPTIMIZACIÓN: Cargar s3_image_mapping.json si existe (imágenes ya subidas)
     s3_mapping_file = question_dir / "s3_image_mapping.json"
     s3_image_mapping: dict[str, str] = {}
     if s3_mapping_file.exists():
-        print(f"📖 Cargando mapeo de imágenes S3 existente...")
+        print("📖 Cargando mapeo de imágenes S3 existente...")
         with open(s3_mapping_file, "r", encoding="utf-8") as f:
             s3_image_mapping = json.load(f)
         print(f"   ✅ Encontradas {len(s3_image_mapping)} URL(s) S3 en mapeo")
-    
+
     # Restaurar placeholders con base64 (igual que el pipeline original)
     # Solo hacerlo si la validación pasó y hay extracted_content
     if validation_result["success"] and extracted_content_list:
-        print(f"🔄 Restaurando placeholders con imágenes desde extracted_content...")
+        print("🔄 Restaurando placeholders con imágenes desde extracted_content...")
         qti_xml = restore_large_content(qti_xml, extracted_content_list)
-        
+
         # OPTIMIZACIÓN: Usar URLs S3 existentes del mapeo si están disponibles
         # Esto evita subir imágenes que ya están en S3
-        print(f"🔍 Verificando imágenes restauradas...")
+        print("🔍 Verificando imágenes restauradas...")
         base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
         base64_matches = re.findall(base64_pattern, qti_xml)
-        
+
         if base64_matches:
             print(f"   Encontradas {len(base64_matches)} imagen(es) base64...")
             uploaded_count = 0
             skipped_count = 0
-            
+
             for i, match in enumerate(base64_matches):
                 full_prefix = match[0]  # data:image/png;base64,
                 base64_data = match[2]  # actual base64 data
                 full_data_uri = full_prefix + base64_data
-                
+
                 # OPTIMIZACIÓN: Verificar si ya existe en el mapeo S3
                 # Buscar en el mapeo usando diferentes keys posibles
                 s3_url = None
@@ -280,7 +282,7 @@ def regenerate_qti_from_processed(
                         print(f"   ✅ Usando URL S3 existente para imagen {i+1}: {s3_url}")
                         skipped_count += 1
                         break
-                
+
                 # Si no encontramos en el mapeo, subir a S3
                 if not s3_url:
                     img_id = f"{question_id}_restored_{i}" if question_id else f"restored_{i}"
@@ -290,20 +292,20 @@ def regenerate_qti_from_processed(
                         question_id=img_id,
                         test_name=test_name,
                     )
-                    
+
                     if s3_url:
                         uploaded_count += 1
                         # Guardar en el mapeo para futuros usos
                         s3_image_mapping[f"image_{i}"] = s3_url
                         s3_image_mapping[img_id] = s3_url
-                
+
                 if s3_url:
                     # Reemplazar en XML
                     qti_xml = qti_xml.replace(full_data_uri, s3_url, 1)
                     print(f"   ✅ Reemplazado con URL de S3: {s3_url}")
                 else:
-                    print(f"   ⚠️  Falló la subida a S3, dejando base64 en XML")
-            
+                    print("   ⚠️  Falló la subida a S3, dejando base64 en XML")
+
             # Guardar mapeo actualizado
             if s3_image_mapping:
                 with open(s3_mapping_file, "w", encoding="utf-8") as f:
@@ -312,20 +314,20 @@ def regenerate_qti_from_processed(
                     print(f"   💾 Mapeo S3 actualizado ({uploaded_count} nueva(s), {skipped_count} existente(s))")
             else:
                 print(f"   📊 Resumen: {uploaded_count} subida(s), {skipped_count} existente(s)")
-    
+
     if not validation_result["success"]:
         return {
             "success": False,
             "error": f"Validación falló: {validation_result.get('validation_errors', validation_result.get('error'))}"
         }
-    
+
     # Guardar QTI XML
     xml_path = question_dir / "question.xml"
     with open(xml_path, "w", encoding="utf-8") as f:
         f.write(qti_xml)
-    
+
     print(f"✅ QTI XML guardado: {xml_path}")
-    
+
     return {
         "success": True,
         "xml_path": str(xml_path),
@@ -336,7 +338,7 @@ def regenerate_qti_from_processed(
 def main():
     """Función principal."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description="Regenerar QTI XML desde contenido ya procesado"
     )
@@ -363,17 +365,17 @@ def main():
         default=True,
         help="Usar modo PAES (default: True)"
     )
-    
+
     args = parser.parse_args()
-    
+
     # Obtener API key
     api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
     if not api_key:
         print("❌ No API key found. Set GEMINI_API_KEY or OPENAI_API_KEY in environment")
         sys.exit(1)
-    
+
     output_base_dir = Path(args.output_dir)
-    
+
     print("=" * 60)
     print("Regeneración de QTI desde contenido procesado")
     print("=" * 60)
@@ -381,20 +383,20 @@ def main():
     print(f"📋 Preguntas: {len(args.question_numbers)}")
     print(f"⚡ PAES mode: {args.paes_mode}")
     print()
-    
+
     success_count = 0
     failed_count = 0
-    
+
     for i, q_num in enumerate(args.question_numbers, 1):
         question_dir = output_base_dir / f"Q{q_num}"
-        
+
         print(f"[{i}/{len(args.question_numbers)}] Procesando Q{q_num}...")
-        
+
         if not question_dir.exists():
             print(f"   ❌ Carpeta no encontrada: {question_dir}")
             failed_count += 1
             continue
-        
+
         try:
             result = regenerate_qti_from_processed(
                 question_dir=question_dir,
@@ -402,9 +404,9 @@ def main():
                 paes_mode=args.paes_mode,
                 test_name=args.test_name,
             )
-            
+
             if result.get("success"):
-                print(f"   ✅ Éxito")
+                print("   ✅ Éxito")
                 success_count += 1
             else:
                 print(f"   ❌ Falló: {result.get('error', 'Unknown')}")
@@ -412,9 +414,9 @@ def main():
         except Exception as e:
             print(f"   ❌ Excepción: {e}")
             failed_count += 1
-        
+
         print()
-    
+
     print("=" * 60)
     print(f"✅ Exitosas: {success_count}")
     print(f"❌ Fallidas: {failed_count}")

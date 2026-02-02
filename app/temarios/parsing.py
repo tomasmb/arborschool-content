@@ -6,7 +6,6 @@ from pathlib import Path
 
 from PyPDF2 import PdfReader
 
-
 BASE_DIR = Path(__file__).resolve().parents[1]  # points to app/
 DATA_DIR = BASE_DIR / "data" / "temarios"
 PDF_DIR = DATA_DIR / "pdf"
@@ -56,7 +55,7 @@ def clean_text(raw: str) -> str:
     return s
 
 
-TEMARIO_CONFIGS: List[TemarioConfig] = [
+TEMARIO_CONFIGS: list[TemarioConfig] = [
     TemarioConfig(
         stem="2026-25-01-24-temario-paes-invierno-m1",
         out_name="2026-25-01-24-temario-paes-invierno-m1.json",

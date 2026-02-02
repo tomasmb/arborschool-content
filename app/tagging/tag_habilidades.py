@@ -12,10 +12,9 @@ Usa Gemini con fallback a OpenAI.
 """
 
 import json
-import os
 import sys
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, Optional
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -59,7 +58,7 @@ Responde SOLO con un JSON válido con la siguiente estructura:
     "justificacion": "Explicación breve de por qué esta es la habilidad principal (max 50 palabras)"
 }}
 
-IMPORTANTE: 
+IMPORTANTE:
 - Elige UNA SOLA habilidad principal
 - Si hay duda entre dos, elige la que mejor describe lo que el estudiante DEBE HACER para resolver la pregunta
 - No incluyas texto adicional fuera del JSON
@@ -93,11 +92,11 @@ def extract_question_info(metadata: Dict[str, Any]) -> Dict[str, str]:
     atoms_info = []
     for atom in metadata.get("selected_atoms", []):
         atoms_info.append(f"- {atom.get('atom_id', 'N/A')}: {atom.get('atom_title', 'N/A')} ({atom.get('relevance', 'N/A')})")
-    
+
     # Get difficulty
     difficulty = metadata.get("difficulty", {})
     difficulty_str = f"{difficulty.get('level', 'Unknown')} (score: {difficulty.get('score', 'N/A')})"
-    
+
     return {
         "general_analysis": metadata.get("general_analysis", "No disponible"),
         "difficulty": difficulty_str,
@@ -108,19 +107,19 @@ def extract_question_info(metadata: Dict[str, Any]) -> Dict[str, str]:
 def load_question_text(qti_path: str) -> tuple[str, str]:
     """Load question text and choices from QTI XML file."""
     import xml.etree.ElementTree as ET
-    
+
     try:
         tree = ET.parse(qti_path)
         root = tree.getroot()
-        
+
         # Extract question text (simplified)
         question_parts = []
         for elem in root.iter():
             if elem.text and elem.text.strip():
                 question_parts.append(elem.text.strip())
-        
+
         question_text = " ".join(question_parts[:10])  # First parts usually contain question
-        
+
         # Extract choices
         choices = []
         for choice in root.iter():
@@ -128,11 +127,11 @@ def load_question_text(qti_path: str) -> tuple[str, str]:
                 choice_text = ET.tostring(choice, encoding='unicode', method='text').strip()
                 if choice_text:
                     choices.append(choice_text)
-        
+
         choices_str = "\n".join([f"- {c}" for c in choices[:5]]) if choices else "No disponibles"
-        
+
         return question_text[:2000], choices_str  # Limit length
-        
+
     except Exception as e:
         return f"Error loading question: {e}", "No disponibles"
 
@@ -140,7 +139,7 @@ def load_question_text(qti_path: str) -> tuple[str, str]:
 def tag_habilidad(service, question_text: str, choices: str, metadata: Dict[str, Any]) -> Optional[Dict[str, str]]:
     """Use LLM to tag the main skill."""
     info = extract_question_info(metadata)
-    
+
     prompt = HABILIDADES_PROMPT.format(
         question_text=question_text,
         choices=choices,
@@ -148,24 +147,24 @@ def tag_habilidad(service, question_text: str, choices: str, metadata: Dict[str,
         difficulty=info["difficulty"],
         atoms=info["atoms"]
     )
-    
+
     try:
         response = service.generate_text(
             prompt,
             response_mime_type="application/json",
             temperature=0.0
         )
-        
+
         # Parse response
         result = json.loads(response)
-        
+
         # Validate
         if result.get("habilidad_principal") not in ["RES", "MOD", "REP", "ARG"]:
             print(f"    ⚠️ Invalid habilidad: {result.get('habilidad_principal')}")
             return None
-            
+
         return result
-        
+
     except json.JSONDecodeError as e:
         print(f"    ❌ JSON parse error: {e}")
         return None
@@ -177,14 +176,14 @@ def tag_habilidad(service, question_text: str, choices: str, metadata: Dict[str,
 def process_all_questions(dry_run: bool = False):
     """Process all questions and add habilidad_principal field."""
     base_path = Path("app/data/pruebas/finalizadas")
-    
+
     # Find all metadata files
     metadata_files = list(base_path.rglob("metadata_tags.json"))
     print(f"\n📊 Found {len(metadata_files)} metadata files\n")
-    
+
     # Initialize service
     service = load_default_gemini_service()
-    
+
     # Statistics
     stats = {
         "processed": 0,
@@ -193,21 +192,21 @@ def process_all_questions(dry_run: bool = False):
         "already_tagged": 0,
         "by_habilidad": {"RES": 0, "MOD": 0, "REP": 0, "ARG": 0}
     }
-    
+
     for i, metadata_path in enumerate(metadata_files, 1):
         # Get question directory
         q_dir = metadata_path.parent
         qti_path = q_dir / "question.xml"
-        
+
         print(f"[{i}/{len(metadata_files)}] Processing {q_dir.parent.name}/{q_dir.name}...", end=" ")
-        
+
         # Load metadata
         metadata = load_metadata(str(metadata_path))
         if not metadata:
             stats["errors"] += 1
             print("❌ Failed to load metadata")
             continue
-        
+
         # Check if already tagged
         if "habilidad_principal" in metadata:
             stats["already_tagged"] += 1
@@ -215,20 +214,20 @@ def process_all_questions(dry_run: bool = False):
             stats["by_habilidad"][hab] = stats["by_habilidad"].get(hab, 0) + 1
             print(f"⏭️ Already tagged: {hab}")
             continue
-        
+
         # Load question text
         if qti_path.exists():
             question_text, choices = load_question_text(str(qti_path))
         else:
             question_text = metadata.get("general_analysis", "")
             choices = "No disponibles"
-        
+
         # Tag habilidad
         result = tag_habilidad(service, question_text, choices, metadata)
-        
+
         if result:
             metadata["habilidad_principal"] = result
-            
+
             if not dry_run:
                 if save_metadata(metadata, str(metadata_path)):
                     stats["processed"] += 1
@@ -244,7 +243,7 @@ def process_all_questions(dry_run: bool = False):
         else:
             stats["errors"] += 1
             print("❌ Tagging failed")
-    
+
     # Print summary
     print("\n" + "="*50)
     print("📊 RESUMEN DE TAGGEO DE HABILIDADES")
@@ -253,7 +252,7 @@ def process_all_questions(dry_run: bool = False):
     print(f"  Procesados:         {stats['processed']}")
     print(f"  Ya taggeados:       {stats['already_tagged']}")
     print(f"  Errores:            {stats['errors']}")
-    print(f"\n  Por habilidad:")
+    print("\n  Por habilidad:")
     for hab, count in sorted(stats["by_habilidad"].items()):
         pct = (count / max(1, stats['processed'] + stats['already_tagged'])) * 100
         print(f"    {hab}: {count} ({pct:.1f}%)")
@@ -265,5 +264,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Tag PAES skills to questions")
     parser.add_argument("--dry-run", action="store_true", help="Don't save changes")
     args = parser.parse_args()
-    
+
     process_all_questions(dry_run=args.dry_run)

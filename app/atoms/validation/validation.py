@@ -19,17 +19,17 @@ logger = logging.getLogger(__name__)
 
 def build_validation_prompt(standard: dict[str, Any], atoms: list[dict[str, Any]]) -> str:
     """Build the validation prompt for atom quality evaluation.
-    
+
     Args:
         standard: The standard dictionary
         atoms: List of atom dictionaries to validate
-        
+
     Returns:
         Complete validation prompt as string
     """
     prompt = f"""<educational_context>
-Este es contenido educativo matemático puro para evaluación curricular. Todos los términos 
-("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos 
+Este es contenido educativo matemático puro para evaluación curricular. Todos los términos
+("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos
 estándar de álgebra y aritmética. No hay contenido inapropiado, solo matemáticas educativas.
 </educational_context>
 
@@ -53,7 +53,7 @@ Evalúa la calidad de los átomos generados considerando:
 
 1. **Fidelidad**: ¿Los átomos cubren completamente el estándar sin agregar contenido fuera de alcance?
 2. **Granularidad**: ¿Cada átomo cumple los 6 criterios de granularidad atómica?
-3. **Completitud y Cobertura del Estándar (CRÍTICO)**: 
+3. **Completitud y Cobertura del Estándar (CRÍTICO)**:
    - Verifica punto por punto que CADA elemento del estándar esté representado en los átomos:
      * Revisa cada ítem en "incluye" del estándar y verifica que haya átomos que lo cubran
      * Revisa cada "subcontenidos_clave" y verifica que esté representado
@@ -212,17 +212,17 @@ def validate_atoms_with_gemini(
     atoms: list[dict[str, Any]],
 ) -> dict[str, Any]:
     """Validate atoms using Gemini.
-    
+
     Args:
         gemini: Gemini service instance
         standard: The standard dictionary
         atoms: List of atom dictionaries to validate
-        
+
     Returns:
         Validation result as dictionary
     """
     prompt = build_validation_prompt(standard, atoms)
-    
+
     logger.info("Validating atoms with Gemini...")
     # Try with high thinking level first, fallback to medium if safety filters trigger
     try:
@@ -245,13 +245,13 @@ def validate_atoms_with_gemini(
             )
         else:
             raise
-    
+
     # Parse JSON response
     result = parse_json_response(raw_response)
-    
+
     if not isinstance(result, dict):
         raise ValueError(f"Expected dict, got {type(result)}")
-    
+
     return result
 
 
@@ -262,20 +262,20 @@ def validate_atoms_from_files(
     standard_id: str | None = None,
 ) -> dict[str, Any]:
     """Validate atoms from JSON files.
-    
+
     Args:
         gemini: Gemini service instance
         standard_path: Path to standards JSON file
         atoms_path: Path to atoms JSON file
         standard_id: Optional standard ID to filter (if standards file contains multiple)
-        
+
     Returns:
         Validation result as dictionary
     """
     # Load standard
     with open(standard_path, 'r', encoding='utf-8') as f:
         standards_data = json.load(f)
-    
+
     if isinstance(standards_data, list):
         if standard_id:
             standard = next((s for s in standards_data if s.get('id') == standard_id), None)
@@ -304,13 +304,13 @@ def validate_atoms_from_files(
                 standard = standards_list[0]
         else:
             standard = standards_data
-    
+
     # Load atoms
     with open(atoms_path, 'r', encoding='utf-8') as f:
         atoms = json.load(f)
-    
+
     if not isinstance(atoms, list):
         raise ValueError(f"Expected list of atoms, got {type(atoms)}")
-    
+
     return validate_atoms_with_gemini(gemini, standard, atoms)
 

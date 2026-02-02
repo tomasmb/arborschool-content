@@ -4,11 +4,10 @@ Uses Gemini Preview 3 by default (with PDF converted to images),
 with fallback to OpenAI's direct PDF upload if Gemini unavailable.
 """
 
-import os
 import json
-import base64
+import os
 import re
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 # Try to import Gemini SDK
 try:
@@ -130,7 +129,7 @@ SEGMENT_SCHEMA = {
 }
 
 # Chain-of-Thought system prompt for reliable segmentation
-SEGMENT_PROMPT = """
+SEGMENT_PROMPT = r"""
 You are an expert at segmenting educational test PDFs. Return only validated JSON without explanation.
 
 CRITICAL: When returning the `text` field for any segment, include ONLY the first 50 words (or full text if shorter).
@@ -191,7 +190,7 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 **Example**: If you see:
   "1. What is 2+2? A) 3 B) 4 C) 5 D) 6
    2. What is 3+3? A) 5 B) 6 C) 7 D) 8"
-  
+
   You must create TWO separate question segments: Q1 and Q2.
 
 ## Multi-Question Reference Rules
@@ -203,7 +202,7 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 
 ## Process - Step by Step
 
-1. **Initial Scan**: 
+1. **Initial Scan**:
    - Skip the first 2-3 pages (cover/instructions)
    - Find the FIRST question number (usually "1." or "1)")
    - This marks where questions begin
@@ -215,17 +214,17 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
      - Include all answer choices (A), B), C), D))
      - Include any images, tables, or diagrams that belong ONLY to this question
      - Continue until you reach the next question number or end of document
-   
-3. **Boundaries**: 
+
+3. **Boundaries**:
    - Each question segment starts at its question number
    - Each question segment ends at the start of the next question number (or end of document)
    - No gaps, no overlaps
 
-4. **References**: 
+4. **References**:
    - If content is used by multiple questions, make it a multi-question reference
    - Link questions to their references
 
-5. **Validation**: 
+5. **Validation**:
    - Count your questions:
      - **Invierno tests**: You MUST find exactly 65 questions (Q1 through Q65, all present, sequential)
      - **Regular/Seleccion tests**: You MUST find exactly 45 questions (numbers may skip, gaps are normal)
@@ -241,11 +240,11 @@ IMPORTANT: The first 2-3 pages of the PDF typically contain cover pages, general
 - Unrelated: UC1, UC2, UC3... (cover pages, general instructions)
 - Start markers: First words of each segment - for questions, use the question number and first few words
 
-**CRITICAL REMINDER**: 
+**CRITICAL REMINDER**:
 - You must find and segment EVERY numbered question in the document
 - Do not stop after finding just a few questions
 - Scan the ENTIRE document systematically, page by page
-- **Expected counts**: 
+- **Expected counts**:
   - If this is an "invierno" test, you MUST find exactly 65 questions (Q1 through Q65, all sequential)
   - If this is a "seleccion" or "regular" test, you MUST find exactly 45 questions (numbers may skip)
 - If you only find 5-10 questions, you have DEFINITELY missed many more - keep searching!
@@ -258,28 +257,28 @@ Return the JSON with all segments properly identified and associated.
 def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
     """
     Segment PDF using OpenAI's direct PDF upload feature.
-    
+
     Args:
         pdf_path: Path to the PDF file
-        
+
     Returns:
         Dictionary containing questions and references with metadata
     """
     try:
         print(f"Processing PDF: {pdf_path}")
-        
+
         # Get OpenAI client (lazy initialization)
         openai_client = get_openai_client()
-        
+
         # Upload PDF file to OpenAI
         with open(pdf_path, 'rb') as pdf_file:
             file_response = openai_client.files.create(
                 file=pdf_file,
                 purpose="user_data"
             )
-        
+
         print(f"PDF uploaded with ID: {file_response.id}")
-        
+
         # Process PDF with direct file input and chain-of-thought
         completion = openai_client.chat.completions.create(
             model="o4-mini-2025-04-16",  # Use o4-mini with vision capability
@@ -300,7 +299,7 @@ def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
             },
             seed=42
         )
-        
+
         # Parse response (contains precomputed bboxes from LLM)
         response_content = completion.choices[0].message.content
 
@@ -325,11 +324,11 @@ def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
                     f"OpenAI returned non-parsable JSON (error: {e}). "
                     "Raw response has been written to debug_raw_response.json for inspection."
                 )
-        
+
         # Keep the segment order as returned by the LLM, preserving original PDF order
-        
+
         # No manual normalization: LLM is required to supply 'text' field for all segment types
-        
+
         # Add metadata
         result['metadata'] = {
             'pdf_path': pdf_path,
@@ -340,21 +339,21 @@ def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
             'total_multi_question_references': len(result.get('multi_question_references', [])),
             'total_unrelated_content_segments': len(result.get('unrelated_content_segments', []))
         }
-        
-        print(f"✅ Segmentation complete:")
+
+        print("✅ Segmentation complete:")
         print(f"   Questions found: {result['metadata']['total_questions']}")
         print(f"   References found: {result['metadata']['total_multi_question_references']}")
         print(f"   Unrelated content segments found: {result['metadata']['total_unrelated_content_segments']}")
-        
+
         # Clean up uploaded file
         try:
             openai_client.files.delete(file_response.id)
             print(f"✓ Cleaned up uploaded file: {file_response.id}")
         except Exception as e:
             print(f"⚠️  Could not delete uploaded file: {e}")
-        
+
         return result
-        
+
     except Exception as e:
         print(f"❌ Error processing PDF: {str(e)}")
         raise
@@ -362,33 +361,33 @@ def segment_pdf_document(pdf_path: str) -> Dict[str, Any]:
 def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Dict[str, Any]:
     """
     Main function to segment PDF and optionally save results.
-    
+
     Args:
         pdf_path: Path to input PDF file
         output_file: Optional path to save JSON results
-        
+
     Returns:
         Segmentation results dictionary
     """
     # Process the PDF
     results = segment_pdf_document(pdf_path)
-    
+
     # Detectar tipo de prueba desde el nombre del archivo/ruta
     pdf_name_lower = pdf_path.lower()
     is_seleccion = 'seleccion' in pdf_name_lower
     is_invierno = 'invierno' in pdf_name_lower
     expected_count = 45 if is_seleccion else (65 if is_invierno else None)
     test_type = "seleccion" if is_seleccion else ("invierno" if is_invierno else "unknown")
-    
+
     # VALIDACIÓN POST-SEGMENTACIÓN: Detectar problemas comunes
     questions = results.get('questions', [])
     total_questions = len(questions)
-    
+
     # Verificar cantidad de preguntas según el tipo de prueba
     if expected_count:
         if total_questions < expected_count * 0.7:  # Menos del 70% esperado
             print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
-            print(f"   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
+            print("   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
         elif total_questions < expected_count:
             print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
             print(f"   Faltan {expected_count - total_questions} pregunta(s).")
@@ -398,9 +397,9 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
             print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s), más de las {expected_count} esperadas para {test_type}")
     elif total_questions < 10:
         print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s)")
-        print(f"   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
-        print(f"   Revisa el PDF - debería haber 45 (seleccion) o 65 (invierno) preguntas.")
-    
+        print("   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
+        print("   Revisa el PDF - debería haber 45 (seleccion) o 65 (invierno) preguntas.")
+
     # Verificar si alguna pregunta abarca demasiadas páginas (indicador de que se combinaron múltiples)
     oversized_questions = []
     for q in questions:
@@ -411,13 +410,13 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
                 'pages': page_count,
                 'page_nums': q.get('page_nums', [])[:10]  # Primeras 10 páginas para mostrar
             })
-    
+
     if oversized_questions:
         print(f"\n⚠️  ADVERTENCIA: {len(oversized_questions)} pregunta(s) abarcan más de 5 páginas:")
         for q_info in oversized_questions:
             print(f"   - {q_info['id']}: {q_info['pages']} páginas (páginas {q_info['page_nums']}...)")
-            print(f"     Esto sugiere que se combinaron múltiples preguntas. Busca números de pregunta intermedios.")
-    
+            print("     Esto sugiere que se combinaron múltiples preguntas. Busca números de pregunta intermedios.")
+
     # Verificar gaps en la numeración SOLO para pruebas Invierno (en selecciones, gaps son normales)
     if is_invierno and not is_seleccion:
         question_numbers = []
@@ -427,7 +426,7 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
             match = re.match(r'Q(\d+)', q_id)
             if match:
                 question_numbers.append(int(match.group(1)))
-        
+
         if question_numbers:
             question_numbers.sort()
             gaps = []
@@ -437,12 +436,12 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
                 if next_num - current > 1:
                     missing = list(range(current + 1, next_num))
                     gaps.extend(missing)
-            
+
             if gaps:
-                print(f"\n⚠️  ADVERTENCIA (Invierno): Se detectaron gaps en la numeración de preguntas:")
+                print("\n⚠️  ADVERTENCIA (Invierno): Se detectaron gaps en la numeración de preguntas:")
                 print(f"   Preguntas encontradas: {question_numbers[:10]}{'...' if len(question_numbers) > 10 else ''}")
                 print(f"   Números faltantes detectados: {gaps[:10]}{'...' if len(gaps) > 10 else ''}")
-                print(f"   En pruebas Invierno, TODAS las preguntas Q1-Q65 deben estar presentes.")
+                print("   En pruebas Invierno, TODAS las preguntas Q1-Q65 deben estar presentes.")
     elif is_seleccion:
         # Para selecciones, los gaps son normales - solo informar
         question_numbers = []
@@ -451,30 +450,30 @@ def segment_pdf_with_llm(pdf_path: str, output_file: Optional[str] = None) -> Di
             match = re.match(r'Q(\d+)', q_id)
             if match:
                 question_numbers.append(int(match.group(1)))
-        
+
         if question_numbers:
             question_numbers.sort()
             min_q = min(question_numbers)
             max_q = max(question_numbers)
             print(f"\nℹ️  Selección detectada: Preguntas encontradas van de Q{min_q} a Q{max_q} (gaps son normales)")
-    
+
     # Save results if output file specified
     if output_file:
         with open(output_file, 'w', encoding='utf-8') as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
         print(f"📄 Results saved to: {output_file}")
-    
+
     return results
 
 def validate_coordinates(bbox: Dict[str, float], page_width: float = 612, page_height: float = 792) -> Dict[str, float]:
     """
     Validate and clamp coordinates to page boundaries.
-    
+
     Args:
         bbox: Bounding box coordinates
         page_width: Page width in points (default: 612 for US Letter)
         page_height: Page height in points (default: 792 for US Letter)
-        
+
     Returns:
         Validated bounding box
     """
@@ -488,17 +487,17 @@ def validate_coordinates(bbox: Dict[str, float], page_width: float = 612, page_h
 def get_question_statistics(results: Dict[str, Any]) -> Dict[str, Any]:
     """
     Generate statistics about the segmented questions.
-    
+
     Args:
         results: Segmentation results
-        
+
     Returns:
         Statistics dictionary
     """
     questions = results.get('questions', [])
     multi_refs = results.get('multi_question_references', [])
     unrelated = results.get('unrelated_content_segments', [])
-    
+
     stats = {
         'total_questions': len(questions),
         'total_multi_question_references': len(multi_refs),
@@ -509,7 +508,7 @@ def get_question_statistics(results: Dict[str, Any]) -> Dict[str, Any]:
         'pages_with_questions': set(),
         'multi_page_questions': 0
     }
-    
+
     # Analyze questions
     for q in questions:
         q_type = q.get('type', 'unknown')
@@ -519,17 +518,17 @@ def get_question_statistics(results: Dict[str, Any]) -> Dict[str, Any]:
             stats['pages_with_questions'].add(p)
         if q.get('multi_page', False):
             stats['multi_page_questions'] += 1
-    
+
     # Analyze references
     for ref in multi_refs:
         ref_type = ref.get('type', 'unknown')
         stats['reference_types'][ref_type] = stats['reference_types'].get(ref_type, 0) + 1
-    
+
     # Analyze unrelated content
     for unrel in unrelated:
         unrel_type = unrel.get('type', 'unknown')
         stats['unrelated_content_types'][unrel_type] = stats['unrelated_content_types'].get(unrel_type, 0) + 1
-    
+
     stats['pages_with_questions'] = len(stats['pages_with_questions'])
-    
-    return stats 
+
+    return stats

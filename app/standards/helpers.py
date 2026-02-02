@@ -10,14 +10,14 @@ from typing import Any
 def _fix_invalid_escapes(text: str) -> str:
     """
     Fix invalid escape sequences in JSON strings.
-    
+
     JSON only allows specific escape sequences. This function attempts to
     fix common invalid escapes by either escaping the backslash or removing
     the invalid escape sequence.
-    
+
     Args:
         text: JSON string that may contain invalid escapes
-        
+
     Returns:
         Text with fixed escape sequences
     """
@@ -25,7 +25,7 @@ def _fix_invalid_escapes(text: str) -> str:
     # a valid escape character)
     # Valid escapes in JSON: \", \\, \/, \b, \f, \n, \r, \t, \uXXXX
     # We'll be conservative and only fix obvious cases
-    
+
     # First, protect already valid escapes
     # Replace valid escapes with placeholders temporarily
     valid_escapes = {
@@ -38,12 +38,12 @@ def _fix_invalid_escapes(text: str) -> str:
         r'\\r': '__ESCAPE_CARRIAGE__',
         r'\\t': '__ESCAPE_TAB__',
     }
-    
+
     # Protect valid escapes
     protected = text
     for pattern, placeholder in valid_escapes.items():
         protected = protected.replace(pattern, placeholder)
-    
+
     # Fix invalid escapes: \ followed by non-escape character
     # Replace \X (where X is not a valid escape) with \\X
     # But be careful not to break \uXXXX sequences
@@ -52,11 +52,11 @@ def _fix_invalid_escapes(text: str) -> str:
         r'\\\\',  # Escape the backslash
         protected,
     )
-    
+
     # Restore valid escapes
     for pattern, placeholder in valid_escapes.items():
         fixed = fixed.replace(placeholder, pattern)
-    
+
     return fixed
 
 
@@ -102,7 +102,7 @@ def parse_json_response(response: str) -> dict[str, Any] | list[Any]:
             except json.JSONDecodeError:
                 # If fixing didn't work, continue with original error handling
                 pass
-        
+
         # If that fails, try to find the first valid JSON object/array
         # by looking for the first '{' or '[' and finding its matching closing
         depth = 0

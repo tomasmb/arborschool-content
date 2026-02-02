@@ -10,7 +10,6 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Any
 
 # Expected standards
 EXPECTED_STANDARDS = [
@@ -73,7 +72,7 @@ def main() -> None:
         try:
             with combined_file.open(encoding="utf-8") as f:
                 combined_data = json.load(f)
-            
+
             completed = len(combined_data)
             total = len(EXPECTED_STANDARDS)
             progress = (completed / total) * 100 if total > 0 else 0

@@ -30,4 +30,4 @@ def should_split_pdf(total_pages: int, threshold: int | None = None) -> bool:
                     global *SPLIT_PAGE_THRESHOLD*.
     """
     effective_threshold = threshold if threshold is not None else SPLIT_PAGE_THRESHOLD
-    return total_pages > effective_threshold 
+    return total_pages > effective_threshold

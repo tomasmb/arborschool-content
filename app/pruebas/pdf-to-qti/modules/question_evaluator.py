@@ -4,9 +4,10 @@ Question Evaluator Module
 This module evaluates questions for detailed metrics using GPT-5.1.
 """
 import json
-from typing import Dict, Any
-from .ai_processing import chat_completion
+from typing import Any, Dict
+
 from openai import OpenAI
+
 
 def evaluate_question_detail(
     pdf_content: Dict[str, Any],
@@ -43,10 +44,14 @@ def evaluate_question_detail(
 
     # Determine allowed standards based on subject
     subj = subject.lower().strip() if subject else ''
-    if subj in ['math', 'ela', 'english language arts']:  standard_enum = ['CCSS']
-    elif subj == 'science':                             standard_enum = ['NGSS']
-    elif subj in ['social studies', 'socialstudies', 'social_studies', 'history']:    standard_enum = ['C3']
-    else:                                                standard_enum = ['CCSS','NGSS','C3']
+    if subj in ['math', 'ela', 'english language arts']:
+        standard_enum = ['CCSS']
+    elif subj == 'science':
+        standard_enum = ['NGSS']
+    elif subj in ['social studies', 'socialstudies', 'social_studies', 'history']:
+        standard_enum = ['C3']
+    else:
+        standard_enum = ['CCSS', 'NGSS', 'C3']
 
     # Step 2: Extract metrics using function-calling and JSON schema, passing the PDF file directly
     function_spec = {
@@ -173,4 +178,4 @@ def evaluate_question_detail(
     dok_level = detail.get("dokLevel",0)
     detail["cognitiveRigorCell"] = bloom_rank + dok_level*2
     print(f"🔢 cognitiveRigorCell computed: {detail['cognitiveRigorCell']}")
-    return detail 
+    return detail

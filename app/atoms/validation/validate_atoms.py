@@ -14,10 +14,9 @@ import argparse
 import json
 import logging
 import sys
-from pathlib import Path
 
-from app.gemini_client import load_default_gemini_service
 from app.atoms.validation import validate_atoms_from_files
+from app.gemini_client import load_default_gemini_service
 
 logging.basicConfig(
     level=logging.INFO,
@@ -55,9 +54,9 @@ def main() -> int:
         default=None,
         help='Output path for validation result JSON (default: print to stdout)'
     )
-    
+
     args = parser.parse_args()
-    
+
     # Initialize Gemini
     logger.info("Initializing Gemini service...")
     try:
@@ -65,7 +64,7 @@ def main() -> int:
     except Exception as e:
         logger.error(f"Failed to initialize Gemini: {e}")
         return 1
-    
+
     # Validate atoms
     logger.info("=" * 60)
     logger.info("VALIDATING ATOMS")
@@ -75,7 +74,7 @@ def main() -> int:
     if args.standard_id:
         logger.info(f"Standard ID: {args.standard_id}")
     logger.info("=" * 60)
-    
+
     try:
         result = validate_atoms_from_files(
             gemini=gemini,
@@ -83,17 +82,17 @@ def main() -> int:
             atoms_path=args.atoms,
             standard_id=args.standard_id,
         )
-        
+
         # Output result
         result_json = json.dumps(result, indent=2, ensure_ascii=False)
-        
+
         if args.output:
             with open(args.output, 'w', encoding='utf-8') as f:
                 f.write(result_json)
             logger.info(f"✓ Validation result saved to: {args.output}")
         else:
             print(result_json)
-        
+
         # Print summary
         summary = result.get('evaluation_summary', {})
         logger.info("")
@@ -106,13 +105,13 @@ def main() -> int:
         logger.info(f"Overall quality: {summary.get('overall_quality', 'N/A')}")
         logger.info(f"Coverage assessment: {summary.get('coverage_assessment', 'N/A')}")
         logger.info(f"Granularity assessment: {summary.get('granularity_assessment', 'N/A')}")
-        
+
         coverage = result.get('coverage_analysis', {})
         if coverage.get('missing_areas'):
             logger.warning(f"Missing areas: {coverage.get('missing_areas')}")
-        
+
         return 0
-        
+
     except Exception as e:
         logger.error(f"Validation failed: {e}", exc_info=True)
         return 1

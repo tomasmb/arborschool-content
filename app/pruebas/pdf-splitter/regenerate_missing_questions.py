@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import os
 import sys
-import shutil
 import tempfile
 from pathlib import Path
 
@@ -30,28 +29,28 @@ def regenerate_question_pdf(
 ) -> bool:
     """
     Regenera un PDF individual para una pregunta usando datos de segmentación.
-    
+
     Args:
         question_data: Datos de la pregunta desde segmentation_results.json
         original_pdf_path: Ruta al PDF original
         output_path: Ruta donde guardar el PDF generado
         results: Resultados completos de segmentación (para referencias compartidas)
-    
+
     Returns:
         True si se generó exitosamente, False en caso contrario
     """
     try:
         doc = fitz.open(original_pdf_path)
-        
+
         with tempfile.TemporaryDirectory() as tmpdir:
             ref_paths = []
             q_paths = []
-            
+
             # Primero, agregar referencias compartidas si las hay
             for ref_id in question_data.get('multi_question_references', []):
                 ref = next(
-                    (r for r in results.get('multi_question_references', []) 
-                     if r.get('id') == ref_id), 
+                    (r for r in results.get('multi_question_references', [])
+                     if r.get('id') == ref_id),
                     None
                 )
                 if ref:
@@ -68,16 +67,16 @@ def regenerate_question_pdf(
                             r_temp = os.path.join(tmpdir, f"ref_{ref_id}_p{rp}.pdf")
                             create_pdf_from_region(rpage, rrect, r_temp)
                             ref_paths.append(r_temp)
-            
+
             # Luego, extraer las páginas de la pregunta
             page_nums = question_data.get('page_nums', [])
             bboxes = question_data.get('bboxes', [])
-            
+
             if not page_nums or not bboxes:
-                print(f"   ⚠️  Falta información de páginas o bboxes")
+                print("   ⚠️  Falta información de páginas o bboxes")
                 doc.close()
                 return False
-            
+
             for p, bbox in zip(page_nums, bboxes):
                 page_idx = p - 1
                 if 0 <= page_idx < doc.page_count:
@@ -91,7 +90,7 @@ def regenerate_question_pdf(
                     q_temp = os.path.join(tmpdir, f"q_p{p}.pdf")
                     create_pdf_from_region(page, rect, q_temp)
                     q_paths.append(q_temp)
-            
+
             # Combinar referencias y páginas de la pregunta
             final_paths = ref_paths + q_paths
             if final_paths:
@@ -101,7 +100,7 @@ def regenerate_question_pdf(
             else:
                 doc.close()
                 return False
-                
+
     except Exception as e:
         print(f"   ❌ Error generando PDF: {e}")
         if 'doc' in locals():
@@ -112,7 +111,7 @@ def regenerate_question_pdf(
 def main():
     """Punto de entrada principal."""
     import argparse
-    
+
     parser = argparse.ArgumentParser(
         description="Regenerar PDFs de preguntas específicas que fallaron validación"
     )
@@ -137,28 +136,28 @@ def main():
         type=int,
         help="Números de preguntas a regenerar (ej: 26 40 47). Si no se especifica, regenera todas las faltantes."
     )
-    
+
     args = parser.parse_args()
-    
+
     # Cargar resultados de segmentación
     seg_file = Path(args.segmentation_file)
     if not seg_file.exists():
         print(f"❌ Archivo de segmentación no encontrado: {seg_file}")
         sys.exit(1)
-    
+
     with open(seg_file, 'r', encoding='utf-8') as f:
         results = json.load(f)
-    
+
     # Verificar PDF original
     original_pdf = Path(args.original_pdf)
     if not original_pdf.exists():
         print(f"❌ PDF original no encontrado: {original_pdf}")
         sys.exit(1)
-    
+
     # Crear directorio de salida
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
-    
+
     # Determinar qué preguntas regenerar
     if args.question_numbers:
         questions_to_regenerate = args.question_numbers
@@ -171,41 +170,41 @@ def main():
                 try:
                     num = int(q_id[1:])
                     questions_to_regenerate.append(num)
-                except:
+                except ValueError:
                     pass
-    
+
     print(f"🔄 Regenerando {len(questions_to_regenerate)} preguntas...")
     print()
-    
+
     success_count = 0
     failed_count = 0
-    
+
     for q_num in sorted(questions_to_regenerate):
         q_id = f"Q{q_num}"
-        
+
         # Buscar datos de la pregunta
         question_data = None
         for q in results.get('questions', []):
             if q.get('id') == q_id:
                 question_data = q
                 break
-        
+
         if not question_data:
             print(f"⚠️  {q_id}: No encontrada en resultados de segmentación")
             failed_count += 1
             continue
-        
+
         # Generar PDF
         output_path = output_dir / f"Q{q_num}.pdf"
         print(f"📄 Generando {q_id}...", end=" ")
-        
+
         if regenerate_question_pdf(question_data, str(original_pdf), str(output_path), results):
             print(f"✅ Guardado en {output_path}")
             success_count += 1
         else:
-            print(f"❌ Falló")
+            print("❌ Falló")
             failed_count += 1
-    
+
     print()
     print("=" * 60)
     print(f"✅ Exitosas: {success_count}")

@@ -294,7 +294,7 @@ def _build_canonical_file(
     tipo_aplicacion = temario.get("tipo_aplicacion", "unknown")
     if isinstance(tipo_aplicacion, list):
         tipo_aplicacion = ", ".join(tipo_aplicacion)  # Convert list to comma-separated string
-    
+
     metadata = StandardsMetadata(
         id=temario.get("id", "unknown"),
         proceso_admision=temario.get("proceso_admision", 2026),

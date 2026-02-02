@@ -10,20 +10,20 @@ Refactored to use content_processor and prompt_builder for better separation.
 IMPORTANT: All images MUST be uploaded to S3. Base64 encoding in final XML is not allowed.
 """
 
-import json
-import re
-import logging
 import hashlib
+import json
+import logging
+import re
 import xml.etree.ElementTree as ET
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 # Local helpers
 from .ai_processing import chat_completion
-from .qti_configs import QTI_TYPE_CONFIGS
 from .prompt_builder import (
-    create_transformation_prompt,
     create_error_correction_prompt,
+    create_transformation_prompt,
 )
+from .qti_configs import QTI_TYPE_CONFIGS
 from .utils.s3_uploader import upload_image_to_s3, upload_multiple_images_to_s3
 
 _logger = logging.getLogger(__name__)
@@ -58,11 +58,11 @@ ENCODING_FIXES = {
     'd1as': 'días',
     'Mi1rcoles': 'Miércoles',
     'Gr1fico': 'Gráfico',
-    
+
     # Ñ
     'af1o': 'año',
     'af1os': 'años',
-    
+
     # Signos de interrogación
     'bfCue1l': '¿Cuál',
     'bfcue1l': '¿cuál',
@@ -70,21 +70,21 @@ ENCODING_FIXES = {
     'bfcue1les': '¿cuáles',
     'bfCue': '¿Cu',
     'bfcue': '¿cu',
-    
+
     # Otros
     'sere1': 'será',
     'produciredan': 'producirían',
     'comenzare1': 'comenzará',
     'restaurare1': 'restaurará',
     'vaceda': 'vacía',
-    
+
     # Comillas mal codificadas
     'ab bajabb': '"baja"',
     'ab no bajabb': '"no baja"',
     'bfCon cue1l': '¿Con cuál',
     'bfCon': '¿Con',
     'cue1l': 'cuál',
-    
+
     # Más tildes
     'orge1nicos': 'orgánicos',
     'gre1ficos': 'gráficos',
@@ -105,27 +105,27 @@ ENCODING_FIXES = {
 def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
     """
     Verifica y corrige automáticamente problemas de codificación comunes en el QTI XML.
-    
+
     Detecta y corrige errores como:
     - Tildes mal codificados (e1cido → ácido, reflexif3n → reflexión)
     - Letra "ñ" mal codificada (af1o → año)
     - Signos de interrogación mal codificados (bfCue1l → ¿Cuál)
-    
+
     Args:
         qti_xml: El QTI XML a verificar y corregir
-        
+
     Returns:
         Tupla con (xml_corregido, se_encontraron_problemas)
     """
     if not qti_xml:
         return qti_xml, False
-    
+
     # Verificar si hay problemas de codificación
     has_issues = any(wrong in qti_xml for wrong in ENCODING_FIXES.keys())
-    
+
     if not has_issues:
         return qti_xml, False
-    
+
     # Aplicar correcciones en orden (más específicas primero)
     fixed_xml = qti_xml
     for wrong, correct in sorted(ENCODING_FIXES.items(), key=lambda x: -len(x[0])):
@@ -133,36 +133,36 @@ def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
         # También buscar en mayúsculas/minúsculas
         fixed_xml = fixed_xml.replace(wrong.capitalize(), correct.capitalize())
         fixed_xml = fixed_xml.replace(wrong.upper(), correct.upper())
-    
+
     return fixed_xml, True
 
 
 def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
     """
     Extract the correct answer from QTI XML.
-    
+
     Args:
         qti_xml: QTI XML string
-        
+
     Returns:
         Correct answer identifier (e.g., "ChoiceA") or None if not found
     """
     try:
         root = ET.fromstring(qti_xml)
         QTI_NS = "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}"
-        
+
         response_decl = root.find(f".//{QTI_NS}qti-response-declaration")
         if response_decl is None:
             return None
-        
+
         correct_response = response_decl.find(f"{QTI_NS}qti-correct-response")
         if correct_response is None:
             return None
-        
+
         qti_value = correct_response.find(f"{QTI_NS}qti-value")
         if qti_value is None or not qti_value.text:
             return None
-        
+
         return qti_value.text.strip()
     except ET.ParseError:
         # If XML parsing fails, try regex as fallback
@@ -180,35 +180,35 @@ def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
 def update_correct_answer_in_qti_xml(qti_xml: str, correct_answer: str) -> str:
     """
     Update or add the correct answer in QTI XML.
-    
+
     Args:
         qti_xml: QTI XML string
         correct_answer: Correct answer identifier (e.g., "ChoiceA")
-        
+
     Returns:
         Updated QTI XML string
     """
     try:
         root = ET.fromstring(qti_xml)
         QTI_NS = "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}"
-        
+
         response_decl = root.find(f".//{QTI_NS}qti-response-declaration")
         if response_decl is None:
             # If no response declaration, return original (shouldn't happen)
             return qti_xml
-        
+
         correct_response = response_decl.find(f"{QTI_NS}qti-correct-response")
         if correct_response is None:
             # Create correct-response element if missing
             correct_response = ET.SubElement(response_decl, f"{QTI_NS}qti-correct-response")
-        
+
         qti_value = correct_response.find(f"{QTI_NS}qti-value")
         if qti_value is None:
             # Create value element if missing
             qti_value = ET.SubElement(correct_response, f"{QTI_NS}qti-value")
-        
+
         qti_value.text = correct_answer
-        
+
         # Convert back to string
         return ET.tostring(root, encoding="unicode")
     except ET.ParseError:
@@ -217,21 +217,21 @@ def update_correct_answer_in_qti_xml(qti_xml: str, correct_answer: str) -> str:
         pattern = r'(<qti-correct-response[^>]*>\s*<qti-value>)[^<]+(</qti-value>\s*</qti-correct-response>)'
         if re.search(pattern, qti_xml):
             return re.sub(pattern, r'\1' + correct_answer + r'\2', qti_xml)
-        
+
         # If no correct-response found, try to add it after response-declaration
         pattern = r'(<qti-response-declaration[^>]*>)'
         replacement = r'\1\n    <qti-correct-response>\n      <qti-value>' + correct_answer + '</qti-value>\n    </qti-correct-response>'
         if re.search(pattern, qti_xml):
             return re.sub(pattern, replacement, qti_xml, count=1)
-        
+
         return qti_xml
     except Exception:
         return qti_xml
 
 
 def transform_to_qti(
-    processed_content: Dict[str, Any], 
-    question_type: str, 
+    processed_content: Dict[str, Any],
+    question_type: str,
     openai_api_key: str,
     validation_feedback: Optional[str] = None,
     question_id: Optional[str] = None,
@@ -243,14 +243,14 @@ def transform_to_qti(
 ) -> Dict[str, Any]:
     """
     Transform PDF content to QTI 3.0 XML format.
-    
+
     This implements step 2 of the conversion guidelines:
     Use the detected question type to transform the PDF content
     into valid QTI 3.0 XML.
-    
+
     CRITICAL: All images MUST be uploaded to S3. If any image upload fails,
     the transformation will fail. Base64 encoding in final XML is not allowed.
-    
+
     Args:
         processed_content: Already processed PDF content with placeholders
         question_type: Detected question type
@@ -263,7 +263,7 @@ def transform_to_qti(
                    Images will be stored in images/{test_name}/ to avoid conflicts between tests
         correct_answer: Optional correct answer identifier (e.g., "ChoiceA", "ChoiceB", "ChoiceC", "ChoiceD")
                        If provided, will be used in <qti-correct-response> instead of LLM inference
-        
+
     Returns:
         Dictionary with transformation results
     """
@@ -275,7 +275,7 @@ def transform_to_qti(
                 "success": False,
                 "error": f"Unsupported question type: {question_type}"
             }
-        
+
         # CRITICAL: S3 upload is REQUIRED - fail early if disabled
         if not use_s3:
             _logger.error("S3 upload is disabled, but it is REQUIRED for all images")
@@ -283,13 +283,13 @@ def transform_to_qti(
                 "success": False,
                 "error": "S3 upload is required. use_s3 must be True."
             }
-        
+
         _logger.info("🚀 Starting S3 image upload process (REQUIRED)")
-        
+
         # Upload images to S3 (REQUIRED - no fallback to base64)
         image_url_mapping: Dict[str, str] = {}
         failed_uploads: list[str] = []
-        
+
         # Upload main image (with retry)
         if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
             _logger.info(f"📤 Uploading main image to S3 (question_id: {question_id or 'main'}, test: {test_name or 'default'})")
@@ -306,7 +306,7 @@ def transform_to_qti(
                 image_url_mapping['main_image'] = s3_url
                 processed_content['image_s3_url'] = s3_url
                 _logger.info(f"✅ Main image uploaded to S3: {s3_url}")
-        
+
         # Upload all additional images (with retry for each)
         if processed_content.get('all_images'):
             total_images = len(processed_content['all_images'])
@@ -326,7 +326,7 @@ def transform_to_qti(
                     else:
                         _logger.info(f"✅ {image_key} uploaded to S3: {s3_results[image_key]}")
             image_url_mapping.update({k: v for k, v in s3_results.items() if v})
-        
+
         # CRITICAL: Fail if any image upload failed
         if failed_uploads:
             error_msg = f"Failed to upload {len(failed_uploads)} image(s) to S3: {', '.join(failed_uploads)}. S3 upload is REQUIRED - cannot proceed with base64 fallback."
@@ -335,15 +335,15 @@ def transform_to_qti(
                 "success": False,
                 "error": error_msg
             }
-        
+
         # Verify that we have at least one image uploaded if there were images to upload
         expected_images = 0
         if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
             expected_images += 1
         if processed_content.get('all_images'):
-            expected_images += sum(1 for img in processed_content['all_images'] 
+            expected_images += sum(1 for img in processed_content['all_images']
                                  if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER'))
-        
+
         if expected_images > 0 and len(image_url_mapping) == 0:
             error_msg = "Expected images but none were uploaded to S3. S3 upload is REQUIRED."
             _logger.error(f"❌ {error_msg}")
@@ -351,24 +351,24 @@ def transform_to_qti(
                 "success": False,
                 "error": error_msg
             }
-        
+
         if len(image_url_mapping) > 0:
             _logger.info(f"✅ Successfully uploaded {len(image_url_mapping)} image(s) to S3")
-        
+
         # Create the transformation prompt using the already processed content
         prompt = create_transformation_prompt(
-            processed_content, 
-            question_type, 
+            processed_content,
+            question_type,
             config,
             validation_feedback,
             correct_answer=correct_answer
         )
-        
+
         # Optimize prompt for PAES (mathematics, 4 alternatives)
         if paes_mode:
             from .paes_optimizer import optimize_prompt_for_math
             prompt = optimize_prompt_for_math(prompt)
-        
+
         # Prepare messages for LLM (still use base64 for AI analysis, but XML must use S3 URLs)
         messages = [
             {
@@ -381,7 +381,7 @@ def transform_to_qti(
                 )
             },
             {
-                "role": "user", 
+                "role": "user",
                 "content": [
                     {
                         "type": "text",
@@ -390,20 +390,20 @@ def transform_to_qti(
                 ]
             }
         ]
-        
+
         # ESTRATEGIA: En pruebas PAES, TODAS las imágenes son importantes - enviar todas
         # No hay imágenes "decorativas" en estas pruebas - todo es crítico para calidad
         # Solo optimizamos si hay MUCHAS imágenes (10+), pero para casos normales (1-5 imágenes), todas se envían
-        
+
         images_sent_to_llm = 0
         max_images_threshold = 10  # Solo limitar si hay más de 10 imágenes (caso extremo)
-        
+
         # 1. Add main image if available (ALWAYS send)
         if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
             image_data = processed_content['image_base64']
             if not image_data.startswith('data:'):
                 image_data = f"data:image/png;base64,{image_data}"
-            
+
             messages[1]["content"].append({
                 "type": "image_url",
                 "image_url": {
@@ -412,17 +412,17 @@ def transform_to_qti(
             })
             images_sent_to_llm += 1
             _logger.info("📤 Sending main image to LLM")
-        
+
         # 2. Add ALL additional images (in PAES tests, all images are important)
         if processed_content.get('all_images'):
-            total_additional = len(processed_content['all_images'])
-            
+            len(processed_content['all_images'])
+
             # Count how many have actual image data
             images_with_data = [
                 img for img in processed_content['all_images']
                 if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER')
             ]
-            
+
             # For PAES tests: Send ALL images (they're all important)
             # Only limit if there are MANY images (10+) - extreme case
             if len(images_with_data) <= max_images_threshold:
@@ -431,7 +431,7 @@ def transform_to_qti(
                     image_data = image_info['image_base64']
                     if not image_data.startswith('data:'):
                         image_data = f"data:image/png;base64,{image_data}"
-                    
+
                     messages[1]["content"].append({
                         "type": "image_url",
                         "image_url": {
@@ -439,31 +439,31 @@ def transform_to_qti(
                         }
                     })
                     images_sent_to_llm += 1
-                
+
                 _logger.info(f"📤 Sending {len(images_with_data)} additional image(s) to LLM (all important for quality)")
             else:
                 # Extreme case: Many images (10+) - prioritize by importance
                 # Still prioritize choice diagrams and larger images
                 choice_images = []
                 other_images = []
-                
+
                 for image_info in images_with_data:
                     is_choice = image_info.get('is_choice_diagram', False)
                     width = image_info.get('width', 0)
                     height = image_info.get('height', 0)
                     area = width * height
-                    
+
                     if is_choice:
                         choice_images.append((999999, image_info))  # Highest priority
                     else:
                         other_images.append((area, image_info))
-                
+
                 # Send ALL choice images first
                 for priority, image_info in sorted(choice_images, reverse=True):
                     image_data = image_info['image_base64']
                     if not image_data.startswith('data:'):
                         image_data = f"data:image/png;base64,{image_data}"
-                    
+
                     messages[1]["content"].append({
                         "type": "image_url",
                         "image_url": {
@@ -471,17 +471,17 @@ def transform_to_qti(
                         }
                     })
                     images_sent_to_llm += 1
-                
+
                 # Then send top other images (sorted by size)
                 other_images.sort(reverse=True)
                 remaining_slots = max_images_threshold - len(choice_images)
                 images_to_send = other_images[:remaining_slots]
-                
+
                 for priority, image_info in images_to_send:
                     image_data = image_info['image_base64']
                     if not image_data.startswith('data:'):
                         image_data = f"data:image/png;base64,{image_data}"
-                    
+
                     messages[1]["content"].append({
                         "type": "image_url",
                         "image_url": {
@@ -489,7 +489,7 @@ def transform_to_qti(
                         }
                     })
                     images_sent_to_llm += 1
-                
+
                 skipped = len(other_images) - len(images_to_send)
                 if skipped > 0:
                     _logger.warning(
@@ -498,9 +498,9 @@ def transform_to_qti(
                     )
                 else:
                     _logger.info(f"📤 Sending {images_sent_to_llm - 1} additional image(s) to LLM")
-        
+
         _logger.info(f"📊 Total images sent to LLM: {images_sent_to_llm} (quality priority)")
-        
+
         # Call the LLM for transformation via shared helper with retry on empty response
         # Aumentar límite de tokens para preguntas complejas (pueden tener mucho contenido)
         import time
@@ -508,7 +508,7 @@ def transform_to_qti(
         base_delay = 2.0
         last_error: Optional[str] = None
         result: Optional[Dict[str, Any]] = None
-        
+
         for attempt in range(max_retries):
             try:
                 response_text = chat_completion(
@@ -520,7 +520,7 @@ def transform_to_qti(
                     operation="transform_to_qti",
                     max_tokens=16384,  # Aumentado para manejar respuestas grandes
                 )
-                
+
                 # Check if response is empty
                 if not response_text or not response_text.strip():
                     if attempt < max_retries - 1:
@@ -533,10 +533,10 @@ def transform_to_qti(
                         continue
                     else:
                         raise ValueError("LLM returned empty response after all retries")
-                
+
                 # Parse the transformation response
                 result = parse_transformation_response(response_text)
-                
+
                 # Check if parsing was successful
                 if result.get("success"):
                     break
@@ -556,7 +556,7 @@ def transform_to_qti(
                             "success": False,
                             "error": f"Failed to parse transformation response after {max_retries} attempts: {error_msg}"
                         }
-                        
+
             except Exception as e:
                 error_str = str(e)
                 if attempt < max_retries - 1:
@@ -573,25 +573,25 @@ def transform_to_qti(
                         "success": False,
                         "error": f"LLM call failed after {max_retries} attempts: {error_str}"
                     }
-        
+
         # If we get here, result should be set
         if result is None or not result.get("success"):
             return {
                 "success": False,
                 "error": f"Failed to get valid response from LLM: {last_error or 'Unknown error'}"
             }
-        
+
         if result["success"]:
             # Verify and fix encoding issues (already done in parse_transformation_response,
             # but ensure it's also applied after cleaning)
             result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
-            
+
             # Clean up any remaining placeholders
             result["qti_xml"] = clean_qti_xml(result["qti_xml"])
-            
+
             # Final encoding check after cleaning (in case cleaning introduced issues)
             result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
-            
+
             # Replace data URIs with S3 URLs (REQUIRED - S3 is mandatory)
             if image_url_mapping:
                 result["qti_xml"] = replace_data_uris_with_s3_urls(
@@ -599,41 +599,41 @@ def transform_to_qti(
                     image_url_mapping,
                     processed_content
                 )
-            
+
             # OPTIMIZACIÓN: Intentar convertir base64 restante a S3 (pero NO abortar si falla)
             # Prioridad: Optimizar llamadas API - XML generado es valioso incluso con base64
             base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
             base64_matches = re.findall(base64_pattern, result["qti_xml"])
-            
+
             if base64_matches:
                 _logger.warning(
                     f"⚠️  Found {len(base64_matches)} base64 data URI(s) in XML. "
                     "Attempting to upload to S3 (will continue with base64 if upload fails)..."
                 )
-                
+
                 uploaded_count = 0
                 failed_count = 0
-                
+
                 # Upload each base64 image to S3 and replace (continue even if some fail)
                 for match in base64_matches:
                     full_prefix = match[0]  # data:image/png;base64,
-                    image_type = match[1]   # png, svg+xml, etc.
+                    match[1]   # png, svg+xml, etc.
                     base64_data = match[2]  # actual base64 data
                     full_data_uri = full_prefix + base64_data
-                    
+
                     # Generate a unique identifier for this image
                     image_hash = hashlib.md5(base64_data.encode()).hexdigest()[:8]
                     img_identifier = f"{question_id or 'img'}_base64_{image_hash}"
-                    
+
                     _logger.info(f"  📤 Attempting to upload base64 image to S3: {img_identifier}")
-                    
+
                     # Upload to S3 (try but don't abort if it fails)
                     s3_url = upload_image_to_s3(
                         image_base64=full_data_uri,
                         question_id=img_identifier,
                         test_name=test_name
                     )
-                    
+
                     if s3_url:
                         # Replace in XML - escape the URI for regex
                         escaped_uri = re.escape(full_data_uri)
@@ -642,19 +642,19 @@ def transform_to_qti(
                             f'src="{s3_url}"',
                             result["qti_xml"]
                         )
-                        
+
                         # Also try replacing without src quotes (in case it's in different format)
                         result["qti_xml"] = result["qti_xml"].replace(full_data_uri, s3_url)
-                        
+
                         uploaded_count += 1
                         _logger.info(f"  ✅ Replaced base64 with S3 URL: {s3_url}")
                     else:
                         failed_count += 1
                         _logger.warning(
-                            f"  ⚠️  Failed to upload base64 image to S3. "
+                            "  ⚠️  Failed to upload base64 image to S3. "
                             "Keeping as base64 - XML will be saved (can convert manually later)."
                         )
-                
+
                 # Log summary (don't abort)
                 if uploaded_count > 0:
                     _logger.info(f"✅ Successfully converted {uploaded_count}/{len(base64_matches)} base64 image(s) to S3")
@@ -665,7 +665,7 @@ def transform_to_qti(
                     )
             else:
                 _logger.info("✅ XML validated: No base64 data URIs found - all images use S3 URLs")
-            
+
             # Verify correct answer matches answer key (if provided)
             if correct_answer:
                 xml_answer = extract_correct_answer_from_qti(result["qti_xml"])
@@ -678,7 +678,7 @@ def transform_to_qti(
                         )
                         # Auto-correct the answer in the XML
                         result["qti_xml"] = update_correct_answer_in_qti_xml(
-                            result["qti_xml"], 
+                            result["qti_xml"],
                             correct_answer
                         )
                         _logger.info(f"✅ Corrected answer to '{correct_answer}'")
@@ -692,13 +692,13 @@ def transform_to_qti(
                     )
                     # Try to add the correct answer if it's missing
                     result["qti_xml"] = update_correct_answer_in_qti_xml(
-                        result["qti_xml"], 
+                        result["qti_xml"],
                         correct_answer
                     )
                     _logger.info(f"✅ Added correct answer '{correct_answer}' from answer key")
-        
+
         return result
-        
+
     except Exception as e:
         return {
             "success": False,
@@ -713,24 +713,24 @@ def replace_data_uris_with_s3_urls(
 ) -> str:
     """
     Replace ALL data URIs in QTI XML with S3 URLs.
-    
+
     This function aggressively replaces all base64 data URIs with S3 URLs.
     It's called as a critical step to ensure no base64 remains in the final XML.
-    
+
     Args:
         qti_xml: QTI XML string that may contain data URIs
         image_url_mapping: Dictionary mapping image identifiers to S3 URLs
         processed_content: Original processed content with image info
-        
+
     Returns:
         QTI XML with ALL data URIs replaced by S3 URLs
     """
     # Pattern to match data URIs in img src attributes (more permissive to catch all)
     # Matches data:image/<any-type>;base64,<base64-data>
     data_uri_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+'
-    
+
     replacements_made = 0
-    
+
     # Replace main image first
     if 'main_image' in image_url_mapping and image_url_mapping['main_image']:
         main_s3_url = image_url_mapping['main_image']
@@ -744,7 +744,7 @@ def replace_data_uris_with_s3_urls(
         if before != qti_xml:
             replacements_made += 1
             _logger.debug(f"Replaced main image data URI with S3 URL: {main_s3_url}")
-    
+
     # Replace additional images
     if processed_content.get('all_images'):
         for i, image_info in enumerate(processed_content['all_images']):
@@ -762,7 +762,7 @@ def replace_data_uris_with_s3_urls(
                 if before != qti_xml:
                     replacements_made += 1
                     _logger.debug(f"Replaced {image_key} data URI with S3 URL: {s3_url}")
-    
+
     # If we still have data URIs but ran out of mapped URLs, log warning
     remaining = re.findall(data_uri_pattern, qti_xml)
     if remaining:
@@ -772,10 +772,10 @@ def replace_data_uris_with_s3_urls(
             first_s3_url = next(iter(image_url_mapping.values()))
             qti_xml = re.sub(data_uri_pattern, first_s3_url, qti_xml)
             _logger.warning(f"Replaced remaining data URIs with fallback S3 URL: {first_s3_url}")
-    
+
     if replacements_made > 0:
         _logger.info(f"✅ Replaced {replacements_made} data URI(s) with S3 URLs")
-    
+
     return qti_xml
 
 
@@ -792,7 +792,7 @@ def fix_qti_xml_with_llm(
 ) -> Dict[str, Any]:
     """
     Attempt to fix invalid QTI XML using LLM.
-    
+
     Args:
         invalid_xml: The invalid QTI XML string (with placeholders, not images)
         validation_errors: String containing validation error messages
@@ -800,7 +800,7 @@ def fix_qti_xml_with_llm(
         openai_api_key: OpenAI API key
         retry_attempt: Current attempt number (1-based)
         max_attempts: Maximum number of attempts for context
-        
+
     Returns:
         Dictionary with success status and corrected XML
     """
@@ -811,19 +811,19 @@ def fix_qti_xml_with_llm(
             ET.fromstring(invalid_xml)
         except ET.ParseError as e:
             return {
-                "success": False, 
+                "success": False,
                 "error": f"XML structure error: {str(e)}"
             }
-        
+
         # Create error correction prompt
         correction_prompt = create_error_correction_prompt(
-            invalid_xml, 
-            validation_errors, 
+            invalid_xml,
+            validation_errors,
             question_type,
             retry_attempt,
             max_attempts
         )
-        
+
         # Call the model to fix the XML via shared helper (uses GPT-5.1 with high reasoning)
         corrected_content = chat_completion(
             [
@@ -838,28 +838,28 @@ def fix_qti_xml_with_llm(
             output_dir=output_dir,
             operation=f"fix_qti_xml_retry_{retry_attempt}",
         ).strip()
-        
+
         # Parse the correction response
         result = parse_correction_response(corrected_content)
-        
+
         if result["success"]:
             # Verify and fix encoding issues (already done in parse_correction_response,
             # but ensure it's also applied after cleaning)
             result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
-            
+
             # Clean the result
             cleaned_xml = clean_qti_xml(result["qti_xml"])
-            
+
             # Final encoding check after cleaning
             cleaned_xml, _ = verify_and_fix_encoding(cleaned_xml)
-            
+
             # Basic validation
             try:
                 import xml.etree.ElementTree as ET
                 ET.fromstring(cleaned_xml)
             except ET.ParseError as e:
                 return {"success": False, "error": f"LLM produced invalid XML: {str(e)}"}
-            
+
             return {
                 "success": True,
                 "qti_xml": cleaned_xml
@@ -869,7 +869,7 @@ def fix_qti_xml_with_llm(
                 "success": False,
                 "error": result.get("error", "Failed to parse LLM correction response")
             }
-        
+
     except Exception as e:
         return {
             "success": False,
@@ -880,10 +880,10 @@ def fix_qti_xml_with_llm(
 def parse_transformation_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the transformation response from the LLM.
-    
+
     Args:
         response_text: Raw response text
-        
+
     Returns:
         Parsed transformation result
     """
@@ -891,40 +891,40 @@ def parse_transformation_response(response_text: str) -> Dict[str, Any]:
         # Check for None or empty response
         if response_text is None:
             raise ValueError("Response text is None")
-        
+
         if not response_text.strip():
             raise ValueError("Response text is empty")
-        
+
         # Try to extract JSON from the response
         json_start = response_text.find('{')
         json_end = response_text.rfind('}') + 1
-        
+
         if json_start >= 0 and json_end > json_start:
             json_text = response_text[json_start:json_end]
             # Ensure UTF-8 encoding is preserved when parsing JSON
             result = json.loads(json_text)
-            
+
             # Validate required fields
             if not isinstance(result, dict):
                 raise ValueError("Response is not a dictionary")
-            
+
             title = result.get('title', 'Untitled Question')
             description = result.get('description', '')
             qti_xml = result.get('qti_xml', '')
-            
+
             # Ensure QTI XML is properly decoded as UTF-8
             if isinstance(qti_xml, bytes):
                 qti_xml = qti_xml.decode('utf-8')
-            
+
             if not qti_xml:
                 raise ValueError("No QTI XML found in response")
-            
+
             # Verify and fix encoding issues (tildes, ñ, etc.)
             qti_xml, encoding_fixed = verify_and_fix_encoding(qti_xml)
             if encoding_fixed:
                 # Log that encoding was fixed (could add logging here if needed)
                 pass
-            
+
             return {
                 "success": True,
                 "title": title,
@@ -935,7 +935,7 @@ def parse_transformation_response(response_text: str) -> Dict[str, Any]:
             }
         else:
             raise ValueError("No JSON found in response")
-            
+
     except json.JSONDecodeError as e:
         return {
             "success": False,
@@ -951,10 +951,10 @@ def parse_transformation_response(response_text: str) -> Dict[str, Any]:
 def parse_correction_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the correction response from the LLM.
-    
+
     Args:
         response_text: Raw response text
-        
+
     Returns:
         Parsed correction result
     """
@@ -962,30 +962,30 @@ def parse_correction_response(response_text: str) -> Dict[str, Any]:
         # Try to extract JSON from the response
         json_start = response_text.find('{')
         json_end = response_text.rfind('}') + 1
-        
+
         if json_start >= 0 and json_end > json_start:
             json_text = response_text[json_start:json_end]
             result = json.loads(json_text)
-            
+
             # Validate required fields
             if not isinstance(result, dict):
                 raise ValueError("Response is not a dictionary")
-            
+
             qti_xml = result.get('qti_xml', '')
-            
+
             # Ensure QTI XML is properly decoded as UTF-8
             if isinstance(qti_xml, bytes):
                 qti_xml = qti_xml.decode('utf-8')
-            
+
             if not qti_xml:
                 raise ValueError("No corrected QTI XML found in response")
-            
+
             # Verify and fix encoding issues (tildes, ñ, etc.)
             qti_xml, encoding_fixed = verify_and_fix_encoding(qti_xml)
             if encoding_fixed:
                 # Log that encoding was fixed (could add logging here if needed)
                 pass
-            
+
             return {
                 "success": True,
                 "qti_xml": qti_xml,
@@ -994,7 +994,7 @@ def parse_correction_response(response_text: str) -> Dict[str, Any]:
             }
         else:
             raise ValueError("No JSON found in response")
-            
+
     except json.JSONDecodeError as e:
         return {
             "success": False,
@@ -1014,23 +1014,23 @@ def clean_qti_xml(xml_content: str) -> str:
     - Removes XML declaration if present
     - Strips leading/trailing whitespace
     - Removes invalid null characters that can exist in PDF text
-    
+
     Args:
         xml_content: Raw XML content
-        
+
     Returns:
         Cleaned XML content
     """
     # Remove any markdown code block markers
     if xml_content.strip().startswith('```xml'):
         xml_content = xml_content.strip()[6:-3].strip()
-    
+
     # Remove XML declaration
     if xml_content.strip().startswith('<?xml'):
         xml_content = xml_content.split('?>', 1)[1].strip()
 
     # CRITICAL: Remove null characters (Unicode: 0x0) which are invalid in XML
     xml_content = xml_content.replace('\x00', '')
-    
+
     # Strip any leading/trailing whitespace from the whole block
-    return xml_content.strip() 
+    return xml_content.strip()

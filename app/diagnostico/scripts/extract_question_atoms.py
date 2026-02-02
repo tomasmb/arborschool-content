@@ -9,7 +9,6 @@ Usage:
 import json
 from pathlib import Path
 
-
 # Las 32 preguntas del MST
 MST_QUESTIONS = {
     "R1": [
@@ -58,30 +57,30 @@ MST_QUESTIONS = {
 def extract_question_atoms():
     """Extrae los átomos asociados a cada pregunta del MST."""
     base_path = Path("app/data/pruebas/finalizadas")
-    
+
     question_atoms = {}
     missing = []
-    
+
     for module, questions in MST_QUESTIONS.items():
         for exam, qid in questions:
             key = f"{exam}/{qid}"
             metadata_path = base_path / exam / "qti" / qid / "metadata_tags.json"
-            
+
             if not metadata_path.exists():
                 print(f"⚠️  No encontrado: {metadata_path}")
                 missing.append(key)
                 continue
-            
+
             with metadata_path.open() as f:
                 metadata = json.load(f)
-            
+
             atoms = []
             for atom in metadata.get("selected_atoms", []):
                 atoms.append({
                     "atom_id": atom["atom_id"],
                     "relevance": atom.get("relevance", "primary"),
                 })
-            
+
             question_atoms[key] = {
                 "module": module,
                 "exam": exam,
@@ -90,23 +89,23 @@ def extract_question_atoms():
                 "habilidad": metadata.get("habilidad_principal", {}).get("habilidad_principal"),
                 "difficulty": metadata.get("difficulty", {}).get("level"),
             }
-    
+
     # Resumen
     print("\n" + "=" * 60)
     print("RESUMEN DE MAPEO PREGUNTA → ÁTOMO")
     print("=" * 60)
     print(f"Total preguntas: {len(question_atoms)}")
     print(f"Preguntas faltantes: {len(missing)}")
-    
+
     total_atoms = sum(len(q["atoms"]) for q in question_atoms.values())
     print(f"Total asociaciones pregunta-átomo: {total_atoms}")
-    
+
     unique_atoms = set()
     for q in question_atoms.values():
         for a in q["atoms"]:
             unique_atoms.add(a["atom_id"])
     print(f"Átomos únicos cubiertos: {len(unique_atoms)}")
-    
+
     # Por módulo
     print("\nPor módulo:")
     for module in ["R1", "A2", "B2", "C2"]:
@@ -116,9 +115,9 @@ def extract_question_atoms():
             for a in q["atoms"]:
                 module_atoms.add(a["atom_id"])
         print(f"  {module}: {len(module_questions)} preguntas, {len(module_atoms)} átomos únicos")
-    
+
     print("=" * 60)
-    
+
     # Guardar
     output = {
         "metadata": {
@@ -130,7 +129,7 @@ def extract_question_atoms():
         "question_atoms": question_atoms,
         "atom_to_questions": {},  # Reverse mapping
     }
-    
+
     # Crear reverse mapping (átomo → preguntas)
     for key, q in question_atoms.items():
         for a in q["atoms"]:
@@ -142,15 +141,15 @@ def extract_question_atoms():
                 "module": q["module"],
                 "relevance": a["relevance"],
             })
-    
+
     output_path = Path("app/diagnostico/data/question_atoms.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     with output_path.open("w") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    
+
     print(f"\n✅ Guardado en: {output_path}")
-    
+
     return output
 
 

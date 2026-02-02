@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import List, Dict, Any
 import json
-from .llm_client import chat_completion
+from typing import Any, Dict, List
+
 from openai import OpenAI
 from pydantic import BaseModel, Field
+
 
 class FilteredImages(BaseModel):
     """A Pydantic model to structure the response for image filtering."""
@@ -91,4 +92,4 @@ Example of what to keep:
 
     except Exception as e:
         print(f"Error during structured output LLM call: {e}. Keeping all images.")
-        return list(range(len(images))) 
+        return list(range(len(images)))

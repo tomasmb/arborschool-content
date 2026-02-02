@@ -40,14 +40,9 @@ from app.sync.extractors import (
     extract_atoms,
     extract_standards,
 )
-from app.sync.models import SyncPayload
 from app.sync.s3_client import ImageUploader, S3Config, process_all_questions_images
 from app.sync.transformers import (
     build_sync_payload,
-    transform_atom,
-    transform_question,
-    transform_standard,
-    transform_test,
 )
 
 # -----------------------------------------------------------------------------

@@ -154,7 +154,7 @@ def validate_coverage_locally(
     eje_key: str | None = None,
 ) -> list[ValidationIssue]:
     """Check that all temario unidades are covered (fast, no Gemini).
-    
+
     If eje_key is provided, only validates coverage for that specific eje.
     Otherwise validates all ejes (for full pipeline validation).
     """
