@@ -22,10 +22,15 @@ These files exceed the hard limit and need immediate refactoring.
 
 ### Priority 1: Files > 1000 Lines (Critical)
 
-- [ ] **`app/pruebas/pdf-to-qti/modules/qti_transformer.py`** (1093 lines)
-  - [ ] Analyze responsibilities and identify logical splits
-  - [ ] Extract helper modules (e.g., `qti_builder.py`, `qti_utils.py`)
-  - [ ] Ensure no functionality loss after split
+- [x] **`app/pruebas/pdf-to-qti/modules/qti_transformer.py`** (1093 → 345 lines) ✅
+  - [x] Analyze responsibilities and identify logical splits
+  - [x] Extract helper modules:
+    - `qti_encoding.py` (187 lines) - encoding detection/validation
+    - `qti_answer_utils.py` (112 lines) - answer extraction/update
+    - `qti_response_parsers.py` (148 lines) - LLM response parsing
+    - `qti_xml_utils.py` (228 lines) - XML cleanup, S3 replacement
+    - `qti_image_handler.py` (323 lines) - image upload, LLM prep
+  - [x] Ensure no functionality loss after split (backward compatible imports)
 
 - [ ] **`app/pruebas/pdf-to-qti/main.py`** (1092 lines)
   - [ ] Extract orchestration logic vs processing logic
@@ -301,7 +306,7 @@ Review each refactored file for these smells:
 
 | Phase | Total Items | Completed | Progress |
 |-------|-------------|-----------|----------|
-| Phase 1 | 15 files | 0 | 0% |
+| Phase 1 | 15 files | 1 | 7% |
 | Phase 2 | ~20 files | 0 | 0% |
 | Phase 3 | 5 principles | 0 | 0% |
 | Phase 4 | 5 areas | 0 | 0% |
@@ -323,3 +328,12 @@ Review each refactored file for these smells:
 ---
 
 *Last updated: 2026-02-02*
+
+---
+
+## Changelog
+
+### 2026-02-02
+- **qti_transformer.py** refactored: 1093 → 345 lines
+  - Created 5 new modules for better separation of concerns
+  - All backward-compatible imports maintained
