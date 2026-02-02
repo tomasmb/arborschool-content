@@ -59,21 +59,9 @@ son manejados por el pipeline con validación y rechazo:
 | `fix_specific_questions.py` | Mismo que arriba |
 | `fix_final_image_issues.py` | Mismo que arriba |
 | `fix_*_invierno_2025.py` | `output_validator.validate_question_number_in_content()` |
+| `check_all_encoding_issues.py` | Validación integrada en pipeline, rechaza XML con problemas |
+| `process_missing_questions.py` | One-off script completado, eliminado |
+| `reprocess_encoding_issues.py` | One-off script completado, eliminado |
 
 **Principio**: El pipeline rechaza contenido que necesitaría corrección,
 en lugar de corregirlo después de generado.
-
----
-
-## Documentación Archivada
-
-Las siguientes agendas fueron movidas a `docs/archive/agendas/`:
-
-- `agenda-pdf-splitter-qti-pipeline.md` - Pipeline completado
-- `agenda-cambios-manuales-version-final.md` - Cambios finalizados
-- `agenda-cambios-manuales-tests.md` - Tests finalizados
-- `agenda-cambios-manuales-prueba-invierno-2026.md` - Prueba procesada
-- `agenda_taggeo.md` - Tagging completado (100% PASS)
-- `pipeline-improvements-2025-01.md` - Mejoras implementadas
-
-**Razón**: Documentación de trabajo completado, preservada para referencia histórica.

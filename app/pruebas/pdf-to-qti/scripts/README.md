@@ -4,18 +4,6 @@ Esta carpeta contiene scripts auxiliares y temporales para tareas específicas d
 
 ## Scripts Disponibles
 
-### `process_missing_questions.py`
-Script para procesar preguntas específicas que fallaron en una ejecución inicial.
-
-**Uso:**
-```bash
-python3 scripts/process_missing_questions.py
-```
-
-**Descripción:** Procesa las preguntas 53 y 59 que inicialmente fallaron. Ya completado.
-
----
-
 ### `create_question_pdfs_from_segmented.py`
 Script para crear PDFs individuales de preguntas a partir de resultados de segmentación.
 

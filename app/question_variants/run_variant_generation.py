@@ -24,7 +24,7 @@ def main():
     parser.add_argument(
         "--source-test",
         required=True,
-        help="Test ID to generate variants from (e.g., 'Prueba-invierno-2025')"
+        help="Test ID to generate variants from (e.g., 'prueba-invierno-2025')"
     )
 
     parser.add_argument(
