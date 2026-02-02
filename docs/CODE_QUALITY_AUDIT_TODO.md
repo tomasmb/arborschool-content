@@ -32,10 +32,15 @@ These files exceed the hard limit and need immediate refactoring.
     - `qti_image_handler.py` (323 lines) - image upload, LLM prep
   - [x] Ensure no functionality loss after split (backward compatible imports)
 
-- [ ] **`app/pruebas/pdf-to-qti/main.py`** (1092 lines)
-  - [ ] Extract orchestration logic vs processing logic
-  - [ ] Consider splitting into `pipeline.py` + `handlers.py`
-  - [ ] Move configuration handling to separate module if mixed
+- [x] **`app/pruebas/pdf-to-qti/main.py`** (1092 → 449 lines) ✅
+  - [x] Extract orchestration logic vs processing logic
+  - [x] Created 4 new modules for better separation of concerns:
+    - `external_validation.py` (236 lines) - external service validation
+    - `pipeline_cache.py` (225 lines) - cache/skip/regeneration logic
+    - `pipeline_s3.py` (364 lines) - S3 mapping and image processing
+    - `pipeline_helpers.py` (196 lines) - question ID, answer key, debug files
+  - [x] Enhanced `utils/s3_uploader.py` (262 → 366 lines) with convert function
+  - [x] All backward-compatible imports maintained
 
 ### Priority 2: Files 800-1000 Lines (High)
 
@@ -306,7 +311,7 @@ Review each refactored file for these smells:
 
 | Phase | Total Items | Completed | Progress |
 |-------|-------------|-----------|----------|
-| Phase 1 | 15 files | 1 | 7% |
+| Phase 1 | 15 files | 2 | 13% |
 | Phase 2 | ~20 files | 0 | 0% |
 | Phase 3 | 5 principles | 0 | 0% |
 | Phase 4 | 5 areas | 0 | 0% |
@@ -333,7 +338,17 @@ Review each refactored file for these smells:
 
 ## Changelog
 
-### 2026-02-02
+### 2026-02-02 (Session 2)
+- **main.py** refactored: 1092 → 449 lines (59% reduction)
+  - Created 4 new pipeline modules:
+    - `external_validation.py` (236 lines) - external validation service client
+    - `pipeline_cache.py` (225 lines) - cache checking, skip logic, regeneration
+    - `pipeline_s3.py` (364 lines) - S3 mapping, image post-processing
+    - `pipeline_helpers.py` (196 lines) - question ID, answer key, debug files
+  - Enhanced `utils/s3_uploader.py` with `convert_base64_to_s3_in_xml` function
+  - All backward-compatible imports maintained
+
+### 2026-02-02 (Session 1)
 - **qti_transformer.py** refactored: 1093 → 345 lines
   - Created 5 new modules for better separation of concerns
   - All backward-compatible imports maintained

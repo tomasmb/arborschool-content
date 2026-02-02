@@ -2,14 +2,17 @@
 S3 Image Uploader
 
 Uploads images to AWS S3 bucket and returns public URLs for use in QTI XML.
+Also provides utilities for converting base64 images to S3 URLs in XML content.
 """
 
 from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import logging
 import os
+import re
 from typing import Optional
 
 try:
@@ -259,3 +262,105 @@ def upload_multiple_images_to_s3(
             image_info["s3_url"] = s3_url
 
     return results
+
+
+def convert_base64_to_s3_in_xml(
+    qti_xml: str,
+    question_id: Optional[str],
+    test_name: Optional[str],
+    output_dir: str,
+) -> Optional[str]:
+    """
+    Manual conversion of base64 images to S3 URLs in XML (no LLM API calls).
+
+    Detects base64 images in the XML, uploads them to S3 using upload_image_to_s3,
+    and replaces the data URIs with S3 URLs.
+
+    Args:
+        qti_xml: QTI XML that may contain base64 images
+        question_id: Question ID for naming the images
+        test_name: Test name for organizing in S3
+        output_dir: Output directory for saving S3 mapping
+
+    Returns:
+        Updated XML with S3 URLs, or None if there was a critical error
+    """
+    base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
+    base64_matches = list(re.finditer(base64_pattern, qti_xml))
+
+    if not base64_matches:
+        return qti_xml  # No base64, return XML unchanged
+
+    _logger.info(f"Detected {len(base64_matches)} base64 image(s)")
+
+    # Load existing S3 mapping if it exists
+    s3_mapping_file = os.path.join(output_dir, "s3_image_mapping.json")
+    s3_image_mapping: dict[str, str] = {}
+    if os.path.exists(s3_mapping_file):
+        try:
+            with open(s3_mapping_file, "r", encoding="utf-8") as f:
+                s3_image_mapping = json.load(f)
+        except Exception:
+            s3_image_mapping = {}
+
+    updated_xml = qti_xml
+    uploaded_count = 0
+    reused_count = 0
+    failed_count = 0
+
+    for i, match in enumerate(base64_matches):
+        full_data_uri = match.group(0)  # Complete URI
+
+        # Check if already exists in S3 mapping
+        s3_url = None
+        img_keys = [f"image_{i}", f"{question_id}_manual_{i}", f"{question_id}_img{i}"]
+        for key in img_keys:
+            if key in s3_image_mapping:
+                s3_url = s3_image_mapping[key]
+                reused_count += 1
+                _logger.info(f"Reusing image {i+1} from S3 mapping")
+                break
+
+        # If not exists, upload to S3 (no LLM API - just S3 upload)
+        if not s3_url:
+            img_id = f"{question_id}_manual_{i}" if question_id else f"manual_{i}"
+            _logger.info(f"Uploading image {i+1}/{len(base64_matches)} to S3 (manual)...")
+
+            s3_url = upload_image_to_s3(
+                image_base64=full_data_uri,
+                question_id=img_id,
+                test_name=test_name,
+            )
+
+            if s3_url:
+                uploaded_count += 1
+                # Save in mapping
+                for key in img_keys:
+                    s3_image_mapping[key] = s3_url
+                _logger.info(f"Image {i+1} uploaded to S3: {s3_url}")
+            else:
+                failed_count += 1
+                _logger.warning(f"Failed to upload image {i+1} to S3 (will keep base64)")
+
+        # Replace in XML if we have S3 URL
+        if s3_url:
+            updated_xml = updated_xml.replace(full_data_uri, s3_url, 1)
+
+    # Save updated mapping
+    if uploaded_count > 0 or reused_count > 0:
+        try:
+            with open(s3_mapping_file, "w", encoding="utf-8") as f:
+                json.dump(s3_image_mapping, f, indent=2)
+            status_parts = []
+            if uploaded_count > 0:
+                status_parts.append(f"{uploaded_count} new")
+            if reused_count > 0:
+                status_parts.append(f"{reused_count} reused")
+            _logger.info(f"S3 mapping updated ({', '.join(status_parts)})")
+        except Exception as e:
+            _logger.error(f"Error saving S3 mapping: {e}")
+
+    if failed_count > 0:
+        _logger.warning(f"{failed_count} image(s) could not be uploaded (kept as base64)")
+
+    return updated_xml
