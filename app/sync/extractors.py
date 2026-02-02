@@ -280,11 +280,13 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
         # Extract atoms info
         atoms_data: list[dict[str, Any]] = []
         for atom_info in metadata.get("selected_atoms", []):
-            atoms_data.append({
-                "atom_id": atom_info.get("atom_id"),
-                "relevance": atom_info.get("relevance", "primary").lower(),
-                "reasoning": atom_info.get("reasoning"),
-            })
+            atoms_data.append(
+                {
+                    "atom_id": atom_info.get("atom_id"),
+                    "relevance": atom_info.get("relevance", "primary").lower(),
+                    "reasoning": atom_info.get("reasoning"),
+                }
+            )
 
         # Extract difficulty
         difficulty = metadata.get("difficulty", {})

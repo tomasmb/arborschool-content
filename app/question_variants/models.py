@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Optional
 
 class ValidationVerdict(str, Enum):
     """Possible validation outcomes."""
+
     APPROVED = "APROBADA"
     REJECTED = "RECHAZADA"
 
@@ -25,6 +26,7 @@ class SourceQuestion:
         correct_answer: The correct answer text
         image_urls: List of image URLs in the question
     """
+
     question_id: str
     test_id: str
     qti_xml: str
@@ -62,6 +64,7 @@ class VariantQuestion:
         metadata: Generated metadata (inherits atoms, updated feedback)
         validation_result: Result of validation phase
     """
+
     variant_id: str
     source_question_id: str
     source_test_id: str
@@ -83,6 +86,7 @@ class ValidationResult:
         distractors_plausible: Are distractors reasonable errors?
         rejection_reason: If rejected, why?
     """
+
     verdict: ValidationVerdict
     concept_aligned: bool
     difficulty_equal: bool
@@ -108,6 +112,7 @@ class PipelineConfig:
         output_dir: Directory for saving generated variants (by test)
         diagnostic_output_dir: Optional consolidated directory for diagnostic variants
     """
+
     variants_per_question: int = 3
     temperature: float = 0.3  # Slight variation for diversity
     validate_variants: bool = True
@@ -129,6 +134,7 @@ class GenerationReport:
         variants: List of approved variant IDs
         errors: Any errors encountered
     """
+
     source_question_id: str
     source_test_id: str
     total_generated: int = 0

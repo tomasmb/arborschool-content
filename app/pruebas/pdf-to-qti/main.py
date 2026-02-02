@@ -92,30 +92,26 @@ def process_single_question_pdf(
         api_key = _get_api_key(openai_api_key)
         if api_key:
             test_name = extract_test_name_from_path(output_dir)
-            regen_result = try_regenerate_from_processed(
-                output_dir, api_key, paes_mode, test_name
-            )
+            regen_result = try_regenerate_from_processed(output_dir, api_key, paes_mode, test_name)
             if regen_result:
                 return regen_result
 
     try:
         return _process_pdf_core(
-            input_pdf_path, output_dir, openai_api_key,
-            validation_endpoint, paes_mode, is_lambda,
+            input_pdf_path,
+            output_dir,
+            openai_api_key,
+            validation_endpoint,
+            paes_mode,
+            is_lambda,
         )
     except Exception as e:
-        return _handle_processing_error(
-            e, output_dir, openai_api_key, paes_mode, is_lambda
-        )
+        return _handle_processing_error(e, output_dir, openai_api_key, paes_mode, is_lambda)
 
 
 def _get_api_key(openai_api_key: Optional[str] = None) -> Optional[str]:
     """Get API key from parameter or environment variables."""
-    return (
-        openai_api_key
-        or os.environ.get("GEMINI_API_KEY")
-        or os.environ.get("OPENAI_API_KEY")
-    )
+    return openai_api_key or os.environ.get("GEMINI_API_KEY") or os.environ.get("OPENAI_API_KEY")
 
 
 def _process_pdf_core(
@@ -139,9 +135,7 @@ def _process_pdf_core(
 
     # Step 1: Extract PDF content
     pdf_content = extract_pdf_content(doc, api_key)
-    processed_content, extracted_content = extract_large_content(
-        pdf_content, openai_api_key=api_key
-    )
+    processed_content, extracted_content = extract_large_content(pdf_content, openai_api_key=api_key)
 
     # Include AI analysis in processed content
     if "pages" in pdf_content:
@@ -154,9 +148,7 @@ def _process_pdf_core(
         save_debug_files(output_dir, pdf_content, processed_content)
 
     # Step 2: Detect question type
-    detection_result, question_type, can_represent = _detect_question_type(
-        processed_content, api_key, paes_mode, output_dir, is_lambda
-    )
+    detection_result, question_type, can_represent = _detect_question_type(processed_content, api_key, paes_mode, output_dir, is_lambda)
 
     if not can_represent:
         return {
@@ -168,9 +160,7 @@ def _process_pdf_core(
 
     # Step 3: Prepare transformation
     question_id = generate_question_id(output_dir, input_pdf_path, processed_content)
-    test_name = extract_test_name_from_path(output_dir) or extract_test_name_from_path(
-        input_pdf_path
-    )
+    test_name = extract_test_name_from_path(output_dir) or extract_test_name_from_path(input_pdf_path)
 
     if test_name:
         print(f"📁 Test name: {test_name}, 📦 Images → S3: images/{test_name}/")
@@ -180,9 +170,14 @@ def _process_pdf_core(
     # Step 4: Transform to QTI
     print("🔄 Transforming to QTI XML...")
     transformation_result = transform_to_qti(
-        processed_content, question_type, api_key,
-        question_id=question_id, use_s3=True, paes_mode=paes_mode,
-        test_name=test_name, correct_answer=correct_answer,
+        processed_content,
+        question_type,
+        api_key,
+        question_id=question_id,
+        use_s3=True,
+        paes_mode=paes_mode,
+        test_name=test_name,
+        correct_answer=correct_answer,
     )
 
     if not transformation_result["success"]:
@@ -207,8 +202,12 @@ def _process_pdf_core(
     # Step 6: Post-validation S3 processing
     if validation_result["success"]:
         qti_xml = post_validation_s3_processing(
-            qti_xml, extracted_content, output_dir,
-            question_id, test_name, is_lambda,
+            qti_xml,
+            extracted_content,
+            output_dir,
+            question_id,
+            test_name,
+            is_lambda,
         )
 
     if not validation_result["success"]:
@@ -220,8 +219,17 @@ def _process_pdf_core(
 
     # Step 7: Comprehensive validation
     return _run_comprehensive_validation(
-        qti_xml, pdf_content, api_key, question_type, can_represent,
-        title, description, validation_result, output_dir, is_lambda, doc,
+        qti_xml,
+        pdf_content,
+        api_key,
+        question_type,
+        can_represent,
+        title,
+        description,
+        validation_result,
+        output_dir,
+        is_lambda,
+        doc,
     )
 
 
@@ -236,6 +244,7 @@ def _detect_question_type(
     if paes_mode:
         print("⚡ PAES mode: Skipping type detection (always choice)")
         from modules.paes_optimizer import get_paes_question_type
+
         return get_paes_question_type(), "choice", True
 
     print("🔍 Detecting question type...")
@@ -287,9 +296,7 @@ def _run_comprehensive_validation(
         }
 
     print("🌐 Using external QTI validation service")
-    validation_result = validate_with_external_service(
-        qti_xml, original_pdf_image, api_key
-    )
+    validation_result = validate_with_external_service(qti_xml, original_pdf_image, api_key)
     question_validation_result = build_validation_result_dict(validation_result)
 
     error_result = _check_validation_passes(validation_result, question_type)
@@ -300,8 +307,16 @@ def _run_comprehensive_validation(
         print("✅ Question validation passed - QTI is ready for use")
 
     return _build_final_result(
-        qti_xml, question_type, can_represent, title, description,
-        initial_validation, question_validation_result, output_dir, is_lambda, doc,
+        qti_xml,
+        question_type,
+        can_represent,
+        title,
+        description,
+        initial_validation,
+        question_validation_result,
+        output_dir,
+        is_lambda,
+        doc,
     )
 
 
@@ -360,9 +375,7 @@ def _build_final_result(
         "validation_errors": initial_validation.get("validation_errors"),
         "question_validation": question_validation_result,
         "validation_summary": question_validation_result.get("validation_summary", "Passed"),
-        "output_files": build_output_files_dict(
-            xml_path, output_dir, is_lambda, question_validation_result
-        ),
+        "output_files": build_output_files_dict(xml_path, output_dir, is_lambda, question_validation_result),
     }
 
     if not is_lambda:
@@ -396,9 +409,7 @@ def _handle_processing_error(
         api_key = _get_api_key(openai_api_key)
         if api_key:
             test_name = extract_test_name_from_path(output_dir)
-            regen_result = try_auto_regenerate_on_error(
-                output_dir, api_key, error_str, paes_mode, test_name
-            )
+            regen_result = try_auto_regenerate_on_error(output_dir, api_key, error_str, paes_mode, test_name)
             if regen_result:
                 return regen_result
 
@@ -407,9 +418,7 @@ def _handle_processing_error(
 
 def main() -> None:
     """Main entry point for the PDF to QTI converter application."""
-    parser = argparse.ArgumentParser(
-        description="Converts a single question PDF into QTI 3.0 XML format."
-    )
+    parser = argparse.ArgumentParser(description="Converts a single question PDF into QTI 3.0 XML format.")
     parser.add_argument("input_pdf", help="Path to the input PDF file.")
     parser.add_argument("output_dir", help="Directory to save the output results.")
     parser.add_argument("--openai-api-key", help="API key (uses env vars by default).")
@@ -426,6 +435,7 @@ def main() -> None:
     if args.clean and os.path.exists(args.output_dir):
         print(f"🧹 Cleaning: {args.output_dir}")
         import shutil
+
         shutil.rmtree(args.output_dir)
 
     print("🚀 Starting PDF to QTI Conversion...")
@@ -433,8 +443,11 @@ def main() -> None:
         print("⚡ PAES mode: choice questions, math optimization, full validation")
 
     result = process_single_question_pdf(
-        args.input_pdf, args.output_dir, args.openai_api_key,
-        args.validation_endpoint, paes_mode=args.paes_mode,
+        args.input_pdf,
+        args.output_dir,
+        args.openai_api_key,
+        args.validation_endpoint,
+        paes_mode=args.paes_mode,
     )
 
     if result["success"]:

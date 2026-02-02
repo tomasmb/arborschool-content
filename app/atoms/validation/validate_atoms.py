@@ -25,33 +25,11 @@ logger = logging.getLogger(__name__)
 
 def main() -> int:
     """Main entry point for atom validation CLI."""
-    parser = argparse.ArgumentParser(
-        description='Validate generated atoms against standards using Gemini'
-    )
-    parser.add_argument(
-        '--standards',
-        type=str,
-        required=True,
-        help='Path to standards JSON file'
-    )
-    parser.add_argument(
-        '--atoms',
-        type=str,
-        required=True,
-        help='Path to atoms JSON file'
-    )
-    parser.add_argument(
-        '--standard-id',
-        type=str,
-        default=None,
-        help='Standard ID to validate (required if standards file has multiple)'
-    )
-    parser.add_argument(
-        '--output',
-        type=str,
-        default=None,
-        help='Output path for validation result JSON (default: print to stdout)'
-    )
+    parser = argparse.ArgumentParser(description="Validate generated atoms against standards using Gemini")
+    parser.add_argument("--standards", type=str, required=True, help="Path to standards JSON file")
+    parser.add_argument("--atoms", type=str, required=True, help="Path to atoms JSON file")
+    parser.add_argument("--standard-id", type=str, default=None, help="Standard ID to validate (required if standards file has multiple)")
+    parser.add_argument("--output", type=str, default=None, help="Output path for validation result JSON (default: print to stdout)")
 
     args = parser.parse_args()
 
@@ -85,14 +63,14 @@ def main() -> int:
         result_json = json.dumps(result, indent=2, ensure_ascii=False)
 
         if args.output:
-            with open(args.output, 'w', encoding='utf-8') as f:
+            with open(args.output, "w", encoding="utf-8") as f:
                 f.write(result_json)
             logger.info(f"✓ Validation result saved to: {args.output}")
         else:
             print(result_json)
 
         # Print summary
-        summary = result.get('evaluation_summary', {})
+        summary = result.get("evaluation_summary", {})
         logger.info("")
         logger.info("=" * 60)
         logger.info("VALIDATION SUMMARY")
@@ -104,8 +82,8 @@ def main() -> int:
         logger.info(f"Coverage assessment: {summary.get('coverage_assessment', 'N/A')}")
         logger.info(f"Granularity assessment: {summary.get('granularity_assessment', 'N/A')}")
 
-        coverage = result.get('coverage_analysis', {})
-        if coverage.get('missing_areas'):
+        coverage = result.get("coverage_analysis", {})
+        if coverage.get("missing_areas"):
             logger.warning(f"Missing areas: {coverage.get('missing_areas')}")
 
         return 0
@@ -115,6 +93,5 @@ def main() -> int:
         return 1
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())
-

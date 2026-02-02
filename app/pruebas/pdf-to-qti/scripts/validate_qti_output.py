@@ -14,20 +14,15 @@ from typing import Any, Dict
 
 def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
     """Valida la estructura básica de un QTI XML."""
-    result = {
-        "valid": False,
-        "errors": [],
-        "warnings": [],
-        "elements": {}
-    }
+    result = {"valid": False, "errors": [], "warnings": [], "elements": {}}
 
     try:
         tree = ET.parse(xml_path)
         root = tree.getroot()
 
         # Namespace QTI
-        qti_ns = 'http://www.imsglobal.org/xsd/imsqtiasi_v3p0'
-        math_ns = 'http://www.w3.org/1998/Math/MathML'
+        qti_ns = "http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+        math_ns = "http://www.w3.org/1998/Math/MathML"
 
         # Función helper para buscar elementos (con prefijo qti- o namespace)
         # El XML usa prefijos qti- pero el namespace está definido en el root
@@ -35,9 +30,9 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
             # Buscar en todo el árbol con cualquier namespace o prefijo
             for elem in root.iter():
                 # Verificar si el tag termina con el nombre que buscamos
-                if elem.tag.endswith(tag) or elem.tag == f'qti-{tag}':
+                if elem.tag.endswith(tag) or elem.tag == f"qti-{tag}":
                     # Verificar que sea el elemento correcto (no un subelemento con nombre similar)
-                    if tag in ['response-declaration', 'outcome-declaration', 'item-body', 'choice-interaction', 'correct-response']:
+                    if tag in ["response-declaration", "outcome-declaration", "item-body", "choice-interaction", "correct-response"]:
                         if elem.tag.endswith(tag):
                             return elem
                     else:
@@ -47,12 +42,12 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
         def findall_qti(tag):
             results = []
             for elem in root.iter():
-                if elem.tag.endswith(tag) or elem.tag == f'qti-{tag}':
+                if elem.tag.endswith(tag) or elem.tag == f"qti-{tag}":
                     results.append(elem)
             return results
 
         # Verificar elemento raíz
-        if root.tag.endswith('assessment-item') or root.tag == f'{{{qti_ns}}}assessment-item' or 'assessment-item' in root.tag:
+        if root.tag.endswith("assessment-item") or root.tag == f"{{{qti_ns}}}assessment-item" or "assessment-item" in root.tag:
             result["valid"] = True
         else:
             result["errors"].append(f"Root element should be assessment-item, found: {root.tag}")
@@ -60,11 +55,11 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
 
         # Verificar elementos requeridos
         required_elements = {
-            "response_declaration": find_qti('response-declaration'),
-            "outcome_declaration": find_qti('outcome-declaration'),
-            "item_body": find_qti('item-body'),
-            "choice_interaction": find_qti('choice-interaction'),
-            "correct_response": find_qti('correct-response'),
+            "response_declaration": find_qti("response-declaration"),
+            "outcome_declaration": find_qti("outcome-declaration"),
+            "item_body": find_qti("item-body"),
+            "choice_interaction": find_qti("choice-interaction"),
+            "correct_response": find_qti("correct-response"),
         }
 
         for name, element in required_elements.items():
@@ -74,7 +69,7 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
                 result["errors"].append(f"Missing required element: {name}")
 
         # Verificar alternativas
-        choices = findall_qti('simple-choice')
+        choices = findall_qti("simple-choice")
         result["elements"]["num_choices"] = len(choices)
 
         if len(choices) < 2:
@@ -85,12 +80,12 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
             result["warnings"].append(f"Unexpected number of choices: {len(choices)} (expected 4 for PAES)")
 
         # Verificar respuesta correcta
-        correct_response = find_qti('correct-response')
+        correct_response = find_qti("correct-response")
         if correct_response is not None:
             # Buscar qti-value dentro de correct-response
             value_elem = None
             for child in correct_response.iter():
-                if child.tag.endswith('value') or 'value' in child.tag:
+                if child.tag.endswith("value") or "value" in child.tag:
                     value_elem = child
                     break
             if value_elem is not None and value_elem.text:
@@ -101,7 +96,7 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
             result["errors"].append("Missing correct response element")
 
         # Verificar MathML
-        math_elements = root.findall(f'.//{{{math_ns}}}math') or root.findall('.//math')
+        math_elements = root.findall(f".//{{{math_ns}}}math") or root.findall(".//math")
         result["elements"]["has_math"] = len(math_elements) > 0
         result["elements"]["num_math"] = len(math_elements)
 
@@ -110,12 +105,12 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
         for elem in root.iter():
             tag_lower = elem.tag.lower()
             # Buscar elementos img
-            if 'img' in tag_lower:
+            if "img" in tag_lower:
                 images.append(elem)
             # También buscar atributos src con data:image o http
-            if 'src' in elem.attrib:
-                src = elem.attrib['src']
-                if src.startswith('data:image') or src.startswith('http') or 'image' in src.lower():
+            if "src" in elem.attrib:
+                src = elem.attrib["src"]
+                if src.startswith("data:image") or src.startswith("http") or "image" in src.lower():
                     images.append(elem)
         result["elements"]["has_images"] = len(images) > 0
         result["elements"]["num_images"] = len(images)
@@ -124,18 +119,18 @@ def validate_qti_structure(xml_path: Path) -> Dict[str, Any]:
         tables = []
         for elem in root.iter():
             tag_lower = elem.tag.lower()
-            if 'table' in tag_lower:
+            if "table" in tag_lower:
                 tables.append(elem)
         result["elements"]["has_tables"] = len(tables) > 0
         result["elements"]["num_tables"] = len(tables)
 
         # Verificar título
-        title = root.get('title', '')
+        title = root.get("title", "")
         result["elements"]["has_title"] = bool(title)
         result["elements"]["title"] = title[:50] if title else "No title"
 
         # Verificar identifier
-        identifier = root.get('identifier', '')
+        identifier = root.get("identifier", "")
         result["elements"]["has_identifier"] = bool(identifier)
 
     except ET.ParseError as e:
@@ -151,19 +146,13 @@ def validate_all_questions(output_dir: str) -> Dict[str, Any]:
     output_path = Path(output_dir)
 
     if not output_path.exists():
-        return {
-            "success": False,
-            "error": f"Output directory not found: {output_dir}"
-        }
+        return {"success": False, "error": f"Output directory not found: {output_dir}"}
 
     # Encontrar todos los XMLs
     question_xmls = sorted(output_path.glob("question_*/question.xml"))
 
     if not question_xmls:
-        return {
-            "success": False,
-            "error": f"No question XMLs found in {output_dir}"
-        }
+        return {"success": False, "error": f"No question XMLs found in {output_dir}"}
 
     print(f"📋 Validando {len(question_xmls)} preguntas...")
     print()
@@ -180,8 +169,8 @@ def validate_all_questions(output_dir: str) -> Dict[str, Any]:
             "correct_choices": 0,
             "missing_correct_response": 0,
             "errors": defaultdict(int),
-            "warnings": defaultdict(int)
-        }
+            "warnings": defaultdict(int),
+        },
     }
 
     for xml_path in question_xmls:
@@ -245,32 +234,29 @@ def print_report(results: Dict[str, Any]):
     print()
 
     print("📈 ESTADÍSTICAS DE CONTENIDO")
-    print(f"   Con MathML: {results['summary']['with_math']} ({results['summary']['with_math']/results['total']*100:.1f}%)")
-    print(f"   Con imágenes: {results['summary']['with_images']} ({results['summary']['with_images']/results['total']*100:.1f}%)")
-    print(f"   Con tablas: {results['summary']['with_tables']} ({results['summary']['with_tables']/results['total']*100:.1f}%)")
-    print(f"   Con 4 alternativas: {results['summary']['correct_choices']} ({results['summary']['correct_choices']/results['total']*100:.1f}%)")
+    print(f"   Con MathML: {results['summary']['with_math']} ({results['summary']['with_math'] / results['total'] * 100:.1f}%)")
+    print(f"   Con imágenes: {results['summary']['with_images']} ({results['summary']['with_images'] / results['total'] * 100:.1f}%)")
+    print(f"   Con tablas: {results['summary']['with_tables']} ({results['summary']['with_tables'] / results['total'] * 100:.1f}%)")
+    print(f"   Con 4 alternativas: {results['summary']['correct_choices']} ({results['summary']['correct_choices'] / results['total'] * 100:.1f}%)")
     print()
 
-    if results['summary']['errors']:
+    if results["summary"]["errors"]:
         print("❌ ERRORES ENCONTRADOS")
-        for error, count in sorted(results['summary']['errors'].items(), key=lambda x: x[1], reverse=True):
+        for error, count in sorted(results["summary"]["errors"].items(), key=lambda x: x[1], reverse=True):
             print(f"   - {error}: {count} veces")
         print()
 
-    if results['summary']['warnings']:
+    if results["summary"]["warnings"]:
         print("⚠️  ADVERTENCIAS")
-        for warning, count in sorted(results['summary']['warnings'].items(), key=lambda x: x[1], reverse=True):
+        for warning, count in sorted(results["summary"]["warnings"].items(), key=lambda x: x[1], reverse=True):
             print(f"   - {warning}: {count} veces")
         print()
 
     # Preguntas con problemas
     problematic = []
-    for qnum, validation in results['questions'].items():
-        if validation['errors']:
-            problematic.append({
-                "question": qnum,
-                "errors": validation['errors']
-            })
+    for qnum, validation in results["questions"].items():
+        if validation["errors"]:
+            problematic.append({"question": qnum, "errors": validation["errors"]})
 
     if problematic:
         print(f"🔍 PREGUNTAS CON PROBLEMAS ({len(problematic)}):")
@@ -285,18 +271,9 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Validar calidad de QTI generados"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="./output/paes-invierno-2026-new",
-        help="Directorio con los QTI generados"
-    )
-    parser.add_argument(
-        "--json",
-        help="Guardar resultados en JSON"
-    )
+    parser = argparse.ArgumentParser(description="Validar calidad de QTI generados")
+    parser.add_argument("--output-dir", default="./output/paes-invierno-2026-new", help="Directorio con los QTI generados")
+    parser.add_argument("--json", help="Guardar resultados en JSON")
 
     args = parser.parse_args()
 
@@ -316,13 +293,13 @@ def main():
     # Guardar JSON si se solicita
     if args.json:
         output_path = Path(args.json)
-        with open(output_path, 'w') as f:
+        with open(output_path, "w") as f:
             json.dump(results, f, indent=2, default=str)
         print(f"📄 Resultados guardados en: {output_path}")
         print()
 
     # Exit code basado en resultados
-    if results['invalid'] > 0:
+    if results["invalid"] > 0:
         print("⚠️  Se encontraron problemas en algunas preguntas")
         sys.exit(1)
     else:

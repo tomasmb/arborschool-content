@@ -89,8 +89,8 @@ def parse_validation_response(response_text: str) -> dict[str, Any]:
     """
     try:
         # Look for JSON in the response
-        json_start = response_text.find('{')
-        json_end = response_text.rfind('}') + 1
+        json_start = response_text.find("{")
+        json_end = response_text.rfind("}") + 1
 
         if json_start >= 0 and json_end > json_start:
             json_str = response_text[json_start:json_end]
@@ -113,15 +113,12 @@ def parse_validation_response(response_text: str) -> dict[str, Any]:
                 "recommendations": validation_data.get("recommendations", []),
                 "validation_summary": validation_data.get("validation_summary", ""),
                 "raw_response": response_text,
-                "validation_details": validation_data
+                "validation_details": validation_data,
             }
         else:
             # Fallback parsing if JSON not found
             response_lower = response_text.lower()
-            validation_passed = (
-                "validation_passed\": true" in response_lower
-                or "pass" in response_lower
-            )
+            validation_passed = 'validation_passed": true' in response_lower or "pass" in response_lower
 
             return {
                 "success": True,
@@ -130,7 +127,7 @@ def parse_validation_response(response_text: str) -> dict[str, Any]:
                 "issues_found": ["Could not parse detailed validation results"],
                 "validation_summary": "Validation completed but response parsing failed",
                 "raw_response": response_text,
-                "validation_details": {}
+                "validation_details": {},
             }
 
     except Exception as e:
@@ -141,7 +138,7 @@ def parse_validation_response(response_text: str) -> dict[str, Any]:
             "overall_score": 0,
             "error": f"Failed to parse validation response: {str(e)}",
             "raw_response": response_text,
-            "validation_details": {}
+            "validation_details": {},
         }
 
 

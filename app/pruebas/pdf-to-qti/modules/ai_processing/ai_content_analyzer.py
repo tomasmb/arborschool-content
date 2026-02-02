@@ -32,11 +32,7 @@ from .ai_analysis_prompts import (
 from .llm_client import chat_completion
 
 
-def analyze_pdf_content_with_ai(
-    page: fitz.Page,
-    structured_data: dict[str, Any],
-    openai_api_key: str
-) -> dict[str, Any]:
+def analyze_pdf_content_with_ai(page: fitz.Page, structured_data: dict[str, Any], openai_api_key: str) -> dict[str, Any]:
     """Complete AI-powered analysis of PDF content following converter guidelines.
 
     OPTIMIZED: Uses a single comprehensive API call instead of multiple separate calls.
@@ -60,69 +56,47 @@ def analyze_pdf_content_with_ai(
 
         # Get page image for visual context
         page_image_bytes = get_page_image_for_ai(page)
-        page_image_base64 = base64.b64encode(page_image_bytes).decode('utf-8')
+        page_image_base64 = base64.b64encode(page_image_bytes).decode("utf-8")
 
         # OPTIMIZATION: Use comprehensive analysis (single API call)
-        comprehensive_result = comprehensive_content_analysis(
-            text_blocks, page_image_base64, openai_api_key, question_text=question_text
-        )
+        comprehensive_result = comprehensive_content_analysis(text_blocks, page_image_base64, openai_api_key, question_text=question_text)
 
         if comprehensive_result.get("success", False):
             return comprehensive_result
 
         # Fallback: Use original two-step approach
         print("🧠 ⚠️ Comprehensive analysis failed, falling back to two-step approach")
-        return _fallback_two_step_analysis(
-            text_blocks, page_image_base64, openai_api_key
-        )
+        return _fallback_two_step_analysis(text_blocks, page_image_base64, openai_api_key)
 
     except Exception as e:
         print(f"🧠 ⚠️ AI content analysis failed: {e}")
         return _create_error_result(str(e))
 
 
-def _fallback_two_step_analysis(
-    text_blocks: list[dict[str, Any]],
-    page_image_base64: str,
-    openai_api_key: str
-) -> dict[str, Any]:
+def _fallback_two_step_analysis(text_blocks: list[dict[str, Any]], page_image_base64: str, openai_api_key: str) -> dict[str, Any]:
     """Fallback to original two-step approach if comprehensive fails."""
-    compatibility_result = assess_qti_compatibility(
-        text_blocks, page_image_base64, openai_api_key
-    )
+    compatibility_result = assess_qti_compatibility(text_blocks, page_image_base64, openai_api_key)
 
     categorization_result = {}
-    if compatibility_result.get('visual_content_required', False):
-        categorization_result = categorize_content_blocks(
-            text_blocks, page_image_base64, openai_api_key
-        )
+    if compatibility_result.get("visual_content_required", False):
+        categorization_result = categorize_content_blocks(text_blocks, page_image_base64, openai_api_key)
 
     return {
         "success": True,
         "compatibility": compatibility_result,
         "categorization": categorization_result,
         "ai_categories": categorization_result.get("block_categories", {}),
-        "has_visual_content": compatibility_result.get('visual_content_required', False)
+        "has_visual_content": compatibility_result.get("visual_content_required", False),
     }
 
 
 def _create_error_result(error: str) -> dict[str, Any]:
     """Create standardized error result."""
-    return {
-        "success": False,
-        "error": error,
-        "compatibility": {},
-        "categorization": {},
-        "ai_categories": {},
-        "has_visual_content": False
-    }
+    return {"success": False, "error": error, "compatibility": {}, "categorization": {}, "ai_categories": {}, "has_visual_content": False}
 
 
 def comprehensive_content_analysis(
-    text_blocks: list[dict[str, Any]],
-    page_image_base64: str,
-    openai_api_key: str,
-    question_text: str | None = None
+    text_blocks: list[dict[str, Any]], page_image_base64: str, openai_api_key: str, question_text: str | None = None
 ) -> dict[str, Any]:
     """OPTIMIZED: Comprehensive analysis in a single API call.
 
@@ -149,9 +123,7 @@ def comprehensive_content_analysis(
         content_summary = prepare_content_summary(text_blocks)
 
         # Build prompt
-        prompt = build_comprehensive_analysis_prompt(
-            question_text, content_summary, block_info
-        )
+        prompt = build_comprehensive_analysis_prompt(question_text, content_summary, block_info)
 
         messages = [
             {"role": "system", "content": COMPREHENSIVE_SYSTEM_PROMPT},
@@ -159,11 +131,9 @@ def comprehensive_content_analysis(
                 "role": "user",
                 "content": [
                     {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {
-                        "url": f"data:image/png;base64,{page_image_base64}"
-                    }}
-                ]
-            }
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}},
+                ],
+            },
         ]
 
         print("🧠 ⚡ Using OPTIMIZED comprehensive analysis (single API call)")
@@ -195,22 +165,12 @@ def _prepare_block_info(text_blocks: list[dict[str, Any]]) -> list[dict[str, Any
         if len(bbox) >= 4:
             position = f"({bbox[0]:.0f}, {bbox[1]:.0f}) to ({bbox[2]:.0f}, {bbox[3]:.0f})"
 
-        block_info.append({
-            "block_number": i + 1,
-            "text": block_text,
-            "bbox": bbox,
-            "area": area,
-            "position": position
-        })
+        block_info.append({"block_number": i + 1, "text": block_text, "bbox": bbox, "area": area, "position": position})
 
     return block_info
 
 
-def assess_qti_compatibility(
-    text_blocks: list[dict[str, Any]],
-    page_image_base64: str,
-    openai_api_key: str
-) -> dict[str, Any]:
+def assess_qti_compatibility(text_blocks: list[dict[str, Any]], page_image_base64: str, openai_api_key: str) -> dict[str, Any]:
     """Step 1: Use GPT-5.1 to assess if content can be represented in QTI 3.0.
 
     Following guideline #7: Two-step LLM approach.
@@ -225,11 +185,9 @@ def assess_qti_compatibility(
                 "role": "user",
                 "content": [
                     {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {
-                        "url": f"data:image/png;base64,{page_image_base64}"
-                    }}
-                ]
-            }
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}},
+                ],
+            },
         ]
 
         response_text = chat_completion(
@@ -251,11 +209,7 @@ def assess_qti_compatibility(
         return {"can_represent": False, "visual_content_required": False}
 
 
-def categorize_content_blocks(
-    text_blocks: list[dict[str, Any]],
-    page_image_base64: str,
-    openai_api_key: str
-) -> dict[str, Any]:
+def categorize_content_blocks(text_blocks: list[dict[str, Any]], page_image_base64: str, openai_api_key: str) -> dict[str, Any]:
     """Step 2: Intelligently categorize text blocks for image extraction.
 
     Following guideline #3: Build image BBOX using surrounding blocks with AI.
@@ -265,12 +219,7 @@ def categorize_content_blocks(
     # Prepare block information for AI
     block_info = []
     for i, block in enumerate(text_blocks):
-        block_info.append({
-            "block_number": i + 1,
-            "text": block["text"][:200],
-            "bbox": block["bbox"],
-            "area": block["area"]
-        })
+        block_info.append({"block_number": i + 1, "text": block["text"][:200], "bbox": block["bbox"], "area": block["area"]})
 
     prompt = build_categorization_prompt(block_info)
 
@@ -281,11 +230,9 @@ def categorize_content_blocks(
                 "role": "user",
                 "content": [
                     {"type": "text", "text": prompt},
-                    {"type": "image_url", "image_url": {
-                        "url": f"data:image/png;base64,{page_image_base64}"
-                    }}
-                ]
-            }
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{page_image_base64}"}},
+                ],
+            },
         ]
 
         client = openai.OpenAI(api_key=openai_api_key)
@@ -304,14 +251,10 @@ def categorize_content_blocks(
 
         return {
             "block_categories": categorization,
-            "question_answer_blocks": [
-                i for i, cat in categorization.items()
-                if cat in ["question_text", "answer_choice"]
-            ],
+            "question_answer_blocks": [i for i, cat in categorization.items() if cat in ["question_text", "answer_choice"]],
             "image_related_blocks": [
-                i for i, cat in categorization.items()
-                if cat in ["visual_content_title", "visual_content_label", "other_label"]
-            ]
+                i for i, cat in categorization.items() if cat in ["visual_content_title", "visual_content_label", "other_label"]
+            ],
         }
 
     except Exception as e:
@@ -330,19 +273,14 @@ def extract_text_blocks_for_analysis(structured_data: dict[str, Any]) -> list[di
             if len(bbox) >= 4:
                 # Extract text content
                 block_text = ""
-                for line in block.get('lines', []):
-                    for span in line.get('spans', []):
-                        block_text += span.get('text', '') + " "
+                for line in block.get("lines", []):
+                    for span in line.get("spans", []):
+                        block_text += span.get("text", "") + " "
                 block_text = block_text.strip()
 
                 if block_text:  # Only include blocks with actual text
                     text_area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
-                    text_blocks.append({
-                        "block_number": i + 1,
-                        "text": block_text,
-                        "bbox": bbox,
-                        "area": text_area
-                    })
+                    text_blocks.append({"block_number": i + 1, "text": block_text, "bbox": bbox, "area": text_area})
 
     return text_blocks
 

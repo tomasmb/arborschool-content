@@ -15,21 +15,15 @@ BLOCK_MATCH_SCHEMA = {
     "properties": {
         "matched_block_index": {
             "type": ["integer", "null"],
-            "description": "Index of the block that contains the start marker (0-based), or null if no match found"
+            "description": "Index of the block that contains the start marker (0-based), or null if no match found",
         },
-        "confidence": {
-            "type": "string",
-            "enum": ["high", "medium", "low"],
-            "description": "Confidence level of the match"
-        },
-        "reasoning": {
-            "type": "string",
-            "description": "Brief explanation of why this block was chosen or why no match was found"
-        }
+        "confidence": {"type": "string", "enum": ["high", "medium", "low"], "description": "Confidence level of the match"},
+        "reasoning": {"type": "string", "description": "Brief explanation of why this block was chosen or why no match was found"},
     },
     "required": ["matched_block_index", "confidence", "reasoning"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
+
 
 def find_block_with_llm_fallback(page, segment_data, page_num):
     """
@@ -50,29 +44,21 @@ def find_block_with_llm_fallback(page, segment_data, page_num):
 
         for i, block in enumerate(blocks):
             if block.get("type") == 0:  # Text block
-                block_text = " ".join(
-                    span.get("text", "")
-                    for line in block.get("lines", [])
-                    for span in line.get("spans", [])
-                ).strip()
+                block_text = " ".join(span.get("text", "") for line in block.get("lines", []) for span in line.get("spans", [])).strip()
 
                 if block_text:  # Only include non-empty blocks
-                    text_blocks.append({
-                        "index": i,
-                        "text": block_text,
-                        "bbox": block.get("bbox", [0, 0, 0, 0])
-                    })
+                    text_blocks.append({"index": i, "text": block_text, "bbox": block.get("bbox", [0, 0, 0, 0])})
 
         if not text_blocks:
             print(f"❌ No text blocks found on page {page_num} for segment {segment_data.get('id', 'unknown')}")
             return None
 
         # Prepare LLM prompt: prioritize start_marker over text for matching
-        start_marker = segment_data.get('start_marker', '')
-        preview = segment_data.get('text', '')
+        start_marker = segment_data.get("start_marker", "")
+        preview = segment_data.get("text", "")
 
         # Use start_marker if available, otherwise fall back to first 10 words of text
-        if start_marker and not (',' in start_marker and start_marker.replace(',', '').replace('.', '').replace('-', '').isdigit()):
+        if start_marker and not ("," in start_marker and start_marker.replace(",", "").replace(".", "").replace("-", "").isdigit()):
             # Start marker is text (not coordinates), use it for matching
             pass
         else:
@@ -96,7 +82,7 @@ reasoning (brief explanation)"""
 
         user_prompt = f"""Find which block this segment starts in:
 
-**Segment ID:** {segment_data.get('id', 'unknown')}
+**Segment ID:** {segment_data.get("id", "unknown")}
 **Start Marker:** "{start_marker}"
 **Segment Preview:** "{preview}"
 **Page:** {page_num}
@@ -105,7 +91,7 @@ reasoning (brief explanation)"""
 """
 
         for block in text_blocks:
-            user_prompt += f"\nBlock {block['index']}: \"{block['text']}\"\n"
+            user_prompt += f'\nBlock {block["index"]}: "{block["text"]}"\n'
 
         user_prompt += "\n**Instructions:** Identify which blocks belong to this segment, then choose the top-left block of that segment."
 
@@ -115,20 +101,10 @@ reasoning (brief explanation)"""
         # Make LLM call
         completion = openai_client.chat.completions.create(
             model="gpt-5.1",  # Using gpt-5.1 for precision matching
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt}
-            ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "block_match_result",
-                    "schema": BLOCK_MATCH_SCHEMA,
-                    "strict": True
-                }
-            },
+            messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
+            response_format={"type": "json_schema", "json_schema": {"name": "block_match_result", "schema": BLOCK_MATCH_SCHEMA, "strict": True}},
             temperature=0.0,  # Low temperature for consistent results
-            seed=42  # Deterministic output
+            seed=42,  # Deterministic output
         )
 
         # Parse response
@@ -152,6 +128,7 @@ reasoning (brief explanation)"""
         print(f"❌ LLM fallback failed for segment {segment_data.get('id', 'unknown')}: {str(e)}")
         return None
 
+
 def parse_start_marker(marker_str):
     """
     Parse start marker string format.
@@ -169,6 +146,7 @@ def parse_start_marker(marker_str):
     else:
         # It's text
         return {"type": "text", "text": marker_str.strip()}
+
 
 def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, doc=None):
     """
@@ -200,32 +178,32 @@ def find_start_block_index(page, marker_obj, segment_data=None, page_num=None, d
         # Try adjacent pages: previous, next, previous previous, next next
         # Previous page
         if doc and page_num > 1:
-            print(f"🔍 Searching page {page_num-1} for segment {segment_id}")
-            matched = find_block_with_llm_fallback(doc.load_page(page_num-2), segment_data, page_num-1)
+            print(f"🔍 Searching page {page_num - 1} for segment {segment_id}")
+            matched = find_block_with_llm_fallback(doc.load_page(page_num - 2), segment_data, page_num - 1)
             if isinstance(matched, int):
-                print(f"✅ Found segment {segment_id} on page {page_num-1} (was expected on page {page_num})")
-                return ("previous_page", matched, page_num-1)
+                print(f"✅ Found segment {segment_id} on page {page_num - 1} (was expected on page {page_num})")
+                return ("previous_page", matched, page_num - 1)
         # Next page
         if doc and page_num < doc.page_count:
-            print(f"🔍 Searching page {page_num+1} for segment {segment_id}")
-            matched = find_block_with_llm_fallback(doc.load_page(page_num), segment_data, page_num+1)
+            print(f"🔍 Searching page {page_num + 1} for segment {segment_id}")
+            matched = find_block_with_llm_fallback(doc.load_page(page_num), segment_data, page_num + 1)
             if isinstance(matched, int):
-                print(f"✅ Found segment {segment_id} on page {page_num+1} (was expected on page {page_num})")
-                return ("next_page", matched, page_num+1)
+                print(f"✅ Found segment {segment_id} on page {page_num + 1} (was expected on page {page_num})")
+                return ("next_page", matched, page_num + 1)
         # Previous previous page
         if doc and page_num > 2:
-            print(f"🔍 Searching page {page_num-2} for segment {segment_id}")
-            matched = find_block_with_llm_fallback(doc.load_page(page_num-3), segment_data, page_num-2)
+            print(f"🔍 Searching page {page_num - 2} for segment {segment_id}")
+            matched = find_block_with_llm_fallback(doc.load_page(page_num - 3), segment_data, page_num - 2)
             if isinstance(matched, int):
-                print(f"✅ Found segment {segment_id} on page {page_num-2} (was expected on page {page_num})")
-                return ("previous_previous_page", matched, page_num-2)
+                print(f"✅ Found segment {segment_id} on page {page_num - 2} (was expected on page {page_num})")
+                return ("previous_previous_page", matched, page_num - 2)
         # Next next page
         if doc and page_num < doc.page_count - 1:
-            print(f"🔍 Searching page {page_num+2} for segment {segment_id}")
-            matched = find_block_with_llm_fallback(doc.load_page(page_num+1), segment_data, page_num+2)
+            print(f"🔍 Searching page {page_num + 2} for segment {segment_id}")
+            matched = find_block_with_llm_fallback(doc.load_page(page_num + 1), segment_data, page_num + 2)
             if isinstance(matched, int):
-                print(f"✅ Found segment {segment_id} on page {page_num+2} (was expected on page {page_num})")
-                return ("next_next_page", matched, page_num+2)
+                print(f"✅ Found segment {segment_id} on page {page_num + 2} (was expected on page {page_num})")
+                return ("next_next_page", matched, page_num + 2)
         # Not found anywhere
         raise ValueError(f"❌ CRITICAL: Could not find start block for segment '{segment_id}'")
 

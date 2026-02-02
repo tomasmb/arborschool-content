@@ -39,12 +39,9 @@ def upload_images_to_s3(
     failed_uploads: list[str] = []
 
     # Upload main image (with retry)
-    main_image = processed_content.get('image_base64')
-    if main_image and not main_image.startswith('CONTENT_PLACEHOLDER'):
-        _logger.info(
-            f"📤 Uploading main image to S3 "
-            f"(question_id: {question_id or 'main'}, test: {test_name or 'default'})"
-        )
+    main_image = processed_content.get("image_base64")
+    if main_image and not main_image.startswith("CONTENT_PLACEHOLDER"):
+        _logger.info(f"📤 Uploading main image to S3 (question_id: {question_id or 'main'}, test: {test_name or 'default'})")
         s3_url = upload_image_to_s3(
             image_base64=main_image,
             question_id=question_id or "main",
@@ -55,24 +52,24 @@ def upload_images_to_s3(
             failed_uploads.append("main image")
             _logger.error("❌ Failed to upload main image to S3 after retries")
         else:
-            image_url_mapping['main_image'] = s3_url
-            processed_content['image_s3_url'] = s3_url
+            image_url_mapping["main_image"] = s3_url
+            processed_content["image_s3_url"] = s3_url
             _logger.info(f"✅ Main image uploaded to S3: {s3_url}")
 
     # Upload all additional images (with retry for each)
-    if processed_content.get('all_images'):
-        total_images = len(processed_content['all_images'])
+    if processed_content.get("all_images"):
+        total_images = len(processed_content["all_images"])
         _logger.info(f"📤 Uploading {total_images} additional image(s) to S3")
         s3_results = upload_multiple_images_to_s3(
-            images=processed_content['all_images'],
+            images=processed_content["all_images"],
             question_id=question_id,
             test_name=test_name,
         )
         # Validate that all images were uploaded successfully
-        for i, image_info in enumerate(processed_content['all_images']):
+        for i, image_info in enumerate(processed_content["all_images"]):
             image_key = f"image_{i}"
-            img_base64 = image_info.get('image_base64')
-            if img_base64 and not img_base64.startswith('CONTENT_PLACEHOLDER'):
+            img_base64 = image_info.get("image_base64")
+            if img_base64 and not img_base64.startswith("CONTENT_PLACEHOLDER"):
                 if image_key not in s3_results or not s3_results[image_key]:
                     failed_uploads.append(f"image_{i}")
                     _logger.error(f"❌ Failed to upload {image_key} to S3 after retries")
@@ -82,10 +79,7 @@ def upload_images_to_s3(
 
     # CRITICAL: Fail if any image upload failed
     if failed_uploads:
-        error_msg = (
-            f"Failed to upload {len(failed_uploads)} image(s) to S3: "
-            f"{', '.join(failed_uploads)}. S3 upload is REQUIRED."
-        )
+        error_msg = f"Failed to upload {len(failed_uploads)} image(s) to S3: {', '.join(failed_uploads)}. S3 upload is REQUIRED."
         _logger.error(f"❌ {error_msg}")
         return None
 
@@ -105,13 +99,12 @@ def upload_images_to_s3(
 def _count_expected_images(processed_content: dict[str, Any]) -> int:
     """Count the number of images expected to be uploaded."""
     expected = 0
-    main_img = processed_content.get('image_base64')
-    if main_img and not main_img.startswith('CONTENT_PLACEHOLDER'):
+    main_img = processed_content.get("image_base64")
+    if main_img and not main_img.startswith("CONTENT_PLACEHOLDER"):
         expected += 1
-    if processed_content.get('all_images'):
+    if processed_content.get("all_images"):
         expected += sum(
-            1 for img in processed_content['all_images']
-            if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER')
+            1 for img in processed_content["all_images"] if img.get("image_base64") and not img["image_base64"].startswith("CONTENT_PLACEHOLDER")
         )
     return expected
 
@@ -138,48 +131,38 @@ def prepare_llm_messages(
                 "You must respond with valid JSON format only. "
                 "CRITICAL: NEVER use base64 encoding (data:image/...;base64,...) in the QTI XML. "
                 "Only use placeholder image names that will be replaced with S3 URLs."
-            )
+            ),
         },
-        {
-            "role": "user",
-            "content": [{"type": "text", "text": prompt}]
-        }
+        {"role": "user", "content": [{"type": "text", "text": prompt}]},
     ]
 
     images_sent = 0
     max_images_threshold = 10
 
     # Add main image if available
-    main_image = processed_content.get('image_base64')
-    if main_image and not main_image.startswith('CONTENT_PLACEHOLDER'):
+    main_image = processed_content.get("image_base64")
+    if main_image and not main_image.startswith("CONTENT_PLACEHOLDER"):
         image_data = main_image
-        if not image_data.startswith('data:'):
+        if not image_data.startswith("data:"):
             image_data = f"data:image/png;base64,{image_data}"
 
-        messages[1]["content"].append({
-            "type": "image_url",
-            "image_url": {"url": image_data}
-        })
+        messages[1]["content"].append({"type": "image_url", "image_url": {"url": image_data}})
         images_sent += 1
         _logger.info("📤 Sending main image to LLM")
 
     # Add additional images
-    if processed_content.get('all_images'):
+    if processed_content.get("all_images"):
         images_with_data = [
-            img for img in processed_content['all_images']
-            if img.get('image_base64') and not img['image_base64'].startswith('CONTENT_PLACEHOLDER')
+            img for img in processed_content["all_images"] if img.get("image_base64") and not img["image_base64"].startswith("CONTENT_PLACEHOLDER")
         ]
 
         if len(images_with_data) <= max_images_threshold:
             # Normal case: Send all images
             for image_info in images_with_data:
-                image_data = image_info['image_base64']
-                if not image_data.startswith('data:'):
+                image_data = image_info["image_base64"]
+                if not image_data.startswith("data:"):
                     image_data = f"data:image/png;base64,{image_data}"
-                messages[1]["content"].append({
-                    "type": "image_url",
-                    "image_url": {"url": image_data}
-                })
+                messages[1]["content"].append({"type": "image_url", "image_url": {"url": image_data}})
                 images_sent += 1
             _logger.info(f"📤 Sending {len(images_with_data)} additional image(s) to LLM")
         else:
@@ -205,9 +188,9 @@ def _add_prioritized_images(
     other_images = []
 
     for image_info in images_with_data:
-        is_choice = image_info.get('is_choice_diagram', False)
-        width = image_info.get('width', 0)
-        height = image_info.get('height', 0)
+        is_choice = image_info.get("is_choice_diagram", False)
+        width = image_info.get("width", 0)
+        height = image_info.get("height", 0)
         area = width * height
 
         if is_choice:
@@ -219,33 +202,26 @@ def _add_prioritized_images(
 
     # Send ALL choice images first
     for _priority, image_info in sorted(choice_images, reverse=True):
-        image_data = image_info['image_base64']
-        if not image_data.startswith('data:'):
+        image_data = image_info["image_base64"]
+        if not image_data.startswith("data:"):
             image_data = f"data:image/png;base64,{image_data}"
-        messages[1]["content"].append({
-            "type": "image_url",
-            "image_url": {"url": image_data}
-        })
+        messages[1]["content"].append({"type": "image_url", "image_url": {"url": image_data}})
         images_added += 1
 
     # Then send top other images (sorted by size)
     other_images.sort(reverse=True)
     remaining_slots = max_threshold - len(choice_images)
     for _priority, image_info in other_images[:remaining_slots]:
-        image_data = image_info['image_base64']
-        if not image_data.startswith('data:'):
+        image_data = image_info["image_base64"]
+        if not image_data.startswith("data:"):
             image_data = f"data:image/png;base64,{image_data}"
-        messages[1]["content"].append({
-            "type": "image_url",
-            "image_url": {"url": image_data}
-        })
+        messages[1]["content"].append({"type": "image_url", "image_url": {"url": image_data}})
         images_added += 1
 
     skipped = len(other_images) - remaining_slots
     if skipped > 0:
         _logger.warning(
-            f"📤 Sending {len(choice_images)} choice + {remaining_slots} other images "
-            f"(skipped {skipped} due to {len(images_with_data)} total)"
+            f"📤 Sending {len(choice_images)} choice + {remaining_slots} other images (skipped {skipped} due to {len(images_with_data)} total)"
         )
 
     return images_added
@@ -269,17 +245,14 @@ def convert_remaining_base64_to_s3(
     Returns:
         QTI XML with base64 images converted to S3 URLs where possible.
     """
-    base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
+    base64_pattern = r"(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)"
     base64_matches = re.findall(base64_pattern, qti_xml)
 
     if not base64_matches:
         _logger.info("✅ XML validated: No base64 data URIs found")
         return qti_xml
 
-    _logger.warning(
-        f"⚠️  Found {len(base64_matches)} base64 data URI(s) in XML. "
-        "Attempting to upload to S3..."
-    )
+    _logger.warning(f"⚠️  Found {len(base64_matches)} base64 data URI(s) in XML. Attempting to upload to S3...")
 
     uploaded_count = 0
     failed_count = 0
@@ -295,19 +268,11 @@ def convert_remaining_base64_to_s3(
 
         _logger.info(f"  📤 Attempting to upload base64 image to S3: {img_identifier}")
 
-        s3_url = upload_image_to_s3(
-            image_base64=full_data_uri,
-            question_id=img_identifier,
-            test_name=test_name
-        )
+        s3_url = upload_image_to_s3(image_base64=full_data_uri, question_id=img_identifier, test_name=test_name)
 
         if s3_url:
             escaped_uri = re.escape(full_data_uri)
-            qti_xml = re.sub(
-                rf'src=["\']{escaped_uri}["\']',
-                f'src="{s3_url}"',
-                qti_xml
-            )
+            qti_xml = re.sub(rf'src=["\']{escaped_uri}["\']', f'src="{s3_url}"', qti_xml)
             qti_xml = qti_xml.replace(full_data_uri, s3_url)
             uploaded_count += 1
             _logger.info(f"  ✅ Replaced base64 with S3 URL: {s3_url}")

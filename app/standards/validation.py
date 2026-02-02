@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 # Data classes
 # -----------------------------------------------------------------------------
 
+
 @dataclass
 class ValidationIssue:
     """A single validation issue found during review."""
@@ -68,6 +69,7 @@ class ValidationResult:
 # Structural validation (Pydantic-based)
 # -----------------------------------------------------------------------------
 
+
 def validate_standard_structure(
     standard_dict: dict[str, Any],
 ) -> tuple[Standard | None, list[str]]:
@@ -77,10 +79,7 @@ def validate_standard_structure(
         validate_standard_id_matches_eje(standard)
         return standard, []
     except ValidationError as e:
-        errors = [
-            f"Field '{'.'.join(str(loc) for loc in err['loc'])}': {err['msg']}"
-            for err in e.errors()
-        ]
+        errors = [f"Field '{'.'.join(str(loc) for loc in err['loc'])}': {err['msg']}" for err in e.errors()]
         return None, errors
     except ValueError as e:
         return None, [str(e)]
@@ -89,6 +88,7 @@ def validate_standard_structure(
 # -----------------------------------------------------------------------------
 # Per-unidad semantic validation
 # -----------------------------------------------------------------------------
+
 
 def validate_single_standard_with_gemini(
     gemini: GeminiService,
@@ -115,6 +115,7 @@ def validate_single_standard_with_gemini(
 # -----------------------------------------------------------------------------
 # Per-eje semantic validation
 # -----------------------------------------------------------------------------
+
 
 def validate_standards_eje_with_gemini(
     gemini: GeminiService,
@@ -147,6 +148,7 @@ def validate_standards_eje_with_gemini(
 # -----------------------------------------------------------------------------
 # Local validation
 # -----------------------------------------------------------------------------
+
 
 def validate_coverage_locally(
     standards: list[Standard],
@@ -188,6 +190,7 @@ def validate_coverage_locally(
 # -----------------------------------------------------------------------------
 # Combined validation
 # -----------------------------------------------------------------------------
+
 
 def run_full_eje_validation(
     gemini: GeminiService,
@@ -235,6 +238,7 @@ def run_full_eje_validation(
 # -----------------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------------
+
 
 def _call_gemini_validation(
     gemini: GeminiService,

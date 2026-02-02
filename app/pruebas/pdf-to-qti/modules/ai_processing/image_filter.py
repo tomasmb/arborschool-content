@@ -9,13 +9,11 @@ from pydantic import BaseModel, Field
 
 class FilteredImages(BaseModel):
     """A Pydantic model to structure the response for image filtering."""
+
     indices_to_keep: List[int] = Field(..., description="A list of integer IDs of the images that should be kept.")
 
 
-def get_indices_of_images_to_keep(
-    images: List[Dict[str, Any]],
-    openai_api_key: str
-) -> List[int]:
+def get_indices_of_images_to_keep(images: List[Dict[str, Any]], openai_api_key: str) -> List[int]:
     """
     Uses an LLM call to identify images that should be kept.
 
@@ -33,11 +31,8 @@ def get_indices_of_images_to_keep(
         return []
 
     image_descriptions = [
-        {
-            "id": i,
-            "description": image.get('description', 'No description available.'),
-            "is_choice_image": image.get('is_choice_diagram', False)
-        } for i, image in enumerate(images)
+        {"id": i, "description": image.get("description", "No description available."), "is_choice_image": image.get("is_choice_diagram", False)}
+        for i, image in enumerate(images)
     ]
 
     prompt = f"""
@@ -80,12 +75,9 @@ Example of what to keep:
                         "Your task is to distinguish between content images and "
                         "interactive answering elements based on their descriptions. "
                         "Respond only with valid JSON that conforms to the provided schema."
-                    )
+                    ),
                 },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
+                {"role": "user", "content": prompt},
             ],
             response_format=FilteredImages,
             reasoning_effort="high",

@@ -65,10 +65,7 @@ def regenerate_qti_from_processed(
 
     # Verificar que existe el archivo necesario
     if not processed_json.exists():
-        return {
-            "success": False,
-            "error": f"processed_content.json no encontrado en {question_dir}"
-        }
+        return {"success": False, "error": f"processed_content.json no encontrado en {question_dir}"}
 
     # Cargar contenido procesado (igual que el pipeline original)
     print("📖 Cargando processed_content.json...")
@@ -86,62 +83,58 @@ def regenerate_qti_from_processed(
 
         # Construir lista de ExtractedContent desde el JSON
         # Buscar placeholders en processed_content y mapear con imágenes en extracted_content
-        if processed_content.get('image_base64') and processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER_'):
-            placeholder = processed_content['image_base64']
-            match = re.search(r'P(\d+)', placeholder)
+        if processed_content.get("image_base64") and processed_content["image_base64"].startswith("CONTENT_PLACEHOLDER_"):
+            placeholder = processed_content["image_base64"]
+            match = re.search(r"P(\d+)", placeholder)
             if match:
                 idx = int(match.group(1))
                 base64_data = None
                 # Buscar en all_images del extracted_content
-                if 'all_images' in extracted_content and idx < len(extracted_content['all_images']):
-                    extracted_img = extracted_content['all_images'][idx]
-                    if extracted_img.get('image_base64') and not extracted_img['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                        base64_data = extracted_img['image_base64']
+                if "all_images" in extracted_content and idx < len(extracted_content["all_images"]):
+                    extracted_img = extracted_content["all_images"][idx]
+                    if extracted_img.get("image_base64") and not extracted_img["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                        base64_data = extracted_img["image_base64"]
                 # También intentar en image_base64 raíz del extracted_content si es P0
-                elif idx == 0 and extracted_content.get('image_base64'):
-                    if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                        base64_data = extracted_content['image_base64']
+                elif idx == 0 and extracted_content.get("image_base64"):
+                    if not extracted_content["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                        base64_data = extracted_content["image_base64"]
 
                 if base64_data:
                     # Asegurar formato data URI
-                    if not base64_data.startswith('data:'):
+                    if not base64_data.startswith("data:"):
                         base64_data = f"data:image/png;base64,{base64_data}"
-                    extracted_content_list.append(ExtractedContent(
-                        placeholder=placeholder,
-                        original_content=base64_data,
-                        content_type='base64-image',
-                        metadata={}
-                    ))
+                    extracted_content_list.append(
+                        ExtractedContent(placeholder=placeholder, original_content=base64_data, content_type="base64-image", metadata={})
+                    )
 
         # Procesar all_images
-        if processed_content.get('all_images'):
-            for i, img_info in enumerate(processed_content['all_images']):
-                placeholder = img_info.get('image_base64', '')
-                if placeholder.startswith('CONTENT_PLACEHOLDER_'):
-                    match = re.search(r'P(\d+)', placeholder)
+        if processed_content.get("all_images"):
+            for i, img_info in enumerate(processed_content["all_images"]):
+                placeholder = img_info.get("image_base64", "")
+                if placeholder.startswith("CONTENT_PLACEHOLDER_"):
+                    match = re.search(r"P(\d+)", placeholder)
                     if match:
                         idx = int(match.group(1))
                         base64_data = None
                         # Buscar en all_images del extracted_content
-                        if 'all_images' in extracted_content and idx < len(extracted_content['all_images']):
-                            extracted_img = extracted_content['all_images'][idx]
-                            if extracted_img.get('image_base64') and not extracted_img['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                                base64_data = extracted_img['image_base64']
+                        if "all_images" in extracted_content and idx < len(extracted_content["all_images"]):
+                            extracted_img = extracted_content["all_images"][idx]
+                            if extracted_img.get("image_base64") and not extracted_img["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                                base64_data = extracted_img["image_base64"]
                         # Si no encontramos y es P0, buscar en image_base64 raíz
-                        elif idx == 0 and extracted_content.get('image_base64'):
-                            if not extracted_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-                                base64_data = extracted_content['image_base64']
+                        elif idx == 0 and extracted_content.get("image_base64"):
+                            if not extracted_content["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+                                base64_data = extracted_content["image_base64"]
 
                         if base64_data:
                             # Asegurar formato data URI
-                            if not base64_data.startswith('data:'):
+                            if not base64_data.startswith("data:"):
                                 base64_data = f"data:image/png;base64,{base64_data}"
-                            extracted_content_list.append(ExtractedContent(
-                                placeholder=placeholder,
-                                original_content=base64_data,
-                                content_type='base64-image',
-                                metadata={'image_index': i}
-                            ))
+                            extracted_content_list.append(
+                                ExtractedContent(
+                                    placeholder=placeholder, original_content=base64_data, content_type="base64-image", metadata={"image_index": i}
+                                )
+                            )
 
     # Determinar tipo de pregunta
     if paes_mode:
@@ -159,17 +152,14 @@ def regenerate_qti_from_processed(
     # Cargar respuesta correcta si existe
     correct_answer = None
     if test_name:
-        answer_key_path = (
-            question_dir.parent.parent.parent / "data" / "pruebas" / "procesadas"
-            / test_name / "respuestas_correctas.json"
-        )
+        answer_key_path = question_dir.parent.parent.parent / "data" / "pruebas" / "procesadas" / test_name / "respuestas_correctas.json"
         if answer_key_path.exists():
             with open(answer_key_path, "r", encoding="utf-8") as f:
                 answer_key_data = json.load(f)
             answers = answer_key_data.get("answers", {})
 
             # Extraer número de pregunta del nombre de la carpeta
-            q_num_match = re.search(r'(\d+)', question_dir.name)
+            q_num_match = re.search(r"(\d+)", question_dir.name)
             if q_num_match:
                 q_num = q_num_match.group(1)
                 correct_answer = answers.get(q_num)
@@ -191,10 +181,7 @@ def regenerate_qti_from_processed(
     )
 
     if not transformation_result["success"]:
-        return {
-            "success": False,
-            "error": f"Transformación falló: {transformation_result.get('error')}"
-        }
+        return {"success": False, "error": f"Transformación falló: {transformation_result.get('error')}"}
 
     qti_xml = transformation_result["qti_xml"]
 
@@ -222,7 +209,7 @@ def regenerate_qti_from_processed(
                         break
                 # También buscar por índices (P0, P1, etc.)
                 if not s3_url:
-                    match = re.search(r'P(\d+)', placeholder)
+                    match = re.search(r"P(\d+)", placeholder)
                     if match:
                         idx = int(match.group(1))
                         for key in [f"image_{idx}", f"{question_id}_img{idx}"]:
@@ -260,7 +247,7 @@ def regenerate_qti_from_processed(
         # OPTIMIZACIÓN: Usar URLs S3 existentes del mapeo si están disponibles
         # Esto evita subir imágenes que ya están en S3
         print("🔍 Verificando imágenes restauradas...")
-        base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
+        base64_pattern = r"(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)"
         base64_matches = re.findall(base64_pattern, qti_xml)
 
         if base64_matches:
@@ -279,14 +266,14 @@ def regenerate_qti_from_processed(
                 for key in [f"image_{i}", f"{question_id}_img{i}", f"{question_id}_restored_{i}"]:
                     if key in s3_image_mapping:
                         s3_url = s3_image_mapping[key]
-                        print(f"   ✅ Usando URL S3 existente para imagen {i+1}: {s3_url}")
+                        print(f"   ✅ Usando URL S3 existente para imagen {i + 1}: {s3_url}")
                         skipped_count += 1
                         break
 
                 # Si no encontramos en el mapeo, subir a S3
                 if not s3_url:
                     img_id = f"{question_id}_restored_{i}" if question_id else f"restored_{i}"
-                    print(f"   📤 Subiendo imagen {i+1}/{len(base64_matches)} a S3...")
+                    print(f"   📤 Subiendo imagen {i + 1}/{len(base64_matches)} a S3...")
                     s3_url = upload_image_to_s3(
                         image_base64=full_data_uri,
                         question_id=img_id,
@@ -316,10 +303,7 @@ def regenerate_qti_from_processed(
                 print(f"   📊 Resumen: {uploaded_count} subida(s), {skipped_count} existente(s)")
 
     if not validation_result["success"]:
-        return {
-            "success": False,
-            "error": f"Validación falló: {validation_result.get('validation_errors', validation_result.get('error'))}"
-        }
+        return {"success": False, "error": f"Validación falló: {validation_result.get('validation_errors', validation_result.get('error'))}"}
 
     # Guardar QTI XML
     xml_path = question_dir / "question.xml"
@@ -339,32 +323,13 @@ def main():
     """Función principal."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Regenerar QTI XML desde contenido ya procesado"
-    )
+    parser = argparse.ArgumentParser(description="Regenerar QTI XML desde contenido ya procesado")
+    parser.add_argument("--question-numbers", nargs="+", type=int, required=True, help="Números de pregunta a procesar (ej: 19 22 23)")
     parser.add_argument(
-        "--question-numbers",
-        nargs="+",
-        type=int,
-        required=True,
-        help="Números de pregunta a procesar (ej: 19 22 23)"
+        "--output-dir", default="../../data/pruebas/procesadas/seleccion-regular-2026/qti", help="Directorio base con las carpetas de preguntas"
     )
-    parser.add_argument(
-        "--output-dir",
-        default="../../data/pruebas/procesadas/seleccion-regular-2026/qti",
-        help="Directorio base con las carpetas de preguntas"
-    )
-    parser.add_argument(
-        "--test-name",
-        default="seleccion-regular-2026",
-        help="Nombre del test para cargar respuestas correctas"
-    )
-    parser.add_argument(
-        "--paes-mode",
-        action="store_true",
-        default=True,
-        help="Usar modo PAES (default: True)"
-    )
+    parser.add_argument("--test-name", default="seleccion-regular-2026", help="Nombre del test para cargar respuestas correctas")
+    parser.add_argument("--paes-mode", action="store_true", default=True, help="Usar modo PAES (default: True)")
 
     args = parser.parse_args()
 

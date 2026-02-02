@@ -15,12 +15,14 @@ from __future__ import annotations
 # Eje (Axis) Constants
 # -----------------------------------------------------------------------------
 
-VALID_EJES = frozenset({
-    "numeros",
-    "algebra_y_funciones",
-    "geometria",
-    "probabilidad_y_estadistica",
-})
+VALID_EJES = frozenset(
+    {
+        "numeros",
+        "algebra_y_funciones",
+        "geometria",
+        "probabilidad_y_estadistica",
+    }
+)
 
 EJE_PREFIXES = {
     "numeros": "NUM",
@@ -37,23 +39,27 @@ EJE_PREFIX_MAP = EJE_PREFIXES
 # Habilidad (Skill) Constants
 # -----------------------------------------------------------------------------
 
-VALID_HABILIDAD_IDS = frozenset({
-    "resolver_problemas",
-    "modelar",
-    "representar",
-    "argumentar",
-})
+VALID_HABILIDAD_IDS = frozenset(
+    {
+        "resolver_problemas",
+        "modelar",
+        "representar",
+        "argumentar",
+    }
+)
 
 
 # -----------------------------------------------------------------------------
 # Atom Type Constants
 # -----------------------------------------------------------------------------
 
-VALID_TIPO_ATOMICO = frozenset({
-    "concepto",
-    "procedimiento",
-    "representacion",
-    "argumentacion",
-    "modelizacion",
-    "concepto_procedimental",
-})
+VALID_TIPO_ATOMICO = frozenset(
+    {
+        "concepto",
+        "procedimiento",
+        "representacion",
+        "argumentacion",
+        "modelizacion",
+        "concepto_procedimental",
+    }
+)

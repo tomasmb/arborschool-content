@@ -37,20 +37,26 @@ except ImportError:
         # Fallback if retry handler not available
         def is_retryable_error(e: Exception) -> bool:
             return False
+
         def extract_retry_after(e: Exception) -> Optional[float]:
             return None
+
         def retry_with_backoff(*args: Any, **kwargs: Any):
             def decorator(func: Any) -> Any:
                 return func
+
             return decorator
+
 
 # Import usage tracker
 try:
     from ..utils.api_usage_tracker import log_api_usage
+
     USAGE_TRACKING_AVAILABLE = True
 except ImportError:
     try:
         from modules.utils.api_usage_tracker import log_api_usage
+
         USAGE_TRACKING_AVAILABLE = True
     except ImportError:
         USAGE_TRACKING_AVAILABLE = False
@@ -60,11 +66,13 @@ except ImportError:
 try:
     from google import genai
     from google.genai import types
+
     GEMINI_AVAILABLE = True
 except ImportError:
     try:
         import google.generativeai as genai
         from google.generativeai.types import GenerationConfig
+
         GEMINI_AVAILABLE = True
         NEW_SDK = False
     except ImportError:
@@ -157,6 +165,7 @@ def _call_gemini(
                         if url.startswith("data:"):
                             # Base64 image
                             import base64
+
                             try:
                                 header, encoded = url.split(",", 1)
                                 mime_type = header.split(":")[1].split(";")[0]
@@ -282,26 +291,21 @@ def _call_openai(
 
             # Don't retry on last attempt
             if attempt == max_retries - 1:
-                _logger.error(
-                    f"Max retries ({max_retries}) reached for OpenAI call: {e}"
-                )
+                _logger.error(f"Max retries ({max_retries}) reached for OpenAI call: {e}")
                 raise
 
             # Calculate delay
             delay = extract_retry_after(e)
             if delay is None:
                 # Exponential backoff with jitter
-                delay = min(base_delay * (2 ** attempt), max_delay)
+                delay = min(base_delay * (2**attempt), max_delay)
                 jitter = random.uniform(0, delay * 0.1)
                 delay += jitter
 
-            _logger.warning(
-                f"Retryable error in OpenAI call (attempt {attempt + 1}/{max_retries}): "
-                f"{e}. Retrying in {delay:.2f}s..."
-            )
+            _logger.warning(f"Retryable error in OpenAI call (attempt {attempt + 1}/{max_retries}): {e}. Retrying in {delay:.2f}s...")
             time.sleep(delay)
 
-    if last_exception and 'response' not in locals():
+    if last_exception and "response" not in locals():
         raise last_exception
 
     # Track API usage if available
@@ -442,10 +446,7 @@ def chat_completion(
         openai_key = os.environ.get("OPENAI_API_KEY")
 
     if not openai_key:
-        raise ValueError(
-            "No API key available. Provide api_key or set "
-            "GEMINI_API_KEY/OPENAI_API_KEY in environment"
-        )
+        raise ValueError("No API key available. Provide api_key or set GEMINI_API_KEY/OPENAI_API_KEY in environment")
 
     _logger.info("Using OpenAI GPT-5.1 (fallback)")
     return _call_openai(

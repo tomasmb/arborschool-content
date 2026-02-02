@@ -25,11 +25,7 @@ class VariantGenerator:
         self.config = config or PipelineConfig()
         self.service = load_default_gemini_service()
 
-    def generate_variants(
-        self,
-        source: SourceQuestion,
-        num_variants: Optional[int] = None
-    ) -> List[VariantQuestion]:
+    def generate_variants(self, source: SourceQuestion, num_variants: Optional[int] = None) -> List[VariantQuestion]:
         """Generate variant questions from a source question.
 
         Args:
@@ -47,11 +43,7 @@ class VariantGenerator:
         print(f"  Generating {n} variants for {source.question_id}...")
 
         try:
-            response = self.service.generate_text(
-                prompt,
-                response_mime_type="application/json",
-                temperature=self.config.temperature
-            )
+            response = self.service.generate_text(prompt, response_mime_type="application/json", temperature=self.config.temperature)
 
             # Parse the response
             variants_data = self._parse_response(response, source)
@@ -59,13 +51,13 @@ class VariantGenerator:
             # Convert to VariantQuestion objects
             variants = []
             for i, vdata in enumerate(variants_data):
-                variant_id = f"{source.question_id}_v{i+1}"
+                variant_id = f"{source.question_id}_v{i + 1}"
                 variant = VariantQuestion(
                     variant_id=variant_id,
                     source_question_id=source.question_id,
                     source_test_id=source.test_id,
                     qti_xml=vdata.get("qti_xml", ""),
-                    metadata=self._build_variant_metadata(source, vdata)
+                    metadata=self._build_variant_metadata(source, vdata),
                 )
                 variants.append(variant)
 
@@ -75,6 +67,7 @@ class VariantGenerator:
         except Exception as e:
             print(f"  ❌ Error generating variants: {e}")
             import traceback
+
             traceback.print_exc()
             return []
 
@@ -146,7 +139,7 @@ NUNCA el concepto matemático evaluado.
 
 <dificultad>
 {diff_text}
-Análisis: {diff.get('analysis', 'N/A')}
+Análisis: {diff.get("analysis", "N/A")}
 </dificultad>
 
 <tarea>
@@ -203,7 +196,7 @@ IMPORTANTE: El QTI XML debe:
             return data.get("variants", [])
         except json.JSONDecodeError as e:
             # Try to fix common JSON issues
-            cleaned = re.sub(r'\\(?![/"\\\bfnrtu])', r'\\\\', response)
+            cleaned = re.sub(r'\\(?![/"\\\bfnrtu])', r"\\\\", response)
             try:
                 data = json.loads(cleaned)
                 return data.get("variants", [])
@@ -211,11 +204,7 @@ IMPORTANTE: El QTI XML debe:
                 print(f"  ⚠️ Failed to parse JSON response: {e}")
                 return []
 
-    def _build_variant_metadata(
-        self,
-        source: SourceQuestion,
-        variant_data: Dict[str, Any]
-    ) -> Dict[str, Any]:
+    def _build_variant_metadata(self, source: SourceQuestion, variant_data: Dict[str, Any]) -> Dict[str, Any]:
         """Build metadata for a variant, inheriting from source."""
 
         # Start with inherited atoms (same concept = same atoms)
@@ -229,8 +218,8 @@ IMPORTANTE: El QTI XML debe:
             "source_info": {
                 "source_question_id": source.question_id,
                 "source_test_id": source.test_id,
-                "change_description": variant_data.get("change_description", "")
-            }
+                "change_description": variant_data.get("change_description", ""),
+            },
         }
 
         return metadata

@@ -52,7 +52,7 @@ def extract_tables_with_pymupdf(page: fitz.Page) -> list[dict[str, Any]]:
                 }
 
                 detected_tables.append(structured_table)
-                print(f"📊 ✅ Table {i+1}: {structured_table['rows']}x{structured_table['cols']}")
+                print(f"📊 ✅ Table {i + 1}: {structured_table['rows']}x{structured_table['cols']}")
         else:
             print("📊 No tables detected by PyMuPDF")
 

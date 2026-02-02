@@ -96,9 +96,7 @@ def main() -> None:
             with output_path.open(encoding="utf-8") as f:
                 existing_data = json.load(f)
             if isinstance(existing_data, dict) and "atoms" in existing_data:
-                existing_atoms_list = [
-                    Atom.model_validate(a) for a in existing_data["atoms"]
-                ]
+                existing_atoms_list = [Atom.model_validate(a) for a in existing_data["atoms"]]
                 # Group by standard_id
                 for atom in existing_atoms_list:
                     for std_id in atom.standard_ids:
@@ -116,8 +114,7 @@ def main() -> None:
     temario_path_str = metadata_dict.get("source_temario_json", "")
     if not temario_path_str:
         logger.error(
-            "No source_temario_json found in standards metadata. "
-            "Cannot determine temario path.",
+            "No source_temario_json found in standards metadata. Cannot determine temario path.",
         )
         sys.exit(1)
     # Resolve temario path (could be relative or absolute)
@@ -277,4 +274,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

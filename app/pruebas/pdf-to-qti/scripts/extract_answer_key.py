@@ -51,24 +51,14 @@ def extract_text_from_pdf(pdf_path: Path) -> Dict[str, Any]:
     for page_num in range(total_pages):
         page = doc.load_page(page_num)
         text = page.get_text()
-        pages_text.append({
-            "page_number": page_num + 1,
-            "text": text
-        })
+        pages_text.append({"page_number": page_num + 1, "text": text})
 
     doc.close()
 
-    return {
-        "total_pages": total_pages,
-        "pages": pages_text
-    }
+    return {"total_pages": total_pages, "pages": pages_text}
 
 
-def extract_answer_key_with_ai(
-    pdf_content: Dict[str, Any],
-    api_key: str,
-    focus_page: Optional[int] = None
-) -> Dict[str, str]:
+def extract_answer_key_with_ai(pdf_content: Dict[str, Any], api_key: str, focus_page: Optional[int] = None) -> Dict[str, str]:
     """
     Use AI to extract answer key from PDF content.
 
@@ -83,7 +73,7 @@ def extract_answer_key_with_ai(
     # Combine all page text, or focus on specific page if requested
     if focus_page:
         # Filter to only the specified page (focus_page is 1-indexed, pages are 0-indexed in list)
-        pages_to_use = [p for p in pdf_content["pages"] if p['page_number'] == focus_page]
+        pages_to_use = [p for p in pdf_content["pages"] if p["page_number"] == focus_page]
         if not pages_to_use:
             print(f"⚠️  Page {focus_page} not found in PDF. Using all pages instead.")
             pages_to_use = pdf_content["pages"]
@@ -123,12 +113,9 @@ Return the answer key as JSON:"""
             [
                 {
                     "role": "system",
-                    "content": "You are an expert at extracting structured data from educational documents. Always return valid JSON only."
+                    "content": "You are an expert at extracting structured data from educational documents. Always return valid JSON only.",
                 },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
+                {"role": "user", "content": prompt},
             ],
             api_key=api_key,
             json_only=True,
@@ -152,7 +139,7 @@ Return the answer key as JSON:"""
                     normalized[q_num_clean] = answer_clean
                 else:
                     # Try to extract letter
-                    match = re.search(r'[A-E]', answer_clean)
+                    match = re.search(r"[A-E]", answer_clean)
                     if match:
                         normalized[q_num_clean] = f"Choice{match.group()}"
 
@@ -165,33 +152,18 @@ Return the answer key as JSON:"""
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Extract answer key from PDF"
-    )
+    parser = argparse.ArgumentParser(description="Extract answer key from PDF")
     parser.add_argument(
-        "--pdf-path",
-        required=True,
-        help="Path to PDF with answer key (e.g., ../../data/pruebas/raw/prueba-invierno-2026/respuestas.pdf)"
+        "--pdf-path", required=True, help="Path to PDF with answer key (e.g., ../../data/pruebas/raw/prueba-invierno-2026/respuestas.pdf)"
     )
-    parser.add_argument(
-        "--output",
-        required=True,
-        help="Output JSON file path for answer key"
-    )
-    parser.add_argument(
-        "--test-name",
-        help="Test name (for documentation in output file)"
-    )
-    parser.add_argument(
-        "--api-key",
-        default=None,
-        help="API key (uses GEMINI_API_KEY from env if not provided)"
-    )
+    parser.add_argument("--output", required=True, help="Output JSON file path for answer key")
+    parser.add_argument("--test-name", help="Test name (for documentation in output file)")
+    parser.add_argument("--api-key", default=None, help="API key (uses GEMINI_API_KEY from env if not provided)")
     parser.add_argument(
         "--focus-page",
         type=int,
         default=None,
-        help="Focus extraction on a specific page number (1-indexed). Useful if answers are on a specific page."
+        help="Focus extraction on a specific page number (1-indexed). Useful if answers are on a specific page.",
     )
 
     args = parser.parse_args()
@@ -231,8 +203,8 @@ def main():
         "answers": answer_key,
         "metadata": {
             "extraction_method": "AI (Gemini/OpenAI)",
-            "question_numbers": sorted(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999)
-        }
+            "question_numbers": sorted(answer_key.keys(), key=lambda x: int(x) if x.isdigit() else 999),
+        },
     }
 
     # Save output

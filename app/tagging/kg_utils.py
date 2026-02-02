@@ -47,10 +47,7 @@ class KGManager:
     def find_atoms_by_standard(self, standard_id: str) -> List[Dict[str, Any]]:
         """Returns atoms associated with a specific standard."""
         # Simple string match in standard_ids list
-        return [
-            atom for atom in self._atoms
-            if standard_id in atom.get("standard_ids", [])
-        ]
+        return [atom for atom in self._atoms if standard_id in atom.get("standard_ids", [])]
 
     def get_ancestors(self, atom_id: str) -> set:
         """Returns a set of all recursive prerequisite IDs for an atom."""
@@ -80,8 +77,10 @@ class KGManager:
         # Edge case: A is prereq of B. We select A and B. A is in ancestors of B. A is removed. Correct.
         return [aid for aid in atom_ids if aid not in all_implicit_prereqs]
 
+
 # Global instance for easy import
 _kg_manager = None
+
 
 def get_kg_manager() -> KGManager:
     global _kg_manager
@@ -89,11 +88,14 @@ def get_kg_manager() -> KGManager:
         _kg_manager = KGManager()
     return _kg_manager
 
+
 def get_all_atoms() -> List[Dict[str, Any]]:
     return get_kg_manager().get_all_atoms()
 
+
 def get_atom_by_id(atom_id: str) -> Optional[Dict[str, Any]]:
     return get_kg_manager().get_atom_by_id(atom_id)
+
 
 def filter_redundant_atoms(atom_ids: List[str]) -> List[str]:
     return get_kg_manager().filter_redundant_atoms(atom_ids)

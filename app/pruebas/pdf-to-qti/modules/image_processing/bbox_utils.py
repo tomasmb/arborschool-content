@@ -26,13 +26,14 @@ __all__ = [
 # Basic bbox constants - kept minimal and not overfitted to examples
 # ---------------------------------------------------------------------------
 
-MIN_IMAGE_WIDTH = 5       # px, minimal threshold for valid content
-MIN_IMAGE_HEIGHT = 5      # px
+MIN_IMAGE_WIDTH = 5  # px, minimal threshold for valid content
+MIN_IMAGE_HEIGHT = 5  # px
 MAX_ASPECT_RATIO_FOR_LINE = 50  # allow thin label strips
 
 # ---------------------------------------------------------------------------
 # Simple helpers
 # ---------------------------------------------------------------------------
+
 
 def bboxes_are_same(bbox1: List[float], bbox2: List[float], tol: float = 0.1) -> bool:
     """Return *True* if *bbox1* and *bbox2* are identical within *tol* pixels."""
@@ -61,9 +62,11 @@ def bbox_overlap_percentage(bbox1: List[float], bbox2: List[float]) -> float:
         return 0.0
     return intersection / min(area1, area2)
 
+
 # ---------------------------------------------------------------------------
 # AI-powered bbox operations following converter guidelines
 # ---------------------------------------------------------------------------
+
 
 def expand_image_bbox_to_boundaries(
     image_bbox: List[float],
@@ -78,38 +81,33 @@ def expand_image_bbox_to_boundaries(
     max_expansion = 50
     expanded = list(image_bbox)
 
-    other_blocks = [b.get("bbox", []) for b in all_blocks
-                   if not bboxes_are_same(b.get("bbox", []), image_bbox)]
+    other_blocks = [b.get("bbox", []) for b in all_blocks if not bboxes_are_same(b.get("bbox", []), image_bbox)]
 
     # Left edge expansion
     tgt_left = max(0, image_bbox[0] - max_expansion)
     for ob in other_blocks:
-        if (ob[2] <= image_bbox[0] and
-            not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3])):
+        if ob[2] <= image_bbox[0] and not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3]):
             tgt_left = max(tgt_left, ob[2] + safety_margin)
     expanded[0] = tgt_left
 
     # Right edge expansion
     tgt_right = min(page.rect.width, image_bbox[2] + max_expansion)
     for ob in other_blocks:
-        if (ob[0] >= image_bbox[2] and
-            not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3])):
+        if ob[0] >= image_bbox[2] and not (ob[3] <= image_bbox[1] or ob[1] >= image_bbox[3]):
             tgt_right = min(tgt_right, ob[0] - safety_margin)
     expanded[2] = tgt_right
 
     # Top edge expansion
     tgt_top = max(0, image_bbox[1] - max_expansion)
     for ob in other_blocks:
-        if (ob[3] <= image_bbox[1] and
-            not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2])):
+        if ob[3] <= image_bbox[1] and not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2]):
             tgt_top = max(tgt_top, ob[3] + safety_margin)
     expanded[1] = tgt_top
 
     # Bottom edge expansion
     tgt_bottom = min(page.rect.height, image_bbox[3] + max_expansion)
     for ob in other_blocks:
-        if (ob[1] >= image_bbox[3] and
-            not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2])):
+        if ob[1] >= image_bbox[3] and not (ob[2] <= image_bbox[0] or ob[0] >= image_bbox[2]):
             tgt_bottom = min(tgt_bottom, ob[1] - safety_margin)
     expanded[3] = tgt_bottom
 
@@ -196,8 +194,7 @@ def shrink_image_bbox_away_from_text(
 
     for iteration in range(8):
         # Check if we still have overlap
-        if not check_bbox_overlap_with_text(bbox, text_blocks, ai_categories,
-                                           overlap_threshold=0.0):
+        if not check_bbox_overlap_with_text(bbox, text_blocks, ai_categories, overlap_threshold=0.0):
             return bbox
 
         cx = (bbox[0] + bbox[2]) / 2

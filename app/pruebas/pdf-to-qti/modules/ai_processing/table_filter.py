@@ -9,18 +9,13 @@ from pydantic import BaseModel, Field
 
 class FilteredTables(BaseModel):
     """A Pydantic model to structure the response for table filtering."""
+
     indices_to_keep: List[int] = Field(
-        ...,
-        description=(
-            "A list of integer IDs of the tables that are part of the actual "
-            "question content and should be kept."
-        )
+        ..., description=("A list of integer IDs of the tables that are part of the actual question content and should be kept.")
     )
 
-def get_indices_of_tables_to_keep(
-    tables: List[Dict[str, Any]],
-    openai_api_key: str
-) -> List[int]:
+
+def get_indices_of_tables_to_keep(tables: List[Dict[str, Any]], openai_api_key: str) -> List[int]:
     """
     Uses an LLM call to identify tables that should be kept.
 
@@ -37,12 +32,7 @@ def get_indices_of_tables_to_keep(
     if not tables:
         return []
 
-    table_html_contents = [
-        {
-            "id": i,
-            "html_content": table.get('html_content', '<table></table>')
-        } for i, table in enumerate(tables)
-    ]
+    table_html_contents = [{"id": i, "html_content": table.get("html_content", "<table></table>")} for i, table in enumerate(tables)]
 
     prompt = f"""
 You are an expert in educational content analysis.
@@ -83,12 +73,9 @@ Example response:
                         "Your task is to distinguish between content tables and "
                         "interactive answering elements based on their HTML structure. "
                         "Respond only with valid JSON that conforms to the provided schema."
-                    )
+                    ),
                 },
-                {
-                    "role": "user",
-                    "content": prompt
-                }
+                {"role": "user", "content": prompt},
             ],
             response_format=FilteredTables,
             reasoning_effort="high",

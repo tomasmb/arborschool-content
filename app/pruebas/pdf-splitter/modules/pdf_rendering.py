@@ -19,7 +19,7 @@ class CustomJSONEncoder(JSONEncoder):
 
     def default(self, obj):
         if isinstance(obj, bytes):
-            return base64.b64encode(obj).decode('utf-8')
+            return base64.b64encode(obj).decode("utf-8")
         return JSONEncoder.default(self, obj)
 
 
@@ -57,7 +57,7 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
     summary: dict = {
         "page_size": {"width": page.rect.width, "height": page.rect.height},
         "blocks_count": len(blocks_data.get("blocks", [])),
-        "page_description": "PDF page with the following elements:"
+        "page_description": "PDF page with the following elements:",
     }
 
     blocks = blocks_data.get("blocks", [])
@@ -75,30 +75,15 @@ def get_optimized_page_content(page: fitz.Page, max_length: int = 8000) -> str:
         if not text:
             continue
 
-        if re.search(r'question\s+\d+|^\d+\.\s+', text.lower()) or text.upper() == text:
-            question_markers.append({
-                "text": text,
-                "bbox": block.get("bbox"),
-                "type": "question_marker"
-            })
+        if re.search(r"question\s+\d+|^\d+\.\s+", text.lower()) or text.upper() == text:
+            question_markers.append({"text": text, "bbox": block.get("bbox"), "type": "question_marker"})
         elif len(text) < 100:
-            important_texts.append({
-                "text": text,
-                "bbox": block.get("bbox"),
-                "type": "header"
-            })
+            important_texts.append({"text": text, "bbox": block.get("bbox"), "type": "header"})
 
     # Second pass: get a representative sample of content
-    remaining_length = (
-        max_length
-        - len(json.dumps(summary))
-        - len(json.dumps(question_markers))
-        - len(json.dumps(important_texts))
-    )
+    remaining_length = max_length - len(json.dumps(summary)) - len(json.dumps(question_markers)) - len(json.dumps(important_texts))
 
-    content_samples = _extract_content_samples(
-        text_blocks, question_markers, important_texts, remaining_length
-    )
+    content_samples = _extract_content_samples(text_blocks, question_markers, important_texts, remaining_length)
 
     summary["question_markers"] = question_markers
     summary["important_texts"] = important_texts
@@ -118,12 +103,7 @@ def _extract_block_text(block: dict) -> str:
     return text.strip()
 
 
-def _extract_content_samples(
-    text_blocks: list,
-    question_markers: list,
-    important_texts: list,
-    remaining_length: int
-) -> list:
+def _extract_content_samples(text_blocks: list, question_markers: list, important_texts: list, remaining_length: int) -> list:
     """Extract a representative sample of content blocks."""
     content_samples = []
 
@@ -141,11 +121,7 @@ def _extract_content_samples(
         if not text or text in existing_texts:
             continue
 
-        block_summary = {
-            "text": text[:min(len(text), 200)],
-            "bbox": block.get("bbox"),
-            "type": "content"
-        }
+        block_summary = {"text": text[: min(len(text), 200)], "bbox": block.get("bbox"), "type": "content"}
 
         content_samples.append(block_summary)
         current_length += len(json.dumps(block_summary))
@@ -210,7 +186,7 @@ def _create_placeholder_image(page: fitz.Page) -> bytes:
 
         from PIL import Image, ImageDraw, ImageFont  # type: ignore
 
-        img = Image.new('RGB', (800, 600), color='white')
+        img = Image.new("RGB", (800, 600), color="white")
         draw = ImageDraw.Draw(img)
 
         try:
@@ -219,18 +195,18 @@ def _create_placeholder_image(page: fitz.Page) -> bytes:
             font = None
 
         text = f"Page {page.number + 1}\nContent too complex to render\nText extraction available"
-        draw.text((50, 250), text, fill='black', font=font)
+        draw.text((50, 250), text, fill="black", font=font)
 
         img_bytes = io.BytesIO()
-        img.save(img_bytes, format='PNG')
+        img.save(img_bytes, format="PNG")
         return img_bytes.getvalue()
 
     except Exception as fallback_error:
         print(f"❌ Even placeholder creation failed: {fallback_error}")
         # Return a minimal 1x1 white pixel as absolute fallback
         return (
-            b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01'
-            b'\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\tpHYs\x00\x00\x0b\x13'
-            b'\x00\x00\x0b\x13\x01\x00\x9a\x9c\x18\x00\x00\x00\x12IDATx\x9cc```'
-            b'bPPP\x00\x02\xac\xea\x05\x1b\x00\x00\x00\x00IEND\xaeB`\x82'
+            b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01"
+            b"\x08\x02\x00\x00\x00\x90wS\xde\x00\x00\x00\tpHYs\x00\x00\x0b\x13"
+            b"\x00\x00\x0b\x13\x01\x00\x9a\x9c\x18\x00\x00\x00\x12IDATx\x9cc```"
+            b"bPPP\x00\x02\xac\xea\x05\x1b\x00\x00\x00\x00IEND\xaeB`\x82"
         )

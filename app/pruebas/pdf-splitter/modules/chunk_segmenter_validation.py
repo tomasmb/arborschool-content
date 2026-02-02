@@ -23,8 +23,8 @@ def detect_test_type(pdf_path: str) -> tuple[str, int | None]:
         test_type is one of: "seleccion", "invierno", "unknown"
     """
     pdf_name_lower = pdf_path.lower()
-    is_seleccion = 'seleccion' in pdf_name_lower
-    is_invierno = 'invierno' in pdf_name_lower
+    is_seleccion = "seleccion" in pdf_name_lower
+    is_invierno = "invierno" in pdf_name_lower
 
     if is_seleccion:
         return "seleccion", 45
@@ -34,11 +34,7 @@ def detect_test_type(pdf_path: str) -> tuple[str, int | None]:
         return "unknown", None
 
 
-def validate_question_count(
-    questions: list[dict[str, Any]],
-    expected_count: int | None,
-    test_type: str
-) -> None:
+def validate_question_count(questions: list[dict[str, Any]], expected_count: int | None, test_type: str) -> None:
     """
     Validate and report on question count.
 
@@ -51,24 +47,15 @@ def validate_question_count(
 
     if expected_count:
         if total_questions < expected_count * 0.7:  # Less than 70% expected
-            print(
-                f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s) "
-                f"de {expected_count} esperadas para {test_type}"
-            )
+            print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
             print("   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
         elif total_questions < expected_count:
-            print(
-                f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s) "
-                f"de {expected_count} esperadas para {test_type}"
-            )
+            print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s) de {expected_count} esperadas para {test_type}")
             print(f"   Faltan {expected_count - total_questions} pregunta(s).")
         elif total_questions == expected_count:
             print(f"\n✅ Correcto: Se encontraron {total_questions} pregunta(s) (esperado para {test_type})")
         else:
-            print(
-                f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s), "
-                f"más de las {expected_count} esperadas para {test_type}"
-            )
+            print(f"\n⚠️  ADVERTENCIA: Se encontraron {total_questions} pregunta(s), más de las {expected_count} esperadas para {test_type}")
     elif total_questions < 10:
         print(f"\n⚠️  ADVERTENCIA: Solo se encontraron {total_questions} pregunta(s)")
         print("   Esto es anormalmente bajo. Probablemente se perdieron preguntas en la segmentación.")
@@ -88,13 +75,15 @@ def find_oversized_questions(questions: list[dict[str, Any]], max_pages: int = 5
     """
     oversized = []
     for q in questions:
-        page_count = len(q.get('page_nums', []))
+        page_count = len(q.get("page_nums", []))
         if page_count > max_pages:
-            oversized.append({
-                'id': q.get('id', 'unknown'),
-                'pages': page_count,
-                'page_nums': q.get('page_nums', [])[:10]  # First 10 pages to show
-            })
+            oversized.append(
+                {
+                    "id": q.get("id", "unknown"),
+                    "pages": page_count,
+                    "page_nums": q.get("page_nums", [])[:10],  # First 10 pages to show
+                }
+            )
     return oversized
 
 
@@ -124,8 +113,8 @@ def extract_question_numbers(questions: list[dict[str, Any]]) -> list[int]:
     """
     question_numbers = []
     for q in questions:
-        q_id = q.get('id', '')
-        match = re.match(r'Q(\d+)', q_id)
+        q_id = q.get("id", "")
+        match = re.match(r"Q(\d+)", q_id)
         if match:
             question_numbers.append(int(match.group(1)))
     question_numbers.sort()
@@ -197,7 +186,7 @@ def validate_segmentation_results(results: dict[str, Any], pdf_path: str) -> Non
         pdf_path: Path to the PDF file
     """
     test_type, expected_count = detect_test_type(pdf_path)
-    questions = results.get('questions', [])
+    questions = results.get("questions", [])
 
     # Validate question count
     validate_question_count(questions, expected_count, test_type)
@@ -216,11 +205,7 @@ def validate_segmentation_results(results: dict[str, Any], pdf_path: str) -> Non
         report_seleccion_range(questions)
 
 
-def validate_coordinates(
-    bbox: dict[str, float],
-    page_width: float = 612,
-    page_height: float = 792
-) -> dict[str, float]:
+def validate_coordinates(bbox: dict[str, float], page_width: float = 612, page_height: float = 792) -> dict[str, float]:
     """
     Validate and clamp coordinates to page boundaries.
 
@@ -233,10 +218,10 @@ def validate_coordinates(
         Validated bounding box
     """
     return {
-        'x1': max(0, min(bbox['x1'], page_width)),
-        'y1': max(0, min(bbox['y1'], page_height)),
-        'x2': max(0, min(bbox['x2'], page_width)),
-        'y2': max(0, min(bbox['y2'], page_height))
+        "x1": max(0, min(bbox["x1"], page_width)),
+        "y1": max(0, min(bbox["y1"], page_height)),
+        "x2": max(0, min(bbox["x2"], page_width)),
+        "y2": max(0, min(bbox["y2"], page_height)),
     }
 
 
@@ -250,41 +235,41 @@ def get_question_statistics(results: dict[str, Any]) -> dict[str, Any]:
     Returns:
         Statistics dictionary with counts and breakdowns
     """
-    questions = results.get('questions', [])
-    multi_refs = results.get('multi_question_references', [])
-    unrelated = results.get('unrelated_content_segments', [])
+    questions = results.get("questions", [])
+    multi_refs = results.get("multi_question_references", [])
+    unrelated = results.get("unrelated_content_segments", [])
 
     stats: dict[str, Any] = {
-        'total_questions': len(questions),
-        'total_multi_question_references': len(multi_refs),
-        'total_unrelated_content_segments': len(unrelated),
-        'question_types': {},
-        'reference_types': {},
-        'unrelated_content_types': {},
-        'pages_with_questions': set(),
-        'multi_page_questions': 0
+        "total_questions": len(questions),
+        "total_multi_question_references": len(multi_refs),
+        "total_unrelated_content_segments": len(unrelated),
+        "question_types": {},
+        "reference_types": {},
+        "unrelated_content_types": {},
+        "pages_with_questions": set(),
+        "multi_page_questions": 0,
     }
 
     # Analyze questions
     for q in questions:
-        q_type = q.get('type', 'unknown')
-        stats['question_types'][q_type] = stats['question_types'].get(q_type, 0) + 1
+        q_type = q.get("type", "unknown")
+        stats["question_types"][q_type] = stats["question_types"].get(q_type, 0) + 1
         # Add all pages a question spans
-        for p in q.get('page_nums', []):
-            stats['pages_with_questions'].add(p)
-        if q.get('multi_page', False):
-            stats['multi_page_questions'] += 1
+        for p in q.get("page_nums", []):
+            stats["pages_with_questions"].add(p)
+        if q.get("multi_page", False):
+            stats["multi_page_questions"] += 1
 
     # Analyze references
     for ref in multi_refs:
-        ref_type = ref.get('type', 'unknown')
-        stats['reference_types'][ref_type] = stats['reference_types'].get(ref_type, 0) + 1
+        ref_type = ref.get("type", "unknown")
+        stats["reference_types"][ref_type] = stats["reference_types"].get(ref_type, 0) + 1
 
     # Analyze unrelated content
     for unrel in unrelated:
-        unrel_type = unrel.get('type', 'unknown')
-        stats['unrelated_content_types'][unrel_type] = stats['unrelated_content_types'].get(unrel_type, 0) + 1
+        unrel_type = unrel.get("type", "unknown")
+        stats["unrelated_content_types"][unrel_type] = stats["unrelated_content_types"].get(unrel_type, 0) + 1
 
-    stats['pages_with_questions'] = len(stats['pages_with_questions'])
+    stats["pages_with_questions"] = len(stats["pages_with_questions"])
 
     return stats

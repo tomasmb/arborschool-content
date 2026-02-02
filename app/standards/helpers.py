@@ -29,14 +29,14 @@ def _fix_invalid_escapes(text: str) -> str:
     # First, protect already valid escapes
     # Replace valid escapes with placeholders temporarily
     valid_escapes = {
-        r'\\"': '__ESCAPE_DOUBLE_QUOTE__',
-        r'\\\\': '__ESCAPE_BACKSLASH__',
-        r'\\/': '__ESCAPE_SLASH__',
-        r'\\b': '__ESCAPE_BACKSPACE__',
-        r'\\f': '__ESCAPE_FORMFEED__',
-        r'\\n': '__ESCAPE_NEWLINE__',
-        r'\\r': '__ESCAPE_CARRIAGE__',
-        r'\\t': '__ESCAPE_TAB__',
+        r'\\"': "__ESCAPE_DOUBLE_QUOTE__",
+        r"\\\\": "__ESCAPE_BACKSLASH__",
+        r"\\/": "__ESCAPE_SLASH__",
+        r"\\b": "__ESCAPE_BACKSPACE__",
+        r"\\f": "__ESCAPE_FORMFEED__",
+        r"\\n": "__ESCAPE_NEWLINE__",
+        r"\\r": "__ESCAPE_CARRIAGE__",
+        r"\\t": "__ESCAPE_TAB__",
     }
 
     # Protect valid escapes
@@ -49,7 +49,7 @@ def _fix_invalid_escapes(text: str) -> str:
     # But be careful not to break \uXXXX sequences
     fixed = re.sub(
         r'\\(?![u"\\/bfnrt])',  # \ not followed by valid escape char
-        r'\\\\',  # Escape the backslash
+        r"\\\\",  # Escape the backslash
         protected,
     )
 
@@ -108,15 +108,15 @@ def parse_json_response(response: str) -> dict[str, Any] | list[Any]:
         depth = 0
         start_idx = -1
         for i, char in enumerate(cleaned):
-            if char in '{[':
+            if char in "{[":
                 if start_idx == -1:
                     start_idx = i
                 depth += 1
-            elif char in '}]':
+            elif char in "}]":
                 depth -= 1
                 if depth == 0 and start_idx != -1:
                     # Found complete JSON
-                    json_str = cleaned[start_idx:i+1]
+                    json_str = cleaned[start_idx : i + 1]
                     try:
                         return json.loads(json_str)
                     except json.JSONDecodeError as inner_e:
@@ -133,4 +133,3 @@ def parse_json_response(response: str) -> dict[str, Any] | list[Any]:
 
         # If we couldn't find valid JSON, raise the original error
         raise
-

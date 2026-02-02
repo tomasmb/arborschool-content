@@ -13,10 +13,7 @@ from typing import Any, Dict, Optional
 import requests
 
 
-def validate_qti_xml(
-    qti_xml: str,
-    validation_endpoint: Optional[str] = None
-) -> Dict[str, Any]:
+def validate_qti_xml(qti_xml: str, validation_endpoint: Optional[str] = None) -> Dict[str, Any]:
     """
     Validate QTI XML against the XSD schema.
 
@@ -37,8 +34,8 @@ def validate_qti_xml(
         try:
             # Strip any XML declaration and whitespace for validation
             stripped_xml = qti_xml.strip()
-            if stripped_xml.startswith('<?xml'):
-                stripped_xml = stripped_xml.split('?>', 1)[1].strip()
+            if stripped_xml.startswith("<?xml"):
+                stripped_xml = stripped_xml.split("?>", 1)[1].strip()
 
             # Use production endpoint with schema parameter
             validation_url = f"{validation_endpoint}?schema=qti3"
@@ -47,52 +44,38 @@ def validate_qti_xml(
             headers = {"Content-Type": "application/xml"}
 
             # LAMBDA WORKAROUND: Use raw HTTP instead of requests library
-            if os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+            if os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
                 import urllib.request
 
-                xml_bytes = stripped_xml.encode('utf-8')
-                req = urllib.request.Request(
-                    validation_url,
-                    data=xml_bytes,
-                    headers={'Content-Type': 'application/xml'}
-                )
+                xml_bytes = stripped_xml.encode("utf-8")
+                req = urllib.request.Request(validation_url, data=xml_bytes, headers={"Content-Type": "application/xml"})
 
                 with urllib.request.urlopen(req, timeout=30) as response:
-                    response_data = response.read().decode('utf-8')
+                    response_data = response.read().decode("utf-8")
                     status_code = response.status
             else:
-                response = requests.post(
-                    validation_url,
-                    data=stripped_xml,
-                    headers=headers,
-                    timeout=30
-                )
+                response = requests.post(validation_url, data=stripped_xml, headers=headers, timeout=30)
                 response_data = response.text
                 status_code = response.status_code
 
             # Parse response (same logic for both methods)
             if status_code == 200:
                 result = json.loads(response_data)
-                is_valid = result.get('valid', False)
+                is_valid = result.get("valid", False)
 
                 if is_valid:
-                    return {
-                        "success": True,
-                        "valid": True,
-                        "message": "QTI XML is valid",
-                        "warnings": result.get('warnings', [])
-                    }
+                    return {"success": True, "valid": True, "message": "QTI XML is valid", "warnings": result.get("warnings", [])}
                 else:
                     # Format validation errors for LLM feedback
-                    errors = result.get('errors', [])
+                    errors = result.get("errors", [])
                     error_messages = []
 
                     if isinstance(errors, list):
                         for error in errors:
                             if isinstance(error, dict):
-                                message = error.get('message', str(error))
-                                line = error.get('line')
-                                column = error.get('column')
+                                message = error.get("message", str(error))
+                                line = error.get("line")
+                                column = error.get("column")
 
                                 if line is not None and column is not None:
                                     error_messages.append(f"Line {line}, Column {column}: {message}")
@@ -108,13 +91,13 @@ def validate_qti_xml(
                         "valid": False,
                         "validation_errors": validation_errors,
                         "errors": errors,
-                        "warnings": result.get('warnings', [])
+                        "warnings": result.get("warnings", []),
                     }
             elif status_code == 422:
                 if attempt < max_retries - 1:
                     print(f"Validation returned 422, attempt {attempt + 1} of {max_retries}. Retrying in {retry_delay_seconds}s...")
                     time.sleep(retry_delay_seconds)
-                    continue # Retry the loop
+                    continue  # Retry the loop
                 else:
                     # Max retries reached for 422
                     print(f"Validation returned 422 after {max_retries} attempts. Giving up.")
@@ -124,16 +107,16 @@ def validate_qti_xml(
             # This part is reached if status_code is not 200 and not 422 (or 422 after max retries)
             try:
                 error_data = json.loads(response_data)
-                errors = error_data.get('errors', [])
+                errors = error_data.get("errors", [])
 
                 # Format errors for LLM feedback
                 if isinstance(errors, list):
                     error_messages = []
                     for error in errors:
                         if isinstance(error, dict):
-                            message = error.get('message', str(error))
-                            line = error.get('line')
-                            column = error.get('column')
+                            message = error.get("message", str(error))
+                            line = error.get("line")
+                            column = error.get("column")
 
                             if line is not None and column is not None:
                                 error_messages.append(f"Line {line}, Column {column}: {message}")
@@ -146,18 +129,12 @@ def validate_qti_xml(
                 else:
                     validation_errors = str(errors)
 
+                return {"success": False, "valid": False, "validation_errors": validation_errors, "errors": errors, "statusCode": status_code}
+            except json.JSONDecodeError:  # If response_data is not JSON
                 return {
                     "success": False,
-                    "valid": False,
-                    "validation_errors": validation_errors,
-                    "errors": errors,
-                    "statusCode": status_code
-                }
-            except json.JSONDecodeError: # If response_data is not JSON
-                 return {
-                    "success": False,
                     "error": f"Validation service returned status {status_code}: {response_data}",
-                    "statusCode": status_code # Include status code for non-JSON 422s etc.
+                    "statusCode": status_code,  # Include status code for non-JSON 422s etc.
                 }
 
         except requests.exceptions.Timeout:
@@ -165,32 +142,20 @@ def validate_qti_xml(
                 print(f"Validation request timed out, attempt {attempt + 1} of {max_retries}. Retrying in {retry_delay_seconds}s...")
                 time.sleep(retry_delay_seconds)
                 continue
-            return {
-                "success": False,
-                "error": "Validation request timed out after multiple retries"
-            }
+            return {"success": False, "error": "Validation request timed out after multiple retries"}
         except requests.exceptions.ConnectionError:
             if attempt < max_retries - 1:
                 print(f"Could not connect to validation service, attempt {attempt + 1} of {max_retries}. Retrying in {retry_delay_seconds}s...")
                 time.sleep(retry_delay_seconds)
                 continue
-            return {
-                "success": False,
-                "error": "Could not connect to validation service after multiple retries"
-            }
+            return {"success": False, "error": "Could not connect to validation service after multiple retries"}
         except requests.exceptions.RequestException as e:
             # For other request exceptions, probably not worth retrying unless specific
-            return {
-                "success": False,
-                "error": f"Validation request failed: {str(e)}"
-            }
-        except json.JSONDecodeError: # This catches JSON errors if the successful (status 200) response is not valid JSON
-            return {
-                "success": False,
-                "error": "Invalid JSON response from validation service on successful request"
-            }
-        except Exception as e: # Catch-all for other errors within the try block
-            if attempt < max_retries -1:
+            return {"success": False, "error": f"Validation request failed: {str(e)}"}
+        except json.JSONDecodeError:  # This catches JSON errors if the successful (status 200) response is not valid JSON
+            return {"success": False, "error": "Invalid JSON response from validation service on successful request"}
+        except Exception as e:  # Catch-all for other errors within the try block
+            if attempt < max_retries - 1:
                 print(
                     f"An unexpected error occurred during validation "
                     f"(attempt {attempt + 1}/{max_retries}): {str(e)}. "
@@ -198,17 +163,11 @@ def validate_qti_xml(
                 )
                 time.sleep(retry_delay_seconds)
                 continue
-            return {
-                "success": False,
-                "error": f"Validation failed after multiple retries: {str(e)}"
-            }
+            return {"success": False, "error": f"Validation failed after multiple retries: {str(e)}"}
 
     # This part should ideally not be reached if logic is correct,
     # but as a fallback, return a generic failure.
-    return {
-        "success": False,
-        "error": "Validation failed after all retry attempts."
-    }
+    return {"success": False, "error": "Validation failed after all retry attempts."}
 
 
 def validate_xml_structure(qti_xml: str) -> Dict[str, Any]:
@@ -231,51 +190,34 @@ def validate_xml_structure(qti_xml: str) -> Dict[str, Any]:
         issues = []
 
         # Check for required namespace
-        if 'http://www.imsglobal.org/xsd/imsqtiasi_v3p0' not in qti_xml:
+        if "http://www.imsglobal.org/xsd/imsqtiasi_v3p0" not in qti_xml:
             issues.append("Missing required QTI 3.0 namespace")
 
         # Check for required root element
-        if not root.tag.endswith('qti-assessment-item'):
+        if not root.tag.endswith("qti-assessment-item"):
             issues.append("Root element should be qti-assessment-item")
 
         # Check for required attributes
-        required_attrs = ['identifier', 'title']
+        required_attrs = ["identifier", "title"]
         for attr in required_attrs:
             if attr not in root.attrib:
                 issues.append(f"Missing required attribute: {attr}")
 
         # Check for required child elements
-        required_children = ['qti-response-declaration', 'qti-item-body']
+        required_children = ["qti-response-declaration", "qti-item-body"]
         for child_tag in required_children:
             if not any(child.tag.endswith(child_tag) for child in root):
                 issues.append(f"Missing required child element: {child_tag}")
 
         if issues:
-            return {
-                "success": False,
-                "valid": False,
-                "validation_errors": "\n".join(issues),
-                "errors": issues
-            }
+            return {"success": False, "valid": False, "validation_errors": "\n".join(issues), "errors": issues}
         else:
-            return {
-                "success": True,
-                "valid": True,
-                "message": "Basic XML structure is valid"
-            }
+            return {"success": True, "valid": True, "message": "Basic XML structure is valid"}
 
     except ET.ParseError as e:
-        return {
-            "success": False,
-            "valid": False,
-            "validation_errors": f"XML parsing error: {str(e)}",
-            "errors": [str(e)]
-        }
+        return {"success": False, "valid": False, "validation_errors": f"XML parsing error: {str(e)}", "errors": [str(e)]}
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Structure validation failed: {str(e)}"
-        }
+        return {"success": False, "error": f"Structure validation failed: {str(e)}"}
 
 
 def format_validation_errors(errors: Any) -> str:
@@ -298,9 +240,9 @@ def format_validation_errors(errors: Any) -> str:
         formatted_errors = []
         for error in errors:
             if isinstance(error, dict):
-                message = error.get('message', str(error))
-                line = error.get('line')
-                column = error.get('column')
+                message = error.get("message", str(error))
+                line = error.get("line")
+                column = error.get("column")
 
                 if line is not None and column is not None:
                     formatted_errors.append(f"Line {line}, Column {column}: {message}")
@@ -370,10 +312,7 @@ def is_validation_available(validation_endpoint: Optional[str] = None) -> bool:
 
     try:
         # Try a simple GET request to check if service is up
-        response = requests.get(
-            validation_endpoint.replace('/validate', '/health'),
-            timeout=5
-        )
+        response = requests.get(validation_endpoint.replace("/validate", "/health"), timeout=5)
         return response.status_code < 500
     except Exception:
         return False

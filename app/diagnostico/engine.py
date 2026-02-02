@@ -28,6 +28,7 @@ from .config import (
 
 class ResponseType(Enum):
     """Tipos de respuesta posibles"""
+
     CORRECT = "correct"
     INCORRECT = "incorrect"
     DONT_KNOW = "dont_know"  # Botón "No lo sé"
@@ -36,6 +37,7 @@ class ResponseType(Enum):
 @dataclass
 class Response:
     """Representa una respuesta del estudiante"""
+
     question: Question
     response_type: ResponseType
     selected_option: Optional[str] = None  # La opción seleccionada (A, B, C, D)
@@ -48,6 +50,7 @@ class Response:
 @dataclass
 class AtomDiagnosis:
     """Diagnóstico de un átomo específico"""
+
     atom_id: str
     atom_title: str
     response_type: ResponseType
@@ -85,6 +88,7 @@ class AtomDiagnosis:
 @dataclass
 class TestResult:
     """Resultado completo de la prueba diagnóstica"""
+
     route: Route
     r1_correct: int
     stage2_correct: int
@@ -244,10 +248,7 @@ class MSTEngine:
             if response.is_correct:
                 axis_counts[axis]["correct"] += 1
 
-        return {
-            axis: counts["correct"] / counts["total"] if counts["total"] > 0 else 0
-            for axis, counts in axis_counts.items()
-        }
+        return {axis: counts["correct"] / counts["total"] if counts["total"] > 0 else 0 for axis, counts in axis_counts.items()}
 
     def _calculate_skill_performance(self, responses: List[Response]) -> Dict[Skill, float]:
         """Calcula el porcentaje de acierto por habilidad"""
@@ -262,10 +263,7 @@ class MSTEngine:
             if response.is_correct:
                 skill_counts[skill]["correct"] += 1
 
-        return {
-            skill: counts["correct"] / counts["total"] if counts["total"] > 0 else 0
-            for skill, counts in skill_counts.items()
-        }
+        return {skill: counts["correct"] / counts["total"] if counts["total"] > 0 else 0 for skill, counts in skill_counts.items()}
 
     def _calculate_atom_diagnoses(self, responses: List[Response]) -> List[AtomDiagnosis]:
         """
@@ -303,7 +301,7 @@ class MSTEngine:
                 continue
 
             try:
-                with open(metadata_path, 'r', encoding='utf-8') as f:
+                with open(metadata_path, "r", encoding="utf-8") as f:
                     metadata = json.load(f)
             except (json.JSONDecodeError, IOError):
                 continue

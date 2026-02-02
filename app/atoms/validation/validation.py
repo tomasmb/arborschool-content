@@ -301,44 +301,37 @@ def validate_atoms_from_files(
         Validation result as dictionary
     """
     # Load standard
-    with open(standard_path, 'r', encoding='utf-8') as f:
+    with open(standard_path, "r", encoding="utf-8") as f:
         standards_data = json.load(f)
 
     if isinstance(standards_data, list):
         if standard_id:
-            standard = next((s for s in standards_data if s.get('id') == standard_id), None)
+            standard = next((s for s in standards_data if s.get("id") == standard_id), None)
             if not standard:
                 raise ValueError(f"Standard {standard_id} not found in {standard_path}")
         else:
             if len(standards_data) != 1:
-                raise ValueError(
-                    f"Multiple standards in file, must specify standard_id. "
-                    f"Found: {[s.get('id') for s in standards_data]}"
-                )
+                raise ValueError(f"Multiple standards in file, must specify standard_id. Found: {[s.get('id') for s in standards_data]}")
             standard = standards_data[0]
     else:
-        if 'standards' in standards_data:
-            standards_list = standards_data['standards']
+        if "standards" in standards_data:
+            standards_list = standards_data["standards"]
             if standard_id:
-                standard = next((s for s in standards_list if s.get('id') == standard_id), None)
+                standard = next((s for s in standards_list if s.get("id") == standard_id), None)
                 if not standard:
                     raise ValueError(f"Standard {standard_id} not found in {standard_path}")
             else:
                 if len(standards_list) != 1:
-                    raise ValueError(
-                        f"Multiple standards in file, must specify standard_id. "
-                        f"Found: {[s.get('id') for s in standards_list]}"
-                    )
+                    raise ValueError(f"Multiple standards in file, must specify standard_id. Found: {[s.get('id') for s in standards_list]}")
                 standard = standards_list[0]
         else:
             standard = standards_data
 
     # Load atoms
-    with open(atoms_path, 'r', encoding='utf-8') as f:
+    with open(atoms_path, "r", encoding="utf-8") as f:
         atoms = json.load(f)
 
     if not isinstance(atoms, list):
         raise ValueError(f"Expected list of atoms, got {type(atoms)}")
 
     return validate_atoms_with_gemini(gemini, standard, atoms)
-

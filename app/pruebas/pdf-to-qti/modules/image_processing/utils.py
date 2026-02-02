@@ -42,7 +42,7 @@ def extract_choice_identifier(text: str, block_index: int) -> str:
 
     # If no alphanumeric found, use sequential numbering based on position
     # This handles cases like "First choice", "Option one", etc.
-    choice_labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+    choice_labels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     if block_index < len(choice_labels):
         return choice_labels[block_index]
 
@@ -84,7 +84,7 @@ def detect_mixed_choice_content(text: str, bbox: List[float], choice_identifier:
             identifier_end = len(choice_identifier)
             if identifier_end < len(text_stripped):
                 next_char = text_stripped[identifier_end]
-                if next_char in '.):':
+                if next_char in ".):":
                     identifier_end += 1  # Include the punctuation
 
             # Calculate a more conservative mask area
@@ -104,7 +104,7 @@ def detect_mixed_choice_content(text: str, bbox: List[float], choice_identifier:
                 mask_area = {
                     "bbox": [bbox[0], bbox[1], bbox[0] + mask_width, bbox[3]],
                     "text_to_mask": text_stripped[:identifier_end],
-                    "reason": "precise_choice_letter_masking"
+                    "reason": "precise_choice_letter_masking",
                 }
                 mask_areas.append(mask_area)
 

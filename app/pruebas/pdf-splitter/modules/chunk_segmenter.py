@@ -18,6 +18,7 @@ from typing import Any
 # Try to import Gemini SDK
 try:
     from google import genai
+
     GEMINI_AVAILABLE = True
 except ImportError:
     GEMINI_AVAILABLE = False
@@ -26,6 +27,7 @@ except ImportError:
 # Try to import OpenAI SDK
 try:
     from openai import OpenAI
+
     OPENAI_AVAILABLE = True
 except ImportError:
     OPENAI_AVAILABLE = False
@@ -34,6 +36,7 @@ except ImportError:
 # Try to import PyMuPDF for PDF to image conversion
 try:
     import fitz  # PyMuPDF  # noqa: F401
+
     PYMUPDF_AVAILABLE = True
 except ImportError:
     PYMUPDF_AVAILABLE = False
@@ -97,11 +100,8 @@ def segment_pdf_document(pdf_path: str) -> dict[str, Any]:
         client = get_openai_client()
 
         # Upload PDF file to OpenAI
-        with open(pdf_path, 'rb') as pdf_file:
-            file_response = client.files.create(
-                file=pdf_file,
-                purpose="user_data"
-            )
+        with open(pdf_path, "rb") as pdf_file:
+            file_response = client.files.create(file=pdf_file, purpose="user_data")
 
         print(f"PDF uploaded with ID: {file_response.id}")
 
@@ -110,20 +110,16 @@ def segment_pdf_document(pdf_path: str) -> dict[str, Any]:
             model="o4-mini-2025-04-16",
             messages=[
                 {"role": "system", "content": SEGMENT_PROMPT},
-                {"role": "user", "content": [
-                    {"type": "file", "file": {"file_id": file_response.id}},
-                    {"type": "text", "text": "Please segment this PDF into question and reference segments as instructed."}
-                ]}
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "file", "file": {"file_id": file_response.id}},
+                        {"type": "text", "text": "Please segment this PDF into question and reference segments as instructed."},
+                    ],
+                },
             ],
-            response_format={
-                "type": "json_schema",
-                "json_schema": {
-                    "name": "pdf_segmentation",
-                    "schema": SEGMENT_SCHEMA,
-                    "strict": True
-                }
-            },
-            seed=42
+            response_format={"type": "json_schema", "json_schema": {"name": "pdf_segmentation", "schema": SEGMENT_SCHEMA, "strict": True}},
+            seed=42,
         )
 
         # Parse response
@@ -131,14 +127,14 @@ def segment_pdf_document(pdf_path: str) -> dict[str, Any]:
         result = _parse_response(response_content, pdf_path)
 
         # Add metadata
-        result['metadata'] = {
-            'pdf_path': pdf_path,
-            'file_id': file_response.id,
-            'processing_method': 'direct_pdf_upload',
-            'model_used': 'o4-mini-2025-04-16',
-            'total_questions': len(result.get('questions', [])),
-            'total_multi_question_references': len(result.get('multi_question_references', [])),
-            'total_unrelated_content_segments': len(result.get('unrelated_content_segments', []))
+        result["metadata"] = {
+            "pdf_path": pdf_path,
+            "file_id": file_response.id,
+            "processing_method": "direct_pdf_upload",
+            "model_used": "o4-mini-2025-04-16",
+            "total_questions": len(result.get("questions", [])),
+            "total_multi_question_references": len(result.get("multi_question_references", [])),
+            "total_unrelated_content_segments": len(result.get("unrelated_content_segments", [])),
         }
 
         _print_summary(result)
@@ -177,10 +173,7 @@ def _parse_response(response_content: Any, pdf_path: str) -> dict[str, Any]:
         except Exception as write_err:
             print(f"⚠️  Could not save raw response for inspection: {write_err}")
 
-        raise ValueError(
-            f"OpenAI returned non-parsable JSON (error: {e}). "
-            "Raw response has been written to debug_raw_response.json for inspection."
-        )
+        raise ValueError(f"OpenAI returned non-parsable JSON (error: {e}). Raw response has been written to debug_raw_response.json for inspection.")
 
 
 def _print_summary(result: dict[str, Any]) -> None:
@@ -219,7 +212,7 @@ def segment_pdf_with_llm(pdf_path: str, output_file: str | None = None) -> dict[
 
     # Save results if output file specified
     if output_file:
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
         print(f"📄 Results saved to: {output_file}")
 

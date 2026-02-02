@@ -94,7 +94,7 @@ def force_upload_q38(pdf_path: Path, test_name: str) -> Dict[str, Any]:
             rendered = render_image_area(page, bbox, bbox, i)
 
             if rendered and rendered.get("image_base64"):
-                question_id = f"Q38_alt{chr(65+i)}_{timestamp}"
+                question_id = f"Q38_alt{chr(65 + i)}_{timestamp}"
                 s3_url = upload_image_to_s3(
                     image_base64=rendered["image_base64"],
                     question_id=question_id,
@@ -102,7 +102,7 @@ def force_upload_q38(pdf_path: Path, test_name: str) -> Dict[str, Any]:
                 )
                 if s3_url:
                     alternative_images.append(s3_url)
-                    print(f"   ✅ Alternativa {chr(65+i)} subida: {s3_url}")
+                    print(f"   ✅ Alternativa {chr(65 + i)} subida: {s3_url}")
 
     doc.close()
 
@@ -147,6 +147,7 @@ def update_xml_with_new_urls(question_dir: Path, urls: Dict[str, str]) -> bool:
         return False
 
     import re
+
     with open(xml_path, "r", encoding="utf-8") as f:
         xml_content = f.read()
 
@@ -191,7 +192,7 @@ def main():
             "~/.cursor/projects/Users-francosolari-Arbor-arborschool-content/assets/"
             "Captura_de_pantalla_2025-12-19_a_la_s__00.13.58-d378b019-baa7-41ec-9838-"
             "77558d6b9e79.png"
-        )
+        ),
     )
     parser.add_argument(
         "--q53-image",
@@ -199,7 +200,7 @@ def main():
             "~/.cursor/projects/Users-francosolari-Arbor-arborschool-content/assets/"
             "Captura_de_pantalla_2025-12-19_a_la_s__00.25.15-d29fc468-976c-4e98-bca8-"
             "ca03159d55a6.png"
-        )
+        ),
     )
 
     args = parser.parse_args()

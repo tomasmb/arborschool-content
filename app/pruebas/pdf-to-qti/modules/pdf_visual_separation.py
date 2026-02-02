@@ -51,23 +51,17 @@ def process_visual_separation(
 
     if visual_separation and visual_separation.get("has_prompt_visuals") is not None:
         print("📸 Step 3: Using visual separation from comprehensive analysis (OPTIMIZED)")
-        prompt_choice_analysis = _process_from_comprehensive_analysis(
-            page, all_blocks, visual_separation, ai_categories
-        )
+        prompt_choice_analysis = _process_from_comprehensive_analysis(page, all_blocks, visual_separation, ai_categories)
     else:
         # Fallback: Separate call to analyze visual content
         print("📸 Step 3: Analyzing prompt vs choice visual content (fallback API call)...")
         question_text = extract_question_text_from_blocks(all_blocks)
-        prompt_choice_analysis = separate_prompt_and_choice_images(
-            page, all_blocks, question_text, ai_categories, openai_api_key
-        )
+        prompt_choice_analysis = separate_prompt_and_choice_images(page, all_blocks, question_text, ai_categories, openai_api_key)
         _print_analysis_results(prompt_choice_analysis, "fallback")
 
     # Process the analysis results
     if prompt_choice_analysis and prompt_choice_analysis.get("success", False):
-        return build_separation_result(
-            page, all_blocks, prompt_choice_analysis, ai_categories, ai_analysis_result
-        )
+        return build_separation_result(page, all_blocks, prompt_choice_analysis, ai_categories, ai_analysis_result)
 
     return None
 
@@ -117,9 +111,7 @@ def _process_from_comprehensive_analysis(
         mock_analysis = MockAnalysis(visual_separation)
         text_blocks_for_gaps = extract_text_blocks({"blocks": all_blocks})
 
-        prompt_choice_analysis = process_llm_analysis_with_gaps(
-            mock_analysis, page, text_blocks_for_gaps, ai_categories
-        )
+        prompt_choice_analysis = process_llm_analysis_with_gaps(mock_analysis, page, text_blocks_for_gaps, ai_categories)
         prompt_choice_analysis["success"] = True
         prompt_choice_analysis["confidence"] = visual_separation.get("separation_confidence", 0.8)
         prompt_choice_analysis["ai_categories"] = ai_categories
@@ -190,9 +182,7 @@ def build_separation_result(
     return None
 
 
-def render_prompt_images(
-    page: fitz.Page, prompt_choice_analysis: dict[str, Any]
-) -> list[dict[str, Any]]:
+def render_prompt_images(page: fitz.Page, prompt_choice_analysis: dict[str, Any]) -> list[dict[str, Any]]:
     """Render prompt images from analysis."""
     images: list[dict[str, Any]] = []
     prompt_bboxes = prompt_choice_analysis.get("prompt_bboxes", [])
@@ -211,23 +201,19 @@ def render_prompt_images(
             print(f"⚠️  Warning: Invalid prompt_bbox format at index {i}, skipping")
             continue
 
-        print(f"📸  - Processing prompt image #{i+1}: {prompt_bbox}")
+        print(f"📸  - Processing prompt image #{i + 1}: {prompt_bbox}")
         rendered = render_image_area(page, prompt_bbox, prompt_bbox, i)
         if rendered:
             rendered["is_prompt_image"] = True
-            rendered["description"] = prompt_choice_analysis.get(
-                "prompt_visual_description", "Question prompt visual content"
-            )
+            rendered["description"] = prompt_choice_analysis.get("prompt_visual_description", "Question prompt visual content")
             rendered["detection_method"] = "llm_separation"
             images.append(rendered)
-            print(f"📸 ✅ Rendered prompt image #{i+1}: {rendered['width']}x{rendered['height']}")
+            print(f"📸 ✅ Rendered prompt image #{i + 1}: {rendered['width']}x{rendered['height']}")
 
     return images
 
 
-def render_choice_images(
-    page: fitz.Page, prompt_choice_analysis: dict[str, Any], start_idx: int
-) -> list[dict[str, Any]]:
+def render_choice_images(page: fitz.Page, prompt_choice_analysis: dict[str, Any], start_idx: int) -> list[dict[str, Any]]:
     """Render choice images from analysis."""
     choice_images: list[dict[str, Any]] = []
     choice_bboxes = prompt_choice_analysis.get("choice_bboxes", [])
@@ -246,7 +232,7 @@ def render_choice_images(
 
     for i, choice_info in enumerate(choice_bboxes):
         choice_bbox = choice_info["bbox"]
-        choice_letter = choice_info.get("choice_letter", f"Choice{i+1}")
+        choice_letter = choice_info.get("choice_letter", f"Choice{i + 1}")
         mask_areas = choice_info.get("text_mask_areas", [])
 
         rendered = render_image_area(page, choice_bbox, choice_bbox, start_idx + i, mask_areas)

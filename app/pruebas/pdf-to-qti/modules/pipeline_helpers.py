@@ -83,23 +83,13 @@ def load_answer_key(
     output_path_obj = Path(output_dir)
     possible_paths = [
         # Standard location: app/data/pruebas/procesadas/{test_name}/
-        output_path_obj.parent.parent.parent
-        / "data"
-        / "pruebas"
-        / "procesadas"
-        / test_name
-        / "respuestas_correctas.json",
+        output_path_obj.parent.parent.parent / "data" / "pruebas" / "procesadas" / test_name / "respuestas_correctas.json",
         # Alternative: relative to output_dir
         output_path_obj.parent.parent / test_name / "respuestas_correctas.json",
         # Alternative: same directory as output
         output_path_obj.parent / "respuestas_correctas.json",
         # Also check in raw directory structure
-        output_path_obj.parent.parent.parent
-        / "data"
-        / "pruebas"
-        / "raw"
-        / test_name
-        / "respuestas_correctas.json",
+        output_path_obj.parent.parent.parent / "data" / "pruebas" / "raw" / test_name / "respuestas_correctas.json",
     ]
 
     answer_key_path = next((p for p in possible_paths if p.exists()), None)
@@ -119,10 +109,7 @@ def load_answer_key(
             if correct_answer:
                 print(f"✅ Found correct answer for question {q_num}: {correct_answer}")
                 return correct_answer
-            print(
-                f"⚠️  No answer found for question {q_num} "
-                f"(key has {len(answers)} answers)"
-            )
+            print(f"⚠️  No answer found for question {q_num} (key has {len(answers)} answers)")
     except Exception as e:
         print(f"⚠️  Could not load answer key from {answer_key_path}: {e}")
 
@@ -186,9 +173,7 @@ def build_output_files_dict(
                 "extracted_content": os.path.join(output_dir, "extracted_content.json"),
                 "processed_content": os.path.join(output_dir, "processed_content.json"),
                 "detection_result": os.path.join(output_dir, "detection_result.json"),
-                "validation_result": os.path.join(
-                    output_dir, "question_validation_result.json"
-                ),
+                "validation_result": os.path.join(output_dir, "question_validation_result.json"),
             }
         )
 

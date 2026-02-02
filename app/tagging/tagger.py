@@ -46,7 +46,7 @@ class AtomTagger:
             return json.loads(text)
         except json.JSONDecodeError as e:
             # Fix unescaped LaTeX backslashes
-            cleaned = re.sub(r'\\(?![/"\\bfnrtu])', r'\\\\', text)
+            cleaned = re.sub(r'\\(?![/"\\bfnrtu])', r"\\\\", text)
             try:
                 return json.loads(cleaned)
             except Exception:
@@ -60,9 +60,7 @@ class AtomTagger:
                         print(f"  ❌ Critical error saving raw response: {fatal}")
                 raise e
 
-    def _save_result(
-        self, result: dict[str, Any], output_path: str, is_final: bool = False
-    ) -> None:
+    def _save_result(self, result: dict[str, Any], output_path: str, is_final: bool = False) -> None:
         """Saves current result state. Partial results go to a backup folder."""
         if not output_path:
             return
@@ -87,7 +85,7 @@ class AtomTagger:
             if not is_final:
                 print(f"  💾 Partial backup saved to {target_path}")
         except Exception as e:
-            status = 'final' if is_final else 'incremental'
+            status = "final" if is_final else "incremental"
             print(f"  ⚠️ Failed to save {status} result to {target_path}: {e}")
 
     def _process_mathml(self, element: ET.Element) -> str:
@@ -102,7 +100,7 @@ class AtomTagger:
             "choices": parsed.choices,
             "image_urls": parsed.image_urls,
             "correct_answer_id": parsed.correct_answer_id,
-            "choice_id_map": parsed.choice_id_map
+            "choice_id_map": parsed.choice_id_map,
         }
 
     def _download_image(self, url: str) -> Any:
@@ -132,7 +130,7 @@ class AtomTagger:
         choices: list[str],
         selected_atoms: list[dict[str, Any]],
         images: list[Any] | None = None,
-        correct_answer: str | None = None
+        correct_answer: str | None = None,
     ) -> dict[str, Any]:
         """Generates difficulty evaluation AND instructional feedback."""
         prompt = build_analysis_prompt(question_text, choices, selected_atoms, correct_answer)
@@ -142,23 +140,17 @@ class AtomTagger:
             full_prompt.extend(images)
 
         try:
-            response_text = self.service.generate_text(
-                full_prompt, response_mime_type="application/json", temperature=0.0
-            )
+            response_text = self.service.generate_text(full_prompt, response_mime_type="application/json", temperature=0.0)
             return json.loads(response_text)
         except Exception as e:
             print(f"Error generating analysis: {e}")
             import traceback
+
             traceback.print_exc()
             return {}
 
     def _validate_output(
-        self,
-        question_text: str,
-        choices: list[str],
-        result: dict[str, Any],
-        images: list[Any] | None = None,
-        correct_answer: str | None = None
+        self, question_text: str, choices: list[str], result: dict[str, Any], images: list[Any] | None = None, correct_answer: str | None = None
     ) -> dict[str, Any]:
         """Validates the generated tags and feedback using an LLM Judge."""
         prompt = build_validation_prompt(question_text, choices, result, correct_answer)
@@ -168,9 +160,7 @@ class AtomTagger:
             full_prompt.extend(images)
 
         try:
-            response_text = self.service.generate_text(
-                full_prompt, response_mime_type="application/json", temperature=0.0
-            )
+            response_text = self.service.generate_text(full_prompt, response_mime_type="application/json", temperature=0.0)
             return json.loads(response_text)
         except Exception as e:
             print(f"Error validating output: {e}")
@@ -200,13 +190,9 @@ class AtomTagger:
                 best_score = score
                 best_atom_id = atom.get("atom_id")
 
-        return best_atom_id if best_atom_id else (
-            selected_atoms[0].get("atom_id") if selected_atoms else ""
-        )
+        return best_atom_id if best_atom_id else (selected_atoms[0].get("atom_id") if selected_atoms else "")
 
-    def tag_xml_file(
-        self, xml_path: str, output_path: str | None = None
-    ) -> dict[str, Any] | None:
+    def tag_xml_file(self, xml_path: str, output_path: str | None = None) -> dict[str, Any] | None:
         """Tags a single XML file and optionally saves metadata."""
         if not os.path.exists(xml_path):
             print(f"File not found: {xml_path}")
@@ -239,9 +225,7 @@ class AtomTagger:
             full_prompt.extend(images_content)
 
         try:
-            response_text = self.service.generate_text(
-                full_prompt, response_mime_type="application/json", temperature=0.0
-            )
+            response_text = self.service.generate_text(full_prompt, response_mime_type="application/json", temperature=0.0)
 
             result = self._safe_json_loads(response_text, xml_path)
             self._save_result(result, output_path, is_final=False)
@@ -256,8 +240,7 @@ class AtomTagger:
             # 2. Evaluate Difficulty AND Generate Feedback
             if enriched_selections:
                 result = self._generate_and_validate(
-                    result, question_text, choices, enriched_selections,
-                    images_content, correct_answer_text, output_path, xml_path
+                    result, question_text, choices, enriched_selections, images_content, correct_answer_text, output_path, xml_path
                 )
                 if result is None:
                     return None
@@ -272,6 +255,7 @@ class AtomTagger:
         except Exception as e:
             print(f"Error tagging {xml_path}: {e}")
             import traceback
+
             traceback.print_exc()
             return None
 
@@ -297,13 +281,10 @@ class AtomTagger:
 
         filtered_ids = filter_redundant_atoms(atom_ids)
 
-        result["selected_atoms"] = [
-            item for item in result["selected_atoms"]
-            if item.get("atom_id") in filtered_ids
-        ]
+        result["selected_atoms"] = [item for item in result["selected_atoms"] if item.get("atom_id") in filtered_ids]
 
         if len(result["selected_atoms"]) < original_count:
-            removed = original_count - len(result['selected_atoms'])
+            removed = original_count - len(result["selected_atoms"])
             print(f"  filtered {removed} redundant prerequisite atoms.")
 
     def _repair_missing_primary(self, result: dict[str, Any]) -> None:
@@ -369,13 +350,12 @@ class AtomTagger:
         images_content: list[Any],
         correct_answer_text: str | None,
         output_path: str | None,
-        xml_path: str
+        xml_path: str,
     ) -> dict[str, Any] | None:
         """Generate analysis and validate results."""
         print(f"Generating analysis (Difficulty + Feedback) for {os.path.basename(xml_path)}...")
         analysis_data = self._generate_analysis(
-            question_text, choices, enriched_selections,
-            images=images_content, correct_answer=correct_answer_text
+            question_text, choices, enriched_selections, images=images_content, correct_answer=correct_answer_text
         )
 
         if not analysis_data or not analysis_data.get("difficulty"):
@@ -389,10 +369,7 @@ class AtomTagger:
 
         # Validation Phase
         print(f"Validating results for {os.path.basename(xml_path)}...")
-        validation_result = self._validate_output(
-            question_text, choices, result,
-            images=images_content, correct_answer=correct_answer_text
-        )
+        validation_result = self._validate_output(question_text, choices, result, images=images_content, correct_answer=correct_answer_text)
         result["validation"] = validation_result
 
         if validation_result.get("status") != "PASS":

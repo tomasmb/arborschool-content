@@ -30,9 +30,7 @@ def construct_image_bbox_from_gaps(
     potential_gaps = _find_potential_gaps(qa_blocks_sorted, page_height, margin)
 
     # Adjust for footer content
-    effective_page_bottom = _calculate_effective_bottom(
-        qa_blocks_sorted, all_page_text_bboxes, page_height, margin
-    )
+    effective_page_bottom = _calculate_effective_bottom(qa_blocks_sorted, all_page_text_bboxes, page_height, margin)
 
     # Add bottom gap if space available
     if qa_blocks_sorted[-1][3] < effective_page_bottom:
@@ -41,13 +39,15 @@ def construct_image_bbox_from_gaps(
 
         if gap_end_y > gap_start_y:
             gap_size = gap_end_y - gap_start_y
-            potential_gaps.append({
-                "size": gap_size,
-                "start": gap_start_y,
-                "end": gap_end_y,
-                "type": "bottom",
-                "priority": 1,
-            })
+            potential_gaps.append(
+                {
+                    "size": gap_size,
+                    "start": gap_start_y,
+                    "end": gap_end_y,
+                    "type": "bottom",
+                    "priority": 1,
+                }
+            )
 
     # Filter and select best gap
     valid_gaps = [gap for gap in potential_gaps if gap["size"] >= 100]
@@ -60,15 +60,10 @@ def construct_image_bbox_from_gaps(
     valid_gaps.sort(key=lambda g: (-g["priority"], -g["size"]))
 
     best_gap = valid_gaps[0]
-    print(
-        f"🧠 ✅ Selected {best_gap['type']} gap: {best_gap['size']:.0f}px "
-        f"(priority {best_gap['priority']})"
-    )
+    print(f"🧠 ✅ Selected {best_gap['type']} gap: {best_gap['size']:.0f}px (priority {best_gap['priority']})")
 
     # Calculate horizontal bounds
-    left_bound, right_bound = _calculate_horizontal_bounds(
-        qa_blocks_sorted, best_gap, page_width, margin
-    )
+    left_bound, right_bound = _calculate_horizontal_bounds(qa_blocks_sorted, best_gap, page_width, margin)
 
     if right_bound <= left_bound:
         print("🧠 ⚠️ No valid horizontal space for image")
@@ -82,35 +77,37 @@ def construct_image_bbox_from_gaps(
     return image_bbox
 
 
-def _find_potential_gaps(
-    qa_blocks_sorted: list[list[float]], page_height: float, margin: float
-) -> list[dict[str, Any]]:
+def _find_potential_gaps(qa_blocks_sorted: list[list[float]], page_height: float, margin: float) -> list[dict[str, Any]]:
     """Find potential gaps between Q&A blocks."""
     potential_gaps: list[dict[str, Any]] = []
 
     # Check gap from top of page to first block
     if qa_blocks_sorted[0][1] > margin:
         gap_size = qa_blocks_sorted[0][1] - margin
-        potential_gaps.append({
-            "size": gap_size,
-            "start": margin,
-            "end": qa_blocks_sorted[0][1] - margin,
-            "type": "top",
-            "priority": 2,
-        })
+        potential_gaps.append(
+            {
+                "size": gap_size,
+                "start": margin,
+                "end": qa_blocks_sorted[0][1] - margin,
+                "type": "top",
+                "priority": 2,
+            }
+        )
 
     # Check gaps between consecutive blocks
     for i in range(len(qa_blocks_sorted) - 1):
         current_bottom = qa_blocks_sorted[i][3]
         next_top = qa_blocks_sorted[i + 1][1]
         gap_size = next_top - current_bottom
-        potential_gaps.append({
-            "size": gap_size,
-            "start": current_bottom + margin,
-            "end": next_top - margin,
-            "type": "between",
-            "priority": 3,
-        })
+        potential_gaps.append(
+            {
+                "size": gap_size,
+                "start": current_bottom + margin,
+                "end": next_top - margin,
+                "type": "between",
+                "priority": 3,
+            }
+        )
 
     return potential_gaps
 
@@ -156,9 +153,7 @@ def _calculate_horizontal_bounds(
     return left_bound, right_bound
 
 
-def detect_potential_image_areas(
-    page: fitz.Page, text_blocks: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def detect_potential_image_areas(page: fitz.Page, text_blocks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Detect potential image areas by looking for large empty spaces between text blocks."""
     potential_images: list[dict[str, Any]] = []
     page_width = page.rect.width
@@ -194,14 +189,13 @@ def detect_potential_image_areas(
             area = area_width * area_height
 
             if area > 5000 and area_width > 100 and area_height > 50:
-                print(
-                    f"📸 Potential image area detected: {potential_bbox}, "
-                    f"size: {area_width:.1f}x{area_height:.1f}"
+                print(f"📸 Potential image area detected: {potential_bbox}, size: {area_width:.1f}x{area_height:.1f}")
+                potential_images.append(
+                    {
+                        "type": 1,
+                        "bbox": potential_bbox,
+                        "number": f"fallback_{len(potential_images) + 1}",
+                    }
                 )
-                potential_images.append({
-                    "type": 1,
-                    "bbox": potential_bbox,
-                    "number": f"fallback_{len(potential_images) + 1}",
-                })
 
     return potential_images

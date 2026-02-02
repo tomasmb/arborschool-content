@@ -45,19 +45,19 @@ def prepare_block_info_for_ai(text_blocks: list[dict[str, Any]]) -> list[dict[st
 
         if block_text:
             text_area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
-            block_info.append({
-                "block_number": i + 1,
-                "text": block_text,
-                "bbox": bbox,
-                "area": text_area,
-            })
+            block_info.append(
+                {
+                    "block_number": i + 1,
+                    "text": block_text,
+                    "bbox": bbox,
+                    "area": text_area,
+                }
+            )
 
     return block_info
 
 
-def process_ai_categorization(
-    analysis: Any, text_blocks: list[dict[str, Any]]
-) -> dict[str, Any]:
+def process_ai_categorization(analysis: Any, text_blocks: list[dict[str, Any]]) -> dict[str, Any]:
     """Process AI categorization results into usable format."""
     question_answer_blocks: list[list[float]] = []
     strict_label_bboxes: list[list[float]] = []

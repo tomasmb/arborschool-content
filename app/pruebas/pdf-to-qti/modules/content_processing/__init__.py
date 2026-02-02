@@ -7,10 +7,10 @@ from .table_reconstructor import (
 )
 
 __all__ = [
-    'extract_large_content',
-    'restore_large_content',
-    'ExtractedContent',
-    'detect_scattered_table_blocks',
-    'reconstruct_table_from_blocks',
-    'enhance_content_with_reconstructed_tables'
+    "extract_large_content",
+    "restore_large_content",
+    "ExtractedContent",
+    "detect_scattered_table_blocks",
+    "reconstruct_table_from_blocks",
+    "enhance_content_with_reconstructed_tables",
 ]

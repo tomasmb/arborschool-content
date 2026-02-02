@@ -141,11 +141,7 @@ def generate_and_validate_standard_for_unidad(
         )
 
         # Collect warnings
-        warnings = [
-            f"{i.issue_type}: {i.description}"
-            for i in validation_result.issues
-            if i.severity == "warning"
-        ]
+        warnings = [f"{i.issue_type}: {i.description}" for i in validation_result.issues if i.severity == "warning"]
 
         # Check for errors
         if validation_result.has_errors:
@@ -164,11 +160,7 @@ def generate_and_validate_standard_for_unidad(
                 )
             else:
                 # Validation failed without correction
-                error_msgs = [
-                    f"{i.issue_type}: {i.description}"
-                    for i in validation_result.issues
-                    if i.severity == "error"
-                ]
+                error_msgs = [f"{i.issue_type}: {i.description}" for i in validation_result.issues if i.severity == "error"]
                 error_msg = f"Semantic validation failed: {'; '.join(error_msgs)}"
                 logger.error(error_msg)
                 return GenerationResult(

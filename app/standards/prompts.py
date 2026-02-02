@@ -69,6 +69,7 @@ EXAMPLE_STANDARD = {
 # Generation prompt
 # -----------------------------------------------------------------------------
 
+
 def build_generation_prompt(
     unidad_data: dict[str, Any],
     eje_key: str,
@@ -152,6 +153,7 @@ criterios aplicables.
 # Per-unidad validation prompt
 # -----------------------------------------------------------------------------
 
+
 def build_single_standard_validation_prompt(
     standard_dict: dict[str, Any],
     unidad_data: dict[str, Any],
@@ -227,6 +229,7 @@ Revisa el estándar contra el checklist. Reporta problemas y corrige si hay erro
 # -----------------------------------------------------------------------------
 # Per-eje validation prompt
 # -----------------------------------------------------------------------------
+
 
 def build_eje_validation_prompt(
     standards: list[dict[str, Any]],

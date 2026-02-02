@@ -12,6 +12,7 @@ env_file = project_root / ".env"
 
 if env_file.exists():
     from dotenv import load_dotenv
+
     load_dotenv(env_file)
     print(f"✅ Loaded environment variables from {env_file}")
 else:

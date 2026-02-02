@@ -61,10 +61,7 @@ def monitor_progress(output_dir: str, questions_dir: str, refresh_interval: int 
             current_question = None
             if processed_questions:
                 # Ordenar por número de pregunta
-                sorted_questions = sorted(
-                    processed_questions,
-                    key=lambda x: int(x.replace("question_", ""))
-                )
+                sorted_questions = sorted(processed_questions, key=lambda x: int(x.replace("question_", "")))
                 current_question = sorted_questions[-1]
 
             # Verificar archivos recientes para ver qué está procesando ahora
@@ -95,7 +92,7 @@ def monitor_progress(output_dir: str, questions_dir: str, refresh_interval: int 
                 estimated_minutes = 0
 
             # Limpiar pantalla (ANSI escape code)
-            os.system('clear' if os.name != 'nt' else 'cls')
+            os.system("clear" if os.name != "nt" else "cls")
 
             # Mostrar información
             print("=" * 70)
@@ -118,16 +115,13 @@ def monitor_progress(output_dir: str, questions_dir: str, refresh_interval: int 
                 print(f"🔄 Procesando ahora: {processing_now} (Pregunta #{question_num})")
 
             print()
-            print(f"⏱️  Tiempo transcurrido: {elapsed/60:.1f} minutos")
+            print(f"⏱️  Tiempo transcurrido: {elapsed / 60:.1f} minutos")
             if estimated_minutes > 0:
                 print(f"⏳ Tiempo estimado restante: {estimated_minutes:.1f} minutos")
 
             # Mostrar últimas preguntas procesadas
             if processed_questions:
-                sorted_recent = sorted(
-                    processed_questions - last_processed,
-                    key=lambda x: int(x.replace("question_", ""))
-                )
+                sorted_recent = sorted(processed_questions - last_processed, key=lambda x: int(x.replace("question_", "")))
                 if sorted_recent:
                     print()
                     print(f"✨ Nuevas desde última actualización: {', '.join(sorted_recent[:5])}")
@@ -153,26 +147,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Monitorear progreso del procesamiento PAES")
     parser.add_argument(
-        "--output-dir",
-        default="./output/paes-invierno-2026-new",
-        help="Directorio de salida (default: ./output/paes-invierno-2026-new)"
+        "--output-dir", default="./output/paes-invierno-2026-new", help="Directorio de salida (default: ./output/paes-invierno-2026-new)"
     )
-    parser.add_argument(
-        "--questions-dir",
-        default="../pdf-splitter/output/paes-invierno/questions_pdfs",
-        help="Directorio con PDFs de preguntas"
-    )
-    parser.add_argument(
-        "--interval",
-        type=int,
-        default=5,
-        help="Intervalo de actualización en segundos (default: 5)"
-    )
+    parser.add_argument("--questions-dir", default="../pdf-splitter/output/paes-invierno/questions_pdfs", help="Directorio con PDFs de preguntas")
+    parser.add_argument("--interval", type=int, default=5, help="Intervalo de actualización en segundos (default: 5)")
 
     args = parser.parse_args()
 
-    monitor_progress(
-        output_dir=args.output_dir,
-        questions_dir=args.questions_dir,
-        refresh_interval=args.interval
-    )
+    monitor_progress(output_dir=args.output_dir, questions_dir=args.questions_dir, refresh_interval=args.interval)

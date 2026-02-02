@@ -10,7 +10,7 @@ This module orchestrates the full variant generation workflow:
 import json
 import os
 from dataclasses import asdict
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 
 from app.question_variants.models import (
     GenerationReport,
@@ -39,12 +39,7 @@ class VariantPipeline:
         self.generator = VariantGenerator(self.config)
         self.validator = VariantValidator(self.config)
 
-    def run(
-        self,
-        test_id: str,
-        question_ids: Optional[List[str]] = None,
-        num_variants: Optional[int] = None
-    ) -> List[GenerationReport]:
+    def run(self, test_id: str, question_ids: Optional[List[str]] = None, num_variants: Optional[int] = None) -> List[GenerationReport]:
         """Run the variant generation pipeline.
 
         Args:
@@ -55,10 +50,10 @@ class VariantPipeline:
         Returns:
             List of GenerationReport, one per source question.
         """
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("PIPELINE: Generación de Variantes")
         print(f"Test: {test_id}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")
 
         # Load source questions
         sources = self._load_source_questions(test_id, question_ids)
@@ -80,11 +75,7 @@ class VariantPipeline:
 
         return reports
 
-    def _load_source_questions(
-        self,
-        test_id: str,
-        question_ids: Optional[List[str]] = None
-    ) -> List[SourceQuestion]:
+    def _load_source_questions(self, test_id: str, question_ids: Optional[List[str]] = None) -> List[SourceQuestion]:
         """Load source questions from disk."""
 
         test_path = os.path.join(self.FINALIZED_PATH, test_id, "qti")
@@ -134,28 +125,21 @@ class VariantPipeline:
                 question_text=parsed.text,
                 choices=parsed.choices,
                 correct_answer=parsed.correct_answer_text or "",
-                image_urls=parsed.image_urls
+                image_urls=parsed.image_urls,
             )
 
             sources.append(source)
 
         return sources
 
-    def _process_question(
-        self,
-        source: SourceQuestion,
-        num_variants: Optional[int] = None
-    ) -> GenerationReport:
+    def _process_question(self, source: SourceQuestion, num_variants: Optional[int] = None) -> GenerationReport:
         """Process a single source question."""
 
-        print(f"\n{'─'*40}")
+        print(f"\n{'─' * 40}")
         print(f"Procesando: {source.question_id}")
-        print(f"{'─'*40}")
+        print(f"{'─' * 40}")
 
-        report = GenerationReport(
-            source_question_id=source.question_id,
-            source_test_id=source.test_id
-        )
+        report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
 
         # Generate variants
         variants = self.generator.generate_variants(source, num_variants)
@@ -199,23 +183,12 @@ class VariantPipeline:
 
         return report
 
-    def _save_variant(
-        self,
-        variant: VariantQuestion,
-        source: SourceQuestion,
-        is_rejected: bool = False
-    ):
+    def _save_variant(self, variant: VariantQuestion, source: SourceQuestion, is_rejected: bool = False):
         """Save a variant to disk."""
 
         # Build output path
         status = "rejected" if is_rejected else "approved"
-        variant_path = os.path.join(
-            self.config.output_dir,
-            source.test_id,
-            source.question_id,
-            status,
-            variant.variant_id
-        )
+        variant_path = os.path.join(self.config.output_dir, source.test_id, source.question_id, status, variant.variant_id)
 
         os.makedirs(variant_path, exist_ok=True)
 
@@ -228,14 +201,14 @@ class VariantPipeline:
                 "difficulty_equal": variant.validation_result.difficulty_equal,
                 "answer_correct": variant.validation_result.answer_correct,
                 "calculation_steps": variant.validation_result.calculation_steps,
-                "rejection_reason": variant.validation_result.rejection_reason
+                "rejection_reason": variant.validation_result.rejection_reason,
             }
 
         variant_info = {
             "variant_id": variant.variant_id,
             "source_question_id": variant.source_question_id,
             "source_test_id": variant.source_test_id,
-            "is_rejected": is_rejected
+            "is_rejected": is_rejected,
         }
 
         # Helper to save files to a path
@@ -261,19 +234,14 @@ class VariantPipeline:
         if self.config.diagnostic_output_dir and not is_rejected:
             diag_path = os.path.join(
                 self.config.diagnostic_output_dir,
-                variant.variant_id  # Flat structure: all variants in one folder
+                variant.variant_id,  # Flat structure: all variants in one folder
             )
             save_to_path(diag_path)
 
     def _save_report(self, report: GenerationReport):
         """Save generation report."""
 
-        report_path = os.path.join(
-            self.config.output_dir,
-            report.source_test_id,
-            report.source_question_id,
-            "generation_report.json"
-        )
+        report_path = os.path.join(self.config.output_dir, report.source_test_id, report.source_question_id, "generation_report.json")
 
         os.makedirs(os.path.dirname(report_path), exist_ok=True)
 
@@ -287,12 +255,12 @@ class VariantPipeline:
         total_app = sum(r.total_approved for r in reports)
         total_rej = sum(r.total_rejected for r in reports)
 
-        print(f"\n{'='*60}")
+        print(f"\n{'=' * 60}")
         print("RESUMEN")
-        print(f"{'='*60}")
+        print(f"{'=' * 60}")
         print(f"Preguntas procesadas: {len(reports)}")
         print(f"Variantes generadas:  {total_gen}")
-        print(f"Variantes aprobadas:  {total_app} ({100*total_app/total_gen:.1f}%)" if total_gen > 0 else "N/A")
+        print(f"Variantes aprobadas:  {total_app} ({100 * total_app / total_gen:.1f}%)" if total_gen > 0 else "N/A")
         print(f"Variantes rechazadas: {total_rej}")
         print(f"\nOutput: {self.config.output_dir}")
-        print(f"{'='*60}\n")
+        print(f"{'=' * 60}\n")

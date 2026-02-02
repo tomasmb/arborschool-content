@@ -52,12 +52,7 @@ except ImportError:
     sys.exit(1)
 
 
-def migrate_images_to_test_folder(
-    bucket_name: str,
-    test_name: str,
-    dry_run: bool = False,
-    delete_originals: bool = False
-) -> dict[str, Any]:
+def migrate_images_to_test_folder(bucket_name: str, test_name: str, dry_run: bool = False, delete_originals: bool = False) -> dict[str, Any]:
     """
     Migrate images from images/ to images/{test_name}/.
 
@@ -81,10 +76,7 @@ def migrate_images_to_test_folder(
     all_images = list_images_in_prefix(s3_client, bucket_name, "images/")
 
     # Filter to only images directly in images/ (not in subfolders)
-    root_images = [
-        img for img in all_images
-        if img.startswith("images/") and img.count("/") == 1
-    ]
+    root_images = [img for img in all_images if img.startswith("images/") and img.count("/") == 1]
 
     if not root_images:
         print("   ℹ️  No images found in images/")
@@ -93,20 +85,12 @@ def migrate_images_to_test_folder(
     print(f"   Found {len(root_images)} image(s) in images/")
     print()
 
-    results: dict[str, Any] = {
-        "migrated": 0,
-        "skipped": 0,
-        "failed": 0,
-        "operations": []
-    }
+    results: dict[str, Any] = {"migrated": 0, "skipped": 0, "failed": 0, "operations": []}
 
     new_prefix = f"images/{test_name}/"
 
     for source_key in sorted(root_images):
-        _migrate_single_image(
-            s3_client, bucket_name, source_key, new_prefix,
-            dry_run, delete_originals, results
-        )
+        _migrate_single_image(s3_client, bucket_name, source_key, new_prefix, dry_run, delete_originals, results)
 
     _print_migration_summary(results, dry_run)
     results["success"] = results["failed"] == 0
@@ -114,13 +98,7 @@ def migrate_images_to_test_folder(
 
 
 def _migrate_single_image(
-    s3_client: Any,
-    bucket_name: str,
-    source_key: str,
-    new_prefix: str,
-    dry_run: bool,
-    delete_originals: bool,
-    results: dict[str, Any]
+    s3_client: Any, bucket_name: str, source_key: str, new_prefix: str, dry_run: bool, delete_originals: bool, results: dict[str, Any]
 ) -> None:
     """Migrate a single image to the new folder structure."""
     filename = source_key.split("/")[-1]
@@ -131,12 +109,7 @@ def _migrate_single_image(
         s3_client.head_object(Bucket=bucket_name, Key=dest_key)
         print(f"⚠️  Skipping {source_key} (destination {dest_key} already exists)")
         results["skipped"] += 1
-        results["operations"].append({
-            "source": source_key,
-            "dest": dest_key,
-            "status": "skipped",
-            "reason": "destination exists"
-        })
+        results["operations"].append({"source": source_key, "dest": dest_key, "status": "skipped", "reason": "destination exists"})
         return
     except ClientError as e:
         if e.response["Error"]["Code"] != "404":
@@ -148,22 +121,14 @@ def _migrate_single_image(
     print(f"📋 Processing: {filename}")
     if copy_image_in_s3(s3_client, bucket_name, source_key, dest_key, dry_run):
         results["migrated"] += 1
-        results["operations"].append({
-            "source": source_key,
-            "dest": dest_key,
-            "status": "copied"
-        })
+        results["operations"].append({"source": source_key, "dest": dest_key, "status": "copied"})
 
         if delete_originals:
             delete_image_from_s3(s3_client, bucket_name, source_key, dry_run)
             results["operations"][-1]["original_deleted"] = True
     else:
         results["failed"] += 1
-        results["operations"].append({
-            "source": source_key,
-            "dest": dest_key,
-            "status": "failed"
-        })
+        results["operations"].append({"source": source_key, "dest": dest_key, "status": "failed"})
 
 
 def _print_migration_summary(results: dict[str, Any], dry_run: bool) -> None:
@@ -183,37 +148,14 @@ def _print_migration_summary(results: dict[str, Any], dry_run: bool) -> None:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Migrate S3 images to organize them by test name and update XML URLs"
-    )
-    parser.add_argument(
-        "--test-name", required=True,
-        help="Test/prueba name (e.g., 'prueba-invierno-2026')"
-    )
-    parser.add_argument(
-        "--bucket", default=None,
-        help="S3 bucket name (uses AWS_S3_BUCKET from env if not provided)"
-    )
-    parser.add_argument(
-        "--xml-dir", default=None,
-        help="Directory containing QTI XML files to update"
-    )
-    parser.add_argument(
-        "--dry-run", action="store_true", default=True,
-        help="Perform a dry run without making changes (default: True)"
-    )
-    parser.add_argument(
-        "--no-dry-run", action="store_true",
-        help="Actually perform the migration (disables dry-run)"
-    )
-    parser.add_argument(
-        "--delete-originals", action="store_true",
-        help="Delete original images after copying (USE WITH CAUTION)"
-    )
-    parser.add_argument(
-        "--skip-xml-update", action="store_true",
-        help="Skip XML URL updates (only migrate images)"
-    )
+    parser = argparse.ArgumentParser(description="Migrate S3 images to organize them by test name and update XML URLs")
+    parser.add_argument("--test-name", required=True, help="Test/prueba name (e.g., 'prueba-invierno-2026')")
+    parser.add_argument("--bucket", default=None, help="S3 bucket name (uses AWS_S3_BUCKET from env if not provided)")
+    parser.add_argument("--xml-dir", default=None, help="Directory containing QTI XML files to update")
+    parser.add_argument("--dry-run", action="store_true", default=True, help="Perform a dry run without making changes (default: True)")
+    parser.add_argument("--no-dry-run", action="store_true", help="Actually perform the migration (disables dry-run)")
+    parser.add_argument("--delete-originals", action="store_true", help="Delete original images after copying (USE WITH CAUTION)")
+    parser.add_argument("--skip-xml-update", action="store_true", help="Skip XML URL updates (only migrate images)")
 
     args = parser.parse_args()
 
@@ -252,15 +194,12 @@ def main():
     except Exception as e:
         print(f"❌ Error: {e}")
         import traceback
+
         traceback.print_exc()
         sys.exit(1)
 
 
-def _run_image_migration(
-    args: argparse.Namespace,
-    bucket_name: str,
-    dry_run: bool
-) -> dict[str, Any] | None:
+def _run_image_migration(args: argparse.Namespace, bucket_name: str, dry_run: bool) -> dict[str, Any] | None:
     """Run the image migration step."""
     if args.skip_xml_update and dry_run:
         return None
@@ -269,10 +208,7 @@ def _run_image_migration(
         print("STEP 1: Migrating images in S3")
         print("=" * 60)
         return migrate_images_to_test_folder(
-            bucket_name=bucket_name,
-            test_name=args.test_name,
-            dry_run=dry_run,
-            delete_originals=args.delete_originals
+            bucket_name=bucket_name, test_name=args.test_name, dry_run=dry_run, delete_originals=args.delete_originals
         )
     except ValueError as e:
         if dry_run:
@@ -282,12 +218,7 @@ def _run_image_migration(
         raise
 
 
-def _run_xml_update(
-    args: argparse.Namespace,
-    bucket_name: str,
-    aws_region: str,
-    dry_run: bool
-) -> dict[str, Any] | None:
+def _run_xml_update(args: argparse.Namespace, bucket_name: str, aws_region: str, dry_run: bool) -> dict[str, Any] | None:
     """Run the XML URL update step."""
     if args.skip_xml_update:
         print()
@@ -302,26 +233,13 @@ def _run_xml_update(
     if args.xml_dir:
         xml_dir = Path(args.xml_dir)
     else:
-        xml_dir = (
-            project_root / "app" / "data" / "pruebas" / "procesadas" /
-            args.test_name / "qti"
-        )
+        xml_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / args.test_name / "qti"
         print(f"   Using inferred XML directory: {xml_dir}")
 
-    return update_xml_urls(
-        xml_dir=xml_dir,
-        bucket_name=bucket_name,
-        aws_region=aws_region,
-        test_name=args.test_name,
-        dry_run=dry_run
-    )
+    return update_xml_urls(xml_dir=xml_dir, bucket_name=bucket_name, aws_region=aws_region, test_name=args.test_name, dry_run=dry_run)
 
 
-def _print_final_summary(
-    image_results: dict[str, Any] | None,
-    xml_results: dict[str, Any] | None,
-    dry_run: bool
-) -> None:
+def _print_final_summary(image_results: dict[str, Any] | None, xml_results: dict[str, Any] | None, dry_run: bool) -> None:
     """Print final summary."""
     print()
     print()
@@ -338,10 +256,7 @@ def _print_final_summary(
         print(f"XML files updated: {xml_results['updated']}")
         print(f"XML files failed: {xml_results['failed']}")
 
-    overall_success = (
-        (image_results is None or image_results["success"]) and
-        (xml_results is None or xml_results["success"])
-    )
+    overall_success = (image_results is None or image_results["success"]) and (xml_results is None or xml_results["success"])
 
     if overall_success:
         print()

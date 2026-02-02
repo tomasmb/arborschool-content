@@ -94,21 +94,25 @@ def build_hierarchical_tree(atoms: list[dict], depths: dict[str, int]) -> list[d
 
         children = []
         for atom in sorted_atoms:
-            children.append({
-                "name": atom["id"],
-                "attributes": {
-                    "title": atom["titulo"],
-                    "depth": depths.get(atom["id"], 0),
-                    "habilidad": atom["habilidad_principal"],
-                },
-                "children": [],  # Leaf nodes for now
-            })
+            children.append(
+                {
+                    "name": atom["id"],
+                    "attributes": {
+                        "title": atom["titulo"],
+                        "depth": depths.get(atom["id"], 0),
+                        "habilidad": atom["habilidad_principal"],
+                    },
+                    "children": [],  # Leaf nodes for now
+                }
+            )
 
-        roots.append({
-            "name": eje_names.get(eje, eje),
-            "attributes": {"type": "eje", "count": len(eje_atoms)},
-            "children": children,
-        })
+        roots.append(
+            {
+                "name": eje_names.get(eje, eje),
+                "attributes": {"type": "eje", "count": len(eje_atoms)},
+                "children": children,
+            }
+        )
 
     return roots
 
@@ -134,19 +138,23 @@ def export_skill_tree(atoms_path: Path, output_path: Path, output_format: str = 
 
     for atom in atoms:
         atom_id = atom["id"]
-        nodes.append({
-            "id": atom_id,
-            "title": atom["titulo"],
-            "eje": atom["eje"],
-            "habilidad": atom["habilidad_principal"],
-            "depth": depths.get(atom_id, 0),
-        })
+        nodes.append(
+            {
+                "id": atom_id,
+                "title": atom["titulo"],
+                "eje": atom["eje"],
+                "habilidad": atom["habilidad_principal"],
+                "depth": depths.get(atom_id, 0),
+            }
+        )
 
         for prereq in atom.get("prerrequisitos", []):
-            edges.append({
-                "source": prereq,
-                "target": atom_id,
-            })
+            edges.append(
+                {
+                    "source": prereq,
+                    "target": atom_id,
+                }
+            )
 
     # Build hierarchical format
     hierarchical = build_hierarchical_tree(atoms, depths)

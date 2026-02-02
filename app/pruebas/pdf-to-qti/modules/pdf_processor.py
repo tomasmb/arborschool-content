@@ -22,6 +22,8 @@ from typing import Any
 
 import fitz  # type: ignore
 
+from .pdf_image_utils import is_meaningful_image, render_image_area, trim_whitespace
+from .pdf_table_extraction import extract_tables_with_pymupdf
 from .pdf_text_processing import (
     CustomJSONEncoder,
     extract_block_text,
@@ -29,8 +31,6 @@ from .pdf_text_processing import (
     extract_text_blocks,
     split_choice_blocks,
 )
-from .pdf_image_utils import is_meaningful_image, render_image_area, trim_whitespace
-from .pdf_table_extraction import extract_tables_with_pymupdf
 from .pdf_visual_pipeline import extract_images_and_tables
 from .qti_transformer import detect_encoding_errors
 from .utils import combine_structured_data, create_combined_image, get_page_image
@@ -52,9 +52,7 @@ __all__ = [
 _logger = logging.getLogger(__name__)
 
 
-def extract_pdf_content(
-    doc: fitz.Document, openai_api_key: str | None = None
-) -> dict[str, Any]:
+def extract_pdf_content(doc: fitz.Document, openai_api_key: str | None = None) -> dict[str, Any]:
     """
     Extract comprehensive content from a PDF document using AI-powered analysis.
 
@@ -92,9 +90,7 @@ def extract_pdf_content(
     return content
 
 
-def _process_page(
-    doc: fitz.Document, page_num: int, openai_api_key: str | None
-) -> dict[str, Any]:
+def _process_page(doc: fitz.Document, page_num: int, openai_api_key: str | None) -> dict[str, Any]:
     """
     Process a single PDF page and extract all content.
 
@@ -131,10 +127,7 @@ def _process_page(
         "page_number": page_num,
         "structured_text": structured_text,
         "plain_text": plain_text,
-        "page_image_base64": (
-            extracted_content.get("page_image_base64")
-            or base64.b64encode(page_image).decode("utf-8")
-        ),
+        "page_image_base64": (extracted_content.get("page_image_base64") or base64.b64encode(page_image).decode("utf-8")),
         "bbox": [page.rect.x0, page.rect.y0, page.rect.x1, page.rect.y1],
         "width": page.rect.width,
         "height": page.rect.height,
@@ -148,10 +141,7 @@ def _check_encoding_errors(plain_text: str, page_num: int) -> None:
     """Check for encoding errors and log warnings if found."""
     encoding_errors = detect_encoding_errors(plain_text)
     if encoding_errors:
-        _logger.warning(
-            f"PDF page {page_num} has encoding errors: {encoding_errors[:3]}. "
-            "This indicates non-standard font mappings in the PDF."
-        )
+        _logger.warning(f"PDF page {page_num} has encoding errors: {encoding_errors[:3]}. This indicates non-standard font mappings in the PDF.")
 
 
 def _finalize_content(doc: fitz.Document, content: dict[str, Any]) -> None:

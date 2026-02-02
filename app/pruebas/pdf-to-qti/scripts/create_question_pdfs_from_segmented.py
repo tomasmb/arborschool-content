@@ -15,12 +15,7 @@ except ImportError:
     sys.exit(1)
 
 
-def create_question_pdf(
-    original_pdf_path: str,
-    question_data: dict,
-    output_path: str,
-    margin: int = 10
-) -> bool:
+def create_question_pdf(original_pdf_path: str, question_data: dict, output_path: str, margin: int = 10) -> bool:
     """
     Create a PDF for a single question using bounding boxes.
 
@@ -65,12 +60,7 @@ def create_question_pdf(
                 new_page = new_doc.new_page(width=page.rect.width, height=page.rect.height)
 
                 # Copy the region
-                new_page.show_pdf_page(
-                    new_page.rect,
-                    doc,
-                    page_idx,
-                    clip=rect
-                )
+                new_page.show_pdf_page(new_page.rect, doc, page_idx, clip=rect)
 
         # Save the new PDF
         new_doc.save(output_path)
@@ -88,24 +78,12 @@ def main():
     """Main function."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Create individual question PDFs from segmented.json"
-    )
+    parser = argparse.ArgumentParser(description="Create individual question PDFs from segmented.json")
     parser.add_argument(
-        "--segmented-json",
-        default="../app/data/pruebas/procesadas/prueba-invierno-2026/segmented.json",
-        help="Path to segmented.json"
+        "--segmented-json", default="../app/data/pruebas/procesadas/prueba-invierno-2026/segmented.json", help="Path to segmented.json"
     )
-    parser.add_argument(
-        "--original-pdf",
-        default="../app/data/pruebas/raw/prueba-invierno-2026.pdf",
-        help="Path to original PDF"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="./questions_pdfs",
-        help="Output directory for question PDFs"
-    )
+    parser.add_argument("--original-pdf", default="../app/data/pruebas/raw/prueba-invierno-2026.pdf", help="Path to original PDF")
+    parser.add_argument("--output-dir", default="./questions_pdfs", help="Output directory for question PDFs")
 
     args = parser.parse_args()
 
@@ -154,11 +132,7 @@ def main():
 
         print(f"[{i}/{len(questions)}] Creating {filename}...", end=" ")
 
-        if create_question_pdf(
-            original_pdf_path=str(original_pdf),
-            question_data=question,
-            output_path=str(output_path)
-        ):
+        if create_question_pdf(original_pdf_path=str(original_pdf), question_data=question, output_path=str(output_path)):
             print("✅")
             successful += 1
         else:

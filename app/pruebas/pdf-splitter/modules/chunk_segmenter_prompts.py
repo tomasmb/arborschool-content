@@ -16,126 +16,71 @@ SEGMENT_SCHEMA: dict = {
             "items": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Unique identifier for the question"
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "Full text of the question"
-                    },
+                    "id": {"type": "string", "description": "Unique identifier for the question"},
+                    "text": {"type": "string", "description": "Full text of the question"},
                     "start_marker": {
                         "type": "string",
-                        "description": (
-                            "Start marker - the first 10 words of the segment text "
-                            "or coordinates in format 'x,y' (in PDF points)"
-                        )
+                        "description": ("Start marker - the first 10 words of the segment text or coordinates in format 'x,y' (in PDF points)"),
                     },
-                    "page_nums": {
-                        "type": "array",
-                        "items": {"type": "integer", "minimum": 1},
-                        "description": "1-based pages where question appears"
-                    },
-                    "type": {
-                        "type": "string",
-                        "enum": ["question", "sub_question"],
-                        "description": "Question type"
-                    },
-                    "multi_page": {
-                        "type": "boolean",
-                        "description": "Whether question spans multiple pages"
-                    },
+                    "page_nums": {"type": "array", "items": {"type": "integer", "minimum": 1}, "description": "1-based pages where question appears"},
+                    "type": {"type": "string", "enum": ["question", "sub_question"], "description": "Question type"},
+                    "multi_page": {"type": "boolean", "description": "Whether question spans multiple pages"},
                     "multi_question_references": {
                         "type": "array",
-                        "items": {
-                            "type": "string",
-                            "description": "ID of a multi-question reference used by this question"
-                        },
-                        "description": "IDs of multi-question references used by this question"
-                    }
+                        "items": {"type": "string", "description": "ID of a multi-question reference used by this question"},
+                        "description": "IDs of multi-question references used by this question",
+                    },
                 },
-                "required": [
-                    "id", "text", "start_marker", "page_nums",
-                    "type", "multi_page", "multi_question_references"
-                ],
-                "additionalProperties": False
-            }
+                "required": ["id", "text", "start_marker", "page_nums", "type", "multi_page", "multi_question_references"],
+                "additionalProperties": False,
+            },
         },
         "multi_question_references": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Unique identifier for the reference"
-                    },
-                    "type": {
-                        "type": "string",
-                        "enum": ["citation", "figure", "table", "footnote"],
-                        "description": "Reference type"
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "Full text content of the reference"
-                    },
-                    "start_marker": {
-                        "type": "string",
-                        "description": "Start marker for segment"
-                    },
+                    "id": {"type": "string", "description": "Unique identifier for the reference"},
+                    "type": {"type": "string", "enum": ["citation", "figure", "table", "footnote"], "description": "Reference type"},
+                    "text": {"type": "string", "description": "Full text content of the reference"},
+                    "start_marker": {"type": "string", "description": "Start marker for segment"},
                     "page_nums": {
                         "type": "array",
                         "items": {"type": "integer", "minimum": 1},
-                        "description": "1-based pages where reference appears"
+                        "description": "1-based pages where reference appears",
                     },
                     "question_ids": {
                         "type": "array",
-                        "items": {
-                            "type": "string",
-                            "description": "ID of a question that uses this reference"
-                        },
-                        "description": "IDs of questions that use this multi-question reference"
-                    }
+                        "items": {"type": "string", "description": "ID of a question that uses this reference"},
+                        "description": "IDs of questions that use this multi-question reference",
+                    },
                 },
                 "required": ["id", "type", "text", "start_marker", "page_nums", "question_ids"],
-                "additionalProperties": False
-            }
+                "additionalProperties": False,
+            },
         },
         "unrelated_content_segments": {
             "type": "array",
             "items": {
                 "type": "object",
                 "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Unique identifier for the unrelated content segment"
-                    },
-                    "type": {
-                        "type": "string",
-                        "enum": ["cover_page", "general_instructions", "other"],
-                        "description": "Type of unrelated content"
-                    },
-                    "text": {
-                        "type": "string",
-                        "description": "Full text content of the unrelated segment"
-                    },
-                    "start_marker": {
-                        "type": "string",
-                        "description": "Start marker for segment"
-                    },
+                    "id": {"type": "string", "description": "Unique identifier for the unrelated content segment"},
+                    "type": {"type": "string", "enum": ["cover_page", "general_instructions", "other"], "description": "Type of unrelated content"},
+                    "text": {"type": "string", "description": "Full text content of the unrelated segment"},
+                    "start_marker": {"type": "string", "description": "Start marker for segment"},
                     "page_nums": {
                         "type": "array",
                         "items": {"type": "integer", "minimum": 1},
-                        "description": "1-based pages where unrelated content appears"
-                    }
+                        "description": "1-based pages where unrelated content appears",
+                    },
                 },
                 "required": ["id", "type", "text", "start_marker", "page_nums"],
-                "additionalProperties": False
-            }
-        }
+                "additionalProperties": False,
+            },
+        },
     },
     "required": ["questions", "multi_question_references", "unrelated_content_segments"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 # Chain-of-Thought system prompt for reliable segmentation

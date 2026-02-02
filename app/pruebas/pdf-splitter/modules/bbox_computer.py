@@ -76,39 +76,42 @@ def expand_blocks_from_start(page, start_block_idx, other_segment_blocks):
         # Find adjacent blocks to the right and bottom
         candidates_added = 0
         for candidate_idx, candidate_block in enumerate(blocks):
-            if (candidate_idx in included_blocks or
-                candidate_idx in blocks_to_check or
-                candidate_idx in other_segment_blocks or
-                candidate_block.get("type") != 0):
+            if (
+                candidate_idx in included_blocks
+                or candidate_idx in blocks_to_check
+                or candidate_idx in other_segment_blocks
+                or candidate_block.get("type") != 0
+            ):
                 continue
 
             candidate_bbox = candidate_block.get("bbox", [0, 0, 0, 0])
 
             # Calculate distances
             horizontal_distance = candidate_bbox[0] - current_bbox[2]  # Left edge of candidate - right edge of current
-            vertical_distance = candidate_bbox[1] - current_bbox[3]    # Top edge of candidate - bottom edge of current
+            vertical_distance = candidate_bbox[1] - current_bbox[3]  # Top edge of candidate - bottom edge of current
 
             # Check if candidate is to the right (same row, roughly)
             is_to_right = (
-                horizontal_distance >= -alignment_tolerance and  # Not too far left
-                horizontal_distance <= max_distance and          # Not too far right
-                abs(candidate_bbox[1] - current_bbox[1]) <= alignment_tolerance  # Similar top y-coordinate
+                horizontal_distance >= -alignment_tolerance  # Not too far left
+                and horizontal_distance <= max_distance  # Not too far right
+                and abs(candidate_bbox[1] - current_bbox[1]) <= alignment_tolerance  # Similar top y-coordinate
             )
 
             # Check if candidate is below (similar or overlapping x-range)
             is_below = (
-                vertical_distance >= -alignment_tolerance and   # Not too far up
-                vertical_distance <= max_distance and           # Not too far down
-                not (candidate_bbox[2] <= current_bbox[0] - alignment_tolerance or
-                     candidate_bbox[0] >= current_bbox[2] + alignment_tolerance)  # X-ranges overlap with tolerance
+                vertical_distance >= -alignment_tolerance  # Not too far up
+                and vertical_distance <= max_distance  # Not too far down
+                and not (
+                    candidate_bbox[2] <= current_bbox[0] - alignment_tolerance or candidate_bbox[0] >= current_bbox[2] + alignment_tolerance
+                )  # X-ranges overlap with tolerance
             )
 
             # Check if candidate is diagonally below-right (within reasonable distance)
             is_diagonal = (
-                horizontal_distance >= -alignment_tolerance and
-                horizontal_distance <= max_distance // 2 and    # Stricter distance for diagonal
-                vertical_distance >= -alignment_tolerance and
-                vertical_distance <= max_distance // 2
+                horizontal_distance >= -alignment_tolerance
+                and horizontal_distance <= max_distance // 2  # Stricter distance for diagonal
+                and vertical_distance >= -alignment_tolerance
+                and vertical_distance <= max_distance // 2
             )
 
             if is_to_right or is_below or is_diagonal:
@@ -125,6 +128,7 @@ def expand_blocks_from_start(page, start_block_idx, other_segment_blocks):
 
     print(f"🎉 Expansion complete: {len(selected_bboxes)} blocks included, {len(other_segment_blocks)} boundaries respected")
     return selected_bboxes
+
 
 def compute_bboxes_for_segments(results: dict, pdf_path: str, start_page_in_original: int = 1) -> dict:
     """

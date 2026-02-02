@@ -25,73 +25,68 @@ _logger = logging.getLogger(__name__)
 # Used for DETECTION only - NOT for auto-correction
 ENCODING_FIXES: dict[str, str] = {
     # Tildes comunes
-    'e1cido': 'ácido',
-    'e1tomos': 'átomos',
-    'e1tomo': 'átomo',
-    'c1cido': 'ácido',
-    'c1tomo': 'átomo',
-    'oxedgeno': 'oxígeno',
-    'hidrf3geno': 'hidrógeno',
-    'sulffarico': 'sulfúrico',
-    'quedmico': 'químico',
-    'informacif3n': 'información',
-    'continuacif3n': 'continuación',
-    'reflexif3n': 'reflexión',
-    'traslacif3n': 'traslación',
-    'isome9tricas': 'isométricas',
-    've9rtice': 'vértice',
-    've9rtices': 'vértices',
-    'producif3n': 'producción',
-    'tecnolf3gica': 'tecnológica',
-    'cumplif3': 'cumplió',
-    'Funcif3n': 'Función',
-    'razf3n': 'razón',
-    'me1s': 'más',
-    'd1a': 'día',
-    'd1as': 'días',
-    'Mi1rcoles': 'Miércoles',
-    'Gr1fico': 'Gráfico',
-
+    "e1cido": "ácido",
+    "e1tomos": "átomos",
+    "e1tomo": "átomo",
+    "c1cido": "ácido",
+    "c1tomo": "átomo",
+    "oxedgeno": "oxígeno",
+    "hidrf3geno": "hidrógeno",
+    "sulffarico": "sulfúrico",
+    "quedmico": "químico",
+    "informacif3n": "información",
+    "continuacif3n": "continuación",
+    "reflexif3n": "reflexión",
+    "traslacif3n": "traslación",
+    "isome9tricas": "isométricas",
+    "ve9rtice": "vértice",
+    "ve9rtices": "vértices",
+    "producif3n": "producción",
+    "tecnolf3gica": "tecnológica",
+    "cumplif3": "cumplió",
+    "Funcif3n": "Función",
+    "razf3n": "razón",
+    "me1s": "más",
+    "d1a": "día",
+    "d1as": "días",
+    "Mi1rcoles": "Miércoles",
+    "Gr1fico": "Gráfico",
     # Ñ
-    'af1o': 'año',
-    'af1os': 'años',
-
+    "af1o": "año",
+    "af1os": "años",
     # Signos de interrogación
-    'bfCue1l': '¿Cuál',
-    'bfcue1l': '¿cuál',
-    'bfcue1ntos': '¿cuántos',
-    'bfcue1les': '¿cuáles',
-    'bfCue': '¿Cu',
-    'bfcue': '¿cu',
-
+    "bfCue1l": "¿Cuál",
+    "bfcue1l": "¿cuál",
+    "bfcue1ntos": "¿cuántos",
+    "bfcue1les": "¿cuáles",
+    "bfCue": "¿Cu",
+    "bfcue": "¿cu",
     # Otros
-    'sere1': 'será',
-    'produciredan': 'producirían',
-    'comenzare1': 'comenzará',
-    'restaurare1': 'restaurará',
-    'vaceda': 'vacía',
-
+    "sere1": "será",
+    "produciredan": "producirían",
+    "comenzare1": "comenzará",
+    "restaurare1": "restaurará",
+    "vaceda": "vacía",
     # Comillas mal codificadas
-    'ab bajabb': '"baja"',
-    'ab no bajabb': '"no baja"',
-    'bfCon cue1l': '¿Con cuál',
-    'bfCon': '¿Con',
-    'cue1l': 'cuál',
-
+    "ab bajabb": '"baja"',
+    "ab no bajabb": '"no baja"',
+    "bfCon cue1l": "¿Con cuál",
+    "bfCon": "¿Con",
+    "cue1l": "cuál",
     # Más tildes
-    'orge1nicos': 'orgánicos',
-    'gre1ficos': 'gráficos',
-    'construccif3n': 'construcción',
-    'comparacif3n': 'comparación',
-    'afirmacif3n': 'afirmación',
-    'continfachn': 'continuación',
-    'este1n': 'están',
-    'este1': 'está',
-    'este1 graduados': 'están graduados',
-    'este1 escritos': 'están escritos',
-    'este1 juntas': 'están juntas',
-    'Ilustracif3n': 'Ilustración',
-    'ilustracif3n': 'ilustración',
+    "orge1nicos": "orgánicos",
+    "gre1ficos": "gráficos",
+    "construccif3n": "construcción",
+    "comparacif3n": "comparación",
+    "afirmacif3n": "afirmación",
+    "continfachn": "continuación",
+    "este1n": "están",
+    "este1": "está",
+    "este1 graduados": "están graduados",
+    "este1 escritos": "están escritos",
+    "este1 juntas": "están juntas",
+    "Ilustracif3n": "Ilustración",
+    "ilustracif3n": "ilustración",
 }
 
 
@@ -176,11 +171,7 @@ def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
         return qti_xml, False
 
     # Log warning but do NOT fix - fixing is error-prone
-    _logger.warning(
-        "Encoding errors detected in QTI XML. "
-        "Content should be rejected, not auto-fixed. "
-        f"Found {len(errors)} pattern(s): {errors[:5]}"
-    )
+    _logger.warning(f"Encoding errors detected in QTI XML. Content should be rejected, not auto-fixed. Found {len(errors)} pattern(s): {errors[:5]}")
 
     # Return unchanged XML with flag indicating errors were found
     # The caller should reject this content

@@ -30,7 +30,7 @@ from .image_processing.multipart_images import (
 )
 from .pdf_image_utils import is_meaningful_image, render_image_area
 from .pdf_table_extraction import extract_tables_with_pymupdf, try_reconstruct_table_from_blocks
-from .pdf_text_processing import extract_block_text, split_choice_blocks
+from .pdf_text_processing import split_choice_blocks
 from .pdf_visual_separation import (
     extract_question_text_from_blocks,
     process_visual_separation,
@@ -75,33 +75,24 @@ def extract_images_and_tables(
 
     # Step 3: Process visual separation (prompt vs choice images)
     if has_visual_content:
-        separation_result = process_visual_separation(
-            page, all_blocks, ai_analysis_result, ai_categories, openai_api_key
-        )
+        separation_result = process_visual_separation(page, all_blocks, ai_analysis_result, ai_categories, openai_api_key)
         if separation_result:
             separation_result["tables"] = tables_info
             return separation_result
 
     # Step 4: Try choice diagram detection (fallback)
     if has_visual_content and ai_categories:
-        choice_result = _try_choice_diagram_detection(
-            page, all_blocks, ai_categories, tables_info, ai_analysis_result, has_visual_content
-        )
+        choice_result = _try_choice_diagram_detection(page, all_blocks, ai_categories, tables_info, ai_analysis_result, has_visual_content)
         if choice_result:
             return choice_result
 
     # Step 5: Handle multi-part questions
-    multipart_result = _try_multipart_detection(
-        page, all_blocks, ai_categories, tables_info, ai_analysis_result,
-        has_visual_content, openai_api_key
-    )
+    multipart_result = _try_multipart_detection(page, all_blocks, ai_categories, tables_info, ai_analysis_result, has_visual_content, openai_api_key)
     if multipart_result:
         return multipart_result
 
     # Step 6: Regular image processing
-    images = _process_regular_images(
-        page, all_blocks, ai_categories, has_visual_content, tables_info, openai_api_key
-    )
+    images = _process_regular_images(page, all_blocks, ai_categories, has_visual_content, tables_info, openai_api_key)
 
     # Step 7: Apply multipart filtering if applicable
     images = _apply_multipart_filtering(images, all_blocks)
@@ -179,9 +170,7 @@ def _try_choice_diagram_detection(
     print("📸 Step 3 (Fallback): Using original choice diagram detection...")
 
     question_text = extract_question_text_from_blocks(all_blocks)
-    choice_images = detect_and_extract_choice_diagrams(
-        page, all_blocks, ai_categories, question_text
-    )
+    choice_images = detect_and_extract_choice_diagrams(page, all_blocks, ai_categories, question_text)
 
     if choice_images:
         print(f"🎯 ✅ Detected choice diagram question with {len(choice_images)} choices")
@@ -223,9 +212,7 @@ def _try_multipart_detection(
     parts_with_visuals = multipart_info[0]["parts_with_visuals"]
     print(f"🎯 Running specialized AI detection for parts: {parts_with_visuals}")
 
-    part_specific_images = detect_part_specific_images_with_ai(
-        page, all_blocks, parts_with_visuals, openai_api_key
-    )
+    part_specific_images = detect_part_specific_images_with_ai(page, all_blocks, parts_with_visuals, openai_api_key)
 
     if not part_specific_images:
         return None
@@ -278,9 +265,7 @@ def _process_regular_images(
 
         # Step 4b: Assess adequacy and potentially expand
         if meaningful_images and has_visual_content:
-            meaningful_images = _assess_and_expand_images(
-                meaningful_images, page, all_blocks, ai_categories, openai_api_key
-            )
+            meaningful_images = _assess_and_expand_images(meaningful_images, page, all_blocks, ai_categories, openai_api_key)
 
     # Step 5: Use AI detection if no PyMuPDF images found
     if not meaningful_images and has_visual_content:
@@ -297,15 +282,13 @@ def _process_regular_images(
     # Step 6: Process each meaningful image with AI-guided bbox operations
     for idx, (original_idx, image_block) in enumerate(meaningful_images):
         original_bbox = image_block.get("bbox", [0, 0, 0, 0])
-        print(f"📸 Processing image {idx+1}/{len(meaningful_images)}: {original_bbox}")
+        print(f"📸 Processing image {idx + 1}/{len(meaningful_images)}: {original_bbox}")
 
         # Expand bbox using deterministic logic
         expanded_bbox = expand_image_bbox_to_boundaries(original_bbox, all_blocks, page)
 
         # Shrink away from question/answer text using AI categorization
-        final_bbox = shrink_image_bbox_away_from_text(
-            expanded_bbox, all_blocks, page, ai_categories
-        )
+        final_bbox = shrink_image_bbox_away_from_text(expanded_bbox, all_blocks, page, ai_categories)
 
         # Render the final image area
         rendered = render_image_area(page, final_bbox, original_bbox, idx)
@@ -315,9 +298,7 @@ def _process_regular_images(
     return images
 
 
-def _filter_meaningful_images(
-    image_blocks: list[dict[str, Any]], tables_info: list[dict[str, Any]]
-) -> list[tuple[int, dict[str, Any]]]:
+def _filter_meaningful_images(image_blocks: list[dict[str, Any]], tables_info: list[dict[str, Any]]) -> list[tuple[int, dict[str, Any]]]:
     """Filter image blocks to find meaningful ones that don't overlap with tables."""
     candidate_images: list[tuple[int, dict[str, Any]]] = []
 
@@ -325,13 +306,11 @@ def _filter_meaningful_images(
         bbox = image_block.get("bbox", [0, 0, 0, 0])
 
         # Check if this overlaps with detected tables
-        is_table_area = any(
-            bbox_overlap_percentage(bbox, table["bbox"]) > 0.5 for table in tables_info
-        )
+        is_table_area = any(bbox_overlap_percentage(bbox, table["bbox"]) > 0.5 for table in tables_info)
 
         if not is_table_area and is_meaningful_image(bbox):
             candidate_images.append((i, image_block))
-            print(f"📸 ✅ Image {i+1} is meaningful and separate from tables")
+            print(f"📸 ✅ Image {i + 1} is meaningful and separate from tables")
 
     return candidate_images
 
@@ -347,9 +326,7 @@ def _assess_and_expand_images(
     print("📸 Step 4b: Assessing PyMuPDF image adequacy...")
 
     image_blocks_only = [img_block for _, img_block in candidate_images]
-    adequacy_result = assess_pymupdf_image_adequacy(
-        image_blocks_only, page, all_blocks, openai_api_key
-    )
+    adequacy_result = assess_pymupdf_image_adequacy(image_blocks_only, page, all_blocks, openai_api_key)
 
     if adequacy_result["adequate"]:
         print(f"📸 ✅ PyMuPDF images are adequate: {adequacy_result['reason']}")
@@ -364,9 +341,7 @@ def _assess_and_expand_images(
         original_bbox = image_block.get("bbox", [0, 0, 0, 0])
 
         # Expand the PyMuPDF bbox intelligently
-        expanded_bbox = expand_pymupdf_bbox_intelligently(
-            original_bbox, page, all_blocks, ai_categories
-        )
+        expanded_bbox = expand_pymupdf_bbox_intelligently(original_bbox, page, all_blocks, ai_categories)
 
         # Create expanded image block
         expanded_block = image_block.copy()
@@ -380,9 +355,7 @@ def _assess_and_expand_images(
     return expanded_images
 
 
-def _apply_multipart_filtering(
-    images: list[dict[str, Any]], all_blocks: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def _apply_multipart_filtering(images: list[dict[str, Any]], all_blocks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Apply multipart filtering if applicable (Step 7)."""
     if not images:
         return images

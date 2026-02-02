@@ -36,10 +36,7 @@ def navigate_to_sandbox(driver: WebDriver, sandbox_url: str) -> dict[str, Any]:
         return {"success": True}
     except Exception as nav_error:
         print(f"   ❌ Navigation failed: {str(nav_error)}")
-        return {
-            "success": False,
-            "error": f"Failed to navigate to sandbox: {str(nav_error)}"
-        }
+        return {"success": False, "error": f"Failed to navigate to sandbox: {str(nav_error)}"}
 
 
 def wait_for_page_load(driver: WebDriver, is_lambda: bool) -> None:
@@ -78,21 +75,13 @@ def find_qti_textarea(driver: WebDriver, is_lambda: bool) -> dict[str, Any]:
     wait = WebDriverWait(driver, timeout)
 
     try:
-        xml_textarea = wait.until(
-            EC.presence_of_element_located((By.TAG_NAME, "textarea"))
-        )
+        xml_textarea = wait.until(EC.presence_of_element_located((By.TAG_NAME, "textarea")))
         print("   ✅ Found QTI XML textarea")
-        return {
-            "success": True,
-            "textarea": xml_textarea
-        }
+        return {"success": True, "textarea": xml_textarea}
 
     except TimeoutException as e:
         print(f"   ❌ Timeout finding textarea: {str(e)}")
-        return {
-            "success": False,
-            "error": f"Could not find QTI XML input textarea: {str(e)}"
-        }
+        return {"success": False, "error": f"Could not find QTI XML input textarea: {str(e)}"}
 
 
 def insert_qti_xml(driver: WebDriver, textarea, qti_xml: str) -> dict[str, Any]:
@@ -114,19 +103,13 @@ def insert_qti_xml(driver: WebDriver, textarea, qti_xml: str) -> dict[str, Any]:
         print("   🧹 Textarea cleared")
 
         # Use JavaScript injection for reliable insertion
-        escaped_xml = (
-            qti_xml
-            .replace('\\', '\\\\')
-            .replace('"', '\\"')
-            .replace('\n', '\\n')
-            .replace('\r', '\\r')
-        )
+        escaped_xml = qti_xml.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
         js_script = f'arguments[0].value = "{escaped_xml}";'
         driver.execute_script(js_script, textarea)
         print("   ✅ QTI XML injected via JavaScript")
 
         # Verify the content was inserted
-        inserted_length = len(textarea.get_attribute('value'))
+        inserted_length = len(textarea.get_attribute("value"))
         print(f"   🔍 Verification: {inserted_length}/{len(qti_xml)} characters in textarea")
 
         # Simulate user input to trigger QTI rendering
@@ -140,10 +123,7 @@ def insert_qti_xml(driver: WebDriver, textarea, qti_xml: str) -> dict[str, Any]:
 
     except Exception as insert_error:
         print(f"   ❌ Error inserting XML: {str(insert_error)}")
-        return {
-            "success": False,
-            "error": f"Failed to insert QTI XML: {str(insert_error)}"
-        }
+        return {"success": False, "error": f"Failed to insert QTI XML: {str(insert_error)}"}
 
 
 def wait_for_qti_render(driver: WebDriver, max_wait_time: int = 15) -> None:
@@ -189,9 +169,7 @@ def find_question_area(driver: WebDriver):
 
     # Try the main QTI container first
     try:
-        question_area = driver.find_element(
-            By.CSS_SELECTOR, ".col-lg-8 .qti3-player-container-fluid"
-        )
+        question_area = driver.find_element(By.CSS_SELECTOR, ".col-lg-8 .qti3-player-container-fluid")
         print("   ✅ Found QTI container")
         return question_area
     except Exception:
@@ -222,21 +200,15 @@ def log_question_area_debug_info(driver: WebDriver, question_area) -> None:
     print(f"   📝 Content length: {len(area_text)} characters")
 
     if area_text:
-        preview = area_text[:100].replace('\n', ' ')
+        preview = area_text[:100].replace("\n", " ")
         print(f"   📄 Preview: '{preview}{'...' if len(area_text) > 100 else ''}'")
 
     try:
-        area_text_sample = question_area.text[:200].replace('\n', ' ').strip()
-        print(
-            f"   🔍 Content preview: '{area_text_sample}"
-            f"{'...' if len(question_area.text) > 200 else ''}'"
-        )
+        area_text_sample = question_area.text[:200].replace("\n", " ").strip()
+        print(f"   🔍 Content preview: '{area_text_sample}{'...' if len(question_area.text) > 200 else ''}'")
 
         # Check for specific QTI elements
-        qti_check_selectors = [
-            "input", "textarea", "button", "img", ".qti-interaction",
-            ".qti-item-body", ".qti-prompt", "svg", "canvas"
-        ]
+        qti_check_selectors = ["input", "textarea", "button", "img", ".qti-interaction", ".qti-item-body", ".qti-prompt", "svg", "canvas"]
 
         qti_elements_in_area = []
         for check_selector in qti_check_selectors:
@@ -270,26 +242,18 @@ def capture_element_screenshot(driver: WebDriver, element) -> dict[str, Any]:
 
     # Scroll element into view
     try:
-        driver.execute_script(
-            "arguments[0].scrollIntoView({block: 'center'});", element
-        )
+        driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
         time.sleep(1)  # Brief pause after scrolling
     except Exception as scroll_error:
         print(f"   ⚠️  Scroll failed: {str(scroll_error)}")
 
     try:
         screenshot_png = element.screenshot_as_png
-        screenshot_base64 = base64.b64encode(screenshot_png).decode('utf-8')
+        screenshot_base64 = base64.b64encode(screenshot_png).decode("utf-8")
         print(f"   ✅ Screenshot captured successfully ({len(screenshot_base64)} chars)")
 
-        return {
-            "success": True,
-            "screenshot_base64": screenshot_base64
-        }
+        return {"success": True, "screenshot_base64": screenshot_base64}
 
     except Exception as screenshot_error:
         print(f"   ❌ Screenshot capture failed: {str(screenshot_error)}")
-        return {
-            "success": False,
-            "error": f"Screenshot capture failed: {str(screenshot_error)}"
-        }
+        return {"success": False, "error": f"Screenshot capture failed: {str(screenshot_error)}"}

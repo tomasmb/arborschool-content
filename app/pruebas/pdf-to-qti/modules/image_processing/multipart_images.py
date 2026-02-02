@@ -18,9 +18,7 @@ import fitz
 
 
 def detect_multipart_question_images(
-    text_blocks: List[Dict[str, Any]],
-    ai_categories: Optional[Dict[int, str]] = None,
-    question_text: str = ""
+    text_blocks: List[Dict[str, Any]], ai_categories: Optional[Dict[int, str]] = None, question_text: str = ""
 ) -> List[Dict[str, Any]]:
     """
     Detect if this is a multi-part question with part-specific images.
@@ -50,18 +48,11 @@ def detect_multipart_question_images(
     print(f"🎯 Found parts with visual content: {parts_with_visual_content}")
 
     # Step 3: Return indication that this needs special AI detection
-    return [{
-        "needs_special_ai_detection": True,
-        "parts_with_visuals": parts_with_visual_content,
-        "method": "multipart_ai_detection"
-    }]
+    return [{"needs_special_ai_detection": True, "parts_with_visuals": parts_with_visual_content, "method": "multipart_ai_detection"}]
 
 
 def detect_part_specific_images_with_ai(
-    page: fitz.Page,
-    text_blocks: List[Dict[str, Any]],
-    parts_with_visuals: List[str],
-    openai_api_key: str
+    page: fitz.Page, text_blocks: List[Dict[str, Any]], parts_with_visuals: List[str], openai_api_key: str
 ) -> List[Dict[str, Any]]:
     """
     Use AI to specifically locate images for parts that have visual content.
@@ -88,27 +79,24 @@ def detect_part_specific_images_with_ai(
             page_rect = page.rect
 
             # Validate bbox is within page bounds
-            if (0 <= bbox[0] < bbox[2] <= page_rect.width and
-                0 <= bbox[1] < bbox[3] <= page_rect.height):
-
-                detected_images.append({
-                    "bbox": bbox,
-                    "part_context": part_name,
-                    "confidence": 0.9,  # High confidence for boundary-based detection
-                    "description": f"Visual content for Part {part_name}",
-                    "detection_method": "text_boundary",
-                    "method_details": "area between text references"
-                })
+            if 0 <= bbox[0] < bbox[2] <= page_rect.width and 0 <= bbox[1] < bbox[3] <= page_rect.height:
+                detected_images.append(
+                    {
+                        "bbox": bbox,
+                        "part_context": part_name,
+                        "confidence": 0.9,  # High confidence for boundary-based detection
+                        "description": f"Visual content for Part {part_name}",
+                        "detection_method": "text_boundary",
+                        "method_details": "area between text references",
+                    }
+                )
 
                 print(f"📸 ✅ Text boundary detection for Part {part_name}: {bbox}")
 
     return detected_images
 
 
-def _find_visual_content_boundaries(
-    text_blocks: List[Dict[str, Any]],
-    part_name: str
-) -> Optional[List[float]]:
+def _find_visual_content_boundaries(text_blocks: List[Dict[str, Any]], part_name: str) -> Optional[List[float]]:
     """
     Find the boundaries of visual content by locating the text that references it
     and the text that follows it.
@@ -127,19 +115,19 @@ def _find_visual_content_boundaries(
 
     # Patterns for visual content references
     reference_patterns = [
-        r'the\s+model\s+shown',
-        r'the\s+diagram\s+shows?',
-        r'the\s+figure\s+shows?',
-        r'the\s+image\s+shows?',
-        r'shown\s+(?:in\s+)?(?:the\s+)?(?:model|diagram|figure)',
+        r"the\s+model\s+shown",
+        r"the\s+diagram\s+shows?",
+        r"the\s+figure\s+shows?",
+        r"the\s+image\s+shows?",
+        r"shown\s+(?:in\s+)?(?:the\s+)?(?:model|diagram|figure)",
     ]
 
     # Patterns for follow-up text that uses the visual content
     followup_patterns = [
-        r'based\s+on\s+the\s+(?:model|diagram|figure)',
-        r'using\s+the\s+(?:model|diagram|figure)',
-        r'from\s+the\s+(?:model|diagram|figure)',
-        r'according\s+to\s+the\s+(?:model|diagram|figure)',
+        r"based\s+on\s+the\s+(?:model|diagram|figure)",
+        r"using\s+the\s+(?:model|diagram|figure)",
+        r"from\s+the\s+(?:model|diagram|figure)",
+        r"according\s+to\s+the\s+(?:model|diagram|figure)",
     ]
 
     for i, block in enumerate(text_blocks):
@@ -168,9 +156,7 @@ def _find_visual_content_boundaries(
 
 
 def _create_bbox_between_text_blocks(
-    reference_block: Dict[str, Any],
-    follow_up_block: Dict[str, Any],
-    all_blocks: List[Dict[str, Any]]
+    reference_block: Dict[str, Any], follow_up_block: Dict[str, Any], all_blocks: List[Dict[str, Any]]
 ) -> List[float]:
     """
     Create a bounding box that captures the area between two text blocks.
@@ -215,7 +201,7 @@ def _create_bbox_between_text_blocks(
     # Create bbox that spans from after all related text to before follow-up text
     x1 = page_x_min  # Full width
     y1 = actual_text_end + padding  # After all related text + padding
-    x2 = page_x_max   # Full width
+    x2 = page_x_max  # Full width
     y2 = followup_bbox[1] - padding  # Before follow-up text - padding
 
     # Ensure valid bbox with minimum height
@@ -229,15 +215,12 @@ def _create_bbox_between_text_blocks(
     print(f"   Reference block end: {ref_bbox[3]:.1f}")
     print(f"   Related text end: {actual_text_end:.1f}")
     print(f"   Follow-up start: {followup_bbox[1]:.1f}")
-    print(f"   Final bbox: {bbox} (size: {x2-x1:.0f}x{y2-y1:.0f})")
+    print(f"   Final bbox: {bbox} (size: {x2 - x1:.0f}x{y2 - y1:.0f})")
 
     return bbox
 
 
-def _create_bbox_after_reference(
-    reference_block: Dict[str, Any],
-    all_blocks: List[Dict[str, Any]]
-) -> List[float]:
+def _create_bbox_after_reference(reference_block: Dict[str, Any], all_blocks: List[Dict[str, Any]]) -> List[float]:
     """
     Create a bounding box after the reference text when no clear follow-up is found.
 
@@ -285,9 +268,7 @@ def _create_bbox_after_reference(
 
 
 def filter_images_for_multipart_question(
-    detected_images: List[Dict[str, Any]],
-    text_blocks: List[Dict[str, Any]],
-    question_text: str = ""
+    detected_images: List[Dict[str, Any]], text_blocks: List[Dict[str, Any]], question_text: str = ""
 ) -> List[Dict[str, Any]]:
     """
     Filter detected images to only include those relevant to parts with visual content.
@@ -335,24 +316,23 @@ def _is_multipart_question(text_blocks: List[Dict[str, Any]], question_text: str
 
     # Multi-part question patterns
     multipart_patterns = [
-        r'\bpart\s+[a-d]\b',  # "Part A", "Part B"
-        r'\b[a-d]\.\s+\w+',   # "A. Identify", "B. Explain"
+        r"\bpart\s+[a-d]\b",  # "Part A", "Part B"
+        r"\b[a-d]\.\s+\w+",  # "A. Identify", "B. Explain"
     ]
 
     # Content-based indicators
     content_indicators = [
-        "three parts", "two parts", "four parts",
-        "label each part", "each part of your response",
+        "three parts",
+        "two parts",
+        "four parts",
+        "label each part",
+        "each part of your response",
     ]
 
     # Check for patterns
-    has_multipart_structure = any(
-        re.search(pattern, all_text) for pattern in multipart_patterns
-    )
+    has_multipart_structure = any(re.search(pattern, all_text) for pattern in multipart_patterns)
 
-    has_multipart_content = any(
-        indicator in all_text for indicator in content_indicators
-    )
+    has_multipart_content = any(indicator in all_text for indicator in content_indicators)
 
     is_multipart = has_multipart_structure or has_multipart_content
 
@@ -362,10 +342,7 @@ def _is_multipart_question(text_blocks: List[Dict[str, Any]], question_text: str
     return is_multipart
 
 
-def _find_parts_with_visual_references(
-    text_blocks: List[Dict[str, Any]],
-    question_text: str = ""
-) -> List[str]:
+def _find_parts_with_visual_references(text_blocks: List[Dict[str, Any]], question_text: str = "") -> List[str]:
     """
     Find which parts of the multi-part question have visual content references.
 
@@ -384,9 +361,18 @@ def _find_parts_with_visual_references(
 
         # Visual content indicators - focus on explicit references
         visual_indicators = [
-            "model shown", "diagram", "figure", "image", "picture",
-            "the model", "based on the model", "from the model",
-            "shown", "represents", "illustrates", "displays"
+            "model shown",
+            "diagram",
+            "figure",
+            "image",
+            "picture",
+            "the model",
+            "based on the model",
+            "from the model",
+            "shown",
+            "represents",
+            "illustrates",
+            "displays",
         ]
 
         has_visual_reference = any(indicator in part_text for indicator in visual_indicators)
@@ -409,7 +395,7 @@ def _group_blocks_by_parts(text_blocks: List[Dict[str, Any]]) -> Dict[str, List[
             block_text = _extract_block_text(block)
 
             # Check if this block starts a new part
-            part_match = re.match(r'^([A-D])\.\s+(.+)', block_text.strip())
+            part_match = re.match(r"^([A-D])\.\s+(.+)", block_text.strip())
             if part_match:
                 current_part = part_match.group(1)
                 if current_part not in part_groups:
@@ -435,5 +421,3 @@ def _extract_block_text(block: Dict[str, Any]) -> str:
                 text_parts.append(text)
 
     return " ".join(text_parts)
-
-

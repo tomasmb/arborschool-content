@@ -100,6 +100,7 @@ def main() -> None:
     # Create a minimal Atom-like structure for find_cycles
     class AtomDict:
         """Minimal Atom-like structure for circular dependency checking."""
+
         def __init__(self, atom_dict: dict[str, Any]) -> None:
             self.id = atom_dict["id"]
             self.prerrequisitos = atom_dict.get("prerrequisitos", [])
@@ -121,9 +122,7 @@ def main() -> None:
             sys.exit(1)
     else:
         # Only validate standards that have atoms
-        standards_list = [
-            s for s in standards_list if s.get("id") in standard_ids_in_atoms
-        ]
+        standards_list = [s for s in standards_list if s.get("id") in standard_ids_in_atoms]
 
     # Initialize Gemini
     logger.info("Initializing Gemini service...")
@@ -183,9 +182,7 @@ def main() -> None:
 
         try:
             # Extract atoms for this standard
-            standard_atoms = [
-                atom for atom in atoms_dict if standard_id in atom.get("standard_ids", [])
-            ]
+            standard_atoms = [atom for atom in atoms_dict if standard_id in atom.get("standard_ids", [])]
 
             if not standard_atoms:
                 logger.warning("⚠ No atoms found for %s", standard_id)
@@ -193,6 +190,7 @@ def main() -> None:
 
             # Use validate_atoms_with_gemini directly since we have the data in memory
             from app.atoms.validation import validate_atoms_with_gemini
+
             result = validate_atoms_with_gemini(
                 gemini=gemini,
                 standard=standard_dict,
@@ -279,4 +277,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

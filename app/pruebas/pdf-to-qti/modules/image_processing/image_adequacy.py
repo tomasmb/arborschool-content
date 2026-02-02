@@ -51,10 +51,7 @@ def assess_pymupdf_image_adequacy(
     largest_image_side = size_result["largest_image_side"]
     image_area_ratio = size_result["image_area_ratio"]
 
-    print(
-        f"📸 Size assessment: area={largest_image_area:.0f}, "
-        f"side={largest_image_side:.0f}, ratio={image_area_ratio:.3f}"
-    )
+    print(f"📸 Size assessment: area={largest_image_area:.0f}, side={largest_image_side:.0f}, ratio={image_area_ratio:.3f}")
     print(f"📸 Size adequate: {size_adequate}")
 
     # Step 2: AI-based assessment if available
@@ -63,9 +60,7 @@ def assess_pymupdf_image_adequacy(
 
     if openai_api_key:
         try:
-            ai_assessment = assess_image_completeness_with_ai(
-                image_blocks, page, text_blocks, openai_api_key
-            )
+            ai_assessment = assess_image_completeness_with_ai(image_blocks, page, text_blocks, openai_api_key)
             ai_adequate = ai_assessment.get("adequate", False)
             ai_reasoning = ai_assessment.get("reasoning", "AI assessment failed")
 
@@ -80,9 +75,7 @@ def assess_pymupdf_image_adequacy(
 
     reason = []
     if not size_adequate:
-        reason.append(
-            f"Image too small (area={largest_image_area:.0f}, side={largest_image_side:.0f})"
-        )
+        reason.append(f"Image too small (area={largest_image_area:.0f}, side={largest_image_side:.0f})")
     if not ai_adequate:
         reason.append(f"AI assessment: {ai_reasoning}")
 
@@ -101,9 +94,7 @@ def assess_pymupdf_image_adequacy(
     return result
 
 
-def _assess_size_adequacy(
-    image_blocks: list[dict[str, Any]], page: fitz.Page
-) -> dict[str, Any]:
+def _assess_size_adequacy(image_blocks: list[dict[str, Any]], page: fitz.Page) -> dict[str, Any]:
     """Assess image adequacy based on size heuristics."""
     total_image_area = 0.0
     page_area = page.rect.width * page.rect.height
@@ -164,9 +155,7 @@ def assess_image_completeness_with_ai(
             bbox = img_block.get("bbox", [0, 0, 0, 0])
             width = bbox[2] - bbox[0]
             height = bbox[3] - bbox[1]
-            image_info.append(
-                f"Image {i+1}: {width:.0f}x{height:.0f} at position ({bbox[0]:.0f}, {bbox[1]:.0f})"
-            )
+            image_info.append(f"Image {i + 1}: {width:.0f}x{height:.0f} at position ({bbox[0]:.0f}, {bbox[1]:.0f})")
 
         prompt = f"""Analyze whether the detected images adequately capture the visual content needed for this educational question.
 

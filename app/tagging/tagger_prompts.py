@@ -11,11 +11,7 @@ import json
 from typing import Any
 
 
-def build_atom_tagging_prompt(
-    question_text: str,
-    choices: list[str],
-    atoms: list[dict[str, Any]]
-) -> str:
+def build_atom_tagging_prompt(question_text: str, choices: list[str], atoms: list[dict[str, Any]]) -> str:
     """
     Constructs the prompt for identifying relevant atoms.
 
@@ -30,11 +26,7 @@ def build_atom_tagging_prompt(
     # Format atoms efficiently
     atoms_text = []
     for atom in atoms:
-        atoms_text.append(
-            f"ID: {atom['id']}\n"
-            f"Title: {atom.get('titulo', '')}\n"
-            f"Desc: {atom.get('descripcion', '')}\n"
-        )
+        atoms_text.append(f"ID: {atom['id']}\nTitle: {atom.get('titulo', '')}\nDesc: {atom.get('descripcion', '')}\n")
 
     atoms_block = "\n---\n".join(atoms_text)
     choices_text = "\n".join([f"- {c}" for c in choices])
@@ -83,12 +75,7 @@ REGLAS DE RELEVANCIA:
 """
 
 
-def build_analysis_prompt(
-    question_text: str,
-    choices: list[str],
-    selected_atoms: list[dict[str, Any]],
-    correct_answer: str | None = None
-) -> str:
+def build_analysis_prompt(question_text: str, choices: list[str], selected_atoms: list[dict[str, Any]], correct_answer: str | None = None) -> str:
     """
     Constructs the prompt for difficulty evaluation and feedback generation.
 
@@ -121,7 +108,7 @@ OPCIONES:
 {correct_info}
 
 ÁTOMOS RELEVANTES (HABILIDADES):
-{json.dumps([a.get('titulo') for a in selected_atoms], ensure_ascii=False)}
+{json.dumps([a.get("titulo") for a in selected_atoms], ensure_ascii=False)}
 
 RÚBRICA DE DIFICULTAD:
 - **Low (Baja)**: Procedimiento rutinario, recuerdo directo, ejecución de un solo paso.
@@ -163,12 +150,7 @@ REGLA DE ORO DEL FEEDBACK:
 """
 
 
-def build_validation_prompt(
-    question_text: str,
-    choices: list[str],
-    result: dict[str, Any],
-    correct_answer: str | None = None
-) -> str:
+def build_validation_prompt(question_text: str, choices: list[str], result: dict[str, Any], correct_answer: str | None = None) -> str:
     """
     Constructs the prompt for validating generated tags and feedback.
 
@@ -181,10 +163,7 @@ def build_validation_prompt(
     Returns:
         The complete prompt string
     """
-    correct_info = (
-        f"\nRESPUESTA CORRECTA OFICIAL (La Verdad Absoluta): {correct_answer}\n"
-        if correct_answer else ""
-    )
+    correct_info = f"\nRESPUESTA CORRECTA OFICIAL (La Verdad Absoluta): {correct_answer}\n" if correct_answer else ""
 
     return f"""
 Eres un Especialista en Aseguramiento de Calidad (QA) para contenido educativo.

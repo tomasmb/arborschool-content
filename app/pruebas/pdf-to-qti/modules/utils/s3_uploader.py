@@ -18,6 +18,7 @@ from typing import Optional
 try:
     import boto3
     from botocore.exceptions import ClientError, NoCredentialsError
+
     BOTO3_AVAILABLE = True
 except ImportError:
     BOTO3_AVAILABLE = False
@@ -111,6 +112,7 @@ def upload_image_to_s3(
     # Retry logic for transient errors
     import random
     import time
+
     base_delay = 1.0
     max_delay = 10.0
 
@@ -138,7 +140,7 @@ def upload_image_to_s3(
                     if error_code != "404":  # 404 means doesn't exist, which is fine
                         # Other error, might be transient
                         if attempt < max_retries - 1:
-                            delay = min(base_delay * (2 ** attempt), max_delay)
+                            delay = min(base_delay * (2**attempt), max_delay)
                             jitter = random.uniform(0, delay * 0.1)
                             _logger.warning(
                                 f"Error checking S3 object existence (attempt {attempt + 1}/{max_retries}): "
@@ -179,11 +181,10 @@ def upload_image_to_s3(
 
             # Retryable errors (transient network issues, throttling, etc.)
             if attempt < max_retries - 1:
-                delay = min(base_delay * (2 ** attempt), max_delay)
+                delay = min(base_delay * (2**attempt), max_delay)
                 jitter = random.uniform(0, delay * 0.1)
                 _logger.warning(
-                    f"S3 upload failed (attempt {attempt + 1}/{max_retries}) with error '{error_code}': {e}. "
-                    f"Retrying in {delay + jitter:.2f}s..."
+                    f"S3 upload failed (attempt {attempt + 1}/{max_retries}) with error '{error_code}': {e}. Retrying in {delay + jitter:.2f}s..."
                 )
                 time.sleep(delay + jitter)
                 continue
@@ -193,12 +194,9 @@ def upload_image_to_s3(
         except Exception as e:
             # Other exceptions (network errors, timeouts, etc.) - retry
             if attempt < max_retries - 1:
-                delay = min(base_delay * (2 ** attempt), max_delay)
+                delay = min(base_delay * (2**attempt), max_delay)
                 jitter = random.uniform(0, delay * 0.1)
-                _logger.warning(
-                    f"Unexpected error uploading to S3 (attempt {attempt + 1}/{max_retries}): {e}. "
-                    f"Retrying in {delay + jitter:.2f}s..."
-                )
+                _logger.warning(f"Unexpected error uploading to S3 (attempt {attempt + 1}/{max_retries}): {e}. Retrying in {delay + jitter:.2f}s...")
                 time.sleep(delay + jitter)
                 continue
             else:
@@ -285,7 +283,7 @@ def convert_base64_to_s3_in_xml(
     Returns:
         Updated XML with S3 URLs, or None if there was a critical error
     """
-    base64_pattern = r'(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)'
+    base64_pattern = r"(data:image/([^;]+);base64,)([A-Za-z0-9+/=\s]+)"
     base64_matches = list(re.finditer(base64_pattern, qti_xml))
 
     if not base64_matches:
@@ -318,13 +316,13 @@ def convert_base64_to_s3_in_xml(
             if key in s3_image_mapping:
                 s3_url = s3_image_mapping[key]
                 reused_count += 1
-                _logger.info(f"Reusing image {i+1} from S3 mapping")
+                _logger.info(f"Reusing image {i + 1} from S3 mapping")
                 break
 
         # If not exists, upload to S3 (no LLM API - just S3 upload)
         if not s3_url:
             img_id = f"{question_id}_manual_{i}" if question_id else f"manual_{i}"
-            _logger.info(f"Uploading image {i+1}/{len(base64_matches)} to S3 (manual)...")
+            _logger.info(f"Uploading image {i + 1}/{len(base64_matches)} to S3 (manual)...")
 
             s3_url = upload_image_to_s3(
                 image_base64=full_data_uri,
@@ -337,10 +335,10 @@ def convert_base64_to_s3_in_xml(
                 # Save in mapping
                 for key in img_keys:
                     s3_image_mapping[key] = s3_url
-                _logger.info(f"Image {i+1} uploaded to S3: {s3_url}")
+                _logger.info(f"Image {i + 1} uploaded to S3: {s3_url}")
             else:
                 failed_count += 1
-                _logger.warning(f"Failed to upload image {i+1} to S3 (will keep base64)")
+                _logger.warning(f"Failed to upload image {i + 1} to S3 (will keep base64)")
 
         # Replace in XML if we have S3 URL
         if s3_url:

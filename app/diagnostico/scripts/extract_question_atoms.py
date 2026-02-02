@@ -76,10 +76,12 @@ def extract_question_atoms():
 
             atoms = []
             for atom in metadata.get("selected_atoms", []):
-                atoms.append({
-                    "atom_id": atom["atom_id"],
-                    "relevance": atom.get("relevance", "primary"),
-                })
+                atoms.append(
+                    {
+                        "atom_id": atom["atom_id"],
+                        "relevance": atom.get("relevance", "primary"),
+                    }
+                )
 
             question_atoms[key] = {
                 "module": module,
@@ -136,11 +138,13 @@ def extract_question_atoms():
             atom_id = a["atom_id"]
             if atom_id not in output["atom_to_questions"]:
                 output["atom_to_questions"][atom_id] = []
-            output["atom_to_questions"][atom_id].append({
-                "question_key": key,
-                "module": q["module"],
-                "relevance": a["relevance"],
-            })
+            output["atom_to_questions"][atom_id].append(
+                {
+                    "question_key": key,
+                    "module": q["module"],
+                    "relevance": a["relevance"],
+                }
+            )
 
     output_path = Path("app/diagnostico/config/question_atoms.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)

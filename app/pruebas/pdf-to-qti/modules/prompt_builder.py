@@ -42,13 +42,10 @@ def create_detection_prompt(pdf_content: dict[str, Any]) -> str:
         Detection prompt string
     """
     content_summary = create_content_summary(pdf_content)
-    combined_text = pdf_content.get('combined_text', '')
+    combined_text = pdf_content.get("combined_text", "")
     text_length = len(combined_text)
 
-    has_images = bool(
-        pdf_content.get('image_base64') or
-        any(page.get('image_base64') for page in pdf_content.get('pages', []))
-    )
+    has_images = bool(pdf_content.get("image_base64") or any(page.get("image_base64") for page in pdf_content.get("pages", [])))
 
     prompt = f"""
 You are an expert in educational assessment formats, particularly QTI (Question and Test Interoperability).
@@ -96,7 +93,7 @@ def create_transformation_prompt(
     question_type: str,
     question_config: dict[str, str],
     validation_feedback: str | None = None,
-    correct_answer: str | None = None
+    correct_answer: str | None = None,
 ) -> str:
     """Create a sophisticated prompt for QTI XML transformation.
 
@@ -141,7 +138,7 @@ interaction, as the physical answering elements have likely been removed.
 {image_info}
 
 ## Question Type: {question_type}
-{question_config.get('promptInstructions', '')}{visual_choice_instructions}
+{question_config.get("promptInstructions", "")}{visual_choice_instructions}
 
 {CHOICE_LABEL_INSTRUCTIONS}
 
@@ -167,7 +164,7 @@ interaction, as the physical answering elements have likely been removed.
 {image_context_instructions}
 
 Example QTI XML for reference:
-{question_config.get('exampleXml', '')}
+{question_config.get("exampleXml", "")}
 
 Ensure your QTI XML follows QTI 3.0 standards exactly and includes proper namespaces, identifiers, and response processing."""
 
@@ -192,9 +189,9 @@ def _build_retry_context(validation_feedback: str | None) -> str:
 
 def _build_image_context_instructions(pdf_content: dict[str, Any]) -> str:
     """Build image context instructions if needed."""
-    combined_text = pdf_content.get('combined_text', '').lower()
+    combined_text = pdf_content.get("combined_text", "").lower()
 
-    if "img" in combined_text or "__IMAGE_PLACEHOLDER_" in pdf_content.get('combined_text', ''):
+    if "img" in combined_text or "__IMAGE_PLACEHOLDER_" in pdf_content.get("combined_text", ""):
         return (
             "\n\n## Image Handling:\n"
             "- Preserve all <img> tags and their structure exactly as they appear\n"
@@ -206,8 +203,8 @@ def _build_image_context_instructions(pdf_content: dict[str, Any]) -> str:
 
 def _build_visual_choice_instructions(pdf_content: dict[str, Any]) -> str:
     """Build visual choice instructions if question has choice images."""
-    has_choice_images = pdf_content.get('is_choice_diagram', False) or any(
-        img.get('is_choice_diagram', False) for img in pdf_content.get('all_images', [])
+    has_choice_images = pdf_content.get("is_choice_diagram", False) or any(
+        img.get("is_choice_diagram", False) for img in pdf_content.get("all_images", [])
     )
 
     if not has_choice_images:
@@ -238,13 +235,7 @@ def _build_correct_answer_instruction(correct_answer: str | None) -> str:
         return "- Determine the correct answer from the question content and include it in <qti-correct-response>"
 
 
-def create_error_correction_prompt(
-    qti_xml: str,
-    validation_errors: str,
-    question_type: str,
-    retry_attempt: int = 1,
-    max_attempts: int = 3
-) -> str:
+def create_error_correction_prompt(qti_xml: str, validation_errors: str, question_type: str, retry_attempt: int = 1, max_attempts: int = 3) -> str:
     """Create a prompt for correcting QTI XML validation errors.
 
     Args:

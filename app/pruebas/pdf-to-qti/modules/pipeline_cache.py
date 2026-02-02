@@ -50,9 +50,7 @@ def check_existing_xml(
             print("   ⏭️  Skipping processing (disable with skip_if_exists=False)")
 
             # Extract title from existing XML
-            title_match = re.search(
-                r'<qti-assessment-item[^>]*title="([^"]*)"', existing_xml
-            )
+            title_match = re.search(r'<qti-assessment-item[^>]*title="([^"]*)"', existing_xml)
             title = title_match.group(1) if title_match else "Existing Question"
 
             return {
@@ -119,9 +117,7 @@ def try_regenerate_from_processed(
             if os.path.exists(xml_path):
                 with open(xml_path, "r", encoding="utf-8") as f:
                     regenerated_xml = f.read()
-                title_match = re.search(
-                    r'<qti-assessment-item[^>]*title="([^"]*)"', regenerated_xml
-                )
+                title_match = re.search(r'<qti-assessment-item[^>]*title="([^"]*)"', regenerated_xml)
                 title = title_match.group(1) if title_match else "Regenerated Question"
 
                 return {
@@ -187,9 +183,7 @@ def try_auto_regenerate_on_error(
             if os.path.exists(xml_path):
                 with open(xml_path, "r", encoding="utf-8") as f:
                     regenerated_xml = f.read()
-                title_match = re.search(
-                    r'<qti-assessment-item[^>]*title="([^"]*)"', regenerated_xml
-                )
+                title_match = re.search(r'<qti-assessment-item[^>]*title="([^"]*)"', regenerated_xml)
                 title = title_match.group(1) if title_match else "Regenerated Question"
 
                 return {

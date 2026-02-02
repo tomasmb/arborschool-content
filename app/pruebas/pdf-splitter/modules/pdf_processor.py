@@ -29,6 +29,7 @@ except ImportError:
     # When running locally
     import os
     import sys
+
     sys.path.append(os.path.dirname(os.path.dirname(__file__)))
     from main import compute_bboxes_for_segments, create_question_pdfs
 
@@ -38,7 +39,7 @@ def download_pdf_from_url(url: str, temp_path: str) -> None:
     response = requests.get(url, timeout=30)
     response.raise_for_status()
 
-    with open(temp_path, 'wb') as f:
+    with open(temp_path, "wb") as f:
         f.write(response.content)
 
 
@@ -46,7 +47,7 @@ def save_base64_pdf(base64_data: str, temp_path: str) -> None:
     """Save base64 encoded PDF data to temporary file."""
     pdf_data = base64.b64decode(base64_data)
 
-    with open(temp_path, 'wb') as f:
+    with open(temp_path, "wb") as f:
         f.write(pdf_data)
 
 
@@ -63,7 +64,7 @@ def upload_file_to_s3(file_path: str, session: boto3.Session, bucket_name: str, 
     Returns:
         Public S3 URL
     """
-    s3_client = session.client('s3')
+    s3_client = session.client("s3")
 
     try:
         # Upload file
@@ -78,13 +79,7 @@ def upload_file_to_s3(file_path: str, session: boto3.Session, bucket_name: str, 
 
 
 def process_pdf_to_s3(
-    pdf_source: str,
-    is_base64: bool,
-    session: boto3.Session,
-    bucket_name: str,
-    path_prefix: str,
-    test_id: str,
-    initial_chunk_size: Optional[int] = 20
+    pdf_source: str, is_base64: bool, session: boto3.Session, bucket_name: str, path_prefix: str, test_id: str, initial_chunk_size: Optional[int] = 20
 ) -> List[str]:
     """
     Process PDF and upload question PDFs to S3.
@@ -123,10 +118,7 @@ def process_pdf_to_s3(
         doc.close()
 
         if should_split_pdf(total_pages):
-            print(
-                f"🔀 PDF has {total_pages} pages (>" \
-                f"{SPLIT_PAGE_THRESHOLD}). Using AI to split into logical parts..."
-            )
+            print(f"🔀 PDF has {total_pages} pages (>{SPLIT_PAGE_THRESHOLD}). Using AI to split into logical parts...")
             chunks = split_pdf_by_ai(input_pdf_path, output_dir)
         else:
             # Treat the whole PDF as a single chunk
@@ -134,6 +126,7 @@ def process_pdf_to_s3(
 
         if len(chunks) > 1:
             from concurrent.futures import ThreadPoolExecutor, as_completed
+
             all_urls: List[str] = []
 
             def process_chunk(idx: int, chunk_path: str) -> List[str]:
@@ -142,22 +135,19 @@ def process_pdf_to_s3(
                         print(f"📦 Processing chunk {idx}/{len(chunks)}: {chunk_path}")
                         chunk_output_dir = os.path.join(output_dir, f"part_{idx}")
                         os.makedirs(chunk_output_dir, exist_ok=True)
-                        results = segment_pdf_with_llm(
-                            pdf_path=chunk_path,
-                            output_file=os.path.join(chunk_output_dir, "segmentation_results.json")
-                        )
+                        results = segment_pdf_with_llm(pdf_path=chunk_path, output_file=os.path.join(chunk_output_dir, "segmentation_results.json"))
                         results = compute_bboxes_for_segments(results, chunk_path)
                         create_question_pdfs(results, chunk_path, chunk_output_dir, fail_on_validation_error=False)
                         failed_log = os.path.join(chunk_output_dir, "failed_questions_log.json")
                         if os.path.exists(failed_log):
-                            with open(failed_log, 'r') as f:
+                            with open(failed_log, "r") as f:
                                 failed = json.load(f)
                             raise Exception(f"Quality validation failed for chunk {idx}: {len(failed)} questions failed")
                         urls: List[str] = []
                         questions_dir = os.path.join(chunk_output_dir, "questions")
                         if os.path.exists(questions_dir):
                             for filename in sorted(os.listdir(questions_dir)):
-                                if filename.endswith('.pdf'):
+                                if filename.endswith(".pdf"):
                                     local_path = os.path.join(questions_dir, filename)
                                     s3_key = f"{path_prefix}{test_id}/part_{idx}/{filename}"
                                     url = upload_file_to_s3(local_path, session, bucket_name, s3_key)
@@ -171,10 +161,7 @@ def process_pdf_to_s3(
 
             # Run chunk processing in parallel, abort on first chunk failure
             with ThreadPoolExecutor(max_workers=len(chunks)) as executor:
-                future_to_idx = {
-                    executor.submit(process_chunk, idx, chunk_path): idx
-                    for idx, (chunk_path, _) in enumerate(chunks, start=1)
-                }
+                future_to_idx = {executor.submit(process_chunk, idx, chunk_path): idx for idx, (chunk_path, _) in enumerate(chunks, start=1)}
 
                 # Collect results in a dictionary to allow for reordering
                 chunk_results = {}
@@ -199,10 +186,7 @@ def process_pdf_to_s3(
         try:
             # Use our working segmentation pipeline
             print("🔮 Using OpenAI's native PDF processing...")
-            results = segment_pdf_with_llm(
-                pdf_path=input_pdf_path,
-                output_file=os.path.join(output_dir, "segmentation_results.json")
-            )
+            results = segment_pdf_with_llm(pdf_path=input_pdf_path, output_file=os.path.join(output_dir, "segmentation_results.json"))
 
             # Compute bounding boxes using PyMuPDF
             results = compute_bboxes_for_segments(results, input_pdf_path)
@@ -225,7 +209,7 @@ def process_pdf_to_s3(
             if os.path.exists(questions_dir):
                 # Upload each question PDF
                 for filename in sorted(os.listdir(questions_dir)):
-                    if filename.endswith('.pdf'):
+                    if filename.endswith(".pdf"):
                         local_path = os.path.join(questions_dir, filename)
                         s3_key = f"{path_prefix}{test_id}/{filename}"
 
@@ -238,12 +222,7 @@ def process_pdf_to_s3(
                             raise
 
                 # Also upload metadata files
-                metadata_files = [
-                    "segmentation_results.json",
-                    "processing_statistics.json",
-                    "questions_list.json",
-                    "question_references.json"
-                ]
+                metadata_files = ["segmentation_results.json", "processing_statistics.json", "questions_list.json", "question_references.json"]
 
                 for metadata_file in metadata_files:
                     metadata_path = os.path.join(output_dir, metadata_file)

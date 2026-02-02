@@ -35,15 +35,15 @@ def clean_qti_xml(xml_content: str) -> str:
         Cleaned XML content
     """
     # Remove any markdown code block markers
-    if xml_content.strip().startswith('```xml'):
+    if xml_content.strip().startswith("```xml"):
         xml_content = xml_content.strip()[6:-3].strip()
 
     # Remove XML declaration
-    if xml_content.strip().startswith('<?xml'):
-        xml_content = xml_content.split('?>', 1)[1].strip()
+    if xml_content.strip().startswith("<?xml"):
+        xml_content = xml_content.split("?>", 1)[1].strip()
 
     # CRITICAL: Remove null characters (Unicode: 0x0) which are invalid in XML
-    xml_content = xml_content.replace('\x00', '')
+    xml_content = xml_content.replace("\x00", "")
 
     # Strip any leading/trailing whitespace from the whole block
     return xml_content.strip()
@@ -70,13 +70,13 @@ def replace_data_uris_with_s3_urls(
     """
     # Pattern to match data URIs in img src attributes (more permissive to catch all)
     # Matches data:image/<any-type>;base64,<base64-data>
-    data_uri_pattern = r'data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+'
+    data_uri_pattern = r"data:image/[^;]+;base64,[A-Za-z0-9+/=\s]+"
 
     replacements_made = 0
 
     # Replace main image first
-    if 'main_image' in image_url_mapping and image_url_mapping['main_image']:
-        main_s3_url = image_url_mapping['main_image']
+    if "main_image" in image_url_mapping and image_url_mapping["main_image"]:
+        main_s3_url = image_url_mapping["main_image"]
         before = qti_xml
         qti_xml = re.sub(
             data_uri_pattern,
@@ -89,8 +89,8 @@ def replace_data_uris_with_s3_urls(
             _logger.debug(f"Replaced main image data URI with S3 URL: {main_s3_url}")
 
     # Replace additional images
-    if processed_content.get('all_images'):
-        for i, _image_info in enumerate(processed_content['all_images']):
+    if processed_content.get("all_images"):
+        for i, _image_info in enumerate(processed_content["all_images"]):
             image_key = f"image_{i}"
             if image_key in image_url_mapping and image_url_mapping[image_key]:
                 s3_url = image_url_mapping[image_key]
@@ -109,10 +109,7 @@ def replace_data_uris_with_s3_urls(
     # If we still have data URIs but ran out of mapped URLs, log warning
     remaining = re.findall(data_uri_pattern, qti_xml)
     if remaining:
-        _logger.warning(
-            f"⚠️  Found {len(remaining)} remaining data URI(s) after replacement. "
-            "This should not happen."
-        )
+        _logger.warning(f"⚠️  Found {len(remaining)} remaining data URI(s) after replacement. This should not happen.")
         # Try to replace any remaining with first available S3 URL
         if image_url_mapping:
             first_s3_url = next(iter(image_url_mapping.values()))
@@ -160,27 +157,15 @@ def fix_qti_xml_with_llm(
         try:
             ET.fromstring(invalid_xml)
         except ET.ParseError as e:
-            return {
-                "success": False,
-                "error": f"XML structure error: {str(e)}"
-            }
+            return {"success": False, "error": f"XML structure error: {str(e)}"}
 
         # Create error correction prompt
-        correction_prompt = create_error_correction_prompt(
-            invalid_xml,
-            validation_errors,
-            question_type,
-            retry_attempt,
-            max_attempts
-        )
+        correction_prompt = create_error_correction_prompt(invalid_xml, validation_errors, question_type, retry_attempt, max_attempts)
 
         # Call the model to fix the XML via shared helper (uses GPT-5.1 with high reasoning)
         corrected_content = chat_completion(
             [
-                {
-                    "role": "system",
-                    "content": "You are an expert in QTI 3.0 XML. Fix the provided XML to make it valid."
-                },
+                {"role": "system", "content": "You are an expert in QTI 3.0 XML. Fix the provided XML to make it valid."},
                 {"role": "user", "content": correction_prompt},
             ],
             api_key=openai_api_key,
@@ -211,18 +196,9 @@ def fix_qti_xml_with_llm(
             except ET.ParseError as e:
                 return {"success": False, "error": f"LLM produced invalid XML: {str(e)}"}
 
-            return {
-                "success": True,
-                "qti_xml": cleaned_xml
-            }
+            return {"success": True, "qti_xml": cleaned_xml}
         else:
-            return {
-                "success": False,
-                "error": result.get("error", "Failed to parse LLM correction response")
-            }
+            return {"success": False, "error": result.get("error", "Failed to parse LLM correction response")}
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"LLM correction failed: {str(e)}"
-        }
+        return {"success": False, "error": f"LLM correction failed: {str(e)}"}

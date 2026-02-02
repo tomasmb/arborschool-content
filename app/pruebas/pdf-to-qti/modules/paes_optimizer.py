@@ -26,7 +26,7 @@ def get_paes_question_type() -> Dict[str, Any]:
         "can_represent": True,
         "confidence": 1.0,
         "source": "paes_optimizer",
-        "reason": "PAES format: all questions are choice with 4 alternatives"
+        "reason": "PAES format: all questions are choice with 4 alternatives",
     }
 
 
@@ -62,7 +62,7 @@ def get_paes_choice_config() -> Dict[str, Any]:
         "min_choices": 1,
         "expected_alternatives": 4,
         "alternative_labels": ["A", "B", "C", "D"],
-        "subject": "mathematics"
+        "subject": "mathematics",
     }
 
 
@@ -85,9 +85,7 @@ def should_skip_validation_step(step: str, paes_mode: bool = True) -> bool:
     return False
 
 
-def optimize_content_processing_for_paes(
-    processed_content: Dict[str, Any]
-) -> Dict[str, Any]:
+def optimize_content_processing_for_paes(processed_content: Dict[str, Any]) -> Dict[str, Any]:
     """
     Optimize content processing for PAES format.
 

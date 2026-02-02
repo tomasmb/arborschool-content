@@ -20,19 +20,19 @@ from .prompt_builder import create_detection_prompt
 
 # Supported QTI 3.0 question types - EXACT MATCH from the working HTML transformer
 SUPPORTED_QTI_TYPES = [
-    'choice',
-    'match',
-    'text-entry',
-    'hotspot',
-    'extended-text',
-    'hot-text',
-    'gap-match',
-    'order',
-    'graphic-gap-match',
-    'inline-choice',
-    'select-point',
-    'media-interaction',
-    'composite'  # Multi-part questions with different interaction types
+    "choice",
+    "match",
+    "text-entry",
+    "hotspot",
+    "extended-text",
+    "hot-text",
+    "gap-match",
+    "order",
+    "graphic-gap-match",
+    "inline-choice",
+    "select-point",
+    "media-interaction",
+    "composite",  # Multi-part questions with different interaction types
 ]
 
 
@@ -63,10 +63,7 @@ def detect_question_type(pdf_content: Dict[str, Any], openai_api_key: str) -> Di
         return perform_direct_question_detection(pdf_content, openai_api_key)
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Question type detection failed: {str(e)}"
-        }
+        return {"success": False, "error": f"Question type detection failed: {str(e)}"}
 
 
 def extract_ai_analysis_from_content(pdf_content: Dict[str, Any]) -> Dict[str, Any]:
@@ -103,10 +100,7 @@ def build_detection_result_from_ai_analysis(ai_analysis: Dict[str, Any]) -> Dict
 
     # Validate question type
     if can_represent and question_type not in SUPPORTED_QTI_TYPES:
-        return {
-            "success": False,
-            "error": f"Invalid question type from AI analysis: {question_type}. Must be one of: {SUPPORTED_QTI_TYPES}"
-        }
+        return {"success": False, "error": f"Invalid question type from AI analysis: {question_type}. Must be one of: {SUPPORTED_QTI_TYPES}"}
 
     return {
         "success": True,
@@ -116,7 +110,7 @@ def build_detection_result_from_ai_analysis(ai_analysis: Dict[str, Any]) -> Dict
         "reason": reasoning,
         "key_elements": [],  # Could extract from AI analysis if needed
         "potential_issues": [],  # Could extract from AI analysis if needed
-        "source": "ai_content_analysis"  # Indicate this came from AI analysis
+        "source": "ai_content_analysis",  # Indicate this came from AI analysis
     }
 
 
@@ -131,7 +125,7 @@ def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_ke
         cleaned_content = clean_pdf_content_for_llm(pdf_content)
 
         # Extract large content to avoid token limits
-        processed_content, extracted_content = extract_large_content(cleaned_content, 'D')
+        processed_content, extracted_content = extract_large_content(cleaned_content, "D")
 
         # Create the sophisticated detection prompt
         prompt = create_detection_prompt(processed_content)
@@ -145,31 +139,18 @@ def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_ke
                     "Your task is to analyze PDF question content and determine if it can "
                     "be accurately represented using standard QTI 3.0 interaction types. "
                     "You must respond with valid JSON format only."
-                )
+                ),
             },
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    }
-                ]
-            }
+            {"role": "user", "content": [{"type": "text", "text": prompt}]},
         ]
 
         # Add image if available and not extracted as placeholder
-        if processed_content.get('image_base64') and not processed_content['image_base64'].startswith('CONTENT_PLACEHOLDER'):
-            image_data = processed_content['image_base64']
-            if not image_data.startswith('data:'):
+        if processed_content.get("image_base64") and not processed_content["image_base64"].startswith("CONTENT_PLACEHOLDER"):
+            image_data = processed_content["image_base64"]
+            if not image_data.startswith("data:"):
                 image_data = f"data:image/png;base64,{image_data}"
 
-            messages[1]["content"].append({
-                "type": "image_url",
-                "image_url": {
-                    "url": image_data
-                }
-            })
+            messages[1]["content"].append({"type": "image_url", "image_url": {"url": image_data}})
 
         # Call the model through the shared helper (uses GPT-5.1 by default)
         response_text = chat_completion(
@@ -185,10 +166,7 @@ def perform_direct_question_detection(pdf_content: Dict[str, Any], openai_api_ke
         return result
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Direct question type detection failed: {str(e)}"
-        }
+        return {"success": False, "error": f"Direct question type detection failed: {str(e)}"}
 
 
 def parse_detection_response(response_text: str) -> Dict[str, Any]:
@@ -203,8 +181,8 @@ def parse_detection_response(response_text: str) -> Dict[str, Any]:
     """
     try:
         # Try to extract JSON from the response
-        json_start = response_text.find('{')
-        json_end = response_text.rfind('}') + 1
+        json_start = response_text.find("{")
+        json_end = response_text.rfind("}") + 1
 
         if json_start >= 0 and json_end > json_start:
             json_text = response_text[json_start:json_end]
@@ -215,39 +193,30 @@ def parse_detection_response(response_text: str) -> Dict[str, Any]:
                 raise ValueError("Response is not a dictionary")
 
             # Ensure required fields
-            can_represent = result.get('can_represent', False)
-            question_type = result.get('question_type')
+            can_represent = result.get("can_represent", False)
+            question_type = result.get("question_type")
 
             # Validate question type if can_represent is True
             if can_represent and question_type not in SUPPORTED_QTI_TYPES:
-                return {
-                    "success": False,
-                    "error": f"Invalid question type: {question_type}. Must be one of: {SUPPORTED_QTI_TYPES}"
-                }
+                return {"success": False, "error": f"Invalid question type: {question_type}. Must be one of: {SUPPORTED_QTI_TYPES}"}
 
             # Return successful result
             return {
                 "success": True,
                 "can_represent": can_represent,
                 "question_type": question_type,
-                "confidence": result.get('confidence', 0.0),
-                "reason": result.get('reason', ''),
-                "key_elements": result.get('key_elements', []),
-                "potential_issues": result.get('potential_issues', [])
+                "confidence": result.get("confidence", 0.0),
+                "reason": result.get("reason", ""),
+                "key_elements": result.get("key_elements", []),
+                "potential_issues": result.get("potential_issues", []),
             }
         else:
             raise ValueError("No JSON found in response")
 
     except json.JSONDecodeError as e:
-        return {
-            "success": False,
-            "error": f"Failed to parse JSON response: {str(e)}"
-        }
+        return {"success": False, "error": f"Failed to parse JSON response: {str(e)}"}
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"Error parsing detection response: {str(e)}"
-        }
+        return {"success": False, "error": f"Error parsing detection response: {str(e)}"}
 
 
 def validate_question_type(question_type: str) -> bool:
@@ -274,19 +243,19 @@ def get_question_type_description(question_type: str) -> str:
         Description string
     """
     descriptions = {
-        'choice': 'Single or multiple-choice questions with selectable options',
-        'match': 'Questions where items from two sets need to be paired',
-        'text-entry': 'Questions requiring short text input',
-        'hotspot': 'Questions requiring clicking on specific areas of an image',
-        'extended-text': 'Questions requiring longer text input/essay responses',
-        'hot-text': 'Questions where specific text needs to be selected',
-        'gap-match': 'Questions where text must be dragged to fill gaps',
-        'order': 'Questions requiring ordering/ranking items',
-        'graphic-gap-match': 'Questions matching items to locations on an image',
-        'inline-choice': 'Questions with dropdown selections within text',
-        'select-point': 'Questions requiring clicking specific points on an image',
-        'media-interaction': 'Questions involving audio or video media',
-        'composite': 'Multi-part questions with different interaction types'
+        "choice": "Single or multiple-choice questions with selectable options",
+        "match": "Questions where items from two sets need to be paired",
+        "text-entry": "Questions requiring short text input",
+        "hotspot": "Questions requiring clicking on specific areas of an image",
+        "extended-text": "Questions requiring longer text input/essay responses",
+        "hot-text": "Questions where specific text needs to be selected",
+        "gap-match": "Questions where text must be dragged to fill gaps",
+        "order": "Questions requiring ordering/ranking items",
+        "graphic-gap-match": "Questions matching items to locations on an image",
+        "inline-choice": "Questions with dropdown selections within text",
+        "select-point": "Questions requiring clicking specific points on an image",
+        "media-interaction": "Questions involving audio or video media",
+        "composite": "Multi-part questions with different interaction types",
     }
 
-    return descriptions.get(question_type, 'Unknown question type')
+    return descriptions.get(question_type, "Unknown question type")

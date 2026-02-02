@@ -33,12 +33,7 @@ def is_meaningful_image(bbox: list[float]) -> bool:
     aspect_ratio = max(width, height) / min(width, height) if min(width, height) > 0 else float("inf")
 
     # Conservative criteria without overfitted thresholds
-    return (
-        area > 100
-        and aspect_ratio < 30
-        and width >= MIN_IMAGE_WIDTH
-        and height >= MIN_IMAGE_HEIGHT
-    )
+    return area > 100 and aspect_ratio < 30 and width >= MIN_IMAGE_WIDTH and height >= MIN_IMAGE_HEIGHT
 
 
 def trim_whitespace(image_bytes: bytes) -> bytes:
@@ -142,17 +137,14 @@ def render_image_area(
             }
 
             if mask_areas:
-                print(
-                    f"📸 ✅ Rendered and trimmed masked image {idx+1}: "
-                    f"{new_width}x{new_height} (masked {len(mask_areas)} areas)"
-                )
+                print(f"📸 ✅ Rendered and trimmed masked image {idx + 1}: {new_width}x{new_height} (masked {len(mask_areas)} areas)")
             else:
-                print(f"📸 ✅ Rendered and trimmed image {idx+1}: {new_width}x{new_height}")
+                print(f"📸 ✅ Rendered and trimmed image {idx + 1}: {new_width}x{new_height}")
 
             return result
 
     except Exception as e:
-        print(f"⚠️ Error rendering image {idx+1}: {e}")
+        print(f"⚠️ Error rendering image {idx + 1}: {e}")
 
     return None
 

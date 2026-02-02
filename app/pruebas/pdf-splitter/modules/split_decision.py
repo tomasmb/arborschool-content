@@ -16,9 +16,7 @@ from typing import Final
 _DEFAULT_THRESHOLD: Final[int] = 40
 
 # Exported constant so callers can print it in log messages.
-SPLIT_PAGE_THRESHOLD: Final[int] = int(
-    os.getenv("PDF_SPLIT_PAGE_THRESHOLD", _DEFAULT_THRESHOLD)
-)
+SPLIT_PAGE_THRESHOLD: Final[int] = int(os.getenv("PDF_SPLIT_PAGE_THRESHOLD", _DEFAULT_THRESHOLD))
 
 
 def should_split_pdf(total_pages: int, threshold: int | None = None) -> bool:

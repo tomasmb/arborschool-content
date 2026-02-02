@@ -16,39 +16,33 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-
 # Chrome paths for different environments
 LAMBDA_CHROME_PATHS = [
     "/opt/chrome/chrome",  # chrome-aws-lambda layer
     "/opt/chrome-linux/chrome",  # alternative layer
     "/opt/bin/chrome",  # another common path
-    "/usr/bin/google-chrome"  # system install
+    "/usr/bin/google-chrome",  # system install
 ]
 
 LAMBDA_CHROMEDRIVER_PATHS = [
     "/opt/chromedriver",  # chrome-aws-lambda layer
     "/opt/bin/chromedriver",  # alternative
-    "/usr/bin/chromedriver"  # system install
+    "/usr/bin/chromedriver",  # system install
 ]
 
 MACOS_CHROME_PATHS = [
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Chromium.app/Contents/MacOS/Chromium",
     "/usr/bin/google-chrome",
-    "/usr/bin/chromium"
+    "/usr/bin/chromium",
 ]
 
-LINUX_CHROME_PATHS = [
-    "/usr/bin/google-chrome",
-    "/usr/bin/chromium",
-    "/usr/bin/chromium-browser",
-    "/snap/bin/chromium"
-]
+LINUX_CHROME_PATHS = ["/usr/bin/google-chrome", "/usr/bin/chromium", "/usr/bin/chromium-browser", "/snap/bin/chromium"]
 
 
 def is_lambda_environment() -> bool:
     """Check if running in AWS Lambda environment."""
-    return os.environ.get('AWS_LAMBDA_FUNCTION_NAME') is not None
+    return os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is not None
 
 
 def find_binary_path(paths: list[str]) -> str | None:
@@ -86,12 +80,11 @@ def create_chrome_options(is_lambda: bool) -> Options:
 
     # User agent and automation detection
     chrome_options.add_argument(
-        "--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
     )
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
+    chrome_options.add_experimental_option("useAutomationExtension", False)
     chrome_options.add_argument("--disable-popup-blocking")
     chrome_options.add_argument("--disable-default-apps")
 
@@ -115,24 +108,15 @@ def setup_lambda_chrome(chrome_options: Options) -> dict[str, Any]:
         print(f"   🔧 Using Lambda Chrome binary: {chrome_binary_path}")
     else:
         print(f"   ❌ Chrome not found in Lambda. Checked paths: {LAMBDA_CHROME_PATHS}")
-        return {
-            "success": False,
-            "error": "Chrome Lambda layer not found. Please add Chrome Lambda layer."
-        }
+        return {"success": False, "error": "Chrome Lambda layer not found. Please add Chrome Lambda layer."}
 
     chromedriver_path = find_binary_path(LAMBDA_CHROMEDRIVER_PATHS)
     if chromedriver_path:
         print(f"   🔧 Using Lambda chromedriver: {chromedriver_path}")
-        return {
-            "success": True,
-            "service": Service(chromedriver_path)
-        }
+        return {"success": True, "service": Service(chromedriver_path)}
     else:
         print(f"   ❌ ChromeDriver not found. Checked paths: {LAMBDA_CHROMEDRIVER_PATHS}")
-        return {
-            "success": False,
-            "error": "ChromeDriver not found in Lambda layer."
-        }
+        return {"success": False, "error": "ChromeDriver not found in Lambda layer."}
 
 
 def setup_local_chrome(chrome_options: Options) -> dict[str, Any]:
@@ -162,10 +146,7 @@ def setup_local_chrome(chrome_options: Options) -> dict[str, Any]:
 
     # Use webdriver-manager for local development
     print("   🔧 Using webdriver-manager")
-    return {
-        "success": True,
-        "service": Service(ChromeDriverManager().install())
-    }
+    return {"success": True, "service": Service(ChromeDriverManager().install())}
 
 
 def create_webdriver() -> dict[str, Any]:
@@ -186,16 +167,9 @@ def create_webdriver() -> dict[str, Any]:
         if not setup_result["success"]:
             return setup_result
 
-        driver = webdriver.Chrome(
-            service=setup_result["service"],
-            options=chrome_options
-        )
+        driver = webdriver.Chrome(service=setup_result["service"], options=chrome_options)
 
-        return {
-            "success": True,
-            "driver": driver,
-            "is_lambda": is_lambda
-        }
+        return {"success": True, "driver": driver, "is_lambda": is_lambda}
 
     except Exception as chrome_error:
         print(f"   ❌ Chrome setup failed: {str(chrome_error)}")
@@ -209,10 +183,7 @@ def _create_chrome_error_response(error: Exception, is_lambda: bool) -> dict[str
     if is_lambda:
         return {
             "success": False,
-            "error": (
-                f"Chrome Lambda layer setup failed. Ensure Chrome Lambda layer "
-                f"is properly configured. Original error: {error_str}"
-            )
+            "error": (f"Chrome Lambda layer setup failed. Ensure Chrome Lambda layer is properly configured. Original error: {error_str}"),
         }
     elif "chrome binary" in error_str.lower():
         return {
@@ -221,10 +192,7 @@ def _create_chrome_error_response(error: Exception, is_lambda: bool) -> dict[str
                 f"Chrome browser not found. Please install Google Chrome from "
                 f"https://www.google.com/chrome/ or run 'brew install --cask google-chrome'. "
                 f"Original error: {error_str}"
-            )
+            ),
         }
     else:
-        return {
-            "success": False,
-            "error": f"WebDriver setup failed: {error_str}"
-        }
+        return {"success": False, "error": f"WebDriver setup failed: {error_str}"}

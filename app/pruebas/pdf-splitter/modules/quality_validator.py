@@ -17,6 +17,7 @@ from openai import OpenAI
 # OpenAI client will be initialized lazily
 client = None
 
+
 def get_openai_client() -> OpenAI:
     """Get or initialize OpenAI client with API key from environment."""
     global client
@@ -27,21 +28,16 @@ def get_openai_client() -> OpenAI:
         client = OpenAI(api_key=api_key)
     return client
 
+
 # JSON Schema for the quality validation response
 VALIDATION_SCHEMA = {
     "type": "object",
     "properties": {
-        "is_complete_and_answerable": {
-            "type": "boolean",
-            "description": "Is the question complete and answerable with the provided content?"
-        },
-        "reason": {
-            "type": "string",
-            "description": "A brief explanation for the decision, especially if false."
-        }
+        "is_complete_and_answerable": {"type": "boolean", "description": "Is the question complete and answerable with the provided content?"},
+        "reason": {"type": "string", "description": "A brief explanation for the decision, especially if false."},
     },
     "required": ["is_complete_and_answerable", "reason"],
-    "additionalProperties": False
+    "additionalProperties": False,
 }
 
 # System prompt for the quality check AI
@@ -91,6 +87,7 @@ Respond with a JSON object that strictly adheres to the provided schema.
   or "The question refers to Document 2, but it is not included in the PDF."
 """
 
+
 def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool, str]:
     """
     Uses an AI to validate the quality and completeness of a generated question PDF.
@@ -116,11 +113,8 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
         # Convert to image with high DPI for better quality
         pix = page.get_pixmap(matrix=fitz.Matrix(2, 2))  # 2x scaling for better resolution
         img_data = pix.tobytes("png")
-        img_base64 = base64.b64encode(img_data).decode('utf-8')
-        images_base64.append({
-            "type": "image_url",
-            "image_url": {"url": f"data:image/png;base64,{img_base64}"}
-        })
+        img_base64 = base64.b64encode(img_data).decode("utf-8")
+        images_base64.append({"type": "image_url", "image_url": {"url": f"data:image/png;base64,{img_base64}"}})
 
     doc.close()
 
@@ -136,19 +130,12 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
             # Call the chat completion API with the images
             completion = openai_client.chat.completions.create(
                 model="o4-mini-2025-04-16",
-                messages=[
-                    {"role": "system", "content": QUALITY_CHECK_PROMPT},
-                    {"role": "user", "content": message_content}
-                ],
+                messages=[{"role": "system", "content": QUALITY_CHECK_PROMPT}, {"role": "user", "content": message_content}],
                 response_format={
                     "type": "json_schema",
-                    "json_schema": {
-                        "name": "question_quality_validation",
-                        "schema": VALIDATION_SCHEMA,
-                        "strict": True
-                    }
+                    "json_schema": {"name": "question_quality_validation", "schema": VALIDATION_SCHEMA, "strict": True},
                 },
-                seed=42 # Deterministic output
+                seed=42,  # Deterministic output
             )
 
             # Parse the response
@@ -167,15 +154,28 @@ def validate_question_quality(pdf_path: str, max_retries: int = 3) -> Tuple[bool
 
         except Exception as e:
             error_str = str(e)
-            is_retryable = any(error_type in error_str.lower() for error_type in [
-                "502", "503", "504", "500",  # Server errors
-                "bad gateway", "service unavailable", "gateway timeout", "internal server error",
-                "connection", "timeout", "network", "rate limit", "too many requests"
-            ])
+            is_retryable = any(
+                error_type in error_str.lower()
+                for error_type in [
+                    "502",
+                    "503",
+                    "504",
+                    "500",  # Server errors
+                    "bad gateway",
+                    "service unavailable",
+                    "gateway timeout",
+                    "internal server error",
+                    "connection",
+                    "timeout",
+                    "network",
+                    "rate limit",
+                    "too many requests",
+                ]
+            )
 
             if is_retryable and attempt < max_retries - 1:
                 # Exponential backoff with jitter
-                delay = min(60, (2 ** attempt) + random.uniform(0, 1))
+                delay = min(60, (2**attempt) + random.uniform(0, 1))
                 print(f"🔄 Retryable error (attempt {attempt + 1}/{max_retries}): {error_str}")
                 print(f"⏳ Retrying in {delay:.1f} seconds...")
                 time.sleep(delay)

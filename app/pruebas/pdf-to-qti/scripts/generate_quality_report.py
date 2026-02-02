@@ -28,35 +28,30 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 
 def check_xml_structure(xml_file: Path) -> Dict[str, Any]:
     """Valida estructura básica del XML."""
-    result = {
-        "valid": False,
-        "errors": [],
-        "warnings": [],
-        "elements": {}
-    }
+    result = {"valid": False, "errors": [], "warnings": [], "elements": {}}
 
     try:
         tree = ET.parse(xml_file)
         root = tree.getroot()
 
-        xml_content = xml_file.read_text(encoding='utf-8')
+        xml_content = xml_file.read_text(encoding="utf-8")
 
         # Check root element
-        if root.tag.endswith('assessment-item'):
+        if root.tag.endswith("assessment-item"):
             result["valid"] = True
         else:
             result["errors"].append(f"Root element should be assessment-item, found: {root.tag}")
 
         # Check namespace
-        if 'http://www.imsglobal.org/xsd/imsqtiasi_v3p0' not in xml_content:
+        if "http://www.imsglobal.org/xsd/imsqtiasi_v3p0" not in xml_content:
             result["errors"].append("Missing QTI 3.0 namespace")
 
         # Check required elements
         required = {
-            'response_declaration': 'response-declaration',
-            'item_body': 'item-body',
-            'choice_interaction': 'choice-interaction',
-            'correct_response': 'correct-response'
+            "response_declaration": "response-declaration",
+            "item_body": "item-body",
+            "choice_interaction": "choice-interaction",
+            "correct_response": "correct-response",
         }
 
         for name, tag in required.items():
@@ -66,14 +61,14 @@ def check_xml_structure(xml_file: Path) -> Dict[str, Any]:
                 result["errors"].append(f"Missing required element: {name}")
 
         # Check number of choices
-        choices = [e for e in root.iter() if 'simple-choice' in e.tag]
+        choices = [e for e in root.iter() if "simple-choice" in e.tag]
         result["elements"]["num_choices"] = len(choices)
 
         if len(choices) != 4:
             result["warnings"].append(f"Expected 4 choices for PAES, found {len(choices)}")
 
         # Check for base64
-        if 'data:image' in xml_content and 'base64' in xml_content:
+        if "data:image" in xml_content and "base64" in xml_content:
             result["errors"].append("XML still contains base64 (should use S3 URLs)")
 
         # Check for S3 URLs
@@ -90,20 +85,17 @@ def check_xml_structure(xml_file: Path) -> Dict[str, Any]:
 
 def check_encoding_issues(xml_file: Path) -> Dict[str, Any]:
     """Verifica problemas de codificación comunes."""
-    result = {
-        "has_issues": False,
-        "issues": []
-    }
+    result = {"has_issues": False, "issues": []}
 
     try:
-        xml_content = xml_file.read_text(encoding='utf-8')
+        xml_content = xml_file.read_text(encoding="utf-8")
 
         # Known encoding patterns
         encoding_patterns = [
-            (r'\be1\w*', 'á (tildes mal codificados)'),
-            (r'\bf3\w*', 'ó (tildes mal codificados)'),
-            (r'\bf1\w*', 'ñ (letra ñ mal codificada)'),
-            (r'\bbf\w*', '¿ (signo de interrogación mal codificado)'),
+            (r"\be1\w*", "á (tildes mal codificados)"),
+            (r"\bf3\w*", "ó (tildes mal codificados)"),
+            (r"\bf1\w*", "ñ (letra ñ mal codificada)"),
+            (r"\bbf\w*", "¿ (signo de interrogación mal codificado)"),
         ]
 
         for pattern, description in encoding_patterns:
@@ -111,12 +103,7 @@ def check_encoding_issues(xml_file: Path) -> Dict[str, Any]:
             if matches:
                 unique_matches = list(set(matches))[:5]
                 result["has_issues"] = True
-                result["issues"].append({
-                    "pattern": pattern,
-                    "description": description,
-                    "matches": unique_matches,
-                    "count": len(matches)
-                })
+                result["issues"].append({"pattern": pattern, "description": description, "matches": unique_matches, "count": len(matches)})
 
     except Exception as e:
         result["issues"].append({"error": str(e)})
@@ -126,12 +113,7 @@ def check_encoding_issues(xml_file: Path) -> Dict[str, Any]:
 
 def check_correct_answer(xml_file: Path, expected_answer: str | None) -> Dict[str, Any]:
     """Verifica que la respuesta correcta coincida con el answer key."""
-    result = {
-        "has_answer": False,
-        "matches": False,
-        "found": None,
-        "expected": expected_answer
-    }
+    result = {"has_answer": False, "matches": False, "found": None, "expected": expected_answer}
 
     if not expected_answer:
         return result
@@ -143,21 +125,21 @@ def check_correct_answer(xml_file: Path, expected_answer: str | None) -> Dict[st
         # Find correct-response
         correct_response = None
         for elem in root.iter():
-            if 'correct-response' in elem.tag:
+            if "correct-response" in elem.tag:
                 correct_response = elem
                 break
 
         if correct_response:
             # Find qti-value
             for child in correct_response.iter():
-                if 'value' in child.tag and child.text:
+                if "value" in child.tag and child.text:
                     result["has_answer"] = True
                     result["found"] = child.text.strip()
 
                     # Normalize for comparison
                     found_norm = child.text.strip().upper()
                     expected_norm = expected_answer.strip().upper()
-                    result["matches"] = (found_norm == expected_norm)
+                    result["matches"] = found_norm == expected_norm
                     break
 
     except Exception:
@@ -178,9 +160,9 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
     # Load answer key if available
     answer_key = {}
     if answer_key_path.exists():
-        with open(answer_key_path, 'r') as f:
+        with open(answer_key_path, "r") as f:
             answer_key_data = json.load(f)
-            answer_key = answer_key_data.get('answers', {})
+            answer_key = answer_key_data.get("answers", {})
 
     report = {
         "test_name": test_name,
@@ -192,22 +174,21 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
             "xmls_with_warnings": 0,
             "encoding_issues": 0,
             "answer_mismatches": 0,
-            "missing_xmls": []
+            "missing_xmls": [],
         },
-        "details": []
+        "details": [],
     }
 
     # Find all question folders
     question_folders = sorted(
-        [f for f in qti_dir.iterdir() if f.is_dir() and f.name.startswith('Q')],
-        key=lambda x: int(x.name[1:]) if x.name[1:].isdigit() else 999
+        [f for f in qti_dir.iterdir() if f.is_dir() and f.name.startswith("Q")], key=lambda x: int(x.name[1:]) if x.name[1:].isdigit() else 999
     )
 
     for folder in question_folders:
         q_name = folder.name
         q_num = q_name[1:] if q_name[1:].isdigit() else None
 
-        xml_file = folder / 'question.xml'
+        xml_file = folder / "question.xml"
 
         if not xml_file.exists():
             report["summary"]["missing_xmls"].append(q_name)
@@ -215,10 +196,7 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
 
         report["summary"]["total_xmls"] += 1
 
-        detail = {
-            "question": q_name,
-            "xml_file": str(xml_file)
-        }
+        detail = {"question": q_name, "xml_file": str(xml_file)}
 
         # Check structure
         structure_check = check_xml_structure(xml_file)
@@ -247,9 +225,9 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
         report["details"].append(detail)
 
     # Print summary
-    print("\n" + "="*60)
+    print("\n" + "=" * 60)
     print("📊 REPORTE DE CALIDAD QTI")
-    print("="*60)
+    print("=" * 60)
     print(f"Test: {test_name}")
     print(f"Generado: {report['generated_at']}")
     print()
@@ -260,15 +238,15 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
     print(f"📝 Respuestas incorrectas: {report['summary']['answer_mismatches']}")
     print(f"📄 XMLs faltantes: {len(report['summary']['missing_xmls'])}")
 
-    if report['summary']['missing_xmls']:
+    if report["summary"]["missing_xmls"]:
         print("\n📋 Preguntas sin XML:")
         print(f"   {', '.join(report['summary']['missing_xmls'])}")
 
     # Show issues
     xmls_with_issues = [
-        d for d in report["details"]
-        if d["structure"]["errors"] or d["encoding"]["has_issues"] or
-        (d["correct_answer"]["has_answer"] and not d["correct_answer"]["matches"])
+        d
+        for d in report["details"]
+        if d["structure"]["errors"] or d["encoding"]["has_issues"] or (d["correct_answer"]["has_answer"] and not d["correct_answer"]["matches"])
     ]
 
     if xmls_with_issues:
@@ -292,7 +270,7 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
 
     # Save to file if requested
     if output_file:
-        with open(output_file, 'w', encoding='utf-8') as f:
+        with open(output_file, "w", encoding="utf-8") as f:
             json.dump(report, f, indent=2, ensure_ascii=False)
         print(f"\n💾 Reporte guardado en: {output_file}")
 
@@ -300,17 +278,9 @@ def generate_report(test_name: str, output_file: Path | None = None) -> Dict[str
 
 
 def main():
-    parser = argparse.ArgumentParser(
-        description="Generate quality report for QTI XMLs"
-    )
-    parser.add_argument(
-        "test_name",
-        help="Test name (e.g., 'seleccion-regular-2026')"
-    )
-    parser.add_argument(
-        "--output",
-        help="Output JSON file path (optional)"
-    )
+    parser = argparse.ArgumentParser(description="Generate quality report for QTI XMLs")
+    parser.add_argument("test_name", help="Test name (e.g., 'seleccion-regular-2026')")
+    parser.add_argument("--output", help="Output JSON file path (optional)")
 
     args = parser.parse_args()
 

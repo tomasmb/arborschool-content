@@ -15,11 +15,7 @@ from .config import Route, get_paes_score
 from .engine import Response, ResponseType
 
 
-def calculate_paes_score(
-    route: Route,
-    r1_correct: int,
-    stage2_correct: int
-) -> Dict:
+def calculate_paes_score(route: Route, r1_correct: int, stage2_correct: int) -> Dict:
     """
     Calcula el puntaje PAES estimado.
 
@@ -114,14 +110,16 @@ def diagnose_atoms(responses: List[Response]) -> List[Dict]:
                     include_in_plan = True
                     instruction_type = "corregir"
 
-                diagnoses.append({
-                    "atom_id": atom_id,
-                    "atom_title": atom_title,
-                    "respuesta": response.response_type.value,
-                    "estado": status,
-                    "incluir_en_plan": include_in_plan,
-                    "tipo_instruccion": instruction_type,
-                })
+                diagnoses.append(
+                    {
+                        "atom_id": atom_id,
+                        "atom_title": atom_title,
+                        "respuesta": response.response_type.value,
+                        "estado": status,
+                        "incluir_en_plan": include_in_plan,
+                        "tipo_instruccion": instruction_type,
+                    }
+                )
 
         except (json.JSONDecodeError, KeyError):
             continue

@@ -11,7 +11,6 @@ import json
 import logging
 import sys
 from pathlib import Path
-from typing import Any
 
 from app.atoms.generation import generate_atoms_for_standard
 from app.gemini_client import load_default_gemini_service
@@ -164,4 +163,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -18,7 +18,7 @@ def extract_choice_images(
     block_categories: Dict[int, str],
     all_text_bboxes: List[List[float]],
     question_answer_blocks: List[List[float]],
-    choice_image_labels: List[List[float]]
+    choice_image_labels: List[List[float]],
 ) -> Dict[str, Any]:
     """
     Extract individual choice images by finding visual areas around each answer choice block.
@@ -43,11 +43,7 @@ def extract_choice_images(
                 if original_block.get("type") == 0:
                     bbox = original_block.get("bbox")
                     if bbox and len(bbox) == 4:
-                        choice_blocks.append({
-                            "block_num": block_num,
-                            "bbox": bbox,
-                            "text": get_block_text_from_bbox(page, bbox)
-                        })
+                        choice_blocks.append({"block_num": block_num, "bbox": bbox, "text": get_block_text_from_bbox(page, bbox)})
 
     print(f"🔍 📋 Found {len(choice_blocks)} answer choice blocks")
 
@@ -61,20 +57,20 @@ def extract_choice_images(
     if len(choice_blocks) > 1:
         # Extract choice identifier for each block first
         for choice_block in choice_blocks:
-            choice_identifier = extract_choice_identifier(choice_block['text'], 0)  # index not used in current implementation
-            choice_block['choice_identifier'] = choice_identifier
+            choice_identifier = extract_choice_identifier(choice_block["text"], 0)  # index not used in current implementation
+            choice_block["choice_identifier"] = choice_identifier
 
         # Sort by choice identifier (A, B, C, D)
-        choice_blocks.sort(key=lambda cb: cb.get('choice_identifier', 'Z'))
+        choice_blocks.sort(key=lambda cb: cb.get("choice_identifier", "Z"))
 
     print("🔍 📋 Choice blocks in reading order:")
     for i, choice_block in enumerate(choice_blocks):
-        choice_id = choice_block.get('choice_identifier', 'Unknown')
-        print(f"🔍   {i+1}. Block {choice_block['block_num']}: '{choice_block['text'].strip()}' -> Choice {choice_id}")
+        choice_id = choice_block.get("choice_identifier", "Unknown")
+        print(f"🔍   {i + 1}. Block {choice_block['block_num']}: '{choice_block['text'].strip()}' -> Choice {choice_id}")
 
     # 2. Detect layout type (Vertical vs. Grid).
-    x_coords = [(cb['bbox'][0] + cb['bbox'][2]) / 2 for cb in choice_blocks]
-    x_std_dev = (sum([(x - sum(x_coords) / len(x_coords))**2 for x in x_coords]) / len(x_coords))**0.5
+    x_coords = [(cb["bbox"][0] + cb["bbox"][2]) / 2 for cb in choice_blocks]
+    x_std_dev = (sum([(x - sum(x_coords) / len(x_coords)) ** 2 for x in x_coords]) / len(x_coords)) ** 0.5
     layout_type = "Vertical" if x_std_dev < (page_width * 0.1) else "Grid"
     print(f"🔍 🧐 Detected layout type: {layout_type} (X-coord std dev: {x_std_dev:.1f})")
 
@@ -84,7 +80,7 @@ def extract_choice_images(
         block_bbox = choice_block["bbox"]
         block_text = choice_block["text"]
 
-        print(f"🔍 🎯 Processing choice {i+1}: Block {block_num}")
+        print(f"🔍 🎯 Processing choice {i + 1}: Block {block_num}")
 
         choice_image_bbox = None
         if layout_type == "Vertical":
@@ -99,22 +95,22 @@ def extract_choice_images(
 
             # 3. Bottom of image area is the top of the next choice's text block.
             if i < len(choice_blocks) - 1:
-                bottom = choice_blocks[i+1]['bbox'][1] - margin
+                bottom = choice_blocks[i + 1]["bbox"][1] - margin
             else:
                 # For the last choice, find the footer and end before it.
                 footer_y_start = page_height
                 for block in all_text_bboxes:
                     # A footer block is typically low on the page.
                     if block[1] > (page_height * 0.9):
-                         footer_y_start = min(footer_y_start, block[1])
+                        footer_y_start = min(footer_y_start, block[1])
                 bottom = footer_y_start - margin
 
             choice_image_bbox = [left, top, right, bottom]
 
-        else: # Grid Layout
+        else:  # Grid Layout
             # The existing quadrant-based logic is robust for grid layouts.
-            x_coords = sorted([(cb['bbox'][0] + cb['bbox'][2]) / 2 for cb in choice_blocks])
-            y_coords = sorted([(cb['bbox'][1] + cb['bbox'][3]) / 2 for cb in choice_blocks])
+            x_coords = sorted([(cb["bbox"][0] + cb["bbox"][2]) / 2 for cb in choice_blocks])
+            y_coords = sorted([(cb["bbox"][1] + cb["bbox"][3]) / 2 for cb in choice_blocks])
             median_x = x_coords[len(x_coords) // 2]
             median_y = y_coords[len(y_coords) // 2]
 
@@ -126,24 +122,24 @@ def extract_choice_images(
                 else:
                     return "bottom_left" if x < median_x else "bottom_right"
 
-            choice_in_quadrant = {get_quadrant(cb['bbox']): cb for cb in choice_blocks}
+            choice_in_quadrant = {get_quadrant(cb["bbox"]): cb for cb in choice_blocks}
 
-            visual_labels_by_choice = {cb['block_num']: [] for cb in choice_blocks}
+            visual_labels_by_choice = {cb["block_num"]: [] for cb in choice_blocks}
 
             print(f"🔍 🔬 Analyzing {len(choice_image_labels)} choice-specific labels...")
             for label_bbox in choice_image_labels:
                 label_quadrant = get_quadrant(label_bbox)
-                if (target_choice := choice_in_quadrant.get(label_quadrant)):
-                    visual_labels_by_choice[target_choice['block_num']].append(label_bbox)
+                if target_choice := choice_in_quadrant.get(label_quadrant):
+                    visual_labels_by_choice[target_choice["block_num"]].append(label_bbox)
 
             associated_labels = visual_labels_by_choice.get(block_num, [])
 
-            print(f"🔍 🔬 Associating visual labels with choice {i+1} (Block {block_num}):")
+            print(f"🔍 🔬 Associating visual labels with choice {i + 1} (Block {block_num}):")
             if not associated_labels:
                 print("🔍      No labels associated.")
             for label_idx, label_bbox in enumerate(associated_labels):
-                label_text = get_block_text_from_bbox(page, label_bbox).replace('\n', ' ')
-                print(f"🔍      - Label {label_idx+1}: '{label_text}'")
+                label_text = get_block_text_from_bbox(page, label_bbox).replace("\n", " ")
+                print(f"🔍      - Label {label_idx + 1}: '{label_text}'")
 
             all_content_bboxes = [block_bbox] + associated_labels
             if not all_content_bboxes:
@@ -166,7 +162,7 @@ def extract_choice_images(
             # --- Find bottom boundary to prevent capturing text below ---
             bottom_boundary = page_height - margin
             # Consider both other choices and general Q&A text as potential boundaries
-            all_potential_boundaries_below = [b for b in (question_answer_blocks + [cb['bbox'] for cb in choice_blocks]) if b[1] > content_max_y]
+            all_potential_boundaries_below = [b for b in (question_answer_blocks + [cb["bbox"] for cb in choice_blocks]) if b[1] > content_max_y]
             if all_potential_boundaries_below:
                 closest_boundary_below = min(all_potential_boundaries_below, key=lambda b: b[1])
                 bottom_boundary = closest_boundary_below[1] - (margin / 2)
@@ -204,10 +200,10 @@ def extract_choice_images(
                 if is_left_column and (my_pos_in_reading_order + 1) < len(choice_blocks):
                     next_choice_block = choice_blocks[my_pos_in_reading_order + 1]
                     # Ensure the next choice is actually to the right
-                    if next_choice_block['bbox'][0] > choice_block['bbox'][0]:
-                        right_boundary = next_choice_block['bbox'][0] - margin
+                    if next_choice_block["bbox"][0] > choice_block["bbox"][0]:
+                        right_boundary = next_choice_block["bbox"][0] - margin
                         if choice_image_bbox[2] > right_boundary:
-                            print(f"🔍    CLIPPING right edge from {choice_image_bbox[2]:.1f} to {right_boundary:.1f} (boundary from choice {i+2})")
+                            print(f"🔍    CLIPPING right edge from {choice_image_bbox[2]:.1f} to {right_boundary:.1f} (boundary from choice {i + 2})")
                             choice_image_bbox[2] = right_boundary
                         else:
                             print(f"🔍    Right edge {choice_image_bbox[2]:.1f} is already within boundary {right_boundary:.1f}")
@@ -226,7 +222,7 @@ def extract_choice_images(
 
             if choice_width > min_width and choice_height > min_height:
                 # Use pre-computed choice identifier to ensure consistency
-                choice_identifier = choice_block.get('choice_identifier', extract_choice_identifier(block_text, i))
+                choice_identifier = choice_block.get("choice_identifier", extract_choice_identifier(block_text, i))
                 text_mask_areas = detect_mixed_choice_content(block_text, block_bbox, choice_identifier)
 
                 choice_info = {
@@ -234,15 +230,12 @@ def extract_choice_images(
                     "choice_letter": choice_identifier,
                     "description": f"Choice {choice_identifier} visual diagram",
                     "block_num": block_num,
-                    "text_mask_areas": text_mask_areas
+                    "text_mask_areas": text_mask_areas,
                 }
                 choice_bboxes.append(choice_info)
 
                 print(f"🔍 ✅ Found choice image for {choice_info['choice_letter']}")
-                print(
-                    f"🔍    Bbox: [{choice_image_bbox[0]:.1f}, {choice_image_bbox[1]:.1f}, "
-                    f"{choice_image_bbox[2]:.1f}, {choice_image_bbox[3]:.1f}]"
-                )
+                print(f"🔍    Bbox: [{choice_image_bbox[0]:.1f}, {choice_image_bbox[1]:.1f}, {choice_image_bbox[2]:.1f}, {choice_image_bbox[3]:.1f}]")
                 print(f"🔍    Size: {choice_width:.1f} x {choice_height:.1f}")
             else:
                 print(f"🔍 ❌ Choice area too small: {choice_width:.1f} x {choice_height:.1f} (min: {min_width:.1f} x {min_height:.1f})")
@@ -251,7 +244,4 @@ def extract_choice_images(
     print(f"🔍    Total choice blocks found: {len(choice_blocks)}")
     print(f"🔍    Choice images extracted: {len(choice_bboxes)}")
 
-    return {
-        "extracted_images": choice_bboxes,
-        "total_choices_found": len(choice_blocks)
-    }
+    return {"extracted_images": choice_bboxes, "total_choices_found": len(choice_blocks)}

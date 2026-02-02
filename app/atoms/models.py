@@ -15,10 +15,10 @@ from app.models.constants import (
     VALID_TIPO_ATOMICO,
 )
 
-
 # -----------------------------------------------------------------------------
 # Atom model
 # -----------------------------------------------------------------------------
+
 
 class Atom(BaseModel):
     """A single learning atom as defined in docs/standards-from-temarios.md."""
@@ -138,6 +138,7 @@ class Atom(BaseModel):
 # Top-level structures
 # -----------------------------------------------------------------------------
 
+
 class AtomsMetadata(BaseModel):
     """Document-level information for a canonical atoms file."""
 
@@ -203,6 +204,7 @@ class CanonicalAtomsFile(BaseModel):
 # Validation helpers
 # -----------------------------------------------------------------------------
 
+
 def validate_atom_id_matches_eje(atom: Atom) -> None:
     """Ensure the atom ID prefix matches its eje."""
     expected_prefix = EJE_PREFIXES.get(atom.eje)
@@ -217,9 +219,5 @@ def validate_atom_id_matches_eje(atom: Atom) -> None:
 
     id_prefix = id_parts[2]
     if id_prefix != expected_prefix:
-        msg = (
-            f"Atom ID prefix '{id_prefix}' doesn't match eje '{atom.eje}' "
-            f"(expected '{expected_prefix}')"
-        )
+        msg = f"Atom ID prefix '{id_prefix}' doesn't match eje '{atom.eje}' (expected '{expected_prefix}')"
         raise ValueError(msg)
-

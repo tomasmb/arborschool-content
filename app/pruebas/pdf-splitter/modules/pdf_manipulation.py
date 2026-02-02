@@ -89,11 +89,7 @@ def merge_pdfs(pdf_paths: list[str], output_path: str) -> None:
     merged_doc.close()
 
 
-def extract_page_region_with_margin(
-    page: fitz.Page,
-    bbox: list[float],
-    margin: int = 10
-) -> fitz.Rect:
+def extract_page_region_with_margin(page: fitz.Page, bbox: list[float], margin: int = 10) -> fitz.Rect:
     """
     Create a fitz.Rect from a bbox with margin, clamped to page boundaries.
 

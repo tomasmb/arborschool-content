@@ -21,15 +21,15 @@ def main():
         print(f"❌ Archivo de segmentación no encontrado: {seg_file}")
         sys.exit(1)
 
-    with open(seg_file, 'r', encoding='utf-8') as f:
+    with open(seg_file, "r", encoding="utf-8") as f:
         seg_data = json.load(f)
 
     # Crear mapeo: número de pregunta -> posición en archivo (1-indexed)
-    questions_list = seg_data.get('questions', [])
+    questions_list = seg_data.get("questions", [])
     qnum_to_position = {}
     for idx, q in enumerate(questions_list):
-        q_id = q.get('id', '')
-        if q_id.startswith('Q'):
+        q_id = q.get("id", "")
+        if q_id.startswith("Q"):
             try:
                 q_num = int(q_id[1:])
                 qnum_to_position[q_num] = idx + 1  # Posición 1-indexed
@@ -44,10 +44,10 @@ def main():
     renames = []
     for item in os.listdir(qti_dir):
         item_path = qti_dir / item
-        if item_path.is_dir() and item.startswith('Q'):
+        if item_path.is_dir() and item.startswith("Q"):
             try:
                 # Extraer número actual
-                if item.startswith('Q0'):
+                if item.startswith("Q0"):
                     # Ya está en formato Q01, Q02, etc.
                     current_num = int(item[1:])
                     # Buscar qué pregunta es esta
@@ -63,7 +63,7 @@ def main():
                     current_num = int(item[1:])
                     if current_num in qnum_to_position:
                         pos = qnum_to_position[current_num]
-                        new_name = f'Q{pos:02d}'
+                        new_name = f"Q{pos:02d}"
                         if item != new_name:
                             renames.append((item, new_name, current_num, pos))
             except ValueError:

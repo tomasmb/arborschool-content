@@ -31,14 +31,12 @@ from app.pruebas.pdf_to_qti.modules.image_processing.choice_region_utils import 
 
 class ChoiceDiagramExtractionError(Exception):
     """Custom exception for errors during choice diagram extraction."""
+
     pass
 
 
 def detect_and_extract_choice_diagrams(
-    page: fitz.Page,
-    text_blocks: list[dict[str, Any]],
-    ai_categories: dict[int, str] | None = None,
-    question_text: str = ""
+    page: fitz.Page, text_blocks: list[dict[str, Any]], ai_categories: dict[int, str] | None = None, question_text: str = ""
 ) -> list[dict[str, Any]] | None:
     """
     Detect if this is a multiple choice question with diagram options and extract
@@ -83,17 +81,13 @@ def detect_and_extract_choice_diagrams(
 
     if not choice_images:
         raise ChoiceDiagramExtractionError(
-            "Detected a choice diagram question and found choice regions, "
-            "but failed to render the images for the choices."
+            "Detected a choice diagram question and found choice regions, but failed to render the images for the choices."
         )
 
     return choice_images
 
 
-def _extract_choice_images(
-    page: fitz.Page,
-    choice_regions: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def _extract_choice_images(page: fitz.Page, choice_regions: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """
     Extract images from choice regions.
 
@@ -107,8 +101,8 @@ def _extract_choice_images(
     choice_images = []
 
     for i, region in enumerate(choice_regions):
-        choice_letter = region.get('choice_letter', f'Choice{i+1}')
-        bbox = region['bbox']
+        choice_letter = region.get("choice_letter", f"Choice{i + 1}")
+        bbox = region["bbox"]
 
         try:
             render_rect = fitz.Rect(bbox)
@@ -131,7 +125,7 @@ def _extract_choice_images(
                 "is_grouped": False,
                 "is_choice_diagram": True,
                 "choice_letter": choice_letter,
-                "description": f"Diagram for choice {choice_letter}"
+                "description": f"Diagram for choice {choice_letter}",
             }
 
             choice_images.append(choice_image)

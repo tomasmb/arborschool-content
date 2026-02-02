@@ -11,11 +11,7 @@ import re
 from typing import Any
 
 
-def is_choice_diagram_question(
-    text_blocks: list[dict[str, Any]],
-    ai_categories: dict[int, str] | None = None,
-    question_text: str = ""
-) -> bool:
+def is_choice_diagram_question(text_blocks: list[dict[str, Any]], ai_categories: dict[int, str] | None = None, question_text: str = "") -> bool:
     """
     Determine if this is a multiple choice question with diagram options.
 
@@ -76,11 +72,7 @@ def is_choice_diagram_question(
     # 1. It has explicit visual choice question language AND
     # 2. It has clear choice option structure AND
     # 3. It's not detected as having prompt visuals
-    result = (
-        explicit_choice_question and
-        has_actual_choice_options and
-        not has_prompt_visuals
-    )
+    result = explicit_choice_question and has_actual_choice_options and not has_prompt_visuals
 
     print(f"🎯 Visual question: {has_visual_question}")
     print(f"🎯 Explicit choice question: {explicit_choice_question}")
@@ -95,13 +87,30 @@ def is_choice_diagram_question(
 def _has_multi_part_indicators(all_text: str) -> bool:
     """Check for multi-part question indicators that indicate NOT a choice diagram."""
     multi_part_indicators = [
-        "part a", "part b", "part c", "part d",
-        "a.", "b.", "c.", "d.",
-        "a)", "b)", "c)", "d)",
-        "identify", "explain", "describe", "analyze",
-        "based on the model", "the model shown",
-        "three parts", "two parts", "four parts",
-        "label each part", "name the parts", "list the components"
+        "part a",
+        "part b",
+        "part c",
+        "part d",
+        "a.",
+        "b.",
+        "c.",
+        "d.",
+        "a)",
+        "b)",
+        "c)",
+        "d)",
+        "identify",
+        "explain",
+        "describe",
+        "analyze",
+        "based on the model",
+        "the model shown",
+        "three parts",
+        "two parts",
+        "four parts",
+        "label each part",
+        "name the parts",
+        "list the components",
     ]
     return any(indicator in all_text for indicator in multi_part_indicators)
 
@@ -109,11 +118,25 @@ def _has_multi_part_indicators(all_text: str) -> bool:
 def _has_prompt_visual_indicators(all_text: str) -> bool:
     """Check for indicators that visual content is part of the question setup, not choices."""
     prompt_visual_indicators = [
-        "hydrogen peroxide", "water", "oxygen",  # Molecule names
-        "molecule", "molecular", "atoms", "compound", "element",
-        "diagram shows", "diagrams shown", "shown above", "image above",
-        "in the diagram", "from the diagram", "the diagram", "the model",
-        "conservation of mass", "chemical reaction", "breaks apart"
+        "hydrogen peroxide",
+        "water",
+        "oxygen",  # Molecule names
+        "molecule",
+        "molecular",
+        "atoms",
+        "compound",
+        "element",
+        "diagram shows",
+        "diagrams shown",
+        "shown above",
+        "image above",
+        "in the diagram",
+        "from the diagram",
+        "the diagram",
+        "the model",
+        "conservation of mass",
+        "chemical reaction",
+        "breaks apart",
     ]
     return any(indicator in all_text for indicator in prompt_visual_indicators)
 
@@ -122,20 +145,22 @@ def _has_visual_question_indicators(all_text: str) -> bool:
     """Check for visual question indicators - generalized for any subject."""
     visual_indicators = [
         "which of the following best shows",
-        "which diagram", "which figure", "which image", "which picture",
-        "which model shows", "which correctly shows", "which accurately depicts"
+        "which diagram",
+        "which figure",
+        "which image",
+        "which picture",
+        "which model shows",
+        "which correctly shows",
+        "which accurately depicts",
     ]
     return any(indicator in all_text for indicator in visual_indicators)
 
 
 def _has_explicit_choice_question(all_text: str) -> bool:
     """Check for explicit choice question language."""
-    return any([
-        "which of the following" in all_text,
-        "which diagram shows" in all_text,
-        "which model shows" in all_text,
-        "which figure shows" in all_text
-    ])
+    return any(
+        ["which of the following" in all_text, "which diagram shows" in all_text, "which model shows" in all_text, "which figure shows" in all_text]
+    )
 
 
 def _has_choice_options(all_text: str) -> tuple[bool, int]:
@@ -146,9 +171,9 @@ def _has_choice_options(all_text: str) -> tuple[bool, int]:
         Tuple of (has_actual_choice_options, total_matches)
     """
     choice_option_patterns = [
-        r'([A-D])\s*[\.:\)]\s*[A-Z]',  # A. Something, A) Something, A: Something
-        r'([A-D])\s+Reactants\s+Products',  # A Reactants Products (table headers)
-        r'([A-D])\s*[\.:\)]\s*\w{3,}'  # A. word, but word must be at least 3 chars
+        r"([A-D])\s*[\.:\)]\s*[A-Z]",  # A. Something, A) Something, A: Something
+        r"([A-D])\s+Reactants\s+Products",  # A Reactants Products (table headers)
+        r"([A-D])\s*[\.:\)]\s*\w{3,}",  # A. word, but word must be at least 3 chars
     ]
 
     total_choice_matches = 0

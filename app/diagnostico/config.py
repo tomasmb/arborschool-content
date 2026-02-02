@@ -14,6 +14,7 @@ from typing import List
 
 class Skill(Enum):
     """Habilidades PAES M1"""
+
     RES = "Resolver"
     MOD = "Modelar"
     REP = "Representar"
@@ -22,6 +23,7 @@ class Skill(Enum):
 
 class Axis(Enum):
     """Ejes temáticos PAES M1"""
+
     ALG = "Álgebra y Funciones"
     NUM = "Números"
     GEO = "Geometría"
@@ -30,6 +32,7 @@ class Axis(Enum):
 
 class Route(Enum):
     """Rutas del MST"""
+
     A = "bajo"
     B = "medio"
     C = "alto"
@@ -38,6 +41,7 @@ class Route(Enum):
 @dataclass
 class Question:
     """Representa una pregunta en el MST"""
+
     exam: str
     question_id: str
     axis: Axis
@@ -135,9 +139,9 @@ MST_CONFIG = {
 # =============================================================================
 ROUTING_RULES = {
     "cuts": {
-        (0, 3): Route.A,   # 0-3 correctas → Ruta A (bajo)
-        (4, 6): Route.B,   # 4-6 correctas → Ruta B (medio)
-        (7, 8): Route.C,   # 7-8 correctas → Ruta C (alto)
+        (0, 3): Route.A,  # 0-3 correctas → Ruta A (bajo)
+        (4, 6): Route.B,  # 4-6 correctas → Ruta B (medio)
+        (7, 8): Route.C,  # 7-8 correctas → Ruta C (alto)
     }
 }
 
@@ -224,10 +228,10 @@ def get_paes_score_weighted(responses: list, route: Route) -> tuple[int, int, in
     max_score = 0
 
     for resp in responses:
-        pregunta = resp.get('question', {})
-        peso = PESO_LOW if pregunta.get('score', 0.5) <= 0.35 else PESO_MEDIUM
+        pregunta = resp.get("question", {})
+        peso = PESO_LOW if pregunta.get("score", 0.5) <= 0.35 else PESO_MEDIUM
         max_score += peso
-        if resp.get('is_correct', False):
+        if resp.get("is_correct", False):
             score_ponderado += peso
 
     score_normalizado = score_ponderado / max_score if max_score > 0 else 0
@@ -264,4 +268,3 @@ def get_paes_score(route: Route, total_correct: int) -> tuple[int, int, int]:
         return route_mapping[all_ranges[0]]
     else:
         return route_mapping[all_ranges[-1]]
-

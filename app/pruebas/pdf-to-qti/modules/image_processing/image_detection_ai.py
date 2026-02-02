@@ -19,9 +19,7 @@ from .image_detection_helpers import (
 )
 
 
-def should_use_ai_image_detection(
-    text_blocks: list[dict[str, Any]], openai_api_key: str | None = None
-) -> bool:
+def should_use_ai_image_detection(text_blocks: list[dict[str, Any]], openai_api_key: str | None = None) -> bool:
     """
     Determine if AI-powered image detection should be used.
 
@@ -73,9 +71,7 @@ Use high confidence only when there are clear visual indicators."""
         return use_conservative_visual_indicators(text_blocks)
 
 
-def detect_images_with_ai(
-    page: fitz.Page, text_blocks: list[dict[str, Any]], openai_api_key: str | None = None
-) -> list[dict[str, Any]]:
+def detect_images_with_ai(page: fitz.Page, text_blocks: list[dict[str, Any]], openai_api_key: str | None = None) -> list[dict[str, Any]]:
     """
     Use AI to categorize text blocks and construct image areas intelligently.
 

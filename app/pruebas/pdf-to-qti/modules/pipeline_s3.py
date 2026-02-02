@@ -167,13 +167,13 @@ def process_restored_base64_images(
             if key in s3_mapping:
                 s3_url = s3_mapping[key]
                 reused_count += 1
-                print(f"   ✅ Reusing image {i+1} from S3: {s3_url}")
+                print(f"   ✅ Reusing image {i + 1} from S3: {s3_url}")
                 break
 
         # If not in S3, upload
         if not s3_url:
             img_id = f"{question_id}_restored_{i}" if question_id else f"restored_{i}"
-            print(f"   📤 Uploading image {i+1}/{len(base64_matches)} to S3...")
+            print(f"   📤 Uploading image {i + 1}/{len(base64_matches)} to S3...")
 
             s3_url = upload_image_to_s3(
                 image_base64=full_data_uri,
@@ -185,17 +185,17 @@ def process_restored_base64_images(
                 uploaded_count += 1
                 for key in img_keys:
                     s3_mapping[key] = s3_url
-                print(f"   ✅ Image {i+1} uploaded to S3: {s3_url}")
+                print(f"   ✅ Image {i + 1} uploaded to S3: {s3_url}")
             else:
-                failed_uploads.append(f"image_{i+1}")
-                print(f"   ⚠️  Image {i+1} failed to upload - keeping base64")
+                failed_uploads.append(f"image_{i + 1}")
+                print(f"   ⚠️  Image {i + 1} failed to upload - keeping base64")
 
         # Replace in XML if we have S3 URL
         if s3_url:
             updated_xml = updated_xml.replace(full_data_uri, s3_url, 1)
-            print(f"   ✅ Image {i+1} replaced with S3 URL")
+            print(f"   ✅ Image {i + 1} replaced with S3 URL")
         else:
-            print(f"   💡 Image {i+1} kept as base64 (can convert to S3 later)")
+            print(f"   💡 Image {i + 1} kept as base64 (can convert to S3 later)")
 
     # Summary
     if failed_uploads:
@@ -297,9 +297,7 @@ def post_validation_s3_processing(
     print("🔍 Checking restored images (converting base64 → S3)...")
 
     if not is_lambda:
-        qti_xml, _ = process_restored_base64_images(
-            qti_xml, output_dir, question_id, test_name
-        )
+        qti_xml, _ = process_restored_base64_images(qti_xml, output_dir, question_id, test_name)
 
         remaining_base64 = count_remaining_base64(qti_xml)
         if remaining_base64 > 0:
@@ -316,9 +314,7 @@ def post_validation_s3_processing(
 
         # Try manual conversion if base64 remains
         if remaining_base64 > 0:
-            qti_xml = _try_manual_s3_conversion(
-                qti_xml, xml_path, question_id, test_name, output_dir, remaining_base64
-            )
+            qti_xml = _try_manual_s3_conversion(qti_xml, xml_path, question_id, test_name, output_dir, remaining_base64)
 
     return qti_xml
 
@@ -333,9 +329,7 @@ def _try_manual_s3_conversion(
 ) -> str:
     """Attempt manual base64 to S3 conversion."""
     print(f"\n🔧 MANUAL CONVERSION: Converting {remaining_count} base64 image(s)...")
-    converted_xml = convert_base64_to_s3_in_xml(
-        qti_xml, question_id, test_name, output_dir
-    )
+    converted_xml = convert_base64_to_s3_in_xml(qti_xml, question_id, test_name, output_dir)
     if converted_xml:
         with open(xml_path, "w", encoding="utf-8") as f:
             f.write(converted_xml)

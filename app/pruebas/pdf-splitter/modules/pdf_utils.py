@@ -32,12 +32,7 @@ from .pdf_rendering import (
 from .quality_validator import validate_question_quality
 
 
-def create_question_pdfs(
-    results: dict,
-    original_pdf_path: str,
-    output_dir: str,
-    fail_on_validation_error: bool = False
-) -> None:
+def create_question_pdfs(results: dict, original_pdf_path: str, output_dir: str, fail_on_validation_error: bool = False) -> None:
     """
     Create individual PDF files for each question using the segmentation results.
 
@@ -47,7 +42,7 @@ def create_question_pdfs(
         output_dir: Output directory for the results
         fail_on_validation_error: If True, raise exception immediately on validation failure
     """
-    questions = results.get('questions', [])
+    questions = results.get("questions", [])
     if not questions:
         print("❌ No questions found to create PDFs")
         return
@@ -71,9 +66,7 @@ def create_question_pdfs(
 
     with tempfile.TemporaryDirectory() as tmpdir:
         for i, question in enumerate(questions, 1):
-            final_pdf_path = _create_single_question_pdf(
-                doc, results, question, i, questions_dir, tmpdir
-            )
+            final_pdf_path = _create_single_question_pdf(doc, results, question, i, questions_dir, tmpdir)
 
             if final_pdf_path is None:
                 continue
@@ -82,8 +75,7 @@ def create_question_pdfs(
             is_valid, reason = validate_question_quality(final_pdf_path)
             if not is_valid:
                 _handle_failed_question(
-                    final_pdf_path, failed_dir, question, i, reason,
-                    failed_questions_log, output_dir, doc, fail_on_validation_error
+                    final_pdf_path, failed_dir, question, i, reason, failed_questions_log, output_dir, doc, fail_on_validation_error
                 )
 
     doc.close()
@@ -91,21 +83,14 @@ def create_question_pdfs(
     # Save the log of failed questions
     if failed_questions_log:
         log_path = os.path.join(output_dir, "failed_questions_log.json")
-        with open(log_path, 'w', encoding='utf-8') as f:
+        with open(log_path, "w", encoding="utf-8") as f:
             json.dump(failed_questions_log, f, indent=2, ensure_ascii=False)
         print(f"📓 Log of failed quality checks saved to: {log_path}")
 
     print(f"🎉 Finished creating PDFs. See output in {questions_dir} and {failed_dir}")
 
 
-def _create_single_question_pdf(
-    doc: fitz.Document,
-    results: dict,
-    question: dict,
-    question_num: int,
-    questions_dir: str,
-    tmpdir: str
-) -> str | None:
+def _create_single_question_pdf(doc: fitz.Document, results: dict, question: dict, question_num: int, questions_dir: str, tmpdir: str) -> str | None:
     """
     Create a PDF for a single question including its references.
 
@@ -116,13 +101,10 @@ def _create_single_question_pdf(
     q_paths = []
 
     # First, crop shared multi-question references
-    for ref_id in question.get('multi_question_references', []):
-        ref = next(
-            (r for r in results.get('multi_question_references', []) if r.get('id') == ref_id),
-            None
-        )
+    for ref_id in question.get("multi_question_references", []):
+        ref = next((r for r in results.get("multi_question_references", []) if r.get("id") == ref_id), None)
         if ref:
-            for rp, rb in zip(ref.get('page_nums', []), ref.get('bboxes', [])):
+            for rp, rb in zip(ref.get("page_nums", []), ref.get("bboxes", [])):
                 rp_idx = rp - 1
                 if 0 <= rp_idx < doc.page_count:
                     rpage = doc.load_page(rp_idx)
@@ -132,8 +114,8 @@ def _create_single_question_pdf(
                     ref_paths.append(r_temp)
 
     # Then, crop question region across all pages
-    page_nums = question.get('page_nums', [])
-    bboxes = question.get('bboxes', [])
+    page_nums = question.get("page_nums", [])
+    bboxes = question.get("bboxes", [])
     if not page_nums or not bboxes:
         print(f"⚠️  Question {question_num}: missing page_nums or bboxes, skipping.")
         return None
@@ -165,24 +147,22 @@ def _handle_failed_question(
     failed_questions_log: list[dict],
     output_dir: str,
     doc: fitz.Document,
-    fail_on_validation_error: bool
+    fail_on_validation_error: bool,
 ) -> None:
     """Handle a question that failed quality validation."""
     failed_pdf_path = os.path.join(failed_dir, f"question_{question_num:03d}.pdf")
     shutil.move(final_pdf_path, failed_pdf_path)
     print(f"   🚚 Moved failed question to: {failed_pdf_path}")
 
-    failed_questions_log.append({
-        "question_id": question.get("id", f"unknown_{question_num}"),
-        "pdf_name": os.path.basename(failed_pdf_path),
-        "reason": reason
-    })
+    failed_questions_log.append(
+        {"question_id": question.get("id", f"unknown_{question_num}"), "pdf_name": os.path.basename(failed_pdf_path), "reason": reason}
+    )
 
     if fail_on_validation_error:
         # Save the log immediately before failing
         if failed_questions_log:
             log_path = os.path.join(output_dir, "failed_questions_log.json")
-            with open(log_path, 'w', encoding='utf-8') as f:
+            with open(log_path, "w", encoding="utf-8") as f:
                 json.dump(failed_questions_log, f, indent=2, ensure_ascii=False)
             print(f"📓 Log of failed quality checks saved to: {log_path}")
 
@@ -190,11 +170,7 @@ def _handle_failed_question(
         raise Exception(f"Quality validation failed for question {question_num}: {reason}")
 
 
-def split_pdf_by_ai(
-    input_pdf_path: str,
-    output_dir: str | None = None,
-    model: str = "gpt-5.1"
-) -> list[tuple[str, int]]:
+def split_pdf_by_ai(input_pdf_path: str, output_dir: str | None = None, model: str = "gpt-5.1") -> list[tuple[str, int]]:
     """
     Use an LLM to suggest logical split points for a PDF, then split at those points.
 
@@ -219,11 +195,7 @@ def split_pdf_by_ai(
     return chunk_infos
 
 
-def _get_ai_split_points(
-    doc: fitz.Document,
-    input_pdf_path: str,
-    model: str
-) -> list[int]:
+def _get_ai_split_points(doc: fitz.Document, input_pdf_path: str, model: str) -> list[int]:
     """Get AI-suggested split points for the PDF."""
     total_pages = doc.page_count
 
@@ -231,9 +203,9 @@ def _get_ai_split_points(
     page_summaries = []
     for i in range(total_pages):
         text = doc.load_page(i).get_text().strip()
-        lines = [line for line in text.split('\n') if line.strip()]
-        summary = ' | '.join(lines[:3])[:200]
-        page_summaries.append(f"Page {i+1}: {summary}")
+        lines = [line for line in text.split("\n") if line.strip()]
+        summary = " | ".join(lines[:3])[:200]
+        page_summaries.append(f"Page {i + 1}: {summary}")
 
     # Prepare LLM prompt
     prompt = _build_split_prompt(page_summaries)
@@ -245,33 +217,23 @@ def _get_ai_split_points(
             "split_pages": {
                 "type": "array",
                 "items": {"type": "integer"},
-                "description": "Sorted list of split page numbers (first page of each part, 1-based)"
+                "description": "Sorted list of split page numbers (first page of each part, 1-based)",
             }
         },
         "required": ["split_pages"],
-        "additionalProperties": False
+        "additionalProperties": False,
     }
 
     # Call OpenAI LLM
     client = openai.Client()
     response = client.chat.completions.create(
         model=model,
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
-            {"role": "user", "content": prompt}
-        ],
-        response_format={
-            "type": "json_schema",
-            "json_schema": {
-                "name": "logical_pdf_split",
-                "schema": split_schema,
-                "strict": True
-            }
-        },
+        messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
+        response_format={"type": "json_schema", "json_schema": {"name": "logical_pdf_split", "schema": split_schema, "strict": True}},
         temperature=0,
         top_p=1,
         max_tokens=512,
-        seed=42
+        seed=42,
     )
 
     llm_json = response.choices[0].message.content
@@ -325,12 +287,7 @@ def _save_debug_response(response: str, pdf_path: str, filename: str) -> None:
         print(f"⚠️ Could not save debug response: {write_err}")
 
 
-def _create_pdf_chunks(
-    doc: fitz.Document,
-    split_pages: list[int],
-    input_pdf_path: str,
-    output_dir: str | None
-) -> list[tuple[str, int]]:
+def _create_pdf_chunks(doc: fitz.Document, split_pages: list[int], input_pdf_path: str, output_dir: str | None) -> list[tuple[str, int]]:
     """Create PDF chunks from split points."""
     total_pages = doc.page_count
 

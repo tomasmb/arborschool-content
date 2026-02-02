@@ -136,9 +136,7 @@ def split_choice_blocks(structured_data: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
-def _split_block_by_choices(
-    block: dict[str, Any], choice_matches: list[str]
-) -> list[dict[str, Any]]:
+def _split_block_by_choices(block: dict[str, Any], choice_matches: list[str]) -> list[dict[str, Any]]:
     """
     Split a block containing multiple choices into separate blocks.
 
@@ -230,9 +228,7 @@ def _split_line_by_position(line: dict[str, Any]) -> tuple[list[Any], list[Any]]
     return first_spans, second_spans
 
 
-def _calculate_bbox_from_lines(
-    lines: list[dict[str, Any]], fallback_bbox: list[float] | None
-) -> list[float]:
+def _calculate_bbox_from_lines(lines: list[dict[str, Any]], fallback_bbox: list[float] | None) -> list[float]:
     """
     Calculate bounding box from a list of lines.
 

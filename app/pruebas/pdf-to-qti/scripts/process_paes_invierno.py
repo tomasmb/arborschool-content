@@ -43,31 +43,19 @@ def process_all_questions(
     """
     questions_path = Path(questions_dir)
     if not questions_path.exists():
-        return {
-            "success": False,
-            "error": f"Questions directory not found: {questions_dir}"
-        }
+        return {"success": False, "error": f"Questions directory not found: {questions_dir}"}
 
     # Find all PDF files
     question_pdfs = sorted(questions_path.glob("*.pdf"))
 
     if not question_pdfs:
-        return {
-            "success": False,
-            "error": f"No PDF files found in {questions_dir}"
-        }
+        return {"success": False, "error": f"No PDF files found in {questions_dir}"}
 
     print(f"📋 Found {len(question_pdfs)} question PDFs")
     print(f"⚡ PAES mode: {'Enabled' if paes_mode else 'Disabled'}")
     print()
 
-    results = {
-        "total": len(question_pdfs),
-        "successful": [],
-        "failed": [],
-        "processing_times": [],
-        "start_time": time.time()
-    }
+    results = {"total": len(question_pdfs), "successful": [], "failed": [], "processing_times": [], "start_time": time.time()}
 
     # Load answer key if available
     answer_key_data = None
@@ -105,27 +93,15 @@ def process_all_questions(
 
             if result.get("success"):
                 print(f"   ✅ Success ({elapsed:.1f}s)")
-                results["successful"].append({
-                    "question": question_id,
-                    "time": elapsed,
-                    "title": result.get("title", "Unknown")
-                })
+                results["successful"].append({"question": question_id, "time": elapsed, "title": result.get("title", "Unknown")})
             else:
                 print(f"   ❌ Failed: {result.get('error', 'Unknown error')} ({elapsed:.1f}s)")
-                results["failed"].append({
-                    "question": question_id,
-                    "time": elapsed,
-                    "error": result.get("error", "Unknown error")
-                })
+                results["failed"].append({"question": question_id, "time": elapsed, "error": result.get("error", "Unknown error")})
 
         except Exception as e:
             elapsed = time.time() - start_time
             print(f"   ❌ Exception: {e} ({elapsed:.1f}s)")
-            results["failed"].append({
-                "question": question_id,
-                "time": elapsed,
-                "error": str(e)
-            })
+            results["failed"].append({"question": question_id, "time": elapsed, "error": str(e)})
 
         print()
 
@@ -140,7 +116,7 @@ def process_all_questions(
         "success_rate": f"{(len(results['successful']) / results['total'] * 100):.1f}%",
         "total_time_seconds": total_time,
         "total_time_minutes": total_time / 60,
-        "avg_time_per_question": avg_time
+        "avg_time_per_question": avg_time,
     }
 
     return results
@@ -150,30 +126,15 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Process PAES Invierno 2026 with new code"
-    )
+    parser = argparse.ArgumentParser(description="Process PAES Invierno 2026 with new code")
     parser.add_argument(
         "--questions-dir",
         default="../app/data/pruebas/procesadas/prueba-invierno-2026/questions_pdfs",
-        help="Directory with individual question PDFs"
+        help="Directory with individual question PDFs",
     )
-    parser.add_argument(
-        "--output-dir",
-        default="./output/paes-invierno-2026-new",
-        help="Output directory for results"
-    )
-    parser.add_argument(
-        "--paes-mode",
-        action="store_true",
-        default=True,
-        help="Use PAES optimizations (default: True)"
-    )
-    parser.add_argument(
-        "--no-paes-mode",
-        action="store_true",
-        help="Disable PAES mode"
-    )
+    parser.add_argument("--output-dir", default="./output/paes-invierno-2026-new", help="Output directory for results")
+    parser.add_argument("--paes-mode", action="store_true", default=True, help="Use PAES optimizations (default: True)")
+    parser.add_argument("--no-paes-mode", action="store_true", help="Disable PAES mode")
 
     args = parser.parse_args()
 
@@ -200,11 +161,7 @@ def main():
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Process all questions
-    results = process_all_questions(
-        questions_dir=str(questions_dir),
-        output_base_dir=str(output_dir),
-        paes_mode=paes_mode
-    )
+    results = process_all_questions(questions_dir=str(questions_dir), output_base_dir=str(output_dir), paes_mode=paes_mode)
 
     # Save results
     results_file = output_dir / "processing_results.json"

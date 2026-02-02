@@ -45,9 +45,7 @@ def expand_pymupdf_bbox_intelligently(
     print(f"📸 Found {len(qa_text_blocks)} Q&A text blocks to avoid")
 
     # Find the maximum expansion boundaries
-    max_left, max_right, max_top, max_bottom = _find_expansion_boundaries(
-        expanded_bbox, qa_text_blocks, page_width, page_height
-    )
+    max_left, max_right, max_top, max_bottom = _find_expansion_boundaries(expanded_bbox, qa_text_blocks, page_width, page_height)
 
     # Apply the expansion
     expanded_bbox[0] = max_left
@@ -55,15 +53,10 @@ def expand_pymupdf_bbox_intelligently(
     expanded_bbox[1] = max_top
     expanded_bbox[3] = max_bottom
 
-    print(
-        f"📸 Expansion boundaries: left={max_left}, right={max_right}, "
-        f"top={max_top}, bottom={max_bottom}"
-    )
+    print(f"📸 Expansion boundaries: left={max_left}, right={max_right}, top={max_top}, bottom={max_bottom}")
 
     # Log expansion stats
-    _log_expansion_stats(
-        original_x0, original_y0, original_x1, original_y1, expanded_bbox
-    )
+    _log_expansion_stats(original_x0, original_y0, original_x1, original_y1, expanded_bbox)
 
     return expanded_bbox
 
@@ -191,12 +184,7 @@ def bbox_overlaps_with_qa_text(
         margin_qa_y1 = qa_y1 + safety_margin
 
         # Check for overlap
-        if not (
-            test_x1 <= margin_qa_x0
-            or test_x0 >= margin_qa_x1
-            or test_y1 <= margin_qa_y0
-            or test_y0 >= margin_qa_y1
-        ):
+        if not (test_x1 <= margin_qa_x0 or test_x0 >= margin_qa_x1 or test_y1 <= margin_qa_y0 or test_y0 >= margin_qa_y1):
             return True
 
     return False

@@ -50,10 +50,7 @@ def calculate_cost(
 
     input_cost = (input_tokens / 1_000_000) * model_pricing.get("input", 0)
     output_cost = (output_tokens / 1_000_000) * model_pricing.get("output", 0)
-    cached_cost = (
-        (cached_input_tokens / 1_000_000)
-        * model_pricing.get("cached_input", 0)
-    )
+    cached_cost = (cached_input_tokens / 1_000_000) * model_pricing.get("cached_input", 0)
 
     return input_cost + output_cost - cached_cost
 
@@ -120,9 +117,7 @@ def log_api_usage(
             print(f"⚠️  Warning: Could not save usage to {usage_file}: {e}")
 
     # Print summary
-    print(f"📊 API Usage: {provider}/{model} | "
-          f"Input: {input_tokens:,} | Output: {output_tokens:,} | "
-          f"Cost: ${cost:.4f}")
+    print(f"📊 API Usage: {provider}/{model} | Input: {input_tokens:,} | Output: {output_tokens:,} | Cost: ${cost:.4f}")
 
     return usage_data
 

@@ -13,11 +13,8 @@ from typing import Any, Optional
 
 import requests
 
-
 # Default external validation service URL
-DEFAULT_VALIDATION_URL = (
-    "https://klx2kb3qmf5wlb3dzqg436wysm0cwlat.lambda-url.us-east-1.on.aws/"
-)
+DEFAULT_VALIDATION_URL = "https://klx2kb3qmf5wlb3dzqg436wysm0cwlat.lambda-url.us-east-1.on.aws/"
 
 
 def validate_with_external_service(
@@ -85,10 +82,7 @@ def validate_with_external_service(
             if response.status_code in [500, 502, 503, 504]:
                 retries += 1
                 if retries < max_retries:
-                    print(
-                        f"❌ Received status {response.status_code}. "
-                        f"Retrying in {sleep_time}s... ({retries}/{max_retries})"
-                    )
+                    print(f"❌ Received status {response.status_code}. Retrying in {sleep_time}s... ({retries}/{max_retries})")
                     time.sleep(sleep_time)
                     sleep_time *= backoff_factor
                     continue
@@ -108,50 +102,36 @@ def validate_with_external_service(
                 return result
             else:
                 print(f"❌ External validation service failed: {result.get('error')}")
-                return _create_failure_result(
-                    result.get("error", "External validation failed")
-                )
+                return _create_failure_result(result.get("error", "External validation failed"))
 
         except requests.exceptions.Timeout:
             retries += 1
             if retries < max_retries:
-                print(
-                    f"❌ Request timed out. Retrying in {sleep_time}s... "
-                    f"({retries}/{max_retries})"
-                )
+                print(f"❌ Request timed out. Retrying in {sleep_time}s... ({retries}/{max_retries})")
                 time.sleep(sleep_time)
                 sleep_time *= backoff_factor
                 continue
             else:
                 print("❌ Request timed out. Max retries reached.")
-                return _create_failure_result(
-                    "External validation service timeout after multiple retries"
-                )
+                return _create_failure_result("External validation service timeout after multiple retries")
 
         except requests.exceptions.ConnectionError as e:
             retries += 1
             if retries < max_retries:
-                print(
-                    f"❌ Connection error: {e}. Retrying in {sleep_time}s... "
-                    f"({retries}/{max_retries})"
-                )
+                print(f"❌ Connection error: {e}. Retrying in {sleep_time}s... ({retries}/{max_retries})")
                 time.sleep(sleep_time)
                 sleep_time *= backoff_factor
                 continue
             else:
                 print("❌ Connection error. Max retries reached.")
-                return _create_failure_result(
-                    "External validation service connection error after multiple retries"
-                )
+                return _create_failure_result("External validation service connection error after multiple retries")
 
         except Exception as e:
             print(f"❌ Failed to call external validation service: {str(e)}")
             return _create_failure_result(f"External validation service error: {str(e)}")
 
     # Fallback (should be unreachable if loop logic is correct)
-    return _create_failure_result(
-        "Max retries reached for external validation service."
-    )
+    return _create_failure_result("Max retries reached for external validation service.")
 
 
 def _create_failure_result(error_message: str) -> dict[str, Any]:

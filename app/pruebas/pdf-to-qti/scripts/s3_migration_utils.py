@@ -15,6 +15,7 @@ from typing import Any
 try:
     import boto3
     from botocore.exceptions import ClientError
+
     BOTO3_AVAILABLE = True
 except ImportError:
     BOTO3_AVAILABLE = False
@@ -37,10 +38,7 @@ def get_s3_client() -> tuple[Any, str]:
     aws_region = os.environ.get("AWS_REGION", "us-east-1")
 
     if not aws_access_key or not aws_secret_key:
-        raise ValueError(
-            "AWS credentials not found in environment. "
-            "Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY"
-        )
+        raise ValueError("AWS credentials not found in environment. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY")
 
     session = boto3.Session(
         aws_access_key_id=aws_access_key,
@@ -79,13 +77,7 @@ def list_images_in_prefix(s3_client: Any, bucket_name: str, prefix: str) -> list
         raise
 
 
-def copy_image_in_s3(
-    s3_client: Any,
-    bucket_name: str,
-    source_key: str,
-    dest_key: str,
-    dry_run: bool = False
-) -> bool:
+def copy_image_in_s3(s3_client: Any, bucket_name: str, source_key: str, dest_key: str, dry_run: bool = False) -> bool:
     """
     Copy an image from source_key to dest_key in S3.
 
@@ -117,12 +109,7 @@ def copy_image_in_s3(
         return False
 
 
-def delete_image_from_s3(
-    s3_client: Any,
-    bucket_name: str,
-    key: str,
-    dry_run: bool = False
-) -> bool:
+def delete_image_from_s3(s3_client: Any, bucket_name: str, key: str, dry_run: bool = False) -> bool:
     """
     Delete an image from S3.
 
@@ -148,13 +135,7 @@ def delete_image_from_s3(
         return False
 
 
-def update_xml_urls(
-    xml_dir: Path,
-    bucket_name: str,
-    aws_region: str,
-    test_name: str,
-    dry_run: bool = False
-) -> dict[str, Any]:
+def update_xml_urls(xml_dir: Path, bucket_name: str, aws_region: str, test_name: str, dry_run: bool = False) -> dict[str, Any]:
     """
     Update S3 image URLs in XML files to use the new test folder structure.
 
@@ -186,9 +167,9 @@ def update_xml_urls(
     print()
 
     url_pattern = re.compile(
-        rf'https://{re.escape(bucket_name)}\.s3\.{re.escape(aws_region)}\.amazonaws\.com'
+        rf"https://{re.escape(bucket_name)}\.s3\.{re.escape(aws_region)}\.amazonaws\.com"
         rf'/images/([^/"]+\.(?:png|jpg|jpeg|gif|svg))',
-        re.IGNORECASE
+        re.IGNORECASE,
     )
 
     results: dict[str, Any] = {"updated": 0, "failed": 0, "files": []}
@@ -202,24 +183,18 @@ def update_xml_urls(
 
 
 def _process_xml_file(
-    xml_file: Path,
-    url_pattern: re.Pattern,
-    bucket_name: str,
-    aws_region: str,
-    test_name: str,
-    dry_run: bool,
-    results: dict[str, Any]
+    xml_file: Path, url_pattern: re.Pattern, bucket_name: str, aws_region: str, test_name: str, dry_run: bool, results: dict[str, Any]
 ) -> None:
     """Process a single XML file for URL updates."""
     try:
-        with open(xml_file, 'r', encoding='utf-8') as f:
+        with open(xml_file, "r", encoding="utf-8") as f:
             xml_content = f.read()
 
         original_content = xml_content
 
         def replace_url(match: re.Match) -> str:
             filename = match.group(1)
-            return f'https://{bucket_name}.s3.{aws_region}.amazonaws.com/images/{test_name}/{filename}'
+            return f"https://{bucket_name}.s3.{aws_region}.amazonaws.com/images/{test_name}/{filename}"
 
         xml_content = url_pattern.sub(replace_url, xml_content)
 
@@ -227,34 +202,24 @@ def _process_xml_file(
             replacements_count = len(url_pattern.findall(original_content))
 
             if not dry_run:
-                with open(xml_file, 'w', encoding='utf-8') as f:
+                with open(xml_file, "w", encoding="utf-8") as f:
                     f.write(xml_content)
                 print(f"✅ Updated {xml_file.name} ({replacements_count} URL(s))")
             else:
                 print(f"  [DRY RUN] Would update {xml_file.name} ({replacements_count} URL(s))")
 
             results["updated"] += 1
-            results["files"].append({
-                "file": str(xml_file),
-                "replacements": replacements_count,
-                "status": "updated" if not dry_run else "would_update"
-            })
+            results["files"].append(
+                {"file": str(xml_file), "replacements": replacements_count, "status": "updated" if not dry_run else "would_update"}
+            )
         else:
             print(f"   ℹ️  No URLs to update in {xml_file.name}")
-            results["files"].append({
-                "file": str(xml_file),
-                "replacements": 0,
-                "status": "no_change"
-            })
+            results["files"].append({"file": str(xml_file), "replacements": 0, "status": "no_change"})
 
     except Exception as e:
         print(f"❌ Failed to update {xml_file.name}: {e}")
         results["failed"] += 1
-        results["files"].append({
-            "file": str(xml_file),
-            "status": "failed",
-            "error": str(e)
-        })
+        results["files"].append({"file": str(xml_file), "status": "failed", "error": str(e)})
 
 
 def _print_xml_summary(results: dict[str, Any]) -> None:

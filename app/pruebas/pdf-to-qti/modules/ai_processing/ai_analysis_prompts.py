@@ -8,11 +8,7 @@ for QTI compatibility assessment and content categorization.
 from __future__ import annotations
 
 
-def build_comprehensive_analysis_prompt(
-    question_text: str,
-    content_summary: str,
-    block_info: list[dict]
-) -> str:
+def build_comprehensive_analysis_prompt(question_text: str, content_summary: str, block_info: list[dict]) -> str:
     """Build prompt for comprehensive content analysis.
 
     Args:
@@ -160,16 +156,30 @@ Respond with JSON in this format:
 
 # Valid QTI question types
 VALID_QTI_TYPES = [
-    "choice", "match", "text-entry", "hotspot", "extended-text",
-    "hot-text", "gap-match", "order", "graphic-gap-match",
-    "inline-choice", "select-point", "media-interaction", "composite"
+    "choice",
+    "match",
+    "text-entry",
+    "hotspot",
+    "extended-text",
+    "hot-text",
+    "gap-match",
+    "order",
+    "graphic-gap-match",
+    "inline-choice",
+    "select-point",
+    "media-interaction",
+    "composite",
 ]
 
 # Valid block categories for categorization
 VALID_BLOCK_CATEGORIES = [
-    "question_part_header", "question_text", "answer_choice",
-    "visual_content_title", "visual_content_label",
-    "choice_visual_label", "other_label"
+    "question_part_header",
+    "question_text",
+    "answer_choice",
+    "visual_content_title",
+    "visual_content_label",
+    "choice_visual_label",
+    "other_label",
 ]
 
 # System prompts for different analysis types
@@ -180,11 +190,9 @@ COMPREHENSIVE_SYSTEM_PROMPT = (
 )
 
 COMPATIBILITY_SYSTEM_PROMPT = (
-    "You are an expert in educational assessment and QTI 3.0 standards. "
-    "Analyze content for QTI compatibility. Respond only with valid JSON."
+    "You are an expert in educational assessment and QTI 3.0 standards. Analyze content for QTI compatibility. Respond only with valid JSON."
 )
 
 CATEGORIZATION_SYSTEM_PROMPT = (
-    "You are an expert in educational content analysis. "
-    "Categorize text blocks for intelligent image extraction. Respond only with valid JSON."
+    "You are an expert in educational content analysis. Categorize text blocks for intelligent image extraction. Respond only with valid JSON."
 )

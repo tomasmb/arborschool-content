@@ -15,4 +15,3 @@ __all__ = [
     "validate_atoms_from_files",
     "validate_atoms_with_gemini",
 ]
-

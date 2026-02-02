@@ -29,11 +29,11 @@ def shorten_long_alt_text(alt_text: str, max_length: int = 120) -> str:
     # Try to keep the first part and add "..."
     break_point = max_length - 10  # Leave room for "..."
     # Try to break at sentence end
-    sentence_end = alt_text.rfind('.', 0, break_point)
+    sentence_end = alt_text.rfind(".", 0, break_point)
     if sentence_end > max_length * 0.7:
-        return alt_text[:sentence_end + 1] + "..."
+        return alt_text[: sentence_end + 1] + "..."
     # Otherwise break at word boundary
-    word_end = alt_text.rfind(' ', 0, break_point)
+    word_end = alt_text.rfind(" ", 0, break_point)
     if word_end > max_length * 0.7:
         return alt_text[:word_end] + "..."
     # Last resort: truncate
@@ -54,26 +54,26 @@ def format_xml_file(filepath: Path, max_line_length: int = 120) -> tuple[bool, i
 
         # Shorten very long alt attributes
         for img in root.iter():
-            if 'img' in img.tag.lower():
-                alt = img.get('alt')
+            if "img" in img.tag.lower():
+                alt = img.get("alt")
                 if alt and len(alt) > max_line_length - 30:
                     shortened = shorten_long_alt_text(alt, max_line_length - 30)
-                    img.set('alt', shortened)
+                    img.set("alt", shortened)
 
         # Format with indentation
-        ET.indent(tree, space='  ')
+        ET.indent(tree, space="  ")
 
         # Convert to string
-        xml_str = ET.tostring(root, encoding='unicode', method='xml')
+        xml_str = ET.tostring(root, encoding="unicode", method="xml")
 
         # Remove namespace prefixes that ET might add
-        xml_str = re.sub(r'xmlns:ns\d+="[^"]*"\s*', '', xml_str)
-        xml_str = re.sub(r'<ns\d+:([^>\s]+)', r'<\1', xml_str)
-        xml_str = re.sub(r'</ns\d+:([^>\s]+)', r'</\1', xml_str)
+        xml_str = re.sub(r'xmlns:ns\d+="[^"]*"\s*', "", xml_str)
+        xml_str = re.sub(r"<ns\d+:([^>\s]+)", r"<\1", xml_str)
+        xml_str = re.sub(r"</ns\d+:([^>\s]+)", r"</\1", xml_str)
 
         # Process lines to break long ones
         output_lines = []
-        for line in xml_str.split('\n'):
+        for line in xml_str.split("\n"):
             line = line.rstrip()
             if not line.strip():
                 continue
@@ -86,9 +86,9 @@ def format_xml_file(filepath: Path, max_line_length: int = 120) -> tuple[bool, i
                 output_lines.append(line)
 
         # Write formatted XML
-        with open(filepath, 'w', encoding='utf-8') as f:
+        with open(filepath, "w", encoding="utf-8") as f:
             f.write('<?xml version="1.0" encoding="utf-8"?>\n')
-            f.write('\n'.join(output_lines) + '\n')
+            f.write("\n".join(output_lines) + "\n")
 
         # Verify
         all_lines = ['<?xml version="1.0" encoding="utf-8"?>'] + output_lines
@@ -98,6 +98,7 @@ def format_xml_file(filepath: Path, max_line_length: int = 120) -> tuple[bool, i
     except Exception as e:
         print(f"Error formatting {filepath}: {e}", file=sys.stderr)
         import traceback
+
         traceback.print_exc()
         return False, 0
 
@@ -105,32 +106,32 @@ def format_xml_file(filepath: Path, max_line_length: int = 120) -> tuple[bool, i
 def break_long_line_safe(line: str, max_length: int) -> list[str]:
     """Break a long XML line safely, preserving XML structure."""
     # Check if it's a tag with attributes (self-closing or opening)
-    tag_match = re.match(r'^(\s*)(<[^\s>]+)(.*?)(/?>)$', line)
+    tag_match = re.match(r"^(\s*)(<[^\s>]+)(.*?)(/?>)$", line)
     if tag_match:
         return break_tag_line(line, max_length)
 
     # Check if it's simple text content: <tag>text only</tag> (no nested elements)
     # Only break if there are NO nested tags in the text
-    text_match = re.match(r'^(\s*)(<([^>]+)>)(.*?)(</\3>)$', line)
+    text_match = re.match(r"^(\s*)(<([^>]+)>)(.*?)(</\3>)$", line)
     if text_match:
         indent, open_tag, tag_name, text_content, close_tag = text_match.groups()
         text_stripped = text_content.strip()
 
         # Only break if text has NO nested XML elements
-        if '<' not in text_stripped and '>' not in text_stripped:
+        if "<" not in text_stripped and ">" not in text_stripped:
             # Simple text only - safe to break
             if len(text_stripped) > max_length - len(indent) - len(open_tag) - len(close_tag):
                 words = text_stripped.split()
                 if len(words) > 1:
                     lines = [indent + open_tag]
-                    current = indent + '  '
+                    current = indent + "  "
                     for word in words:
-                        test = current + (' ' if current.strip() else '') + word
+                        test = current + (" " if current.strip() else "") + word
                         if len(test) > max_length - len(close_tag) - 5 and current.strip():
                             lines.append(current.rstrip())
-                            current = indent + '  ' + word
+                            current = indent + "  " + word
                         else:
-                            current = test if current.strip() else indent + '  ' + word
+                            current = test if current.strip() else indent + "  " + word
                     lines.append(current + close_tag)
                     return lines
 
@@ -141,13 +142,13 @@ def break_long_line_safe(line: str, max_length: int) -> list[str]:
 
 def break_tag_line(line: str, max_length: int) -> list[str]:
     """Break a long XML tag line with attributes into multiple lines."""
-    match = re.match(r'^(\s*)(<[^\s>]+)(.*?)(/?>)$', line)
+    match = re.match(r"^(\s*)(<[^\s>]+)(.*?)(/?>)$", line)
     if not match:
         return [line]
 
     indent, tag_name, attrs_str, closing = match.groups()
     indent_str = indent
-    attr_indent = indent_str + '  '
+    attr_indent = indent_str + "  "
 
     # Extract attributes
     attr_pattern = r'(\S+=(?:"(?:[^"\\]|\\.)*"|\'(?:[^\'\\]|\\.)*\'))'
@@ -205,5 +206,5 @@ def main():
         sys.exit(1)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

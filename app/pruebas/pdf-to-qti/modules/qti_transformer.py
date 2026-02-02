@@ -19,6 +19,10 @@ from typing import Any, Optional
 # Local helpers
 from .ai_processing import chat_completion
 from .prompt_builder import create_transformation_prompt
+from .qti_answer_utils import (
+    extract_correct_answer_from_qti,
+    update_correct_answer_in_qti_xml,
+)
 from .qti_configs import QTI_TYPE_CONFIGS
 
 # Import from split modules
@@ -28,23 +32,19 @@ from .qti_encoding import (
     validate_no_encoding_errors_or_raise,
     verify_and_fix_encoding,
 )
-from .qti_answer_utils import (
-    extract_correct_answer_from_qti,
-    update_correct_answer_in_qti_xml,
+from .qti_image_handler import (
+    convert_remaining_base64_to_s3,
+    prepare_llm_messages,
+    upload_images_to_s3,
 )
 from .qti_response_parsers import (
-    parse_transformation_response,
     parse_correction_response,
+    parse_transformation_response,
 )
 from .qti_xml_utils import (
     clean_qti_xml,
-    replace_data_uris_with_s3_urls,
     fix_qti_xml_with_llm,
-)
-from .qti_image_handler import (
-    upload_images_to_s3,
-    prepare_llm_messages,
-    convert_remaining_base64_to_s3,
+    replace_data_uris_with_s3_urls,
 )
 
 # Re-export all functions for backward compatibility
@@ -116,68 +116,44 @@ def transform_to_qti(
         # Get configuration for the question type
         config = QTI_TYPE_CONFIGS.get(question_type)
         if not config:
-            return {
-                "success": False,
-                "error": f"Unsupported question type: {question_type}"
-            }
+            return {"success": False, "error": f"Unsupported question type: {question_type}"}
 
         # CRITICAL: S3 upload is REQUIRED - fail early if disabled
         if not use_s3:
             _logger.error("S3 upload is disabled, but it is REQUIRED for all images")
-            return {
-                "success": False,
-                "error": "S3 upload is required. use_s3 must be True."
-            }
+            return {"success": False, "error": "S3 upload is required. use_s3 must be True."}
 
         _logger.info("🚀 Starting S3 image upload process (REQUIRED)")
 
         # Upload images to S3 (REQUIRED - no fallback to base64)
-        image_url_mapping = upload_images_to_s3(
-            processed_content, question_id, test_name
-        )
+        image_url_mapping = upload_images_to_s3(processed_content, question_id, test_name)
         if image_url_mapping is None:
-            return {
-                "success": False,
-                "error": "Failed to upload images to S3. S3 upload is REQUIRED."
-            }
+            return {"success": False, "error": "Failed to upload images to S3. S3 upload is REQUIRED."}
 
         # Create the transformation prompt
-        prompt = create_transformation_prompt(
-            processed_content,
-            question_type,
-            config,
-            validation_feedback,
-            correct_answer=correct_answer
-        )
+        prompt = create_transformation_prompt(processed_content, question_type, config, validation_feedback, correct_answer=correct_answer)
 
         # Optimize prompt for PAES (mathematics, 4 alternatives)
         if paes_mode:
             from .paes_optimizer import optimize_prompt_for_math
+
             prompt = optimize_prompt_for_math(prompt)
 
         # Prepare messages for LLM
         messages = prepare_llm_messages(prompt, processed_content)
 
         # Call the LLM for transformation with retry
-        result = _call_llm_with_retry(
-            messages, openai_api_key, question_id, output_dir
-        )
+        result = _call_llm_with_retry(messages, openai_api_key, question_id, output_dir)
         if not result or not result.get("success"):
             return result or {"success": False, "error": "LLM call failed"}
 
         # Post-process the result
-        result = _post_process_qti_result(
-            result, image_url_mapping, processed_content,
-            question_id, test_name, correct_answer
-        )
+        result = _post_process_qti_result(result, image_url_mapping, processed_content, question_id, test_name, correct_answer)
 
         return result
 
     except Exception as e:
-        return {
-            "success": False,
-            "error": f"QTI transformation failed: {str(e)}"
-        }
+        return {"success": False, "error": f"QTI transformation failed: {str(e)}"}
 
 
 def _call_llm_with_retry(
@@ -211,11 +187,8 @@ def _call_llm_with_retry(
             # Check if response is empty
             if not response_text or not response_text.strip():
                 if attempt < max_retries - 1:
-                    delay = base_delay * (2 ** attempt)
-                    _logger.warning(
-                        f"Empty response from LLM (attempt {attempt + 1}/{max_retries}). "
-                        f"Retrying in {delay:.2f}s..."
-                    )
+                    delay = base_delay * (2**attempt)
+                    _logger.warning(f"Empty response from LLM (attempt {attempt + 1}/{max_retries}). Retrying in {delay:.2f}s...")
                     time.sleep(delay)
                     continue
                 else:
@@ -229,41 +202,26 @@ def _call_llm_with_retry(
             else:
                 error_msg = result.get("error", "Unknown parsing error")
                 if attempt < max_retries - 1:
-                    delay = base_delay * (2 ** attempt)
-                    _logger.warning(
-                        f"Failed to parse LLM response (attempt {attempt + 1}/{max_retries}): "
-                        f"{error_msg}. Retrying in {delay:.2f}s..."
-                    )
+                    delay = base_delay * (2**attempt)
+                    _logger.warning(f"Failed to parse LLM response (attempt {attempt + 1}/{max_retries}): {error_msg}. Retrying in {delay:.2f}s...")
                     time.sleep(delay)
                     last_error = error_msg
                     continue
                 else:
-                    return {
-                        "success": False,
-                        "error": f"Failed to parse after {max_retries} attempts: {error_msg}"
-                    }
+                    return {"success": False, "error": f"Failed to parse after {max_retries} attempts: {error_msg}"}
 
         except Exception as e:
             error_str = str(e)
             if attempt < max_retries - 1:
-                delay = base_delay * (2 ** attempt)
-                _logger.warning(
-                    f"Error calling LLM (attempt {attempt + 1}/{max_retries}): "
-                    f"{error_str}. Retrying in {delay:.2f}s..."
-                )
+                delay = base_delay * (2**attempt)
+                _logger.warning(f"Error calling LLM (attempt {attempt + 1}/{max_retries}): {error_str}. Retrying in {delay:.2f}s...")
                 time.sleep(delay)
                 last_error = error_str
                 continue
             else:
-                return {
-                    "success": False,
-                    "error": f"LLM call failed after {max_retries} attempts: {error_str}"
-                }
+                return {"success": False, "error": f"LLM call failed after {max_retries} attempts: {error_str}"}
 
-    return {
-        "success": False,
-        "error": f"Failed to get valid response from LLM: {last_error or 'Unknown error'}"
-    }
+    return {"success": False, "error": f"Failed to get valid response from LLM: {last_error or 'Unknown error'}"}
 
 
 def _post_process_qti_result(
@@ -293,22 +251,14 @@ def _post_process_qti_result(
 
     # Replace data URIs with S3 URLs
     if image_url_mapping:
-        result["qti_xml"] = replace_data_uris_with_s3_urls(
-            result["qti_xml"],
-            image_url_mapping,
-            processed_content
-        )
+        result["qti_xml"] = replace_data_uris_with_s3_urls(result["qti_xml"], image_url_mapping, processed_content)
 
     # Handle any remaining base64 images
-    result["qti_xml"] = convert_remaining_base64_to_s3(
-        result["qti_xml"], question_id, test_name
-    )
+    result["qti_xml"] = convert_remaining_base64_to_s3(result["qti_xml"], question_id, test_name)
 
     # Verify correct answer matches answer key (if provided)
     if correct_answer:
-        result["qti_xml"] = _verify_and_fix_answer(
-            result["qti_xml"], correct_answer, question_id
-        )
+        result["qti_xml"] = _verify_and_fix_answer(result["qti_xml"], correct_answer, question_id)
 
     return result
 

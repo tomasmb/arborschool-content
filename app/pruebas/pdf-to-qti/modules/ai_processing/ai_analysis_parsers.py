@@ -33,7 +33,7 @@ def parse_compatibility_response(response_text: str) -> dict[str, Any]:
             "visual_content_required": visual_required,
             "question_type": question_type,
             "confidence": confidence,
-            "reasoning": reasoning
+            "reasoning": reasoning,
         }
 
     except json.JSONDecodeError as e:
@@ -43,17 +43,14 @@ def parse_compatibility_response(response_text: str) -> dict[str, Any]:
             "visual_content_required": False,
             "question_type": None,
             "confidence": 0.0,
-            "reasoning": "Failed to parse AI response"
+            "reasoning": "Failed to parse AI response",
         }
 
 
 def parse_categorization_response(response_text: str, num_blocks: int) -> dict[int, str]:
     """Parse AI categorization response from structured JSON."""
     # Valid categories for basic categorization (subset of VALID_BLOCK_CATEGORIES)
-    valid_categories = [
-        "question_text", "answer_choice", "visual_content_title",
-        "visual_content_label", "other_label"
-    ]
+    valid_categories = ["question_text", "answer_choice", "visual_content_title", "visual_content_label", "other_label"]
 
     try:
         result = json.loads(response_text)
@@ -80,10 +77,7 @@ def parse_categorization_response(response_text: str, num_blocks: int) -> dict[i
         return {i: "other_label" for i in range(1, num_blocks + 1)}
 
 
-def validate_block_categories(
-    block_cats: dict[str, str],
-    num_blocks: int
-) -> dict[int, str]:
+def validate_block_categories(block_cats: dict[str, str], num_blocks: int) -> dict[int, str]:
     """Validate and convert block categories to integers."""
     block_categories = {}
 
@@ -103,10 +97,7 @@ def validate_block_categories(
     return block_categories
 
 
-def process_comprehensive_result(
-    result: dict[str, Any],
-    text_blocks: list[dict[str, Any]]
-) -> dict[str, Any]:
+def process_comprehensive_result(result: dict[str, Any], text_blocks: list[dict[str, Any]]) -> dict[str, Any]:
     """Process comprehensive analysis result into standard format."""
     qti_compat = result.get("qti_compatibility", {})
     visual_sep = result.get("visual_separation", {})
@@ -116,14 +107,8 @@ def process_comprehensive_result(
     block_categories = validate_block_categories(block_cats, len(text_blocks))
 
     # Build categorization result format (compatible with old code)
-    question_answer_blocks = [
-        i for i, cat in block_categories.items()
-        if cat in ["question_text", "answer_choice", "question_part_header"]
-    ]
-    image_related_blocks = [
-        i for i, cat in block_categories.items()
-        if cat in ["visual_content_title", "visual_content_label"]
-    ]
+    question_answer_blocks = [i for i, cat in block_categories.items() if cat in ["question_text", "answer_choice", "question_part_header"]]
+    image_related_blocks = [i for i, cat in block_categories.items() if cat in ["visual_content_title", "visual_content_label"]]
 
     _log_comprehensive_result(qti_compat, visual_sep, block_categories)
 
@@ -133,19 +118,15 @@ def process_comprehensive_result(
         "categorization": {
             "block_categories": block_categories,
             "question_answer_blocks": question_answer_blocks,
-            "image_related_blocks": image_related_blocks
+            "image_related_blocks": image_related_blocks,
         },
         "visual_separation": visual_sep,
         "ai_categories": block_categories,
-        "has_visual_content": qti_compat.get('visual_content_required', False)
+        "has_visual_content": qti_compat.get("visual_content_required", False),
     }
 
 
-def _log_comprehensive_result(
-    qti_compat: dict[str, Any],
-    visual_sep: dict[str, Any],
-    block_categories: dict[int, str]
-) -> None:
+def _log_comprehensive_result(qti_compat: dict[str, Any], visual_sep: dict[str, Any], block_categories: dict[int, str]) -> None:
     """Log comprehensive analysis results."""
     print("🧠 ✅ Comprehensive analysis complete:")
     print(f"   QTI compatible: {qti_compat.get('can_represent', False)}")

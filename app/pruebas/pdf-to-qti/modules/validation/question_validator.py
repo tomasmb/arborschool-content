@@ -52,7 +52,7 @@ def validate_qti_question(
     original_pdf_image: str,
     openai_api_key: str,
     output_dir: str | None = None,
-    sandbox_url: str = "https://qti.amp-up.io/testrunner/sandbox/"
+    sandbox_url: str = "https://qti.amp-up.io/testrunner/sandbox/",
 ) -> dict[str, Any]:
     """Comprehensive QTI question validation using GPT-5.1.
 
@@ -80,9 +80,7 @@ def validate_qti_question(
     try:
         # Save original PDF screenshot for debugging
         if output_dir and original_pdf_image:
-            screenshot_paths = _save_original_pdf_screenshot(
-                original_pdf_image, output_dir
-            )
+            screenshot_paths = _save_original_pdf_screenshot(original_pdf_image, output_dir)
 
         # Step 1: Render QTI in sandbox and capture screenshot
         print("   📸 Capturing screenshot of rendered question...")
@@ -99,12 +97,7 @@ def validate_qti_question(
         # Step 2: Comprehensive validation using GPT-5.1
         if rendered_image:
             print("   🤖 Performing comprehensive validation with GPT-5.1...")
-            validation_result = perform_comprehensive_validation(
-                original_pdf_image,
-                rendered_image,
-                qti_xml,
-                openai_api_key
-            )
+            validation_result = perform_comprehensive_validation(original_pdf_image, rendered_image, qti_xml, openai_api_key)
         else:
             validation_result = _create_no_screenshot_result()
 
@@ -121,13 +114,11 @@ def validate_qti_question(
             "validation_passed": False,
             "error": f"Validation process failed: {str(e)}",
             "screenshot_paths": screenshot_paths,
-            "validation_details": {}
+            "validation_details": {},
         }
 
 
-def _save_original_pdf_screenshot(
-    original_pdf_image: str, output_dir: str
-) -> dict[str, str]:
+def _save_original_pdf_screenshot(original_pdf_image: str, output_dir: str) -> dict[str, str]:
     """Save original PDF screenshot for debugging."""
     screenshot_paths: dict[str, str] = {}
     original_path = os.path.join(output_dir, "validation_original_pdf.png")
@@ -143,9 +134,7 @@ def _save_original_pdf_screenshot(
     return screenshot_paths
 
 
-def _save_rendered_screenshot(
-    rendered_image: str, output_dir: str | None, screenshot_paths: dict[str, str]
-) -> None:
+def _save_rendered_screenshot(rendered_image: str, output_dir: str | None, screenshot_paths: dict[str, str]) -> None:
     """Save rendered QTI screenshot."""
     if not output_dir:
         return
@@ -160,19 +149,14 @@ def _save_rendered_screenshot(
         print(f"   ⚠️  Failed to save rendered screenshot: {str(e)}")
 
 
-def _create_screenshot_failure_result(
-    screenshot_result: dict[str, Any], screenshot_paths: dict[str, str]
-) -> dict[str, Any]:
+def _create_screenshot_failure_result(screenshot_result: dict[str, Any], screenshot_paths: dict[str, str]) -> dict[str, Any]:
     """Create result for screenshot capture failure."""
     return {
         "success": False,
         "validation_passed": False,
         "error": f"Failed to capture screenshot: {screenshot_result['error']}",
         "screenshot_paths": screenshot_paths,
-        "validation_details": {
-            "screenshot_capture_failed": True,
-            "chrome_setup_error": "cannot find Chrome binary" in screenshot_result['error']
-        }
+        "validation_details": {"screenshot_capture_failed": True, "chrome_setup_error": "cannot find Chrome binary" in screenshot_result["error"]},
     }
 
 
@@ -184,7 +168,7 @@ def _create_no_screenshot_result() -> dict[str, Any]:
         "validation_passed": False,
         "overall_score": 0,
         "error": "Could not capture rendered screenshot for comparison",
-        "validation_summary": "Validation incomplete - screenshot capture failed"
+        "validation_summary": "Validation incomplete - screenshot capture failed",
     }
 
 
@@ -194,7 +178,7 @@ def _log_validation_result(validation_result: dict[str, Any]) -> None:
         print("   ✅ Question validation PASSED")
     else:
         print("   ❌ Question validation FAILED")
-        error_msg = validation_result.get('error', 'Screenshot capture failed')
+        error_msg = validation_result.get("error", "Screenshot capture failed")
         print(f"   📋 Issues: {error_msg}")
 
 
@@ -250,10 +234,7 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> dict[str, Any]:
     except Exception as e:
         error_message = _format_screenshot_error(str(e), is_lambda)
         print(f"   ❌ Screenshot capture error: {error_message}")
-        return {
-            "success": False,
-            "error": error_message
-        }
+        return {"success": False, "error": error_message}
 
     finally:
         if driver:
@@ -268,34 +249,17 @@ def _format_screenshot_error(error_message: str, is_lambda: bool) -> str:
     """Format error message for screenshot capture failures."""
     if "chrome binary" in error_message.lower():
         if is_lambda:
-            return (
-                f"Chrome Lambda layer not configured properly. "
-                f"Original error: {error_message}"
-            )
+            return f"Chrome Lambda layer not configured properly. Original error: {error_message}"
         else:
-            return (
-                f"Chrome browser not found. Please install Google Chrome. "
-                f"Original error: {error_message}"
-            )
+            return f"Chrome browser not found. Please install Google Chrome. Original error: {error_message}"
     elif "timeout" in error_message.lower():
-        return (
-            f"Timeout waiting for page elements. The QTI sandbox may be slow. "
-            f"Original error: {error_message}"
-        )
+        return f"Timeout waiting for page elements. The QTI sandbox may be slow. Original error: {error_message}"
     elif "connection" in error_message.lower():
-        return (
-            f"Network connection issue. Check internet connectivity. "
-            f"Original error: {error_message}"
-        )
+        return f"Network connection issue. Check internet connectivity. Original error: {error_message}"
     return error_message
 
 
-def perform_comprehensive_validation(
-    original_pdf_image: str,
-    rendered_image: str,
-    qti_xml: str,
-    openai_api_key: str
-) -> dict[str, Any]:
+def perform_comprehensive_validation(original_pdf_image: str, rendered_image: str, qti_xml: str, openai_api_key: str) -> dict[str, Any]:
     """Perform comprehensive validation using GPT-5.1.
 
     Args:
@@ -314,7 +278,7 @@ def perform_comprehensive_validation(
         validation_prompt = create_validation_prompt()
 
         # Truncate XML for context (avoid token limits)
-        xml_context = qti_xml[:2000] + ('...' if len(qti_xml) > 2000 else '')
+        xml_context = qti_xml[:2000] + ("..." if len(qti_xml) > 2000 else "")
 
         # Prepare messages for the API call
         messages = [
@@ -322,25 +286,10 @@ def perform_comprehensive_validation(
                 "role": "user",
                 "content": [
                     {"type": "text", "text": validation_prompt},
-                    {
-                        "type": "text",
-                        "text": f"\n\nQTI XML for context:\n```xml\n{xml_context}\n```"
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{original_pdf_image}",
-                            "detail": "high"
-                        }
-                    },
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{rendered_image}",
-                            "detail": "high"
-                        }
-                    }
-                ]
+                    {"type": "text", "text": f"\n\nQTI XML for context:\n```xml\n{xml_context}\n```"},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{original_pdf_image}", "detail": "high"}},
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{rendered_image}", "detail": "high"}},
+                ],
             }
         ]
 
@@ -358,9 +307,4 @@ def perform_comprehensive_validation(
         return parse_validation_response(response_text)
 
     except Exception as e:
-        return {
-            "success": False,
-            "validation_passed": False,
-            "error": f"GPT-5.1 validation failed: {str(e)}",
-            "validation_details": {}
-        }
+        return {"success": False, "validation_passed": False, "error": f"GPT-5.1 validation failed: {str(e)}", "validation_details": {}}

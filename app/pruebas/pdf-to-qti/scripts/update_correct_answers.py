@@ -73,26 +73,10 @@ def update_qti_correct_answer(xml_path: Path, correct_answer: str) -> tuple[bool
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Update correct answers in QTI XML files"
-    )
-    parser.add_argument(
-        "--answers-json",
-        type=Path,
-        required=True,
-        help="Path to respuestas_correctas.json file"
-    )
-    parser.add_argument(
-        "--xml-dir",
-        type=Path,
-        required=True,
-        help="Directory containing QTI XML files"
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show what would be updated without making changes"
-    )
+    parser = argparse.ArgumentParser(description="Update correct answers in QTI XML files")
+    parser.add_argument("--answers-json", type=Path, required=True, help="Path to respuestas_correctas.json file")
+    parser.add_argument("--xml-dir", type=Path, required=True, help="Directory containing QTI XML files")
+    parser.add_argument("--dry-run", action="store_true", help="Show what would be updated without making changes")
 
     args = parser.parse_args()
 

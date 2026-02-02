@@ -41,10 +41,7 @@ def extract_correct_answer_from_qti(qti_xml: str) -> Optional[str]:
         return qti_value.text.strip()
     except ET.ParseError:
         # If XML parsing fails, try regex as fallback
-        match = re.search(
-            r'<qti-value>([^<]+)</qti-value>',
-            qti_xml
-        )
+        match = re.search(r"<qti-value>([^<]+)</qti-value>", qti_xml)
         if match:
             return match.group(1).strip()
         return None
@@ -90,20 +87,16 @@ def update_correct_answer_in_qti_xml(qti_xml: str, correct_answer: str) -> str:
         # Fallback to regex replacement if XML parsing fails
         # Try to replace existing value
         pattern = (
-            r'(<qti-correct-response[^>]*>\s*<qti-value>)'
-            r'[^<]+'
-            r'(</qti-value>\s*</qti-correct-response>)'
+            r"(<qti-correct-response[^>]*>\s*<qti-value>)"
+            r"[^<]+"
+            r"(</qti-value>\s*</qti-correct-response>)"
         )
         if re.search(pattern, qti_xml):
-            return re.sub(pattern, r'\1' + correct_answer + r'\2', qti_xml)
+            return re.sub(pattern, r"\1" + correct_answer + r"\2", qti_xml)
 
         # If no correct-response found, try to add it after response-declaration
-        pattern = r'(<qti-response-declaration[^>]*>)'
-        replacement = (
-            r'\1\n    <qti-correct-response>\n      <qti-value>'
-            + correct_answer
-            + '</qti-value>\n    </qti-correct-response>'
-        )
+        pattern = r"(<qti-response-declaration[^>]*>)"
+        replacement = r"\1\n    <qti-correct-response>\n      <qti-value>" + correct_answer + "</qti-value>\n    </qti-correct-response>"
         if re.search(pattern, qti_xml):
             return re.sub(pattern, replacement, qti_xml, count=1)
 

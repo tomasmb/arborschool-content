@@ -65,23 +65,10 @@ def parse_text_answer_key(text_path: Path) -> Dict[str, str]:
 
 def main():
     """Main entry point."""
-    parser = argparse.ArgumentParser(
-        description="Convert text answer key to JSON format"
-    )
-    parser.add_argument(
-        "--text-path",
-        required=True,
-        help="Path to text file with answer key"
-    )
-    parser.add_argument(
-        "--output",
-        required=True,
-        help="Output JSON file path"
-    )
-    parser.add_argument(
-        "--test-name",
-        help="Test name (for documentation in output file)"
-    )
+    parser = argparse.ArgumentParser(description="Convert text answer key to JSON format")
+    parser.add_argument("--text-path", required=True, help="Path to text file with answer key")
+    parser.add_argument("--output", required=True, help="Output JSON file path")
+    parser.add_argument("--test-name", help="Test name (for documentation in output file)")
 
     args = parser.parse_args()
 
@@ -107,8 +94,8 @@ def main():
         "answers": answers,
         "metadata": {
             "extraction_method": "Text file parsing",
-            "question_numbers": sorted(answers.keys(), key=lambda x: int(x) if x.isdigit() else 999)
-        }
+            "question_numbers": sorted(answers.keys(), key=lambda x: int(x) if x.isdigit() else 999),
+        },
     }
 
     # Save output

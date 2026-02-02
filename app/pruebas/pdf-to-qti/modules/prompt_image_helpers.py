@@ -28,16 +28,13 @@ def find_nearby_text_for_image(
     image_page_num: int,
     all_document_blocks: list[dict[str, Any]],
     max_vertical_gap: int = 50,
-    min_horizontal_overlap_percentage: float = 0.1
+    min_horizontal_overlap_percentage: float = 0.1,
 ) -> str:
     """Finds text blocks near an image bbox and returns semantic context for placement."""
     img_rect = fitz.Rect(image_bbox_coords)
 
     # Collect text blocks with their relative positions
-    text_blocks = _collect_nearby_text_blocks(
-        img_rect, image_page_num, all_document_blocks,
-        max_vertical_gap, min_horizontal_overlap_percentage
-    )
+    text_blocks = _collect_nearby_text_blocks(img_rect, image_page_num, all_document_blocks, max_vertical_gap, min_horizontal_overlap_percentage)
 
     if not text_blocks:
         return "No nearby text context found"
@@ -50,7 +47,7 @@ def _collect_nearby_text_blocks(
     image_page_num: int,
     all_document_blocks: list[dict[str, Any]],
     max_vertical_gap: int,
-    min_horizontal_overlap_percentage: float
+    min_horizontal_overlap_percentage: float,
 ) -> list[dict[str, Any]]:
     """Collect text blocks near the image with their positions."""
     text_blocks = []
@@ -69,25 +66,18 @@ def _collect_nearby_text_blocks(
             continue
 
         # Check spatial relationship
-        block_info = _analyze_spatial_relationship(
-            img_rect, text_rect, text_content,
-            max_vertical_gap, min_horizontal_overlap_percentage
-        )
+        block_info = _analyze_spatial_relationship(img_rect, text_rect, text_content, max_vertical_gap, min_horizontal_overlap_percentage)
 
         if block_info:
             text_blocks.append(block_info)
 
     # Sort by distance (closest first)
-    text_blocks.sort(key=lambda x: x['distance'])
+    text_blocks.sort(key=lambda x: x["distance"])
     return text_blocks
 
 
 def _analyze_spatial_relationship(
-    img_rect: fitz.Rect,
-    text_rect: fitz.Rect,
-    text_content: str,
-    max_vertical_gap: int,
-    min_horizontal_overlap_percentage: float
+    img_rect: fitz.Rect, text_rect: fitz.Rect, text_content: str, max_vertical_gap: int, min_horizontal_overlap_percentage: float
 ) -> dict[str, Any] | None:
     """Analyze spatial relationship between image and text block."""
     # Check for horizontal overlap (more lenient)
@@ -100,7 +90,7 @@ def _analyze_spatial_relationship(
     horizontal_distance = min(
         abs(text_rect.x1 - img_rect.x0),  # Text left of image
         abs(img_rect.x1 - text_rect.x0),  # Text right of image
-        0 if horizontal_overlap_width >= min_width else float('inf')
+        0 if horizontal_overlap_width >= min_width else float("inf"),
     )
 
     if horizontal_overlap_width < min_width and horizontal_distance >= 100:
@@ -110,7 +100,7 @@ def _analyze_spatial_relationship(
     vertical_distance = min(
         abs(text_rect.y1 - img_rect.y0),  # Text above image
         abs(img_rect.y1 - text_rect.y0),  # Text below image
-        0 if (text_rect.y0 <= img_rect.y1 and text_rect.y1 >= img_rect.y0) else float('inf')
+        0 if (text_rect.y0 <= img_rect.y1 and text_rect.y1 >= img_rect.y0) else float("inf"),
     )
 
     if vertical_distance > max_vertical_gap:
@@ -119,12 +109,7 @@ def _analyze_spatial_relationship(
     # Determine relationship
     relationship = _determine_relationship(img_rect, text_rect)
 
-    return {
-        'content': text_content.strip(),
-        'relationship': relationship,
-        'distance': vertical_distance,
-        'y_pos': text_rect.y0
-    }
+    return {"content": text_content.strip(), "relationship": relationship, "distance": vertical_distance, "y_pos": text_rect.y0}
 
 
 def _determine_relationship(img_rect: fitz.Rect, text_rect: fitz.Rect) -> str:
@@ -143,9 +128,9 @@ def _determine_relationship(img_rect: fitz.Rect, text_rect: fitz.Rect) -> str:
 def _format_text_context(text_blocks: list[dict[str, Any]]) -> str:
     """Format nearby text blocks into context description."""
     # Group by relationship
-    above_texts = [t['content'] for t in text_blocks if t['relationship'] == 'above']
-    below_texts = [t['content'] for t in text_blocks if t['relationship'] == 'below']
-    side_texts = [t['content'] for t in text_blocks if t['relationship'] in ['left', 'right']]
+    above_texts = [t["content"] for t in text_blocks if t["relationship"] == "above"]
+    below_texts = [t["content"] for t in text_blocks if t["relationship"] == "below"]
+    side_texts = [t["content"] for t in text_blocks if t["relationship"] in ["left", "right"]]
 
     # Create semantic description
     context_parts = []
@@ -163,7 +148,7 @@ def _format_text_context(text_blocks: list[dict[str, Any]]) -> str:
         context_parts.append(f"Adjacent text: '{side_combined}'")
 
     # Analyze semantic meaning for placement hints
-    all_text = " ".join([t['content'] for t in text_blocks[:3]]).lower()
+    all_text = " ".join([t["content"] for t in text_blocks[:3]]).lower()
     placement_hints = _analyze_placement_hints(all_text)
 
     result = " | ".join(context_parts)
@@ -177,13 +162,13 @@ def _analyze_placement_hints(text: str) -> list[str]:
     """Analyze text to determine placement hints for images."""
     hints = []
 
-    if any(word in text for word in ['question', 'which', 'what', 'how', 'why', 'when', 'where']):
+    if any(word in text for word in ["question", "which", "what", "how", "why", "when", "where"]):
         hints.append("appears to be part of question stem")
-    if any(word in text for word in ['a)', 'b)', 'c)', 'd)', 'choice', 'option']):
+    if any(word in text for word in ["a)", "b)", "c)", "d)", "choice", "option"]):
         hints.append("near answer choices")
-    if any(word in text for word in ['diagram', 'figure', 'image', 'picture', 'shows', 'illustration']):
+    if any(word in text for word in ["diagram", "figure", "image", "picture", "shows", "illustration"]):
         hints.append("referenced by text")
-    if any(word in text for word in ['instruction', 'direction', 'note', 'consider']):
+    if any(word in text for word in ["instruction", "direction", "note", "consider"]):
         hints.append("part of instructions")
 
     return hints
@@ -201,43 +186,42 @@ def prepare_document_blocks(pdf_content: dict[str, Any]) -> list[dict[str, Any]]
     return all_doc_blocks
 
 
-def collect_large_images(
-    pdf_content: dict[str, Any],
-    all_doc_blocks: list[dict[str, Any]]
-) -> list[dict[str, Any]]:
+def collect_large_images(pdf_content: dict[str, Any], all_doc_blocks: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Collect large images for inclusion in prompt."""
     large_images = []
 
-    if not pdf_content.get('all_images'):
+    if not pdf_content.get("all_images"):
         return large_images
 
-    for img_data in pdf_content['all_images']:
-        width = int(img_data.get('width', 0))
-        height = int(img_data.get('height', 0))
+    for img_data in pdf_content["all_images"]:
+        width = int(img_data.get("width", 0))
+        height = int(img_data.get("height", 0))
 
         # Include choice images regardless of size
-        if width * height > 5000 or img_data.get('is_choice_diagram'):
-            placeholder = img_data.get('image_base64')
+        if width * height > 5000 or img_data.get("is_choice_diagram"):
+            placeholder = img_data.get("image_base64")
             if placeholder and placeholder.startswith("CONTENT_PLACEHOLDER_"):
-                img_page_num = img_data.get('page_number', 0)
+                img_page_num = img_data.get("page_number", 0)
 
                 nearby_text = find_nearby_text_for_image(
-                    img_data.get('bbox', [0, 0, 0, 0]),
+                    img_data.get("bbox", [0, 0, 0, 0]),
                     img_page_num,
                     all_doc_blocks,
                 )
 
                 alt_suggestion = f"Image {len(large_images) + 1} (size {width}x{height})"
 
-                large_images.append({
-                    'placeholder': placeholder,
-                    'width': width,
-                    'height': height,
-                    'bbox': img_data.get('bbox', [0, 0, 0, 0]),
-                    'page_number': img_page_num,
-                    'alt_suggestion': alt_suggestion,
-                    'nearby_text': nearby_text
-                })
+                large_images.append(
+                    {
+                        "placeholder": placeholder,
+                        "width": width,
+                        "height": height,
+                        "bbox": img_data.get("bbox", [0, 0, 0, 0]),
+                        "page_number": img_page_num,
+                        "alt_suggestion": alt_suggestion,
+                        "nearby_text": nearby_text,
+                    }
+                )
 
     return large_images
 
@@ -248,11 +232,11 @@ def format_image_info(images: list[dict[str, Any]]) -> str:
     image_info += f"Found {len(images)} image(s) in logical reading order:\n"
 
     for i, img_details in enumerate(images):
-        bbox_coords = img_details['bbox']
-        page_num = img_details['page_number']
-        width = img_details['width']
-        height = img_details['height']
-        nearby_text_info = img_details.get('nearby_text', 'No nearby text context found.')
+        bbox_coords = img_details["bbox"]
+        page_num = img_details["page_number"]
+        width = img_details["width"]
+        height = img_details["height"]
+        nearby_text_info = img_details.get("nearby_text", "No nearby text context found.")
 
         # Determine position description
         y_pos = bbox_coords[1]
@@ -265,8 +249,8 @@ def format_image_info(images: list[dict[str, Any]]) -> str:
             position_desc = "middle"
 
         image_info += (
-            f"  Image {i+1}: Use placeholder '{img_details['placeholder']}'. "
-            f"Location: Page {page_num+1}, Position: {position_desc} of page, Size: {width}x{height}. "
+            f"  Image {i + 1}: Use placeholder '{img_details['placeholder']}'. "
+            f"Location: Page {page_num + 1}, Position: {position_desc} of page, Size: {width}x{height}. "
             f"Contextual Text: {nearby_text_info}. "
             f"Alt text: '{img_details['alt_suggestion']}'.\n"
         )
@@ -282,7 +266,7 @@ def build_image_info(pdf_content: dict[str, Any]) -> str:
 
     if large_images:
         return format_image_info(large_images)
-    elif pdf_content.get('has_extracted_images'):
+    elif pdf_content.get("has_extracted_images"):
         return (
             "\n## Visual Content\n"
             "The PDF contains extracted images. If they are part of the question, "

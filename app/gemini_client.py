@@ -68,10 +68,7 @@ class GeminiClient:
                 text = "".join(part.text for part in response.candidates[0].content.parts if hasattr(part, "text"))
             else:
                 finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
-                raise ValueError(
-                    f"Gemini response has no text content. Finish reason: {finish_reason}. "
-                    f"Original error: {e}"
-                ) from e
+                raise ValueError(f"Gemini response has no text content. Finish reason: {finish_reason}. Original error: {e}") from e
 
         return type("Response", (), {"text": text})()
 
@@ -100,10 +97,7 @@ class OpenAIClient:
         temperature: float = 0.0,
         **kwargs: Any,
     ) -> str:
-        headers = {
-            "Authorization": f"Bearer {self._api_key}",
-            "Content-Type": "application/json"
-        }
+        headers = {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"}
 
         messages = []
         content = []
@@ -115,10 +109,7 @@ class OpenAIClient:
                     content.append({"type": "text", "text": part})
                 elif hasattr(part, "save"):  # Assume PIL Image
                     base64_img = self._pil_to_base64(part)
-                    content.append({
-                        "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}
-                    })
+                    content.append({"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}})
         else:
             content.append({"type": "text", "text": str(prompt)})
 
@@ -225,12 +216,7 @@ class GeminiService:
             if self._openai:
                 print(f"\n⚠️ Gemini Quota Exhausted (429). Falling back to OpenAI ({self._openai._model})...")
                 try:
-                    return self._openai.generate_text(
-                        prompt,
-                        response_mime_type=response_mime_type,
-                        temperature=temperature or 0.0,
-                        **kwargs
-                    )
+                    return self._openai.generate_text(prompt, response_mime_type=response_mime_type, temperature=temperature or 0.0, **kwargs)
                 except Exception as oa_err:
                     print(f"❌ OpenAI Fallback also failed: {oa_err}")
                     raise oa_err
@@ -258,4 +244,3 @@ def load_default_gemini_service() -> GeminiService:
 
     config = GeminiConfig(api_key=api_key)
     return GeminiService(config)
-

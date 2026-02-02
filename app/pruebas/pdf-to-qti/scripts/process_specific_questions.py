@@ -38,30 +38,14 @@ def main():
     """Procesar preguntas específicas."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Process specific questions using actual question numbers for folder names"
-    )
+    parser = argparse.ArgumentParser(description="Process specific questions using actual question numbers for folder names")
+    parser.add_argument("--question-numbers", nargs="+", type=int, required=True, help="Question numbers to process (e.g., 11 15 41 57)")
     parser.add_argument(
-        "--question-numbers",
-        nargs="+",
-        type=int,
-        required=True,
-        help="Question numbers to process (e.g., 11 15 41 57)"
+        "--questions-dir", default="../../data/pruebas/procesadas/seleccion-regular-2026/questions_pdfs", help="Directory with question PDFs"
     )
+    parser.add_argument("--output-dir", default="../../data/pruebas/procesadas/seleccion-regular-2026/qti", help="Output directory for QTI files")
     parser.add_argument(
-        "--questions-dir",
-        default="../../data/pruebas/procesadas/seleccion-regular-2026/questions_pdfs",
-        help="Directory with question PDFs"
-    )
-    parser.add_argument(
-        "--output-dir",
-        default="../../data/pruebas/procesadas/seleccion-regular-2026/qti",
-        help="Output directory for QTI files"
-    )
-    parser.add_argument(
-        "--segmentation-file",
-        default="splitter_output_regular_2026/part_1/segmentation_results.json",
-        help="Path to segmentation results JSON"
+        "--segmentation-file", default="splitter_output_regular_2026/part_1/segmentation_results.json", help="Path to segmentation results JSON"
     )
 
     args = parser.parse_args()
@@ -97,7 +81,7 @@ def main():
                 skip_if_exists=True,  # Skip if XML already exists
             )
 
-            if result.get('success'):
+            if result.get("success"):
                 print("   ✅ Éxito")
                 success_count += 1
             else:

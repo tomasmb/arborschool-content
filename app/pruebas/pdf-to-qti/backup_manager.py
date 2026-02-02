@@ -127,11 +127,13 @@ def list_backups(output_dir: Path) -> List[Dict[str, Any]]:
                 backups.append(metadata)
             except Exception:
                 # Si no se puede leer, crear metadata básica
-                backups.append({
-                    "backup_dir": str(backup_folder),
-                    "timestamp": backup_folder.name.replace("backup_", ""),
-                    "total_backed_up": len(list((backup_folder).glob("Q*"))),
-                })
+                backups.append(
+                    {
+                        "backup_dir": str(backup_folder),
+                        "timestamp": backup_folder.name.replace("backup_", ""),
+                        "total_backed_up": len(list((backup_folder).glob("Q*"))),
+                    }
+                )
 
     return backups
 

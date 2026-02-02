@@ -39,6 +39,7 @@ DEFAULT_OUTPUT_DIR = Path(__file__).resolve().parents[1] / "data" / "standards"
 # Data classes
 # -----------------------------------------------------------------------------
 
+
 @dataclass
 class PipelineConfig:
     """Configuration for the standards generation pipeline."""
@@ -66,6 +67,7 @@ class PipelineResult:
 # -----------------------------------------------------------------------------
 # Main pipeline
 # -----------------------------------------------------------------------------
+
 
 def run_standards_pipeline(config: PipelineConfig) -> PipelineResult:
     """
@@ -104,6 +106,7 @@ def run_standards_pipeline(config: PipelineConfig) -> PipelineResult:
 # -----------------------------------------------------------------------------
 # Pipeline steps
 # -----------------------------------------------------------------------------
+
 
 def _load_temario_safe(
     path: Path,
@@ -153,9 +156,7 @@ def _process_all_ejes(
         logger.info("EJE: %s (%d unidades)", eje_key.upper(), len(unidades))
         logger.info("=" * 60)
 
-        eje_standards = _process_single_eje(
-            config, gemini, eje_key, unidades, habilidades, conocimientos, result
-        )
+        eje_standards = _process_single_eje(config, gemini, eje_key, unidades, habilidades, conocimientos, result)
         all_standards.extend(eje_standards)
 
     return all_standards
@@ -267,6 +268,7 @@ def _export_standards(
 # Helpers
 # -----------------------------------------------------------------------------
 
+
 def _load_temario(path: Path) -> dict[str, Any]:
     """Load and validate basic temario structure."""
     with path.open(encoding="utf-8") as f:
@@ -315,6 +317,7 @@ def _build_canonical_file(
 # -----------------------------------------------------------------------------
 # CLI
 # -----------------------------------------------------------------------------
+
 
 def main() -> None:
     """CLI entry point."""
