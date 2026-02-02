@@ -6,7 +6,8 @@ setting it to False for the 31 atoms identified as having no question coverage.
 """
 
 import json
-from pathlib import Path
+
+from app.utils.paths import get_atoms_file
 
 # 31 atoms without coverage (from docs/analisis_cobertura_atomos.md)
 ATOMS_FUERA_DE_ALCANCE = {
@@ -48,9 +49,7 @@ ATOMS_FUERA_DE_ALCANCE = {
 
 def main():
     """Mark uncovered atoms as out of scope."""
-    # Path relative to project root
-    project_root = Path(__file__).parent.parent.parent.parent
-    atoms_path = project_root / "app" / "data" / "atoms" / "paes_m1_2026_atoms.json"
+    atoms_path = get_atoms_file("paes_m1_2026")
 
     print(f"Loading atoms from: {atoms_path}")
     with open(atoms_path, "r", encoding="utf-8") as f:

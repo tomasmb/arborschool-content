@@ -7,7 +7,8 @@ import sys
 from pathlib import Path
 
 # Load .env file from project root
-project_root = Path(__file__).parent.parent
+# pdf-splitter/ -> pruebas/ -> app/ -> repo root
+project_root = Path(__file__).resolve().parents[3]
 env_file = project_root / ".env"
 
 if env_file.exists():

@@ -254,16 +254,6 @@ def compare_images_with_llm(original_image: str, rendered_image: str, openai_api
         return {"success": False, "error": f"Image comparison failed: {str(e)}"}
 
 
-def create_comparison_prompt() -> str:
-    """
-    DEPRECATED: Use prompt_builder.create_visual_comparison_prompt() instead.
-
-    Returns:
-        Comparison prompt string
-    """
-    return create_visual_comparison_prompt()
-
-
 def parse_comparison_response(response_text: str) -> Dict[str, Any]:
     """
     Parse the comparison response from GPT-5.1.

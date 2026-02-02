@@ -453,11 +453,19 @@ These are improvements identified during the audit that enhance maintainability.
   - `app/tagging/kg_utils.py` - uses `get_atoms_file()`
   - `app/pruebas/pdf-to-qti/scripts/migrate_s3_images_by_test.py` - uses `PRUEBAS_PROCESADAS_DIR`
 
-### 9.2 Remaining Opportunities
+### 9.2 Dead Code Cleanup ✅
 
-- [ ] **JSON utilities migration** - 42 files use raw `json.load/dump` instead of `data_loader.py`
-- [ ] **Missing READMEs** - `app/atoms/`, `app/tagging/`, `app/standards/`
-- [ ] **mypy errors** - ~39 errors across priority modules
+- [x] **Removed unused deprecated function** `create_comparison_prompt()` in `visual_validator.py`
+- [x] **Removed unused legacy alias** `_trim_whitespace` in `pdf_processor.py`
+- [x] **Removed deprecated aliases** `PDF_DIR`/`JSON_DIR` in `temarios/parsing.py` - now uses centralized paths
+- [x] **Removed duplicate function** `extract_block_text()` in `content_processor.py` - now imports from `pdf_text_processing.py`
+- [x] **Fixed path bugs** in 5 scripts that had incorrect `.parent.parent` calculation for finding `.env`
+
+### 9.3 Remaining Low-Priority Opportunities
+
+- [ ] **JSON utilities migration** - 42 files use raw `json.load/dump` instead of `data_loader.py` (optional DRY improvement)
+- [ ] **Missing READMEs** - `app/atoms/`, `app/tagging/`, `app/standards/` (optional documentation)
+- [ ] **mypy errors** - ~39 errors across priority modules (optional type safety improvement)
 
 ---
 
@@ -471,11 +479,25 @@ These are improvements identified during the audit that enhance maintainability.
 
 ---
 
-*Last updated: 2026-02-02 (Session 8 - Post-Audit Improvements)*
+*Last updated: 2026-02-02 (Session 9 - Dead Code Cleanup)*
 
 ---
 
 ## Changelog
+
+### 2026-02-02 (Session 9)
+- **Phase 9.2: Dead Code Cleanup**
+  - Removed unused deprecated function `create_comparison_prompt()` from `visual_validator.py`
+  - Removed unused legacy alias `_trim_whitespace` from `pdf_processor.py`
+  - Removed deprecated `PDF_DIR`/`JSON_DIR` aliases from `temarios/parsing.py`
+  - Removed duplicate `extract_block_text()` from `content_processor.py` (now imports from `pdf_text_processing.py`)
+  - Fixed path calculation bugs in 5 scripts:
+    - `process_paes_regular_2026.py`: `.parent.parent` → `.parents[4]`
+    - `process_paes_regular_2025.py`: `.parent.parent` → `.parents[4]`
+    - `process_paes_invierno.py`: `.parent.parent` → `.parents[4]`
+    - `process_prueba_invierno_2025.py`: `.parent.parent` → `.parents[4]`
+    - `run_with_env.py`: `.parent.parent` → `.parents[3]`
+  - Updated `mark_uncovered_atoms.py` to use `get_atoms_file()` from centralized paths
 
 ### 2026-02-02 (Session 8)
 - **Phase 9: Post-Audit Improvements**

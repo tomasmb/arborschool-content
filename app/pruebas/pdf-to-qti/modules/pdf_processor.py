@@ -22,7 +22,7 @@ from typing import Any
 
 import fitz  # type: ignore
 
-from .pdf_image_utils import is_meaningful_image, render_image_area, trim_whitespace
+from .pdf_image_utils import is_meaningful_image, render_image_area
 from .pdf_table_extraction import extract_tables_with_pymupdf
 from .pdf_text_processing import (
     CustomJSONEncoder,
@@ -168,7 +168,3 @@ def _finalize_content(doc: fitz.Document, content: dict[str, Any]) -> None:
         content["structured_data"] = content["pages"][0]["structured_text"]
     else:
         content["structured_data"] = combine_structured_data(content["pages"])
-
-
-# Legacy alias for backward compatibility
-_trim_whitespace = trim_whitespace

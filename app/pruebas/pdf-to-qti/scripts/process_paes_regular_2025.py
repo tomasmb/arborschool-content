@@ -15,14 +15,15 @@ from typing import Any, Dict, List, Tuple
 # Load environment variables from .env file
 from dotenv import load_dotenv
 
-project_root = Path(__file__).parent.parent
+# scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> repo root
+project_root = Path(__file__).resolve().parents[4]
 env_file = project_root / ".env"
 if env_file.exists():
     load_dotenv(env_file)
     print(f"✅ Loaded environment variables from {env_file}")
 
-# Add modules to path
-sys.path.insert(0, str(Path(__file__).parent))
+# Add pdf-to-qti directory to path for local imports
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from backup_manager import create_qti_backup
 from main import process_single_question_pdf

@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from ..ai_processing.image_filter import get_indices_of_images_to_keep
 from ..ai_processing.table_filter import get_indices_of_tables_to_keep
+from ..pdf_text_processing import extract_block_text
 
 
 @dataclass
@@ -406,27 +407,6 @@ def create_content_summary(pdf_content: Dict[str, Any]) -> str:
         summary_parts.append("Visual: PDF page image available")
 
     return "\n".join(summary_parts)
-
-
-def extract_block_text(block: Dict[str, Any]) -> str:
-    """
-    Extract text from a PyMuPDF text block.
-
-    Args:
-        block: PyMuPDF block dictionary
-
-    Returns:
-        Extracted text string
-    """
-    text_parts = []
-
-    for line in block.get("lines", []):
-        line_text = ""
-        for span in line.get("spans", []):
-            line_text += span.get("text", "")
-        text_parts.append(line_text)
-
-    return " ".join(text_parts).strip()
 
 
 def clean_pdf_content_for_llm(pdf_content: Dict[str, Any]) -> Dict[str, Any]:

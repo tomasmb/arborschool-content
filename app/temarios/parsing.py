@@ -7,10 +7,6 @@ from PyPDF2 import PdfReader
 
 from app.utils.paths import TEMARIOS_JSON_DIR, TEMARIOS_PDF_DIR
 
-# Backward-compatible aliases (deprecated - use imports from app.utils.paths)
-PDF_DIR = TEMARIOS_PDF_DIR
-JSON_DIR = TEMARIOS_JSON_DIR
-
 
 @dataclass
 class UnitConfig:
@@ -348,7 +344,7 @@ def parse_axes(text: str, cfg: TemarioConfig) -> dict[str, object]:
 
 
 def build_structured_temario(cfg: TemarioConfig) -> dict[str, object]:
-    pdf_path = PDF_DIR / f"{cfg.stem}.pdf"
+    pdf_path = TEMARIOS_PDF_DIR / f"{cfg.stem}.pdf"
     reader = PdfReader(str(pdf_path))
     pages: list[str] = []
     for page in reader.pages:
@@ -371,10 +367,10 @@ def build_structured_temario(cfg: TemarioConfig) -> dict[str, object]:
 
 
 def build_all_temarios() -> None:
-    JSON_DIR.mkdir(parents=True, exist_ok=True)
+    TEMARIOS_JSON_DIR.mkdir(parents=True, exist_ok=True)
     for cfg in TEMARIO_CONFIGS:
         data = build_structured_temario(cfg)
-        out_path = JSON_DIR / cfg.out_name
+        out_path = TEMARIOS_JSON_DIR / cfg.out_name
         out_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"Wrote {out_path}")
 
