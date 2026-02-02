@@ -47,7 +47,7 @@ El pipeline se ejecuta principalmente vía línea de comandos:
 ```bash
 # Generar N variantes para preguntas específicas de una prueba
 python -m app.question_variants.run_variant_generation \
-  --source-test "Prueba-invierno-2025" \
+  --source-test "prueba-invierno-2025" \
   --questions "Q1,Q5,Q50" \
   --variants-per-question 2
 ```

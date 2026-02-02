@@ -17,7 +17,7 @@ class SourceQuestion:
 
     Attributes:
         question_id: Unique identifier (e.g., "Q1")
-        test_id: Test identifier (e.g., "Prueba-invierno-2025")
+        test_id: Test identifier (e.g., "prueba-invierno-2025")
         qti_xml: The raw QTI 3.0 XML content
         metadata: The metadata_tags.json content including atoms, difficulty, feedback
         question_text: Extracted text from QTI for prompt context

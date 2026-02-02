@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Script para finalizar la organización de PDFs de Prueba-invierno-2025.
+Script para finalizar la organización de PDFs de prueba-invierno-2025.
 
 Copia todos los PDFs generados correctamente y los organiza en el directorio final.
 """
@@ -17,14 +17,14 @@ def main():
     base_dir = Path(__file__).parent
     project_root = base_dir.parent.parent.parent
 
-    source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf-splitter-output-fixed" / "questions"
-    output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf"
+    source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "prueba-invierno-2025" / "pdf-splitter-output-fixed" / "questions"
+    output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "prueba-invierno-2025" / "pdf"
 
     # Crear directorio de salida
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 60)
-    print("Finalizando organización de PDFs de Prueba-invierno-2025")
+    print("Finalizando organización de PDFs de prueba-invierno-2025")
     print("=" * 60)
     print()
 

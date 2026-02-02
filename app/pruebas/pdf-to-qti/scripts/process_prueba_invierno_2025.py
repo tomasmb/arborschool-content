@@ -76,7 +76,7 @@ def process_all_questions(
     answer_key_path = Path(output_base_dir).parent / "respuestas_correctas.json"
     if not answer_key_path.exists():
         # Try alternative location
-        answer_key_path = Path(output_base_dir).parent.parent / "procesadas" / "Prueba-invierno-2025" / "respuestas_correctas.json"
+        answer_key_path = Path(output_base_dir).parent.parent / "procesadas" / "prueba-invierno-2025" / "respuestas_correctas.json"
 
     if answer_key_path.exists():
         try:
@@ -131,7 +131,7 @@ def process_all_questions(
                         print("   💾 Creando backup incremental...")
                         try:
                             backup_metadata = {
-                                "test_name": "Prueba-invierno-2025",
+                                "test_name": "prueba-invierno-2025",
                                 "batch_number": len(generated_folders_with_xml) // backup_batch_size,
                                 "total_processed": i,
                             }
@@ -185,7 +185,7 @@ def process_all_questions(
         print("=" * 60)
         try:
             final_backup_metadata = {
-                "test_name": "Prueba-invierno-2025",
+                "test_name": "prueba-invierno-2025",
                 "final_backup": True,
                 "total_questions_processed": len(generated_folders_with_xml),
             }
@@ -211,12 +211,12 @@ def main():
     )
     parser.add_argument(
         "--questions-dir",
-        default="../../data/pruebas/procesadas/Prueba-invierno-2025/pdf",
+        default="../../data/pruebas/procesadas/prueba-invierno-2025/pdf",
         help="Directory with individual question PDFs"
     )
     parser.add_argument(
         "--output-dir",
-        default="../../data/pruebas/procesadas/Prueba-invierno-2025/qti",
+        default="../../data/pruebas/procesadas/prueba-invierno-2025/qti",
         help="Output directory for QTI files"
     )
     parser.add_argument(

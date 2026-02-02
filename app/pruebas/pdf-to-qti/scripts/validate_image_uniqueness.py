@@ -129,7 +129,7 @@ def main():
     parser.add_argument(
         "--test-name",
         required=True,
-        help="Test name (e.g., Prueba-invierno-2025)"
+        help="Test name (e.g., prueba-invierno-2025)"
     )
     parser.add_argument(
         "--output-dir",

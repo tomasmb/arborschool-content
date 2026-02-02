@@ -48,7 +48,7 @@ class VariantPipeline:
         """Run the variant generation pipeline.
 
         Args:
-            test_id: Test identifier (e.g., "Prueba-invierno-2025")
+            test_id: Test identifier (e.g., "prueba-invierno-2025")
             question_ids: Specific question IDs to process. If None, processes all.
             num_variants: Override for number of variants per question.
 

@@ -203,8 +203,8 @@ FASE 3: Migración a CAT
 | Archivo | Descripción |
 |---------|-------------|
 | `app/atoms/scripts/export_skill_tree.py` | Exporta grafo de átomos a JSON |
-| `app/diagnostico/data/skill_tree.json` | 229 nodos, 317 edges, profundidad máx 6 |
-| `app/diagnostico/data/question_atoms.json` | Mapeo 32 preguntas → 61 átomos únicos |
+| `app/diagnostico/config/skill_tree.json` | 229 nodos, 317 edges, profundidad máx 6 |
+| `app/diagnostico/config/question_atoms.json` | Mapeo 32 preguntas → 61 átomos únicos |
 | `app/diagnostico/web/skill_tree.js` | Componente D3.js para visualización |
 | `app/diagnostico/web/tree_viewer.html` | Vista standalone del árbol completo |
 | `app/diagnostico/scripts/extract_question_atoms.py` | Extrae mapeo pregunta→átomo |

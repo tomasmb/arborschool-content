@@ -32,10 +32,10 @@ MST_QUESTIONS = {
         ("seleccion-regular-2026", "Q54"),
     ],
     "B2": [
-        ("Prueba-invierno-2025", "Q11"),
+        ("prueba-invierno-2025", "Q11"),
         ("prueba-invierno-2026", "Q6"),
         ("seleccion-regular-2026", "Q47"),
-        ("Prueba-invierno-2025", "Q18"),
+        ("prueba-invierno-2025", "Q18"),
         ("seleccion-regular-2026", "Q5"),
         ("seleccion-regular-2026", "Q45"),
         ("prueba-invierno-2026", "Q54"),
@@ -46,9 +46,9 @@ MST_QUESTIONS = {
         ("seleccion-regular-2026", "Q48"),
         ("prueba-invierno-2026", "Q36"),
         ("seleccion-regular-2025", "Q23"),
-        ("Prueba-invierno-2025", "Q56"),
+        ("prueba-invierno-2025", "Q56"),
         ("seleccion-regular-2025", "Q65"),
-        ("Prueba-invierno-2025", "Q61"),
+        ("prueba-invierno-2025", "Q61"),
         ("seleccion-regular-2026", "Q53"),
     ],
 }
@@ -142,7 +142,7 @@ def extract_question_atoms():
                 "relevance": a["relevance"],
             })
 
-    output_path = Path("app/diagnostico/data/question_atoms.json")
+    output_path = Path("app/diagnostico/config/question_atoms.json")
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     with output_path.open("w") as f:

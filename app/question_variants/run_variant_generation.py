@@ -3,7 +3,7 @@
 
 Usage:
     python -m app.assessment.run_variant_generation \\
-        --source-test "Prueba-invierno-2025" \\
+        --source-test "prueba-invierno-2025" \\
         --questions "Q1,Q4,Q5" \\
         --variants-per-question 3 \\
         --output-dir "app/data/pruebas/alternativas"

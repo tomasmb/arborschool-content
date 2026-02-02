@@ -67,7 +67,7 @@ Este documento resume el estado actual del proyecto `arborschool-content`, los l
 ```bash
 # Específico para una pregunta
 python -m app.question_variants.run_variant_generation \
-  --source-test "Prueba-invierno-2025" \
+  --source-test "prueba-invierno-2025" \
   --questions "Q50" \
   --variants-per-question 1
 ```

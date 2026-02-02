@@ -1,6 +1,6 @@
 # Deuda Técnica - arborschool-content
 
-> Último actualizado: 2025-01-30
+> Último actualizado: 2026-02-02
 
 ## Archivos > 500 líneas (Pendientes de Refactorización)
 

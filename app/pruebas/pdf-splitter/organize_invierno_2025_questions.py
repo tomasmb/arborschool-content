@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Script para organizar y corregir los PDFs de preguntas de Prueba-invierno-2025.
+Script para organizar y corregir los PDFs de preguntas de prueba-invierno-2025.
 
 Este script:
 1. Copia las preguntas que están correctas
 2. Regenera las preguntas problemáticas usando páginas completas del PDF original
-3. Organiza todo en data/procesadas/Prueba-invierno-2025/pdf/
+3. Organiza todo en data/procesadas/prueba-invierno-2025/pdf/
 """
 
 from __future__ import annotations
@@ -27,15 +27,15 @@ def main():
     base_dir = Path(__file__).parent
     project_root = base_dir.parent.parent.parent
 
-    original_pdf = project_root / "app" / "data" / "pruebas" / "raw" / "Prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
-    source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf-splitter-output" / "part_1" / "questions"
-    output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "Prueba-invierno-2025" / "pdf"
+    original_pdf = project_root / "app" / "data" / "pruebas" / "raw" / "prueba-invierno-2025" / "2025-24-06-19-paes-invierno-oficial-matematica1-p2025.pdf"
+    source_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "prueba-invierno-2025" / "pdf-splitter-output" / "part_1" / "questions"
+    output_dir = project_root / "app" / "data" / "pruebas" / "procesadas" / "prueba-invierno-2025" / "pdf"
 
     # Crear directorio de salida
     output_dir.mkdir(parents=True, exist_ok=True)
 
     print("=" * 60)
-    print("Organizando y corrigiendo PDFs de Prueba-invierno-2025")
+    print("Organizando y corrigiendo PDFs de prueba-invierno-2025")
     print("=" * 60)
     print()
 

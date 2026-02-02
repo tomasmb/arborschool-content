@@ -6,7 +6,7 @@ librerías de visualización como D3.js o react-d3-tree.
 Usage:
     python -m app.atoms.scripts.export_skill_tree \
         --atoms app/data/atoms/paes_m1_2026_atoms.json \
-        --output app/diagnostico/data/skill_tree.json
+        --output app/diagnostico/config/skill_tree.json
 """
 
 from __future__ import annotations
@@ -216,7 +216,7 @@ def main() -> None:
     parser.add_argument(
         "--output",
         type=Path,
-        default=Path("app/diagnostico/data/skill_tree.json"),
+        default=Path("app/diagnostico/config/skill_tree.json"),
         help="Output JSON file for skill tree",
     )
     parser.add_argument("-v", "--verbose", action="store_true")

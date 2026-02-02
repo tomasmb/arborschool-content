@@ -183,8 +183,8 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Force upload images to S3")
-    parser.add_argument("--output-dir", default="../../data/pruebas/procesadas/Prueba-invierno-2025/qti")
-    parser.add_argument("--questions-dir", default="../../data/pruebas/procesadas/Prueba-invierno-2025/pdf")
+    parser.add_argument("--output-dir", default="../../data/pruebas/procesadas/prueba-invierno-2025/qti")
+    parser.add_argument("--questions-dir", default="../../data/pruebas/procesadas/prueba-invierno-2025/pdf")
     parser.add_argument("--q27-image", default="~/.cursor/projects/Users-francosolari-Arbor-arborschool-content/assets/Captura_de_pantalla_2025-12-19_a_la_s__00.13.58-d378b019-baa7-41ec-9838-77558d6b9e79.png")
     parser.add_argument("--q53-image", default="~/.cursor/projects/Users-francosolari-Arbor-arborschool-content/assets/Captura_de_pantalla_2025-12-19_a_la_s__00.25.15-d29fc468-976c-4e98-bca8-ca03159d55a6.png")
 
@@ -194,7 +194,7 @@ def main():
     questions_dir = Path(args.questions_dir)
     q27_image = Path(args.q27_image).expanduser()
     q53_image = Path(args.q53_image).expanduser()
-    test_name = "Prueba-invierno-2025"
+    test_name = "prueba-invierno-2025"
 
     print("=" * 60)
     print("🔄 FORZANDO SUBIDA DE IMÁGENES CON NOMBRES ÚNICOS")

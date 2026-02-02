@@ -55,11 +55,11 @@ class Question:
 # Optimizado para máxima cobertura de átomos (v2.0 - 2026-01-09)
 # =============================================================================
 R1_QUESTIONS: List[Question] = [
-    Question("Prueba-invierno-2025", "Q28", Axis.ALG, Skill.RES, 0.45),
+    Question("prueba-invierno-2025", "Q28", Axis.ALG, Skill.RES, 0.45),
     Question("prueba-invierno-2026", "Q31", Axis.ALG, Skill.MOD, 0.55),
     Question("prueba-invierno-2026", "Q23", Axis.NUM, Skill.ARG, 0.45),
     Question("seleccion-regular-2025", "Q15", Axis.NUM, Skill.ARG, 0.55),
-    Question("Prueba-invierno-2025", "Q46", Axis.GEO, Skill.ARG, 0.45),
+    Question("prueba-invierno-2025", "Q46", Axis.GEO, Skill.ARG, 0.45),
     Question("prueba-invierno-2026", "Q45", Axis.GEO, Skill.ARG, 0.55),
     Question("prueba-invierno-2026", "Q58", Axis.PROB, Skill.REP, 0.45),
     Question("seleccion-regular-2026", "Q60", Axis.PROB, Skill.RES, 0.45),
@@ -71,11 +71,11 @@ R1_QUESTIONS: List[Question] = [
 # Optimizado para máxima cobertura de átomos (v2.0 - 2026-01-09)
 # =============================================================================
 A2_QUESTIONS: List[Question] = [
-    Question("Prueba-invierno-2025", "Q40", Axis.ALG, Skill.RES, 0.25),
+    Question("prueba-invierno-2025", "Q40", Axis.ALG, Skill.RES, 0.25),
     Question("seleccion-regular-2026", "Q35", Axis.ALG, Skill.MOD, 0.25),
     Question("prueba-invierno-2026", "Q40", Axis.ALG, Skill.RES, 0.25),
     Question("seleccion-regular-2025", "Q10", Axis.NUM, Skill.RES, 0.30),
-    Question("Prueba-invierno-2025", "Q6", Axis.NUM, Skill.RES, 0.30),
+    Question("prueba-invierno-2025", "Q6", Axis.NUM, Skill.RES, 0.30),
     Question("seleccion-regular-2025", "Q63", Axis.GEO, Skill.REP, 0.30),
     Question("prueba-invierno-2026", "Q64", Axis.PROB, Skill.ARG, 0.35),
     Question("seleccion-regular-2025", "Q54", Axis.PROB, Skill.RES, 0.25),
@@ -91,10 +91,10 @@ B2_QUESTIONS: List[Question] = [
     Question("seleccion-regular-2025", "Q38", Axis.ALG, Skill.RES, 0.55),
     Question("seleccion-regular-2025", "Q36", Axis.ALG, Skill.MOD, 0.55),
     Question("seleccion-regular-2025", "Q3", Axis.NUM, Skill.ARG, 0.55),
-    Question("Prueba-invierno-2025", "Q22", Axis.NUM, Skill.MOD, 0.45),
+    Question("prueba-invierno-2025", "Q22", Axis.NUM, Skill.MOD, 0.45),
     Question("seleccion-regular-2025", "Q60", Axis.GEO, Skill.RES, 0.45),
     Question("seleccion-regular-2025", "Q55", Axis.PROB, Skill.RES, 0.55),
-    Question("Prueba-invierno-2025", "Q65", Axis.PROB, Skill.REP, 0.45),
+    Question("prueba-invierno-2025", "Q65", Axis.PROB, Skill.REP, 0.45),
 ]
 
 # =============================================================================
@@ -105,11 +105,11 @@ B2_QUESTIONS: List[Question] = [
 C2_QUESTIONS: List[Question] = [
     Question("seleccion-regular-2026", "Q59", Axis.ALG, Skill.RES, 0.60),
     Question("seleccion-regular-2026", "Q11", Axis.ALG, Skill.MOD, 0.55),
-    Question("Prueba-invierno-2025", "Q33", Axis.ALG, Skill.MOD, 0.60),
-    Question("Prueba-invierno-2025", "Q56", Axis.NUM, Skill.ARG, 0.65),
+    Question("prueba-invierno-2025", "Q33", Axis.ALG, Skill.MOD, 0.60),
+    Question("prueba-invierno-2025", "Q56", Axis.NUM, Skill.ARG, 0.65),
     Question("seleccion-regular-2026", "Q23", Axis.NUM, Skill.RES, 0.55),
-    Question("Prueba-invierno-2025", "Q50", Axis.GEO, Skill.REP, 0.55),
-    Question("Prueba-invierno-2025", "Q61", Axis.PROB, Skill.ARG, 0.65),
+    Question("prueba-invierno-2025", "Q50", Axis.GEO, Skill.REP, 0.55),
+    Question("prueba-invierno-2025", "Q61", Axis.PROB, Skill.ARG, 0.65),
     Question("prueba-invierno-2026", "Q60", Axis.PROB, Skill.ARG, 0.55),
 ]
 
