@@ -6,7 +6,7 @@ This document outlines the course-centric frontend architecture.
 
 ## Implementation Status (Updated 2026-02-03)
 
-### All Frontend Phases Complete ✅
+### All Phases Complete ✅
 
 | Phase | Description | Status |
 |-------|-------------|--------|
@@ -16,6 +16,7 @@ This document outlines the course-centric frontend architecture.
 | Phase 4 | New Course Pages (`/standards`, `/tests`, `/settings`) | ✅ Done |
 | Phase 5 | Generation Buttons Functional (with cost modal, progress, toasts) | ✅ Done |
 | Phase 6 | Dynamic Sidebar (context-aware navigation) | ✅ Done |
+| Phase 7 | Course-scoped Sync (Settings page with full sync flow) | ✅ Done |
 | Cleanup | Remove dead code (legacy components, unused API functions) | ✅ Done |
 
 ### Current State
@@ -27,20 +28,21 @@ This document outlines the course-centric frontend architecture.
 - Generation triggers `GeneratePipelineModal` with cost estimation, confirmation, progress
 - Toast notifications on success/failure, data auto-refreshes
 - New pages: Standards list, Tests list, Settings
-- Legacy code removed: `JobsTable`, `PipelineForm`, `JobStatusBadge`, unused API functions
+- Settings page has full sync flow: preview → confirm → execute
+- Legacy code removed: `JobsTable`, `PipelineForm`, `JobStatusBadge`, unused global sync functions
 
-**Backend (no changes needed):**
+**Backend (complete):**
 - API uses `/api/subjects/` endpoints (works fine, just internal naming)
 - Pipeline API works for generation
-- Sync API is global but works since there's only one course currently
+- Course-scoped sync endpoints: `POST /api/subjects/{subject_id}/sync/preview` and `/execute`
+- Extractors accept `subject_id` to scope data to specific course
 
-### Remaining Work (Optional Backend Enhancements)
+### Optional Future Enhancements
 
 | Task | Description | Priority |
 |------|-------------|----------|
-| Wire up Settings sync | Use existing `/api/sync/*` endpoints from Settings page | Medium |
-| Course-scoped sync endpoint | `POST /api/courses/{course_id}/sync` (cleaner API) | Low |
 | Auto-upload images during QTI | Upload to S3 during generation, not as separate step | Low |
+| Rename API routes | `/api/subjects/` → `/api/courses/` for consistency | Low |
 
 ---
 
@@ -171,8 +173,14 @@ Shows current sync state:
 
 ### Course Settings (`/courses/[courseId]/settings`)
 
-- Sync status and controls
-- Course configuration
+- Configuration status: Database and S3 connection status
+- Course-scoped sync with full flow:
+  1. Select entities to sync (standards, atoms, tests, questions)
+  2. Options: include variants, upload images to S3
+  3. Preview what will be synced (dry run)
+  4. Confirm and execute sync
+  5. Show results (rows affected per table)
+- Course information display
 
 ---
 

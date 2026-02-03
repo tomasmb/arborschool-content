@@ -185,19 +185,24 @@ export async function getJobLogs(
 }
 
 // -----------------------------------------------------------------------------
-// Sync API
+// Sync API (Global - deprecated, use course-scoped sync instead)
 // -----------------------------------------------------------------------------
 
 export async function getSyncStatus(): Promise<SyncStatus> {
   return fetchAPI<SyncStatus>("/sync/status");
 }
 
-export async function previewSync(
+// -----------------------------------------------------------------------------
+// Course-scoped Sync API
+// -----------------------------------------------------------------------------
+
+export async function previewCourseSync(
+  courseId: string,
   entities: string[],
   includeVariants: boolean,
   uploadImages: boolean
 ): Promise<SyncPreviewResponse> {
-  return fetchAPI<SyncPreviewResponse>("/sync/preview", {
+  return fetchAPI<SyncPreviewResponse>(`/subjects/${courseId}/sync/preview`, {
     method: "POST",
     body: JSON.stringify({
       entities,
@@ -207,13 +212,14 @@ export async function previewSync(
   });
 }
 
-export async function executeSync(
+export async function executeCourseSync(
+  courseId: string,
   entities: string[],
   includeVariants: boolean,
   uploadImages: boolean,
   confirm: boolean
 ): Promise<SyncExecuteResponse> {
-  return fetchAPI<SyncExecuteResponse>("/sync/execute", {
+  return fetchAPI<SyncExecuteResponse>(`/subjects/${courseId}/sync/execute`, {
     method: "POST",
     body: JSON.stringify({
       entities,

@@ -1,6 +1,7 @@
 """Sync router for database synchronization.
 
-Provides endpoints to preview and execute syncs to the production database.
+Provides global endpoints to preview and execute syncs to the production database.
+Course-scoped sync endpoints are in api/routers/course_sync.py.
 """
 
 from __future__ import annotations
@@ -12,6 +13,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
 
+from api.config import SUBJECTS_CONFIG
 from api.schemas.api_models import (
     SyncExecuteRequest,
     SyncExecuteResponse,
@@ -19,6 +21,7 @@ from api.schemas.api_models import (
     SyncPreviewResponse,
     SyncTableSummary,
 )
+from app.utils.paths import ATOMS_DIR, STANDARDS_DIR
 
 # Load environment variables for database config
 REPO_ROOT = Path(__file__).parent.parent.parent
@@ -34,10 +37,30 @@ def _check_db_config() -> bool:
     return bool(os.getenv("HOST"))
 
 
+def _get_subject_files(subject_id: str) -> tuple[Path | None, Path | None]:
+    """Get the standards and atoms file paths for a subject.
+
+    Args:
+        subject_id: Subject identifier (e.g., "paes-m1-2026")
+
+    Returns:
+        Tuple of (standards_file, atoms_file) paths, or None if not configured
+    """
+    config = SUBJECTS_CONFIG.get(subject_id)
+    if not config:
+        return None, None
+
+    standards_file = STANDARDS_DIR / config.get("standards_file", "")
+    atoms_file = ATOMS_DIR / config.get("atoms_file", "")
+
+    return standards_file, atoms_file
+
+
 def _extract_data(
     entities: list[str],
     include_variants: bool,
     include_diagnostic_variants: bool = True,
+    subject_id: str | None = None,
 ) -> dict:
     """Extract data from content repo based on requested entities.
 
@@ -45,6 +68,8 @@ def _extract_data(
         entities: List of entity types to extract
         include_variants: Whether to include variants
         include_diagnostic_variants: Whether to include diagnostic test variants
+        subject_id: Optional subject ID to scope extraction. If provided, only
+            data for that subject is extracted.
 
     Returns:
         Dict with extracted data for each entity type
@@ -65,6 +90,11 @@ def _extract_data(
         "variants": [],
     }
 
+    # Get subject-specific file paths if subject_id provided
+    standards_file, atoms_file = None, None
+    if subject_id:
+        standards_file, atoms_file = _get_subject_files(subject_id)
+
     # Determine what to extract based on entities list
     sync_standards = "standards" in entities
     sync_atoms = "atoms" in entities
@@ -73,10 +103,10 @@ def _extract_data(
     sync_variants = include_variants or "variants" in entities
 
     if sync_standards:
-        result["standards"] = extract_standards()
+        result["standards"] = extract_standards(standards_file)
 
     if sync_atoms:
-        result["atoms"] = extract_atoms()
+        result["atoms"] = extract_atoms(atoms_file)
 
     if sync_tests or sync_questions:
         tests, questions = extract_all_tests()
@@ -94,9 +124,29 @@ def _extract_data(
     return result
 
 
-def _build_payload(extracted_data: dict):
-    """Build sync payload from extracted data."""
+def _api_to_db_subject_id(api_subject_id: str) -> str:
+    """Convert API subject ID to database subject ID.
+
+    API uses "paes-m1-2026" format, DB uses "paes_m1" format.
+    """
+    # Map API IDs to DB IDs
+    mapping = {
+        "paes-m1-2026": "paes_m1",
+    }
+    return mapping.get(api_subject_id, api_subject_id.replace("-", "_").rsplit("_", 1)[0])
+
+
+def _build_payload(extracted_data: dict, subject_id: str | None = None):
+    """Build sync payload from extracted data.
+
+    Args:
+        extracted_data: Dict with extracted data
+        subject_id: Optional API subject ID (e.g., "paes-m1-2026")
+    """
     from app.sync.transformers import build_sync_payload
+
+    # Convert API subject_id to DB format
+    db_subject_id = _api_to_db_subject_id(subject_id) if subject_id else "paes_m1"
 
     return build_sync_payload(
         standards=extracted_data["standards"],
@@ -104,6 +154,7 @@ def _build_payload(extracted_data: dict):
         tests=extracted_data["tests"],
         questions=extracted_data["questions"],
         variants=extracted_data["variants"] if extracted_data["variants"] else None,
+        subject_id=db_subject_id,
     )
 
 
