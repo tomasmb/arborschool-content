@@ -5,11 +5,14 @@ Usage:
     # Dry run (see what would change)
     python -m app.sync.scripts.sync_to_db --dry-run
 
-    # Sync everything
-    python -m app.sync.scripts.sync_to_db
+    # Sync everything (including variants)
+    python -m app.sync.scripts.sync_to_db --include-variants
 
     # Sync specific entities
     python -m app.sync.scripts.sync_to_db --only atoms standards
+
+    # Sync questions with variants
+    python -m app.sync.scripts.sync_to_db --only questions --include-variants
 
     # With S3 image upload
     python -m app.sync.scripts.sync_to_db --upload-images
@@ -40,6 +43,7 @@ from app.sync.extractors import (
     extract_atoms,
     extract_standards,
 )
+from app.sync.variant_extractors import extract_variants
 from app.sync.s3_client import ImageUploader, S3Config, process_all_questions_images
 from app.sync.transformers import (
     build_sync_payload,
@@ -80,8 +84,14 @@ Examples:
     parser.add_argument(
         "--only",
         nargs="+",
-        choices=["atoms", "standards", "questions", "tests"],
+        choices=["atoms", "standards", "questions", "tests", "variants"],
         help="Only sync specific entity types",
+    )
+
+    parser.add_argument(
+        "--include-variants",
+        action="store_true",
+        help="Include question variants (alternate versions) from alternativas/",
     )
 
     parser.add_argument(
@@ -109,6 +119,7 @@ def main() -> int:
     sync_standards = args.only is None or "standards" in args.only
     sync_questions = args.only is None or "questions" in args.only
     sync_tests = args.only is None or "tests" in args.only
+    sync_variants = args.include_variants or (args.only is not None and "variants" in args.only)
 
     print("=" * 60)
     print("Content Repo → Database Sync")
@@ -126,6 +137,7 @@ def main() -> int:
     extracted_atoms = []
     extracted_tests = []
     extracted_questions = []
+    extracted_variants = []
 
     if sync_standards:
         extracted_standards = extract_standards()
@@ -139,6 +151,10 @@ def main() -> int:
         extracted_tests, extracted_questions = extract_all_tests()
         print(f"   ✓ Tests: {len(extracted_tests)}")
         print(f"   ✓ Questions: {len(extracted_questions)}")
+
+    if sync_variants:
+        extracted_variants = extract_variants()
+        print(f"   ✓ Variants: {len(extracted_variants)}")
 
     # -------------------------------------------------------------------------
     # Process images (if requested)
@@ -180,20 +196,25 @@ def main() -> int:
         extracted_tests = []
     if not sync_questions:
         extracted_questions = []
+    if not sync_variants:
+        extracted_variants = []
 
     payload = build_sync_payload(
         standards=extracted_standards,
         atoms=extracted_atoms,
         tests=extracted_tests,
         questions=extracted_questions,
+        variants=extracted_variants if extracted_variants else None,
     )
 
     summary = payload.summary()
+    official_count = len(extracted_questions)
+    variant_count = len(extracted_variants)
     print(f"   ✓ Subjects: {summary['subjects']}")
     print(f"   ✓ Standards: {summary['standards']}")
     print(f"   ✓ Atoms: {summary['atoms']}")
     print(f"   ✓ Tests: {summary['tests']}")
-    print(f"   ✓ Questions: {summary['questions']}")
+    print(f"   ✓ Questions: {summary['questions']} ({official_count} official + {variant_count} variants)")
     print(f"   ✓ Question-Atom links: {summary['question_atoms']}")
     print(f"   ✓ Test-Question links: {summary['test_questions']}")
 

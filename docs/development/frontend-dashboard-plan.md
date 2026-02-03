@@ -106,7 +106,7 @@ Status is derived from **file existence** (no separate state DB needed).
 
 | Gap | Description | Status |
 |-----|-------------|--------|
-| **Variant Sync** | `app/sync/extractors.py` only extracts from `finalizadas/`, not `alternativas/`. Variants exist but are never synced to DB. | **Needs implementation** |
+| **Variant Sync** | `app/sync/extractors.py` only extracts from `finalizadas/`, not `alternativas/`. Variants exist but are never synced to DB. | ✅ **Implemented** (use `--include-variants` flag) |
 | **Question Sets** | No generation pipeline exists yet. | Future |
 | **Lessons** | No generation pipeline exists yet. | Future |
 
@@ -830,45 +830,29 @@ arborschool-content/
 
 Before the frontend can fully function, these backend gaps need to be addressed:
 
-### 9.1 Variant Extraction & Sync (HIGH PRIORITY)
+### 9.1 Variant Extraction & Sync ✅ IMPLEMENTED
 
 **Problem:** Variants are generated to `alternativas/` but never synced to DB.
 
-**Current state:**
-- `app/sync/extractors.py` only reads `finalizadas/`
-- DB schema supports `source: "alternate"` and `parent_question_id`
-- Variants exist with proper metadata (`variant_info.json`, `metadata_tags.json`)
+**Solution implemented (2026-02-03):**
 
-**Required changes to `app/sync/extractors.py`:**
+- `app/sync/extractors.py`: Added `ExtractedVariant` dataclass and `extract_variants()` function
+- `app/sync/transformers.py`: Added `transform_variant()` function, updated `build_sync_payload()`
+- `app/sync/scripts/sync_to_db.py`: Added `--include-variants` flag
 
-```python
-@dataclass
-class ExtractedVariant:
-    """Variant question extracted from alternativas/."""
-    id: str                    # e.g., "alt-prueba-invierno-2025-Q1-001"
-    parent_question_id: str    # e.g., "prueba-invierno-2025-Q1"
-    test_id: str               # Source test
-    qti_xml: str
-    correct_answer: str
-    atoms: list[dict]          # Inherited from parent
-    difficulty_level: str
-    # ... other fields from metadata_tags.json
+**Usage:**
+```bash
+# Sync with variants
+python -m app.sync.scripts.sync_to_db --include-variants
 
-def extract_variants(alternativas_dir: Path | None = None) -> list[ExtractedVariant]:
-    """Extract all approved variants from alternativas/."""
-    # Walk alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/
-    # Read question.xml, variant_info.json, metadata_tags.json
-    # Return list of ExtractedVariant
+# Dry run first
+python -m app.sync.scripts.sync_to_db --include-variants --dry-run
+
+# Sync only variants
+python -m app.sync.scripts.sync_to_db --only variants
 ```
 
-**Required changes to `app/sync/transformers.py`:**
-- Transform `ExtractedVariant` → `QuestionRow` with:
-  - `source = QuestionSource.ALTERNATE`
-  - `parent_question_id` set to the official question ID
-
-**Required changes to `app/sync/scripts/sync_to_db.py`:**
-- Add `--include-variants` flag (or sync by default)
-- Call `extract_variants()` and include in payload
+**Variant ID format:** `alt-{test_id}-Q{n}-{seq:03d}` (e.g., `alt-prueba-invierno-2025-Q1-001`)
 
 ### 9.2 Question Sets Pipeline (FUTURE)
 
@@ -889,42 +873,43 @@ def extract_variants(alternativas_dir: Path | None = None) -> list[ExtractedVari
 
 ## 10. Implementation Phases
 
-### Phase 0: Backend Prerequisites
-- [ ] Implement `extract_variants()` in `app/sync/extractors.py`
-- [ ] Update `transformers.py` to handle variants with `parent_question_id`
-- [ ] Update sync script to include variants
+### Phase 0: Backend Prerequisites ✅ COMPLETE
+- [x] Implement `extract_variants()` in `app/sync/extractors.py`
+- [x] Update `transformers.py` to handle variants with `parent_question_id`
+- [x] Update sync script to include variants (`--include-variants` flag)
 - [ ] Test variant sync with dry-run
 
-### Phase 1: Foundation (API + Scaffold)
-- [ ] FastAPI skeleton with config
-- [ ] `GET /api/overview` - basic stats from files
-- [ ] `GET /api/subjects/{id}` - read temario/standards/atoms
-- [ ] Next.js scaffold with routing
-- [ ] Basic layout (sidebar, header)
-- [ ] Home page with subject cards
+### Phase 1: Foundation (API + Scaffold) ✅ COMPLETE
+- [x] FastAPI skeleton with config (`api/`)
+- [x] `GET /api/overview` - basic stats from files
+- [x] `GET /api/subjects/{id}` - read temario/standards/atoms
+- [x] Next.js scaffold with routing (`frontend/`)
+- [x] Basic layout (sidebar, header)
+- [x] Home page with subject cards
 
-### Phase 2: Content Browsing
-- [ ] Subject detail page
-- [ ] Standards list view
-- [ ] Atoms list view with filters
-- [ ] Tests table with status columns
-- [ ] Question detail slide-over
+### Phase 2: Content Browsing ✅ MOSTLY COMPLETE
+- [x] Subject detail page
+- [x] Standards list view (embedded in subject detail)
+- [x] Atoms list view with filters
+- [x] Tests table with status columns
+- [ ] Question detail slide-over (placeholder only)
 
 ### Phase 3: Knowledge Graph
-- [ ] React Flow integration
-- [ ] Graph data endpoint
+- [ ] React Flow integration (endpoint exists: `GET /api/subjects/{id}/atoms/graph`)
+- [x] Graph data endpoint
 - [ ] Node styling by type
 - [ ] Stats panel
 - [ ] Modal/drawer wrapper
 
 ### Phase 4: Pipeline Runner
-- [ ] Pipeline forms for each type
+- [x] Pipeline forms UI (placeholder)
 - [ ] Cost estimation service
 - [ ] Confirmation modals
 - [ ] Job execution (subprocess)
 - [ ] Status polling + refresh button
 
 ### Phase 5: Sync & Polish
+- [x] Sync page UI (placeholder)
 - [ ] Sync preview endpoint
 - [ ] Sync execution with confirmation
 - [ ] Risk warning modals
@@ -999,7 +984,26 @@ def extract_variants(alternativas_dir: Path | None = None) -> list[ExtractedVari
 ## 14. Next Steps
 
 1. ~~Review this plan, answer open questions~~ ✓ Done
-2. **Phase 0**: Implement variant sync backend
-3. Create `api/` folder with FastAPI skeleton
-4. Create `frontend/` folder with Next.js scaffold
-5. Implement Phase 1 (foundation)
+2. ~~**Phase 0**: Implement variant sync backend~~ ✓ Done (2026-02-03)
+3. ~~Create `api/` folder with FastAPI skeleton~~ ✓ Done (2026-02-03)
+4. ~~Create `frontend/` folder with Next.js scaffold~~ ✓ Done (2026-02-03)
+5. ~~Implement Phase 1 (foundation)~~ ✓ Done (2026-02-03)
+6. Test the dashboard locally (see instructions below)
+7. Complete Phase 3: Wire up React Flow for knowledge graph
+8. Complete Phase 4: Implement pipeline execution backend
+9. Complete Phase 5: Implement sync endpoints
+
+### Running the Dashboard
+
+```bash
+# Terminal 1: Start FastAPI backend
+pip install -e ".[dashboard]"
+uvicorn api.main:app --reload --port 8000
+
+# Terminal 2: Start Next.js frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000

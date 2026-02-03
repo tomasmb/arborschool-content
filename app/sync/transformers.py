@@ -6,7 +6,13 @@ English-named schema as defined in docs/data-model-specification.md.
 
 from __future__ import annotations
 
-from .extractors import ExtractedAtom, ExtractedQuestion, ExtractedStandard, ExtractedTest
+from .extractors import (
+    ExtractedAtom,
+    ExtractedQuestion,
+    ExtractedStandard,
+    ExtractedTest,
+)
+from .variant_extractors import ExtractedVariant
 from .models import (
     AtomRelevance,
     AtomRow,
@@ -224,11 +230,72 @@ def transform_test(
     return test_row, test_questions
 
 
+def transform_variant(
+    extracted: ExtractedVariant,
+) -> tuple[QuestionRow, list[QuestionAtomRow]]:
+    """Transform an extracted variant to database rows.
+
+    Variants are stored as questions with source=ALTERNATE and parent_question_id set.
+    They inherit atom tags from metadata_tags.json (which may be inherited or modified
+    from the parent question).
+
+    Args:
+        extracted: ExtractedVariant from alternativas/
+
+    Returns:
+        Tuple of (QuestionRow, list of QuestionAtomRow)
+    """
+    # Parse difficulty level
+    difficulty = DIFFICULTY_MAP.get(
+        extracted.difficulty_level or "medium", DifficultyLevel.MEDIUM
+    )
+
+    question_row = QuestionRow(
+        id=extracted.id,
+        source=QuestionSource.ALTERNATE,
+        parent_question_id=extracted.parent_question_id,
+        qti_xml=extracted.qti_xml,
+        correct_answer=extracted.correct_answer,
+        difficulty_level=difficulty,
+        title=f"Variant of Q{extracted.source_question_number}",
+        difficulty_score=extracted.difficulty_score,
+        difficulty_analysis=extracted.difficulty_analysis,
+        general_analysis=extracted.general_analysis,
+        feedback_general=extracted.feedback_general,
+        feedback_per_option=extracted.feedback_per_option,
+        source_test_id=extracted.source_test_id,
+        source_question_number=extracted.source_question_number,
+    )
+
+    # Create question-atom relationships (inherited from parent or modified)
+    question_atoms: list[QuestionAtomRow] = []
+    for atom_data in extracted.atoms:
+        if not atom_data.get("atom_id"):
+            continue
+
+        relevance_str = atom_data.get("relevance", "primary").lower()
+        relevance = (
+            AtomRelevance.PRIMARY if relevance_str == "primary" else AtomRelevance.SECONDARY
+        )
+
+        question_atoms.append(
+            QuestionAtomRow(
+                question_id=extracted.id,
+                atom_id=atom_data["atom_id"],
+                relevance=relevance,
+                reasoning=atom_data.get("reasoning"),
+            )
+        )
+
+    return question_row, question_atoms
+
+
 def build_sync_payload(
     standards: list[ExtractedStandard],
     atoms: list[ExtractedAtom],
     tests: list[ExtractedTest],
     questions: list[ExtractedQuestion],
+    variants: list[ExtractedVariant] | None = None,
     subject_id: str = "paes_m1",
 ) -> SyncPayload:
     """Build a complete sync payload from all extracted data.
@@ -238,6 +305,7 @@ def build_sync_payload(
         atoms: List of extracted atoms
         tests: List of extracted tests
         questions: List of extracted questions
+        variants: List of extracted variants (optional)
         subject_id: Subject identifier
 
     Returns:
@@ -261,6 +329,13 @@ def build_sync_payload(
         q_row, q_atoms = transform_question(q)
         payload.questions.append(q_row)
         payload.question_atoms.extend(q_atoms)
+
+    # Transform variants (alternate questions)
+    if variants:
+        for v in variants:
+            v_row, v_atoms = transform_variant(v)
+            payload.questions.append(v_row)
+            payload.question_atoms.extend(v_atoms)
 
     # Transform tests and their question relationships
     for test in tests:
