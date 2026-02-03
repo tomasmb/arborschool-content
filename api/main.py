@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import get_settings
-from api.routers import overview, subjects
+from api.routers import overview, pipelines, subjects
 
 settings = get_settings()
 
@@ -35,6 +35,7 @@ app.add_middleware(
 # Include routers
 app.include_router(overview.router, prefix="/api", tags=["Overview"])
 app.include_router(subjects.router, prefix="/api/subjects", tags=["Subjects"])
+app.include_router(pipelines.router, prefix="/api/pipelines", tags=["Pipelines"])
 
 
 @app.get("/api/health")

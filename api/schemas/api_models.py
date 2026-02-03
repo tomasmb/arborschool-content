@@ -189,3 +189,87 @@ class GraphData(BaseModel):
     nodes: list[GraphNode]
     edges: list[GraphEdge]
     stats: dict = Field(default_factory=dict)
+
+
+# -----------------------------------------------------------------------------
+# Pipeline models
+# -----------------------------------------------------------------------------
+
+
+class PipelineDefinition(BaseModel):
+    """Definition of an available pipeline."""
+
+    id: str
+    name: str
+    description: str
+    has_ai_cost: bool = True
+    requires: list[str] = Field(default_factory=list, description="Prerequisites")
+    produces: str = Field(description="What this pipeline outputs")
+
+
+class PipelineParam(BaseModel):
+    """A parameter for a pipeline."""
+
+    name: str
+    type: str = Field(description="string | number | boolean | select")
+    label: str
+    required: bool = True
+    default: str | int | bool | None = None
+    options: list[str] | None = Field(None, description="For select type")
+    description: str | None = None
+
+
+class CostEstimate(BaseModel):
+    """Estimated cost for running a pipeline."""
+
+    pipeline_id: str
+    model: str
+    input_tokens: int
+    output_tokens: int
+    estimated_cost_min: float = Field(description="Lower bound estimate in USD")
+    estimated_cost_max: float = Field(description="Upper bound estimate in USD")
+    breakdown: dict = Field(default_factory=dict, description="Per-item breakdown")
+
+
+class JobStatus(BaseModel):
+    """Status of a pipeline job."""
+
+    job_id: str
+    pipeline_id: str
+    status: str = Field(description="pending | running | completed | failed | cancelled")
+    params: dict = Field(default_factory=dict)
+    started_at: str | None = None
+    completed_at: str | None = None
+    # Progress tracking
+    total_items: int = 0
+    completed_items: int = 0
+    failed_items: int = 0
+    current_item: str | None = Field(None, description="Currently processing item")
+    # Results
+    error: str | None = None
+    cost_actual: float | None = Field(None, description="Actual cost incurred")
+    logs: list[str] = Field(default_factory=list)
+
+
+class JobListResponse(BaseModel):
+    """Response for listing jobs."""
+
+    jobs: list[JobStatus]
+
+
+class RunPipelineRequest(BaseModel):
+    """Request to run a pipeline."""
+
+    pipeline_id: str
+    params: dict = Field(default_factory=dict)
+    confirmation_token: str | None = Field(
+        None, description="Token from cost estimate to confirm user saw the cost"
+    )
+
+
+class RunPipelineResponse(BaseModel):
+    """Response after starting a pipeline."""
+
+    job_id: str
+    status: str
+    message: str

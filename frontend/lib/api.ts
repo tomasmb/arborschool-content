@@ -177,3 +177,136 @@ export async function getTestDetail(
 ): Promise<TestDetail> {
   return fetchAPI<TestDetail>(`/subjects/${subjectId}/tests/${testId}`);
 }
+
+// -----------------------------------------------------------------------------
+// Pipeline types
+// -----------------------------------------------------------------------------
+
+export interface PipelineDefinition {
+  id: string;
+  name: string;
+  description: string;
+  has_ai_cost: boolean;
+  requires: string[];
+  produces: string;
+}
+
+export interface PipelineParam {
+  name: string;
+  type: "string" | "number" | "boolean" | "select";
+  label: string;
+  required: boolean;
+  default?: string | number | boolean | null;
+  options?: string[];
+  description?: string;
+}
+
+export interface CostEstimate {
+  pipeline_id: string;
+  model: string;
+  input_tokens: number;
+  output_tokens: number;
+  estimated_cost_min: number;
+  estimated_cost_max: number;
+  breakdown: Record<string, unknown>;
+}
+
+export interface JobStatus {
+  job_id: string;
+  pipeline_id: string;
+  status: "pending" | "running" | "completed" | "failed" | "cancelled";
+  params: Record<string, unknown>;
+  started_at: string | null;
+  completed_at: string | null;
+  total_items: number;
+  completed_items: number;
+  failed_items: number;
+  current_item: string | null;
+  error: string | null;
+  cost_actual: number | null;
+  logs: string[];
+}
+
+export interface JobListResponse {
+  jobs: JobStatus[];
+}
+
+// -----------------------------------------------------------------------------
+// Pipeline API functions
+// -----------------------------------------------------------------------------
+
+export async function getPipelines(): Promise<PipelineDefinition[]> {
+  return fetchAPI<PipelineDefinition[]>("/pipelines");
+}
+
+export async function getPipelineDetails(
+  pipelineId: string
+): Promise<{ pipeline: PipelineDefinition; params: PipelineParam[] }> {
+  return fetchAPI<{ pipeline: PipelineDefinition; params: PipelineParam[] }>(
+    `/pipelines/${pipelineId}`
+  );
+}
+
+export async function estimatePipelineCost(
+  pipelineId: string,
+  params: Record<string, unknown>
+): Promise<CostEstimate> {
+  return fetchAPI<CostEstimate>(
+    `/pipelines/estimate?pipeline_id=${encodeURIComponent(pipelineId)}`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export async function getConfirmationToken(
+  pipelineId: string,
+  params: Record<string, unknown>
+): Promise<{ confirmation_token: string }> {
+  return fetchAPI<{ confirmation_token: string }>(
+    `/pipelines/confirm?pipeline_id=${encodeURIComponent(pipelineId)}`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export async function runPipeline(
+  pipelineId: string,
+  params: Record<string, unknown>,
+  confirmationToken: string
+): Promise<{ job_id: string; status: string; message: string }> {
+  return fetchAPI<{ job_id: string; status: string; message: string }>(
+    "/pipelines/run",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        pipeline_id: pipelineId,
+        params,
+        confirmation_token: confirmationToken,
+      }),
+    }
+  );
+}
+
+export async function getJobs(limit = 20): Promise<JobListResponse> {
+  return fetchAPI<JobListResponse>(`/pipelines/jobs?limit=${limit}`);
+}
+
+export async function getJob(jobId: string): Promise<JobStatus> {
+  return fetchAPI<JobStatus>(`/pipelines/jobs/${jobId}`);
+}
+
+export async function cancelJob(jobId: string): Promise<JobStatus> {
+  return fetchAPI<JobStatus>(`/pipelines/jobs/${jobId}/cancel`, {
+    method: "POST",
+  });
+}
+
+export async function deleteJob(jobId: string): Promise<{ message: string }> {
+  return fetchAPI<{ message: string }>(`/pipelines/jobs/${jobId}`, {
+    method: "DELETE",
+  });
+}

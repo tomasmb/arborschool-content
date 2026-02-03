@@ -902,11 +902,43 @@ python -m app.sync.scripts.sync_to_db --only variants
 - [x] Modal/drawer wrapper (full-screen modal with escape key support)
 
 ### Phase 4: Pipeline Runner
-- [x] Pipeline forms UI (placeholder)
-- [ ] Cost estimation service
-- [ ] Confirmation modals
-- [ ] Job execution (subprocess)
-- [ ] Status polling + refresh button
+
+**4.1 Backend - API Endpoints** ✅ COMPLETE (2026-02-03)
+- [x] Add `PipelineJob`, `CostEstimate`, etc. models to `api/schemas/api_models.py`
+- [x] Create `api/services/cost_estimator.py` - estimate token usage & cost per pipeline
+- [x] Create `api/services/pipeline_runner.py` - execute pipelines via subprocess, track jobs
+- [x] Create `api/routers/pipelines.py`:
+  - [x] `GET /api/pipelines` - list available pipelines
+  - [x] `GET /api/pipelines/{pipeline_id}` - get pipeline details and params
+  - [x] `POST /api/pipelines/estimate` - estimate cost before running
+  - [x] `POST /api/pipelines/confirm` - get confirmation token after cost review
+  - [x] `POST /api/pipelines/run` - start a pipeline job
+  - [x] `GET /api/pipelines/jobs` - list recent jobs
+  - [x] `GET /api/pipelines/jobs/{job_id}` - get job status/progress
+  - [x] `POST /api/pipelines/jobs/{job_id}/cancel` - cancel running job
+  - [x] `DELETE /api/pipelines/jobs/{job_id}` - delete completed job record
+- [x] Register pipelines router in `api/main.py`
+
+**4.2 Frontend - Functional Pipeline UI** ✅ COMPLETE (2026-02-03)
+- [x] Pipeline cards (fetched from API)
+- [x] Pipeline config form (dynamic per pipeline type)
+- [x] Cost estimation display (calls `/api/pipelines/estimate`)
+- [x] Confirmation modal with cost warning
+- [x] Job execution + progress polling (5s interval)
+- [x] Recent runs table with status badges
+- [ ] Resume/retry failed jobs UI (future enhancement)
+
+### Phase 4 Status: ✅ MOSTLY COMPLETE
+The pipeline runner is now functional. You can:
+- View available pipelines from the API
+- Configure pipeline parameters via dynamic forms
+- Get cost estimates before running
+- Start pipeline jobs with confirmation
+- Monitor job status with auto-refresh
+
+Remaining for Phase 4:
+- Resume/retry failed jobs UI
+- Job logs viewer
 
 ### Phase 5: Sync & Polish
 - [x] Sync page UI (placeholder)
@@ -990,8 +1022,13 @@ python -m app.sync.scripts.sync_to_db --only variants
 5. ~~Implement Phase 1 (foundation)~~ ✓ Done (2026-02-03)
 6. Test the dashboard locally (see instructions below)
 7. ~~Complete Phase 3: Wire up React Flow for knowledge graph~~ ✓ Done (2026-02-03)
-8. Complete Phase 4: Implement pipeline execution backend
-9. Complete Phase 5: Implement sync endpoints
+8. ~~Complete Phase 4: Implement pipeline execution backend~~ ✓ Done (2026-02-03)
+   - API endpoints for pipelines, cost estimation, job management
+   - Frontend pipeline runner with dynamic forms and cost confirmation
+9. **Next**: Complete Phase 5 - Implement sync endpoints
+   - `POST /api/sync/preview` - preview changes before syncing
+   - `POST /api/sync/execute` - execute sync with confirmation
+   - Update frontend sync page to call these endpoints
 
 ### Running the Dashboard
 
