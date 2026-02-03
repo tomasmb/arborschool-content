@@ -6,6 +6,8 @@ Endpoints:
     GET /api/subjects/{subject_id}/atoms - Atoms list with filters
     GET /api/subjects/{subject_id}/atoms/{atom_id} - Single atom detail
     GET /api/subjects/{subject_id}/atoms/graph - Knowledge graph data
+    GET /api/subjects/{subject_id}/atoms/unlock-status - Unlock status for Q Sets/Lessons
+    GET /api/subjects/{subject_id}/temario - Temario JSON content
     GET /api/subjects/{subject_id}/tests - Tests list
     GET /api/subjects/{subject_id}/tests/{test_id} - Test detail with questions
 
@@ -14,6 +16,7 @@ Note: Question detail endpoint is in questions.py
 
 from __future__ import annotations
 
+import json
 import re
 
 from fastapi import APIRouter, HTTPException, Query
@@ -30,8 +33,10 @@ from api.schemas.api_models import (
     SubjectDetail,
     TestBrief,
     TestDetail,
+    UnlockStatus,
 )
 from api.services.status_tracker import StatusTracker
+from app.utils.paths import TEMARIOS_JSON_DIR
 
 router = APIRouter()
 
@@ -70,7 +75,6 @@ async def get_subject(subject_id: str) -> SubjectDetail:
         # Parse year and type from test name
         admission_year = None
         application_type = None
-        import re
         year_match = re.search(r"(\d{4})", test_id)
         if year_match:
             admission_year = int(year_match.group(1))
@@ -278,7 +282,6 @@ async def get_tests(subject_id: str) -> list[TestBrief]:
         status = tracker.get_test_status(test_id)
 
         # Parse year and type
-        import re
         admission_year = None
         application_type = None
         year_match = re.search(r"(\d{4})", test_id)
@@ -347,4 +350,78 @@ async def get_test_detail(subject_id: str, test_id: str) -> TestDetail:
         tagged_count=status["tagged_count"],
         variants_count=status["variants_count"],
         questions=questions,
+    )
+
+
+@router.get("/{subject_id}/temario")
+async def get_temario(subject_id: str) -> dict:
+    """Get the temario JSON content for a subject.
+
+    Returns the full temario data including ejes, unidades, and contenidos.
+    """
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    config = SUBJECTS_CONFIG[subject_id]
+    temario_file = config.get("temario_file")
+
+    if not temario_file:
+        raise HTTPException(
+            status_code=404,
+            detail=f"No temario configured for subject '{subject_id}'"
+        )
+
+    temario_path = TEMARIOS_JSON_DIR / temario_file
+    if not temario_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"Temario file not found: {temario_file}"
+        )
+
+    with open(temario_path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+@router.get("/{subject_id}/atoms/unlock-status", response_model=UnlockStatus)
+async def get_atoms_unlock_status(subject_id: str) -> UnlockStatus:
+    """Get unlock status for Question Sets and Lessons generation.
+
+    Question Sets and Lessons can only be generated when ALL finalized
+    questions across ALL tests have been tagged with atoms.
+
+    Returns status showing tagging progress and whether generation is unlocked.
+    """
+    tracker = _get_tracker(subject_id)
+
+    # Count tagged vs total across all tests
+    total_tagged = 0
+    total_finalized = 0
+    tests_status: dict[str, dict] = {}
+
+    for test_dir in tracker.get_test_dirs():
+        test_id = test_dir.name
+        status = tracker.get_test_status(test_id)
+
+        tagged = status["tagged_count"]
+        finalized = status["finalized_count"]
+
+        total_tagged += tagged
+        total_finalized += finalized
+
+        tests_status[test_id] = {
+            "tagged": tagged,
+            "total": finalized,
+            "complete": tagged == finalized and finalized > 0,
+        }
+
+    # Calculate completion
+    completion = (total_tagged / total_finalized * 100) if total_finalized > 0 else 0
+    all_tagged = total_tagged == total_finalized and total_finalized > 0
+
+    return UnlockStatus(
+        all_questions_tagged=all_tagged,
+        tagged_count=total_tagged,
+        total_count=total_finalized,
+        completion_percentage=round(completion, 1),
+        tests_status=tests_status,
     )

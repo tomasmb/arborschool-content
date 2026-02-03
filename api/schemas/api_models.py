@@ -405,3 +405,30 @@ class SyncExecuteResponse(BaseModel):
     results: dict = Field(default_factory=dict, description="Rows affected per table")
     message: str
     errors: list[str] = Field(default_factory=list)
+
+
+# -----------------------------------------------------------------------------
+# Unlock status models
+# -----------------------------------------------------------------------------
+
+
+class UnlockStatus(BaseModel):
+    """Status of unlock conditions for question sets and lessons.
+
+    Question Sets and Lessons require all test questions to be tagged
+    before they can be generated for any atom.
+    """
+
+    all_questions_tagged: bool = Field(
+        description="Whether ALL finalized questions are tagged"
+    )
+    tagged_count: int = Field(description="Number of tagged questions")
+    total_count: int = Field(description="Total finalized questions")
+    completion_percentage: float = Field(
+        description="Percentage complete (0-100)"
+    )
+    # Per-test breakdown
+    tests_status: dict[str, dict] = Field(
+        default_factory=dict,
+        description="Tagging status per test: {test_id: {tagged, total}}"
+    )

@@ -944,7 +944,7 @@ The pipeline runner is now fully functional. You can:
 - [x] Sync execution with confirmation (`POST /api/sync/execute`)
 - [x] Risk warning modals (confirmation modal before sync)
 - [x] Database configuration status check
-- [x] S3 image upload integration (UI ready with checkbox, shows "(not configured)" warning)
+- [x] S3 image upload integration (fully wired - uploads images and updates QTI with S3 URLs)
 - [x] Responsive design (mobile sidebar, responsive tables, breakpoint-aware layouts)
 - [x] Error handling improvements (ErrorBoundary, LoadingSpinner, ErrorMessage components)
 
@@ -1004,12 +1004,15 @@ The pipeline runner is now fully functional. You can:
 
 ---
 
-## 13. Scope Questions
+## 13. Scope Questions (Resolved)
 
-1. **Diagnostic Tests** - There's a `app/data/diagnostico/variantes/` folder with diagnostic test variants in a different structure. Should these be included in the dashboard?
-   - They use `test_type: "diagnostic"` in DB
-   - Currently flat structure: `diagnostico/variantes/Q{n}_v{m}/`
-   - May need separate handling
+1. **Diagnostic Tests** - ✅ RESOLVED (2026-02-03)
+   - The `app/data/diagnostico/variantes/` folder contains variants for the MST diagnostic test
+   - These use a **flat structure**: `diagnostico/variantes/Q{n}_v{m}/` (no test_id or approved/ subdir)
+   - Each variant has `variant_info.json` with `source_test_id` and `source_question_id`
+   - **Decision**: Include diagnostic variants in sync. They are now extracted alongside regular variants.
+   - **ID format**: `diag-{source_test_id}-Q{n}-{seq:03d}` (e.g., `diag-prueba-invierno-2025-Q28-001`)
+   - Sync uses `extract_all_variants(include_diagnostic=True)` by default
 
 ---
 
@@ -1030,17 +1033,15 @@ The pipeline runner is now fully functional. You can:
    - `POST /api/sync/execute` - execute sync with confirmation
    - Frontend sync page with entity selection, preview, and confirmation modal
 10. ~~**Next**: Polish and remaining items~~ ✓ Done (2026-02-03)
-    - ~~Test S3 image upload integration~~ (UI ready, needs backend S3 client)
+    - ~~Test S3 image upload integration~~ ✅ Done (2026-02-03)
     - ~~Add question detail slide-over panel~~ ✓ Done
     - ~~Add job resume/retry UI for failed pipeline jobs~~ ✓ Done
     - ~~Responsive design tweaks~~ ✓ Done
     - ~~Error handling improvements~~ ✓ Done
 
-11. **Future enhancements**:
-    - S3 image upload backend implementation
-    - Diagnostic tests support (different folder structure)
-    - Question Sets pipeline UI (when backend ready)
-    - Lessons pipeline UI (when backend ready)
+11. **Future enhancements** (not blocking for current use):
+    - Question Sets pipeline backend + UI (generate ~60 practice questions per atom)
+    - Lessons pipeline backend + UI (generate micro-lessons per atom)
 
 ### Running the Dashboard
 

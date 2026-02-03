@@ -37,12 +37,14 @@ def _check_db_config() -> bool:
 def _extract_data(
     entities: list[str],
     include_variants: bool,
+    include_diagnostic_variants: bool = True,
 ) -> dict:
     """Extract data from content repo based on requested entities.
 
     Args:
         entities: List of entity types to extract
         include_variants: Whether to include variants
+        include_diagnostic_variants: Whether to include diagnostic test variants
 
     Returns:
         Dict with extracted data for each entity type
@@ -53,7 +55,7 @@ def _extract_data(
         extract_atoms,
         extract_standards,
     )
-    from app.sync.variant_extractors import extract_variants
+    from app.sync.variant_extractors import extract_all_variants
 
     result = {
         "standards": [],
@@ -84,7 +86,10 @@ def _extract_data(
             result["questions"] = questions
 
     if sync_variants:
-        result["variants"] = extract_variants()
+        # Extract both regular and diagnostic variants
+        result["variants"] = extract_all_variants(
+            include_diagnostic=include_diagnostic_variants
+        )
 
     return result
 
@@ -193,11 +198,17 @@ async def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
         raise HTTPException(status_code=500, detail=f"Preview failed: {e!s}") from e
 
 
+def _check_s3_config() -> bool:
+    """Check if S3 configuration is available."""
+    return bool(os.getenv("S3_BUCKET"))
+
+
 @router.post("/execute", response_model=SyncExecuteResponse)
 async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
     """Execute sync to the production database.
 
     This endpoint actually syncs data to the database. Requires confirm=True.
+    If upload_images is True, uploads local images to S3 and updates QTI XML.
     """
     # Safety check: require explicit confirmation
     if not request.confirm:
@@ -219,12 +230,52 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             ],
         )
 
+    # Check S3 configuration if image upload requested
+    if request.upload_images and not _check_s3_config():
+        return SyncExecuteResponse(
+            success=False,
+            results={},
+            message="S3 configuration not found but image upload requested.",
+            errors=[
+                "Set S3_BUCKET, AWS_S3_KEY, AWS_S3_SECRET environment variables."
+            ],
+        )
+
     try:
         # Lazy imports
         from app.sync.db_client import DBClient, DBConfig
+        from app.utils.paths import PRUEBAS_FINALIZADAS_DIR
 
         # Extract and transform data
         extracted = _extract_data(request.entities, request.include_variants)
+
+        # Process S3 image uploads if requested
+        images_uploaded = 0
+        if request.upload_images and extracted["questions"]:
+            from app.sync.s3_client import (
+                ImageUploader,
+                S3Config,
+                process_all_questions_images,
+            )
+
+            s3_config = S3Config.from_env()
+            uploader = ImageUploader(s3_config)
+
+            # Process images and get updated QTI XML
+            updated_qti = process_all_questions_images(
+                extracted["questions"],
+                PRUEBAS_FINALIZADAS_DIR,
+                uploader,
+            )
+
+            # Update the extracted questions with S3 URLs in their QTI
+            for q in extracted["questions"]:
+                if q.id in updated_qti:
+                    q.qti_xml = updated_qti[q.id]
+                    images_uploaded += 1
+
+            logger.info(f"Processed {images_uploaded} questions for S3 images")
+
         payload = _build_payload(extracted)
 
         # Connect and sync
@@ -236,6 +287,8 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
         # Format results message
         total_affected = sum(results.values())
         msg = f"Sync completed. {total_affected} total rows affected."
+        if request.upload_images:
+            msg += f" {images_uploaded} questions processed for S3 images."
 
         return SyncExecuteResponse(
             success=True,

@@ -208,6 +208,22 @@ export async function getAtomsGraph(subjectId: string): Promise<GraphData> {
   return fetchAPI<GraphData>(`/subjects/${subjectId}/atoms/graph`);
 }
 
+export interface UnlockStatus {
+  all_questions_tagged: boolean;
+  tagged_count: number;
+  total_count: number;
+  completion_percentage: number;
+  tests_status: Record<string, { tagged: number; total: number; complete: boolean }>;
+}
+
+export async function getAtomsUnlockStatus(subjectId: string): Promise<UnlockStatus> {
+  return fetchAPI<UnlockStatus>(`/subjects/${subjectId}/atoms/unlock-status`);
+}
+
+export async function getTemario(subjectId: string): Promise<Record<string, unknown>> {
+  return fetchAPI<Record<string, unknown>>(`/subjects/${subjectId}/temario`);
+}
+
 export async function getTests(subjectId: string): Promise<TestBrief[]> {
   return fetchAPI<TestBrief[]>(`/subjects/${subjectId}/tests`);
 }
