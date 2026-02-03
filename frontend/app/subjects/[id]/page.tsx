@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { getSubject, type SubjectDetail } from "@/lib/api";
 import { cn, formatEje, getEjeColor, getEjeBgColor } from "@/lib/utils";
+import { KnowledgeGraphModal } from "@/components/knowledge-graph";
 
 export default function SubjectPage() {
   const params = useParams();
@@ -19,6 +20,7 @@ export default function SubjectPage() {
   const [data, setData] = useState<SubjectDetail | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showGraph, setShowGraph] = useState(false);
 
   useEffect(() => {
     if (subjectId) {
@@ -62,13 +64,13 @@ export default function SubjectPage() {
           <h1 className="text-2xl font-semibold">{data.full_name}</h1>
           <p className="text-text-secondary mt-1">{data.year}</p>
         </div>
-        <Link
-          href={`/subjects/${subjectId}/atoms`}
+        <button
+          onClick={() => setShowGraph(true)}
           className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-lg text-sm font-medium hover:bg-accent/20 transition-colors"
         >
           <Network className="w-4 h-4" />
           Knowledge Graph
-        </Link>
+        </button>
       </div>
 
       {/* Knowledge Graph Pipeline */}
@@ -225,6 +227,13 @@ export default function SubjectPage() {
           </table>
         </div>
       </section>
+
+      {/* Knowledge Graph Modal */}
+      <KnowledgeGraphModal
+        subjectId={subjectId}
+        isOpen={showGraph}
+        onClose={() => setShowGraph(false)}
+      />
     </div>
   );
 }

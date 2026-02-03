@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft, Filter } from "lucide-react";
+import { ArrowLeft, Filter, Network } from "lucide-react";
 import { getAtoms, type AtomBrief } from "@/lib/api";
 import { cn, formatEje, getEjeColor, getEjeBgColor } from "@/lib/utils";
+import { KnowledgeGraphModal } from "@/components/knowledge-graph";
 
 const EJES = [
   { id: "all", label: "All" },
@@ -23,6 +24,7 @@ export default function AtomsPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedEje, setSelectedEje] = useState("all");
+  const [showGraph, setShowGraph] = useState(false);
 
   useEffect(() => {
     if (subjectId) {
@@ -68,6 +70,13 @@ export default function AtomsPage() {
             </p>
           </div>
         </div>
+        <button
+          onClick={() => setShowGraph(true)}
+          className="flex items-center gap-2 px-4 py-2 bg-accent/10 text-accent rounded-lg text-sm font-medium hover:bg-accent/20 transition-colors"
+        >
+          <Network className="w-4 h-4" />
+          Knowledge Graph
+        </button>
       </div>
 
       {/* Filters */}
@@ -152,6 +161,13 @@ export default function AtomsPage() {
           </tbody>
         </table>
       </div>
+
+      {/* Knowledge Graph Modal */}
+      <KnowledgeGraphModal
+        subjectId={subjectId}
+        isOpen={showGraph}
+        onClose={() => setShowGraph(false)}
+      />
     </div>
   );
 }

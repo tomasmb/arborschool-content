@@ -894,12 +894,12 @@ python -m app.sync.scripts.sync_to_db --only variants
 - [x] Tests table with status columns
 - [ ] Question detail slide-over (placeholder only)
 
-### Phase 3: Knowledge Graph
-- [ ] React Flow integration (endpoint exists: `GET /api/subjects/{id}/atoms/graph`)
+### Phase 3: Knowledge Graph ✅ COMPLETE
+- [x] React Flow integration (endpoint exists: `GET /api/subjects/{id}/atoms/graph`)
 - [x] Graph data endpoint
-- [ ] Node styling by type
-- [ ] Stats panel
-- [ ] Modal/drawer wrapper
+- [x] Node styling by type (color-coded by eje, type badges)
+- [x] Stats panel (total atoms, connections, orphans, atoms by eje)
+- [x] Modal/drawer wrapper (full-screen modal with escape key support)
 
 ### Phase 4: Pipeline Runner
 - [x] Pipeline forms UI (placeholder)
@@ -989,7 +989,7 @@ python -m app.sync.scripts.sync_to_db --only variants
 4. ~~Create `frontend/` folder with Next.js scaffold~~ ✓ Done (2026-02-03)
 5. ~~Implement Phase 1 (foundation)~~ ✓ Done (2026-02-03)
 6. Test the dashboard locally (see instructions below)
-7. Complete Phase 3: Wire up React Flow for knowledge graph
+7. ~~Complete Phase 3: Wire up React Flow for knowledge graph~~ ✓ Done (2026-02-03)
 8. Complete Phase 4: Implement pipeline execution backend
 9. Complete Phase 5: Implement sync endpoints
 
