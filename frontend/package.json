@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:full": "concurrently -n API,WEB -c blue,green \"cd .. && .venv/bin/uvicorn api.main:app --reload --port 8000\" \"next dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -28,6 +29,7 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint-config-next": "14.2.3",
+    "concurrently": "^8.2.2"
   }
 }
