@@ -108,7 +108,8 @@ def upload_image_to_s3_direct(
         # Build path
         path_prefix = "images/"
         if test_name:
-            safe_test_name = "".join(c for c in test_name if c.isalnum() or c in "-_")
+            # Lowercase for consistency with folder structure
+            safe_test_name = "".join(c for c in test_name.lower() if c.isalnum() or c in "-_")
             path_prefix = f"{path_prefix}{safe_test_name}/"
 
         s3_key = f"{path_prefix}{filename}"
