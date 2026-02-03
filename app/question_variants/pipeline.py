@@ -230,14 +230,6 @@ class VariantPipeline:
         # Save to primary location (by test)
         save_to_path(variant_path)
 
-        # Also save to consolidated diagnostic directory if configured (approved only)
-        if self.config.diagnostic_output_dir and not is_rejected:
-            diag_path = os.path.join(
-                self.config.diagnostic_output_dir,
-                variant.variant_id,  # Flat structure: all variants in one folder
-            )
-            save_to_path(diag_path)
-
     def _save_report(self, report: GenerationReport):
         """Save generation report."""
 

@@ -110,7 +110,6 @@ class PipelineConfig:
         validate_variants: Whether to run validation phase
         save_rejected: Whether to save rejected variants for debugging
         output_dir: Directory for saving generated variants (by test)
-        diagnostic_output_dir: Optional consolidated directory for diagnostic variants
     """
 
     variants_per_question: int = 3
@@ -118,7 +117,6 @@ class PipelineConfig:
     validate_variants: bool = True
     save_rejected: bool = True
     output_dir: str = "app/data/pruebas/alternativas"
-    diagnostic_output_dir: Optional[str] = None  # e.g., "app/data/diagnostico/variantes"
 
 
 @dataclass

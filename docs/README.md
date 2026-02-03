@@ -15,17 +15,13 @@
 - [Átomos de Aprendizaje](specifications/learning-atom-granularity-guidelines.md)
 - [Métodos de Aprendizaje](specifications/learning-method-specification.md)
 - [Pipeline de Variantes](specifications/variant-generation-pipeline.md)
-- [Diseño e Implementación Prueba Diagnóstica](specifications/diagnostic-test-implementation.md)
 - [Estructura del Repo](specifications/repo-structure-and-modules.md)
 - [Estándares de Código Python](specifications/python-best-practices.md)
 - [Transformación Temarios → Standards](specifications/standards-from-temarios.md)
-- [Prompt Engineering Gemini](specifications/gemini-3-pro-prompt-engineering-best-practices.md)
-- [Métricas Post-Diagnóstico](specifications/metricas_post_diagnostico.md)
+- [Prompt Engineering Gemini](specifications/gemini-prompt-engineering-best-practices.md)
 
 ## Research
 
-- [Prueba Diagnóstica](research/prueba-diagnostica/) - Opciones y fundamentos psicométricos
-- [Métricas Post-Diagnóstico (Ideas Futuras)](research/metricas-post-diagnostico/)
 - [Generación de Preguntas con IA](research/ai-question-generation/)
 
 ## Análisis de Contenido

@@ -52,13 +52,6 @@ configuration files).
   Tags questions with atoms and skills.
   - `tagger.py`, `batch_runner.py`
 
-- `app/diagnostico/`  
-  Diagnostic test engine and web UI.
-  - `engine.py`, `scorer.py`
-  - `config/`: skill tree and question mappings
-  - `web/`: HTML/JS frontend
-  - `scripts/`: utility scripts
-
 - `app/sync/`  
   Syncs content repository to student app database.
   - `db_client.py`, `s3_client.py`, `transformers.py`
@@ -94,9 +87,6 @@ configuration files).
   - `procesadas/`: processed questions (QTI, JSON, PDFs)
   - `alternativas/`: generated question variants
   - `finalizadas/`: finalized questions ready for production
-
-- `app/data/diagnostico/`  
-  Output data from diagnostic processing.
 
 ---
 

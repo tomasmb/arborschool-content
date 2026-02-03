@@ -57,9 +57,6 @@ PRUEBAS_RAW_DIR = PRUEBAS_DIR / "raw"
 # Backups
 BACKUPS_DIR = DATA_DIR / "backups"
 
-# Diagnostico configuration (note: config is under app/diagnostico, not data)
-DIAGNOSTICO_CONFIG_DIR = APP_DIR / "diagnostico" / "config"
-
 
 # -----------------------------------------------------------------------------
 # Helper functions
