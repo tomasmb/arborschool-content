@@ -1,0 +1,306 @@
+/**
+ * TypeScript interfaces matching backend API schemas.
+ * Separated from api.ts to keep files under 500 lines.
+ */
+
+// -----------------------------------------------------------------------------
+// Subject & Overview Types
+// -----------------------------------------------------------------------------
+
+export interface SubjectStats {
+  temario_exists: boolean;
+  standards_count: number;
+  atoms_count: number;
+  tests_count: number;
+  questions_count: number;
+  variants_count: number;
+  tagging_completion: number;
+}
+
+export interface SubjectBrief {
+  id: string;
+  name: string;
+  full_name: string;
+  year: number;
+  stats: SubjectStats;
+}
+
+export interface OverviewResponse {
+  subjects: SubjectBrief[];
+}
+
+export interface StandardBrief {
+  id: string;
+  eje: string;
+  title: string;
+  atoms_count: number;
+}
+
+export interface AtomBrief {
+  id: string;
+  eje: string;
+  standard_ids: string[];
+  tipo_atomico: string;
+  titulo: string;
+  question_set_count: number;
+  has_lesson: boolean;
+}
+
+export interface TestBrief {
+  id: string;
+  name: string;
+  admission_year: number | null;
+  application_type: string | null;
+  raw_pdf_exists: boolean;
+  split_count: number;
+  qti_count: number;
+  finalized_count: number;
+  tagged_count: number;
+  variants_count: number;
+}
+
+export interface SubjectDetail {
+  id: string;
+  name: string;
+  full_name: string;
+  year: number;
+  temario_exists: boolean;
+  temario_file: string | null;
+  standards: StandardBrief[];
+  atoms_count: number;
+  tests: TestBrief[];
+}
+
+// -----------------------------------------------------------------------------
+// Question Types
+// -----------------------------------------------------------------------------
+
+export interface QuestionBrief {
+  id: string;
+  question_number: number;
+  has_split_pdf: boolean;
+  has_qti: boolean;
+  is_finalized: boolean;
+  is_tagged: boolean;
+  atoms_count: number;
+  variants_count: number;
+}
+
+export interface AtomTag {
+  atom_id: string;
+  titulo: string;
+  eje: string;
+  relevance: number;
+}
+
+export interface VariantBrief {
+  id: string;
+  variant_number: number;
+  folder_name: string;
+  has_qti: boolean;
+  has_metadata: boolean;
+}
+
+export interface QuestionOption {
+  id: string;
+  text: string;
+}
+
+export interface QuestionDetail {
+  id: string;
+  test_id: string;
+  question_number: number;
+  has_split_pdf: boolean;
+  has_qti: boolean;
+  is_finalized: boolean;
+  is_tagged: boolean;
+  qti_xml: string | null;
+  qti_stem: string | null;
+  qti_options: QuestionOption[] | null;
+  correct_answer: string | null;
+  difficulty: string | null;
+  source_info: Record<string, unknown> | null;
+  atom_tags: AtomTag[];
+  feedback: Record<string, string>;
+  variants: VariantBrief[];
+  qti_path: string | null;
+  pdf_path: string | null;
+}
+
+export interface TestDetail {
+  id: string;
+  name: string;
+  admission_year: number | null;
+  application_type: string | null;
+  raw_pdf_exists: boolean;
+  split_count: number;
+  qti_count: number;
+  finalized_count: number;
+  tagged_count: number;
+  variants_count: number;
+  questions: QuestionBrief[];
+}
+
+// -----------------------------------------------------------------------------
+// Graph Types
+// -----------------------------------------------------------------------------
+
+export interface GraphNode {
+  id: string;
+  type: string;
+  position: { x: number; y: number };
+  data: Record<string, unknown>;
+}
+
+export interface GraphEdge {
+  id: string;
+  source: string;
+  target: string;
+  type: string;
+}
+
+export interface GraphData {
+  nodes: GraphNode[];
+  edges: GraphEdge[];
+  stats: Record<string, unknown>;
+}
+
+// -----------------------------------------------------------------------------
+// Config Status Types
+// -----------------------------------------------------------------------------
+
+export interface ConfigStatus {
+  database: {
+    configured: boolean;
+    required_vars: string[];
+    description: string;
+  };
+  s3: {
+    configured: boolean;
+    required_vars: string[];
+    optional_vars: string[];
+    description: string;
+  };
+  ai: {
+    gemini_configured: boolean;
+    openai_configured: boolean;
+    any_configured: boolean;
+    required_vars: string[];
+    optional_vars: string[];
+    description: string;
+  };
+  summary: {
+    can_sync: boolean;
+    can_upload_images: boolean;
+    can_run_ai_pipelines: boolean;
+  };
+}
+
+export interface UnlockStatus {
+  all_questions_tagged: boolean;
+  tagged_count: number;
+  total_count: number;
+  completion_percentage: number;
+  tests_status: Record<string, { tagged: number; total: number; complete: boolean }>;
+}
+
+// -----------------------------------------------------------------------------
+// Pipeline Types
+// -----------------------------------------------------------------------------
+
+export interface PipelineDefinition {
+  id: string;
+  name: string;
+  description: string;
+  has_ai_cost: boolean;
+  requires: string[];
+  produces: string;
+}
+
+export interface PipelineParam {
+  name: string;
+  type: "string" | "number" | "boolean" | "select";
+  label: string;
+  required: boolean;
+  default?: string | number | boolean | null;
+  options?: string[];
+  description?: string;
+}
+
+export interface CostEstimate {
+  pipeline_id: string;
+  model: string;
+  input_tokens: number;
+  output_tokens: number;
+  estimated_cost_min: number;
+  estimated_cost_max: number;
+  breakdown: Record<string, unknown>;
+}
+
+export interface FailedItem {
+  id: string;
+  error: string;
+  timestamp: string | null;
+}
+
+export interface JobStatus {
+  job_id: string;
+  pipeline_id: string;
+  status: "pending" | "running" | "completed" | "failed" | "cancelled";
+  params: Record<string, unknown>;
+  started_at: string | null;
+  completed_at: string | null;
+  total_items: number;
+  completed_items: number;
+  failed_items: number;
+  current_item: string | null;
+  completed_item_ids: string[];
+  failed_item_details: FailedItem[];
+  remaining_items: number;
+  error: string | null;
+  cost_actual: number | null;
+  logs: string[];
+  can_resume: boolean;
+}
+
+export interface JobListResponse {
+  jobs: JobStatus[];
+}
+
+export interface JobLogsResponse {
+  job_id: string;
+  logs: string[];
+  offset: number;
+  limit: number;
+  total: number;
+  has_more: boolean;
+}
+
+// -----------------------------------------------------------------------------
+// Sync Types
+// -----------------------------------------------------------------------------
+
+export interface SyncTableSummary {
+  table: string;
+  total: number;
+  breakdown: Record<string, number>;
+}
+
+export interface SyncPreviewResponse {
+  tables: SyncTableSummary[];
+  summary: Record<string, unknown>;
+  warnings: string[];
+}
+
+export interface SyncExecuteResponse {
+  success: boolean;
+  results: Record<string, number>;
+  message: string;
+  errors: string[];
+}
+
+export interface SyncStatus {
+  database_configured: boolean;
+  s3_configured: boolean;
+  available_entities: string[];
+}

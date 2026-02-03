@@ -174,7 +174,7 @@ def main() -> int:
             print(f"   ✓ Processed {len(updated_qti)} questions for images")
         except ValueError as e:
             print(f"   ⚠ Skipping S3 upload: {e}")
-            print("   (Set S3_BUCKET, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY)")
+            print("   (Set AWS_S3_KEY, AWS_S3_SECRET environment variables)")
 
     # Update QTI XML if images were processed
     if updated_qti:

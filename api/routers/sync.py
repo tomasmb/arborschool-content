@@ -199,8 +199,10 @@ async def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
 
 
 def _check_s3_config() -> bool:
-    """Check if S3 configuration is available."""
-    return bool(os.getenv("S3_BUCKET"))
+    """Check if S3 configuration is available (AWS credentials present)."""
+    access_key = os.getenv("AWS_S3_KEY") or os.getenv("AWS_ACCESS_KEY_ID")
+    secret_key = os.getenv("AWS_S3_SECRET") or os.getenv("AWS_SECRET_ACCESS_KEY")
+    return bool(access_key and secret_key)
 
 
 @router.post("/execute", response_model=SyncExecuteResponse)
@@ -235,9 +237,9 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
         return SyncExecuteResponse(
             success=False,
             results={},
-            message="S3 configuration not found but image upload requested.",
+            message="S3 credentials not found but image upload requested.",
             errors=[
-                "Set S3_BUCKET, AWS_S3_KEY, AWS_S3_SECRET environment variables."
+                "Set AWS_S3_KEY and AWS_S3_SECRET environment variables."
             ],
         )
 
@@ -319,7 +321,7 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
 async def sync_status() -> dict:
     """Get current sync status and configuration availability."""
     has_db_config = _check_db_config()
-    has_s3_config = bool(os.getenv("S3_BUCKET"))
+    has_s3_config = _check_s3_config()
 
     return {
         "database_configured": has_db_config,

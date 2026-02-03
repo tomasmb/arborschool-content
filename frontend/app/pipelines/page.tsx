@@ -5,6 +5,8 @@ import {
   PlayCircle,
   Loader2,
   AlertTriangle,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import { JobLogsModal } from "@/components/pipelines/JobLogsModal";
 import { PipelineForm } from "@/components/pipelines/PipelineForm";
@@ -19,10 +21,12 @@ import {
   cancelJob,
   resumeJob,
   deleteJob,
+  getConfigStatus,
   PipelineDefinition,
   PipelineParam,
   CostEstimate,
   JobStatus,
+  ConfigStatus,
 } from "@/lib/api";
 
 type PipelineFormState = {
@@ -49,10 +53,13 @@ export default function PipelinesPage() {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [logsJobId, setLogsJobId] = useState<string | null>(null);
   const [resumingJobId, setResumingJobId] = useState<string | null>(null);
+  const [configStatus, setConfigStatus] = useState<ConfigStatus | null>(null);
 
   useEffect(() => {
-    getPipelines()
-      .then(setPipelines)
+    Promise.all([
+      getPipelines().then(setPipelines),
+      getConfigStatus().then(setConfigStatus),
+    ])
       .catch(console.error)
       .finally(() => setIsLoadingPipelines(false));
   }, []);
@@ -164,6 +171,37 @@ export default function PipelinesPage() {
         <h1 className="text-2xl font-semibold">Pipeline Runner</h1>
         <p className="text-text-secondary mt-1">Execute content generation pipelines</p>
       </div>
+
+      {/* AI Configuration Status */}
+      {configStatus && !configStatus.ai.any_configured && (
+        <div className="bg-error/10 border border-error/20 rounded-lg p-4 flex items-start gap-3">
+          <XCircle className="w-5 h-5 text-error flex-shrink-0 mt-0.5" />
+          <div>
+            <p className="font-medium text-error">AI Not Configured</p>
+            <p className="text-sm text-text-secondary mt-1">
+              Set <code className="bg-surface px-1 rounded">GEMINI_API_KEY</code> environment variable
+              to run AI pipelines. Optionally add <code className="bg-surface px-1 rounded">OPENAI_API_KEY</code> as fallback.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {configStatus && configStatus.ai.any_configured && (
+        <div className="bg-success/10 border border-success/20 rounded-lg p-4 flex items-start gap-3">
+          <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+          <div className="flex items-center gap-4">
+            <span className="font-medium text-success">AI Configured</span>
+            <div className="flex items-center gap-3 text-sm text-text-secondary">
+              <span className={configStatus.ai.gemini_configured ? "text-success" : "text-text-secondary"}>
+                Gemini: {configStatus.ai.gemini_configured ? "✓" : "—"}
+              </span>
+              <span className={configStatus.ai.openai_configured ? "text-success" : "text-text-secondary"}>
+                OpenAI: {configStatus.ai.openai_configured ? "✓" : "—"}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Pipeline selection */}
       <div className="bg-surface border border-border rounded-lg p-4 md:p-6">

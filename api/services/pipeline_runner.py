@@ -14,164 +14,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from api.schemas.api_models import FailedItem, JobStatus, PipelineDefinition, PipelineParam
+from api.schemas.api_models import JobStatus, PipelineDefinition, PipelineParam
+from api.services.pipeline_definitions import PIPELINE_PARAMS, PIPELINES
 from app.utils.paths import JOBS_DIR, REPO_ROOT
-
-
-# -----------------------------------------------------------------------------
-# Pipeline definitions
-# -----------------------------------------------------------------------------
-
-PIPELINES: dict[str, PipelineDefinition] = {
-    "standards_gen": PipelineDefinition(
-        id="standards_gen",
-        name="Standards Generation",
-        description="Generate standards from temario",
-        has_ai_cost=True,
-        requires=["temario"],
-        produces="standards/*.json",
-    ),
-    "atoms_gen": PipelineDefinition(
-        id="atoms_gen",
-        name="Atoms Generation",
-        description="Generate atoms from standards",
-        has_ai_cost=True,
-        requires=["standards"],
-        produces="atoms/*.json",
-    ),
-    "pdf_split": PipelineDefinition(
-        id="pdf_split",
-        name="PDF Split",
-        description="Split test PDF into individual questions",
-        has_ai_cost=True,
-        requires=["raw_pdf"],
-        produces="procesadas/{test}/pdf/*.pdf",
-    ),
-    "pdf_to_qti": PipelineDefinition(
-        id="pdf_to_qti",
-        name="PDF to QTI",
-        description="Convert question PDFs to QTI XML format",
-        has_ai_cost=True,
-        requires=["split_pdfs"],
-        produces="procesadas/{test}/qti/*/question.xml",
-    ),
-    "finalize": PipelineDefinition(
-        id="finalize",
-        name="Finalize Questions",
-        description="Copy validated QTI to finalizadas/",
-        has_ai_cost=False,
-        requires=["qti"],
-        produces="finalizadas/{test}/qti/*",
-    ),
-    "tagging": PipelineDefinition(
-        id="tagging",
-        name="Question Tagging",
-        description="Tag questions with relevant atoms",
-        has_ai_cost=True,
-        requires=["atoms", "finalized_questions"],
-        produces="finalizadas/{test}/qti/*/metadata_tags.json",
-    ),
-    "variant_gen": PipelineDefinition(
-        id="variant_gen",
-        name="Variant Generation",
-        description="Generate alternative versions of questions",
-        has_ai_cost=True,
-        requires=["tagged_questions"],
-        produces="alternativas/{test}/Q*/approved/*",
-    ),
-    "question_sets": PipelineDefinition(
-        id="question_sets",
-        name="Question Sets (PP100)",
-        description="Generate ~60 practice questions per atom",
-        has_ai_cost=True,
-        requires=["atoms", "all_tagged"],
-        produces="question_sets/{atom_id}/*.json",
-    ),
-    "lessons": PipelineDefinition(
-        id="lessons",
-        name="Lessons",
-        description="Generate micro-lessons for atoms",
-        has_ai_cost=True,
-        requires=["atoms", "question_sets_or_all_tagged"],
-        produces="lessons/{atom_id}.json",
-    ),
-}
-
-# Pipeline parameters
-PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
-    "standards_gen": [
-        PipelineParam(
-            name="temario_file",
-            type="select",
-            label="Temario",
-            required=True,
-            options=[
-                "temario-paes-m1-invierno-y-regular-2026.json",
-            ],
-        ),
-        PipelineParam(
-            name="eje",
-            type="select",
-            label="Eje (optional)",
-            required=False,
-            options=[
-                "numeros",
-                "algebra_y_funciones",
-                "geometria",
-                "probabilidad_y_estadistica",
-            ],
-            description="Leave empty to generate all ejes",
-        ),
-    ],
-    "atoms_gen": [
-        PipelineParam(
-            name="standards_file",
-            type="select",
-            label="Standards File",
-            required=True,
-            options=["paes_m1_2026.json"],
-        ),
-    ],
-    "tagging": [
-        PipelineParam(
-            name="test_id",
-            type="select",
-            label="Test",
-            required=True,
-            options=[],  # Populated dynamically
-        ),
-        PipelineParam(
-            name="question_ids",
-            type="string",
-            label="Question IDs (optional)",
-            required=False,
-            description="Comma-separated list (e.g., Q1,Q2,Q3). Leave empty for all.",
-        ),
-    ],
-    "variant_gen": [
-        PipelineParam(
-            name="test_id",
-            type="select",
-            label="Source Test",
-            required=True,
-            options=[],  # Populated dynamically
-        ),
-        PipelineParam(
-            name="question_ids",
-            type="string",
-            label="Question IDs",
-            required=True,
-            description="Comma-separated list (e.g., Q1,Q2,Q3)",
-        ),
-        PipelineParam(
-            name="variants_per_question",
-            type="number",
-            label="Variants per Question",
-            required=False,
-            default=3,
-        ),
-    ],
-}
 
 
 # -----------------------------------------------------------------------------
@@ -289,8 +134,12 @@ class PipelineRunner:
         commands = {
             "standards_gen": self._cmd_standards_gen,
             "atoms_gen": self._cmd_atoms_gen,
+            "pdf_split": self._cmd_pdf_split,
+            "pdf_to_qti": self._cmd_pdf_to_qti,
+            "finalize": self._cmd_finalize,
             "tagging": self._cmd_tagging,
             "variant_gen": self._cmd_variant_gen,
+            # question_sets and lessons are future enhancements
         }
 
         builder = commands.get(pipeline_id)
@@ -309,10 +158,41 @@ class PipelineRunner:
         """Build command for atoms generation."""
         return ["python", "-m", "app.atoms.scripts.run_single_standard"]
 
+    def _cmd_pdf_split(self, params: dict[str, Any]) -> list[str]:
+        """Build command for PDF splitting."""
+        cmd = ["python", "-m", "app.pruebas.pdf-splitter.main"]
+        if params.get("pdf_path"):
+            cmd.append(params["pdf_path"])
+        if params.get("output_dir"):
+            cmd.extend(["--output-dir", params["output_dir"]])
+        return cmd
+
+    def _cmd_pdf_to_qti(self, params: dict[str, Any]) -> list[str]:
+        """Build command for PDF to QTI conversion."""
+        cmd = ["python", "-m", "app.pruebas.pdf-to-qti.scripts.process_test"]
+        if params.get("test_id"):
+            cmd.extend(["--test", params["test_id"]])
+        if params.get("question_ids"):
+            cmd.extend(["--questions", params["question_ids"]])
+        return cmd
+
+    def _cmd_finalize(self, params: dict[str, Any]) -> list[str]:
+        """Build command for finalization (copy to finalizadas/).
+
+        Note: This is a simple file operation, not AI. Uses a script that copies
+        validated QTI files from procesadas/ to finalizadas/.
+        """
+        # For now, return a simple echo - finalization logic can be added
+        # when the finalization script is implemented
+        return ["echo", "Finalization pipeline not yet implemented via CLI"]
+
     def _cmd_tagging(self, params: dict[str, Any]) -> list[str]:
         """Build command for tagging."""
         cmd = ["python", "-m", "app.tagging.batch_runner"]
-        # Note: batch_runner doesn't have params yet, we'd need to extend it
+        if params.get("test_id"):
+            cmd.extend(["--test", params["test_id"]])
+        if params.get("question_ids"):
+            cmd.extend(["--questions", params["question_ids"]])
         return cmd
 
     def _cmd_variant_gen(self, params: dict[str, Any]) -> list[str]:
