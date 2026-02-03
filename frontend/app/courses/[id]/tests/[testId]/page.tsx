@@ -12,7 +12,7 @@ import { ErrorPage } from "@/components/ui/ErrorMessage";
 
 export default function TestDetailPage() {
   const params = useParams();
-  const subjectId = params.id as string;
+  const courseId = params.id as string;
   const testId = params.testId as string;
 
   const [data, setData] = useState<TestDetail | null>(null);
@@ -21,18 +21,18 @@ export default function TestDetailPage() {
   const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
 
   const fetchData = useCallback(async () => {
-    if (!subjectId || !testId) return;
+    if (!courseId || !testId) return;
     setLoading(true);
     setError(null);
     try {
-      const result = await getTestDetail(subjectId, testId);
+      const result = await getTestDetail(courseId, testId);
       setData(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load test");
     } finally {
       setLoading(false);
     }
-  }, [subjectId, testId]);
+  }, [courseId, testId]);
 
   useEffect(() => {
     fetchData();
@@ -66,7 +66,7 @@ export default function TestDetailPage() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <Link
-          href={`/subjects/${subjectId}`}
+          href={`/courses/${courseId}`}
           className="p-2 hover:bg-white/5 rounded-lg transition-colors"
         >
           <ArrowLeft className="w-5 h-5 text-text-secondary" />
@@ -175,7 +175,7 @@ export default function TestDetailPage() {
       {/* Question Detail Panel */}
       {selectedQuestion !== null && (
         <QuestionDetailPanel
-          subjectId={subjectId}
+          subjectId={courseId}
           testId={testId}
           questionNumber={selectedQuestion}
           onClose={() => setSelectedQuestion(null)}

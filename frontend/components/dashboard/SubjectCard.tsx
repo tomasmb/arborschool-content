@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Circle } from "lucide-react";
 import { type SubjectBrief } from "@/lib/api";
-import { formatPercent } from "@/lib/utils";
+import { cn, formatPercent } from "@/lib/utils";
 
 interface SubjectCardProps {
   subject: SubjectBrief;
@@ -74,10 +74,14 @@ export function SubjectCard({ subject }: SubjectCardProps) {
         </div>
       </div>
 
-      {/* Action */}
+      {/* Action - Updated to /courses/ */}
       <Link
-        href={`/subjects/${subject.id}`}
-        className="flex items-center justify-center gap-2 w-full py-2 px-4 bg-accent/10 text-accent rounded-lg text-sm font-medium hover:bg-accent/20 transition-colors"
+        href={`/courses/${subject.id}`}
+        className={cn(
+          "flex items-center justify-center gap-2 w-full py-2 px-4",
+          "bg-accent/10 text-accent rounded-lg text-sm font-medium",
+          "hover:bg-accent/20 transition-colors"
+        )}
       >
         Enter
         <ArrowRight className="w-4 h-4" />

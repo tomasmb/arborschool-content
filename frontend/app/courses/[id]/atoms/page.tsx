@@ -18,7 +18,7 @@ const EJES = [
 
 export default function AtomsPage() {
   const params = useParams();
-  const subjectId = params.id as string;
+  const courseId = params.id as string;
 
   const [atoms, setAtoms] = useState<AtomBrief[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -27,14 +27,14 @@ export default function AtomsPage() {
   const [showGraph, setShowGraph] = useState(false);
 
   useEffect(() => {
-    if (subjectId) {
+    if (courseId) {
       const filters = selectedEje === "all" ? {} : { eje: selectedEje };
-      getAtoms(subjectId, filters)
+      getAtoms(courseId, filters)
         .then(setAtoms)
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
     }
-  }, [subjectId, selectedEje]);
+  }, [courseId, selectedEje]);
 
   if (loading) {
     return (
@@ -58,7 +58,7 @@ export default function AtomsPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Link
-            href={`/subjects/${subjectId}`}
+            href={`/courses/${courseId}`}
             className="p-2 hover:bg-white/5 rounded-lg transition-colors"
           >
             <ArrowLeft className="w-5 h-5 text-text-secondary" />
@@ -66,7 +66,7 @@ export default function AtomsPage() {
           <div>
             <h1 className="text-2xl font-semibold">Atoms ({atoms.length})</h1>
             <p className="text-text-secondary mt-1">
-              Learning atoms for PAES M1
+              Learning atoms for this course
             </p>
           </div>
         </div>
@@ -164,7 +164,7 @@ export default function AtomsPage() {
 
       {/* Knowledge Graph Modal */}
       <KnowledgeGraphModal
-        subjectId={subjectId}
+        subjectId={courseId}
         isOpen={showGraph}
         onClose={() => setShowGraph(false)}
       />

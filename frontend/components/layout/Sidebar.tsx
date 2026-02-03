@@ -6,21 +6,15 @@ import {
   LayoutDashboard,
   BookOpen,
   Layers,
-  PlayCircle,
-  Database,
+  FileText,
+  Settings,
+  ArrowLeft,
   Menu,
   X,
+  GraduationCap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState, useEffect } from "react";
-
-const navItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/subjects/paes-m1-2026", label: "PAES M1 2026", icon: BookOpen },
-  { href: "/subjects/paes-m1-2026/atoms", label: "Atoms", icon: Layers },
-  { href: "/pipelines", label: "Pipelines", icon: PlayCircle },
-  { href: "/sync", label: "Sync", icon: Database },
-];
+import { useEffect } from "react";
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -34,6 +28,41 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
   useEffect(() => {
     if (onClose) onClose();
   }, [pathname, onClose]);
+
+  // Determine if we're inside a course
+  const courseMatch = pathname.match(/^\/courses\/([^/]+)/);
+  const courseId = courseMatch ? courseMatch[1] : null;
+  const isInsideCourse = !!courseId;
+
+  // Course navigation items (shown when inside a course)
+  const courseNavItems = courseId
+    ? [
+        { href: `/courses/${courseId}`, label: "Overview", icon: BookOpen, exact: true },
+        { href: `/courses/${courseId}/standards`, label: "Standards", icon: GraduationCap },
+        { href: `/courses/${courseId}/atoms`, label: "Atoms", icon: Layers },
+        { href: `/courses/${courseId}/tests`, label: "Tests", icon: FileText },
+        { href: `/courses/${courseId}/settings`, label: "Settings", icon: Settings },
+      ]
+    : [];
+
+  // Dashboard navigation (shown when on dashboard)
+  const dashboardNavItems = [
+    { href: "/", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  ];
+
+  const navItems = isInsideCourse ? courseNavItems : dashboardNavItems;
+
+  // Format course ID for display (e.g., "paes-m1-2026" -> "PAES M1 2026")
+  const formatCourseId = (id: string) => {
+    return id
+      .split("-")
+      .map((part) => {
+        if (part.match(/^m\d+$/i)) return part.toUpperCase();
+        if (part.match(/^\d+$/)) return part;
+        return part.charAt(0).toUpperCase() + part.slice(1);
+      })
+      .join(" ");
+  };
 
   return (
     <>
@@ -76,11 +105,39 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+          {/* Back to Dashboard (when inside course) */}
+          {isInsideCourse && (
+            <>
+              <Link
+                href="/"
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm",
+                  "text-text-secondary hover:text-text-primary hover:bg-white/5 transition-colors"
+                )}
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Dashboard
+              </Link>
+
+              {/* Course header */}
+              <div className="px-3 py-3 mt-2">
+                <p className="text-xs text-text-secondary uppercase tracking-wide mb-1">
+                  Course
+                </p>
+                <p className="font-semibold text-sm">
+                  {formatCourseId(courseId)}
+                </p>
+              </div>
+
+              <div className="border-t border-border my-2" />
+            </>
+          )}
+
+          {/* Nav items */}
           {navItems.map((item) => {
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href);
+            const isActive = item.exact
+              ? pathname === item.href
+              : pathname.startsWith(item.href);
             const Icon = item.icon;
 
             return (
