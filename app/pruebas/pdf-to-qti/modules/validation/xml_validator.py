@@ -43,20 +43,9 @@ def validate_qti_xml(qti_xml: str, validation_endpoint: Optional[str] = None) ->
             # Simple headers
             headers = {"Content-Type": "application/xml"}
 
-            # LAMBDA WORKAROUND: Use raw HTTP instead of requests library
-            if os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
-                import urllib.request
-
-                xml_bytes = stripped_xml.encode("utf-8")
-                req = urllib.request.Request(validation_url, data=xml_bytes, headers={"Content-Type": "application/xml"})
-
-                with urllib.request.urlopen(req, timeout=30) as response:
-                    response_data = response.read().decode("utf-8")
-                    status_code = response.status
-            else:
-                response = requests.post(validation_url, data=stripped_xml, headers=headers, timeout=30)
-                response_data = response.text
-                status_code = response.status_code
+            response = requests.post(validation_url, data=stripped_xml, headers=headers, timeout=30)
+            response_data = response.text
+            status_code = response.status_code
 
             # Parse response (same logic for both methods)
             if status_code == 200:

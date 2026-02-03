@@ -76,15 +76,13 @@ def process_single_question_pdf(
     if not os.path.exists(input_pdf_path):
         return {"success": False, "error": f"Input PDF not found at {input_pdf_path}"}
 
-    is_lambda = os.environ.get("AWS_LAMBDA_FUNCTION_NAME") is not None
-
-    # Create output directory (skip in Lambda)
-    if not is_lambda and not os.path.exists(output_dir):
+    # Create output directory
+    if not os.path.exists(output_dir):
         os.makedirs(output_dir)
         print(f"Created output directory: {output_dir}")
 
     # Check cache and try to skip processing
-    if skip_if_exists and not is_lambda:
+    if skip_if_exists:
         cached_result = check_existing_xml(output_dir, validation_endpoint)
         if cached_result:
             return cached_result

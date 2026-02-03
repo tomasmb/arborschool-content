@@ -41,6 +41,7 @@ configuration files).
 - `app/atoms/`  
   Atom definitions, prerequisite graphs, validation.
   - `generation.py`, `models.py`, `prompts.py`
+  - `prompts/`: modular prompt components for atom generation
   - `validation/`: atom validation logic
   - `scripts/`: generation and export scripts
 
@@ -50,22 +51,37 @@ configuration files).
 
 - `app/tagging/`  
   Tags questions with atoms and skills.
-  - `tagger.py`, `batch_runner.py`
+  - `tagger.py`, `batch_runner.py`, `tagger_prompts.py`
+  - `kg_utils.py`: knowledge graph utilities
+  - `tag_habilidades.py`: skill tagging
 
 - `app/sync/`  
   Syncs content repository to student app database.
   - `db_client.py`, `s3_client.py`, `transformers.py`
+  - `extractors.py`, `models.py`: data extraction and models
+  - `scripts/`: sync execution scripts
+
+- `app/utils/`  
+  Shared utilities used across modules.
+  - `paths.py`: centralized path definitions
+  - `data_loader.py`, `qti_extractor.py`: data loading utilities
+  - `prompt_helpers.py`, `mathml_parser.py`: parsing utilities
+  - `logging_config.py`: logging configuration
+
+- `app/models/`  
+  Shared constants and enums.
+  - `constants.py`: project-wide constants
 
 ### Pipeline modules
 
 - `app/pruebas/pdf-splitter/`  
   Splits multi-question PAES PDFs into individual question PDFs.
-  - `main.py`, `lambda_handler.py`
+  - `main.py`: core splitting logic
   - `modules/`: processing logic
 
 - `app/pruebas/pdf-to-qti/`  
   Converts question PDFs to QTI format.
-  - `main.py`, `lambda_handler.py`
+  - `main.py`: core conversion logic
   - `modules/`: AI processing, image processing, validation
   - `scripts/`: processing and migration scripts
 
@@ -87,6 +103,10 @@ configuration files).
   - `procesadas/`: processed questions (QTI, JSON, PDFs)
   - `alternativas/`: generated question variants
   - `finalizadas/`: finalized questions ready for production
+
+- `app/data/diagnostico/`  
+  Diagnostic test variants for student assessment.
+  - `variantes/`: generated diagnostic question variants
 
 ---
 
@@ -113,6 +133,9 @@ When you add new functionality, follow this pattern:
    - Atom definitions, prereqs → `app/atoms/`
    - Question processing → `app/pruebas/`
    - Question variants → `app/question_variants/`
+   - Question tagging → `app/tagging/`
+   - Database sync → `app/sync/`
+   - Shared utilities → `app/utils/`
 
 2. **Create a focused module**
    - Prefer a single file with a clear purpose over many tiny files.

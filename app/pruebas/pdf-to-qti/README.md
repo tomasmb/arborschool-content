@@ -1,100 +1,82 @@
-# PDF-to-QTI Lambda Functions
+# PDF-to-QTI Converter
 
-AWS Lambda functions for converting PDF questions to QTI 3.0 XML format.
+Converts PDF questions to QTI 3.0 XML format using AI-powered analysis.
 
-## 📍 Production Endpoints
-
-- **convertPdfToQti**: https://6yuvwmyy6mjtu5ojqbkindumpq0zaxwv.lambda-url.us-east-1.on.aws/
-- **questionDetail**: https://dwz3c4pziukfhwfqkkauvzh4bu0uicgu.lambda-url.us-east-1.on.aws/
-
-## 🚀 Quick Deploy
+## Quick Start
 
 ```bash
-cd src/lambda/pdf-to-qti
-./deploy.sh
+# Process a complete test
+uv run python scripts/process_test.py --test-name prueba-invierno-2026
+
+# Process specific questions
+uv run python scripts/process_test.py --test-name prueba-invierno-2026 --questions 1 5 10
 ```
 
-That's it! The deploy script will:
-1. Check AWS credentials (saml-prod profile)
-2. Install dependencies via Serverless Framework
-3. Build Python packages with Docker
-4. Deploy both Lambda functions
-5. Show you the updated function URLs
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-src/lambda/pdf-to-qti/
-├── lambda_handler.py           # Main PDF→QTI conversion handler
-├── question_detail_handler.py  # Question metadata extraction
+app/pruebas/pdf-to-qti/
 ├── main.py                     # Core conversion logic
-├── modules/                    # 10,456 lines of Python code
-│   ├── pdf_processor.py       # PDF extraction & parsing
-│   ├── question_detector.py   # AI-powered question type detection
-│   ├── qti_transformer.py     # QTI XML generation
-│   ├── question_evaluator.py  # Question validation
-│   ├── prompt_builder.py      # AI prompt construction
-│   ├── qti_configs.py         # QTI configurations
-│   ├── ai_processing/         # AI content analysis
-│   ├── content_processing/    # Content transformation
-│   ├── image_processing/      # Image extraction & analysis
-│   ├── utils/                 # Utility functions
-│   └── validation/            # XML & visual validation
-├── requirements.txt           # Python dependencies
-├── serverless.yml            # Serverless Framework config
-├── package.json              # NPM deployment scripts
-├── deploy.sh                 # One-command deployment
-└── DEPLOYMENT.md             # Detailed deployment guide
+├── backup_manager.py           # QTI backup management
+├── modules/
+│   ├── pdf_processor.py        # PDF extraction & parsing
+│   ├── question_detector.py    # AI-powered question type detection
+│   ├── qti_transformer.py      # QTI XML generation
+│   ├── question_evaluator.py   # Question validation
+│   ├── prompt_builder.py       # AI prompt construction
+│   ├── qti_configs.py          # QTI configurations
+│   ├── ai_processing/          # AI content analysis
+│   ├── content_processing/     # Content transformation
+│   ├── image_processing/       # Image extraction & analysis
+│   ├── utils/                  # Utility functions
+│   └── validation/             # XML & visual validation
+└── scripts/                    # Processing scripts
+    ├── process_test.py         # Main test processing script
+    ├── extract_answer_key.py   # Extract answers from PDF
+    ├── render_qti_to_html.py   # Preview QTI as HTML
+    └── ...                     # See scripts/README.md
 ```
 
-## 🛠️ Common Commands
+## Common Commands
 
 ```bash
-# Deploy to production
-./deploy.sh
+# Process a test (auto-derives paths from test name)
+uv run python scripts/process_test.py --test-name prueba-invierno-2026
 
-# Deploy to development
-./deploy.sh dev
+# Skip already processed questions
+uv run python scripts/process_test.py --test-name prueba-invierno-2026 --skip-existing
 
-# View real-time logs
-npm run logs
+# Extract answer key from PDF
+uv run python scripts/extract_answer_key.py --pdf-path path/to/answers.pdf
 
-# Get deployment info
-npm run info
+# Preview generated QTI as HTML
+uv run python scripts/render_all_questions_to_html.py --test-name prueba-invierno-2026
 
-# Deploy single function (faster)
-npm run deploy:function -- -f convertPdfToQti
+# Validate QTI output quality
+uv run python scripts/validate_qti_output.py --output-dir path/to/qti
 ```
 
-## 📖 Documentation
+## How It Works
 
-- **[DEPLOYMENT.md](./DEPLOYMENT.md)** - Complete deployment guide with troubleshooting
-- **[Original README](../../parser/pdf-to-qti/README.md)** - API documentation and examples
+1. **Extract PDF content** - Parse text, images, and layout from question PDFs
+2. **Detect question type** - AI identifies the question format (multiple choice, etc.)
+3. **Transform to QTI** - Generate valid QTI 3.0 XML
+4. **Validate** - Check XML validity and visual correctness
+5. **Save results** - Store QTI XML and metadata
 
-## 🔧 Making Changes
+## Dependencies
 
-1. Edit code in this directory
-2. Run `./deploy.sh`
-3. Test the deployed function
+Uses dependencies defined in the root `pyproject.toml`:
 
-Changes are deployed in ~2-3 minutes.
+```bash
+# Install pdf-to-qti dependencies
+uv sync --group pdf-to-qti
+```
 
-## 📦 What's Included
+## Documentation
 
-This directory contains the **complete source code** for the PDF-to-QTI Lambda functions recovered from AWS. All 10,456 lines of Python code are now safely version-controlled in this repo.
+- **[scripts/README.md](./scripts/README.md)** - Detailed scripts documentation
 
-## ⚙️ Technical Details
+## Related Modules
 
-- **Runtime**: Python 3.11
-- **Timeout**: 900 seconds (15 minutes)
-- **Memory**: 3,008 MB
-- **Dependencies**: Pillow, PyMuPDF, OpenAI, Selenium, etc.
-- **Deployment**: Serverless Framework with Docker for pip packages
-
-## 🎯 Next Steps
-
-1. **Test the current deployment** - Make sure everything works
-2. **Make your changes** - Edit the code as needed
-3. **Redeploy** - Run `./deploy.sh` to update the Lambda
-
-For detailed instructions, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+- **[PDF Splitter](../pdf-splitter/)** - Splits multi-question PDFs into individual files
