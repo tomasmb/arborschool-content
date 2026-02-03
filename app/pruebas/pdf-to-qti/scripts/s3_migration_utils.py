@@ -194,7 +194,8 @@ def _process_xml_file(
 
         def replace_url(match: re.Match) -> str:
             filename = match.group(1)
-            return f"https://{bucket_name}.s3.{aws_region}.amazonaws.com/images/{test_name}/{filename}"
+            # Lowercase test_name for consistency with folder structure
+            return f"https://{bucket_name}.s3.{aws_region}.amazonaws.com/images/{test_name.lower()}/{filename}"
 
         xml_content = url_pattern.sub(replace_url, xml_content)
 

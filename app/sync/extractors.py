@@ -2,6 +2,8 @@
 
 This module reads the canonical data files and returns structured data ready
 for transformation to DB schema.
+
+For variant extraction, see variant_extractors.py.
 """
 
 from __future__ import annotations
@@ -89,6 +91,52 @@ class ExtractedTest:
 
 
 # -----------------------------------------------------------------------------
+# Shared helper functions (also used by variant_extractors)
+# -----------------------------------------------------------------------------
+
+
+def _find_images_in_qti(qti_xml: str) -> list[str]:
+    """Find all image references in QTI XML content.
+
+    Looks for <img src="..."> and similar patterns.
+    """
+    # Pattern for img tags with src attribute
+    img_pattern = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
+    # Pattern for object/embed tags
+    object_pattern = re.compile(r'<object[^>]+data=["\']([^"\']+)["\']', re.IGNORECASE)
+
+    images: list[str] = []
+    images.extend(img_pattern.findall(qti_xml))
+    images.extend(object_pattern.findall(qti_xml))
+
+    return images
+
+
+def _parse_correct_answer_from_qti(qti_xml: str) -> str:
+    """Extract correct answer identifier from QTI XML.
+
+    Looks for <qti-correct-response><qti-value>ChoiceX</qti-value></qti-correct-response>
+    """
+    pattern = re.compile(
+        r"<qti-correct-response>\s*<qti-value>([^<]+)</qti-value>\s*</qti-correct-response>",
+        re.IGNORECASE,
+    )
+    match = pattern.search(qti_xml)
+    if match:
+        return match.group(1).strip()
+    return ""
+
+
+def _parse_title_from_qti(qti_xml: str) -> str | None:
+    """Extract title from QTI XML."""
+    pattern = re.compile(r'title=["\']([^"\']+)["\']', re.IGNORECASE)
+    match = pattern.search(qti_xml)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
+# -----------------------------------------------------------------------------
 # Extraction functions
 # -----------------------------------------------------------------------------
 
@@ -161,47 +209,6 @@ def extract_standards(standards_file: Path | None = None) -> list[ExtractedStand
         )
 
     return standards
-
-
-def _find_images_in_qti(qti_xml: str) -> list[str]:
-    """Find all image references in QTI XML content.
-
-    Looks for <img src="..."> and similar patterns.
-    """
-    # Pattern for img tags with src attribute
-    img_pattern = re.compile(r'<img[^>]+src=["\']([^"\']+)["\']', re.IGNORECASE)
-    # Pattern for object/embed tags
-    object_pattern = re.compile(r'<object[^>]+data=["\']([^"\']+)["\']', re.IGNORECASE)
-
-    images: list[str] = []
-    images.extend(img_pattern.findall(qti_xml))
-    images.extend(object_pattern.findall(qti_xml))
-
-    return images
-
-
-def _parse_correct_answer_from_qti(qti_xml: str) -> str:
-    """Extract correct answer identifier from QTI XML.
-
-    Looks for <qti-correct-response><qti-value>ChoiceX</qti-value></qti-correct-response>
-    """
-    pattern = re.compile(
-        r"<qti-correct-response>\s*<qti-value>([^<]+)</qti-value>\s*</qti-correct-response>",
-        re.IGNORECASE,
-    )
-    match = pattern.search(qti_xml)
-    if match:
-        return match.group(1).strip()
-    return ""
-
-
-def _parse_title_from_qti(qti_xml: str) -> str | None:
-    """Extract title from QTI XML."""
-    pattern = re.compile(r'title=["\']([^"\']+)["\']', re.IGNORECASE)
-    match = pattern.search(qti_xml)
-    if match:
-        return match.group(1).strip()
-    return None
 
 
 def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[ExtractedQuestion]]:

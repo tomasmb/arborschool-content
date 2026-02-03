@@ -53,9 +53,16 @@ PRUEBAS_DIR = DATA_DIR / "pruebas"
 PRUEBAS_FINALIZADAS_DIR = PRUEBAS_DIR / "finalizadas"
 PRUEBAS_PROCESADAS_DIR = PRUEBAS_DIR / "procesadas"
 PRUEBAS_RAW_DIR = PRUEBAS_DIR / "raw"
+PRUEBAS_ALTERNATIVAS_DIR = PRUEBAS_DIR / "alternativas"
+
+# Diagnostic test configuration
+DIAGNOSTICO_DIR = DATA_DIR / "diagnostico"
 
 # Backups
 BACKUPS_DIR = DATA_DIR / "backups"
+
+# Jobs state (for pipeline resume functionality)
+JOBS_DIR = DATA_DIR / ".jobs"
 
 
 # -----------------------------------------------------------------------------
@@ -192,5 +199,6 @@ def validate_paths() -> dict[str, bool]:
         "STANDARDS_DIR": STANDARDS_DIR,
         "TEMARIOS_DIR": TEMARIOS_DIR,
         "PRUEBAS_FINALIZADAS_DIR": PRUEBAS_FINALIZADAS_DIR,
+        "PRUEBAS_ALTERNATIVAS_DIR": PRUEBAS_ALTERNATIVAS_DIR,
     }
     return {name: path.exists() for name, path in paths_to_check.items()}

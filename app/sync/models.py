@@ -71,18 +71,6 @@ class TestType(str, Enum):
 
 
 @dataclass
-class SubjectRow:
-    """Represents a row in the subjects table."""
-
-    id: str
-    name: str
-    short_name: str
-    description: str | None = None
-    admission_year: int | None = None
-    application_types: list[str] | None = None
-
-
-@dataclass
 class StandardRow:
     """Represents a row in the standards table."""
 
@@ -180,9 +168,11 @@ class TestQuestionRow:
 
 @dataclass
 class SyncPayload:
-    """Container for all data to be synced to the database."""
+    """Container for all data to be synced to the database.
 
-    subjects: list[SubjectRow] = field(default_factory=list)
+    Note: Subjects are master data managed separately and not synced from the content repo.
+    """
+
     standards: list[StandardRow] = field(default_factory=list)
     atoms: list[AtomRow] = field(default_factory=list)
     questions: list[QuestionRow] = field(default_factory=list)
@@ -193,7 +183,6 @@ class SyncPayload:
     def summary(self) -> dict[str, int]:
         """Return counts of each entity type."""
         return {
-            "subjects": len(self.subjects),
             "standards": len(self.standards),
             "atoms": len(self.atoms),
             "questions": len(self.questions),

@@ -5,6 +5,7 @@
 | Carpeta | Descripción |
 |---------|-------------|
 | `specifications/` | Verdades absolutas: modelos de datos, normas, specs |
+| `development/` | Planes de desarrollo, arquitectura frontend/backend |
 | `research/` | Investigación exploratoria y opciones de diseño |
 | `analysis/` | Análisis de contenido (cobertura, brechas) |
 
@@ -19,6 +20,10 @@
 - [Estándares de Código Python](specifications/python-best-practices.md)
 - [Transformación Temarios → Standards](specifications/standards-from-temarios.md)
 - [Prompt Engineering Gemini](specifications/gemini-prompt-engineering-best-practices.md)
+
+## Development
+
+- [Frontend Dashboard Plan](development/frontend-dashboard-plan.md) - Admin dashboard for content pipeline management
 
 ## Research
 

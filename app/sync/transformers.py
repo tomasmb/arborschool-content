@@ -6,7 +6,13 @@ English-named schema as defined in docs/data-model-specification.md.
 
 from __future__ import annotations
 
-from .extractors import ExtractedAtom, ExtractedQuestion, ExtractedStandard, ExtractedTest
+from .extractors import (
+    ExtractedAtom,
+    ExtractedQuestion,
+    ExtractedStandard,
+    ExtractedTest,
+)
+from .variant_extractors import ExtractedVariant
 from .models import (
     AtomRelevance,
     AtomRow,
@@ -17,7 +23,6 @@ from .models import (
     QuestionSource,
     SkillType,
     StandardRow,
-    SubjectRow,
     SyncPayload,
     TestQuestionRow,
     TestRow,
@@ -60,17 +65,6 @@ DIFFICULTY_MAP: dict[str, DifficultyLevel] = {
     "medium": DifficultyLevel.MEDIUM,
     "high": DifficultyLevel.HIGH,
 }
-
-# Default subject for PAES M1
-DEFAULT_SUBJECT = SubjectRow(
-    id="paes_m1",
-    name="Prueba de Competencia Matemática 1 (M1)",
-    short_name="PAES M1",
-    description="Competencia Matemática 1 para el proceso de admisión universitaria en Chile",
-    admission_year=2026,
-    application_types=["invierno", "regular"],
-)
-
 
 # -----------------------------------------------------------------------------
 # Transform functions
@@ -224,11 +218,47 @@ def transform_test(
     return test_row, test_questions
 
 
+def transform_variant(extracted: ExtractedVariant) -> QuestionRow:
+    """Transform an extracted variant to a database row.
+
+    Variants are stored as questions with source=ALTERNATE and parent_question_id set.
+    They inherit atom associations from their parent question via parent_question_id,
+    so no separate question_atoms rows are created for variants.
+
+    Args:
+        extracted: ExtractedVariant from alternativas/
+
+    Returns:
+        QuestionRow ready for DB insertion (no question_atoms - inherited from parent)
+    """
+    difficulty = DIFFICULTY_MAP.get(
+        extracted.difficulty_level or "medium", DifficultyLevel.MEDIUM
+    )
+
+    return QuestionRow(
+        id=extracted.id,
+        source=QuestionSource.ALTERNATE,
+        parent_question_id=extracted.parent_question_id,
+        qti_xml=extracted.qti_xml,
+        correct_answer=extracted.correct_answer,
+        difficulty_level=difficulty,
+        title=f"Variant of Q{extracted.source_question_number}",
+        difficulty_score=extracted.difficulty_score,
+        difficulty_analysis=extracted.difficulty_analysis,
+        general_analysis=extracted.general_analysis,
+        feedback_general=extracted.feedback_general,
+        feedback_per_option=extracted.feedback_per_option,
+        source_test_id=extracted.source_test_id,
+        source_question_number=extracted.source_question_number,
+    )
+
+
 def build_sync_payload(
     standards: list[ExtractedStandard],
     atoms: list[ExtractedAtom],
     tests: list[ExtractedTest],
     questions: list[ExtractedQuestion],
+    variants: list[ExtractedVariant] | None = None,
     subject_id: str = "paes_m1",
 ) -> SyncPayload:
     """Build a complete sync payload from all extracted data.
@@ -238,6 +268,7 @@ def build_sync_payload(
         atoms: List of extracted atoms
         tests: List of extracted tests
         questions: List of extracted questions
+        variants: List of extracted variants (optional)
         subject_id: Subject identifier
 
     Returns:
@@ -245,8 +276,8 @@ def build_sync_payload(
     """
     payload = SyncPayload()
 
-    # Add default subject
-    payload.subjects.append(DEFAULT_SUBJECT)
+    # Note: Subjects are master data managed separately - not synced from content repo.
+    # The subject (e.g., "paes_m1") must already exist in the database.
 
     # Transform standards
     for std in standards:
@@ -261,6 +292,13 @@ def build_sync_payload(
         q_row, q_atoms = transform_question(q)
         payload.questions.append(q_row)
         payload.question_atoms.extend(q_atoms)
+
+    # Transform variants (alternate questions)
+    # Note: Variants inherit atom associations from their parent via parent_question_id,
+    # so no question_atoms rows are created for them.
+    if variants:
+        for v in variants:
+            payload.questions.append(transform_variant(v))
 
     # Transform tests and their question relationships
     for test in tests:

@@ -20,10 +20,14 @@ if TYPE_CHECKING:
 # Configuration
 # -----------------------------------------------------------------------------
 
+# Default S3 bucket for question images (shared across environments)
+DEFAULT_S3_BUCKET = "paes-question-images"
+DEFAULT_S3_REGION = "us-east-1"
+
 
 @dataclass
 class S3Config:
-    """S3 configuration from environment variables."""
+    """S3 configuration for image uploads."""
 
     bucket: str
     region: str
@@ -36,31 +40,39 @@ class S3Config:
     def from_env(cls) -> "S3Config":
         """Create config from environment variables.
 
+        Uses the default bucket (paes-question-images) unless S3_BUCKET is set.
+
         Expected variables:
-            S3_BUCKET: Bucket name
-            S3_REGION: AWS region
-            AWS_S3_KEY: Access key (or AWS_ACCESS_KEY_ID)
-            AWS_S3_SECRET: Secret key (or AWS_SECRET_ACCESS_KEY)
+            AWS_S3_KEY: Access key (required)
+            AWS_S3_SECRET: Secret key (required)
+            S3_BUCKET: (optional) Override default bucket
+            S3_REGION: (optional) Override default region (us-east-1)
             S3_ENDPOINT_URL: (optional) For S3-compatible services
             S3_PUBLIC_URL_BASE: (optional) Custom CDN URL base
         """
-        bucket = os.getenv("S3_BUCKET")
-        if not bucket:
-            msg = "S3_BUCKET environment variable is required"
-            raise ValueError(msg)
-
-        # Support both naming conventions
+        # Support both naming conventions for AWS credentials
         access_key = os.getenv("AWS_S3_KEY") or os.getenv("AWS_ACCESS_KEY_ID", "")
         secret_key = os.getenv("AWS_S3_SECRET") or os.getenv("AWS_SECRET_ACCESS_KEY", "")
 
+        if not access_key or not secret_key:
+            msg = "AWS_S3_KEY and AWS_S3_SECRET environment variables are required for S3"
+            raise ValueError(msg)
+
         return cls(
-            bucket=bucket,
-            region=os.getenv("S3_REGION", "us-east-1"),
+            bucket=os.getenv("S3_BUCKET", DEFAULT_S3_BUCKET),
+            region=os.getenv("S3_REGION", DEFAULT_S3_REGION),
             access_key_id=access_key,
             secret_access_key=secret_key,
             endpoint_url=os.getenv("S3_ENDPOINT_URL"),
             public_url_base=os.getenv("S3_PUBLIC_URL_BASE"),
         )
+
+    @classmethod
+    def is_configured(cls) -> bool:
+        """Check if S3 credentials are configured (keys present)."""
+        access_key = os.getenv("AWS_S3_KEY") or os.getenv("AWS_ACCESS_KEY_ID")
+        secret_key = os.getenv("AWS_S3_SECRET") or os.getenv("AWS_SECRET_ACCESS_KEY")
+        return bool(access_key and secret_key)
 
 
 # -----------------------------------------------------------------------------

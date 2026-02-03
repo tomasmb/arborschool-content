@@ -103,8 +103,8 @@ def upload_image_to_s3(
 
     # Add test_name to path if provided (for organization: images/{test_name}/filename.png)
     if test_name:
-        # Sanitize test_name for use in S3 path
-        safe_test_name = "".join(c for c in test_name if c.isalnum() or c in "-_")
+        # Sanitize and lowercase test_name for use in S3 path (consistency with folder structure)
+        safe_test_name = "".join(c for c in test_name.lower() if c.isalnum() or c in "-_")
         path_prefix = f"{path_prefix}{safe_test_name}/"
 
     s3_key = f"{path_prefix}{filename}"
