@@ -64,7 +64,6 @@ def _get_subject_files(subject_id: str) -> tuple[Path | None, Path | None]:
 
 def _extract_data(
     entities: list[str],
-    include_diagnostic_variants: bool = True,
     subject_id: str | None = None,
 ) -> dict:
     """Extract data from content repo based on requested entities.
@@ -72,7 +71,6 @@ def _extract_data(
     Args:
         entities: List of entity types to extract (standards, atoms, tests,
             questions, variants)
-        include_diagnostic_variants: Whether to include diagnostic test variants
         subject_id: Optional subject ID to scope extraction. If provided, only
             data for that subject is extracted.
 
@@ -121,10 +119,7 @@ def _extract_data(
             result["questions"] = questions
 
     if sync_variants:
-        # Extract both regular and diagnostic variants
-        result["variants"] = extract_all_variants(
-            include_diagnostic=include_diagnostic_variants
-        )
+        result["variants"] = extract_all_variants()
 
     return result
 

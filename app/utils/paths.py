@@ -55,9 +55,8 @@ PRUEBAS_PROCESADAS_DIR = PRUEBAS_DIR / "procesadas"
 PRUEBAS_RAW_DIR = PRUEBAS_DIR / "raw"
 PRUEBAS_ALTERNATIVAS_DIR = PRUEBAS_DIR / "alternativas"
 
-# Diagnostic test variants (flat structure)
+# Diagnostic test configuration
 DIAGNOSTICO_DIR = DATA_DIR / "diagnostico"
-DIAGNOSTICO_VARIANTES_DIR = DIAGNOSTICO_DIR / "variantes"
 
 # Backups
 BACKUPS_DIR = DATA_DIR / "backups"

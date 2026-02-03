@@ -1,12 +1,11 @@
-"""Extract variant questions from alternativas/ and diagnostico/variantes/.
+"""Extract variant questions from alternativas/.
 
 This module extracts approved question variants that are generated from
 official test questions. Variants inherit atom associations from their parent
 via parent_question_id - no separate question_atoms are synced for variants.
 
-Two variant sources:
-1. alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/ - regular test variants
-2. diagnostico/variantes/Q{n}_v{m}/ - MST diagnostic test variants (flat structure)
+Variant source:
+    alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/ - test variants
 """
 
 from __future__ import annotations
@@ -17,7 +16,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from app.utils.paths import DIAGNOSTICO_VARIANTES_DIR, PRUEBAS_ALTERNATIVAS_DIR
+from app.utils.paths import PRUEBAS_ALTERNATIVAS_DIR
 
 # Import shared helpers from extractors
 from app.sync.extractors import (
@@ -214,101 +213,16 @@ def extract_variants(
     return variants
 
 
-def extract_diagnostic_variants(
-    diagnostico_dir: Path | None = None,
-) -> list[ExtractedVariant]:
-    """Extract variants from diagnostico/variantes/ (flat structure).
-
-    These are variants specifically created for the MST diagnostic test.
-    They reference questions from multiple source tests.
-
-    Structure expected:
-        diagnostico/variantes/Q{n}_v{m}/
-        ├── question.xml
-        ├── variant_info.json  (contains source_test_id, source_question_id)
-        └── metadata_tags.json
-
-    Args:
-        diagnostico_dir: Path to diagnostico/variantes directory.
-            Defaults to DIAGNOSTICO_VARIANTES_DIR.
-
-    Returns:
-        List of ExtractedVariant instances.
-    """
-    if diagnostico_dir is None:
-        diagnostico_dir = DIAGNOSTICO_VARIANTES_DIR
-
-    variants: list[ExtractedVariant] = []
-
-    if not diagnostico_dir.exists():
-        return variants
-
-    # Walk variant directories directly (flat structure)
-    for v_dir in sorted(diagnostico_dir.iterdir()):
-        if not v_dir.is_dir() or not v_dir.name.startswith("Q"):
-            continue
-
-        # Parse variant info: Q{n}_v{m}
-        match = re.match(r"Q(\d+)_v(\d+)", v_dir.name)
-        if not match:
-            continue
-
-        # Read variant_info.json to get source test and question
-        variant_info_file = v_dir / "variant_info.json"
-        if not variant_info_file.exists():
-            continue
-
-        with open(variant_info_file, encoding="utf-8") as f:
-            variant_info = json.load(f)
-
-        source_test_id = variant_info.get("source_test_id", "")
-        source_q_id = variant_info.get("source_question_id", "")
-        if not source_test_id or not source_q_id:
-            continue
-
-        # Extract question number from source_question_id (e.g., "Q28" -> 28)
-        q_num_match = re.search(r"(\d+)", source_q_id)
-        if not q_num_match:
-            continue
-        q_num = int(q_num_match.group(1))
-
-        # Variant sequence from folder name
-        variant_seq = int(match.group(2))
-
-        # Extract using shared function
-        variant = _extract_single_variant(v_dir, source_test_id, q_num, variant_seq)
-        if variant:
-            # Override ID to indicate diagnostic source
-            variant.id = f"diag-{source_test_id}-Q{q_num}-{variant_seq:03d}"
-            variants.append(variant)
-
-    return variants
-
-
-def extract_all_variants(
-    include_diagnostic: bool = True,
-) -> list[ExtractedVariant]:
-    """Extract all variants from both regular and diagnostic sources.
-
-    Args:
-        include_diagnostic: Whether to include diagnostic test variants.
-            Defaults to True.
+def extract_all_variants() -> list[ExtractedVariant]:
+    """Extract all variants from alternativas/.
 
     Returns:
         List of all ExtractedVariant instances.
     """
-    variants = extract_variants()
-
-    if include_diagnostic:
-        diag_variants = extract_diagnostic_variants()
-        variants.extend(diag_variants)
-
-    return variants
+    return extract_variants()
 
 
-def extract_all_with_variants(
-    include_diagnostic: bool = True,
-) -> tuple[
+def extract_all_with_variants() -> tuple[
     list,  # list[ExtractedTest] - imported type
     list,  # list[ExtractedQuestion] - imported type
     list[ExtractedVariant],
@@ -317,12 +231,9 @@ def extract_all_with_variants(
 
     Convenience function that calls extract_all_tests() and extract_variants().
 
-    Args:
-        include_diagnostic: Whether to include diagnostic test variants.
-
     Returns:
         Tuple of (tests, questions, variants)
     """
     tests, questions = extract_all_tests()
-    variants = extract_all_variants(include_diagnostic=include_diagnostic)
+    variants = extract_all_variants()
     return tests, questions, variants
