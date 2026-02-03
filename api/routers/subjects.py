@@ -20,8 +20,9 @@ import json
 import re
 
 from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import FileResponse
 
-from api.config import SUBJECTS_CONFIG
+from api.config import PRUEBAS_RAW_DIR, SUBJECTS_CONFIG, TEMARIOS_PDF_DIR
 from api.schemas.api_models import (
     AtomBrief,
     AtomDetail,
@@ -380,6 +381,47 @@ async def get_temario(subject_id: str) -> dict:
 
     with open(temario_path, encoding="utf-8") as f:
         return json.load(f)
+
+
+@router.get("/{subject_id}/temario/pdf")
+async def get_temario_pdf(subject_id: str) -> FileResponse:
+    """Serve the temario PDF file for a subject."""
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    config = SUBJECTS_CONFIG[subject_id]
+    if not config.get("temario_file"):
+        raise HTTPException(status_code=404, detail=f"No temario for '{subject_id}'")
+
+    if not TEMARIOS_PDF_DIR.exists():
+        raise HTTPException(status_code=404, detail="Temario PDF directory not found")
+
+    # Return the most recent PDF (by name, which includes date)
+    pdf_files = list(TEMARIOS_PDF_DIR.glob("*.pdf"))
+    if not pdf_files:
+        raise HTTPException(status_code=404, detail="No temario PDFs found")
+
+    pdf_file = sorted(pdf_files, reverse=True)[0]
+    return FileResponse(path=pdf_file, media_type="application/pdf", filename=pdf_file.name)
+
+
+@router.get("/{subject_id}/tests/{test_id}/raw-pdf")
+async def get_test_raw_pdf(subject_id: str, test_id: str) -> FileResponse:
+    """Serve the raw (original) PDF file for a test."""
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    raw_test_dir = PRUEBAS_RAW_DIR / test_id
+    if not raw_test_dir.exists():
+        raise HTTPException(status_code=404, detail=f"Raw PDF not found for '{test_id}'")
+
+    pdf_files = list(raw_test_dir.glob("*.pdf"))
+    if not pdf_files:
+        raise HTTPException(status_code=404, detail=f"No PDFs found for '{test_id}'")
+
+    # Return the largest PDF (usually the official one)
+    pdf_file = max(pdf_files, key=lambda f: f.stat().st_size)
+    return FileResponse(path=pdf_file, media_type="application/pdf", filename=f"{test_id}.pdf")
 
 
 @router.get("/{subject_id}/atoms/unlock-status", response_model=UnlockStatus)

@@ -14,6 +14,8 @@ import {
 import {
   getSubject,
   getSyncStatus,
+  getTemarioPdfUrl,
+  getTestRawPdfUrl,
   type SubjectDetail,
   type SyncStatus,
 } from "@/lib/api";
@@ -157,6 +159,7 @@ export default function CoursePage() {
             done={hasTemario}
             description={hasTemario ? "Parsed from DEMRE PDF" : "Not yet parsed"}
             detail={data.temario_file}
+            pdfUrl={hasTemario ? getTemarioPdfUrl(courseId) : undefined}
           />
 
           {/* Standards */}
@@ -329,7 +332,15 @@ export default function CoursePage() {
                   </td>
                   <td className="px-4 py-3 text-center">
                     {test.raw_pdf_exists ? (
-                      <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
+                      <a
+                        href={getTestRawPdfUrl(courseId, test.id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center hover:opacity-80"
+                        title="View raw PDF"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-success" />
+                      </a>
                     ) : (
                       <Circle className="w-4 h-4 text-text-secondary mx-auto" />
                     )}

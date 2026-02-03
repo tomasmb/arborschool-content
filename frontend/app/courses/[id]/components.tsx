@@ -11,6 +11,7 @@ import {
   Lock,
   X,
   Loader2,
+  FileText,
 } from "lucide-react";
 import { clearPipelineOutputs } from "@/lib/api";
 
@@ -32,6 +33,7 @@ export interface PipelineCardProps {
   onRegenerate?: () => void;
   linkHref?: string;
   linkText?: string;
+  pdfUrl?: string;
   children?: React.ReactNode;
 }
 
@@ -49,6 +51,7 @@ export function PipelineCard({
   onRegenerate,
   linkHref,
   linkText,
+  pdfUrl,
   children,
 }: PipelineCardProps) {
   return (
@@ -70,6 +73,21 @@ export function PipelineCard({
         <p className="text-xs text-text-secondary font-mono truncate mb-3">
           {detail}
         </p>
+      )}
+
+      {pdfUrl && done && (
+        <a
+          href={pdfUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={[
+            "inline-flex items-center gap-2 px-3 py-1.5 bg-accent/10 text-accent rounded",
+            "text-sm font-medium hover:bg-accent/20 transition-colors mb-3",
+          ].join(" ")}
+        >
+          <FileText className="w-4 h-4" />
+          View PDF
+        </a>
       )}
 
       {children}

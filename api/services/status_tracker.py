@@ -141,15 +141,12 @@ class StatusTracker:
         procesadas_dir = PRUEBAS_PROCESADAS_DIR / test_id
         alternativas_dir = PRUEBAS_ALTERNATIVAS_DIR / test_id
 
-        # Check raw PDF
+        # Check raw PDF - look in the test's subdirectory
         raw_pdf_exists = False
-        raw_dir = PRUEBAS_RAW_DIR
-        if raw_dir.exists():
+        raw_test_dir = PRUEBAS_RAW_DIR / test_id
+        if raw_test_dir.exists():
             raw_pdf_exists = any(
-                f.name.lower().startswith(test_id.replace("-", ""))
-                or test_id in f.name.lower()
-                for f in raw_dir.iterdir()
-                if f.suffix.lower() == ".pdf"
+                f.suffix.lower() == ".pdf" for f in raw_test_dir.iterdir()
             )
 
         # Count split PDFs

@@ -137,6 +137,20 @@ export function getQuestionPdfUrl(
   return `${API_BASE}/subjects/${subjectId}/tests/${testId}/questions/${questionNum}/pdf`;
 }
 
+/**
+ * Get the URL for a subject's temario PDF file.
+ */
+export function getTemarioPdfUrl(subjectId: string): string {
+  return `${API_BASE}/subjects/${subjectId}/temario/pdf`;
+}
+
+/**
+ * Get the URL for a test's raw (original) PDF file.
+ */
+export function getTestRawPdfUrl(subjectId: string, testId: string): string {
+  return `${API_BASE}/subjects/${subjectId}/tests/${testId}/raw-pdf`;
+}
+
 // -----------------------------------------------------------------------------
 // Pipeline API
 // -----------------------------------------------------------------------------

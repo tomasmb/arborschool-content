@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, CheckCircle2, Circle, ChevronRight } from "lucide-react";
-import { getTests, type TestBrief } from "@/lib/api";
+import { getTests, getTestRawPdfUrl, type TestBrief } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 export default function TestsPage() {
@@ -88,7 +88,15 @@ export default function TestsPage() {
                 </td>
                 <td className="px-4 py-3 text-center">
                   {test.raw_pdf_exists ? (
-                    <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
+                    <a
+                      href={getTestRawPdfUrl(courseId, test.id)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center hover:opacity-80"
+                      title="View raw PDF"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-success" />
+                    </a>
                   ) : (
                     <Circle className="w-4 h-4 text-text-secondary mx-auto" />
                   )}
