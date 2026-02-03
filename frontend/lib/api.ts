@@ -125,6 +125,18 @@ export async function getQuestionDetail(
   );
 }
 
+/**
+ * Get the URL for a question's PDF file.
+ * This returns a URL that can be used directly in an anchor tag or window.open().
+ */
+export function getQuestionPdfUrl(
+  subjectId: string,
+  testId: string,
+  questionNum: number
+): string {
+  return `${API_BASE}/subjects/${subjectId}/tests/${testId}/questions/${questionNum}/pdf`;
+}
+
 // -----------------------------------------------------------------------------
 // Pipeline API
 // -----------------------------------------------------------------------------

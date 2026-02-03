@@ -2,15 +2,16 @@
 
 Endpoints:
     GET /api/subjects/{subject_id}/tests/{test_id}/questions/{question_num}
+    GET /api/subjects/{subject_id}/tests/{test_id}/questions/{question_num}/pdf
 """
 
 from __future__ import annotations
 
 import json as json_module
-import re
 import xml.etree.ElementTree as ET
 
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import FileResponse
 
 from api.config import (
     PRUEBAS_ALTERNATIVAS_DIR,
@@ -191,4 +192,33 @@ async def get_question_detail(
         variants=variants,
         qti_path=str(qti_file) if qti_file.exists() else None,
         pdf_path=str(pdf_file) if pdf_file.exists() else None,
+    )
+
+
+@router.get("/{subject_id}/tests/{test_id}/questions/{question_num}/pdf")
+async def get_question_pdf(
+    subject_id: str,
+    test_id: str,
+    question_num: int
+) -> FileResponse:
+    """Serve the split PDF file for a specific question.
+
+    Returns the PDF file for viewing/downloading in the browser.
+    """
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    pdf_dir = PRUEBAS_PROCESADAS_DIR / test_id / "pdf"
+    pdf_file = pdf_dir / f"Q{question_num}.pdf"
+
+    if not pdf_file.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"PDF for Q{question_num} not found in test '{test_id}'"
+        )
+
+    return FileResponse(
+        path=pdf_file,
+        media_type="application/pdf",
+        filename=f"{test_id}-Q{question_num}.pdf",
     )

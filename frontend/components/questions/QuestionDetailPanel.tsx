@@ -13,9 +13,34 @@ import {
   ExternalLink,
   ChevronDown,
   ChevronRight,
+  FileImage,
+  RefreshCw,
+  Sparkles,
 } from "lucide-react";
-import { getQuestionDetail, QuestionDetail } from "@/lib/api";
+import { getQuestionDetail, getQuestionPdfUrl, QuestionDetail } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { GeneratePipelineModal } from "@/components/pipelines/GeneratePipelineModal";
+import { VariantOptionsDialog } from "@/components/pipelines/VariantOptionsDialog";
+
+type PipelineAction = "pdf_to_qti" | "tagging" | "variant_gen" | null;
+
+const PIPELINE_INFO = {
+  pdf_to_qti: {
+    id: "pdf_to_qti",
+    name: "Regenerate QTI",
+    description: "Re-convert this question's PDF to QTI XML format",
+  },
+  tagging: {
+    id: "tagging",
+    name: "Regenerate Tags",
+    description: "Re-tag this question with relevant atoms",
+  },
+  variant_gen: {
+    id: "variant_gen",
+    name: "Generate Variants",
+    description: "Add new alternative versions of this question",
+  },
+};
 
 interface QuestionDetailPanelProps {
   subjectId: string;
@@ -35,8 +60,11 @@ export function QuestionDetailPanel({
   const [error, setError] = useState<string | null>(null);
   const [showRawXml, setShowRawXml] = useState(false);
   const [copiedXml, setCopiedXml] = useState(false);
+  const [activePipeline, setActivePipeline] = useState<PipelineAction>(null);
+  const [showVariantOptions, setShowVariantOptions] = useState(false);
+  const [variantsPerQuestion, setVariantsPerQuestion] = useState(3);
 
-  useEffect(() => {
+  const fetchData = () => {
     setLoading(true);
     setError(null);
 
@@ -44,7 +72,29 @@ export function QuestionDetailPanel({
       .then(setData)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchData();
   }, [subjectId, testId, questionNumber]);
+
+  const handlePipelineSuccess = () => {
+    fetchData(); // Refresh question data after pipeline completes
+  };
+
+  const handlePipelineAction = (action: PipelineAction) => {
+    if (action === "variant_gen") {
+      setShowVariantOptions(true);
+    } else {
+      setActivePipeline(action);
+    }
+  };
+
+  const handleVariantOptionsConfirm = (count: number) => {
+    setVariantsPerQuestion(count);
+    setShowVariantOptions(false);
+    setActivePipeline("variant_gen");
+  };
 
   // Handle escape key
   useEffect(() => {
@@ -86,12 +136,26 @@ export function QuestionDetailPanel({
             <h2 className="text-lg font-semibold">Question {questionNumber}</h2>
             <p className="text-sm text-text-secondary">{testId}</p>
           </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            {data?.has_split_pdf && (
+              <a
+                href={getQuestionPdfUrl(subjectId, testId, questionNumber)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent/20
+                  text-accent rounded-lg transition-colors text-sm font-medium"
+              >
+                <FileImage className="w-4 h-4" />
+                View PDF
+              </a>
+            )}
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -131,6 +195,45 @@ export function QuestionDetailPanel({
                       <span className="text-sm">{item.label}</span>
                     </div>
                   ))}
+                </div>
+              </section>
+
+              {/* Actions */}
+              <section>
+                <h3 className="text-sm font-medium text-text-secondary mb-3">
+                  Actions
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => handlePipelineAction("pdf_to_qti")}
+                    disabled={!data.has_split_pdf}
+                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border
+                      rounded-lg hover:bg-white/5 transition-colors text-sm
+                      disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <RefreshCw className="w-4 h-4 text-accent" />
+                    Regenerate QTI
+                  </button>
+                  <button
+                    onClick={() => handlePipelineAction("tagging")}
+                    disabled={!data.is_finalized}
+                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border
+                      rounded-lg hover:bg-white/5 transition-colors text-sm
+                      disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Tag className="w-4 h-4 text-purple-400" />
+                    Regenerate Tags
+                  </button>
+                  <button
+                    onClick={() => handlePipelineAction("variant_gen")}
+                    disabled={!data.is_tagged}
+                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border
+                      rounded-lg hover:bg-white/5 transition-colors text-sm
+                      disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Sparkles className="w-4 h-4 text-yellow-400" />
+                    Generate Variants
+                  </button>
                 </div>
               </section>
 
@@ -342,6 +445,38 @@ export function QuestionDetailPanel({
             </>
           )}
         </div>
+
+        {/* Variant Options Dialog */}
+        <VariantOptionsDialog
+          isOpen={showVariantOptions}
+          onClose={() => setShowVariantOptions(false)}
+          onConfirm={handleVariantOptionsConfirm}
+          existingCount={data?.variants.length ?? 0}
+        />
+
+        {/* Pipeline Modal */}
+        {activePipeline && (
+          <GeneratePipelineModal
+            isOpen={activePipeline !== null}
+            onClose={() => setActivePipeline(null)}
+            onSuccess={handlePipelineSuccess}
+            pipelineId={PIPELINE_INFO[activePipeline].id}
+            pipelineName={PIPELINE_INFO[activePipeline].name}
+            pipelineDescription={PIPELINE_INFO[activePipeline].description}
+            params={
+              activePipeline === "variant_gen"
+                ? {
+                    test_id: testId,
+                    question_ids: `Q${questionNumber}`,
+                    variants_per_question: variantsPerQuestion,
+                  }
+                : {
+                    test_id: testId,
+                    question_ids: `Q${questionNumber}`,
+                  }
+            }
+          />
+        )}
       </div>
     </>
   );
