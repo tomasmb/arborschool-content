@@ -55,6 +55,7 @@ class DBClient:
         Yields:
             Active database connection
         """
+        # Timeout is configured in the connection string (see config.py)
         conn = psycopg.connect(self.config.connection_string, row_factory=dict_row)
         try:
             yield conn

@@ -115,11 +115,13 @@ class DBConfig:
 
     @property
     def connection_string(self) -> str:
-        """Generate psycopg connection string."""
+        """Generate psycopg connection string with timeout."""
         # Use original URL if available (preserves SSL params, etc.)
         if self._connection_string:
-            return self._connection_string
+            # Add timeout if not already present
+            sep = "&" if "?" in self._connection_string else "?"
+            return f"{self._connection_string}{sep}connect_timeout=5"
         return (
             f"postgresql://{self.user}:{self.password}"
-            f"@{self.host}:{self.port}/{self.database}"
+            f"@{self.host}:{self.port}/{self.database}?connect_timeout=5"
         )

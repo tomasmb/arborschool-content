@@ -42,13 +42,19 @@ export default function SettingsPage() {
 
   // Sync options
   const [environment, setEnvironment] = useState<SyncEnvironment>("local");
-  const [entities, setEntities] = useState<string[]>([
-    "standards",
-    "atoms",
-    "tests",
-    "questions",
-  ]);
+  const [entities, setEntities] = useState<string[]>([]);
   const [showProdConfirm, setShowProdConfirm] = useState(false);
+
+  // Auto-select entities that need syncing when diff loads
+  useEffect(() => {
+    if (syncDiff && !syncDiff.error) {
+      const needsSync = ENTITIES.filter((entity) => {
+        const diff = syncDiff.entities[entity];
+        return diff?.has_changes ?? false;
+      });
+      setEntities(needsSync);
+    }
+  }, [syncDiff]);
 
   useEffect(() => {
     if (courseId) {
@@ -246,41 +252,47 @@ export default function SettingsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
                   {ENTITIES.map((entity) => {
                     const diff = syncDiff?.entities[entity];
-                    const hasChanges = diff?.has_changes ?? true;
+                    const hasChanges = diff?.has_changes ?? false;
+                    const isSelected = entities.includes(entity);
+                    const isDisabled = !hasChanges;
+
                     return (
-                      <label
+                      <button
                         key={entity}
+                        type="button"
+                        onClick={() => !isDisabled && toggleEntity(entity)}
+                        disabled={isDisabled}
                         className={cn(
-                          "flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors",
-                          entities.includes(entity)
-                            ? "border-accent bg-accent/10"
-                            : "border-border hover:border-border/80",
-                          !hasChanges && "opacity-60"
+                          "flex items-center gap-2 p-3 rounded-lg border transition-colors",
+                          isSelected && !isDisabled
+                            ? "border-accent bg-accent/10 text-accent"
+                            : isDisabled
+                              ? "border-border/50 opacity-50 cursor-not-allowed"
+                              : "border-border hover:border-border/80"
                         )}
                       >
-                        <input
-                          type="checkbox"
-                          checked={entities.includes(entity)}
-                          onChange={() => toggleEntity(entity)}
-                          className="hidden"
-                        />
                         <div
                           className={cn(
-                            "w-4 h-4 rounded border flex items-center justify-center",
-                            entities.includes(entity)
+                            "w-4 h-4 rounded border flex items-center justify-center flex-shrink-0",
+                            isSelected && !isDisabled
                               ? "bg-accent border-accent"
-                              : "border-text-secondary"
+                              : isDisabled
+                                ? "border-text-secondary/50 bg-success/20"
+                                : "border-text-secondary"
                           )}
                         >
-                          {entities.includes(entity) && (
+                          {isSelected && !isDisabled && (
                             <CheckCircle2 className="w-3 h-3 text-white" />
+                          )}
+                          {isDisabled && (
+                            <CheckCircle2 className="w-3 h-3 text-success" />
                           )}
                         </div>
                         <span className="text-sm capitalize">{entity}</span>
-                        {!hasChanges && (
-                          <CheckCircle2 className="w-3 h-3 text-success ml-auto" />
+                        {isDisabled && (
+                          <span className="text-xs text-success ml-auto">synced</span>
                         )}
-                      </label>
+                      </button>
                     );
                   })}
                 </div>
@@ -475,12 +487,10 @@ export default function SettingsPage() {
           Course Information
         </h2>
 
-        <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-xs text-text-secondary uppercase tracking-wide">Course ID</p>
-              <p className="font-mono text-sm mt-1">{courseId}</p>
-            </div>
+        <div className="bg-surface border border-border rounded-lg p-6 grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-xs text-text-secondary uppercase tracking-wide">Course ID</p>
+            <p className="font-mono text-sm mt-1">{courseId}</p>
           </div>
         </div>
       </section>

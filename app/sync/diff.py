@@ -98,8 +98,16 @@ def _fetch_db_ids(
     conn: psycopg.Connection,
     table: str,
     subject_id: str | None = None,
+    variants_only: bool = False,
 ) -> dict[str, str]:
     """Fetch all IDs and content hashes from a database table.
+
+    Args:
+        conn: Database connection
+        table: Table name to query
+        subject_id: Optional subject ID for filtering (standards, atoms, tests)
+        variants_only: If True and table is 'questions', only fetch variant IDs
+            (questions with parent_question_id IS NOT NULL)
 
     Returns:
         Dict mapping ID to content hash (or empty string if no hash column)
@@ -111,8 +119,12 @@ def _fetch_db_ids(
                 (subject_id,),
             )
         elif table == "questions":
-            # Questions don't have direct subject_id, but we can filter by source_test
-            cur.execute("SELECT id FROM questions")
+            if variants_only:
+                # Only fetch variants (questions that have a parent)
+                cur.execute("SELECT id FROM questions WHERE parent_question_id IS NOT NULL")
+            else:
+                # Fetch only original questions (not variants)
+                cur.execute("SELECT id FROM questions WHERE parent_question_id IS NULL")
         elif table == "question_atoms":
             cur.execute("SELECT question_id || ':' || atom_id as id FROM question_atoms")
         elif table == "test_questions":
@@ -127,6 +139,7 @@ def compute_entity_diff(
     local_items: list[Any],
     db_ids: dict[str, str],
     id_field: str = "id",
+    compute_deletions: bool = True,
 ) -> EntityDiff:
     """Compute diff between local items and database IDs.
 
@@ -134,6 +147,8 @@ def compute_entity_diff(
         local_items: List of local items (dataclasses or dicts)
         db_ids: Dict of database IDs to content hashes
         id_field: Field name to use as ID
+        compute_deletions: If False, skip computing deleted items. Useful for
+            additive-only entities like variants that shouldn't delete parent items.
 
     Returns:
         EntityDiff with new, modified, deleted items
@@ -161,8 +176,9 @@ def compute_entity_diff(
             # A more sophisticated approach would compare content hashes
             diff.unchanged_count += 1
 
-    # Find deleted items (in DB but not in local)
-    diff.deleted_ids = [id_ for id_ in db_ids if id_ not in local_ids]
+    # Find deleted items (in DB but not in local) - only if requested
+    if compute_deletions:
+        diff.deleted_ids = [id_ for id_ in db_ids if id_ not in local_ids]
 
     return diff
 
@@ -215,18 +231,21 @@ def compute_sync_diff(
                     extracted_data["tests"], db_ids
                 )
 
-            # Questions
+            # Questions (original questions only, not variants)
             if extracted_data.get("questions"):
-                db_ids = _fetch_db_ids(conn, "questions")
+                db_ids = _fetch_db_ids(conn, "questions", variants_only=False)
                 result.entities["questions"] = compute_entity_diff(
                     extracted_data["questions"], db_ids
                 )
 
-            # Variants (also go into questions table)
+            # Variants (also go into questions table, but tracked separately)
+            # Variants are additive - they should never cause deletion of parent questions
             if extracted_data.get("variants"):
-                db_ids = _fetch_db_ids(conn, "questions")
+                db_ids = _fetch_db_ids(conn, "questions", variants_only=True)
                 result.entities["variants"] = compute_entity_diff(
-                    extracted_data["variants"], db_ids
+                    extracted_data["variants"],
+                    db_ids,
+                    compute_deletions=False,  # Variants are additive only
                 )
 
         # Check if any entity has changes

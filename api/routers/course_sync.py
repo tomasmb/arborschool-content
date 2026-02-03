@@ -262,7 +262,7 @@ async def get_course_sync_diff(
             detail=f"Invalid environment: {environment}"
         )
 
-    from api.routers.sync import _check_db_config, _extract_data
+    from api.routers.sync import _api_to_db_subject_id, _check_db_config, _extract_data
     from app.sync.diff import compute_sync_diff
 
     # Check if environment is configured
@@ -281,8 +281,11 @@ async def get_course_sync_diff(
             subject_id=subject_id,
         )
 
-        # Compute diff
-        diff = compute_sync_diff(extracted, environment, subject_id)
+        # Convert API subject_id to DB format for querying
+        db_subject_id = _api_to_db_subject_id(subject_id)
+
+        # Compute diff using DB-format subject_id
+        diff = compute_sync_diff(extracted, environment, db_subject_id)
         return diff.to_dict()
 
     except Exception as e:
