@@ -21,7 +21,6 @@ from .models import (
     QuestionAtomRow,
     QuestionRow,
     StandardRow,
-    SubjectRow,
     SyncPayload,
     TestQuestionRow,
     TestRow,
@@ -102,39 +101,6 @@ class DBClient:
     # -------------------------------------------------------------------------
     # Upsert operations
     # -------------------------------------------------------------------------
-
-    def upsert_subjects(self, cur: psycopg.Cursor, subjects: list[SubjectRow]) -> int:
-        """Upsert subjects to the database.
-
-        Args:
-            cur: Database cursor
-            subjects: List of SubjectRow to upsert
-
-        Returns:
-            Number of rows affected
-        """
-        if not subjects:
-            return 0
-
-        affected = 0
-        for subject in subjects:
-            data = self._row_to_dict(subject)
-            cur.execute(
-                """
-                INSERT INTO subjects (id, name, short_name, description, admission_year, application_types)
-                VALUES (%(id)s, %(name)s, %(short_name)s, %(description)s, %(admission_year)s, %(application_types)s)
-                ON CONFLICT (id) DO UPDATE SET
-                    name = EXCLUDED.name,
-                    short_name = EXCLUDED.short_name,
-                    description = EXCLUDED.description,
-                    admission_year = EXCLUDED.admission_year,
-                    application_types = EXCLUDED.application_types
-                """,
-                data,
-            )
-            affected += cur.rowcount
-
-        return affected
 
     def upsert_standards(self, cur: psycopg.Cursor, standards: list[StandardRow]) -> int:
         """Upsert standards to the database.
@@ -414,8 +380,7 @@ class DBClient:
         with self.connection() as conn:
             try:
                 with self.transaction(conn) as cur:
-                    # Upsert in dependency order
-                    results["subjects"] = self.upsert_subjects(cur, payload.subjects)
+                    # Upsert in dependency order (subjects are master data, not synced)
                     results["standards"] = self.upsert_standards(cur, payload.standards)
                     results["atoms"] = self.upsert_atoms(cur, payload.atoms)
                     results["tests"] = self.upsert_tests(cur, payload.tests)

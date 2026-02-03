@@ -210,12 +210,11 @@ def main() -> int:
     summary = payload.summary()
     official_count = len(extracted_questions)
     variant_count = len(extracted_variants)
-    print(f"   ✓ Subjects: {summary['subjects']}")
     print(f"   ✓ Standards: {summary['standards']}")
     print(f"   ✓ Atoms: {summary['atoms']}")
     print(f"   ✓ Tests: {summary['tests']}")
     print(f"   ✓ Questions: {summary['questions']} ({official_count} official + {variant_count} variants)")
-    print(f"   ✓ Question-Atom links: {summary['question_atoms']}")
+    print(f"   ✓ Question-Atom links: {summary['question_atoms']} (official only, variants inherit)")
     print(f"   ✓ Test-Question links: {summary['test_questions']}")
 
     # -------------------------------------------------------------------------

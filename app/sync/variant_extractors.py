@@ -1,7 +1,8 @@
 """Extract variant questions from alternativas/ and diagnostico/variantes/.
 
 This module extracts approved question variants that are generated from
-official test questions. Variants inherit atom tags from their parent.
+official test questions. Variants inherit atom associations from their parent
+via parent_question_id - no separate question_atoms are synced for variants.
 
 Two variant sources:
 1. alternativas/{test_id}/Q{n}/approved/Q{n}_v{m}/ - regular test variants
@@ -34,7 +35,9 @@ from app.sync.extractors import (
 class ExtractedVariant:
     """Variant question extracted from alternativas/.
 
-    Variants inherit atom tags from their parent official question.
+    Variants inherit atom associations from their parent question via parent_question_id.
+    No separate question_atoms are stored for variants - queries should resolve atoms
+    through the parent question.
     """
 
     id: str  # e.g., "alt-prueba-invierno-2025-Q1-001"
@@ -44,8 +47,6 @@ class ExtractedVariant:
     source_question_number: int  # e.g., 1
     qti_xml: str
     correct_answer: str
-    # From metadata_tags.json (inherited/modified from parent)
-    atoms: list[dict[str, Any]]  # List of {atom_id, relevance, reasoning}
     difficulty_level: str | None
     difficulty_score: float | None
     difficulty_analysis: str | None
@@ -108,17 +109,6 @@ def _extract_single_variant(
     canonical_id = f"alt-{test_id}-Q{question_number}-{variant_seq:03d}"
     parent_question_id = f"{test_id}-Q{question_number}"
 
-    # Extract atoms info
-    atoms_data: list[dict[str, Any]] = []
-    for atom_info in metadata.get("selected_atoms", []):
-        atoms_data.append(
-            {
-                "atom_id": atom_info.get("atom_id"),
-                "relevance": atom_info.get("relevance", "primary").lower(),
-                "reasoning": atom_info.get("reasoning"),
-            }
-        )
-
     # Extract difficulty
     difficulty = metadata.get("difficulty", {})
     difficulty_level = difficulty.get("level", "medium").lower() if difficulty else "medium"
@@ -143,7 +133,6 @@ def _extract_single_variant(
         source_question_number=question_number,
         qti_xml=qti_xml,
         correct_answer=_parse_correct_answer_from_qti(qti_xml),
-        atoms=atoms_data,
         difficulty_level=difficulty_level,
         difficulty_score=difficulty.get("score") if difficulty else None,
         difficulty_analysis=difficulty.get("analysis") if difficulty else None,
