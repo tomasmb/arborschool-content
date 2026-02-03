@@ -2,22 +2,18 @@
  * API client for the Arbor Content Dashboard backend.
  */
 
-// Re-export all types for backward compatibility
+// Re-export types that are used by components
 export type {
   AtomBrief,
   AtomTag,
-  ConfigStatus,
   CostEstimate,
   FailedItem,
   GraphData,
   GraphEdge,
   GraphNode,
-  JobListResponse,
   JobLogsResponse,
   JobStatus,
   OverviewResponse,
-  PipelineDefinition,
-  PipelineParam,
   QuestionBrief,
   QuestionDetail,
   QuestionOption,
@@ -31,20 +27,15 @@ export type {
   SyncTableSummary,
   TestBrief,
   TestDetail,
-  UnlockStatus,
   VariantBrief,
 } from "./api-types";
 
 import type {
-  ConfigStatus,
   CostEstimate,
   GraphData,
-  JobListResponse,
   JobLogsResponse,
   JobStatus,
   OverviewResponse,
-  PipelineDefinition,
-  PipelineParam,
   QuestionDetail,
   StandardBrief,
   AtomBrief,
@@ -54,7 +45,6 @@ import type {
   SyncStatus,
   TestBrief,
   TestDetail,
-  UnlockStatus,
 } from "./api-types";
 
 const API_BASE = "/api";
@@ -79,15 +69,11 @@ async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> 
 }
 
 // -----------------------------------------------------------------------------
-// Overview & Config API
+// Overview API
 // -----------------------------------------------------------------------------
 
 export async function getOverview(): Promise<OverviewResponse> {
   return fetchAPI<OverviewResponse>("/overview");
-}
-
-export async function getConfigStatus(): Promise<ConfigStatus> {
-  return fetchAPI<ConfigStatus>("/config-status");
 }
 
 // -----------------------------------------------------------------------------
@@ -117,14 +103,6 @@ export async function getAtomsGraph(subjectId: string): Promise<GraphData> {
   return fetchAPI<GraphData>(`/subjects/${subjectId}/atoms/graph`);
 }
 
-export async function getAtomsUnlockStatus(subjectId: string): Promise<UnlockStatus> {
-  return fetchAPI<UnlockStatus>(`/subjects/${subjectId}/atoms/unlock-status`);
-}
-
-export async function getTemario(subjectId: string): Promise<Record<string, unknown>> {
-  return fetchAPI<Record<string, unknown>>(`/subjects/${subjectId}/temario`);
-}
-
 // -----------------------------------------------------------------------------
 // Tests & Questions API
 // -----------------------------------------------------------------------------
@@ -150,18 +128,6 @@ export async function getQuestionDetail(
 // -----------------------------------------------------------------------------
 // Pipeline API
 // -----------------------------------------------------------------------------
-
-export async function getPipelines(): Promise<PipelineDefinition[]> {
-  return fetchAPI<PipelineDefinition[]>("/pipelines");
-}
-
-export async function getPipelineDetails(
-  pipelineId: string
-): Promise<{ pipeline: PipelineDefinition; params: PipelineParam[] }> {
-  return fetchAPI<{ pipeline: PipelineDefinition; params: PipelineParam[] }>(
-    `/pipelines/${pipelineId}`
-  );
-}
 
 export async function estimatePipelineCost(
   pipelineId: string,
@@ -204,37 +170,8 @@ export async function runPipeline(
   });
 }
 
-export async function getJobs(limit = 20): Promise<JobListResponse> {
-  return fetchAPI<JobListResponse>(`/pipelines/jobs?limit=${limit}`);
-}
-
 export async function getJob(jobId: string): Promise<JobStatus> {
   return fetchAPI<JobStatus>(`/pipelines/jobs/${jobId}`);
-}
-
-export async function cancelJob(jobId: string): Promise<JobStatus> {
-  return fetchAPI<JobStatus>(`/pipelines/jobs/${jobId}/cancel`, {
-    method: "POST",
-  });
-}
-
-export async function deleteJob(jobId: string): Promise<{ message: string }> {
-  return fetchAPI<{ message: string }>(`/pipelines/jobs/${jobId}`, {
-    method: "DELETE",
-  });
-}
-
-export async function resumeJob(
-  jobId: string,
-  mode: "remaining" | "failed_only" = "remaining"
-): Promise<{ job_id: string; status: string; message: string }> {
-  return fetchAPI<{ job_id: string; status: string; message: string }>(
-    `/pipelines/jobs/${jobId}/resume`,
-    {
-      method: "POST",
-      body: JSON.stringify({ mode }),
-    }
-  );
 }
 
 export async function getJobLogs(

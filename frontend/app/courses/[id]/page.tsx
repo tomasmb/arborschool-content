@@ -8,10 +8,8 @@ import {
   Circle,
   Network,
   ChevronRight,
-  Play,
   RefreshCw,
   AlertTriangle,
-  Lock,
 } from "lucide-react";
 import {
   getSubject,
@@ -19,6 +17,8 @@ import {
   type SubjectDetail,
   type SyncStatus,
 } from "@/lib/api";
+import { GeneratePipelineModal } from "@/components/pipelines";
+import { useToast } from "@/components/ui";
 
 // Calculate totals from subject data
 function calculateTotals(data: SubjectDetail) {
@@ -32,16 +32,21 @@ function calculateTotals(data: SubjectDetail) {
 }
 import { cn, getEjeColor, getEjeBgColor } from "@/lib/utils";
 import { KnowledgeGraphModal } from "@/components/knowledge-graph";
+import { PipelineCard, SyncItem } from "./components";
+
+type GenerateModalType = "standards" | "atoms" | null;
 
 export default function CoursePage() {
   const params = useParams();
   const courseId = params.id as string;
+  const { showToast } = useToast();
 
   const [data, setData] = useState<SubjectDetail | null>(null);
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showGraph, setShowGraph] = useState(false);
+  const [generateModal, setGenerateModal] = useState<GenerateModalType>(null);
 
   const fetchData = useCallback(async () => {
     if (!courseId) return;
@@ -63,6 +68,23 @@ export default function CoursePage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const handleGenerateSuccess = useCallback(() => {
+    const type = generateModal;
+    setGenerateModal(null);
+    showToast(
+      "success",
+      type === "standards"
+        ? "Standards generated successfully!"
+        : "Atoms generated successfully!"
+    );
+    // Refresh data to show new items
+    fetchData();
+  }, [generateModal, showToast, fetchData]);
+
+  const handleGenerateClose = useCallback(() => {
+    setGenerateModal(null);
+  }, []);
 
   if (loading) {
     return (
@@ -139,7 +161,7 @@ export default function CoursePage() {
             canGenerate={canGenerateStandards}
             isBlocked={!hasTemario}
             blockedReason="Requires Temario"
-            onGenerate={() => alert("Generate Standards - Coming soon!")}
+            onGenerate={() => setGenerateModal("standards")}
           >
             {hasStandards && (
               <div className="flex flex-wrap gap-1 mt-3">
@@ -178,7 +200,7 @@ export default function CoursePage() {
             canGenerate={canGenerateAtoms}
             isBlocked={!hasStandards}
             blockedReason="Requires Standards"
-            onGenerate={() => alert("Generate Atoms - Coming soon!")}
+            onGenerate={() => setGenerateModal("atoms")}
             linkHref={`/courses/${courseId}/atoms`}
             linkText="View atoms →"
           />
@@ -339,125 +361,32 @@ export default function CoursePage() {
         isOpen={showGraph}
         onClose={() => setShowGraph(false)}
       />
-    </div>
-  );
-}
 
-// Pipeline Card Component
-interface PipelineCardProps {
-  step: number;
-  title: string;
-  done: boolean;
-  description: string;
-  detail?: string | null;
-  canGenerate?: boolean;
-  isBlocked?: boolean;
-  blockedReason?: string;
-  onGenerate?: () => void;
-  linkHref?: string;
-  linkText?: string;
-  children?: React.ReactNode;
-}
+      {/* Generate Standards Modal */}
+      <GeneratePipelineModal
+        isOpen={generateModal === "standards"}
+        onClose={handleGenerateClose}
+        onSuccess={handleGenerateSuccess}
+        pipelineId="standards_gen"
+        pipelineName="Generate Standards"
+        pipelineDescription="Generate learning standards from the temario"
+        params={{
+          temario_file: data?.temario_file || "",
+        }}
+      />
 
-function PipelineCard({
-  step,
-  title,
-  done,
-  description,
-  detail,
-  canGenerate,
-  isBlocked,
-  blockedReason,
-  onGenerate,
-  linkHref,
-  linkText,
-  children,
-}: PipelineCardProps) {
-  return (
-    <div className="bg-surface border border-border rounded-lg p-4">
-      <div className="flex items-center gap-3 mb-3">
-        {done ? (
-          <CheckCircle2 className="w-5 h-5 text-success" />
-        ) : (
-          <Circle className="w-5 h-5 text-text-secondary" />
-        )}
-        <h3 className="font-medium">
-          {step}. {title}
-        </h3>
-      </div>
-
-      <p className="text-text-secondary text-sm mb-3">{description}</p>
-
-      {detail && (
-        <p className="text-xs text-text-secondary font-mono truncate mb-3">
-          {detail}
-        </p>
-      )}
-
-      {children}
-
-      {/* Action buttons */}
-      <div className="mt-4 flex items-center gap-2">
-        {canGenerate && onGenerate && (
-          <button
-            onClick={onGenerate}
-            className="flex items-center gap-2 px-3 py-1.5 bg-accent text-white rounded text-sm font-medium hover:bg-accent/90 transition-colors"
-          >
-            <Play className="w-3 h-3" />
-            Generate
-          </button>
-        )}
-
-        {isBlocked && !done && (
-          <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-            <Lock className="w-3 h-3" />
-            {blockedReason}
-          </span>
-        )}
-
-        {linkHref && linkText && (
-          <Link href={linkHref} className="text-accent text-sm hover:underline">
-            {linkText}
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// Sync Item Component
-interface SyncItemProps {
-  label: string;
-  count: number;
-  status: "synced" | "pending" | "empty" | "warning";
-  warning?: string;
-}
-
-function SyncItem({ label, count, status, warning }: SyncItemProps) {
-  const getStatusIcon = () => {
-    switch (status) {
-      case "synced":
-        return <CheckCircle2 className="w-4 h-4 text-success" />;
-      case "pending":
-        return <RefreshCw className="w-4 h-4 text-warning" />;
-      case "warning":
-        return <AlertTriangle className="w-4 h-4 text-warning" />;
-      default:
-        return <Circle className="w-4 h-4 text-text-secondary" />;
-    }
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      {getStatusIcon()}
-      <div>
-        <p className="text-sm font-medium">{label}</p>
-        {warning ? (
-          <p className="text-xs text-warning">{warning}</p>
-        ) : (
-          <p className="text-xs text-text-secondary">{count} items</p>
-        )}
-      </div>
+      {/* Generate Atoms Modal */}
+      <GeneratePipelineModal
+        isOpen={generateModal === "atoms"}
+        onClose={handleGenerateClose}
+        onSuccess={handleGenerateSuccess}
+        pipelineId="atoms_gen"
+        pipelineName="Generate Atoms"
+        pipelineDescription="Generate learning atoms from standards"
+        params={{
+          standards_file: "paes_m1_2026.json",
+        }}
+      />
     </div>
   );
 }

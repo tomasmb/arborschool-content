@@ -1,13 +1,12 @@
 # Frontend Redesign: Course-Centric Architecture
 
-This document outlines the changes needed to transform the frontend from a
-pipeline-centric/global-view architecture to a **course-centric** architecture.
+This document outlines the course-centric frontend architecture.
 
 ---
 
 ## Implementation Status (Updated 2026-02-03)
 
-### Completed
+### All Frontend Phases Complete ✅
 
 | Phase | Description | Status |
 |-------|-------------|--------|
@@ -15,38 +14,33 @@ pipeline-centric/global-view architecture to a **course-centric** architecture.
 | Phase 2 | Remove global pages (`/pipelines`, `/sync`) | ✅ Done |
 | Phase 3 | Course Overview Enhancement (pipeline cards, sync status, inline buttons) | ✅ Done |
 | Phase 4 | New Course Pages (`/standards`, `/tests`, `/settings`) | ✅ Done |
+| Phase 5 | Generation Buttons Functional (with cost modal, progress, toasts) | ✅ Done |
 | Phase 6 | Dynamic Sidebar (context-aware navigation) | ✅ Done |
-
-### Remaining Work (Backend)
-
-| Task | Description | Priority |
-|------|-------------|----------|
-| Course-scoped sync endpoint | `POST /api/courses/{course_id}/sync` | Medium |
-| Course-scoped generation endpoints | `POST /api/courses/{course_id}/generate/standards`, etc. | Medium |
-| Auto-upload images during QTI generation | Upload to S3 during generation, not as separate step | Low |
-| Sync diff tracking | Track local vs remote counts per course | Low |
+| Cleanup | Remove dead code (legacy components, unused API functions) | ✅ Done |
 
 ### Current State
 
-**Frontend:**
-- All URLs now use `/courses/` instead of `/subjects/`
+**Frontend (complete):**
+- All URLs use `/courses/` pattern
 - Sidebar is dynamic: shows Dashboard on home, course-specific nav when inside a course
-- Course overview shows Knowledge Graph Pipeline status with placeholder [Generate] buttons
-- New pages: Standards list, Tests list, Settings (with sync placeholder)
-- Old global pages (`/pipelines`, `/sync`) removed
+- Course overview shows Knowledge Graph Pipeline with working [Generate] buttons
+- Generation triggers `GeneratePipelineModal` with cost estimation, confirmation, progress
+- Toast notifications on success/failure, data auto-refreshes
+- New pages: Standards list, Tests list, Settings
+- Legacy code removed: `JobsTable`, `PipelineForm`, `JobStatusBadge`, unused API functions
 
-**Backend:**
-- API still uses `/api/subjects/` endpoints (frontend calls these)
-- No changes needed yet - frontend works with existing APIs
-- Generation buttons are placeholders (show alerts)
-- Sync in Settings is a placeholder
+**Backend (no changes needed):**
+- API uses `/api/subjects/` endpoints (works fine, just internal naming)
+- Pipeline API works for generation
+- Sync API is global but works since there's only one course currently
 
-### Next Steps to Make Generation Work
+### Remaining Work (Optional Backend Enhancements)
 
-1. Wire up [Generate Standards] button to call existing pipeline API
-2. Wire up [Generate Atoms] button to call existing pipeline API
-3. Add loading states and progress indicators
-4. Show toast notifications on success/failure
+| Task | Description | Priority |
+|------|-------------|----------|
+| Wire up Settings sync | Use existing `/api/sync/*` endpoints from Settings page | Medium |
+| Course-scoped sync endpoint | `POST /api/courses/{course_id}/sync` (cleaner API) | Low |
+| Auto-upload images during QTI | Upload to S3 during generation, not as separate step | Low |
 
 ---
 
@@ -68,19 +62,7 @@ Instead:
 
 ---
 
-## Current State (Problems)
-
-| Page | Problem |
-|------|---------|
-| `/pipelines` | Global page, not course-specific. User must know which pipeline to run. |
-| `/sync` | Global page with checkboxes. Confusing UX. |
-| `/subjects/[id]/atoms` | Good - already course-scoped |
-| Sidebar | Hardcoded "PAES M1 2026" link. Has global "Pipelines" and "Sync" links. |
-| S3 Images | Separate manual step instead of auto-upload during generation |
-
----
-
-## New Architecture
+## Architecture
 
 ### Navigation Structure
 
@@ -102,50 +84,17 @@ Dashboard (/)
             └── Sync actions, configuration
 ```
 
-### Sidebar Changes
-
-**Remove:**
-- "Pipelines" link
-- "Sync" link
-- Hardcoded "PAES M1 2026" link
-- "Atoms" global link
-
-**Keep:**
-- "Dashboard" link
-
-**Add (dynamic, when inside a course):**
-- Course name as header
-- "Overview" link
-- "Standards" link
-- "Atoms" link
-- "Tests" link
-- "Settings" link
-- "← Back to Dashboard" link
-
 ---
 
-## Pages to Remove
+## Pages
 
-| Page | Reason |
-|------|--------|
-| `/pipelines` | Replaced by inline generation in course overview |
-| `/sync` | Replaced by sync status + actions in course settings |
-| `/subjects/[id]/atoms` | Rename to `/courses/[id]/atoms` |
-| `/subjects/[id]` | Rename to `/courses/[id]` |
-| `/subjects/[id]/tests/[testId]` | Rename to `/courses/[id]/tests/[testId]` |
+### Dashboard (`/`)
 
----
-
-## Pages to Create/Modify
-
-### 1. Dashboard (`/`)
-
-**Keep as-is but enhance:**
-- Show all courses as cards
+- Shows all courses as cards
 - Each card shows: name, year, pipeline completion %, sync status indicator
 - Click → navigates to `/courses/[courseId]`
 
-### 2. Course Overview (`/courses/[courseId]`)
+### Course Overview (`/courses/[courseId]`)
 
 **This is the main course page. Shows:**
 
@@ -198,226 +147,55 @@ Shows current sync state:
 └─────────────────────────────────────────────────────┘
 ```
 
-### 3. Course Standards (`/courses/[courseId]/standards`)
+### Course Standards (`/courses/[courseId]/standards`)
 
 - List of all standards for this course
 - Grouped by eje (axis): Números, Álgebra, Geometría, Probabilidad
 - Each standard shows: code, description, atom count
-- Filter/search functionality
 
-### 4. Course Atoms (`/courses/[courseId]/atoms`)
+### Course Atoms (`/courses/[courseId]/atoms`)
 
-- **Move existing `/subjects/[id]/atoms` here**
 - List of all atoms for this course
 - Filter by: eje, standard, status
 - Each atom shows: title, standard link, question count
 
-### 5. Course Tests (`/courses/[courseId]/tests`)
+### Course Tests (`/courses/[courseId]/tests`)
 
 - List of all tests for this course
 - Shows pipeline status for each test
-- Quick actions: Split, Generate QTI, etc.
 
-### 6. Test Detail (`/courses/[courseId]/tests/[testId]`)
+### Test Detail (`/courses/[courseId]/tests/[testId]`)
 
-- **Move existing page here**
-- Questions table with:
-  - Question number, preview, status
-  - Atom tags
-  - Variant count
-  - Actions: Generate variants, Tag atoms, View/Edit
+- Questions table with: question number, preview, status, atom tags, variant count
+- Actions: Generate variants, Tag atoms, View/Edit
 
-### 7. Course Settings (`/courses/[courseId]/settings`)
+### Course Settings (`/courses/[courseId]/settings`)
 
-**Contains:**
-- Full sync controls (what was in `/sync` but scoped to this course)
+- Sync status and controls
 - Course configuration
-- Danger zone (reset, delete)
 
 ---
 
-## Backend Changes Needed
-
-### 1. Auto-upload images during QTI generation
-
-**Current:** Images stay local, user must manually sync to S3.
-
-**New:** When generating QTI questions, automatically upload images to S3 and
-update the XML with S3 URLs.
-
-**Files to modify:**
-- `app/qti/generation.py` (or wherever QTI is generated)
-- Call `ImageUploader.upload()` during generation, not as separate step
-
-### 2. Course-scoped sync endpoint
-
-**Current:** `/api/sync` syncs everything based on checkboxes.
-
-**New:** `/api/courses/{course_id}/sync` syncs only that course's data.
-
-**Endpoint behavior:**
-- Automatically determines what needs syncing (diff local vs DB)
-- Returns preview of changes
-- Accepts confirmation to execute
-
-### 3. Course-scoped pipeline endpoints
-
-**Current:** Pipelines might be global or require manual course specification.
-
-**New:** All generation endpoints are course-scoped:
-- `POST /api/courses/{course_id}/generate/standards`
-- `POST /api/courses/{course_id}/generate/atoms`
-- `POST /api/courses/{course_id}/tests/{test_id}/split`
-- `POST /api/courses/{course_id}/tests/{test_id}/generate-qti`
-- `POST /api/courses/{course_id}/tests/{test_id}/generate-variants`
-
-### 4. Course status endpoint
-
-**New endpoint:** `GET /api/courses/{course_id}/status`
-
-Returns comprehensive status for the course overview page:
-
-```json
-{
-  "course_id": "paes-m1-2026",
-  "knowledge_graph": {
-    "temario": { "status": "complete", "count": 1 },
-    "standards": { "status": "complete", "count": 45 },
-    "atoms": { "status": "pending", "count": 0, "can_generate": true }
-  },
-  "tests": [
-    {
-      "test_id": "prueba-invierno-2025",
-      "name": "Prueba Invierno 2025",
-      "pdf": true,
-      "split_count": 45,
-      "qti_count": 45,
-      "tagged_count": 40,
-      "variant_count": 120
-    }
-  ],
-  "sync": {
-    "standards": { "local": 45, "remote": 45, "pending": 0 },
-    "atoms": { "local": 120, "remote": 100, "pending": 20 },
-    "questions": { "local": 45, "remote": 45, "pending": 0 },
-    "variants": { "local": 120, "remote": 115, "pending": 5 },
-    "images": { "pending": 0 }
-  },
-  "last_sync": "2026-02-01T14:30:00Z"
-}
-```
-
----
-
-## URL Structure Changes
-
-| Old | New |
-|-----|-----|
-| `/subjects/[id]` | `/courses/[id]` |
-| `/subjects/[id]/atoms` | `/courses/[id]/atoms` |
-| `/subjects/[id]/tests/[testId]` | `/courses/[id]/tests/[testId]` |
-| `/pipelines` | **(removed)** |
-| `/sync` | **(removed)** |
-| — | `/courses/[id]/standards` **(new)** |
-| — | `/courses/[id]/tests` **(new)** |
-| — | `/courses/[id]/settings` **(new)** |
-
----
-
-## Component Changes
+## Key Components
 
 ### Sidebar (`components/layout/Sidebar.tsx`)
 
-**Current:** Static links to global pages.
+Dynamic based on context:
+- On dashboard: shows only "Dashboard" link
+- Inside a course: shows course-specific navigation (Overview, Standards, Atoms, Tests, Settings) plus "← Dashboard" back link
 
-**New:** Dynamic based on context:
-- If on dashboard: show only "Dashboard"
-- If inside a course: show course navigation
+### GeneratePipelineModal (`components/pipelines/GeneratePipelineModal.tsx`)
 
-```tsx
-// Pseudo-code
-if (isInsideCourse) {
-  return (
-    <>
-      <BackLink to="/">← Dashboard</BackLink>
-      <CourseHeader>{courseName}</CourseHeader>
-      <NavLink to={`/courses/${courseId}`}>Overview</NavLink>
-      <NavLink to={`/courses/${courseId}/standards`}>Standards</NavLink>
-      <NavLink to={`/courses/${courseId}/atoms`}>Atoms</NavLink>
-      <NavLink to={`/courses/${courseId}/tests`}>Tests</NavLink>
-      <NavLink to={`/courses/${courseId}/settings`}>Settings</NavLink>
-    </>
-  );
-} else {
-  return <NavLink to="/">Dashboard</NavLink>;
-}
-```
+Handles the full generation flow:
+1. Fetches cost estimate from `/api/pipelines/estimate`
+2. Shows cost and requires user confirmation
+3. Gets confirmation token and runs pipeline
+4. Polls job status and shows progress
+5. Displays success/failure and triggers data refresh
 
-### New Component: PipelineStatus
+### Toast (`components/ui/Toast.tsx`)
 
-Reusable component showing a pipeline step:
-
-```tsx
-interface PipelineStepProps {
-  name: string;
-  status: 'complete' | 'pending' | 'blocked';
-  count: number;
-  total?: number;
-  canGenerate: boolean;
-  onGenerate: () => void;
-}
-```
-
-### New Component: SyncStatus
-
-Shows sync state for a course:
-
-```tsx
-interface SyncStatusProps {
-  courseId: string;
-  standards: { local: number; remote: number };
-  atoms: { local: number; remote: number };
-  questions: { local: number; remote: number };
-  variants: { local: number; remote: number };
-  lastSync: string | null;
-  onSync: () => void;
-}
-```
-
----
-
-## Implementation Order
-
-### Phase 1: URL Restructure ✅ DONE
-1. ✅ Rename `/subjects` to `/courses`
-2. ✅ Update all internal links
-3. ✅ Update API calls (frontend still calls `/api/subjects/` - that's fine)
-
-### Phase 2: Remove Global Pages ✅ DONE
-1. ✅ Delete `/pipelines/page.tsx`
-2. ✅ Delete `/sync/page.tsx`
-3. ✅ Remove from sidebar
-
-### Phase 3: Course Overview Enhancement ✅ DONE
-1. ✅ Create `PipelineCard` component (inline in page)
-2. ✅ Create `SyncItem` component (inline in page)
-3. ✅ Add inline generation buttons (placeholders)
-4. ✅ Add sync status section
-
-### Phase 4: New Course Pages ✅ DONE
-1. ✅ Create `/courses/[id]/standards`
-2. ✅ Create `/courses/[id]/tests` (list view)
-3. ✅ Create `/courses/[id]/settings`
-
-### Phase 5: Backend Changes ⏳ PENDING
-1. ⏳ Add course-scoped status endpoint (optional - current API works)
-2. ⏳ Add course-scoped sync endpoint (optional)
-3. ⏳ Auto-upload images during generation
-
-### Phase 6: Dynamic Sidebar ✅ DONE
-1. ✅ Detect if inside course context
-2. ✅ Show appropriate navigation
-3. ✅ Add "Back to Dashboard" when in course
+Simple toast notification system with `ToastProvider` context and `useToast` hook.
 
 ---
 
@@ -431,9 +209,16 @@ interface SyncStatusProps {
 
 ---
 
-## Open Questions
+## Design Decisions (Resolved)
 
-1. **Course creation**: Where does creating a new course happen? (Dashboard or separate admin?)
-2. **Multi-course operations**: Is there ever a need to sync/generate across all courses at once?
-3. **Course deletion**: What's the flow for removing a course and its data?
-4. **Permissions**: Will there be different user roles with different access levels per course?
+1. **Course creation**: Courses are created by uploading a temario. Either:
+   - Upload via UI (future feature) which places the temario in the correct folder
+   - Manually place the temario PDF in `app/data/temarios/pdf/`
+   - No explicit "Create Course" button needed—the temario defines the course.
+
+2. **Multi-course operations**: No. All operations are always scoped to a single course.
+   No bulk sync or bulk generation across multiple courses.
+
+3. **Course deletion**: Out of scope. Not needed for current use case.
+
+4. **Permissions**: Single user system, no authentication or role-based access control needed.
