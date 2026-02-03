@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-
 # -----------------------------------------------------------------------------
 # Overview models
 # -----------------------------------------------------------------------------
@@ -273,3 +272,64 @@ class RunPipelineResponse(BaseModel):
     job_id: str
     status: str
     message: str
+
+
+# -----------------------------------------------------------------------------
+# Sync models
+# -----------------------------------------------------------------------------
+
+
+class SyncEntityCounts(BaseModel):
+    """Counts for a single entity type."""
+
+    total: int = Field(description="Total items to sync")
+    official: int | None = Field(None, description="Official questions (source=official)")
+    variants: int | None = Field(None, description="Variant questions (source=alternate)")
+
+
+class SyncPreviewRequest(BaseModel):
+    """Request for sync preview (dry run)."""
+
+    entities: list[str] = Field(
+        default_factory=lambda: ["standards", "atoms", "tests", "questions"],
+        description="Entity types to sync: standards, atoms, tests, questions, variants"
+    )
+    include_variants: bool = Field(False, description="Include question variants")
+    upload_images: bool = Field(False, description="Upload images to S3")
+
+
+class SyncTableSummary(BaseModel):
+    """Summary of what will be affected for a single table."""
+
+    table: str
+    total: int = Field(description="Total rows to upsert")
+    breakdown: dict = Field(default_factory=dict, description="Additional breakdown")
+
+
+class SyncPreviewResponse(BaseModel):
+    """Response from sync preview."""
+
+    tables: list[SyncTableSummary]
+    summary: dict = Field(default_factory=dict, description="Overall summary counts")
+    warnings: list[str] = Field(default_factory=list, description="Any warnings")
+
+
+class SyncExecuteRequest(BaseModel):
+    """Request to execute sync."""
+
+    entities: list[str] = Field(
+        default_factory=lambda: ["standards", "atoms", "tests", "questions"],
+        description="Entity types to sync"
+    )
+    include_variants: bool = Field(False, description="Include question variants")
+    upload_images: bool = Field(False, description="Upload images to S3")
+    confirm: bool = Field(False, description="Must be True to execute")
+
+
+class SyncExecuteResponse(BaseModel):
+    """Response from sync execution."""
+
+    success: bool
+    results: dict = Field(default_factory=dict, description="Rows affected per table")
+    message: str
+    errors: list[str] = Field(default_factory=list)

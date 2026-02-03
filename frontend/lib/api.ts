@@ -310,3 +310,72 @@ export async function deleteJob(jobId: string): Promise<{ message: string }> {
     method: "DELETE",
   });
 }
+
+// -----------------------------------------------------------------------------
+// Sync types
+// -----------------------------------------------------------------------------
+
+export interface SyncTableSummary {
+  table: string;
+  total: number;
+  breakdown: Record<string, number>;
+}
+
+export interface SyncPreviewResponse {
+  tables: SyncTableSummary[];
+  summary: Record<string, unknown>;
+  warnings: string[];
+}
+
+export interface SyncExecuteResponse {
+  success: boolean;
+  results: Record<string, number>;
+  message: string;
+  errors: string[];
+}
+
+export interface SyncStatus {
+  database_configured: boolean;
+  s3_configured: boolean;
+  available_entities: string[];
+}
+
+// -----------------------------------------------------------------------------
+// Sync API functions
+// -----------------------------------------------------------------------------
+
+export async function getSyncStatus(): Promise<SyncStatus> {
+  return fetchAPI<SyncStatus>("/sync/status");
+}
+
+export async function previewSync(
+  entities: string[],
+  includeVariants: boolean,
+  uploadImages: boolean
+): Promise<SyncPreviewResponse> {
+  return fetchAPI<SyncPreviewResponse>("/sync/preview", {
+    method: "POST",
+    body: JSON.stringify({
+      entities,
+      include_variants: includeVariants,
+      upload_images: uploadImages,
+    }),
+  });
+}
+
+export async function executeSync(
+  entities: string[],
+  includeVariants: boolean,
+  uploadImages: boolean,
+  confirm: boolean
+): Promise<SyncExecuteResponse> {
+  return fetchAPI<SyncExecuteResponse>("/sync/execute", {
+    method: "POST",
+    body: JSON.stringify({
+      entities,
+      include_variants: includeVariants,
+      upload_images: uploadImages,
+      confirm,
+    }),
+  });
+}

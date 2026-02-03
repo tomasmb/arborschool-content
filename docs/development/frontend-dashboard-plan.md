@@ -940,11 +940,13 @@ Remaining for Phase 4:
 - Resume/retry failed jobs UI
 - Job logs viewer
 
-### Phase 5: Sync & Polish
-- [x] Sync page UI (placeholder)
-- [ ] Sync preview endpoint
-- [ ] Sync execution with confirmation
-- [ ] Risk warning modals
+### Phase 5: Sync & Polish ✅ MOSTLY COMPLETE (2026-02-03)
+- [x] Sync page UI (placeholder → functional)
+- [x] Sync preview endpoint (`POST /api/sync/preview`)
+- [x] Sync execution with confirmation (`POST /api/sync/execute`)
+- [x] Risk warning modals (confirmation modal before sync)
+- [x] Database configuration status check
+- [ ] S3 image upload integration (endpoint exists, UI checkbox added)
 - [ ] Responsive tweaks
 - [ ] Error handling improvements
 
@@ -1025,10 +1027,16 @@ Remaining for Phase 4:
 8. ~~Complete Phase 4: Implement pipeline execution backend~~ ✓ Done (2026-02-03)
    - API endpoints for pipelines, cost estimation, job management
    - Frontend pipeline runner with dynamic forms and cost confirmation
-9. **Next**: Complete Phase 5 - Implement sync endpoints
+9. ~~Complete Phase 5: Implement sync endpoints~~ ✓ Done (2026-02-03)
    - `POST /api/sync/preview` - preview changes before syncing
    - `POST /api/sync/execute` - execute sync with confirmation
-   - Update frontend sync page to call these endpoints
+   - Frontend sync page with entity selection, preview, and confirmation modal
+10. **Next**: Polish and remaining items
+    - Test S3 image upload integration
+    - Add question detail slide-over panel
+    - Add job resume/retry UI for failed pipeline jobs
+    - Responsive design tweaks
+    - Error handling improvements
 
 ### Running the Dashboard
 
