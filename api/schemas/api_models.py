@@ -124,6 +124,55 @@ class QuestionBrief(BaseModel):
     variants_count: int = Field(description="Number of approved variants")
 
 
+class AtomTag(BaseModel):
+    """Atom tag information for a question."""
+
+    atom_id: str
+    titulo: str
+    eje: str
+    relevance: float = Field(1.0, description="Relevance score 0-1")
+
+
+class VariantBrief(BaseModel):
+    """Brief variant info for question detail."""
+
+    id: str
+    variant_number: int
+    folder_name: str
+    has_qti: bool = True
+    has_metadata: bool = False
+
+
+class QuestionDetail(BaseModel):
+    """Full question detail for slide-over panel."""
+
+    id: str
+    test_id: str
+    question_number: int
+    # Pipeline status
+    has_split_pdf: bool
+    has_qti: bool
+    is_finalized: bool
+    is_tagged: bool
+    # Content
+    qti_xml: str | None = Field(None, description="Raw QTI XML content")
+    qti_stem: str | None = Field(None, description="Extracted question stem text")
+    qti_options: list[dict] | None = Field(None, description="Answer options")
+    correct_answer: str | None = Field(None, description="Correct answer identifier")
+    # Metadata
+    difficulty: str | None = None
+    source_info: dict | None = Field(default_factory=dict)
+    # Atom tags
+    atom_tags: list[AtomTag] = Field(default_factory=list)
+    # Feedback (per-option)
+    feedback: dict[str, str] = Field(default_factory=dict)
+    # Variants
+    variants: list[VariantBrief] = Field(default_factory=list)
+    # Paths for debugging
+    qti_path: str | None = None
+    pdf_path: str | None = None
+
+
 class TestDetail(BaseModel):
     """Full test detail with questions."""
 
@@ -230,6 +279,14 @@ class CostEstimate(BaseModel):
     breakdown: dict = Field(default_factory=dict, description="Per-item breakdown")
 
 
+class FailedItem(BaseModel):
+    """Information about a failed item in a job."""
+
+    id: str
+    error: str
+    timestamp: str | None = None
+
+
 class JobStatus(BaseModel):
     """Status of a pipeline job."""
 
@@ -244,10 +301,25 @@ class JobStatus(BaseModel):
     completed_items: int = 0
     failed_items: int = 0
     current_item: str | None = Field(None, description="Currently processing item")
+    # Detailed item tracking for resume
+    completed_item_ids: list[str] = Field(default_factory=list)
+    failed_item_details: list[FailedItem] = Field(default_factory=list)
+    remaining_items: int = 0
     # Results
     error: str | None = None
     cost_actual: float | None = Field(None, description="Actual cost incurred")
     logs: list[str] = Field(default_factory=list)
+    # Resume capability
+    can_resume: bool = Field(False, description="Whether this job can be resumed")
+
+
+class JobResumeRequest(BaseModel):
+    """Request to resume a failed/cancelled job."""
+
+    mode: str = Field(
+        "remaining",
+        description="Resume mode: 'remaining' (all not completed) or 'failed_only'"
+    )
 
 
 class JobListResponse(BaseModel):

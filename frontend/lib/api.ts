@@ -102,6 +102,47 @@ export interface QuestionBrief {
   variants_count: number;
 }
 
+export interface AtomTag {
+  atom_id: string;
+  titulo: string;
+  eje: string;
+  relevance: number;
+}
+
+export interface VariantBrief {
+  id: string;
+  variant_number: number;
+  folder_name: string;
+  has_qti: boolean;
+  has_metadata: boolean;
+}
+
+export interface QuestionOption {
+  id: string;
+  text: string;
+}
+
+export interface QuestionDetail {
+  id: string;
+  test_id: string;
+  question_number: number;
+  has_split_pdf: boolean;
+  has_qti: boolean;
+  is_finalized: boolean;
+  is_tagged: boolean;
+  qti_xml: string | null;
+  qti_stem: string | null;
+  qti_options: QuestionOption[] | null;
+  correct_answer: string | null;
+  difficulty: string | null;
+  source_info: Record<string, unknown> | null;
+  atom_tags: AtomTag[];
+  feedback: Record<string, string>;
+  variants: VariantBrief[];
+  qti_path: string | null;
+  pdf_path: string | null;
+}
+
 export interface TestDetail {
   id: string;
   name: string;
@@ -178,6 +219,16 @@ export async function getTestDetail(
   return fetchAPI<TestDetail>(`/subjects/${subjectId}/tests/${testId}`);
 }
 
+export async function getQuestionDetail(
+  subjectId: string,
+  testId: string,
+  questionNum: number
+): Promise<QuestionDetail> {
+  return fetchAPI<QuestionDetail>(
+    `/subjects/${subjectId}/tests/${testId}/questions/${questionNum}`
+  );
+}
+
 // -----------------------------------------------------------------------------
 // Pipeline types
 // -----------------------------------------------------------------------------
@@ -211,6 +262,12 @@ export interface CostEstimate {
   breakdown: Record<string, unknown>;
 }
 
+export interface FailedItem {
+  id: string;
+  error: string;
+  timestamp: string | null;
+}
+
 export interface JobStatus {
   job_id: string;
   pipeline_id: string;
@@ -222,9 +279,13 @@ export interface JobStatus {
   completed_items: number;
   failed_items: number;
   current_item: string | null;
+  completed_item_ids: string[];
+  failed_item_details: FailedItem[];
+  remaining_items: number;
   error: string | null;
   cost_actual: number | null;
   logs: string[];
+  can_resume: boolean;
 }
 
 export interface JobListResponse {
@@ -309,6 +370,38 @@ export async function deleteJob(jobId: string): Promise<{ message: string }> {
   return fetchAPI<{ message: string }>(`/pipelines/jobs/${jobId}`, {
     method: "DELETE",
   });
+}
+
+export async function resumeJob(
+  jobId: string,
+  mode: "remaining" | "failed_only" = "remaining"
+): Promise<{ job_id: string; status: string; message: string }> {
+  return fetchAPI<{ job_id: string; status: string; message: string }>(
+    `/pipelines/jobs/${jobId}/resume`,
+    {
+      method: "POST",
+      body: JSON.stringify({ mode }),
+    }
+  );
+}
+
+export interface JobLogsResponse {
+  job_id: string;
+  logs: string[];
+  offset: number;
+  limit: number;
+  total: number;
+  has_more: boolean;
+}
+
+export async function getJobLogs(
+  jobId: string,
+  offset = 0,
+  limit = 100
+): Promise<JobLogsResponse> {
+  return fetchAPI<JobLogsResponse>(
+    `/pipelines/jobs/${jobId}/logs?offset=${offset}&limit=${limit}`
+  );
 }
 
 // -----------------------------------------------------------------------------

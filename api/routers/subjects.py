@@ -8,9 +8,13 @@ Endpoints:
     GET /api/subjects/{subject_id}/atoms/graph - Knowledge graph data
     GET /api/subjects/{subject_id}/tests - Tests list
     GET /api/subjects/{subject_id}/tests/{test_id} - Test detail with questions
+
+Note: Question detail endpoint is in questions.py
 """
 
 from __future__ import annotations
+
+import re
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -315,7 +319,6 @@ async def get_test_detail(subject_id: str, test_id: str) -> TestDetail:
         raise HTTPException(status_code=404, detail=f"Test '{test_id}' not found")
 
     # Parse year and type
-    import re
     admission_year = None
     application_type = None
     year_match = re.search(r"(\d{4})", test_id)

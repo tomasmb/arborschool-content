@@ -1,34 +1,44 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { getOverview, type OverviewResponse, type SubjectBrief } from "@/lib/api";
+import { useEffect, useState, useCallback } from "react";
+import { getOverview, type OverviewResponse } from "@/lib/api";
 import { SubjectCard } from "@/components/dashboard/SubjectCard";
+import { LoadingPage } from "@/components/ui/LoadingSpinner";
+import { ErrorPage } from "@/components/ui/ErrorMessage";
 
 export default function DashboardPage() {
   const [data, setData] = useState<OverviewResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    getOverview()
-      .then(setData)
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await getOverview();
+      setData(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load dashboard");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-text-secondary">Loading...</div>
-      </div>
-    );
+    return <LoadingPage text="Loading dashboard..." />;
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-error">Error: {error}</div>
-      </div>
+      <ErrorPage
+        title="Failed to load dashboard"
+        message={error}
+        onRetry={fetchData}
+      />
     );
   }
 

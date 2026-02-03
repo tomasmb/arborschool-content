@@ -20,6 +20,7 @@ from fastapi import APIRouter, HTTPException
 from api.schemas.api_models import (
     CostEstimate,
     JobListResponse,
+    JobResumeRequest,
     JobStatus,
     PipelineDefinition,
     PipelineParam,
@@ -191,6 +192,85 @@ async def delete_job(job_id: str) -> dict[str, str]:
         raise HTTPException(status_code=500, detail="Failed to delete job")
 
     return {"message": f"Job '{job_id}' deleted"}
+
+
+@router.post("/jobs/{job_id}/resume", response_model=RunPipelineResponse)
+async def resume_job(job_id: str, request: JobResumeRequest) -> RunPipelineResponse:
+    """Resume a failed or cancelled job.
+
+    Args:
+        job_id: The job to resume
+        request: Resume options - mode can be 'remaining' or 'failed_only'
+
+    Returns:
+        New job info for the resumed job
+    """
+    runner = get_runner()
+    job = runner.get_job(job_id)
+
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Job '{job_id}' not found")
+
+    if job.status not in ("failed", "cancelled"):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot resume job with status '{job.status}'. Only failed or cancelled jobs can be resumed.",
+        )
+
+    if not job.can_resume:
+        raise HTTPException(
+            status_code=400,
+            detail="This job cannot be resumed. It may lack the required tracking data.",
+        )
+
+    # Create new job with remaining/failed items
+    new_job = runner.resume_job(job_id, mode=request.mode)
+    if not new_job:
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to create resume job",
+        )
+
+    return RunPipelineResponse(
+        job_id=new_job.job_id,
+        status=new_job.status,
+        message=f"Resumed job {job_id} with mode '{request.mode}'",
+    )
+
+
+@router.get("/jobs/{job_id}/logs")
+async def get_job_logs(
+    job_id: str,
+    offset: int = 0,
+    limit: int = 100
+) -> dict[str, Any]:
+    """Get logs for a specific job.
+
+    Args:
+        job_id: The job ID
+        offset: Start from this log line (0-indexed)
+        limit: Maximum number of log lines to return
+
+    Returns:
+        Dict with logs array and metadata
+    """
+    runner = get_runner()
+    job = runner.get_job(job_id)
+
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Job '{job_id}' not found")
+
+    logs = job.logs[offset:offset + limit]
+    total = len(job.logs)
+
+    return {
+        "job_id": job_id,
+        "logs": logs,
+        "offset": offset,
+        "limit": limit,
+        "total": total,
+        "has_more": offset + limit < total,
+    }
 
 
 # -----------------------------------------------------------------------------
