@@ -17,6 +17,7 @@ from api.schemas.api_models import (
     SyncPreviewRequest,
     SyncPreviewResponse,
     SyncTableSummary,
+    VALID_SYNC_ENVIRONMENTS,
 )
 
 logger = logging.getLogger(__name__)
@@ -73,13 +74,19 @@ async def preview_course_sync(
     if subject_id not in SUBJECTS_CONFIG:
         raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
 
+    # Validate environment
+    if request.environment not in VALID_SYNC_ENVIRONMENTS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid environment: {request.environment}"
+        )
+
     # Import sync helpers from sync.py
     from api.routers.sync import _build_payload, _check_db_config, _extract_data
 
     try:
         extracted = _extract_data(
             request.entities,
-            request.include_variants,
             subject_id=subject_id,
         )
 
@@ -88,10 +95,15 @@ async def preview_course_sync(
         tables = _build_table_summaries(summary, extracted)
 
         warnings = []
-        if not _check_db_config():
+        if not _check_db_config(request.environment):
+            env_help = {
+                "local": "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables.",
+                "staging": "Set DATABASE_URL_STAGING environment variable.",
+                "prod": "Set DATABASE_URL_PROD environment variable.",
+            }
             warnings.append(
-                "Database configuration not found. "
-                "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables."
+                f"Database configuration not found for {request.environment}. "
+                f"{env_help.get(request.environment, '')}"
             )
 
         return SyncPreviewResponse(
@@ -99,11 +111,10 @@ async def preview_course_sync(
             summary={
                 "subject_id": subject_id,
                 "entities_requested": request.entities,
-                "include_variants": request.include_variants,
-                "upload_images": request.upload_images,
                 "total_tables": len(tables),
             },
             warnings=warnings,
+            environment=request.environment,
         )
 
     except Exception as e:
@@ -116,7 +127,7 @@ async def execute_course_sync(
     subject_id: str,
     request: SyncExecuteRequest,
 ) -> SyncExecuteResponse:
-    """Execute sync to the production database for this course."""
+    """Execute sync to the database for this course."""
     if subject_id not in SUBJECTS_CONFIG:
         raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
 
@@ -127,28 +138,37 @@ async def execute_course_sync(
         _extract_data,
     )
 
+    # Validate environment
+    if request.environment not in VALID_SYNC_ENVIRONMENTS:
+        return SyncExecuteResponse(
+            success=False,
+            results={},
+            message=f"Invalid environment: {request.environment}",
+            errors=[f"Environment must be one of: {', '.join(VALID_SYNC_ENVIRONMENTS)}"],
+            environment=request.environment,
+        )
+
     if not request.confirm:
         return SyncExecuteResponse(
             success=False,
             results={},
             message="Sync not executed. Set confirm=True to execute.",
             errors=["Confirmation required"],
+            environment=request.environment,
         )
 
-    if not _check_db_config():
+    if not _check_db_config(request.environment):
+        env_help = {
+            "local": "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables.",
+            "staging": "Set DATABASE_URL_STAGING environment variable.",
+            "prod": "Set DATABASE_URL_PROD environment variable.",
+        }
         return SyncExecuteResponse(
             success=False,
             results={},
-            message="Database configuration not found.",
-            errors=["Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables."],
-        )
-
-    if request.upload_images and not _check_s3_config():
-        return SyncExecuteResponse(
-            success=False,
-            results={},
-            message="S3 credentials not found but image upload requested.",
-            errors=["Set AWS_S3_KEY and AWS_S3_SECRET environment variables."],
+            message=f"Database configuration not found for {request.environment}.",
+            errors=[env_help.get(request.environment, "")],
+            environment=request.environment,
         )
 
     try:
@@ -157,12 +177,12 @@ async def execute_course_sync(
 
         extracted = _extract_data(
             request.entities,
-            request.include_variants,
             subject_id=subject_id,
         )
 
+        # Auto-upload images to S3 if configured and questions are being synced
         images_uploaded = 0
-        if request.upload_images and extracted["questions"]:
+        if _check_s3_config() and extracted["questions"]:
             from app.sync.s3_client import (
                 ImageUploader,
                 S3Config,
@@ -185,13 +205,15 @@ async def execute_course_sync(
 
         payload = _build_payload(extracted, subject_id=subject_id)
 
-        db_config = DBConfig.from_env()
+        # Connect to the appropriate database based on environment
+        db_config = DBConfig.for_environment(request.environment)
         db_client = DBClient(db_config)
         results = db_client.sync_all(payload, dry_run=False)
 
         total_affected = sum(results.values())
-        msg = f"Sync completed for {subject_id}. {total_affected} total rows affected."
-        if request.upload_images:
+        msg = f"Sync to {request.environment} completed for {subject_id}. "
+        msg += f"{total_affected} total rows affected."
+        if images_uploaded > 0:
             msg += f" {images_uploaded} questions processed for S3 images."
 
         return SyncExecuteResponse(
@@ -199,6 +221,7 @@ async def execute_course_sync(
             results=results,
             message=msg,
             errors=[],
+            environment=request.environment,
         )
 
     except ValueError as e:
@@ -208,6 +231,7 @@ async def execute_course_sync(
             results={},
             message=f"Configuration error: {e!s}",
             errors=[str(e)],
+            environment=request.environment,
         )
     except Exception as e:
         logger.exception("Error during course sync execution")
@@ -216,4 +240,56 @@ async def execute_course_sync(
             results={},
             message=f"Sync failed: {e!s}",
             errors=[str(e)],
+            environment=request.environment,
         )
+
+
+@router.get("/{subject_id}/sync/diff")
+async def get_course_sync_diff(
+    subject_id: str,
+    environment: str = "local",
+) -> dict:
+    """Get diff between local data and database for this course.
+
+    Returns what would be new, modified, or deleted if a sync were performed.
+    """
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    if environment not in VALID_SYNC_ENVIRONMENTS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid environment: {environment}"
+        )
+
+    from api.routers.sync import _check_db_config, _extract_data
+    from app.sync.diff import compute_sync_diff
+
+    # Check if environment is configured
+    if not _check_db_config(environment):
+        return {
+            "environment": environment,
+            "has_changes": False,
+            "entities": {},
+            "error": f"Database not configured for {environment}",
+        }
+
+    try:
+        # Extract all data for comparison
+        extracted = _extract_data(
+            ["standards", "atoms", "tests", "questions", "variants"],
+            subject_id=subject_id,
+        )
+
+        # Compute diff
+        diff = compute_sync_diff(extracted, environment, subject_id)
+        return diff.to_dict()
+
+    except Exception as e:
+        logger.exception("Error computing sync diff")
+        return {
+            "environment": environment,
+            "has_changes": False,
+            "entities": {},
+            "error": str(e),
+        }

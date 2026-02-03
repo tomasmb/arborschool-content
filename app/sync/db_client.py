@@ -7,15 +7,15 @@ connection pooling and transaction management.
 from __future__ import annotations
 
 import json
-import os
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass
+from dataclasses import asdict
 from enum import Enum
 from typing import Any, Generator
 
 import psycopg
 from psycopg.rows import dict_row
 
+from .config import DBConfig, SyncEnvironment
 from .models import (
     AtomRow,
     QuestionAtomRow,
@@ -27,41 +27,8 @@ from .models import (
     TestRow,
 )
 
-# -----------------------------------------------------------------------------
-# Configuration
-# -----------------------------------------------------------------------------
-
-
-@dataclass
-class DBConfig:
-    """Database configuration from environment variables."""
-
-    host: str
-    port: int
-    database: str
-    user: str
-    password: str
-
-    @classmethod
-    def from_env(cls) -> "DBConfig":
-        """Create config from environment variables."""
-        host = os.getenv("HOST")
-        if not host:
-            msg = "HOST environment variable is required"
-            raise ValueError(msg)
-
-        return cls(
-            host=host,
-            port=int(os.getenv("PORT", "5432")),
-            database=os.getenv("DB_NAME", ""),
-            user=os.getenv("DB_USER", ""),
-            password=os.getenv("DB_PASSWORD", ""),
-        )
-
-    @property
-    def connection_string(self) -> str:
-        """Generate psycopg connection string."""
-        return f"postgresql://{self.user}:{self.password}@{self.host}:{self.port}/{self.database}"
+# Re-export for backwards compatibility
+__all__ = ["DBClient", "DBConfig", "SyncEnvironment"]
 
 
 # -----------------------------------------------------------------------------

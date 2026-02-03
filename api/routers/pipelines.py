@@ -293,3 +293,135 @@ async def get_confirmation_token(
 
     token = generate_confirmation_token(pipeline_id, params or {})
     return {"confirmation_token": token}
+
+
+# -----------------------------------------------------------------------------
+# Pipeline output clearing
+# -----------------------------------------------------------------------------
+
+
+@router.delete("/{pipeline_id}/clear")
+async def clear_pipeline_outputs(
+    pipeline_id: str,
+    subject_id: str | None = None,
+    test_id: str | None = None,
+) -> dict[str, Any]:
+    """Clear/delete outputs for a specific pipeline.
+
+    Args:
+        pipeline_id: The pipeline whose outputs to clear
+        subject_id: Optional subject ID to scope the clearing
+        test_id: Optional test ID for test-specific pipelines
+
+    Returns:
+        Dict with deleted counts and paths
+    """
+    import shutil
+    from pathlib import Path
+
+    from app.utils.paths import (
+        ATOMS_DIR,
+        STANDARDS_DIR,
+        PRUEBAS_ALTERNATIVAS_DIR,
+        PRUEBAS_FINALIZADAS_DIR,
+        PRUEBAS_PROCESADAS_DIR,
+    )
+
+    runner = get_runner()
+    if not runner.get_pipeline(pipeline_id):
+        raise HTTPException(status_code=404, detail=f"Pipeline '{pipeline_id}' not found")
+
+    deleted_count = 0
+    deleted_paths: list[str] = []
+
+    if pipeline_id == "standards_gen":
+        # Delete standards JSON file for the subject
+        if subject_id:
+            pattern = f"*{subject_id.replace('-', '_')}*.json"
+        else:
+            pattern = "*.json"
+        for f in STANDARDS_DIR.glob(pattern):
+            f.unlink()
+            deleted_paths.append(str(f))
+            deleted_count += 1
+
+    elif pipeline_id == "atoms_gen":
+        # Delete atoms JSON file for the subject
+        if subject_id:
+            pattern = f"*{subject_id.replace('-', '_')}*_atoms.json"
+        else:
+            pattern = "*_atoms.json"
+        for f in ATOMS_DIR.glob(pattern):
+            f.unlink()
+            deleted_paths.append(str(f))
+            deleted_count += 1
+
+    elif pipeline_id == "variant_gen":
+        # Delete variant folders
+        if test_id:
+            variant_dir = PRUEBAS_ALTERNATIVAS_DIR / test_id
+            if variant_dir.exists():
+                shutil.rmtree(variant_dir)
+                deleted_paths.append(str(variant_dir))
+                deleted_count = 1
+        else:
+            for test_dir in PRUEBAS_ALTERNATIVAS_DIR.iterdir():
+                if test_dir.is_dir():
+                    shutil.rmtree(test_dir)
+                    deleted_paths.append(str(test_dir))
+                    deleted_count += 1
+
+    elif pipeline_id == "tagging":
+        # Delete metadata_tags.json files
+        if test_id:
+            qti_dir = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+        else:
+            qti_dir = PRUEBAS_FINALIZADAS_DIR
+        for f in qti_dir.rglob("metadata_tags.json"):
+            f.unlink()
+            deleted_paths.append(str(f))
+            deleted_count += 1
+
+    elif pipeline_id == "pdf_to_qti":
+        # Delete QTI folders (but not the PDFs)
+        if test_id:
+            qti_dir = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+            if qti_dir.exists():
+                shutil.rmtree(qti_dir)
+                deleted_paths.append(str(qti_dir))
+                deleted_count = 1
+        else:
+            for test_dir in PRUEBAS_FINALIZADAS_DIR.iterdir():
+                qti_dir = test_dir / "qti"
+                if qti_dir.exists():
+                    shutil.rmtree(qti_dir)
+                    deleted_paths.append(str(qti_dir))
+                    deleted_count += 1
+
+    elif pipeline_id == "pdf_split":
+        # Delete processed PDF folders
+        if test_id:
+            pdf_dir = PRUEBAS_PROCESADAS_DIR / test_id
+            if pdf_dir.exists():
+                shutil.rmtree(pdf_dir)
+                deleted_paths.append(str(pdf_dir))
+                deleted_count = 1
+        else:
+            for test_dir in PRUEBAS_PROCESADAS_DIR.iterdir():
+                if test_dir.is_dir():
+                    shutil.rmtree(test_dir)
+                    deleted_paths.append(str(test_dir))
+                    deleted_count += 1
+
+    else:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Clear not supported for pipeline '{pipeline_id}'",
+        )
+
+    return {
+        "pipeline_id": pipeline_id,
+        "deleted_count": deleted_count,
+        "deleted_paths": deleted_paths[:10],  # Limit paths in response
+        "message": f"Cleared {deleted_count} items for {pipeline_id}",
+    }

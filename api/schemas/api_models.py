@@ -350,6 +350,12 @@ class RunPipelineResponse(BaseModel):
 # Sync models
 # -----------------------------------------------------------------------------
 
+# Valid sync entity types
+VALID_SYNC_ENTITIES = ["standards", "atoms", "tests", "questions", "variants"]
+
+# Valid sync environments
+VALID_SYNC_ENVIRONMENTS = ["local", "staging", "prod"]
+
 
 class SyncEntityCounts(BaseModel):
     """Counts for a single entity type."""
@@ -366,8 +372,10 @@ class SyncPreviewRequest(BaseModel):
         default_factory=lambda: ["standards", "atoms", "tests", "questions"],
         description="Entity types to sync: standards, atoms, tests, questions, variants"
     )
-    include_variants: bool = Field(False, description="Include question variants")
-    upload_images: bool = Field(False, description="Upload images to S3")
+    environment: str = Field(
+        "local",
+        description="Target environment: local, staging, or prod"
+    )
 
 
 class SyncTableSummary(BaseModel):
@@ -384,6 +392,7 @@ class SyncPreviewResponse(BaseModel):
     tables: list[SyncTableSummary]
     summary: dict = Field(default_factory=dict, description="Overall summary counts")
     warnings: list[str] = Field(default_factory=list, description="Any warnings")
+    environment: str = Field("local", description="Target environment")
 
 
 class SyncExecuteRequest(BaseModel):
@@ -391,10 +400,12 @@ class SyncExecuteRequest(BaseModel):
 
     entities: list[str] = Field(
         default_factory=lambda: ["standards", "atoms", "tests", "questions"],
-        description="Entity types to sync"
+        description="Entity types to sync: standards, atoms, tests, questions, variants"
     )
-    include_variants: bool = Field(False, description="Include question variants")
-    upload_images: bool = Field(False, description="Upload images to S3")
+    environment: str = Field(
+        "local",
+        description="Target environment: local, staging, or prod"
+    )
     confirm: bool = Field(False, description="Must be True to execute")
 
 
@@ -405,6 +416,7 @@ class SyncExecuteResponse(BaseModel):
     results: dict = Field(default_factory=dict, description="Rows affected per table")
     message: str
     errors: list[str] = Field(default_factory=list)
+    environment: str = Field("local", description="Target environment used")
 
 
 # -----------------------------------------------------------------------------

@@ -3,26 +3,26 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import {
-  ArrowLeft,
-  CheckCircle2,
-  Circle,
-  RefreshCw,
-  AlertTriangle,
-  Loader2,
-} from "lucide-react";
+import { ArrowLeft, CheckCircle2, Circle, RefreshCw, AlertTriangle, Loader2 } from "lucide-react";
 import {
   getSyncStatus,
+  getCourseSyncDiff,
   previewCourseSync,
   executeCourseSync,
   type SyncStatus,
   type SyncPreviewResponse,
   type SyncExecuteResponse,
+  type SyncEnvironment,
+  type SyncDiffResponse,
 } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui";
+import { SyncDiffTable } from "./sync-diff-table";
+import { EnvironmentSelector, ENVIRONMENTS } from "./environment-selector";
 
 type SyncStep = "idle" | "preview" | "confirm" | "syncing" | "done" | "error";
+
+const ENTITIES = ["standards", "atoms", "tests", "questions", "variants"];
 
 export default function SettingsPage() {
   const params = useParams();
@@ -30,6 +30,8 @@ export default function SettingsPage() {
   const { showToast } = useToast();
 
   const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
+  const [syncDiff, setSyncDiff] = useState<SyncDiffResponse | null>(null);
+  const [diffLoading, setDiffLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,14 +41,14 @@ export default function SettingsPage() {
   const [syncResult, setSyncResult] = useState<SyncExecuteResponse | null>(null);
 
   // Sync options
+  const [environment, setEnvironment] = useState<SyncEnvironment>("local");
   const [entities, setEntities] = useState<string[]>([
     "standards",
     "atoms",
     "tests",
     "questions",
   ]);
-  const [includeVariants, setIncludeVariants] = useState(true);
-  const [uploadImages, setUploadImages] = useState(false);
+  const [showProdConfirm, setShowProdConfirm] = useState(false);
 
   useEffect(() => {
     if (courseId) {
@@ -57,37 +59,56 @@ export default function SettingsPage() {
     }
   }, [courseId]);
 
+  // Load diff when environment changes
+  const loadDiff = useCallback(async () => {
+    if (!courseId || !syncStatus?.environments?.[environment]) return;
+    setDiffLoading(true);
+    try {
+      const diff = await getCourseSyncDiff(courseId, environment);
+      setSyncDiff(diff);
+    } catch (err) {
+      console.error("Failed to load diff:", err);
+    } finally {
+      setDiffLoading(false);
+    }
+  }, [courseId, environment, syncStatus]);
+
+  useEffect(() => {
+    loadDiff();
+  }, [loadDiff]);
+
+  const isEnvConfigured = (env: SyncEnvironment) => {
+    return syncStatus?.environments?.[env] ?? false;
+  };
+
   const handlePreview = useCallback(async () => {
     setSyncStep("preview");
     setPreview(null);
     setSyncResult(null);
+    setError(null);
 
     try {
-      const result = await previewCourseSync(
-        courseId,
-        entities,
-        includeVariants,
-        uploadImages
-      );
+      const result = await previewCourseSync(courseId, entities, environment);
       setPreview(result);
       setSyncStep("confirm");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Preview failed");
       setSyncStep("error");
     }
-  }, [courseId, entities, includeVariants, uploadImages]);
+  }, [courseId, entities, environment]);
 
   const handleSync = useCallback(async () => {
+    // Extra confirmation for production
+    if (environment === "prod" && !showProdConfirm) {
+      setShowProdConfirm(true);
+      return;
+    }
+
     setSyncStep("syncing");
+    setShowProdConfirm(false);
 
     try {
-      const result = await executeCourseSync(
-        courseId,
-        entities,
-        includeVariants,
-        uploadImages,
-        true // confirm
-      );
+      const result = await executeCourseSync(courseId, entities, environment, true);
       setSyncResult(result);
 
       if (result.success) {
@@ -102,12 +123,14 @@ export default function SettingsPage() {
       setSyncStep("error");
       showToast("error", "Sync failed");
     }
-  }, [courseId, entities, includeVariants, uploadImages, showToast]);
+  }, [courseId, entities, environment, showProdConfirm, showToast]);
 
   const resetSync = useCallback(() => {
     setSyncStep("idle");
     setPreview(null);
     setSyncResult(null);
+    setShowProdConfirm(false);
+    setError(null);
   }, []);
 
   const toggleEntity = (entity: string) => {
@@ -155,20 +178,22 @@ export default function SettingsPage() {
         </h2>
 
         <div className="bg-surface border border-border rounded-lg p-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-3">
-              {syncStatus?.database_configured ? (
-                <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
-              ) : (
-                <Circle className="w-5 h-5 text-text-secondary flex-shrink-0" />
-              )}
-              <div>
-                <p className="text-sm font-medium">Database</p>
-                <p className="text-xs text-text-secondary">
-                  {syncStatus?.database_configured ? "Connected" : "Not configured"}
-                </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {ENVIRONMENTS.map((env) => (
+              <div key={env.id} className="flex items-center gap-3">
+                {isEnvConfigured(env.id) ? (
+                  <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
+                ) : (
+                  <Circle className="w-5 h-5 text-text-secondary flex-shrink-0" />
+                )}
+                <div>
+                  <p className="text-sm font-medium">{env.label} DB</p>
+                  <p className="text-xs text-text-secondary">
+                    {isEnvConfigured(env.id) ? "Configured" : "Not configured"}
+                  </p>
+                </div>
               </div>
-            </div>
+            ))}
             <div className="flex items-center gap-3">
               {syncStatus?.s3_configured ? (
                 <CheckCircle2 className="w-5 h-5 text-success flex-shrink-0" />
@@ -193,90 +218,95 @@ export default function SettingsPage() {
         </h2>
 
         <div className="bg-surface border border-border rounded-lg p-6 space-y-6">
-          {/* Entity Selection */}
+          {/* Environment & Entity Selection */}
           {syncStep === "idle" && (
             <>
+              {/* Environment Selector */}
+              <EnvironmentSelector
+                environment={environment}
+                setEnvironment={setEnvironment}
+                isEnvConfigured={isEnvConfigured}
+              />
+
+              {/* Sync Status Table */}
+              {isEnvConfigured(environment) && (
+                <SyncDiffTable
+                  syncDiff={syncDiff}
+                  diffLoading={diffLoading}
+                  environment={environment}
+                  environmentLabel={ENVIRONMENTS.find((e) => e.id === environment)?.label || ""}
+                  entities={ENTITIES}
+                  onRefresh={loadDiff}
+                />
+              )}
+
+              {/* Entity Selection */}
               <div>
                 <p className="text-sm font-medium mb-3">Select data to sync:</p>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                  {["standards", "atoms", "tests", "questions"].map((entity) => (
-                    <label
-                      key={entity}
-                      className={cn(
-                        "flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors",
-                        entities.includes(entity)
-                          ? "border-accent bg-accent/10"
-                          : "border-border hover:border-border/80"
-                      )}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={entities.includes(entity)}
-                        onChange={() => toggleEntity(entity)}
-                        className="hidden"
-                      />
-                      <div
+                <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  {ENTITIES.map((entity) => {
+                    const diff = syncDiff?.entities[entity];
+                    const hasChanges = diff?.has_changes ?? true;
+                    return (
+                      <label
+                        key={entity}
                         className={cn(
-                          "w-4 h-4 rounded border flex items-center justify-center",
+                          "flex items-center gap-2 p-3 rounded-lg border cursor-pointer transition-colors",
                           entities.includes(entity)
-                            ? "bg-accent border-accent"
-                            : "border-text-secondary"
+                            ? "border-accent bg-accent/10"
+                            : "border-border hover:border-border/80",
+                          !hasChanges && "opacity-60"
                         )}
                       >
-                        {entities.includes(entity) && (
-                          <CheckCircle2 className="w-3 h-3 text-white" />
+                        <input
+                          type="checkbox"
+                          checked={entities.includes(entity)}
+                          onChange={() => toggleEntity(entity)}
+                          className="hidden"
+                        />
+                        <div
+                          className={cn(
+                            "w-4 h-4 rounded border flex items-center justify-center",
+                            entities.includes(entity)
+                              ? "bg-accent border-accent"
+                              : "border-text-secondary"
+                          )}
+                        >
+                          {entities.includes(entity) && (
+                            <CheckCircle2 className="w-3 h-3 text-white" />
+                          )}
+                        </div>
+                        <span className="text-sm capitalize">{entity}</span>
+                        {!hasChanges && (
+                          <CheckCircle2 className="w-3 h-3 text-success ml-auto" />
                         )}
-                      </div>
-                      <span className="text-sm capitalize">{entity}</span>
-                    </label>
-                  ))}
+                      </label>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-4">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={includeVariants}
-                    onChange={(e) => setIncludeVariants(e.target.checked)}
-                    className="w-4 h-4 rounded border-border"
-                  />
-                  <span className="text-sm">Include question variants</span>
-                </label>
-
-                <label
-                  className={cn(
-                    "flex items-center gap-2",
-                    syncStatus?.s3_configured ? "cursor-pointer" : "opacity-50 cursor-not-allowed"
-                  )}
-                >
-                  <input
-                    type="checkbox"
-                    checked={uploadImages}
-                    onChange={(e) => setUploadImages(e.target.checked)}
-                    disabled={!syncStatus?.s3_configured}
-                    className="w-4 h-4 rounded border-border"
-                  />
-                  <span className="text-sm">Upload images to S3</span>
-                  {!syncStatus?.s3_configured && (
-                    <span className="text-xs text-warning">(S3 not configured)</span>
-                  )}
-                </label>
-              </div>
+              {/* S3 Auto-Upload Note */}
+              {syncStatus?.s3_configured && entities.includes("questions") && (
+                <div className="flex items-center gap-2 text-xs text-text-secondary">
+                  <CheckCircle2 className="w-4 h-4 text-success" />
+                  <span>Images will be automatically uploaded to S3</span>
+                </div>
+              )}
 
               <div className="pt-4 border-t border-border">
                 <button
                   onClick={handlePreview}
-                  disabled={entities.length === 0}
+                  disabled={entities.length === 0 || !isEnvConfigured(environment)}
                   className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-                    entities.length === 0
+                    entities.length === 0 || !isEnvConfigured(environment)
                       ? "bg-accent/50 text-white cursor-not-allowed"
                       : "bg-accent text-white hover:bg-accent/90"
                   )}
                 >
                   <RefreshCw className="w-4 h-4" />
-                  Preview Sync
+                  Preview Sync to {ENVIRONMENTS.find((e) => e.id === environment)?.label}
                 </button>
               </div>
             </>
@@ -294,8 +324,17 @@ export default function SettingsPage() {
           {syncStep === "confirm" && preview && (
             <div className="space-y-4">
               <div className="flex items-center gap-2 text-sm font-medium">
-                <AlertTriangle className="w-4 h-4 text-warning" />
-                <span>Review what will be synced:</span>
+                <AlertTriangle className={cn(
+                  "w-4 h-4",
+                  environment === "prod" ? "text-error" : "text-warning"
+                )} />
+                <span>
+                  Review what will be synced to{" "}
+                  <span className={environment === "prod" ? "text-error font-bold" : ""}>
+                    {ENVIRONMENTS.find((e) => e.id === environment)?.label}
+                  </span>
+                  :
+                </span>
               </div>
 
               <div className="bg-background rounded-lg p-4 space-y-2">
@@ -324,13 +363,30 @@ export default function SettingsPage() {
                 </div>
               )}
 
+              {/* Production Confirmation */}
+              {environment === "prod" && showProdConfirm && (
+                <div className="bg-error/10 border border-error/20 rounded-lg p-4">
+                  <p className="text-sm text-error font-medium mb-2">
+                    Are you sure you want to sync to PRODUCTION?
+                  </p>
+                  <p className="text-xs text-error/80">
+                    This will modify live data. This action cannot be undone.
+                  </p>
+                </div>
+              )}
+
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleSync}
-                  className="flex items-center gap-2 px-4 py-2 bg-success text-white rounded-lg text-sm font-medium hover:bg-success/90 transition-colors"
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
+                    environment === "prod"
+                      ? "bg-error text-white hover:bg-error/90"
+                      : "bg-success text-white hover:bg-success/90"
+                  )}
                 >
                   <CheckCircle2 className="w-4 h-4" />
-                  Confirm & Sync
+                  {showProdConfirm ? "Yes, Sync to Production" : "Confirm & Sync"}
                 </button>
                 <button
                   onClick={resetSync}
@@ -346,7 +402,9 @@ export default function SettingsPage() {
           {syncStep === "syncing" && (
             <div className="flex items-center justify-center py-8">
               <Loader2 className="w-6 h-6 animate-spin text-accent" />
-              <span className="ml-2 text-text-secondary">Syncing to database...</span>
+              <span className="ml-2 text-text-secondary">
+                Syncing to {ENVIRONMENTS.find((e) => e.id === environment)?.label}...
+              </span>
             </div>
           )}
 

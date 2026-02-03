@@ -280,6 +280,8 @@ export interface JobLogsResponse {
 // Sync Types
 // -----------------------------------------------------------------------------
 
+export type SyncEnvironment = "local" | "staging" | "prod";
+
 export interface SyncTableSummary {
   table: string;
   total: number;
@@ -290,6 +292,7 @@ export interface SyncPreviewResponse {
   tables: SyncTableSummary[];
   summary: Record<string, unknown>;
   warnings: string[];
+  environment: SyncEnvironment;
 }
 
 export interface SyncExecuteResponse {
@@ -297,10 +300,11 @@ export interface SyncExecuteResponse {
   results: Record<string, number>;
   message: string;
   errors: string[];
+  environment: SyncEnvironment;
 }
 
 export interface SyncStatus {
-  database_configured: boolean;
+  environments: Record<SyncEnvironment, boolean>;
   s3_configured: boolean;
   available_entities: string[];
 }

@@ -9,6 +9,7 @@ from __future__ import annotations
 import logging
 import os
 from pathlib import Path
+from typing import Literal
 
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
@@ -20,6 +21,7 @@ from api.schemas.api_models import (
     SyncPreviewRequest,
     SyncPreviewResponse,
     SyncTableSummary,
+    VALID_SYNC_ENVIRONMENTS,
 )
 from app.utils.paths import ATOMS_DIR, STANDARDS_DIR
 
@@ -31,10 +33,14 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
+# Type alias for environment
+SyncEnvironment = Literal["local", "staging", "prod"]
 
-def _check_db_config() -> bool:
-    """Check if database configuration is available."""
-    return bool(os.getenv("HOST"))
+
+def _check_db_config(environment: SyncEnvironment = "local") -> bool:
+    """Check if database configuration is available for the given environment."""
+    from app.sync.db_client import DBConfig
+    return DBConfig.check_environment_configured(environment)
 
 
 def _get_subject_files(subject_id: str) -> tuple[Path | None, Path | None]:
@@ -58,15 +64,14 @@ def _get_subject_files(subject_id: str) -> tuple[Path | None, Path | None]:
 
 def _extract_data(
     entities: list[str],
-    include_variants: bool,
     include_diagnostic_variants: bool = True,
     subject_id: str | None = None,
 ) -> dict:
     """Extract data from content repo based on requested entities.
 
     Args:
-        entities: List of entity types to extract
-        include_variants: Whether to include variants
+        entities: List of entity types to extract (standards, atoms, tests,
+            questions, variants)
         include_diagnostic_variants: Whether to include diagnostic test variants
         subject_id: Optional subject ID to scope extraction. If provided, only
             data for that subject is extracted.
@@ -100,7 +105,7 @@ def _extract_data(
     sync_atoms = "atoms" in entities
     sync_tests = "tests" in entities
     sync_questions = "questions" in entities
-    sync_variants = include_variants or "variants" in entities
+    sync_variants = "variants" in entities
 
     if sync_standards:
         result["standards"] = extract_standards(standards_file)
@@ -165,9 +170,16 @@ async def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
     This endpoint extracts data from the content repo and shows what would
     be synced to the database without making any changes.
     """
+    # Validate environment
+    if request.environment not in VALID_SYNC_ENVIRONMENTS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid environment: {request.environment}"
+        )
+
     try:
         # Extract data based on requested entities
-        extracted = _extract_data(request.entities, request.include_variants)
+        extracted = _extract_data(request.entities)
 
         # Build the payload to get accurate counts
         payload = _build_payload(extracted)
@@ -227,21 +239,25 @@ async def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
 
         # Check for warnings
         warnings = []
-        if not _check_db_config():
+        if not _check_db_config(request.environment):
+            env_help = {
+                "local": "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables.",
+                "staging": "Set DATABASE_URL_STAGING environment variable.",
+                "prod": "Set DATABASE_URL_PROD environment variable.",
+            }
             warnings.append(
-                "Database configuration not found. "
-                "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables."
+                f"Database configuration not found for {request.environment}. "
+                f"{env_help.get(request.environment, '')}"
             )
 
         return SyncPreviewResponse(
             tables=tables,
             summary={
                 "entities_requested": request.entities,
-                "include_variants": request.include_variants,
-                "upload_images": request.upload_images,
                 "total_tables": len(tables),
             },
             warnings=warnings,
+            environment=request.environment,
         )
 
     except Exception as e:
@@ -258,11 +274,21 @@ def _check_s3_config() -> bool:
 
 @router.post("/execute", response_model=SyncExecuteResponse)
 async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
-    """Execute sync to the production database.
+    """Execute sync to the database.
 
     This endpoint actually syncs data to the database. Requires confirm=True.
-    If upload_images is True, uploads local images to S3 and updates QTI XML.
+    Automatically uploads images to S3 if S3 is configured and questions are synced.
     """
+    # Validate environment
+    if request.environment not in VALID_SYNC_ENVIRONMENTS:
+        return SyncExecuteResponse(
+            success=False,
+            results={},
+            message=f"Invalid environment: {request.environment}",
+            errors=[f"Environment must be one of: {', '.join(VALID_SYNC_ENVIRONMENTS)}"],
+            environment=request.environment,
+        )
+
     # Safety check: require explicit confirmation
     if not request.confirm:
         return SyncExecuteResponse(
@@ -270,28 +296,22 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             results={},
             message="Sync not executed. Set confirm=True to execute.",
             errors=["Confirmation required"],
+            environment=request.environment,
         )
 
-    # Check database configuration
-    if not _check_db_config():
+    # Check database configuration for the target environment
+    if not _check_db_config(request.environment):
+        env_help = {
+            "local": "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables.",
+            "staging": "Set DATABASE_URL_STAGING environment variable.",
+            "prod": "Set DATABASE_URL_PROD environment variable.",
+        }
         return SyncExecuteResponse(
             success=False,
             results={},
-            message="Database configuration not found.",
-            errors=[
-                "Set HOST, DB_NAME, DB_USER, DB_PASSWORD environment variables."
-            ],
-        )
-
-    # Check S3 configuration if image upload requested
-    if request.upload_images and not _check_s3_config():
-        return SyncExecuteResponse(
-            success=False,
-            results={},
-            message="S3 credentials not found but image upload requested.",
-            errors=[
-                "Set AWS_S3_KEY and AWS_S3_SECRET environment variables."
-            ],
+            message=f"Database configuration not found for {request.environment}.",
+            errors=[env_help.get(request.environment, "")],
+            environment=request.environment,
         )
 
     try:
@@ -300,11 +320,11 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
         from app.utils.paths import PRUEBAS_FINALIZADAS_DIR
 
         # Extract and transform data
-        extracted = _extract_data(request.entities, request.include_variants)
+        extracted = _extract_data(request.entities)
 
-        # Process S3 image uploads if requested
+        # Auto-upload images to S3 if configured and questions are being synced
         images_uploaded = 0
-        if request.upload_images and extracted["questions"]:
+        if _check_s3_config() and extracted["questions"]:
             from app.sync.s3_client import (
                 ImageUploader,
                 S3Config,
@@ -331,16 +351,16 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
 
         payload = _build_payload(extracted)
 
-        # Connect and sync
-        db_config = DBConfig.from_env()
+        # Connect to the appropriate database based on environment
+        db_config = DBConfig.for_environment(request.environment)
         db_client = DBClient(db_config)
 
         results = db_client.sync_all(payload, dry_run=False)
 
         # Format results message
         total_affected = sum(results.values())
-        msg = f"Sync completed. {total_affected} total rows affected."
-        if request.upload_images:
+        msg = f"Sync to {request.environment} completed. {total_affected} total rows affected."
+        if images_uploaded > 0:
             msg += f" {images_uploaded} questions processed for S3 images."
 
         return SyncExecuteResponse(
@@ -348,6 +368,7 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             results=results,
             message=msg,
             errors=[],
+            environment=request.environment,
         )
 
     except ValueError as e:
@@ -357,6 +378,7 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             results={},
             message=f"Configuration error: {e!s}",
             errors=[str(e)],
+            environment=request.environment,
         )
     except Exception as e:
         logger.exception("Error during sync execution")
@@ -365,17 +387,23 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             results={},
             message=f"Sync failed: {e!s}",
             errors=[str(e)],
+            environment=request.environment,
         )
 
 
 @router.get("/status")
 async def sync_status() -> dict:
-    """Get current sync status and configuration availability."""
-    has_db_config = _check_db_config()
+    """Get current sync status and configuration availability for all environments."""
     has_s3_config = _check_s3_config()
 
+    # Check each environment's database configuration
+    environments = {
+        env: _check_db_config(env)
+        for env in VALID_SYNC_ENVIRONMENTS
+    }
+
     return {
-        "database_configured": has_db_config,
+        "environments": environments,
         "s3_configured": has_s3_config,
         "available_entities": ["standards", "atoms", "tests", "questions", "variants"],
     }

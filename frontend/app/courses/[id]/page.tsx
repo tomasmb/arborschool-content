@@ -32,9 +32,10 @@ function calculateTotals(data: SubjectDetail) {
 }
 import { cn, getEjeColor, getEjeBgColor } from "@/lib/utils";
 import { KnowledgeGraphModal } from "@/components/knowledge-graph";
-import { PipelineCard, SyncItem } from "./components";
+import { PipelineCard, SyncItem, RegenerateDialog } from "./components";
 
 type GenerateModalType = "standards" | "atoms" | null;
+type RegenerateModalType = "standards" | "atoms" | null;
 
 export default function CoursePage() {
   const params = useParams();
@@ -47,6 +48,7 @@ export default function CoursePage() {
   const [loading, setLoading] = useState(true);
   const [showGraph, setShowGraph] = useState(false);
   const [generateModal, setGenerateModal] = useState<GenerateModalType>(null);
+  const [regenerateModal, setRegenerateModal] = useState<RegenerateModalType>(null);
 
   const fetchData = useCallback(async () => {
     if (!courseId) return;
@@ -85,6 +87,15 @@ export default function CoursePage() {
   const handleGenerateClose = useCallback(() => {
     setGenerateModal(null);
   }, []);
+
+  const handleRegenerateConfirm = useCallback(() => {
+    // After clearing, open the generate modal
+    const type = regenerateModal;
+    setRegenerateModal(null);
+    if (type) {
+      setGenerateModal(type);
+    }
+  }, [regenerateModal]);
 
   if (loading) {
     return (
@@ -159,9 +170,11 @@ export default function CoursePage() {
                 : "Not yet generated"
             }
             canGenerate={canGenerateStandards}
+            canRegenerate={hasStandards && hasTemario}
             isBlocked={!hasTemario}
             blockedReason="Requires Temario"
             onGenerate={() => setGenerateModal("standards")}
+            onRegenerate={() => setRegenerateModal("standards")}
           >
             {hasStandards && (
               <div className="flex flex-wrap gap-1 mt-3">
@@ -198,9 +211,11 @@ export default function CoursePage() {
                 : "Not yet generated"
             }
             canGenerate={canGenerateAtoms}
+            canRegenerate={hasAtoms && hasStandards}
             isBlocked={!hasStandards}
             blockedReason="Requires Standards"
             onGenerate={() => setGenerateModal("atoms")}
+            onRegenerate={() => setRegenerateModal("atoms")}
             linkHref={`/courses/${courseId}/atoms`}
             linkText="View atoms →"
           />
@@ -386,6 +401,28 @@ export default function CoursePage() {
         params={{
           standards_file: "paes_m1_2026.json",
         }}
+      />
+
+      {/* Regenerate Standards Dialog */}
+      <RegenerateDialog
+        isOpen={regenerateModal === "standards"}
+        onClose={() => setRegenerateModal(null)}
+        onConfirm={handleRegenerateConfirm}
+        pipelineId="standards_gen"
+        pipelineName="Standards"
+        itemCount={data?.standards.length || 0}
+        itemLabel="standards"
+      />
+
+      {/* Regenerate Atoms Dialog */}
+      <RegenerateDialog
+        isOpen={regenerateModal === "atoms"}
+        onClose={() => setRegenerateModal(null)}
+        onConfirm={handleRegenerateConfirm}
+        pipelineId="atoms_gen"
+        pipelineName="Atoms"
+        itemCount={data?.atoms_count || 0}
+        itemLabel="learning atoms"
       />
     </div>
   );

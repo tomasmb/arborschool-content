@@ -184,6 +184,27 @@ export async function getJobLogs(
   );
 }
 
+export interface ClearPipelineResponse {
+  pipeline_id: string;
+  deleted_count: number;
+  deleted_paths: string[];
+  message: string;
+}
+
+export async function clearPipelineOutputs(
+  pipelineId: string,
+  params?: { subject_id?: string; test_id?: string }
+): Promise<ClearPipelineResponse> {
+  const queryParams = new URLSearchParams();
+  if (params?.subject_id) queryParams.set("subject_id", params.subject_id);
+  if (params?.test_id) queryParams.set("test_id", params.test_id);
+  const query = queryParams.toString();
+  return fetchAPI<ClearPipelineResponse>(
+    `/pipelines/${pipelineId}/clear${query ? `?${query}` : ""}`,
+    { method: "DELETE" }
+  );
+}
+
 // -----------------------------------------------------------------------------
 // Sync API (Global - deprecated, use course-scoped sync instead)
 // -----------------------------------------------------------------------------
@@ -196,18 +217,45 @@ export async function getSyncStatus(): Promise<SyncStatus> {
 // Course-scoped Sync API
 // -----------------------------------------------------------------------------
 
+export type SyncEnvironment = "local" | "staging" | "prod";
+
+export interface SyncDiffResponse {
+  environment: SyncEnvironment;
+  has_changes: boolean;
+  entities: Record<string, {
+    local_count: number;
+    db_count: number;
+    new: string[];
+    new_count: number;
+    modified: string[];
+    modified_count: number;
+    deleted: string[];
+    deleted_count: number;
+    unchanged: number;
+    has_changes: boolean;
+  }>;
+  error: string | null;
+}
+
+export async function getCourseSyncDiff(
+  courseId: string,
+  environment: SyncEnvironment = "local"
+): Promise<SyncDiffResponse> {
+  return fetchAPI<SyncDiffResponse>(
+    `/subjects/${courseId}/sync/diff?environment=${environment}`
+  );
+}
+
 export async function previewCourseSync(
   courseId: string,
   entities: string[],
-  includeVariants: boolean,
-  uploadImages: boolean
+  environment: SyncEnvironment = "local"
 ): Promise<SyncPreviewResponse> {
   return fetchAPI<SyncPreviewResponse>(`/subjects/${courseId}/sync/preview`, {
     method: "POST",
     body: JSON.stringify({
       entities,
-      include_variants: includeVariants,
-      upload_images: uploadImages,
+      environment,
     }),
   });
 }
@@ -215,16 +263,14 @@ export async function previewCourseSync(
 export async function executeCourseSync(
   courseId: string,
   entities: string[],
-  includeVariants: boolean,
-  uploadImages: boolean,
+  environment: SyncEnvironment,
   confirm: boolean
 ): Promise<SyncExecuteResponse> {
   return fetchAPI<SyncExecuteResponse>(`/subjects/${courseId}/sync/execute`, {
     method: "POST",
     body: JSON.stringify({
       entities,
-      include_variants: includeVariants,
-      upload_images: uploadImages,
+      environment,
       confirm,
     }),
   });
