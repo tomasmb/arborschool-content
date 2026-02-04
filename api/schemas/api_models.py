@@ -172,6 +172,17 @@ class QuestionDetail(BaseModel):
     # Paths for debugging
     qti_path: str | None = None
     pdf_path: str | None = None
+    # Enrichment/validation status (added in Phase 3)
+    is_enriched: bool = Field(False, description="Has feedback been added")
+    is_validated: bool = Field(False, description="Has passed LLM validation")
+    can_sync: bool = Field(False, description="Ready to sync to database")
+    sync_status: str | None = Field(
+        None,
+        description="Sync status: not_in_db, in_sync, local_changed, not_validated"
+    )
+    validation_result: dict | None = Field(
+        None, description="Detailed validation result if validated"
+    )
 
 
 class TestDetail(BaseModel):

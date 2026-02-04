@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import get_settings
-from api.routers import course_sync, overview, pipelines, questions, subjects, sync
+from api.routers import course_sync, overview, pipelines, questions, subjects, sync, tests
 
 settings = get_settings()
 
@@ -39,6 +39,7 @@ app.include_router(questions.router, prefix="/api/subjects", tags=["Questions"])
 app.include_router(course_sync.router, prefix="/api/subjects", tags=["Course Sync"])
 app.include_router(pipelines.router, prefix="/api/pipelines", tags=["Pipelines"])
 app.include_router(sync.router, prefix="/api/sync", tags=["Sync"])
+app.include_router(tests.router, prefix="/api/subjects", tags=["Tests"])
 
 
 @app.get("/api/health")

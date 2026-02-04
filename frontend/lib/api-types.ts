@@ -56,6 +56,8 @@ export interface TestBrief {
   qti_count: number;
   finalized_count: number;
   tagged_count: number;
+  enriched_count: number;
+  validated_count: number;
   variants_count: number;
 }
 
@@ -82,6 +84,8 @@ export interface QuestionBrief {
   has_qti: boolean;
   is_finalized: boolean;
   is_tagged: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
   atoms_count: number;
   variants_count: number;
 }
@@ -110,7 +114,7 @@ export interface QuestionOption {
  * Full question detail for the slide-over panel.
  *
  * Note: correct_answer and feedback are now embedded in qti_xml and parsed
- * by the frontend when displaying questions (to be implemented in new feedback panel).
+ * by the frontend when displaying questions (FeedbackTab component).
  */
 export interface QuestionDetail {
   id: string;
@@ -120,6 +124,9 @@ export interface QuestionDetail {
   has_qti: boolean;
   is_finalized: boolean;
   is_tagged: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
+  can_sync: boolean;
   qti_xml: string | null;
   qti_stem: string | null;
   qti_options: QuestionOption[] | null;
@@ -129,6 +136,55 @@ export interface QuestionDetail {
   variants: VariantBrief[];
   qti_path: string | null;
   pdf_path: string | null;
+  sync_status: QuestionSyncStatus | null;
+  validation_result: ValidationResultDetail | null;
+}
+
+// -----------------------------------------------------------------------------
+// Question Sync Status (for individual questions)
+// -----------------------------------------------------------------------------
+
+export type QuestionSyncStatus = "not_in_db" | "in_sync" | "local_changed" | "not_validated";
+
+// -----------------------------------------------------------------------------
+// Detailed Validation Types (for display in ValidationTab)
+// -----------------------------------------------------------------------------
+
+export type CheckStatus = "pass" | "fail" | "not_applicable";
+
+export interface CheckResult {
+  status: CheckStatus;
+  issues: string[];
+  reasoning: string;
+}
+
+export interface CorrectAnswerCheck {
+  status: CheckStatus;
+  expected_answer: string;
+  marked_answer: string;
+  verification_steps: string;
+  issues: string[];
+}
+
+export interface ContentQualityCheck {
+  status: CheckStatus;
+  typos_found: string[];
+  character_issues: string[];
+  clarity_issues: string[];
+}
+
+/**
+ * Detailed validation result for display in the question panel.
+ * This is the full result from FinalValidator, stored in validation_result.json.
+ */
+export interface ValidationResultDetail {
+  validation_result: "pass" | "fail";
+  correct_answer_check: CorrectAnswerCheck;
+  feedback_check: CheckResult;
+  content_quality_check: ContentQualityCheck;
+  image_check: CheckResult;
+  math_validity_check: CheckResult;
+  overall_reasoning: string;
 }
 
 export interface TestDetail {
@@ -141,8 +197,81 @@ export interface TestDetail {
   qti_count: number;
   finalized_count: number;
   tagged_count: number;
+  enriched_count: number;
+  validated_count: number;
   variants_count: number;
   questions: QuestionBrief[];
+}
+
+// -----------------------------------------------------------------------------
+// Enrichment & Validation Types
+// -----------------------------------------------------------------------------
+
+export interface EnrichmentProgress {
+  completed: number;
+  total: number;
+  failed: number;
+}
+
+export interface EnrichmentResult {
+  question_id: string;
+  status: "success" | "failed";
+  error?: string;
+}
+
+export interface EnrichmentJobResponse {
+  job_id: string;
+  status: "pending" | "running" | "completed";
+  progress: EnrichmentProgress;
+  results?: EnrichmentResult[];
+}
+
+export interface ValidationProgress {
+  completed: number;
+  total: number;
+  passed: number;
+  failed: number;
+}
+
+export interface ValidationResult {
+  question_id: string;
+  status: "pass" | "fail";
+  failed_checks?: string[];
+  issues?: string[];
+}
+
+export interface ValidationJobResponse {
+  job_id: string;
+  status: "pending" | "running" | "completed";
+  progress: ValidationProgress;
+  results?: ValidationResult[];
+}
+
+export interface SyncPreviewQuestions {
+  to_create: Array<{ id: string; question_number: number }>;
+  to_update: Array<{ id: string; question_number: number }>;
+  unchanged: Array<{ id: string; question_number: number }>;
+  skipped: Array<{ id: string; question_number: number; reason: string }>;
+}
+
+export interface SyncPreviewSummary {
+  create: number;
+  update: number;
+  unchanged: number;
+  skipped: number;
+}
+
+export interface TestSyncPreview {
+  questions: SyncPreviewQuestions;
+  summary: SyncPreviewSummary;
+}
+
+export interface TestSyncResult {
+  success: boolean;
+  created: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
 }
 
 // -----------------------------------------------------------------------------
