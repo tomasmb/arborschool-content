@@ -159,6 +159,34 @@ async def get_question_detail(
                     has_metadata=(variant_dir / "metadata_tags.json").exists(),
                 ))
 
+    # Check enrichment/validation status
+    validated_xml_file = q_dir / "question_validated.xml"
+    validation_result_file = q_dir / "validation_result.json"
+
+    is_enriched = validated_xml_file.exists()
+    is_validated = False
+    can_sync = False
+    validation_result: dict | None = None
+
+    if validation_result_file.exists():
+        try:
+            with open(validation_result_file, encoding="utf-8") as f:
+                validation_data = json_module.load(f)
+            can_sync = validation_data.get("can_sync", False)
+            is_validated = can_sync or validation_data.get("success", False)
+            # Extract validation details for display
+            if "stages" in validation_data and "final_validation" in validation_data["stages"]:
+                validation_result = validation_data["stages"]["final_validation"]
+            elif "validation_details" in validation_data:
+                validation_result = validation_data["validation_details"]
+        except (json_module.JSONDecodeError, OSError):
+            pass
+
+    # Get sync status
+    from api.services.sync_service import get_question_sync_status
+
+    sync_status = get_question_sync_status(test_id, question_num)
+
     return QuestionDetail(
         id=question_id,
         test_id=test_id,
@@ -176,6 +204,11 @@ async def get_question_detail(
         variants=variants,
         qti_path=str(qti_file) if qti_file.exists() else None,
         pdf_path=str(pdf_file) if pdf_file.exists() else None,
+        is_enriched=is_enriched,
+        is_validated=is_validated,
+        can_sync=can_sync,
+        sync_status=sync_status,
+        validation_result=validation_result,
     )
 
 
