@@ -144,7 +144,11 @@ class VariantBrief(BaseModel):
 
 
 class QuestionDetail(BaseModel):
-    """Full question detail for slide-over panel."""
+    """Full question detail for slide-over panel.
+
+    Note: correct_answer and feedback are now embedded in qti_xml and parsed
+    at display time by the frontend.
+    """
 
     id: str
     test_id: str
@@ -158,14 +162,11 @@ class QuestionDetail(BaseModel):
     qti_xml: str | None = Field(None, description="Raw QTI XML content")
     qti_stem: str | None = Field(None, description="Extracted question stem text")
     qti_options: list[dict] | None = Field(None, description="Answer options")
-    correct_answer: str | None = Field(None, description="Correct answer identifier")
     # Metadata
     difficulty: str | None = None
     source_info: dict | None = Field(default_factory=dict)
     # Atom tags
     atom_tags: list[AtomTag] = Field(default_factory=list)
-    # Feedback (per-option)
-    feedback: dict[str, str] = Field(default_factory=dict)
     # Variants
     variants: list[VariantBrief] = Field(default_factory=list)
     # Paths for debugging

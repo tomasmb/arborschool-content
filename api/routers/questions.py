@@ -32,9 +32,12 @@ router = APIRouter()
 def _parse_qti_xml(xml_content: str) -> dict:
     """Parse QTI XML to extract question stem and options.
 
-    Returns dict with keys: stem, options (list of {id, text}), correct_answer
+    Note: correct_answer and feedback are now embedded in qti_xml and parsed
+    by the frontend when displaying questions.
+
+    Returns dict with keys: stem, options (list of {id, text})
     """
-    result = {"stem": None, "options": [], "correct_answer": None}
+    result = {"stem": None, "options": []}
 
     try:
         root = ET.fromstring(xml_content)
@@ -67,19 +70,6 @@ def _parse_qti_xml(xml_content: str) -> dict:
                     choice_text = "".join(choice.itertext()).strip()
                     if choice_id and choice_text:
                         result["options"].append({"id": choice_id, "text": choice_text})
-
-        # Find correct answer
-        response_decl = (
-            root.find(".//qti:responseDeclaration", ns)
-            or root.find(".//responseDeclaration")
-        )
-        if response_decl is not None:
-            correct = (
-                response_decl.find(".//qti:correctResponse/qti:value", ns)
-                or response_decl.find(".//correctResponse/value")
-            )
-            if correct is not None and correct.text:
-                result["correct_answer"] = correct.text.strip()
 
     except ET.ParseError:
         pass
@@ -120,19 +110,16 @@ async def get_question_detail(
     qti_xml = None
     qti_stem = None
     qti_options = None
-    correct_answer = None
 
     if qti_file.exists():
         qti_xml = qti_file.read_text(encoding="utf-8")
         parsed = _parse_qti_xml(qti_xml)
         qti_stem = parsed["stem"]
         qti_options = parsed["options"] if parsed["options"] else None
-        correct_answer = parsed["correct_answer"]
 
     # Read metadata/tags
     atom_tags: list[AtomTag] = []
     difficulty = None
-    feedback: dict[str, str] = {}
     source_info: dict = {}
 
     if metadata_file.exists():
@@ -155,7 +142,6 @@ async def get_question_detail(
                     ))
 
             difficulty = metadata.get("difficulty")
-            feedback = metadata.get("feedback", {})
             source_info = metadata.get("source_info", {})
         except (json_module.JSONDecodeError, OSError):
             pass
@@ -184,11 +170,9 @@ async def get_question_detail(
         qti_xml=qti_xml,
         qti_stem=qti_stem,
         qti_options=qti_options,
-        correct_answer=correct_answer,
         difficulty=difficulty,
         source_info=source_info,
         atom_tags=atom_tags,
-        feedback=feedback,
         variants=variants,
         qti_path=str(qti_file) if qti_file.exists() else None,
         pdf_path=str(pdf_file) if pdf_file.exists() else None,

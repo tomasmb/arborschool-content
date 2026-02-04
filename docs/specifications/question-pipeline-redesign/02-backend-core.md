@@ -14,13 +14,13 @@ Create the `app/question_feedback/` module that handles:
 
 ## Acceptance Criteria
 
-- [ ] `app/question_feedback/` module created with all files
-- [ ] `FeedbackEnhancer` class generates complete QTI XML with feedback
-- [ ] XSD validation integrated with retry logic
-- [ ] `FinalValidator` class performs comprehensive quality checks
-- [ ] `QuestionPipeline` orchestrates all stages
-- [ ] `validation_result.json` saved after processing
-- [ ] `question_validated.xml` saved for successful questions
+- [x] `app/question_feedback/` module created with all files
+- [x] `FeedbackEnhancer` class generates complete QTI XML with feedback
+- [x] XSD validation integrated with retry logic
+- [x] `FinalValidator` class performs comprehensive quality checks
+- [x] `QuestionPipeline` orchestrates all stages
+- [x] `validation_result.json` saved after processing
+- [x] `question_validated.xml` saved for successful questions
 - [ ] Unit tests for all components
 
 ---
@@ -755,16 +755,16 @@ def is_s3_url(url: str) -> bool:
 ## Summary Checklist
 
 ```
-[ ] 2.1 Create app/question_feedback/__init__.py
-[ ] 2.1 Create app/question_feedback/models.py
-[ ] 2.2 Create app/question_feedback/prompts.py
-[ ] 2.3 Create app/question_feedback/schemas.py
-[ ] 2.4 Create app/question_feedback/enhancer.py
-[ ] 2.5 Create app/question_feedback/validator.py
-[ ] 2.6 Create app/question_feedback/pipeline.py
-[ ] 2.7 Create app/question_feedback/utils/__init__.py
-[ ] 2.7 Create app/question_feedback/utils/qti_parser.py
-[ ] 2.7 Create app/question_feedback/utils/image_utils.py
+[x] 2.1 Create app/question_feedback/__init__.py
+[x] 2.1 Create app/question_feedback/models.py
+[x] 2.2 Create app/question_feedback/prompts.py
+[x] 2.3 Create app/question_feedback/schemas.py
+[x] 2.4 Create app/question_feedback/enhancer.py
+[x] 2.5 Create app/question_feedback/validator.py
+[x] 2.6 Create app/question_feedback/pipeline.py
+[x] 2.7 Create app/question_feedback/utils/__init__.py
+[x] 2.7 Create app/question_feedback/utils/qti_parser.py
+[x] 2.7 Create app/question_feedback/utils/image_utils.py
 [ ] Write unit tests for FeedbackEnhancer
 [ ] Write unit tests for FinalValidator
 [ ] Write integration test for QuestionPipeline

@@ -253,21 +253,12 @@ export function QuestionDetailPanel({
                         {data.qti_options.map((opt) => (
                           <div
                             key={opt.id}
-                            className={cn(
-                              "flex items-start gap-3 p-2 rounded",
-                              data.correct_answer === opt.id
-                                ? "bg-success/10 border border-success/30"
-                                : "bg-background"
-                            )}
+                            className="flex items-start gap-3 p-2 rounded bg-background"
                           >
-                            <span
-                              className={cn(
-                                "flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full text-xs font-medium",
-                                data.correct_answer === opt.id
-                                  ? "bg-success text-white"
-                                  : "bg-surface border border-border"
-                              )}
-                            >
+                            <span className={
+                              "flex-shrink-0 w-6 h-6 flex items-center justify-center " +
+                              "rounded-full text-xs font-medium bg-surface border border-border"
+                            }>
                               {opt.id}
                             </span>
                             <span className="text-sm">{opt.text}</span>
@@ -280,28 +271,16 @@ export function QuestionDetailPanel({
               )}
 
               {/* Metadata */}
-              {(data.difficulty || data.correct_answer) && (
+              {data.difficulty && (
                 <section>
                   <h3 className="text-sm font-medium text-text-secondary mb-3">
                     Metadata
                   </h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {data.correct_answer && (
-                      <div className="bg-surface border border-border rounded-lg p-3">
-                        <p className="text-xs text-text-secondary">Correct Answer</p>
-                        <p className="font-mono font-medium mt-1">
-                          {data.correct_answer}
-                        </p>
-                      </div>
-                    )}
-                    {data.difficulty && (
-                      <div className="bg-surface border border-border rounded-lg p-3">
-                        <p className="text-xs text-text-secondary">Difficulty</p>
-                        <p className="font-medium mt-1 capitalize">
-                          {data.difficulty}
-                        </p>
-                      </div>
-                    )}
+                  <div className="bg-surface border border-border rounded-lg p-3">
+                    <p className="text-xs text-text-secondary">Difficulty</p>
+                    <p className="font-medium mt-1 capitalize">
+                      {data.difficulty}
+                    </p>
                   </div>
                 </section>
               )}
@@ -347,28 +326,6 @@ export function QuestionDetailPanel({
                   </p>
                 )}
               </section>
-
-              {/* Feedback */}
-              {Object.keys(data.feedback).length > 0 && (
-                <section>
-                  <h3 className="text-sm font-medium text-text-secondary mb-3">
-                    Answer Feedback
-                  </h3>
-                  <div className="space-y-2">
-                    {Object.entries(data.feedback).map(([key, value]) => (
-                      <div
-                        key={key}
-                        className="bg-surface border border-border rounded-lg p-3"
-                      >
-                        <p className="font-mono text-xs text-text-secondary">
-                          Option {key}
-                        </p>
-                        <p className="text-sm mt-1">{value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
 
               {/* Variants */}
               <section>

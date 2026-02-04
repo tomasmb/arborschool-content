@@ -105,21 +105,19 @@ class AtomRow:
 
 @dataclass
 class QuestionRow:
-    """Represents a row in the questions table."""
+    """Represents a row in the questions table.
+
+    Note: correct_answer, title, and feedback are parsed directly from qti_xml
+    rather than stored as separate fields.
+    """
 
     id: str
     source: QuestionSource
     qti_xml: str
-    correct_answer: str
     difficulty_level: DifficultyLevel
-    title: str | None = None
     parent_question_id: str | None = None
     question_set_id: str | None = None
     difficulty_score: float | None = None
-    difficulty_analysis: str | None = None
-    general_analysis: str | None = None
-    feedback_general: str | None = None
-    feedback_per_option: dict[str, str] | None = None
     source_test_id: str | None = None
     source_question_number: int | None = None
 

@@ -106,6 +106,12 @@ export interface QuestionOption {
   text: string;
 }
 
+/**
+ * Full question detail for the slide-over panel.
+ *
+ * Note: correct_answer and feedback are now embedded in qti_xml and parsed
+ * by the frontend when displaying questions (to be implemented in new feedback panel).
+ */
 export interface QuestionDetail {
   id: string;
   test_id: string;
@@ -117,11 +123,9 @@ export interface QuestionDetail {
   qti_xml: string | null;
   qti_stem: string | null;
   qti_options: QuestionOption[] | null;
-  correct_answer: string | null;
   difficulty: string | null;
   source_info: Record<string, unknown> | null;
   atom_tags: AtomTag[];
-  feedback: Record<string, string>;
   variants: VariantBrief[];
   qti_path: string | null;
   pdf_path: string | null;

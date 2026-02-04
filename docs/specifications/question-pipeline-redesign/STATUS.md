@@ -8,8 +8,8 @@
 | Document | Description | Status |
 |----------|-------------|--------|
 | [00-overview.md](./00-overview.md) | Architecture, data model, pipeline flow | Reference |
-| [01-cleanup-tasks.md](./01-cleanup-tasks.md) | Remove old feedback, clean modules | In Progress |
-| [02-backend-core.md](./02-backend-core.md) | `app/question_feedback/` module | Not Started |
+| [01-cleanup-tasks.md](./01-cleanup-tasks.md) | Remove old feedback, clean modules | Complete |
+| [02-backend-core.md](./02-backend-core.md) | `app/question_feedback/` module | Complete |
 | [03-variant-integration.md](./03-variant-integration.md) | Integrate feedback into variants | Not Started |
 | [04-api-endpoints.md](./04-api-endpoints.md) | Enrichment, validation, sync endpoints | Not Started |
 | [05-frontend-test-detail.md](./05-frontend-test-detail.md) | Test detail page enhancements | Not Started |
@@ -23,8 +23,8 @@
 ## Overall Progress
 
 ```
-Phase 0: Cleanup           [~] In Progress
-Phase 1: Backend Core      [ ] Not Started
+Phase 0: Cleanup           [x] Complete
+Phase 1: Backend Core      [x] Complete
 Phase 2: Variant Integration [ ] Not Started
 Phase 3: API Endpoints     [ ] Not Started
 Phase 4: Frontend - Test   [ ] Not Started
@@ -39,6 +39,8 @@ Phase 6: Migration         [ ] Not Started
 | Date | Session | Tasks Completed | Notes |
 |------|---------|-----------------|-------|
 | 2026-02-04 | 1 | Task 1.1: Removed feedback from 261 metadata_tags.json files | One-shot script, deleted after use |
+| 2026-02-04 | 2 | Tasks 1.2-1.7: Full cleanup of sync, API, and frontend | Removed feedback/correct_answer/title fields from all layers |
+| 2026-02-04 | 3 | Tasks 2.1-2.7: Created app/question_feedback/ module | FeedbackEnhancer, FinalValidator, QuestionPipeline, utils |
 
 ---
 

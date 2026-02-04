@@ -15,14 +15,14 @@ Before implementing the new feedback pipeline, we need to clean up:
 ## Acceptance Criteria
 
 - [x] All `metadata_tags.json` files have `feedback` field removed
-- [ ] `app/sync/models.py` has redundant fields removed
-- [ ] `app/sync/extractors.py` has feedback/correct_answer extraction removed
-- [ ] `app/sync/transformers.py` has mapping for removed fields removed
-- [ ] `app/tagging/tagger_prompts.py` has no feedback generation prompts
-- [ ] `api/schemas/api_models.py` has `feedback`, `correct_answer` fields removed
-- [ ] `api/routers/questions.py` has old feedback reading removed
-- [ ] `frontend/lib/api-types.ts` has old feedback types removed
-- [ ] `frontend/components/questions/QuestionDetailPanel.tsx` has old feedback display removed
+- [x] `app/sync/models.py` has redundant fields removed
+- [x] `app/sync/extractors.py` has feedback/correct_answer extraction removed
+- [x] `app/sync/transformers.py` has mapping for removed fields removed
+- [x] `app/tagging/tagger_prompts.py` has no feedback generation prompts
+- [x] `api/schemas/api_models.py` has `feedback`, `correct_answer` fields removed
+- [x] `api/routers/questions.py` has old feedback reading removed
+- [x] `frontend/lib/api-types.ts` has old feedback types removed
+- [x] `frontend/components/questions/QuestionDetailPanel.tsx` has old feedback display removed
 - [ ] All tests pass after changes
 
 ---
@@ -238,11 +238,11 @@ Remove:
 
 ```
 [x] 1.1 Create and run cleanup_old_feedback.py script
-[ ] 1.2 Clean app/sync/models.py
-[ ] 1.3 Clean app/sync/extractors.py
-[ ] 1.4 Clean app/sync/transformers.py
-[ ] 1.5 Clean app/tagging/tagger_prompts.py
-[ ] 1.6 Clean api/schemas/api_models.py and api/routers/questions.py
-[ ] 1.7 Clean frontend/lib/api-types.ts and QuestionDetailPanel.tsx
+[x] 1.2 Clean app/sync/models.py
+[x] 1.3 Clean app/sync/extractors.py (+ variant_extractors.py)
+[x] 1.4 Clean app/sync/transformers.py
+[x] 1.5 Clean app/tagging/tagger_prompts.py
+[x] 1.6 Clean api/schemas/api_models.py and api/routers/questions.py
+[x] 1.7 Clean frontend/lib/api-types.ts and QuestionDetailPanel.tsx
 [ ] Run tests to verify nothing broke
 ```

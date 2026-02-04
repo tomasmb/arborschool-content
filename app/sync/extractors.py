@@ -59,22 +59,20 @@ class ExtractedStandard:
 
 @dataclass
 class ExtractedQuestion:
-    """Raw question data extracted from QTI XML and metadata JSON."""
+    """Raw question data extracted from QTI XML and metadata JSON.
+
+    Note: correct_answer, title, and feedback are parsed directly from qti_xml
+    at display time rather than stored separately.
+    """
 
     id: str
     test_id: str
     question_number: int
     qti_xml: str
-    correct_answer: str
-    title: str | None
     # From metadata_tags.json
     atoms: list[dict[str, Any]]  # List of {atom_id, relevance, reasoning}
     difficulty_level: str | None
     difficulty_score: float | None
-    difficulty_analysis: str | None
-    general_analysis: str | None
-    feedback_general: str | None
-    feedback_per_option: dict[str, str] | None
     # Image paths found in QTI
     image_paths: list[str]
 
@@ -110,30 +108,6 @@ def _find_images_in_qti(qti_xml: str) -> list[str]:
     images.extend(object_pattern.findall(qti_xml))
 
     return images
-
-
-def _parse_correct_answer_from_qti(qti_xml: str) -> str:
-    """Extract correct answer identifier from QTI XML.
-
-    Looks for <qti-correct-response><qti-value>ChoiceX</qti-value></qti-correct-response>
-    """
-    pattern = re.compile(
-        r"<qti-correct-response>\s*<qti-value>([^<]+)</qti-value>\s*</qti-correct-response>",
-        re.IGNORECASE,
-    )
-    match = pattern.search(qti_xml)
-    if match:
-        return match.group(1).strip()
-    return ""
-
-
-def _parse_title_from_qti(qti_xml: str) -> str | None:
-    """Extract title from QTI XML."""
-    pattern = re.compile(r'title=["\']([^"\']+)["\']', re.IGNORECASE)
-    match = pattern.search(qti_xml)
-    if match:
-        return match.group(1).strip()
-    return None
 
 
 # -----------------------------------------------------------------------------
@@ -297,24 +271,15 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
         if difficulty_level not in ("low", "medium", "high"):
             difficulty_level = "medium"
 
-        # Extract feedback
-        feedback = metadata.get("feedback", {})
-
         questions.append(
             ExtractedQuestion(
                 id=question_id,
                 test_id=test_id,
                 question_number=q_num,
                 qti_xml=qti_xml,
-                correct_answer=_parse_correct_answer_from_qti(qti_xml),
-                title=_parse_title_from_qti(qti_xml),
                 atoms=atoms_data,
                 difficulty_level=difficulty_level,
                 difficulty_score=difficulty.get("score") if difficulty else None,
-                difficulty_analysis=difficulty.get("analysis") if difficulty else None,
-                general_analysis=metadata.get("general_analysis"),
-                feedback_general=feedback.get("general_guidance") if feedback else None,
-                feedback_per_option=feedback.get("per_option_feedback") if feedback else None,
                 image_paths=_find_images_in_qti(qti_xml),
             )
         )

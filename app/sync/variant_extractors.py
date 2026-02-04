@@ -21,7 +21,6 @@ from app.utils.paths import PRUEBAS_ALTERNATIVAS_DIR
 # Import shared helpers from extractors
 from app.sync.extractors import (
     _find_images_in_qti,
-    _parse_correct_answer_from_qti,
     extract_all_tests,
 )
 
@@ -37,6 +36,8 @@ class ExtractedVariant:
     Variants inherit atom associations from their parent question via parent_question_id.
     No separate question_atoms are stored for variants - queries should resolve atoms
     through the parent question.
+
+    Note: correct_answer and feedback are now stored in QTI XML and parsed at display time.
     """
 
     id: str  # e.g., "alt-prueba-invierno-2025-Q1-001"
@@ -45,13 +46,8 @@ class ExtractedVariant:
     source_test_id: str  # Source test, e.g., "prueba-invierno-2025"
     source_question_number: int  # e.g., 1
     qti_xml: str
-    correct_answer: str
     difficulty_level: str | None
     difficulty_score: float | None
-    difficulty_analysis: str | None
-    general_analysis: str | None
-    feedback_general: str | None
-    feedback_per_option: dict[str, str] | None
     # Variant-specific metadata
     change_description: str | None  # What was changed from the original
     validation_verdict: str | None  # APROBADA/RECHAZADA
@@ -114,9 +110,6 @@ def _extract_single_variant(
     if difficulty_level not in ("low", "medium", "high"):
         difficulty_level = "medium"
 
-    # Extract feedback
-    feedback = metadata.get("feedback", {})
-
     # Extract validation info
     validation = metadata.get("validation", {})
 
@@ -131,13 +124,8 @@ def _extract_single_variant(
         source_test_id=test_id,
         source_question_number=question_number,
         qti_xml=qti_xml,
-        correct_answer=_parse_correct_answer_from_qti(qti_xml),
         difficulty_level=difficulty_level,
         difficulty_score=difficulty.get("score") if difficulty else None,
-        difficulty_analysis=difficulty.get("analysis") if difficulty else None,
-        general_analysis=metadata.get("general_analysis"),
-        feedback_general=feedback.get("general_guidance") if feedback else None,
-        feedback_per_option=feedback.get("per_option_feedback") if feedback else None,
         change_description=change_description,
         validation_verdict=validation.get("verdict") if validation else None,
         validation_steps=validation.get("calculation_steps") if validation else None,
