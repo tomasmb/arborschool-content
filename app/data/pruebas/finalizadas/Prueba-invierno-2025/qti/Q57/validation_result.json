@@ -1,0 +1,35 @@
+{
+  "question_id": "prueba-invierno-2025-Q57",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-04T21:28:08.462046+00:00",
+  "success": false,
+  "stage_failed": "feedback_review",
+  "error": "Feedback review failed: feedback_accuracy, feedback_clarity",
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "fail",
+      "feedback_accuracy": {
+        "status": "fail",
+        "issues": [
+          "En los feedbacks de las alternativas incorrectas (A, B y C) se afirma que “la suma de esos dos nuevos valores debe ser igual a 40”, lo cual es falso: la condición correcta para conservar el promedio es que la suma de los dos nuevos datos sea 16 (no 40), dado que el nuevo total debe ser 56.",
+          "En el feedback de la alternativa correcta (D) también se afirma que “la suma de esos dos nuevos valores debe ser igual a 40”, lo que contradice el propio cálculo posterior donde se usa correctamente que 2 + 14 = 16 y 40 + 16 = 56.",
+          "Existe una inconsistencia interna entre la explicación verbal de la condición (suma = 40) y el procedimiento numérico correcto (suma = 16), lo que constituye un error matemático en la descripción conceptual."
+        ],
+        "reasoning": "Aunque los cálculos numéricos de sumas parciales y del promedio son correctos, la condición conceptual que se repite en todos los feedbacks (“la suma de los dos nuevos valores debe ser igual a 40”) es matemáticamente incorrecta. Para mantener el promedio 8 al pasar de 5 a 7 datos, la suma total debe ser 56, por lo que la suma de los dos nuevos datos debe ser 16. Esta confusión afecta tanto a la explicación de la alternativa correcta como a la caracterización de los errores en las alternativas incorrectas, por lo que la precisión factual del feedback falla."
+      },
+      "feedback_clarity": {
+        "status": "fail",
+        "issues": [
+          "La explicación mezcla una condición conceptual incorrecta (suma = 40) con un procedimiento correcto (suma = 16), lo que puede confundir al estudiante sobre cuál es la regla general para conservar el promedio.",
+          "En los feedbacks de las alternativas incorrectas se insiste en una condición equivocada como si fuera el criterio correcto, reforzando una idea errónea en lugar de aclarar el concepto.",
+          "Aunque el lenguaje es adecuado para 3°-4° medio y los pasos de la solución están bien estructurados, la contradicción entre la regla enunciada y los cálculos concretos reduce la claridad pedagógica y puede generar confusión conceptual."
+        ],
+        "reasoning": "El tono y el nivel de lenguaje son apropiados y la solución paso a paso, en su parte numérica, es clara y específica a la pregunta. Sin embargo, la presencia de una regla conceptual incorrecta repetida en varios feedbacks y en la explicación de la opción correcta genera una contradicción interna que dificulta la comprensión del criterio real para conservar el promedio. Esta inconsistencia hace que la claridad pedagógica no sea suficiente."
+      },
+      "overall_reasoning": "El feedback contiene una idea conceptual equivocada sobre la condición necesaria para mantener el promedio al agregar datos, repetida en varias alternativas, pese a que los cálculos numéricos concretos son correctos. Esta contradicción implica errores factuales y reduce la claridad pedagógica, por lo que la revisión no puede aprobarse."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": null
+}

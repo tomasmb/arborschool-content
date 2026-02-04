@@ -1,0 +1,107 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-59" title="Justificación de la estabilidad de la moda estadística" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Para decidir el color con el que se pintarán las murallas de una sala de clases, se preguntó a los estudiantes que asistieron ese día por su color de preferencia, obteniéndose la información que se presenta en la siguiente tabla:</p>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Color</th>
+            <th>Frecuencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Blanco</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Verde</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>Celeste</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Gris</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>Amarillo</td>
+            <td>7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Se decidió que las murallas se pintarán del color correspondiente a la moda de las respuestas. Como ese día faltaron cuatro estudiantes, una persona propuso que, antes de decidir el color, se les pregunte a esos cuatro estudiantes por su preferencia.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los siguientes argumentos permite justificar que la moda no va a cambiar aun cuando se incorporen las preferencias pendientes?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Que la moda seguirá siendo “verde” si las preferencias por incorporar eligen ese color.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">Incorrecto. Este argumento solo considera el caso en que los 4 estudiantes eligen “verde”, pero la justificación debe asegurar que la moda no cambia sin importar qué colores elijan; es decir, debe ser válida para cualquier combinación de respuestas.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Que la frecuencia de la opción “verde” excede en más de 4 preferencias la frecuencia de cualquier otro color.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">¡Correcto! La moda es el valor con mayor frecuencia. “Verde” tiene 12 preferencias y los demás colores tienen 7, es decir, “verde” supera a cualquier otro color por 5 preferencias. Como solo faltan 4 estudiantes por responder, aun cuando todos eligieran el mismo color distinto de “verde”, ese color llegaría a lo más a 11 preferencias, que sigue siendo menor que 12. Por eso la moda no puede cambiar.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Que, con excepción de la moda, todos los otros colores tienen igual frecuencia y esta es menor que la frecuencia de la moda.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. Aunque es cierto que todos los otros colores tienen la misma frecuencia y es menor que la de “verde”, este hecho por sí solo no garantiza que la moda se mantenga. Falta considerar cuánta es la diferencia de frecuencias y cuántas respuestas nuevas se pueden agregar; sin esa comparación, no se puede asegurar que otro color no alcance o supere a “verde”.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Que las preferencias por incorporar son 4, pero los colores disponibles son 5.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">Incorrecto. Este argumento se centra en la cantidad de colores y de respuestas faltantes, pero eso no determina la moda. Lo relevante es comparar cuánta ventaja lleva “verde” sobre los otros colores y cuántas nuevas preferencias se pueden sumar a un mismo color; el número de colores disponibles no impide que uno de ellos aumente su frecuencia.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Análisis de la estabilidad de la moda al agregar nuevos datos</strong></p>
+        <ol>
+          <li>Identificar la moda actual: En la tabla, las frecuencias son: blanco 7, verde 12, celeste 7, gris 7, amarillo 7. El color con mayor frecuencia es “verde” con 12 preferencias, por lo que la moda actual es “verde”.</li>
+          <li>Comparar la frecuencia de la moda con las demás: Cada uno de los otros colores tiene 7 preferencias. La diferencia entre “verde” y cualquier otro color es 12 − 7 = 5 preferencias.</li>
+          <li>Analizar el máximo cambio posible al agregar las respuestas faltantes: Faltan 4 estudiantes por responder. En el caso más extremo para “verde”, todos esos 4 estudiantes podrían elegir el mismo color distinto de “verde”. Así, la frecuencia máxima que podría alcanzar otro color sería 7 + 4 = 11.</li>
+          <li>Concluir si la moda puede cambiar: Aun en ese caso extremo, el otro color llegaría a 11 preferencias, que sigue siendo menor que las 12 preferencias de “verde”. Por lo tanto, ningún color puede igualar o superar a “verde” al incorporar las 4 respuestas faltantes, y la moda se mantiene.</li>
+          <li>Relacionar con la alternativa correcta: La alternativa B explica justamente esta idea: la frecuencia de “verde” excede en más de 4 preferencias a la de cualquier otro color. Como la ventaja es de 5 y solo se pueden agregar 4 respuestas, la moda no puede cambiar.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

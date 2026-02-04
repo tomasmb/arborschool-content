@@ -1,0 +1,100 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-51" title="Cálculo de nueva ubicación con desplazamientos cardinales" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una tienda ubicada en una ciudad turística puso un anuncio en un terminal de buses para que los visitantes fueran a conocer la tienda. El anuncio mencionaba la forma de llegar desde una de las salidas del terminal: avance cinco cuadras hacia el norte y siete cuadras hacia el este, y tenía el siguiente dibujo:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q51_main.png" alt="Rosa de los vientos indicando los puntos cardinales: Norte (N), Sur (S), Este (E) y Oeste (O)"/>
+    </p>
+    <p>Con el paso del tiempo, la tienda ha tenido algunos cambios de ubicación, primero se movió tres cuadras hacia el sur y dos cuadras al este y después, diez cuadras al norte y tres al oeste. Por esta razón, han decidido hacer un nuevo anuncio que mencione cómo llegar desde la misma salida del terminal de buses.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes indicaciones pueden poner en el anuncio en el terminal de buses para que los turistas puedan llegar a la tienda?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Avance doce cuadras hacia el norte y dos cuadras hacia el este.
+        <qti-feedback-inline identifier="ChoiceA_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta opción se suman bien los desplazamientos hacia el norte (5 − 3 + 10 = 12), pero se calcula mal el desplazamiento hacia el este: se considera solo 7 + 2 = 9 y luego se resta 7 para llegar a 2, en vez de restar correctamente los 3 hacia el oeste (7 + 2 − 3 = 6).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Avance doce cuadras hacia el norte y seis cuadras hacia el este.
+        <qti-feedback-inline identifier="ChoiceB_fb" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Desde el terminal, la tienda estaba a 5 cuadras al norte y 7 al este. Luego se mueve 3 cuadras al sur (5 − 3 = 2 al norte) y 2 al este (7 + 2 = 9 al este). Después se desplaza 10 cuadras al norte (2 + 10 = 12 al norte) y 3 al oeste (9 − 3 = 6 al este). El resultado final es 12 cuadras al norte y 6 cuadras al este desde el terminal.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Avance dos cuadras hacia el norte y doce cuadras hacia el este.
+        <qti-feedback-inline identifier="ChoiceC_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se confunden los efectos de los desplazamientos: se toma el 2 como resultado final hacia el norte (5 − 3 = 2) sin considerar el último movimiento de 10 cuadras al norte, y se suman todos los desplazamientos hacia el este (7 + 2 + 3 = 12) como si el movimiento hacia el oeste aumentara el este, en vez de restarlo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Avance seis cuadras hacia el norte y doce cuadras hacia el este.
+        <qti-feedback-inline identifier="ChoiceD_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta alternativa se mezclan mal las direcciones: se promedia o combina de forma incorrecta los desplazamientos norte–sur para obtener 6 cuadras al norte, y se suman todos los desplazamientos horizontales como si fueran hacia el este (7 + 2 + 3 = 12), sin considerar que el último movimiento es hacia el oeste y debe restarse.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: Sumar desplazamientos norte–sur y este–oeste por separado</strong></p>
+        <ol>
+          <li>Ubicación inicial de la tienda respecto del terminal:
+            <ul>
+              <li>5 cuadras hacia el norte.</li>
+              <li>7 cuadras hacia el este.</li>
+            </ul>
+          </li>
+          <li>Aplicar el primer cambio de ubicación (3 cuadras al sur y 2 al este):
+            <ul>
+              <li>Dirección norte–sur: 5 al norte − 3 al sur = 2 cuadras al norte.</li>
+              <li>Dirección este–oeste: 7 al este + 2 al este = 9 cuadras al este.</li>
+              <li>Después del primer cambio, la tienda queda a 2 cuadras al norte y 9 al este del terminal.</li>
+            </ul>
+          </li>
+          <li>Aplicar el segundo cambio de ubicación (10 cuadras al norte y 3 al oeste):
+            <ul>
+              <li>Dirección norte–sur: 2 al norte + 10 al norte = 12 cuadras al norte.</li>
+              <li>Dirección este–oeste: 9 al este − 3 al oeste = 6 cuadras al este.</li>
+            </ul>
+          </li>
+          <li>Conclusión:
+            <ul>
+              <li>Desde la salida del terminal, la nueva indicación correcta es:
+                <em>“Avance doce cuadras hacia el norte y seis cuadras hacia el este”.</em>
+              </li>
+              <li>Por eso, la alternativa correcta es la opción B.</li>
+            </ul>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceB_fb</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">incorrect</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
