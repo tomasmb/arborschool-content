@@ -425,7 +425,12 @@ async def get_test_raw_pdf(subject_id: str, test_id: str) -> FileResponse:
 
     # Return the largest PDF (usually the official one)
     pdf_file = max(pdf_files, key=lambda f: f.stat().st_size)
-    return FileResponse(path=pdf_file, media_type="application/pdf", filename=f"{test_id}.pdf")
+    # Use inline to display in browser instead of downloading
+    return FileResponse(
+        path=pdf_file,
+        media_type="application/pdf",
+        content_disposition_type="inline",
+    )
 
 
 @router.get("/{subject_id}/atoms/unlock-status", response_model=UnlockStatus)

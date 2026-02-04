@@ -263,5 +263,6 @@ async def get_question_pdf(
     return FileResponse(
         path=pdf_file,
         media_type="application/pdf",
-        filename=f"{test_id}-Q{question_num}.pdf",
+        # Use inline to display in browser instead of downloading
+        content_disposition_type="inline",
     )
