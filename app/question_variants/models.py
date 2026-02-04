@@ -1,5 +1,7 @@
 """Data models for the assessment variant generation pipeline."""
 
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Dict, List, Optional
@@ -117,6 +119,27 @@ class PipelineConfig:
     validate_variants: bool = True
     save_rejected: bool = True
     output_dir: str = "app/data/pruebas/alternativas"
+
+
+@dataclass
+class VariantResult:
+    """Result of variant generation through the feedback pipeline.
+
+    Attributes:
+        success: Whether variant passed all pipeline stages.
+        variant_id: Unique identifier for the variant.
+        qti_xml: Final QTI XML with feedback (if successful).
+        error: Error message if any stage failed.
+        stage_failed: Name of the stage that failed (e.g., "feedback_enhancement").
+        validation_details: Full validation details from pipeline.
+    """
+
+    success: bool
+    variant_id: str
+    qti_xml: str | None = None
+    error: str | None = None
+    stage_failed: str | None = None
+    validation_details: Dict[str, Any] | None = None
 
 
 @dataclass

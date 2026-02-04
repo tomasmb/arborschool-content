@@ -3,24 +3,34 @@
 This module orchestrates the full variant generation workflow:
 1. Load source questions from finalized tests
 2. Generate variants using VariantGenerator
-3. Validate variants using VariantValidator
-4. Save approved variants to output directory
+3. Enhance variants with feedback using QuestionPipeline
+4. Validate variants using VariantValidator (semantic checks)
+5. Save approved variants to output directory
 """
 
+from __future__ import annotations
+
 import json
+import logging
 import os
 from dataclasses import asdict
+from datetime import datetime, timezone
 from typing import List, Optional
 
+from app.question_feedback.pipeline import QuestionPipeline
+from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_variants.models import (
     GenerationReport,
     PipelineConfig,
     SourceQuestion,
     VariantQuestion,
+    VariantResult,
 )
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_validator import VariantValidator
 from app.utils.qti_extractor import parse_qti_xml
+
+logger = logging.getLogger(__name__)
 
 
 class VariantPipeline:
@@ -38,6 +48,7 @@ class VariantPipeline:
         self.config = config or PipelineConfig()
         self.generator = VariantGenerator(self.config)
         self.validator = VariantValidator(self.config)
+        self.feedback_pipeline = QuestionPipeline()
 
     def run(self, test_id: str, question_ids: Optional[List[str]] = None, num_variants: Optional[int] = None) -> List[GenerationReport]:
         """Run the variant generation pipeline.
@@ -133,15 +144,21 @@ class VariantPipeline:
         return sources
 
     def _process_question(self, source: SourceQuestion, num_variants: Optional[int] = None) -> GenerationReport:
-        """Process a single source question."""
+        """Process a single source question.
 
+        Pipeline flow for each variant:
+        1. Generate raw variant QTI XML
+        2. Enhance with feedback via QuestionPipeline (includes XSD validation)
+        3. Validate semantics via VariantValidator (concept alignment, difficulty)
+        4. Save only variants passing all validation stages
+        """
         print(f"\n{'─' * 40}")
         print(f"Procesando: {source.question_id}")
         print(f"{'─' * 40}")
 
         report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
 
-        # Generate variants
+        # Generate variants (raw QTI without feedback)
         variants = self.generator.generate_variants(source, num_variants)
         report.total_generated = len(variants)
 
@@ -149,53 +166,130 @@ class VariantPipeline:
             report.errors.append("No se pudieron generar variantes")
             return report
 
-        # Validate each variant
-        approved_variants = []
+        # Process each variant through feedback pipeline + semantic validation
+        approved_variants: list[VariantQuestion] = []
+        variant_results: dict[str, VariantResult] = {}
 
-        if self.config.validate_variants:
-            for variant in variants:
-                result = self.validator.validate(variant, source)
-                variant.validation_result = result
+        for variant in variants:
+            result = self._process_variant_through_pipeline(variant, source)
+            variant_results[variant.variant_id] = result
 
-                if result.is_approved:
+            if result.success and result.qti_xml:
+                # Update variant with enriched QTI XML
+                variant.qti_xml = result.qti_xml
+
+                # Run semantic validation (concept alignment, difficulty)
+                if self.config.validate_variants:
+                    semantic_result = self.validator.validate(variant, source)
+                    variant.validation_result = semantic_result
+
+                    if semantic_result.is_approved:
+                        approved_variants.append(variant)
+                        report.total_approved += 1
+                    else:
+                        report.total_rejected += 1
+                        logger.warning(
+                            f"Variant {variant.variant_id} failed semantic validation: "
+                            f"{semantic_result.rejection_reason}"
+                        )
+                else:
+                    # Skip semantic validation
                     approved_variants.append(variant)
                     report.total_approved += 1
-                else:
-                    report.total_rejected += 1
-        else:
-            # Skip validation
-            approved_variants = variants
-            report.total_approved = len(variants)
+            else:
+                report.total_rejected += 1
+                logger.warning(
+                    f"Variant {variant.variant_id} failed feedback pipeline: "
+                    f"stage={result.stage_failed}, error={result.error}"
+                )
 
         # Save approved variants
         for variant in approved_variants:
-            self._save_variant(variant, source)
+            self._save_variant(variant, source, variant_results.get(variant.variant_id))
             report.variants.append(variant.variant_id)
 
         # Save rejected variants if configured
         if self.config.save_rejected:
             rejected = [v for v in variants if v not in approved_variants]
             for variant in rejected:
-                self._save_variant(variant, source, is_rejected=True)
+                self._save_variant(
+                    variant, source, variant_results.get(variant.variant_id), is_rejected=True
+                )
 
         # Save report
         self._save_report(report)
 
         return report
 
-    def _save_variant(self, variant: VariantQuestion, source: SourceQuestion, is_rejected: bool = False):
-        """Save a variant to disk."""
+    def _process_variant_through_pipeline(
+        self, variant: VariantQuestion, source: SourceQuestion
+    ) -> VariantResult:
+        """Process a variant through the feedback enhancement pipeline.
 
+        Args:
+            variant: The variant to process.
+            source: The source question (for context).
+
+        Returns:
+            VariantResult with success status and enriched QTI XML if successful.
+        """
+        print(f"    📝 Processing {variant.variant_id} through feedback pipeline...")
+
+        # Extract image URLs from variant QTI
+        image_urls = extract_image_urls(variant.qti_xml)
+
+        # Run through feedback pipeline (enhancement + XSD + content validation)
+        pipeline_result = self.feedback_pipeline.process(
+            question_id=variant.variant_id,
+            qti_xml=variant.qti_xml,
+            image_urls=image_urls if image_urls else None,
+            output_dir=None,  # Don't save intermediate results
+        )
+
+        if not pipeline_result.success:
+            print(f"    ❌ {variant.variant_id} failed: {pipeline_result.stage_failed}")
+            return VariantResult(
+                success=False,
+                variant_id=variant.variant_id,
+                error=pipeline_result.error,
+                stage_failed=pipeline_result.stage_failed,
+                validation_details=pipeline_result.validation_details,
+            )
+
+        print(f"    ✅ {variant.variant_id} passed feedback pipeline")
+        return VariantResult(
+            success=True,
+            variant_id=variant.variant_id,
+            qti_xml=pipeline_result.qti_xml_final,
+            validation_details=pipeline_result.validation_details,
+        )
+
+    def _save_variant(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+        pipeline_result: VariantResult | None = None,
+        is_rejected: bool = False,
+    ) -> None:
+        """Save a variant to disk.
+
+        Args:
+            variant: The variant to save.
+            source: The source question.
+            pipeline_result: Result from feedback pipeline (for validation_result.json).
+            is_rejected: Whether this variant was rejected.
+        """
         # Build output path
         status = "rejected" if is_rejected else "approved"
-        variant_path = os.path.join(self.config.output_dir, source.test_id, source.question_id, status, variant.variant_id)
+        variant_path = os.path.join(
+            self.config.output_dir, source.test_id, source.question_id, status, variant.variant_id
+        )
 
         os.makedirs(variant_path, exist_ok=True)
 
-        # Prepare content to save
-        # Add validation result to metadata
+        # Add semantic validation result to metadata (if available)
         if variant.validation_result:
-            variant.metadata["validation"] = {
+            variant.metadata["semantic_validation"] = {
                 "verdict": variant.validation_result.verdict.value,
                 "concept_aligned": variant.validation_result.concept_aligned,
                 "difficulty_equal": variant.validation_result.difficulty_equal,
@@ -211,24 +305,34 @@ class VariantPipeline:
             "is_rejected": is_rejected,
         }
 
-        # Helper to save files to a path
-        def save_to_path(base_path: str):
-            os.makedirs(base_path, exist_ok=True)
+        os.makedirs(variant_path, exist_ok=True)
 
-            # Save QTI XML
-            with open(os.path.join(base_path, "question.xml"), "w", encoding="utf-8") as f:
-                f.write(variant.qti_xml)
+        # Save QTI XML (with feedback if pipeline passed)
+        with open(os.path.join(variant_path, "question.xml"), "w", encoding="utf-8") as f:
+            f.write(variant.qti_xml)
 
-            # Save metadata
-            with open(os.path.join(base_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
-                json.dump(variant.metadata, f, ensure_ascii=False, indent=2)
+        # Save metadata
+        with open(os.path.join(variant_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
+            json.dump(variant.metadata, f, ensure_ascii=False, indent=2)
 
-            # Save variant info
-            with open(os.path.join(base_path, "variant_info.json"), "w", encoding="utf-8") as f:
-                json.dump(variant_info, f, ensure_ascii=False, indent=2)
+        # Save variant info
+        with open(os.path.join(variant_path, "variant_info.json"), "w", encoding="utf-8") as f:
+            json.dump(variant_info, f, ensure_ascii=False, indent=2)
 
-        # Save to primary location (by test)
-        save_to_path(variant_path)
+        # Save validation_result.json (pipeline validation details)
+        validation_data = {
+            "variant_id": variant.variant_id,
+            "pipeline_version": "2.0",
+            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "pipeline_success": pipeline_result.success if pipeline_result else None,
+            "pipeline_stage_failed": pipeline_result.stage_failed if pipeline_result else None,
+            "pipeline_error": pipeline_result.error if pipeline_result else None,
+            "pipeline_validation_details": pipeline_result.validation_details if pipeline_result else None,
+            "semantic_validation": variant.metadata.get("semantic_validation"),
+            "is_approved": not is_rejected,
+        }
+        with open(os.path.join(variant_path, "validation_result.json"), "w", encoding="utf-8") as f:
+            json.dump(validation_data, f, ensure_ascii=False, indent=2)
 
     def _save_report(self, report: GenerationReport):
         """Save generation report."""
