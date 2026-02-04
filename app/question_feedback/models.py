@@ -65,6 +65,19 @@ class EnhancementResult(BaseModel):
     attempts: int = 1
 
 
+class FeedbackReviewResult(BaseModel):
+    """Result from feedback-only review (used during enrichment).
+
+    This is a lightweight validation that checks only the generated feedback,
+    not the original question content. Used as a gate after feedback generation.
+    """
+
+    review_result: str  # "pass" or "fail"
+    feedback_accuracy: CheckResult
+    feedback_clarity: CheckResult
+    overall_reasoning: str
+
+
 class PipelineResult(BaseModel):
     """Complete pipeline result."""
 
@@ -74,5 +87,5 @@ class PipelineResult(BaseModel):
     error: str | None = None
     xsd_errors: str | None = None
     qti_xml_final: str | None = None
-    validation_details: dict[str, Any] | None = None
+    feedback_review_details: dict[str, Any] | None = None
     can_sync: bool = False

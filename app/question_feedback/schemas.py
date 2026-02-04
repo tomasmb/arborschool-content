@@ -2,6 +2,57 @@
 
 from __future__ import annotations
 
+# ---------------------------------------------------------------------------
+# Feedback Review Schema (lightweight, used during enrichment)
+# ---------------------------------------------------------------------------
+FEEDBACK_REVIEW_SCHEMA: dict = {
+    "type": "object",
+    "properties": {
+        "review_result": {
+            "type": "string",
+            "enum": ["pass", "fail"],
+            "description": "Overall result: pass if all feedback is factually correct",
+        },
+        "feedback_accuracy": {
+            "type": "object",
+            "properties": {
+                "status": {"type": "string", "enum": ["pass", "fail"]},
+                "issues": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of factual errors in feedback",
+                },
+                "reasoning": {"type": "string"},
+            },
+            "required": ["status", "issues", "reasoning"],
+        },
+        "feedback_clarity": {
+            "type": "object",
+            "properties": {
+                "status": {"type": "string", "enum": ["pass", "fail"]},
+                "issues": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of clarity/pedagogical issues",
+                },
+                "reasoning": {"type": "string"},
+            },
+            "required": ["status", "issues", "reasoning"],
+        },
+        "overall_reasoning": {"type": "string"},
+    },
+    "required": [
+        "review_result",
+        "feedback_accuracy",
+        "feedback_clarity",
+        "overall_reasoning",
+    ],
+}
+
+
+# ---------------------------------------------------------------------------
+# Final Validation Schema (comprehensive, used as separate validation step)
+# ---------------------------------------------------------------------------
 FINAL_VALIDATION_SCHEMA: dict = {
     "type": "object",
     "properties": {

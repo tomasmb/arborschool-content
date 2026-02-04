@@ -9,33 +9,37 @@ from pathlib import Path
 
 from app.question_feedback.enhancer import FeedbackEnhancer
 from app.question_feedback.models import PipelineResult
-from app.question_feedback.validator import FinalValidator
+from app.question_feedback.reviewer import FeedbackReviewer
 
 logger = logging.getLogger(__name__)
 
 
 class QuestionPipeline:
-    """Complete question processing pipeline with validation gates.
+    """Question processing pipeline with feedback generation and review.
 
-    This class orchestrates the full feedback generation pipeline:
+    This class orchestrates the feedback enrichment pipeline:
     1. Stage 1: Feedback Enhancement (LLM generates QTI XML with feedback)
     2. Gate 1: XSD Validation (validates against QTI 3.0 schema)
-    3. Stage 2: Final Validation (LLM validates content quality)
+    3. Stage 2: Feedback Review (lightweight LLM review of generated feedback only)
+
+    Note: Full validation (FinalValidator) is run as a SEPARATE step after enrichment,
+    not during this pipeline. This allows enrichment to complete faster while still
+    catching obvious factual errors in the generated feedback.
     """
 
     def __init__(
         self,
         enhancer: FeedbackEnhancer | None = None,
-        validator: FinalValidator | None = None,
+        reviewer: FeedbackReviewer | None = None,
     ):
         """Initialize the pipeline.
 
         Args:
             enhancer: FeedbackEnhancer instance. Creates default if None.
-            validator: FinalValidator instance. Creates default if None.
+            reviewer: FeedbackReviewer instance. Creates default if None.
         """
         self.enhancer = enhancer or FeedbackEnhancer()
-        self.validator = validator or FinalValidator()
+        self.reviewer = reviewer or FeedbackReviewer()
 
     def process(
         self,
@@ -44,7 +48,7 @@ class QuestionPipeline:
         image_urls: list[str] | None = None,
         output_dir: Path | None = None,
     ) -> PipelineResult:
-        """Process a question through the complete pipeline.
+        """Process a question through the enrichment pipeline.
 
         Args:
             question_id: Unique identifier for the question.
@@ -76,54 +80,52 @@ class QuestionPipeline:
                 self._save_result(output_dir, result)
             return result
 
+        # At this point enhancement.qti_xml is guaranteed to be non-None (success=True)
+        assert enhancement.qti_xml is not None
         qti_with_feedback = enhancement.qti_xml
 
-        # ── STAGE 2: Final LLM Validation ──
-        validation = self.validator.validate(qti_with_feedback, image_urls)
+        # ── STAGE 2: Feedback Review (lightweight - only validates generated feedback) ──
+        review = self.reviewer.review(qti_with_feedback)
 
-        if validation.validation_result != "pass":
-            # Build descriptive error from validation details
+        if review.review_result != "pass":
+            # Build descriptive error from review details
             failed_checks = []
-            if validation.correct_answer_check.status.value == "fail":
-                failed_checks.append("correct_answer")
-            if validation.feedback_check.status.value == "fail":
-                failed_checks.append("feedback")
-            if validation.content_quality_check.status.value == "fail":
-                failed_checks.append("content_quality")
-            if validation.math_validity_check.status.value == "fail":
-                failed_checks.append("math_validity")
-            error_msg = f"Validation failed: {', '.join(failed_checks) or 'unknown checks'}"
+            if review.feedback_accuracy.status.value == "fail":
+                failed_checks.append("feedback_accuracy")
+            if review.feedback_clarity.status.value == "fail":
+                failed_checks.append("feedback_clarity")
+            error_msg = f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
 
             result = PipelineResult(
                 question_id=question_id,
                 success=False,
-                stage_failed="final_validation",
+                stage_failed="feedback_review",
                 error=error_msg,
-                validation_details=validation.model_dump(),
+                feedback_review_details=review.model_dump(),
                 can_sync=False,
             )
             if output_dir:
                 self._save_result(output_dir, result)
             return result
 
-        # ── SUCCESS: Ready for sync ──
+        # ── SUCCESS: Ready for full validation (separate step) ──
         result = PipelineResult(
             question_id=question_id,
             success=True,
             qti_xml_final=qti_with_feedback,
-            validation_details=validation.model_dump(),
-            can_sync=True,
+            feedback_review_details=review.model_dump(),
+            can_sync=False,  # Will be set to True after full validation passes
         )
 
         if output_dir:
             self._save_result(output_dir, result)
             self._save_validated_xml(output_dir, qti_with_feedback)
 
-        logger.info(f"Question {question_id} processed successfully")
+        logger.info(f"Question {question_id} enrichment completed successfully")
         return result
 
     def _save_result(self, output_dir: Path, result: PipelineResult) -> None:
-        """Save validation result to JSON file.
+        """Save enrichment result to JSON file.
 
         Args:
             output_dir: Directory to save the result.
@@ -133,13 +135,15 @@ class QuestionPipeline:
 
         result_data = {
             "question_id": result.question_id,
-            "pipeline_version": "2.0",
+            "pipeline_version": "3.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "success": result.success,
             "stage_failed": result.stage_failed,
             "error": result.error,
             "xsd_errors": result.xsd_errors,
-            "validation_details": result.validation_details,
+            "stages": {
+                "feedback_review": result.feedback_review_details,
+            },
             "can_sync": result.can_sync,
             "validated_qti_path": (
                 "question_validated.xml" if result.success else None
@@ -150,7 +154,7 @@ class QuestionPipeline:
         with open(result_path, "w", encoding="utf-8") as f:
             json.dump(result_data, f, indent=2, ensure_ascii=False)
 
-        logger.info(f"Saved validation result to {result_path}")
+        logger.info(f"Saved enrichment result to {result_path}")
 
     def _save_validated_xml(self, output_dir: Path, qti_xml: str) -> None:
         """Save validated QTI XML to file.

@@ -5,8 +5,9 @@ Feedback is embedded directly in QTI XML following the QTI 3.0 standard.
 
 Main components:
 - FeedbackEnhancer: Generates complete QTI XML with feedback embedded
-- FinalValidator: Validates content quality with LLM
-- QuestionPipeline: Orchestrates the full processing pipeline
+- FeedbackReviewer: Lightweight review of generated feedback (used during enrichment)
+- FinalValidator: Comprehensive validation of complete QTI (separate validation step)
+- QuestionPipeline: Orchestrates the enrichment pipeline
 """
 
 from __future__ import annotations
@@ -17,10 +18,12 @@ from app.question_feedback.models import (
     CheckStatus,
     CorrectAnswerCheck,
     EnhancementResult,
+    FeedbackReviewResult,
     PipelineResult,
     ValidationResult,
 )
 from app.question_feedback.pipeline import QuestionPipeline
+from app.question_feedback.reviewer import FeedbackReviewer
 from app.question_feedback.validator import FinalValidator
 
 __all__ = [
@@ -29,10 +32,12 @@ __all__ = [
     "CheckResult",
     "CorrectAnswerCheck",
     "ValidationResult",
+    "FeedbackReviewResult",
     "EnhancementResult",
     "PipelineResult",
     # Classes
     "FeedbackEnhancer",
+    "FeedbackReviewer",
     "FinalValidator",
     "QuestionPipeline",
 ]

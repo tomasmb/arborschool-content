@@ -260,11 +260,15 @@ async def start_variant_enrichment_job(
     return job_id, len(variants), estimated_cost
 
 
-async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
-    """Run enrichment in background.
+# Concurrency limit for parallel processing
+MAX_CONCURRENT_JOBS = 10
 
-    Uses asyncio.to_thread() to run sync pipeline.process()
-    without blocking the event loop.
+
+async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
+    """Run enrichment in background with parallel processing.
+
+    Uses asyncio.Semaphore to limit concurrency to MAX_CONCURRENT_JOBS.
+    Each question is processed in a separate thread via asyncio.to_thread().
     """
     job = _jobs.get(job_id)
     if not job:
@@ -284,46 +288,62 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
         logger.exception(error_msg)
         return
 
-    for q in questions:
-        job.current_question = q["id"]
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT_JOBS)
 
-        try:
-            # Run sync pipeline in thread pool to avoid blocking
-            result = await asyncio.to_thread(
-                pipeline.process,
-                question_id=q["id"],
-                qti_xml=q["qti_xml"],
-                image_urls=q.get("image_urls"),
-                output_dir=Path(q["output_dir"]),
-            )
+    async def process_question(q: dict) -> dict:
+        """Process a single question with semaphore-controlled concurrency."""
+        async with semaphore:
+            job.current_question = q["id"]
+            try:
+                result = await asyncio.to_thread(
+                    pipeline.process,
+                    question_id=q["id"],
+                    qti_xml=q["qti_xml"],
+                    image_urls=q.get("image_urls"),
+                    output_dir=Path(q["output_dir"]),
+                )
 
-            job.completed += 1
+                if result.success:
+                    logger.info(f"Enrichment succeeded for {q['id']}")
+                    return {"question_id": q["id"], "status": "success", "success": True}
 
-            if result.success:
-                job.successful += 1
-                job.results.append({"question_id": q["id"], "status": "success"})
-                logger.info(f"Enrichment succeeded for {q['id']}")
-            else:
-                job.failed += 1
                 error_msg = result.error or "Unknown error"
                 if result.xsd_errors:
                     error_msg = f"XSD validation failed: {result.xsd_errors}"
-                job.results.append({
+                logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+                return {
                     "question_id": q["id"],
                     "status": "failed",
                     "error": error_msg,
-                })
-                logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+                    "success": False,
+                }
 
-        except Exception as e:
-            job.completed += 1
+            except Exception as e:
+                logger.exception(f"Exception during enrichment for {q['id']}")
+                return {
+                    "question_id": q["id"],
+                    "status": "failed",
+                    "error": str(e),
+                    "success": False,
+                }
+
+    # Run all questions in parallel (limited by semaphore)
+    tasks = [process_question(q) for q in questions]
+    results = await asyncio.gather(*tasks)
+
+    # Update job with results
+    for result in results:
+        job.completed += 1
+        if result.get("success"):
+            job.successful += 1
+            job.results.append({"question_id": result["question_id"], "status": "success"})
+        else:
             job.failed += 1
             job.results.append({
-                "question_id": q["id"],
+                "question_id": result["question_id"],
                 "status": "failed",
-                "error": str(e),
+                "error": result.get("error", "Unknown error"),
             })
-            logger.exception(f"Exception during enrichment for {q['id']}")
 
     job.status = "completed"
     job.current_question = None

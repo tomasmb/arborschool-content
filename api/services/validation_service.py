@@ -243,8 +243,16 @@ async def start_variant_validation_job(
     return job_id, len(variants), estimated_cost
 
 
+# Concurrency limit for parallel processing
+MAX_CONCURRENT_JOBS = 10
+
+
 async def _run_validation(job_id: str, questions: list[dict]) -> None:
-    """Run validation in background."""
+    """Run validation in background with parallel processing.
+
+    Uses asyncio.Semaphore to limit concurrency to MAX_CONCURRENT_JOBS.
+    Each question is validated in a separate thread via asyncio.to_thread().
+    """
     job = _validation_jobs.get(job_id)
     if not job:
         logger.error(f"Job {job_id} not found")
@@ -255,25 +263,27 @@ async def _run_validation(job_id: str, questions: list[dict]) -> None:
     # Create validator instance
     validator = FinalValidator()
 
-    for q in questions:
-        try:
-            result = await asyncio.to_thread(
-                validator.validate,
-                qti_xml_with_feedback=q["qti_xml"],
-                image_urls=q.get("image_urls"),
-            )
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT_JOBS)
 
-            job.completed += 1
+    async def validate_question(q: dict) -> dict:
+        """Validate a single question with semaphore-controlled concurrency."""
+        async with semaphore:
+            try:
+                result = await asyncio.to_thread(
+                    validator.validate,
+                    qti_xml_with_feedback=q["qti_xml"],
+                    image_urls=q.get("image_urls"),
+                )
 
-            if result.validation_result == "pass":
-                job.passed += 1
-                job.results.append({"question_id": q["id"], "status": "pass"})
-
-                # Update validation_result.json with can_sync=True
-                _update_validation_result(q["output_dir"], result, can_sync=True)
-                logger.info(f"Validation passed for {q['id']}")
-            else:
-                job.failed += 1
+                if result.validation_result == "pass":
+                    _update_validation_result(q["output_dir"], result, can_sync=True)
+                    logger.info(f"Validation passed for {q['id']}")
+                    return {
+                        "question_id": q["id"],
+                        "status": "pass",
+                        "passed": True,
+                        "result": result,
+                    }
 
                 # Collect failed checks
                 failed_checks = []
@@ -294,28 +304,45 @@ async def _run_validation(job_id: str, questions: list[dict]) -> None:
                 issues.extend(result.feedback_check.issues)
                 issues.extend(result.math_validity_check.issues)
 
-                job.results.append({
+                _update_validation_result(q["output_dir"], result, can_sync=False)
+                logger.warning(f"Validation failed for {q['id']}: {failed_checks}")
+
+                return {
                     "question_id": q["id"],
                     "status": "fail",
+                    "passed": False,
                     "failed_checks": failed_checks,
-                    "issues": issues[:3],  # Limit to 3 issues
-                })
+                    "issues": issues[:3],
+                }
 
-                _update_validation_result(q["output_dir"], result, can_sync=False)
-                logger.warning(
-                    f"Validation failed for {q['id']}: {failed_checks}"
-                )
+            except Exception as e:
+                logger.exception(f"Exception during validation for {q['id']}")
+                return {
+                    "question_id": q["id"],
+                    "status": "fail",
+                    "passed": False,
+                    "failed_checks": ["exception"],
+                    "issues": [str(e)],
+                }
 
-        except Exception as e:
-            job.completed += 1
+    # Run all questions in parallel (limited by semaphore)
+    tasks = [validate_question(q) for q in questions]
+    results = await asyncio.gather(*tasks)
+
+    # Update job with results
+    for result in results:
+        job.completed += 1
+        if result.get("passed"):
+            job.passed += 1
+            job.results.append({"question_id": result["question_id"], "status": "pass"})
+        else:
             job.failed += 1
             job.results.append({
-                "question_id": q["id"],
+                "question_id": result["question_id"],
                 "status": "fail",
-                "failed_checks": ["exception"],
-                "issues": [str(e)],
+                "failed_checks": result.get("failed_checks", []),
+                "issues": result.get("issues", []),
             })
-            logger.exception(f"Exception during validation for {q['id']}")
 
     job.status = "completed"
     job.completed_at = datetime.now(timezone.utc)
