@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { CheckCircle2, Circle, AlertTriangle, Play, RefreshCw, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PDFViewerModal } from "@/components/pdf";
+import { PDFViewerModal, PDFPreview } from "@/components/pdf";
 import { QTIPreview } from "@/components/qti";
 import { StatusIcon } from "@/components/ui";
 import { getQuestionPdfUrl, getQuestionDetail, type QuestionBrief, type QuestionDetail } from "@/lib/api";
@@ -208,15 +208,18 @@ export function ParsingTab({
                       Original PDF
                     </h4>
                   </div>
-                  <div className="flex-1 overflow-auto bg-gray-900 flex items-center justify-center">
+                  <div className="flex-1 overflow-hidden">
                     {currentQuestion.has_split_pdf ? (
-                      <iframe
-                        src={getQuestionPdfUrl(subjectId, testId, selectedQuestion)}
-                        className="w-full h-full"
-                        title={`Q${selectedQuestion} PDF`}
+                      <PDFPreview
+                        pdfUrl={getQuestionPdfUrl(subjectId, testId, selectedQuestion)}
+                        title={`Q${selectedQuestion}`}
+                        height="h-full"
+                        onExpand={() => setViewingPdf(true)}
                       />
                     ) : (
-                      <div className="text-text-secondary text-sm">No split PDF</div>
+                      <div className="flex-1 flex items-center justify-center bg-gray-900">
+                        <div className="text-text-secondary text-sm">No split PDF</div>
+                      </div>
                     )}
                   </div>
                 </div>
