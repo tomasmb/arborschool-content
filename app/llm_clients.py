@@ -4,17 +4,31 @@ import os
 from dataclasses import dataclass
 from typing import Any, List, Optional, Union
 
-import google.generativeai as genai
 import requests
 from dotenv import load_dotenv
-from google.api_core import exceptions as google_exceptions
 from PIL import Image
+
+# Lazy import for google-generativeai - only loaded when GeminiClient is used
+# This allows OpenAIClient to be imported without requiring google-generativeai
+genai = None
+google_exceptions = None
+
+
+def _ensure_google_imports() -> None:
+    """Lazy import of google-generativeai to avoid import errors when not using Gemini."""
+    global genai, google_exceptions
+    if genai is None:
+        import google.generativeai as _genai
+        from google.api_core import exceptions as _google_exceptions
+        genai = _genai
+        google_exceptions = _google_exceptions
 
 
 class GeminiClient:
     """Wrapper for google-generativeai client."""
 
     def __init__(self, api_key: str, model: str) -> None:
+        _ensure_google_imports()
         genai.configure(api_key=api_key)
         self._model = genai.GenerativeModel(model)
 

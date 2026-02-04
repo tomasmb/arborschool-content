@@ -1,0 +1,71 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-30" title="Euler's Formula Polyhedron Calculation" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La fórmula de Euler establece que para cierto tipo de poliedros se cumple la relación <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mi>C</mi><mo>+</mo><mi>V</mi><mo>=</mo><mi>A</mi><mo>+</mo><mn>2</mn></math>, tal que C es la cantidad de caras, A es la cantidad de aristas y V es la cantidad de vértices del poliedro.</p>
+    <p>Si un poliedro con 8 vértices y 18 aristas cumple con la fórmula de Euler, ¿cuántas caras tiene?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">12
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Al aplicar la fórmula de Euler C + V = A + 2, se reemplaza V = 8 y A = 18: C + 8 = 18 + 2. Entonces C + 8 = 20, por lo que C = 20 − 8 = 12. Esta es la única cantidad de caras que hace que la igualdad se cumpla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">14
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta corresponde a sumar mal en el paso final: si haces 18 + 2 = 20 y luego calculas C = 20 − 8, podrías equivocarte y obtener 14 en lugar de 12. El error está en la resta 20 − 8.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">24
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción puede surgir si confundes la fórmula de Euler y piensas que C = A + V, es decir, 18 + 8 = 26, y luego ajustas mal el resultado. El error está en no considerar el “+ 2” de la fórmula correcta C + V = A + 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">28
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este valor es mucho mayor que el que permite la fórmula de Euler. Puede venir de sumar todos los datos (8 + 18) y luego agregar 2 sin aislar C, es decir, 8 + 18 + 2 = 28. El error es usar la fórmula como C = V + A + 2 en vez de despejar correctamente C en C + V = A + 2.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución usando la fórmula de Euler para poliedros</strong></p>
+        <ol>
+          <li>Escribe la fórmula de Euler para poliedros: C + V = A + 2, donde C es el número de caras, V el número de vértices y A el número de aristas.</li>
+          <li>Reemplaza los datos del problema: V = 8 y A = 18, entonces C + 8 = 18 + 2.</li>
+          <li>Calcula el lado derecho de la igualdad: 18 + 2 = 20, por lo que queda C + 8 = 20.</li>
+          <li>Despeja C restando 8 en ambos lados: C = 20 − 8.</li>
+          <li>Realiza la resta: C = 12. Por lo tanto, el poliedro tiene 12 caras.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

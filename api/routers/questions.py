@@ -99,11 +99,20 @@ async def get_question_detail(
         )
 
     question_id = f"{test_id}-Q{question_num}"
-    qti_file = q_dir / "question.xml"
+    validated_qti_file = q_dir / "question_validated.xml"
+    original_qti_file = q_dir / "question.xml"
+    validation_result_file = q_dir / "validation_result.json"
     metadata_file = q_dir / "metadata_tags.json"
     pdf_dir = PRUEBAS_PROCESADAS_DIR / test_id / "pdf"
     pdf_file = pdf_dir / f"Q{question_num}.pdf"
     alternativas_dir = PRUEBAS_ALTERNATIVAS_DIR / test_id / f"Q{question_num}" / "approved"
+
+    # Show enriched XML if it exists (for review), regardless of validation status
+    # Sync is gated on can_sync=true, not display
+    if validated_qti_file.exists():
+        qti_file = validated_qti_file
+    else:
+        qti_file = original_qti_file
 
     # Read QTI content
     qti_xml = None
@@ -185,11 +194,8 @@ async def get_question_detail(
                     is_validated=variant_validated,
                 ))
 
-    # Check enrichment/validation status
-    validated_xml_file = q_dir / "question_validated.xml"
-    validation_result_file = q_dir / "validation_result.json"
-
-    is_enriched = validated_xml_file.exists()
+    # Check enrichment/validation status (reuse validation data read earlier)
+    is_enriched = validated_qti_file.exists()
     is_validated = False
     can_sync = False
     validation_result: dict | None = None
@@ -199,7 +205,9 @@ async def get_question_detail(
             with open(validation_result_file, encoding="utf-8") as f:
                 validation_data = json_module.load(f)
             can_sync = validation_data.get("can_sync", False)
-            is_validated = can_sync or validation_data.get("success", False)
+            # Only can_sync=True means truly validated and ready for sync
+            # success=True just means the pipeline ran without errors
+            is_validated = can_sync
             # Extract validation details for display
             if "stages" in validation_data and "final_validation" in validation_data["stages"]:
                 validation_result = validation_data["stages"]["final_validation"]
@@ -218,8 +226,8 @@ async def get_question_detail(
         test_id=test_id,
         question_number=question_num,
         has_split_pdf=pdf_file.exists(),
-        has_qti=qti_file.exists(),
-        is_finalized=qti_file.exists(),
+        has_qti=original_qti_file.exists(),
+        is_finalized=original_qti_file.exists(),
         is_tagged=metadata_file.exists(),
         qti_xml=qti_xml,
         qti_stem=qti_stem,

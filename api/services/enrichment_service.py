@@ -59,6 +59,12 @@ def _get_items_to_enrich_from_path(
     """
     items: list[dict] = []
 
+    logger.warning(
+        f"[ENRICH DEBUG] _get_items_to_enrich_from_path called with: "
+        f"base_path={base_path}, id_prefix={id_prefix}, item_ids={item_ids}, "
+        f"require_tagged={require_tagged}, skip_already_enriched={skip_already_enriched}"
+    )
+
     if not base_path.exists():
         logger.warning(f"Path not found: {base_path}")
         return items
@@ -68,6 +74,8 @@ def _get_items_to_enrich_from_path(
         [f for f in base_path.iterdir() if f.is_dir()],
         key=lambda p: p.name,
     )
+
+    logger.warning(f"[ENRICH DEBUG] Found {len(folders)} folders: {[f.name for f in folders]}")
 
     for folder in folders:
         item_name = folder.name
@@ -95,12 +103,16 @@ def _get_items_to_enrich_from_path(
         # Check if already enriched
         validated_xml_path = folder / "question_validated.xml"
         if skip_already_enriched and validated_xml_path.exists():
+            logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: already enriched")
             continue
 
         # Read original QTI XML
         qti_path = folder / "question.xml"
         if not qti_path.exists():
+            logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: no question.xml")
             continue
+
+        logger.warning(f"[ENRICH DEBUG] Including {item_id} for enrichment")
 
         try:
             qti_xml = qti_path.read_text(encoding="utf-8")
@@ -119,6 +131,7 @@ def _get_items_to_enrich_from_path(
             "output_dir": str(folder),
         })
 
+    logger.warning(f"[ENRICH DEBUG] Returning {len(items)} items to enrich")
     return items
 
 
@@ -130,6 +143,11 @@ def _get_questions_to_enrich(
 ) -> list[dict]:
     """Get list of questions to enrich from the test folder."""
     base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+    logger.warning(
+        f"[ENRICH DEBUG] _get_questions_to_enrich: test_id={test_id}, "
+        f"question_ids={question_ids}, all_tagged={all_tagged}, "
+        f"skip_already_enriched={skip_already_enriched}, base_path={base_path}"
+    )
     return _get_items_to_enrich_from_path(
         base_path=base_path,
         id_prefix=test_id,
@@ -260,11 +278,15 @@ async def start_variant_enrichment_job(
     return job_id, len(variants), estimated_cost
 
 
-async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
-    """Run enrichment in background.
+# Concurrency limit for parallel processing
+MAX_CONCURRENT_JOBS = 10
 
-    Uses asyncio.to_thread() to run sync pipeline.process()
-    without blocking the event loop.
+
+async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
+    """Run enrichment in background with parallel processing.
+
+    Uses asyncio.Semaphore to limit concurrency to MAX_CONCURRENT_JOBS.
+    Each question is processed in a separate thread via asyncio.to_thread().
     """
     job = _jobs.get(job_id)
     if not job:
@@ -273,49 +295,73 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
 
     job.status = "in_progress"
 
-    # Create pipeline instance
-    pipeline = QuestionPipeline()
+    # Create pipeline instance - wrapped in try/except to catch initialization errors
+    try:
+        pipeline = QuestionPipeline()
+    except Exception as e:
+        job.status = "failed"
+        job.completed_at = datetime.now(timezone.utc)
+        error_msg = f"Pipeline initialization failed: {e}"
+        job.results.append({"question_id": "init", "status": "failed", "error": error_msg})
+        logger.exception(error_msg)
+        return
 
-    for q in questions:
-        job.current_question = q["id"]
+    semaphore = asyncio.Semaphore(MAX_CONCURRENT_JOBS)
 
-        try:
-            # Run sync pipeline in thread pool to avoid blocking
-            result = await asyncio.to_thread(
-                pipeline.process,
-                question_id=q["id"],
-                qti_xml=q["qti_xml"],
-                image_urls=q.get("image_urls"),
-                output_dir=Path(q["output_dir"]),
-            )
+    async def process_question(q: dict) -> dict:
+        """Process a single question with semaphore-controlled concurrency."""
+        async with semaphore:
+            job.current_question = q["id"]
+            try:
+                result = await asyncio.to_thread(
+                    pipeline.process,
+                    question_id=q["id"],
+                    qti_xml=q["qti_xml"],
+                    image_urls=q.get("image_urls"),
+                    output_dir=Path(q["output_dir"]),
+                )
 
-            job.completed += 1
+                if result.success:
+                    logger.info(f"Enrichment succeeded for {q['id']}")
+                    return {"question_id": q["id"], "status": "success", "success": True}
 
-            if result.success:
-                job.successful += 1
-                job.results.append({"question_id": q["id"], "status": "success"})
-                logger.info(f"Enrichment succeeded for {q['id']}")
-            else:
-                job.failed += 1
                 error_msg = result.error or "Unknown error"
                 if result.xsd_errors:
                     error_msg = f"XSD validation failed: {result.xsd_errors}"
-                job.results.append({
+                logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+                return {
                     "question_id": q["id"],
                     "status": "failed",
                     "error": error_msg,
-                })
-                logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+                    "success": False,
+                }
 
-        except Exception as e:
-            job.completed += 1
+            except Exception as e:
+                logger.exception(f"Exception during enrichment for {q['id']}")
+                return {
+                    "question_id": q["id"],
+                    "status": "failed",
+                    "error": str(e),
+                    "success": False,
+                }
+
+    # Run all questions in parallel (limited by semaphore)
+    tasks = [process_question(q) for q in questions]
+    results = await asyncio.gather(*tasks)
+
+    # Update job with results
+    for result in results:
+        job.completed += 1
+        if result.get("success"):
+            job.successful += 1
+            job.results.append({"question_id": result["question_id"], "status": "success"})
+        else:
             job.failed += 1
             job.results.append({
-                "question_id": q["id"],
+                "question_id": result["question_id"],
                 "status": "failed",
-                "error": str(e),
+                "error": result.get("error", "Unknown error"),
             })
-            logger.exception(f"Exception during enrichment for {q['id']}")
 
     job.status = "completed"
     job.current_question = None

@@ -1,0 +1,105 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-5" title="Comparación de tiempos de carrera" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la tabla adjunta se presenta el tiempo que demoraron los corredores de una competencia en llegar a la meta.</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Corredor</th>
+            <th>Tiempo en minutos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Juan</td>
+            <td>10,10</td>
+          </tr>
+          <tr>
+            <td>Roberto</td>
+            <td>10,02</td>
+          </tr>
+          <tr>
+            <td>Mario</td>
+            <td>10,90</td>
+          </tr>
+          <tr>
+            <td>Pedro</td>
+            <td>10,12</td>
+          </tr>
+          <tr>
+            <td>Arturo</td>
+            <td>10,06</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuáles de los corredores llegaron después de Mario?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Pedro y Arturo
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Esta opción supone que basta con comparar solo la segunda cifra decimal (centésimas) y no considera que el tiempo de Mario es 10,90 minutos, es decir, 10 minutos y 90 centésimas, que es mayor que todos los otros tiempos (10,10; 10,02; 10,12; 10,06). Por lo tanto, ningún corredor llegó después de él.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Juan, Roberto, Pedro y Arturo
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Aquí se interpreta al revés el significado de los decimales, como si 10,02; 10,06; 10,10 y 10,12 fueran mayores que 10,90 por tener números más pequeños después de la coma. En realidad, 10,90 es casi 11 minutos, mientras que los otros tiempos están apenas sobre 10 minutos, por lo que Mario es el que más se demora.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Juan y Pedro
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta respuesta se basa en comparar solo algunos tiempos y no todos. Si se ordenan correctamente los tiempos decimales, se ve que 10,90 (Mario) es mayor que 10,10 (Juan), 10,02 (Roberto), 10,12 (Pedro) y 10,06 (Arturo). Por lo tanto, ninguno de ellos llegó después de Mario.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Ninguno de los corredores
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">¡Correcto! Al comparar números decimales, primero se miran los minutos (la parte entera) y luego las centésimas (la parte decimal). Todos tienen 10 minutos, pero Mario tiene 10,90 minutos, que es mayor que 10,10; 10,02; 10,12 y 10,06. Eso significa que Mario fue el que más se demoró y, por lo tanto, ningún corredor llegó después de él.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Comparación de tiempos decimales en una carrera</strong></p>
+        <ol>
+          <li>Escribe todos los tiempos con el mismo formato decimal (dos cifras decimales): Juan: 10,10; Roberto: 10,02; Mario: 10,90; Pedro: 10,12; Arturo: 10,06.</li>
+          <li>Compara primero la parte entera (los minutos). Todos tienen 10 minutos, por lo que debes comparar ahora la parte decimal (las centésimas).</li>
+          <li>Ordena las partes decimales de menor a mayor: 0,02 (Roberto), 0,06 (Arturo), 0,10 (Juan), 0,12 (Pedro), 0,90 (Mario). Como 0,90 es la mayor parte decimal, 10,90 es el mayor tiempo total.</li>
+          <li>Concluye que Mario es el corredor que más se demoró en llegar a la meta. Por lo tanto, ningún corredor llegó después de Mario, ya que todos los demás tiempos son menores que 10,90.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

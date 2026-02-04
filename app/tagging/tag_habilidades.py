@@ -19,7 +19,7 @@ from typing import Any, Dict, Optional
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from app.gemini_client import load_default_gemini_service
+from app.llm_clients import load_default_gemini_service
 
 HABILIDADES_PROMPT = """Eres un experto en evaluación educativa PAES Chile.
 

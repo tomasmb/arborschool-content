@@ -16,7 +16,7 @@ import logging
 import sys
 
 from app.atoms.validation import validate_atoms_from_files
-from app.gemini_client import load_default_gemini_service
+from app.llm_clients import load_default_gemini_service
 from app.utils.logging_config import setup_logging
 
 setup_logging()

@@ -1,0 +1,113 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-58" title="Promedio de Goles por Partido" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la cantidad de goles anotados y de partidos jugados de cuatro jugadores.</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Goles anotados</th>
+            <th>Partidos jugados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Jugador 1</td>
+            <td>427</td>
+            <td>826</td>
+          </tr>
+          <tr>
+            <td>Jugador 2</td>
+            <td>429</td>
+            <td>623</td>
+          </tr>
+          <tr>
+            <td>Jugador 3</td>
+            <td>427</td>
+            <td>786</td>
+          </tr>
+          <tr>
+            <td>Jugador 4</td>
+            <td>432</td>
+            <td>1034</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los jugadores tiene el mayor promedio de goles por partido?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">El Jugador 1
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">Incorrecto. Aquí se compara solo la cantidad de goles (427) sin considerar que el Jugador 1 tiene muchos más partidos (826), por lo que su promedio de goles por partido es menor que el de otros jugadores con menos partidos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El Jugador 2
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">¡Correcto! El promedio se calcula dividiendo los goles por los partidos jugados. El Jugador 2 tiene 429 goles en 623 partidos, lo que da un promedio cercano a 0,69 goles por partido, mayor que el de los otros jugadores, cuyos promedios son menores al comparar goles/partidos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">El Jugador 3
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. Esta opción surge de fijarse en que el Jugador 3 tiene los mismos goles que el Jugador 1 (427), pero menos partidos (786), y pensar que eso basta para que tenga el mayor promedio. Aunque su promedio es mayor que el del Jugador 1, sigue siendo menor que el del Jugador 2, que tiene más goles en menos partidos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">El Jugador 4
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">Incorrecto. Aquí se elige al Jugador 4 porque tiene la mayor cantidad de goles (432), pero se ignora que también tiene la mayor cantidad de partidos (1034). Al dividir goles por partidos, su promedio resulta más bajo que el de los otros jugadores.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo y comparación de promedios de goles por partido</strong></p>
+        <ol>
+          <li>Recuerda que el promedio de goles por partido se calcula dividiendo la cantidad de goles por la cantidad de partidos jugados: promedio = (goles) ÷ (partidos).</li>
+          <li>Calcula el promedio de cada jugador:
+            <ul>
+              <li>Jugador 1: 427 ÷ 826 ≈ 0,52 goles por partido.</li>
+              <li>Jugador 2: 429 ÷ 623 ≈ 0,69 goles por partido.</li>
+              <li>Jugador 3: 427 ÷ 786 ≈ 0,54 goles por partido.</li>
+              <li>Jugador 4: 432 ÷ 1034 ≈ 0,42 goles por partido.</li>
+            </ul>
+          </li>
+          <li>Compara los promedios obtenidos: 0,52; 0,69; 0,54; 0,42. El mayor de estos valores es aproximadamente 0,69, que corresponde al Jugador 2.</li>
+          <li>Concluye que el jugador con el mayor promedio de goles por partido es el Jugador 2.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

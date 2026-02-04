@@ -89,8 +89,8 @@ class FeedbackEnhancer:
         self.max_retries = max_retries
         self._last_xsd_errors: str | None = None
 
-        # Import OpenAIClient from gemini_client
-        from app.gemini_client import OpenAIClient
+        # Import OpenAIClient from llm_clients
+        from app.llm_clients import OpenAIClient
 
         self._client = OpenAIClient(api_key=self._api_key, model=self.model)
 

@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from app.atoms.generation import generate_atoms_for_standard
-from app.gemini_client import load_default_gemini_service
+from app.llm_clients import load_default_gemini_service
 from app.utils.data_loader import find_item_by_id, load_standards_file
 from app.utils.logging_config import setup_logging
 

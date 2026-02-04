@@ -1,0 +1,78 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-43" title="Conteo de cajas apiladas en bodega" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona ordena cajas, de un mismo tipo, en una bodega de tal manera que ubica una caja sobre otra y no deja espacios entre ellas, dejándolas perfectamente alineadas.</p>
+    <p>En la siguiente imagen se representan las cajas que se tienen ordenadas en la bodega.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q43_main.png" alt="Imagen isométrica que muestra un apilamiento de cajas formando una pirámide de base triangular con cuatro niveles de altura."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuántas cajas hay ordenadas en la bodega?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">12
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Esta respuesta considera solo las cajas visibles en uno de los lados (o en los niveles superiores) y no cuenta todas las cajas que quedan “escondidas” detrás en la base de la pirámide.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">16
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Aquí se cuentan bien las cajas de los niveles superiores, pero se subestima la cantidad de cajas en la base, olvidando que la base triangular tiene 10 cajas y no solo 6.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">19
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta opción suele aparecer al contar casi todas las cajas, pero omitiendo una caja de la base que queda poco visible en la representación isométrica.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">20
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">¡Correcto! El apilamiento forma una pirámide de base triangular con 4 niveles. Cada nivel es un triángulo de cajas: el nivel 1 tiene 1 caja, el nivel 2 tiene 3 cajas, el nivel 3 tiene 6 cajas y el nivel 4 (la base) tiene 10 cajas. Al sumar 1 + 3 + 6 + 10 se obtiene 20 cajas en total.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: Contar por niveles usando triángulos de cajas</strong></p>
+        <ol>
+          <li>Observa que las cajas forman una pirámide cuya base es un triángulo y que tiene 4 niveles de altura.</li>
+          <li>Reconoce que cada nivel forma un triángulo de cajas: en el nivel superior hay 1 caja; en el segundo nivel hay un triángulo de 2 cajas por lado (1 + 2 = 3 cajas); en el tercer nivel hay un triángulo de 3 cajas por lado (1 + 2 + 3 = 6 cajas); y en el cuarto nivel (la base) hay un triángulo de 4 cajas por lado (1 + 2 + 3 + 4 = 10 cajas).</li>
+          <li>Cuenta las cajas de cada nivel: nivel 1: 1 caja; nivel 2: 3 cajas; nivel 3: 6 cajas; nivel 4: 10 cajas.</li>
+          <li>Suma las cajas de todos los niveles para obtener el total: 1 + 3 + 6 + 10 = 20.</li>
+          <li>Concluye que en la bodega hay 20 cajas ordenadas en total.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

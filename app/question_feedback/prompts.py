@@ -1,144 +1,221 @@
-"""PAES-specific prompts for feedback generation and validation (Spanish)."""
+"""PAES-specific prompts for feedback generation and validation (Spanish).
+
+All prompts follow Gemini 3 Pro best practices:
+- Direct, precise instructions
+- Structured sections (Role, Task, Rules, Output Format, Context)
+- Context first, instructions last
+- Explicit output format requirements
+"""
 
 from __future__ import annotations
 
+# ---------------------------------------------------------------------------
+# FEEDBACK ENHANCEMENT PROMPT
+# ---------------------------------------------------------------------------
+# Used by FeedbackEnhancer to generate QTI XML with feedback.
+# The prompt explicitly tells the model what it will be evaluated on.
+# ---------------------------------------------------------------------------
+
 FEEDBACK_ENHANCEMENT_PROMPT = """
-Eres un experto en educación matemática para la prueba PAES de Chile y en el formato QTI 3.0.
+<role>
+Experto en educación matemática PAES Chile y formato QTI 3.0.
+</role>
 
-TAREA: Agregar retroalimentación educativa a esta pregunta de matemáticas.
-Debes devolver el QTI XML COMPLETO con la retroalimentación incluida.
-
-AUDIENCIA:
-- Estudiantes de 3° y 4° medio (16-18 años)
-- Preparación para PAES Matemática M1
-- Nivel de lectura: claro y preciso, sin jerga innecesaria
-
-QTI XML ORIGINAL:
+<context>
+QTI XML ORIGINAL (sin retroalimentación):
 ```xml
 {original_qti_xml}
 ```
 
 {images_section}
+</context>
 
-REQUISITOS DE RETROALIMENTACIÓN:
+<task>
+Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con feedback.
+</task>
 
-1. DECLARACIONES DE OUTCOME (agregar después de qti-response-declaration):
-```xml
-<qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
-<qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
-```
+<rules>
+1. MANTENER todos los elementos originales (stem, choices, images) sin modificar
+2. AGREGAR outcome declarations después de qti-response-declaration:
+   - <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+   - <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
-2. RETROALIMENTACIÓN POR OPCIÓN (dentro de cada qti-simple-choice):
-```xml
-<qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceX" show-hide="show">
-  [Tu explicación de 1-3 oraciones]
-</qti-feedback-inline>
-```
+3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
+   - Opción correcta: "¡Correcto! [explicación matemática de POR QUÉ es correcta]"
+   - Opciones incorrectas: "Incorrecto. [error conceptual específico que lleva a esta opción]"
 
-Requisitos para cada opción:
-- Opción correcta: Comienza con "¡Correcto! " y explica POR QUÉ es correcta matemáticamente
-- Opciones incorrectas: Comienza con "Incorrecto. " e identifica el ERROR CONCEPTUAL específico
-- Sé específico a ESTA pregunta, no genérico
+4. AGREGAR qti-feedback-block al final de qti-item-body con solución paso a paso:
+   ```xml
+   <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+     <qti-content-body>
+       <p><strong>[Título del método]</strong></p>
+       <ol><li>Paso 1...</li><li>Paso 2...</li></ol>
+     </qti-content-body>
+   </qti-feedback-block>
+   ```
 
-3. SOLUCIÓN PASO A PASO (al final de qti-item-body):
-```xml
-<qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
-  <qti-content-body>
-    <p><strong>[Título descriptivo del método]</strong></p>
-    <ol>
-      <li>Paso 1: [Descripción clara]</li>
-      <li>Paso 2: [Descripción clara]</li>
-    </ol>
-  </qti-content-body>
-</qti-feedback-block>
-```
+5. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
+</rules>
 
-4. RESPONSE PROCESSING (reemplazar el existente):
-```xml
-<qti-response-processing>
-  <qti-response-condition>
-    <qti-response-if>
-      <qti-match>
-        <qti-variable identifier="RESPONSE"/>
-        <qti-correct identifier="RESPONSE"/>
-      </qti-match>
-      <qti-set-outcome-value identifier="SCORE">
-        <qti-base-value base-type="float">1</qti-base-value>
-      </qti-set-outcome-value>
-    </qti-response-if>
-    <qti-response-else>
-      <qti-set-outcome-value identifier="SCORE">
-        <qti-base-value base-type="float">0</qti-base-value>
-      </qti-set-outcome-value>
-    </qti-response-else>
-  </qti-response-condition>
-  <qti-set-outcome-value identifier="FEEDBACK">
-    <qti-variable identifier="RESPONSE"/>
-  </qti-set-outcome-value>
-  <qti-set-outcome-value identifier="SOLUTION">
-    <qti-base-value base-type="identifier">show</qti-base-value>
-  </qti-set-outcome-value>
-</qti-response-processing>
-```
+<evaluation_criteria>
+Tu output será evaluado en:
+1. PRECISIÓN FACTUAL: ¿El feedback de la opción correcta explica correctamente la matemática?
+2. ERRORES CONCEPTUALES: ¿Cada feedback incorrecto identifica el error real que lleva a esa opción?
+3. SOLUCIÓN PASO A PASO: ¿Los pasos matemáticos son correctos y llevan a la respuesta correcta?
+4. CLARIDAD PEDAGÓGICA: ¿El lenguaje es apropiado para estudiantes de 3°-4° medio?
+</evaluation_criteria>
 
-REGLAS CRÍTICAS:
-- Mantén TODOS los elementos originales (stem, choices, images, etc.)
-- NO modifiques el contenido de la pregunta, solo agrega retroalimentación
-- Usa el namespace QTI 3.0 correcto
-- Asegura que el XML sea válido y bien formado
-- Usa comillas dobles para atributos
-- No uses caracteres especiales que rompan XML (usa entidades si es necesario)
+<output_format>
+Devuelve SOLO el QTI XML completo. Sin markdown, sin explicaciones.
+Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
+</output_format>
 
-FORMATO DE SALIDA:
-Devuelve SOLO el QTI XML completo, sin markdown, sin explicaciones.
-El XML debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
+<final_instruction>
+Basándote en el QTI XML original arriba, genera el XML completo con retroalimentación.
+</final_instruction>
 """
 
 
-FINAL_VALIDATION_PROMPT = """
-Eres un validador experto de preguntas para la prueba PAES de Matemática M1 de Chile.
-Tu trabajo es encontrar CUALQUIER error o problema en esta pregunta.
+# ---------------------------------------------------------------------------
+# FEEDBACK REVIEW PROMPT
+# ---------------------------------------------------------------------------
+# Lightweight validation focused ONLY on the generated feedback.
+# Does NOT validate the original question content.
+# Used as a gate after feedback generation in the enrichment pipeline.
+# ---------------------------------------------------------------------------
 
-QTI XML CON RETROALIMENTACIÓN:
+FEEDBACK_REVIEW_PROMPT = """
+<role>
+Revisor de retroalimentación educativa para preguntas PAES Matemática M1.
+</role>
+
+<context>
+QTI XML CON RETROALIMENTACIÓN GENERADA:
+```xml
+{qti_xml_with_feedback}
+```
+</context>
+
+<task>
+Revisar ÚNICAMENTE la retroalimentación generada (no el contenido original de la pregunta).
+Verificar precisión factual y claridad pedagógica del feedback.
+</task>
+
+<checks>
+1. PRECISIÓN FACTUAL (feedback_accuracy):
+   - ¿El feedback de la opción correcta explica correctamente POR QUÉ es matemáticamente correcta?
+   - ¿Los feedbacks de opciones incorrectas identifican errores conceptuales REALES?
+   - ¿La solución paso a paso tiene matemáticas correctas y llega a la respuesta correcta?
+   - FAIL si hay cualquier error matemático en el feedback
+
+2. CLARIDAD PEDAGÓGICA (feedback_clarity):
+   - ¿El lenguaje es claro para estudiantes de 3°-4° medio?
+   - ¿Los pasos son suficientemente detallados?
+   - ¿El feedback es específico a esta pregunta (no genérico)?
+   - FAIL si el feedback es confuso, muy técnico, o genérico
+</checks>
+
+<output_format>
+JSON con este schema:
+- review_result: "pass" o "fail" (fail si cualquier check falla)
+- feedback_accuracy: {{status, issues[], reasoning}}
+- feedback_clarity: {{status, issues[], reasoning}}
+- overall_reasoning: resumen de 1-2 oraciones
+</output_format>
+
+<constraints>
+- NO evalúes el contenido original de la pregunta
+- NO evalúes si la respuesta marcada es correcta (eso es trabajo de validación final)
+- SOLO evalúa la calidad del feedback generado
+- Sé estricto: cualquier error factual en el feedback = fail
+</constraints>
+
+<final_instruction>
+Basándote en el QTI XML arriba, revisa la retroalimentación y responde en JSON.
+</final_instruction>
+"""
+
+
+# ---------------------------------------------------------------------------
+# FINAL VALIDATION PROMPT
+# ---------------------------------------------------------------------------
+# Comprehensive validation of the complete QTI XML including:
+# - Original question correctness
+# - Feedback quality
+# - Content quality (typos, encoding)
+# - Image validation
+# - PAES curriculum alignment
+# Used as a SEPARATE validation step (not during enrichment).
+# ---------------------------------------------------------------------------
+
+FINAL_VALIDATION_PROMPT = """
+<role>
+Validador experto de preguntas PAES Matemática M1 de Chile.
+</role>
+
+<context>
+QTI XML COMPLETO (pregunta + retroalimentación):
 ```xml
 {qti_xml_with_feedback}
 ```
 
 {images_section}
+</context>
 
-VALIDACIONES REQUERIDAS:
+<task>
+Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
+</task>
 
-1. VALIDACIÓN DE RESPUESTA CORRECTA
-   - ¿La respuesta marcada en <qti-correct-response> es matemáticamente correcta?
-   - Resuelve el problema paso a paso para verificar
-   - ¿El valor numérico/expresión es exactamente correcto?
+<checks>
+1. RESPUESTA CORRECTA (correct_answer_check):
+   - Resuelve el problema paso a paso
+   - Verifica que <qti-correct-response> tenga la respuesta matemáticamente correcta
+   - FAIL si la respuesta marcada no es correcta
 
-2. VALIDACIÓN DE RETROALIMENTACIÓN
-   - ¿La retroalimentación de la opción correcta explica correctamente POR QUÉ es correcta?
-   - ¿La retroalimentación de cada opción incorrecta identifica el ERROR CONCEPTUAL real?
-   - ¿La solución paso a paso lleva a la respuesta correcta?
-   - ¿Los pasos matemáticos son correctos y completos?
+2. RETROALIMENTACIÓN (feedback_check):
+   - ¿Feedback de opción correcta explica POR QUÉ es correcta?
+   - ¿Feedbacks incorrectos identifican errores conceptuales reales?
+   - ¿Solución paso a paso llega a la respuesta correcta?
+   - FAIL si hay errores en el feedback
 
-3. VALIDACIÓN DE CONTENIDO
-   - ¿Hay errores tipográficos?
-   - ¿Hay caracteres extraños o mal codificados?
-   - ¿Las expresiones matemáticas están correctas? (signos, exponentes, fracciones)
-   - ¿El lenguaje es claro y apropiado para estudiantes de 3°-4° medio?
+3. CALIDAD DE CONTENIDO (content_quality_check):
+   - Errores tipográficos
+   - Caracteres mal codificados
+   - Expresiones matemáticas incorrectas (signos, exponentes)
+   - Claridad del lenguaje para 3°-4° medio
+   - FAIL si hay errores de calidad
 
-4. VALIDACIÓN DE IMÁGENES (si hay imágenes)
-   - ¿Las referencias a imágenes en el enunciado tienen imagen correspondiente?
-   - ¿La imagen es relevante y correcta para la pregunta?
-   - ¿El alt-text describe adecuadamente la imagen?
-   - ¿No hay imágenes huérfanas (presentes pero no referenciadas)?
+4. IMÁGENES (image_check):
+   - Referencias corresponden a imágenes reales
+   - Imágenes son relevantes y correctas
+   - Alt-text adecuado
+   - NOT_APPLICABLE si no hay imágenes
 
-5. VALIDACIÓN MATEMÁTICA PAES
-   - ¿El contenido está dentro del temario PAES M1?
-   - ¿Los valores numéricos son razonables? (no hay errores de orden de magnitud)
-   - ¿Las unidades son correctas si aplica?
+5. VALIDEZ MATEMÁTICA PAES (math_validity_check):
+   - Contenido dentro del temario PAES M1
+   - Valores numéricos razonables
+   - Unidades correctas si aplica
+   - FAIL si está fuera de temario o tiene errores de magnitud
+</checks>
 
-INSTRUCCIONES:
-- Sé ESTRICTO: cualquier error debe resultar en "fail"
-- Proporciona reasoning específico citando el contenido exacto
-- Los issues deben ser ESPECÍFICOS y ACCIONABLES
-- Si no hay imágenes, marca image_check como "not_applicable"
+<output_format>
+JSON con este schema:
+- validation_result: "pass" o "fail"
+- correct_answer_check: {{status, expected_answer, marked_answer, verification_steps, issues[]}}
+- feedback_check: {{status, issues[], reasoning}}
+- content_quality_check: {{status, typos_found[], character_issues[], clarity_issues[]}}
+- image_check: {{status, issues[], reasoning}}
+- math_validity_check: {{status, issues[], reasoning}}
+- overall_reasoning: resumen de 1-2 oraciones
+</output_format>
+
+<constraints>
+- Sé ESTRICTO: cualquier error = fail
+- Cita contenido exacto cuando reportes issues
+- Issues deben ser específicos y accionables
+</constraints>
+
+<final_instruction>
+Basándote en el QTI XML arriba, valida completamente y responde en JSON.
+</final_instruction>
 """

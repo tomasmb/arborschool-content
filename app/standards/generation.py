@@ -18,7 +18,7 @@ import logging
 from dataclasses import dataclass, field
 from typing import Any
 
-from app.gemini_client import GeminiService
+from app.llm_clients import GeminiService
 from app.standards.helpers import parse_json_response
 from app.standards.models import Standard, validate_standard_id_matches_eje
 from app.standards.prompts import EJE_PREFIX_MAP, build_generation_prompt

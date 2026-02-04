@@ -1,0 +1,78 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="translation-point-c" title="Translation of a Point in Cartesian Plane" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera el punto <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi><mrow><mo>(</mo><mn>1</mn><mo>,</mo><mo>-</mo><mn>2</mn><mo>)</mo></mrow></math> correspondiente a un vértice de un cuadrilátero dibujado en un plano cartesiano, el cual será trasladado según el vector <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mo>-</mo><mn>5</mn><mo>,</mo><mo>-</mo><mn>3</mn><mo>)</mo></mrow></math>.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuáles son las coordenadas de la imagen del punto <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi></math>?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mn>6</mn><mo>,</mo><mn>1</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="FB_ChoiceA">Incorrecto. Corresponde a sumar el vector en lugar de restarlo: calculaste (1 + 5, -2 + 3) = (6, 1), pero el vector es (-5, -3), por lo que debes sumar 1 + (-5) y -2 + (-3).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mo>-</mo><mn>6</mn><mo>,</mo><mo>-</mo><mn>1</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="FB_ChoiceB">Incorrecto. Aquí se cambió el signo de ambas coordenadas del punto original (1, -2) y luego se aplicó mal el vector. Trasladar no significa reflejar el punto, sino sumar coordenada a coordenada con el vector dado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mo>-</mo><mn>4</mn><mo>,</mo><mo>-</mo><mn>5</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="FB_ChoiceC">¡Correcto! Para trasladar el punto C(1, -2) por el vector (-5, -3), se suman las coordenadas: x: 1 + (-5) = -4 y: -2 + (-3) = -5. Por lo tanto, la imagen del punto es C'(-4, -5).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mo>-</mo><mn>5</mn><mo>,</mo><mn>6</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="FB_ChoiceD">Incorrecto. Aquí se mezclan las coordenadas del vector con las del punto, usando -5 como nueva x y cambiando el signo de la coordenada y. En una traslación, no se reemplazan coordenadas: se suman las del punto con las del vector.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método para trasladar un punto usando un vector en el plano cartesiano</strong></p>
+        <ol>
+          <li>Identifica las coordenadas del punto inicial. En este caso, el punto es C(1, -2), por lo que su coordenada en x es 1 y su coordenada en y es -2.</li>
+          <li>Identifica las componentes del vector de traslación. El vector dado es (-5, -3), por lo que su componente en x es -5 y su componente en y es -3.</li>
+          <li>Suma la coordenada en x del punto con la componente en x del vector: 1 + (-5) = -4. Esta será la nueva coordenada en x del punto trasladado.</li>
+          <li>Suma la coordenada en y del punto con la componente en y del vector: -2 + (-3) = -5. Esta será la nueva coordenada en y del punto trasladado.</li>
+          <li>Escribe las coordenadas del punto imagen después de la traslación: C'( -4, -5 ). Por lo tanto, la respuesta correcta es (-4, -5).</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

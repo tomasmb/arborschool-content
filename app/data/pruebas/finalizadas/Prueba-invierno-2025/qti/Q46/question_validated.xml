@@ -1,0 +1,89 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-46" title="Prismas unidos y área superficial" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se tienen dos prismas rectos de base cuadrada que se juntan por una cara lateral, formando un nuevo prisma, como se representa en la figura adjunta.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q46_main.png" alt="Diagrama que muestra la secuencia de unión de dos prismas rectos de base cuadrada. Primero se muestran separados, luego alineados para unirse por una cara lateral, y finalmente como un solo prisma resultante más ancho."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes razones justifica que el área total del nuevo prisma sea menor que la suma del área total de los prismas originales?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Porque en total los prismas originales tienen 4 bases, mientras que el nuevo prisma tiene solo 2 bases.<qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">Incorrecto. Aunque es cierto que al unir cuerpos algunas caras pueden dejar de ser parte de la superficie exterior, en este caso las bases no cambian: antes y después de unir los prismas se mantienen 2 bases por prisma y 2 bases en el cuerpo resultante. El cambio en el área total se debe a las caras laterales que quedan en contacto, no a las bases.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Porque un prisma de 6 caras siempre tiene menor área total que 2 prismas de 6 caras.<qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">Incorrecto. Esta afirmación es demasiado general y no explica la situación geométrica específica. No basta decir que “uno es menor que dos”; lo importante es entender que al unir los prismas desaparecen de la superficie exterior las dos caras laterales que quedan pegadas, y por eso el área total disminuye.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Porque cada uno de los prismas originales tiene un área total menor que el área total del cuerpo resultante.<qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. Es cierto que el cuerpo resultante tiene mayor área total que cada prisma por separado, pero eso no explica por qué su área es menor que la suma de las áreas de los dos prismas originales. El punto clave es que al unirlos se “eliminan” de la superficie exterior las caras que quedan en contacto.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Porque las caras laterales donde se juntan los prismas originales no son parte de la superficie del cuerpo resultante.<qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">¡Correcto! Al unir los prismas por una cara lateral, esas dos caras dejan de estar expuestas al exterior y pasan a ser caras internas. Por eso ya no se cuentan en el área total del nuevo prisma, lo que hace que el área superficial resultante sea menor que la suma de las áreas de los prismas originales.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Análisis de la superficie al unir dos prismas</strong></p>
+        <ol>
+          <li>Observa que cada prisma recto de base cuadrada tiene:
+            <ul>
+              <li>2 bases (superior e inferior), que son cuadrados.</li>
+              <li>4 caras laterales rectangulares.</li>
+            </ul>
+          </li>
+          <li>Cuando los dos prismas están separados, el área total es la suma de todas sus caras exteriores:
+            <ul>
+              <li>En total hay 4 bases (2 por cada prisma).</li>
+              <li>Y 8 caras laterales (4 por cada prisma).</li>
+            </ul>
+          </li>
+          <li>Al unir los prismas por una cara lateral, cada uno “pierde” una cara lateral exterior, porque:
+            <ul>
+              <li>La cara lateral de un prisma queda pegada a la cara lateral del otro.</li>
+              <li>Esas dos caras ya no están en contacto con el exterior, sino entre sí.</li>
+            </ul>
+          </li>
+          <li>En el nuevo cuerpo resultante:
+            <ul>
+              <li>Las bases siguen siendo 2 (una arriba y una abajo), igual que en cada prisma original.</li>
+              <li>Pero hay 2 caras laterales menos en la superficie exterior, porque las que se unieron quedaron internas.</li>
+            </ul>
+          </li>
+          <li>Como el área total se calcula sumando solo las caras que están en la superficie exterior, al desaparecer de la superficie esas dos caras laterales, el área total del nuevo prisma es menor que la suma de las áreas totales de los dos prismas originales.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

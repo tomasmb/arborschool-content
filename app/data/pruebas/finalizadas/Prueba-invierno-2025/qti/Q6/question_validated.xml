@@ -1,0 +1,81 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-6-juego-bolitas" title="Cálculo de puntaje máximo en juego de lanzamiento de bolitas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Un juego consiste en lanzar cinco bolitas desde cierta distancia hacia los agujeros de una caja. Los puntajes se asignan según el agujero por el cual entra la bolita, como se presenta a continuación:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q6_main.png" alt="Ilustración de una caja con tres agujeros en forma de arco en la parte inferior. El agujero de la izquierda tiene un cartel que indica '3 puntos', el agujero del centro indica '1 punto', y el agujero de la derecha indica '5 puntos'."/>
+    </p>
+    <p>Cuando una bolita no ingresa en alguno de los agujeros, se repite el lanzamiento. El juego finaliza cuando todas las bolitas entran por uno de los agujeros, siendo el puntaje final la suma de los puntajes asignados por donde ingresó cada una de las bolitas.</p>
+    <p>Una persona jugó este juego y se sabe que las bolitas ingresaron por los tres agujeros.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los siguientes puntajes corresponde al máximo puntaje que pudo haber obtenido la persona al finalizar el juego?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">5
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Este puntaje considera que solo una bolita entra por el agujero de 5 puntos y no toma en cuenta que deben usarse las cinco bolitas ni que las bolitas ingresan por los tres agujeros.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">11
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Este valor corresponde a sumar 5 + 3 + 1 usando solo una bolita en cada agujero, pero olvida que se lanzan cinco bolitas en total, por lo que aún quedan dos bolitas sin considerar.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">19
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">¡Correcto! Para maximizar el puntaje con cinco bolitas y usando los tres agujeros, se debe usar una bolita en el agujero de 1 punto (para cumplir la condición), una en el de 3 puntos y las tres restantes en el de 5 puntos, que es el de mayor puntaje. Así, el puntaje máximo es 1·1 + 1·3 + 3·5 = 1 + 3 + 15 = 19.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">25
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. Este puntaje supone que las cinco bolitas entran por el agujero de 5 puntos (5·5 = 25), pero no respeta la condición de que las bolitas ingresaron por los tres agujeros.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método para maximizar el puntaje usando los tres agujeros</strong></p>
+        <ol>
+          <li>Identificar los puntajes de cada agujero: 1 punto, 3 puntos y 5 puntos.</li>
+          <li>Considerar que se lanzan 5 bolitas en total y que, según el enunciado, las bolitas ingresaron por los tres agujeros. Por lo tanto, al menos una bolita debe entrar por cada agujero.</li>
+          <li>Para maximizar el puntaje, se debe usar la menor cantidad posible de bolitas en los agujeros de menor puntaje (1 y 3 puntos) y la mayor cantidad posible en el agujero de mayor puntaje (5 puntos).</li>
+          <li>Asignar una bolita al agujero de 1 punto y una bolita al agujero de 3 puntos para cumplir la condición de usar los tres agujeros. Con esto se han usado 2 bolitas y quedan 3 bolitas por asignar.</li>
+          <li>Asignar las 3 bolitas restantes al agujero de 5 puntos, ya que es el que entrega más puntaje por bolita.</li>
+          <li>Calcular el puntaje total: 1·1 + 1·3 + 3·5 = 1 + 3 + 15 = 19.</li>
+          <li>Concluimos que el máximo puntaje posible, cumpliendo que las bolitas ingresan por los tres agujeros, es 19.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -14,7 +14,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
-from app.gemini_client import GeminiService
+from app.llm_clients import GeminiService
 from app.standards.helpers import parse_json_response
 from app.standards.models import (
     Standard,

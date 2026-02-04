@@ -189,7 +189,9 @@ class StatusTracker:
                     try:
                         with open(validation_result_file, encoding="utf-8") as f:
                             vdata = json.load(f)
-                        is_validated = vdata.get("can_sync", False) or vdata.get("success", False)
+                        # Only can_sync=True means truly validated and ready for sync
+                        # success=True just means the pipeline ran without errors
+                        is_validated = vdata.get("can_sync", False)
                     except (json.JSONDecodeError, OSError):
                         pass
 
@@ -253,7 +255,8 @@ class StatusTracker:
 
         # split_count: if QTI exists, consider it "split" even without PDF
         # (QTI is the goal, PDF is just an intermediate step)
-        split_count = max(pdf_split_count, qti_count)
+        # Cap at finalized_count to avoid >100% when procesadas has extra PDFs
+        split_count = min(max(pdf_split_count, qti_count), finalized_count)
 
         return {
             "raw_pdf_exists": raw_pdf_exists,

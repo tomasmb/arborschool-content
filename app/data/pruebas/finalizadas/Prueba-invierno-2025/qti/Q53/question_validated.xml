@@ -1,0 +1,89 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-53" title="Transformaciones isométricas de una circunferencia" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la cuadrícula adjunta se dibuja la circunferencia T de radio 1 unidad con centro en <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi><mo>(</mo><mo>-</mo><mn>1</mn><mo>,</mo><mo>&#160;</mo><mo>-</mo><mn>2</mn><mo>)</mo></math>, la cual se traslada según el vector <math xmlns="http://www.w3.org/1998/Math/MathML"><mover><mi>v</mi><mo>&#x2192;</mo></mover><mo>=</mo><mo>(</mo><mn>3</mn><mo>,</mo><mo>&#160;</mo><mn>4</mn><mo>)</mo></math>, y luego se refleja con respecto al eje Y, obteniéndose la circunferencia R.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q53_main_1766115581.png" alt="Mapa cartesiano con circunferencia T y transformaciones"/></p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los siguientes puntos pertenece a la circunferencia R?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn>3</mn><mo>,</mo><mo>&#160;</mo><mo>-</mo><mn>2</mn><mo>)</mo></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">
+          Incorrecto. Este punto corresponde al centro de la circunferencia T después de la traslación por el vector (3, 4), pero antes de reflejarla en el eje Y. Falta aplicar la reflexión, que cambia el signo de la coordenada en x.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mo>-</mo><mn>2</mn><mo>,</mo><mo>&#160;</mo><mn>3</mn><mo>)</mo></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">
+          ¡Correcto! Al trasladar el centro C(-1, -2) por el vector (3, 4) se obtiene el nuevo centro C′(2, 2). Luego, al reflejar respecto del eje Y, la coordenada en x cambia de signo y se obtiene el centro C″(-2, 2). El punto (-2, 3) está a distancia 1 de C″(-2, 2), por lo que pertenece a la circunferencia R de radio 1.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn>2</mn><mo>,</mo><mo>&#160;</mo><mn>1</mn><mo>)</mo></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">
+          Incorrecto. Este punto está cerca del centro C′(2, 2) obtenido solo después de la traslación, pero no se ha considerado la reflexión en el eje Y ni que los puntos de la circunferencia deben estar exactamente a distancia 1 del centro final C″(-2, 2).
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mo>-</mo><mn>3</mn><mo>,</mo><mo>&#160;</mo><mn>0</mn><mo>)</mo></math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">
+          Incorrecto. Este punto está a una distancia mayor que 1 del centro final C″(-2, 2) de la circunferencia R. El error está en no verificar la distancia al centro después de aplicar ambas transformaciones (traslación y reflexión).
+        </qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Determinar el centro final y verificar la distancia al centro</strong></p>
+        <ol>
+          <li>Identificar el centro inicial de la circunferencia T: C(-1, -2) y su radio: r = 1.</li>
+          <li>Aplicar la traslación por el vector (3, 4): al centro C(-1, -2) se le suma el vector, obteniendo C′(x′, y′) = (-1 + 3, -2 + 4) = (2, 2).</li>
+          <li>Aplicar la reflexión respecto del eje Y: esta transformación cambia el signo de la coordenada en x y mantiene la coordenada en y. Por lo tanto, el centro C′(2, 2) se transforma en C″(-2, 2).</li>
+          <li>Recordar que la circunferencia R tiene el mismo radio r = 1, ya que las traslaciones y reflexiones son isometrías (no cambian distancias).</li>
+          <li>Verificar qué punto de las alternativas está a distancia 1 del centro final C″(-2, 2). Se calcula la distancia entre C″(-2, 2) y cada punto (x, y) usando la fórmula de distancia: d = √[(x + 2)² + (y - 2)²].</li>
+          <li>Para el punto (-2, 3): d = √[(-2 + 2)² + (3 - 2)²] = √[0² + 1²] = √1 = 1. Este punto está exactamente a distancia 1 del centro C″, por lo que pertenece a la circunferencia R.</li>
+          <li>Concluir que el punto que pertenece a la circunferencia R es (-2, 3), correspondiente a la alternativa B.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

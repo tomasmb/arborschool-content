@@ -1,0 +1,77 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="wall-dimensions-x" title="Cálculo de dimensiones en diagrama de pared" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Se coloca un cuadro en una pared, tal como se representa a continuación:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q29_main.png" alt="Diagrama de una pared rectangular con un cuadro centrado. El ancho total en la parte inferior está etiquetado como '3 m'. En la parte superior, el ancho está dividido en tres segmentos: el segmento izquierdo etiquetado como 'x cm', el segmento central etiquetado como '180 cm', y el segmento derecho etiquetado como 'x cm'."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es el valor de x ?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">30
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Esta opción corresponde a dividir 180 cm entre 6 (o a pensar que 3 m son 180 cm), lo que implica no convertir correctamente 3 m a 300 cm ni considerar que el total es 2x + 180.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">60
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">¡Correcto! Al convertir 3 m a 300 cm, el ancho total de la pared se expresa como 2x + 180. Al plantear la ecuación 2x + 180 = 300 y resolverla, se obtiene x = 60 cm, lo que hace que los dos espacios laterales sean iguales y el cuadro quede centrado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">120
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta opción surge de restar 180 a 300 y olvidar que hay dos segmentos iguales x (es decir, usar 300 − 180 = x en lugar de 300 − 180 = 2x). El ancho que falta se reparte en dos lados, por eso debe dividirse entre 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">150
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. Esta opción supone que cada x es la mitad de 300 (es decir, x = 150), ignorando el segmento central de 180 cm. El total de 300 cm se compone de los dos x más los 180 cm del cuadro: 2x + 180, no solo de los dos x.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: Planteo de ecuación con conversión de unidades</strong></p>
+        <ol>
+          <li>Convertir todas las medidas a la misma unidad. El ancho total de la pared es 3 m, que equivalen a 300 cm. Así, todo el diagrama se trabaja en centímetros.</li>
+          <li>Expresar el ancho total como suma de segmentos. Según el diagrama, el ancho total se compone de tres partes: el segmento izquierdo x, el cuadro de 180 cm y el segmento derecho x. Por lo tanto, el ancho total es 2x + 180.</li>
+          <li>Plantear la ecuación con el ancho total. Como el ancho total es 300 cm, se cumple: 2x + 180 = 300.</li>
+          <li>Resolver la ecuación. Restar 180 en ambos lados: 2x = 300 − 180 = 120. Luego dividir por 2: x = 120 ÷ 2 = 60.</li>
+          <li>Concluir el valor de x. El valor de x es 60 cm, lo que significa que los espacios a la izquierda y a la derecha del cuadro miden 60 cm cada uno, dejando el cuadro centrado en la pared.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

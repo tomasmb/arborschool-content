@@ -1,0 +1,93 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-22" title="Problema de potencias - Reparto de frutas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Diariamente una persona reparte frutas en su camioneta a siete almacenes, durante los siete días de la semana.</p>
+    <p>Si cada día reparte siete cajas a cada almacén con siete kilogramos de frutas cada una, ¿cuál es el total de kilogramos de fruta que reparte en una semana?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><msup><mn>7</mn><mn>3</mn></msup></math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción considera solo tres factores 7 (por ejemplo, 7 almacenes × 7 cajas × 7 kg), pero olvida multiplicar por los 7 días de la semana. Falta un factor 7, por eso el exponente debería ser 4 y no 3.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><msup><mn>3</mn><mn>7</mn></msup></math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se confunden base y exponente: se usa 3 como base (por los tres datos del problema) y 7 como exponente. En realidad, lo que se repite es el número 7 (7 días, 7 almacenes, 7 cajas, 7 kg), por lo que la base debe ser 7 y el exponente debe indicar cuántas veces se repite ese 7.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><msup><mn>7</mn><mn>4</mn></msup></math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El total de kilos se obtiene multiplicando cuatro veces el número 7: 7 días × 7 almacenes × 7 cajas por almacén × 7 kg por caja. Eso es 7 × 7 × 7 × 7, que se escribe como potencia 7⁴.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><msup><mn>4</mn><mn>7</mn></msup></math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta opción se toma 4 como base (por los cuatro datos del problema) y 7 como exponente. El número que se repite en el cálculo no es 4, sino 7 (7 días, 7 almacenes, 7 cajas, 7 kg). Por eso la base correcta debe ser 7 y el exponente 4.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del total de kilogramos usando potencias</strong></p>
+        <ol>
+          <li>Identificar las cantidades que intervienen:
+            <ul>
+              <li>7 días a la semana.</li>
+              <li>7 almacenes.</li>
+              <li>7 cajas por almacén cada día.</li>
+              <li>7 kilogramos por caja.</li>
+            </ul>
+          </li>
+          <li>Expresar el total de kilogramos como un producto:
+            <ul>
+              <li>Total de kg en la semana = 7 (días) × 7 (almacenes) × 7 (cajas por almacén) × 7 (kg por caja).</li>
+            </ul>
+          </li>
+          <li>Reconocer que es el mismo número 7 multiplicado 4 veces:
+            <ul>
+              <li>7 × 7 × 7 × 7 = 7⁴.</li>
+            </ul>
+          </li>
+          <li>Concluir que la expresión que representa el total de kilogramos de fruta repartidos en la semana es:
+            <ul>
+              <li><strong>7⁴</strong>, que corresponde a la alternativa correcta.</li>
+            </ul>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

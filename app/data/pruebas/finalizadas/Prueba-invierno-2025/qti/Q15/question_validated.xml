@@ -1,0 +1,82 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="ine-poblacion-adulto-mayor" title="Estadísticas INE Población Adulto Mayor" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>De acuerdo con un estudio del Instituto Nacional de Estadísticas (INE), el porcentaje de personas de 60 años o más que vive en Chile, respecto a la población total, ha ido aumentando progresivamente en las últimas décadas.</p>
+    <p>Si bien en 1992 este grupo (60 años o más) equivalía al 9,5 % de la población total de habitantes del país, en 2022 aumentó al 18,1 % y se espera que en 2050 este grupo equivalga al 32,1 % de la población.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>Según los datos entregados por el INE, ¿en cuántos puntos porcentuales se estima que aumentará la población de 60 años o más del 2022 al 2050?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">14,0
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">¡Correcto! Para calcular el aumento en puntos porcentuales se resta el porcentaje inicial al porcentaje final: 32,1 % − 18,1 % = 14,0 puntos porcentuales. No se multiplican ni se dividen los porcentajes, solo se calcula la diferencia entre ellos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">27,6
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">Incorrecto. Esta opción surge si restas el porcentaje de 1992 (9,5 %) al de 2022 (18,1 %) y luego sumas ese resultado al 18,1 %, mezclando dos variaciones distintas. La pregunta solo pide el aumento entre 2022 y 2050, por lo que solo debes restar 18,1 % a 32,1 %.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">41,6
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. Este valor corresponde a sumar los porcentajes de 2022 (18,1 %) y 2050 (32,1 %). Para hallar el aumento en puntos porcentuales no se suman los porcentajes de los años, sino que se calcula la diferencia entre el porcentaje final y el inicial.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">50,2
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">Incorrecto. Este número se obtiene si sumas los tres porcentajes (1992, 2022 y 2050), lo que no tiene sentido para medir un aumento entre dos años específicos. El aumento en puntos porcentuales entre 2022 y 2050 se obtiene solo restando 18,1 % a 32,1 %.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del aumento en puntos porcentuales</strong></p>
+        <ol>
+          <li>Identificar los porcentajes que se comparan:
+            <ul>
+              <li>Porcentaje en 2022: 18,1 %</li>
+              <li>Porcentaje en 2050: 32,1 %</li>
+            </ul>
+          </li>
+          <li>Calcular el aumento en puntos porcentuales restando el porcentaje inicial al final:
+            <ul>
+              <li>32,1 % − 18,1 % = 14,0 puntos porcentuales</li>
+            </ul>
+          </li>
+          <li>Concluir que la población de 60 años o más se estima que aumentará en 14,0 puntos porcentuales entre 2022 y 2050.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

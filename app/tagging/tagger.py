@@ -21,7 +21,7 @@ try:
 except ImportError:
     Image = None  # type: ignore
 
-from app.gemini_client import GeminiService, load_default_gemini_service
+from app.llm_clients import GeminiService, load_default_gemini_service
 from app.tagging.kg_utils import filter_redundant_atoms, get_all_atoms, get_atom_by_id
 from app.tagging.tagger_prompts import (
     build_analysis_prompt,

@@ -1,0 +1,76 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-24" title="Factorización de trinomio cuadrático" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>¿Cuál de las siguientes expresiones es igual a <math xmlns="http://www.w3.org/1998/Math/MathML"><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mn>5</mn><mi>x</mi><mo>-</mo><mn>6</mn></math>?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>-</mo><mn>6</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Al desarrollar (x + 1)(x − 6) obtienes x² − 5x − 6, porque el término en x es 1x − 6x = −5x, no +5x. Aquí se confunden los signos al combinar los términos en x.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>6</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>-</mo><mn>1</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Al desarrollar (x + 6)(x − 1) se obtiene x·x = x², x·(−1) = −x, 6·x = 6x y 6·(−1) = −6. Al sumar los términos en x, −x + 6x = 5x, por lo que el resultado es x² + 5x − 6, que coincide con el trinomio dado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>x</mi><mo>+</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>+</mo><mn>3</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. (x + 2)(x + 3) da x² + 5x + 6, porque 2·3 = +6. Aquí se mantiene bien la suma 2 + 3 = 5 para el coeficiente de x, pero se ignora que el término independiente del trinomio es −6, no +6.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>x</mi><mo>-</mo><mn>2</mn><mo>)</mo><mo>(</mo><mi>x</mi><mo>-</mo><mn>3</mn><mo>)</mo></mrow></math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. (x − 2)(x − 3) produce x² − 5x + 6, ya que el término en x es −2x − 3x = −5x. Aquí se eligieron bien los números cuyo producto es +6, pero se equivocó el signo del coeficiente de x: debe ser +5x y no −5x.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Factorización de trinomio cuadrático x² + 5x − 6</strong></p>
+        <ol>
+          <li>Identifica la forma del trinomio: es de la forma x² + bx + c, donde b = 5 y c = −6.</li>
+          <li>Busca dos números enteros que multiplicados den −6 (el término independiente) y sumados den 5 (el coeficiente de x). Esos números son 6 y −1, porque 6 · (−1) = −6 y 6 + (−1) = 5.</li>
+          <li>Escribe la factorización usando esos números como términos constantes de los binomios: (x + 6)(x − 1).</li>
+          <li>Verifica desarrollando: (x + 6)(x − 1) = x·x + x·(−1) + 6·x + 6·(−1) = x² − x + 6x − 6 = x² + 5x − 6. Como coincide con el trinomio original, la factorización es correcta.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

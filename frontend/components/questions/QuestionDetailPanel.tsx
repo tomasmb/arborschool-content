@@ -18,22 +18,28 @@ import {
   Beaker,
   Layers,
 } from "lucide-react";
-import { getQuestionDetail, getQuestionPdfUrl, QuestionDetail } from "@/lib/api";
+import {
+  getQuestionDetail,
+  getQuestionPdfUrl,
+  QuestionDetail,
+  startEnrichment,
+  getEnrichmentStatus,
+  startValidation,
+  getValidationStatus,
+} from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { GeneratePipelineModal } from "@/components/pipelines/GeneratePipelineModal";
 import { VariantOptionsDialog } from "@/components/pipelines/VariantOptionsDialog";
 import { FeedbackTab } from "./FeedbackTab";
 import { ValidationTab } from "./ValidationTab";
 
-type PipelineAction = "pdf_to_qti" | "tagging" | "variant_gen" | "enrich" | "validate" | null;
+type PipelineAction = "pdf_to_qti" | "tagging" | "variant_gen" | null;
 type TabValue = "question" | "feedback" | "validation" | "variants";
 
 const PIPELINE_INFO = {
   pdf_to_qti: { id: "pdf_to_qti", name: "Regenerate QTI", description: "Re-convert PDF to QTI" },
   tagging: { id: "tagging", name: "Regenerate Tags", description: "Re-tag with atoms" },
   variant_gen: { id: "variant_gen", name: "Generate Variants", description: "Add variants" },
-  enrich: { id: "enrich", name: "Enrich Feedback", description: "Add educational feedback" },
-  validate: { id: "validate", name: "Validate", description: "Validate question quality" },
 };
 
 interface QuestionDetailPanelProps {
@@ -84,6 +90,9 @@ export function QuestionDetailPanel({
   const [activePipeline, setActivePipeline] = useState<PipelineAction>(null);
   const [showVariantOptions, setShowVariantOptions] = useState(false);
   const [variantsPerQuestion, setVariantsPerQuestion] = useState(3);
+  const [enriching, setEnriching] = useState(false);
+  const [validating, setValidating] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   const fetchData = () => {
     setLoading(true);
@@ -112,6 +121,62 @@ export function QuestionDetailPanel({
     setVariantsPerQuestion(count);
     setShowVariantOptions(false);
     setActivePipeline("variant_gen");
+  };
+
+  const handleEnrich = async () => {
+    setEnriching(true);
+    setActionError(null);
+    try {
+      const { job_id } = await startEnrichment(subjectId, testId, {
+        question_ids: [`Q${questionNumber}`],
+        skip_already_enriched: false,
+      });
+      // Poll for completion
+      const pollStatus = async () => {
+        const status = await getEnrichmentStatus(subjectId, testId, job_id);
+        if (status.status === "completed") {
+          setEnriching(false);
+          if (status.progress.failed > 0) {
+            setActionError("Enrichment failed");
+          }
+          fetchData();
+        } else {
+          setTimeout(pollStatus, 1000);
+        }
+      };
+      pollStatus();
+    } catch (err) {
+      setEnriching(false);
+      setActionError(err instanceof Error ? err.message : "Enrichment failed");
+    }
+  };
+
+  const handleValidate = async () => {
+    setValidating(true);
+    setActionError(null);
+    try {
+      const { job_id } = await startValidation(subjectId, testId, {
+        question_ids: [`Q${questionNumber}`],
+        revalidate_passed: true,
+      });
+      // Poll for completion
+      const pollStatus = async () => {
+        const status = await getValidationStatus(subjectId, testId, job_id);
+        if (status.status === "completed") {
+          setValidating(false);
+          if (status.progress.failed > 0) {
+            setActionError("Validation failed");
+          }
+          fetchData();
+        } else {
+          setTimeout(pollStatus, 1000);
+        }
+      };
+      pollStatus();
+    } catch (err) {
+      setValidating(false);
+      setActionError(err instanceof Error ? err.message : "Validation failed");
+    }
   };
 
   useEffect(() => {
@@ -248,16 +313,20 @@ export function QuestionDetailPanel({
                     label="Regenerate Tags"
                   />
                   <ActionButton
-                    onClick={() => handlePipelineAction("enrich")}
-                    disabled={!data.is_tagged}
-                    icon={<Sparkles className="w-4 h-4 text-yellow-400" />}
-                    label={data.is_enriched ? "Re-enrich" : "Enrich"}
+                    onClick={handleEnrich}
+                    disabled={!data.is_tagged || enriching}
+                    icon={enriching
+                      ? <Loader2 className="w-4 h-4 text-yellow-400 animate-spin" />
+                      : <Sparkles className="w-4 h-4 text-yellow-400" />}
+                    label={enriching ? "Enriching..." : data.is_enriched ? "Re-enrich" : "Enrich"}
                   />
                   <ActionButton
-                    onClick={() => handlePipelineAction("validate")}
-                    disabled={!data.is_enriched}
-                    icon={<Beaker className="w-4 h-4 text-blue-400" />}
-                    label={data.is_validated ? "Re-validate" : "Validate"}
+                    onClick={handleValidate}
+                    disabled={!data.is_enriched || validating}
+                    icon={validating
+                      ? <Loader2 className="w-4 h-4 text-blue-400 animate-spin" />
+                      : <Beaker className="w-4 h-4 text-blue-400" />}
+                    label={validating ? "Validating..." : data.is_validated ? "Re-validate" : "Validate"}
                   />
                   <ActionButton
                     onClick={() => handlePipelineAction("variant_gen")}

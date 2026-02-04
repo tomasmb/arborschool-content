@@ -1,0 +1,75 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="water-distribution-infographic" title="Distribución del agua en la Tierra" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente infografía se presentan los porcentajes de los distintos tipos de agua que hay en la Tierra.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/question_restored_0.png" alt="Infografía sobre la distribución del agua. Muestra un gráfico circular donde el 97,5% es agua salada y el 2,5% es agua dulce. Del agua dulce, se desglosa en: 69,7% Glaciares, 30% Acuíferos, y 0,3% Ríos y Arroyos. Un recuadro indica: 'Solo el 0,007% del agua está disponible para el consumo humano'."/>
+    </p>
+    <p>FUENTE: FAO | ONU Adaptado de Carrión, M (s. f.). ¿Cuánta agua hay en el mundo? El Ágora diario del agua.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es verdadera?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Un 69,7 % del agua en el planeta está en los glaciares.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">Incorrecto. El 69,7 % corresponde solo al porcentaje de agua dulce que está en glaciares, no al total de agua del planeta (que incluye principalmente agua salada).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La mayor reserva de agua dulce en el planeta se encuentra en los glaciares.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">¡Correcto! Dentro del 2,5 % de agua dulce, el gráfico muestra que el 69,7 % está en glaciares, valor mayor que el 30 % en acuíferos y el 0,3 % en ríos y arroyos; por eso, los glaciares constituyen la mayor reserva de agua dulce.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Para determinar el porcentaje de agua que consume el ser humano de los ríos, se debe realizar la operación 0,007 · 0,3.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. 0,007 representa el porcentaje total de agua disponible para consumo humano respecto de toda el agua del planeta, mientras que 0,3 es la fracción de agua dulce en acuíferos; mezclar estos datos con un producto no corresponde al porcentaje de agua que proviene de ríos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Hay más agua disponible en glaciares y acuíferos, en conjunto, que agua salada.
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">Incorrecto. El gráfico indica que el 97,5 % del agua del planeta es salada y solo el 2,5 % es dulce; aunque dentro del agua dulce la suma de glaciares y acuíferos es alta, sigue siendo mucho menor que el 97,5 % de agua salada.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Análisis de porcentajes en el gráfico de distribución del agua</strong></p>
+        <ol>
+          <li>Del gráfico se observa que el 97,5 % del agua del planeta es salada y solo el 2,5 % es agua dulce. Por lo tanto, cualquier afirmación que compare glaciares y acuíferos con toda el agua salada debe considerar que 2,5 % es mucho menor que 97,5 %.</li>
+          <li>Dentro del 2,5 % de agua dulce, el gráfico descompone así: 69,7 % en glaciares, 30 % en acuíferos y 0,3 % en ríos y arroyos. Como 69,7 es el mayor de estos porcentajes, la mayor reserva de agua dulce se encuentra en los glaciares. Por eso, la única afirmación verdadera es: “La mayor reserva de agua dulce en el planeta se encuentra en los glaciares”.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

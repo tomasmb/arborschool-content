@@ -1,0 +1,77 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-32" title="Solución de ecuación lineal simple" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>¿Cuál es la solución de la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>3</mn><mo>-</mo><mn>2</mn><mi>x</mi><mo>=</mo><mn>7</mn></math>?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>10</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta corresponde a resolver como si la ecuación fuera 3 + 2x = 7 y luego cambiar mal el signo al despejar x. Recuerda que al pasar el 3 restando obtienes -2x = 4 y al dividir por -2 el resultado debe ser negativo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>5</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción aparece si restas al revés (7 - 3 = -4) y luego divides por -2, obteniendo -5. Ten cuidado con el orden: desde 3 - 2x = 7, al pasar el 3 al otro lado queda -2x = 7 - 3 = 4.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>4</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta se obtiene si haces bien 7 - 3 = 4 pero luego olvidas que el coeficiente de x es -2 y divides por 2 en lugar de por -2, perdiendo el signo negativo de la solución.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>2</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Al pasar el 3 al otro lado de la ecuación 3 - 2x = 7, obtienes -2x = 7 - 3 = 4. Luego divides ambos lados por -2 y queda x = 4 / (-2) = -2.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso de la ecuación lineal</strong></p>
+        <ol>
+          <li>Partimos de la ecuación: 3 - 2x = 7.</li>
+          <li>Restamos 3 en ambos lados para dejar el término con x solo: -2x = 7 - 3 = 4.</li>
+          <li>Dividimos ambos lados de la ecuación por -2 (el coeficiente de x): x = 4 / (-2).</li>
+          <li>Calculamos la división: x = -2.</li>
+          <li>Verificamos reemplazando en la ecuación original: 3 - 2(-2) = 3 + 4 = 7, por lo tanto la solución x = -2 es correcta.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

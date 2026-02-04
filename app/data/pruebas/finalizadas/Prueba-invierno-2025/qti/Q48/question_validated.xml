@@ -1,0 +1,114 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="pizza-perimeter-box" title="Perímetro de pizza en caja cuadrada" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera una caja de pizza de base cuadrada de <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>400</mn><mo>&#160;</mo><msup><mtext>cm</mtext><mn>2</mn></msup></math> de área, como se representa en la figura adjunta.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q48_main.png" alt="Ilustración de una caja de pizza cuadrada abierta que contiene una pizza redonda en su interior."/>
+    </p>
+    <p>Si en la pizzería se quiere aprovechar al máximo la caja para guardar una pizza, ¿cuál es el perímetro de la pizza redonda más grande que se puede guardar en esta caja?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>100</mn>
+          <mi>&#x3C0;</mi>
+          <mo>&#160;</mo>
+          <mtext>cm</mtext>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Esta opción corresponde a usar el área del cuadrado (400 cm²) como si fuera el radio de la circunferencia (r = 100), confundiendo área con longitud. El área del cuadrado sirve para hallar el lado, no se usa directamente como radio.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>400</mn>
+          <mi>&#x3C0;</mi>
+          <mo>&#160;</mo>
+          <mtext>cm</mtext>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Aquí se toma el área del cuadrado (400 cm²) como si fuera directamente el perímetro de la circunferencia, sin usar la fórmula del perímetro (P = 2πr) ni relacionar el lado del cuadrado con el diámetro del círculo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>10</mn>
+          <mi>&#x3C0;</mi>
+          <mo>&#160;</mo>
+          <mtext>cm</mtext>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta opción surge de usar el lado del cuadrado (20 cm) como si fuera el radio (r = 5), en lugar de reconocer que el lado del cuadrado es el diámetro de la pizza más grande que cabe dentro de la caja.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>20</mn>
+          <mi>&#x3C0;</mi>
+          <mo>&#160;</mo>
+          <mtext>cm</mtext>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">¡Correcto! El área del cuadrado es 400 cm², por lo que su lado mide 20 cm. La pizza más grande que cabe tiene diámetro igual al lado del cuadrado (20 cm), entonces su radio es 10 cm. El perímetro de la circunferencia es P = 2πr = 2π·10 = 20π cm.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: Relacionar el área del cuadrado con el diámetro de la circunferencia</strong></p>
+        <ol>
+          <li>El área de la base de la caja es 400 cm² y la base es un cuadrado. Si llamamos L al lado del cuadrado, entonces:
+            <br/>L² = 400  ⇒  L = √400 = 20 cm.
+          </li>
+          <li>La pizza redonda más grande que cabe en la caja tiene su circunferencia tangente a los cuatro lados del cuadrado, por lo que su diámetro es igual al lado del cuadrado:
+            <br/>diámetro de la pizza = 20 cm.
+          </li>
+          <li>El radio de la pizza es la mitad del diámetro:
+            <br/>r = 20 ÷ 2 = 10 cm.
+          </li>
+          <li>El perímetro (circunferencia) de un círculo se calcula con:
+            <br/>P = 2πr.
+          </li>
+          <li>Sustituimos el valor del radio:
+            <br/>P = 2 · π · 10 = 20π cm.
+          </li>
+          <li>Por lo tanto, el perímetro de la pizza redonda más grande que se puede guardar en la caja es:
+            <br/><strong>20π cm</strong>.
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
