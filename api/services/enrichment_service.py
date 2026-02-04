@@ -273,8 +273,16 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
 
     job.status = "in_progress"
 
-    # Create pipeline instance
-    pipeline = QuestionPipeline()
+    # Create pipeline instance - wrapped in try/except to catch initialization errors
+    try:
+        pipeline = QuestionPipeline()
+    except Exception as e:
+        job.status = "failed"
+        job.completed_at = datetime.now(timezone.utc)
+        error_msg = f"Pipeline initialization failed: {e}"
+        job.results.append({"question_id": "init", "status": "failed", "error": error_msg})
+        logger.exception(error_msg)
+        return
 
     for q in questions:
         job.current_question = q["id"]

@@ -12,7 +12,7 @@ import logging
 import sys
 from pathlib import Path
 
-from app.gemini_client import load_default_gemini_service
+from app.llm_clients import load_default_gemini_service
 from app.standards.generation import generate_standards_for_eje
 from app.standards.prompts import EJE_PREFIX_MAP
 from app.standards.validation import run_full_eje_validation

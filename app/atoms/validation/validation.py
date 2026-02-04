@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from app.gemini_client import GeminiService
+from app.llm_clients import GeminiService
 from app.standards.helpers import parse_json_response
 
 logger = logging.getLogger(__name__)

@@ -49,8 +49,8 @@ class FinalValidator:
 
         self.model = model or self.DEFAULT_MODEL
 
-        # Import OpenAIClient from gemini_client
-        from app.gemini_client import OpenAIClient
+        # Import OpenAIClient from llm_clients
+        from app.llm_clients import OpenAIClient
 
         self._client = OpenAIClient(api_key=self._api_key, model=self.model)
 

@@ -26,9 +26,9 @@ configuration files).
 
 ### Core modules
 
-- `app/gemini_client.py`  
-  Reusable Gemini client wrapper (using `gemini-3-pro-preview`).  
-  Reads `GEMINI_API_KEY` from the project-level `.env` file.
+- `app/llm_clients.py`  
+  Reusable LLM client wrappers (Gemini and OpenAI).  
+  Reads `GEMINI_API_KEY` and `OPENAI_API_KEY` from the project-level `.env` file.
 
 - `app/temarios/`  
   - `parsing.py`: parses DEMRE temario PDFs and builds structured JSON.
@@ -153,5 +153,5 @@ When you add new functionality, follow this pattern:
 ## 5. Naming conventions
 
 - **Folders**: lowercase with hyphens (e.g., `pdf-to-qti`, `prueba-invierno-2025`)
-- **Python files**: lowercase with underscores (e.g., `gemini_client.py`)
+- **Python files**: lowercase with underscores (e.g., `llm_clients.py`)
 - **Test IDs**: lowercase with hyphens (e.g., `prueba-invierno-2025`)

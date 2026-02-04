@@ -9,7 +9,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional
 
-from app.gemini_client import load_default_gemini_service
+from app.llm_clients import load_default_gemini_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantQuestion
 
 

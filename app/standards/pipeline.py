@@ -19,7 +19,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from app.gemini_client import GeminiService, load_default_gemini_service
+from app.llm_clients import GeminiService, load_default_gemini_service
 from app.standards.generation import EjeGenerationResult, generate_standards_for_eje
 from app.standards.models import (
     CanonicalStandardsFile,

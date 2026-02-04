@@ -38,7 +38,7 @@ cp .env.example .env  # Then edit with your API keys
 ```
 arborschool-content/
 ├── app/                    # Python code and data
-│   ├── gemini_client.py    # Gemini API wrapper
+│   ├── llm_clients.py      # LLM API wrappers (Gemini, OpenAI)
 │   ├── temarios/           # DEMRE temario PDF parsing
 │   ├── standards/          # Standards generation pipeline
 │   ├── atoms/              # Learning atom definitions
