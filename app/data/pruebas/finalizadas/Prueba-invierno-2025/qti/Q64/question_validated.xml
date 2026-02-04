@@ -1,0 +1,69 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-64" title="Question 64" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera una urna con 36 bolitas entre amarillas, azules y rojas, todas del mismo tipo.</p>
+    <p>Al sacar una bolita al azar de la urna, la probabilidad de que esta sea amarilla o azul es <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mfrac><mn>2</mn><mn>3</mn></mfrac></math>.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuántas bolitas rojas hay en la urna?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">1
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción supone que casi todas las bolitas son amarillas o azules (35 de 36), es decir, una probabilidad de 35/36, que no coincide con 2/3. No se está usando la relación entre probabilidad y cantidad total de bolitas.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">12
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Si la probabilidad de sacar una bolita amarilla o azul es 2/3, entonces la probabilidad de sacar una roja es 1 - 2/3 = 1/3. Como hay 36 bolitas en total, 1/3 de 36 es 36 ÷ 3 = 12 bolitas rojas.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">31
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción interpreta 2/3 como si fuera la cantidad de bolitas (2 de 3) y luego suma mal hasta llegar a 31 rojas, lo que implicaría solo 5 bolitas amarillas o azules. Eso daría una probabilidad de 5/36, que es muy distinta de 2/3.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">34
+        <qti-feedback-inline identifier="FEEDBACK_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción asume que casi todas las bolitas son rojas (34 de 36), por lo que la probabilidad de amarilla o azul sería 2/36 = 1/18, muy diferente de 2/3. Se está confundiendo la fracción de probabilidad con una cantidad pequeña de bolitas.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: usar la probabilidad complementaria</strong></p>
+        <ol>
+          <li>La probabilidad de que la bolita sea amarilla o azul es 2/3. Entonces, la probabilidad de que sea roja es el complemento: 1 - 2/3 = 1/3.</li>
+          <li>Sabemos que hay 36 bolitas en total. Si 1/3 de ellas son rojas, calculamos: 36 × (1/3) = 36 ÷ 3 = 12 bolitas rojas.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

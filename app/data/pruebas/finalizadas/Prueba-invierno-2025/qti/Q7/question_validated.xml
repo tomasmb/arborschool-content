@@ -1,0 +1,77 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="weather-variation-q7" title="Variación de temperatura en pronóstico del tiempo" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente infografía se presenta el pronóstico del tiempo para cierto día, con la temperatura en grados Celsius.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q7_main.png" alt="Infografía del pronóstico del tiempo. Muestra la temperatura actual de 30 grados. Pronóstico por hora: 15:00 30 grados, 16:00 30 grados, 17:00 29 grados, 18:00 28 grados, 19:00 27 grados, 20:00 26 grados, 21:00 24 grados."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál será la variación de temperatura entre las 17:00 y las 21:00 horas?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">-6 °C
+        <qti-feedback-inline identifier="ChoiceA_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a restar al revés: 29 − 24 = 5 y luego cambiarle el signo a −5 para obtener −6. La variación se calcula como temperatura final menos temperatura inicial: 24 − 29, no al revés ni modificando el resultado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">-5 °C
+        <qti-feedback-inline identifier="ChoiceB_FB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! La variación de temperatura se obtiene restando la temperatura final menos la inicial: 24 °C (a las 21:00) menos 29 °C (a las 17:00). Así, 24 − 29 = −5, lo que indica que la temperatura disminuye 5 °C en ese intervalo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">4 °C
+        <qti-feedback-inline identifier="ChoiceC_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se ignora el signo y se toma solo la diferencia positiva entre 24 y 29, o se confunde el orden de las temperaturas. La variación debe considerar si la temperatura sube o baja, por eso es necesario usar 24 − 29 y mantener el signo negativo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">6 °C
+        <qti-feedback-inline identifier="ChoiceD_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción puede surgir de contar mal los grados de diferencia (por ejemplo, sumando 1 grado de más) o de leer una temperatura equivocada del gráfico. Entre 29 °C y 24 °C la diferencia correcta es de 5 grados, no de 6.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo de la variación de temperatura como diferencia final − inicial</strong></p>
+        <ol>
+          <li>Identificar la temperatura a las 17:00 horas: según la infografía, es de 29 °C.</li>
+          <li>Identificar la temperatura a las 21:00 horas: según la infografía, es de 24 °C.</li>
+          <li>Calcular la variación de temperatura usando la fórmula: variación = temperatura final − temperatura inicial. En este caso: 24 − 29.</li>
+          <li>Resolver la resta: 24 − 29 = −5. El resultado negativo indica que la temperatura disminuyó.</li>
+          <li>Concluir que la variación de temperatura entre las 17:00 y las 21:00 horas es de −5 °C, es decir, bajó 5 grados Celsius.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceB_FB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">general_incorrect</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
