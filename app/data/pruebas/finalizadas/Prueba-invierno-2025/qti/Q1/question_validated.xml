@@ -1,0 +1,100 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="eval-expression-integers" title="Evaluación de expresión numérica con enteros" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>¿Cuál es el valor de <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>-</mo><mo>(</mo><mo>-</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>-</mo><mn>2</mn><mo>-</mo><mn>7</mn><mo>)</mo></math>?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>63</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para obtener −63 probablemente multiplicaste mal los signos: (−2)(−9) = +18, no −18. El producto de dos números negativos siempre es positivo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>13</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Primero se resuelve el paréntesis: −2 − 7 = −9. Luego se multiplica (−2)(−9) = +18, porque el producto de dos negativos es positivo. Finalmente, 5 − 18 = −13.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>5</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para llegar a −5 probablemente calculaste bien (−2 − 7 = −9), pero luego sumaste 5 + 9 = 14 y después cambiaste el signo al final. Recuerda que 5 − 18 se interpreta como 5 + (−18), lo que da −13, no −5.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>8</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para obtener 8 es probable que hayas hecho 5 + (−2) = 3 y luego 3 − (−2 − 7) = 3 − (−9) = 12, o bien hayas tratado los paréntesis como si fueran solo agrupación sin respetar el orden de las operaciones. Primero debes resolver el paréntesis interno y luego la multiplicación antes de restar.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso usando orden de operaciones y manejo de signos</strong></p>
+        <ol>
+          <li>Identificar la expresión completa:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>-</mo><mo>(</mo><mo>-</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>-</mo><mn>2</mn><mo>-</mo><mn>7</mn><mo>)</mo></math></p>
+          </li>
+          <li>Resolver primero el paréntesis interno:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>2</mn><mo>-</mo><mn>7</mn><mo>=</mo><mo>-</mo><mn>9</mn></math></p>
+            <p>La expresión queda:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>-</mo><mo>(</mo><mo>-</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>-</mo><mn>9</mn><mo>)</mo></math>
+            </p>
+          </li>
+          <li>Aplicar la multiplicación antes de la resta:
+            <p>Multiplicamos los dos números negativos:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>(</mo><mo>-</mo><mn>2</mn><mo>)</mo><mo>(</mo><mo>-</mo><mn>9</mn><mo>)</mo><mo>=</mo><mn>18</mn></math>
+            </p>
+            <p>Porque el producto de dos números negativos es positivo.</p>
+            <p>Ahora la expresión se simplifica a:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>-</mo><mn>18</mn></math>
+            </p>
+          </li>
+          <li>Calcular la resta de enteros:
+            <p>Recordamos que restar 18 es sumar −18:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>-</mo><mn>18</mn><mo>=</mo><mn>5</mn><mo>+</mo><mo>-</mo><mn>18</mn></math>
+            </p>
+            <p>Sumamos un positivo y un negativo:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>5</mn><mo>+</mo><mo>-</mo><mn>18</mn><mo>=</mo><mo>-</mo><mn>13</mn></math>
+            </p>
+          </li>
+          <li>Conclusión:
+            <p>El valor de la expresión es:
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>-</mo><mn>13</mn></math>
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

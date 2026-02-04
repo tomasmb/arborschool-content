@@ -59,6 +59,12 @@ def _get_items_to_enrich_from_path(
     """
     items: list[dict] = []
 
+    logger.info(
+        f"[ENRICH DEBUG] _get_items_to_enrich_from_path called with: "
+        f"base_path={base_path}, id_prefix={id_prefix}, item_ids={item_ids}, "
+        f"require_tagged={require_tagged}, skip_already_enriched={skip_already_enriched}"
+    )
+
     if not base_path.exists():
         logger.warning(f"Path not found: {base_path}")
         return items
@@ -68,6 +74,8 @@ def _get_items_to_enrich_from_path(
         [f for f in base_path.iterdir() if f.is_dir()],
         key=lambda p: p.name,
     )
+
+    logger.info(f"[ENRICH DEBUG] Found {len(folders)} folders: {[f.name for f in folders]}")
 
     for folder in folders:
         item_name = folder.name
@@ -95,12 +103,16 @@ def _get_items_to_enrich_from_path(
         # Check if already enriched
         validated_xml_path = folder / "question_validated.xml"
         if skip_already_enriched and validated_xml_path.exists():
+            logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: already enriched")
             continue
 
         # Read original QTI XML
         qti_path = folder / "question.xml"
         if not qti_path.exists():
+            logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: no question.xml")
             continue
+
+        logger.info(f"[ENRICH DEBUG] Including {item_id} for enrichment")
 
         try:
             qti_xml = qti_path.read_text(encoding="utf-8")
@@ -119,6 +131,7 @@ def _get_items_to_enrich_from_path(
             "output_dir": str(folder),
         })
 
+    logger.info(f"[ENRICH DEBUG] Returning {len(items)} items to enrich")
     return items
 
 
@@ -130,6 +143,11 @@ def _get_questions_to_enrich(
 ) -> list[dict]:
     """Get list of questions to enrich from the test folder."""
     base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+    logger.info(
+        f"[ENRICH DEBUG] _get_questions_to_enrich: test_id={test_id}, "
+        f"question_ids={question_ids}, all_tagged={all_tagged}, "
+        f"skip_already_enriched={skip_already_enriched}, base_path={base_path}"
+    )
     return _get_items_to_enrich_from_path(
         base_path=base_path,
         id_prefix=test_id,
