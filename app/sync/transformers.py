@@ -12,7 +12,6 @@ from .extractors import (
     ExtractedStandard,
     ExtractedTest,
 )
-from .variant_extractors import ExtractedVariant
 from .models import (
     AtomRelevance,
     AtomRow,
@@ -28,6 +27,7 @@ from .models import (
     TestRow,
     TestType,
 )
+from .variant_extractors import ExtractedVariant
 
 # -----------------------------------------------------------------------------
 # Constants

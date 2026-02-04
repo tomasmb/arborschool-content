@@ -306,6 +306,8 @@ async def get_tests(subject_id: str) -> list[TestBrief]:
                 qti_count=status["qti_count"],
                 finalized_count=status["finalized_count"],
                 tagged_count=status["tagged_count"],
+                enriched_count=status["enriched_count"],
+                validated_count=status["validated_count"],
                 variants_count=status["variants_count"],
             )
         )
@@ -349,6 +351,8 @@ async def get_test_detail(subject_id: str, test_id: str) -> TestDetail:
         qti_count=status["qti_count"],
         finalized_count=status["finalized_count"],
         tagged_count=status["tagged_count"],
+        enriched_count=status["enriched_count"],
+        validated_count=status["validated_count"],
         variants_count=status["variants_count"],
         questions=questions,
     )

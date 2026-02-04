@@ -21,9 +21,27 @@ export interface ActionItem {
   count: number;
 }
 
+/**
+ * Type of next action - used to determine what to do when user clicks "Next"
+ */
+export type NextActionType =
+  | "upload_temario"
+  | "generate_standards"
+  | "generate_atoms"
+  | "upload_tests"
+  | "run_split"
+  | "run_qti_parse"
+  | "run_tagging"
+  | "run_enrichment"
+  | "run_validation"
+  | null;
+
 export interface ComputedProgress {
   overallPercent: number;
   nextAction: string | null;
+  nextActionType: NextActionType;
+  /** Test ID for test-specific actions (split, parse, tag, etc.) */
+  nextActionTestId: string | null;
   knowledgePipeline: {
     standards: { done: boolean; count: number; byEje: Record<string, number> };
     atoms: { done: boolean; count: number; byEje: Record<string, number> };
@@ -125,26 +143,51 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
 
   const overallPercent = totalWeight > 0 ? Math.round(weightedSum / totalWeight) : 0;
 
-  // Determine next action
+  // Determine next action and its type
   let nextAction: string | null = null;
+  let nextActionType: NextActionType = null;
+  let nextActionTestId: string | null = null;
+
+  // Find the first test that needs work for test-specific actions
+  const findTestNeedingWork = (
+    predicate: (t: SubjectDetail["tests"][0]) => boolean
+  ): string | null => {
+    const test = data.tests.find(predicate);
+    return test?.id ?? null;
+  };
+
   if (!data.temario_exists) {
     nextAction = "Upload temario PDF";
+    nextActionType = "upload_temario";
   } else if (!hasStandards) {
     nextAction = "Generate standards";
+    nextActionType = "generate_standards";
   } else if (!hasAtoms) {
     nextAction = "Generate atoms";
+    nextActionType = "generate_atoms";
   } else if (totalTests === 0) {
     nextAction = "Upload test PDFs";
+    nextActionType = "upload_tests";
   } else if (totalSplit === 0) {
     nextAction = "Run PDF splitting";
+    nextActionType = "run_split";
+    nextActionTestId = findTestNeedingWork((t) => t.raw_pdf_exists && t.split_count === 0);
   } else if (totalQti < totalSplit) {
     nextAction = `Parse ${totalSplit - totalQti} questions to QTI`;
+    nextActionType = "run_qti_parse";
+    nextActionTestId = findTestNeedingWork((t) => t.qti_count < t.split_count);
   } else if (totalTagged < totalFinalized) {
     nextAction = `Tag ${totalFinalized - totalTagged} questions`;
+    nextActionType = "run_tagging";
+    nextActionTestId = findTestNeedingWork((t) => t.tagged_count < t.finalized_count);
   } else if (totalEnriched < totalFinalized) {
     nextAction = `Enrich ${totalFinalized - totalEnriched} questions`;
+    nextActionType = "run_enrichment";
+    nextActionTestId = findTestNeedingWork((t) => t.enriched_count < t.finalized_count);
   } else if (totalValidated < totalFinalized) {
     nextAction = `Validate ${totalFinalized - totalValidated} questions`;
+    nextActionType = "run_validation";
+    nextActionTestId = findTestNeedingWork((t) => t.validated_count < t.finalized_count);
   }
 
   // Action items
@@ -174,6 +217,8 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
   return {
     overallPercent,
     nextAction,
+    nextActionType,
+    nextActionTestId,
     knowledgePipeline: {
       standards: {
         done: hasStandards,

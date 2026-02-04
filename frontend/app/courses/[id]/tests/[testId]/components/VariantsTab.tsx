@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   Plus,
   Trash2,
@@ -12,10 +12,12 @@ import {
   ShieldCheck,
   CheckCircle2,
   Circle,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StatusIcon, ProgressRatio } from "@/components/ui";
-import type { QuestionBrief, TestDetail } from "@/lib/api";
+import { getQuestionDetail, type QuestionBrief, type TestDetail, type VariantBrief } from "@/lib/api";
 
 export interface VariantsTabProps {
   subjectId: string;
@@ -134,7 +136,9 @@ export function VariantsTab({
           )}
           <button
             onClick={onGenerateVariants}
-            className="flex items-center gap-2 px-3 py-2 bg-yellow-500/10 text-yellow-400 rounded-lg text-sm font-medium hover:bg-yellow-500/20 border border-yellow-500/20"
+            className="flex items-center gap-2 px-3 py-2 bg-yellow-500/10 text-yellow-400
+              rounded-lg text-sm font-medium hover:bg-yellow-500/20 border
+              border-yellow-500/20"
           >
             <Plus className="w-4 h-4" />
             Add More Variants
@@ -144,7 +148,9 @@ export function VariantsTab({
           {onEnrichVariants && totalVariants > 0 && (
             <button
               onClick={onEnrichVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400 rounded-lg text-sm font-medium hover:bg-green-500/20 border border-green-500/20"
+              className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400
+                rounded-lg text-sm font-medium hover:bg-green-500/20 border
+                border-green-500/20"
             >
               <MessageSquarePlus className="w-4 h-4" />
               Enrich Variants
@@ -155,7 +161,9 @@ export function VariantsTab({
           {onValidateVariants && totalVariants > 0 && (
             <button
               onClick={onValidateVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-500/20 border border-blue-500/20"
+              className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400
+                rounded-lg text-sm font-medium hover:bg-blue-500/20 border
+                border-blue-500/20"
             >
               <ShieldCheck className="w-4 h-4" />
               Validate Variants
@@ -219,6 +227,8 @@ export function VariantsTab({
               return (
                 <VariantQuestionRow
                   key={q.id}
+                  subjectId={subjectId}
+                  testId={testId}
                   question={q}
                   isExpanded={isExpanded}
                   onToggle={() => toggleRow(q.question_number)}
@@ -249,6 +259,8 @@ export function VariantsTab({
 }
 
 interface VariantQuestionRowProps {
+  subjectId: string;
+  testId: string;
   question: QuestionBrief;
   isExpanded: boolean;
   onToggle: () => void;
@@ -257,6 +269,8 @@ interface VariantQuestionRowProps {
 }
 
 function VariantQuestionRow({
+  subjectId,
+  testId,
   question: q,
   isExpanded,
   onToggle,
@@ -337,7 +351,12 @@ function VariantQuestionRow({
         <tr className="bg-background/50">
           <td colSpan={8} className="p-0">
             <div className="p-4 border-b border-border">
-              <VariantsExpandedContent questionNum={q.question_number} variantCount={q.variants_count} />
+              <VariantsExpandedContent
+                subjectId={subjectId}
+                testId={testId}
+                questionNum={q.question_number}
+                variantCount={q.variants_count}
+              />
             </div>
           </td>
         </tr>
@@ -346,40 +365,122 @@ function VariantQuestionRow({
   );
 }
 
-function VariantsExpandedContent({
-  questionNum,
-  variantCount,
-  onDeleteVariant,
-}: {
+interface VariantsExpandedContentProps {
+  subjectId: string;
+  testId: string;
   questionNum: number;
   variantCount: number;
   onDeleteVariant?: (variantId: string) => void;
-}) {
-  // Generate variant IDs based on naming convention
-  const variantIds = Array.from(
-    { length: variantCount },
-    (_, i) => `Q${questionNum}-V${i + 1}`
-  );
+}
+
+function VariantsExpandedContent({
+  subjectId,
+  testId,
+  questionNum,
+  variantCount,
+  onDeleteVariant,
+}: VariantsExpandedContentProps) {
+  const [variants, setVariants] = useState<VariantBrief[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchVariants() {
+      setLoading(true);
+      setError(null);
+      try {
+        const detail = await getQuestionDetail(subjectId, testId, questionNum);
+        if (!cancelled) {
+          setVariants(detail.variants || []);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Failed to load variants");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchVariants();
+    return () => {
+      cancelled = true;
+    };
+  }, [subjectId, testId, questionNum]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-6">
+        <Loader2 className="w-4 h-4 animate-spin text-accent" />
+        <span className="ml-2 text-text-secondary text-sm">Loading variants...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center py-6 text-error">
+        <AlertCircle className="w-4 h-4" />
+        <span className="ml-2 text-sm">{error}</span>
+      </div>
+    );
+  }
+
+  // Compute variant stats
+  const enrichedCount = variants.filter((v) => v.is_enriched).length;
+  const validatedCount = variants.filter((v) => v.is_validated).length;
 
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
         <h4 className="text-sm font-medium">Q{questionNum} Variants</h4>
-        <p className="text-xs text-text-secondary">
-          {variantCount} variants (generated with feedback)
-        </p>
+        <div className="flex items-center gap-4 text-xs">
+          <span className="text-text-secondary">{variants.length} total</span>
+          {enrichedCount > 0 && (
+            <span className="text-accent">{enrichedCount} enriched</span>
+          )}
+          {validatedCount > 0 && (
+            <span className="text-success">{validatedCount} validated</span>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-        {variantIds.map((id) => (
+        {variants.map((v) => (
           <div
-            key={id}
-            className="flex items-center justify-between p-2 bg-background rounded border border-border/50"
+            key={v.id}
+            className={cn(
+              "flex items-center justify-between p-2 bg-background rounded border",
+              v.is_validated
+                ? "border-success/30"
+                : v.is_enriched
+                  ? "border-accent/30"
+                  : v.has_qti
+                    ? "border-border/50"
+                    : "border-warning/30"
+            )}
           >
-            <span className="text-sm font-mono">{id}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-mono">{v.folder_name}</span>
+              <div className="flex items-center gap-0.5">
+                {v.is_validated ? (
+                  <ShieldCheck className="w-3 h-3 text-success" aria-label="Validated" />
+                ) : v.is_enriched ? (
+                  <MessageSquarePlus className="w-3 h-3 text-accent" aria-label="Enriched" />
+                ) : v.has_qti ? (
+                  <CheckCircle2 className="w-3 h-3 text-text-secondary" aria-label="Has QTI" />
+                ) : (
+                  <Circle className="w-3 h-3 text-warning" aria-label="Missing QTI" />
+                )}
+              </div>
+            </div>
             {onDeleteVariant && (
               <button
-                onClick={() => onDeleteVariant(id)}
+                onClick={() => onDeleteVariant(v.id)}
                 className="text-xs text-error hover:underline ml-2"
               >
                 <Trash2 className="w-3 h-3" />
@@ -388,6 +489,12 @@ function VariantsExpandedContent({
           </div>
         ))}
       </div>
+
+      {variants.length === 0 && (
+        <p className="text-center text-text-secondary text-sm py-4">
+          No variants found for this question.
+        </p>
+      )}
 
       <p className="mt-3 text-xs text-text-secondary">
         Variants are generated with feedback included. View individual variants in the

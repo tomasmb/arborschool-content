@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   CheckCircle2,
   Circle,
@@ -10,11 +10,13 @@ import {
   ChevronDown,
   ChevronRight,
   Tag,
+  Loader2,
+  AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StatusBadge, StatusIcon, ProgressRatio } from "@/components/ui";
-import { QTIFullView } from "@/components/qti";
-import type { QuestionBrief, TestDetail } from "@/lib/api";
+import { QTIFullView, QTIRenderer } from "@/components/qti";
+import { getQuestionDetail, type QuestionBrief, type TestDetail, type QuestionDetail } from "@/lib/api";
 
 export interface QuestionsTabProps {
   subjectId: string;
@@ -117,7 +119,9 @@ export function QuestionsTab({
           <button
             onClick={onRunTagging}
             disabled={notTaggedCount === 0 && taggedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-purple-500/10 text-purple-400 rounded-lg text-sm font-medium hover:bg-purple-500/20 border border-purple-500/20 disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-2 bg-purple-500/10 text-purple-400
+              rounded-lg text-sm font-medium hover:bg-purple-500/20 border
+              border-purple-500/20 disabled:opacity-50"
           >
             <Tag className="w-4 h-4" />
             {notTaggedCount > 0 ? `Tag ${notTaggedCount} Questions` : "Re-tag All"}
@@ -127,7 +131,9 @@ export function QuestionsTab({
           <button
             onClick={onOpenEnrichment}
             disabled={taggedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400 rounded-lg text-sm font-medium hover:bg-green-500/20 border border-green-500/20 disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400
+              rounded-lg text-sm font-medium hover:bg-green-500/20 border
+              border-green-500/20 disabled:opacity-50"
           >
             <MessageSquarePlus className="w-4 h-4" />
             {notEnrichedCount > 0 ? `Enrich ${notEnrichedCount} Missing` : "Re-enrich"}
@@ -137,7 +143,9 @@ export function QuestionsTab({
           <button
             onClick={onOpenValidation}
             disabled={enrichedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400 rounded-lg text-sm font-medium hover:bg-blue-500/20 border border-blue-500/20 disabled:opacity-50"
+            className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400
+              rounded-lg text-sm font-medium hover:bg-blue-500/20 border
+              border-blue-500/20 disabled:opacity-50"
           >
             <ShieldCheck className="w-4 h-4" />
             {notValidatedCount > 0 ? `Validate ${notValidatedCount} Missing` : "Re-validate"}
@@ -191,6 +199,8 @@ export function QuestionsTab({
               return (
                 <QuestionRow
                   key={q.id}
+                  subjectId={subjectId}
+                  testId={testId}
                   question={q}
                   isExpanded={isExpanded}
                   onToggle={() => toggleRow(q.question_number)}
@@ -212,13 +222,22 @@ export function QuestionsTab({
 }
 
 interface QuestionRowProps {
+  subjectId: string;
+  testId: string;
   question: QuestionBrief;
   isExpanded: boolean;
   onToggle: () => void;
   onViewDetail: () => void;
 }
 
-function QuestionRow({ question: q, isExpanded, onToggle, onViewDetail }: QuestionRowProps) {
+function QuestionRow({
+  subjectId,
+  testId,
+  question: q,
+  isExpanded,
+  onToggle,
+  onViewDetail,
+}: QuestionRowProps) {
   return (
     <>
       <tr
@@ -288,7 +307,12 @@ function QuestionRow({ question: q, isExpanded, onToggle, onViewDetail }: Questi
         <tr className="bg-background/50">
           <td colSpan={7} className="p-0">
             <div className="p-4 border-b border-border">
-              <QuestionExpandedContent questionNum={q.question_number} question={q} />
+              <QuestionExpandedContent
+                subjectId={subjectId}
+                testId={testId}
+                questionNum={q.question_number}
+                question={q}
+              />
             </div>
           </td>
         </tr>
@@ -297,22 +321,80 @@ function QuestionRow({ question: q, isExpanded, onToggle, onViewDetail }: Questi
   );
 }
 
-function QuestionExpandedContent({
-  questionNum,
-  question,
-}: {
+interface QuestionExpandedContentProps {
+  subjectId: string;
+  testId: string;
   questionNum: number;
   question: QuestionBrief;
-}) {
+}
+
+function QuestionExpandedContent({
+  subjectId,
+  testId,
+  questionNum,
+  question,
+}: QuestionExpandedContentProps) {
+  const [detail, setDetail] = useState<QuestionDetail | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchDetail() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await getQuestionDetail(subjectId, testId, questionNum);
+        if (!cancelled) {
+          setDetail(data);
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : "Failed to load question");
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    }
+
+    fetchDetail();
+    return () => {
+      cancelled = true;
+    };
+  }, [subjectId, testId, questionNum]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <Loader2 className="w-5 h-5 animate-spin text-accent" />
+        <span className="ml-2 text-text-secondary text-sm">Loading question...</span>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center py-8 text-error">
+        <AlertCircle className="w-5 h-5" />
+        <span className="ml-2 text-sm">{error}</span>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-2 gap-4">
       {/* Left: Question preview */}
       <div>
         <h4 className="text-sm font-medium text-text-secondary mb-2">Question Preview</h4>
-        <div className="bg-surface border border-border rounded-lg p-4 text-sm text-text-secondary">
-          Question content would be loaded here...
-          <br />
-          (Click "View Details" to see full question)
+        <div className="bg-surface border border-border rounded-lg p-4">
+          {detail?.qti_xml ? (
+            <QTIRenderer qtiXml={detail.qti_xml} size="sm" />
+          ) : (
+            <p className="text-sm text-text-secondary">No QTI content available</p>
+          )}
         </div>
       </div>
 
@@ -341,11 +423,48 @@ function QuestionExpandedContent({
           </div>
         </div>
 
-        {question.is_enriched && (
+        {/* Atom tags */}
+        {detail?.atom_tags && detail.atom_tags.length > 0 && (
           <div>
-            <h4 className="text-sm font-medium text-text-secondary mb-2">Feedback Preview</h4>
-            <div className="bg-surface border border-border rounded-lg p-3 text-sm text-text-secondary">
-              Feedback content would be shown here...
+            <h4 className="text-sm font-medium text-text-secondary mb-2">Atom Tags</h4>
+            <div className="flex flex-wrap gap-1">
+              {detail.atom_tags.map((tag) => (
+                <span
+                  key={tag.atom_id}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-accent/10 text-accent text-xs rounded"
+                  title={tag.titulo}
+                >
+                  <Tag className="w-3 h-3" />
+                  {tag.atom_id}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Validation result */}
+        {detail?.validation_result && (
+          <div>
+            <h4 className="text-sm font-medium text-text-secondary mb-2">Validation Result</h4>
+            <div
+              className={cn(
+                "border rounded-lg p-3 text-sm",
+                detail.validation_result.validation_result === "pass"
+                  ? "bg-success/10 border-success/20 text-success"
+                  : "bg-error/10 border-error/20 text-error"
+              )}
+            >
+              <div className="flex items-center gap-2">
+                {detail.validation_result.validation_result === "pass" ? (
+                  <CheckCircle2 className="w-4 h-4" />
+                ) : (
+                  <XCircle className="w-4 h-4" />
+                )}
+                <span className="font-medium capitalize">{detail.validation_result.validation_result}</span>
+              </div>
+              {detail.validation_result.overall_reasoning && (
+                <p className="mt-1 text-xs opacity-80">{detail.validation_result.overall_reasoning}</p>
+              )}
             </div>
           </div>
         )}

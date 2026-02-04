@@ -15,19 +15,18 @@ Endpoints:
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, UploadFile
-
-from api.config import PRUEBAS_FINALIZADAS_DIR, PRUEBAS_RAW_DIR, SUBJECTS_CONFIG
 from pydantic import BaseModel, Field
 
+from api.config import PRUEBAS_FINALIZADAS_DIR, PRUEBAS_RAW_DIR, SUBJECTS_CONFIG
 from api.schemas.pipeline_models import (
     EnrichmentJobResponse,
     EnrichmentProgress,
     EnrichmentQuestionResult,
     EnrichmentRequest,
     EnrichmentStatusResponse,
+    TestSyncExecuteResponse,
     TestSyncPreviewRequest,
     TestSyncPreviewResponse,
-    TestSyncExecuteResponse,
     TestSyncSummary,
     ValidationJobResponse,
     ValidationProgress,
@@ -36,7 +35,6 @@ from api.schemas.pipeline_models import (
     ValidationStatusResponse,
 )
 from api.services import enrichment_service, sync_service, validation_service
-
 
 # -----------------------------------------------------------------------------
 # Variant Request Models
@@ -396,6 +394,6 @@ async def upload_test_pdf(
 
     return {
         "success": True,
-        "message": f"PDF uploaded successfully",
+        "message": "PDF uploaded successfully",
         "path": str(pdf_path),
     }

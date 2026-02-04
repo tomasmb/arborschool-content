@@ -1,17 +1,19 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
   AlertTriangle,
   CheckCircle2,
   Database,
   ArrowRight,
+  Play,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { StatusIcon } from "@/components/ui/StatusBadge";
 import type { SubjectDetail, SyncStatus } from "@/lib/api-types";
-import { computeProgress } from "./ProgressComputation";
+import { computeProgress, type NextActionType } from "./ProgressComputation";
 import {
   KnowledgePipelineCard,
   PipelineStageRow,
@@ -40,6 +42,7 @@ export function CourseProgressDashboard({
   onGenerateStandards,
   onGenerateAtoms,
 }: CourseProgressDashboardProps) {
+  const router = useRouter();
   const progress = computeProgress(data);
 
   const hasTemario = data.temario_exists;
@@ -53,6 +56,41 @@ export function CourseProgressDashboard({
     totalQuestions += test.finalized_count;
     totalVariants += test.variants_count;
   }
+
+  /**
+   * Handle clicking the "Next" action - navigate to the appropriate page
+   * or trigger the appropriate modal.
+   */
+  const handleNextAction = () => {
+    const { nextActionType, nextActionTestId } = progress;
+
+    switch (nextActionType) {
+      case "generate_standards":
+        onGenerateStandards?.();
+        break;
+      case "generate_atoms":
+        onGenerateAtoms?.();
+        break;
+      case "upload_tests":
+        router.push(`/courses/${courseId}/tests`);
+        break;
+      case "run_split":
+      case "run_qti_parse":
+      case "run_tagging":
+      case "run_enrichment":
+      case "run_validation":
+        // Navigate to the specific test that needs work
+        if (nextActionTestId) {
+          router.push(`/courses/${courseId}/tests/${nextActionTestId}`);
+        } else {
+          router.push(`/courses/${courseId}/tests`);
+        }
+        break;
+      default:
+        // For upload_temario and other cases, go to settings
+        router.push(`/courses/${courseId}/settings`);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -72,11 +110,17 @@ export function CourseProgressDashboard({
         />
 
         {progress.nextAction && (
-          <div className="flex items-center gap-2 text-sm">
-            <ArrowRight className="w-4 h-4 text-accent" />
+          <button
+            onClick={handleNextAction}
+            className="flex items-center gap-2 text-sm group hover:bg-accent/5 -mx-2 px-2 py-1 rounded transition-colors"
+          >
+            <Play className="w-4 h-4 text-accent" />
             <span className="text-text-secondary">Next:</span>
-            <span className="text-accent font-medium">{progress.nextAction}</span>
-          </div>
+            <span className="text-accent font-medium group-hover:underline">
+              {progress.nextAction}
+            </span>
+            <ArrowRight className="w-3 h-3 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </button>
         )}
       </div>
 

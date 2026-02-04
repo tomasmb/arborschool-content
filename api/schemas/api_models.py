@@ -107,6 +107,8 @@ class TestBrief(BaseModel):
     qti_count: int = Field(description="Number of QTI files")
     finalized_count: int = Field(description="Number of finalized questions")
     tagged_count: int = Field(description="Number of tagged questions")
+    enriched_count: int = Field(0, description="Number of enriched questions")
+    validated_count: int = Field(0, description="Number of validated questions")
     variants_count: int = Field(description="Number of approved variants")
 
 
@@ -120,6 +122,8 @@ class QuestionBrief(BaseModel):
     has_qti: bool
     is_finalized: bool
     is_tagged: bool
+    is_enriched: bool = Field(False, description="Has feedback been added")
+    is_validated: bool = Field(False, description="Has passed LLM validation")
     atoms_count: int = Field(description="Number of linked atoms")
     variants_count: int = Field(description="Number of approved variants")
 
@@ -141,6 +145,8 @@ class VariantBrief(BaseModel):
     folder_name: str
     has_qti: bool = True
     has_metadata: bool = False
+    is_enriched: bool = Field(False, description="Has feedback been added to variant")
+    is_validated: bool = Field(False, description="Has variant passed LLM validation")
 
 
 class QuestionDetail(BaseModel):
@@ -198,6 +204,8 @@ class TestDetail(BaseModel):
     qti_count: int
     finalized_count: int
     tagged_count: int
+    enriched_count: int = 0
+    validated_count: int = 0
     variants_count: int
     # Questions
     questions: list[QuestionBrief]

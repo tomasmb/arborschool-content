@@ -157,17 +157,32 @@ async def get_question_detail(
         except (json_module.JSONDecodeError, OSError):
             pass
 
-    # List variants
+    # List variants with enrichment/validation status
     variants: list[VariantBrief] = []
     if alternativas_dir.exists():
         for idx, variant_dir in enumerate(sorted(alternativas_dir.iterdir()), 1):
             if variant_dir.is_dir():
+                # Check variant-level enrichment (question_validated.xml)
+                variant_enriched = (variant_dir / "question_validated.xml").exists()
+                # Check variant-level validation (validation_result.json with success)
+                variant_validated = False
+                variant_validation_file = variant_dir / "validation_result.json"
+                if variant_validation_file.exists():
+                    try:
+                        with open(variant_validation_file, encoding="utf-8") as f:
+                            vdata = json_module.load(f)
+                        variant_validated = vdata.get("can_sync", False) or vdata.get("success", False)
+                    except (json_module.JSONDecodeError, OSError):
+                        pass
+
                 variants.append(VariantBrief(
                     id=f"{question_id}-v{idx}",
                     variant_number=idx,
                     folder_name=variant_dir.name,
                     has_qti=(variant_dir / "question.xml").exists(),
                     has_metadata=(variant_dir / "metadata_tags.json").exists(),
+                    is_enriched=variant_enriched,
+                    is_validated=variant_validated,
                 ))
 
     # Check enrichment/validation status

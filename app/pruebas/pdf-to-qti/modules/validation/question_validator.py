@@ -19,7 +19,7 @@ from typing import Any
 
 from openai import OpenAI
 
-from .validation_chrome_setup import create_webdriver, is_lambda_environment
+from .validation_chrome_setup import create_webdriver
 from .validation_prompts import (
     create_validation_prompt,
     parse_validation_response,
@@ -193,7 +193,6 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> dict[str, Any]:
         Dictionary with success status and screenshot data
     """
     driver = None
-    is_lambda = is_lambda_environment()
 
     try:
         # Create WebDriver
@@ -209,10 +208,10 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> dict[str, Any]:
             return nav_result
 
         # Wait for page load
-        wait_for_page_load(driver, is_lambda)
+        wait_for_page_load(driver)
 
         # Find QTI textarea
-        textarea_result = find_qti_textarea(driver, is_lambda)
+        textarea_result = find_qti_textarea(driver)
         if not textarea_result["success"]:
             return textarea_result
 
@@ -232,7 +231,7 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> dict[str, Any]:
         return capture_element_screenshot(driver, question_area)
 
     except Exception as e:
-        error_message = _format_screenshot_error(str(e), is_lambda)
+        error_message = _format_screenshot_error(str(e))
         print(f"   ❌ Screenshot capture error: {error_message}")
         return {"success": False, "error": error_message}
 
@@ -245,17 +244,23 @@ def capture_qti_screenshot(qti_xml: str, sandbox_url: str) -> dict[str, Any]:
                 pass
 
 
-def _format_screenshot_error(error_message: str, is_lambda: bool) -> str:
+def _format_screenshot_error(error_message: str) -> str:
     """Format error message for screenshot capture failures."""
     if "chrome binary" in error_message.lower():
-        if is_lambda:
-            return f"Chrome Lambda layer not configured properly. Original error: {error_message}"
-        else:
-            return f"Chrome browser not found. Please install Google Chrome. Original error: {error_message}"
+        return (
+            f"Chrome browser not found. Please install Google Chrome. "
+            f"Original error: {error_message}"
+        )
     elif "timeout" in error_message.lower():
-        return f"Timeout waiting for page elements. The QTI sandbox may be slow. Original error: {error_message}"
+        return (
+            f"Timeout waiting for page elements. The QTI sandbox may be slow. "
+            f"Original error: {error_message}"
+        )
     elif "connection" in error_message.lower():
-        return f"Network connection issue. Check internet connectivity. Original error: {error_message}"
+        return (
+            f"Network connection issue. Check internet connectivity. "
+            f"Original error: {error_message}"
+        )
     return error_message
 
 

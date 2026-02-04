@@ -16,13 +16,12 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from app.utils.paths import PRUEBAS_ALTERNATIVAS_DIR
-
 # Import shared helpers from extractors
 from app.sync.extractors import (
     _find_images_in_qti,
     extract_all_tests,
 )
+from app.utils.paths import PRUEBAS_ALTERNATIVAS_DIR
 
 # -----------------------------------------------------------------------------
 # Data container

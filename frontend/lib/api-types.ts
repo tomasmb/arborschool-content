@@ -103,6 +103,8 @@ export interface VariantBrief {
   folder_name: string;
   has_qti: boolean;
   has_metadata: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
 }
 
 export interface QuestionOption {

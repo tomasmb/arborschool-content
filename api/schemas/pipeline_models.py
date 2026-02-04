@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-
 # -----------------------------------------------------------------------------
 # Enrichment models (test-level feedback pipeline)
 # -----------------------------------------------------------------------------

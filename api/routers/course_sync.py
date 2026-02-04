@@ -12,12 +12,12 @@ from fastapi import APIRouter, HTTPException
 
 from api.config import SUBJECTS_CONFIG
 from api.schemas.api_models import (
+    VALID_SYNC_ENVIRONMENTS,
     SyncExecuteRequest,
     SyncExecuteResponse,
     SyncPreviewRequest,
     SyncPreviewResponse,
     SyncTableSummary,
-    VALID_SYNC_ENVIRONMENTS,
 )
 
 logger = logging.getLogger(__name__)

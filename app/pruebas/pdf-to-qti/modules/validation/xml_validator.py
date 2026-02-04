@@ -6,7 +6,6 @@ using the provided validation endpoint.
 """
 
 import json
-import os
 import time  # Added for retry delay
 from typing import Any, Dict, Optional
 

@@ -18,7 +18,6 @@ from api.schemas.api_models import JobStatus, PipelineDefinition, PipelineParam
 from api.services.pipeline_definitions import PIPELINE_PARAMS, PIPELINES
 from app.utils.paths import JOBS_DIR, REPO_ROOT
 
-
 # -----------------------------------------------------------------------------
 # Job management
 # -----------------------------------------------------------------------------

@@ -43,11 +43,11 @@ from app.sync.extractors import (
     extract_atoms,
     extract_standards,
 )
-from app.sync.variant_extractors import extract_variants
 from app.sync.s3_client import ImageUploader, S3Config, process_all_questions_images
 from app.sync.transformers import (
     build_sync_payload,
 )
+from app.sync.variant_extractors import extract_variants
 
 # -----------------------------------------------------------------------------
 # CLI

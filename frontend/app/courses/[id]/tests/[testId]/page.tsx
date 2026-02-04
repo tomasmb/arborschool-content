@@ -129,13 +129,16 @@ export default function TestDetailPage() {
       {/* Header */}
       <div className="px-6 py-4 border-b border-border flex items-center justify-between shrink-0">
         <div className="flex items-center gap-4">
+          {/* Back to course link - prominent */}
           <Link
             href={`/courses/${courseId}`}
-            className="p-2 hover:bg-white/5 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 text-sm text-text-secondary
+              hover:text-text-primary hover:bg-white/5 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5 text-text-secondary" />
+            <ArrowLeft className="w-4 h-4" />
+            <span className="hidden sm:inline">Course</span>
           </Link>
-          <div>
+          <div className="border-l border-border pl-4">
             <h1 className="text-xl font-semibold">{data.name}</h1>
             {data.application_type && (
               <p className="text-text-secondary text-sm capitalize">
@@ -145,8 +148,8 @@ export default function TestDetailPage() {
           </div>
         </div>
 
-        {/* Pipeline status summary */}
-        <div className="flex items-center gap-4 text-sm">
+        {/* Pipeline status summary - compact on mobile */}
+        <div className="hidden md:flex items-center gap-4 text-sm">
           <div className="flex items-center gap-2">
             <span className="text-text-secondary">Split:</span>
             <span className="font-mono">{data.split_count}</span>
@@ -164,12 +167,22 @@ export default function TestDetailPage() {
             <span className="font-mono">{data.validated_count}/{data.finalized_count}</span>
           </div>
         </div>
+        {/* Mobile: show completion percentage */}
+        <div className="flex md:hidden items-center gap-2 text-sm">
+          <span className="text-text-secondary">Progress:</span>
+          <span className="font-mono text-accent">
+            {data.finalized_count > 0
+              ? Math.round((data.validated_count / data.finalized_count) * 100)
+              : 0}%
+          </span>
+        </div>
       </div>
 
       {/* Tabs */}
       <TestTabs
         activeTab={activeTab}
         onTabChange={setActiveTab}
+        hasPdf={data.raw_pdf_exists}
         counts={{
           split: data.split_count,
           qti: data.qti_count,
@@ -230,6 +243,10 @@ export default function TestDetailPage() {
             onGenerateVariants={() => handlePipelineAction("variant_gen")}
             onEnrichVariants={() => setShowVariantEnrichmentModal(true)}
             onValidateVariants={() => setShowVariantValidationModal(true)}
+            onDeleteVariants={(questionNum) => {
+              // TODO: Implement when variant delete API is available
+              console.log(`Delete variants for Q${questionNum}`);
+            }}
           />
         )}
 
@@ -240,6 +257,10 @@ export default function TestDetailPage() {
             questions={data.questions}
             data={data}
             onSync={() => setShowSyncModal(true)}
+            onViewDiff={() => {
+              // TODO: Implement diff viewer modal
+              console.log("View diff");
+            }}
           />
         )}
       </div>
