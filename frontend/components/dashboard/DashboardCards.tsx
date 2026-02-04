@@ -171,7 +171,7 @@ export function TestRow({ test, courseId }: { test: TestBrief; courseId: string 
         </span>
       </td>
       <td className="px-4 py-2 text-center text-sm">
-        <span className="font-mono text-text-secondary">—/{test.finalized_count}</span>
+        <span className="font-mono text-text-secondary">{test.variants_count}</span>
       </td>
       <td className="px-4 py-2 text-right">
         <Link href={`/courses/${courseId}/tests/${test.id}`} className="text-accent hover:underline">

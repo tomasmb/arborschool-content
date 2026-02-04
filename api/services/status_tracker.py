@@ -149,11 +149,11 @@ class StatusTracker:
                 f.suffix.lower() == ".pdf" for f in raw_test_dir.iterdir()
             )
 
-        # Count split PDFs
-        split_count = 0
+        # Count split PDFs (in procesadas/pdf directory)
+        pdf_split_count = 0
         split_dir = procesadas_dir / "pdf" if procesadas_dir.exists() else None
         if split_dir and split_dir.exists():
-            split_count = len([f for f in split_dir.iterdir() if f.suffix == ".pdf"])
+            pdf_split_count = len([f for f in split_dir.iterdir() if f.suffix == ".pdf"])
 
         # Count QTI and finalized questions
         qti_count = 0
@@ -250,6 +250,10 @@ class StatusTracker:
                     variants_count += len([
                         d for d in approved_dir.iterdir() if d.is_dir()
                     ])
+
+        # split_count: if QTI exists, consider it "split" even without PDF
+        # (QTI is the goal, PDF is just an intermediate step)
+        split_count = max(pdf_split_count, qti_count)
 
         return {
             "raw_pdf_exists": raw_pdf_exists,

@@ -234,28 +234,22 @@ export function CourseProgressDashboard({
             </h4>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
               <div>
-                <p className="text-text-secondary text-xs">Questions w/ Variants</p>
-                <p className="font-mono">
-                  {progress.variants.questionsWithVariants || "—"}/
-                  {progress.variants.totalQuestions}
-                </p>
-              </div>
-              <div>
-                <p className="text-text-secondary text-xs">Qs w/ Validated Vars</p>
-                <p className="font-mono">
-                  {progress.variants.questionsWithValidatedVariants || "—"}/
-                  {progress.variants.totalQuestions}
-                </p>
-              </div>
-              <div>
                 <p className="text-text-secondary text-xs">Total Variants</p>
                 <p className="font-mono">{totalVariants}</p>
               </div>
               <div>
+                <p className="text-text-secondary text-xs">Base Questions</p>
+                <p className="font-mono">{progress.variants.totalQuestions}</p>
+              </div>
+              <div>
                 <p className="text-text-secondary text-xs">Avg per Question</p>
                 <p className="font-mono">
-                  {totalQuestions > 0 ? (totalVariants / totalQuestions).toFixed(1) : "—"}
+                  {totalQuestions > 0 ? (totalVariants / totalQuestions).toFixed(1) : "0"}
                 </p>
+              </div>
+              <div>
+                <p className="text-text-secondary text-xs">Validated Questions</p>
+                <p className="font-mono">{progress.questionsPipeline[5]?.done ?? 0}</p>
               </div>
             </div>
           </div>
