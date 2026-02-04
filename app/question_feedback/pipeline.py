@@ -61,11 +61,14 @@ class QuestionPipeline:
         enhancement = self.enhancer.enhance(qti_xml, image_urls)
 
         if not enhancement.success:
+            error_msg = enhancement.error or "Enhancement failed (no details available)"
+            if enhancement.xsd_errors:
+                error_msg = f"XSD validation failed: {enhancement.xsd_errors}"
             result = PipelineResult(
                 question_id=question_id,
                 success=False,
                 stage_failed="feedback_enhancement",
-                error=enhancement.error,
+                error=error_msg,
                 xsd_errors=enhancement.xsd_errors,
                 can_sync=False,
             )
@@ -79,10 +82,23 @@ class QuestionPipeline:
         validation = self.validator.validate(qti_with_feedback, image_urls)
 
         if validation.validation_result != "pass":
+            # Build descriptive error from validation details
+            failed_checks = []
+            if validation.correct_answer_check.status.value == "fail":
+                failed_checks.append("correct_answer")
+            if validation.feedback_check.status.value == "fail":
+                failed_checks.append("feedback")
+            if validation.content_quality_check.status.value == "fail":
+                failed_checks.append("content_quality")
+            if validation.math_validity_check.status.value == "fail":
+                failed_checks.append("math_validity")
+            error_msg = f"Validation failed: {', '.join(failed_checks) or 'unknown checks'}"
+
             result = PipelineResult(
                 question_id=question_id,
                 success=False,
                 stage_failed="final_validation",
+                error=error_msg,
                 validation_details=validation.model_dump(),
                 can_sync=False,
             )
