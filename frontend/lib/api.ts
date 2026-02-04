@@ -7,6 +7,9 @@ export type {
   AtomBrief,
   AtomTag,
   CostEstimate,
+  EnrichmentJobResponse,
+  EnrichmentProgress,
+  EnrichmentResult,
   FailedItem,
   GraphData,
   GraphEdge,
@@ -23,28 +26,39 @@ export type {
   SubjectStats,
   SyncExecuteResponse,
   SyncPreviewResponse,
+  SyncPreviewQuestions,
+  SyncPreviewSummary,
   SyncStatus,
   SyncTableSummary,
   TestBrief,
   TestDetail,
+  TestSyncPreview,
+  TestSyncResult,
+  ValidationJobResponse,
+  ValidationProgress,
+  ValidationResult,
   VariantBrief,
 } from "./api-types";
 
 import type {
+  AtomBrief,
   CostEstimate,
+  EnrichmentJobResponse,
   GraphData,
   JobLogsResponse,
   JobStatus,
   OverviewResponse,
   QuestionDetail,
   StandardBrief,
-  AtomBrief,
   SubjectDetail,
   SyncExecuteResponse,
   SyncPreviewResponse,
   SyncStatus,
   TestBrief,
   TestDetail,
+  TestSyncPreview,
+  TestSyncResult,
+  ValidationJobResponse,
 } from "./api-types";
 
 const API_BASE = "/api";
@@ -300,4 +314,107 @@ export async function executeCourseSync(
       confirm,
     }),
   });
+}
+
+// -----------------------------------------------------------------------------
+// Enrichment API
+// -----------------------------------------------------------------------------
+
+export interface StartEnrichmentParams {
+  all_tagged?: boolean;
+  skip_already_enriched?: boolean;
+}
+
+export async function startEnrichment(
+  subjectId: string,
+  testId: string,
+  params: StartEnrichmentParams
+): Promise<{ job_id: string }> {
+  return fetchAPI<{ job_id: string }>(
+    `/subjects/${subjectId}/tests/${testId}/enrich`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export async function getEnrichmentStatus(
+  subjectId: string,
+  testId: string,
+  jobId: string
+): Promise<EnrichmentJobResponse> {
+  return fetchAPI<EnrichmentJobResponse>(
+    `/subjects/${subjectId}/tests/${testId}/enrich/status/${jobId}`
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Validation API
+// -----------------------------------------------------------------------------
+
+export interface StartValidationParams {
+  all_enriched?: boolean;
+  revalidate_passed?: boolean;
+}
+
+export async function startValidation(
+  subjectId: string,
+  testId: string,
+  params: StartValidationParams
+): Promise<{ job_id: string }> {
+  return fetchAPI<{ job_id: string }>(
+    `/subjects/${subjectId}/tests/${testId}/validate`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export async function getValidationStatus(
+  subjectId: string,
+  testId: string,
+  jobId: string
+): Promise<ValidationJobResponse> {
+  return fetchAPI<ValidationJobResponse>(
+    `/subjects/${subjectId}/tests/${testId}/validate/status/${jobId}`
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Test Sync API
+// -----------------------------------------------------------------------------
+
+export interface TestSyncParams {
+  include_variants?: boolean;
+  upload_images?: boolean;
+}
+
+export async function getTestSyncPreview(
+  subjectId: string,
+  testId: string,
+  params: TestSyncParams
+): Promise<TestSyncPreview> {
+  return fetchAPI<TestSyncPreview>(
+    `/subjects/${subjectId}/tests/${testId}/sync/preview`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export async function executeTestSync(
+  subjectId: string,
+  testId: string,
+  params: TestSyncParams
+): Promise<TestSyncResult> {
+  return fetchAPI<TestSyncResult>(
+    `/subjects/${subjectId}/tests/${testId}/sync/execute`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
 }

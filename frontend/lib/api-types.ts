@@ -56,6 +56,8 @@ export interface TestBrief {
   qti_count: number;
   finalized_count: number;
   tagged_count: number;
+  enriched_count: number;
+  validated_count: number;
   variants_count: number;
 }
 
@@ -82,6 +84,8 @@ export interface QuestionBrief {
   has_qti: boolean;
   is_finalized: boolean;
   is_tagged: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
   atoms_count: number;
   variants_count: number;
 }
@@ -141,8 +145,81 @@ export interface TestDetail {
   qti_count: number;
   finalized_count: number;
   tagged_count: number;
+  enriched_count: number;
+  validated_count: number;
   variants_count: number;
   questions: QuestionBrief[];
+}
+
+// -----------------------------------------------------------------------------
+// Enrichment & Validation Types
+// -----------------------------------------------------------------------------
+
+export interface EnrichmentProgress {
+  completed: number;
+  total: number;
+  failed: number;
+}
+
+export interface EnrichmentResult {
+  question_id: string;
+  status: "success" | "failed";
+  error?: string;
+}
+
+export interface EnrichmentJobResponse {
+  job_id: string;
+  status: "pending" | "running" | "completed";
+  progress: EnrichmentProgress;
+  results?: EnrichmentResult[];
+}
+
+export interface ValidationProgress {
+  completed: number;
+  total: number;
+  passed: number;
+  failed: number;
+}
+
+export interface ValidationResult {
+  question_id: string;
+  status: "pass" | "fail";
+  failed_checks?: string[];
+  issues?: string[];
+}
+
+export interface ValidationJobResponse {
+  job_id: string;
+  status: "pending" | "running" | "completed";
+  progress: ValidationProgress;
+  results?: ValidationResult[];
+}
+
+export interface SyncPreviewQuestions {
+  to_create: Array<{ id: string; question_number: number }>;
+  to_update: Array<{ id: string; question_number: number }>;
+  unchanged: Array<{ id: string; question_number: number }>;
+  skipped: Array<{ id: string; question_number: number; reason: string }>;
+}
+
+export interface SyncPreviewSummary {
+  create: number;
+  update: number;
+  unchanged: number;
+  skipped: number;
+}
+
+export interface TestSyncPreview {
+  questions: SyncPreviewQuestions;
+  summary: SyncPreviewSummary;
+}
+
+export interface TestSyncResult {
+  success: boolean;
+  created: number;
+  updated: number;
+  skipped: number;
+  errors: string[];
 }
 
 // -----------------------------------------------------------------------------

@@ -12,6 +12,9 @@ import {
   RefreshCw,
   Sparkles,
   Tag,
+  MessageSquarePlus,
+  ShieldCheck,
+  Upload,
 } from "lucide-react";
 import { getTestDetail, type TestDetail } from "@/lib/api";
 import { QuestionDetailPanel } from "@/components/questions";
@@ -19,6 +22,9 @@ import { LoadingPage } from "@/components/ui/LoadingSpinner";
 import { ErrorPage } from "@/components/ui/ErrorMessage";
 import { GeneratePipelineModal } from "@/components/pipelines/GeneratePipelineModal";
 import { VariantOptionsDialog } from "@/components/pipelines/VariantOptionsDialog";
+import { EnrichmentModal } from "@/components/pipelines/EnrichmentModal";
+import { ValidationModal } from "@/components/pipelines/ValidationModal";
+import { TestSyncModal } from "@/components/pipelines/TestSyncModal";
 
 type PipelineAction = "pdf_to_qti" | "tagging" | "variant_gen" | null;
 
@@ -53,6 +59,9 @@ export default function TestDetailPage() {
   const [activePipeline, setActivePipeline] = useState<PipelineAction>(null);
   const [showVariantOptions, setShowVariantOptions] = useState(false);
   const [variantsPerQuestion, setVariantsPerQuestion] = useState(3);
+  const [showEnrichmentModal, setShowEnrichmentModal] = useState(false);
+  const [showValidationModal, setShowValidationModal] = useState(false);
+  const [showSyncModal, setShowSyncModal] = useState(false);
   const actionsMenuRef = useRef<HTMLDivElement>(null);
 
   const fetchData = useCallback(async () => {
@@ -187,16 +196,73 @@ export default function TestDetailPage() {
                   <p className="text-xs text-text-secondary">Re-tag questions with atoms</p>
                 </div>
               </button>
+
+              {/* Separator */}
+              <div className="border-t border-border my-1" />
+
+              <button
+                onClick={() => {
+                  setShowActionsMenu(false);
+                  setShowEnrichmentModal(true);
+                }}
+                disabled={data.tagged_count === 0}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left
+                  hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <MessageSquarePlus className="w-4 h-4 text-green-400" />
+                <div>
+                  <p className="text-sm font-medium">Enrich Feedback</p>
+                  <p className="text-xs text-text-secondary">Add educational feedback</p>
+                </div>
+              </button>
+              <button
+                onClick={() => {
+                  setShowActionsMenu(false);
+                  setShowValidationModal(true);
+                }}
+                disabled={data.enriched_count === 0}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left border-t border-border
+                  hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ShieldCheck className="w-4 h-4 text-blue-400" />
+                <div>
+                  <p className="text-sm font-medium">Run Validation</p>
+                  <p className="text-xs text-text-secondary">Verify content quality</p>
+                </div>
+              </button>
+
+              {/* Separator */}
+              <div className="border-t border-border my-1" />
+
               <button
                 onClick={() => handlePipelineAction("variant_gen")}
                 disabled={data.tagged_count === 0}
-                className="w-full flex items-center gap-3 px-4 py-3 text-left border-t border-border
+                className="w-full flex items-center gap-3 px-4 py-3 text-left
                   hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Sparkles className="w-4 h-4 text-yellow-400" />
                 <div>
                   <p className="text-sm font-medium">Generate Variants</p>
                   <p className="text-xs text-text-secondary">Create question alternatives</p>
+                </div>
+              </button>
+
+              {/* Separator */}
+              <div className="border-t border-border my-1" />
+
+              <button
+                onClick={() => {
+                  setShowActionsMenu(false);
+                  setShowSyncModal(true);
+                }}
+                disabled={data.validated_count === 0}
+                className="w-full flex items-center gap-3 px-4 py-3 text-left
+                  hover:bg-white/5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <Upload className="w-4 h-4 text-orange-400" />
+                <div>
+                  <p className="text-sm font-medium">Sync Test to DB</p>
+                  <p className="text-xs text-text-secondary">Push to production database</p>
                 </div>
               </button>
             </div>
@@ -214,6 +280,16 @@ export default function TestDetailPage() {
           {
             label: "Tagged",
             value: `${data.tagged_count}/${data.finalized_count}`,
+            type: "fraction",
+          },
+          {
+            label: "Enriched",
+            value: `${data.enriched_count}/${data.tagged_count}`,
+            type: "fraction",
+          },
+          {
+            label: "Validated",
+            value: `${data.validated_count}/${data.enriched_count}`,
             type: "fraction",
           },
           { label: "Variants", value: `${data.variants_count}`, type: "number" },
@@ -241,7 +317,7 @@ export default function TestDetailPage() {
 
       {/* Questions Table */}
       <div className="bg-surface border border-border rounded-lg overflow-x-auto">
-        <table className="w-full min-w-[640px]">
+        <table className="w-full min-w-[800px]">
           <thead>
             <tr className="border-b border-border text-left text-xs text-text-secondary uppercase tracking-wide">
               <th className="px-4 py-3 font-medium">Q#</th>
@@ -250,6 +326,8 @@ export default function TestDetailPage() {
               <th className="px-4 py-3 font-medium text-center">Final</th>
               <th className="px-4 py-3 font-medium text-center">Tagged</th>
               <th className="px-4 py-3 font-medium text-center">Atoms</th>
+              <th className="px-4 py-3 font-medium text-center">Enriched</th>
+              <th className="px-4 py-3 font-medium text-center">Validated</th>
               <th className="px-4 py-3 font-medium text-center">Variants</th>
             </tr>
           </thead>
@@ -280,6 +358,20 @@ export default function TestDetailPage() {
                     <span className="text-accent">{q.atoms_count}</span>
                   ) : (
                     <span className="text-text-secondary">-</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {q.is_tagged ? (
+                    <StatusCell done={q.is_enriched} />
+                  ) : (
+                    <span className="block text-center text-text-secondary">-</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {q.is_enriched ? (
+                    <StatusCell done={q.is_validated} />
+                  ) : (
+                    <span className="block text-center text-text-secondary">-</span>
                   )}
                 </td>
                 <td className="px-4 py-3 text-center text-sm">
@@ -329,6 +421,45 @@ export default function TestDetailPage() {
           }
         />
       )}
+
+      {/* Enrichment Modal */}
+      <EnrichmentModal
+        open={showEnrichmentModal}
+        onOpenChange={setShowEnrichmentModal}
+        testId={testId}
+        subjectId={courseId}
+        stats={{
+          tagged_count: data.tagged_count,
+          enriched_count: data.enriched_count,
+        }}
+        onSuccess={fetchData}
+      />
+
+      {/* Validation Modal */}
+      <ValidationModal
+        open={showValidationModal}
+        onOpenChange={setShowValidationModal}
+        testId={testId}
+        subjectId={courseId}
+        stats={{
+          enriched_count: data.enriched_count,
+          validated_count: data.validated_count,
+        }}
+        onSuccess={fetchData}
+      />
+
+      {/* Test Sync Modal */}
+      <TestSyncModal
+        open={showSyncModal}
+        onOpenChange={setShowSyncModal}
+        testId={testId}
+        subjectId={courseId}
+        stats={{
+          validated_count: data.validated_count,
+          total: data.questions.length,
+        }}
+        onSuccess={fetchData}
+      />
     </div>
   );
 }
