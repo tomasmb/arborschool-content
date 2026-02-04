@@ -5,7 +5,7 @@ them with minimal user intervention.
 
 Your goals:
 - Ensure changes are committed and pushed.
-- Create a PR from the current branch to `dev` (or use existing PR).
+- Create a PR from `dev` to `main` (or use existing PR).
 - Wait for any GitHub checks to pass.
 - Optionally merge the PR if the `merge` parameter is provided.
 
@@ -18,8 +18,8 @@ Your goals:
 ## Usage
 
 ```
-/deploy         # Create PR and wait for checks
-/deploy merge   # Create PR, wait for checks, then merge to dev
+/deploy         # Create PR from dev to main and wait for checks
+/deploy merge   # Create PR, wait for checks, then merge to main
 ```
 
 ---
@@ -28,9 +28,9 @@ Your goals:
 
 1. Run `git branch --show-current` and `git status --porcelain`.
 
-2. **If on `dev` branch:**
-   > "⚠️ Cannot create PR from `dev` to `dev`. Please create a feature branch first."
-   > "Run `/new-branch <branch-name>` to create one."
+2. **If NOT on `dev` branch:**
+   > "⚠️ Deploy creates PRs from `dev` to `main`. Please switch to `dev` first."
+   > "Run `git checkout dev` to switch."
    
    Then STOP.
 
@@ -50,7 +50,7 @@ Your goals:
 
 Run:
 ```bash
-gh pr list --head $(git branch --show-current) --base dev --json number,url,state
+gh pr list --head dev --base main --json number,url,state
 ```
 
 - **If open PR exists:** Use that PR instead of creating a new one.
@@ -65,19 +65,18 @@ gh pr list --head $(git branch --show-current) --base dev --json number,url,stat
 If no existing PR:
 
 1. Inspect:
-   - The current branch name.
-   - The last few commits (`git log -5 --oneline`).
-   - A diff summary (`git diff --stat origin/dev...HEAD`).
+   - The commits on dev not yet on main (`git log origin/main..origin/dev --oneline`).
+   - A diff summary (`git diff --stat origin/main...origin/dev`).
 
 2. Generate a clear PR title and body based on the changes.
 
 3. Run:
    ```bash
-   gh pr create --base dev --head <current-branch> --title "<title>" --body "<body>"
+   gh pr create --base main --head dev --title "<title>" --body "<body>"
    ```
 
-4. If PR creation fails due to "no commits between dev and branch":
-   > "✅ Branch is already up to date with `dev`. No PR needed."
+4. If PR creation fails due to "no commits between main and dev":
+   > "✅ `main` is already up to date with `dev`. No PR needed."
    
    Then STOP.
 
@@ -143,12 +142,12 @@ gh pr view <PR_NUMBER> --json mergeable,mergeStateStatus
 ### Perform Merge
 
 ```bash
-gh pr merge <PR_NUMBER> --squash --delete-branch
+gh pr merge <PR_NUMBER> --squash
 ```
 
 **Merge options:**
-- `--squash`: Squash commits into single commit on dev.
-- `--delete-branch`: Delete the feature branch after merge.
+- `--squash`: Squash commits into single commit on main.
+- Note: We do NOT delete dev branch after merge.
 
 ### If Merge Fails
 
@@ -173,11 +172,10 @@ Then STOP.
 ```
 ✅ Deploy Summary
 ─────────────────
-✓ Changes committed and pushed
 ✓ PR created: <PR_URL>
 ✓ All checks passed (or no checks configured)
 
-PR is ready for review. Run `/deploy merge` after approval to merge.
+PR is ready for review. Run `/deploy merge` after approval to merge to main.
 ```
 
 ### If `merge` passed and successful:
@@ -185,11 +183,9 @@ PR is ready for review. Run `/deploy merge` after approval to merge.
 ```
 ✅ Deploy Summary
 ─────────────────
-✓ Changes committed and pushed
 ✓ PR created: <PR_URL>
 ✓ All checks passed
-✓ PR merged to dev
-✓ Feature branch deleted
+✓ PR merged to main
 
 Deployment complete!
 ```
@@ -200,10 +196,10 @@ Deployment complete!
 
 | Error | Action |
 |-------|--------|
-| On `dev` branch | Stop and instruct user to create feature branch |
+| Not on `dev` branch | Stop and instruct user to switch to dev |
 | Uncommitted changes | Run `/git-commit` flow first |
 | PR already exists | Use existing PR |
-| Branch up to date with dev | Inform user, no PR needed |
+| main up to date with dev | Inform user, no PR needed |
 | Checks failing | Report which check failed, don't merge |
 | Merge blocked by reviews | Provide PR URL for manual review/merge |
 | Merge conflicts | Provide PR URL for manual resolution |
@@ -216,8 +212,8 @@ Deployment complete!
 **Do NOT:**
 - Merge if any checks are failing
 - Force merge bypassing branch protection
-- Delete branches that aren't the PR source branch
-- Create PR if already on `dev`
+- Delete the dev branch after merge
+- Create PR if not on `dev`
 
 **Do:**
 - Report clear status at each step
