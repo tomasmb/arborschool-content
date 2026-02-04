@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { getStandards, type StandardBrief } from "@/lib/api";
 import { cn, formatEje, getEjeColor, getEjeBgColor } from "@/lib/utils";
 
@@ -23,6 +23,7 @@ export default function StandardsPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedEje, setSelectedEje] = useState("all");
+  const [expandedStandards, setExpandedStandards] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (courseId) {
@@ -32,6 +33,18 @@ export default function StandardsPage() {
         .finally(() => setLoading(false));
     }
   }, [courseId]);
+
+  const toggleExpanded = useCallback((id: string) => {
+    setExpandedStandards((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  }, []);
 
   if (loading) {
     return (
@@ -115,37 +128,31 @@ export default function StandardsPage() {
                 {formatEje(eje)} ({ejeStandards.length})
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {ejeStandards.map((standard) => (
-                  <div
-                    key={standard.id}
-                    className="bg-surface border border-border rounded-lg p-4"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="font-mono text-xs text-text-secondary">
-                            {standard.id}
-                          </span>
-                          <span
-                            className={cn(
-                              "text-xs px-2 py-0.5 rounded",
-                              getEjeBgColor(standard.eje),
-                              getEjeColor(standard.eje)
-                            )}
-                          >
-                            {formatEje(standard.eje)}
-                          </span>
-                        </div>
-                        <p className="text-sm">{standard.title}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-lg font-semibold">{standard.atoms_count}</p>
-                        <p className="text-xs text-text-secondary">atoms</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div className="bg-surface border border-border rounded-lg overflow-hidden">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-border text-left text-xs text-text-secondary uppercase tracking-wide">
+                      <th className="w-8 px-2"></th>
+                      <th className="px-4 py-3 font-medium">ID</th>
+                      <th className="px-4 py-3 font-medium">Title</th>
+                      <th className="px-4 py-3 font-medium text-right">Atoms</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ejeStandards.map((standard) => {
+                      const isExpanded = expandedStandards.has(standard.id);
+                      return (
+                        <StandardRow
+                          key={standard.id}
+                          standard={standard}
+                          isExpanded={isExpanded}
+                          onToggle={() => toggleExpanded(standard.id)}
+                          courseId={courseId}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </section>
           );
@@ -157,6 +164,122 @@ export default function StandardsPage() {
           No standards found for this filter.
         </div>
       )}
+    </div>
+  );
+}
+
+interface StandardRowProps {
+  standard: StandardBrief;
+  isExpanded: boolean;
+  onToggle: () => void;
+  courseId: string;
+}
+
+function StandardRow({ standard, isExpanded, onToggle, courseId }: StandardRowProps) {
+  return (
+    <>
+      <tr
+        className={cn(
+          "border-b border-border hover:bg-white/5 transition-colors cursor-pointer",
+          isExpanded && "bg-white/5"
+        )}
+        onClick={onToggle}
+      >
+        <td className="w-8 px-2">
+          <span className="inline-flex items-center justify-center w-5 h-5 rounded hover:bg-white/10">
+            {isExpanded ? (
+              <ChevronDown className="w-4 h-4 text-text-secondary" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-text-secondary" />
+            )}
+          </span>
+        </td>
+        <td className="px-4 py-3">
+          <span className="font-mono text-xs text-text-secondary">{standard.id}</span>
+        </td>
+        <td className="px-4 py-3 text-sm">{standard.title}</td>
+        <td className="px-4 py-3 text-right">
+          <span className="text-accent font-semibold">{standard.atoms_count}</span>
+        </td>
+      </tr>
+
+      {/* Expanded content */}
+      {isExpanded && (
+        <tr className="bg-background/50">
+          <td colSpan={4} className="p-0">
+            <StandardExpandedContent standard={standard} courseId={courseId} />
+          </td>
+        </tr>
+      )}
+    </>
+  );
+}
+
+function StandardExpandedContent({ standard, courseId }: { standard: StandardBrief; courseId: string }) {
+  return (
+    <div className="p-4 border-b border-border">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left column - Standard details */}
+        <div className="space-y-4">
+          <div>
+            <h4 className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+              Standard Info
+            </h4>
+            <div className="space-y-2 text-sm">
+              <div>
+                <span className="text-text-secondary">ID:</span>{" "}
+                <span className="font-mono">{standard.id}</span>
+              </div>
+              <div>
+                <span className="text-text-secondary">Eje:</span>{" "}
+                <span>{formatEje(standard.eje)}</span>
+              </div>
+              <div>
+                <span className="text-text-secondary">Atoms linked:</span>{" "}
+                <span className="text-accent">{standard.atoms_count}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <h4 className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+                Description
+              </h4>
+              <p className="text-sm text-text-secondary">
+                {standard.title}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right column - Linked atoms */}
+        <div>
+          <div className="flex items-center justify-between mb-2">
+            <h4 className="text-xs font-medium text-text-secondary uppercase tracking-wide">
+              Linked Atoms
+            </h4>
+            {standard.atoms_count > 0 && (
+              <Link
+                href={`/courses/${courseId}/atoms?standard=${standard.id}`}
+                className="text-xs text-accent hover:underline"
+              >
+                View all {standard.atoms_count} atoms →
+              </Link>
+            )}
+          </div>
+          <div className="bg-surface border border-border rounded-lg p-3">
+            {standard.atoms_count > 0 ? (
+              <p className="text-sm">
+                <span className="text-success font-medium">{standard.atoms_count}</span>{" "}
+                <span className="text-text-secondary">atoms are linked to this standard.</span>
+              </p>
+            ) : (
+              <p className="text-sm text-text-secondary">No atoms linked yet</p>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

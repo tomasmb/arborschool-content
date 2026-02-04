@@ -1,7 +1,9 @@
 """Validation service for test-level LLM validation.
 
 Manages async validation jobs that run the FinalValidator to check
-questions that have been enriched with feedback.
+questions AND variants that have been enriched with feedback.
+
+Follows DRY/SOLID - same validation logic handles both questions and variants.
 """
 
 from __future__ import annotations
@@ -14,7 +16,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-from api.config import PRUEBAS_FINALIZADAS_DIR
+from api.config import PRUEBAS_ALTERNATIVAS_DIR, PRUEBAS_FINALIZADAS_DIR
 from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_feedback.validator import FinalValidator
 
@@ -40,44 +42,44 @@ class ValidationJob:
 _validation_jobs: dict[str, ValidationJob] = {}
 
 
-def _get_questions_to_validate(
-    test_id: str,
-    question_ids: list[str] | None = None,
-    all_enriched: bool = False,
+def _get_items_to_validate_from_path(
+    base_path: Path,
+    id_prefix: str,
+    item_ids: list[str] | None = None,
     revalidate_passed: bool = False,
 ) -> list[dict]:
-    """Get list of questions to validate from the test folder.
+    """Get list of items to validate from a folder containing enriched XML files.
 
-    Only returns questions that have been enriched (have question_validated.xml).
+    This is the core function that handles both questions and variants.
+    Only returns items that have been enriched (have question_validated.xml).
     """
-    base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
-    questions: list[dict] = []
+    items: list[dict] = []
 
     if not base_path.exists():
-        logger.warning(f"Test QTI folder not found: {base_path}")
-        return questions
+        logger.warning(f"Path not found: {base_path}")
+        return items
 
-    # Get all Q* folders, sorted by question number
-    q_folders = sorted(
-        [f for f in base_path.iterdir() if f.is_dir() and f.name.startswith("Q")],
-        key=lambda p: int(p.name[1:]) if p.name[1:].isdigit() else 0,
+    # Get all subfolders
+    folders = sorted(
+        [f for f in base_path.iterdir() if f.is_dir()],
+        key=lambda p: p.name,
     )
 
-    for q_folder in q_folders:
-        question_num = q_folder.name  # e.g., "Q6"
-        question_id = f"{test_id}-{question_num}"
+    for folder in folders:
+        item_name = folder.name
+        item_id = f"{id_prefix}-{item_name}"
 
-        # Filter by specific question_ids if provided
-        if question_ids and question_num not in question_ids:
+        # Filter by specific ids if provided
+        if item_ids and item_name not in item_ids:
             continue
 
         # Must have validated XML (enriched)
-        validated_xml_path = q_folder / "question_validated.xml"
+        validated_xml_path = folder / "question_validated.xml"
         if not validated_xml_path.exists():
             continue
 
         # Check existing validation result
-        validation_result_path = q_folder / "validation_result.json"
+        validation_result_path = folder / "validation_result.json"
         if validation_result_path.exists() and not revalidate_passed:
             try:
                 with open(validation_result_path, encoding="utf-8") as f:
@@ -90,20 +92,78 @@ def _get_questions_to_validate(
         try:
             qti_xml = validated_xml_path.read_text(encoding="utf-8")
         except OSError as e:
-            logger.warning(f"Failed to read validated XML for {question_id}: {e}")
+            logger.warning(f"Failed to read validated XML for {item_id}: {e}")
             continue
 
         image_urls = extract_image_urls(qti_xml)
 
-        questions.append({
-            "id": question_id,
-            "question_num": question_num,
+        items.append({
+            "id": item_id,
+            "item_name": item_name,
             "qti_xml": qti_xml,
             "image_urls": image_urls if image_urls else None,
-            "output_dir": str(q_folder),
+            "output_dir": str(folder),
         })
 
-    return questions
+    return items
+
+
+def _get_questions_to_validate(
+    test_id: str,
+    question_ids: list[str] | None = None,
+    all_enriched: bool = False,
+    revalidate_passed: bool = False,
+) -> list[dict]:
+    """Get list of questions to validate from the test folder."""
+    base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+    return _get_items_to_validate_from_path(
+        base_path=base_path,
+        id_prefix=test_id,
+        item_ids=question_ids,
+        revalidate_passed=revalidate_passed,
+    )
+
+
+def _get_variants_to_validate(
+    test_id: str,
+    question_num: str | None = None,
+    revalidate_passed: bool = False,
+) -> list[dict]:
+    """Get list of variants to validate from the alternativas folder.
+
+    Variants are stored in: PRUEBAS_ALTERNATIVAS_DIR/{test_id}/Q{num}/approved/{variant}/
+    """
+    variants: list[dict] = []
+    alternativas_base = PRUEBAS_ALTERNATIVAS_DIR / test_id
+
+    if not alternativas_base.exists():
+        logger.warning(f"Alternativas folder not found: {alternativas_base}")
+        return variants
+
+    # Get question folders to scan
+    if question_num:
+        q_folders = [alternativas_base / question_num]
+    else:
+        q_folders = sorted(
+            [f for f in alternativas_base.iterdir() if f.is_dir() and f.name.startswith("Q")],
+            key=lambda p: int(p.name[1:]) if p.name[1:].isdigit() else 0,
+        )
+
+    for q_folder in q_folders:
+        approved_dir = q_folder / "approved"
+        if not approved_dir.exists():
+            continue
+
+        q_name = q_folder.name
+        items = _get_items_to_validate_from_path(
+            base_path=approved_dir,
+            id_prefix=f"{test_id}-{q_name}",
+            item_ids=None,
+            revalidate_passed=revalidate_passed,
+        )
+        variants.extend(items)
+
+    return variants
 
 
 async def start_validation_job(
@@ -112,7 +172,7 @@ async def start_validation_job(
     all_enriched: bool = False,
     revalidate_passed: bool = False,
 ) -> tuple[str, int, float]:
-    """Start async validation job.
+    """Start async validation job for questions.
 
     Returns:
         Tuple of (job_id, questions_to_process, estimated_cost_usd)
@@ -140,6 +200,47 @@ async def start_validation_job(
     asyncio.create_task(_run_validation(job_id, questions))
 
     return job_id, len(questions), estimated_cost
+
+
+async def start_variant_validation_job(
+    test_id: str,
+    question_num: str | None = None,
+    revalidate_passed: bool = False,
+) -> tuple[str, int, float]:
+    """Start async validation job for variants.
+
+    Uses the same validation logic as questions - DRY principle.
+
+    Args:
+        test_id: Test identifier
+        question_num: Optional - only validate variants for this question (e.g. "Q1")
+        revalidate_passed: Re-validate variants that already passed
+
+    Returns:
+        Tuple of (job_id, variants_to_process, estimated_cost_usd)
+    """
+    job_id = f"validate-variant-{uuid.uuid4().hex[:8]}"
+
+    # Get variants to process (same logic, different source)
+    variants = _get_variants_to_validate(test_id, question_num, revalidate_passed)
+
+    job = ValidationJob(
+        job_id=job_id,
+        status="started",
+        total=len(variants),
+        completed=0,
+        passed=0,
+        failed=0,
+        results=[],
+    )
+    _validation_jobs[job_id] = job
+
+    estimated_cost = get_validation_cost_estimate(len(variants))
+
+    # Uses the same _run_validation function - DRY!
+    asyncio.create_task(_run_validation(job_id, variants))
+
+    return job_id, len(variants), estimated_cost
 
 
 async def _run_validation(job_id: str, questions: list[dict]) -> None:

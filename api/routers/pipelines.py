@@ -23,7 +23,6 @@ from api.schemas.api_models import (
     JobResumeRequest,
     JobStatus,
     PipelineDefinition,
-    PipelineParam,
     RunPipelineRequest,
     RunPipelineResponse,
 )
@@ -317,14 +316,13 @@ async def clear_pipeline_outputs(
         Dict with deleted counts and paths
     """
     import shutil
-    from pathlib import Path
 
     from app.utils.paths import (
         ATOMS_DIR,
-        STANDARDS_DIR,
         PRUEBAS_ALTERNATIVAS_DIR,
         PRUEBAS_FINALIZADAS_DIR,
         PRUEBAS_PROCESADAS_DIR,
+        STANDARDS_DIR,
     )
 
     runner = get_runner()

@@ -4,18 +4,22 @@ import { useState, useEffect, useCallback } from "react";
 import { X, Loader2, CheckCircle2, XCircle, AlertTriangle, Download } from "lucide-react";
 import {
   startValidation,
+  startVariantValidation,
   getValidationStatus,
   type ValidationResult,
 } from "@/lib/api";
 
 type ModalStep = "configure" | "progress" | "results";
 type SelectionMode = "unvalidated" | "all" | "revalidate";
+type ValidationTarget = "questions" | "variants";
 
 interface ValidationModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   testId: string;
   subjectId: string;
+  /** Target type - questions or variants. Defaults to questions. */
+  target?: ValidationTarget;
   stats: {
     enriched_count: number;
     validated_count: number;
@@ -24,14 +28,17 @@ interface ValidationModalProps {
 }
 
 /**
- * Modal for running final validation on enriched questions.
+ * Modal for running final validation on enriched questions or variants.
  * Flow: configure options → run validation → show results with export option
+ *
+ * Supports both questions and variants (DRY - same UI, different API endpoints).
  */
 export function ValidationModal({
   open,
   onOpenChange,
   testId,
   subjectId,
+  target = "questions",
   stats,
   onSuccess,
 }: ValidationModalProps) {
@@ -47,14 +54,17 @@ export function ValidationModal({
   const [results, setResults] = useState<ValidationResult[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Calculate questions to validate based on selection
-  const questionsToValidate =
+  const isVariants = target === "variants";
+  const itemLabel = isVariants ? "variants" : "questions";
+
+  // Calculate items to validate based on selection
+  const itemsToValidate =
     selection === "unvalidated"
       ? stats.enriched_count - stats.validated_count
       : stats.enriched_count;
 
-  // Estimated cost: ~$0.015 per question (GPT 5.1 high reasoning)
-  const estimatedCost = questionsToValidate * 0.015;
+  // Estimated cost: ~$0.015 per item (GPT 5.1 high reasoning)
+  const estimatedCost = itemsToValidate * 0.015;
 
   // Reset state when modal opens
   useEffect(() => {
@@ -107,12 +117,18 @@ export function ValidationModal({
     setStep("progress");
 
     try {
-      const response = await startValidation(subjectId, testId, {
-        all_enriched: selection === "all" || selection === "revalidate",
-        revalidate_passed: selection === "revalidate",
-      });
+      // DRY: Same logic, different API endpoint based on target
+      const response = isVariants
+        ? await startVariantValidation(subjectId, testId, {
+            revalidate_passed: selection === "revalidate",
+          })
+        : await startValidation(subjectId, testId, {
+            all_enriched: selection === "all" || selection === "revalidate",
+            revalidate_passed: selection === "revalidate",
+          });
+
       setJobId(response.job_id);
-      setProgress({ completed: 0, total: questionsToValidate, passed: 0, failed: 0 });
+      setProgress({ completed: 0, total: itemsToValidate, passed: 0, failed: 0 });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to start validation");
       setStep("configure");
@@ -259,8 +275,8 @@ export function ValidationModal({
                 <h3 className="font-medium text-sm mb-2">Cost Estimate</h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-text-secondary">Questions</p>
-                    <p className="font-mono">{questionsToValidate}</p>
+                    <p className="text-text-secondary">{isVariants ? "Variants" : "Questions"}</p>
+                    <p className="font-mono">{itemsToValidate}</p>
                   </div>
                   <div>
                     <p className="text-text-secondary">Estimated Cost</p>
@@ -270,7 +286,7 @@ export function ValidationModal({
                 <p className="text-xs text-text-secondary mt-2">Model: GPT 5.1 (high reasoning)</p>
               </div>
 
-              {questionsToValidate === 0 && (
+              {itemsToValidate === 0 && (
                 <div className="flex items-center gap-2 p-3 bg-warning/10 border border-warning/20 rounded-lg">
                   <AlertTriangle className="w-4 h-4 text-warning flex-shrink-0" />
                   <p className="text-sm text-warning">
@@ -378,7 +394,7 @@ export function ValidationModal({
               </button>
               <button
                 onClick={handleStartValidation}
-                disabled={questionsToValidate === 0}
+                disabled={itemsToValidate === 0}
                 className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium
                   hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >

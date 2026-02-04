@@ -388,6 +388,51 @@ export async function getValidationStatus(
 }
 
 // -----------------------------------------------------------------------------
+// Variant Enrichment & Validation API (DRY - reuses same job status endpoints)
+// -----------------------------------------------------------------------------
+
+export interface StartVariantEnrichmentParams {
+  question_num?: string;
+  skip_already_enriched?: boolean;
+}
+
+export async function startVariantEnrichment(
+  subjectId: string,
+  testId: string,
+  params: StartVariantEnrichmentParams
+): Promise<{ job_id: string }> {
+  return fetchAPI<{ job_id: string }>(
+    `/subjects/${subjectId}/tests/${testId}/variants/enrich`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+export interface StartVariantValidationParams {
+  question_num?: string;
+  revalidate_passed?: boolean;
+}
+
+export async function startVariantValidation(
+  subjectId: string,
+  testId: string,
+  params: StartVariantValidationParams
+): Promise<{ job_id: string }> {
+  return fetchAPI<{ job_id: string }>(
+    `/subjects/${subjectId}/tests/${testId}/variants/validate`,
+    {
+      method: "POST",
+      body: JSON.stringify(params),
+    }
+  );
+}
+
+// Note: Variant jobs use the same status endpoints as questions
+// getEnrichmentStatus and getValidationStatus work for both
+
+// -----------------------------------------------------------------------------
 // Test Sync API
 // -----------------------------------------------------------------------------
 

@@ -6,22 +6,20 @@ Loads settings from environment variables and provides path constants.
 from __future__ import annotations
 
 from functools import lru_cache
-from pathlib import Path
 
 from pydantic_settings import BaseSettings
 
 # Re-export paths from app.utils.paths for convenience
-from app.utils.paths import (
+# These are imported and re-exported for use by API modules
+from app.utils.paths import (  # noqa: F401
     ATOMS_DIR,
     DATA_DIR,
-    JOBS_DIR,
     PRUEBAS_ALTERNATIVAS_DIR,
+    PRUEBAS_DIR,
     PRUEBAS_FINALIZADAS_DIR,
     PRUEBAS_PROCESADAS_DIR,
     PRUEBAS_RAW_DIR,
-    REPO_ROOT,
     STANDARDS_DIR,
-    TEMARIOS_DIR,
     TEMARIOS_JSON_DIR,
     TEMARIOS_PDF_DIR,
 )

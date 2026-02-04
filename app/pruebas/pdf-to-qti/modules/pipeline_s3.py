@@ -269,7 +269,6 @@ def post_validation_s3_processing(
     output_dir: str,
     question_id: Optional[str],
     test_name: Optional[str],
-    is_lambda: bool,
 ) -> str:
     """
     Handle post-validation processing: restore content and S3 conversion.
@@ -283,7 +282,6 @@ def post_validation_s3_processing(
         output_dir: Output directory path
         question_id: Question ID for S3 naming
         test_name: Test name for S3 organization
-        is_lambda: Whether running in AWS Lambda
 
     Returns:
         Updated QTI XML with restored content and S3 URLs
@@ -296,25 +294,24 @@ def post_validation_s3_processing(
 
     print("🔍 Checking restored images (converting base64 → S3)...")
 
-    if not is_lambda:
-        qti_xml, _ = process_restored_base64_images(qti_xml, output_dir, question_id, test_name)
+    qti_xml, _ = process_restored_base64_images(qti_xml, output_dir, question_id, test_name)
 
-        remaining_base64 = count_remaining_base64(qti_xml)
-        if remaining_base64 > 0:
-            print_base64_warning_with_instructions(test_name, remaining_base64)
-        else:
-            print("✅ Final validation: All images are in S3 (0 base64)")
+    remaining_base64 = count_remaining_base64(qti_xml)
+    if remaining_base64 > 0:
+        print_base64_warning_with_instructions(test_name, remaining_base64)
+    else:
+        print("✅ Final validation: All images are in S3 (0 base64)")
 
-        # Save XML
-        xml_path = os.path.join(output_dir, "question.xml")
-        with open(xml_path, "w", encoding="utf-8") as f:
-            f.write(qti_xml)
-        status = f" ({remaining_base64} with base64)" if remaining_base64 else " (100% S3)"
-        print(f"✅ QTI XML saved{status}: {xml_path}")
+    # Save XML
+    xml_path = os.path.join(output_dir, "question.xml")
+    with open(xml_path, "w", encoding="utf-8") as f:
+        f.write(qti_xml)
+    status = f" ({remaining_base64} with base64)" if remaining_base64 else " (100% S3)"
+    print(f"✅ QTI XML saved{status}: {xml_path}")
 
-        # Try manual conversion if base64 remains
-        if remaining_base64 > 0:
-            qti_xml = _try_manual_s3_conversion(qti_xml, xml_path, question_id, test_name, output_dir, remaining_base64)
+    # Try manual conversion if base64 remains
+    if remaining_base64 > 0:
+        qti_xml = _try_manual_s3_conversion(qti_xml, xml_path, question_id, test_name, output_dir, remaining_base64)
 
     return qti_xml
 

@@ -13,7 +13,6 @@ from typing import Any
 
 from api.schemas.api_models import CostEstimate
 
-
 # Model pricing (per 1M tokens) - verify these periodically
 MODEL_PRICING = {
     "gemini-3-pro-preview": {

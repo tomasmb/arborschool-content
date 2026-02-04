@@ -103,6 +103,8 @@ export interface VariantBrief {
   folder_name: string;
   has_qti: boolean;
   has_metadata: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
 }
 
 export interface QuestionOption {
@@ -441,3 +443,6 @@ export interface SyncStatus {
   s3_configured: boolean;
   available_entities: string[];
 }
+
+// Note: Course progress types are computed client-side in
+// components/dashboard/ProgressComputation.ts - not API types

@@ -11,6 +11,7 @@ Main components:
 
 from __future__ import annotations
 
+from app.question_feedback.enhancer import FeedbackEnhancer
 from app.question_feedback.models import (
     CheckResult,
     CheckStatus,
@@ -19,9 +20,8 @@ from app.question_feedback.models import (
     PipelineResult,
     ValidationResult,
 )
-from app.question_feedback.enhancer import FeedbackEnhancer
-from app.question_feedback.validator import FinalValidator
 from app.question_feedback.pipeline import QuestionPipeline
+from app.question_feedback.validator import FinalValidator
 
 __all__ = [
     # Models

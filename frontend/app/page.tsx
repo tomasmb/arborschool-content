@@ -55,14 +55,6 @@ export default function DashboardPage() {
         {data?.subjects.map((subject) => (
           <SubjectCard key={subject.id} subject={subject} />
         ))}
-
-        {/* Placeholder for future subjects */}
-        <div className="bg-surface border border-border border-dashed rounded-lg p-6 flex items-center justify-center">
-          <div className="text-center">
-            <p className="text-text-secondary text-sm">More subjects coming soon</p>
-            <p className="text-text-secondary text-xs mt-1">PAES M2, etc.</p>
-          </div>
-        </div>
       </div>
     </div>
   );

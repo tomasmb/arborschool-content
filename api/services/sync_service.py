@@ -9,7 +9,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-from pathlib import Path
 
 from api.config import PRUEBAS_FINALIZADAS_DIR
 from app.question_feedback.utils.qti_parser import has_feedback

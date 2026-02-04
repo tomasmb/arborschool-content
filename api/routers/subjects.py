@@ -306,6 +306,8 @@ async def get_tests(subject_id: str) -> list[TestBrief]:
                 qti_count=status["qti_count"],
                 finalized_count=status["finalized_count"],
                 tagged_count=status["tagged_count"],
+                enriched_count=status["enriched_count"],
+                validated_count=status["validated_count"],
                 variants_count=status["variants_count"],
             )
         )
@@ -349,6 +351,8 @@ async def get_test_detail(subject_id: str, test_id: str) -> TestDetail:
         qti_count=status["qti_count"],
         finalized_count=status["finalized_count"],
         tagged_count=status["tagged_count"],
+        enriched_count=status["enriched_count"],
+        validated_count=status["validated_count"],
         variants_count=status["variants_count"],
         questions=questions,
     )
@@ -421,7 +425,12 @@ async def get_test_raw_pdf(subject_id: str, test_id: str) -> FileResponse:
 
     # Return the largest PDF (usually the official one)
     pdf_file = max(pdf_files, key=lambda f: f.stat().st_size)
-    return FileResponse(path=pdf_file, media_type="application/pdf", filename=f"{test_id}.pdf")
+    # Use inline to display in browser instead of downloading
+    return FileResponse(
+        path=pdf_file,
+        media_type="application/pdf",
+        content_disposition_type="inline",
+    )
 
 
 @router.get("/{subject_id}/atoms/unlock-status", response_model=UnlockStatus)

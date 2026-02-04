@@ -25,7 +25,6 @@ from api.schemas.api_models import (
     VariantBrief,
 )
 
-
 router = APIRouter()
 
 
@@ -134,29 +133,56 @@ async def get_question_detail(
                         eje="unknown", relevance=1.0
                     ))
                 elif isinstance(atom_data, dict):
+                    # Convert string relevance values to float
+                    raw_relevance = atom_data.get("relevance", 1.0)
+                    if isinstance(raw_relevance, str):
+                        relevance_map = {"primary": 1.0, "secondary": 0.5, "tertiary": 0.25}
+                        relevance = relevance_map.get(raw_relevance.lower(), 1.0)
+                    else:
+                        relevance = float(raw_relevance) if raw_relevance else 1.0
                     atom_tags.append(AtomTag(
                         atom_id=atom_data.get("atom_id", ""),
                         titulo=atom_data.get("titulo", atom_data.get("atom_id", "")),
                         eje=atom_data.get("eje", "unknown"),
-                        relevance=atom_data.get("relevance", 1.0)
+                        relevance=relevance
                     ))
 
-            difficulty = metadata.get("difficulty")
+            raw_difficulty = metadata.get("difficulty")
+            # Handle difficulty as dict or string
+            if isinstance(raw_difficulty, dict):
+                difficulty = raw_difficulty.get("level")
+            else:
+                difficulty = raw_difficulty
             source_info = metadata.get("source_info", {})
         except (json_module.JSONDecodeError, OSError):
             pass
 
-    # List variants
+    # List variants with enrichment/validation status
     variants: list[VariantBrief] = []
     if alternativas_dir.exists():
         for idx, variant_dir in enumerate(sorted(alternativas_dir.iterdir()), 1):
             if variant_dir.is_dir():
+                # Check variant-level enrichment (question_validated.xml)
+                variant_enriched = (variant_dir / "question_validated.xml").exists()
+                # Check variant-level validation (validation_result.json with success)
+                variant_validated = False
+                variant_validation_file = variant_dir / "validation_result.json"
+                if variant_validation_file.exists():
+                    try:
+                        with open(variant_validation_file, encoding="utf-8") as f:
+                            vdata = json_module.load(f)
+                        variant_validated = vdata.get("can_sync", False) or vdata.get("success", False)
+                    except (json_module.JSONDecodeError, OSError):
+                        pass
+
                 variants.append(VariantBrief(
                     id=f"{question_id}-v{idx}",
                     variant_number=idx,
                     folder_name=variant_dir.name,
                     has_qti=(variant_dir / "question.xml").exists(),
                     has_metadata=(variant_dir / "metadata_tags.json").exists(),
+                    is_enriched=variant_enriched,
+                    is_validated=variant_validated,
                 ))
 
     # Check enrichment/validation status
@@ -237,5 +263,6 @@ async def get_question_pdf(
     return FileResponse(
         path=pdf_file,
         media_type="application/pdf",
-        filename=f"{test_id}-Q{question_num}.pdf",
+        # Use inline to display in browser instead of downloading
+        content_disposition_type="inline",
     )

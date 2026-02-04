@@ -150,7 +150,6 @@ def save_conversion_result(output_dir: str, result: dict[str, Any]) -> None:
 def build_output_files_dict(
     xml_path: Optional[str],
     output_dir: str,
-    is_lambda: bool,
     question_validation_result: dict[str, Any],
 ) -> dict[str, Any]:
     """
@@ -159,7 +158,6 @@ def build_output_files_dict(
     Args:
         xml_path: Path to the generated XML file
         output_dir: Output directory path
-        is_lambda: Whether running in AWS Lambda
         question_validation_result: Validation result with screenshot paths
 
     Returns:
@@ -167,15 +165,14 @@ def build_output_files_dict(
     """
     output_files: dict[str, Any] = {"xml_path": xml_path}
 
-    if not is_lambda:
-        output_files.update(
-            {
-                "extracted_content": os.path.join(output_dir, "extracted_content.json"),
-                "processed_content": os.path.join(output_dir, "processed_content.json"),
-                "detection_result": os.path.join(output_dir, "detection_result.json"),
-                "validation_result": os.path.join(output_dir, "question_validation_result.json"),
-            }
-        )
+    output_files.update(
+        {
+            "extracted_content": os.path.join(output_dir, "extracted_content.json"),
+            "processed_content": os.path.join(output_dir, "processed_content.json"),
+            "detection_result": os.path.join(output_dir, "detection_result.json"),
+            "validation_result": os.path.join(output_dir, "question_validation_result.json"),
+        }
+    )
 
     output_files.update(question_validation_result.get("screenshot_paths", {}))
     return output_files

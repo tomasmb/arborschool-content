@@ -149,16 +149,18 @@ class StatusTracker:
                 f.suffix.lower() == ".pdf" for f in raw_test_dir.iterdir()
             )
 
-        # Count split PDFs
-        split_count = 0
+        # Count split PDFs (in procesadas/pdf directory)
+        pdf_split_count = 0
         split_dir = procesadas_dir / "pdf" if procesadas_dir.exists() else None
         if split_dir and split_dir.exists():
-            split_count = len([f for f in split_dir.iterdir() if f.suffix == ".pdf"])
+            pdf_split_count = len([f for f in split_dir.iterdir() if f.suffix == ".pdf"])
 
         # Count QTI and finalized questions
         qti_count = 0
         finalized_count = 0
         tagged_count = 0
+        enriched_count = 0
+        validated_count = 0
         questions = []
 
         qti_dir = test_dir / "qti" if test_dir.exists() else None
@@ -179,11 +181,27 @@ class StatusTracker:
                 has_qti = (q_dir / "question.xml").exists()
                 is_tagged = (q_dir / "metadata_tags.json").exists()
 
+                # Check enrichment/validation status
+                is_enriched = (q_dir / "question_validated.xml").exists()
+                is_validated = False
+                validation_result_file = q_dir / "validation_result.json"
+                if validation_result_file.exists():
+                    try:
+                        with open(validation_result_file, encoding="utf-8") as f:
+                            vdata = json.load(f)
+                        is_validated = vdata.get("can_sync", False) or vdata.get("success", False)
+                    except (json.JSONDecodeError, OSError):
+                        pass
+
                 if has_qti:
                     qti_count += 1
                     finalized_count += 1  # In finalizadas = finalized
                 if is_tagged:
                     tagged_count += 1
+                if is_enriched:
+                    enriched_count += 1
+                if is_validated:
+                    validated_count += 1
 
                 # Count variants for this question
                 q_variants_count = 0
@@ -215,6 +233,8 @@ class StatusTracker:
                     "has_qti": has_qti,
                     "is_finalized": has_qti,  # If in finalizadas with QTI, it's finalized
                     "is_tagged": is_tagged,
+                    "is_enriched": is_enriched,
+                    "is_validated": is_validated,
                     "atoms_count": atoms_count,
                     "variants_count": q_variants_count,
                 })
@@ -231,12 +251,18 @@ class StatusTracker:
                         d for d in approved_dir.iterdir() if d.is_dir()
                     ])
 
+        # split_count: if QTI exists, consider it "split" even without PDF
+        # (QTI is the goal, PDF is just an intermediate step)
+        split_count = max(pdf_split_count, qti_count)
+
         return {
             "raw_pdf_exists": raw_pdf_exists,
             "split_count": split_count,
             "qti_count": qti_count,
             "finalized_count": finalized_count,
             "tagged_count": tagged_count,
+            "enriched_count": enriched_count,
+            "validated_count": validated_count,
             "variants_count": variants_count,
             "questions": questions,
         }

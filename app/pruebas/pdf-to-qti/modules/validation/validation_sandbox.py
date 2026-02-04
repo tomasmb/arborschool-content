@@ -39,14 +39,13 @@ def navigate_to_sandbox(driver: WebDriver, sandbox_url: str) -> dict[str, Any]:
         return {"success": False, "error": f"Failed to navigate to sandbox: {str(nav_error)}"}
 
 
-def wait_for_page_load(driver: WebDriver, is_lambda: bool) -> None:
+def wait_for_page_load(driver: WebDriver) -> None:
     """Wait for page to load and verify basic content.
 
     Args:
         driver: Selenium WebDriver instance
-        is_lambda: Whether running in Lambda environment
     """
-    timeout = 30 if is_lambda else 15
+    timeout = 15
     print(f"   ⏳ Waiting for page load (timeout: {timeout}s)...")
 
     # Basic page check
@@ -60,18 +59,17 @@ def wait_for_page_load(driver: WebDriver, is_lambda: bool) -> None:
         pass
 
 
-def find_qti_textarea(driver: WebDriver, is_lambda: bool) -> dict[str, Any]:
+def find_qti_textarea(driver: WebDriver) -> dict[str, Any]:
     """Find and return the QTI XML textarea element.
 
     Args:
         driver: Selenium WebDriver instance
-        is_lambda: Whether running in Lambda environment
 
     Returns:
         Dict with success status and textarea element
     """
     print("   📝 Looking for QTI XML input area...")
-    timeout = 30 if is_lambda else 15
+    timeout = 15
     wait = WebDriverWait(driver, timeout)
 
     try:

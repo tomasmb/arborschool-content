@@ -101,10 +101,9 @@ def process_single_question_pdf(
             openai_api_key,
             validation_endpoint,
             paes_mode,
-            is_lambda,
         )
     except Exception as e:
-        return _handle_processing_error(e, output_dir, openai_api_key, paes_mode, is_lambda)
+        return _handle_processing_error(e, output_dir, openai_api_key, paes_mode)
 
 
 def _get_api_key(openai_api_key: Optional[str] = None) -> Optional[str]:
@@ -118,7 +117,6 @@ def _process_pdf_core(
     openai_api_key: Optional[str],
     validation_endpoint: Optional[str],
     paes_mode: bool,
-    is_lambda: bool,
 ) -> dict[str, Any]:
     """Core PDF processing logic."""
     doc = fitz.open(input_pdf_path)
@@ -142,11 +140,12 @@ def _process_pdf_core(
                 processed_content["ai_analysis"] = page["ai_analysis"]
                 break
 
-    if not is_lambda:
-        save_debug_files(output_dir, pdf_content, processed_content)
+    save_debug_files(output_dir, pdf_content, processed_content)
 
     # Step 2: Detect question type
-    detection_result, question_type, can_represent = _detect_question_type(processed_content, api_key, paes_mode, output_dir, is_lambda)
+    detection_result, question_type, can_represent = _detect_question_type(
+        processed_content, api_key, paes_mode, output_dir
+    )
 
     if not can_represent:
         return {
@@ -190,9 +189,8 @@ def _process_pdf_core(
     description = transformation_result.get("description", "")
     print(f"✅ Generated QTI XML: {title}")
 
-    if not is_lambda:
-        initialize_s3_mapping_from_xml(qti_xml, output_dir, question_id)
-        _save_pre_validation_xml(output_dir, qti_xml)
+    initialize_s3_mapping_from_xml(qti_xml, output_dir, question_id)
+    _save_pre_validation_xml(output_dir, qti_xml)
 
     # Step 5: Initial validation
     validation_result = validate_qti_xml(qti_xml, validation_endpoint)
@@ -205,7 +203,6 @@ def _process_pdf_core(
             output_dir,
             question_id,
             test_name,
-            is_lambda,
         )
 
     if not validation_result["success"]:
@@ -226,7 +223,6 @@ def _process_pdf_core(
         description,
         validation_result,
         output_dir,
-        is_lambda,
         doc,
     )
 
@@ -236,7 +232,6 @@ def _detect_question_type(
     api_key: str,
     paes_mode: bool,
     output_dir: str,
-    is_lambda: bool,
 ) -> tuple[dict[str, Any], str, bool]:
     """Detect question type or use PAES mode defaults."""
     if paes_mode:
@@ -248,8 +243,7 @@ def _detect_question_type(
     print("🔍 Detecting question type...")
     detection_result = detect_question_type(processed_content, api_key)
 
-    if not is_lambda:
-        save_detection_result(output_dir, detection_result)
+    save_detection_result(output_dir, detection_result)
 
     if not detection_result["success"]:
         return detection_result, "unknown", False
@@ -277,7 +271,6 @@ def _run_comprehensive_validation(
     description: str,
     initial_validation: dict[str, Any],
     output_dir: str,
-    is_lambda: bool,
     doc: Any,
 ) -> dict[str, Any]:
     """Run comprehensive validation with external service."""
@@ -313,7 +306,6 @@ def _run_comprehensive_validation(
         initial_validation,
         question_validation_result,
         output_dir,
-        is_lambda,
         doc,
     )
 
@@ -356,11 +348,10 @@ def _build_final_result(
     initial_validation: dict[str, Any],
     question_validation_result: dict[str, Any],
     output_dir: str,
-    is_lambda: bool,
     doc: Any,
 ) -> dict[str, Any]:
     """Build the final result dictionary."""
-    xml_path = os.path.join(output_dir, "question.xml") if not is_lambda else None
+    xml_path = os.path.join(output_dir, "question.xml")
 
     result = {
         "success": True,
@@ -373,11 +364,10 @@ def _build_final_result(
         "validation_errors": initial_validation.get("validation_errors"),
         "question_validation": question_validation_result,
         "validation_summary": question_validation_result.get("validation_summary", "Passed"),
-        "output_files": build_output_files_dict(xml_path, output_dir, is_lambda, question_validation_result),
+        "output_files": build_output_files_dict(xml_path, output_dir, question_validation_result),
     }
 
-    if not is_lambda:
-        save_conversion_result(output_dir, result)
+    save_conversion_result(output_dir, result)
 
     doc.close()
 
@@ -394,7 +384,6 @@ def _handle_processing_error(
     output_dir: str,
     openai_api_key: Optional[str],
     paes_mode: bool,
-    is_lambda: bool,
 ) -> dict[str, Any]:
     """Handle processing errors with auto-recovery attempt."""
     error_str = str(error)
@@ -403,7 +392,7 @@ def _handle_processing_error(
     processed_json_path = os.path.join(output_dir, "processed_content.json")
     has_processed = os.path.exists(processed_json_path)
 
-    if has_processed and not is_lambda:
+    if has_processed:
         api_key = _get_api_key(openai_api_key)
         if api_key:
             test_name = extract_test_name_from_path(output_dir)

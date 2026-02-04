@@ -16,12 +16,12 @@ from fastapi import APIRouter, HTTPException
 
 from api.config import SUBJECTS_CONFIG
 from api.schemas.api_models import (
+    VALID_SYNC_ENVIRONMENTS,
     SyncExecuteRequest,
     SyncExecuteResponse,
     SyncPreviewRequest,
     SyncPreviewResponse,
     SyncTableSummary,
-    VALID_SYNC_ENVIRONMENTS,
 )
 from app.utils.paths import ATOMS_DIR, STANDARDS_DIR
 
