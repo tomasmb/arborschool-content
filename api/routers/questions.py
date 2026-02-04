@@ -25,7 +25,6 @@ from api.schemas.api_models import (
     VariantBrief,
 )
 
-
 router = APIRouter()
 
 
@@ -134,14 +133,26 @@ async def get_question_detail(
                         eje="unknown", relevance=1.0
                     ))
                 elif isinstance(atom_data, dict):
+                    # Convert string relevance values to float
+                    raw_relevance = atom_data.get("relevance", 1.0)
+                    if isinstance(raw_relevance, str):
+                        relevance_map = {"primary": 1.0, "secondary": 0.5, "tertiary": 0.25}
+                        relevance = relevance_map.get(raw_relevance.lower(), 1.0)
+                    else:
+                        relevance = float(raw_relevance) if raw_relevance else 1.0
                     atom_tags.append(AtomTag(
                         atom_id=atom_data.get("atom_id", ""),
                         titulo=atom_data.get("titulo", atom_data.get("atom_id", "")),
                         eje=atom_data.get("eje", "unknown"),
-                        relevance=atom_data.get("relevance", 1.0)
+                        relevance=relevance
                     ))
 
-            difficulty = metadata.get("difficulty")
+            raw_difficulty = metadata.get("difficulty")
+            # Handle difficulty as dict or string
+            if isinstance(raw_difficulty, dict):
+                difficulty = raw_difficulty.get("level")
+            else:
+                difficulty = raw_difficulty
             source_info = metadata.get("source_info", {})
         except (json_module.JSONDecodeError, OSError):
             pass
