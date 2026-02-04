@@ -114,7 +114,7 @@ export interface QuestionOption {
  * Full question detail for the slide-over panel.
  *
  * Note: correct_answer and feedback are now embedded in qti_xml and parsed
- * by the frontend when displaying questions (to be implemented in new feedback panel).
+ * by the frontend when displaying questions (FeedbackTab component).
  */
 export interface QuestionDetail {
   id: string;
@@ -124,6 +124,9 @@ export interface QuestionDetail {
   has_qti: boolean;
   is_finalized: boolean;
   is_tagged: boolean;
+  is_enriched: boolean;
+  is_validated: boolean;
+  can_sync: boolean;
   qti_xml: string | null;
   qti_stem: string | null;
   qti_options: QuestionOption[] | null;
@@ -133,6 +136,55 @@ export interface QuestionDetail {
   variants: VariantBrief[];
   qti_path: string | null;
   pdf_path: string | null;
+  sync_status: SyncStatus | null;
+  validation_result: ValidationResultDetail | null;
+}
+
+// -----------------------------------------------------------------------------
+// Sync Status
+// -----------------------------------------------------------------------------
+
+export type SyncStatus = "not_in_db" | "in_sync" | "local_changed" | "not_validated";
+
+// -----------------------------------------------------------------------------
+// Detailed Validation Types (for display in ValidationTab)
+// -----------------------------------------------------------------------------
+
+export type CheckStatus = "pass" | "fail" | "not_applicable";
+
+export interface CheckResult {
+  status: CheckStatus;
+  issues: string[];
+  reasoning: string;
+}
+
+export interface CorrectAnswerCheck {
+  status: CheckStatus;
+  expected_answer: string;
+  marked_answer: string;
+  verification_steps: string;
+  issues: string[];
+}
+
+export interface ContentQualityCheck {
+  status: CheckStatus;
+  typos_found: string[];
+  character_issues: string[];
+  clarity_issues: string[];
+}
+
+/**
+ * Detailed validation result for display in the question panel.
+ * This is the full result from FinalValidator, stored in validation_result.json.
+ */
+export interface ValidationResultDetail {
+  validation_result: "pass" | "fail";
+  correct_answer_check: CorrectAnswerCheck;
+  feedback_check: CheckResult;
+  content_quality_check: ContentQualityCheck;
+  image_check: CheckResult;
+  math_validity_check: CheckResult;
+  overall_reasoning: string;
 }
 
 export interface TestDetail {

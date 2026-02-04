@@ -13,8 +13,7 @@
 | [03-variant-integration.md](./03-variant-integration.md) | Integrate feedback into variants | Complete |
 | [04-api-endpoints.md](./04-api-endpoints.md) | Enrichment, validation, sync endpoints | Complete |
 | [05-frontend-test-detail.md](./05-frontend-test-detail.md) | Test detail page enhancements | Complete |
-| [06-frontend-question-panel.md](./06-frontend-question-panel.md) | Question panel tabs | Not Started |
-| [07-migration.md](./07-migration.md) | Database migration | Not Started |
+| [06-frontend-question-panel.md](./06-frontend-question-panel.md) | Question panel tabs | Complete |
 | [frontend-types.md](./frontend-types.md) | TypeScript types for frontend | Reference |
 | [Appendix-A-example-qti.xml](./Appendix-A-example-qti.xml) | Example QTI with feedback | Reference |
 
@@ -22,15 +21,18 @@
 
 ## Overall Progress
 
+**All phases complete!**
+
 ```
-Phase 0: Cleanup           [x] Complete
-Phase 1: Backend Core      [x] Complete
+Phase 0: Cleanup             [x] Complete
+Phase 1: Backend Core        [x] Complete
 Phase 2: Variant Integration [x] Complete
-Phase 3: API Endpoints     [x] Complete
-Phase 4: Frontend - Test   [x] Complete
-Phase 5: Frontend - Panel  [ ] Not Started
-Phase 6: Migration         [ ] Not Started
+Phase 3: API Endpoints       [x] Complete
+Phase 4: Frontend - Test     [x] Complete
+Phase 5: Frontend - Panel    [x] Complete
 ```
+
+> Note: Database migrations are handled in the separate database repo.
 
 ---
 
@@ -44,6 +46,7 @@ Phase 6: Migration         [ ] Not Started
 | 2026-02-04 | 4 | Task 3: Variant Integration | Integrated QuestionPipeline into VariantPipeline, added VariantResult model |
 | 2026-02-04 | 5 | Phase 3: API Endpoints | Created enrichment/validation/sync services, tests router, updated question detail |
 | 2026-02-04 | 6 | Phase 4: Frontend - Test Detail | Added enriched/validated columns, pipeline stages, EnrichmentModal, ValidationModal, TestSyncModal |
+| 2026-02-04 | 7 | Phase 5: Frontend - Question Panel | Added tabbed interface, status badges, FeedbackTab, ValidationTab, qti-parser.ts |
 
 ---
 

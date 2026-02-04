@@ -6,6 +6,10 @@
 export type {
   AtomBrief,
   AtomTag,
+  CheckResult,
+  CheckStatus,
+  ContentQualityCheck,
+  CorrectAnswerCheck,
   CostEstimate,
   EnrichmentJobResponse,
   EnrichmentProgress,
@@ -37,6 +41,7 @@ export type {
   ValidationJobResponse,
   ValidationProgress,
   ValidationResult,
+  ValidationResultDetail,
   VariantBrief,
 } from "./api-types";
 

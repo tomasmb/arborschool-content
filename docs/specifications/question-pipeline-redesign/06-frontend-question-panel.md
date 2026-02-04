@@ -11,12 +11,12 @@ feedback and validation details in a tabbed interface.
 
 ## Acceptance Criteria
 
-- [ ] Panel shows tabs: Question | Feedback | Validation | Variants
-- [ ] Status badges show enriched/validated/sync status
-- [ ] Feedback tab displays per-choice feedback and worked solution
-- [ ] Validation tab shows all check results
-- [ ] Re-enrich and Re-validate action buttons work
-- [ ] Graceful handling when feedback/validation not available
+- [x] Panel shows tabs: Question | Feedback | Validation | Variants
+- [x] Status badges show enriched/validated/sync status
+- [x] Feedback tab displays per-choice feedback and worked solution
+- [x] Validation tab shows all check results
+- [x] Re-enrich and Re-validate action buttons work
+- [x] Graceful handling when feedback/validation not available
 
 ---
 
@@ -379,12 +379,12 @@ export function parseFeedbackFromQti(qtiXml: string): ParsedFeedback | null {
 ## Summary Checklist
 
 ```
-[ ] 6.1 Add status badges component
-[ ] 6.2 Implement tabbed interface in QuestionDetailPanel
-[ ] 6.3 Create FeedbackTab component
-[ ] 6.4 Create ValidationTab component
-[ ] 6.5 Add QTI parser utility for feedback extraction
-[ ] 6.6 Add Re-enrich and Re-validate buttons
-[ ] Handle loading states for each tab
+[x] 6.1 Add status badges component
+[x] 6.2 Implement tabbed interface in QuestionDetailPanel
+[x] 6.3 Create FeedbackTab component
+[x] 6.4 Create ValidationTab component
+[x] 6.5 Add QTI parser utility for feedback extraction
+[x] 6.6 Add Re-enrich and Re-validate buttons
+[x] Handle loading states for each tab
 [ ] Test with real question data
 ```
