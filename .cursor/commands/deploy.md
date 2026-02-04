@@ -46,7 +46,36 @@ Your goals:
 
 ---
 
-## 2. Check for Existing PR
+## 2. Sync with Main (CRITICAL)
+
+**This step prevents merge conflicts in the PR.**
+
+1. Fetch latest from origin:
+   ```bash
+   git fetch origin
+   ```
+
+2. Merge main into dev:
+   ```bash
+   git merge origin/main --no-edit
+   ```
+
+3. **If merge conflicts occur:**
+   - Resolve them automatically if trivial (e.g., keep both changes).
+   - If complex conflicts, show the conflicted files and ask user how to proceed.
+   - After resolution: `git add . && git commit -m "Merge origin/main into dev"`
+
+4. **Push the merge:**
+   ```bash
+   git push
+   ```
+
+5. **If already up to date:**
+   > "✓ dev is up to date with main"
+
+---
+
+## 3. Check for Existing PR
 
 Run:
 ```bash
@@ -60,7 +89,7 @@ gh pr list --head dev --base main --json number,url,state
 
 ---
 
-## 3. Create the PR
+## 4. Create the PR
 
 If no existing PR:
 
@@ -87,7 +116,7 @@ If no existing PR:
 
 ---
 
-## 4. Wait for GitHub Checks
+## 5. Wait for GitHub Checks
 
 Monitor the PR checks until all complete:
 
@@ -125,7 +154,7 @@ Then STOP (do not merge).
 
 ---
 
-## 5. Merge (only if `merge` parameter passed)
+## 6. Merge (only if `merge` parameter passed)
 
 If the user did NOT pass `merge`, skip this section and go to Final Summary.
 
@@ -165,7 +194,7 @@ Then STOP.
 
 ---
 
-## 6. Final Summary
+## 7. Final Summary
 
 ### If `merge` NOT passed:
 

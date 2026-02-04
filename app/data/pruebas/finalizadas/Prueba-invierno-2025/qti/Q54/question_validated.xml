@@ -1,0 +1,92 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-54" title="Cálculo de total de encuestados" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el gráfico adjunto se presentan los resultados de una encuesta sobre la cantidad de carcasas de celular que ha tenido cada uno de los estudiantes de un curso.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q54_main.png" alt="Gráfico de barras que muestra la frecuencia de estudiantes según la cantidad de carcasas. Eje Y: Frecuencia (0-9). Eje X: Cantidad de carcasas (0-5). Valores de las barras: 0 carcasas (6), 1 carcasa (7), 2 carcasas (8), 3 carcasas (6), 4 carcasas (3), 5 carcasas (2)."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuántos fueron los estudiantes encuestados?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">15
+        <qti-feedback-inline identifier="ChoiceA_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a sumar solo algunas barras (por ejemplo, 6 + 3 + 2 + 4) o a considerar solo parte de las frecuencias. Para obtener el total de estudiantes, debes sumar todas las frecuencias de las barras del gráfico.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">26
+        <qti-feedback-inline identifier="ChoiceB_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este resultado se obtiene si omites algunas categorías del gráfico (por ejemplo, si no consideras a quienes tuvieron 0 o 5 carcasas). El total de encuestados se calcula sumando las frecuencias de todas las barras, incluyendo 0 carcasas y 5 carcasas.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">32
+        <qti-feedback-inline identifier="ChoiceC_FB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El total de estudiantes encuestados se obtiene sumando las frecuencias de todas las barras del gráfico: 6 (0 carcasas) + 7 (1 carcasa) + 8 (2 carcasas) + 6 (3 carcasas) + 3 (4 carcasas) + 2 (5 carcasas) = 32 estudiantes en total.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">63
+        <qti-feedback-inline identifier="ChoiceD_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este número es cercano a la suma de los valores de las carcasas multiplicados por sus frecuencias, es decir, a un cálculo similar al total de carcasas, no al total de estudiantes. Para responder la pregunta, solo debes sumar las frecuencias (alturas de las barras), no multiplicarlas por la cantidad de carcasas.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del total de estudiantes a partir de un gráfico de barras</strong></p>
+        <ol>
+          <li>Identifica en el gráfico la frecuencia (altura de la barra) para cada cantidad de carcasas:
+            <ul>
+              <li>0 carcasas: 6 estudiantes</li>
+              <li>1 carcasa: 7 estudiantes</li>
+              <li>2 carcasas: 8 estudiantes</li>
+              <li>3 carcasas: 6 estudiantes</li>
+              <li>4 carcasas: 3 estudiantes</li>
+              <li>5 carcasas: 2 estudiantes</li>
+            </ul>
+          </li>
+          <li>Suma todas las frecuencias para obtener el total de estudiantes encuestados:
+            <ul>
+              <li>6 + 7 = 13</li>
+              <li>13 + 8 = 21</li>
+              <li>21 + 6 = 27</li>
+              <li>27 + 3 = 30</li>
+              <li>30 + 2 = 32</li>
+            </ul>
+            Por lo tanto, el total de estudiantes encuestados es 32.
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceC_FB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

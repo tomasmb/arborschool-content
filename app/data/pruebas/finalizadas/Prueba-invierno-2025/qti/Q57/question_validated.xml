@@ -1,0 +1,75 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-57" title="Promedio de un conjunto de datos" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera el siguiente grupo de datos:</p>
+    <p style="text-align:center;">4, 6, 8, 10 y 12</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los siguientes pares de datos se puede agregar a este conjunto para que mantenga su promedio?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">1 y 13
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este par suma 14, que es menor que 16 (el doble del promedio 8). Esto hace que el nuevo promedio baje, porque estás agregando menos que lo necesario para mantener el promedio original.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3 y 14
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este par suma 17, que no es igual a 16 (el doble del promedio 8). Aquí se confunde la idea de “cercano al promedio” con la condición exacta necesaria para mantenerlo: la suma de los nuevos datos debe ser exactamente 16.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2 y 13
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este par suma 15, que sigue siendo distinto de 16. El error está en pensar que basta con que uno de los números sea menor y el otro mayor que 8; en realidad, la suma de ambos debe ser exactamente 16 para conservar el promedio.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">2 y 14
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El promedio original es 8, y al agregar dos datos más, para mantener el mismo promedio la suma de esos dos nuevos datos debe ser 2·8 = 16. Como 2 + 14 = 16, este par mantiene el promedio del conjunto.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: usar la suma total y la definición de promedio</strong></p>
+        <ol>
+          <li>Calcula el promedio del conjunto original: los datos son 4, 6, 8, 10 y 12. Su suma es 4 + 6 + 8 + 10 + 12 = 40. Como son 5 datos, el promedio es 40 ÷ 5 = 8.</li>
+          <li>Plantea la condición para mantener el promedio: si agregamos dos datos más, habrá 7 datos en total. Para que el promedio siga siendo 8, la nueva suma total debe ser 8 · 7 = 56.</li>
+          <li>Determina cuánto deben sumar los dos nuevos datos: la suma original es 40, por lo que los dos datos nuevos deben sumar 56 − 40 = 16.</li>
+          <li>Revisa las alternativas y busca el par que sume 16: 1 + 13 = 14, 3 + 14 = 17, 2 + 13 = 15 y 2 + 14 = 16. El único par que cumple la condición es 2 y 14.</li>
+          <li>Concluye: el par de datos que se puede agregar para mantener el promedio del conjunto es 2 y 14.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_INCORRECT</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
