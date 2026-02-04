@@ -449,18 +449,18 @@ function QuestionExpandedContent({
             <div
               className={cn(
                 "border rounded-lg p-3 text-sm",
-                detail.validation_result.validation_result === "pass"
+                detail.validation_result.status === "pass"
                   ? "bg-success/10 border-success/20 text-success"
                   : "bg-error/10 border-error/20 text-error"
               )}
             >
               <div className="flex items-center gap-2">
-                {detail.validation_result.validation_result === "pass" ? (
+                {detail.validation_result.status === "pass" ? (
                   <CheckCircle2 className="w-4 h-4" />
                 ) : (
                   <XCircle className="w-4 h-4" />
                 )}
-                <span className="font-medium capitalize">{detail.validation_result.validation_result}</span>
+                <span className="font-medium capitalize">{detail.validation_result.status || "unknown"}</span>
               </div>
               {detail.validation_result.overall_reasoning && (
                 <p className="mt-1 text-xs opacity-80">{detail.validation_result.overall_reasoning}</p>
