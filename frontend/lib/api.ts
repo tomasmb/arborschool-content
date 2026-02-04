@@ -326,6 +326,7 @@ export async function executeCourseSync(
 // -----------------------------------------------------------------------------
 
 export interface StartEnrichmentParams {
+  question_ids?: string[];
   all_tagged?: boolean;
   skip_already_enriched?: boolean;
 }
@@ -359,6 +360,7 @@ export async function getEnrichmentStatus(
 // -----------------------------------------------------------------------------
 
 export interface StartValidationParams {
+  question_ids?: string[];
   all_enriched?: boolean;
   revalidate_passed?: boolean;
 }
