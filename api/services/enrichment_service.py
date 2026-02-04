@@ -1,7 +1,11 @@
 """Enrichment service for test-level feedback generation.
 
 Manages async enrichment jobs that run the QuestionPipeline to add feedback
-to questions. Uses in-memory storage for job state (Redis recommended for production).
+to questions AND variants. Uses in-memory storage for job state (Redis recommended
+for production).
+
+Follows DRY/SOLID - same logic handles both questions and variants, just different
+source directories.
 """
 
 from __future__ import annotations
@@ -14,7 +18,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 
-from api.config import PRUEBAS_FINALIZADAS_DIR
+from api.config import PRUEBAS_ALTERNATIVAS_DIR, PRUEBAS_FINALIZADAS_DIR
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_feedback.utils.image_utils import extract_image_urls
 
@@ -41,81 +45,141 @@ class EnrichmentJob:
 _jobs: dict[str, EnrichmentJob] = {}
 
 
-def _get_questions_to_enrich(
-    test_id: str,
-    question_ids: list[str] | None = None,
-    all_tagged: bool = False,
+def _get_items_to_enrich_from_path(
+    base_path: Path,
+    id_prefix: str,
+    item_ids: list[str] | None = None,
+    require_tagged: bool = False,
     skip_already_enriched: bool = True,
 ) -> list[dict]:
-    """Get list of questions to enrich from the test folder.
+    """Get list of items to enrich from a folder containing question.xml files.
 
+    This is the core function that handles both questions and variants.
     Returns list of dicts with: id, qti_xml, image_urls, output_dir
     """
-    base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
-    questions: list[dict] = []
+    items: list[dict] = []
 
     if not base_path.exists():
-        logger.warning(f"Test QTI folder not found: {base_path}")
-        return questions
+        logger.warning(f"Path not found: {base_path}")
+        return items
 
-    # Get all Q* folders, sorted by question number
-    q_folders = sorted(
-        [f for f in base_path.iterdir() if f.is_dir() and f.name.startswith("Q")],
-        key=lambda p: int(p.name[1:]) if p.name[1:].isdigit() else 0,
+    # Get all subfolders that might contain question.xml
+    folders = sorted(
+        [f for f in base_path.iterdir() if f.is_dir()],
+        key=lambda p: p.name,
     )
 
-    for q_folder in q_folders:
-        question_num = q_folder.name  # e.g., "Q6"
-        question_id = f"{test_id}-{question_num}"
+    for folder in folders:
+        item_name = folder.name
+        item_id = f"{id_prefix}-{item_name}"
 
-        # Filter by specific question_ids if provided
-        if question_ids and question_num not in question_ids:
+        # Filter by specific ids if provided
+        if item_ids and item_name not in item_ids:
             continue
 
-        # Check if tagged (metadata_tags.json exists with selected_atoms)
-        metadata_path = q_folder / "metadata_tags.json"
-        if not metadata_path.exists():
+        # Check if tagged (metadata_tags.json exists) - only if required
+        metadata_path = folder / "metadata_tags.json"
+        if require_tagged and not metadata_path.exists():
             continue
 
-        try:
-            with open(metadata_path, encoding="utf-8") as f:
-                metadata = json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            logger.warning(f"Failed to read metadata for {question_id}: {e}")
-            continue
-
-        # Skip if not tagged (no atoms selected) when all_tagged is True
-        if all_tagged and not metadata.get("selected_atoms"):
-            continue
+        if require_tagged and metadata_path.exists():
+            try:
+                with open(metadata_path, encoding="utf-8") as f:
+                    metadata = json.load(f)
+                if not metadata.get("selected_atoms"):
+                    continue
+            except (json.JSONDecodeError, OSError) as e:
+                logger.warning(f"Failed to read metadata for {item_id}: {e}")
+                continue
 
         # Check if already enriched
-        validated_xml_path = q_folder / "question_validated.xml"
+        validated_xml_path = folder / "question_validated.xml"
         if skip_already_enriched and validated_xml_path.exists():
             continue
 
         # Read original QTI XML
-        qti_path = q_folder / "question.xml"
+        qti_path = folder / "question.xml"
         if not qti_path.exists():
             continue
 
         try:
             qti_xml = qti_path.read_text(encoding="utf-8")
         except OSError as e:
-            logger.warning(f"Failed to read QTI for {question_id}: {e}")
+            logger.warning(f"Failed to read QTI for {item_id}: {e}")
             continue
 
         # Extract image URLs from QTI
         image_urls = extract_image_urls(qti_xml)
 
-        questions.append({
-            "id": question_id,
-            "question_num": question_num,
+        items.append({
+            "id": item_id,
+            "item_name": item_name,
             "qti_xml": qti_xml,
             "image_urls": image_urls if image_urls else None,
-            "output_dir": str(q_folder),
+            "output_dir": str(folder),
         })
 
-    return questions
+    return items
+
+
+def _get_questions_to_enrich(
+    test_id: str,
+    question_ids: list[str] | None = None,
+    all_tagged: bool = False,
+    skip_already_enriched: bool = True,
+) -> list[dict]:
+    """Get list of questions to enrich from the test folder."""
+    base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+    return _get_items_to_enrich_from_path(
+        base_path=base_path,
+        id_prefix=test_id,
+        item_ids=question_ids,
+        require_tagged=all_tagged,
+        skip_already_enriched=skip_already_enriched,
+    )
+
+
+def _get_variants_to_enrich(
+    test_id: str,
+    question_num: str | None = None,
+    skip_already_enriched: bool = True,
+) -> list[dict]:
+    """Get list of variants to enrich from the alternativas folder.
+
+    Variants are stored in: PRUEBAS_ALTERNATIVAS_DIR/{test_id}/Q{num}/approved/{variant}/
+    """
+    variants: list[dict] = []
+    alternativas_base = PRUEBAS_ALTERNATIVAS_DIR / test_id
+
+    if not alternativas_base.exists():
+        logger.warning(f"Alternativas folder not found: {alternativas_base}")
+        return variants
+
+    # Get question folders to scan
+    if question_num:
+        q_folders = [alternativas_base / question_num]
+    else:
+        q_folders = sorted(
+            [f for f in alternativas_base.iterdir() if f.is_dir() and f.name.startswith("Q")],
+            key=lambda p: int(p.name[1:]) if p.name[1:].isdigit() else 0,
+        )
+
+    for q_folder in q_folders:
+        approved_dir = q_folder / "approved"
+        if not approved_dir.exists():
+            continue
+
+        q_name = q_folder.name
+        items = _get_items_to_enrich_from_path(
+            base_path=approved_dir,
+            id_prefix=f"{test_id}-{q_name}",
+            item_ids=None,
+            require_tagged=False,  # Variants don't require tagging
+            skip_already_enriched=skip_already_enriched,
+        )
+        variants.extend(items)
+
+    return variants
 
 
 async def start_enrichment_job(
@@ -124,7 +188,7 @@ async def start_enrichment_job(
     all_tagged: bool = False,
     skip_already_enriched: bool = True,
 ) -> tuple[str, int, float]:
-    """Start async enrichment job.
+    """Start async enrichment job for questions.
 
     Returns:
         Tuple of (job_id, questions_to_process, estimated_cost_usd)
@@ -153,6 +217,47 @@ async def start_enrichment_job(
     asyncio.create_task(_run_enrichment(job_id, questions))
 
     return job_id, len(questions), estimated_cost
+
+
+async def start_variant_enrichment_job(
+    test_id: str,
+    question_num: str | None = None,
+    skip_already_enriched: bool = True,
+) -> tuple[str, int, float]:
+    """Start async enrichment job for variants.
+
+    Uses the same enrichment logic as questions - DRY principle.
+
+    Args:
+        test_id: Test identifier
+        question_num: Optional - only enrich variants for this question (e.g. "Q1")
+        skip_already_enriched: Skip variants that already have feedback
+
+    Returns:
+        Tuple of (job_id, variants_to_process, estimated_cost_usd)
+    """
+    job_id = f"enrich-variant-{uuid.uuid4().hex[:8]}"
+
+    # Get variants to process (same logic, different source)
+    variants = _get_variants_to_enrich(test_id, question_num, skip_already_enriched)
+
+    job = EnrichmentJob(
+        job_id=job_id,
+        status="started",
+        total=len(variants),
+        completed=0,
+        successful=0,
+        failed=0,
+        results=[],
+    )
+    _jobs[job_id] = job
+
+    estimated_cost = get_enrichment_cost_estimate(len(variants))
+
+    # Uses the same _run_enrichment function - DRY!
+    asyncio.create_task(_run_enrichment(job_id, variants))
+
+    return job_id, len(variants), estimated_cost
 
 
 async def _run_enrichment(job_id: str, questions: list[dict]) -> None:

@@ -441,3 +441,6 @@ export interface SyncStatus {
   s3_configured: boolean;
   available_entities: string[];
 }
+
+// Note: Course progress types are computed client-side in
+// components/dashboard/ProgressComputation.ts - not API types

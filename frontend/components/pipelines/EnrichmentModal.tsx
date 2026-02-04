@@ -4,18 +4,22 @@ import { useState, useEffect, useCallback } from "react";
 import { X, Loader2, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
 import {
   startEnrichment,
+  startVariantEnrichment,
   getEnrichmentStatus,
   type EnrichmentResult,
 } from "@/lib/api";
 
 type ModalStep = "configure" | "progress" | "results";
 type SelectionMode = "all" | "unenriched";
+type EnrichmentTarget = "questions" | "variants";
 
 interface EnrichmentModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   testId: string;
   subjectId: string;
+  /** Target type - questions or variants. Defaults to questions. */
+  target?: EnrichmentTarget;
   stats: {
     tagged_count: number;
     enriched_count: number;
@@ -24,14 +28,17 @@ interface EnrichmentModalProps {
 }
 
 /**
- * Modal for enriching questions with educational feedback.
+ * Modal for enriching questions or variants with educational feedback.
  * Flow: configure options → run enrichment → show results
+ *
+ * Supports both questions and variants (DRY - same UI, different API endpoints).
  */
 export function EnrichmentModal({
   open,
   onOpenChange,
   testId,
   subjectId,
+  target = "questions",
   stats,
   onSuccess,
 }: EnrichmentModalProps) {
@@ -42,14 +49,17 @@ export function EnrichmentModal({
   const [results, setResults] = useState<EnrichmentResult[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  // Calculate questions to process based on selection
-  const questionsToProcess =
+  const isVariants = target === "variants";
+  const itemLabel = isVariants ? "variants" : "questions";
+
+  // Calculate items to process based on selection
+  const itemsToProcess =
     selection === "all"
       ? stats.tagged_count
       : stats.tagged_count - stats.enriched_count;
 
-  // Estimated cost: ~$0.024 per question (GPT 5.1 medium reasoning)
-  const estimatedCost = questionsToProcess * 0.024;
+  // Estimated cost: ~$0.024 per item (GPT 5.1 medium reasoning)
+  const estimatedCost = itemsToProcess * 0.024;
 
   // Reset state when modal opens
   useEffect(() => {
@@ -101,12 +111,18 @@ export function EnrichmentModal({
     setStep("progress");
 
     try {
-      const response = await startEnrichment(subjectId, testId, {
-        all_tagged: selection === "all",
-        skip_already_enriched: selection === "unenriched",
-      });
+      // DRY: Same logic, different API endpoint based on target
+      const response = isVariants
+        ? await startVariantEnrichment(subjectId, testId, {
+            skip_already_enriched: selection === "unenriched",
+          })
+        : await startEnrichment(subjectId, testId, {
+            all_tagged: selection === "all",
+            skip_already_enriched: selection === "unenriched",
+          });
+
       setJobId(response.job_id);
-      setProgress({ completed: 0, total: questionsToProcess, failed: 0 });
+      setProgress({ completed: 0, total: itemsToProcess, failed: 0 });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to start enrichment");
       setStep("configure");
@@ -217,8 +233,8 @@ export function EnrichmentModal({
                 <h3 className="font-medium text-sm mb-2">Cost Estimate</h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div>
-                    <p className="text-text-secondary">Questions</p>
-                    <p className="font-mono">{questionsToProcess}</p>
+                    <p className="text-text-secondary">{isVariants ? "Variants" : "Questions"}</p>
+                    <p className="font-mono">{itemsToProcess}</p>
                   </div>
                   <div>
                     <p className="text-text-secondary">Estimated Cost</p>
@@ -228,7 +244,7 @@ export function EnrichmentModal({
                 <p className="text-xs text-text-secondary mt-2">Model: GPT 5.1 (medium reasoning)</p>
               </div>
 
-              {questionsToProcess === 0 && (
+              {itemsToProcess === 0 && (
                 <div className="flex items-center gap-2 p-3 bg-warning/10 border border-warning/20 rounded-lg">
                   <AlertTriangle className="w-4 h-4 text-warning flex-shrink-0" />
                   <p className="text-sm text-warning">
@@ -322,7 +338,7 @@ export function EnrichmentModal({
               </button>
               <button
                 onClick={handleStartEnrichment}
-                disabled={questionsToProcess === 0}
+                disabled={itemsToProcess === 0}
                 className="px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium
                   hover:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
