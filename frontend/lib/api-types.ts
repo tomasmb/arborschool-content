@@ -136,15 +136,15 @@ export interface QuestionDetail {
   variants: VariantBrief[];
   qti_path: string | null;
   pdf_path: string | null;
-  sync_status: SyncStatus | null;
+  sync_status: QuestionSyncStatus | null;
   validation_result: ValidationResultDetail | null;
 }
 
 // -----------------------------------------------------------------------------
-// Sync Status
+// Question Sync Status (for individual questions)
 // -----------------------------------------------------------------------------
 
-export type SyncStatus = "not_in_db" | "in_sync" | "local_changed" | "not_validated";
+export type QuestionSyncStatus = "not_in_db" | "in_sync" | "local_changed" | "not_validated";
 
 // -----------------------------------------------------------------------------
 // Detailed Validation Types (for display in ValidationTab)

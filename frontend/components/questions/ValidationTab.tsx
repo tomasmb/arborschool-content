@@ -158,7 +158,7 @@ export function ValidationTab({ result }: ValidationTabProps) {
                   )}
 
                   {/* Show reasoning if available and different from issues */}
-                  {check.result.reasoning && !hasIssues && (
+                  {"reasoning" in check.result && check.result.reasoning && !hasIssues && (
                     <p className="text-xs text-text-secondary mt-1">
                       {check.result.reasoning}
                     </p>

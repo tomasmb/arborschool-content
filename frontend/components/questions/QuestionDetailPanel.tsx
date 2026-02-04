@@ -16,7 +16,7 @@ import {
   RefreshCw,
   Sparkles,
   Beaker,
-  CloudUpload,
+  Layers,
 } from "lucide-react";
 import { getQuestionDetail, getQuestionPdfUrl, QuestionDetail } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -41,6 +41,32 @@ interface QuestionDetailPanelProps {
   testId: string;
   questionNumber: number;
   onClose: () => void;
+}
+
+/** Reusable action button for pipeline actions */
+function ActionButton({
+  onClick,
+  disabled,
+  icon,
+  label,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  icon: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="flex items-center gap-2 px-3 py-2 bg-surface border border-border
+        rounded-lg hover:bg-white/5 transition-colors text-sm
+        disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {icon}
+      {label}
+    </button>
+  );
 }
 
 export function QuestionDetailPanel({
@@ -130,7 +156,8 @@ export function QuestionDetailPanel({
                 href={getQuestionPdfUrl(subjectId, testId, questionNumber)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent/20 text-accent rounded-lg transition-colors text-sm font-medium"
+                className="flex items-center gap-2 px-3 py-2 bg-accent/10 hover:bg-accent/20
+                  text-accent rounded-lg transition-colors text-sm font-medium"
               >
                 <FileImage className="w-4 h-4" />
                 View PDF
@@ -208,26 +235,36 @@ export function QuestionDetailPanel({
               <section>
                 <h3 className="text-sm font-medium text-text-secondary mb-2">Actions</h3>
                 <div className="flex flex-wrap gap-2">
-                  <button onClick={() => handlePipelineAction("pdf_to_qti")} disabled={!data.has_split_pdf}
-                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-lg hover:bg-white/5 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                    <RefreshCw className="w-4 h-4 text-accent" />Regenerate QTI
-                  </button>
-                  <button onClick={() => handlePipelineAction("tagging")} disabled={!data.is_finalized}
-                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-lg hover:bg-white/5 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                    <Tag className="w-4 h-4 text-purple-400" />Regenerate Tags
-                  </button>
-                  <button onClick={() => handlePipelineAction("enrich")} disabled={!data.is_tagged}
-                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-lg hover:bg-white/5 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                    <Sparkles className="w-4 h-4 text-yellow-400" />{data.is_enriched ? "Re-enrich" : "Enrich"}
-                  </button>
-                  <button onClick={() => handlePipelineAction("validate")} disabled={!data.is_enriched}
-                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-lg hover:bg-white/5 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                    <Beaker className="w-4 h-4 text-blue-400" />{data.is_validated ? "Re-validate" : "Validate"}
-                  </button>
-                  <button onClick={() => handlePipelineAction("variant_gen")} disabled={!data.is_tagged}
-                    className="flex items-center gap-2 px-3 py-2 bg-surface border border-border rounded-lg hover:bg-white/5 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed">
-                    <CloudUpload className="w-4 h-4 text-green-400" />Generate Variants
-                  </button>
+                  <ActionButton
+                    onClick={() => handlePipelineAction("pdf_to_qti")}
+                    disabled={!data.has_split_pdf}
+                    icon={<RefreshCw className="w-4 h-4 text-accent" />}
+                    label="Regenerate QTI"
+                  />
+                  <ActionButton
+                    onClick={() => handlePipelineAction("tagging")}
+                    disabled={!data.is_finalized}
+                    icon={<Tag className="w-4 h-4 text-purple-400" />}
+                    label="Regenerate Tags"
+                  />
+                  <ActionButton
+                    onClick={() => handlePipelineAction("enrich")}
+                    disabled={!data.is_tagged}
+                    icon={<Sparkles className="w-4 h-4 text-yellow-400" />}
+                    label={data.is_enriched ? "Re-enrich" : "Enrich"}
+                  />
+                  <ActionButton
+                    onClick={() => handlePipelineAction("validate")}
+                    disabled={!data.is_enriched}
+                    icon={<Beaker className="w-4 h-4 text-blue-400" />}
+                    label={data.is_validated ? "Re-validate" : "Validate"}
+                  />
+                  <ActionButton
+                    onClick={() => handlePipelineAction("variant_gen")}
+                    disabled={!data.is_tagged}
+                    icon={<Layers className="w-4 h-4 text-green-400" />}
+                    label="Generate Variants"
+                  />
                 </div>
               </section>
 
@@ -264,7 +301,8 @@ export function QuestionDetailPanel({
                           <div className="mt-4 space-y-2">
                             {data.qti_options.map((opt) => (
                               <div key={opt.id} className="flex items-start gap-3 p-2 rounded bg-background">
-                                <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full text-xs font-medium bg-surface border border-border">
+                                <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center
+                                  rounded-full text-xs font-medium bg-surface border border-border">
                                   {opt.id}
                                 </span>
                                 <span className="text-sm">{opt.text}</span>
@@ -322,7 +360,12 @@ export function QuestionDetailPanel({
                         </button>
                         {showRawXml && (
                           <div className="mt-2 relative">
-                            <button onClick={copyXml} className="absolute top-2 right-2 p-1.5 bg-background hover:bg-white/10 rounded transition-colors" title="Copy XML">
+                            <button
+                              onClick={copyXml}
+                              className="absolute top-2 right-2 p-1.5 bg-background
+                                hover:bg-white/10 rounded transition-colors"
+                              title="Copy XML"
+                            >
                               <Copy className="w-4 h-4" />
                             </button>
                             {copiedXml && <span className="absolute top-2 right-10 text-xs text-success">Copied!</span>}
