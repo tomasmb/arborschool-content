@@ -1,0 +1,84 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="percentage-calc-001" title="Cálculo de Porcentaje - 15% de 60 000" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>¿Cuál es el <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>15</mn><mo>%</mo></math> de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>60</mn><mspace width="thickmathspace"/><mn>000</mn></math>?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>400</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este resultado corresponde a calcular el 1% de 40 000 o a confundir el 15% con un porcentaje mucho menor. Para hallar el 15% de 60 000 debes multiplicar 60 000 por 0,15, no por 0,01 ni por un número cercano a cero.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>900</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. 900 es el 1,5% de 60 000, no el 15%. Aquí probablemente se olvidó mover la coma al convertir 15% a 0,15 y se usó 0,015 en la multiplicación: 60 000 × 0,015 = 900. Recuerda que 15% = 15/100 = 0,15.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4000</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. 4 000 es aproximadamente el 6,7% de 60 000. Un error frecuente es tomar solo una parte del 10% y sumarla mal. El 10% de 60 000 es 6 000 y el 5% es 3 000, por lo que el 15% debe ser 6 000 + 3 000 = 9 000, no 4 000.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9000</mn></math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! 15% significa 15 de cada 100, es decir, 15/100 = 0,15. Al calcular 15% de 60 000, multiplicas 60 000 × 0,15 = 9 000. Otra forma: el 10% de 60 000 es 6 000 y el 5% es la mitad de eso, 3 000; sumando 6 000 + 3 000 obtienes 9 000.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método 1: Usando la definición de porcentaje</strong></p>
+        <ol>
+          <li>Escribe el porcentaje como fracción: 15% = 15/100.</li>
+          <li>Convierte la fracción a número decimal: 15/100 = 0,15.</li>
+          <li>Multiplica el número total por el decimal del porcentaje: 60 000 × 0,15.</li>
+          <li>Calcula el producto: 60 000 × 0,15 = 9 000.</li>
+          <li>Concluye que el 15% de 60 000 es 9 000.</li>
+        </ol>
+        <p><strong>Método 2: Descomponiendo en 10% y 5%</strong></p>
+        <ol>
+          <li>Calcula el 10% de 60 000: para obtener el 10%, divide por 10. Entonces, 60 000 ÷ 10 = 6 000.</li>
+          <li>Calcula el 5% de 60 000: el 5% es la mitad del 10%, por lo tanto, 5% de 60 000 = 6 000 ÷ 2 = 3 000.</li>
+          <li>Suma los resultados: 10% + 5% = 15%, entonces 6 000 + 3 000 = 9 000.</li>
+          <li>Concluye que el 15% de 60 000 es 9 000.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

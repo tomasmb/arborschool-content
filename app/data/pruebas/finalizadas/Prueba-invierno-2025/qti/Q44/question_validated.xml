@@ -1,0 +1,75 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-44" title="Cálculo de consumo de agua en estanque cilíndrico" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una industria hay un estanque de acumulación de agua con forma de cilindro recto, cuyas medidas del radio y altura son 2 m y 4 m, respectivamente.</p>
+    <p>El consumo de agua diario en la industria es del 50 % de la capacidad total del estanque.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuántos metros cúbicos de agua aproximadamente se consumen diariamente en la industria si se considera π aproximado a 3?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">6
+        <qti-feedback-inline identifier="FEED_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a calcular solo el 50 % del área de la base (3·2² = 12 y luego 12·0,5 = 6), olvidando multiplicar por la altura del cilindro para obtener el volumen total.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">12
+        <qti-feedback-inline identifier="FEED_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se calculó el área de la base (π·r² ≈ 3·2² = 12), pero no se multiplicó por la altura del cilindro ni se aplicó el 50 % de consumo diario.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">24
+        <qti-feedback-inline identifier="FEED_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Primero se calcula el volumen del cilindro: V = π·r²·h ≈ 3·2²·4 = 3·4·4 = 48 m³. Luego se toma el 50 % de ese volumen para el consumo diario: 0,5·48 = 24 m³.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">96
+        <qti-feedback-inline identifier="FEED_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta opción se duplicó el volumen correcto (48 m³ → 96 m³), lo que equivale a considerar un 200 % del volumen del estanque, en lugar del 50 % indicado en el enunciado.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del volumen del cilindro y porcentaje de consumo</strong></p>
+        <ol>
+          <li>Identificar los datos del cilindro: radio r = 2 m, altura h = 4 m y usar π ≈ 3, según indica el problema.</li>
+          <li>Calcular el volumen total del estanque usando la fórmula del volumen de un cilindro: V = π·r²·h.</li>
+          <li>Reemplazar los valores: V ≈ 3·(2)²·4 = 3·4·4 = 48 m³. Este es el volumen máximo de agua que puede contener el estanque.</li>
+          <li>Determinar el consumo diario, que es el 50 % del volumen total: 50 % de 48 m³ es 0,5·48 = 24 m³.</li>
+          <li>Concluir que el consumo diario de agua en la industria es de aproximadamente 24 metros cúbicos.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEED_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

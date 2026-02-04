@@ -205,7 +205,9 @@ async def get_question_detail(
             with open(validation_result_file, encoding="utf-8") as f:
                 validation_data = json_module.load(f)
             can_sync = validation_data.get("can_sync", False)
-            is_validated = can_sync or validation_data.get("success", False)
+            # Only can_sync=True means truly validated and ready for sync
+            # success=True just means the pipeline ran without errors
+            is_validated = can_sync
             # Extract validation details for display
             if "stages" in validation_data and "final_validation" in validation_data["stages"]:
                 validation_result = validation_data["stages"]["final_validation"]

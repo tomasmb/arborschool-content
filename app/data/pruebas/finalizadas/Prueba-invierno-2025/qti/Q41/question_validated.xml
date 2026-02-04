@@ -1,0 +1,157 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-41" title="Error en resolución de sistema de ecuaciones - Monedas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona dispone de $12\,000$ en monedas de $100$ y $500$, y en total tiene 36 monedas.</p>
+    <p>Para saber cuántas monedas tiene de cada tipo, efectúa el siguiente desarrollo, cometiendo un error.</p>
+    <p><strong>Paso 1:</strong> considera que <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> es la cantidad de monedas de $100$ e <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi></math> es la cantidad de monedas de $500$, planteando el siguiente sistema de ecuaciones:</p>
+    <p>
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtable columnalign="right center left">
+            <mtr>
+              <mtd><mn>100</mn><mi>x</mi><mo>+</mo><mn>500</mn><mi>y</mi></mtd>
+              <mtd><mo>=</mo></mtd>
+              <mtd><mn>12000</mn></mtd>
+            </mtr>
+            <mtr>
+              <mtd><mi>x</mi><mo>+</mo><mi>y</mi></mtd>
+              <mtd><mo>=</mo></mtd>
+              <mtd><mn>36</mn></mtd>
+            </mtr>
+          </mtable>
+        </mrow>
+      </math>
+    </p>
+    <p><strong>Paso 2:</strong> multiplica la segunda ecuación por <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mn>100</mn></math>, obteniendo</p>
+    <p>
+      <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+        <mrow>
+          <mtable columnalign="right center left">
+            <mtr>
+              <mtd><mn>100</mn><mi>x</mi><mo>+</mo><mn>500</mn><mi>y</mi></mtd>
+              <mtd><mo>=</mo></mtd>
+              <mtd><mn>12000</mn></mtd>
+            </mtr>
+            <mtr>
+              <mtd><mo>-</mo><mn>100</mn><mi>x</mi><mo>+</mo><mn>100</mn><mi>y</mi></mtd>
+              <mtd><mo>=</mo></mtd>
+              <mtd><mo>-</mo><mn>3600</mn></mtd>
+            </mtr>
+          </mtable>
+        </mrow>
+      </math>
+    </p>
+    <p>y luego suma hacia abajo las ecuaciones, obteniendo <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>y</mi><mo>=</mo><mn>14</mn></math>.</p>
+    <p><strong>Paso 3:</strong> reemplaza el resultado anterior en la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>+</mo><mi>y</mi><mo>=</mo><mn>36</mn></math>, obteniendo <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>22</mn></math>.</p>
+    <p><strong>Paso 4:</strong> por último, concluye que tiene 14 monedas de $500$ y 22 monedas de $100$.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿En cuál de los pasos se cometió el error?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">En el Paso 1
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En el Paso 1 el sistema está bien planteado: 100x + 500y = 12000 representa el total de dinero y x + y = 36 representa el total de monedas. El error no está en la traducción del enunciado a ecuaciones.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En el Paso 2
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El error está en el Paso 2: al multiplicar la ecuación x + y = 36 por -100, el término 100y debería quedar como -100y, no como +100y. Es decir, la ecuación correcta sería -100x - 100y = -3600. El signo de 100y está mal, y eso provoca que el valor de y obtenido (14) sea incorrecto.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">En el Paso 3
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En el Paso 3 se reemplaza y = 14 en la ecuación x + y = 36, obteniendo x = 22. Ese reemplazo y la operación están bien hechos. El problema es que el valor y = 14 ya venía mal desde el Paso 2.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">En el Paso 4
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En el Paso 4 solo se interpreta el resultado obtenido: 14 monedas de $500 y 22 de $100. Esa conclusión sería correcta si los valores de x e y fueran correctos. El error real ocurre antes, en el procedimiento de eliminación del Paso 2.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución correcta del sistema de ecuaciones (método de eliminación)</strong></p>
+        <ol>
+          <li>Plantear el sistema a partir del enunciado:
+            <ul>
+              <li>Sea x la cantidad de monedas de $100 y y la cantidad de monedas de $500.</li>
+              <li>Total de dinero: 100x + 500y = 12000.</li>
+              <li>Total de monedas: x + y = 36.</li>
+              <li>Sistema:
+                <br/>100x + 500y = 12000
+                <br/>x + y = 36
+              </li>
+            </ul>
+          </li>
+          <li>Multiplicar la segunda ecuación por -100 para eliminar x:
+            <ul>
+              <li>Ecuación 2: x + y = 36.</li>
+              <li>Multiplicando por -100: -100x - 100y = -3600.</li>
+              <li>El error del enunciado fue escribir -100x + 100y en lugar de -100x - 100y.</li>
+            </ul>
+          </li>
+          <li>Sumar las ecuaciones para encontrar y:
+            <ul>
+              <li>100x + 500y = 12000</li>
+              <li>-100x - 100y = -3600</li>
+              <li>Sumando término a término:
+                <br/>(100x - 100x) + (500y - 100y) = 12000 - 3600
+                <br/>0x + 400y = 8400
+                <br/>400y = 8400
+                <br/>y = 8400 / 400 = 21.
+              </li>
+            </ul>
+          </li>
+          <li>Reemplazar el valor de y en la ecuación x + y = 36:
+            <ul>
+              <li>x + y = 36</li>
+              <li>x + 21 = 36</li>
+              <li>x = 36 - 21 = 15.</li>
+            </ul>
+          </li>
+          <li>Interpretar la solución:
+            <ul>
+              <li>x = 15: tiene 15 monedas de $100.</li>
+              <li>y = 21: tiene 21 monedas de $500.</li>
+              <li>Verificación:
+                <ul>
+                  <li>Total de monedas: 15 + 21 = 36.</li>
+                  <li>Total de dinero: 15·100 + 21·500 = 1500 + 10500 = 12000.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

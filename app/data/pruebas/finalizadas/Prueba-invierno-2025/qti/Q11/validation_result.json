@@ -1,0 +1,30 @@
+{
+  "question_id": "prueba-invierno-2025-Q11",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-04T21:16:06.881787+00:00",
+  "success": false,
+  "stage_failed": "feedback_review",
+  "error": "Feedback review failed: feedback_accuracy",
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "fail",
+      "feedback_accuracy": {
+        "status": "fail",
+        "issues": [
+          "En la opción A, el feedback afirma que el error proviene de multiplicar por 100 000 en lugar de dividir por 100 000 al pasar de centímetros a kilómetros. Sin embargo, el valor de la alternativa ('32 186 800 000 kilómetros') no corresponde a aplicar ese error sobre el valor correcto (3,21868 km); sería 321 868 km, no 32 186 800 000 km. Por tanto, el error descrito no genera el número de la alternativa.",
+          "En la opción D, el feedback indica que el valor corresponde aproximadamente a media milla convertida a kilómetros o a haber usado x = 0,5 en lugar de x = 2. En realidad, 0,80467 km es aproximadamente la conversión de 0,5 millas a kilómetros (0,5 × 1,60934 ≈ 0,80467), lo que implica que se usó correctamente el factor milla→km, no la ecuación dada en centímetros. La explicación mezcla causas posibles sin vincularlas correctamente con la ecuación C = 160 934 × x."
+        ],
+        "reasoning": "Los cálculos numéricos en el feedback de la opción correcta y en la solución paso a paso son consistentes: 2 × 160 934 = 321 868 cm y 321 868 ÷ 100 000 = 3,21868 km. Sin embargo, en la opción A se atribuye a la alternativa un error de conversión (multiplicar por 100 000 en vez de dividir) que no produce el valor mostrado, y en la opción D se describe una causa (usar x = 0,5 en la ecuación dada) que no se corresponde con el valor numérico si se sigue estrictamente esa ecuación. Estas desalineaciones entre la explicación del error y los valores de las alternativas constituyen errores factuales en el feedback."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'multiplicar', 'dividir', 'convertir' y recordando explícitamente que 1 km = 100 000 cm. El feedback de la opción correcta y la solución paso a paso explican el procedimiento de manera ordenada y específica para esta pregunta. Aunque en A y D hay problemas de precisión factual, desde el punto de vista de claridad pedagógica el mensaje es comprensible y apunta a errores típicos (confundir multiplicar/dividir y usar una fracción de la distancia)."
+      },
+      "overall_reasoning": "La solución y el feedback de la alternativa correcta son matemáticamente coherentes y claros, pero en las opciones incorrectas A y D la descripción de los errores no coincide con los valores numéricos de las alternativas, lo que introduce inexactitudes factuales en la retroalimentación. Por ello, aunque el enfoque pedagógico es adecuado, la revisión global debe marcarse como fail por problemas de precisión en la explicación de los errores."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": null
+}

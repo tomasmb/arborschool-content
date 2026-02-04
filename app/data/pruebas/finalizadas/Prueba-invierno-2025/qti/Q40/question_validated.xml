@@ -1,0 +1,91 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-40" title="Cálculo de variable en funciones de costo de estacionamiento" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos estacionamientos cobran en función de la cantidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> de minutos que un vehículo permanece estacionado.</p>
+    <p>Para calcular el cobro por estacionar, en pesos, se utilizan las siguientes funciones:</p>
+    <p>Estacionamiento 1: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>1000</mn><mo>+</mo><mn>25</mn><mi>x</mi></math></p>
+    <p>Estacionamiento 2: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>p</mi><mo>+</mo><mn>15</mn><mi>x</mi></math></p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es el valor de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi></math>, considerando que ambos estacionamientos cobran lo mismo por 60 minutos de uso?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">94
+        <qti-feedback-inline identifier="FEEDBACK_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Corresponde a calcular solo la diferencia entre los cobros variables por minuto (25 − 15 = 10) y luego dividir el costo fijo 1000 por 10, sin considerar que se debe igualar los cobros totales para 60 minutos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">400
+        <qti-feedback-inline identifier="FEEDBACK_B" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción surge de restar mal los términos al igualar las funciones, por ejemplo, haciendo 1000 − 15·60 en lugar de 1000 + 25·60 = p + 15·60 y despejar correctamente p.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">1600
+        <qti-feedback-inline identifier="FEEDBACK_C" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Al igualar los cobros para 60 minutos se tiene f(60) = g(60): 1000 + 25·60 = p + 15·60. Entonces 1000 + 1500 = p + 900, es decir 2500 = p + 900, por lo que p = 2500 − 900 = 1600.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">2500
+        <qti-feedback-inline identifier="FEEDBACK_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se confunde el valor de p con el valor total del cobro en el estacionamiento 1 para 60 minutos (1000 + 25·60 = 2500), olvidando que p es solo el costo fijo del estacionamiento 2, no el total a pagar.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Igualación de funciones de costo para un mismo tiempo</strong></p>
+        <ol>
+          <li>Escribimos las funciones de cobro para 60 minutos:
+            <ul>
+              <li>Estacionamiento 1: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mn>60</mn><mo>)</mo><mo>=</mo><mn>1000</mn><mo>+</mo><mn>25</mn><mo>&#xB7;</mo><mn>60</mn></math></li>
+              <li>Estacionamiento 2: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mn>60</mn><mo>)</mo><mo>=</mo><mi>p</mi><mo>+</mo><mn>15</mn><mo>&#xB7;</mo><mn>60</mn></math></li>
+            </ul>
+          </li>
+          <li>Como ambos cobran lo mismo por 60 minutos, igualamos los valores:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mn>60</mn><mo>)</mo><mo>=</mo><mi>g</mi><mo>(</mo><mn>60</mn><mo>)</mo></math>, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1000</mn><mo>+</mo><mn>25</mn><mo>&#xB7;</mo><mn>60</mn><mo>=</mo><mi>p</mi><mo>+</mo><mn>15</mn><mo>&#xB7;</mo><mn>60</mn></math>.</p>
+          </li>
+          <li>Calculamos los productos:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn><mo>&#xB7;</mo><mn>60</mn><mo>=</mo><mn>1500</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>15</mn><mo>&#xB7;</mo><mn>60</mn><mo>=</mo><mn>900</mn></math>, por lo que la igualdad queda: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1000</mn><mo>+</mo><mn>1500</mn><mo>=</mo><mi>p</mi><mo>+</mo><mn>900</mn></math>.</p>
+          </li>
+          <li>Sumamos en el lado izquierdo:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2500</mn><mo>=</mo><mi>p</mi><mo>+</mo><mn>900</mn></math>.</p>
+          </li>
+          <li>Despejamos p restando 900 en ambos lados:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi><mo>=</mo><mn>2500</mn><mo>&#x2212;</mo><mn>900</mn><mo>=</mo><mn>1600</mn></math>.</p>
+          </li>
+          <li>Por lo tanto, el valor de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi></math> es 1600.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

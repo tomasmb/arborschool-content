@@ -189,7 +189,9 @@ class StatusTracker:
                     try:
                         with open(validation_result_file, encoding="utf-8") as f:
                             vdata = json.load(f)
-                        is_validated = vdata.get("can_sync", False) or vdata.get("success", False)
+                        # Only can_sync=True means truly validated and ready for sync
+                        # success=True just means the pipeline ran without errors
+                        is_validated = vdata.get("can_sync", False)
                     except (json.JSONDecodeError, OSError):
                         pass
 

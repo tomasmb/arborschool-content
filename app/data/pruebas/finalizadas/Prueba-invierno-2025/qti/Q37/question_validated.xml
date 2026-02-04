@@ -1,0 +1,75 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-37" title="Problema de Razones - Academia" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una academia hay 120 personas, entre hombres y mujeres. La cantidad de hombres es a la cantidad de mujeres como 1 es a 3.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuántas mujeres hay en la academia?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">30
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Esta opción corresponde a tomar solo una parte de la razón 1:3 (por ejemplo, pensar que 120 ÷ 4 = 30) y confundir esa “parte” con la cantidad de mujeres. En realidad, 30 sería la cantidad de hombres (1 parte), no de mujeres (3 partes).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">40
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Esta respuesta supone que la razón 1:3 se aplica directamente a 120 como si 1 + 3 = 3, en vez de 4, o que se está usando una fracción equivocada (por ejemplo, 120 × 1/3). La razón 1:3 significa 1 parte de hombres y 3 partes de mujeres, en total 4 partes, no 3.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">60
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta opción surge de pensar que hombres y mujeres están en partes iguales (1:1), dividiendo 120 en dos mitades (60 y 60). Sin embargo, el enunciado indica una razón 1:3, es decir, hay muchas más mujeres que hombres, no la misma cantidad.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">90
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">¡Correcto! La razón 1:3 indica que por cada 1 hombre hay 3 mujeres, es decir, en total hay 1 + 3 = 4 partes iguales. Si las 4 partes suman 120 personas, cada parte vale 120 ÷ 4 = 30. Como las mujeres corresponden a 3 partes, se tiene 3 × 30 = 90 mujeres.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método con razón y partes proporcionales</strong></p>
+        <ol>
+          <li>Identificar la razón entre hombres y mujeres: 1 : 3. Esto significa que por cada 1 hombre hay 3 mujeres.</li>
+          <li>Calcular el total de partes en la razón: 1 (hombres) + 3 (mujeres) = 4 partes en total.</li>
+          <li>Relacionar las partes con el total de personas: esas 4 partes representan a las 120 personas de la academia.</li>
+          <li>Encontrar el valor de una parte: dividir el total por el número de partes: 120 ÷ 4 = 30. Cada parte equivale a 30 personas.</li>
+          <li>Calcular cuántas mujeres hay: las mujeres son 3 partes, por lo tanto 3 × 30 = 90 mujeres.</li>
+          <li>Conclusión: en la academia hay 90 mujeres.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

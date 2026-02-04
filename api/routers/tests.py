@@ -14,8 +14,12 @@ Endpoints:
 
 from __future__ import annotations
 
+import logging
+
 from fastapi import APIRouter, HTTPException, UploadFile
 from pydantic import BaseModel, Field
+
+logger = logging.getLogger(__name__)
 
 from api.config import PRUEBAS_FINALIZADAS_DIR, PRUEBAS_RAW_DIR, SUBJECTS_CONFIG
 from api.schemas.pipeline_models import (
@@ -95,11 +99,22 @@ async def start_enrichment(
     """
     _validate_subject_and_test(subject_id, test_id)
 
+    logger.warning(
+        f"[ENRICH API] Starting enrichment: test_id={test_id}, "
+        f"question_ids={request.question_ids}, all_tagged={request.all_tagged}, "
+        f"skip_already_enriched={request.skip_already_enriched}"
+    )
+
     job_id, questions_count, estimated_cost = await enrichment_service.start_enrichment_job(
         test_id=test_id,
         question_ids=request.question_ids,
         all_tagged=request.all_tagged,
         skip_already_enriched=request.skip_already_enriched,
+    )
+
+    logger.warning(
+        f"[ENRICH API] Job created: job_id={job_id}, "
+        f"questions_to_process={questions_count}, estimated_cost=${estimated_cost}"
     )
 
     return EnrichmentJobResponse(

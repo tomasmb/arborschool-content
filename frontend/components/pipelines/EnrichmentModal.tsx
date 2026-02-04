@@ -88,10 +88,12 @@ export function EnrichmentModal({
         if (data.status === "completed") {
           setResults(data.results || []);
           setStep("results");
-        } else if (data.status !== "pending" && data.status !== "running") {
+        } else if (data.status === "failed") {
+          // Only treat explicit "failed" status as an error
           setError("Enrichment job failed unexpectedly");
           setStep("results");
         }
+        // "started" and "in_progress" continue polling
       } catch (err) {
         console.error("Failed to poll enrichment status:", err);
       }
