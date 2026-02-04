@@ -14,7 +14,7 @@ Before implementing the new feedback pipeline, we need to clean up:
 
 ## Acceptance Criteria
 
-- [ ] All `metadata_tags.json` files have `feedback` field removed
+- [x] All `metadata_tags.json` files have `feedback` field removed
 - [ ] `app/sync/models.py` has redundant fields removed
 - [ ] `app/sync/extractors.py` has feedback/correct_answer extraction removed
 - [ ] `app/sync/transformers.py` has mapping for removed fields removed
@@ -237,7 +237,7 @@ Remove:
 ## Summary Checklist
 
 ```
-[ ] 1.1 Create and run cleanup_old_feedback.py script
+[x] 1.1 Create and run cleanup_old_feedback.py script
 [ ] 1.2 Clean app/sync/models.py
 [ ] 1.3 Clean app/sync/extractors.py
 [ ] 1.4 Clean app/sync/transformers.py
