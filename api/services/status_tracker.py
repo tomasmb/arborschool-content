@@ -253,7 +253,8 @@ class StatusTracker:
 
         # split_count: if QTI exists, consider it "split" even without PDF
         # (QTI is the goal, PDF is just an intermediate step)
-        split_count = max(pdf_split_count, qti_count)
+        # Cap at finalized_count to avoid >100% when procesadas has extra PDFs
+        split_count = min(max(pdf_split_count, qti_count), finalized_count)
 
         return {
             "raw_pdf_exists": raw_pdf_exists,
