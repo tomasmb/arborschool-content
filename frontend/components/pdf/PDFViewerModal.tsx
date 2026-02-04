@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import { Document, Page, pdfjs } from "react-pdf";
+import { useState, useCallback, useEffect, type ComponentType } from "react";
 import {
   X,
   ZoomIn,
@@ -13,11 +12,33 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Set up PDF.js worker using CDN (reliable with Next.js)
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+// Lazy-load react-pdf components to avoid SSR/webpack issues
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let DocumentComponent: ComponentType<any> | null = null;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let PageComponent: ComponentType<any> | null = null;
+let pdfInitialized = false;
 
-import "react-pdf/dist/Page/AnnotationLayer.css";
-import "react-pdf/dist/Page/TextLayer.css";
+async function initPdfJs(): Promise<boolean> {
+  if (pdfInitialized) return true;
+  if (typeof window === "undefined") return false;
+
+  try {
+    const reactPdf = await import("react-pdf");
+    DocumentComponent = reactPdf.Document;
+    PageComponent = reactPdf.Page;
+
+    // Set up worker using CDN
+    reactPdf.pdfjs.GlobalWorkerOptions.workerSrc =
+      `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${reactPdf.pdfjs.version}/pdf.worker.min.mjs`;
+
+    pdfInitialized = true;
+    return true;
+  } catch (err) {
+    console.error("Failed to load PDF.js:", err);
+    return false;
+  }
+}
 
 export interface PDFViewerModalProps {
   /** Whether the modal is open */
@@ -56,8 +77,16 @@ export function PDFViewerModal({
   const [zoomIndex, setZoomIndex] = useState<number>(DEFAULT_ZOOM_INDEX);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [pdfReady, setPdfReady] = useState<boolean>(pdfInitialized);
 
   const zoom = ZOOM_LEVELS[zoomIndex];
+
+  // Initialize PDF.js on mount
+  useEffect(() => {
+    if (!pdfInitialized && isOpen) {
+      initPdfJs().then(() => setPdfReady(true));
+    }
+  }, [isOpen]);
 
   // Reset state when PDF changes
   useEffect(() => {
@@ -182,33 +211,41 @@ export function PDFViewerModal({
 
       {/* PDF Content */}
       <div className="flex-1 overflow-auto flex items-start justify-center p-4 bg-gray-900">
-        {loading && (
+        {!pdfReady && (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-text-secondary">Loading PDF viewer...</div>
+          </div>
+        )}
+
+        {pdfReady && loading && (
           <div className="flex items-center justify-center h-full">
             <div className="text-text-secondary">Loading PDF...</div>
           </div>
         )}
 
-        {error && (
+        {pdfReady && error && (
           <div className="flex items-center justify-center h-full">
             <div className="text-error">Error: {error}</div>
           </div>
         )}
 
-        <Document
-          file={pdfUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={onDocumentLoadError}
-          loading={null}
-          className="flex flex-col items-center"
-        >
-          <Page
-            pageNumber={currentPage}
-            scale={zoom}
-            renderTextLayer
-            renderAnnotationLayer
-            className="shadow-xl"
-          />
-        </Document>
+        {pdfReady && DocumentComponent && PageComponent && (
+          <DocumentComponent
+            file={pdfUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={null}
+            className="flex flex-col items-center"
+          >
+            <PageComponent
+              pageNumber={currentPage}
+              scale={zoom}
+              renderTextLayer
+              renderAnnotationLayer
+              className="shadow-xl"
+            />
+          </DocumentComponent>
+        )}
       </div>
 
       {/* Footer - Page navigation */}
@@ -308,6 +345,14 @@ export function PDFPreview({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [pdfReady, setPdfReady] = useState<boolean>(pdfInitialized);
+
+  // Initialize PDF.js on mount
+  useEffect(() => {
+    if (!pdfInitialized) {
+      initPdfJs().then(() => setPdfReady(true));
+    }
+  }, []);
 
   const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
     setNumPages(numPages);
@@ -359,18 +404,33 @@ export function PDFPreview({
       </div>
 
       {/* Content */}
-      <div className="flex items-center justify-center overflow-auto" style={{ height: "calc(100% - 36px)" }}>
-        {loading && <div className="text-text-secondary text-sm">Loading...</div>}
-        {error && <div className="text-error text-sm">Error: {error}</div>}
+      <div
+        className="flex items-center justify-center overflow-auto"
+        style={{ height: "calc(100% - 36px)" }}
+      >
+        {!pdfReady && <div className="text-text-secondary text-sm">Loading...</div>}
+        {pdfReady && loading && (
+          <div className="text-text-secondary text-sm">Loading...</div>
+        )}
+        {pdfReady && error && (
+          <div className="text-error text-sm">Error: {error}</div>
+        )}
 
-        <Document
-          file={pdfUrl}
-          onLoadSuccess={onDocumentLoadSuccess}
-          onLoadError={onDocumentLoadError}
-          loading={null}
-        >
-          <Page pageNumber={currentPage} width={280} renderTextLayer={false} renderAnnotationLayer={false} />
-        </Document>
+        {pdfReady && DocumentComponent && PageComponent && (
+          <DocumentComponent
+            file={pdfUrl}
+            onLoadSuccess={onDocumentLoadSuccess}
+            onLoadError={onDocumentLoadError}
+            loading={null}
+          >
+            <PageComponent
+              pageNumber={currentPage}
+              width={280}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+            />
+          </DocumentComponent>
+        )}
       </div>
     </div>
   );
