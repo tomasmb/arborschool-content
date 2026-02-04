@@ -1,0 +1,111 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="boxplot-bicicletas" title="Diagrama de cajón de cantidad de bicicletas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un curso de 20 estudiantes se realizó una encuesta en la que se consultó sobre cuántas bicicletas hay en el hogar de cada uno. Las respuestas se registran en la siguiente tabla:</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>0</th>
+            <th>0</th>
+            <th>1</th>
+            <th>1</th>
+            <th>1</th>
+            <th>1</th>
+            <th>2</th>
+            <th>2</th>
+            <th>2</th>
+            <th>2</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2</td>
+            <td>2</td>
+            <td>2</td>
+            <td>3</td>
+            <td>3</td>
+            <td>3</td>
+            <td>4</td>
+            <td>4</td>
+            <td>5</td>
+            <td>6</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>¿Cuál de los siguientes diagramas de cajón representa correctamente los datos?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q65_img0.png" alt="Diagrama de cajón con eje horizontal de 0 a 6 bicicletas, caja aproximadamente desde 1 hasta 4 bicicletas y línea de la mediana cerca de 2 bicicletas, con bigotes que se extienden hasta 0 y 6 bicicletas."/></p>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA">Incorrecto. En este diagrama el cuartil superior (Q3) está cerca de 4, como si el 75% de los datos fuera menor o igual que 4. Sin embargo, al ordenar los 20 datos, el valor que corresponde a Q3 es 3 (promedio entre el 15.º y 16.º dato, ambos 3). Esta opción surge de calcular mal Q3, tomando un valor demasiado grande para el tercer cuartil.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q65_img1.png" alt="Diagrama de cajón con eje horizontal de 0 a 6 bicicletas, caja desde 1 hasta 3 bicicletas, línea de la mediana en 2 bicicletas y bigotes que se extienden desde 0 hasta 6 bicicletas, correspondiente a los valores mínimos 0, cuartil inferior 1, mediana 2, cuartil superior 3 y máximo 6."/></p>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB">¡Correcto! Al ordenar los 20 datos, el mínimo es 0 y el máximo es 6. La mediana es el promedio entre el 10.º y 11.º dato, ambos 2, por lo que la mediana es 2. El cuartil inferior Q1 es el promedio entre el 5.º y 6.º dato (ambos 1), por lo que Q1 = 1. El cuartil superior Q3 es el promedio entre el 15.º y 16.º dato (ambos 3), por lo que Q3 = 3. El diagrama correcto debe tener bigotes en 0 y 6, caja desde 1 hasta 3 y la mediana en 2, tal como se muestra en esta opción.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q65_img2.png" alt="Diagrama de cajón con eje horizontal de 0 a 6 bicicletas, con posiciones de la caja y la mediana que no coinciden con un cuartil inferior en 1 y un cuartil superior en 3; representa una distribución diferente de los datos."/></p>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC">Incorrecto. En este diagrama la posición de la mediana y/o de los cuartiles no coincide con los valores reales de los datos. La mediana debe ser 2 (entre el 10.º y 11.º dato), y los cuartiles deben ser Q1 = 1 y Q3 = 3. Esta opción refleja un error al ubicar la mediana o los cuartiles sin considerar correctamente las posiciones 5-6 (para Q1) y 15-16 (para Q3) en el conjunto de 20 datos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q65_img3.png" alt="Diagrama de cajón con eje horizontal de 0 a 6 bicicletas, donde la caja y la posición de la mediana difieren de la combinación correcta de mínimo 0, cuartil inferior 1, mediana 2, cuartil superior 3 y máximo 6."/></p>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD">Incorrecto. Este diagrama no respeta simultáneamente los cinco valores clave: mínimo 0, Q1 = 1, mediana 2, Q3 = 3 y máximo 6. La caja y/o la línea de la mediana están desplazadas, como si se hubiera usado otra forma de dividir los datos (por ejemplo, tomando mal las posiciones de los cuartiles o confundiendo frecuencia con valor). El diagrama correcto debe tener la caja de 1 a 3 y la mediana en 2.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo de los cinco números para construir el diagrama de cajón</strong></p>
+        <ol>
+          <li><strong>Ordenar los datos</strong>: ya están ordenados en la tabla:<br/>0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5, 6.</li>
+          <li><strong>Identificar el mínimo y el máximo</strong>:<br/>Mínimo = 0 (el valor más pequeño).<br/>Máximo = 6 (el valor más grande).</li>
+          <li><strong>Calcular la mediana</strong>: hay 20 datos, por lo que la mediana es el promedio entre el 10.º y el 11.º dato.<br/>10.º dato = 2, 11.º dato = 2, entonces mediana = (2 + 2) / 2 = 2.</li>
+          <li><strong>Calcular el cuartil inferior Q1</strong>: se toma la mitad inferior de los datos (los primeros 10 valores) y se halla su mediana.<br/>Mitad inferior: 0, 0, 1, 1, 1, 1, 2, 2, 2, 2.<br/>La mediana de estos 10 datos es el promedio entre el 5.º y 6.º dato: ambos son 1, por lo que Q1 = (1 + 1) / 2 = 1.</li>
+          <li><strong>Calcular el cuartil superior Q3</strong>: se toma la mitad superior de los datos (los últimos 10 valores) y se halla su mediana.<br/>Mitad superior: 2, 2, 2, 3, 3, 3, 4, 4, 5, 6.<br/>La mediana de estos 10 datos es el promedio entre el 15.º y 16.º dato del total, que en esta mitad corresponden al 5.º y 6.º dato: ambos son 3, por lo que Q3 = (3 + 3) / 2 = 3.</li>
+          <li><strong>Construir el diagrama de cajón</strong>:<br/>• Bigote izquierdo en el mínimo: 0.<br/>• Inicio de la caja en Q1: 1.<br/>• Línea dentro de la caja en la mediana: 2.<br/>• Fin de la caja en Q3: 3.<br/>• Bigote derecho en el máximo: 6.<br/>El diagrama que muestra exactamente estos cinco valores es la alternativa B.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

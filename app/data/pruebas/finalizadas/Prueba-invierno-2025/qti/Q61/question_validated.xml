@@ -1,0 +1,83 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-61" title="Comparación de salarios y promedios en dos sucursales" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una empresa tiene dos sucursales. El promedio de los salarios de los trabajadores en la Sucursal 1 es de $550 000, mientras que el promedio de los salarios en la Sucursal 2 es de $450 000. Además, la Sucursal 2 tiene el doble de trabajadores que la Sucursal 1.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es siempre verdadera?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La suma de los salarios en la Sucursal 2 es menor que la suma de los salarios en la Sucursal 1.
+        <qti-feedback-inline identifier="FEEDBACK_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Confundes el promedio con la suma total: aunque el promedio en la Sucursal 2 es menor, como tiene el doble de trabajadores, su suma total de salarios puede ser mayor que la de la Sucursal 1.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Hay al menos un trabajador en la Sucursal 1 que gana $100 000 más que cualquier trabajador de la Sucursal 2.
+        <qti-feedback-inline identifier="FEEDBACK_B" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Interpretas el promedio como si fuera el sueldo de cada trabajador: que el promedio sea $550 000 y $450 000 no implica que todos ganen esos montos ni que exista alguien que gane exactamente $100 000 más que todos los de la otra sucursal.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">El promedio de los salarios de ambas sucursales equivale al promedio entre $550 000 y $450 000.
+        <qti-feedback-inline identifier="FEEDBACK_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Estás calculando un promedio simple de los promedios sin considerar que la Sucursal 2 tiene el doble de trabajadores; para el promedio conjunto se debe usar un promedio ponderado, no solo promediar 550 000 y 450 000.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La suma total de los salarios en la Sucursal 2 es menor que el doble de la suma de los salarios en la Sucursal 1.
+        <qti-feedback-inline identifier="FEEDBACK_D" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Si la Sucursal 1 tiene N trabajadores, su suma total es 550 000·N. La Sucursal 2 tiene 2N trabajadores, con suma total 450 000·2N = 900 000·N. El doble de la suma de la Sucursal 1 es 2·(550 000·N) = 1 100 000·N. Como 900 000·N &lt; 1 100 000·N, la suma de la Sucursal 2 es siempre menor que el doble de la suma de la Sucursal 1.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo algebraico de las sumas totales y comparación</strong></p>
+        <ol>
+          <li>Sea N el número de trabajadores de la Sucursal 1. Entonces, como el promedio de sueldo es $550 000, la suma total de los salarios en la Sucursal 1 es:
+            <br/>Suma Sucursal 1 = 550 000 · N.
+          </li>
+          <li>La Sucursal 2 tiene el doble de trabajadores, es decir, 2N trabajadores, y su promedio de sueldo es $450 000. Por lo tanto, la suma total de los salarios en la Sucursal 2 es:
+            <br/>Suma Sucursal 2 = 450 000 · 2N = 900 000 · N.
+          </li>
+          <li>Ahora calculamos el doble de la suma de los salarios de la Sucursal 1:
+            <br/>Doble de la suma Sucursal 1 = 2 · (550 000 · N) = 1 100 000 · N.
+          </li>
+          <li>Comparamos la suma de la Sucursal 2 con el doble de la suma de la Sucursal 1:
+            <br/>Suma Sucursal 2 = 900 000 · N
+            <br/>Doble suma Sucursal 1 = 1 100 000 · N
+            <br/>Como 900 000 · N &lt; 1 100 000 · N para cualquier N &gt; 0, se cumple siempre que:
+            <br/>Suma Sucursal 2 &lt; 2 · (Suma Sucursal 1).
+          </li>
+          <li>Por lo tanto, la afirmación que siempre es verdadera es:
+            <br/>“La suma total de los salarios en la Sucursal 2 es menor que el doble de la suma de los salarios en la Sucursal 1” (alternativa D).</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -460,7 +460,9 @@ function QuestionExpandedContent({
                 ) : (
                   <XCircle className="w-4 h-4" />
                 )}
-                <span className="font-medium capitalize">{detail.validation_result.status || "unknown"}</span>
+<span className="font-medium capitalize">
+                  {detail.validation_result.validation_result || "unknown"}
+                </span>
               </div>
               {detail.validation_result.overall_reasoning && (
                 <p className="mt-1 text-xs opacity-80">{detail.validation_result.overall_reasoning}</p>

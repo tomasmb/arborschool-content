@@ -1,0 +1,109 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-63" title="Cálculo de frecuencia en tabla de distribución dada una probabilidad" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la tabla adjunta se presenta la distribución de los participantes en los talleres que ofrece una municipalidad.</p>
+    <div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Talleres</th>
+            <th>Pintura al óleo</th>
+            <th>Diseño Web</th>
+            <th>Repostería</th>
+            <th>Zumba</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cantidad de personas</td>
+            <td>20</td>
+            <td>18</td>
+            <td>x</td>
+            <td>26</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Se sabe que al escoger al azar a una persona de los talleres, la probabilidad de que esta participe en el taller de pintura al óleo es 0,25.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es la cantidad de personas que participa en el taller de repostería?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">48
+        <qti-feedback-inline identifier="FEEDBACK_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta alternativa se asume que 0,25 corresponde a la fracción de personas que NO están en pintura al óleo, por lo que se resta 0,25 a 1 y se trabaja con 0,75 como si fuera la probabilidad de repostería. Esto es un error, porque 0,25 se refiere solo al taller de pintura al óleo, no al complemento ni a la suma de los otros talleres.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">32
+        <qti-feedback-inline identifier="FEEDBACK_B" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción suele aparecer al confundir la probabilidad 0,25 con una proporción aplicada solo a parte de los datos (por ejemplo, sumando algunos talleres y no el total) o al hacer un cálculo aproximado del total de personas sin considerar que 20 debe ser exactamente el 25% del total. El total debe ser un número que cumpla 20 = 0,25 × total, lo que no ocurre si el total fuera 80 (que llevaría a 32 en repostería).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">16
+        <qti-feedback-inline identifier="FEEDBACK_C" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Si la probabilidad de elegir a alguien del taller de pintura al óleo es 0,25, eso significa que el 25% de todas las personas está en ese taller. Como en pintura al óleo hay 20 personas, se cumple 20 = 0,25 × (total de personas). De ahí se obtiene que el total de personas es 80. Luego, sumando los participantes de todos los talleres (20 + 18 + x + 26) también debe dar 80, por lo que x = 80 − (20 + 18 + 26) = 16.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">4
+        <qti-feedback-inline identifier="FEEDBACK_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta alternativa suele surgir al aplicar mal la fracción 0,25, por ejemplo, restando 20 personas a un total supuesto de 24 o usando 0,25 como si fuera la fracción de repostería en lugar de la de pintura al óleo. Recuerda que 0,25 se refiere exclusivamente al taller de pintura al óleo, y primero se debe encontrar el total de personas antes de calcular cuántas están en repostería.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del total de personas a partir de una probabilidad y uso de la suma de frecuencias</strong></p>
+        <ol>
+          <li>Interpretar la probabilidad dada: La probabilidad de que una persona participe en el taller de pintura al óleo es 0,25. Esto significa que el 25% de todas las personas que asisten a los talleres está en pintura al óleo.</li>
+          <li>Plantear la ecuación con el total de personas: Sea T el total de personas en todos los talleres. Como en pintura al óleo hay 20 personas y eso corresponde al 25% del total, se cumple:
+            <br/>20 = 0,25 × T</li>
+          <li>Calcular el total de personas T: Despejamos T en la ecuación anterior:
+            <br/>T = 20 ÷ 0,25
+            <br/>T = 20 ÷ (1/4)
+            <br/>T = 20 × 4 = 80
+            <br/>Por lo tanto, en total hay 80 personas en los talleres.</li>
+          <li>Usar la suma de las frecuencias para encontrar x: La suma de las personas en todos los talleres debe ser igual al total T:
+            <br/>20 (pintura al óleo) + 18 (diseño web) + x (repostería) + 26 (zumba) = 80
+            <br/>20 + 18 + 26 = 64
+            <br/>Entonces:
+            <br/>64 + x = 80</li>
+          <li>Despejar x:
+            <br/>x = 80 − 64
+            <br/>x = 16
+            <br/>Por lo tanto, la cantidad de personas que participa en el taller de repostería es 16.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
