@@ -15,25 +15,25 @@
     <p>¿Cuántos números enteros positivos son mayores o iguales que -4 y menores que 3?</p>
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-simple-choice identifier="ChoiceA">2
-        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Los números enteros positivos que cumplen ser mayores o iguales que -4 y menores que 3 son 1 y 2. El 0 no se considera positivo, y 3 no se incluye porque la condición es &quot;menor que 3&quot;. Por lo tanto, hay exactamente 2 números enteros positivos en ese rango.</qti-feedback-inline>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Los números enteros positivos que cumplen la condición son aquellos mayores o iguales que -4 y menores que 3, pero además deben ser &quot;positivos&quot;. Los enteros en el rango [-4, 3) son: -4, -3, -2, -1, 0, 1, 2. De ellos, los únicos positivos son 1 y 2, es decir, hay exactamente 2 números enteros positivos que cumplen la condición.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">3
-        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción suele aparecer cuando se cuenta también el 0 como número positivo (0, 1 y 2). Sin embargo, en matemáticas escolares se considera que los enteros positivos comienzan en 1, por lo que 0 no debe incluirse.</qti-feedback-inline>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta suele aparecer cuando se cuentan todos los enteros 0, 1 y 2 como &quot;positivos&quot;. Sin embargo, el 0 no es un número entero positivo; los enteros positivos comienzan en 1. Por eso no se debe incluir el 0 en el conteo.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceC">4
-        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta indica que se están contando todos los enteros entre -4 y 3 (por ejemplo, -3, -2, -1, 0, 1, 2), sin fijarse en que la pregunta pide solo los números enteros positivos. Los negativos y el 0 no deben considerarse.</qti-feedback-inline>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a contar todos los enteros -1, 0, 1 y 2, es decir, no se está considerando la condición de que los números deben ser &quot;positivos&quot;. Los números negativos y el 0 no son enteros positivos, por lo que no deben incluirse.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceD">6
-        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción sugiere que se contaron todos los enteros desde -4 hasta 3, incluyendo ambos extremos (-4, -3, -2, -1, 0, 1, 2, 3), y además sin filtrar solo los positivos. Recuerda que el intervalo es &quot;mayores o iguales que -4 y menores que 3&quot; (3 no se incluye) y que solo interesan los enteros positivos.</qti-feedback-inline>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta respuesta se obtiene si se cuentan casi todos los enteros entre -4 y 3 (por ejemplo, -3, -2, -1, 0, 1 y 2) sin respetar la condición de que deben ser positivos y, además, olvidando que el intervalo es &quot;menor que 3&quot; (no incluye al 3). Es importante aplicar ambas condiciones: rango y positividad.</qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
     <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
       <qti-content-body>
-        <p><strong>Método: listar y filtrar los enteros positivos en el intervalo</strong></p>
+        <p><strong>Método: listar y filtrar los enteros según las condiciones</strong></p>
         <ol>
-          <li>Primero, identifica todos los números enteros que son mayores o iguales que -4 y menores que 3. Estos son: -4, -3, -2, -1, 0, 1 y 2.</li>
-          <li>Luego, de esa lista, selecciona solo los números enteros positivos. Recuerda que los enteros positivos comienzan en 1, por lo que los positivos son: 1 y 2.</li>
-          <li>Finalmente, cuenta cuántos números hay en esa lista de positivos: 1, 2. Hay exactamente 2 números enteros positivos en el intervalo dado.</li>
+          <li>Primero, identifica todos los números enteros que son mayores o iguales que -4 y menores que 3. Eso corresponde al intervalo [-4, 3). Los enteros en ese intervalo son: -4, -3, -2, -1, 0, 1, 2.</li>
+          <li>Luego, aplica la condición de que los números deben ser enteros positivos. Los enteros positivos son aquellos mayores que 0: 1, 2, 3, 4, ... Por lo tanto, de la lista anterior, solo 1 y 2 son enteros positivos.</li>
+          <li>Cuenta cuántos números quedaron después de filtrar: 1 y 2. Hay exactamente 2 números enteros positivos que cumplen todas las condiciones.</li>
         </ol>
       </qti-content-body>
     </qti-feedback-block>
@@ -58,9 +58,6 @@
       <qti-response-else>
         <qti-set-outcome-value identifier="SCORE">
           <qti-base-value base-type="float">0</qti-base-value>
-        </qti-set-outcome-value>
-        <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>

@@ -319,31 +319,72 @@ export function EnrichmentModal({
           {/* Results step */}
           {step === "results" && (
             <div className="space-y-4">
-              <div className="flex flex-col items-center py-4">
-                {failedCount === 0 ? (
-                  <CheckCircle2 className="w-12 h-12 text-success mb-4" />
-                ) : (
-                  <AlertTriangle className="w-12 h-12 text-warning mb-4" />
-                )}
-                <p className="font-semibold text-lg">Enrichment Complete</p>
+              {/* Overall result banner */}
+              <div
+                className={`p-4 rounded-lg border ${
+                  failedCount === 0
+                    ? "bg-success/5 border-success/20"
+                    : "bg-warning/5 border-warning/20"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  {failedCount === 0 ? (
+                    <CheckCircle2 className="w-6 h-6 text-success" />
+                  ) : (
+                    <AlertTriangle className="w-6 h-6 text-warning" />
+                  )}
+                  <div>
+                    <p className={`font-medium ${failedCount === 0 ? "text-success" : "text-warning"}`}>
+                      Enrichment Complete
+                    </p>
+                    <p className="text-sm text-text-secondary mt-0.5">
+                      {successCount} succeeded, {failedCount} failed
+                    </p>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-2 text-sm">
-                <p className="text-success">
-                  <CheckCircle2 className="w-4 h-4 inline mr-2" />
-                  {successCount} questions enriched successfully
+              {/* Failed questions list */}
+              {failedCount > 0 && (
+                <div className="space-y-2">
+                  <p className="text-sm font-medium text-text-secondary">Failed Questions</p>
+                  <div className="max-h-48 overflow-y-auto space-y-2">
+                    {results
+                      .filter((r) => r.status === "failed")
+                      .map((result) => (
+                        <div
+                          key={result.question_id}
+                          className="p-3 rounded-lg border border-error/20 bg-error/5"
+                        >
+                          <div className="flex items-start gap-3">
+                            <XCircle className="w-4 h-4 text-error flex-shrink-0 mt-0.5" />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-sm">{result.question_id}</p>
+                              {result.error && (
+                                <p className="text-xs text-text-secondary mt-1 break-words">
+                                  {result.error}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Success summary (collapsed when there are failures) */}
+              {successCount > 0 && failedCount === 0 && (
+                <p className="text-sm text-text-secondary">
+                  Next step: Run Validation to verify content quality
                 </p>
-                {failedCount > 0 && (
-                  <p className="text-error">
-                    <XCircle className="w-4 h-4 inline mr-2" />
-                    {failedCount} questions failed
-                  </p>
-                )}
-              </div>
+              )}
 
-              <p className="text-sm text-text-secondary">
-                Next step: Run Validation to verify content quality
-              </p>
+              {failedCount > 0 && (
+                <p className="text-xs text-text-secondary">
+                  Failed questions can be re-enriched. Check the error messages above for details.
+                </p>
+              )}
             </div>
           )}
         </div>

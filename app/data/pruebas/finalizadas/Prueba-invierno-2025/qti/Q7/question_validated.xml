@@ -19,27 +19,39 @@
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-prompt>¿Cuál será la variación de temperatura entre las 17:00 y las 21:00 horas?</qti-prompt>
       <qti-simple-choice identifier="ChoiceA">-6 °C
-        <qti-feedback-inline identifier="ChoiceA_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a restar al revés: 29 − 24 = 5 y luego cambiarle el signo a −5 para obtener −6. La variación se calcula como temperatura final menos temperatura inicial: 24 − 29, no al revés ni modificando el resultado.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceA_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción considera la diferencia 24 − 30, usando la temperatura de las 15:00 (30 °C) en lugar de la de las 17:00 (29 °C). La variación pedida es entre 17:00 y 21:00, por lo que debes usar solo esas dos temperaturas.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">-5 °C
-        <qti-feedback-inline identifier="ChoiceB_FB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! La variación de temperatura se obtiene restando la temperatura final menos la inicial: 24 °C (a las 21:00) menos 29 °C (a las 17:00). Así, 24 − 29 = −5, lo que indica que la temperatura disminuye 5 °C en ese intervalo.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceB_fb" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! A las 17:00 la temperatura es 29 °C y a las 21:00 es 24 °C. La variación se calcula como temperatura final menos temperatura inicial: 24 − 29 = −5. El signo negativo indica que la temperatura disminuye 5 °C en ese intervalo.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceC">4 °C
-        <qti-feedback-inline identifier="ChoiceC_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se ignora el signo y se toma solo la diferencia positiva entre 24 y 29, o se confunde el orden de las temperaturas. La variación debe considerar si la temperatura sube o baja, por eso es necesario usar 24 − 29 y mantener el signo negativo.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceC_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aquí se tomó la diferencia sin considerar el orden (29 − 24 = 5) y además se cambió el signo, escribiendo 4 °C en vez de 5 °C. La variación debe ser temperatura final menos temperatura inicial y conservar el signo correcto.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceD">6 °C
-        <qti-feedback-inline identifier="ChoiceD_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción puede surgir de contar mal los grados de diferencia (por ejemplo, sumando 1 grado de más) o de leer una temperatura equivocada del gráfico. Entre 29 °C y 24 °C la diferencia correcta es de 5 grados, no de 6.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceD_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción parece sumar o restar temperaturas intermedias, como si la variación total fuera la suma de varias variaciones parciales mal calculadas. Para obtener la variación entre 17:00 y 21:00 solo necesitas comparar directamente esas dos temperaturas: 24 − 29.</qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
     <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
       <qti-content-body>
-        <p><strong>Cálculo de la variación de temperatura como diferencia final − inicial</strong></p>
+        <p><strong>Cálculo de la variación de temperatura entre dos horas</strong></p>
         <ol>
-          <li>Identificar la temperatura a las 17:00 horas: según la infografía, es de 29 °C.</li>
-          <li>Identificar la temperatura a las 21:00 horas: según la infografía, es de 24 °C.</li>
-          <li>Calcular la variación de temperatura usando la fórmula: variación = temperatura final − temperatura inicial. En este caso: 24 − 29.</li>
-          <li>Resolver la resta: 24 − 29 = −5. El resultado negativo indica que la temperatura disminuyó.</li>
-          <li>Concluir que la variación de temperatura entre las 17:00 y las 21:00 horas es de −5 °C, es decir, bajó 5 grados Celsius.</li>
+          <li>Identificar las temperaturas en las horas indicadas:
+            <ul>
+              <li>A las 17:00 la temperatura es 29 °C.</li>
+              <li>A las 21:00 la temperatura es 24 °C.</li>
+            </ul>
+          </li>
+          <li>Calcular la variación de temperatura usando la fórmula:
+            <p>variación = temperatura final − temperatura inicial</p>
+            <p>En este caso: variación = 24 − 29 = −5.</p>
+          </li>
+          <li>Interpretar el resultado:
+            <ul>
+              <li>El valor absoluto 5 indica que la temperatura cambia en 5 °C.</li>
+              <li>El signo negativo (−) indica que la temperatura disminuye.</li>
+            </ul>
+            <p>Por lo tanto, la variación de temperatura entre las 17:00 y las 21:00 horas es de −5 °C.</p>
+          </li>
         </ol>
       </qti-content-body>
     </qti-feedback-block>
@@ -55,7 +67,7 @@
           <qti-base-value base-type="float">1</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">ChoiceB_FB</qti-base-value>
+          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>
@@ -66,7 +78,7 @@
           <qti-base-value base-type="float">0</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">general_incorrect</qti-base-value>
+          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>
