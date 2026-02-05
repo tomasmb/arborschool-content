@@ -79,9 +79,11 @@ SOLUCIÓN PASO A PASO:
 <formatting_rules>
 1. Notación matemática: usar SOLO MathML, nunca LaTeX (\(...\) está prohibido)
 
-2. Números grandes: usar `&#x202F;` como separador de miles
-   - MathML: `<mn>60&#x202F;000</mn>` (un solo tag)
-   - Texto: `32&#x202F;186&#x202F;800&#x202F;000 km`
+2. Formato de números chileno:
+   - Separador de miles: punto (.)
+   - Separador decimal: coma (,)
+   - MathML: `<mn>160.934</mn>`, `<mn>3,21868</mn>`
+   - Texto: `32.186.800.000 kilómetros`
 </formatting_rules>
 
 <output_format>
@@ -136,7 +138,7 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
-   - ¿Usa `&#x202F;` como separador de miles?
+   - ¿Usa formato chileno? (punto para miles, coma para decimal)
    - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
    - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
 </checks>
@@ -200,10 +202,11 @@ Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 
 3. CALIDAD DE CONTENIDO (content_quality_check):
    - Errores tipográficos
-   - Caracteres mal codificados
+   - Caracteres mal codificados (excepto entidades HTML válidas como &#x00A1;)
    - Expresiones matemáticas incorrectas (signos, exponentes)
+   - Formato numérico chileno: punto para miles, coma para decimal
    - Claridad del lenguaje para 3°-4° medio
-   - FAIL si hay errores de calidad
+   - FAIL si hay errores de calidad reales
 
 4. IMÁGENES (image_check):
    - Referencias corresponden a imágenes reales
@@ -230,7 +233,15 @@ JSON con este schema:
 </output_format>
 
 <constraints>
-- Sé ESTRICTO: cualquier error = fail
+- Sé riguroso pero no excesivamente estricto
+- NO marcar como error:
+  - "¡Correcto!" en feedback de opción correcta (es apropiado)
+  - qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
+  - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
+- SÍ marcar como error:
+  - Errores matemáticos reales
+  - Respuesta correcta marcada incorrectamente
+  - Feedback que no corresponde a la alternativa
 - Cita contenido exacto cuando reportes issues
 - Issues deben ser específicos y accionables
 </constraints>
