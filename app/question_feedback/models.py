@@ -66,15 +66,15 @@ class EnhancementResult(BaseModel):
 
 
 class FeedbackReviewResult(BaseModel):
-    """Result from feedback-only review (used during enrichment).
+    """Result from feedback review (used during enrichment).
 
-    This is a lightweight validation that checks only the generated feedback,
-    not the original question content. Used as a gate after feedback generation.
+    Validates feedback accuracy, clarity, and formatting before final validation.
     """
 
     review_result: str  # "pass" or "fail"
     feedback_accuracy: CheckResult
     feedback_clarity: CheckResult
+    formatting_check: CheckResult
     overall_reasoning: str
 
 

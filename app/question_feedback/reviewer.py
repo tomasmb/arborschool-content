@@ -1,8 +1,8 @@
-"""Lightweight feedback reviewer for enrichment pipeline.
+"""Feedback reviewer for enrichment pipeline.
 
-This module provides a focused review of generated feedback only,
-without validating the original question content. Used as a gate
-after feedback generation to catch factual errors before saving.
+This module validates generated feedback by solving the problem and
+verifying mathematical accuracy. Used as a gate after feedback generation
+to catch factual errors and incomplete explanations before final validation.
 """
 
 from __future__ import annotations
@@ -21,10 +21,10 @@ logger = logging.getLogger(__name__)
 
 
 class FeedbackReviewer:
-    """Lightweight reviewer for generated feedback.
+    """Reviewer for generated feedback.
 
-    Reviews ONLY the feedback quality, not the original question.
-    Used during enrichment to validate generated feedback before saving.
+    Validates feedback by solving the problem and verifying mathematical accuracy.
+    Used during enrichment to catch errors before final validation.
     """
 
     DEFAULT_MODEL = "gpt-5.1"
@@ -106,26 +106,32 @@ class FeedbackReviewer:
             reasoning=clarity.get("reasoning", ""),
         )
 
+        formatting = result.get("formatting_check", {})
+        formatting_check = CheckResult(
+            status=CheckStatus(formatting.get("status", "fail")),
+            issues=formatting.get("issues", []),
+            reasoning=formatting.get("reasoning", ""),
+        )
+
         return FeedbackReviewResult(
             review_result=result.get("review_result", "fail"),
             feedback_accuracy=feedback_accuracy,
             feedback_clarity=feedback_clarity,
+            formatting_check=formatting_check,
             overall_reasoning=result.get("overall_reasoning", ""),
         )
 
     def _create_error_result(self, error_message: str) -> FeedbackReviewResult:
         """Create an error FeedbackReviewResult."""
+        error_check = CheckResult(
+            status=CheckStatus.FAIL,
+            issues=[error_message],
+            reasoning="Review failed due to error",
+        )
         return FeedbackReviewResult(
             review_result="fail",
-            feedback_accuracy=CheckResult(
-                status=CheckStatus.FAIL,
-                issues=[error_message],
-                reasoning="Review failed due to error",
-            ),
-            feedback_clarity=CheckResult(
-                status=CheckStatus.FAIL,
-                issues=[error_message],
-                reasoning="Review failed due to error",
-            ),
+            feedback_accuracy=error_check,
+            feedback_clarity=error_check,
+            formatting_check=error_check,
             overall_reasoning=f"Review failed: {error_message}",
         )

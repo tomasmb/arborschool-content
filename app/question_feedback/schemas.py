@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
-# Feedback Review Schema (lightweight, used during enrichment)
+# Feedback Review Schema (used during enrichment pipeline)
 # ---------------------------------------------------------------------------
 FEEDBACK_REVIEW_SCHEMA: dict = {
     "type": "object",
@@ -11,7 +11,7 @@ FEEDBACK_REVIEW_SCHEMA: dict = {
         "review_result": {
             "type": "string",
             "enum": ["pass", "fail"],
-            "description": "Overall result: pass if all feedback is factually correct",
+            "description": "Overall result: pass if all checks pass",
         },
         "feedback_accuracy": {
             "type": "object",
@@ -20,7 +20,7 @@ FEEDBACK_REVIEW_SCHEMA: dict = {
                 "issues": {
                     "type": "array",
                     "items": {"type": "string"},
-                    "description": "List of factual errors in feedback",
+                    "description": "List of factual/mathematical errors in feedback",
                 },
                 "reasoning": {"type": "string"},
             },
@@ -39,12 +39,26 @@ FEEDBACK_REVIEW_SCHEMA: dict = {
             },
             "required": ["status", "issues", "reasoning"],
         },
+        "formatting_check": {
+            "type": "object",
+            "properties": {
+                "status": {"type": "string", "enum": ["pass", "fail"]},
+                "issues": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of formatting issues (LaTeX, number separators)",
+                },
+                "reasoning": {"type": "string"},
+            },
+            "required": ["status", "issues", "reasoning"],
+        },
         "overall_reasoning": {"type": "string"},
     },
     "required": [
         "review_result",
         "feedback_accuracy",
         "feedback_clarity",
+        "formatting_check",
         "overall_reasoning",
     ],
 }

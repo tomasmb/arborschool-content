@@ -34,64 +34,52 @@ QTI XML ORIGINAL (sin retroalimentación):
 Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con feedback.
 </task>
 
-<rules>
+<xml_structure>
 1. MANTENER todos los elementos originales (stem, choices, images) sin modificar
+
 2. AGREGAR outcome declarations después de qti-response-declaration:
-   - <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
-   - <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+   <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+   <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
-3. Formato de números grandes (usar `&#x202F;` como separador de miles en AMBOS casos):
-   - MathML: UN solo `<mn>` con `&#x202F;`
-     - CORRECTO: `<mn>60&#x202F;000</mn>`
-     - INCORRECTO: `<mn>60</mn><mspace .../><mn>000</mn>`
-   - Texto plano (alternativas, feedback, solución): usar `&#x202F;`
-     - CORRECTO: `32&#x202F;186&#x202F;800&#x202F;000 kilómetros`
-     - INCORRECTO: `32 186 800 000 kilómetros` (espacio normal)
+3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice
 
-4. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
-   - Opción correcta: "¡Correcto! [explicación matemática de POR QUÉ es correcta]"
-   - Opciones incorrectas: "Incorrecto. [por qué es matemáticamente incorrecta, con cálculo si aplica]"
-   IMPORTANTE: Para opciones incorrectas, NO especules sobre qué error cometió el estudiante.
-   Solo explica por qué la opción no satisface las condiciones del problema.
-
-5. AGREGAR qti-feedback-block al final de qti-item-body con solución paso a paso:
-   ```xml
+4. AGREGAR qti-feedback-block al final de qti-item-body:
    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
      <qti-content-body>
        <p><strong>[Título del método]</strong></p>
-       <ol><li>Paso 1...</li><li>Paso 2...</li></ol>
+       <ol><li>Paso 1...</li></ol>
      </qti-content-body>
    </qti-feedback-block>
-   ```
 
-6. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
-</rules>
+5. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
+</xml_structure>
 
-<evaluation_criteria>
-Tu output será evaluado en dos dimensiones:
+<feedback_requirements>
+Para cada opción, el feedback debe ser AUTO-CONTENIDO (el estudiante entiende sin hacer
+cálculos adicionales):
 
-1. PRECISIÓN FACTUAL (feedback_accuracy):
-   - ¿El feedback de la opción correcta explica POR QUÉ es matemáticamente correcta?
-   - ¿Los feedbacks de opciones incorrectas demuestran matemáticamente por qué no cumplen las condiciones?
-   - ¿La solución paso a paso tiene matemáticas correctas y llega a la respuesta correcta?
-   - FALLA si hay cualquier error matemático o afirmación no verificable en el feedback
+OPCIÓN CORRECTA:
+- Formato: "¡Correcto! [demostración matemática]"
+- Incluir el cálculo o razonamiento que PRUEBA que es correcta
 
-2. CLARIDAD PEDAGÓGICA (feedback_clarity):
-   - ¿El lenguaje es claro para estudiantes de 3°-4° medio?
-   - ¿Los pasos son suficientemente detallados?
-   - ¿El feedback es específico a esta pregunta (no genérico)?
-   - FALLA si el feedback es confuso, muy técnico, o genérico
-</evaluation_criteria>
+OPCIONES INCORRECTAS:
+- Formato: "Incorrecto. [demostración matemática]"
+- Incluir el cálculo que PRUEBA que esta opción NO satisface el problema
+- NO especular sobre qué error cometió el estudiante
 
-<self_check>
-Antes de generar tu respuesta final, verifica mentalmente:
-1. ¿Resolví el problema yo mismo y llegué a la respuesta marcada como correcta?
-2. ¿El feedback de la opción correcta explica el razonamiento matemático completo?
-3. ¿Cada feedback incorrecto explica por qué ESA opción no cumple las condiciones del problema?
-   (NO especules sobre errores del estudiante - solo demuestra por qué es incorrecta)
-4. ¿La solución paso a paso es correcta y llega a la respuesta correcta?
-5. ¿El lenguaje es apropiado para estudiantes de 3°-4° medio?
-</self_check>
+SOLUCIÓN PASO A PASO:
+- Resolver el problema completo con pasos claros
+- Llegar explícitamente a la respuesta correcta
+- Lenguaje claro para estudiantes de 3°-4° medio
+</feedback_requirements>
+
+<formatting_rules>
+1. Notación matemática: usar SOLO MathML, nunca LaTeX (\(...\) está prohibido)
+
+2. Números grandes: usar `&#x202F;` como separador de miles
+   - MathML: `<mn>60&#x202F;000</mn>` (un solo tag)
+   - Texto: `32&#x202F;186&#x202F;800&#x202F;000 km`
+</formatting_rules>
 
 <output_format>
 Devuelve SOLO el QTI XML completo. Sin markdown, sin explicaciones.
@@ -99,6 +87,7 @@ Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
 </output_format>
 
 <final_instruction>
+Antes de generar, resuelve el problema tú mismo para verificar la respuesta correcta.
 Basándote en el QTI XML original arriba, genera el XML completo con retroalimentación.
 </final_instruction>
 """
@@ -107,9 +96,9 @@ Basándote en el QTI XML original arriba, genera el XML completo con retroalimen
 # ---------------------------------------------------------------------------
 # FEEDBACK REVIEW PROMPT
 # ---------------------------------------------------------------------------
-# Lightweight validation focused ONLY on the generated feedback.
-# Does NOT validate the original question content.
+# Validates generated feedback by solving the problem and verifying accuracy.
 # Used as a gate after feedback generation in the enrichment pipeline.
+# Catches mathematical errors and incomplete explanations before final validation.
 # ---------------------------------------------------------------------------
 
 FEEDBACK_REVIEW_PROMPT = """
@@ -125,22 +114,27 @@ QTI XML CON RETROALIMENTACIÓN GENERADA:
 </context>
 
 <task>
-Revisar ÚNICAMENTE la retroalimentación generada (no el contenido original de la pregunta).
-Verificar precisión factual y claridad pedagógica del feedback.
+Resolver el problema y validar que cada feedback sea matemáticamente correcto y auto-contenido.
 </task>
 
 <checks>
 1. PRECISIÓN FACTUAL (feedback_accuracy):
-   - ¿El feedback de la opción correcta explica correctamente POR QUÉ es matemáticamente correcta?
-   - ¿Los feedbacks de opciones incorrectas identifican errores conceptuales REALES?
-   - ¿La solución paso a paso tiene matemáticas correctas y llega a la respuesta correcta?
-   - FAIL si hay cualquier error matemático en el feedback
+   - Resuelve el problema paso a paso para verificar la respuesta correcta
+   - Feedback de opción correcta: ¿incluye demostración matemática de POR QUÉ es correcta?
+   - Feedbacks incorrectos: ¿incluyen el cálculo que PRUEBA que no satisfacen el problema?
+   - Solución paso a paso: ¿tiene matemáticas correctas y llega a la respuesta correcta?
+   - FAIL si hay error matemático, justificación incorrecta, o falta la demostración
 
 2. CLARIDAD PEDAGÓGICA (feedback_clarity):
    - ¿El lenguaje es claro para estudiantes de 3°-4° medio?
-   - ¿Los pasos son suficientemente detallados?
+   - ¿Cada feedback es auto-contenido? (estudiante entiende sin cálculos adicionales)
    - ¿El feedback es específico a esta pregunta (no genérico)?
-   - FAIL si el feedback es confuso, muy técnico, o genérico
+   - FAIL si el feedback es confuso, asume conocimiento previo, o es genérico
+
+3. FORMATO (formatting_check):
+   - ¿Usa MathML para notación matemática (no LaTeX)?
+   - ¿Usa `&#x202F;` como separador de miles?
+   - FAIL si hay LaTeX (\(...\)) o formato de números incorrecto
 </checks>
 
 <output_format>
@@ -148,15 +142,9 @@ JSON con este schema:
 - review_result: "pass" o "fail" (fail si cualquier check falla)
 - feedback_accuracy: {{status, issues[], reasoning}}
 - feedback_clarity: {{status, issues[], reasoning}}
+- formatting_check: {{status, issues[], reasoning}}
 - overall_reasoning: resumen de 1-2 oraciones
 </output_format>
-
-<constraints>
-- NO evalúes el contenido original de la pregunta
-- NO evalúes si la respuesta marcada es correcta (eso es trabajo de validación final)
-- SOLO evalúa la calidad del feedback generado
-- Sé estricto: cualquier error factual en el feedback = fail
-</constraints>
 
 <final_instruction>
 Basándote en el QTI XML arriba, revisa la retroalimentación y responde en JSON.

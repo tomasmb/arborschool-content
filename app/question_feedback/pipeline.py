@@ -20,11 +20,10 @@ class QuestionPipeline:
     This class orchestrates the feedback enrichment pipeline:
     1. Stage 1: Feedback Enhancement (LLM generates QTI XML with feedback)
     2. Gate 1: XSD Validation (validates against QTI 3.0 schema)
-    3. Stage 2: Feedback Review (lightweight LLM review of generated feedback only)
+    3. Stage 2: Feedback Review (LLM solves problem and validates feedback accuracy)
 
-    Note: Full validation (FinalValidator) is run as a SEPARATE step after enrichment,
-    not during this pipeline. This allows enrichment to complete faster while still
-    catching obvious factual errors in the generated feedback.
+    Note: Full validation (FinalValidator) is run as a SEPARATE step after enrichment.
+    The review stage catches mathematical errors and incomplete explanations early.
     """
 
     def __init__(
@@ -88,7 +87,7 @@ class QuestionPipeline:
         assert enhancement.qti_xml is not None
         qti_with_feedback = enhancement.qti_xml
 
-        # ── STAGE 2: Feedback Review (lightweight - only validates generated feedback) ──
+        # ── STAGE 2: Feedback Review (solves problem and validates feedback accuracy) ──
         review = self.reviewer.review(qti_with_feedback)
 
         if review.review_result != "pass":
@@ -98,6 +97,8 @@ class QuestionPipeline:
                 failed_checks.append("feedback_accuracy")
             if review.feedback_clarity.status.value == "fail":
                 failed_checks.append("feedback_clarity")
+            if review.formatting_check.status.value == "fail":
+                failed_checks.append("formatting_check")
             error_msg = f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
 
             result = PipelineResult(
