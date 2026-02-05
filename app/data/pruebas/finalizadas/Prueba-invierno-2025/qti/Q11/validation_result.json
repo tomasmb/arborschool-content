@@ -1,40 +1,31 @@
 {
   "question_id": "prueba-invierno-2025-Q11",
   "pipeline_version": "3.0",
-  "timestamp": "2026-02-04T21:27:21.341999+00:00",
-  "success": true,
-  "stage_failed": null,
-  "error": null,
+  "timestamp": "2026-02-05T14:27:55.344984+00:00",
+  "success": false,
+  "stage_failed": "feedback_review",
+  "error": "Feedback review failed: feedback_accuracy",
   "xsd_errors": null,
   "stages": {
     "feedback_review": {
-      "review_result": "pass",
+      "review_result": "fail",
       "feedback_accuracy": {
-        "status": "pass",
-        "issues": [],
-        "reasoning": "La retroalimentación de la alternativa correcta describe correctamente el procedimiento: usar C = 160 934 · x con x = 2 para obtener 321 868 cm y luego dividir por 100 000 para convertir a kilómetros, llegando a 3,21868 km, consistente con 1 milla ≈ 1,6 km. En la alternativa B se identifica bien el error de no dividir por 100 000, lo que explica por qué 80 467 corresponde a centímetros mal interpretados como kilómetros. En la alternativa D se señala que el valor es aproximadamente la mitad del correcto y se proponen causas plausibles (usar solo 1 milla o una división errónea por 200 000); aunque son conjeturas, no contienen errores matemáticos. En la alternativa A se indica que se confundieron unidades y órdenes de magnitud; aunque el número dado no se deriva claramente de un cálculo estándar, la explicación conceptual (no convertir de cm a km y perder el orden de magnitud) es matemáticamente coherente y no introduce afirmaciones falsas sobre conversiones. La solución paso a paso repite el mismo procedimiento correcto y llega al mismo resultado numérico correcto."
+        "status": "fail",
+        "issues": [
+          "En la opción A se afirma que el error es 'tomar el valor en centímetros y se interpreta como si ya estuviera en kilómetros, sin dividir por 100 000'. Sin embargo, el número dado (32 186 800 000 km) no corresponde a 2 millas expresadas en centímetros ni a un simple olvido de dividir por 100 000; la magnitud es mucho mayor y la explicación no describe un error real coherente con ese valor.",
+          "En la opción B se indica que 'se multiplica correctamente por 2, pero no se realiza la conversión de centímetros a kilómetros (falta dividir por 100 000), por eso el resultado queda 100 000 veces más grande'. El valor 80 467 no es 100 000 veces 3,21868 ni 321 868; la explicación no se ajusta numéricamente a la alternativa dada.",
+          "En la opción D se sugiere que el valor es 'cercano a 0,80467 millas expresadas en kilómetros', pero 0,80467 km corresponde aproximadamente a 0,5 millas, no a 0,80467 millas; la interpretación física de la cifra es incorrecta."
+        ],
+        "reasoning": "La retroalimentación de la opción correcta (C) y la solución paso a paso son matemáticamente consistentes: 2 × 160 934 = 321 868 cm y 321 868 ÷ 100 000 = 3,21868 km. Sin embargo, en varias opciones incorrectas se atribuyen errores conceptuales que no se corresponden con los valores numéricos propuestos (A y B) o se interpreta mal el significado de la magnitud (D). Esto constituye errores factuales en la descripción de los errores del estudiante."
       },
       "feedback_clarity": {
         "status": "pass",
         "issues": [],
-        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'dividir por 100 000' y recordando explícitamente la equivalencia 1 km = 100 000 cm. La retroalimentación es específica a cada alternativa: en B se explica exactamente en qué paso se detuvo el cálculo (quedarse en centímetros), en C se justifica el resultado y se contrasta con la equivalencia aproximada de millas a kilómetros, y en D se interpreta el valor como aproximadamente la mitad del correcto. La solución general presenta un método ordenado en pasos numerados, con operaciones explícitas y una breve interpretación final, lo que facilita la comprensión del procedimiento y del sentido del resultado."
+        "reasoning": "El lenguaje es claro, adecuado para estudiantes de 3°-4° medio, y explica explícitamente los pasos de conversión (multiplicar por el factor dado y luego dividir por 100 000). La solución está bien estructurada en pasos y la retroalimentación es específica para cada alternativa, sin tecnicismos innecesarios. Aunque hay problemas de exactitud, desde el punto de vista de claridad pedagógica el texto es comprensible y suficientemente detallado."
       },
-      "overall_reasoning": "La retroalimentación es matemáticamente correcta y coherente con las conversiones de unidades involucradas, y explica de forma clara y específica los aciertos y errores probables en cada alternativa. No se detectan errores factuales ni problemas de claridad pedagógica relevantes."
-    },
-    "final_validation": {
-      "status": "fail",
-      "model": "gpt-5.1",
-      "reasoning_effort": "high",
-      "checks": {
-        "correct_answer_check": "fail",
-        "feedback_check": "fail",
-        "content_quality_check": "fail",
-        "image_check": "not_applicable",
-        "math_validity_check": "pass"
-      },
-      "timestamp": "2026-02-05T14:02:43.603416+00:00"
+      "overall_reasoning": "La solución y la explicación de la alternativa correcta son matemáticamente correctas, pero varias descripciones de los errores en las alternativas incorrectas no se ajustan a los valores numéricos mostrados, lo que introduce inexactitudes factuales en el feedback. Por ello, el resultado global debe ser 'fail'."
     }
   },
   "can_sync": false,
-  "validated_qti_path": "question_validated.xml"
+  "validated_qti_path": null
 }

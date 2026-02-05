@@ -1,40 +1,30 @@
 {
   "question_id": "prueba-invierno-2025-Q19",
   "pipeline_version": "3.0",
-  "timestamp": "2026-02-04T21:27:11.186763+00:00",
-  "success": true,
-  "stage_failed": null,
-  "error": null,
+  "timestamp": "2026-02-05T14:27:58.119306+00:00",
+  "success": false,
+  "stage_failed": "feedback_review",
+  "error": "Feedback review failed: feedback_accuracy",
   "xsd_errors": null,
   "stages": {
     "feedback_review": {
-      "review_result": "pass",
+      "review_result": "fail",
       "feedback_accuracy": {
-        "status": "pass",
-        "issues": [],
-        "reasoning": "La retroalimentación de la alternativa correcta explica correctamente que 1⁰ = 1 (para base distinta de 0) y que 2³ = 2·2·2 = 8, y que la suma es 1 + 8 = 9. Los comentarios de las alternativas incorrectas describen errores plausibles: omitir el término 1⁰ para obtener 8; calcular 2³ como 2·3 = 6 y luego sumar 1 para obtener 7; y combinar errores en ambas potencias para llegar a 6. La solución paso a paso repite estos mismos cálculos de forma consistente y sin errores matemáticos."
+        "status": "fail",
+        "issues": [
+          "En la retroalimentación de la alternativa correcta (ChoiceA) se afirma: \"todo número distinto de 0 elevado a 0 es 1\". Esta formulación es incorrecta: la propiedad estándar es que todo número real distinto de 0 elevado a 0 con exponente 0 da 1 (a^0 = 1 para a ≠ 0), pero la expresión a^0 con a ≠ 0 no se describe como \"elevado a 0\" en el sentido de 0^0, y la frase tal como está escrita es matemáticamente imprecisa y puede interpretarse como una regla general sobre 0^0.",
+          "El mismo enunciado incorrecto se repite en la retroalimentación de la alternativa C y en el desarrollo paso a paso de la solución, reforzando una formulación conceptual inadecuada sobre potencias con exponente 0."
+        ],
+        "reasoning": "Los cálculos numéricos en todos los feedbacks son correctos: se evalúa 1^0 = 1, 2^3 = 8 y se suma 1 + 8 = 9. Los errores conceptuales identificados para las alternativas incorrectas (olvidar sumar 1^0 en B, pensar que 1^0 = 0 en C, y errores de cálculo o de operación en D) son plausibles y específicos a la pregunta. Sin embargo, la frase repetida \"todo número distinto de 0 elevado a 0 es 1\" es una formulación incorrecta de la regla de exponentes: la propiedad correcta es que todo número real distinto de 0 elevado a exponente 0 es 1 (a^0 = 1 para a ≠ 0). Tal como está, el feedback introduce una afirmación matemáticamente imprecisa, por lo que la precisión factual no cumple el criterio."
       },
       "feedback_clarity": {
         "status": "pass",
         "issues": [],
-        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando términos estándar como 'elevado a' y explicando 2³ como multiplicar 2 por sí mismo 3 veces. Cada feedback se refiere explícitamente a los elementos de la expresión dada y al posible error cometido, por lo que es específico y no genérico. La solución paso a paso está ordenada en tres pasos lógicos (calcular cada potencia y luego sumar), con suficiente detalle sin ser excesivamente técnica."
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Se explican los pasos de cálculo de las potencias (por ejemplo, 2^3 como 2·2·2) y luego la suma, sin tecnicismos innecesarios. Cada retroalimentación está claramente vinculada al error típico asociado a esa alternativa (olvidar un término, asignar mal el valor de 1^0, errores de multiplicación o de operación). La solución paso a paso está bien estructurada en viñetas y es específica a esta pregunta. Aunque hay un problema de precisión conceptual, desde el punto de vista de claridad pedagógica el mensaje es comprensible y suficientemente detallado."
       },
-      "overall_reasoning": "La retroalimentación es matemáticamente correcta y describe errores razonables para cada distractor, y la explicación paso a paso es clara, específica y adecuada al nivel esperado. No se detectan errores factuales ni problemas de claridad pedagógica significativos."
-    },
-    "final_validation": {
-      "status": "fail",
-      "model": "gpt-5.1",
-      "reasoning_effort": "high",
-      "checks": {
-        "correct_answer_check": "pass",
-        "feedback_check": "fail",
-        "content_quality_check": "fail",
-        "image_check": "not_applicable",
-        "math_validity_check": "pass"
-      },
-      "timestamp": "2026-02-05T14:02:27.317964+00:00"
+      "overall_reasoning": "Los cálculos y la estructura pedagógica del feedback son adecuados y específicos, pero la formulación repetida de la regla sobre exponentes cero es matemáticamente imprecisa, lo que obliga a reprobar la revisión por precisión factual."
     }
   },
   "can_sync": false,
-  "validated_qti_path": "question_validated.xml"
+  "validated_qti_path": null
 }

@@ -61,6 +61,10 @@ class QuestionPipeline:
         """
         logger.info(f"Processing question: {question_id}")
 
+        # Clear previous enrichment files to avoid stale data if re-enrichment fails
+        if output_dir:
+            self._clear_previous_enrichment(output_dir)
+
         # ── STAGE 1: Feedback Enhancement + XSD Validation ──
         enhancement = self.enhancer.enhance(qti_xml, image_urls)
 
@@ -168,6 +172,23 @@ class QuestionPipeline:
             f.write(qti_xml)
 
         logger.info(f"Saved validated QTI to {xml_path}")
+
+    def _clear_previous_enrichment(self, output_dir: Path) -> None:
+        """Clear previous enrichment files to avoid stale data.
+
+        Called at the start of processing so that if re-enrichment fails,
+        there's no misleading old enrichment data left behind.
+
+        Args:
+            output_dir: Directory containing enrichment files.
+        """
+        files_to_clear = ["question_validated.xml", "validation_result.json"]
+
+        for filename in files_to_clear:
+            file_path = output_dir / filename
+            if file_path.exists():
+                file_path.unlink()
+                logger.info(f"Cleared previous enrichment file: {file_path}")
 
 
 def process_question_dir(

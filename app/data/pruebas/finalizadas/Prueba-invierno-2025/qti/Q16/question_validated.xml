@@ -17,27 +17,50 @@
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-prompt>¿cuál fue la tasa de inflación anual en el periodo descrito?</qti-prompt>
       <qti-simple-choice identifier="ChoiceA">11 %
-        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción supone que la variación porcentual se calcula como 121/110 ≈ 1,1 y se interpreta directamente como 11 %, pero en realidad la tasa de inflación es el aumento relativo: (121 − 110) / 110 = 11/110 = 0,1, es decir, 10 %.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Aquí se está calculando la variación como 121 − 110 = 11 y se interpreta ese 11 directamente como 11 %, sin dividir por el valor inicial (110). Falta el paso clave de comparar el aumento con el IPC inicial: 11 ÷ 110.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">10 %
-        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! La tasa de inflación se calcula como el aumento relativo del IPC respecto del valor inicial: (IPC final − IPC inicial) / IPC inicial × 100. Aquí: (121 − 110) / 110 × 100 = 11/110 × 100 = 0,1 × 100 = 10 %.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">¡Correcto! La tasa de inflación se calcula como variación porcentual: (IPC final − IPC inicial) ÷ IPC inicial × 100. En este caso, (121 − 110) ÷ 110 × 100 = 11 ÷ 110 × 100 = 0,1 × 100 = 10 %, por lo que la inflación anual fue de 10 %.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceC">9 %
-        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción puede surgir de un error de cálculo al dividir 11 entre 121 o al redondear mal. La base correcta para calcular la variación porcentual es el IPC inicial (110), no el IPC final (121), por eso se debe usar 11/110 y no 11/121.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Esta respuesta puede venir de un redondeo incorrecto o de usar un valor aproximado mal calculado para la fracción 11 ÷ 121 en lugar de dividir por el valor inicial 110. El porcentaje siempre debe calcularse respecto del IPC inicial (110), no del final (121).</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceD">2,1 %
-        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este valor es mucho menor que el aumento real del IPC. Puede provenir de confundir la diferencia absoluta (11 puntos de IPC) con un porcentaje muy pequeño o de dividir por un número mucho mayor al inicial. La variación debe compararse con el valor de partida (110), no con otro valor arbitrario.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. Este valor es mucho menor que el aumento real. Probablemente se confundió la escala del porcentaje (por ejemplo, usando 11 ÷ 521 o un número similar) o se cometió un error al usar la calculadora. El aumento real es 11 unidades sobre 110, lo que corresponde a un 10 %, no a un 2,1 %.</qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
     <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
       <qti-content-body>
-        <p><strong>Cálculo paso a paso de la tasa de inflación anual</strong></p>
+        <p><strong>Cálculo de la tasa de inflación anual como variación porcentual</strong></p>
         <ol>
-          <li>Identificar los datos: IPC inicial (abril 2021) = 110; IPC final (abril 2022) = 121.</li>
-          <li>Calcular el aumento absoluto del IPC: 121 − 110 = 11 puntos de IPC.</li>
-          <li>Calcular la variación relativa respecto del valor inicial: 11 / 110 = 0,1.</li>
-          <li>Convertir la variación relativa a porcentaje: 0,1 × 100 = 10 %.</li>
-          <li>Concluir que la tasa de inflación anual en el periodo descrito es 10 %.</li>
+          <li>Identificar los datos del problema:
+            <ul>
+              <li>IPC inicial (abril 2021): 110</li>
+              <li>IPC final (abril 2022): 121</li>
+            </ul>
+          </li>
+          <li>Calcular el aumento absoluto del IPC:
+            <ul>
+              <li>Aumento = IPC final − IPC inicial = 121 − 110 = 11</li>
+            </ul>
+          </li>
+          <li>Aplicar la fórmula de variación porcentual:
+            <ul>
+              <li>Tasa de inflación = (Aumento ÷ IPC inicial) × 100</li>
+              <li>Tasa de inflación = (11 ÷ 110) × 100</li>
+            </ul>
+          </li>
+          <li>Realizar la división y convertir a porcentaje:
+            <ul>
+              <li>11 ÷ 110 = 0,1</li>
+              <li>0,1 × 100 = 10</li>
+            </ul>
+          </li>
+          <li>Concluir con la respuesta:
+            <ul>
+              <li>La tasa de inflación anual en el periodo descrito fue de 10 %.</li>
+            </ul>
+          </li>
         </ol>
       </qti-content-body>
     </qti-feedback-block>
@@ -53,7 +76,7 @@
           <qti-base-value base-type="float">1</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>
@@ -64,7 +87,7 @@
           <qti-base-value base-type="float">0</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">show</qti-base-value>
+          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>

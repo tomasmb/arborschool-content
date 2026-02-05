@@ -19,16 +19,16 @@
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-prompt>¿Cuántos fueron los estudiantes encuestados?</qti-prompt>
       <qti-simple-choice identifier="ChoiceA">15
-        <qti-feedback-inline identifier="ChoiceA_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a sumar solo algunas barras (por ejemplo, 6 + 3 + 2 + 4) o a considerar solo parte de las frecuencias. Para obtener el total de estudiantes, debes sumar todas las frecuencias de las barras del gráfico.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceA_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta opción corresponde a sumar solo algunas barras (por ejemplo, 7 + 8) y no todas las frecuencias del gráfico. Para obtener el total de estudiantes debes considerar la suma de las frecuencias de todas las cantidades de carcasas.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">26
-        <qti-feedback-inline identifier="ChoiceB_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este resultado se obtiene si omites algunas categorías del gráfico (por ejemplo, si no consideras a quienes tuvieron 0 o 5 carcasas). El total de encuestados se calcula sumando las frecuencias de todas las barras, incluyendo 0 carcasas y 5 carcasas.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceB_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este resultado se obtiene si se omiten varias barras del gráfico (por ejemplo, sumando solo 6 + 7 + 8 + 3 + 2 = 26 y dejando fuera la barra de 3 carcasas). El total de encuestados se calcula sumando todas las frecuencias, sin excluir ninguna categoría.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceC">32
-        <qti-feedback-inline identifier="ChoiceC_FB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El total de estudiantes encuestados se obtiene sumando las frecuencias de todas las barras del gráfico: 6 (0 carcasas) + 7 (1 carcasa) + 8 (2 carcasas) + 6 (3 carcasas) + 3 (4 carcasas) + 2 (5 carcasas) = 32 estudiantes en total.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceC_fb" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El total de estudiantes encuestados se obtiene sumando las frecuencias de todas las barras del gráfico: 6 (0 carcasas) + 7 (1 carcasa) + 8 (2 carcasas) + 6 (3 carcasas) + 3 (4 carcasas) + 2 (5 carcasas) = 32 estudiantes en total.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceD">63
-        <qti-feedback-inline identifier="ChoiceD_FB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este número es cercano a la suma de los valores de las carcasas multiplicados por sus frecuencias, es decir, a un cálculo similar al total de carcasas, no al total de estudiantes. Para responder la pregunta, solo debes sumar las frecuencias (alturas de las barras), no multiplicarlas por la cantidad de carcasas.</qti-feedback-inline>
+        <qti-feedback-inline identifier="ChoiceD_fb" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Este número es cercano a la suma de las frecuencias y las cantidades de carcasas (por ejemplo, 6 + 7 + 8 + 6 + 3 + 2 + 0 + 1 + 2 + 3 + 4 + 5), mezclando datos distintos. Para hallar el total de estudiantes solo debes sumar las frecuencias (las alturas de las barras), no las cantidades de carcasas.</qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
     <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
@@ -45,7 +45,7 @@
               <li>5 carcasas: 2 estudiantes</li>
             </ul>
           </li>
-          <li>Suma todas las frecuencias para obtener el total de estudiantes encuestados:
+          <li>Suma todas las frecuencias para obtener el total de encuestados:
             <ul>
               <li>6 + 7 = 13</li>
               <li>13 + 8 = 21</li>
@@ -53,7 +53,7 @@
               <li>27 + 3 = 30</li>
               <li>30 + 2 = 32</li>
             </ul>
-            Por lo tanto, el total de estudiantes encuestados es 32.
+            Por lo tanto, el total de estudiantes encuestados es <strong>32</strong>.
           </li>
         </ol>
       </qti-content-body>
@@ -70,7 +70,7 @@
           <qti-base-value base-type="float">1</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">ChoiceC_FB</qti-base-value>
+          <qti-base-value base-type="identifier">ChoiceC_fb</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>
@@ -81,7 +81,7 @@
           <qti-base-value base-type="float">0</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">show</qti-base-value>
+          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>

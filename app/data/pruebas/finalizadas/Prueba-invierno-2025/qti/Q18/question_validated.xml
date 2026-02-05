@@ -16,26 +16,27 @@
     <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
       <qti-prompt>¿En qué porcentaje aumenta la población de individuos cada hora?</qti-prompt>
       <qti-simple-choice identifier="ChoiceA">En un 1 %
-        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Confundes el factor de crecimiento 1,1 con un aumento del 1 %. Un factor 1,1 significa que cada hora la población queda en 1,1 veces la anterior, es decir, aumenta en 0,1 de la cantidad inicial, lo que corresponde a un 10 % y no a un 1 %.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Confundes el factor de crecimiento 1,1 con un aumento de 1 %. Un aumento de 1 % corresponde a un factor 1,01, no 1,1.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">En un 1,1 %
-        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Estás interpretando el número 1,1 directamente como porcentaje (1,1 %), pero en la expresión exponencial 1,1 es el factor de crecimiento, no el porcentaje. Un factor 1,1 equivale a 110 % de la cantidad anterior, es decir, un aumento del 10 %.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Estás leyendo el 1,1 como si fuera directamente el porcentaje de aumento. El 1,1 es el factor total después de una hora (100 % + aumento), no solo el porcentaje que aumenta.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceC">En un 10 %
-        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">¡Correcto! El modelo es C = 2000 · (1,1)<sup>t</sup>. El número 1,1 es el factor de crecimiento por hora. Esto significa que cada hora la población queda en 1,1 veces la anterior, es decir, 100 % de la cantidad que había más un 0,1 adicional. Ese 0,1 corresponde a un 10 % de aumento respecto de la cantidad anterior.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">¡Correcto! El modelo es C = 2000 · (1,1)<sup>t</sup>. El número 1,1 representa el factor de crecimiento por hora: 1 corresponde al 100 % de la población inicial y 0,1 es el aumento adicional, es decir, un 10 % más cada hora.</qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceD">En un 11 %
-        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. Aquí estás leyendo el 1,1 como si fuera 111 % (o un 11 % de aumento), pero en realidad 1,1 como factor de crecimiento significa 110 % de la cantidad anterior. Eso corresponde a un aumento del 10 %, no del 11 %.</qti-feedback-inline>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. Estás interpretando el 1,1 como 110 % de la población inicial y suponiendo que eso implica un aumento de 11 %. En realidad, 110 % significa 100 % + 10 %, por lo que el aumento es de 10 %.</qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
     <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
       <qti-content-body>
-        <p><strong>Interpretación del modelo exponencial y del factor de crecimiento</strong></p>
+        <p><strong>Interpretación del modelo exponencial de crecimiento</strong></p>
         <ol>
-          <li>El modelo dado es <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi><mo>=</mo><mn>2000</mn><mo>&#183;</mo><msup><mn>1,1</mn><mi>t</mi></msup></math>, donde 2000 es la cantidad inicial de individuos y 1,1 es el factor por el cual se multiplica la población cada hora.</li>
-          <li>Un factor de crecimiento de 1,1 significa que, después de una hora, la nueva cantidad es 1,1 veces la cantidad anterior. Esto se puede escribir como 1,1 = 1 + 0,1, donde 1 representa el 100 % de la población que ya había y 0,1 representa el aumento.</li>
-          <li>El valor 0,1 en forma decimal corresponde a un 10 % en forma porcentual, porque 0,1 · 100 = 10. Por lo tanto, cada hora la población aumenta en un 10 % respecto de la cantidad que había la hora anterior.</li>
-          <li>En consecuencia, el porcentaje de aumento por hora de la población es del 10 %, que corresponde a la alternativa "En un 10 %".</li>
+          <li>El modelo dado es <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi><mo>=</mo><mn>2000</mn><mo>&#183;</mo><msup><mn>1,1</mn><mi>t</mi></msup></math>, donde 2000 es la cantidad inicial de individuos cuando <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>t</mi><mo>=</mo><mn>0</mn></math>.</li>
+          <li>En un modelo de crecimiento exponencial de la forma <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>C</mi><mo>=</mo><mi>C</mi><mn>0</mn><mo>&#183;</mo><msup><mrow><mo>(</mo><mn>1</mn><mo>+</mo><mi>r</mi><mo>)</mo></mrow><mi>t</mi></msup></math>, el número <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mi>r</mi></math> es el factor de crecimiento por unidad de tiempo y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi></math> es la tasa de crecimiento expresada en forma decimal.</li>
+          <li>En este caso, el factor de crecimiento es 1,1. Entonces se cumple que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mi>r</mi><mo>=</mo><mn>1,1</mn></math>, por lo que <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi><mo>=</mo><mn>1,1</mn><mo>-</mo><mn>1</mn><mo>=</mo><mn>0,1</mn></math>.</li>
+          <li>La tasa de crecimiento decimal <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>r</mi><mo>=</mo><mn>0,1</mn></math> corresponde a un 10 %, porque para pasar de decimal a porcentaje se multiplica por 100: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>&#215;</mo><mn>100</mn><mo>=</mo><mn>10</mn><mo>%</mo></math>.</li>
+          <li>Por lo tanto, la población aumenta en un 10 % cada hora, lo que coincide con la alternativa "En un 10 %".</li>
         </ol>
       </qti-content-body>
     </qti-feedback-block>
@@ -51,7 +52,7 @@
           <qti-base-value base-type="float">1</qti-base-value>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="FEEDBACK">
-          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+          <qti-variable identifier="RESPONSE"/>
         </qti-set-outcome-value>
         <qti-set-outcome-value identifier="SOLUTION">
           <qti-base-value base-type="identifier">show</qti-base-value>
