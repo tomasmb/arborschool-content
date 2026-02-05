@@ -58,12 +58,29 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
 </rules>
 
 <evaluation_criteria>
-Tu output será evaluado en:
-1. PRECISIÓN FACTUAL: ¿El feedback de la opción correcta explica correctamente la matemática?
-2. ERRORES CONCEPTUALES: ¿Cada feedback incorrecto identifica el error real que lleva a esa opción?
-3. SOLUCIÓN PASO A PASO: ¿Los pasos matemáticos son correctos y llevan a la respuesta correcta?
-4. CLARIDAD PEDAGÓGICA: ¿El lenguaje es apropiado para estudiantes de 3°-4° medio?
+Tu output será evaluado en dos dimensiones:
+
+1. PRECISIÓN FACTUAL (feedback_accuracy):
+   - ¿El feedback de la opción correcta explica POR QUÉ es matemáticamente correcta?
+   - ¿Los feedbacks de opciones incorrectas identifican errores conceptuales REALES?
+   - ¿La solución paso a paso tiene matemáticas correctas y llega a la respuesta correcta?
+   - FALLA si hay cualquier error matemático en el feedback
+
+2. CLARIDAD PEDAGÓGICA (feedback_clarity):
+   - ¿El lenguaje es claro para estudiantes de 3°-4° medio?
+   - ¿Los pasos son suficientemente detallados?
+   - ¿El feedback es específico a esta pregunta (no genérico)?
+   - FALLA si el feedback es confuso, muy técnico, o genérico
 </evaluation_criteria>
+
+<self_check>
+Antes de generar tu respuesta final, verifica mentalmente:
+1. ¿Resolví el problema yo mismo y llegué a la respuesta marcada como correcta?
+2. ¿El feedback de la opción correcta explica el razonamiento matemático completo?
+3. ¿Cada feedback incorrecto identifica un error conceptual específico y realista?
+4. ¿La solución paso a paso es correcta y llega a la respuesta correcta?
+5. ¿El lenguaje es apropiado para estudiantes de 3°-4° medio?
+</self_check>
 
 <output_format>
 Devuelve SOLO el QTI XML completo. Sin markdown, sin explicaciones.
