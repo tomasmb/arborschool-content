@@ -21,6 +21,22 @@ FEEDBACK_ENHANCEMENT_PROMPT = """
 Experto en educación matemática PAES Chile y formato QTI 3.0.
 </role>
 
+<chilean_number_format>
+CRÍTICO - FORMATO NUMÉRICO CHILENO EN EL CONTENIDO:
+- PUNTO (.) = separador de MILES, NO decimal
+- COMA (,) = separador DECIMAL
+
+Cómo interpretar números en el XML:
+- <mn>160.934</mn> = 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- <mn>100.000</mn> = 100000 (cien mil)
+- <mn>3,21868</mn> = 3.21868 en notación inglesa (tres coma dos uno...)
+
+Ejemplo de conversión millas-km: 1 milla ≈ 160.934 cm (formato chileno) = 160934 cm = 1,60934 km
+Por tanto, 2 millas ≈ 321.868 cm = 3,21868 km. Esto ES físicamente correcto.
+
+NO afirmes que las constantes son incorrectas si al interpretarlas en formato chileno dan valores físicos correctos.
+</chilean_number_format>
+
 <context>
 QTI XML ORIGINAL (sin retroalimentación):
 ```xml
@@ -120,6 +136,17 @@ FEEDBACK_CORRECTION_PROMPT = """
 Experto en educación matemática PAES Chile y formato QTI 3.0.
 </role>
 
+<chilean_number_format>
+CRÍTICO - FORMATO NUMÉRICO CHILENO:
+- PUNTO (.) = separador de MILES, NO decimal
+- COMA (,) = separador DECIMAL
+
+Interpretación: <mn>160.934</mn> = 160934 (no 160.934)
+Ejemplo: 1 milla ≈ 160.934 cm (chileno) = 160934 cm = 1,60934 km. Esto ES correcto.
+
+NO afirmes que las constantes son incorrectas si dan valores físicos correctos en formato chileno.
+</chilean_number_format>
+
 <context>
 QTI XML CON FEEDBACK QUE TIENE ERRORES:
 ```xml
@@ -139,9 +166,10 @@ Corregir los errores identificados en el feedback. Devolver el XML completo corr
 
 <correction_instructions>
 1. Lee cuidadosamente cada error identificado
-2. Resuelve el problema matemático paso a paso para verificar los valores correctos
-3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
-4. Verifica que los números y cálculos en el feedback corregido sean correctos
+2. Interpreta los números en formato chileno (punto = miles, coma = decimal)
+3. Resuelve el problema matemático para verificar los valores correctos
+4. Corrige las partes con errores, manteniendo el resto del XML intacto
+5. NO agregues disclaimers sobre constantes si son físicamente correctas
 </correction_instructions>
 
 <formatting_rules>
@@ -170,17 +198,19 @@ Revisor de retroalimentación educativa para preguntas PAES Matemática M1.
 </role>
 
 <chilean_number_format>
-CRÍTICO: Este contenido usa formato numérico CHILENO:
+Este contenido usa formato numérico CHILENO:
 - PUNTO (.) = separador de MILES (no decimal)
 - COMA (,) = separador DECIMAL
 
-Ejemplos de interpretación correcta:
-- 160.934 = ciento sesenta mil novecientos treinta y cuatro (160934)
-- 100.000 = cien mil (100000)
-- 3,21868 = tres coma dos uno ocho seis ocho (3.21868 en notación inglesa)
-- 32.186.800.000 = treinta y dos mil millones (32186800000)
+Ejemplos: 160.934 = 160934, 100.000 = 100000, 3,21868 = 3.21868
 
-DEBES interpretar los números con esta convención al resolver el problema.
+IMPORTANTE: Los cálculos intermedios en el feedback pueden usar notación mixta porque
+los LLMs hacen aritmética internamente con formato inglés. Esto es ACEPTABLE si:
+1. El RESULTADO FINAL es físicamente/matemáticamente correcto
+2. La respuesta marcada como correcta es la correcta
+
+NO falles por formato de números intermedios si el resultado final es correcto.
+Verifica la CORRECCIÓN MATEMÁTICA del resultado, no el formato de pasos intermedios.
 </chilean_number_format>
 
 <context>
@@ -250,17 +280,15 @@ Validador experto de preguntas PAES Matemática M1 de Chile.
 </role>
 
 <chilean_number_format>
-CRÍTICO: Este contenido usa formato numérico CHILENO:
+Este contenido usa formato numérico CHILENO:
 - PUNTO (.) = separador de MILES (no decimal)
 - COMA (,) = separador DECIMAL
 
-Ejemplos de interpretación correcta:
-- 160.934 = ciento sesenta mil novecientos treinta y cuatro (160934)
-- 100.000 = cien mil (100000)
-- 3,21868 = tres coma dos uno ocho seis ocho (3.21868 en notación inglesa)
-- 32.186.800.000 = treinta y dos mil millones (32186800000)
+Ejemplos: 160.934 = 160934, 100.000 = 100000, 3,21868 = 3.21868
 
-DEBES interpretar los números con esta convención al resolver el problema.
+IMPORTANTE: Los cálculos intermedios pueden usar notación mixta porque los LLMs
+hacen aritmética con formato inglés. Esto es ACEPTABLE si el resultado final es correcto.
+Verifica la CORRECCIÓN MATEMÁTICA del resultado, no el formato de pasos intermedios.
 </chilean_number_format>
 
 <context>
