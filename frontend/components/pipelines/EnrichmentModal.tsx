@@ -122,6 +122,7 @@ export function EnrichmentModal({
       const response = isVariants
         ? await startVariantEnrichment(subjectId, testId, {
             skip_already_enriched: selection === "unenriched",
+            only_failed_validation: selection === "failed",
           })
         : await startEnrichment(subjectId, testId, {
             all_tagged: selection === "all",
@@ -222,7 +223,7 @@ export function EnrichmentModal({
                     Only questions without feedback ({stats.tagged_count - stats.enriched_count})
                   </span>
                 </label>
-                {!isVariants && failedValidationCount > 0 && (
+                {failedValidationCount > 0 && (
                   <label className="flex items-center gap-3 p-3 border border-warning/30 bg-warning/5 rounded-lg cursor-pointer hover:bg-warning/10">
                     <input
                       type="radio"
@@ -232,7 +233,7 @@ export function EnrichmentModal({
                       className="w-4 h-4 accent-warning"
                     />
                     <span className="text-sm">
-                      Re-enrich questions that failed validation ({failedValidationCount})
+                      Re-enrich {itemLabel} that failed validation ({failedValidationCount})
                     </span>
                   </label>
                 )}

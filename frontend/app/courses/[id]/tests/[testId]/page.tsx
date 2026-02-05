@@ -338,10 +338,9 @@ export default function TestDetailPage() {
         subjectId={courseId}
         target="variants"
         stats={{
-          // Variants stats - using variants_count as proxy
-          // Ideally would have enriched_variants_count from API
           tagged_count: data.variants_count,
-          enriched_count: 0, // Would need API to track this
+          enriched_count: data.enriched_variants_count,
+          failed_validation_count: data.failed_validation_variants_count,
         }}
         onSuccess={fetchData}
       />
@@ -354,9 +353,8 @@ export default function TestDetailPage() {
         subjectId={courseId}
         target="variants"
         stats={{
-          // Variants stats - would need API to track enriched/validated variants
-          enriched_count: data.variants_count,
-          validated_count: 0, // Would need API to track this
+          enriched_count: data.enriched_variants_count,
+          validated_count: data.validated_variants_count,
         }}
         onSuccess={fetchData}
       />

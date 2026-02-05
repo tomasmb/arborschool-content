@@ -42,6 +42,10 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
    <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
 3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice
+   CRÍTICO: qti-feedback-inline solo acepta contenido INLINE (texto, strong, em, span, sub, sup).
+   PROHIBIDO usar elementos de bloque dentro de qti-feedback-inline: NO <p>, NO <div>, NO <ol>.
+   Ejemplo correcto: <qti-feedback-inline ...>Incorrecto. El cálculo correcto es...</qti-feedback-inline>
+   Ejemplo INCORRECTO: <qti-feedback-inline ...><p>Incorrecto.</p></qti-feedback-inline>
 
 4. AGREGAR qti-feedback-block al final de qti-item-body:
    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
@@ -51,10 +55,9 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
      </qti-content-body>
    </qti-feedback-block>
 
-5. REEMPLAZAR qti-response-processing: cada opción debe mapear a su feedback específico.
-   IMPORTANTE: El fallback final (qti-response-else) debe asignar el feedback de una opción
-   INCORRECTA, nunca el de la correcta. Esto evita mostrar "¡Correcto!" cuando el estudiante
-   no selecciona nada o hay un error.
+5. REEMPLAZAR qti-response-processing:
+   - Mapear CADA opción (A, B, C, D) a su feedback específico
+   - El fallback (qti-response-else) debe asignar feedback de una opción INCORRECTA
 </xml_structure>
 
 <feedback_requirements>
@@ -69,11 +72,14 @@ OPCIONES INCORRECTAS:
 - Formato: "Incorrecto. [demostración matemática]"
 - Incluir el cálculo que PRUEBA que esta opción NO satisface el problema
 - NO especular sobre qué error cometió el estudiante
+- Preservar la semántica exacta del enunciado (no agregar ni quitar calificadores)
+- Para negar afirmaciones universales: incluir un CONTRAEJEMPLO CONCRETO con valores específicos
 
 SOLUCIÓN PASO A PASO:
 - Resolver el problema completo con pasos claros
 - Llegar explícitamente a la respuesta correcta
 - Lenguaje claro para estudiantes de 3°-4° medio
+- Explicitar supuestos cuando se usan en desigualdades (ej: "como n > 0...")
 </feedback_requirements>
 
 <formatting_rules>
@@ -93,13 +99,12 @@ ANTES de generar el feedback, DEBES:
 2. RESOLVER el problema paso a paso para entender el razonamiento
 3. VERIFICAR que tu solución llega a esa respuesta
 
-Para problemas con cálculos numéricos:
-- Muestra cada operación intermedia
-- Si hay conversión de unidades, verifica que las unidades se cancelen correctamente
+Para CADA cálculo o ejemplo numérico que incluyas en el feedback (respuesta correcta,
+opciones incorrectas, contraejemplos y solución paso a paso):
+- Muestra cada operación intermedia y verifica el resultado
+- Confirma que los valores usados cumplen todas las restricciones del enunciado
+- Si hay conversión de unidades, verifica que se cancelen correctamente
 - Cuenta los ceros cuidadosamente en números grandes
-
-IMPORTANTE: El feedback debe contener matemáticas verificadas. Si un cálculo es
-complejo, desglósalo en pasos más simples para evitar errores.
 </verification_process>
 
 <output_format>
@@ -141,7 +146,8 @@ Corregir los errores identificados en el feedback. Devolver el XML completo corr
 1. Lee cuidadosamente cada error identificado
 2. Resuelve el problema matemático paso a paso para verificar los valores correctos
 3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
-4. Verifica que los números y cálculos en el feedback corregido sean correctos
+4. Verifica que cada número, cálculo y ejemplo construido en el feedback corregido
+   cumpla todas las restricciones del enunciado y sea aritméticamente correcto
 </correction_instructions>
 
 <formatting_rules>
@@ -197,8 +203,8 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
    - ¿Usa formato chileno? (punto para miles, coma para decimal)
-   - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
-   - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
+   - Fallback (qti-response-else): PASS si asigna feedback de cualquier opción INCORRECTA.
+     FAIL solo si asigna feedback de la opción CORRECTA (la marcada en qti-correct-response)
 </checks>
 
 <output_format>

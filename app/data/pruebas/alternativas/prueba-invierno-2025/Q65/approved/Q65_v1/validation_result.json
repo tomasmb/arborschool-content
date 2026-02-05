@@ -1,0 +1,32 @@
+{
+  "question_id": "prueba-invierno-2025-Q65-Q65_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-05T20:05:17.502480+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Los datos ordenados son: 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 4, 4, 5, 6. Mínimo = 0, máximo = 6. Con 20 datos, la mediana es el promedio entre el dato 10 y 11: ambos son 2, por lo que mediana = 2. El cuartil inferior es la mediana de los primeros 10 datos (0, 0, 1, 1, 1, 1, 2, 2, 2, 2): datos 5 y 6 son 1 y 1, por lo que Q1 = 1. El cuartil superior es la mediana de los últimos 10 datos (2, 2, 3, 3, 4, 4, 4, 4, 5, 6): datos 5 y 6 son 4 y 4, por lo que Q3 = 4. Por tanto, el diagrama correcto debe tener mínimo 0, Q1 = 1, mediana 2, Q3 = 4 y máximo 6, que coincide con la descripción de la alternativa A. El feedback de la opción correcta explica explícitamente este cálculo y justifica por qué el diagrama A es el adecuado. Los feedbacks de B, C y D recalculan los cinco números resumen y explican por qué esos diagramas no coinciden con (0, 1, 2, 4, 6); en particular, el de B identifica correctamente que el error está en el cuartil superior (3 en el diagrama vs 4 en los datos). No hay errores matemáticos ni contradicciones en la solución paso a paso del bloque SOLUTION, que reproduce los mismos cálculos de manera coherente."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio, usando términos estándar como mínimo, máximo, mediana, cuartil inferior y cuartil superior, y explicando cómo se obtienen (\"mediana de los 10 primeros datos\", \"promedio entre el dato 5 y el dato 6\"). Cada feedback incluye la lista completa de datos ordenados y detalla el procedimiento de cálculo de los cinco números resumen, por lo que es auto-contenido: el estudiante no necesita hacer cálculos adicionales para entender por qué una opción es correcta o incorrecta. Además, los feedbacks se refieren explícitamente a las características del diagrama de cada alternativa (por ejemplo, que en B el cuartil superior es 3) y las contrastan con los valores correctos, lo que los hace específicos a esta pregunta y no genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática explícita en fórmulas está en MathML dentro de etiquetas <math> y no se usa LaTeX. No aparecen números con separador de miles ni decimales, por lo que no hay conflicto con el formato chileno (punto para miles, coma para decimales). En el bloque de procesamiento de respuestas, el fallback (<qti-response-else>) asigna SCORE = 0 y FEEDBACK = ChoiceB, es decir, muestra la retroalimentación de una opción incorrecta, no de la correcta, cumpliendo la condición pedida."
+      },
+      "overall_reasoning": "Los cálculos de los cinco números resumen son correctos y coherentes en todos los bloques de retroalimentación y en la solución, el lenguaje es claro y específico para la tarea, y el formato (MathML y lógica de fallback) cumple con los requisitos. No se detectan errores matemáticos ni de formato."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": "question_validated.xml"
+}

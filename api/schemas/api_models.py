@@ -207,6 +207,10 @@ class TestDetail(BaseModel):
     enriched_count: int = 0
     validated_count: int = 0
     variants_count: int
+    # Variant-level enrichment/validation stats
+    enriched_variants_count: int = 0
+    validated_variants_count: int = 0
+    failed_validation_variants_count: int = 0
     # Questions
     questions: list[QuestionBrief]
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   Plus,
   Trash2,
@@ -12,12 +12,11 @@ import {
   ShieldCheck,
   CheckCircle2,
   Circle,
-  Loader2,
-  AlertCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { StatusIcon, ProgressRatio } from "@/components/ui";
-import { getQuestionDetail, type QuestionBrief, type TestDetail, type VariantBrief } from "@/lib/api";
+import { ProgressRatio } from "@/components/ui";
+import { type QuestionBrief, type TestDetail } from "@/lib/api";
+import { VariantsExpandedContent } from "./VariantsExpandedContent";
 
 export interface VariantsTabProps {
   subjectId: string;
@@ -96,29 +95,44 @@ export function VariantsTab({
           <h3 className="font-semibold">Variants</h3>
 
           {/* Key metrics */}
-          <div className="grid grid-cols-3 gap-6 text-sm">
+          <div className="grid grid-cols-4 gap-4 text-sm">
             <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Questions with Variants</p>
+              <p className="text-text-secondary text-xs mb-1">Total Variants</p>
+              <p className="text-xl font-semibold">{totalVariants}</p>
+              <p className="text-xs text-text-secondary mt-1">
+                Avg {validatedQuestions.length > 0 ? (totalVariants / validatedQuestions.length).toFixed(1) : 0}/q
+              </p>
+            </div>
+            <div className="bg-surface border border-border rounded-lg p-3">
+              <p className="text-text-secondary text-xs mb-1">Enriched</p>
+              <p className="text-xl font-semibold">
+                <ProgressRatio current={data.enriched_variants_count} total={totalVariants} />
+              </p>
+              {totalVariants > 0 && data.enriched_variants_count < totalVariants && (
+                <p className="text-xs text-warning mt-1">
+                  {totalVariants - data.enriched_variants_count} need feedback
+                </p>
+              )}
+            </div>
+            <div className="bg-surface border border-border rounded-lg p-3">
+              <p className="text-text-secondary text-xs mb-1">Validated</p>
+              <p className="text-xl font-semibold">
+                <ProgressRatio current={data.validated_variants_count} total={data.enriched_variants_count} />
+              </p>
+              {data.failed_validation_variants_count > 0 && (
+                <p className="text-xs text-error mt-1">
+                  {data.failed_validation_variants_count} failed
+                </p>
+              )}
+            </div>
+            <div className="bg-surface border border-border rounded-lg p-3">
+              <p className="text-text-secondary text-xs mb-1">Questions w/ Variants</p>
               <p className="text-xl font-semibold">
                 <ProgressRatio current={questionsWithVariants} total={validatedQuestions.length} />
               </p>
               {questionsNoVariants > 0 && (
                 <p className="text-xs text-warning mt-1">{questionsNoVariants} need variants</p>
               )}
-            </div>
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Qs with Validated Variants</p>
-              <p className="text-xl font-semibold">
-                <span className="text-text-secondary">—</span>/{validatedQuestions.length}
-              </p>
-              <p className="text-xs text-text-secondary mt-1">Ready for sync</p>
-            </div>
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Total Variants</p>
-              <p className="text-xl font-semibold">{totalVariants}</p>
-              <p className="text-xs text-text-secondary mt-1">
-                Avg {validatedQuestions.length > 0 ? (totalVariants / validatedQuestions.length).toFixed(1) : 0}/question
-              </p>
             </div>
           </div>
         </div>
@@ -365,141 +379,3 @@ function VariantQuestionRow({
   );
 }
 
-interface VariantsExpandedContentProps {
-  subjectId: string;
-  testId: string;
-  questionNum: number;
-  variantCount: number;
-  onDeleteVariant?: (variantId: string) => void;
-}
-
-function VariantsExpandedContent({
-  subjectId,
-  testId,
-  questionNum,
-  variantCount,
-  onDeleteVariant,
-}: VariantsExpandedContentProps) {
-  const [variants, setVariants] = useState<VariantBrief[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchVariants() {
-      setLoading(true);
-      setError(null);
-      try {
-        const detail = await getQuestionDetail(subjectId, testId, questionNum);
-        if (!cancelled) {
-          setVariants(detail.variants || []);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Failed to load variants");
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchVariants();
-    return () => {
-      cancelled = true;
-    };
-  }, [subjectId, testId, questionNum]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-6">
-        <Loader2 className="w-4 h-4 animate-spin text-accent" />
-        <span className="ml-2 text-text-secondary text-sm">Loading variants...</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center py-6 text-error">
-        <AlertCircle className="w-4 h-4" />
-        <span className="ml-2 text-sm">{error}</span>
-      </div>
-    );
-  }
-
-  // Compute variant stats
-  const enrichedCount = variants.filter((v) => v.is_enriched).length;
-  const validatedCount = variants.filter((v) => v.is_validated).length;
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-3">
-        <h4 className="text-sm font-medium">Q{questionNum} Variants</h4>
-        <div className="flex items-center gap-4 text-xs">
-          <span className="text-text-secondary">{variants.length} total</span>
-          {enrichedCount > 0 && (
-            <span className="text-accent">{enrichedCount} enriched</span>
-          )}
-          {validatedCount > 0 && (
-            <span className="text-success">{validatedCount} validated</span>
-          )}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-        {variants.map((v) => (
-          <div
-            key={v.id}
-            className={cn(
-              "flex items-center justify-between p-2 bg-background rounded border",
-              v.is_validated
-                ? "border-success/30"
-                : v.is_enriched
-                  ? "border-accent/30"
-                  : v.has_qti
-                    ? "border-border/50"
-                    : "border-warning/30"
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-mono">{v.folder_name}</span>
-              <div className="flex items-center gap-0.5">
-                {v.is_validated ? (
-                  <ShieldCheck className="w-3 h-3 text-success" aria-label="Validated" />
-                ) : v.is_enriched ? (
-                  <MessageSquarePlus className="w-3 h-3 text-accent" aria-label="Enriched" />
-                ) : v.has_qti ? (
-                  <CheckCircle2 className="w-3 h-3 text-text-secondary" aria-label="Has QTI" />
-                ) : (
-                  <Circle className="w-3 h-3 text-warning" aria-label="Missing QTI" />
-                )}
-              </div>
-            </div>
-            {onDeleteVariant && (
-              <button
-                onClick={() => onDeleteVariant(v.id)}
-                className="text-xs text-error hover:underline ml-2"
-              >
-                <Trash2 className="w-3 h-3" />
-              </button>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {variants.length === 0 && (
-        <p className="text-center text-text-secondary text-sm py-4">
-          No variants found for this question.
-        </p>
-      )}
-
-      <p className="mt-3 text-xs text-text-secondary">
-        Variants are generated with feedback included. View individual variants in the
-        question detail panel.
-      </p>
-    </div>
-  );
-}
