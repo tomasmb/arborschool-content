@@ -23,7 +23,13 @@ CHARACTER_ENCODING_INSTRUCTIONS = """## CRITICAL: Character Encoding and Special
 
 **MathML Number Formatting**: Large numbers must use a SINGLE `<mn>` tag with `&#x202F;` (narrow no-break space) as thousands separator:
 - CORRECT: `<mn>160&#x202F;934</mn>` (one number, one tag)
-- INCORRECT: `<mn>160</mn><mspace width="0.25em"/><mn>934</mn>` (splits number into two tags)"""
+- INCORRECT: `<mn>160</mn><mspace width="0.25em"/><mn>934</mn>` (splits number into two tags)
+
+**Plain Text Number Formatting**: Large numbers in plain text (answer choices, feedback, solutions)
+must also use `&#x202F;` as thousands separator for consistency with MathML:
+- CORRECT: `32&#x202F;186&#x202F;800&#x202F;000 kilómetros`
+- INCORRECT: `32186800000 kilómetros` (no separator)
+- INCORRECT: `32 186 800 000 kilómetros` (regular space - inconsistent with MathML)"""
 
 # Shared context handling instructions
 SHARED_CONTEXT_INSTRUCTIONS = """## Shared Context Handling

@@ -40,9 +40,13 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
    - <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
    - <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
-3. MathML: números grandes usan UN solo `<mn>` con `&#x202F;` como separador de miles:
-   - CORRECTO: `<mn>60&#x202F;000</mn>`
-   - INCORRECTO: `<mn>60</mn><mspace .../><mn>000</mn>`
+3. Formato de números grandes (usar `&#x202F;` como separador de miles en AMBOS casos):
+   - MathML: UN solo `<mn>` con `&#x202F;`
+     - CORRECTO: `<mn>60&#x202F;000</mn>`
+     - INCORRECTO: `<mn>60</mn><mspace .../><mn>000</mn>`
+   - Texto plano (alternativas, feedback, solución): usar `&#x202F;`
+     - CORRECTO: `32&#x202F;186&#x202F;800&#x202F;000 kilómetros`
+     - INCORRECTO: `32 186 800 000 kilómetros` (espacio normal)
 
 4. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
    - Opción correcta: "¡Correcto! [explicación matemática de POR QUÉ es correcta]"
