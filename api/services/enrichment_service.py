@@ -184,7 +184,10 @@ def _extract_failure_details(result) -> dict | None:
         # Collect issues from failed checks
         for check_name in ["feedback_accuracy", "feedback_clarity"]:
             check = review.get(check_name, {})
-            if check.get("status") == "fail":
+            # Handle both enum objects and string values for status
+            status = check.get("status")
+            status_str = status.value if hasattr(status, "value") else str(status)
+            if status_str == "fail":
                 details["issues"].extend(check.get("issues", []))
         # Use overall reasoning if available
         details["reasoning"] = review.get("overall_reasoning")
