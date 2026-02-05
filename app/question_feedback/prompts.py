@@ -86,15 +86,73 @@ SOLUCIÓN PASO A PASO:
    - Texto: `32.186.800.000 kilómetros`
 </formatting_rules>
 
+<verification_process>
+ANTES de generar el feedback, DEBES:
+
+1. IDENTIFICAR la respuesta marcada como correcta en el XML original
+2. RESOLVER el problema paso a paso para entender el razonamiento
+3. VERIFICAR que tu solución llega a esa respuesta
+
+Para problemas con cálculos numéricos:
+- Muestra cada operación intermedia
+- Si hay conversión de unidades, verifica que las unidades se cancelen correctamente
+- Cuenta los ceros cuidadosamente en números grandes
+
+IMPORTANTE: El feedback debe contener matemáticas verificadas. Si un cálculo es
+complejo, desglósalo en pasos más simples para evitar errores.
+</verification_process>
+
 <output_format>
 Devuelve SOLO el QTI XML completo. Sin markdown, sin explicaciones.
 Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
 </output_format>
+"""
 
-<final_instruction>
-Antes de generar, resuelve el problema tú mismo para verificar la respuesta correcta.
-Basándote en el QTI XML original arriba, genera el XML completo con retroalimentación.
-</final_instruction>
+
+# ---------------------------------------------------------------------------
+# FEEDBACK CORRECTION PROMPT
+# ---------------------------------------------------------------------------
+# Used when feedback review fails - asks model to fix specific issues.
+# ---------------------------------------------------------------------------
+
+FEEDBACK_CORRECTION_PROMPT = """
+<role>
+Experto en educación matemática PAES Chile y formato QTI 3.0.
+</role>
+
+<context>
+QTI XML CON FEEDBACK QUE TIENE ERRORES:
+```xml
+{qti_xml_with_errors}
+```
+
+{images_section}
+</context>
+
+<errors_to_fix>
+{review_issues}
+</errors_to_fix>
+
+<task>
+Corregir los errores identificados en el feedback. Devolver el XML completo corregido.
+</task>
+
+<correction_instructions>
+1. Lee cuidadosamente cada error identificado
+2. Resuelve el problema matemático paso a paso para verificar los valores correctos
+3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
+4. Verifica que los números y cálculos en el feedback corregido sean correctos
+</correction_instructions>
+
+<formatting_rules>
+1. Notación matemática: usar SOLO MathML, nunca LaTeX
+2. Formato de números chileno: punto para miles, coma para decimal
+</formatting_rules>
+
+<output_format>
+Devuelve SOLO el QTI XML completo corregido. Sin markdown, sin explicaciones.
+Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
+</output_format>
 """
 
 
@@ -188,9 +246,24 @@ QTI XML COMPLETO (pregunta + retroalimentación):
 Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 </task>
 
+<chilean_number_format>
+IMPORTANTE: Este contenido usa formato numérico chileno:
+- Punto (.) = separador de MILES (no decimal)
+- Coma (,) = separador DECIMAL
+
+Ejemplos de interpretación:
+- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- "100.000" significa 100000 (cien mil)
+- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
+- "3,21868" significa 3.21868 (tres coma veintiuno...)
+- "0,80467" significa 0.80467 (cero coma ochenta...)
+
+Al validar cálculos, interpreta los números según este formato ANTES de verificar.
+</chilean_number_format>
+
 <checks>
 1. RESPUESTA CORRECTA (correct_answer_check):
-   - Resuelve el problema paso a paso
+   - Resuelve el problema paso a paso (usando formato chileno para interpretar números)
    - Verifica que <qti-correct-response> tenga la respuesta matemáticamente correcta
    - FAIL si la respuesta marcada no es correcta
 
@@ -233,17 +306,20 @@ JSON con este schema:
 </output_format>
 
 <constraints>
-- Sé riguroso pero no excesivamente estricto
+- Sé riguroso pero no excesivamente estricto ni pedante
 - NO marcar como error:
   - "¡Correcto!" en feedback de opción correcta (es apropiado)
   - qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
   - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
+  - Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
+  - Cálculos correctos en formato chileno (recuerda: punto=miles, coma=decimal)
 - SÍ marcar como error:
-  - Errores matemáticos reales
+  - Errores matemáticos reales (resultado numérico incorrecto)
   - Respuesta correcta marcada incorrectamente
   - Feedback que no corresponde a la alternativa
 - Cita contenido exacto cuando reportes issues
 - Issues deben ser específicos y accionables
+- IMPORTANTE: Verifica cálculos interpretando números en formato chileno
 </constraints>
 
 <final_instruction>

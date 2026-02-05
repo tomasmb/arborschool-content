@@ -11,7 +11,10 @@ from typing import Any
 from dotenv import load_dotenv
 
 from app.question_feedback.models import EnhancementResult
-from app.question_feedback.prompts import FEEDBACK_ENHANCEMENT_PROMPT
+from app.question_feedback.prompts import (
+    FEEDBACK_CORRECTION_PROMPT,
+    FEEDBACK_ENHANCEMENT_PROMPT,
+)
 from app.question_feedback.utils.image_utils import load_images_from_urls
 
 
@@ -198,6 +201,87 @@ class FeedbackEnhancer:
                 )
 
         return EnhancementResult(success=False, error="Max retries exceeded")
+
+    def correct(
+        self,
+        qti_xml_with_errors: str,
+        review_issues: str,
+        image_urls: list[str] | None = None,
+    ) -> EnhancementResult:
+        """Correct feedback errors identified by the reviewer.
+
+        Args:
+            qti_xml_with_errors: QTI XML with feedback that has errors.
+            review_issues: Description of the issues found by the reviewer.
+            image_urls: Optional list of image URLs for multimodal input.
+
+        Returns:
+            EnhancementResult with success status and corrected XML or errors.
+        """
+        logger.info("Attempting feedback correction based on review issues")
+
+        images: list[Any] = []
+        if image_urls:
+            images = load_images_from_urls(image_urls)
+
+        images_section = ""
+        if images:
+            images_section = (
+                f"IMÁGENES: {len(images)} imagen(es) adjuntas. "
+                "Considera las imágenes al corregir el feedback."
+            )
+
+        prompt = FEEDBACK_CORRECTION_PROMPT.format(
+            qti_xml_with_errors=qti_xml_with_errors,
+            images_section=images_section,
+            review_issues=review_issues,
+        )
+
+        try:
+            if images:
+                multimodal_prompt: list[Any] = [prompt]
+                multimodal_prompt.extend(images)
+                response_text = self._client.generate_text(
+                    multimodal_prompt,
+                    temperature=0.0,
+                    max_tokens=8000,
+                )
+            else:
+                response_text = self._client.generate_text(
+                    prompt,
+                    temperature=0.0,
+                    max_tokens=8000,
+                )
+
+            corrected_xml = self._extract_xml(response_text)
+
+            # XSD Validation
+            xsd_result = validate_qti_xml(corrected_xml)
+
+            if xsd_result.get("valid"):
+                logger.info("Correction XSD validation passed")
+                return EnhancementResult(
+                    success=True,
+                    qti_xml=corrected_xml,
+                    attempts=1,
+                )
+
+            xsd_errors = str(xsd_result.get("validation_errors", "Unknown error"))
+            logger.warning(f"Correction XSD validation failed: {xsd_errors}")
+            return EnhancementResult(
+                success=False,
+                error="Correction failed XSD validation",
+                xsd_errors=xsd_errors,
+                attempts=1,
+            )
+
+        except Exception as e:
+            logger.error(f"Feedback correction failed: {e}")
+            return EnhancementResult(
+                success=False,
+                error=f"Correction failed: {str(e)}",
+                attempts=1,
+            )
 
     def _extract_xml(self, response_text: str) -> str:
         """Extract QTI XML from response, handling any wrapping.
