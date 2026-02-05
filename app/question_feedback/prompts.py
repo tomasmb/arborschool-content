@@ -203,8 +203,8 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
    - ¿Usa formato chileno? (punto para miles, coma para decimal)
-   - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
-   - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
+   - Fallback (qti-response-else): PASS si asigna feedback de cualquier opción INCORRECTA.
+     FAIL solo si asigna feedback de la opción CORRECTA (la marcada en qti-correct-response)
 </checks>
 
 <output_format>
