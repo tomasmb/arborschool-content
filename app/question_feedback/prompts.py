@@ -169,6 +169,20 @@ FEEDBACK_REVIEW_PROMPT = """
 Revisor de retroalimentación educativa para preguntas PAES Matemática M1.
 </role>
 
+<chilean_number_format>
+CRÍTICO: Este contenido usa formato numérico CHILENO:
+- PUNTO (.) = separador de MILES (no decimal)
+- COMA (,) = separador DECIMAL
+
+Ejemplos de interpretación correcta:
+- 160.934 = ciento sesenta mil novecientos treinta y cuatro (160934)
+- 100.000 = cien mil (100000)
+- 3,21868 = tres coma dos uno ocho seis ocho (3.21868 en notación inglesa)
+- 32.186.800.000 = treinta y dos mil millones (32186800000)
+
+DEBES interpretar los números con esta convención al resolver el problema.
+</chilean_number_format>
+
 <context>
 QTI XML CON RETROALIMENTACIÓN GENERADA:
 ```xml
@@ -197,8 +211,10 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
    - ¿Usa formato chileno? (punto para miles, coma para decimal)
-   - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
-   - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
+   - Fallback (qti-response-else): SOLO debe asignar feedback de una opción INCORRECTA
+   - FAIL si hay LaTeX o formato incorrecto
+   - FAIL si el fallback asigna el feedback de la opción CORRECTA
+   - PASS si el fallback asigna feedback de CUALQUIER opción incorrecta (esto es válido)
 </checks>
 
 <output_format>
@@ -233,6 +249,20 @@ FINAL_VALIDATION_PROMPT = """
 Validador experto de preguntas PAES Matemática M1 de Chile.
 </role>
 
+<chilean_number_format>
+CRÍTICO: Este contenido usa formato numérico CHILENO:
+- PUNTO (.) = separador de MILES (no decimal)
+- COMA (,) = separador DECIMAL
+
+Ejemplos de interpretación correcta:
+- 160.934 = ciento sesenta mil novecientos treinta y cuatro (160934)
+- 100.000 = cien mil (100000)
+- 3,21868 = tres coma dos uno ocho seis ocho (3.21868 en notación inglesa)
+- 32.186.800.000 = treinta y dos mil millones (32186800000)
+
+DEBES interpretar los números con esta convención al resolver el problema.
+</chilean_number_format>
+
 <context>
 QTI XML COMPLETO (pregunta + retroalimentación):
 ```xml
@@ -248,7 +278,7 @@ Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 
 <checks>
 1. RESPUESTA CORRECTA (correct_answer_check):
-   - Resuelve el problema paso a paso
+   - Resuelve el problema paso a paso (usando formato chileno para interpretar números)
    - Verifica que <qti-correct-response> tenga la respuesta matemáticamente correcta
    - FAIL si la respuesta marcada no es correcta
 
