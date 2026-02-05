@@ -86,15 +86,73 @@ SOLUCIÓN PASO A PASO:
    - Texto: `32.186.800.000 kilómetros`
 </formatting_rules>
 
+<verification_process>
+ANTES de generar el feedback, DEBES:
+
+1. IDENTIFICAR la respuesta marcada como correcta en el XML original
+2. RESOLVER el problema paso a paso para entender el razonamiento
+3. VERIFICAR que tu solución llega a esa respuesta
+
+Para problemas con cálculos numéricos:
+- Muestra cada operación intermedia
+- Si hay conversión de unidades, verifica que las unidades se cancelen correctamente
+- Cuenta los ceros cuidadosamente en números grandes
+
+IMPORTANTE: El feedback debe contener matemáticas verificadas. Si un cálculo es
+complejo, desglósalo en pasos más simples para evitar errores.
+</verification_process>
+
 <output_format>
 Devuelve SOLO el QTI XML completo. Sin markdown, sin explicaciones.
 Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
 </output_format>
+"""
 
-<final_instruction>
-Antes de generar, resuelve el problema tú mismo para verificar la respuesta correcta.
-Basándote en el QTI XML original arriba, genera el XML completo con retroalimentación.
-</final_instruction>
+
+# ---------------------------------------------------------------------------
+# FEEDBACK CORRECTION PROMPT
+# ---------------------------------------------------------------------------
+# Used when feedback review fails - asks model to fix specific issues.
+# ---------------------------------------------------------------------------
+
+FEEDBACK_CORRECTION_PROMPT = """
+<role>
+Experto en educación matemática PAES Chile y formato QTI 3.0.
+</role>
+
+<context>
+QTI XML CON FEEDBACK QUE TIENE ERRORES:
+```xml
+{qti_xml_with_errors}
+```
+
+{images_section}
+</context>
+
+<errors_to_fix>
+{review_issues}
+</errors_to_fix>
+
+<task>
+Corregir los errores identificados en el feedback. Devolver el XML completo corregido.
+</task>
+
+<correction_instructions>
+1. Lee cuidadosamente cada error identificado
+2. Resuelve el problema matemático paso a paso para verificar los valores correctos
+3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
+4. Verifica que los números y cálculos en el feedback corregido sean correctos
+</correction_instructions>
+
+<formatting_rules>
+1. Notación matemática: usar SOLO MathML, nunca LaTeX
+2. Formato de números chileno: punto para miles, coma para decimal
+</formatting_rules>
+
+<output_format>
+Devuelve SOLO el QTI XML completo corregido. Sin markdown, sin explicaciones.
+Debe empezar con <qti-assessment-item y terminar con </qti-assessment-item>
+</output_format>
 """
 
 

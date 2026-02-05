@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from app.question_feedback.enhancer import FeedbackEnhancer
-from app.question_feedback.models import PipelineResult
+from app.question_feedback.models import FeedbackReviewResult, PipelineResult
 from app.question_feedback.reviewer import FeedbackReviewer
 
 logger = logging.getLogger(__name__)
@@ -91,27 +91,61 @@ class QuestionPipeline:
         review = self.reviewer.review(qti_with_feedback)
 
         if review.review_result != "pass":
-            # Build descriptive error from review details
-            failed_checks = []
-            if review.feedback_accuracy.status.value == "fail":
-                failed_checks.append("feedback_accuracy")
-            if review.feedback_clarity.status.value == "fail":
-                failed_checks.append("feedback_clarity")
-            if review.formatting_check.status.value == "fail":
-                failed_checks.append("formatting_check")
-            error_msg = f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
+            # ── STAGE 2b: Attempt correction based on review feedback ──
+            logger.info("Feedback review failed, attempting correction...")
 
-            result = PipelineResult(
-                question_id=question_id,
-                success=False,
-                stage_failed="feedback_review",
-                error=error_msg,
-                feedback_review_details=review.model_dump(),
-                can_sync=False,
+            review_issues = self._format_review_issues(review)
+            correction = self.enhancer.correct(
+                qti_xml_with_errors=qti_with_feedback,
+                review_issues=review_issues,
+                image_urls=image_urls,
             )
-            if output_dir:
-                self._save_result(output_dir, result)
-            return result
+
+            if correction.success and correction.qti_xml:
+                # Re-review the corrected feedback
+                corrected_review = self.reviewer.review(correction.qti_xml)
+
+                if corrected_review.review_result == "pass":
+                    logger.info("Correction successful, review passed")
+                    qti_with_feedback = correction.qti_xml
+                    review = corrected_review
+                else:
+                    # Correction didn't fix all issues
+                    failed_checks = self._get_failed_checks(corrected_review)
+                    error_msg = (
+                        f"Feedback review failed after correction: "
+                        f"{', '.join(failed_checks) or 'unknown'}"
+                    )
+
+                    result = PipelineResult(
+                        question_id=question_id,
+                        success=False,
+                        stage_failed="feedback_review",
+                        error=error_msg,
+                        feedback_review_details=corrected_review.model_dump(),
+                        can_sync=False,
+                    )
+                    if output_dir:
+                        self._save_result(output_dir, result)
+                    return result
+            else:
+                # Correction itself failed
+                failed_checks = self._get_failed_checks(review)
+                error_msg = (
+                    f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
+                )
+
+                result = PipelineResult(
+                    question_id=question_id,
+                    success=False,
+                    stage_failed="feedback_review",
+                    error=error_msg,
+                    feedback_review_details=review.model_dump(),
+                    can_sync=False,
+                )
+                if output_dir:
+                    self._save_result(output_dir, result)
+                return result
 
         # ── SUCCESS: Ready for full validation (separate step) ──
         result = PipelineResult(
@@ -190,6 +224,54 @@ class QuestionPipeline:
             if file_path.exists():
                 file_path.unlink()
                 logger.info(f"Cleared previous enrichment file: {file_path}")
+
+    def _format_review_issues(self, review: FeedbackReviewResult) -> str:
+        """Format review issues into a string for the correction prompt.
+
+        Args:
+            review: FeedbackReviewResult with issues.
+
+        Returns:
+            Formatted string describing all issues found.
+        """
+        issues_parts = []
+
+        if review.feedback_accuracy.status.value == "fail":
+            issues_parts.append("ERRORES DE PRECISIÓN MATEMÁTICA:")
+            for issue in review.feedback_accuracy.issues:
+                issues_parts.append(f"- {issue}")
+            if review.feedback_accuracy.reasoning:
+                issues_parts.append(f"Análisis: {review.feedback_accuracy.reasoning}")
+
+        if review.feedback_clarity.status.value == "fail":
+            issues_parts.append("\nERRORES DE CLARIDAD:")
+            for issue in review.feedback_clarity.issues:
+                issues_parts.append(f"- {issue}")
+
+        if review.formatting_check.status.value == "fail":
+            issues_parts.append("\nERRORES DE FORMATO:")
+            for issue in review.formatting_check.issues:
+                issues_parts.append(f"- {issue}")
+
+        return "\n".join(issues_parts)
+
+    def _get_failed_checks(self, review: FeedbackReviewResult) -> list[str]:
+        """Get list of failed check names from a review result.
+
+        Args:
+            review: FeedbackReviewResult to check.
+
+        Returns:
+            List of failed check names.
+        """
+        failed_checks = []
+        if review.feedback_accuracy.status.value == "fail":
+            failed_checks.append("feedback_accuracy")
+        if review.feedback_clarity.status.value == "fail":
+            failed_checks.append("feedback_clarity")
+        if review.formatting_check.status.value == "fail":
+            failed_checks.append("formatting_check")
+        return failed_checks
 
 
 def process_question_dir(
