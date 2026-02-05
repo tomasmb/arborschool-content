@@ -329,6 +329,7 @@ export interface StartEnrichmentParams {
   question_ids?: string[];
   all_tagged?: boolean;
   skip_already_enriched?: boolean;
+  only_failed_validation?: boolean;
 }
 
 export async function startEnrichment(

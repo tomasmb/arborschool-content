@@ -22,6 +22,10 @@ class EnrichmentRequest(BaseModel):
     skip_already_enriched: bool = Field(
         True, description="Skip questions with existing feedback"
     )
+    only_failed_validation: bool = Field(
+        False,
+        description="Only re-enrich questions that are enriched but failed validation"
+    )
 
 
 class EnrichmentJobResponse(BaseModel):

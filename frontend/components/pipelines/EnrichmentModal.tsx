@@ -10,7 +10,7 @@ import {
 } from "@/lib/api";
 
 type ModalStep = "configure" | "progress" | "results";
-type SelectionMode = "all" | "unenriched";
+type SelectionMode = "all" | "unenriched" | "failed";
 type EnrichmentTarget = "questions" | "variants";
 
 interface EnrichmentModalProps {
@@ -23,6 +23,8 @@ interface EnrichmentModalProps {
   stats: {
     tagged_count: number;
     enriched_count: number;
+    /** Count of questions that failed validation (enriched but not validated) */
+    failed_validation_count?: number;
   };
   onSuccess?: () => void;
 }
@@ -51,12 +53,15 @@ export function EnrichmentModal({
 
   const isVariants = target === "variants";
   const itemLabel = isVariants ? "variants" : "questions";
+  const failedValidationCount = stats.failed_validation_count ?? 0;
 
   // Calculate items to process based on selection
   const itemsToProcess =
     selection === "all"
       ? stats.tagged_count
-      : stats.tagged_count - stats.enriched_count;
+      : selection === "failed"
+        ? failedValidationCount
+        : stats.tagged_count - stats.enriched_count;
 
   // Estimated cost: ~$0.024 per item (GPT 5.1 medium reasoning)
   const estimatedCost = itemsToProcess * 0.024;
@@ -121,6 +126,7 @@ export function EnrichmentModal({
         : await startEnrichment(subjectId, testId, {
             all_tagged: selection === "all",
             skip_already_enriched: selection === "unenriched",
+            only_failed_validation: selection === "failed",
           });
 
       setJobId(response.job_id);
@@ -216,6 +222,20 @@ export function EnrichmentModal({
                     Only questions without feedback ({stats.tagged_count - stats.enriched_count})
                   </span>
                 </label>
+                {!isVariants && failedValidationCount > 0 && (
+                  <label className="flex items-center gap-3 p-3 border border-warning/30 bg-warning/5 rounded-lg cursor-pointer hover:bg-warning/10">
+                    <input
+                      type="radio"
+                      name="selection"
+                      checked={selection === "failed"}
+                      onChange={() => setSelection("failed")}
+                      className="w-4 h-4 accent-warning"
+                    />
+                    <span className="text-sm">
+                      Re-enrich questions that failed validation ({failedValidationCount})
+                    </span>
+                  </label>
+                )}
                 <label className="flex items-center gap-3 p-3 border border-border rounded-lg cursor-pointer hover:bg-white/5">
                   <input
                     type="radio"
