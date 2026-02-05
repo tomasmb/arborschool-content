@@ -21,22 +21,6 @@ FEEDBACK_ENHANCEMENT_PROMPT = """
 Experto en educación matemática PAES Chile y formato QTI 3.0.
 </role>
 
-<chilean_number_format>
-CRÍTICO - FORMATO NUMÉRICO CHILENO EN EL CONTENIDO:
-- PUNTO (.) = separador de MILES, NO decimal
-- COMA (,) = separador DECIMAL
-
-Cómo interpretar números en el XML:
-- <mn>160.934</mn> = 160934 (ciento sesenta mil novecientos treinta y cuatro)
-- <mn>100.000</mn> = 100000 (cien mil)
-- <mn>3,21868</mn> = 3.21868 en notación inglesa (tres coma dos uno...)
-
-Ejemplo de conversión millas-km: 1 milla ≈ 160.934 cm (formato chileno) = 160934 cm = 1,60934 km
-Por tanto, 2 millas ≈ 321.868 cm = 3,21868 km. Esto ES físicamente correcto.
-
-NO afirmes que las constantes son incorrectas si al interpretarlas en formato chileno dan valores físicos correctos.
-</chilean_number_format>
-
 <context>
 QTI XML ORIGINAL (sin retroalimentación):
 ```xml
@@ -136,17 +120,6 @@ FEEDBACK_CORRECTION_PROMPT = """
 Experto en educación matemática PAES Chile y formato QTI 3.0.
 </role>
 
-<chilean_number_format>
-CRÍTICO - FORMATO NUMÉRICO CHILENO:
-- PUNTO (.) = separador de MILES, NO decimal
-- COMA (,) = separador DECIMAL
-
-Interpretación: <mn>160.934</mn> = 160934 (no 160.934)
-Ejemplo: 1 milla ≈ 160.934 cm (chileno) = 160934 cm = 1,60934 km. Esto ES correcto.
-
-NO afirmes que las constantes son incorrectas si dan valores físicos correctos en formato chileno.
-</chilean_number_format>
-
 <context>
 QTI XML CON FEEDBACK QUE TIENE ERRORES:
 ```xml
@@ -166,10 +139,9 @@ Corregir los errores identificados en el feedback. Devolver el XML completo corr
 
 <correction_instructions>
 1. Lee cuidadosamente cada error identificado
-2. Interpreta los números en formato chileno (punto = miles, coma = decimal)
-3. Resuelve el problema matemático para verificar los valores correctos
-4. Corrige las partes con errores, manteniendo el resto del XML intacto
-5. NO agregues disclaimers sobre constantes si son físicamente correctas
+2. Resuelve el problema matemático paso a paso para verificar los valores correctos
+3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
+4. Verifica que los números y cálculos en el feedback corregido sean correctos
 </correction_instructions>
 
 <formatting_rules>
@@ -196,22 +168,6 @@ FEEDBACK_REVIEW_PROMPT = """
 <role>
 Revisor de retroalimentación educativa para preguntas PAES Matemática M1.
 </role>
-
-<chilean_number_format>
-Este contenido usa formato numérico CHILENO:
-- PUNTO (.) = separador de MILES (no decimal)
-- COMA (,) = separador DECIMAL
-
-Ejemplos: 160.934 = 160934, 100.000 = 100000, 3,21868 = 3.21868
-
-IMPORTANTE: Los cálculos intermedios en el feedback pueden usar notación mixta porque
-los LLMs hacen aritmética internamente con formato inglés. Esto es ACEPTABLE si:
-1. El RESULTADO FINAL es físicamente/matemáticamente correcto
-2. La respuesta marcada como correcta es la correcta
-
-NO falles por formato de números intermedios si el resultado final es correcto.
-Verifica la CORRECCIÓN MATEMÁTICA del resultado, no el formato de pasos intermedios.
-</chilean_number_format>
 
 <context>
 QTI XML CON RETROALIMENTACIÓN GENERADA:
@@ -241,10 +197,8 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
    - ¿Usa formato chileno? (punto para miles, coma para decimal)
-   - Fallback (qti-response-else): SOLO debe asignar feedback de una opción INCORRECTA
-   - FAIL si hay LaTeX o formato incorrecto
-   - FAIL si el fallback asigna el feedback de la opción CORRECTA
-   - PASS si el fallback asigna feedback de CUALQUIER opción incorrecta (esto es válido)
+   - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
+   - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
 </checks>
 
 <output_format>
@@ -279,18 +233,6 @@ FINAL_VALIDATION_PROMPT = """
 Validador experto de preguntas PAES Matemática M1 de Chile.
 </role>
 
-<chilean_number_format>
-Este contenido usa formato numérico CHILENO:
-- PUNTO (.) = separador de MILES (no decimal)
-- COMA (,) = separador DECIMAL
-
-Ejemplos: 160.934 = 160934, 100.000 = 100000, 3,21868 = 3.21868
-
-IMPORTANTE: Los cálculos intermedios pueden usar notación mixta porque los LLMs
-hacen aritmética con formato inglés. Esto es ACEPTABLE si el resultado final es correcto.
-Verifica la CORRECCIÓN MATEMÁTICA del resultado, no el formato de pasos intermedios.
-</chilean_number_format>
-
 <context>
 QTI XML COMPLETO (pregunta + retroalimentación):
 ```xml
@@ -303,6 +245,21 @@ QTI XML COMPLETO (pregunta + retroalimentación):
 <task>
 Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 </task>
+
+<chilean_number_format>
+IMPORTANTE: Este contenido usa formato numérico chileno:
+- Punto (.) = separador de MILES (no decimal)
+- Coma (,) = separador DECIMAL
+
+Ejemplos de interpretación:
+- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- "100.000" significa 100000 (cien mil)
+- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
+- "3,21868" significa 3.21868 (tres coma veintiuno...)
+- "0,80467" significa 0.80467 (cero coma ochenta...)
+
+Al validar cálculos, interpreta los números según este formato ANTES de verificar.
+</chilean_number_format>
 
 <checks>
 1. RESPUESTA CORRECTA (correct_answer_check):
@@ -349,17 +306,20 @@ JSON con este schema:
 </output_format>
 
 <constraints>
-- Sé riguroso pero no excesivamente estricto
+- Sé riguroso pero no excesivamente estricto ni pedante
 - NO marcar como error:
   - "¡Correcto!" en feedback de opción correcta (es apropiado)
   - qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
   - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
+  - Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
+  - Cálculos correctos en formato chileno (recuerda: punto=miles, coma=decimal)
 - SÍ marcar como error:
-  - Errores matemáticos reales
+  - Errores matemáticos reales (resultado numérico incorrecto)
   - Respuesta correcta marcada incorrectamente
   - Feedback que no corresponde a la alternativa
 - Cita contenido exacto cuando reportes issues
 - Issues deben ser específicos y accionables
+- IMPORTANTE: Verifica cálculos interpretando números en formato chileno
 </constraints>
 
 <final_instruction>
