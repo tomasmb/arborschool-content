@@ -1,0 +1,167 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-9" title="Cálculo de gastos en frutas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona compró tres cuartos kilogramos de paltas, un kilogramo y medio de naranjas y medio kilogramo de duraznos. Los precios se presentan a continuación:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2025/Q9_main.png" alt="Tres carteles con precios de frutas por kilogramo. Palta: $ 5000 el kilogramo. Naranja: $ 1100 el kilogramo. Durazno: $ 1300 el kilogramo."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa lo que gastó la persona en paltas, naranjas y duraznos?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>0,75</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>5000</mn>
+          <mo>+</mo>
+          <mn>1,2</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1100</mn>
+          <mo>+</mo>
+          <mn>0,2</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1300</mn>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. En esta opción se cambian las cantidades compradas: se usa 1,2 kg y 0,2 kg en lugar de 1,5 kg y 0,5 kg para naranjas y duraznos. El error está en no respetar los datos del problema al escribir los factores de cada precio.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>0,75</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>5000</mn>
+          <mo>+</mo>
+          <mn>1,5</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1100</mn>
+          <mo>+</mo>
+          <mn>0,5</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1300</mn>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">¡Correcto! Se multiplica el precio por kilogramo de cada fruta por la cantidad comprada: 0,75 kg de paltas por $5000, 1,5 kg de naranjas por $1100 y 0,5 kg de duraznos por $1300. Luego se suman estos tres productos para obtener el gasto total.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>3,4</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>5000</mn>
+          <mo>+</mo>
+          <mn>1,2</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1100</mn>
+          <mo>+</mo>
+          <mn>0,2</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1300</mn>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Aquí se suman mal las cantidades de fruta (3,4 kg) y además se cambian las cantidades de naranjas y duraznos (1,2 kg y 0,2 kg). El error es intentar combinar o modificar las cantidades en lugar de usar exactamente 0,75 kg, 1,5 kg y 0,5 kg con sus respectivos precios.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>3,4</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>5000</mn>
+          <mo>+</mo>
+          <mn>1,5</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1100</mn>
+          <mo>+</mo>
+          <mn>0,5</mn>
+          <mo>&#183;</mo>
+          <mo>$</mo>
+          <mn>1300</mn>
+        </math>
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">Incorrecto. En esta expresión se usa 3,4 como si toda la cantidad de fruta se pagara al precio de la palta ($5000). El error es no asociar cada cantidad con su precio por kilogramo correspondiente y tratar todo el peso como si fuera de la misma fruta.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del gasto total multiplicando precio por cantidad</strong></p>
+        <ol>
+          <li>Identificar las cantidades compradas:
+            <ul>
+              <li>Paltas: tres cuartos de kilogramo = 0,75 kg.</li>
+              <li>Naranjas: un kilogramo y medio = 1,5 kg.</li>
+              <li>Duraznos: medio kilogramo = 0,5 kg.</li>
+            </ul>
+          </li>
+          <li>Identificar los precios por kilogramo (según la imagen):
+            <ul>
+              <li>Paltas: $5000 por kg.</li>
+              <li>Naranjas: $1100 por kg.</li>
+              <li>Duraznos: $1300 por kg.</li>
+            </ul>
+          </li>
+          <li>Escribir el gasto en cada tipo de fruta como “precio por kg × cantidad en kg”:
+            <ul>
+              <li>Paltas: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,75</mn><mo>&#183;</mo><mo>$</mo><mn>5000</mn></math>.</li>
+              <li>Naranjas: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,5</mn><mo>&#183;</mo><mo>$</mo><mn>1100</mn></math>.</li>
+              <li>Duraznos: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn><mo>&#183;</mo><mo>$</mo><mn>1300</mn></math>.</li>
+            </ul>
+          </li>
+          <li>Sumar los tres gastos parciales para obtener el gasto total:
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>0,75</mn><mo>&#183;</mo><mo>$</mo><mn>5000</mn>
+              <mo>+</mo>
+              <mn>1,5</mn><mo>&#183;</mo><mo>$</mo><mn>1100</mn>
+              <mo>+</mo>
+              <mn>0,5</mn><mo>&#183;</mo><mo>$</mo><mn>1300</mn>
+            </math></p>
+            <p>Esta es exactamente la expresión que aparece en la alternativa B.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

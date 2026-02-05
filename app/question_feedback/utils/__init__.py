@@ -5,6 +5,7 @@ from __future__ import annotations
 from app.question_feedback.utils.image_utils import (
     extract_image_urls,
     is_s3_url,
+    load_images_from_urls,
 )
 from app.question_feedback.utils.qti_parser import (
     extract_correct_answer,
@@ -18,4 +19,5 @@ __all__ = [
     "has_feedback",
     "extract_image_urls",
     "is_s3_url",
+    "load_images_from_urls",
 ]

@@ -400,10 +400,46 @@ def get_validation_job_status(job_id: str) -> ValidationJob | None:
     return _validation_jobs.get(job_id)
 
 
-def get_validation_cost_estimate(question_count: int) -> float:
-    """Calculate estimated cost for validation.
+def get_validation_cost_estimate(
+    question_count: int,
+    avg_images_per_question: float = 0.5,
+) -> float:
+    """Calculate estimated cost for validation with GPT-5.1.
 
-    $0.015 per question for validation (high reasoning).
+    Pricing (as of Feb 2026):
+    - GPT-5.1 Input: $1.25 per 1M tokens
+    - GPT-5.1 Output: $10.00 per 1M tokens
+
+    Token estimates per question:
+    - Text input (QTI XML + prompt): ~3,000 tokens
+    - Text output (validation JSON): ~800 tokens
+    - Images: ~700 tokens per image (high detail, typical 800x600 image)
+      Formula: base(70) + tiles(4) × 140 = 630 tokens, rounded up for safety
+
+    Args:
+        question_count: Number of questions to validate.
+        avg_images_per_question: Average images per question (default 0.5).
+
+    Returns:
+        Estimated cost in USD.
     """
-    cost_per_question = 0.015
-    return round(question_count * cost_per_question, 2)
+    # Token estimates
+    text_input_tokens = 3000
+    text_output_tokens = 800
+    tokens_per_image = 700
+
+    # Pricing per token
+    input_price_per_token = 1.25 / 1_000_000  # $1.25 per 1M
+    output_price_per_token = 10.00 / 1_000_000  # $10.00 per 1M
+
+    # Calculate per-question cost
+    input_tokens = text_input_tokens + (tokens_per_image * avg_images_per_question)
+    output_tokens = text_output_tokens
+
+    cost_per_question = (
+        input_tokens * input_price_per_token +
+        output_tokens * output_price_per_token
+    )
+
+    total_cost = question_count * cost_per_question
+    return round(total_cost, 3)
