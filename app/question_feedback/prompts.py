@@ -42,6 +42,10 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
    <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
 3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice
+   CRÍTICO: qti-feedback-inline solo acepta contenido INLINE (texto, strong, em, span, sub, sup).
+   PROHIBIDO usar elementos de bloque dentro de qti-feedback-inline: NO <p>, NO <div>, NO <ol>.
+   Ejemplo correcto: <qti-feedback-inline ...>Incorrecto. El cálculo correcto es...</qti-feedback-inline>
+   Ejemplo INCORRECTO: <qti-feedback-inline ...><p>Incorrecto.</p></qti-feedback-inline>
 
 4. AGREGAR qti-feedback-block al final de qti-item-body:
    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
@@ -51,10 +55,9 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
      </qti-content-body>
    </qti-feedback-block>
 
-5. REEMPLAZAR qti-response-processing: cada opción debe mapear a su feedback específico.
-   IMPORTANTE: El fallback final (qti-response-else) debe asignar el feedback de una opción
-   INCORRECTA, nunca el de la correcta. Esto evita mostrar "¡Correcto!" cuando el estudiante
-   no selecciona nada o hay un error.
+5. REEMPLAZAR qti-response-processing:
+   - Mapear CADA opción (A, B, C, D) a su feedback específico
+   - El fallback (qti-response-else) debe asignar feedback de una opción INCORRECTA
 </xml_structure>
 
 <feedback_requirements>
@@ -69,11 +72,14 @@ OPCIONES INCORRECTAS:
 - Formato: "Incorrecto. [demostración matemática]"
 - Incluir el cálculo que PRUEBA que esta opción NO satisface el problema
 - NO especular sobre qué error cometió el estudiante
+- Preservar la semántica exacta del enunciado (no agregar ni quitar calificadores)
+- Para negar afirmaciones universales: incluir un CONTRAEJEMPLO CONCRETO con valores específicos
 
 SOLUCIÓN PASO A PASO:
 - Resolver el problema completo con pasos claros
 - Llegar explícitamente a la respuesta correcta
 - Lenguaje claro para estudiantes de 3°-4° medio
+- Explicitar supuestos cuando se usan en desigualdades (ej: "como n > 0...")
 </feedback_requirements>
 
 <formatting_rules>
