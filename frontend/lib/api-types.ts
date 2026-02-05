@@ -202,6 +202,10 @@ export interface TestDetail {
   enriched_count: number;
   validated_count: number;
   variants_count: number;
+  // Variant-level enrichment/validation stats
+  enriched_variants_count: number;
+  validated_variants_count: number;
+  failed_validation_variants_count: number;
   questions: QuestionBrief[];
 }
 

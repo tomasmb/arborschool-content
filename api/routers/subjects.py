@@ -354,6 +354,9 @@ async def get_test_detail(subject_id: str, test_id: str) -> TestDetail:
         enriched_count=status["enriched_count"],
         validated_count=status["validated_count"],
         variants_count=status["variants_count"],
+        enriched_variants_count=status["enriched_variants_count"],
+        validated_variants_count=status["validated_variants_count"],
+        failed_validation_variants_count=status["failed_validation_variants_count"],
         questions=questions,
     )
 

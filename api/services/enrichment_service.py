@@ -228,10 +228,17 @@ def _get_variants_to_enrich(
     test_id: str,
     question_num: str | None = None,
     skip_already_enriched: bool = True,
+    only_failed_validation: bool = False,
 ) -> list[dict]:
     """Get list of variants to enrich from the alternativas folder.
 
     Variants are stored in: PRUEBAS_ALTERNATIVAS_DIR/{test_id}/Q{num}/approved/{variant}/
+
+    Args:
+        test_id: Test identifier
+        question_num: Optional - only enrich variants for this question (e.g. "Q1")
+        skip_already_enriched: Skip variants that already have question_validated.xml
+        only_failed_validation: Only re-enrich variants that are enriched but failed validation
     """
     variants: list[dict] = []
     alternativas_base = PRUEBAS_ALTERNATIVAS_DIR / test_id
@@ -261,6 +268,7 @@ def _get_variants_to_enrich(
             item_ids=None,
             require_tagged=False,  # Variants don't require tagging
             skip_already_enriched=skip_already_enriched,
+            only_failed_validation=only_failed_validation,
         )
         variants.extend(items)
 
@@ -316,6 +324,7 @@ async def start_variant_enrichment_job(
     test_id: str,
     question_num: str | None = None,
     skip_already_enriched: bool = True,
+    only_failed_validation: bool = False,
 ) -> tuple[str, int, float]:
     """Start async enrichment job for variants.
 
@@ -325,6 +334,7 @@ async def start_variant_enrichment_job(
         test_id: Test identifier
         question_num: Optional - only enrich variants for this question (e.g. "Q1")
         skip_already_enriched: Skip variants that already have feedback
+        only_failed_validation: Only re-enrich variants that failed validation
 
     Returns:
         Tuple of (job_id, variants_to_process, estimated_cost_usd)
@@ -332,7 +342,9 @@ async def start_variant_enrichment_job(
     job_id = f"enrich-variant-{uuid.uuid4().hex[:8]}"
 
     # Get variants to process (same logic, different source)
-    variants = _get_variants_to_enrich(test_id, question_num, skip_already_enriched)
+    variants = _get_variants_to_enrich(
+        test_id, question_num, skip_already_enriched, only_failed_validation
+    )
 
     job = EnrichmentJob(
         job_id=job_id,

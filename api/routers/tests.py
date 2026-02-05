@@ -54,6 +54,9 @@ class VariantEnrichmentRequest(BaseModel):
     skip_already_enriched: bool = Field(
         True, description="Skip variants that already have feedback"
     )
+    only_failed_validation: bool = Field(
+        False, description="Only re-enrich variants that failed validation"
+    )
 
 
 class VariantValidationRequest(BaseModel):
@@ -266,6 +269,7 @@ async def start_variant_enrichment(
         test_id=test_id,
         question_num=request.question_num,
         skip_already_enriched=request.skip_already_enriched,
+        only_failed_validation=request.only_failed_validation,
     )
 
     return EnrichmentJobResponse(

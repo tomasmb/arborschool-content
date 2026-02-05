@@ -397,6 +397,7 @@ export async function getValidationStatus(
 export interface StartVariantEnrichmentParams {
   question_num?: string;
   skip_already_enriched?: boolean;
+  only_failed_validation?: boolean;
 }
 
 export async function startVariantEnrichment(
