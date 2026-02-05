@@ -99,13 +99,12 @@ ANTES de generar el feedback, DEBES:
 2. RESOLVER el problema paso a paso para entender el razonamiento
 3. VERIFICAR que tu solución llega a esa respuesta
 
-Para problemas con cálculos numéricos:
-- Muestra cada operación intermedia
-- Si hay conversión de unidades, verifica que las unidades se cancelen correctamente
+Para CADA cálculo o ejemplo numérico que incluyas en el feedback (respuesta correcta,
+opciones incorrectas, contraejemplos y solución paso a paso):
+- Muestra cada operación intermedia y verifica el resultado
+- Confirma que los valores usados cumplen todas las restricciones del enunciado
+- Si hay conversión de unidades, verifica que se cancelen correctamente
 - Cuenta los ceros cuidadosamente en números grandes
-
-IMPORTANTE: El feedback debe contener matemáticas verificadas. Si un cálculo es
-complejo, desglósalo en pasos más simples para evitar errores.
 </verification_process>
 
 <output_format>
@@ -147,7 +146,8 @@ Corregir los errores identificados en el feedback. Devolver el XML completo corr
 1. Lee cuidadosamente cada error identificado
 2. Resuelve el problema matemático paso a paso para verificar los valores correctos
 3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
-4. Verifica que los números y cálculos en el feedback corregido sean correctos
+4. Verifica que cada número, cálculo y ejemplo construido en el feedback corregido
+   cumpla todas las restricciones del enunciado y sea aritméticamente correcto
 </correction_instructions>
 
 <formatting_rules>
