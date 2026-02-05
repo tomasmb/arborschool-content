@@ -1,0 +1,32 @@
+{
+  "question_id": "prueba-invierno-2025-Q1-Q1_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-05T20:25:18.908992+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La expresión es 4 - (−3)(−1 − 5). Primero, −1 − 5 = −6. Luego la expresión queda 4 − (−3)(−6). El producto (−3)(−6) = 18 (producto de dos negativos es positivo). Finalmente, 4 − 18 = −14. Por lo tanto, la alternativa correcta es ChoiceB (−14). \n\nEn el feedback de ChoiceB se muestra exactamente esta secuencia de pasos y se concluye −14, justificando por qué es correcta. En los feedbacks de ChoiceA (−42), ChoiceC (22) y ChoiceD (−8), se parte de la suposición de que ese valor fuera el resultado, se re-calcula la expresión paso a paso (mismos pasos correctos: −1 − 5 = −6, (−3)(−6) = 18, 4 − 18 = −14) y se concluye que el valor real es −14, demostrando que cada una de esas alternativas no satisface la igualdad propuesta. La solución paso a paso del bloque SOLUTION repite el mismo procedimiento correcto y llega a −14. No hay errores de cálculo ni de justificación en ninguno de los textos."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°–4° medio: se explican los pasos en orden (resolver paréntesis interior, luego producto, luego resta) y se menciona explícitamente la regla de signos (producto de dos negativos es positivo). Cada feedback es auto-contenido: incluye la expresión original, los cálculos intermedios y la conclusión, sin requerir que el estudiante haga operaciones adicionales para entender por qué la opción es correcta o incorrecta. Además, todos los mensajes se refieren explícitamente a esta expresión y a estos valores (−42, −14, 22, −8), por lo que no son genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML; no aparece LaTeX. No se usan números con miles ni decimales, por lo que no hay conflicto con el formato chileno de separadores. En el bloque de response-processing, la respuesta correcta ChoiceB asigna SCORE = 1 y FEEDBACK = ChoiceB_FB. Todas las demás ramas (ChoiceA, ChoiceC, ChoiceD y el response-else de fallback) asignan SCORE = 0 y un identificador de feedback de opción incorrecta (ChoiceA_FB, ChoiceC_FB, ChoiceD_FB o ChoiceA_FB en el else), nunca el feedback de la opción correcta. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La expresión está correctamente resuelta en todos los textos, la alternativa correcta es −14 y todos los feedbacks (correctos e incorrectos) muestran cálculos coherentes y completos. El lenguaje es claro, específico a la pregunta y el formato QTI/MathML está bien implementado, incluyendo un fallback que muestra feedback de opción incorrecta."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": "question_validated.xml"
+}
