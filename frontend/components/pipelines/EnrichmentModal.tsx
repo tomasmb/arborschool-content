@@ -348,7 +348,7 @@ export function EnrichmentModal({
               {failedCount > 0 && (
                 <div className="space-y-2">
                   <p className="text-sm font-medium text-text-secondary">Failed Questions</p>
-                  <div className="max-h-48 overflow-y-auto space-y-2">
+                  <div className="max-h-64 overflow-y-auto space-y-2">
                     {results
                       .filter((r) => r.status === "failed")
                       .map((result) => (
@@ -358,11 +358,30 @@ export function EnrichmentModal({
                         >
                           <div className="flex items-start gap-3">
                             <XCircle className="w-4 h-4 text-error flex-shrink-0 mt-0.5" />
-                            <div className="flex-1 min-w-0">
-                              <p className="font-medium text-sm">{result.question_id}</p>
+                            <div className="flex-1 min-w-0 space-y-1">
+                              <div className="flex items-center gap-2">
+                                <p className="font-medium text-sm">{result.question_id}</p>
+                                {result.details?.stage_failed && (
+                                  <span className="text-xs px-1.5 py-0.5 rounded bg-error/10 text-error">
+                                    {result.details.stage_failed.replace(/_/g, " ")}
+                                  </span>
+                                )}
+                              </div>
                               {result.error && (
-                                <p className="text-xs text-text-secondary mt-1 break-words">
+                                <p className="text-xs text-text-secondary break-words">
                                   {result.error}
+                                </p>
+                              )}
+                              {result.details?.issues && result.details.issues.length > 0 && (
+                                <ul className="text-xs text-text-secondary list-disc list-inside">
+                                  {result.details.issues.map((issue, i) => (
+                                    <li key={i} className="break-words">{issue}</li>
+                                  ))}
+                                </ul>
+                              )}
+                              {result.details?.reasoning && (
+                                <p className="text-xs text-text-secondary/80 italic mt-1 break-words">
+                                  {result.details.reasoning}
                                 </p>
                               )}
                             </div>

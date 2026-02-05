@@ -168,6 +168,34 @@ def _get_items_to_enrich_from_path(
     return items
 
 
+def _extract_failure_details(result) -> dict | None:
+    """Extract detailed failure info from a PipelineResult.
+
+    Returns a dict with stage_failed, issues, and reasoning if available.
+    """
+    if result.success:
+        return None
+
+    details: dict = {"stage_failed": result.stage_failed, "issues": [], "reasoning": None}
+
+    # Extract details from feedback review if available
+    if result.feedback_review_details:
+        review = result.feedback_review_details
+        # Collect issues from failed checks
+        for check_name in ["feedback_accuracy", "feedback_clarity"]:
+            check = review.get(check_name, {})
+            if check.get("status") == "fail":
+                details["issues"].extend(check.get("issues", []))
+        # Use overall reasoning if available
+        details["reasoning"] = review.get("overall_reasoning")
+
+    # For XSD errors, put them in issues
+    if result.xsd_errors:
+        details["issues"].append(result.xsd_errors)
+
+    return details if (details["issues"] or details["reasoning"]) else None
+
+
 def _get_questions_to_enrich(
     test_id: str,
     question_ids: list[str] | None = None,
@@ -373,10 +401,15 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
                 if result.xsd_errors:
                     error_msg = f"XSD validation failed: {result.xsd_errors}"
                 logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+
+                # Extract detailed failure info from pipeline result
+                details = _extract_failure_details(result)
+
                 return {
                     "question_id": q["id"],
                     "status": "failed",
                     "error": error_msg,
+                    "details": details,
                     "success": False,
                 }
 
@@ -401,11 +434,14 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
             job.results.append({"question_id": result["question_id"], "status": "success"})
         else:
             job.failed += 1
-            job.results.append({
+            result_entry = {
                 "question_id": result["question_id"],
                 "status": "failed",
                 "error": result.get("error", "Unknown error"),
-            })
+            }
+            if result.get("details"):
+                result_entry["details"] = result["details"]
+            job.results.append(result_entry)
 
     job.status = "completed"
     job.current_question = None

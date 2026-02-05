@@ -46,12 +46,23 @@ class EnrichmentProgress(BaseModel):
     failed: int
 
 
+class EnrichmentFailureDetails(BaseModel):
+    """Detailed failure information for enrichment."""
+
+    stage_failed: str | None = Field(None, description="Stage where failure occurred")
+    issues: list[str] = Field(default_factory=list, description="Specific issues found")
+    reasoning: str | None = Field(None, description="Explanation of why it failed")
+
+
 class EnrichmentQuestionResult(BaseModel):
     """Result for a single question in enrichment job."""
 
     question_id: str
     status: str = Field(description="success | failed")
     error: str | None = None
+    details: EnrichmentFailureDetails | None = Field(
+        None, description="Detailed failure info when status=failed"
+    )
 
 
 class EnrichmentStatusResponse(BaseModel):
