@@ -2,7 +2,20 @@
 
 from __future__ import annotations
 
+import base64
+import io
+import logging
 import re
+from typing import Any
+
+import requests
+
+try:
+    from PIL import Image
+except ImportError:
+    Image = None  # type: ignore
+
+logger = logging.getLogger(__name__)
 
 
 def extract_image_urls(qti_xml: str) -> list[str]:
@@ -84,3 +97,92 @@ def normalize_image_url(url: str, base_url: str | None = None) -> str:
         return f"{base_url}/{url}"
 
     return url
+
+
+def download_image_from_url(url: str, timeout: int = 15) -> Any | None:
+    """Download an image from HTTP/HTTPS URL and return PIL Image.
+
+    Args:
+        url: HTTP/HTTPS URL to download.
+        timeout: Request timeout in seconds.
+
+    Returns:
+        PIL Image object or None if download fails.
+    """
+    if not Image:
+        logger.warning("PIL not installed, skipping image download")
+        return None
+
+    try:
+        response = requests.get(url, timeout=timeout)
+        response.raise_for_status()
+
+        img_io = io.BytesIO(response.content)
+        img = Image.open(img_io)
+        img.verify()
+
+        # Re-open after verify (verify consumes the image)
+        img_io.seek(0)
+        img = Image.open(img_io)
+        return img
+    except Exception as e:
+        logger.warning(f"Failed to download image from {url}: {e}")
+        return None
+
+
+def decode_data_url(data_url: str) -> Any | None:
+    """Decode a base64 data URL and return PIL Image.
+
+    Args:
+        data_url: Data URL in format data:image/...;base64,...
+
+    Returns:
+        PIL Image object or None if decoding fails.
+    """
+    if not Image:
+        logger.warning("PIL not installed, skipping image decode")
+        return None
+
+    try:
+        # Extract base64 data from data URL
+        match = re.match(r"data:image/[^;]+;base64,(.+)", data_url)
+        if not match:
+            logger.warning(f"Invalid data URL format: {data_url[:50]}...")
+            return None
+
+        base64_data = match.group(1)
+        image_data = base64.b64decode(base64_data)
+        img_io = io.BytesIO(image_data)
+        img = Image.open(img_io)
+        return img
+    except Exception as e:
+        logger.warning(f"Failed to decode data URL: {e}")
+        return None
+
+
+def load_images_from_urls(image_urls: list[str]) -> list[Any]:
+    """Load images from URLs (HTTP, HTTPS, or data URLs).
+
+    Args:
+        image_urls: List of image URLs.
+
+    Returns:
+        List of PIL Image objects (only successfully loaded images).
+    """
+    images: list[Any] = []
+    for url in image_urls:
+        if url.startswith("data:"):
+            img = decode_data_url(url)
+        elif url.startswith("http://") or url.startswith("https://"):
+            img = download_image_from_url(url)
+        else:
+            logger.warning(f"Unsupported image URL format: {url[:50]}...")
+            continue
+
+        if img:
+            images.append(img)
+
+    if images:
+        logger.info(f"Successfully loaded {len(images)}/{len(image_urls)} images")
+
+    return images

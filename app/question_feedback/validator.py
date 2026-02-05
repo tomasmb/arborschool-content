@@ -18,6 +18,7 @@ from app.question_feedback.models import (
 )
 from app.question_feedback.prompts import FINAL_VALIDATION_PROMPT
 from app.question_feedback.schemas import FINAL_VALIDATION_SCHEMA
+from app.question_feedback.utils.image_utils import load_images_from_urls
 
 logger = logging.getLogger(__name__)
 
@@ -68,10 +69,24 @@ class FinalValidator:
         Returns:
             ValidationResult with detailed check results.
         """
-        images_section = ""
+        # Load images if provided
+        images: list[Any] = []
         if image_urls:
+            images = load_images_from_urls(image_urls)
+
+        # Build images section text (for context in prompt)
+        images_section = ""
+        if images:
             images_section = (
-                f"IMÁGENES: {len(image_urls)} imagen(es) adjuntas para validación."
+                f"IMÁGENES: {len(images)} imagen(es) adjuntas para validación visual. "
+                "Examina las imágenes cuidadosamente para verificar que son correctas, "
+                "legibles y relevantes para la pregunta."
+            )
+        elif image_urls:
+            # Had URLs but failed to load
+            images_section = (
+                f"IMÁGENES: Se detectaron {len(image_urls)} imagen(es) en el XML pero "
+                "no se pudieron cargar. Valida basándote solo en el texto."
             )
 
         prompt = FINAL_VALIDATION_PROMPT.format(
@@ -83,15 +98,30 @@ class FinalValidator:
         prompt += "\n\nRespuesta en formato JSON siguiendo este schema:\n"
         prompt += json.dumps(FINAL_VALIDATION_SCHEMA, indent=2, ensure_ascii=False)
 
-        logger.info(f"Running final validation with {self.model}")
+        logger.info(
+            f"Running final validation with {self.model} "
+            f"({len(images)} images attached)"
+        )
 
         try:
-            response_text = self._client.generate_text(
-                prompt,
-                response_mime_type="application/json",
-                temperature=0.0,
-                max_tokens=4000,
-            )
+            # Build multimodal prompt if we have images
+            if images:
+                # OpenAIClient expects list with text first, then PIL images
+                multimodal_prompt: list[Any] = [prompt]
+                multimodal_prompt.extend(images)
+                response_text = self._client.generate_text(
+                    multimodal_prompt,
+                    response_mime_type="application/json",
+                    temperature=0.0,
+                    max_tokens=4000,
+                )
+            else:
+                response_text = self._client.generate_text(
+                    prompt,
+                    response_mime_type="application/json",
+                    temperature=0.0,
+                    max_tokens=4000,
+                )
 
             result = json.loads(response_text)
             logger.info(f"Validation result: {result.get('validation_result')}")

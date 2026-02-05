@@ -1,32 +1,40 @@
 {
   "question_id": "prueba-invierno-2025-Q33",
   "pipeline_version": "3.0",
-  "timestamp": "2026-02-04T21:27:35.658581+00:00",
-  "success": false,
-  "stage_failed": "feedback_review",
-  "error": "Feedback review failed: feedback_accuracy",
+  "timestamp": "2026-02-04T21:35:56.088301+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
   "xsd_errors": null,
   "stages": {
     "feedback_review": {
-      "review_result": "fail",
+      "review_result": "pass",
       "feedback_accuracy": {
-        "status": "fail",
-        "issues": [
-          "En la solución paso a paso, el procedimiento de suma de fracciones es incorrecto: se escribe 1/2 = 5/10 correctamente, pero luego se representa 1/4 como 2.5/10, lo que no es una fracción válida en este contexto (debería ser 2.5/10 solo como número decimal 0,25, o bien 1/4 = 2.5/10 no es una igualdad entre fracciones con numerador y denominador enteros).",
-          "La igualdad 1/2 + 1/4 + 1/10 = 5/10 + 2.5/10 + 1/10 = 8.5/10 mezcla notación fraccionaria con numeradores decimales, lo que es matemáticamente impropio y puede considerarse un error de notación/fundamento en el contexto escolar."
-        ],
-        "reasoning": "El feedback de las alternativas A, B, C y D describe correctamente los errores conceptuales (confundir el total con el aporte de Carla, no usar la variable x en los aportes porcentuales, o manipular incorrectamente el 15%). El feedback de la opción correcta explica bien por qué la ecuación modela la situación. Sin embargo, en la sección de solución paso a paso, al sumar las fracciones 1/2, 1/4 y 1/10 se introduce una notación incorrecta: se usa 2.5/10 como fracción para representar 1/4, lo que no es una fracción con numerador entero y puede confundir a estudiantes; además, se presenta como igualdad entre fracciones, lo que es matemáticamente inadecuado en este nivel. Aunque el resultado final 0,85 es correcto, el procedimiento mostrado contiene un error de notación y de suma de fracciones, por lo que la precisión factual del feedback no cumple el estándar estricto requerido."
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La retroalimentación de cada alternativa describe correctamente lo que hace la ecuación y por qué es o no es adecuada. En A, se identifica bien que 3/20·x representa el aporte de Carla como fracción del total en vez de como monto conocido. En B, se explica correctamente que se está tratando los $150 000 como si fueran el total y se vuelve a aplicar el 15%, lo que es un error conceptual real. En C, se justifica de forma correcta que las fracciones de x representan los aportes de Andrea, Benjamín y Diego, y que el aporte de Carla debe entrar como 150 000, sumando todo para igualarlo a x. En D, se señala con acierto que se están sumando fracciones sin x (adimensionales) con un monto en pesos, y que falta multiplicar por x para representar montos de dinero. La solución paso a paso suma correctamente las fracciones (1/2 + 1/4 + 1/10 = 17/20), plantea 17/20·x + 150000 = x, transforma 1 − 17/20 = 3/20, despeja x = 150000·20/3 = 1 000 000, y vincula coherentemente este resultado con la ecuación de la alternativa C. No se observan errores matemáticos ni conceptuales."
       },
       "feedback_clarity": {
         "status": "pass",
-        "issues": [
-          "La parte donde se suman las fracciones usando 2.5/10 puede resultar confusa para estudiantes, porque mezcla fracciones y decimales en el numerador; sería más claro usar denominadores comunes con enteros (por ejemplo, 1/2 = 5/10, 1/4 = 2.5/10 solo como 0,25, o mejor 1/4 = 2.5/10 no se debería usar) o pasar todo a decimales directamente."
-        ],
-        "reasoning": "El lenguaje en los feedbacks de cada alternativa es claro, específico a la pregunta y adecuado para estudiantes de 3°-4° medio. Se explica con palabras sencillas qué representa x, qué representa el 15% y por qué ciertas ecuaciones no modelan bien la situación. La estructura de la solución paso a paso es pedagógicamente adecuada (definir x, interpretar porcentajes, plantear la ecuación y luego simplificar). Sin embargo, la notación usada al sumar fracciones (2.5/10) puede generar confusión, aunque el mensaje general sigue siendo entendible. Aun así, en términos de claridad global, el feedback es mayormente claro y orientador."
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'fracción del total', 'monto conocido' y 'aportes' de forma comprensible. Cada feedback se refiere explícitamente a lo que hace la ecuación de esa alternativa, evitando comentarios genéricos. La solución paso a paso está bien estructurada en viñetas numeradas, detalla la interpretación del gráfico, el planteamiento de la ecuación, la suma de fracciones con denominador común y el despeje de x, sin tecnicismos innecesarios. La explicación de por qué no se debe volver a multiplicar por 3/20 en la alternativa B y por qué es incorrecto mezclar fracciones puras con montos en pesos en D es pedagógicamente clara y específica al problema."
       },
-      "overall_reasoning": "La retroalimentación conceptual para cada alternativa es adecuada y bien explicada, pero la solución detallada contiene un procedimiento de suma de fracciones con notación incorrecta (2.5/10), lo que constituye un error matemático y obliga a reprobar la revisión en precisión factual."
+      "overall_reasoning": "La retroalimentación es matemáticamente correcta y se alinea bien con los errores típicos que podrían cometer los estudiantes, explicando con claridad por qué cada alternativa es correcta o incorrecta y mostrando una resolución paso a paso adecuada al nivel PAES M1."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "pass",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-05T14:03:03.771947+00:00"
     }
   },
-  "can_sync": false,
-  "validated_qti_path": null
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
 }

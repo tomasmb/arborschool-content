@@ -20,11 +20,10 @@ class QuestionPipeline:
     This class orchestrates the feedback enrichment pipeline:
     1. Stage 1: Feedback Enhancement (LLM generates QTI XML with feedback)
     2. Gate 1: XSD Validation (validates against QTI 3.0 schema)
-    3. Stage 2: Feedback Review (lightweight LLM review of generated feedback only)
+    3. Stage 2: Feedback Review (LLM solves problem and validates feedback accuracy)
 
-    Note: Full validation (FinalValidator) is run as a SEPARATE step after enrichment,
-    not during this pipeline. This allows enrichment to complete faster while still
-    catching obvious factual errors in the generated feedback.
+    Note: Full validation (FinalValidator) is run as a SEPARATE step after enrichment.
+    The review stage catches mathematical errors and incomplete explanations early.
     """
 
     def __init__(
@@ -61,6 +60,10 @@ class QuestionPipeline:
         """
         logger.info(f"Processing question: {question_id}")
 
+        # Clear previous enrichment files to avoid stale data if re-enrichment fails
+        if output_dir:
+            self._clear_previous_enrichment(output_dir)
+
         # ── STAGE 1: Feedback Enhancement + XSD Validation ──
         enhancement = self.enhancer.enhance(qti_xml, image_urls)
 
@@ -84,7 +87,7 @@ class QuestionPipeline:
         assert enhancement.qti_xml is not None
         qti_with_feedback = enhancement.qti_xml
 
-        # ── STAGE 2: Feedback Review (lightweight - only validates generated feedback) ──
+        # ── STAGE 2: Feedback Review (solves problem and validates feedback accuracy) ──
         review = self.reviewer.review(qti_with_feedback)
 
         if review.review_result != "pass":
@@ -94,6 +97,8 @@ class QuestionPipeline:
                 failed_checks.append("feedback_accuracy")
             if review.feedback_clarity.status.value == "fail":
                 failed_checks.append("feedback_clarity")
+            if review.formatting_check.status.value == "fail":
+                failed_checks.append("formatting_check")
             error_msg = f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
 
             result = PipelineResult(
@@ -168,6 +173,23 @@ class QuestionPipeline:
             f.write(qti_xml)
 
         logger.info(f"Saved validated QTI to {xml_path}")
+
+    def _clear_previous_enrichment(self, output_dir: Path) -> None:
+        """Clear previous enrichment files to avoid stale data.
+
+        Called at the start of processing so that if re-enrichment fails,
+        there's no misleading old enrichment data left behind.
+
+        Args:
+            output_dir: Directory containing enrichment files.
+        """
+        files_to_clear = ["question_validated.xml", "validation_result.json"]
+
+        for filename in files_to_clear:
+            file_path = output_dir / filename
+            if file_path.exists():
+                file_path.unlink()
+                logger.info(f"Cleared previous enrichment file: {file_path}")
 
 
 def process_question_dir(

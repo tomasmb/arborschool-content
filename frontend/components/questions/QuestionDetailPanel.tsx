@@ -131,13 +131,15 @@ export function QuestionDetailPanel({
         question_ids: [`Q${questionNumber}`],
         skip_already_enriched: false,
       });
-      // Poll for completion
       const pollStatus = async () => {
         const status = await getEnrichmentStatus(subjectId, testId, job_id);
         if (status.status === "completed") {
           setEnriching(false);
           if (status.progress.failed > 0) {
-            setActionError("Enrichment failed");
+            // Extract error message from results
+            const failedResult = status.results?.find((r) => r.status === "failed");
+            const errorMsg = failedResult?.error || "Enrichment failed";
+            setActionError(errorMsg);
           }
           fetchData();
         } else {
@@ -159,7 +161,6 @@ export function QuestionDetailPanel({
         question_ids: [`Q${questionNumber}`],
         revalidate_passed: true,
       });
-      // Poll for completion
       const pollStatus = async () => {
         const status = await getValidationStatus(subjectId, testId, job_id);
         if (status.status === "completed") {

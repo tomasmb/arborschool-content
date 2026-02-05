@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 
 from app.question_feedback.models import EnhancementResult
 from app.question_feedback.prompts import FEEDBACK_ENHANCEMENT_PROMPT
+from app.question_feedback.utils.image_utils import load_images_from_urls
 
 
 def _import_xml_validator() -> Any:
@@ -108,13 +109,29 @@ class FeedbackEnhancer:
         Returns:
             EnhancementResult with success status and enhanced XML or errors.
         """
-        for attempt in range(self.max_retries + 1):
-            logger.info(f"Enhancement attempt {attempt + 1}/{self.max_retries + 1}")
+        # Load images once (outside retry loop)
+        images: list[Any] = []
+        if image_urls:
+            images = load_images_from_urls(image_urls)
 
-            # Build prompt
+        for attempt in range(self.max_retries + 1):
+            logger.info(
+                f"Enhancement attempt {attempt + 1}/{self.max_retries + 1} "
+                f"({len(images)} images)"
+            )
+
+            # Build prompt with images section
             images_section = ""
-            if image_urls:
-                images_section = f"IMÁGENES: {len(image_urls)} imagen(es) adjuntas."
+            if images:
+                images_section = (
+                    f"IMÁGENES: {len(images)} imagen(es) adjuntas. "
+                    "Considera las imágenes al generar el feedback educativo."
+                )
+            elif image_urls:
+                images_section = (
+                    f"IMÁGENES: Se detectaron {len(image_urls)} imagen(es) pero "
+                    "no se pudieron cargar. Genera feedback basándote solo en el texto."
+                )
 
             prompt = FEEDBACK_ENHANCEMENT_PROMPT.format(
                 original_qti_xml=qti_xml,
@@ -127,12 +144,21 @@ class FeedbackEnhancer:
                 prompt += "Por favor corrige estos errores en tu respuesta."
 
             try:
-                # Call OpenAI - use text prompt (images not yet supported in our client)
-                response_text = self._client.generate_text(
-                    prompt,
-                    temperature=0.0,
-                    max_tokens=8000,
-                )
+                # Build multimodal prompt if we have images
+                if images:
+                    multimodal_prompt: list[Any] = [prompt]
+                    multimodal_prompt.extend(images)
+                    response_text = self._client.generate_text(
+                        multimodal_prompt,
+                        temperature=0.0,
+                        max_tokens=8000,
+                    )
+                else:
+                    response_text = self._client.generate_text(
+                        prompt,
+                        temperature=0.0,
+                        max_tokens=8000,
+                    )
 
                 enhanced_xml = self._extract_xml(response_text)
 

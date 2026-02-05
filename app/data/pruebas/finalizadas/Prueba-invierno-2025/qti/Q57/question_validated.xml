@@ -1,0 +1,90 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-57" title="Promedio de un conjunto de datos" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Considera el siguiente grupo de datos:</p>
+    <p style="text-align:center;">4, 6, 8, 10 y 12</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de los siguientes pares de datos se puede agregar a este conjunto para que mantenga su promedio?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">1 y 13
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceA" show-hide="show">Incorrecto. Este par suma 14, que es menor que 16 (el doble del promedio original 8). Al agregar dos números cuya suma es menor que 16, el nuevo promedio baja, por lo que no se mantiene el promedio original.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">3 y 14
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceB" show-hide="show">Incorrecto. Este par suma 17, que es mayor que 16 (el doble del promedio original 8). Al agregar dos números cuya suma es mayor que 16, el nuevo promedio sube, por lo que no se mantiene el promedio original.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">2 y 13
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceC" show-hide="show">Incorrecto. Aunque 2 y 13 parecen “equilibrar” alrededor de 8, su suma es 15, distinta de 16 (el doble del promedio original 8). Como la suma total de los nuevos datos no coincide con la necesaria para mantener el promedio, el promedio cambia.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">2 y 14
+        <qti-feedback-inline outcome-identifier="FEEDBACK" identifier="ChoiceD" show-hide="show">¡Correcto! El promedio original es 8, y al agregar dos datos más, para mantener ese promedio la suma de los dos nuevos números debe ser 2·8 = 16. El par 2 y 14 suma exactamente 16, por lo que la suma total del conjunto queda ajustada para que el promedio siga siendo 8.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Método: Usar la suma total y la definición de promedio</strong></p>
+        <ol>
+          <li>Calcula el promedio original del conjunto 4, 6, 8, 10 y 12:
+            <br/>Suma: 4 + 6 + 8 + 10 + 12 = 40
+            <br/>Cantidad de datos: 5
+            <br/>Promedio: 40 ÷ 5 = 8
+          </li>
+          <li>Supón que agregas dos nuevos datos, que llamaremos a y b. Entonces el nuevo conjunto tendrá 7 datos en total.</li>
+          <li>Para que el promedio se mantenga en 8, la suma total de los 7 datos debe ser:
+            <br/>Promedio × cantidad de datos = 8 × 7 = 56
+          </li>
+          <li>La suma de los 5 datos originales es 40, por lo tanto la suma de los dos nuevos datos debe cumplir:
+            <br/>40 + a + b = 56
+            <br/>a + b = 56 − 40 = 16
+          </li>
+          <li>Revisa cada alternativa y calcula la suma de los pares:
+            <br/>1 y 13: 1 + 13 = 14 (no es 16)
+            <br/>3 y 14: 3 + 14 = 17 (no es 16)
+            <br/>2 y 13: 2 + 13 = 15 (no es 16)
+            <br/>2 y 14: 2 + 14 = 16 (sí es 16)
+          </li>
+          <li>El único par cuya suma es 16 es 2 y 14, por lo tanto esa es la opción que permite mantener el promedio del conjunto.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-correct identifier="RESPONSE"/>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-variable identifier="RESPONSE"/>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -19,7 +19,15 @@ CHARACTER_ENCODING_INSTRUCTIONS = """## CRITICAL: Character Encoding and Special
 - The QTI XML must use UTF-8 encoding and include all characters as-is
 - Examples of CORRECT encoding: "ácido", "átomos", "año", "¿Cuál", "reflexión", "traslación", "vértice", "isométricas"
 - Examples of INCORRECT encoding (DO NOT USE): "e1cido", "e1tomos", "af1o", "bfCue1l", "reflexif3n", "traslacif3n", "ve9rtice", "isome9tricas"
-- If you see text with patterns like "e1", "f3", "e9" in the source, these are encoding errors - you must correct them to proper Spanish characters"""
+- If you see text with patterns like "e1", "f3", "e9" in the source, these are encoding errors - you must correct them to proper Spanish characters
+
+**Formato de números chileno**: Usar punto (.) como separador de miles y coma (,) como decimal:
+- CORRECTO MathML: `<mn>160.934</mn>` (punto para miles, un solo tag)
+- CORRECTO MathML decimal: `<mn>3,21868</mn>` (coma para decimal)
+- CORRECTO texto: `32.186.800.000 kilómetros`
+- INCORRECTO: `<mn>160&#x202F;934</mn>` (espacio fino no es estándar chileno)
+- INCORRECTO: `<mn>160</mn><mspace width="0.25em"/><mn>934</mn>` (divide número en tags)
+- INCORRECTO: `32186800000 kilómetros` (sin separador)"""
 
 # Shared context handling instructions
 SHARED_CONTEXT_INSTRUCTIONS = """## Shared Context Handling

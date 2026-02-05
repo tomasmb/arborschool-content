@@ -215,10 +215,17 @@ export interface EnrichmentProgress {
   failed: number;
 }
 
+export interface EnrichmentFailureDetails {
+  stage_failed?: string;
+  issues?: string[];
+  reasoning?: string;
+}
+
 export interface EnrichmentResult {
   question_id: string;
   status: "success" | "failed";
   error?: string;
+  details?: EnrichmentFailureDetails;
 }
 
 export interface EnrichmentJobResponse {

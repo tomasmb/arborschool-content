@@ -102,7 +102,8 @@ async def start_enrichment(
     logger.warning(
         f"[ENRICH API] Starting enrichment: test_id={test_id}, "
         f"question_ids={request.question_ids}, all_tagged={request.all_tagged}, "
-        f"skip_already_enriched={request.skip_already_enriched}"
+        f"skip_already_enriched={request.skip_already_enriched}, "
+        f"only_failed_validation={request.only_failed_validation}"
     )
 
     job_id, questions_count, estimated_cost = await enrichment_service.start_enrichment_job(
@@ -110,6 +111,7 @@ async def start_enrichment(
         question_ids=request.question_ids,
         all_tagged=request.all_tagged,
         skip_already_enriched=request.skip_already_enriched,
+        only_failed_validation=request.only_failed_validation,
     )
 
     logger.warning(
@@ -156,6 +158,7 @@ async def get_enrichment_status(
                 question_id=r["question_id"],
                 status=r["status"],
                 error=r.get("error"),
+                details=r.get("details"),
             )
             for r in job.results
         ],

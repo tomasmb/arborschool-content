@@ -51,18 +51,28 @@ def _get_items_to_enrich_from_path(
     item_ids: list[str] | None = None,
     require_tagged: bool = False,
     skip_already_enriched: bool = True,
+    only_failed_validation: bool = False,
 ) -> list[dict]:
     """Get list of items to enrich from a folder containing question.xml files.
 
     This is the core function that handles both questions and variants.
     Returns list of dicts with: id, qti_xml, image_urls, output_dir
+
+    Args:
+        base_path: Base directory containing question folders
+        id_prefix: Prefix for item IDs (e.g., test_id)
+        item_ids: Optional list of specific item names to process
+        require_tagged: Only include items with metadata_tags.json
+        skip_already_enriched: Skip items with question_validated.xml
+        only_failed_validation: Only include items that are enriched but failed validation
     """
     items: list[dict] = []
 
     logger.warning(
         f"[ENRICH DEBUG] _get_items_to_enrich_from_path called with: "
         f"base_path={base_path}, id_prefix={id_prefix}, item_ids={item_ids}, "
-        f"require_tagged={require_tagged}, skip_already_enriched={skip_already_enriched}"
+        f"require_tagged={require_tagged}, skip_already_enriched={skip_already_enriched}, "
+        f"only_failed_validation={only_failed_validation}"
     )
 
     if not base_path.exists():
@@ -100,9 +110,32 @@ def _get_items_to_enrich_from_path(
                 logger.warning(f"Failed to read metadata for {item_id}: {e}")
                 continue
 
-        # Check if already enriched
+        # Check enriched status
         validated_xml_path = folder / "question_validated.xml"
-        if skip_already_enriched and validated_xml_path.exists():
+        validation_result_path = folder / "validation_result.json"
+
+        # If only_failed_validation, we want items that ARE enriched but FAILED validation
+        if only_failed_validation:
+            if not validated_xml_path.exists():
+                # Not enriched yet, skip
+                logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: not enriched yet")
+                continue
+
+            # Check if validation failed (can_sync is False)
+            if validation_result_path.exists():
+                try:
+                    with open(validation_result_path, encoding="utf-8") as f:
+                        validation_data = json.load(f)
+                    if validation_data.get("can_sync", False):
+                        # Validation passed, skip
+                        logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: validation passed")
+                        continue
+                except (json.JSONDecodeError, OSError) as e:
+                    logger.warning(f"Failed to read validation result for {item_id}: {e}")
+                    # Include if we can't read (assume failed)
+            # If no validation_result.json, include it (enriched but not validated)
+            logger.warning(f"[ENRICH DEBUG] Including {item_id}: failed validation, will re-enrich")
+        elif skip_already_enriched and validated_xml_path.exists():
             logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: already enriched")
             continue
 
@@ -135,18 +168,51 @@ def _get_items_to_enrich_from_path(
     return items
 
 
+def _extract_failure_details(result) -> dict | None:
+    """Extract detailed failure info from a PipelineResult.
+
+    Returns a dict with stage_failed, issues, and reasoning if available.
+    """
+    if result.success:
+        return None
+
+    details: dict = {"stage_failed": result.stage_failed, "issues": [], "reasoning": None}
+
+    # Extract details from feedback review if available
+    if result.feedback_review_details:
+        review = result.feedback_review_details
+        # Collect issues from failed checks
+        for check_name in ["feedback_accuracy", "feedback_clarity"]:
+            check = review.get(check_name, {})
+            # Handle both enum objects and string values for status
+            status = check.get("status")
+            status_str = status.value if hasattr(status, "value") else str(status)
+            if status_str == "fail":
+                details["issues"].extend(check.get("issues", []))
+        # Use overall reasoning if available
+        details["reasoning"] = review.get("overall_reasoning")
+
+    # For XSD errors, put them in issues
+    if result.xsd_errors:
+        details["issues"].append(result.xsd_errors)
+
+    return details if (details["issues"] or details["reasoning"]) else None
+
+
 def _get_questions_to_enrich(
     test_id: str,
     question_ids: list[str] | None = None,
     all_tagged: bool = False,
     skip_already_enriched: bool = True,
+    only_failed_validation: bool = False,
 ) -> list[dict]:
     """Get list of questions to enrich from the test folder."""
     base_path = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
     logger.warning(
         f"[ENRICH DEBUG] _get_questions_to_enrich: test_id={test_id}, "
         f"question_ids={question_ids}, all_tagged={all_tagged}, "
-        f"skip_already_enriched={skip_already_enriched}, base_path={base_path}"
+        f"skip_already_enriched={skip_already_enriched}, "
+        f"only_failed_validation={only_failed_validation}, base_path={base_path}"
     )
     return _get_items_to_enrich_from_path(
         base_path=base_path,
@@ -154,6 +220,7 @@ def _get_questions_to_enrich(
         item_ids=question_ids,
         require_tagged=all_tagged,
         skip_already_enriched=skip_already_enriched,
+        only_failed_validation=only_failed_validation,
     )
 
 
@@ -205,8 +272,16 @@ async def start_enrichment_job(
     question_ids: list[str] | None = None,
     all_tagged: bool = False,
     skip_already_enriched: bool = True,
+    only_failed_validation: bool = False,
 ) -> tuple[str, int, float]:
     """Start async enrichment job for questions.
+
+    Args:
+        test_id: Test identifier
+        question_ids: Optional specific question IDs to process
+        all_tagged: Only process tagged questions
+        skip_already_enriched: Skip questions that already have question_validated.xml
+        only_failed_validation: Only re-enrich questions that failed validation
 
     Returns:
         Tuple of (job_id, questions_to_process, estimated_cost_usd)
@@ -215,7 +290,7 @@ async def start_enrichment_job(
 
     # Get questions to process
     questions = _get_questions_to_enrich(
-        test_id, question_ids, all_tagged, skip_already_enriched
+        test_id, question_ids, all_tagged, skip_already_enriched, only_failed_validation
     )
 
     job = EnrichmentJob(
@@ -329,10 +404,15 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
                 if result.xsd_errors:
                     error_msg = f"XSD validation failed: {result.xsd_errors}"
                 logger.warning(f"Enrichment failed for {q['id']}: {error_msg}")
+
+                # Extract detailed failure info from pipeline result
+                details = _extract_failure_details(result)
+
                 return {
                     "question_id": q["id"],
                     "status": "failed",
                     "error": error_msg,
+                    "details": details,
                     "success": False,
                 }
 
@@ -357,11 +437,14 @@ async def _run_enrichment(job_id: str, questions: list[dict]) -> None:
             job.results.append({"question_id": result["question_id"], "status": "success"})
         else:
             job.failed += 1
-            job.results.append({
+            result_entry = {
                 "question_id": result["question_id"],
                 "status": "failed",
                 "error": result.get("error", "Unknown error"),
-            })
+            }
+            if result.get("details"):
+                result_entry["details"] = result["details"]
+            job.results.append(result_entry)
 
     job.status = "completed"
     job.current_question = None

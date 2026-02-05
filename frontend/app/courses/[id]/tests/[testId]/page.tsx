@@ -312,6 +312,7 @@ export default function TestDetailPage() {
         stats={{
           tagged_count: data.tagged_count,
           enriched_count: data.enriched_count,
+          failed_validation_count: data.enriched_count - data.validated_count,
         }}
         onSuccess={fetchData}
       />
