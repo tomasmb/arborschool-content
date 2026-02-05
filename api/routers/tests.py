@@ -158,6 +158,7 @@ async def get_enrichment_status(
                 question_id=r["question_id"],
                 status=r["status"],
                 error=r.get("error"),
+                details=r.get("details"),
             )
             for r in job.results
         ],

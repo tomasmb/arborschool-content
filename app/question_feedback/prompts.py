@@ -42,7 +42,9 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
 
 3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
    - Opción correcta: "¡Correcto! [explicación matemática de POR QUÉ es correcta]"
-   - Opciones incorrectas: "Incorrecto. [error conceptual específico que lleva a esta opción]"
+   - Opciones incorrectas: "Incorrecto. [por qué es matemáticamente incorrecta, con cálculo si aplica]"
+   IMPORTANTE: Para opciones incorrectas, NO especules sobre qué error cometió el estudiante.
+   Solo explica por qué la opción no satisface las condiciones del problema.
 
 4. AGREGAR qti-feedback-block al final de qti-item-body con solución paso a paso:
    ```xml
@@ -62,9 +64,9 @@ Tu output será evaluado en dos dimensiones:
 
 1. PRECISIÓN FACTUAL (feedback_accuracy):
    - ¿El feedback de la opción correcta explica POR QUÉ es matemáticamente correcta?
-   - ¿Los feedbacks de opciones incorrectas identifican errores conceptuales REALES?
+   - ¿Los feedbacks de opciones incorrectas demuestran matemáticamente por qué no cumplen las condiciones?
    - ¿La solución paso a paso tiene matemáticas correctas y llega a la respuesta correcta?
-   - FALLA si hay cualquier error matemático en el feedback
+   - FALLA si hay cualquier error matemático o afirmación no verificable en el feedback
 
 2. CLARIDAD PEDAGÓGICA (feedback_clarity):
    - ¿El lenguaje es claro para estudiantes de 3°-4° medio?
@@ -77,7 +79,8 @@ Tu output será evaluado en dos dimensiones:
 Antes de generar tu respuesta final, verifica mentalmente:
 1. ¿Resolví el problema yo mismo y llegué a la respuesta marcada como correcta?
 2. ¿El feedback de la opción correcta explica el razonamiento matemático completo?
-3. ¿Cada feedback incorrecto identifica un error conceptual específico y realista?
+3. ¿Cada feedback incorrecto explica por qué ESA opción no cumple las condiciones del problema?
+   (NO especules sobre errores del estudiante - solo demuestra por qué es incorrecta)
 4. ¿La solución paso a paso es correcta y llega a la respuesta correcta?
 5. ¿El lenguaje es apropiado para estudiantes de 3°-4° medio?
 </self_check>
