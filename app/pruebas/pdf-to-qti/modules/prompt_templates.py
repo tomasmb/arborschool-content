@@ -19,7 +19,11 @@ CHARACTER_ENCODING_INSTRUCTIONS = """## CRITICAL: Character Encoding and Special
 - The QTI XML must use UTF-8 encoding and include all characters as-is
 - Examples of CORRECT encoding: "ácido", "átomos", "año", "¿Cuál", "reflexión", "traslación", "vértice", "isométricas"
 - Examples of INCORRECT encoding (DO NOT USE): "e1cido", "e1tomos", "af1o", "bfCue1l", "reflexif3n", "traslacif3n", "ve9rtice", "isome9tricas"
-- If you see text with patterns like "e1", "f3", "e9" in the source, these are encoding errors - you must correct them to proper Spanish characters"""
+- If you see text with patterns like "e1", "f3", "e9" in the source, these are encoding errors - you must correct them to proper Spanish characters
+
+**MathML Number Formatting**: Large numbers must use a SINGLE `<mn>` tag with `&#x202F;` (narrow no-break space) as thousands separator:
+- CORRECT: `<mn>160&#x202F;934</mn>` (one number, one tag)
+- INCORRECT: `<mn>160</mn><mspace width="0.25em"/><mn>934</mn>` (splits number into two tags)"""
 
 # Shared context handling instructions
 SHARED_CONTEXT_INSTRUCTIONS = """## Shared Context Handling

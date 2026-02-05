@@ -40,13 +40,17 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
    - <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
    - <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
 
-3. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
+3. MathML: números grandes usan UN solo `<mn>` con `&#x202F;` como separador de miles:
+   - CORRECTO: `<mn>60&#x202F;000</mn>`
+   - INCORRECTO: `<mn>60</mn><mspace .../><mn>000</mn>`
+
+4. AGREGAR qti-feedback-inline dentro de cada qti-simple-choice:
    - Opción correcta: "¡Correcto! [explicación matemática de POR QUÉ es correcta]"
    - Opciones incorrectas: "Incorrecto. [por qué es matemáticamente incorrecta, con cálculo si aplica]"
    IMPORTANTE: Para opciones incorrectas, NO especules sobre qué error cometió el estudiante.
    Solo explica por qué la opción no satisface las condiciones del problema.
 
-4. AGREGAR qti-feedback-block al final de qti-item-body con solución paso a paso:
+5. AGREGAR qti-feedback-block al final de qti-item-body con solución paso a paso:
    ```xml
    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
      <qti-content-body>
@@ -56,7 +60,7 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
    </qti-feedback-block>
    ```
 
-5. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
+6. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
 </rules>
 
 <evaluation_criteria>
