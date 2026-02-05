@@ -51,7 +51,10 @@ Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con fe
      </qti-content-body>
    </qti-feedback-block>
 
-5. REEMPLAZAR qti-response-processing con versión que incluya FEEDBACK y SOLUTION
+5. REEMPLAZAR qti-response-processing: cada opción debe mapear a su feedback específico.
+   IMPORTANTE: El fallback final (qti-response-else) debe asignar el feedback de una opción
+   INCORRECTA, nunca el de la correcta. Esto evita mostrar "¡Correcto!" cuando el estudiante
+   no selecciona nada o hay un error.
 </xml_structure>
 
 <feedback_requirements>
@@ -134,7 +137,8 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
    - ¿Usa `&#x202F;` como separador de miles?
-   - FAIL si hay LaTeX (\(...\)) o formato de números incorrecto
+   - ¿El fallback en qti-response-processing asigna feedback de opción INCORRECTA (no correcta)?
+   - FAIL si hay LaTeX, formato incorrecto, o fallback muestra feedback de opción correcta
 </checks>
 
 <output_format>
