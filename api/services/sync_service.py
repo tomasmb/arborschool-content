@@ -38,13 +38,16 @@ def _normalize_xml(xml: str) -> str:
 
 
 def _check_validation(folder: Path) -> str | None:
-    """Check if a question/variant folder passes validation.
+    """Check if a question/variant folder is ready to sync.
 
-    Returns None if valid, or a reason string if invalid.
+    Uses can_sync in validation_result.json as the single source of truth.
+    Returns None if ready, or a reason string explaining why not.
     """
+    if not (folder / "question_validated.xml").exists():
+        return "not_enriched"
     validation_path = folder / "validation_result.json"
     if not validation_path.exists():
-        return "not_enriched"
+        return "not_validated"
     try:
         with open(validation_path, encoding="utf-8") as f:
             validation = json.load(f)
@@ -336,39 +339,114 @@ def _preview_variants(test_id: str, environment: SyncEnvironment) -> dict:
 # -----------------------------------------------------------------------------
 
 
+def _sync_entity_items(
+    items: list[dict],
+    folder_lookup: dict[str, Path],
+    environment: SyncEnvironment,
+    details: list[dict],
+) -> tuple[int, int]:
+    """Sync a list of preview items (questions or variants) to DB.
+
+    Returns (created_count, updated_count).
+    """
+    created = 0
+    updated = 0
+    for item in items:
+        item_id = item["question_id"]
+        folder = folder_lookup.get(item_id)
+        if not folder:
+            details.append({
+                "question_id": item_id,
+                "action": "skipped",
+                "reason": "dir_not_found",
+            })
+            continue
+        xml, err = _read_validated_xml(folder)
+        if err:
+            details.append({
+                "question_id": item_id,
+                "action": "skipped",
+                "reason": err,
+            })
+            continue
+        if upsert_question_qti(item_id, xml, environment):
+            is_new = item["status"] == "create"
+            created += 1 if is_new else 0
+            updated += 0 if is_new else 1
+            action = "created" if is_new else "updated"
+            details.append({"question_id": item_id, "action": action})
+        else:
+            details.append({
+                "question_id": item_id,
+                "action": "failed",
+                "reason": "db_error",
+            })
+    return created, updated
+
+
 def execute_sync(
     test_id: str,
     environment: SyncEnvironment = "local",
     include_variants: bool = True,
     upload_images: bool = True,
 ) -> dict:
-    """Execute sync to database."""
+    """Execute sync to database for questions and variants."""
     preview = get_sync_preview(test_id, environment, include_variants)
-    created = 0
-    updated = 0
     details: list[dict] = []
+
+    # --- Sync questions ---
     base = PRUEBAS_FINALIZADAS_DIR / test_id / "qti"
+    q_lookup: dict[str, Path] = {}
+    if base.exists():
+        for folder in base.iterdir():
+            if folder.is_dir() and folder.name.startswith("Q"):
+                q_lookup[f"{test_id}-{folder.name}"] = folder
 
-    to_sync = preview["questions"]["to_create"] + preview["questions"]["to_update"]
-    for q in to_sync:
-        q_id = q["question_id"]
-        q_folder = base / f"Q{q['question_number']}"
-        xml, err = _read_validated_xml(q_folder)
-        if err:
-            details.append({"question_id": q_id, "action": "skipped", "reason": err})
-            continue
-        if upsert_question_qti(q_id, xml, environment):
-            is_new = q["status"] == "create"
-            created += 1 if is_new else 0
-            updated += 0 if is_new else 1
-            details.append({"question_id": q_id, "action": "created" if is_new else "updated"})
-        else:
-            details.append({"question_id": q_id, "action": "failed", "reason": "db_error"})
-
+    q_to_sync = (
+        preview["questions"]["to_create"]
+        + preview["questions"]["to_update"]
+    )
+    q_created, q_updated = _sync_entity_items(
+        q_to_sync, q_lookup, environment, details,
+    )
     for q in preview["questions"]["skipped"]:
-        details.append({"question_id": q["question_id"], "action": "skipped", "reason": q["reason"]})
+        details.append({
+            "question_id": q["question_id"],
+            "action": "skipped",
+            "reason": q["reason"],
+        })
 
-    return {"created": created, "updated": updated, "skipped": len(preview["questions"]["skipped"]), "details": details}
+    # --- Sync variants ---
+    v_created, v_updated = 0, 0
+    if include_variants:
+        v_lookup = {
+            v_id: v_dir
+            for v_id, _, _, v_dir in _iter_variant_dirs(test_id)
+        }
+        v_to_sync = (
+            preview["variants"]["to_create"]
+            + preview["variants"]["to_update"]
+        )
+        v_created, v_updated = _sync_entity_items(
+            v_to_sync, v_lookup, environment, details,
+        )
+        for v in preview["variants"]["skipped"]:
+            details.append({
+                "question_id": v["question_id"],
+                "action": "skipped",
+                "reason": v["reason"],
+            })
+
+    skipped = len(preview["questions"]["skipped"])
+    if include_variants:
+        skipped += len(preview["variants"]["skipped"])
+
+    return {
+        "created": q_created + v_created,
+        "updated": q_updated + v_updated,
+        "skipped": skipped,
+        "details": details,
+    }
 
 
 # -----------------------------------------------------------------------------

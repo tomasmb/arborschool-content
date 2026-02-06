@@ -258,27 +258,25 @@ class StatusTracker:
                             continue
                         variants_count += 1
 
-                        # Check variant enrichment (question_validated.xml exists)
+                        # Enriched = has question_validated.xml
                         if (variant_dir / "question_validated.xml").exists():
                             enriched_variants_count += 1
 
-                            # Check variant validation (validation_result.json with can_sync)
-                            variant_validation_file = variant_dir / "validation_result.json"
-                            if variant_validation_file.exists():
-                                try:
-                                    with open(variant_validation_file, encoding="utf-8") as f:
-                                        vdata = json.load(f)
-                                    if vdata.get("can_sync", False):
-                                        validated_variants_count += 1
-                                    else:
-                                        # Enriched but failed validation
-                                        failed_validation_variants_count += 1
-                                except (json.JSONDecodeError, OSError):
-                                    # Can't read validation result, count as failed
+                        # Validation: can_sync in validation_result.json
+                        # is the single source of truth
+                        vr_path = variant_dir / "validation_result.json"
+                        if vr_path.exists():
+                            try:
+                                with open(vr_path, encoding="utf-8") as f:
+                                    vdata = json.load(f)
+                                if vdata.get("can_sync", False):
+                                    validated_variants_count += 1
+                                else:
                                     failed_validation_variants_count += 1
-                            else:
-                                # No validation result yet = enriched but not validated
-                                failed_validation_variants_count += 1
+                            except (json.JSONDecodeError, OSError):
+                                pass  # Unreadable → not counted
+                        # No validation_result.json = not yet validated
+                        # (NOT a failure, just pending)
 
         # split_count: if QTI exists, consider it "split" even without PDF
         # (QTI is the goal, PDF is just an intermediate step)
