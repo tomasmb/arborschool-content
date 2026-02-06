@@ -1,0 +1,228 @@
+<qti-assessment-item
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+  identifier="parking-proportional-cost"
+  title="Precio de estacionamiento proporcional al tiempo"
+  adaptive="false"
+  time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>
+      En un estacionamiento se cobra de manera proporcional al tiempo en que un vehículo se encuentra
+      estacionado. Algunos valores se presentan en la tabla adjunta.</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Tiempo en minutos</th>
+            <th>Precio en pesos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>24</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>36</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>48</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa el precio por pagar, en pesos, de un vehículo que está estacionado <m:math>
+          <m:mi>x</m:mi>
+        </m:math> minutos?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mrow>
+            <m:mn>12</m:mn>
+            <m:mi>x</m:mi>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK">¡Correcto! El precio es proporcional al tiempo, por lo que el cociente entre el precio y los minutos debe ser constante. En la tabla, para 1 minuto se pagan 12 pesos, es decir, el valor por minuto es <m:math><m:mrow><m:mn>12</m:mn></m:mrow></m:math>. Para <m:math><m:mi>x</m:mi></m:math> minutos, el precio se obtiene multiplicando 12 por la cantidad de minutos: <m:math><m:mrow><m:mn>12</m:mn><m:mo>&#xD7;</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>12</m:mn><m:mi>x</m:mi></m:mrow></m:math>. Además, si reemplazamos, por ejemplo, <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:math>, obtenemos <m:math><m:mrow><m:mn>12</m:mn><m:mo>&#xD7;</m:mo><m:mn>3</m:mn><m:mo>=</m:mo><m:mn>36</m:mn></m:mrow></m:math>, que coincide con el valor de la tabla.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mfrac>
+            <m:mn>12</m:mn>
+            <m:mi>x</m:mi>
+          </m:mfrac>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera <m:math><m:mfrac><m:mn>12</m:mn><m:mi>x</m:mi></m:mfrac></m:math>, al tomar un valor de la tabla, por ejemplo <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>3</m:mn></m:math> minutos, el precio sería <m:math><m:mrow><m:mfrac><m:mn>12</m:mn><m:mn>3</m:mn></m:mfrac><m:mo>=</m:mo><m:mn>4</m:mn></m:mrow></m:math> pesos. Sin embargo, en la tabla se indica que para 3 minutos el precio es 36 pesos. Como <m:math><m:mrow><m:mn>4</m:mn><m:mo>&#x2260;</m:mo><m:mn>36</m:mn></m:mrow></m:math>, esta expresión no representa correctamente el precio a pagar.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mrow>
+            <m:mi>x</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>11</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera <m:math><m:mrow><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>11</m:mn></m:mrow></m:math>, al tomar un valor de la tabla, por ejemplo <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>2</m:mn></m:math> minutos, el precio sería <m:math><m:mrow><m:mn>2</m:mn><m:mo>+</m:mo><m:mn>11</m:mn><m:mo>=</m:mo><m:mn>13</m:mn></m:mrow></m:math> pesos. Sin embargo, en la tabla se indica que para 2 minutos el precio es 24 pesos. Como <m:math><m:mrow><m:mn>13</m:mn><m:mo>&#x2260;</m:mo><m:mn>24</m:mn></m:mrow></m:math>, esta expresión no coincide con los valores dados y no representa el precio correcto.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mrow>
+            <m:mi>x</m:mi>
+            <m:mo>+</m:mo>
+            <m:mn>12</m:mn>
+          </m:mrow>
+        </m:math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK">Incorrecto. Si el precio fuera <m:math><m:mrow><m:mi>x</m:mi><m:mo>+</m:mo><m:mn>12</m:mn></m:mrow></m:math>, al tomar un valor de la tabla, por ejemplo <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mn>4</m:mn></m:math> minutos, el precio sería <m:math><m:mrow><m:mn>4</m:mn><m:mo>+</m:mo><m:mn>12</m:mn><m:mo>=</m:mo><m:mn>16</m:mn></m:mrow></m:math> pesos. Sin embargo, en la tabla se indica que para 4 minutos el precio es 48 pesos. Como <m:math><m:mrow><m:mn>16</m:mn><m:mo>&#x2260;</m:mo><m:mn>48</m:mn></m:mrow></m:math>, esta expresión no representa correctamente el precio a pagar.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>En el enunciado se indica que el precio del estacionamiento es proporcional al tiempo. Esto significa que el cociente entre el precio y el tiempo es constante. Es decir, si <m:math><m:mi>P</m:mi></m:math> es el precio en pesos y <m:math><m:mi>t</m:mi></m:math> es el tiempo en minutos, entonces existe una constante <m:math><m:mi>k</m:mi></m:math> tal que <m:math><m:mrow><m:mi>P</m:mi><m:mo>=</m:mo><m:mi>k</m:mi><m:mo>&#xD7;</m:mo><m:mi>t</m:mi></m:mrow></m:math>.</li>
+          <li>Usamos los datos de la tabla para encontrar el valor de la constante de proporcionalidad <m:math><m:mi>k</m:mi></m:math>. Por ejemplo, para 1 minuto el precio es 12 pesos. Entonces:
+            <m:math>
+              <m:mrow>
+                <m:mi>P</m:mi>
+                <m:mo>=</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>&#xD7;</m:mo>
+                <m:mi>t</m:mi>
+                <m:mo>&#x21D2;</m:mo>
+                <m:mn>12</m:mn>
+                <m:mo>=</m:mo>
+                <m:mi>k</m:mi>
+                <m:mo>&#xD7;</m:mo>
+                <m:mn>1</m:mn>
+              </m:mrow>
+            </m:math>
+            De esta igualdad se obtiene:
+            <m:math>
+              <m:mrow>
+                <m:mi>k</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>12</m:mn>
+              </m:mrow>
+            </m:math>
+          </li>
+          <li>Por lo tanto, la relación general entre el precio y el tiempo es:
+            <m:math>
+              <m:mrow>
+                <m:mi>P</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>12</m:mn>
+                <m:mo>&#xD7;</m:mo>
+                <m:mi>t</m:mi>
+              </m:mrow>
+            </m:math>
+            Es decir, el precio se obtiene multiplicando 12 pesos por cada minuto de estacionamiento.</li>
+          <li>Si el vehículo está estacionado <m:math><m:mi>x</m:mi></m:math> minutos, basta reemplazar <m:math><m:mi>t</m:mi></m:math> por <m:math><m:mi>x</m:mi></m:math> en la expresión anterior:
+            <m:math>
+              <m:mrow>
+                <m:mi>P</m:mi>
+                <m:mo>=</m:mo>
+                <m:mn>12</m:mn>
+                <m:mo>&#xD7;</m:mo>
+                <m:mi>x</m:mi>
+              </m:mrow>
+            </m:math>
+            Por lo tanto, el precio por pagar, en pesos, de un vehículo que está estacionado <m:math><m:mi>x</m:mi></m:math> minutos se representa mediante la expresión <m:math><m:mrow><m:mn>12</m:mn><m:mi>x</m:mi></m:mrow></m:math>, que corresponde a la alternativa A.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

@@ -10,6 +10,29 @@ All prompts follow Gemini 3 Pro best practices:
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
+# SHARED PROMPT SECTIONS
+# ---------------------------------------------------------------------------
+# Reusable blocks injected into multiple prompts via string concatenation.
+# ---------------------------------------------------------------------------
+
+CHILEAN_NUMBER_FORMAT_SECTION = """
+<chilean_number_format>
+IMPORTANTE: Este contenido usa formato numérico chileno:
+- Punto (.) = separador de MILES (no decimal)
+- Coma (,) = separador DECIMAL
+
+Ejemplos de interpretación:
+- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- "100.000" significa 100000 (cien mil)
+- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
+- "3,21868" significa 3.21868 (tres coma veintiuno...)
+- "0,80467" significa 0.80467 (cero coma ochenta...)
+
+Al validar cálculos, interpreta los números según este formato ANTES de verificar.
+</chilean_number_format>
+"""
+
+# ---------------------------------------------------------------------------
 # FEEDBACK ENHANCEMENT PROMPT
 # ---------------------------------------------------------------------------
 # Used by FeedbackEnhancer to generate QTI XML with feedback.
@@ -185,7 +208,7 @@ QTI XML CON RETROALIMENTACIÓN GENERADA:
 <task>
 Resolver el problema y validar que cada feedback sea matemáticamente correcto y auto-contenido.
 </task>
-
+""" + CHILEAN_NUMBER_FORMAT_SECTION + """
 <checks>
 1. PRECISIÓN FACTUAL (feedback_accuracy):
    - Resuelve el problema paso a paso para verificar la respuesta correcta
@@ -251,22 +274,7 @@ QTI XML COMPLETO (pregunta + retroalimentación):
 <task>
 Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 </task>
-
-<chilean_number_format>
-IMPORTANTE: Este contenido usa formato numérico chileno:
-- Punto (.) = separador de MILES (no decimal)
-- Coma (,) = separador DECIMAL
-
-Ejemplos de interpretación:
-- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
-- "100.000" significa 100000 (cien mil)
-- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
-- "3,21868" significa 3.21868 (tres coma veintiuno...)
-- "0,80467" significa 0.80467 (cero coma ochenta...)
-
-Al validar cálculos, interpreta los números según este formato ANTES de verificar.
-</chilean_number_format>
-
+""" + CHILEAN_NUMBER_FORMAT_SECTION + """
 <checks>
 1. RESPUESTA CORRECTA (correct_answer_check):
    - Resuelve el problema paso a paso (usando formato chileno para interpretar números)

@@ -1,0 +1,32 @@
+{
+  "question_id": "prueba-invierno-2026-Q4",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-06T14:51:12.851817+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cálculo correcto de la expresión original: 4·5 = 20, luego -2·20 = -40, y en el segundo paréntesis 2·3 = 6, 30 - 6 = 24, por lo que el numerador correcto es -40 - 24 = -64 y la fracción es -64/12, que se simplifica a -16/3. El error del procedimiento dado está efectivamente en el Paso 1, donde se reemplaza -2(4·5) por (-8)·(-10) = 80, que no es equivalente a -40. El feedback de ChoiceA explica esta diferencia numérica explícitamente y concluye correctamente que el error está en el Paso 1. Los feedbacks de ChoiceB, ChoiceC y ChoiceD describen y justifican correctamente por qué cada uno de esos pasos, dados el procedimiento seguido, no es el origen del error: Paso 2 calcula 30 - 2·3 = 24 correctamente; Paso 3, partiendo del error previo, hace 80 - 24 = 56 correctamente; Paso 4 simplifica 56/12 a 14/3 dividiendo por 4, lo que también es correcto. La solución paso a paso (feedback-block) reproduce el procedimiento correcto completo y llega a -16/3 sin errores. No se detectan inconsistencias matemáticas ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explicita el orden de las operaciones (primero productos, luego restas), se muestran los cálculos intermedios y se usan frases directas como “Primero se resuelve… Luego se…”. Cada feedback es auto-contenido: incluye los cálculos necesarios (por ejemplo, 4·5 = 20, -2·20 = -40, 2·3 = 6, 30 - 6 = 24, 56/12 = 14/3) y explica por qué el paso es correcto o incorrecto sin requerir que el estudiante haga operaciones adicionales por su cuenta. Además, todos los comentarios se refieren explícitamente a los pasos numerados de esta pregunta, por lo que son específicos y no genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mn>, <mo>, <mfrac>, etc.) y no se usa LaTeX. No aparecen números con miles ni decimales, por lo que no hay conflicto con el formato chileno de separadores. El bloque de procesamiento de respuestas marca ChoiceA como correcta y, en el fallback (<qti-response-else>), asigna el feedback FB_ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La resolución matemática es consistente y correcta, los feedbacks explican y justifican adecuadamente cada caso y están bien formateados en MathML, por lo que el ítem y su retroalimentación cumplen con los criterios solicitados."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": "question_validated.xml"
+}

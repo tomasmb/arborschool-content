@@ -1,0 +1,346 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="dado-cargado-probabilidades" title="Probabilidades en un dado cargado" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la probabilidad de obtener cada cara de un dado cargado al lanzarlo.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Número de la cara</th>
+          <th>Probabilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>0,2</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>0,4</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>0,1</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es verdadera con respecto a la información entregada?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La probabilidad de obtener un 1 o un 2 al lanzar este dado es la misma que se obtiene al lanzar un dado común.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En este dado cargado, la probabilidad de obtener 1 o 2 es la suma de las probabilidades de cada cara: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math>. En un dado común, la probabilidad de obtener 1 o 2 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>6</mn></mfrac><mo>=</mo><mn>0,3333</mn></math> (aprox.). Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn><mo>&#x2260;</mo><mn>0,3333</mn></math>, la probabilidad no es la misma.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La probabilidad de obtener un 6 al lanzar este dado es la misma que se obtiene al lanzar un dado común.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En este dado cargado, la probabilidad de obtener un 6 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math>. En un dado común, la probabilidad de obtener un 6 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>6</mn></mfrac><mo>&#x2248;</mo><mn>0,1667</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>&#x2260;</mo><mn>0,1667</mn></math>, la probabilidad no es la misma.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La probabilidad de obtener un número mayor que 4 al lanzar este dado es 0,5.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Un número mayor que 4 corresponde a las caras 5 y 6. La probabilidad total es la suma de las probabilidades de esas caras: para 5 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4</mn></math> y para 6 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math>, por lo tanto <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,4</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,5</mn></math>. Esto coincide con lo que afirma la alternativa.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La probabilidad de obtener un número par al lanzar este dado es 0,1.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Los números pares en un dado son 2, 4 y 6. En este dado cargado, sus probabilidades son <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math> para 2, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math> para 4 y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math> para 6. La probabilidad total de obtener un número par es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math>, que es distinta de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math>.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Identificar las probabilidades de cada cara del dado cargado, según la tabla:</p>
+            <ul>
+              <li>Cara 1: 0,2</li>
+              <li>Cara 2: 0,1</li>
+              <li>Cara 3: 0,1</li>
+              <li>Cara 4: 0,1</li>
+              <li>Cara 5: 0,4</li>
+              <li>Cara 6: 0,1</li>
+            </ul>
+          </li>
+          <li>
+            <p>Analizar la afirmación de la alternativa C: "La probabilidad de obtener un número mayor que 4 al lanzar este dado es 0,5".</p>
+            <p>Un número mayor que 4, en un dado, corresponde a las caras 5 y 6.</p>
+          </li>
+          <li>
+            <p>Calcular la probabilidad de obtener un número mayor que 4 sumando las probabilidades de las caras 5 y 6:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>P</mi>
+                <mo>(</mo>
+                <mtext>número mayor que </mtext>
+                <mn>4</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mi>P</mi>
+                <mo>(</mo>
+                <mn>5</mn>
+                <mo>)</mo>
+                <mo>+</mo>
+                <mi>P</mi>
+                <mo>(</mo>
+                <mn>6</mn>
+                <mo>)</mo>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>P</mi>
+                <mo>(</mo>
+                <mn>5</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mn>0,4</mn>
+              </math>
+              ,
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>P</mi>
+                <mo>(</mo>
+                <mn>6</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mn>0,1</mn>
+              </math>
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>P</mi>
+                <mo>(</mo>
+                <mtext>número mayor que </mtext>
+                <mn>4</mn>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mn>0,4</mn>
+                <mo>+</mo>
+                <mn>0,1</mn>
+                <mo>=</mo>
+                <mn>0,5</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Comparar con lo que afirma la alternativa C.</p>
+            <p>La alternativa C dice que la probabilidad es 0,5, y el cálculo muestra que efectivamente es 0,5. Por lo tanto, la alternativa C es verdadera.</p>
+          </li>
+          <li>
+            <p>Verificar brevemente por qué las otras alternativas no son correctas:</p>
+            <ul>
+              <li>
+                <strong>Alternativa A:</strong>
+                <p>Probabilidad de obtener 1 o 2 en el dado cargado:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>1</mn>
+                    <mtext> o </mtext>
+                    <mn>2</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>1</mn>
+                    <mo>)</mo>
+                    <mo>+</mo>
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>2</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,2</mn>
+                    <mo>+</mo>
+                    <mn>0,1</mn>
+                    <mo>=</mo>
+                    <mn>0,3</mn>
+                  </math>
+                </p>
+                <p>En un dado común, la probabilidad de obtener 1 o 2 es:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mfrac>
+                      <mn>2</mn>
+                      <mn>6</mn>
+                    </mfrac>
+                    <mo>=</mo>
+                    <mfrac>
+                      <mn>1</mn>
+                      <mn>3</mn>
+                    </mfrac>
+                    <mo>&#x2248;</mo>
+                    <mn>0,3333</mn>
+                  </math>
+                </p>
+                <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn><mo>&#x2260;</mo><mn>0,3333</mn></math>, la afirmación de la alternativa A es falsa.</p>
+              </li>
+              <li>
+                <strong>Alternativa B:</strong>
+                <p>En el dado cargado, la probabilidad de obtener un 6 es:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>6</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,1</mn>
+                  </math>
+                </p>
+                <p>En un dado común, la probabilidad de obtener un 6 es:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mfrac>
+                      <mn>1</mn>
+                      <mn>6</mn>
+                    </mfrac>
+                    <mo>&#x2248;</mo>
+                    <mn>0,1667</mn>
+                  </math>
+                </p>
+                <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn><mo>&#x2260;</mo><mn>0,1667</mn></math>, la afirmación de la alternativa B es falsa.</p>
+              </li>
+              <li>
+                <strong>Alternativa D:</strong>
+                <p>Los números pares en el dado son 2, 4 y 6. En el dado cargado:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>2</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,1</mn>
+                  </math>
+                  ,
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>4</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,1</mn>
+                  </math>
+                  ,
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mn>6</mn>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,1</mn>
+                  </math>
+                </p>
+                <p>Entonces, la probabilidad de obtener un número par es:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mi>P</mi>
+                    <mo>(</mo>
+                    <mtext>par</mtext>
+                    <mo>)</mo>
+                    <mo>=</mo>
+                    <mn>0,1</mn>
+                    <mo>+</mo>
+                    <mn>0,1</mn>
+                    <mo>+</mo>
+                    <mn>0,1</mn>
+                    <mo>=</mo>
+                    <mn>0,3</mn>
+                  </math>
+                </p>
+                <p>La alternativa D afirma que esta probabilidad es 0,1, lo que no coincide con el cálculo, por lo tanto es falsa.</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Conclusión: la única afirmación verdadera es la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

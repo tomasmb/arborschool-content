@@ -1,0 +1,32 @@
+{
+  "question_id": "prueba-invierno-2026-Q18",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-06T14:48:21.508396+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El modelo correcto para un cultivo que parte en 100 bacterias y se duplica cada hora es N(t) = 100·2^t, con t en horas. Para t = 24, se obtiene N(24) = 100·2^24, que coincide con la alternativa ChoiceC. \n\nFeedback ChoiceC (correcta): Explica correctamente el modelo N = 100·2^t, sustituye t = 24 y justifica por qué la expresión 100·2^24 es la adecuada. No hay errores matemáticos.\n\nFeedback ChoiceA: Señala que el modelo correcto es 100·2^t y que para t = 24 se obtiene 100·2^24. Explica que 200^25 significa multiplicar 200 por sí mismo 25 veces y que eso no representa partir en 100 y duplicar cada hora. La crítica al exponente y a la base es matemáticamente correcta.\n\nFeedback ChoiceB: De nuevo presenta el modelo correcto 100·2^t, evalúa en t = 24 y contrasta con 200^24, explicando que 200^24 es 200 multiplicado por sí mismo 24 veces, lo que no corresponde al proceso descrito. Es matemáticamente correcto.\n\nFeedback ChoiceD: Reafirma el modelo 100·2^t, indica que para 24 horas el exponente debe ser 24, y explica que 100·2^25 implica una duplicación adicional (25 duplicaciones en vez de 24). Esto es correcto: 100·2^25 = 2·(100·2^24), es decir, una duplicación más.\n\nSolución paso a paso: Construye el modelo N(t) = 100·2^t, verifica la condición inicial N(0) = 100, explica el significado del exponente como número de duplicaciones y evalúa en t = 24 para obtener 100·2^24. Toda la argumentación es consistente y correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explicita que el crecimiento es exponencial, que cada hora se multiplica por 2, y se define N(t) como la cantidad de bacterias después de t horas. \n\nCada feedback es auto-contenido: en todas las alternativas se recuerda el modelo correcto N = 100·2^t, se indica el valor de t (24 horas) y se contrasta explícitamente con la expresión de la alternativa, explicando qué significa su base y su exponente (por ejemplo, 'multiplicar 200 por sí mismo 24/25 veces' o 'considerar una duplicación adicional'). El estudiante no necesita cálculos externos para entender por qué la opción es incorrecta o correcta.\n\nLa retroalimentación es específica a esta pregunta: se refiere al cultivo, a las 100 bacterias iniciales, a la duplicación por hora y al tiempo de 24 horas, sin mensajes genéricos. La solución paso a paso también está bien estructurada (definición del modelo, verificación de la condición inicial, interpretación del exponente y evaluación en t = 24)."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mn>, <mi>, <msup>, <mrow>, etc.), sin uso de LaTeX. No aparecen números grandes que requieran separador de miles, ni números decimales, por lo que no hay conflicto con el formato chileno (punto para miles, coma para decimales). \n\nEn el procesamiento de respuestas, la alternativa correcta es ChoiceC y el bloque <qti-response-else> asigna el feedback de ChoiceA (incorrecta), lo que es válido como fallback porque no entrega la retroalimentación de la opción correcta. Por tanto, el formato y la lógica de asignación de feedback cumplen con los requisitos."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada como 100·2^24 y todas las retroalimentaciones (correcta, incorrectas y solución paso a paso) son matemáticamente precisas, claras y específicas al contexto del problema. El uso de MathML y la configuración de feedback en el QTI son adecuados, por lo que el ítem y su retroalimentación pasan todas las revisiones."
+    }
+  },
+  "can_sync": false,
+  "validated_qti_path": "question_validated.xml"
+}

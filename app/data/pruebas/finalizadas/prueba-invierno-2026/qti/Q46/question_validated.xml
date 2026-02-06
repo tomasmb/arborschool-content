@@ -1,0 +1,266 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="tensores-repisa-longitud" title="Longitud de los tensores de una repisa" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona debe confeccionar una repisa con dos tensores, tal como se representan en la imagen.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2026/Q46.png" alt="Dibujo de una repisa rectangular vista de lado, unida a una pared. La distancia vertical entre la repisa y el punto superior de sujeción en la pared es 200 cm, marcada con una flecha y la etiqueta '200 cm'. La longitud horizontal de la repisa es 150 cm, marcada con una flecha y la etiqueta '150 cm'. Dos tensores diagonales iguales unen el extremo libre de la repisa con la parte alta de la pared, formando triángulos rectángulos indicados con ángulos rectos en las esquinas." /></p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>Si la persona quiere calcular la medida que debe tener cada uno de los tensores, en centímetros, ¿cuál de las siguientes expresiones debe utilizar?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <msqrt>
+            <mrow>
+              <msup>
+                <mn>200</mn>
+                <mn>2</mn>
+              </msup>
+              <mo>−</mo>
+              <msup>
+                <mn>150</mn>
+                <mn>2</mn>
+              </msup>
+            </mrow>
+          </msqrt>
+        </math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En el triángulo rectángulo que se forma, el tensor es la hipotenusa y los lados de 200 cm y 150 cm son los catetos, por lo que se debe sumar el cuadrado de los catetos, no restarlos. Si se aplicara esta expresión, se obtendría <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msqrt><mrow><msup><mn>200</mn><mn>2</mn></msup><mo>−</mo><msup><mn>150</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>40.000</mn><mo>−</mo><mn>22.500</mn></mrow></msqrt><mo>=</mo><msqrt><mn>17.500</mn></msqrt></mrow></math>, que no corresponde a la longitud de la hipotenusa calculada con el teorema de Pitágoras, donde se debe usar la suma de los cuadrados de los catetos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <msup>
+              <mn>200</mn>
+              <mn>2</mn>
+            </msup>
+            <mo>−</mo>
+            <msup>
+              <mn>150</mn>
+              <mn>2</mn>
+            </msup>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta expresión calcula la diferencia de los cuadrados de 200 cm y 150 cm, pero no entrega directamente la longitud del tensor, ya que no se extrae la raíz cuadrada. Además, para la hipotenusa de un triángulo rectángulo se debe sumar el cuadrado de los catetos. Aquí se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>200</mn><mn>2</mn></msup><mo>−</mo><msup><mn>150</mn><mn>2</mn></msup><mo>=</mo><mn>40.000</mn><mo>−</mo><mn>22.500</mn><mo>=</mo><mn>17.500</mn></mrow></math>, que es un área en centímetros cuadrados, no una longitud en centímetros, por lo que no responde a lo que se pide.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <msqrt>
+            <mrow>
+              <msup>
+                <mn>200</mn>
+                <mn>2</mn>
+              </msup>
+              <mo>+</mo>
+              <msup>
+                <mn>150</mn>
+                <mn>2</mn>
+              </msup>
+            </mrow>
+          </msqrt>
+        </math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El tensor es la hipotenusa de un triángulo rectángulo cuyos catetos miden 200 cm (vertical) y 150 cm (horizontal). Por el teorema de Pitágoras, la longitud del tensor se calcula con <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>c</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mrow></math>. Al reemplazar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>=</mo><mn>200</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>b</mi><mo>=</mo><mn>150</mn></mrow></math>, se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>c</mi><mo>=</mo><msqrt><mrow><msup><mn>200</mn><mn>2</mn></msup><mo>+</mo><msup><mn>150</mn><mn>2</mn></msup></mrow></msqrt><mo>=</mo><msqrt><mrow><mn>40.000</mn><mo>+</mo><mn>22.500</mn></mrow></msqrt><mo>=</mo><msqrt><mn>62.500</mn></msqrt></mrow></math>, que corresponde exactamente a la expresión propuesta para la longitud del tensor.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <msup>
+              <mn>200</mn>
+              <mn>2</mn>
+            </msup>
+            <mo>+</mo>
+            <msup>
+              <mn>150</mn>
+              <mn>2</mn>
+            </msup>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Aunque aquí se suman los cuadrados de 200 cm y 150 cm, falta extraer la raíz cuadrada para obtener una longitud. Esta expresión da <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mn>200</mn><mn>2</mn></msup><mo>+</mo><msup><mn>150</mn><mn>2</mn></msup><mo>=</mo><mn>40.000</mn><mo>+</mo><mn>22.500</mn><mo>=</mo><mn>62.500</mn></mrow></math>, que está en centímetros cuadrados. La longitud del tensor debe estar en centímetros, por lo que es necesario usar la raíz cuadrada de esta suma, tal como indica el teorema de Pitágoras.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo de la longitud del tensor usando el teorema de Pitágoras</strong></p>
+        <ol>
+          <li>En la situación descrita se forma un triángulo rectángulo entre la pared, la repisa y el tensor. La distancia vertical entre el punto de sujeción superior y la repisa es de 200 cm, y la distancia horizontal desde la pared hasta el extremo libre de la repisa es de 150 cm. Esos dos segmentos son los catetos del triángulo rectángulo, y el tensor corresponde a la hipotenusa.</li>
+          <li>El teorema de Pitágoras establece que, en un triángulo rectángulo con catetos de longitudes <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>b</mi></mrow></math>, e hipotenusa de longitud <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>c</mi></mrow></math>, se cumple la relación <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></math>.</li>
+          <li>En este problema, se tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>a</mi><mo>=</mo><mn>200</mn><mo>&#xA0;</mo><mi>c</mi><mi>m</mi></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>b</mi><mo>=</mo><mn>150</mn><mo>&#xA0;</mo><mi>c</mi><mi>m</mi></mrow></math>. Entonces, la longitud del tensor <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>c</mi></mrow></math> se calcula como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>c</mi><mo>=</mo><msqrt><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup></mrow></msqrt></mrow></math>.</li>
+          <li>Se reemplazan los valores de los catetos en la fórmula:
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>c</mi>
+                <mo>=</mo>
+                <msqrt>
+                  <mrow>
+                    <msup>
+                      <mn>200</mn>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>+</mo>
+                    <msup>
+                      <mn>150</mn>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </msqrt>
+              </mrow>
+            </math>
+          </li>
+          <li>Se calculan los cuadrados de cada cateto:
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup>
+                  <mn>200</mn>
+                  <mn>2</mn>
+                </msup>
+                <mo>=</mo>
+                <mn>200</mn>
+                <mo>&#xD7;</mo>
+                <mn>200</mn>
+                <mo>=</mo>
+                <mn>40.000</mn>
+              </mrow>
+            </math>
+            y
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msup>
+                  <mn>150</mn>
+                  <mn>2</mn>
+                </msup>
+                <mo>=</mo>
+                <mn>150</mn>
+                <mo>&#xD7;</mo>
+                <mn>150</mn>
+                <mo>=</mo>
+                <mn>22.500</mn>
+              </mrow>
+            </math>.
+          </li>
+          <li>Se suman los resultados obtenidos:
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>40.000</mn>
+                <mo>+</mo>
+                <mn>22.500</mn>
+                <mo>=</mo>
+                <mn>62.500</mn>
+              </mrow>
+            </math>.
+          </li>
+          <li>Finalmente, se extrae la raíz cuadrada para obtener la longitud del tensor:
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>c</mi>
+                <mo>=</mo>
+                <msqrt>
+                  <mn>62.500</mn>
+                </msqrt>
+              </mrow>
+            </math>.
+            Por lo tanto, la expresión correcta que debe utilizar la persona para calcular la medida de cada tensor es
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <msqrt>
+                  <mrow>
+                    <msup>
+                      <mn>200</mn>
+                      <mn>2</mn>
+                    </msup>
+                    <mo>+</mo>
+                    <msup>
+                      <mn>150</mn>
+                      <mn>2</mn>
+                    </msup>
+                  </mrow>
+                </msqrt>
+              </mrow>
+            </math>, que corresponde a la alternativa C.
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
