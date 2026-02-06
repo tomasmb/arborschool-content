@@ -15,6 +15,7 @@ export interface TestTabsProps {
     enriched: number;
     validated: number;
     variants: number;
+    validated_variants: number;
   };
   /** Whether the test has a raw PDF uploaded */
   hasPdf?: boolean;
@@ -90,8 +91,10 @@ const tabConfigs: TabConfig[] = [
       if (counts.validated === 0) return "blocked";
       return "not_started"; // Sync is never "complete" in this view
     },
-    getLabel: (counts) =>
-      counts.validated > 0 ? `${counts.validated} ready` : "",
+    getLabel: (counts) => {
+      const total = counts.validated + counts.validated_variants;
+      return total > 0 ? `${total} ready` : "";
+    },
   },
 ];
 

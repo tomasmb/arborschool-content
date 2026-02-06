@@ -46,31 +46,44 @@ Your goals:
 
 ---
 
-## 2. Sync with Main (CRITICAL)
+## 2. Sync Both Branches and Merge Main into Dev (CRITICAL)
 
-**This step prevents merge conflicts in the PR.**
+**This step ensures both branches are up to date and conflict-free before opening a PR.**
 
-1. Fetch latest from origin:
+1. Fetch latest from origin (both branches):
    ```bash
-   git fetch origin
+   git fetch origin main dev
    ```
 
-2. Merge main into dev:
+2. Fast-forward local dev to match remote:
+   ```bash
+   git pull --ff-only origin dev
+   ```
+   - If this fails (diverged history), STOP and warn the user.
+
+3. Merge origin/main into dev:
    ```bash
    git merge origin/main --no-edit
    ```
 
-3. **If merge conflicts occur:**
-   - Resolve them automatically if trivial (e.g., keep both changes).
-   - If complex conflicts, show the conflicted files and ask user how to proceed.
-   - After resolution: `git add . && git commit -m "Merge origin/main into dev"`
+4. **If merge conflicts occur → STOP immediately.**
+   Do NOT attempt to auto-resolve. Show the conflicted files and say:
+   > "❌ Merge conflicts detected when merging main into dev."
+   > "Conflicted files: ..."
+   > "Please resolve manually, then run `/deploy` again."
+   
+   Then abort the merge:
+   ```bash
+   git merge --abort
+   ```
+   Then STOP.
 
-4. **Push the merge:**
+5. **Push the merge (only if clean):**
    ```bash
    git push
    ```
 
-5. **If already up to date:**
+6. **If already up to date:**
    > "✓ dev is up to date with main"
 
 ---

@@ -158,6 +158,7 @@ export default function TestDetailPage() {
           enriched: data.enriched_count,
           validated: data.validated_count,
           variants: data.variants_count,
+          validated_variants: data.validated_variants_count,
         }}
       />
 

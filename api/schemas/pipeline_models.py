@@ -140,6 +140,7 @@ class ValidationStatusResponse(BaseModel):
 class TestSyncPreviewRequest(BaseModel):
     """Request for test-level sync preview."""
 
+    environment: str = Field("local", description="Target DB: local|staging|prod")
     include_variants: bool = Field(True, description="Include variant questions")
     upload_images: bool = Field(True, description="Upload images to S3")
 
@@ -177,7 +178,38 @@ class TestSyncPreviewResponse(BaseModel):
     questions: dict = Field(
         description="Categories: to_create, to_update, unchanged, skipped"
     )
+    variants: dict = Field(
+        default_factory=dict,
+        description="Variant categories: to_create, to_update, unchanged, skipped",
+    )
     summary: TestSyncSummary
+    question_summary: TestSyncSummary | None = None
+    variant_summary: TestSyncSummary | None = None
+
+
+class TestSyncDiffEntityResponse(BaseModel):
+    """Diff counts for a single entity type (questions or variants)."""
+
+    local_count: int = 0
+    db_count: int = 0
+    new_count: int = 0
+    deleted_count: int = 0
+    unchanged_count: int = 0
+    has_changes: bool = False
+
+
+class TestSyncDiffResponse(BaseModel):
+    """Response for test-level sync diff (DB status)."""
+
+    environment: str
+    has_changes: bool = False
+    questions: TestSyncDiffEntityResponse = Field(
+        default_factory=TestSyncDiffEntityResponse,
+    )
+    variants: TestSyncDiffEntityResponse = Field(
+        default_factory=TestSyncDiffEntityResponse,
+    )
+    error: str | None = None
 
 
 class TestSyncExecuteResponse(BaseModel):
