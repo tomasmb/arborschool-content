@@ -20,11 +20,14 @@ import {
 
 type ModalStep = "loading" | "preview" | "syncing" | "complete";
 
+type SyncEnvironment = "local" | "staging" | "prod";
+
 interface TestSyncModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   testId: string;
   subjectId: string;
+  environment?: SyncEnvironment;
   stats: {
     validated_count: number;
     total: number;
@@ -33,7 +36,7 @@ interface TestSyncModalProps {
 }
 
 /**
- * Modal for syncing validated questions to the production database.
+ * Modal for syncing validated questions to the target database.
  * Flow: load preview → confirm options → sync → show results
  */
 export function TestSyncModal({
@@ -41,6 +44,7 @@ export function TestSyncModal({
   onOpenChange,
   testId,
   subjectId,
+  environment = "local",
   stats,
   onSuccess,
 }: TestSyncModalProps) {
@@ -53,14 +57,14 @@ export function TestSyncModal({
 
   const canSync = stats.validated_count > 0;
 
-  // Load preview when modal opens
+  // Load preview when modal opens or environment changes
   useEffect(() => {
     if (open && canSync) {
       loadPreview();
     } else if (open) {
       setStep("preview");
     }
-  }, [open, canSync]);
+  }, [open, canSync, environment]);
 
   // Reset state when modal closes
   useEffect(() => {
@@ -78,6 +82,7 @@ export function TestSyncModal({
 
     try {
       const data = await getTestSyncPreview(subjectId, testId, {
+        environment,
         include_variants: includeVariants,
         upload_images: uploadImages,
       });
@@ -95,6 +100,7 @@ export function TestSyncModal({
 
     try {
       const result = await executeTestSync(subjectId, testId, {
+        environment,
         include_variants: includeVariants,
         upload_images: uploadImages,
       });
@@ -142,7 +148,9 @@ export function TestSyncModal({
       <div className="relative w-full max-w-md bg-surface border border-border rounded-xl shadow-xl mx-4">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-          <h2 className="font-semibold">Sync Test to Database</h2>
+          <h2 className="font-semibold">
+            Sync Test to {environment === "prod" ? "Production" : environment === "staging" ? "Staging" : "Local"} Database
+          </h2>
           {step !== "syncing" && (
             <button
               onClick={handleClose}

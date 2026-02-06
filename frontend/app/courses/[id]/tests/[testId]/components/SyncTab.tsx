@@ -22,11 +22,11 @@ export interface SyncTabProps {
   testId: string;
   questions: QuestionBrief[];
   data: TestDetail;
-  onSync: () => void;
+  onSync: (environment: SyncEnvironment) => void;
   onViewDiff?: () => void;
 }
 
-type SyncEnvironment = "local" | "staging" | "prod";
+export type SyncEnvironment = "local" | "staging" | "prod";
 
 export function SyncTab({
   subjectId,
@@ -190,7 +190,7 @@ export function SyncTab({
             variant={selectedEnv === "prod" ? "danger" : "primary"}
             size="lg"
             icon={<Upload className="w-4 h-4" />}
-            onClick={onSync}
+            onClick={() => onSync(selectedEnv)}
             disabled={validatedQuestions.length === 0 || loadingPreview}
           >
             Sync to {envLabel(selectedEnv)}
