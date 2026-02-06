@@ -320,7 +320,7 @@ async def start_variant_validation(
     "/{subject_id}/tests/{test_id}/sync/diff",
     response_model=TestSyncDiffResponse,
 )
-async def get_sync_diff(
+def get_sync_diff(
     subject_id: str,
     test_id: str,
     environment: str = "local",
@@ -350,7 +350,7 @@ async def get_sync_diff(
     "/{subject_id}/tests/{test_id}/sync/preview",
     response_model=TestSyncPreviewResponse,
 )
-async def preview_sync(
+def preview_sync(
     subject_id: str,
     test_id: str,
     request: TestSyncPreviewRequest,
@@ -386,7 +386,7 @@ async def preview_sync(
     "/{subject_id}/tests/{test_id}/sync/execute",
     response_model=TestSyncExecuteResponse,
 )
-async def execute_sync(
+def execute_sync(
     subject_id: str,
     test_id: str,
     request: TestSyncPreviewRequest,
