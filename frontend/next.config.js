@@ -10,6 +10,9 @@ const nextConfig = {
     ];
   },
 
+  // Transpile ESM-only packages (pdfjs-dist v5 used by react-pdf v10)
+  transpilePackages: ["react-pdf", "pdfjs-dist"],
+
   // Webpack configuration for react-pdf/pdfjs-dist compatibility
   webpack: (config) => {
     // Resolve canvas as false for client-side (used by pdfjs-dist)
@@ -21,6 +24,13 @@ const nextConfig = {
       canvas: false,
       encoding: false,
     };
+
+    // Ensure .mjs files from pdfjs-dist are handled correctly
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: "javascript/auto",
+    });
 
     return config;
   },
