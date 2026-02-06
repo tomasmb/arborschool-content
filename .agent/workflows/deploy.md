@@ -1,13 +1,11 @@
 # /deploy
 
-You are an autonomous deployment assistant responsible for creating PRs and optionally merging
-them with minimal user intervention.
+You are an autonomous deployment assistant. You create PRs from `dev` to `main`,
+optionally merge them, and keep branches in sync afterward.
 
-Your goals:
-- Ensure changes are committed and pushed.
-- Create a PR from `dev` to `main` (or use existing PR).
-- Wait for any GitHub checks to pass.
-- Optionally merge the PR if the `merge` parameter is provided.
+**CRITICAL CONTEXT**: This repo uses squash merges. After a squash merge,
+`main` gets a new squash commit that `dev` doesn't have. If you don't
+resync dev to main after merging, future deploys will have fake conflicts.
 
 ---
 
@@ -29,15 +27,14 @@ Your goals:
 1. Run `git branch --show-current` and `git status --porcelain`.
 
 2. **If NOT on `dev` branch:**
-   > "⚠️ Deploy creates PRs from `dev` to `main`. Please switch to `dev` first."
-   > "Run `git checkout dev` to switch."
-   
+   > "⚠️ Deploy creates PRs from `dev` to `main`. Switch to `dev` first."
+
    Then STOP.
 
 3. **If uncommitted changes exist:**
    > "📝 Uncommitted changes detected. Running commit flow first..."
-   
-   Execute the full `/git-commit` command flow (quality checks, commit, push).
+
+   Execute the full `/git-commit` command flow.
    If commit fails, STOP.
 
 4. **If branch not pushed to remote:**
@@ -46,44 +43,47 @@ Your goals:
 
 ---
 
-## 2. Sync Both Branches and Merge Main into Dev (CRITICAL)
+## 2. Sync Dev with Main (CRITICAL — prevents fake conflicts)
 
-**This step ensures both branches are up to date and conflict-free before opening a PR.**
+**Why this exists:** Squash merges cause `main` and `dev` to diverge in git
+history even though the content is identical. This step fixes the divergence
+BEFORE creating a PR, so the PR is always clean.
 
 1. Fetch latest from origin (both branches):
    ```bash
    git fetch origin main dev
    ```
 
-2. Fast-forward local dev to match remote:
+2. Check if main is ahead of dev (commits in main not in dev):
    ```bash
-   git pull --ff-only origin dev
-   ```
-   - If this fails (diverged history), STOP and warn the user.
-
-3. Merge origin/main into dev:
-   ```bash
-   git merge origin/main --no-edit
+   git log dev..origin/main --oneline
    ```
 
-4. **If merge conflicts occur → STOP immediately.**
-   Do NOT attempt to auto-resolve. Show the conflicted files and say:
-   > "❌ Merge conflicts detected when merging main into dev."
-   > "Conflicted files: ..."
-   > "Please resolve manually, then run `/deploy` again."
-   
-   Then abort the merge:
-   ```bash
-   git merge --abort
-   ```
-   Then STOP.
+3. **If main IS ahead** (has squash commits from a previous deploy):
 
-5. **Push the merge (only if clean):**
-   ```bash
-   git push
-   ```
+   a. First, identify commits on dev that are NOT in main yet (your new work):
+      ```bash
+      git log origin/main..dev --oneline
+      ```
 
-6. **If already up to date:**
+   b. If dev has new commits not in main → merge main into dev:
+      ```bash
+      git merge origin/main --no-edit
+      ```
+      - If merge has conflicts → STOP, abort with `git merge --abort`,
+        and tell the user to resolve manually.
+      - If merge succeeds:
+        ```bash
+        git push
+        ```
+
+   c. If dev has NO new commits (everything was already merged) → reset:
+      ```bash
+      git reset --hard origin/main
+      git push --force-with-lease origin dev
+      ```
+
+4. **If main is NOT ahead:**
    > "✓ dev is up to date with main"
 
 ---
@@ -95,8 +95,8 @@ Run:
 gh pr list --head dev --base main --json number,url,state
 ```
 
-- **If open PR exists:** Use that PR instead of creating a new one.
-  > "📋 Found existing PR #<NUMBER>: <URL>"
+- **If open PR exists:** Use that PR.
+  > "📋 Found existing PR #NUMBER: URL"
 
 - **If no PR exists:** Continue to create one.
 
@@ -107,22 +107,21 @@ gh pr list --head dev --base main --json number,url,state
 If no existing PR:
 
 1. Inspect:
-   - The commits on dev not yet on main (`git log origin/main..origin/dev --oneline`).
-   - A diff summary (`git diff --stat origin/main...origin/dev`).
+   - Commits: `git log origin/main..origin/dev --oneline`
+   - Diff: `git diff --stat origin/main...origin/dev`
 
-2. Generate a clear PR title and body based on the changes.
+2. If no commits between main and dev:
+   > "✅ `main` is already up to date with `dev`. No PR needed."
+   Then STOP.
 
-3. Run:
+3. Generate a clear PR title and body based on the changes.
+
+4. Run:
    ```bash
    gh pr create --base main --head dev --title "<title>" --body "<body>"
    ```
 
-4. If PR creation fails due to "no commits between main and dev":
-   > "✅ `main` is already up to date with `dev`. No PR needed."
-   
-   Then STOP.
-
-5. If PR creation succeeds, get the PR URL:
+5. Get the PR URL:
    ```bash
    gh pr view --json number,url
    ```
@@ -130,14 +129,6 @@ If no existing PR:
 ---
 
 ## 5. Wait for GitHub Checks
-
-Monitor the PR checks until all complete:
-
-```bash
-gh pr checks <PR_NUMBER> --watch
-```
-
-**Alternative polling (if --watch times out or isn't available):**
 
 ```bash
 gh pr view <PR_NUMBER> --json statusCheckRollup
@@ -147,35 +138,28 @@ gh pr view <PR_NUMBER> --json statusCheckRollup
 
 1. Check status every 15 seconds.
 2. Maximum wait time: 5 minutes.
-3. Report progress to user:
-   - "⏳ Waiting for checks to complete..."
+3. Report progress:
+   - "⏳ Waiting for checks..."
    - "✓ Check `<name>` passed"
    - "✅ All checks passed!"
 
 ### If No Checks Configured
 
-If the repo has no CI checks, the PR will show as ready immediately:
-> "ℹ️ No CI checks configured for this repo. PR is ready."
+> "ℹ️ No CI checks configured. PR is ready."
 
 ### If Checks Fail
 
-If any check fails:
-> "❌ Check `<name>` failed. Please fix the issues before merging."
-> "PR URL: <URL>"
+> "❌ Check `<name>` failed. Fix the issues before merging."
 
-Then STOP (do not merge).
+Then STOP.
 
 ---
 
 ## 6. Merge (only if `merge` parameter passed)
 
-If the user did NOT pass `merge`, skip this section and go to Final Summary.
+If the user did NOT pass `merge`, skip to Final Summary.
 
 ### Pre-Merge Verification
-
-Before merging, verify:
-1. All checks have passed.
-2. PR is in mergeable state.
 
 ```bash
 gh pr view <PR_NUMBER> --json mergeable,mergeStateStatus
@@ -184,30 +168,42 @@ gh pr view <PR_NUMBER> --json mergeable,mergeStateStatus
 ### Perform Merge
 
 ```bash
-gh pr merge <PR_NUMBER> --squash
+gh pr merge <PR_NUMBER> --squash --delete-branch=false
 ```
-
-**Merge options:**
-- `--squash`: Squash commits into single commit on main.
-- Note: We do NOT delete dev branch after merge.
 
 ### If Merge Fails
 
-**If merge fails due to review requirement:**
-> "⚠️ PR requires approval before merging."
-> "Please get a review or merge manually: <PR_URL>"
+- **Review required:**
+  > "⚠️ PR requires approval. Merge manually: <PR_URL>"
+  STOP.
 
-Then STOP.
-
-**If merge fails due to merge conflicts:**
-> "⚠️ PR has merge conflicts. Please resolve them first."
-> "PR URL: <PR_URL>"
-
-Then STOP.
+- **Merge conflicts:**
+  > "⚠️ PR has merge conflicts. Resolve first: <PR_URL>"
+  STOP.
 
 ---
 
-## 7. Final Summary
+## 7. Post-Merge: Resync Dev to Main (CRITICAL)
+
+**This step MUST run after every squash merge. Skipping it causes fake
+conflicts on the next deploy.**
+
+After the squash merge succeeds:
+
+```bash
+git fetch origin main
+git reset --hard origin/main
+git push --force-with-lease origin dev
+```
+
+This makes dev identical to main, so the next round of work starts clean.
+
+Report:
+> "✓ dev branch reset to main (post-squash-merge sync)"
+
+---
+
+## 8. Final Summary
 
 ### If `merge` NOT passed:
 
@@ -217,7 +213,7 @@ Then STOP.
 ✓ PR created: <PR_URL>
 ✓ All checks passed (or no checks configured)
 
-PR is ready for review. Run `/deploy merge` after approval to merge to main.
+Run `/deploy merge` to merge to main.
 ```
 
 ### If `merge` passed and successful:
@@ -225,10 +221,8 @@ PR is ready for review. Run `/deploy merge` after approval to merge to main.
 ```
 ✅ Deploy Summary
 ─────────────────
-✓ PR created: <PR_URL>
-✓ All checks passed
-✓ PR merged to main
-
+✓ PR merged to main (squash)
+✓ dev synced to main
 Deployment complete!
 ```
 
@@ -238,26 +232,27 @@ Deployment complete!
 
 | Error | Action |
 |-------|--------|
-| Not on `dev` branch | Stop and instruct user to switch to dev |
-| Uncommitted changes | Run `/git-commit` flow first |
+| Not on `dev` | Stop, instruct to switch |
+| Uncommitted changes | Run `/git-commit` first |
 | PR already exists | Use existing PR |
-| main up to date with dev | Inform user, no PR needed |
-| Checks failing | Report which check failed, don't merge |
-| Merge blocked by reviews | Provide PR URL for manual review/merge |
-| Merge conflicts | Provide PR URL for manual resolution |
-| Check timeout (>5 min) | Report timeout, provide PR URL |
+| main up to date with dev | No PR needed |
+| Merge conflicts | Abort, tell user to resolve |
+| Checks failing | Report failure, don't merge |
+| Merge blocked by reviews | Provide PR URL |
 
 ---
 
 ## Boundaries
 
-**Do NOT:**
-- Merge if any checks are failing
+**NEVER:**
+- Merge if checks are failing
 - Force merge bypassing branch protection
-- Delete the dev branch after merge
-- Create PR if not on `dev`
+- Delete the dev branch
+- Skip the post-merge resync (step 7)
+- Try to auto-resolve merge/rebase conflicts
 
-**Do:**
+**ALWAYS:**
+- Resync dev to main after every squash merge
+- Use `--force-with-lease` (not `--force`) when pushing after rebase/reset
 - Report clear status at each step
-- Reuse existing open PRs
-- Provide actionable next steps on any failure
+- STOP on any conflict and let the user decide
