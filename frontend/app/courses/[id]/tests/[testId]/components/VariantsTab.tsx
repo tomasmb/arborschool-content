@@ -1,20 +1,9 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import {
-  Plus,
-  Trash2,
-  ChevronDown,
-  ChevronRight,
-  Sparkles,
-  Info,
-  MessageSquarePlus,
-  ShieldCheck,
-  CheckCircle2,
-  Circle,
-} from "lucide-react";
+import { Plus, Trash2, ChevronDown, ChevronRight, Sparkles, MessageSquarePlus, ShieldCheck, RefreshCw, CheckCircle2, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ProgressRatio } from "@/components/ui";
+import { ProgressRatio, ActionButton, ActionsDropdown, StepBanner } from "@/components/ui";
 import { type QuestionBrief, type TestDetail } from "@/lib/api";
 import { VariantsExpandedContent } from "./VariantsExpandedContent";
 
@@ -29,7 +18,19 @@ export interface VariantsTabProps {
   onDeleteVariants?: (questionNum: number) => void;
 }
 
-type VariantsFilter = "all" | "has_variants" | "no_variants" | "all_validated" | "needs_work";
+type VariantsFilter = "all" | "has_variants" | "no_variants";
+
+/** Determine the next action for the variants pipeline. */
+function getVariantNextAction(counts: {
+  noVariants: number;
+  unenrichedVariants: number;
+  unvalidatedVariants: number;
+}): "generate" | "enrich" | "validate" | "done" {
+  if (counts.noVariants > 0) return "generate";
+  if (counts.unenrichedVariants > 0) return "enrich";
+  if (counts.unvalidatedVariants > 0) return "validate";
+  return "done";
+}
 
 export function VariantsTab({
   subjectId,
@@ -47,36 +48,31 @@ export function VariantsTab({
   // Only validated questions can have variants
   const validatedQuestions = questions.filter((q) => q.is_validated);
 
-  // Calculate counts
+  // Counts
   const questionsWithVariants = validatedQuestions.filter((q) => q.variants_count > 0).length;
-  const questionsNoVariants = validatedQuestions.filter((q) => q.variants_count === 0).length;
+  const questionsNoVariants = validatedQuestions.length - questionsWithVariants;
   const totalVariants = data.variants_count;
+  const unenrichedVariants = totalVariants - data.enriched_variants_count;
+  const unvalidatedVariants = data.enriched_variants_count - data.validated_variants_count;
 
-  // Filter questions
+  const nextAction = getVariantNextAction({
+    noVariants: questionsNoVariants,
+    unenrichedVariants,
+    unvalidatedVariants,
+  });
+
+  // Filter
   const filteredQuestions = validatedQuestions.filter((q) => {
-    switch (filter) {
-      case "has_variants":
-        return q.variants_count > 0;
-      case "no_variants":
-        return q.variants_count === 0;
-      case "all_validated":
-        // Would need variant-level validation data
-        return q.variants_count > 0;
-      case "needs_work":
-        return q.variants_count === 0;
-      default:
-        return true;
-    }
+    if (filter === "has_variants") return q.variants_count > 0;
+    if (filter === "no_variants") return q.variants_count === 0;
+    return true;
   });
 
   const toggleRow = useCallback((questionNum: number) => {
     setExpandedRows((prev) => {
       const next = new Set(prev);
-      if (next.has(questionNum)) {
-        next.delete(questionNum);
-      } else {
-        next.add(questionNum);
-      }
+      if (next.has(questionNum)) next.delete(questionNum);
+      else next.add(questionNum);
       return next;
     });
   }, []);
@@ -87,110 +83,69 @@ export function VariantsTab({
     { id: "no_variants", label: "No Variants", count: questionsNoVariants },
   ];
 
-  return (
-    <div className="p-6 space-y-6">
-      {/* Header with stats */}
-      <div className="flex items-start justify-between">
-        <div className="space-y-3">
-          <h3 className="font-semibold">Variants</h3>
+  // Secondary / overflow actions
+  const secondaryActions = [
+    {
+      id: "add-more",
+      label: "Add More Variants",
+      icon: <Plus className="w-4 h-4" />,
+      onClick: onGenerateVariants,
+    },
+    {
+      id: "enrich",
+      label: "Enrich Variants",
+      icon: <MessageSquarePlus className="w-4 h-4" />,
+      onClick: () => onEnrichVariants?.(),
+      disabled: !onEnrichVariants || totalVariants === 0 || nextAction === "enrich",
+    },
+    {
+      id: "validate",
+      label: "Validate Variants",
+      icon: <ShieldCheck className="w-4 h-4" />,
+      onClick: () => onValidateVariants?.(),
+      disabled: !onValidateVariants || totalVariants === 0 || nextAction === "validate",
+    },
+  ];
 
-          {/* Key metrics */}
-          <div className="grid grid-cols-4 gap-4 text-sm">
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Total Variants</p>
-              <p className="text-xl font-semibold">{totalVariants}</p>
-              <p className="text-xs text-text-secondary mt-1">
-                Avg {validatedQuestions.length > 0 ? (totalVariants / validatedQuestions.length).toFixed(1) : 0}/q
-              </p>
-            </div>
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Enriched</p>
-              <p className="text-xl font-semibold">
-                <ProgressRatio current={data.enriched_variants_count} total={totalVariants} />
-              </p>
-              {totalVariants > 0 && data.enriched_variants_count < totalVariants && (
-                <p className="text-xs text-warning mt-1">
-                  {totalVariants - data.enriched_variants_count} need feedback
-                </p>
-              )}
-            </div>
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Validated</p>
-              <p className="text-xl font-semibold">
-                <ProgressRatio current={data.validated_variants_count} total={data.enriched_variants_count} />
-              </p>
-              {data.failed_validation_variants_count > 0 && (
-                <p className="text-xs text-error mt-1">
-                  {data.failed_validation_variants_count} failed
-                </p>
-              )}
-            </div>
-            <div className="bg-surface border border-border rounded-lg p-3">
-              <p className="text-text-secondary text-xs mb-1">Questions w/ Variants</p>
-              <p className="text-xl font-semibold">
-                <ProgressRatio current={questionsWithVariants} total={validatedQuestions.length} />
-              </p>
-              {questionsNoVariants > 0 && (
-                <p className="text-xs text-warning mt-1">{questionsNoVariants} need variants</p>
-              )}
-            </div>
-          </div>
+  return (
+    <div className="p-6 space-y-5">
+      {/* Header: compact summary + smart CTA */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
+          <h3 className="font-semibold">Variants</h3>
+          {/* Horizontal summary bar (replaces 4-card grid) */}
+          <VariantsSummaryBar
+            totalVariants={totalVariants}
+            enrichedCount={data.enriched_variants_count}
+            validatedCount={data.validated_variants_count}
+            failedCount={data.failed_validation_variants_count}
+            questionsWithVariants={questionsWithVariants}
+            totalQuestions={validatedQuestions.length}
+          />
         </div>
 
-        <div className="flex gap-2 flex-wrap items-center">
-          {/* Generate variants */}
-          {questionsNoVariants > 0 && (
-            <button
-              onClick={onGenerateVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent/90"
-            >
-              <Sparkles className="w-4 h-4" />
-              Generate for {questionsNoVariants} Missing
-            </button>
-          )}
-          <button
-            onClick={onGenerateVariants}
-            className="flex items-center gap-2 px-3 py-2 bg-yellow-500/10 text-yellow-400
-              rounded-lg text-sm font-medium hover:bg-yellow-500/20 border
-              border-yellow-500/20"
-          >
-            <Plus className="w-4 h-4" />
-            Add More Variants
-          </button>
-
-          {/* Enrich variants (for old variants without feedback) */}
-          {onEnrichVariants && totalVariants > 0 && (
-            <button
-              onClick={onEnrichVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400
-                rounded-lg text-sm font-medium hover:bg-green-500/20 border
-                border-green-500/20"
-            >
-              <MessageSquarePlus className="w-4 h-4" />
-              Enrich Variants
-            </button>
-          )}
-
-          {/* Validate variants */}
-          {onValidateVariants && totalVariants > 0 && (
-            <button
-              onClick={onValidateVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400
-                rounded-lg text-sm font-medium hover:bg-blue-500/20 border
-                border-blue-500/20"
-            >
-              <ShieldCheck className="w-4 h-4" />
-              Validate Variants
-            </button>
-          )}
-
-          {/* Info about variant generation */}
-          <div className="flex items-center gap-1.5 text-xs text-text-secondary ml-2">
-            <Info className="w-3.5 h-3.5" />
-            <span>New variants include feedback; old ones may need enrichment</span>
-          </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <VariantPrimaryCTA
+            nextAction={nextAction}
+            questionsNoVariants={questionsNoVariants}
+            unenrichedVariants={unenrichedVariants}
+            unvalidatedVariants={unvalidatedVariants}
+            onGenerateVariants={onGenerateVariants}
+            onEnrichVariants={onEnrichVariants}
+            onValidateVariants={onValidateVariants}
+          />
+          <ActionsDropdown actions={secondaryActions} label="More" />
         </div>
       </div>
+
+      {/* Step guidance banner */}
+      <VariantStepGuidance
+        nextAction={nextAction}
+        unenrichedVariants={unenrichedVariants}
+        unvalidatedVariants={unvalidatedVariants}
+        onEnrichVariants={onEnrichVariants}
+        onValidateVariants={onValidateVariants}
+      />
 
       {/* Filter tabs */}
       <div className="flex gap-1 border-b border-border">
@@ -202,14 +157,14 @@ export function VariantsTab({
               "px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors",
               filter === f.id
                 ? "border-accent text-accent"
-                : "border-transparent text-text-secondary hover:text-text-primary"
+                : "border-transparent text-text-secondary hover:text-text-primary",
             )}
           >
             {f.label}
             <span
               className={cn(
                 "ml-2 px-1.5 py-0.5 text-xs rounded",
-                filter === f.id ? "bg-accent/20" : "bg-surface"
+                filter === f.id ? "bg-accent/20" : "bg-surface",
               )}
             >
               {f.count}
@@ -223,7 +178,7 @@ export function VariantsTab({
         <table className="w-full">
           <thead>
             <tr className="border-b border-border text-left text-xs text-text-secondary uppercase tracking-wide">
-              <th className="w-8 px-2"></th>
+              <th className="w-8 px-2" />
               <th className="px-4 py-3 font-medium">Q#</th>
               <th className="px-4 py-3 font-medium text-center">Original</th>
               <th className="px-4 py-3 font-medium text-center">Has Variants?</th>
@@ -234,23 +189,22 @@ export function VariantsTab({
             </tr>
           </thead>
           <tbody>
-            {filteredQuestions.map((q) => {
-              const isExpanded = expandedRows.has(q.question_number);
-              const hasVariants = q.variants_count > 0;
-
-              return (
-                <VariantQuestionRow
-                  key={q.id}
-                  subjectId={subjectId}
-                  testId={testId}
-                  question={q}
-                  isExpanded={isExpanded}
-                  onToggle={() => toggleRow(q.question_number)}
-                  onAddVariants={onGenerateVariants}
-                  onDeleteVariants={onDeleteVariants ? () => onDeleteVariants(q.question_number) : undefined}
-                />
-              );
-            })}
+            {filteredQuestions.map((q) => (
+              <VariantQuestionRow
+                key={q.id}
+                subjectId={subjectId}
+                testId={testId}
+                question={q}
+                isExpanded={expandedRows.has(q.question_number)}
+                onToggle={() => toggleRow(q.question_number)}
+                onAddVariants={onGenerateVariants}
+                onDeleteVariants={
+                  onDeleteVariants
+                    ? () => onDeleteVariants(q.question_number)
+                    : undefined
+                }
+              />
+            ))}
           </tbody>
         </table>
 
@@ -263,14 +217,168 @@ export function VariantsTab({
         )}
       </div>
 
-      {/* Info about additive model */}
-      <div className="text-xs text-text-secondary bg-surface/50 border border-border rounded-lg p-3">
-        <strong>Note:</strong> Variant generation is additive. Use "Add More" to generate additional
-        variants on top of existing ones. Use "Delete" to remove variants if needed.
+      {/* Additive-model footnote */}
+      <p className="text-xs text-text-secondary">
+        <strong>Note:</strong> Variant generation is additive — use "Add More"
+        to generate additional variants on top of existing ones.
+      </p>
+    </div>
+  );
+}
+
+// ─── Sub-components ───────────────────────────────────
+
+/** Compact horizontal summary replacing the 4-card grid. */
+function VariantsSummaryBar({
+  totalVariants,
+  enrichedCount,
+  validatedCount,
+  failedCount,
+  questionsWithVariants,
+  totalQuestions,
+}: {
+  totalVariants: number;
+  enrichedCount: number;
+  validatedCount: number;
+  failedCount: number;
+  questionsWithVariants: number;
+  totalQuestions: number;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
+      <div>
+        <span className="text-text-secondary">Variants:</span>{" "}
+        <span className="font-medium">{totalVariants}</span>
+      </div>
+      <div>
+        <span className="text-text-secondary">Enriched:</span>{" "}
+        <ProgressRatio current={enrichedCount} total={totalVariants} />
+      </div>
+      <div>
+        <span className="text-text-secondary">Validated:</span>{" "}
+        <ProgressRatio current={validatedCount} total={enrichedCount} />
+      </div>
+      {failedCount > 0 && (
+        <span className="text-error text-xs">{failedCount} failed</span>
+      )}
+      <div>
+        <span className="text-text-secondary">Coverage:</span>{" "}
+        <ProgressRatio current={questionsWithVariants} total={totalQuestions} />
       </div>
     </div>
   );
 }
+
+/** Smart primary CTA for the variants pipeline. */
+function VariantPrimaryCTA({
+  nextAction,
+  questionsNoVariants,
+  unenrichedVariants,
+  unvalidatedVariants,
+  onGenerateVariants,
+  onEnrichVariants,
+  onValidateVariants,
+}: {
+  nextAction: "generate" | "enrich" | "validate" | "done";
+  questionsNoVariants: number;
+  unenrichedVariants: number;
+  unvalidatedVariants: number;
+  onGenerateVariants: () => void;
+  onEnrichVariants?: () => void;
+  onValidateVariants?: () => void;
+}) {
+  switch (nextAction) {
+    case "generate":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<Sparkles className="w-4 h-4" />}
+          onClick={onGenerateVariants}
+        >
+          Generate for {questionsNoVariants} Missing
+        </ActionButton>
+      );
+    case "enrich":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<MessageSquarePlus className="w-4 h-4" />}
+          onClick={() => onEnrichVariants?.()}
+          disabled={!onEnrichVariants}
+        >
+          Enrich {unenrichedVariants} Variants
+        </ActionButton>
+      );
+    case "validate":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<ShieldCheck className="w-4 h-4" />}
+          onClick={() => onValidateVariants?.()}
+          disabled={!onValidateVariants}
+        >
+          Validate {unvalidatedVariants} Variants
+        </ActionButton>
+      );
+    case "done":
+      return (
+        <ActionButton
+          variant="secondary"
+          disabled
+          icon={<CheckCircle2 className="w-4 h-4 text-success" />}
+        >
+          All Complete
+        </ActionButton>
+      );
+  }
+}
+
+/** Contextual guidance banner for variant steps. */
+function VariantStepGuidance({
+  nextAction,
+  unenrichedVariants,
+  unvalidatedVariants,
+  onEnrichVariants,
+  onValidateVariants,
+}: {
+  nextAction: "generate" | "enrich" | "validate" | "done";
+  unenrichedVariants: number;
+  unvalidatedVariants: number;
+  onEnrichVariants?: () => void;
+  onValidateVariants?: () => void;
+}) {
+  if (nextAction === "done") {
+    return (
+      <StepBanner
+        variant="complete"
+        message="All variants are generated, enriched, and validated."
+      />
+    );
+  }
+  if (nextAction === "enrich") {
+    return (
+      <StepBanner
+        variant="action"
+        message={`All questions have variants. ${unenrichedVariants} variants need enrichment.`}
+        actionLabel={`Enrich ${unenrichedVariants}`}
+        onAction={() => onEnrichVariants?.()}
+      />
+    );
+  }
+  if (nextAction === "validate") {
+    return (
+      <StepBanner
+        variant="action"
+        message={`Enrichment complete. ${unvalidatedVariants} variants need validation.`}
+        actionLabel={`Validate ${unvalidatedVariants}`}
+        onAction={() => onValidateVariants?.()}
+      />
+    );
+  }
+  return null;
+}
+
+// ─── Table Row ────────────────────────────────────────
 
 interface VariantQuestionRowProps {
   subjectId: string;
@@ -298,7 +406,7 @@ function VariantQuestionRow({
       <tr
         className={cn(
           "border-b border-border hover:bg-white/5 transition-colors cursor-pointer",
-          isExpanded && "bg-white/5"
+          isExpanded && "bg-white/5",
         )}
         onClick={onToggle}
       >
@@ -325,13 +433,17 @@ function VariantQuestionRow({
           )}
         </td>
         <td className="px-4 py-3 text-center text-sm font-mono">
-          {hasVariants ? <span className="text-accent">{q.variants_count}</span> : <span className="text-text-secondary">0</span>}
+          {hasVariants ? (
+            <span className="text-accent">{q.variants_count}</span>
+          ) : (
+            <span className="text-text-secondary">0</span>
+          )}
         </td>
         <td className="px-4 py-3 text-center text-sm">
-          {hasVariants ? <span className="text-text-secondary">—/—</span> : <span className="text-text-secondary">—</span>}
+          <span className="text-text-secondary">—</span>
         </td>
         <td className="px-4 py-3 text-center text-sm">
-          {hasVariants ? <span className="text-text-secondary">—/—</span> : <span className="text-text-secondary">—</span>}
+          <span className="text-text-secondary">—</span>
         </td>
         <td className="px-4 py-3">
           <div className="flex gap-2">
@@ -360,7 +472,6 @@ function VariantQuestionRow({
         </td>
       </tr>
 
-      {/* Expanded content showing individual variants */}
       {isExpanded && hasVariants && (
         <tr className="bg-background/50">
           <td colSpan={8} className="p-0">
@@ -378,4 +489,3 @@ function VariantQuestionRow({
     </>
   );
 }
-

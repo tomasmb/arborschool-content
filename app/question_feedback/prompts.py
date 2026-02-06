@@ -83,7 +83,7 @@ SOLUCIÓN PASO A PASO:
 </feedback_requirements>
 
 <formatting_rules>
-1. Notación matemática: usar SOLO MathML, nunca LaTeX (\(...\) está prohibido)
+1. Notación matemática: usar SOLO MathML, nunca LaTeX (\\(...\\) está prohibido)
 
 2. Formato de números chileno:
    - Separador de miles: punto (.)

@@ -1,22 +1,11 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
-import {
-  CheckCircle2,
-  Circle,
-  XCircle,
-  MessageSquarePlus,
-  ShieldCheck,
-  ChevronDown,
-  ChevronRight,
-  Tag,
-  Loader2,
-  AlertCircle,
-} from "lucide-react";
+import { useState, useCallback } from "react";
+import { CheckCircle2, Circle, Tag, MessageSquarePlus, ShieldCheck, RefreshCw, ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { StatusBadge, StatusIcon, ProgressRatio } from "@/components/ui";
-import { QTIFullView, QTIRenderer } from "@/components/qti";
-import { getQuestionDetail, type QuestionBrief, type TestDetail, type QuestionDetail } from "@/lib/api";
+import { ProgressRatio, ActionButton, ActionsDropdown, StepBanner } from "@/components/ui";
+import { type QuestionBrief, type TestDetail } from "@/lib/api";
+import { QuestionsExpandedContent } from "./QuestionsExpandedContent";
 
 export interface QuestionsTabProps {
   subjectId: string;
@@ -29,7 +18,31 @@ export interface QuestionsTabProps {
   onSelectQuestion: (questionNum: number) => void;
 }
 
-type QuestionsFilter = "all" | "not_tagged" | "not_enriched" | "enriched" | "not_validated" | "validated";
+type QuestionsFilter =
+  | "all"
+  | "not_tagged"
+  | "not_enriched"
+  | "enriched"
+  | "not_validated"
+  | "validated";
+
+// ─── Helpers ──────────────────────────────────────────
+
+/** Determine which pipeline phase is the current "next action". */
+function getNextAction(counts: {
+  notTagged: number;
+  notEnriched: number;
+  notValidated: number;
+  tagged: number;
+  enriched: number;
+}): "tag" | "enrich" | "validate" | "done" {
+  if (counts.notTagged > 0) return "tag";
+  if (counts.notEnriched > 0) return "enrich";
+  if (counts.notValidated > 0) return "validate";
+  return "done";
+}
+
+// ─── Main Component ───────────────────────────────────
 
 export function QuestionsTab({
   subjectId,
@@ -44,7 +57,7 @@ export function QuestionsTab({
   const [filter, setFilter] = useState<QuestionsFilter>("all");
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
 
-  // Calculate counts - only count finalized questions
+  // Counts
   const finalizedQuestions = questions.filter((q) => q.is_finalized);
   const taggedCount = questions.filter((q) => q.is_tagged).length;
   const enrichedCount = questions.filter((q) => q.is_enriched).length;
@@ -53,7 +66,15 @@ export function QuestionsTab({
   const notEnrichedCount = taggedCount - enrichedCount;
   const notValidatedCount = enrichedCount - validatedCount;
 
-  // Filter questions - show all finalized questions, not just tagged
+  const nextAction = getNextAction({
+    notTagged: notTaggedCount,
+    notEnriched: notEnrichedCount,
+    notValidated: notValidatedCount,
+    tagged: taggedCount,
+    enriched: enrichedCount,
+  });
+
+  // Filter
   const filteredQuestions = finalizedQuestions.filter((q) => {
     switch (filter) {
       case "not_tagged":
@@ -74,11 +95,8 @@ export function QuestionsTab({
   const toggleRow = useCallback((questionNum: number) => {
     setExpandedRows((prev) => {
       const next = new Set(prev);
-      if (next.has(questionNum)) {
-        next.delete(questionNum);
-      } else {
-        next.add(questionNum);
-      }
+      if (next.has(questionNum)) next.delete(questionNum);
+      else next.add(questionNum);
       return next;
     });
   }, []);
@@ -92,66 +110,52 @@ export function QuestionsTab({
     { id: "validated", label: "Validated", count: validatedCount },
   ];
 
+  // Build secondary actions for the dropdown
+  const secondaryActions = buildSecondaryActions({
+    nextAction,
+    taggedCount,
+    enrichedCount,
+    onRunTagging,
+    onOpenEnrichment,
+    onOpenValidation,
+  });
+
   return (
-    <div className="p-6 space-y-6">
-      {/* Header with stats and actions */}
-      <div className="flex items-start justify-between">
+    <div className="p-6 space-y-5">
+      {/* Header: progress + smart CTA */}
+      <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           <h3 className="font-semibold">Questions Pipeline</h3>
           <div className="flex gap-4 text-sm">
-            <div>
-              <span className="text-text-secondary">Tagged:</span>{" "}
-              <ProgressRatio current={taggedCount} total={finalizedQuestions.length} />
-            </div>
-            <div>
-              <span className="text-text-secondary">Enriched:</span>{" "}
-              <ProgressRatio current={enrichedCount} total={taggedCount} />
-            </div>
-            <div>
-              <span className="text-text-secondary">Validated:</span>{" "}
-              <ProgressRatio current={validatedCount} total={enrichedCount} />
-            </div>
+            <ProgressStat label="Tagged" current={taggedCount} total={finalizedQuestions.length} />
+            <ProgressStat label="Enriched" current={enrichedCount} total={taggedCount} />
+            <ProgressStat label="Validated" current={validatedCount} total={enrichedCount} />
           </div>
         </div>
 
-        <div className="flex gap-2">
-          {/* Tagging action */}
-          <button
-            onClick={onRunTagging}
-            disabled={notTaggedCount === 0 && taggedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-purple-500/10 text-purple-400
-              rounded-lg text-sm font-medium hover:bg-purple-500/20 border
-              border-purple-500/20 disabled:opacity-50"
-          >
-            <Tag className="w-4 h-4" />
-            {notTaggedCount > 0 ? `Tag ${notTaggedCount} Questions` : "Re-tag All"}
-          </button>
-
-          {/* Enrichment action */}
-          <button
-            onClick={onOpenEnrichment}
-            disabled={taggedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-green-500/10 text-green-400
-              rounded-lg text-sm font-medium hover:bg-green-500/20 border
-              border-green-500/20 disabled:opacity-50"
-          >
-            <MessageSquarePlus className="w-4 h-4" />
-            {notEnrichedCount > 0 ? `Enrich ${notEnrichedCount} Missing` : "Re-enrich"}
-          </button>
-
-          {/* Validation action */}
-          <button
-            onClick={onOpenValidation}
-            disabled={enrichedCount === 0}
-            className="flex items-center gap-2 px-3 py-2 bg-blue-500/10 text-blue-400
-              rounded-lg text-sm font-medium hover:bg-blue-500/20 border
-              border-blue-500/20 disabled:opacity-50"
-          >
-            <ShieldCheck className="w-4 h-4" />
-            {notValidatedCount > 0 ? `Validate ${notValidatedCount} Missing` : "Re-validate"}
-          </button>
+        {/* Primary CTA + overflow menu */}
+        <div className="flex items-center gap-2 shrink-0">
+          <PrimaryCTA
+            nextAction={nextAction}
+            notTaggedCount={notTaggedCount}
+            notEnrichedCount={notEnrichedCount}
+            notValidatedCount={notValidatedCount}
+            onRunTagging={onRunTagging}
+            onOpenEnrichment={onOpenEnrichment}
+            onOpenValidation={onOpenValidation}
+          />
+          <ActionsDropdown actions={secondaryActions} label="More" />
         </div>
       </div>
+
+      {/* Next-step guidance banner */}
+      <StepGuidance
+        nextAction={nextAction}
+        notEnrichedCount={notEnrichedCount}
+        notValidatedCount={notValidatedCount}
+        onOpenEnrichment={onOpenEnrichment}
+        onOpenValidation={onOpenValidation}
+      />
 
       {/* Filter tabs */}
       <div className="flex gap-1 border-b border-border">
@@ -163,14 +167,14 @@ export function QuestionsTab({
               "px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors",
               filter === f.id
                 ? "border-accent text-accent"
-                : "border-transparent text-text-secondary hover:text-text-primary"
+                : "border-transparent text-text-secondary hover:text-text-primary",
             )}
           >
             {f.label}
             <span
               className={cn(
                 "ml-2 px-1.5 py-0.5 text-xs rounded",
-                filter === f.id ? "bg-accent/20" : "bg-surface"
+                filter === f.id ? "bg-accent/20" : "bg-surface",
               )}
             >
               {f.count}
@@ -184,7 +188,7 @@ export function QuestionsTab({
         <table className="w-full">
           <thead>
             <tr className="border-b border-border text-left text-xs text-text-secondary uppercase tracking-wide">
-              <th className="w-8 px-2"></th>
+              <th className="w-8 px-2" />
               <th className="px-4 py-3 font-medium">Q#</th>
               <th className="px-4 py-3 font-medium text-center">Tagged</th>
               <th className="px-4 py-3 font-medium text-center">Enriched</th>
@@ -194,20 +198,17 @@ export function QuestionsTab({
             </tr>
           </thead>
           <tbody>
-            {filteredQuestions.map((q) => {
-              const isExpanded = expandedRows.has(q.question_number);
-              return (
-                <QuestionRow
-                  key={q.id}
-                  subjectId={subjectId}
-                  testId={testId}
-                  question={q}
-                  isExpanded={isExpanded}
-                  onToggle={() => toggleRow(q.question_number)}
-                  onViewDetail={() => onSelectQuestion(q.question_number)}
-                />
-              );
-            })}
+            {filteredQuestions.map((q) => (
+              <QuestionRow
+                key={q.id}
+                subjectId={subjectId}
+                testId={testId}
+                question={q}
+                isExpanded={expandedRows.has(q.question_number)}
+                onToggle={() => toggleRow(q.question_number)}
+                onViewDetail={() => onSelectQuestion(q.question_number)}
+              />
+            ))}
           </tbody>
         </table>
 
@@ -220,6 +221,180 @@ export function QuestionsTab({
     </div>
   );
 }
+
+// ─── Sub-components ───────────────────────────────────
+
+/** Inline progress stat used in the header. */
+function ProgressStat({
+  label,
+  current,
+  total,
+}: {
+  label: string;
+  current: number;
+  total: number;
+}) {
+  return (
+    <div>
+      <span className="text-text-secondary">{label}:</span>{" "}
+      <ProgressRatio current={current} total={total} />
+    </div>
+  );
+}
+
+/** Single prominent CTA that changes based on pipeline state. */
+function PrimaryCTA({
+  nextAction,
+  notTaggedCount,
+  notEnrichedCount,
+  notValidatedCount,
+  onRunTagging,
+  onOpenEnrichment,
+  onOpenValidation,
+}: {
+  nextAction: "tag" | "enrich" | "validate" | "done";
+  notTaggedCount: number;
+  notEnrichedCount: number;
+  notValidatedCount: number;
+  onRunTagging: () => void;
+  onOpenEnrichment: () => void;
+  onOpenValidation: () => void;
+}) {
+  switch (nextAction) {
+    case "tag":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<Tag className="w-4 h-4" />}
+          onClick={onRunTagging}
+        >
+          Tag {notTaggedCount} Questions
+        </ActionButton>
+      );
+    case "enrich":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<MessageSquarePlus className="w-4 h-4" />}
+          onClick={onOpenEnrichment}
+        >
+          Enrich {notEnrichedCount} Questions
+        </ActionButton>
+      );
+    case "validate":
+      return (
+        <ActionButton
+          variant="primary"
+          icon={<ShieldCheck className="w-4 h-4" />}
+          onClick={onOpenValidation}
+        >
+          Validate {notValidatedCount} Questions
+        </ActionButton>
+      );
+    case "done":
+      return (
+        <ActionButton
+          variant="secondary"
+          disabled
+          icon={<CheckCircle2 className="w-4 h-4 text-success" />}
+        >
+          All Complete
+        </ActionButton>
+      );
+  }
+}
+
+/** Build the dropdown actions list based on current state. */
+function buildSecondaryActions({
+  nextAction,
+  taggedCount,
+  enrichedCount,
+  onRunTagging,
+  onOpenEnrichment,
+  onOpenValidation,
+}: {
+  nextAction: "tag" | "enrich" | "validate" | "done";
+  taggedCount: number;
+  enrichedCount: number;
+  onRunTagging: () => void;
+  onOpenEnrichment: () => void;
+  onOpenValidation: () => void;
+}) {
+  return [
+    {
+      id: "retag",
+      label: "Re-tag All Questions",
+      icon: <RefreshCw className="w-4 h-4" />,
+      onClick: onRunTagging,
+      disabled: taggedCount === 0,
+    },
+    {
+      id: "reenrich",
+      label: "Re-enrich All Questions",
+      icon: <RefreshCw className="w-4 h-4" />,
+      onClick: onOpenEnrichment,
+      // Hide when enrich is the primary action (avoid duplication)
+      disabled: nextAction === "enrich" || taggedCount === 0,
+    },
+    {
+      id: "revalidate",
+      label: "Re-validate All Questions",
+      icon: <RefreshCw className="w-4 h-4" />,
+      onClick: onOpenValidation,
+      disabled: nextAction === "validate" || enrichedCount === 0,
+    },
+  ];
+}
+
+/** Contextual banner guiding the user to the next step. */
+function StepGuidance({
+  nextAction,
+  notEnrichedCount,
+  notValidatedCount,
+  onOpenEnrichment,
+  onOpenValidation,
+}: {
+  nextAction: "tag" | "enrich" | "validate" | "done";
+  notEnrichedCount: number;
+  notValidatedCount: number;
+  onOpenEnrichment: () => void;
+  onOpenValidation: () => void;
+}) {
+  if (nextAction === "done") {
+    return (
+      <StepBanner
+        variant="complete"
+        message="All questions are tagged, enriched, and validated."
+      />
+    );
+  }
+  // Show a nudge only when the primary CTA is for an earlier step but
+  // a later step also has pending work (e.g. tagged done, enrich pending).
+  if (nextAction === "enrich") {
+    return (
+      <StepBanner
+        variant="action"
+        message={`Tagging complete. ${notEnrichedCount} questions need enrichment.`}
+        actionLabel={`Enrich ${notEnrichedCount}`}
+        onAction={onOpenEnrichment}
+      />
+    );
+  }
+  if (nextAction === "validate") {
+    return (
+      <StepBanner
+        variant="action"
+        message={`Enrichment complete. ${notValidatedCount} questions need validation.`}
+        actionLabel={`Validate ${notValidatedCount}`}
+        onAction={onOpenValidation}
+      />
+    );
+  }
+  // "tag" state — no banner needed, the primary CTA is enough
+  return null;
+}
+
+// ─── Table Row ────────────────────────────────────────
 
 interface QuestionRowProps {
   subjectId: string;
@@ -243,7 +418,7 @@ function QuestionRow({
       <tr
         className={cn(
           "border-b border-border hover:bg-white/5 transition-colors cursor-pointer",
-          isExpanded && "bg-white/5"
+          isExpanded && "bg-white/5",
         )}
         onClick={onToggle}
       >
@@ -257,31 +432,9 @@ function QuestionRow({
           </span>
         </td>
         <td className="px-4 py-3 font-mono text-sm">Q{q.question_number}</td>
-        <td className="px-4 py-3 text-center">
-          {q.is_tagged ? (
-            <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
-          ) : (
-            <Circle className="w-4 h-4 text-text-secondary mx-auto" />
-          )}
-        </td>
-        <td className="px-4 py-3 text-center">
-          {!q.is_tagged ? (
-            <span className="text-text-secondary text-sm">—</span>
-          ) : q.is_enriched ? (
-            <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
-          ) : (
-            <Circle className="w-4 h-4 text-text-secondary mx-auto" />
-          )}
-        </td>
-        <td className="px-4 py-3 text-center">
-          {!q.is_enriched ? (
-            <span className="text-text-secondary text-sm">—</span>
-          ) : q.is_validated ? (
-            <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
-          ) : (
-            <Circle className="w-4 h-4 text-text-secondary mx-auto" />
-          )}
-        </td>
+        <StatusCell done={q.is_tagged} blocked={false} />
+        <StatusCell done={q.is_enriched} blocked={!q.is_tagged} />
+        <StatusCell done={q.is_validated} blocked={!q.is_enriched} />
         <td className="px-4 py-3 text-center text-sm">
           {q.atoms_count > 0 ? (
             <span className="text-accent">{q.atoms_count}</span>
@@ -302,12 +455,11 @@ function QuestionRow({
         </td>
       </tr>
 
-      {/* Expanded content */}
       {isExpanded && (
         <tr className="bg-background/50">
           <td colSpan={7} className="p-0">
             <div className="p-4 border-b border-border">
-              <QuestionExpandedContent
+              <QuestionsExpandedContent
                 subjectId={subjectId}
                 testId={testId}
                 questionNum={q.question_number}
@@ -321,156 +473,17 @@ function QuestionRow({
   );
 }
 
-interface QuestionExpandedContentProps {
-  subjectId: string;
-  testId: string;
-  questionNum: number;
-  question: QuestionBrief;
-}
-
-function QuestionExpandedContent({
-  subjectId,
-  testId,
-  questionNum,
-  question,
-}: QuestionExpandedContentProps) {
-  const [detail, setDetail] = useState<QuestionDetail | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function fetchDetail() {
-      setLoading(true);
-      setError(null);
-      try {
-        const data = await getQuestionDetail(subjectId, testId, questionNum);
-        if (!cancelled) {
-          setDetail(data);
-        }
-      } catch (err) {
-        if (!cancelled) {
-          setError(err instanceof Error ? err.message : "Failed to load question");
-        }
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    }
-
-    fetchDetail();
-    return () => {
-      cancelled = true;
-    };
-  }, [subjectId, testId, questionNum]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-5 h-5 animate-spin text-accent" />
-        <span className="ml-2 text-text-secondary text-sm">Loading question...</span>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex items-center justify-center py-8 text-error">
-        <AlertCircle className="w-5 h-5" />
-        <span className="ml-2 text-sm">{error}</span>
-      </div>
-    );
-  }
-
+/** Reusable cell for tagged / enriched / validated columns. */
+function StatusCell({ done, blocked }: { done: boolean; blocked: boolean }) {
   return (
-    <div className="grid grid-cols-2 gap-4">
-      {/* Left: Question preview */}
-      <div>
-        <h4 className="text-sm font-medium text-text-secondary mb-2">Question Preview</h4>
-        <div className="bg-surface border border-border rounded-lg p-4">
-          {detail?.qti_xml ? (
-            <QTIRenderer qtiXml={detail.qti_xml} size="sm" />
-          ) : (
-            <p className="text-sm text-text-secondary">No QTI content available</p>
-          )}
-        </div>
-      </div>
-
-      {/* Right: Status and feedback */}
-      <div className="space-y-4">
-        <div>
-          <h4 className="text-sm font-medium text-text-secondary mb-2">Pipeline Status</h4>
-          <div className="flex flex-wrap gap-2">
-            <StatusBadge status={question.is_tagged ? "complete" : "not_started"} label="Tagged" size="sm" />
-            <StatusBadge
-              status={question.is_enriched ? "complete" : question.is_tagged ? "not_started" : "blocked"}
-              label="Enriched"
-              size="sm"
-            />
-            <StatusBadge
-              status={
-                question.is_validated
-                  ? "complete"
-                  : question.is_enriched
-                    ? "not_started"
-                    : "blocked"
-              }
-              label="Validated"
-              size="sm"
-            />
-          </div>
-        </div>
-
-        {/* Atom tags */}
-        {detail?.atom_tags && detail.atom_tags.length > 0 && (
-          <div>
-            <h4 className="text-sm font-medium text-text-secondary mb-2">Atom Tags</h4>
-            <div className="flex flex-wrap gap-1">
-              {detail.atom_tags.map((tag) => (
-                <span
-                  key={tag.atom_id}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 bg-accent/10 text-accent text-xs rounded"
-                  title={tag.titulo}
-                >
-                  <Tag className="w-3 h-3" />
-                  {tag.atom_id}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Validation result */}
-        {detail?.validation_result && (
-          <div>
-            <h4 className="text-sm font-medium text-text-secondary mb-2">Validation Result</h4>
-            <div
-              className={cn(
-                "border rounded-lg p-3 text-sm",
-                detail.validation_result.status === "pass"
-                  ? "bg-success/10 border-success/20 text-success"
-                  : "bg-error/10 border-error/20 text-error"
-              )}
-            >
-              <div className="flex items-center gap-2">
-                {detail.validation_result.status === "pass" ? (
-                  <CheckCircle2 className="w-4 h-4" />
-                ) : (
-                  <XCircle className="w-4 h-4" />
-                )}
-<span className="font-medium capitalize">
-                  {detail.validation_result.validation_result || "unknown"}
-                </span>
-              </div>
-              {detail.validation_result.overall_reasoning && (
-                <p className="mt-1 text-xs opacity-80">{detail.validation_result.overall_reasoning}</p>
-              )}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
+    <td className="px-4 py-3 text-center">
+      {blocked ? (
+        <span className="text-text-secondary text-sm">—</span>
+      ) : done ? (
+        <CheckCircle2 className="w-4 h-4 text-success mx-auto" />
+      ) : (
+        <Circle className="w-4 h-4 text-text-secondary mx-auto" />
+      )}
+    </td>
   );
 }
