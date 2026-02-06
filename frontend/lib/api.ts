@@ -28,6 +28,7 @@ export type {
   SubjectBrief,
   SubjectDetail,
   SubjectStats,
+  SyncDetailEntry,
   TestBrief,
   TestDetail,
   TestSyncDiff,
@@ -62,11 +63,26 @@ import type {
 
 const API_BASE = "/api";
 
+// Direct backend URL bypasses the Next.js rewrite proxy, which has a
+// hardcoded 30-second timeout.  Use for long-running endpoints (e.g. sync).
+const BACKEND_DIRECT =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000/api";
+
+interface FetchAPIConfig {
+  /** When true, call the backend directly instead of via the Next.js proxy. */
+  direct?: boolean;
+}
+
 /**
  * Generic fetch wrapper with error handling.
  */
-async function fetchAPI<T>(endpoint: string, options?: RequestInit): Promise<T> {
-  const res = await fetch(`${API_BASE}${endpoint}`, {
+async function fetchAPI<T>(
+  endpoint: string,
+  options?: RequestInit,
+  config?: FetchAPIConfig,
+): Promise<T> {
+  const base = config?.direct ? BACKEND_DIRECT : API_BASE;
+  const res = await fetch(`${base}${endpoint}`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -403,6 +419,7 @@ export async function executeTestSync(
     {
       method: "POST",
       body: JSON.stringify(params),
-    }
+    },
+    { direct: true },
   );
 }

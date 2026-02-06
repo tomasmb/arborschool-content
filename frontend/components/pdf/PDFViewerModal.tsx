@@ -1,10 +1,8 @@
 "use client";
 
-import { useState, useCallback, useEffect, type ComponentType } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   X,
-  ZoomIn,
-  ZoomOut,
   ChevronLeft,
   ChevronRight,
   Download,
@@ -12,33 +10,9 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Lazy-load react-pdf components to avoid SSR/webpack issues
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let DocumentComponent: ComponentType<any> | null = null;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let PageComponent: ComponentType<any> | null = null;
-let pdfInitialized = false;
-
-async function initPdfJs(): Promise<boolean> {
-  if (pdfInitialized) return true;
-  if (typeof window === "undefined") return false;
-
-  try {
-    const reactPdf = await import("react-pdf");
-    DocumentComponent = reactPdf.Document;
-    PageComponent = reactPdf.Page;
-
-    // Set up worker using CDN
-    reactPdf.pdfjs.GlobalWorkerOptions.workerSrc =
-      `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${reactPdf.pdfjs.version}/pdf.worker.min.mjs`;
-
-    pdfInitialized = true;
-    return true;
-  } catch (err) {
-    console.error("Failed to load PDF.js:", err);
-    return false;
-  }
-}
+// ---------------------------------------------------------------------------
+// PDFViewerModal — fullscreen modal using the browser's native PDF renderer
+// ---------------------------------------------------------------------------
 
 export interface PDFViewerModalProps {
   /** Whether the modal is open */
@@ -59,9 +33,6 @@ export interface PDFViewerModalProps {
   nextLabel?: string;
 }
 
-const ZOOM_LEVELS = [0.5, 0.75, 1, 1.25, 1.5, 2];
-const DEFAULT_ZOOM_INDEX = 2; // 100%
-
 export function PDFViewerModal({
   isOpen,
   onClose,
@@ -72,31 +43,14 @@ export function PDFViewerModal({
   previousLabel = "Previous",
   nextLabel = "Next",
 }: PDFViewerModalProps) {
-  const [numPages, setNumPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [zoomIndex, setZoomIndex] = useState<number>(DEFAULT_ZOOM_INDEX);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [pdfReady, setPdfReady] = useState<boolean>(pdfInitialized);
 
-  const zoom = ZOOM_LEVELS[zoomIndex];
-
-  // Initialize PDF.js on mount
+  // Reset loading state when PDF URL changes
   useEffect(() => {
-    if (!pdfInitialized && isOpen) {
-      initPdfJs().then(() => setPdfReady(true));
-    }
-  }, [isOpen]);
-
-  // Reset state when PDF changes
-  useEffect(() => {
-    setCurrentPage(1);
-    setZoomIndex(DEFAULT_ZOOM_INDEX);
     setLoading(true);
-    setError(null);
   }, [pdfUrl]);
 
-  // Handle keyboard navigation
+  // Keyboard shortcuts
   useEffect(() => {
     if (!isOpen) return;
 
@@ -106,93 +60,46 @@ export function PDFViewerModal({
           onClose();
           break;
         case "ArrowLeft":
-          if (e.shiftKey && onPrevious) {
-            onPrevious();
-          } else if (currentPage > 1) {
-            setCurrentPage((p) => p - 1);
-          }
+          if (e.shiftKey && onPrevious) onPrevious();
           break;
         case "ArrowRight":
-          if (e.shiftKey && onNext) {
-            onNext();
-          } else if (currentPage < numPages) {
-            setCurrentPage((p) => p + 1);
-          }
-          break;
-        case "+":
-        case "=":
-          handleZoomIn();
-          break;
-        case "-":
-          handleZoomOut();
+          if (e.shiftKey && onNext) onNext();
           break;
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose, onPrevious, onNext, currentPage, numPages]);
+  }, [isOpen, onClose, onPrevious, onNext]);
 
-  const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setLoading(false);
-    setError(null);
-  }, []);
-
-  const onDocumentLoadError = useCallback((err: Error) => {
-    setError(err.message || "Failed to load PDF");
-    setLoading(false);
-  }, []);
-
-  const handleZoomIn = () => {
-    setZoomIndex((i) => Math.min(i + 1, ZOOM_LEVELS.length - 1));
-  };
-
-  const handleZoomOut = () => {
-    setZoomIndex((i) => Math.max(i - 1, 0));
-  };
-
-  const handleDownload = () => {
+  const handleDownload = useCallback(() => {
     const link = document.createElement("a");
     link.href = pdfUrl;
     link.download = title.replace(/\s+/g, "_") + ".pdf";
     link.click();
-  };
+  }, [pdfUrl, title]);
 
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col bg-black/90">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-surface border-b border-border">
-        <h2 className="font-semibold text-lg">{title}</h2>
+      <div
+        className={cn(
+          "flex items-center justify-between px-4 py-3",
+          "bg-surface border-b border-border",
+        )}
+      >
+        <h2 className="font-semibold text-lg truncate mr-4">{title}</h2>
 
         <div className="flex items-center gap-2">
-          {/* Zoom controls */}
-          <div className="flex items-center gap-1 mr-4">
-            <button
-              onClick={handleZoomOut}
-              disabled={zoomIndex === 0}
-              className="p-1.5 rounded hover:bg-white/10 disabled:opacity-50"
-              title="Zoom out (-)"
-            >
-              <ZoomOut className="w-4 h-4" />
-            </button>
-            <span className="text-sm w-16 text-center">{Math.round(zoom * 100)}%</span>
-            <button
-              onClick={handleZoomIn}
-              disabled={zoomIndex === ZOOM_LEVELS.length - 1}
-              className="p-1.5 rounded hover:bg-white/10 disabled:opacity-50"
-              title="Zoom in (+)"
-            >
-              <ZoomIn className="w-4 h-4" />
-            </button>
-          </div>
-
           {/* Download */}
           <button
             onClick={handleDownload}
-            className="flex items-center gap-2 px-3 py-1.5 rounded bg-accent/10 text-accent hover:bg-accent/20 text-sm"
+            className={cn(
+              "flex items-center gap-2 px-3 py-1.5 rounded text-sm",
+              "bg-accent/10 text-accent hover:bg-accent/20",
+            )}
           >
             <Download className="w-4 h-4" />
             Download
@@ -209,123 +116,71 @@ export function PDFViewerModal({
         </div>
       </div>
 
-      {/* PDF Content */}
-      <div className="flex-1 overflow-auto flex items-start justify-center p-4 bg-gray-900">
-        {!pdfReady && (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-text-secondary">Loading PDF viewer...</div>
-          </div>
-        )}
-
-        {pdfReady && loading && (
-          <div className="flex items-center justify-center h-full">
+      {/* PDF Content — browser-native renderer */}
+      <div className="flex-1 relative bg-gray-900">
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-text-secondary">Loading PDF...</div>
           </div>
         )}
+        <iframe
+          src={pdfUrl}
+          title={title}
+          className="w-full h-full border-0"
+          onLoad={() => setLoading(false)}
+        />
+      </div>
 
-        {pdfReady && error && (
-          <div className="flex items-center justify-center h-full">
-            <div className="text-error">Error: {error}</div>
+      {/* Footer — item navigation */}
+      {(onPrevious || onNext) && (
+        <div
+          className={cn(
+            "flex items-center justify-between px-4 py-3",
+            "bg-surface border-t border-border",
+          )}
+        >
+          <div className="flex items-center gap-2">
+            {onPrevious && (
+              <button
+                onClick={onPrevious}
+                className={cn(
+                  "flex items-center gap-1 px-3 py-1.5 rounded text-sm",
+                  "bg-white/5 hover:bg-white/10",
+                )}
+                title="Previous (Shift+Left)"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                {previousLabel}
+              </button>
+            )}
+            {onNext && (
+              <button
+                onClick={onNext}
+                className={cn(
+                  "flex items-center gap-1 px-3 py-1.5 rounded text-sm",
+                  "bg-white/5 hover:bg-white/10",
+                )}
+                title="Next (Shift+Right)"
+              >
+                {nextLabel}
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            )}
           </div>
-        )}
 
-        {pdfReady && DocumentComponent && PageComponent && (
-          <DocumentComponent
-            file={pdfUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-            loading={null}
-            className="flex flex-col items-center"
-          >
-            <PageComponent
-              pageNumber={currentPage}
-              scale={zoom}
-              renderTextLayer
-              renderAnnotationLayer
-              className="shadow-xl"
-            />
-          </DocumentComponent>
-        )}
-      </div>
-
-      {/* Footer - Page navigation */}
-      <div className="flex items-center justify-between px-4 py-3 bg-surface border-t border-border">
-        {/* Item navigation */}
-        <div className="flex items-center gap-2">
-          {onPrevious && (
-            <button
-              onClick={onPrevious}
-              className="flex items-center gap-1 px-3 py-1.5 rounded bg-white/5 hover:bg-white/10 text-sm"
-              title="Previous (Shift+←)"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              {previousLabel}
-            </button>
-          )}
-          {onNext && (
-            <button
-              onClick={onNext}
-              className="flex items-center gap-1 px-3 py-1.5 rounded bg-white/5 hover:bg-white/10 text-sm"
-              title="Next (Shift+→)"
-            >
-              {nextLabel}
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          )}
+          <div className="text-xs text-text-secondary">
+            Shift+Arrow navigate items | Esc close
+          </div>
         </div>
-
-        {/* Page navigation */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-            disabled={currentPage === 1}
-            className="p-1.5 rounded hover:bg-white/10 disabled:opacity-50"
-            title="Previous page (←)"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-
-          <span className="text-sm">
-            Page{" "}
-            <input
-              type="number"
-              value={currentPage}
-              onChange={(e) => {
-                const page = parseInt(e.target.value);
-                if (page >= 1 && page <= numPages) {
-                  setCurrentPage(page);
-                }
-              }}
-              className="w-12 px-1 py-0.5 rounded bg-white/10 text-center text-sm mx-1"
-              min={1}
-              max={numPages}
-            />{" "}
-            of {numPages}
-          </span>
-
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
-            disabled={currentPage === numPages}
-            className="p-1.5 rounded hover:bg-white/10 disabled:opacity-50"
-            title="Next page (→)"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
-
-        {/* Keyboard hint */}
-        <div className="text-xs text-text-secondary">
-          ← → pages | +/- zoom | Esc close
-        </div>
-      </div>
+      )}
     </div>
   );
 }
 
-/**
- * Inline PDF preview component for embedding in pages.
- * Shows a smaller preview that can be expanded to full modal.
- */
+// ---------------------------------------------------------------------------
+// PDFPreview — inline preview with optional expand button
+// ---------------------------------------------------------------------------
+
 export interface PDFPreviewProps {
   pdfUrl: string;
   title?: string;
@@ -341,96 +196,42 @@ export function PDFPreview({
   className,
   onExpand,
 }: PDFPreviewProps) {
-  const [numPages, setNumPages] = useState<number>(0);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-  const [pdfReady, setPdfReady] = useState<boolean>(pdfInitialized);
-
-  // Initialize PDF.js on mount
-  useEffect(() => {
-    if (!pdfInitialized) {
-      initPdfJs().then(() => setPdfReady(true));
-    }
-  }, []);
-
-  const onDocumentLoadSuccess = useCallback(({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setLoading(false);
-  }, []);
-
-  const onDocumentLoadError = useCallback((err: Error) => {
-    setError(err.message || "Failed to load PDF");
-    setLoading(false);
-  }, []);
 
   return (
     <div className={cn("bg-gray-900 rounded-lg overflow-hidden", height, className)}>
       {/* Header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-surface/50 border-b border-border">
-        <span className="text-xs text-text-secondary">{title}</span>
-        <div className="flex items-center gap-2">
-          {numPages > 1 && (
-            <div className="flex items-center gap-1 text-xs">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-                className="p-0.5 rounded hover:bg-white/10 disabled:opacity-50"
-              >
-                <ChevronLeft className="w-3 h-3" />
-              </button>
-              <span>
-                {currentPage}/{numPages}
-              </span>
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(p + 1, numPages))}
-                disabled={currentPage === numPages}
-                className="p-0.5 rounded hover:bg-white/10 disabled:opacity-50"
-              >
-                <ChevronRight className="w-3 h-3" />
-              </button>
-            </div>
-          )}
-          {onExpand && (
-            <button
-              onClick={onExpand}
-              className="p-1 rounded hover:bg-white/10"
-              title="Expand"
-            >
-              <Maximize2 className="w-3 h-3" />
-            </button>
-          )}
-        </div>
+      <div
+        className={cn(
+          "flex items-center justify-between px-3 py-2",
+          "bg-surface/50 border-b border-border",
+        )}
+      >
+        <span className="text-xs text-text-secondary truncate">{title}</span>
+        {onExpand && (
+          <button
+            onClick={onExpand}
+            className="p-1 rounded hover:bg-white/10"
+            title="Expand"
+          >
+            <Maximize2 className="w-3 h-3" />
+          </button>
+        )}
       </div>
 
-      {/* Content */}
-      <div
-        className="flex items-center justify-center overflow-auto"
-        style={{ height: "calc(100% - 36px)" }}
-      >
-        {!pdfReady && <div className="text-text-secondary text-sm">Loading...</div>}
-        {pdfReady && loading && (
-          <div className="text-text-secondary text-sm">Loading...</div>
+      {/* Content — browser-native PDF renderer */}
+      <div className="relative" style={{ height: "calc(100% - 36px)" }}>
+        {loading && (
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="text-text-secondary text-sm">Loading...</span>
+          </div>
         )}
-        {pdfReady && error && (
-          <div className="text-error text-sm">Error: {error}</div>
-        )}
-
-        {pdfReady && DocumentComponent && PageComponent && (
-          <DocumentComponent
-            file={pdfUrl}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onLoadError={onDocumentLoadError}
-            loading={null}
-          >
-            <PageComponent
-              pageNumber={currentPage}
-              width={280}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-            />
-          </DocumentComponent>
-        )}
+        <iframe
+          src={pdfUrl}
+          title={title}
+          className="w-full h-full border-0"
+          onLoad={() => setLoading(false)}
+        />
       </div>
     </div>
   );
