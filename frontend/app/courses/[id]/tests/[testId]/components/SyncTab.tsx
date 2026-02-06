@@ -10,6 +10,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ActionButton } from "@/components/ui";
 import type { QuestionBrief, TestDetail, TestSyncPreview } from "@/lib/api";
 import { getTestSyncPreview } from "@/lib/api";
 
@@ -313,8 +314,14 @@ export function SyncTab({
         </section>
       </div>
 
-      {/* Sync action */}
-      <div className="bg-surface border border-border rounded-lg p-4">
+      {/* Sticky sync action bar */}
+      <div
+        className={cn(
+          "sticky bottom-0 z-10",
+          "bg-surface/95 backdrop-blur-sm border border-border rounded-lg p-4",
+          "shadow-[0_-4px_12px_rgba(0,0,0,0.3)]",
+        )}
+      >
         <div className="flex items-center justify-between">
           <div>
             <p className="font-medium">
@@ -326,23 +333,18 @@ export function SyncTab({
               {selectedEnv === "prod" ? "Production" : selectedEnv} database
             </p>
           </div>
-          <button
+          <ActionButton
+            variant={selectedEnv === "prod" ? "danger" : "primary"}
+            size="lg"
+            icon={<Upload className="w-4 h-4" />}
             onClick={onSync}
             disabled={validatedQuestions.length === 0 || loadingPreview}
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium",
-              selectedEnv === "prod"
-                ? "bg-error text-white hover:bg-error/90"
-                : "bg-accent text-white hover:bg-accent/90",
-              "disabled:opacity-50"
-            )}
           >
-            <Upload className="w-4 h-4" />
             Sync to{" "}
             {selectedEnv === "prod"
               ? "Production"
               : selectedEnv.charAt(0).toUpperCase() + selectedEnv.slice(1)}
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>

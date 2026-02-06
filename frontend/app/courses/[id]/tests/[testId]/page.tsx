@@ -126,55 +126,23 @@ export default function TestDetailPage() {
 
   return (
     <div className="h-full flex flex-col">
-      {/* Header */}
-      <div className="px-6 py-4 border-b border-border flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-4">
-          {/* Back to course link - prominent */}
-          <Link
-            href={`/courses/${courseId}`}
-            className="flex items-center gap-2 px-3 py-1.5 text-sm text-text-secondary
-              hover:text-text-primary hover:bg-white/5 rounded-lg transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">Course</span>
-          </Link>
-          <div className="border-l border-border pl-4">
-            <h1 className="text-xl font-semibold">{data.name}</h1>
-            {data.application_type && (
-              <p className="text-text-secondary text-sm capitalize">
-                {data.application_type} {data.admission_year}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Pipeline status summary - compact on mobile */}
-        <div className="hidden md:flex items-center gap-4 text-sm">
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary">Split:</span>
-            <span className="font-mono">{data.split_count}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary">QTI:</span>
-            <span className="font-mono">{data.qti_count}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary">Enriched:</span>
-            <span className="font-mono">{data.enriched_count}/{data.finalized_count}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-text-secondary">Validated:</span>
-            <span className="font-mono">{data.validated_count}/{data.finalized_count}</span>
-          </div>
-        </div>
-        {/* Mobile: show completion percentage */}
-        <div className="flex md:hidden items-center gap-2 text-sm">
-          <span className="text-text-secondary">Progress:</span>
-          <span className="font-mono text-accent">
-            {data.finalized_count > 0
-              ? Math.round((data.validated_count / data.finalized_count) * 100)
-              : 0}%
-          </span>
+      {/* Header — clean: back link + name only (stats live in tabs) */}
+      <div className="px-6 py-4 border-b border-border flex items-center gap-4 shrink-0">
+        <Link
+          href={`/courses/${courseId}`}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm text-text-secondary
+            hover:text-text-primary hover:bg-white/5 rounded-lg transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span className="hidden sm:inline">Course</span>
+        </Link>
+        <div className="border-l border-border pl-4">
+          <h1 className="text-xl font-semibold">{data.name}</h1>
+          {data.application_type && (
+            <p className="text-text-secondary text-sm capitalize">
+              {data.application_type} {data.admission_year}
+            </p>
+          )}
         </div>
       </div>
 

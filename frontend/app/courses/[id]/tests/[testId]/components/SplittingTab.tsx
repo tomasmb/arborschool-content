@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PDFViewerModal, PDFPreview } from "@/components/pdf";
-import { StatusIcon } from "@/components/ui";
+import { StatusIcon, ActionButton } from "@/components/ui";
 import { getTestRawPdfUrl, getQuestionPdfUrl, type QuestionBrief } from "@/lib/api";
 
 export interface SplittingTabProps {
@@ -144,22 +144,22 @@ export function SplittingTab({
 
         <div className="flex gap-2">
           {splitCount > 0 && onReRunSplit && (
-            <button
+            <ActionButton
+              variant="warning"
+              icon={<RefreshCw className="w-4 h-4" />}
               onClick={onReRunSplit}
-              className="flex items-center gap-2 px-3 py-2 bg-warning/10 text-warning rounded-lg text-sm font-medium hover:bg-warning/20 border border-warning/20"
             >
-              <RefreshCw className="w-4 h-4" />
               Re-run Split
-            </button>
+            </ActionButton>
           )}
           {splitCount === 0 && rawPdfExists && onRunSplit && (
-            <button
+            <ActionButton
+              variant="primary"
+              icon={<Play className="w-4 h-4" />}
               onClick={onRunSplit}
-              className="flex items-center gap-2 px-3 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent/90"
             >
-              <Play className="w-4 h-4" />
               Run PDF Split
-            </button>
+            </ActionButton>
           )}
         </div>
       </div>
@@ -194,23 +194,14 @@ export function SplittingTab({
                 className="hidden"
               />
 
-              <button
+              <ActionButton
+                variant="primary"
+                icon={<Upload className="w-4 h-4" />}
+                loading={uploading}
                 onClick={handleUploadClick}
-                disabled={uploading}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent/90 disabled:opacity-50"
               >
-                {uploading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-4 h-4" />
-                    Upload Test PDF
-                  </>
-                )}
-              </button>
+                {uploading ? "Uploading..." : "Upload Test PDF"}
+              </ActionButton>
 
               {uploadError && (
                 <p className="text-xs text-error mt-2">{uploadError}</p>

@@ -5,7 +5,7 @@ import { CheckCircle2, Circle, AlertTriangle, Play, RefreshCw, Eye } from "lucid
 import { cn } from "@/lib/utils";
 import { PDFViewerModal, PDFPreview } from "@/components/pdf";
 import { QTIPreview } from "@/components/qti";
-import { StatusIcon } from "@/components/ui";
+import { StatusIcon, ActionButton } from "@/components/ui";
 import { getQuestionPdfUrl, getQuestionDetail, type QuestionBrief, type QuestionDetail } from "@/lib/api";
 
 export interface ParsingTabProps {
@@ -102,22 +102,22 @@ export function ParsingTab({
 
         <div className="flex gap-2">
           {unparsedQuestions.length > 0 && onRunParsing && (
-            <button
+            <ActionButton
+              variant="primary"
+              icon={<Play className="w-4 h-4" />}
               onClick={onRunParsing}
-              className="flex items-center gap-2 px-3 py-2 bg-accent text-white rounded-lg text-sm font-medium hover:bg-accent/90"
             >
-              <Play className="w-4 h-4" />
               Parse {unparsedQuestions.length} Remaining
-            </button>
+            </ActionButton>
           )}
           {selectedQuestion && onReparse && (
-            <button
+            <ActionButton
+              variant="warning"
+              icon={<RefreshCw className="w-4 h-4" />}
               onClick={() => onReparse([selectedQuestion])}
-              className="flex items-center gap-2 px-3 py-2 bg-warning/10 text-warning rounded-lg text-sm font-medium hover:bg-warning/20 border border-warning/20"
             >
-              <RefreshCw className="w-4 h-4" />
               Re-parse Q{selectedQuestion}
-            </button>
+            </ActionButton>
           )}
         </div>
       </div>
@@ -241,12 +241,14 @@ export function ParsingTab({
                         <Circle className="w-8 h-8 text-text-secondary mx-auto mb-2" />
                         <p className="text-text-secondary text-sm">Not parsed yet</p>
                         {onRunParsing && (
-                          <button
+                          <ActionButton
+                            variant="primary"
+                            size="sm"
                             onClick={onRunParsing}
-                            className="mt-3 px-3 py-1.5 bg-accent text-white rounded text-sm"
+                            className="mt-3"
                           >
                             Parse Question
-                          </button>
+                          </ActionButton>
                         )}
                       </div>
                     )}
