@@ -6,17 +6,10 @@
  */
 
 import Link from "next/link";
-import {
-  AlertTriangle,
-  ChevronRight,
-  CheckCircle2,
-  Circle,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { cn, formatEje } from "@/lib/utils";
 import { StatusIcon } from "@/components/ui/StatusBadge";
 import type { TestBrief } from "@/lib/api-types";
-import type { PipelineStage } from "./ProgressComputation";
-
 // -----------------------------------------------------------------------------
 // Knowledge Pipeline Card
 // -----------------------------------------------------------------------------
@@ -64,75 +57,6 @@ export function KnowledgePipelineCard({
           View all →
         </Link>
       )}
-    </div>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Pipeline Stage Row
-// -----------------------------------------------------------------------------
-
-export function PipelineStageRow({ stage }: { stage: PipelineStage }) {
-  const percent = stage.total > 0 ? Math.round((stage.done / stage.total) * 100) : 0;
-  const isComplete = stage.done === stage.total && stage.total > 0;
-
-  return (
-    <tr className="border-b border-border last:border-b-0">
-      <td className="py-2 text-sm text-text-secondary">{stage.label}</td>
-      <td className="py-2 text-sm text-right font-mono">{stage.done}</td>
-      <td className="py-2 text-sm text-right font-mono text-text-secondary">{stage.total}</td>
-      <td className="py-2 pl-4 w-32">
-        <div className="flex items-center gap-2">
-          <div className="flex-1 h-1.5 bg-border rounded-full overflow-hidden">
-            <div
-              className={cn(
-                "h-full rounded-full transition-all",
-                isComplete ? "bg-success" : "bg-accent"
-              )}
-              style={{ width: `${percent}%` }}
-            />
-          </div>
-          <span className={cn("text-xs w-8", isComplete ? "text-success" : "text-text-secondary")}>
-            {percent}%
-          </span>
-        </div>
-      </td>
-    </tr>
-  );
-}
-
-// -----------------------------------------------------------------------------
-// Sync Status Item
-// -----------------------------------------------------------------------------
-
-export function SyncStatusItem({
-  label,
-  count,
-  synced,
-  warning,
-}: {
-  label: string;
-  count: number;
-  synced: boolean;
-  warning?: string;
-}) {
-  return (
-    <div className="flex items-center gap-2">
-      {warning ? (
-        <AlertTriangle className="w-4 h-4 text-warning" />
-      ) : synced ? (
-        <CheckCircle2 className="w-4 h-4 text-success" />
-      ) : (
-        <Circle className="w-4 h-4 text-text-secondary" />
-      )}
-      <div>
-        <p className="text-sm font-medium">{label}</p>
-        {warning ? (
-          <p className="text-xs text-warning">{warning}</p>
-        ) : (
-          <p className="text-xs text-text-secondary">{count} items</p>
-        )}
-      </div>
     </div>
   );
 }

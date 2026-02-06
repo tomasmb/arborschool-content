@@ -2,12 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
-import {
-  getSubject,
-  getSyncStatus,
-  type SubjectDetail,
-  type SyncStatus,
-} from "@/lib/api";
+import { getSubject, type SubjectDetail } from "@/lib/api";
 import { GeneratePipelineModal } from "@/components/pipelines";
 import { useToast } from "@/components/ui";
 import { KnowledgeGraphModal } from "@/components/knowledge-graph";
@@ -23,7 +18,6 @@ export default function CoursePage() {
   const { showToast } = useToast();
 
   const [data, setData] = useState<SubjectDetail | null>(null);
-  const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [showGraph, setShowGraph] = useState(false);
@@ -34,12 +28,8 @@ export default function CoursePage() {
     if (!courseId) return;
     setLoading(true);
     try {
-      const [subjectData, sync] = await Promise.all([
-        getSubject(courseId),
-        getSyncStatus().catch(() => null),
-      ]);
+      const subjectData = await getSubject(courseId);
       setData(subjectData);
-      setSyncStatus(sync);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load course");
     } finally {
@@ -100,7 +90,6 @@ export default function CoursePage() {
       {/* Course Progress Dashboard */}
       <CourseProgressDashboard
         data={data}
-        syncStatus={syncStatus}
         courseId={courseId}
         onViewGraph={() => setShowGraph(true)}
         onGenerateStandards={() => setGenerateModal("standards")}

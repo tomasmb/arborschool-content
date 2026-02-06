@@ -12,12 +12,10 @@ import { ReactNode } from "react";
 function formatSegment(segment: string, context?: string): string {
   // Known static segments
   const staticLabels: Record<string, string> = {
-    courses: "Courses",
     subjects: "Subjects",
     atoms: "Atoms",
     tests: "Tests",
     standards: "Standards",
-    settings: "Settings",
     pipelines: "Pipelines",
     sync: "Sync",
   };
@@ -58,10 +56,15 @@ function getBreadcrumbs(pathname: string): Breadcrumb[] {
   const parts = pathname.split("/").filter(Boolean);
   const breadcrumbs: Breadcrumb[] = [];
 
+  // Segments that don't have their own page (home already shows these)
+  const skipSegments = new Set(["courses"]);
+
   let currentPath = "";
   for (let i = 0; i < parts.length; i++) {
     const part = parts[i];
     currentPath += `/${part}`;
+
+    if (skipSegments.has(part)) continue;
 
     // Determine context from previous segment
     const prevPart = i > 0 ? parts[i - 1] : undefined;

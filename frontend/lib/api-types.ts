@@ -442,38 +442,5 @@ export interface JobLogsResponse {
   has_more: boolean;
 }
 
-// -----------------------------------------------------------------------------
-// Sync Types
-// -----------------------------------------------------------------------------
-
-export type SyncEnvironment = "local" | "staging" | "prod";
-
-export interface SyncTableSummary {
-  table: string;
-  total: number;
-  breakdown: Record<string, number>;
-}
-
-export interface SyncPreviewResponse {
-  tables: SyncTableSummary[];
-  summary: Record<string, unknown>;
-  warnings: string[];
-  environment: SyncEnvironment;
-}
-
-export interface SyncExecuteResponse {
-  success: boolean;
-  results: Record<string, number>;
-  message: string;
-  errors: string[];
-  environment: SyncEnvironment;
-}
-
-export interface SyncStatus {
-  environments: Record<SyncEnvironment, boolean>;
-  s3_configured: boolean;
-  available_entities: string[];
-}
-
 // Note: Course progress types are computed client-side in
 // components/dashboard/ProgressComputation.ts - not API types

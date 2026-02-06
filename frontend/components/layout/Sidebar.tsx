@@ -7,7 +7,6 @@ import {
   BookOpen,
   Layers,
   FileText,
-  Settings,
   ArrowLeft,
   Menu,
   X,
@@ -41,7 +40,6 @@ export function Sidebar({ isOpen = true, onClose }: SidebarProps) {
         { href: `/courses/${courseId}/standards`, label: "Standards", icon: GraduationCap },
         { href: `/courses/${courseId}/atoms`, label: "Atoms", icon: Layers },
         { href: `/courses/${courseId}/tests`, label: "Tests", icon: FileText },
-        { href: `/courses/${courseId}/settings`, label: "Settings", icon: Settings },
       ]
     : [];
 
