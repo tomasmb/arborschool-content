@@ -282,12 +282,23 @@ export interface TestSyncPreview {
   variant_summary: SyncPreviewSummary | null;
 }
 
+/** Detail entry for a single synced entity (question or variant). */
+export interface SyncDetailEntry {
+  question_id: string;
+  action: "created" | "updated" | "skipped" | "failed";
+  reason?: string;
+}
+
+/**
+ * Raw response from POST /sync/execute.
+ * NOTE: the backend does NOT return `success` or `errors` —
+ * those must be derived from `details` on the frontend.
+ */
 export interface TestSyncResult {
-  success: boolean;
   created: number;
   updated: number;
   skipped: number;
-  errors: string[];
+  details: SyncDetailEntry[];
 }
 
 export interface TestSyncDiffEntity {

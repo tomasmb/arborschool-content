@@ -28,6 +28,7 @@ export type {
   SubjectBrief,
   SubjectDetail,
   SubjectStats,
+  SyncDetailEntry,
   TestBrief,
   TestDetail,
   TestSyncDiff,

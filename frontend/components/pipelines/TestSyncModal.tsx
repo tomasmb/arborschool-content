@@ -36,6 +36,57 @@ interface TestSyncModalProps {
 }
 
 /**
+ * Derives success/failure from the backend `details` array and
+ * renders the result summary after sync execution.
+ */
+function SyncCompleteView({ result }: { result: TestSyncResult }) {
+  const failures = result.details.filter((d) => d.action === "failed");
+  const success = failures.length === 0;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col items-center py-4">
+        {success ? (
+          <CheckCircle2 className="w-12 h-12 text-success mb-4" />
+        ) : (
+          <XCircle className="w-12 h-12 text-error mb-4" />
+        )}
+        <p className="font-semibold text-lg">
+          {success ? "Sync Complete!" : "Sync Completed with Errors"}
+        </p>
+      </div>
+
+      {/* Counts grid */}
+      <div className="grid grid-cols-3 gap-2 text-sm text-center">
+        <div className="p-3 bg-success/10 rounded-lg">
+          <p className="font-semibold text-success">{result.created}</p>
+          <p className="text-text-secondary">Created</p>
+        </div>
+        <div className="p-3 bg-accent/10 rounded-lg">
+          <p className="font-semibold text-accent">{result.updated}</p>
+          <p className="text-text-secondary">Updated</p>
+        </div>
+        <div className="p-3 bg-warning/10 rounded-lg">
+          <p className="font-semibold text-warning">{result.skipped}</p>
+          <p className="text-text-secondary">Skipped</p>
+        </div>
+      </div>
+
+      {/* Failures list */}
+      {failures.length > 0 && (
+        <div className="max-h-32 overflow-y-auto border border-error/20 rounded-lg p-3">
+          {failures.map((f, i) => (
+            <p key={i} className="text-sm text-error">
+              {f.question_id}: {f.reason ?? "unknown error"}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
  * Modal for syncing validated questions to the target database.
  * Flow: load preview → confirm options → sync → show results
  */
@@ -281,45 +332,7 @@ export function TestSyncModal({
 
           {/* Complete state */}
           {step === "complete" && syncResult && (
-            <div className="space-y-4">
-              <div className="flex flex-col items-center py-4">
-                {syncResult.success ? (
-                  <CheckCircle2 className="w-12 h-12 text-success mb-4" />
-                ) : (
-                  <XCircle className="w-12 h-12 text-error mb-4" />
-                )}
-                <p className="font-semibold text-lg">
-                  {syncResult.success ? "Sync Complete!" : "Sync Failed"}
-                </p>
-              </div>
-
-              {syncResult.success && (
-                <div className="grid grid-cols-3 gap-2 text-sm text-center">
-                  <div className="p-3 bg-success/10 rounded-lg">
-                    <p className="font-semibold text-success">{syncResult.created}</p>
-                    <p className="text-text-secondary">Created</p>
-                  </div>
-                  <div className="p-3 bg-accent/10 rounded-lg">
-                    <p className="font-semibold text-accent">{syncResult.updated}</p>
-                    <p className="text-text-secondary">Updated</p>
-                  </div>
-                  <div className="p-3 bg-warning/10 rounded-lg">
-                    <p className="font-semibold text-warning">{syncResult.skipped}</p>
-                    <p className="text-text-secondary">Skipped</p>
-                  </div>
-                </div>
-              )}
-
-              {syncResult.errors && syncResult.errors.length > 0 && (
-                <div className="max-h-32 overflow-y-auto border border-error/20 rounded-lg p-3">
-                  {syncResult.errors.map((err, i) => (
-                    <p key={i} className="text-sm text-error">
-                      {err}
-                    </p>
-                  ))}
-                </div>
-              )}
-            </div>
+            <SyncCompleteView result={syncResult} />
           )}
         </div>
 
