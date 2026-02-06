@@ -159,7 +159,7 @@ def _build_payload(extracted_data: dict, subject_id: str | None = None):
 
 
 @router.post("/preview", response_model=SyncPreviewResponse)
-async def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
+def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
     """Preview what would be synced (dry run).
 
     This endpoint extracts data from the content repo and shows what would
@@ -268,7 +268,7 @@ def _check_s3_config() -> bool:
 
 
 @router.post("/execute", response_model=SyncExecuteResponse)
-async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
+def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
     """Execute sync to the database.
 
     This endpoint actually syncs data to the database. Requires confirm=True.
@@ -387,7 +387,7 @@ async def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
 
 
 @router.get("/status")
-async def sync_status() -> dict:
+def sync_status() -> dict:
     """Get current sync status and configuration availability for all environments."""
     has_s3_config = _check_s3_config()
 

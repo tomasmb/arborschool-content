@@ -66,7 +66,7 @@ def _build_table_summaries(summary: dict, extracted: dict) -> list[SyncTableSumm
 
 
 @router.post("/{subject_id}/sync/preview", response_model=SyncPreviewResponse)
-async def preview_course_sync(
+def preview_course_sync(
     subject_id: str,
     request: SyncPreviewRequest,
 ) -> SyncPreviewResponse:
@@ -123,7 +123,7 @@ async def preview_course_sync(
 
 
 @router.post("/{subject_id}/sync/execute", response_model=SyncExecuteResponse)
-async def execute_course_sync(
+def execute_course_sync(
     subject_id: str,
     request: SyncExecuteRequest,
 ) -> SyncExecuteResponse:
@@ -245,7 +245,7 @@ async def execute_course_sync(
 
 
 @router.get("/{subject_id}/sync/diff")
-async def get_course_sync_diff(
+def get_course_sync_diff(
     subject_id: str,
     environment: str = "local",
 ) -> dict:
