@@ -1,0 +1,420 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="choice-camisa-pantalon" title="Compra de camisa y pantalón" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona compró una camisa y un pantalón, pagando en total $50 000.</p>
+    <p>La camisa costó un 30 % del total pagado, mientras que el pantalón tenía ya un descuento de un 20 % sobre su precio original.</p>
+    <p>En el siguiente sistema de ecuaciones se modela la situación anterior:</p>
+    <p>
+      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <mfrac>
+          <mi>A</mi>
+          <mn>50000</mn>
+        </mfrac>
+        <mo>=</mo>
+        <mfrac>
+          <mn>30</mn>
+          <mn>100</mn>
+        </mfrac>
+      </math>
+      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <mi>B</mi>
+        <mo>⋅</mo>
+        <mfrac>
+          <mn>80</mn>
+          <mn>100</mn>
+        </mfrac>
+        <mo>+</mo>
+        <mi>A</mi>
+        <mo>=</mo>
+        <mn>50000</mn>
+      </math>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Qué representa B en el sistema de ecuaciones?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">El precio original del pantalón
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! En la segunda ecuación, B se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math>, lo que corresponde a aplicar un descuento de un 20 % al precio original del pantalón. Si llamamos B al precio original del pantalón, entonces el precio final del pantalón es <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac></math>. Al sumar ese precio final del pantalón con A (precio de la camisa), se obtiene el total pagado de $50.000, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi><mo>=</mo><mn>50000</mn></math>, por lo que B representa el precio original del pantalón.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">El precio final del pantalón
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi><mo>=</mo><mn>50000</mn></math>, el término <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac></math> representa el precio final del pantalón después del descuento del 20 %, no B. Si B fuera el precio final del pantalón, entonces el descuento ya estaría aplicado y no tendría sentido volver a multiplicar por <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math>. Por ejemplo, si el precio original del pantalón fuera $40.000, entonces con un 20 % de descuento el precio final sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>40000</mn><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>=</mo><mn>32000</mn></math>. En este caso, B debe ser $40.000 (precio original) y el precio final es $32.000, que corresponde a <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac></math>, por lo que B no puede ser el precio final del pantalón.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La suma del precio original de ambas prendas
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La suma del precio original de ambas prendas se representaría como una expresión que incluye tanto el precio original de la camisa como el precio original del pantalón, por ejemplo, algo del tipo &quot;precio original de la camisa + precio original del pantalón&quot;. En el sistema dado, A representa el precio de la camisa y B el precio original del pantalón, por lo que la suma de los precios originales sería <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>A</mi><mo>+</mo><mi>B</mi></math>, no solo B. Además, en la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi><mo>=</mo><mn>50000</mn></math>, B aparece multiplicado por <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math>, lo que indica que B es un precio al que se le aplica un descuento, no una suma de dos precios originales.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La suma del precio final de ambas prendas
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La suma del precio final de ambas prendas está representada por el lado derecho de la ecuación como $50.000, y por el lado izquierdo como &quot;precio final del pantalón + precio de la camisa&quot;. En la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi><mo>=</mo><mn>50000</mn></math>, el término <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac></math> corresponde al precio final del pantalón y A corresponde al precio de la camisa. Por lo tanto, la suma del precio final de ambas prendas es <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi></math>, que es igual a $50.000. Esa suma no es B, sino toda la expresión completa, de modo que B no puede representar la suma del precio final de ambas prendas.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del sistema</strong></p>
+        <ol>
+          <li>
+            <p>Primero, interpretamos la primera ecuación:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mfrac>
+                  <mi>A</mi>
+                  <mn>50000</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>30</mn>
+                  <mn>100</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Esta ecuación indica que la camisa costó el 30 % del total pagado. Para encontrar A, multiplicamos ambos lados por 50.000:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>A</mi>
+                <mo>=</mo>
+                <mn>50000</mn>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>30</mn>
+                  <mn>100</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Calculamos el producto paso a paso:</p>
+            <p>Primero, simplificamos la fracción <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>30</mn><mn>100</mn></mfrac></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mfrac>
+                  <mn>30</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>3</mn>
+                  <mn>10</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Luego, multiplicamos 50.000 por <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>3</mn><mn>10</mn></mfrac></math>:</p>
+            <p>Primero dividimos 50.000 por 10:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>50000</mn>
+                <mo>÷</mo>
+                <mn>10</mn>
+                <mo>=</mo>
+                <mn>5000</mn>
+              </math>
+            </p>
+            <p>Luego multiplicamos por 3:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>5000</mn>
+                <mo>⋅</mo>
+                <mn>3</mn>
+                <mo>=</mo>
+                <mn>15000</mn>
+              </math>
+            </p>
+            <p>Por lo tanto, el precio de la camisa es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>A</mi>
+                <mo>=</mo>
+                <mn>15000</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Ahora usamos la segunda ecuación del sistema:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>+</mo>
+                <mi>A</mi>
+                <mo>=</mo>
+                <mn>50000</mn>
+              </math>
+            </p>
+            <p>Sabemos que el pantalón tenía un descuento de un 20 % sobre su precio original. Eso significa que se paga el 80 % del precio original. Por eso aparece el factor <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math> multiplicando a B.</p>
+            <p>Reemplazamos A por 15.000 en la ecuación:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>+</mo>
+                <mn>15000</mn>
+                <mo>=</mo>
+                <mn>50000</mn>
+              </math>
+            </p>
+            <p>Restamos 15.000 en ambos lados para aislar el término con B:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>50000</mn>
+                <mo>−</mo>
+                <mn>15000</mn>
+              </math>
+            </p>
+            <p>Calculamos la resta:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>50000</mn>
+                <mo>−</mo>
+                <mn>15000</mn>
+                <mo>=</mo>
+                <mn>35000</mn>
+              </math>
+            </p>
+            <p>Entonces queda:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>35000</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Resolvemos para B. Primero simplificamos la fracción <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>8</mn>
+                  <mn>10</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mn>4</mn>
+                  <mn>5</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Entonces la ecuación queda:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>4</mn>
+                  <mn>5</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>35000</mn>
+              </math>
+            </p>
+            <p>Para despejar B, multiplicamos ambos lados por la fracción inversa, es decir, por <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>5</mn><mn>4</mn></mfrac></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>=</mo>
+                <mn>35000</mn>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>4</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Calculamos este producto paso a paso. Primero multiplicamos 35.000 por 5:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>35000</mn>
+                <mo>⋅</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>175000</mn>
+              </math>
+            </p>
+            <p>Luego dividimos 175.000 por 4:</p>
+            <p>Sabemos que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>⋅</mo><mn>40000</mn><mo>=</mo><mn>160000</mn></math> y que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>4</mn><mo>⋅</mo><mn>3750</mn><mo>=</mo><mn>15000</mn></math>. Sumando estos resultados:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>160000</mn>
+                <mo>+</mo>
+                <mn>15000</mn>
+                <mo>=</mo>
+                <mn>175000</mn>
+              </math>
+            </p>
+            <p>Por lo tanto, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>175000</mn><mo>÷</mo><mn>4</mn><mo>=</mo><mn>43750</mn></math>, y obtenemos:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mi>B</mi>
+                <mo>=</mo>
+                <mn>43750</mn>
+              </math>
+            </p>
+            <p>Este valor de B corresponde al precio original del pantalón, ya que al aplicarle el 20 % de descuento se obtiene el precio que realmente se paga por el pantalón.</p>
+          </li>
+          <li>
+            <p>Verificamos que los valores encontrados cumplen la situación del problema.</p>
+            <p>El precio de la camisa es A = 15.000 y el precio original del pantalón es B = 43.750.</p>
+            <p>Calculamos el precio final del pantalón con el 20 % de descuento, es decir, el 80 % de su precio original:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>43750</mn>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>80</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>43750</mn>
+                <mo>⋅</mo>
+                <mfrac>
+                  <mn>4</mn>
+                  <mn>5</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Primero dividimos 43.750 por 5:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>43750</mn>
+                <mo>÷</mo>
+                <mn>5</mn>
+                <mo>=</mo>
+                <mn>8750</mn>
+              </math>
+            </p>
+            <p>Luego multiplicamos por 4:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>8750</mn>
+                <mo>⋅</mo>
+                <mn>4</mn>
+                <mo>=</mo>
+                <mn>35000</mn>
+              </math>
+            </p>
+            <p>Entonces el precio final del pantalón es $35.000.</p>
+            <p>Sumamos el precio final del pantalón y el precio de la camisa:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mn>35000</mn>
+                <mo>+</mo>
+                <mn>15000</mn>
+                <mo>=</mo>
+                <mn>50000</mn>
+              </math>
+            </p>
+            <p>La suma coincide con el total pagado de $50.000, por lo que los valores son coherentes con el enunciado.</p>
+          </li>
+          <li>
+            <p>Conclusión sobre el significado de B:</p>
+            <p>En la ecuación <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac><mo>+</mo><mi>A</mi><mo>=</mo><mn>50000</mn></math>, el factor <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>80</mn><mn>100</mn></mfrac></math> representa que se paga el 80 % del precio original del pantalón. Por eso, B debe ser el precio original del pantalón, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>B</mi><mo>⋅</mo><mfrac><mn>80</mn><mn>100</mn></mfrac></math> es el precio final del pantalón con descuento. De este modo, la opción correcta es &quot;El precio original del pantalón&quot;.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

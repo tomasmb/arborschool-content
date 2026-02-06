@@ -1,0 +1,241 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="metro-revenue-mayor-demanda" title="Ingreso diario del metro en meses de mayor demanda" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En los meses de menor demanda, el metro traslada aproximadamente 2 600 000 personas cada día, recibiendo un total de $2 000 000 000 diarios por concepto de pasaje.</p>
+    <p>En los meses de mayor demanda, el metro traslada diariamente 100 000 personas más que en los meses de menor demanda.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>Si el precio del pasaje es igual todo el año, ¿cuánto dinero recibe diariamente el metro en los meses de mayor demanda, en pesos?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mfrac>
+            <mrow>
+              <mn>2 000 100 000</mn>
+            </mrow>
+            <mrow>
+              <mn>2 600 000</mn>
+            </mrow>
+          </mfrac>
+        </math>
+        <qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El valor del pasaje se obtiene dividiendo el ingreso diario en meses de menor demanda por la cantidad de personas: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mn>2 000 000 000</mn></mrow><mrow><mn>2 600 000</mn></mrow></mfrac></math>. En meses de mayor demanda, el metro traslada <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 700 000</mn></math> personas, por lo que el ingreso diario debe considerar esa nueva cantidad de pasajeros, no <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 000 100 000</mn></math>. Esta expresión no representa el ingreso diario en los meses de mayor demanda.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mfrac>
+              <mrow>
+                <mn>2 700 000</mn>
+              </mrow>
+              <mrow>
+                <mn>2 600 000</mn>
+              </mrow>
+            </mfrac>
+            <mo>·</mo>
+            <mn>2 000 000 000</mn>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Primero se calcula el valor del pasaje en meses de menor demanda: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mn>2 000 000 000</mn></mrow><mrow><mn>2 600 000</mn></mrow></mfrac></math>. En meses de mayor demanda, el metro traslada <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 700 000</mn></math> personas, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100 000</mn></math> más que en los meses de menor demanda. Como el precio del pasaje es el mismo, el nuevo ingreso diario es el ingreso original multiplicado por el factor de aumento de pasajeros: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mn>2 700 000</mn></mrow><mrow><mn>2 600 000</mn></mrow></mfrac><mo>·</mo><mn>2 000 000 000</mn></mrow></math>, que corresponde a la expresión dada.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mfrac>
+              <mrow>
+                <mn>2 000 000 000</mn>
+              </mrow>
+              <mrow>
+                <mn>2 600 000</mn>
+              </mrow>
+            </mfrac>
+            <mo>+</mo>
+            <mn>100 000</mn>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La fracción <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mn>2 000 000 000</mn></mrow><mrow><mn>2 600 000</mn></mrow></mfrac></math> representa el valor del pasaje en pesos por persona. El número <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100 000</mn></math> corresponde a personas adicionales, no a pesos. Por lo tanto, no se pueden sumar directamente, ya que se están mezclando unidades distintas (pesos con personas). Esta expresión no entrega un monto de dinero diario en los meses de mayor demanda.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mn>2 600 000</mn>
+            <mo>·</mo>
+            <mn>2 000 000 000</mn>
+            <mo>+</mo>
+            <mn>100 000</mn>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El producto <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2 600 000</mn><mo>·</mo><mn>2 000 000 000</mn></mrow></math> multiplica personas por pesos totales, lo que no tiene sentido, porque el ingreso diario ya está dado por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 000 000 000</mn></math> pesos. Además, al sumar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100 000</mn></math> (personas) al resultado de ese producto (que estaría en unidades de personas por pesos), se mezclan nuevamente unidades incompatibles. Esta expresión no representa el ingreso diario en los meses de mayor demanda.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del ingreso diario en meses de mayor demanda</strong></p>
+        <ol>
+          <li>
+            <p>Primero, se calcula el valor del pasaje en los meses de menor demanda. Se sabe que el metro traslada diariamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 600 000</mn></math> personas y recibe un total de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2 000 000 000</mn></math> pesos diarios.</p>
+            <p>Entonces, el valor del pasaje por persona es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>precio</mi>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mn>2 000 000 000</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>2 600 000</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>En los meses de mayor demanda, el metro traslada diariamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100 000</mn></math> personas más que en los meses de menor demanda.</p>
+            <p>Por lo tanto, la nueva cantidad de personas transportadas diariamente es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2 600 000</mn>
+                  <mo>+</mo>
+                  <mn>100 000</mn>
+                  <mo>=</mo>
+                  <mn>2 700 000</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Como el precio del pasaje es igual todo el año, el valor del pasaje en meses de mayor demanda es el mismo que en meses de menor demanda.</p>
+            <p>El ingreso diario en meses de mayor demanda se obtiene multiplicando el valor del pasaje por la nueva cantidad de personas:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>ingreso</mi>
+                  <mo>=</mo>
+                  <mn>2 700 000</mn>
+                  <mo>·</mo>
+                  <mfrac>
+                    <mrow>
+                      <mn>2 000 000 000</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>2 600 000</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Se puede reordenar el producto para expresar el nuevo ingreso diario como un múltiplo del ingreso original:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>ingreso</mi>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mn>2 700 000</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>2 600 000</mn>
+                    </mrow>
+                  </mfrac>
+                  <mo>·</mo>
+                  <mn>2 000 000 000</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Esta expresión muestra que el ingreso diario en los meses de mayor demanda es el ingreso original multiplicado por el factor de aumento de pasajeros <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mn>2 700 000</mn></mrow><mrow><mn>2 600 000</mn></mrow></mfrac></math>, que corresponde exactamente a la alternativa correcta.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

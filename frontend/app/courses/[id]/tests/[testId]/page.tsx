@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getTestDetail, type TestDetail } from "@/lib/api";
-import { QuestionDetailPanel } from "@/components/questions";
 import { LoadingPage } from "@/components/ui/LoadingSpinner";
 import { ErrorPage } from "@/components/ui/ErrorMessage";
 import { GeneratePipelineModal } from "@/components/pipelines/GeneratePipelineModal";
@@ -58,7 +57,6 @@ export default function TestDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<TestTab>("splitting");
-  const [selectedQuestion, setSelectedQuestion] = useState<number | null>(null);
   const [activePipeline, setActivePipeline] = useState<PipelineAction>(null);
   const [showVariantOptions, setShowVariantOptions] = useState(false);
   const [variantsPerQuestion, setVariantsPerQuestion] = useState(3);
@@ -201,7 +199,6 @@ export default function TestDetailPage() {
             onOpenEnrichment={() => setShowEnrichmentModal(true)}
             onOpenValidation={() => setShowValidationModal(true)}
             onRunTagging={() => handlePipelineAction("tagging")}
-            onSelectQuestion={setSelectedQuestion}
           />
         )}
 
@@ -238,16 +235,6 @@ export default function TestDetailPage() {
           />
         )}
       </div>
-
-      {/* Question Detail Panel */}
-      {selectedQuestion !== null && (
-        <QuestionDetailPanel
-          subjectId={courseId}
-          testId={testId}
-          questionNumber={selectedQuestion}
-          onClose={() => setSelectedQuestion(null)}
-        />
-      )}
 
       {/* Variant Options Dialog */}
       <VariantOptionsDialog

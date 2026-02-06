@@ -1,0 +1,288 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="empastado-precio-funcion" title="Función de costo de empastado de tesis" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En una imprenta ofrecen un servicio de empastado para tesis universitarias, cobrando un valor de $<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn></math> por página, más una tarifa fija de $<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> por el servicio.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes funciones modela el precio, en pesos, que debe pagar una persona por empastar su tesis de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> páginas?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>f</mi>
+            <mo>(</mo>
+            <mi>x</mi>
+            <mo>)</mo>
+            <mo>=</mo>
+            <mn>115</mn>
+            <mi>x</mi>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta función solo considera el cobro variable por página y no incluye la tarifa fija de $27.000. Por ejemplo, si la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> páginas, el costo real debe ser: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>1.150</mn></math> pesos por páginas, más <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> pesos fijos, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1.150</mn><mo>+</mo><mn>27.000</mn><mo>=</mo><mn>28.150</mn></math> pesos en total. En cambio, la función propuesta da solo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>1.150</mn></math> pesos, que no corresponde al precio descrito.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>g</mi>
+            <mo>(</mo>
+            <mi>x</mi>
+            <mo>)</mo>
+            <mo>=</mo>
+            <mn>115</mn>
+            <mi>x</mi>
+            <mo>+</mo>
+            <mn>27.000</mn>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El precio total se compone de dos partes: una parte variable que depende de la cantidad de páginas y una parte fija que no cambia. La parte variable es el cobro por página, que es de $115 por cada página, por lo que para <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> páginas el costo variable es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mi>x</mi></math>. La parte fija es la tarifa de servicio de $27.000, que se suma al costo variable. Por lo tanto, la función que modela el precio total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>115</mn><mi>x</mi><mo>+</mo><mn>27.000</mn></math>. Por ejemplo, si la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> páginas, el costo es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>1.150</mn></math> pesos por páginas, más <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> pesos fijos, dando un total de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1.150</mn><mo>+</mo><mn>27.000</mn><mo>=</mo><mn>28.150</mn></math> pesos, que coincide con la función propuesta.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>h</mi>
+            <mo>(</mo>
+            <mi>x</mi>
+            <mo>)</mo>
+            <mo>=</mo>
+            <mo>(</mo>
+            <mn>115</mn>
+            <mo>+</mo>
+            <mn>27.000</mn>
+            <mo>)</mo>
+            <mi>x</mi>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta función multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> tanto el valor por página como la tarifa fija, lo que no corresponde al enunciado. La tarifa fija de $27.000 debe pagarse una sola vez, no una vez por cada página. Por ejemplo, si la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> páginas, el costo real debe ser: costo por páginas <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>1.150</mn></math> pesos, más tarifa fija <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> pesos, total <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1.150</mn><mo>+</mo><mn>27.000</mn><mo>=</mo><mn>28.150</mn></math> pesos. En cambio, la función propuesta da <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>(</mo><mn>115</mn><mo>+</mo><mn>27.000</mn><mo>)</mo><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>27.115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>271.150</mn></math> pesos, que es mucho mayor que el precio descrito y no coincide con el cobro indicado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>k</mi>
+            <mo>(</mo>
+            <mi>x</mi>
+            <mo>)</mo>
+            <mo>=</mo>
+            <mn>115</mn>
+            <mo>+</mo>
+            <mn>27.000</mn>
+            <mi>x</mi>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. En esta función, el valor por página y la tarifa fija están intercambiados en su rol dentro de la expresión. El término que se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> debería ser el cobro por página ($115) y el término independiente debería ser la tarifa fija ($27.000). Aquí ocurre lo contrario: se multiplica <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> por <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>. Por ejemplo, si la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> páginas, el costo real debe ser: costo por páginas <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>1.150</mn></math> pesos, más tarifa fija <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>27.000</mn></math> pesos, total <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1.150</mn><mo>+</mo><mn>27.000</mn><mo>=</mo><mn>28.150</mn></math> pesos. En cambio, la función propuesta da <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>115</mn><mo>+</mo><mn>27.000</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>115</mn><mo>+</mo><mn>270.000</mn><mo>=</mo><mn>270.115</mn></math> pesos, que no corresponde al precio descrito en el problema.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Identificar las partes del cobro descrito en el enunciado.</p>
+            <p>El problema indica dos componentes del precio total:</p>
+            <ul>
+              <li>Un cobro por cada página: $115 por página.</li>
+              <li>Una tarifa fija por el servicio: $27.000, que se paga una sola vez.</li>
+            </ul>
+          </li>
+          <li>
+            <p>Expresar el cobro por página en función de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>.</p>
+            <p>Si la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> páginas y se cobra $115 por cada una, entonces el costo variable (que depende de la cantidad de páginas) es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>115</mn>
+                  <mo>&#xD7;</mo>
+                  <mi>x</mi>
+                  <mo>=</mo>
+                  <mn>115</mn>
+                  <mi>x</mi>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Incorporar la tarifa fija al modelo.</p>
+            <p>La tarifa fija de $27.000 no depende de la cantidad de páginas, por lo que se suma una sola vez al costo variable. Así, el precio total <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>P</mi></math>, en función de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>, es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>P</mi>
+                  <mo>(</mo>
+                  <mi>x</mi>
+                  <mo>)</mo>
+                  <mo>=</mo>
+                  <mn>115</mn>
+                  <mi>x</mi>
+                  <mo>+</mo>
+                  <mn>27.000</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Verificar el modelo con un ejemplo concreto.</p>
+            <p>Supongamos que la tesis tiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> páginas. Entonces:</p>
+            <ul>
+              <li>Costo por páginas:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mrow>
+                    <mn>115</mn>
+                    <mo>&#xD7;</mo>
+                    <mn>10</mn>
+                    <mo>=</mo>
+                    <mn>1.150</mn>
+                  </mrow>
+                </math>
+                pesos.
+              </li>
+              <li>Tarifa fija: 
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>27.000</mn>
+                </math>
+                pesos.
+              </li>
+              <li>Precio total:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mrow>
+                    <mn>1.150</mn>
+                    <mo>+</mo>
+                    <mn>27.000</mn>
+                    <mo>=</mo>
+                    <mn>28.150</mn>
+                  </mrow>
+                </math>
+                pesos.
+              </li>
+            </ul>
+            <p>Usando la función <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>115</mn><mi>x</mi><mo>+</mo><mn>27.000</mn></math> para <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>10</mn></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>g</mi>
+                  <mo>(</mo>
+                  <mn>10</mn>
+                  <mo>)</mo>
+                  <mo>=</mo>
+                  <mn>115</mn>
+                  <mo>&#xD7;</mo>
+                  <mn>10</mn>
+                  <mo>+</mo>
+                  <mn>27.000</mn>
+                  <mo>=</mo>
+                  <mn>1.150</mn>
+                  <mo>+</mo>
+                  <mn>27.000</mn>
+                  <mo>=</mo>
+                  <mn>28.150</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El resultado coincide con el cálculo directo, por lo que la función es coherente con el enunciado.</p>
+          </li>
+          <li>
+            <p>Concluir la respuesta correcta.</p>
+            <p>La función que modela el precio, en pesos, que debe pagar una persona por empastar su tesis de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> páginas es:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mi>g</mi>
+                  <mo>(</mo>
+                  <mi>x</mi>
+                  <mo>)</mo>
+                  <mo>=</mo>
+                  <mn>115</mn>
+                  <mi>x</mi>
+                  <mo>+</mo>
+                  <mn>27.000</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

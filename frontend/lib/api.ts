@@ -28,12 +28,6 @@ export type {
   SubjectBrief,
   SubjectDetail,
   SubjectStats,
-  SyncExecuteResponse,
-  SyncPreviewResponse,
-  SyncPreviewQuestions,
-  SyncPreviewSummary,
-  SyncStatus,
-  SyncTableSummary,
   TestBrief,
   TestDetail,
   TestSyncDiff,
@@ -58,9 +52,6 @@ import type {
   QuestionDetail,
   StandardBrief,
   SubjectDetail,
-  SyncExecuteResponse,
-  SyncPreviewResponse,
-  SyncStatus,
   TestBrief,
   TestDetail,
   TestSyncDiff,
@@ -251,77 +242,6 @@ export async function clearPipelineOutputs(
     `/pipelines/${pipelineId}/clear${query ? `?${query}` : ""}`,
     { method: "DELETE" }
   );
-}
-
-// -----------------------------------------------------------------------------
-// Sync API (Global - deprecated, use course-scoped sync instead)
-// -----------------------------------------------------------------------------
-
-export async function getSyncStatus(): Promise<SyncStatus> {
-  return fetchAPI<SyncStatus>("/sync/status");
-}
-
-// -----------------------------------------------------------------------------
-// Course-scoped Sync API
-// -----------------------------------------------------------------------------
-
-export type SyncEnvironment = "local" | "staging" | "prod";
-
-export interface SyncDiffResponse {
-  environment: SyncEnvironment;
-  has_changes: boolean;
-  entities: Record<string, {
-    local_count: number;
-    db_count: number;
-    new: string[];
-    new_count: number;
-    modified: string[];
-    modified_count: number;
-    deleted: string[];
-    deleted_count: number;
-    unchanged: number;
-    has_changes: boolean;
-  }>;
-  error: string | null;
-}
-
-export async function getCourseSyncDiff(
-  courseId: string,
-  environment: SyncEnvironment = "local"
-): Promise<SyncDiffResponse> {
-  return fetchAPI<SyncDiffResponse>(
-    `/subjects/${courseId}/sync/diff?environment=${environment}`
-  );
-}
-
-export async function previewCourseSync(
-  courseId: string,
-  entities: string[],
-  environment: SyncEnvironment = "local"
-): Promise<SyncPreviewResponse> {
-  return fetchAPI<SyncPreviewResponse>(`/subjects/${courseId}/sync/preview`, {
-    method: "POST",
-    body: JSON.stringify({
-      entities,
-      environment,
-    }),
-  });
-}
-
-export async function executeCourseSync(
-  courseId: string,
-  entities: string[],
-  environment: SyncEnvironment,
-  confirm: boolean
-): Promise<SyncExecuteResponse> {
-  return fetchAPI<SyncExecuteResponse>(`/subjects/${courseId}/sync/execute`, {
-    method: "POST",
-    body: JSON.stringify({
-      entities,
-      environment,
-      confirm,
-    }),
-  });
 }
 
 // -----------------------------------------------------------------------------

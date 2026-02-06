@@ -1,0 +1,45 @@
+{
+  "question_id": "prueba-invierno-2026-Q31-Q31_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-06T16:01:59.173875+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: total ahorrado = 185.000. Aportes que no son de la tía: mesadas = 2 × 20.000 = 40.000; trabajo = 4 × 25.000 = 100.000; suma = 40.000 + 100.000 = 140.000. Aporte total de la tía en 5 semanas = 185.000 − 140.000 = 45.000. Monto semanal = 45.000 ÷ 5 = 9.000, por lo que la alternativa correcta es $9.000 (ChoiceC). \n\nRevisión de cada feedback:\n- ChoiceC (correcta): explica y calcula 2 × 20.000 = 40.000, 4 × 25.000 = 100.000, 40.000 + 100.000 = 140.000, 185.000 − 140.000 = 45.000 y 45.000 ÷ 5 = 9.000. Todos los cálculos son correctos y justifican por qué la opción es correcta.\n- ChoiceA: asume 37.000 semanales, calcula 5 × 37.000 = 185.000, 2 × 20.000 = 40.000, 4 × 25.000 = 100.000 y total 185.000 + 40.000 + 100.000 = 325.000, distinto de 185.000. Todos los cálculos son correctos y muestran por qué no sirve.\n- ChoiceB: asume 24.000 semanales, calcula 5 × 24.000 = 120.000, 2 × 20.000 = 40.000, 4 × 25.000 = 100.000 y total 120.000 + 40.000 + 100.000 = 260.000, distinto de 185.000. Matemáticamente correcto.\n- ChoiceD: asume 13.000 semanales, calcula 5 × 13.000 = 65.000, 2 × 20.000 = 40.000, 4 × 25.000 = 100.000 y total 65.000 + 40.000 + 100.000 = 205.000, distinto de 185.000. Matemáticamente correcto.\n- Solución paso a paso: repite el mismo razonamiento que el feedback correcto, con los mismos cálculos (40.000, 100.000, 140.000, 45.000, 9.000) y llega a la alternativa C. No hay errores ni omisiones en la demostración."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio, usando expresiones como “Entonces, el total por mesadas es…” y “Por lo tanto…”. Cada feedback incorrecto es auto-contenido: parte de suponer que esa alternativa fuera el monto semanal, realiza todos los cálculos necesarios (ahorro de la tía, mesadas, trabajo, total) y concluye explícitamente que el resultado no coincide con los 185.000 del enunciado, sin exigir que el estudiante haga operaciones adicionales. El feedback correcto y la solución paso a paso explican claramente la estrategia (separar aportes de la tía y de otras fuentes, sumar, restar, dividir) y están contextualizados específicamente en esta situación de Lucas y la bicicleta, no son genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática dentro del XML usa MathML (<math>, <mn>, <mo>) y no LaTeX. Los números emplean el formato chileno: punto como separador de miles (por ejemplo, 185.000, 40.000, 100.000, 45.000, 9.000) y no se usan comas decimales, por lo que no hay conflicto con el formato requerido. El bloque de response-processing marca ChoiceC como correcta y, en el response-else, asigna SCORE = 0 y FEEDBACK = FB_ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de que el fallback no entregue el feedback de la opción correcta."
+      },
+      "overall_reasoning": "Los cálculos en todos los feedbacks y en la solución paso a paso son correctos y coherentes con el enunciado, el lenguaje es claro y específico para esta pregunta, y el formato (MathML, uso de puntos para miles y manejo del fallback) cumple con los requisitos. No se detectan errores matemáticos, pedagógicos ni de formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "not_applicable",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-06T17:02:14.149413+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

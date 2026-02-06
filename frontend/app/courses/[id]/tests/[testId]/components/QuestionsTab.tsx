@@ -15,7 +15,6 @@ export interface QuestionsTabProps {
   onOpenEnrichment: () => void;
   onOpenValidation: () => void;
   onRunTagging: () => void;
-  onSelectQuestion: (questionNum: number) => void;
 }
 
 type QuestionsFilter =
@@ -52,7 +51,6 @@ export function QuestionsTab({
   onOpenEnrichment,
   onOpenValidation,
   onRunTagging,
-  onSelectQuestion,
 }: QuestionsTabProps) {
   const [filter, setFilter] = useState<QuestionsFilter>("all");
   const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
@@ -194,7 +192,6 @@ export function QuestionsTab({
               <th className="px-4 py-3 font-medium text-center">Enriched</th>
               <th className="px-4 py-3 font-medium text-center">Validated</th>
               <th className="px-4 py-3 font-medium text-center">Atoms</th>
-              <th className="px-4 py-3 font-medium">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -206,7 +203,6 @@ export function QuestionsTab({
                 question={q}
                 isExpanded={expandedRows.has(q.question_number)}
                 onToggle={() => toggleRow(q.question_number)}
-                onViewDetail={() => onSelectQuestion(q.question_number)}
               />
             ))}
           </tbody>
@@ -402,7 +398,6 @@ interface QuestionRowProps {
   question: QuestionBrief;
   isExpanded: boolean;
   onToggle: () => void;
-  onViewDetail: () => void;
 }
 
 function QuestionRow({
@@ -411,7 +406,6 @@ function QuestionRow({
   question: q,
   isExpanded,
   onToggle,
-  onViewDetail,
 }: QuestionRowProps) {
   return (
     <>
@@ -442,22 +436,11 @@ function QuestionRow({
             <span className="text-text-secondary">—</span>
           )}
         </td>
-        <td className="px-4 py-3">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              onViewDetail();
-            }}
-            className="text-sm text-accent hover:underline"
-          >
-            View Details
-          </button>
-        </td>
       </tr>
 
       {isExpanded && (
         <tr className="bg-background/50">
-          <td colSpan={7} className="p-0">
+          <td colSpan={6} className="p-0">
             <div className="p-4 border-b border-border">
               <QuestionsExpandedContent
                 subjectId={subjectId}

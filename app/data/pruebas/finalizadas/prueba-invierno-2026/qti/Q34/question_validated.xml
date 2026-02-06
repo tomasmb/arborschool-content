@@ -1,0 +1,375 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="homa-ir-inequality" title="Condición de insulinemia para ausencia de resistencia a la insulina" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El índice HOMA-IR es un modelo que sirve para evaluar la resistencia a la insulina y se mide utilizando la insulinemia y la glucemia, ambas medidas en ayunas, de acuerdo con la siguiente igualdad:</p>
+    <p>
+      <math display="block" xmlns="http://www.w3.org/1998/Math/MathML">
+        <mrow>
+          <mtext>HOMA-IR</mtext>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mtext>insulinemia</mtext>
+              <mo>(</mo>
+              <mtext>µU/mL</mtext>
+              <mo>)</mo>
+              <mo>⋅</mo>
+              <mtext>glucemia</mtext>
+              <mo>(</mo>
+              <mtext>mmol/L</mtext>
+              <mo>)</mo>
+            </mrow>
+            <mrow>
+              <mn>22,5</mn>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </math>
+    </p>
+    <p>En la siguiente tabla se presenta la interpretación de los distintos valores del índice HOMA-IR:</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Valores</th>
+            <th>Interpretación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Inferiores a 1,96</td>
+            <td>Sin resistencia a la insulina</td>
+          </tr>
+          <tr>
+            <td>Entre 1,96 a 3</td>
+            <td>Sospecha de resistencia a la insulina</td>
+          </tr>
+          <tr>
+            <td>Superiores que 3</td>
+            <td>Resistencia a la insulina</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>Si una persona tiene una glucemia de <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5,6</mn><mo> </mo><mtext>mmol/L</mtext></mrow></math>, ¿cuál de las siguientes desigualdades representa la condición que debe tener su insulinemia (<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>), medida en <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>µU/mL</mtext></math>, para que la interpretación de su índice HOMA-IR sea sin resistencia a la insulina?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&lt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>22,5</mn>
+              </mrow>
+              <mn>5,6</mn>
+            </mfrac>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Para que la interpretación sea &quot;sin resistencia a la insulina&quot;, el índice HOMA-IR debe ser inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>. Usando la fórmula <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>HOMA-IR</mtext><mo>=</mo><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac></mrow></math> y la condición <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>HOMA-IR</mtext><mo>&lt;</mo><mn>1,96</mn></mrow></math>, se obtiene la desigualdad: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac><mo>&lt;</mo><mn>1,96</mn></mrow></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> son positivos, al despejar <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> se mantiene el sentido de la desigualdad: primero se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> y luego se divide por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math>, quedando <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&lt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow><mn>5,6</mn></mfrac></mrow></math>, que es exactamente la desigualdad dada en esta alternativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&lt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>5,6</mn>
+              </mrow>
+              <mn>22,5</mn>
+            </mfrac>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La desigualdad correcta se obtiene de exigir que el índice HOMA-IR sea inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>. Con la fórmula <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>HOMA-IR</mtext><mo>=</mo><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac></mrow></math>, la condición &quot;sin resistencia a la insulina&quot; se escribe como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac><mo>&lt;</mo><mn>1,96</mn></mrow></math>. Al despejar <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>, se debe multiplicar por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> y luego dividir por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math>, quedando <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&lt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow><mn>5,6</mn></mfrac></mrow></math>. En cambio, esta alternativa propone <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&lt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac></mrow></math>, donde el numerador y el denominador están invertidos respecto de la expresión correcta, por lo que no representa la condición adecuada para que el índice HOMA-IR sea inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&gt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>22,5</mn>
+              </mrow>
+              <mn>5,6</mn>
+            </mfrac>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La condición &quot;sin resistencia a la insulina&quot; exige que el índice HOMA-IR sea inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>, no superior. A partir de la fórmula <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mtext>HOMA-IR</mtext><mo>=</mo><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac></mrow></math> y de la condición <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac><mo>&lt;</mo><mn>1,96</mn></mrow></math>, al despejar <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&lt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow><mn>5,6</mn></mfrac></mrow></math>. Esta alternativa invierte el sentido de la desigualdad y propone <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&gt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow><mn>5,6</mn></mfrac></mrow></math>, lo que corresponde a valores de insulinemia que harían que el índice HOMA-IR sea mayor o igual que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>, es decir, no cumplirían la condición de &quot;sin resistencia a la insulina&quot;.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mrow>
+            <mi>x</mi>
+            <mo>&gt;</mo>
+            <mfrac>
+              <mrow>
+                <mn>1,96</mn>
+                <mo>⋅</mo>
+                <mn>5,6</mn>
+              </mrow>
+              <mn>22,5</mn>
+            </mfrac>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La interpretación &quot;sin resistencia a la insulina&quot; corresponde a índices HOMA-IR inferiores a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>, por lo que la desigualdad para <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> debe ser de la forma &quot;menor que&quot; y no &quot;mayor que&quot;. Además, al despejar <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> desde <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mi>x</mi><mo>⋅</mo><mn>5,6</mn></mrow><mn>22,5</mn></mfrac><mo>&lt;</mo><mn>1,96</mn></mrow></math>, se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>x</mi><mo>&lt;</mo><mfrac><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow><mn>5,6</mn></mfrac></mrow></math>, donde el producto <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1,96</mn><mo>⋅</mo><mn>22,5</mn></mrow></math> queda en el numerador y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> en el denominador. En esta alternativa, además de usar el signo &quot;mayor que&quot;, se ubica <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> en el numerador y <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> en el denominador, lo que no coincide con el despeje correcto de la desigualdad que garantiza un índice HOMA-IR inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Se conoce la fórmula del índice HOMA-IR:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>HOMA-IR</mtext>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mtext>insulinemia</mtext>
+                      <mo>(</mo>
+                      <mtext>µU/mL</mtext>
+                      <mo>)</mo>
+                      <mo>⋅</mo>
+                      <mtext>glucemia</mtext>
+                      <mo>(</mo>
+                      <mtext>mmol/L</mtext>
+                      <mo>)</mo>
+                    </mrow>
+                    <mrow>
+                      <mn>22,5</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+            <p>En este problema, la glucemia es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> mmol/L y la insulinemia se representa por <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> µU/mL. Entonces, el índice HOMA-IR queda:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>HOMA-IR</mtext>
+                  <mo>=</mo>
+                  <mfrac>
+                    <mrow>
+                      <mi>x</mi>
+                      <mo>⋅</mo>
+                      <mn>5,6</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>22,5</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Según la tabla, la interpretación &quot;sin resistencia a la insulina&quot; corresponde a valores del índice HOMA-IR inferiores a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math>. Por lo tanto, se debe cumplir la desigualdad:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mtext>HOMA-IR</mtext>
+                  <mo>&lt;</mo>
+                  <mn>1,96</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Reemplazando la expresión de HOMA-IR en función de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>x</mi>
+                      <mo>⋅</mo>
+                      <mn>5,6</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>22,5</mn>
+                    </mrow>
+                  </mfrac>
+                  <mo>&lt;</mo>
+                  <mn>1,96</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Ahora se despeja <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> en la desigualdad. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> es un número positivo, al multiplicar ambos lados por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math> se mantiene el sentido de la desigualdad:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mfrac>
+                    <mrow>
+                      <mi>x</mi>
+                      <mo>⋅</mo>
+                      <mn>5,6</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>22,5</mn>
+                    </mrow>
+                  </mfrac>
+                  <mo>&lt;</mo>
+                  <mn>1,96</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Multiplicando ambos lados por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>22,5</mn></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mi>x</mi>
+                  <mo>⋅</mo>
+                  <mn>5,6</mn>
+                  <mo>&lt;</mo>
+                  <mn>1,96</mn>
+                  <mo>⋅</mo>
+                  <mn>22,5</mn>
+                </mrow>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Luego, como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> también es positivo, al dividir ambos lados de la desigualdad por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5,6</mn></math> se mantiene nuevamente el sentido de la desigualdad:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mi>x</mi>
+                  <mo>&lt;</mo>
+                  <mfrac>
+                    <mrow>
+                      <mn>1,96</mn>
+                      <mo>⋅</mo>
+                      <mn>22,5</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>5,6</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+            <p>Esta es la desigualdad que debe cumplir la insulinemia <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>, medida en µU/mL, para que el índice HOMA-IR sea inferior a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,96</mn></math> y, por lo tanto, la interpretación sea &quot;sin resistencia a la insulina&quot;.</p>
+          </li>
+          <li>
+            <p>Comparando con las alternativas, la desigualdad obtenida:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+                <mrow>
+                  <mi>x</mi>
+                  <mo>&lt;</mo>
+                  <mfrac>
+                    <mrow>
+                      <mn>1,96</mn>
+                      <mo>⋅</mo>
+                      <mn>22,5</mn>
+                    </mrow>
+                    <mrow>
+                      <mn>5,6</mn>
+                    </mrow>
+                  </mfrac>
+                </mrow>
+              </math>
+            </p>
+            <p>coincide exactamente con la alternativa A, por lo que esa es la respuesta correcta.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

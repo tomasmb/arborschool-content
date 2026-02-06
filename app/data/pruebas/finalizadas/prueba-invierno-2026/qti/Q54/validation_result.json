@@ -1,0 +1,45 @@
+{
+  "question_id": "prueba-invierno-2026-Q54",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-06T14:52:58.081838+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Al resolver el problema, la meta es vender al menos 5 celulares por día (v >= 5). A partir de los datos del gráfico (que el ítem ya explicita en texto): Gonzalo vende 4,4,4,4,4 → 0 días con v >= 5; Camilo vende 8,9,2,2,2 → 2 días con v >= 5 (lunes y martes); Antonia vende 5,4,6,7,7 → 4 días con v >= 5 (lunes, miércoles, jueves y viernes); Fabiola vende 1,2,3,5,7 → 2 días con v >= 5 (jueves y viernes). Por lo tanto, la respuesta correcta es Antonia (ChoiceC). El feedback de la opción correcta muestra explícitamente los valores diarios, compara cada uno con 5 usando la desigualdad v >= 5 y cuenta 4 días, justificando por qué es la que más veces cumple la meta. Los feedbacks de las opciones incorrectas también listan los valores diarios, comparan con 5 y concluyen correctamente cuántos días cumplen la meta (0 para Gonzalo, 2 para Camilo, 2 para Fabiola), explicando por qué son menos que Antonia. La solución paso a paso repite y sistematiza estos mismos cálculos sin errores. No se detectan inconsistencias numéricas ni lógicas entre gráfico descrito, feedbacks y solución."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°–4° medio: se explicita claramente qué significa 'al menos 5 celulares' mediante la desigualdad v >= 5, y se usa vocabulario cotidiano (cumple/no cumple la meta, días de la semana, cantidades vendidas). Cada feedback es auto-contenido: incluye los datos de ventas de la persona correspondiente, la comparación con la meta día por día y la conclusión sobre cuántas veces cumple la meta, sin requerir que el estudiante haga cálculos adicionales. Además, los feedbacks son específicos a la pregunta (se refieren a cada persona, a los días concretos y a la meta de 5 celulares) y no son genéricos. La solución paso a paso organiza el razonamiento en etapas claras (leer datos, comparar con la meta, contar días, concluir), lo que favorece la comprensión."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (por ejemplo, <mi>v</mi><mo>&gt;=</mo><mn>5</mn>), sin uso de LaTeX. No aparecen números con miles ni decimales, solo enteros pequeños (1–9), por lo que no hay conflicto con el formato chileno de separadores. El procesamiento de respuesta marca correctamente ChoiceC como respuesta correcta en <qti-correct-response>. El bloque de response-processing asigna SCORE=1 y FEEDBACK=ChoiceC solo cuando RESPONSE=ChoiceC. En el fallback (<qti-response-else>), se asigna FEEDBACK=ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto. No se observan problemas de formato ni de mapeo de feedback."
+      },
+      "overall_reasoning": "La resolución matemática es correcta y coherente en todos los feedbacks y en la solución paso a paso, la explicación es clara y específica para esta pregunta, y el uso de MathML y la lógica de asignación de feedback cumplen con los requisitos del formato QTI y las condiciones solicitadas."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "pass",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-06T15:19:41.510092+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

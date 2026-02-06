@@ -26,19 +26,30 @@ class QuestionPipeline:
     The review stage catches mathematical errors and incomplete explanations early.
     """
 
+    DEFAULT_MAX_CORRECTION_RETRIES = 2
+
     def __init__(
         self,
         enhancer: FeedbackEnhancer | None = None,
         reviewer: FeedbackReviewer | None = None,
+        max_correction_retries: int | None = None,
     ):
         """Initialize the pipeline.
 
         Args:
             enhancer: FeedbackEnhancer instance. Creates default if None.
             reviewer: FeedbackReviewer instance. Creates default if None.
+            max_correction_retries: Max correction attempts when review fails.
+                Each attempt re-corrects based on the latest review issues.
+                Defaults to DEFAULT_MAX_CORRECTION_RETRIES (2).
         """
         self.enhancer = enhancer or FeedbackEnhancer()
         self.reviewer = reviewer or FeedbackReviewer()
+        self.max_correction_retries = (
+            max_correction_retries
+            if max_correction_retries is not None
+            else self.DEFAULT_MAX_CORRECTION_RETRIES
+        )
 
     def process(
         self,
@@ -91,48 +102,55 @@ class QuestionPipeline:
         review = self.reviewer.review(qti_with_feedback)
 
         if review.review_result != "pass":
-            # ── STAGE 2b: Attempt correction based on review feedback ──
-            logger.info("Feedback review failed, attempting correction...")
+            # ── STAGE 2b: Correction loop with retries ──
+            current_xml = qti_with_feedback
+            latest_review = review
 
-            review_issues = self._format_review_issues(review)
-            correction = self.enhancer.correct(
-                qti_xml_with_errors=qti_with_feedback,
-                review_issues=review_issues,
-                image_urls=image_urls,
-            )
+            for attempt in range(1, self.max_correction_retries + 1):
+                logger.info(
+                    f"Correction attempt {attempt}/"
+                    f"{self.max_correction_retries}..."
+                )
 
-            if correction.success and correction.qti_xml:
-                # Re-review the corrected feedback
+                review_issues = self._format_review_issues(latest_review)
+                correction = self.enhancer.correct(
+                    qti_xml_with_errors=current_xml,
+                    review_issues=review_issues,
+                    image_urls=image_urls,
+                )
+
+                if not correction.success or not correction.qti_xml:
+                    logger.warning(
+                        f"Correction attempt {attempt} failed to produce XML"
+                    )
+                    continue
+
                 corrected_review = self.reviewer.review(correction.qti_xml)
 
                 if corrected_review.review_result == "pass":
-                    logger.info("Correction successful, review passed")
+                    logger.info(
+                        f"Correction succeeded on attempt {attempt}"
+                    )
                     qti_with_feedback = correction.qti_xml
                     review = corrected_review
-                else:
-                    # Correction didn't fix all issues
-                    failed_checks = self._get_failed_checks(corrected_review)
-                    error_msg = (
-                        f"Feedback review failed after correction: "
-                        f"{', '.join(failed_checks) or 'unknown'}"
-                    )
+                    break
 
-                    result = PipelineResult(
-                        question_id=question_id,
-                        success=False,
-                        stage_failed="feedback_review",
-                        error=error_msg,
-                        feedback_review_details=corrected_review.model_dump(),
-                        can_sync=False,
-                    )
-                    if output_dir:
-                        self._save_result(output_dir, result)
-                    return result
+                # Feed new issues into next attempt
+                failed = self._get_failed_checks(corrected_review)
+                logger.warning(
+                    f"Correction attempt {attempt} still has issues: "
+                    f"{', '.join(failed)}"
+                )
+                current_xml = correction.qti_xml
+                latest_review = corrected_review
             else:
-                # Correction itself failed
-                failed_checks = self._get_failed_checks(review)
+                # All correction attempts exhausted without passing
+                failed_checks = self._get_failed_checks(latest_review)
+                retries = self.max_correction_retries
                 error_msg = (
-                    f"Feedback review failed: {', '.join(failed_checks) or 'unknown'}"
+                    f"Feedback review failed after {retries} "
+                    f"correction attempt(s): "
+                    f"{', '.join(failed_checks) or 'unknown'}"
                 )
 
                 result = PipelineResult(
@@ -140,7 +158,7 @@ class QuestionPipeline:
                     success=False,
                     stage_failed="feedback_review",
                     error=error_msg,
-                    feedback_review_details=review.model_dump(),
+                    feedback_review_details=latest_review.model_dump(),
                     can_sync=False,
                 )
                 if output_dir:

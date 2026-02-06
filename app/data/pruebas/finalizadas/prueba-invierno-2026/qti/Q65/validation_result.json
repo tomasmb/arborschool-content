@@ -1,0 +1,45 @@
+{
+  "question_id": "prueba-invierno-2026-Q65",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-06T14:54:37.858834+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: al lanzar 3 monedas hay 2·2·2 = 8 resultados equiprobables. Sea c el número de caras y s el número de sellos, con c + s = 3. El puntaje es c − 2s y se pide P(c − 2s < 0). Los posibles pares (c, s) son: (3,0) → 3 − 0 = 3 (no negativo); (2,1) → 2 − 2 = 0 (no negativo); (1,2) → 1 − 4 = −3 (negativo); (0,3) → 0 − 6 = −6 (negativo). Los casos negativos son (1,2) y (0,3). Contando resultados concretos: (1,2) tiene 3 permutaciones, (0,3) tiene 1, total 4 resultados favorables de 8, por lo que la probabilidad es 4/8 = 1/2. La alternativa correcta es ChoiceD. \n\nRevisión de feedbacks:\n- ChoiceD (correcta): El feedback explica c + s = 3, evalúa el puntaje en los cuatro casos, identifica correctamente cuáles son negativos, cuenta 3 resultados con una cara y dos sellos y 1 con tres sellos, y concluye 4/8 = 1/2. La justificación es matemática y completa.\n- ChoiceA: El feedback muestra explícitamente que el caso con un sello (c=2, s=1) da puntaje 0 (no negativo) y que los casos con dos y tres sellos sí son negativos, sumando 4 resultados de 8, por lo que la probabilidad es 1/2 y no 1/8. Todos los cálculos son correctos.\n- ChoiceB: El feedback recalcula los casos con dos y tres sellos, obtiene puntajes −3 y −6, cuenta 3 resultados con dos sellos y 1 con tres sellos (4 de 8) y concluye 1/2, distinto de 1/4. Es consistente y correcto.\n- ChoiceC: El feedback enumera todos los pares (c,s), calcula los puntajes, identifica correctamente los negativos, cuenta 3 + 1 = 4 resultados favorables de 8 y concluye 1/2, no 3/8. Matemáticamente correcto.\n- Bloque de solución: Repite el razonamiento completo: total de 8 resultados, lista de (c,s), cálculo de puntajes, conteo de resultados concretos por caso, identificación de los negativos y cálculo final 4/8 = 1/2. No hay errores ni omisiones. \nEn todos los casos, la retroalimentación demuestra por qué la opción correcta lo es y por qué las incorrectas no satisfacen la condición de puntaje negativo."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°–4° medio: se explican los pasos de conteo de resultados, la relación c + s = 3 y la evaluación de la expresión c − 2s sin tecnicismos innecesarios. Cada feedback es auto-contenido: recuerda la condición de puntaje negativo (c − 2s < 0), explica cuántos resultados hay al lanzar tres monedas, identifica explícitamente qué combinaciones de caras y sellos producen puntaje negativo y cuántos resultados concretos corresponden a cada caso. No se remite a información externa ni a pasos que el estudiante deba inferir por su cuenta. Además, cada feedback está claramente contextualizado a esta pregunta (tres monedas, caras/sellos, expresión c − 2s) y no es genérico. La solución paso a paso también está estructurada en ítems numerados, lo que favorece la comprensión."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mi>, <mn>, <mfrac>, etc.), sin uso de LaTeX. No aparecen números con separadores de miles ni decimales, solo enteros pequeños (0, 1, 2, 3, 4, 6, 8), por lo que no hay conflicto con el formato chileno de punto para miles y coma para decimales. El bloque de procesamiento de respuestas define ChoiceD como correcta en <qti-correct-response>. El fallback (<qti-response-else>) asigna el feedback fbA, que corresponde a una opción incorrecta, y SCORE = 0, por lo que cumple la condición de no entregar la retroalimentación de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La respuesta correcta (1/2) está bien justificada en todos los textos, y los feedbacks de las alternativas incorrectas muestran explícitamente por qué sus probabilidades propuestas no coinciden con el número de resultados con puntaje negativo. El lenguaje, la estructura y el formato QTI/MathML son adecuados y consistentes, por lo que todos los chequeos se cumplen."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "not_applicable",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-06T15:19:39.935028+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

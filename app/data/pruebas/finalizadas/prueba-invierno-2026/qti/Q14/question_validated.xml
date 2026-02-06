@@ -1,0 +1,174 @@
+<qti-assessment-item
+  xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:m="http://www.w3.org/1998/Math/MathML"
+  xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+  identifier="choice-cafeteria-promocion"
+  title="Promoción de cafetería - descuento por café"
+  adaptive="false"
+  time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una cafetería ofrece la siguiente promoción:</p>
+    <p>
+      <img
+        src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/prueba-invierno-2026/Q14.png"
+        alt="Anuncio de una cafetería dentro de un recuadro con un dibujo en blanco y negro..."/>
+    </p>
+    <p>Un grupo de cinco personas asiste a la cafetería a comprar esta promoción y desean dividir el total a pagar en partes iguales.</p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>¿Qué porcentaje de descuento obtuvo cada persona al pagar por su café?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mn>4</m:mn>
+          <m:mo>%</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Si cada persona obtuviera un descuento de <m:math><m:mn>4</m:mn><m:mo>%</m:mo></m:math>, el grupo pagaría el <m:math><m:mn>96</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés. Sin embargo, con la promoción pagan solo cuatro cafés, es decir, el <m:math><m:mn>80</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés, por lo que el descuento por persona es mayor que <m:math><m:mn>4</m:mn><m:mo>%</m:mo></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mn>5</m:mn>
+          <m:mo>%</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Si cada persona obtuviera un descuento de <m:math><m:mn>5</m:mn><m:mo>%</m:mo></m:math>, el grupo pagaría el <m:math><m:mn>95</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés. Pero con la promoción pagan solo cuatro cafés, es decir, el <m:math><m:mn>80</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés, por lo que el descuento por persona es mayor que <m:math><m:mn>5</m:mn><m:mo>%</m:mo></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mn>20</m:mn>
+          <m:mo>%</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El grupo recibe un café gratis por cada cinco cafés consumidos. Eso significa que pagan solo cuatro de los cinco cafés, es decir, pagan el <m:math><m:mn>80</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés. El descuento total es entonces <m:math><m:mn>100</m:mn><m:mo>%</m:mo><m:mo>-</m:mo><m:mn>80</m:mn><m:mo>%</m:mo><m:mo>=</m:mo><m:mn>20</m:mn><m:mo>%</m:mo></m:math>. Como las cinco personas se reparten el beneficio por igual, cada una obtiene un descuento de <m:math><m:mn>20</m:mn><m:mo>%</m:mo></m:math> sobre el valor de su café.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mn>25</m:mn>
+          <m:mo>%</m:mo>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Un descuento de <m:math><m:mn>25</m:mn><m:mo>%</m:mo></m:math> significa pagar el <m:math><m:mn>75</m:mn><m:mo>%</m:mo></m:math> del valor total. En este caso, el grupo paga solo cuatro de los cinco cafés, es decir, el <m:math><m:mn>80</m:mn><m:mo>%</m:mo></m:math> del valor total de cinco cafés. Por lo tanto, el descuento por persona es de <m:math><m:mn>20</m:mn><m:mo>%</m:mo></m:math>, no de <m:math><m:mn>25</m:mn><m:mo>%</m:mo></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>La promoción indica: por cada cuatro cafés que se compran, el quinto es gratis. Es decir, al consumir cinco cafés, solo se pagan cuatro.</p>
+          </li>
+          <li>
+            <p>Supongamos que el precio de un café es <m:math><m:mi>P</m:mi></m:math> pesos. Entonces, el valor total de cinco cafés sin promoción es:</p>
+            <p><m:math><m:mn>5</m:mn><m:mo>&#x00D7;</m:mo><m:mi>P</m:mi><m:mo>=</m:mo><m:mn>5</m:mn><m:mi>P</m:mi></m:math></p>
+          </li>
+          <li>
+            <p>Con la promoción, el grupo paga solo cuatro cafés:</p>
+            <p><m:math><m:mn>4</m:mn><m:mo>&#x00D7;</m:mo><m:mi>P</m:mi><m:mo>=</m:mo><m:mn>4</m:mn><m:mi>P</m:mi></m:math></p>
+          </li>
+          <li>
+            <p>El descuento total en pesos es la diferencia entre el valor sin promoción y lo que efectivamente se paga:</p>
+            <p><m:math><m:mn>5</m:mn><m:mi>P</m:mi><m:mo>-</m:mo><m:mn>4</m:mn><m:mi>P</m:mi><m:mo>=</m:mo><m:mi>P</m:mi></m:math></p>
+            <p>Es decir, se descuenta el valor de un café.</p>
+          </li>
+          <li>
+            <p>Para encontrar el porcentaje de descuento sobre el valor total de los cinco cafés, comparamos el descuento con el valor total sin promoción:</p>
+            <p><m:math><m:mfrac><m:mi>P</m:mi><m:mrow><m:mn>5</m:mn><m:mi>P</m:mi></m:mrow></m:mfrac><m:mo>=</m:mo><m:mfrac><m:mn>1</m:mn><m:mn>5</m:mn></m:mfrac></m:math></p>
+            <p>Como <m:math><m:mfrac><m:mn>1</m:mn><m:mn>5</m:mn></m:mfrac></m:math> es igual a <m:math><m:mn>0,2</m:mn></m:math>, esto corresponde a un <m:math><m:mn>20</m:mn><m:mo>%</m:mo></m:math> de descuento:</p>
+            <p><m:math><m:mn>0,2</m:mn><m:mo>&#x00D7;</m:mo><m:mn>100</m:mn><m:mo>%</m:mo><m:mo>=</m:mo><m:mn>20</m:mn><m:mo>%</m:mo></m:math></p>
+          </li>
+          <li>
+            <p>Las cinco personas se reparten el costo total en partes iguales, por lo que cada una paga la misma fracción del total y recibe el mismo beneficio de la promoción.</p>
+            <p>Así, cada persona obtiene un descuento de <m:math><m:mn>20</m:mn><m:mo>%</m:mo></m:math> sobre el valor de su café.</p>
+          </li>
+          <li>
+            <p>Por lo tanto, la alternativa correcta es:</p>
+            <p><strong><m:math><m:mn>20</m:mn><m:mo>%</m:mo></m:math></strong></p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

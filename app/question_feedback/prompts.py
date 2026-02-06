@@ -10,6 +10,29 @@ All prompts follow Gemini 3 Pro best practices:
 from __future__ import annotations
 
 # ---------------------------------------------------------------------------
+# SHARED PROMPT SECTIONS
+# ---------------------------------------------------------------------------
+# Reusable blocks injected into multiple prompts via string concatenation.
+# ---------------------------------------------------------------------------
+
+CHILEAN_NUMBER_FORMAT_SECTION = """
+<chilean_number_format>
+IMPORTANTE: Este contenido usa formato numérico chileno:
+- Punto (.) = separador de MILES (no decimal)
+- Coma (,) = separador DECIMAL
+
+Ejemplos de interpretación:
+- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- "100.000" significa 100000 (cien mil)
+- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
+- "3,21868" significa 3.21868 (tres coma veintiuno...)
+- "0,80467" significa 0.80467 (cero coma ochenta...)
+
+Al validar cálculos, interpreta los números según este formato ANTES de verificar.
+</chilean_number_format>
+"""
+
+# ---------------------------------------------------------------------------
 # FEEDBACK ENHANCEMENT PROMPT
 # ---------------------------------------------------------------------------
 # Used by FeedbackEnhancer to generate QTI XML with feedback.
@@ -141,12 +164,22 @@ QTI XML CON FEEDBACK QUE TIENE ERRORES:
 <task>
 Corregir los errores identificados en el feedback. Devolver el XML completo corregido.
 </task>
-
+""" + CHILEAN_NUMBER_FORMAT_SECTION + """
 <correction_instructions>
 1. Lee cuidadosamente cada error identificado
-2. Resuelve el problema matemático paso a paso para verificar los valores correctos
-3. Corrige SOLO las partes con errores, manteniendo el resto del XML intacto
-4. Verifica que cada número, cálculo y ejemplo construido en el feedback corregido
+
+2. RESUELVE EL PROBLEMA COMPLETO desde cero, paso a paso, para obtener
+   los valores correctos ANTES de modificar cualquier feedback
+
+3. Para errores de PRECISIÓN MATEMÁTICA:
+   - Reescribe COMPLETAMENTE la solución paso a paso y los feedbacks afectados
+   - NO intentes parchar expresiones individuales — re-deriva todo desde el principio
+   - Verifica cada igualdad y cada paso aritmético antes de incluirlo
+
+4. Para errores de CLARIDAD o FORMATO:
+   - Corrige solo las partes afectadas, manteniendo el resto intacto
+
+5. Verifica que cada número, cálculo y ejemplo en el feedback corregido
    cumpla todas las restricciones del enunciado y sea aritméticamente correcto
 </correction_instructions>
 
@@ -185,7 +218,7 @@ QTI XML CON RETROALIMENTACIÓN GENERADA:
 <task>
 Resolver el problema y validar que cada feedback sea matemáticamente correcto y auto-contenido.
 </task>
-
+""" + CHILEAN_NUMBER_FORMAT_SECTION + """
 <checks>
 1. PRECISIÓN FACTUAL (feedback_accuracy):
    - Resuelve el problema paso a paso para verificar la respuesta correcta
@@ -251,22 +284,7 @@ QTI XML COMPLETO (pregunta + retroalimentación):
 <task>
 Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
 </task>
-
-<chilean_number_format>
-IMPORTANTE: Este contenido usa formato numérico chileno:
-- Punto (.) = separador de MILES (no decimal)
-- Coma (,) = separador DECIMAL
-
-Ejemplos de interpretación:
-- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
-- "100.000" significa 100000 (cien mil)
-- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
-- "3,21868" significa 3.21868 (tres coma veintiuno...)
-- "0,80467" significa 0.80467 (cero coma ochenta...)
-
-Al validar cálculos, interpreta los números según este formato ANTES de verificar.
-</chilean_number_format>
-
+""" + CHILEAN_NUMBER_FORMAT_SECTION + """
 <checks>
 1. RESPUESTA CORRECTA (correct_answer_check):
    - Resuelve el problema paso a paso (usando formato chileno para interpretar números)
