@@ -302,7 +302,7 @@ export function TestSyncModal({
                 </div>
               )}
 
-              {syncResult.errors.length > 0 && (
+              {syncResult.errors && syncResult.errors.length > 0 && (
                 <div className="max-h-32 overflow-y-auto border border-error/20 rounded-lg p-3">
                   {syncResult.errors.map((err, i) => (
                     <p key={i} className="text-sm text-error">
