@@ -20,6 +20,11 @@ from api.config import (
     SUBJECTS_CONFIG,
     TEMARIOS_JSON_DIR,
 )
+from api.utils.validation_io import (
+    is_can_sync,
+    read_validation_data,
+    validation_failed,
+)
 
 
 class StatusTracker:
@@ -183,17 +188,8 @@ class StatusTracker:
 
                 # Check enrichment/validation status
                 is_enriched = (q_dir / "question_validated.xml").exists()
-                is_validated = False
-                validation_result_file = q_dir / "validation_result.json"
-                if validation_result_file.exists():
-                    try:
-                        with open(validation_result_file, encoding="utf-8") as f:
-                            vdata = json.load(f)
-                        # Only can_sync=True means truly validated and ready for sync
-                        # success=True just means the pipeline ran without errors
-                        is_validated = vdata.get("can_sync", False)
-                    except (json.JSONDecodeError, OSError):
-                        pass
+                vdata = read_validation_data(q_dir)
+                is_validated = is_can_sync(vdata)
 
                 if has_qti:
                     qti_count += 1
@@ -262,21 +258,13 @@ class StatusTracker:
                         if (variant_dir / "question_validated.xml").exists():
                             enriched_variants_count += 1
 
-                        # Validation: can_sync in validation_result.json
-                        # is the single source of truth
-                        vr_path = variant_dir / "validation_result.json"
-                        if vr_path.exists():
-                            try:
-                                with open(vr_path, encoding="utf-8") as f:
-                                    vdata = json.load(f)
-                                if vdata.get("can_sync", False):
-                                    validated_variants_count += 1
-                                else:
-                                    failed_validation_variants_count += 1
-                            except (json.JSONDecodeError, OSError):
-                                pass  # Unreadable → not counted
-                        # No validation_result.json = not yet validated
-                        # (NOT a failure, just pending)
+                        # Validation status from shared helper
+                        vdata = read_validation_data(variant_dir)
+                        if is_can_sync(vdata):
+                            validated_variants_count += 1
+                        elif validation_failed(vdata):
+                            failed_validation_variants_count += 1
+                        # else: not yet validated (pending)
 
         # split_count: if QTI exists, consider it "split" even without PDF
         # (QTI is the goal, PDF is just an intermediate step)

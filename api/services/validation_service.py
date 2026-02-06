@@ -17,6 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from api.config import PRUEBAS_ALTERNATIVAS_DIR, PRUEBAS_FINALIZADAS_DIR
+from api.utils.validation_io import is_can_sync, read_validation_data
 from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_feedback.validator import FinalValidator
 
@@ -78,16 +79,9 @@ def _get_items_to_validate_from_path(
         if not validated_xml_path.exists():
             continue
 
-        # Check existing validation result
-        validation_result_path = folder / "validation_result.json"
-        if validation_result_path.exists() and not revalidate_passed:
-            try:
-                with open(validation_result_path, encoding="utf-8") as f:
-                    existing = json.load(f)
-                if existing.get("can_sync"):
-                    continue  # Already passed, skip
-            except (json.JSONDecodeError, OSError):
-                pass  # If we can't read it, revalidate
+        # Skip items that already passed validation
+        if not revalidate_passed and is_can_sync(read_validation_data(folder)):
+            continue
 
         try:
             qti_xml = validated_xml_path.read_text(encoding="utf-8")

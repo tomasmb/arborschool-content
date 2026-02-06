@@ -24,6 +24,11 @@ from api.schemas.api_models import (
     QuestionDetail,
     VariantBrief,
 )
+from api.utils.validation_io import (
+    has_final_validation,
+    is_can_sync,
+    read_validation_data,
+)
 
 router = APIRouter()
 
@@ -101,7 +106,6 @@ async def get_question_detail(
     question_id = f"{test_id}-Q{question_num}"
     validated_qti_file = q_dir / "question_validated.xml"
     original_qti_file = q_dir / "question.xml"
-    validation_result_file = q_dir / "validation_result.json"
     metadata_file = q_dir / "metadata_tags.json"
     pdf_dir = PRUEBAS_PROCESADAS_DIR / test_id / "pdf"
     pdf_file = pdf_dir / f"Q{question_num}.pdf"
@@ -173,16 +177,10 @@ async def get_question_detail(
             if variant_dir.is_dir():
                 # Check variant-level enrichment (question_validated.xml)
                 variant_enriched = (variant_dir / "question_validated.xml").exists()
-                # Check variant-level validation (validation_result.json with success)
-                variant_validated = False
-                variant_validation_file = variant_dir / "validation_result.json"
-                if variant_validation_file.exists():
-                    try:
-                        with open(variant_validation_file, encoding="utf-8") as f:
-                            vdata = json_module.load(f)
-                        variant_validated = vdata.get("can_sync", False) or vdata.get("success", False)
-                    except (json_module.JSONDecodeError, OSError):
-                        pass
+                # Check variant-level validation (can_sync only)
+                variant_validated = is_can_sync(
+                    read_validation_data(variant_dir)
+                )
 
                 variants.append(VariantBrief(
                     id=f"{question_id}-v{idx}",
@@ -194,27 +192,19 @@ async def get_question_detail(
                     is_validated=variant_validated,
                 ))
 
-    # Check enrichment/validation status (reuse validation data read earlier)
+    # Check enrichment/validation status via shared helper
     is_enriched = validated_qti_file.exists()
-    is_validated = False
-    can_sync = False
-    validation_result: dict | None = None
+    vdata = read_validation_data(q_dir)
+    can_sync = is_can_sync(vdata)
+    is_validated = can_sync
 
-    if validation_result_file.exists():
-        try:
-            with open(validation_result_file, encoding="utf-8") as f:
-                validation_data = json_module.load(f)
-            can_sync = validation_data.get("can_sync", False)
-            # Only can_sync=True means truly validated and ready for sync
-            # success=True just means the pipeline ran without errors
-            is_validated = can_sync
-            # Extract validation details for display
-            if "stages" in validation_data and "final_validation" in validation_data["stages"]:
-                validation_result = validation_data["stages"]["final_validation"]
-            elif "validation_details" in validation_data:
-                validation_result = validation_data["validation_details"]
-        except (json_module.JSONDecodeError, OSError):
-            pass
+    # Extract validation details for display
+    validation_result: dict | None = None
+    if vdata is not None:
+        if has_final_validation(vdata):
+            validation_result = vdata["stages"]["final_validation"]
+        elif "validation_details" in vdata:
+            validation_result = vdata["validation_details"]
 
     # Get sync status
     from api.services.sync_service import get_question_sync_status

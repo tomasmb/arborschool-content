@@ -19,6 +19,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from api.config import PRUEBAS_ALTERNATIVAS_DIR, PRUEBAS_FINALIZADAS_DIR
+from api.utils.validation_io import is_can_sync, read_validation_data
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_feedback.utils.image_utils import extract_image_urls
 
@@ -112,7 +113,6 @@ def _get_items_to_enrich_from_path(
 
         # Check enriched status
         validated_xml_path = folder / "question_validated.xml"
-        validation_result_path = folder / "validation_result.json"
 
         # If only_failed_validation, we want items that ARE enriched but FAILED validation
         if only_failed_validation:
@@ -121,19 +121,14 @@ def _get_items_to_enrich_from_path(
                 logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: not enriched yet")
                 continue
 
-            # Check if validation failed (can_sync is False)
-            if validation_result_path.exists():
-                try:
-                    with open(validation_result_path, encoding="utf-8") as f:
-                        validation_data = json.load(f)
-                    if validation_data.get("can_sync", False):
-                        # Validation passed, skip
-                        logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: validation passed")
-                        continue
-                except (json.JSONDecodeError, OSError) as e:
-                    logger.warning(f"Failed to read validation result for {item_id}: {e}")
-                    # Include if we can't read (assume failed)
-            # If no validation_result.json, include it (enriched but not validated)
+            # Skip items where validation already passed
+            vdata = read_validation_data(folder)
+            if is_can_sync(vdata):
+                logger.debug(
+                    f"[ENRICH DEBUG] Skipping {item_id}: validation passed"
+                )
+                continue
+            # Include: enriched but not validated, or validation failed
             logger.warning(f"[ENRICH DEBUG] Including {item_id}: failed validation, will re-enrich")
         elif skip_already_enriched and validated_xml_path.exists():
             logger.debug(f"[ENRICH DEBUG] Skipping {item_id}: already enriched")

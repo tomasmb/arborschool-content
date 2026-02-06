@@ -6,7 +6,6 @@ file system to the database, including variants.
 
 from __future__ import annotations
 
-import json
 import logging
 import re
 from pathlib import Path
@@ -19,6 +18,7 @@ from api.services.sync_db import (
     get_db_connection,
     upsert_question_qti,
 )
+from api.utils.validation_io import is_can_sync, read_validation_data
 from app.question_feedback.utils.qti_parser import has_feedback
 from app.sync.config import SyncEnvironment
 
@@ -45,15 +45,10 @@ def _check_validation(folder: Path) -> str | None:
     """
     if not (folder / "question_validated.xml").exists():
         return "not_enriched"
-    validation_path = folder / "validation_result.json"
-    if not validation_path.exists():
+    vdata = read_validation_data(folder)
+    if vdata is None:
         return "not_validated"
-    try:
-        with open(validation_path, encoding="utf-8") as f:
-            validation = json.load(f)
-    except (json.JSONDecodeError, OSError):
-        return "validation_unreadable"
-    if not validation.get("can_sync"):
+    if not is_can_sync(vdata):
         return "validation_failed"
     return None
 

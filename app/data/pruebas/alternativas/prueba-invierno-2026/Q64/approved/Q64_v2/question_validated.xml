@@ -1,0 +1,225 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="dado-cargado-probabilidades-v2" title="Probabilidades en un dado cargado V2" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En la siguiente tabla se presenta la probabilidad de obtener cada cara de un dado cargado al lanzarlo.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Número de la cara</th>
+          <th>Probabilidad</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>0,3</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>0,2</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>0,1</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>0,2</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>0,1</td>
+        </tr>
+      </tbody>
+    </table>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es verdadera con respecto a la información entregada?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">La probabilidad de obtener un 3 o un 4 al lanzar este dado es la misma que se obtiene al lanzar un dado común.<qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK">Incorrecto. En el dado cargado, la probabilidad de obtener 3 o 4 es la suma de las probabilidades de cada cara: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn><mo>+</mo><mn>0,1</mn><mo>=</mo><mn>0,3</mn></math>. En un dado común, la probabilidad de obtener 3 o 4 es: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>2</mn><mn>6</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac></math>, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>3</mn></mfrac></math> es aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,333...</mn></math>, que es distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math>. Por lo tanto, la probabilidad en el dado cargado no es la misma que en un dado común.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">La probabilidad de obtener un 1 al lanzar este dado es la misma que se obtiene al lanzar un dado común.<qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK">Incorrecto. En el dado cargado, la probabilidad de obtener un 1 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math>. En un dado común, todas las caras son equiprobables, por lo que la probabilidad de obtener un 1 es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>6</mn></mfrac></math>, que es aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,166...</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math> es distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,166...</mn></math>, la probabilidad de obtener un 1 en este dado cargado no es la misma que en un dado común.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">La probabilidad de obtener un número menor que 4 al lanzar este dado es 0,6.<qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK">¡Correcto! Los números menores que 4 en el dado son 1, 2 y 3. Según la tabla, sus probabilidades son: para 1, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math>; para 2, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math>; y para 3, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn></math>. La probabilidad total de obtener un número menor que 4 es la suma de estas probabilidades: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn><mo>+</mo><mn>0,1</mn><mo>+</mo><mn>0,2</mn><mo>=</mo><mn>0,6</mn></math>. Por lo tanto, la afirmación es verdadera.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">La probabilidad de obtener un número impar al lanzar este dado es 0,5.<qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK">Incorrecto. Los números impares del dado son 1, 3 y 5. Según la tabla, sus probabilidades son: para 1, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math>; para 3, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn></math>; y para 5, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn></math>. La probabilidad total de obtener un número impar es la suma de estas probabilidades: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn><mo>+</mo><mn>0,2</mn><mo>+</mo><mn>0,2</mn><mo>=</mo><mn>0,7</mn></math>. Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,7</mn></math> es distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math>, la afirmación es falsa.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo de probabilidades en el dado cargado</strong></p>
+        <ol>
+          <li>
+            <p>Identificar la información de la tabla:</p>
+            <p>Según la tabla, las probabilidades de cada cara del dado cargado son:</p>
+            <ul>
+              <li>Cara 1: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math></li>
+              <li>Cara 2: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math></li>
+              <li>Cara 3: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn></math></li>
+              <li>Cara 4: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math></li>
+              <li>Cara 5: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,2</mn></math></li>
+              <li>Cara 6: probabilidad <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1</mn></math></li>
+            </ul>
+          </li>
+          <li>
+            <p>Calcular la probabilidad de obtener un número menor que 4:</p>
+            <p>Los números menores que 4 en un dado son 1, 2 y 3.</p>
+            <p>Sumamos las probabilidades de estas caras:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,3</mn>
+                <mo>+</mo>
+                <mn>0,1</mn>
+                <mo>+</mo>
+                <mn>0,2</mn>
+                <mo>=</mo>
+                <mn>0,6</mn>
+              </math>
+            </p>
+            <p>Por lo tanto, la probabilidad de obtener un número menor que 4 al lanzar este dado cargado es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,6</mn></math>.</p>
+          </li>
+          <li>
+            <p>Verificar brevemente las otras afirmaciones:</p>
+            <ul>
+              <li>
+                <p>Probabilidad de obtener 3 o 4 en el dado cargado:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mn>0,2</mn>
+                    <mo>+</mo>
+                    <mn>0,1</mn>
+                    <mo>=</mo>
+                    <mn>0,3</mn>
+                  </math>
+                </p>
+                <p>En un dado común, la probabilidad de obtener 3 o 4 es:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mfrac>
+                      <mn>2</mn>
+                      <mn>6</mn>
+                    </mfrac>
+                    <mo>=</mo>
+                    <mfrac>
+                      <mn>1</mn>
+                      <mn>3</mn>
+                    </mfrac>
+                  </math>
+                </p>
+                <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math> es distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>3</mn></mfrac></math>, esta afirmación es falsa.</p>
+              </li>
+              <li>
+                <p>Probabilidad de obtener 1 en el dado cargado:</p>
+                <p>Es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,3</mn></math>, mientras que en un dado común es <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>1</mn><mn>6</mn></mfrac></math>, aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,166...</mn></math>. No son iguales, por lo que esta afirmación es falsa.</p>
+              </li>
+              <li>
+                <p>Probabilidad de obtener un número impar en el dado cargado:</p>
+                <p>Los números impares son 1, 3 y 5. Sumamos sus probabilidades:</p>
+                <p>
+                  <math xmlns="http://www.w3.org/1998/Math/MathML">
+                    <mn>0,3</mn>
+                    <mo>+</mo>
+                    <mn>0,2</mn>
+                    <mo>+</mo>
+                    <mn>0,2</mn>
+                    <mo>=</mo>
+                    <mn>0,7</mn>
+                  </math>
+                </p>
+                <p>Como <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,7</mn></math> es distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,5</mn></math>, esta afirmación también es falsa.</p>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Conclusión:</p>
+            <p>La única afirmación verdadera es que la probabilidad de obtener un número menor que 4 al lanzar este dado es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,6</mn></math>, que corresponde a la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
