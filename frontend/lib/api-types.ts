@@ -276,7 +276,10 @@ export interface SyncPreviewSummary {
 
 export interface TestSyncPreview {
   questions: SyncPreviewQuestions;
+  variants: SyncPreviewQuestions;
   summary: SyncPreviewSummary;
+  question_summary: SyncPreviewSummary | null;
+  variant_summary: SyncPreviewSummary | null;
 }
 
 export interface TestSyncResult {
@@ -285,6 +288,23 @@ export interface TestSyncResult {
   updated: number;
   skipped: number;
   errors: string[];
+}
+
+export interface TestSyncDiffEntity {
+  local_count: number;
+  db_count: number;
+  new_count: number;
+  deleted_count: number;
+  unchanged_count: number;
+  has_changes: boolean;
+}
+
+export interface TestSyncDiff {
+  environment: string;
+  has_changes: boolean;
+  questions: TestSyncDiffEntity;
+  variants: TestSyncDiffEntity;
+  error: string | null;
 }
 
 // -----------------------------------------------------------------------------

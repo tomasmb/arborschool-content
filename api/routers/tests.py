@@ -28,6 +28,8 @@ from api.schemas.pipeline_models import (
     EnrichmentQuestionResult,
     EnrichmentRequest,
     EnrichmentStatusResponse,
+    TestSyncDiffEntityResponse,
+    TestSyncDiffResponse,
     TestSyncExecuteResponse,
     TestSyncPreviewRequest,
     TestSyncPreviewResponse,
@@ -314,6 +316,36 @@ async def start_variant_validation(
 # -----------------------------------------------------------------------------
 
 
+@router.get(
+    "/{subject_id}/tests/{test_id}/sync/diff",
+    response_model=TestSyncDiffResponse,
+)
+async def get_sync_diff(
+    subject_id: str,
+    test_id: str,
+    environment: str = "local",
+) -> TestSyncDiffResponse:
+    """Get diff between local files and database for this test.
+
+    Shows how many questions/variants would be created, deleted, or
+    are already in sync.
+    """
+    _validate_subject_and_test(subject_id, test_id)
+
+    diff = sync_service.get_test_sync_diff(
+        test_id=test_id,
+        environment=environment,
+    )
+
+    return TestSyncDiffResponse(
+        environment=diff["environment"],
+        has_changes=diff["has_changes"],
+        questions=TestSyncDiffEntityResponse(**diff["questions"]),
+        variants=TestSyncDiffEntityResponse(**diff["variants"]),
+        error=diff.get("error"),
+    )
+
+
 @router.post(
     "/{subject_id}/tests/{test_id}/sync/preview",
     response_model=TestSyncPreviewResponse,
@@ -325,18 +357,28 @@ async def preview_sync(
 ) -> TestSyncPreviewResponse:
     """Preview what will be synced to database.
 
-    Returns categorized questions: to_create, to_update, unchanged, skipped.
+    Returns categorized questions and variants:
+    to_create, to_update, unchanged, skipped.
     """
     _validate_subject_and_test(subject_id, test_id)
 
     preview = sync_service.get_sync_preview(
         test_id=test_id,
+        environment=request.environment,
         include_variants=request.include_variants,
     )
 
+    q_summary = preview.get("question_summary", preview["summary"])
+    v_summary = preview.get("variant_summary", {
+        "create": 0, "update": 0, "unchanged": 0, "skipped": 0,
+    })
+
     return TestSyncPreviewResponse(
         questions=preview["questions"],
+        variants=preview.get("variants", {}),
         summary=TestSyncSummary(**preview["summary"]),
+        question_summary=TestSyncSummary(**q_summary),
+        variant_summary=TestSyncSummary(**v_summary),
     )
 
 
@@ -357,6 +399,7 @@ async def execute_sync(
 
     result = sync_service.execute_sync(
         test_id=test_id,
+        environment=request.environment,
         include_variants=request.include_variants,
         upload_images=request.upload_images,
     )

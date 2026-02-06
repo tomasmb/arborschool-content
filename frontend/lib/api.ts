@@ -36,6 +36,8 @@ export type {
   SyncTableSummary,
   TestBrief,
   TestDetail,
+  TestSyncDiff,
+  TestSyncDiffEntity,
   TestSyncPreview,
   TestSyncResult,
   ValidationJobResponse,
@@ -61,6 +63,7 @@ import type {
   SyncStatus,
   TestBrief,
   TestDetail,
+  TestSyncDiff,
   TestSyncPreview,
   TestSyncResult,
   ValidationJobResponse,
@@ -441,8 +444,19 @@ export async function startVariantValidation(
 // -----------------------------------------------------------------------------
 
 export interface TestSyncParams {
+  environment?: string;
   include_variants?: boolean;
   upload_images?: boolean;
+}
+
+export async function getTestSyncDiff(
+  subjectId: string,
+  testId: string,
+  environment: string = "local",
+): Promise<TestSyncDiff> {
+  return fetchAPI<TestSyncDiff>(
+    `/subjects/${subjectId}/tests/${testId}/sync/diff?environment=${environment}`,
+  );
 }
 
 export async function getTestSyncPreview(
