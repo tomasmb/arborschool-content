@@ -21,6 +21,7 @@ import {
   VariantsTab,
   SyncTab,
   type TestTab,
+  type SyncEnvironment,
 } from "./components";
 
 type PipelineAction = "pdf_split" | "pdf_to_qti" | "tagging" | "variant_gen" | null;
@@ -66,6 +67,7 @@ export default function TestDetailPage() {
   const [showVariantEnrichmentModal, setShowVariantEnrichmentModal] = useState(false);
   const [showVariantValidationModal, setShowVariantValidationModal] = useState(false);
   const [showSyncModal, setShowSyncModal] = useState(false);
+  const [syncEnvironment, setSyncEnvironment] = useState<SyncEnvironment>("local");
   const [pipelineParams, setPipelineParams] = useState<Record<string, string>>({});
 
   const fetchData = useCallback(async () => {
@@ -225,7 +227,10 @@ export default function TestDetailPage() {
             testId={testId}
             questions={data.questions}
             data={data}
-            onSync={() => setShowSyncModal(true)}
+            onSync={(env) => {
+              setSyncEnvironment(env);
+              setShowSyncModal(true);
+            }}
             onViewDiff={() => {
               // TODO: Implement diff viewer modal
               console.log("View diff");
@@ -334,6 +339,7 @@ export default function TestDetailPage() {
         onOpenChange={setShowSyncModal}
         testId={testId}
         subjectId={courseId}
+        environment={syncEnvironment}
         stats={{
           validated_count: data.validated_count,
           total: data.questions.length,

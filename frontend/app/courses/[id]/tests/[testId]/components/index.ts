@@ -3,4 +3,4 @@ export { SplittingTab } from "./SplittingTab";
 export { ParsingTab } from "./ParsingTab";
 export { QuestionsTab } from "./QuestionsTab";
 export { VariantsTab } from "./VariantsTab";
-export { SyncTab } from "./SyncTab";
+export { SyncTab, type SyncEnvironment } from "./SyncTab";
