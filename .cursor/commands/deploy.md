@@ -49,7 +49,7 @@ resync dev to main after merging, future deploys will have fake conflicts.
 history even though the content is identical. This step fixes the divergence
 BEFORE creating a PR, so the PR is always clean.
 
-1. Fetch latest from origin:
+1. Fetch latest from origin (both branches):
    ```bash
    git fetch origin main dev
    ```
@@ -66,15 +66,15 @@ BEFORE creating a PR, so the PR is always clean.
       git log origin/main..dev --oneline
       ```
 
-   b. If dev has new commits not in main → rebase them onto main:
+   b. If dev has new commits not in main → merge main into dev:
       ```bash
-      git rebase origin/main
+      git merge origin/main --no-edit
       ```
-      - If rebase has conflicts → STOP, abort with `git rebase --abort`,
+      - If merge has conflicts → STOP, abort with `git merge --abort`,
         and tell the user to resolve manually.
-      - If rebase succeeds:
+      - If merge succeeds:
         ```bash
-        git push --force-with-lease
+        git push
         ```
 
    c. If dev has NO new commits (everything was already merged) → reset:
@@ -236,7 +236,7 @@ Deployment complete!
 | Uncommitted changes | Run `/git-commit` first |
 | PR already exists | Use existing PR |
 | main up to date with dev | No PR needed |
-| Rebase conflicts | Abort, tell user to resolve |
+| Merge conflicts | Abort, tell user to resolve |
 | Checks failing | Report failure, don't merge |
 | Merge blocked by reviews | Provide PR URL |
 
