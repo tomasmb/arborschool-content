@@ -132,18 +132,23 @@ export function QuestionDetailPanel({
         skip_already_enriched: false,
       });
       const pollStatus = async () => {
-        const status = await getEnrichmentStatus(subjectId, testId, job_id);
-        if (status.status === "completed") {
-          setEnriching(false);
-          if (status.progress.failed > 0) {
-            // Extract error message from results
-            const failedResult = status.results?.find((r) => r.status === "failed");
-            const errorMsg = failedResult?.error || "Enrichment failed";
-            setActionError(errorMsg);
+        try {
+          const status = await getEnrichmentStatus(subjectId, testId, job_id);
+          if (status.status === "completed") {
+            setEnriching(false);
+            if (status.progress.failed > 0) {
+              const failedResult = status.results?.find((r) => r.status === "failed");
+              const errorMsg = failedResult?.error || "Enrichment failed";
+              setActionError(errorMsg);
+            }
+            fetchData();
+          } else {
+            setTimeout(pollStatus, 1000);
           }
-          fetchData();
-        } else {
-          setTimeout(pollStatus, 1000);
+        } catch (err) {
+          setEnriching(false);
+          const msg = err instanceof Error ? err.message : String(err);
+          setActionError(msg.includes("404") ? "Job lost (server restarted)" : msg);
         }
       };
       pollStatus();
@@ -162,15 +167,21 @@ export function QuestionDetailPanel({
         revalidate_passed: true,
       });
       const pollStatus = async () => {
-        const status = await getValidationStatus(subjectId, testId, job_id);
-        if (status.status === "completed") {
-          setValidating(false);
-          if (status.progress.failed > 0) {
-            setActionError("Validation failed");
+        try {
+          const status = await getValidationStatus(subjectId, testId, job_id);
+          if (status.status === "completed") {
+            setValidating(false);
+            if (status.progress.failed > 0) {
+              setActionError("Validation failed");
+            }
+            fetchData();
+          } else {
+            setTimeout(pollStatus, 1000);
           }
-          fetchData();
-        } else {
-          setTimeout(pollStatus, 1000);
+        } catch (err) {
+          setValidating(false);
+          const msg = err instanceof Error ? err.message : String(err);
+          setActionError(msg.includes("404") ? "Job lost (server restarted)" : msg);
         }
       };
       pollStatus();

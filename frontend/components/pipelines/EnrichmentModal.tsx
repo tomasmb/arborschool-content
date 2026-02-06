@@ -100,7 +100,14 @@ export function EnrichmentModal({
         }
         // "started" and "in_progress" continue polling
       } catch (err) {
-        console.error("Failed to poll enrichment status:", err);
+        // Stop polling on 404 (job lost after server restart)
+        const msg = err instanceof Error ? err.message : String(err);
+        if (msg.includes("404") || msg.includes("Not Found")) {
+          setError("Job lost (server restarted). Please retry.");
+          setStep("results");
+        } else {
+          console.error("Failed to poll enrichment status:", err);
+        }
       }
     },
     [subjectId, testId]
