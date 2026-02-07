@@ -1,0 +1,191 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="naegele-rule-calculation-v1" title="Cálculo de Fecha de Parto - Regla de Naegele V1" adaptive="false" time-dependent="false" xml:lang="es">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La regla de Naegele es un método que permite determinar la fecha probable de parto de una mujer, determinando el día, mes y año tal como se representa en el siguiente diagrama:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q10_fixed.png" alt="Diagrama titulado 'Cálculo de la fecha probable de parto'. Muestra tres bloques de instrucciones: 1. Día: Día de la última menstruación más siete días. 2. Mes: Mes de la última menstruación menos tres meses. 3. Año: Dependiendo de la fecha de la última menstruación se podría sumar un año."/>
+    </p>
+    <p>Si la fecha de la última menstruación de una mujer embarazada fue el 15/06/2023, ¿cuál será la probable fecha de parto de esta mujer según la regla de Naegele?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">22/03/2024
+        <qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Según la regla de Naegele, se suma primero 7 días al día de la última menstruación. Como la fecha es 15/06/2023, se calcula <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>15</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>22</mn></mrow></math>, por lo que el día queda 22. Luego, se restan 3 meses al mes de la última menstruación: el mes 6 (junio) menos 3 meses da el mes 3 (marzo), es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>6</mn><mo>-</mo><mn>3</mn><mo>=</mo><mn>3</mn></mrow></math>. Finalmente, como al restar 3 meses no se pasa al año anterior (se sigue dentro del año siguiente al embarazo), se suma 1 año al año de la última menstruación: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2023</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>2024</mn></mrow></math>. Así, la fecha probable de parto es 22/03/2024, que coincide exactamente con esta alternativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">15/03/2024
+        <qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta alternativa mantiene el día 15, pero la regla de Naegele indica que se deben sumar 7 días al día de la última menstruación. Partiendo de 15/06/2023, el cálculo correcto del día es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>15</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>22</mn></mrow></math>, por lo que el día debe ser 22 y no 15. Aunque el mes 3 (marzo) y el año 2024 coinciden con lo que se obtiene al restar 3 meses a junio y sumar 1 año a 2023, la fecha completa que entrega la regla es 22/03/2024, distinta de 15/03/2024.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">08/03/2024
+        <qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta alternativa propone el día 8, pero la regla de Naegele exige sumar 7 días al día de la última menstruación. Con fecha inicial 15/06/2023, el cálculo del día es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>15</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>22</mn></mrow></math>, por lo que el día correcto es 22 y no 8. Aunque el mes 3 (marzo) y el año 2024 coinciden con el resultado de restar 3 meses a junio y sumar 1 año a 2023, la fecha que cumple completamente la regla es 22/03/2024, distinta de 08/03/2024.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">12/03/2024
+        <qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La regla de Naegele indica que se debe sumar 7 días al día de la última menstruación. Partiendo de 15/06/2023, el cálculo correcto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>15</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>22</mn></mrow></math>, por lo que el día debe ser 22 y no 12. Aunque el mes 3 (marzo) y el año 2024 coinciden con el resultado de restar 3 meses al mes 6 y sumar 1 año a 2023, la fecha que satisface completamente la regla es 22/03/2024, distinta de 12/03/2024.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Solución paso a paso usando la regla de Naegele</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar la fecha de la última menstruación</strong></p>
+            <p>La fecha entregada es 15/06/2023. Esto significa:
+            </p>
+            <ul>
+              <li>Día: 15</li>
+              <li>Mes: 6 (junio)</li>
+              <li>Año: 2023</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Calcular el día probable de parto</strong></p>
+            <p>Según el diagrama, para el día se debe sumar 7 días al día de la última menstruación.</p>
+            <p>Se calcula:
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>15</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+                  <mo>=</mo>
+                  <mn>22</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Por lo tanto, el día probable de parto es 22.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el mes probable de parto</strong></p>
+            <p>El diagrama indica que para el mes se deben restar 3 meses al mes de la última menstruación.</p>
+            <p>El mes de la última menstruación es junio, que corresponde al mes 6. Entonces:
+            </p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>6</mn>
+                  <mo>-</mo>
+                  <mn>3</mn>
+                  <mo>=</mo>
+                  <mn>3</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>El mes 3 corresponde a marzo. Por lo tanto, el mes probable de parto es marzo.</p>
+          </li>
+          <li>
+            <p><strong>Calcular el año probable de parto</strong></p>
+            <p>El diagrama señala que, dependiendo de la fecha de la última menstruación, se podría sumar un año.</p>
+            <p>En este caso, al restar 3 meses a junio se llega a marzo del año siguiente al inicio del embarazo. Por eso, se suma 1 año al año de la última menstruación:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mrow>
+                  <mn>2023</mn>
+                  <mo>+</mo>
+                  <mn>1</mn>
+                  <mo>=</mo>
+                  <mn>2024</mn>
+                </mrow>
+              </math>
+            </p>
+            <p>Así, el año probable de parto es 2024.</p>
+          </li>
+          <li>
+            <p><strong>Escribir la fecha probable de parto completa</strong></p>
+            <p>Reuniendo los resultados obtenidos:</p>
+            <ul>
+              <li>Día: 22</li>
+              <li>Mes: 3 (marzo)</li>
+              <li>Año: 2024</li>
+            </ul>
+            <p>La fecha probable de parto es, entonces, 22/03/2024.</p>
+            <p>Entre las alternativas dadas, esta corresponde a la opción 22/03/2024.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

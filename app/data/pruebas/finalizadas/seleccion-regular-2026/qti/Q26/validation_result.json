@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q26",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:11:07.746759+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: se tiene I(x) = 1000x + 600000 y G(x) = 750x + 450000, con G(x) = I(x) − C(x). Despejando, C(x) = I(x) − G(x) = (1000x + 600000) − (750x + 450000) = (1000x − 750x) + (600000 − 450000) = 250x + 150000, que corresponde a la alternativa A. \n\nRevisión de feedbacks:\n- Opción A: El feedback correcto muestra explícitamente el despeje C(x) = I(x) − G(x) y desarrolla (1000x + 600000) − (750x + 450000) = 250x + 150000. Todos los pasos y resultados son matemáticamente correctos.\n- Opción B: El feedback calcula I(x) − C(x) usando C(x) = 250x − 150000 y obtiene 1000x − 250x = 750x y 600000 − (−150000) = 600000 + 150000 = 750000, por lo que G(x) = 750x + 750000, distinto de 750x + 450000. La demostración es correcta.\n- Opción C: El feedback usa C(x) = 1750x − 1050000 y calcula I(x) − C(x) = (1000x + 600000) − (1750x − 1050000) = −750x + 1650000, que no coincide con 750x + 450000. Los signos y operaciones con negativos están bien manejados.\n- Opción D: El feedback usa C(x) = 1750x + 1050000 y obtiene I(x) − C(x) = (1000x + 600000) − (1750x + 1050000) = −750x − 450000, distinto de 750x + 450000. El desarrollo es correcto.\n- Solución paso a paso: Repite el despeje C(x) = I(x) − G(x), reemplaza las funciones dadas y agrupa términos semejantes para llegar a C(x) = 250x + 150000. No hay errores de cálculo ni de razonamiento.\nEn todos los casos, la retroalimentación demuestra correctamente por qué la opción es o no es la función costo."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio: se explican conceptos como 'despejar' y 'restar un número negativo equivale a sumar' con ejemplos concretos. Cada feedback es auto-contenido: incluye las expresiones de I(x), G(x) y la C(x) propuesta, y muestra el cálculo completo de I(x) − C(x) sin exigir que el estudiante haga pasos adicionales por su cuenta. Además, cada explicación está claramente vinculada a la alternativa específica (menciona explícitamente la ganancia esperada y la ganancia obtenida con esa opción), evitando comentarios genéricos. La solución general también está estructurada en pasos numerados, lo que facilita el seguimiento del procedimiento."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números se presentan sin separador de miles (600000, 450000, 150000, etc.), lo que no contradice el formato chileno indicado (no hay comas usadas como separador decimal ni puntos mal usados). No se observan inconsistencias de formato numérico. En el bloque de procesamiento de respuestas, la opción correcta está marcada como ChoiceA y el fallback (qti-response-else) asigna el feedback de ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la alternativa correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada y todas las retroalimentaciones (correcta, incorrectas y solución) son matemáticamente consistentes, específicas y claras. El formato QTI y la notación matemática cumplen con los requisitos establecidos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "Se tiene:\nIngreso: I(x) = 1000x + 600000\nGanancia: G(x) = 750x + 450000\n\nPor definición: G(x) = I(x) − C(x).\nDespejando C(x):\nC(x) = I(x) − G(x).\n\nSustituyendo:\nC(x) = (1000x + 600000) − (750x + 450000)\n     = 1000x + 600000 − 750x − 450000\n     = (1000x − 750x) + (600000 − 450000)\n     = 250x + 150000.\n\nLa alternativa que corresponde a C(x) = 250x + 150000 es la ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: parte de G(x) = I(x) − C(x), despeja correctamente C(x) = I(x) − G(x) y realiza bien las restas 1000x − 750x = 250x y 600000 − 450000 = 150000, concluyendo C(x) = 250x + 150000.\nFeedback ChoiceB: sustituye C(x) = 250x − 150000 en I(x) − C(x), obtiene 1000x − 250x = 750x y 600000 − (−150000) = 750000, por lo que G(x) = 750x + 750000, distinto de 750x + 450000; el razonamiento y la conclusión son correctos.\nFeedback ChoiceC: con C(x) = 1750x − 1050000, calcula I(x) − C(x) = (1000x + 600000) − (1750x − 1050000) = −750x + 1650000, que no coincide con la ganancia dada; los signos y operaciones son correctos.\nFeedback ChoiceD: con C(x) = 1750x + 1050000, obtiene I(x) − C(x) = (1000x + 600000) − (1750x + 1050000) = −750x − 450000, distinto de 750x + 450000; el desarrollo es correcto.\nLa solución paso a paso repite el mismo procedimiento correcto: despeje de C(x), sustitución y agrupación de términos semejantes, llegando a C(x) = 250x + 150000. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata funciones lineales de ingreso, costo y ganancia, contenido estándar del currículo PAES M1. Los valores numéricos (coeficientes 1000, 750 y montos fijos en cientos de miles de pesos) son razonables para un contexto económico simplificado. No hay errores de magnitud ni uso de contenidos fuera del temario."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada, todos los desarrollos algebraicos en la retroalimentación y en la solución son coherentes y correctos, y el contenido es adecuado para PAES M1 sin problemas de forma ni de fondo.",
+      "timestamp": "2026-02-07T02:18:16.623078+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

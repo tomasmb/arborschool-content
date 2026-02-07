@@ -1,0 +1,193 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-54" title="Cálculo de beneficiarios según tabla de edades" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El encargado del personal de una empresa extrae de la ficha de contratación las edades de las personas que trabajan en esta empresa. Luego, resume la distribución de las edades en la siguiente tabla:</p>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Edad en años</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>18 – 24</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>25 – 34</td>
+            <td>7</td>
+          </tr>
+          <tr>
+            <td>35 – 44</td>
+            <td>14</td>
+          </tr>
+          <tr>
+            <td>45 – 54</td>
+            <td>11</td>
+          </tr>
+          <tr>
+            <td>55 o más</td>
+            <td>13</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>La empresa dará un beneficio educacional según la información de la tabla a los trabajadores cuya edad no supere los 34 años.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es la mayor cantidad de trabajadores que podría acceder a ese beneficio?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">6
+        <qti-feedback-inline identifier="FEEDBACK_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Según la tabla, los trabajadores cuya edad no supera los 34 años pertenecen a los intervalos 18–24 y 25–34. En el intervalo 18–24 hay 5 trabajadores y en el intervalo 25–34 hay 7 trabajadores. Si se suman solo 6 trabajadores, no se está considerando toda la información disponible. La suma correcta de esos dos grupos es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>12</mn></math>, por lo que 6 no puede ser la mayor cantidad posible de beneficiarios.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">7
+        <qti-feedback-inline identifier="FEEDBACK_B" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El beneficio se entrega a quienes tienen edad que no supera los 34 años, es decir, a todos los trabajadores de los intervalos 18–24 y 25–34. En el intervalo 18–24 hay 5 trabajadores y en el intervalo 25–34 hay 7 trabajadores. Si se considera solo 7 trabajadores, se está tomando únicamente uno de los intervalos. La suma de ambos intervalos es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>12</mn></math>, por lo que 7 no representa la mayor cantidad de trabajadores que podría acceder al beneficio.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">9
+        <qti-feedback-inline identifier="FEEDBACK_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para encontrar la mayor cantidad de trabajadores que podría acceder al beneficio, se deben sumar todos los trabajadores cuya edad no supera los 34 años, es decir, los de los intervalos 18–24 y 25–34. En el intervalo 18–24 hay 5 trabajadores y en el intervalo 25–34 hay 7 trabajadores. La suma correcta es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>12</mn></math>. El valor 9 es menor que 12, por lo que no corresponde a la mayor cantidad posible de beneficiarios.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">12
+        <qti-feedback-inline identifier="FEEDBACK_D" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El beneficio se entrega a los trabajadores cuya edad no supera los 34 años. Según la tabla, esto incluye a todos los trabajadores de los intervalos 18–24 y 25–34. En el intervalo 18–24 hay 5 trabajadores y en el intervalo 25–34 hay 7 trabajadores. Al sumar ambos grupos se obtiene: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>12</mn></math>. Por lo tanto, la mayor cantidad de trabajadores que podría acceder al beneficio es 12.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Identificar a qué trabajadores se les dará el beneficio.</p>
+            <p>El enunciado indica que la empresa dará el beneficio a los trabajadores cuya edad no supere los 34 años. Esto significa que se consideran todas las personas con edades desde 18 años hasta 34 años, inclusive.</p>
+          </li>
+          <li>
+            <p>Reconocer en la tabla los intervalos de edades que cumplen esta condición.</p>
+            <p>En la tabla aparecen los siguientes intervalos de edad y sus cantidades:</p>
+            <ul>
+              <li>18 – 24: 5 trabajadores</li>
+              <li>25 – 34: 7 trabajadores</li>
+              <li>35 – 44: 14 trabajadores</li>
+              <li>45 – 54: 11 trabajadores</li>
+              <li>55 o más: 13 trabajadores</li>
+            </ul>
+            <p>Los únicos intervalos que corresponden a edades que no superan los 34 años son:</p>
+            <ul>
+              <li>18 – 24</li>
+              <li>25 – 34</li>
+            </ul>
+          </li>
+          <li>
+            <p>Tomar las cantidades de trabajadores de esos intervalos.</p>
+            <p>Según la tabla:</p>
+            <ul>
+              <li>En el intervalo 18 – 24 hay 5 trabajadores.</li>
+              <li>En el intervalo 25 – 34 hay 7 trabajadores.</li>
+            </ul>
+          </li>
+          <li>
+            <p>Sumar las cantidades para obtener la mayor cantidad posible de beneficiarios.</p>
+            <p>Se suman los trabajadores de ambos intervalos:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>5</mn>
+                <mo>+</mo>
+                <mn>7</mn>
+                <mo>=</mo>
+                <mn>12</mn>
+              </math>
+            </p>
+            <p>Esta suma representa a todos los trabajadores cuya edad está entre 18 y 34 años, inclusive, que son quienes pueden recibir el beneficio.</p>
+          </li>
+          <li>
+            <p>Conclusión.</p>
+            <p>La mayor cantidad de trabajadores que podría acceder al beneficio educacional es 12.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

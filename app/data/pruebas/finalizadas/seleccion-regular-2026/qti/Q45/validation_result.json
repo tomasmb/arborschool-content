@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q45",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:11:32.450206+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Se resuelve el problema: área de trapecio A = 0,76 m², bases 0,6 m y 1,3 m. Fórmula: A = (1/2)·(b1 + b2)·h. Entonces 0,76 = (1/2)·(0,6 + 1,3)·h = (1/2)·1,9·h = 0,95·h, de donde h = 0,76 / 0,95 = 0,8 m = 0,80 m. La alternativa correcta es ChoiceB.\n\nRevisión de feedbacks:\n- ChoiceB (correcta): Despeja h como h = (2·A)/(b1 + b2) = (2·0,76)/1,9 = 1,52/1,9 = 0,8. El procedimiento y el resultado son correctos y muestran por qué la opción es válida.\n- ChoiceA: Usa b1 = 0,6, b2 = 1,3, h = 1,444. Calcula (0,6 + 1,3) = 1,9; luego 1,9·1,444 = 2,7436; luego (1/2)·2,7436 = 1,3718 m², distinto de 0,76 m². Todos los cálculos son correctos y prueban que esa altura no sirve.\n- ChoiceC: Usa h = 0,722. Suma de bases 1,9; 1,9·0,722 = 1,3718; (1/2)·1,3718 = 0,6859 m², distinto de 0,76 m². Los números son correctos y la conclusión también.\n- ChoiceD: Usa h = 0,40. Suma de bases 1,9; 1,9·0,40 = 0,76; (1/2)·0,76 = 0,38 m², distinto de 0,76 m². El cálculo está bien y muestra claramente por qué no es la altura.\n\nLa solución paso a paso repite el mismo razonamiento correcto: plantea la fórmula, sustituye datos, simplifica, despeja h y obtiene 0,80 m. No se detectan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, formal y adecuado para estudiantes de 3°-4° medio. Cada feedback:\n- Explica explícitamente la fórmula del área del trapecio y define qué representan b1, b2 y h.\n- Muestra los reemplazos numéricos y las operaciones intermedias (suma de bases, productos, multiplicación por 1/2, comparación con 0,76 m²).\n- En las opciones incorrectas, se indica claramente que el área resultante no coincide con 0,76 m² y por eso la altura propuesta no es válida.\n- En la opción correcta, se muestra el despeje de h y el cálculo numérico hasta llegar a 0,80 m.\n- La solución general organiza el procedimiento en pasos numerados, lo que facilita seguir el razonamiento sin cálculos adicionales.\nTodo el feedback es específico a esta pregunta y no es genérico; es auto-contenido, ya que incluye tanto la fórmula como los valores usados y las conclusiones."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números usan el formato chileno: coma como separador decimal (por ejemplo, 0,76; 1,9; 1,52; 0,8) y no aparecen miles, por lo que no hay conflicto con el punto. La consistencia de comas decimales se mantiene en todos los cálculos. El bloque de response-processing marca ChoiceB como correcta y, en el response-else, asigna el feedback de ChoiceA (una opción incorrecta), lo que es aceptable según el criterio dado. No se observan problemas de formato ni de asignación de feedback en el fallback."
+      },
+      "overall_reasoning": "La matemática de la pregunta, de los feedbacks por alternativa y de la solución paso a paso es correcta y coherente, y el lenguaje es claro y adecuado. El formato cumple con el uso de MathML y la convención numérica chilena, y el fallback no entrega feedback de la opción correcta."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "Datos: trapecio rectángulo con bases b1 = 0,6 m y b2 = 1,3 m, área A = 0,76 m².\nFórmula del área del trapecio: A = (1/2)·(b1 + b2)·h.\n1) Suma de bases: b1 + b2 = 0,6 + 1,3 = 1,9 m.\n2) Sustituimos en la fórmula: 0,76 = (1/2)·1,9·h.\n3) (1/2)·1,9 = 1,9/2.\n   Entonces 0,76 = (1,9/2)·h.\n4) Despejamos h: h = (2·0,76)/1,9.\n5) Calculamos el numerador: 2·0,76 = 1,52.\n6) Dividimos: 1,52 ÷ 1,9 = 0,8.\nPor lo tanto, h = 0,80 m.\nLa alternativa que corresponde a 0,80 m es ChoiceB, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback de ChoiceB: aplica correctamente la fórmula A = (1/2)(b1 + b2)h, despeja h = 2A/(b1 + b2), sustituye A = 0,76, b1 = 0,6, b2 = 1,3, obtiene 1,52/1,9 = 0,8 y concluye h = 0,80 m; todo es matemáticamente correcto.\nFeedback de ChoiceA: sustituye h = 1,444 m en la fórmula, usa b1 + b2 = 1,9, calcula 1,9·1,444 = 2,7436 y luego (1/2)·2,7436 = 1,3718 m², distinto de 0,76 m²; la argumentación es correcta.\nFeedback de ChoiceC: análogamente, con h = 0,722 m, calcula 1,9·0,722 = 1,3718 y luego (1/2)·1,3718 = 0,6859 m², distinto de 0,76 m²; correcto.\nFeedback de ChoiceD: con h = 0,40 m, calcula 1,9·0,40 = 0,76 y luego (1/2)·0,76 = 0,38 m², distinto de 0,76 m²; también correcto.\nLa solución paso a paso repite el mismo procedimiento de despeje y cálculo y llega a h = 0,80 m sin errores numéricos ni conceptuales."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un trapecio rectángulo con la base superior rotulada 0,6 m y la base inferior 1,3 m, coherente con la descripción textual y los datos usados en los cálculos. No hay contradicciones visibles entre la figura y el enunciado."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata el cálculo del área de un trapecio y el despeje de la altura, contenido estándar de geometría plana dentro del temario PAES M1. Los valores numéricos (longitudes en metros y área en m²) son razonables y consistentes entre sí."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (0,80 m) coincide con el resultado obtenido al aplicar correctamente la fórmula del área del trapecio. Tanto la retroalimentación de cada alternativa como la solución detallada son matemáticamente consistentes y el material es claro y adecuado al nivel PAES.",
+      "timestamp": "2026-02-07T02:18:24.755854+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

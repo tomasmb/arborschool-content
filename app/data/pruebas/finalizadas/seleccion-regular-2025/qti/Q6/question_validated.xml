@@ -1,0 +1,150 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="exercise-routine-comparison" title="Comparación de Rutinas de Ejercicio" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Dos personas se juntan a realizar ejercicios, pero cada una tiene su propia rutina, las que se detallan a continuación:</p>
+    <ul>
+      <li>La primera persona realiza ejercicios durante 2 minutos y luego se toma 30 segundos de descanso, repitiendo esta serie ocho veces.</li>
+      <li>La segunda persona realiza ejercicios durante 1 minuto y 30 segundos y luego se toma 15 segundos de descanso, repitiendo esta serie doce veces.</li>
+    </ul>
+    <p>Si las dos personas comienzan sus rutinas al mismo tiempo, ¿cuál de los siguientes argumentos garantiza que una de las personas termina la rutina antes que la otra?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">Que la cantidad de repeticiones de las series de ambas personas es distinta.<qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Que la cantidad de repeticiones sea distinta no garantiza que una persona termine antes que la otra, porque el tiempo total depende tanto del número de repeticiones como de la duración de cada repetición (ejercicio más descanso). Por ejemplo, si una persona hace 4 repeticiones de series de 1 minuto cada una, su tiempo total es 4 minutos, y otra persona hace 2 repeticiones de series de 2 minutos cada una, su tiempo total también es 4 minutos, aunque la cantidad de repeticiones sea distinta.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">Que el tiempo de descanso de ambas personas es distinto.<qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Que el tiempo de descanso sea distinto no garantiza que una persona termine antes que la otra, porque el tiempo total depende de la suma entre el tiempo de ejercicio y el descanso en cada repetición, y de cuántas repeticiones se realizan. Por ejemplo, si una persona descansa 10 segundos y otra 20 segundos, pero la primera hace más repeticiones o tiene un tiempo de ejercicio mayor, ambas podrían terminar al mismo tiempo o incluso la que descansa más podría terminar antes.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Que la suma entre el tiempo de ejercicio, el descanso y las repeticiones de las series es distinta en cada persona.<qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La suma entre el tiempo de ejercicio, el descanso y las repeticiones mezcla cantidades que no tienen las mismas unidades, por lo que no representa un tiempo total. Por ejemplo, para la primera persona: 2 minutos de ejercicio, 30 segundos de descanso y 8 repeticiones dan la suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>+</mo><mn>0,5</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>10,5</mn></math>, y para la segunda persona: 1 minuto y 30 segundos de ejercicio, 15 segundos de descanso y 12 repeticiones dan la suma <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,5</mn><mo>+</mo><mn>0,25</mn><mo>+</mo><mn>12</mn><mo>=</mo><mn>13,75</mn></math>. Aunque estas sumas son distintas, no corresponden al tiempo total de las rutinas, por lo que no garantizan que una persona termine antes que la otra.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">Que la suma entre el tiempo de ejercicio y el descanso, multiplicada por las repeticiones de las series, es distinta en cada persona.<qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El tiempo total de cada persona se obtiene sumando el tiempo de ejercicio y el descanso en una repetición, y luego multiplicando por la cantidad de repeticiones. Para la primera persona, cada repetición dura 2 minutos de ejercicio más 30 segundos de descanso, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>+</mo><mn>0,5</mn><mo>=</mo><mn>2,5</mn></math> minutos por repetición. Como repite esta serie 8 veces, su tiempo total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2,5</mn><mo>&#xD7;</mo><mn>8</mn><mo>=</mo><mn>20</mn></math> minutos. Para la segunda persona, cada repetición dura 1 minuto y 30 segundos de ejercicio más 15 segundos de descanso, es decir, <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,5</mn><mo>+</mo><mn>0,25</mn><mo>=</mo><mn>1,75</mn></math> minutos por repetición. Como repite esta serie 12 veces, su tiempo total es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,75</mn><mo>&#xD7;</mo><mn>12</mn><mo>=</mo><mn>21</mn></math> minutos. Como los tiempos totales son distintos (20 y 21 minutos), se garantiza que una de las personas termina la rutina antes que la otra.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del tiempo total de cada rutina</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Expresar todos los tiempos en la misma unidad</strong></p>
+            <p>Trabajaremos en minutos.</p>
+            <p>Primera persona:</p>
+            <ul>
+              <li>Ejercicio: 2 minutos.</li>
+              <li>Descanso: 30 segundos. Como 1 minuto tiene 60 segundos, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>30</mn><mn>60</mn></mfrac><mo>=</mo><mn>0,5</mn></math> minutos.</li>
+            </ul>
+            <p>Segunda persona:</p>
+            <ul>
+              <li>Ejercicio: 1 minuto y 30 segundos. Los 30 segundos equivalen a <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>30</mn><mn>60</mn></mfrac><mo>=</mo><mn>0,5</mn></math> minutos, por lo que el tiempo de ejercicio es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1</mn><mo>+</mo><mn>0,5</mn><mo>=</mo><mn>1,5</mn></math> minutos.</li>
+              <li>Descanso: 15 segundos. Como 1 minuto tiene 60 segundos, entonces <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>15</mn><mn>60</mn></mfrac><mo>=</mo><mn>0,25</mn></math> minutos.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 2: Calcular la duración de una repetición de la serie para cada persona</strong></p>
+            <p>Primera persona:</p>
+            <p>En una repetición realiza 2 minutos de ejercicio y 0,5 minutos de descanso, por lo que la duración de una repetición es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2</mn><mo>+</mo><mn>0,5</mn><mo>=</mo><mn>2,5</mn></math> minutos por repetición.</p>
+            <p>Segunda persona:</p>
+            <p>En una repetición realiza 1,5 minutos de ejercicio y 0,25 minutos de descanso, por lo que la duración de una repetición es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,5</mn><mo>+</mo><mn>0,25</mn><mo>=</mo><mn>1,75</mn></math> minutos por repetición.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Calcular el tiempo total de cada rutina</strong></p>
+            <p>El tiempo total se obtiene multiplicando la duración de una repetición por la cantidad de repeticiones.</p>
+            <p>Primera persona:</p>
+            <p>Realiza 8 repeticiones, por lo que su tiempo total es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>2,5</mn><mo>&#xD7;</mo><mn>8</mn><mo>=</mo><mn>20</mn></math> minutos.</p>
+            <p>Segunda persona:</p>
+            <p>Realiza 12 repeticiones, por lo que su tiempo total es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mn>1,75</mn><mo>&#xD7;</mo><mn>12</mn><mo>=</mo><mn>21</mn></math> minutos.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Comparar los tiempos totales</strong></p>
+            <p>La primera persona tarda 20 minutos en completar su rutina.</p>
+            <p>La segunda persona tarda 21 minutos en completar su rutina.</p>
+            <p>Como los tiempos totales son distintos, se garantiza que una de las personas termina antes que la otra. El argumento que refleja correctamente este razonamiento es que la suma entre el tiempo de ejercicio y el descanso, multiplicada por las repeticiones de las series, es distinta en cada persona.</p>
+            <p>Por lo tanto, la alternativa correcta es la que indica este argumento.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

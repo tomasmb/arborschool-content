@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q14",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:09:43.144510+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El procedimiento correcto para factorizar 12 + 20 es: 12 = 4·3, 20 = 4·5, por lo tanto 12 + 20 = 4·3 + 4·5. Luego 4 = 2·2, 3 y 5 son primos, así que 4·3 = 2·2·3 y 4·5 = 2·2·5. Reescribiendo 2·2 como 2^2 se obtiene 2^2·3 + 2^2·5. El factor común es 2^2, por lo que la factorización correcta es 2^2(3 + 5) = 4·8 = 32, que coincide con 12 + 20 = 32. El error del procedimiento dado está en el Paso 4, donde se escribe 2^4(3 + 5), que al desarrollar da 16·3 + 16·5 = 48 + 80 = 128, distinto de 32. \n\nRevisión de cada feedback:\n- Opción A (Paso 1): Afirma que 12 = 4·3 y 20 = 4·5, y que 12 + 20 = 4·3 + 4·5. Todo es correcto y muestra explícitamente las igualdades, justificando que no hay error en ese paso.\n- Opción B (Paso 2): Verifica 4 = 2·2, que 3 y 5 son primos, y que 4·3 = 2·2·3 y 4·5 = 2·2·5. La expresión resultante 2·2·3 + 2·2·5 es correcta y la explicación es coherente.\n- Opción C (Paso 3): Justifica que 2·2 = 2^2 y que 2·2·3 = 2^2·3 y 2·2·5 = 2^2·5, obteniendo 2^2·3 + 2^2·5. Todas las igualdades son correctas.\n- Opción D (Paso 4, correcta): Explica que el factor común es 2^2, que la factorización correcta es 2^2(3 + 5) y contrasta con el error 2^4(3 + 5), desarrollando 2^4(3 + 5) = 16·3 + 16·5 = 48 + 80 = 128 y comparándolo con 12 + 20 = 32. La demostración de por qué 2^4(3 + 5) es incorrecto es completa y correcta.\n- Bloque de solución: Reproduce paso a paso el procedimiento correcto, con todas las igualdades bien justificadas y concluye con la factorización 4(3 + 5) o 2^2(3 + 5), ambas equivalentes. No hay errores numéricos ni conceptuales.\nEn todos los casos, los cálculos y las justificaciones son matemáticamente correctos y suficientes para demostrar por qué cada opción es correcta o incorrecta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo, en español claro y adecuado para estudiantes de 3°–4° medio. Cada feedback:\n- Repite la expresión relevante (por ejemplo, 12 = 4·3, 20 = 4·5, 2·2 = 2^2) y muestra las igualdades paso a paso, sin exigir que el estudiante haga cálculos adicionales para entender por qué la opción es correcta o incorrecta.\n- Es específico al ítem: se refiere explícitamente a “Paso 1”, “Paso 2”, etc., y a las expresiones concretas de este problema (12, 20, 4·3, 4·5, 2^2, 2^4), no usa mensajes genéricos.\n- El feedback correcto (ChoiceD) no solo dice que el error está en el Paso 4, sino que muestra el desarrollo de 2^4(3 + 5) y lo compara con 12 + 20, lo que hace muy explícita la razón del error.\n- La solución paso a paso está organizada en una lista ordenada, con subtítulos por paso y explicaciones breves, lo que facilita seguir el razonamiento.\nPor todo esto, la retroalimentación es auto-contenida, comprensible y pedagógicamente adecuada."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mn>, <mo>, <msup>, etc.), sin uso de LaTeX. No aparecen números con separador de miles ni decimales en el enunciado ni en la retroalimentación; solo se usan enteros pequeños (12, 20, 2, 3, 4, 5, 8, 16, 32, 48, 80, 128), por lo que no hay riesgo de conflicto con el formato numérico chileno. \nEn el procesamiento de respuestas, la opción correcta está declarada como ChoiceD y el bloque <qti-response-else> asigna SCORE = 0 y FEEDBACK = FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback. La estructura QTI es coherente con la lógica del ítem."
+      },
+      "overall_reasoning": "Las matemáticas del ítem, de todos los feedbacks y de la solución paso a paso son correctas y están bien justificadas; el lenguaje es claro y específico al problema, y el formato (MathML y lógica QTI) es adecuado. No se detectan errores de contenido ni de formato relevantes."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "Se quiere factorizar 12 + 20.\n1) Cálculo directo: 12 + 20 = 32.\n2) Factor común directo: 12 = 4·3, 20 = 4·5, entonces 12 + 20 = 4·3 + 4·5 = 4(3 + 5). Como 3 + 5 = 8, se obtiene 4·8 = 32, consistente con 12 + 20.\n3) Revisión de los pasos del procedimiento dado:\n   - Paso 1: 12 = 4·3 y 20 = 4·5 son igualdades correctas, por lo tanto 12 + 20 = 4·3 + 4·5 es correcto.\n   - Paso 2: 4 = 2·2, 3 y 5 son primos, por lo que 4·3 = 2·2·3 y 4·5 = 2·2·5. La expresión 2·2·3 + 2·2·5 es correcta.\n   - Paso 3: 2·2 = 2^2, entonces 2·2·3 = 2^2·3 y 2·2·5 = 2^2·5. La expresión 2^2·3 + 2^2·5 es correcta.\n   - Paso 4 correcto debería ser: factor común 2^2, obteniendo 2^2(3 + 5) = 4·8 = 32. Sin embargo, la persona escribe 2^4(3 + 5), que equivale a 16·8 = 128, distinto de 32. Por lo tanto, el error está en el Paso 4.\n4) La alternativa que indica que el error está en el Paso 4 es ChoiceD, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: Explica correctamente que 12 = 4·3 y 20 = 4·5, por lo que 12 + 20 = 4·3 + 4·5 es correcto; la conclusión de que no hay error en el Paso 1 es válida.\nFeedback ChoiceB: Justifica bien la descomposición en factores primos 4 = 2·2, 3 y 5 primos, y que 4·3 = 2·2·3 y 4·5 = 2·2·5; por tanto, el Paso 2 es correcto.\nFeedback ChoiceC: Muestra que 2·2 = 2^2 y que 2·2·3 = 2^2·3 y 2·2·5 = 2^2·5, por lo que el Paso 3 es correcto; no hay error matemático.\nFeedback ChoiceD (correcta): Identifica que el factor común en 2^2·3 + 2^2·5 es 2^2, y que la factorización correcta es 2^2(3 + 5). Luego compara con 2^4(3 + 5) = 16·3 + 16·5 = 48 + 80 = 128, distinto de 12 + 20 = 32. La argumentación es coherente y demuestra claramente el error en el Paso 4.\nSolución paso a paso: Reproduce el procedimiento correcto, concluye que la factorización adecuada es 4(3 + 5) o 2^2(3 + 5), y explica por qué 2^4(3 + 5) es incorrecto. Todos los cálculos (4·8 = 32, 16·3 = 48, 16·5 = 80, 48 + 80 = 128) son correctos. No hay contradicciones ni errores matemáticos."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML; no hay nada que contrastar visualmente."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata de factorización de números enteros, identificación de factores primos y uso de potencias, todos temas básicos de aritmética y álgebra inicial, plenamente dentro del temario de PAES Matemática M1. Los valores numéricos (12, 20, 2^2, 2^4, 32, 128) son razonables y las magnitudes son coherentes. No se observan errores de magnitud ni temas fuera de currículo."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta identificada (error en el Paso 4) coincide con la marcada en el QTI. La retroalimentación y la solución paso a paso son matemáticamente consistentes y sin errores, y el contenido es claro y adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:06.834544+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

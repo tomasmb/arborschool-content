@@ -1,0 +1,45 @@
+{
+  "question_id": "seleccion-regular-2025-Q47",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T00:33:31.322406+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: del gráfico de barras, los hombres son Ana 45, Juan 38, Sofía 35, Carlos 32; total hombres = 45 + 38 + 35 + 32 = 150. Como hay igual número de mujeres, también son 150. Del gráfico circular, los porcentajes de mujeres son Ana 16 %, Juan 24 %, Sofía 36 %, Carlos 24 %. Con 150 mujeres: Ana 0,16×150 = 24; Juan 0,24×150 = 36; Sofía 0,36×150 = 54; Carlos 0,24×150 = 36. Sumando hombres y mujeres: Ana 45+24=69, Juan 38+36=74, Sofía 35+54=89, Carlos 32+36=68, que coincide con la tabla D, por lo que la respuesta correcta es ChoiceD. \n\nFeedback correcto (ChoiceD): Reproduce exactamente este razonamiento, calcula correctamente el total de hombres (150), los votos de mujeres por porcentaje, verifica los porcentajes a partir de las cantidades (24/150=0,16, 36/150=0,24, 54/150=0,36) y muestra que el número de mujeres (150) coincide con el de hombres. Matemáticamente es correcto y demuestra por qué la tabla D es la única que cumple las condiciones.\n\nFeedbacks incorrectos (ChoiceA, B, C): Todos usan el mismo dato correcto de hombres (45, 38, 35, 32) y el hecho de que, al haber igual número de hombres y mujeres, el total de votos por candidato debe ser par (suma de dos enteros). En A, el total para Ana es 61 (impar); en B, el total para Juan es 49 (impar); en C, el total para Juan es 143 (impar). En cada caso, la conclusión de que no puede escribirse como suma de dos números enteros correspondientes a hombres y mujeres es válida y suficiente para descartar la alternativa. No hay errores de cálculo ni de lógica.\n\nLa solución paso a paso del bloque SOLUTION coincide con el procedimiento anterior, con operaciones y resultados correctos, y llega a la alternativa D."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Cada feedback incorrecto explica explícitamente los datos de hombres desde el gráfico de barras, enuncia la condición clave (igual número de hombres y mujeres implica totales pares por candidato) y muestra el valor concreto que falla (61, 49, 143), concluyendo por qué la tabla no puede representar la intención de todos los votos. Esto hace que cada retroalimentación sea auto-contenida: el estudiante no necesita hacer cálculos adicionales para entender el error.\n\nEl feedback correcto desarrolla un procedimiento completo: define m como número de mujeres, usa los porcentajes del gráfico circular, calcula las cantidades de mujeres restando los hombres a los totales de la tabla, verifica que suman 150 y que los porcentajes coinciden con el gráfico circular, y finalmente comprueba que el número de mujeres es igual al de hombres. La solución general (feedback-block) organiza el método en pasos numerados (identificar datos, usar porcentajes, calcular cantidades, sumar y comparar con alternativas), lo que es pedagógicamente claro y específico a esta pregunta."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mrow>, <mn>, <mo>, <mfrac>, etc.), sin uso de LaTeX. Los números decimales usan coma (0,16; 0,24; 0,36) y no hay separadores de miles, por lo que son consistentes con el formato chileno indicado. No se observan puntos usados como separador decimal. \n\nEn el procesamiento de respuesta, la opción correcta es ChoiceD y el bloque <qti-response-else> asigna FEEDBACK = FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada (opción D) y todos los cálculos y argumentos en los feedbacks y en la solución paso a paso son matemáticamente correctos. La redacción es clara, auto-contenida y el uso de MathML y formato numérico chileno es consistente, por lo que todos los chequeos se cumplen."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "pass",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-07T00:45:10.432672+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

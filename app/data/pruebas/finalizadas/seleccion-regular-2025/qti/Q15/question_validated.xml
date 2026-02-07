@@ -1,0 +1,290 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="hiring-stats-table" title="Estadísticas de contratación por departamento" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceD</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En los departamentos de Administración y de Talleres de una empresa se necesitaba contratar a 150 personas entre ambos departamentos. Se presentaron 500 postulantes, según el detalle de la tabla adjunta.</p>
+    <div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th colspan="2">Departamento</th>
+            <th>Postulantes</th>
+            <th>Contratados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">Administración</td>
+            <td>Hombres</td>
+            <td>200</td>
+            <td>20</td>
+          </tr>
+          <tr>
+            <td>Mujeres</td>
+            <td>50</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td rowspan="2">Talleres</td>
+            <td>Hombres</td>
+            <td>50</td>
+            <td>25</td>
+          </tr>
+          <tr>
+            <td>Mujeres</td>
+            <td>200</td>
+            <td>100</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes afirmaciones es verdadera?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">Del total de los hombres que postularon, exactamente un 9% fue contratado.<qti-feedback-inline identifier="FEEDBACK_A" outcome-identifier="FEEDBACK">Incorrecto. El total de hombres que postularon es 200 (Administración) + 50 (Talleres) = 250 hombres. El total de hombres contratados es 20 (Administración) + 25 (Talleres) = 45 hombres. La fracción de hombres contratados es 45/250. En porcentaje, 45/250 = 0,18 = 18%, que es distinto de 9%.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">En Administración se contrató al 20% del total de quienes postularon a ese departamento.<qti-feedback-inline identifier="FEEDBACK_B" outcome-identifier="FEEDBACK">Incorrecto. En Administración postularon 200 hombres y 50 mujeres, en total 250 personas. En Administración fueron contratados 20 hombres y 5 mujeres, en total 25 personas. La fracción de personas contratadas en Administración es 25/250. En porcentaje, 25/250 = 0,10 = 10%, que es distinto de 20%.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">Exactamente un 5% de las mujeres que fueron contratadas corresponden al departamento de Administración.<qti-feedback-inline identifier="FEEDBACK_C" outcome-identifier="FEEDBACK">Incorrecto. El total de mujeres contratadas es 5 (Administración) + 100 (Talleres) = 105 mujeres. De ellas, 5 corresponden a Administración. La fracción de mujeres contratadas que son de Administración es 5/105. En porcentaje, 5/105 ≈ 0,0476 ≈ 4,76%, que es distinto de 5%.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">En Talleres se contrató al 50% de los hombres y al 50% de las mujeres postulantes a ese departamento.<qti-feedback-inline identifier="FEEDBACK_D" outcome-identifier="FEEDBACK">¡Correcto! En Talleres postularon 50 hombres y fueron contratados 25 hombres. La fracción de hombres contratados en Talleres es 25/50. En porcentaje, 25/50 = 0,5 = 50%. En Talleres postularon 200 mujeres y fueron contratadas 100 mujeres. La fracción de mujeres contratadas en Talleres es 100/200. En porcentaje, 100/200 = 0,5 = 50%.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Organizar la información de la tabla</strong></p>
+            <p>De la tabla se obtiene:</p>
+            <ul>
+              <li>Administración:
+                <ul>
+                  <li>Hombres: 200 postulantes, 20 contratados.</li>
+                  <li>Mujeres: 50 postulantes, 5 contratadas.</li>
+                </ul>
+              </li>
+              <li>Talleres:
+                <ul>
+                  <li>Hombres: 50 postulantes, 25 contratados.</li>
+                  <li>Mujeres: 200 postulantes, 100 contratadas.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Analizar la opción A</strong></p>
+            <p>“Del total de los hombres que postularon, exactamente un 9% fue contratado.”</p>
+            <p>Total de hombres que postularon:</p>
+            <p>200 (Administración) + 50 (Talleres) = 250 hombres.</p>
+            <p>Total de hombres contratados:</p>
+            <p>20 (Administración) + 25 (Talleres) = 45 hombres.</p>
+            <p>Proporción de hombres contratados:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>45</mn>
+                  <mn>250</mn>
+                </mfrac>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,18</mn>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>18</mn>
+              </math>
+              %
+            </p>
+            <p>Como 18% es distinto de 9%, la opción A es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Analizar la opción B</strong></p>
+            <p>“En Administración se contrató al 20% del total de quienes postularon a ese departamento.”</p>
+            <p>Total de postulantes a Administración:</p>
+            <p>200 (hombres) + 50 (mujeres) = 250 personas.</p>
+            <p>Total de contratados en Administración:</p>
+            <p>20 (hombres) + 5 (mujeres) = 25 personas.</p>
+            <p>Proporción de contratados en Administración:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>25</mn>
+                  <mn>250</mn>
+                </mfrac>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,10</mn>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>10</mn>
+              </math>
+              %
+            </p>
+            <p>Como 10% es distinto de 20%, la opción B es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Analizar la opción C</strong></p>
+            <p>“Exactamente un 5% de las mujeres que fueron contratadas corresponden al departamento de Administración.”</p>
+            <p>Total de mujeres contratadas:</p>
+            <p>5 (Administración) + 100 (Talleres) = 105 mujeres.</p>
+            <p>Mujeres contratadas en Administración: 5.</p>
+            <p>Proporción de mujeres contratadas que son de Administración:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>5</mn>
+                  <mn>105</mn>
+                </mfrac>
+              </math>
+              ≈
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,0476</mn>
+              </math>
+              ≈
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>4,76</mn>
+              </math>
+              %
+            </p>
+            <p>Como 4,76% es distinto de 5%, la opción C es falsa.</p>
+          </li>
+          <li>
+            <p><strong>Analizar la opción D</strong></p>
+            <p>“En Talleres se contrató al 50% de los hombres y al 50% de las mujeres postulantes a ese departamento.”</p>
+            <p><em>Hombres en Talleres</em>:</p>
+            <p>Postulantes hombres en Talleres: 50.</p>
+            <p>Hombres contratados en Talleres: 25.</p>
+            <p>Proporción de hombres contratados en Talleres:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>25</mn>
+                  <mn>50</mn>
+                </mfrac>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,5</mn>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>50</mn>
+              </math>
+              %
+            </p>
+            <p><em>Mujeres en Talleres</em>:</p>
+            <p>Postulantes mujeres en Talleres: 200.</p>
+            <p>Mujeres contratadas en Talleres: 100.</p>
+            <p>Proporción de mujeres contratadas en Talleres:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>100</mn>
+                  <mn>200</mn>
+                </mfrac>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,5</mn>
+              </math>
+              =
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>50</mn>
+              </math>
+              %
+            </p>
+            <p>En ambos casos (hombres y mujeres) se contrató al 50% de quienes postularon a Talleres, por lo que la opción D es verdadera.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>Las opciones A, B y C no cumplen con los porcentajes que indican, mientras que la opción D sí coincide exactamente con los datos de la tabla. Por lo tanto, la respuesta correcta es la opción D.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FEEDBACK_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

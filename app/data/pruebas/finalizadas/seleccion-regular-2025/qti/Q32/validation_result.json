@@ -1,0 +1,45 @@
+{
+  "question_id": "seleccion-regular-2025-Q32",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T00:33:17.391445+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Del triángulo de Pascal se sabe que cada casilla es la suma de las dos inmediatamente superiores. En la fila inferior se tiene 1, 15, p, 15, 1 y en la fila superior 1, 5, x, 5, 1. Para obtener 15 en la fila inferior, se suma 1 (del borde) con el número inmediatamente superior: 1 + 14 = 15, por lo que sobre cada 15 hay un 14. La casilla con p se obtiene sumando 14 (sobre el 15 de la izquierda) y x, de modo que 14 + x = p, luego x = p - 14. Esto coincide con la alternativa A. \n\nRevisión de feedbacks:\n- Feedback A: Explica correctamente que sobre cada 15 hay un 14 (1 + 14 = 15), plantea 14 + x = p y despeja x = p - 14. Es matemáticamente correcto y demuestra por qué la opción es correcta.\n- Feedback B: Repite el razonamiento correcto (14 + x = p, x = p - 14) y señala que esta alternativa usa p - 10 en vez de p - 14, explicando por qué no representa la relación correcta. Matemáticamente consistente.\n- Feedback C: Indica correctamente que la ecuación es 14 + x = p y que al despejar se obtiene x = p - 14, contrastándolo con la expresión propuesta p + 10 (suma en vez de resta). La justificación de incorrección es válida.\n- Feedback D: De nuevo establece correctamente que el número sobre cada 15 es 14 y que x = p - 14, y explica que la alternativa propone p + 15, usando suma y un valor incorrecto (15 en vez de 14). La crítica es matemáticamente correcta.\n- Bloque de solución: Sigue paso a paso la propiedad del triángulo de Pascal, identifica correctamente los 14 sobre los 15, plantea 14 + x = p y despeja x = p - 14, concluyendo que la alternativa correcta es p - 14 (opción A). No hay errores de cálculo ni de lógica."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explica explícitamente la regla del triángulo de Pascal y se ejemplifica con 1 + 2 = 3. Cada feedback es auto-contenido: recuerda la regla (cada número es suma de los dos superiores), identifica el 14 sobre el 15 y muestra la ecuación 14 + x = p y su despeje, sin requerir que el estudiante haga pasos adicionales por su cuenta. Además, cada retroalimentación se refiere explícitamente a la expresión de su alternativa (p - 10, p + 10, p + 15) y explica por qué no coincide con x = p - 14, por lo que es específica a esta pregunta y no genérica."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<m:math>, <m:mi>, <m:mn>, <m:mo>), sin uso de LaTeX. No aparecen números con separador de miles ni decimales, solo enteros pequeños (1, 2, 3, 5, 10, 14, 15), por lo que no hay conflicto con el formato numérico chileno. El bloque de procesamiento de respuestas marca ChoiceA como correcta y, en el fallback (<qti-response-else>), asigna SCORE = 0 y FEEDBACK = FeedbackB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La solución y todos los feedbacks son matemáticamente correctos, claros y específicos al problema, y el formato QTI/MathML está bien implementado, incluyendo un fallback que no usa la retroalimentación de la opción correcta."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "pass",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-07T00:44:53.563516+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

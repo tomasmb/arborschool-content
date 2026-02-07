@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q3",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:14.971211+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El recorrido total es A→B (5 km) + B→C (25 km) + C→B (25 km) + B→A (5 km) = 60 km. Con un rendimiento de 10 km por litro, los litros necesarios son 60 / 10 = 6 litros, por lo que la alternativa correcta es ChoiceD (6). Todos los feedbacks (A, B, C, D) calculan correctamente la distancia total (60 km) y el consumo (6 litros) y explican por qué 2, 3 y 4 litros no alcanzan, mientras que 6 sí. La solución paso a paso repite el mismo razonamiento de forma detallada y correcta. No hay errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, describiendo explícitamente cada tramo del recorrido y luego el cálculo de la distancia total y de los litros necesarios. Cada feedback es auto-contenido: incluye la suma de los tramos, el cálculo de 60 km y la división por 10 km/l para llegar a 6 litros, explicando explícitamente por qué la opción elegida no alcanza o sí es suficiente. La retroalimentación está claramente contextualizada en este problema específico y no es genérica."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los números usados (5, 25, 10, 60, 6) no requieren separador de miles ni decimales, por lo que no hay conflicto con el formato chileno; no se usan puntos ni comas en estos valores. El bloque de response-processing marca correctamente ChoiceD como respuesta correcta y, en el fallback (qti-response-else), asigna el feedback de ChoiceA, que es una opción incorrecta, cumpliendo la condición de no mostrar el feedback de la opción correcta en el else."
+      },
+      "overall_reasoning": "La resolución matemática es correcta y coherente en todos los feedbacks y en la solución paso a paso, el lenguaje es claro y específico al problema, y el formato QTI/MathML está bien implementado sin conflictos con el formato numérico chileno ni con el manejo del fallback."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Distancias entre ciudades: A–B = 5 km, B–C = 25 km.\n2) Recorrido de ida A→B→C: 5 + 25 = 30 km.\n3) Recorrido de vuelta C→B→A: 25 + 5 = 30 km.\n4) Distancia total ida y vuelta pasando por B en ambos sentidos: 30 + 30 = 60 km.\n5) Rendimiento del auto: 10 km por litro, es decir, con 1 litro recorre 10 km.\n6) Litros necesarios para 60 km: 60 ÷ 10 = 6 litros.\n7) La alternativa que indica 6 litros es ChoiceD, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceD) explica claramente la suma de los tramos (5 + 25 + 25 + 5 = 60 km) y luego el cálculo de litros (60/10 = 6), concluyendo correctamente que se necesitan 6 litros. Los feedbacks de las opciones incorrectas (ChoiceA, ChoiceB, ChoiceC) repiten el mismo razonamiento correcto y explican que 2, 3 o 4 litros no alcanzan para los 60 km requeridos. La solución paso a paso en el bloque SOLUTION también descompone ida y vuelta, obtiene 60 km y luego 6 litros. No hay errores matemáticos ni conclusiones contradictorias."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de proporcionalidad directa y cálculo de consumo de combustible (kilómetros por litro), completamente dentro del temario de PAES Matemática M1. Los valores numéricos (distancias de 5 km y 25 km, rendimiento de 10 km/L, resultado de 6 litros) son razonables y de magnitud adecuada para un contexto realista. No hay desajustes de escala ni contenidos fuera de programa."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien marcada (6 litros, ChoiceD), todos los cálculos en el enunciado, feedbacks y solución son coherentes y correctos, y el contenido es apropiado para PAES M1 sin problemas de forma ni de fondo.",
+      "timestamp": "2026-02-07T02:18:11.972294+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

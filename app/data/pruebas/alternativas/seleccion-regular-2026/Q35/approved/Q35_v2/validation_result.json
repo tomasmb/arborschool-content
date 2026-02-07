@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q35-Q35_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:38:44.088584+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El sistema dado es 10.000x + 6.000y = 38.000 y x + y = 5. De la segunda ecuación se interpreta que x e y son cantidades en kilogramos. En la primera, 10.000 es el precio por kg de almendras y 6.000 el de maní, por lo que 10.000x representa el costo de las almendras: x debe ser la cantidad de kilogramos de almendras. Resolver el sistema confirma: y = 5 − x, se reemplaza en 10.000x + 6.000(5 − x) = 38.000 → 10.000x + 30.000 − 6.000x = 38.000 → 4.000x + 30.000 = 38.000 → 4.000x = 8.000 → x = 2 (kg de almendras). Por tanto, la alternativa correcta es D y la interpretación usada en el feedback es coherente. Los feedbacks de A y C explican correctamente que, si x fuera maní, el coeficiente de x debería ser 6.000 y no 10.000, lo que es matemáticamente correcto. El feedback de B aclara que, aunque la idea es casi correcta, falta explicitar la unidad (kilogramos), lo que es conceptualmente válido. La solución paso a paso en el bloque SOLUTION desarrolla correctamente el despeje, reemplazo, operaciones con 30.000, 38.000, 4.000 y llega a x = 2 sin errores. No hay inconsistencias matemáticas ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explican los precios, el significado de cada coeficiente y se vincula explícitamente cada variable con su unidad (kilogramos). Cada feedback es auto-contenido: A y C explican por qué el coeficiente asociado a x no coincide con el precio del maní, B explica por qué la respuesta es incompleta al omitir la unidad, y D justifica por qué x representa kilogramos de almendras usando ambas ecuaciones. La solución general desarrolla el razonamiento desde el contexto hasta la interpretación de las variables y la resolución del sistema, sin depender de información externa ni de pasos omitidos. El contenido es específico a esta pregunta (almendras, maní, precios y sistema dado) y no recurre a comentarios genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, no en LaTeX. Los números monetarios usan el formato chileno de miles: 10.000, 6.000, 38.000, 30.000, 4.000, 8.000, sin uso de comas decimales, lo que es coherente con el contexto. No se presentan números decimales, por lo que no hay conflicto con el separador decimal. El bloque de response-processing asigna SCORE = 1 y FEEDBACK = FB_D solo cuando RESPONSE = ChoiceD (la opción correcta). El fallback (qti-response-else) asigna FEEDBACK = FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el else. No se observan problemas de formato ni de asignación de feedback."
+      },
+      "overall_reasoning": "La interpretación de la variable x como cantidad de kilogramos de almendras es correcta y está bien justificada en todos los textos. La retroalimentación es matemáticamente sólida, clara para el nivel esperado y cumple con los requisitos de formato y de asignación de feedback en el QTI."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Del enunciado: se venden 5 kg entre almendras y maní por $38.000. Precios: almendras $10.000/kg, maní $6.000/kg.\n2) El sistema dado es:\n   10.000x + 6.000y = 38.000  (costo total)\n   x + y = 5                 (kilogramos totales)\n3) De x + y = 5 se deduce que x e y representan cantidades en kilogramos de cada fruto seco.\n4) En la ecuación de costo, el coeficiente 10.000 corresponde al precio por kg de almendras y el coeficiente 6.000 al precio por kg de maní.\n5) Por tanto, 10.000x es el dinero por almendras, luego x es la cantidad de kilogramos de almendras.\n6) Opciones:\n   - A: cantidad de maní (sin unidades) → no coincide con el coeficiente 10.000.\n   - B: cantidad de almendras (sin especificar kg) → conceptualmente cercana pero menos precisa.\n   - C: cantidad de kg de maní → contradice el uso de 10.000 como coeficiente de x.\n   - D: cantidad de kilogramos de almendras compradas → coincide exactamente con la interpretación del sistema.\n7) La alternativa correcta es D, que coincide con <qti-correct-response> ChoiceD.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceD) explica adecuadamente que 10.000 es el precio por kg de almendras, por lo que 10.000x representa el costo de las almendras y x la cantidad de kg de almendras; además vincula x + y = 5 con la interpretación en kilogramos. Los feedbacks de A y C justifican correctamente por qué x no puede representar maní (ni en kg ni sin unidades), usando el hecho de que el coeficiente de x es 10.000 y no 6.000. El feedback de B señala que, aunque la idea es casi correcta, falta explicitar la unidad (kilogramos), lo que es coherente con la ecuación x + y = 5. La solución paso a paso resuelve el sistema correctamente (obtiene x = 2) y usa ese resultado solo como verificación adicional de la interpretación, sin cometer errores de cálculo ni de lógica. No se observan errores matemáticos ni conclusiones incorrectas en la retroalimentación ni en la solución detallada."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "No se incluyen imágenes externas; solo se usan fórmulas en MathML integradas en el texto, que coinciden con las ecuaciones descritas. No hay elementos gráficos adicionales que puedan generar contradicciones factuales."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de interpretación de variables en un sistema de ecuaciones lineales con dos incógnitas, contenido plenamente dentro del temario de PAES Matemática M1 (modelación con sistemas de ecuaciones, interpretación de coeficientes y variables). Los valores numéricos (precios por kg de frutos secos y total de 5 kg por $38.000) son razonables y de magnitud coherente con un contexto realista. No hay inconsistencias numéricas ni planteamientos fuera del currículo."
+        }
+      },
+      "overall_reasoning": "La pregunta modela correctamente la situación con un sistema de ecuaciones, identifica de forma precisa el significado de la variable x y proporciona una retroalimentación y solución matemáticamente correctas y coherentes con el currículo PAES M1. No se detectan errores concretos en respuesta correcta, feedback, contenido ni cálculos.",
+      "timestamp": "2026-02-07T02:44:09.778970+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

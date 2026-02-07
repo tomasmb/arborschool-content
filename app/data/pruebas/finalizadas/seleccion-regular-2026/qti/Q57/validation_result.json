@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q57",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:13:27.909336+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: el volumen inicial es 720 litros y disminuye 3 litros por minuto, por lo que la función buscada es V(x) = 720 - 3x, equivalente a f(x) = -3x + 720. Esto coincide con la alternativa ChoiceA. \n\nRevisión por opción:\n- ChoiceA: El feedback explica que se parte de 720 litros y se restan 3 litros por cada minuto, muestra la equivalencia 720 - 3x = -3x + 720 y verifica con x = 10 obteniendo f(10) = -3·10 + 720 = -30 + 720 = 690, coherente con el contexto. Matemáticamente correcto y demuestra por qué es la correcta.\n- ChoiceB: Se evalúa g(0) = 3·0 - 720 = -720, lo que no coincide con los 720 litros iniciales y da un volumen negativo. Luego se evalúa g(10) = 3·10 - 720 = 30 - 720 = -690, mientras que el razonamiento del problema indica 690 litros. Ambas verificaciones son correctas y muestran que la función no modela la situación.\n- ChoiceC: Se evalúa p(10) = (10 - 720)/3 = -710/3 ≈ -236,666…, que no coincide con 690 litros y además es negativa. El cálculo es correcto y prueba que la función no sirve como modelo del volumen.\n- ChoiceD: Se evalúa h(10) = (-10 + 720)/3 = 710/3 ≈ 236,666…, distinto de 690. También se evalúa h(0) = 720/3 = 240, que no coincide con los 720 litros iniciales. Ambos cálculos son correctos y muestran que la función no modela el volumen.\n\nLa solución paso a paso construye la función lineal V(x) = -3x + 720 identificando valor inicial y tasa de cambio negativa, y la verifica con x = 0 y x = 10, llegando correctamente a la alternativa A. No se detectan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explican conceptos como \"valor inicial\", \"tasa de cambio\" y se usa una estructura ordenada (pasos numerados en la solución). Cada feedback es auto-contenido: incluye el contexto necesario (qué debería dar la función en x = 0, qué valor se espera en x = 10) y realiza los cálculos explícitamente, sin exigir que el estudiante complete pasos omitidos. Además, cada retroalimentación se refiere específicamente a la situación del estanque y al comportamiento esperado de la función (volumen inicial, disminución de 3 litros por minuto, imposibilidad de volúmenes negativos), no son mensajes genéricos. La opción correcta refuerza el razonamiento y las incorrectas muestran con ejemplos concretos por qué fallan, lo que es pedagógicamente adecuado."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mi>, <mn>, <mo>, <mfrac>, etc.), sin uso de LaTeX. No aparecen números con separador de miles ni decimales en formato conflictivo; los únicos decimales aproximados se escriben como 236,666… dentro de MathML, usando coma como separador decimal, coherente con el formato chileno. No hay puntos usados como separador decimal. \n\nEn el procesamiento de respuesta, el fallback (<qti-response-else>) asigna SCORE = 0 y FEEDBACK = FB_B, que corresponde a una opción incorrecta (ChoiceB), cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La función correcta es f(x) = -3x + 720 y tanto la retroalimentación de cada alternativa como la solución paso a paso son matemáticamente correctas, claras y específicas al contexto. El uso de MathML y el manejo de feedback en el QTI cumplen con los requisitos formales y de formato numérico chileno."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) El estanque parte con 720 litros cuando se abre la llave, es decir, en x = 0 minutos el volumen debe ser 720.  \n2) Se vacía a razón de 3 litros por minuto, por lo que la cantidad de agua disminuye linealmente: la tasa de cambio es −3 litros/minuto.  \n3) El modelo lineal en función del tiempo x (en minutos) es entonces: V(x) = 720 − 3x, que es equivalente a f(x) = −3x + 720.  \n4) Revisando las alternativas:  \n   - ChoiceA: f(x) = −3x + 720 → coincide exactamente con el modelo obtenido.  \n   - ChoiceB: g(x) = 3x − 720 → en x = 0 da −720, no 720.  \n   - ChoiceC: p(x) = (x − 720)/3 → en x = 0 da −240, no 720, y no representa el volumen.  \n   - ChoiceD: h(x) = (−x + 720)/3 → en x = 0 da 240, no 720.  \n5) Por lo tanto, la alternativa correcta es ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: Explica que el volumen inicial es 720 litros y que se restan 3 litros por cada minuto, obteniendo 720 − 3x, equivalente a −3x + 720. Verifica con x = 10 y obtiene 690 litros, cálculo correcto.  \nFeedback ChoiceB: Comprueba g(0) = 3·0 − 720 = −720, lo que es imposible como volumen, y g(10) = 30 − 720 = −690, mientras que el modelo correcto da 690. Los razonamientos y cálculos son correctos.  \nFeedback ChoiceC: Evalúa p(10) = (10 − 720)/3 = −710/3 ≈ −236,666…, distinto de 690 y negativo, lo que no tiene sentido como volumen. Cálculos correctos y conclusión adecuada.  \nFeedback ChoiceD: Evalúa h(10) = (−10 + 720)/3 = 710/3 ≈ 236,666…, distinto de 690, y h(0) = 720/3 = 240, no 720. Cálculos y conclusiones correctos.  \nLa solución paso a paso construye la función V(x) = −3x + 720, verifica en x = 0 y x = 10 y concluye correctamente que corresponde a la alternativa correcta. No se observan errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem QTI no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia imagen-texto que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de modelar una situación lineal simple (volumen de agua en función del tiempo con tasa de cambio constante), completamente dentro del temario de funciones lineales de PAES M1. Los valores numéricos (720 litros iniciales, variación de 3 litros/minuto) son razonables y de magnitud adecuada. No hay extrapolaciones absurdas ni resultados físicamente imposibles dentro del modelo correcto."
+        }
+      },
+      "overall_reasoning": "La función correcta que modela el volumen de agua es f(x) = −3x + 720, coincidiendo con la alternativa marcada. La retroalimentación y la resolución paso a paso son matemáticamente coherentes y los cálculos están bien realizados; no se detectan errores de contenido ni de formato relevantes.",
+      "timestamp": "2026-02-07T02:18:33.796183+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

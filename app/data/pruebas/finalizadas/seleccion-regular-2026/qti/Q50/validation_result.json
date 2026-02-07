@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q50",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:12:09.994903+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La flecha original va de (0,0) a (3,3), por lo que su dirección es 45° respecto del eje X positivo (noreste). \n- Opción A: Reflexión en eje X lleva 45° a −45° (sureste). Reflexión en y = x intercambia coordenadas, lo que en términos angulares lleva −45° a 45°. La flecha vuelve a apuntar al noreste, no al oeste (180°). El feedback describe correctamente estos cambios de ángulo.\n- Opción B (correcta): Reflexión respecto del origen equivale a (x,y) → (−x,−y), es decir, una rotación de 180°. 45° pasa a 225° (suroeste). Luego una rotación de 45° en sentido horario resta 45°: 225° − 45° = 180°, que corresponde al oeste. El feedback explica correctamente ambas transformaciones y justifica por qué se obtiene el oeste.\n- Opción C: Reflexión respecto del eje Y transforma (x,y) en (−x,y), lo que lleva el ángulo 45° a 135° (noroeste). El oeste es 180°, distinto de 135°. El feedback lo explica correctamente.\n- Opción D: Una traslación por (−3,−3) no cambia la orientación, solo la posición; la flecha sigue apuntando al noreste. El feedback lo indica correctamente.\nLa solución paso a paso repite y detalla estos mismos argumentos, con transformaciones de coordenadas y ángulos correctas. No hay errores matemáticos ni omisiones relevantes en las justificaciones."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es adecuado para estudiantes de 3°–4° medio: se explican claramente los puntos cardinales, los ángulos asociados (45°, 135°, 180°, 225°) y el efecto de cada transformación (reflexión en ejes, en el origen, en la recta y = x, rotación horaria, traslación). Cada feedback es auto-contenido: indica desde qué ángulo parte la flecha, qué transformación se aplica y cuál es el ángulo/dirección resultante, concluyendo explícitamente por qué no es oeste (en las incorrectas) o por qué sí lo es (en la correcta). No se usan comentarios genéricos; todo está contextualizado en esta figura y estas transformaciones. El uso de términos como \"equivale a una rotación de 180°\" y la mención explícita de las transformaciones de coordenadas ayudan a la comprensión sin exigir cálculos adicionales al estudiante."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mi>, <mn>, <mo>), sin LaTeX. No se usan números con miles ni decimales, solo enteros pequeños (3, 45, 135, 180, 225), por lo que no hay conflicto con el formato numérico chileno. El procesamiento de respuesta marca ChoiceB como correcta en <qti-correct-response> y en <qti-response-processing> asigna SCORE=1 y FEEDBACK=ChoiceB solo cuando RESPONSE=ChoiceB. El bloque <qti-response-else> asigna FEEDBACK=ChoiceA (una opción incorrecta), lo que es válido como fallback según los criterios. No hay problemas de formato ni de asignación de feedback correcto en el fallback."
+      },
+      "overall_reasoning": "Las transformaciones geométricas y los ángulos están correctamente calculados y explicados, los feedbacks son claros y específicos, y el formato QTI/MathML es adecuado. No se detectan errores matemáticos, pedagógicos ni de formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) La flecha va del origen al punto (3,3). Eso corresponde al vector (3,3), que forma un ángulo de 45° con el eje X positivo (dirección noreste).\n2) Se busca una secuencia de transformaciones isométricas que haga que la flecha apunte al oeste, es decir, en dirección del eje X negativo, ángulo 180°.\n3) Analicemos cada alternativa:\n- Choice C: Reflexión respecto del eje Y. El vector (3,3) pasa a (-3,3). Ese vector tiene ángulo 135° (noroeste), no 180°. No sirve.\n- Choice D: Traslación por el vector (-3,-3). El vector dirección de la flecha no cambia, sigue siendo (3,3), por lo que el ángulo sigue siendo 45° (noreste). No sirve.\n- Choice A: Reflexión respecto del eje X: (3,3) → (3,-3), que tiene ángulo -45° (equivalente a 315°, sureste). Luego reflexión respecto de la recta y = x: (x,y) → (y,x), por lo que (3,-3) → (-3,3), que tiene ángulo 135° (noroeste). No se obtiene 180°. No sirve.\n- Choice B: \"Reflexión respecto del origen\" equivale a (x,y) → (-x,-y), que es una rotación de 180°. Entonces (3,3) → (-3,-3), ángulo 225° (suroeste). Luego una rotación de 45° en sentido horario (restar 45°): 225° - 45° = 180°, que corresponde exactamente al oeste.\n4) Por lo tanto, la única secuencia que produce una flecha apuntando al oeste es la descrita en ChoiceB, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceB explica correctamente que la reflexión en el origen equivale a una rotación de 180°, llevando el ángulo de 45° a 225°, y que luego una rotación de 45° en sentido horario resta 45°, obteniendo 180°, dirección oeste. Para ChoiceA, se describe bien el paso de 45° a -45° (sureste) y luego a 45° tras reflejar en y=x, concluyendo que no se llega a 180°. Para ChoiceC, se explica que la reflexión en el eje Y lleva el ángulo de 45° a 135° (noroeste), distinto de 180°. Para ChoiceD, se aclara que una traslación no cambia la orientación, por lo que la flecha sigue apuntando al noreste. La solución detallada repite estos argumentos con transformaciones de coordenadas correctas ((x,y)→(-x,-y)) y cálculos angulares correctos. No hay errores matemáticos ni conclusiones incorrectas en la retroalimentación ni en la solución paso a paso."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un plano cartesiano con eje Y hacia el norte (N) y eje X hacia el este (E), con los puntos cardinales intermedios (NE, NO, SE, SO) marcados en líneas punteadas. La flecha negra parte del origen y termina en el primer cuadrante, con líneas punteadas que indican coordenadas 3 en ambos ejes, coherente con el punto (3,3) descrito en el texto. La orientación de la flecha es hacia el noreste, como se usa en el enunciado y la solución. No hay contradicciones factuales entre la imagen y la descripción textual."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata transformaciones isométricas (reflexiones, rotaciones, traslaciones) en el plano cartesiano y su efecto en la orientación de una figura, contenido estándar del currículo de geometría de enseñanza media y alineado con PAES M1. Los ángulos usados (45°, 135°, 180°, 225°) y las transformaciones de coordenadas son razonables y correctamente aplicados. No hay valores numéricos extremos ni fuera de contexto."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceB) coincide con el análisis matemático y las transformaciones descritas son coherentes. La retroalimentación y la solución son matemáticamente correctas, el contenido es claro y la imagen concuerda con el enunciado.",
+      "timestamp": "2026-02-07T02:18:29.984289+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

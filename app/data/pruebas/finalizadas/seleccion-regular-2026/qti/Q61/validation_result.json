@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q61",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:13:13.813520+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Del gráfico: 0 h → 30 trabajadores, 1 h → 40, 2 h → 30, 3 h → 20, 4 h → 10, 5 h → 10. La frecuencia máxima es 40 trabajadores con 1 hora extra. El pago por hora es $15.000, por lo que el pago más frecuente es 1 × 15.000 = 15.000, es decir, $15.000 (opción A). \n\nFeedback A: Explica correctamente que la moda de horas extras es 1 hora (40 trabajadores) y calcula 1 × 15.000 = 15.000, concluyendo que el pago más frecuente es $15.000. \nFeedback B: Asocia correctamente $30.000 con 2 horas extras (2 × 15.000 = 30.000) y compara 30 trabajadores (2 h) con 40 trabajadores (1 h), mostrando que no es el pago más frecuente. \nFeedback C: Asocia correctamente $45.000 con 3 horas extras (3 × 15.000 = 45.000) y compara 20 trabajadores (3 h) con 40 trabajadores (1 h), mostrando que no es el pago más frecuente. \nFeedback D: Asocia correctamente $60.000 con 4 horas extras (4 × 15.000 = 60.000) y compara 10 trabajadores (4 h) con 40 trabajadores (1 h), mostrando que no es el pago más frecuente. \nLa solución paso a paso reproduce correctamente la lectura del gráfico, identifica la moda (1 hora) y calcula el pago 1 × 15.000 = 15.000. No hay errores matemáticos ni de interpretación."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'cantidad de horas extras más frecuente' y explicando explícitamente que se trata de la que tiene mayor número de trabajadores. Cada feedback es auto-contenido: indica a cuántas horas corresponde el monto, muestra el cálculo con el valor por hora y compara la cantidad de trabajadores de ese caso con la del caso más frecuente (1 hora). No se requiere información externa para entender por qué cada alternativa es correcta o incorrecta, y las explicaciones se refieren específicamente a este gráfico y estos montos, no son genéricas."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mn>, <mo>) y no se usa LaTeX. Los montos monetarios usan el formato chileno de miles: 15.000, 30.000, 45.000, 60.000, sin uso de comas decimales, lo que es consistente con el contexto. El procesamiento de respuesta marca correctamente ChoiceA como correcta y en el bloque <qti-response-else> se asigna FEEDBACK = FeedbackB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y todos los feedbacks (correcto, incorrectos y solución paso a paso) son matemáticamente correctos, claros y específicos al ítem, con formato numérico y MathML adecuados. No se detectan errores de contenido ni de formato, por lo que el ítem y su retroalimentación son consistentes y apropiados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) Del gráfico se leen las frecuencias: 0 h: 30 trabajadores; 1 h: 40; 2 h: 30; 3 h: 20; 4 h: 10; 5 h: 10. 2) La cantidad de horas extras más frecuente (la moda) es 1 hora, con 40 trabajadores. 3) El pago por cada hora extra es $15.000, por lo que el pago asociado a 1 hora es 1 × 15.000 = 15.000. 4) Por tanto, el pago más frecuente es $15.000, que corresponde a la alternativa ChoiceA, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta explica que la moda de las horas extras es 1 hora (40 trabajadores) y que el pago correspondiente es 1 × 15.000 = 15.000, concluyendo correctamente que el pago más frecuente es $15.000. Los feedbacks de las opciones incorrectas identifican correctamente a cuántas horas corresponde cada monto (2 h → 30.000; 3 h → 45.000; 4 h → 60.000) y comparan sus frecuencias con la de 1 hora, justificando por qué no son el pago más frecuente. La solución paso a paso reproduce el mismo razonamiento y llega a la respuesta correcta sin errores matemáticos."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un gráfico de barras con el eje horizontal rotulado 'Horas extras' de 0 a 5 y el eje vertical 'Cantidad de trabajadores' con valores que permiten leer aproximadamente 30, 40, 30, 20, 10 y 10 trabajadores para 0, 1, 2, 3, 4 y 5 horas respectivamente. Esto coincide con la descripción textual incluida en el enunciado y con los datos usados en la solución; no hay contradicciones factuales ni problemas de legibilidad relevantes."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem trabaja lectura e interpretación de un gráfico de barras y cálculo simple de un producto (pago por hora × número de horas), contenidos plenamente alineados con el temario de PAES Matemática M1. Los valores numéricos (hasta 5 horas extras y pagos de hasta $75.000 si se considerara 5 horas) son razonables y de magnitud adecuada; no hay inconsistencias ni desproporciones."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y coincide con el análisis del gráfico y el cálculo del pago. La retroalimentación y la resolución paso a paso son matemáticamente coherentes, y tanto el contenido textual como la imagen son claros y consistentes con el currículo PAES M1.",
+      "timestamp": "2026-02-07T02:18:35.882980+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

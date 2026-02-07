@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q53",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:14:29.809220+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La pregunta pide el año con mayor cantidad de migrantes exteriores (inmigrantes + emigrantes). Según los valores aproximados usados en los feedbacks y en la solución: 2013: 280 mil + 500 mil = 780 mil; 2015: 300 mil + 300 mil = 600 mil; 2018: 650 mil + 280 mil = 930 mil; 2019: 760 mil + 250 mil = 1.010 mil. 2019 es efectivamente el mayor. Cada feedback incorrecto muestra la suma para ese año y compara explícitamente con 2019 (o con otros años) para justificar que no es el máximo. El feedback correcto muestra el cálculo y la comparación con otros años, y la solución paso a paso repite y ordena estos cálculos de forma coherente. No hay errores numéricos ni de razonamiento, y el uso de 1.010 mil = 1.010.000 es consistente con el formato chileno (punto como separador de miles)."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio. Se explica qué se entiende por migrantes exteriores (suma de inmigrantes y emigrantes) y se dan valores aproximados leídos del gráfico, sin exigir que el estudiante haga cálculos adicionales para entender la corrección. Cada feedback es específico a la alternativa elegida, incluye los datos aproximados de ese año, la suma correspondiente y una comparación explícita con otros años, mostrando por qué no es el máximo o por qué sí lo es. La solución general está estructurada en pasos lógicos (interpretar el concepto, leer datos, sumar, comparar y concluir), lo que es pedagógicamente claro y auto-contenido."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los números usan el formato chileno: punto como separador de miles (por ejemplo, 780.000, 1.010.000) y no se usan comas decimales en estos valores enteros. La interpretación de 1.010 mil como 1.010.000 personas es consistente. En el bloque de procesamiento de respuestas, la opción correcta es ChoiceD y el fallback (qti-response-else) asigna el feedback de ChoiceA, que es una opción incorrecta, por lo que cumple la condición de no mostrar el feedback de la opción correcta en el else."
+      },
+      "overall_reasoning": "Los cálculos y comparaciones entre años son correctos y coherentes, la explicación es clara y específica para la pregunta, y el formato (MathML, uso de puntos para miles y configuración del fallback) cumple con los requisitos. Por ello, todos los chequeos pasan."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Del gráfico (valores aproximados en miles):\n- 2013: inmigrantes ≈ 280, emigrantes ≈ 500 → total ≈ 280 + 500 = 780 mil.\n- 2015: inmigrantes ≈ 300, emigrantes ≈ 300 → total ≈ 300 + 300 = 600 mil.\n- 2018: inmigrantes ≈ 650, emigrantes ≈ 280 → total ≈ 650 + 280 = 930 mil.\n- 2019: inmigrantes ≈ 760, emigrantes ≈ 250 → total ≈ 760 + 250 = 1.010 mil.\n2) Comparando los totales: 600 mil (2015), 780 mil (2013), 930 mil (2018), 1.010 mil (2019). El mayor corresponde a 2019.\n3) La alternativa correcta es, por tanto, 2019, que coincide con ChoiceD, la marcada en <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de cada alternativa usa los mismos valores aproximados que se leen razonablemente del gráfico y realiza sumas correctas en miles: 2013 → 280 + 500 = 780 mil; 2015 → 300 + 300 = 600 mil; 2018 → 650 + 280 = 930 mil; 2019 → 760 + 250 = 1.010 mil. Luego compara correctamente estos totales y concluye que 2019 es el mayor. No hay errores numéricos ni conclusiones contradictorias en la retroalimentación ni en la solución paso a paso."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El gráfico adjunto coincide con la descripción textual: eje X de 2011 a 2021, eje Y en miles hasta 800, dos series (inmigrantes con triángulos grises y emigrantes con cuadrados negros). Las alturas aproximadas de los puntos para 2013, 2015, 2018 y 2019 son coherentes con los valores usados en el enunciado y la retroalimentación. No se observan contradicciones factuales ni problemas de legibilidad relevantes para la pregunta."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem evalúa lectura e interpretación de gráficos y suma de cantidades aproximadas, contenidos propios del temario PAES M1 (estadística descriptiva y análisis de gráficos). Las magnitudes (centenas de miles de migrantes) son razonables para datos demográficos de un país. No hay errores de orden de magnitud ni procedimientos fuera del currículo."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (2019) coincide con la marcada en el QTI, las operaciones y comparaciones en la retroalimentación son matemáticamente correctas y el gráfico es coherente con los datos usados. No se detectan errores tipográficos ni de contenido objetivos.",
+      "timestamp": "2026-02-07T02:18:31.333941+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

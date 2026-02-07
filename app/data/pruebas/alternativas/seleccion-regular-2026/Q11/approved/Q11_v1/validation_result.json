@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q11-Q11_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:39:09.199379+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Problema: hay 24 peldaños por piso, cada uno de 18 cm. La altura entre pisos es 24·18 = 432 cm. Si la persona sube n peldaños, sube 18·n cm. Para estar exactamente en un nuevo piso, se requiere que 18·n sea múltiplo de 432, es decir, divisible por 432. De 18·n = 432·k se obtiene n = (432/18)·k = 24·k, por lo que n es múltiplo de 24. Por tanto, la condición correcta es la de la alternativa C. \n\nRevisión por alternativa:\n- A: El feedback muestra que 18·n divisible por 24 implica 18·n = 24·k, luego 3·n = 4·k, n = (4/3)·k. Para n entero, k múltiplo de 3; con k = 3 se obtiene n = 4, que no es múltiplo de 24, pero 18·4 = 72 y 72/24 = 3, por lo que la condición se cumple sin llegar a un piso. El razonamiento y los cálculos son correctos.\n- B: El feedback parte de 18 + n divisible por 24, es decir, 18 + n = 24·k, luego n = 24·k − 18. Con k = 1 se obtiene n = 6, que no es múltiplo de 24, pero 18 + 6 = 24 y 24/24 = 1, por lo que la condición se cumple sin llegar a un piso. Cálculos y conclusión son correctos.\n- C: El feedback correcto explica que la altura entre pisos es 432 cm, que 18·n debe ser múltiplo de 432, plantea 18·n = 432·k, divide por 18 y obtiene n = 24·k, concluyendo que n es múltiplo de 24 (24, 48, 72, …). La demostración es matemáticamente correcta y completa.\n- D: El feedback muestra que incluso cuando n = 24 (sí llega a un piso), 18 + n = 42, que no es divisible por 432, y que también puede cumplirse la condición sin llegar a un piso: con n = 414, 18 + 414 = 432, que sí es divisible por 432, pero 414/24 ≈ 17,25 pisos, por lo que no está exactamente en un piso. Los cálculos 18 + 24 = 42, 18 + 414 = 432 y 414/24 ≈ 17,25 son correctos y la argumentación es válida.\n\nLa resolución paso a paso repite el razonamiento de la alternativa correcta, con operaciones 24·18 = 432 y 432/18 = 24 correctas, y llega a la misma condición de divisibilidad por 432. No se detectan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es adecuado para estudiantes de 3°-4° medio: se usan términos como “múltiplo”, “divisible”, “número entero” y se explican las igualdades paso a paso. Cada feedback es auto-contenido: recuerda la condición correcta (n múltiplo de 24) y luego muestra, con un ejemplo numérico concreto, por qué la condición de la alternativa no garantiza llegar a un piso (A, B, D) o sí lo garantiza (C). Los contraejemplos están completamente desarrollados (se muestran los valores de n, los cálculos de 18·n o 18 + n y la división correspondiente), de modo que el estudiante no necesita hacer cálculos adicionales para entender el argumento. La solución general también está contextualizada y específica a este problema (peldaños, altura, pisos), no es genérica. No hay pasos lógicos omitidos que dificulten la comprensión para el nivel esperado."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mi>, <mn>, <mo>, <mfrac>), sin uso de LaTeX. No aparecen números con separador de miles ni decimales en el enunciado ni en los feedbacks; todos los números son enteros pequeños (18, 24, 72, 432, 414, etc.), por lo que no hay riesgo de conflicto con el formato chileno. El procesamiento de respuesta marca correctamente ChoiceC como respuesta correcta en <qti-correct-response>. En el bloque <qti-response-processing>, el fallback <qti-response-else> asigna SCORE = 0 y FEEDBACK = FB_ChoiceA, es decir, un feedback de opción incorrecta, lo que es aceptable según el criterio dado (no se asigna el feedback de la opción correcta en el else). Por tanto, el formato y la lógica de asignación de feedback cumplen con los requisitos."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y demostrada, los feedbacks de todas las alternativas son matemáticamente sólidos y específicos al problema, y la solución paso a paso es coherente. El uso de MathML y la configuración de feedback en el QTI son adecuados, sin problemas de formato ni de asignación de retroalimentación."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "1) Entre piso y piso hay 24 peldaños, cada uno de 18 cm.\n2) La altura entre dos pisos es 24 · 18 = 432 cm.\n3) Si la persona sube n peldaños, la altura total subida es 18 · n cm.\n4) Para que llegue exactamente a un nuevo piso, esa altura debe ser un múltiplo de 432 cm.\n   Esto se expresa como: 18 · n es divisible por 432.\n5) 18 · n divisible por 432 ⇔ existe un entero k tal que 18·n = 432·k.\n6) Dividiendo por 18: n = (432/18)·k = 24·k, por lo que n es múltiplo de 24 (24, 48, 72, ...), es decir, corresponde exactamente a 1, 2, 3, ... pisos completos.\n7) Por tanto, la condición correcta es: \"Que 18·n es divisible por 432\", que corresponde a la alternativa ChoiceC.\n8) El <qti-correct-response> marca ChoiceC, que coincide con la resolución.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Opción A: El feedback muestra que 18·n divisible por 24 implica n = (4/3)·k y da el contraejemplo k=3 ⇒ n=4, donde 18·4=72 es divisible por 24 pero 4 peldaños no equivalen a un piso (24 peldaños). El razonamiento es correcto.\nOpción B: Se plantea 18+n divisible por 24 ⇒ 18+n = 24·k ⇒ n = 24·k − 18 y se da el contraejemplo k=1 ⇒ n=6, donde 18+6=24 es divisible por 24 pero 6 peldaños no son un piso. Correcto.\nOpción C (correcta): Se explica que la altura entre pisos es 24·18=432 cm, que la altura recorrida es 18·n, y que exigir que 18·n sea múltiplo de 432 garantiza que existe k entero con 18·n=432·k, de donde n=24·k. Esto demuestra adecuadamente por qué la condición garantiza estar en un nuevo piso.\nOpción D: Se da el contraejemplo n=24 (llega a un piso) pero 18+24=42 no es divisible por 432, mostrando que la condición no es necesaria. Luego se da n=414, donde 18+414=432 sí es divisible por 432, pero 414/24≈17,25 pisos, por lo que no está exactamente en un piso; esto muestra que la condición tampoco es suficiente. Ambos cálculos son correctos.\nLa solución paso a paso repite el argumento de la opción correcta y llega a la misma condición. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trabaja con divisibilidad, múltiplos y modelación de una situación geométrica sencilla (escalera) mediante expresiones algebraicas, todo dentro del temario de PAES Matemática M1 (números, divisibilidad, álgebra básica). Los valores numéricos (24 peldaños, 18 cm por peldaño, 432 cm entre pisos) son razonables y están correctamente calculados."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada (ChoiceC) y la condición de divisibilidad planteada es la adecuada para garantizar que se llega exactamente a un nuevo piso. La retroalimentación y la solución paso a paso son matemáticamente coherentes y no presentan errores de cálculo ni de lógica.",
+      "timestamp": "2026-02-07T02:44:02.275245+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

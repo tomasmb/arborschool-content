@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q47",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:16:29.310802+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El modelo es p = m · 0,025, con p en kg de alimento y m en kg de masa del perro. Para m = 1 kg, p = 0,025 kg. Convertido a gramos: 0,025 · 1.000 = 25 gramos, por lo que el coeficiente 0,025 representa 25 g de alimento por cada kg de masa; la alternativa correcta es ChoiceA. \n\nFeedback ChoiceA: Explica correctamente que 0,025 kg por kg equivalen a 25 g por kg, usando la conversión 1 kg = 1.000 g y el cálculo 0,025 · 1.000 = 25. Es matemáticamente correcto y demuestra por qué la opción es correcta.\n\nFeedback ChoiceB: Muestra que para m = 1 kg se obtiene p = 0,025 kg = 25 g, no 250 g, por lo que 0,025 no representa 250 g por kg. El cálculo y la conclusión son correctos.\n\nFeedback ChoiceC: Parte de p = m · 0,025 y despeja m = p / 0,025. Compara con la afirmación m = 25 · p y muestra que no coinciden. El contraejemplo con m = 20 kg da p = 0,5 kg y la razón 20 / 0,5 = 40, no 25. Todo es matemáticamente correcto y prueba que la afirmación es falsa.\n\nFeedback ChoiceD: Análogo a C, pero comparando con m = 250 · p. Usa el mismo contraejemplo m = 20 kg, p = 0,5 kg, razón 20 / 0,5 = 40, que no es 250. La argumentación es correcta.\n\nBloque de solución: Repite el modelo, interpreta 0,025 como kg de alimento por kg de masa, convierte 0,025 kg a 25 g usando 0,025 · 1.000 = 25, y verifica con un ejemplo m = 20 kg: p = 20 · 0,025 = 0,5 kg = 500 g, que coincide con 20 · 25 = 500 g. La matemática es consistente y llega a la alternativa correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, explicando paso a paso la interpretación del coeficiente y las conversiones de unidades. Cada feedback es auto-contenido: se reescribe el modelo, se explican las variables y se realizan los cálculos necesarios dentro del propio texto, sin requerir información externa. Además, cada retroalimentación se refiere explícitamente a la afirmación de su alternativa (25 g, 250 g, 25 veces, 250 veces), por lo que es específica a esta pregunta y no genérica."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Se respeta el formato numérico chileno: la coma se usa como separador decimal (0,025; 0,5) y el punto como separador de miles (1.000). Los cálculos numéricos son coherentes con esa convención. En el bloque de procesamiento de respuestas, el fallback (qti-response-else) asigna el feedback FB_ChoiceB, que corresponde a una opción incorrecta, por lo que no hay riesgo de entregar feedback de respuesta correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada, todas las retroalimentaciones son matemáticamente correctas, específicas y claras, y el formato (MathML y notación chilena) está bien aplicado, incluyendo un fallback de feedback apropiado."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) El modelo es p = m · 0,025, donde p está en kilogramos de alimento y m en kilogramos de masa del perro.\n2) El coeficiente 0,025 tiene unidades de \"kilogramos de alimento por kilogramo de masa\".\n3) Para un perro de 1 kg (m = 1): p = 1 · 0,025 = 0,025 kg de alimento.\n4) Convertimos 0,025 kg a gramos usando el formato chileno: 1 kg = 1.000 g, entonces 0,025 · 1.000 = 25 g.\n5) Por lo tanto, el modelo indica que el perro debe consumir 25 gramos de alimento por cada kilogramo de su masa.\n6) Esto coincide exactamente con la redacción de ChoiceA, por lo que ChoiceA es la alternativa correcta.\n7) En el XML, <qti-correct-response> contiene <qti-value>ChoiceA</qti-value>, que coincide con la respuesta matemática correcta.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: Explica correctamente que 0,025 está en kg de alimento por kg de masa, convierte 0,025 kg a gramos mediante 0,025 · 1.000 = 25 y concluye que son 25 g por kg; todo es matemáticamente correcto.\nFeedback ChoiceB: Plantea m = 1 kg, obtiene p = 0,025 kg, convierte a gramos (0,025 · 1.000 = 25) y muestra que no son 250 g; el razonamiento y la conclusión son correctos.\nFeedback ChoiceC: Parte de p = m · 0,025, despeja m = p / 0,025, compara con la forma hipotética m = 25 · p y muestra que no coinciden; da un contraejemplo con m = 20 kg, p = 0,5 kg y razón 20 / 0,5 = 40, no 25; todo es consistente.\nFeedback ChoiceD: Análogo a C, pero para el factor 250; muestra que m = p / 0,025 no coincide con m = 250 · p y usa el mismo contraejemplo para obtener razón 40, no 250; también es correcto.\nLa solución general (feedback-block) desarrolla paso a paso la interpretación del coeficiente, la conversión a gramos y un ejemplo con m = 20 kg que produce 0,5 kg = 500 g, coincidiendo con 20 · 25 = 500 g. Llega a la alternativa correcta sin errores numéricos ni conceptuales."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia imagen-texto que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata sobre interpretación de un modelo lineal simple p = m · 0,025, conversión de unidades (kg a g) y razón \"gramos por kilogramo\", todos temas alineados con el currículo de PAES M1 (proporcionalidad, funciones lineales, unidades de medida). El valor 0,025 kg/kg (25 g por kg) es razonable para una ración diaria de alimento canino y no presenta errores de orden de magnitud."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceA) coincide con la interpretación matemática del modelo y las conversiones de unidades están bien hechas. La retroalimentación y la solución son coherentes, sin errores numéricos ni conceptuales, y el contenido es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:24.895589+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

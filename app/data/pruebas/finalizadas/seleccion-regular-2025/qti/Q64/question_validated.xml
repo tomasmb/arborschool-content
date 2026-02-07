@@ -1,0 +1,157 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="chess-king-moves-c7" title="Movimientos del rey en el tablero de ajedrez" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En el siguiente tablero de ajedrez, el rey se ubica inicialmente en la casilla e2.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q64_body_0.png" alt="Primer tablero de ajedrez con rey en e2"/></p>
+    <p>El rey puede moverse en cualquier dirección y sentido, una casilla a la vez. Cada uno de estos movimientos se puede representar con una flecha que indica la dirección del movimiento con respecto al tablero anterior; por ejemplo, a la flecha ↗ le corresponde el movimiento de la casilla e2 a la casilla f3.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q64_body_1.png" alt="Segundo tablero de ajedrez con ejemplo de movimiento"/></p>
+    <qti-choice-interaction response-identifier="RESPONSE" max-choices="1">
+      <qti-prompt>¿Cuál de las siguientes series de movimientos permite que la pieza quede ubicada en la casilla c7, partiendo de e2?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">↗ ↗ ↗ ↙ ↙ ← ← ←<qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK">Incorrecto. Desde e2, los tres primeros movimientos ↗ llevan al rey a f3, g4 y h5. Luego, los dos movimientos ↙ lo llevan a g4 y f3. Finalmente, los tres movimientos ← lo llevan a e3, d3 y c3. La casilla final es c3, que está en la fila 3, no en la fila 7, por lo que no se llega a c7.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">← ← ← ← ↑ ↑ ↑ ↑ ↑ → → →<qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK">Incorrecto. Desde e2, los cuatro movimientos ← llevan al rey a d2, c2, b2 y a2. Luego, los cinco movimientos ↑ lo llevan a a3, a4, a5, a6 y a7. Finalmente, los tres movimientos → lo llevan a b7, c7 y d7. La casilla final es d7, no c7, por lo que esta serie no cumple lo pedido.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">↗ ↗ ↗ ↖ ↖ ← ← ←<qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK">¡Correcto! Desde e2, los tres primeros movimientos ↗ llevan al rey a f3, g4 y h5. Luego, los dos movimientos ↖ lo llevan a g6 y f7. Finalmente, los tres movimientos ← lo llevan a e7, d7 y c7. La casilla final es c7, exactamente la posición solicitada.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">↑ ↑ ↑ ↑ ↑ ↑ ← ← ←<qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK">Incorrecto. Desde e2, los seis movimientos ↑ llevan al rey a e3, e4, e5, e6, e7 y e8. Luego, los tres movimientos ← lo llevan a d8, c8 y b8. La casilla final es b8, que está en la columna b y fila 8, distinta de c7, por lo que no se llega a c7.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso del recorrido del rey</strong></p>
+        <ol>
+          <li>
+            <p>El rey comienza en la casilla e2. En un tablero de ajedrez, las letras (a, b, c, ..., h) indican las columnas y los números (1, 2, 3, ..., 8) indican las filas.</p>
+          </li>
+          <li>
+            <p>La flecha ↗ representa un movimiento diagonal una casilla hacia arriba y hacia la derecha. Aplicamos los tres primeros movimientos ↗ partiendo de e2:</p>
+            <ol>
+              <li>
+                <p>Desde e2, un movimiento ↗ lleva al rey a f3.</p>
+              </li>
+              <li>
+                <p>Desde f3, otro movimiento ↗ lleva al rey a g4.</p>
+              </li>
+              <li>
+                <p>Desde g4, un tercer movimiento ↗ lleva al rey a h5.</p>
+              </li>
+            </ol>
+            <p>Después de estos tres movimientos, la posición del rey es h5.</p>
+          </li>
+          <li>
+            <p>La flecha ↖ representa un movimiento diagonal una casilla hacia arriba y hacia la izquierda. Aplicamos los dos movimientos ↖ desde h5:</p>
+            <ol>
+              <li>
+                <p>Desde h5, un movimiento ↖ lleva al rey a g6.</p>
+              </li>
+              <li>
+                <p>Desde g6, otro movimiento ↖ lleva al rey a f7.</p>
+              </li>
+            </ol>
+            <p>Después de estos dos movimientos, la posición del rey es f7.</p>
+          </li>
+          <li>
+            <p>La flecha ← representa un movimiento horizontal una casilla hacia la izquierda. Aplicamos los tres movimientos ← desde f7:</p>
+            <ol>
+              <li>
+                <p>Desde f7, un movimiento ← lleva al rey a e7.</p>
+              </li>
+              <li>
+                <p>Desde e7, otro movimiento ← lleva al rey a d7.</p>
+              </li>
+              <li>
+                <p>Desde d7, un tercer movimiento ← lleva al rey a c7.</p>
+              </li>
+            </ol>
+            <p>Después de estos tres movimientos, la posición final del rey es c7.</p>
+          </li>
+          <li>
+            <p>Comprobamos que esta casilla coincide con la solicitada en el enunciado: la pieza debe quedar ubicada en c7, partiendo de e2. La serie de movimientos que cumple esto es precisamente ↗ ↗ ↗ ↖ ↖ ← ← ←, que corresponde a la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

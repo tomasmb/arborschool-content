@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q11",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:09:37.962546+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Altura entre pisos: 20 peldaños × 15 cm = 300 cm. Para n peldaños, la altura recorrida es 15·n cm. Llegar exactamente a un nuevo piso equivale a que 15·n sea múltiplo de 300 (divisible por 300), por lo que la alternativa correcta es C. \n\nRevisión por alternativa:\n- Opción A: El feedback muestra el contraejemplo n = 4, donde 15·4 = 60, que es divisible por 20 pero no corresponde a un piso completo (se requieren 20 peldaños). La explicación es matemáticamente correcta y demuestra que la condición no garantiza llegar a un nuevo piso.\n- Opción B: El feedback explica correctamente que 15 + n mezcla unidades (cm con número de peldaños) y da el contraejemplo n = 20, donde se llega a un nuevo piso pero 15 + 20 = 35 no es divisible por 20. Esto prueba que la condición no es suficiente ni necesaria; la argumentación es correcta.\n- Opción C: El feedback calcula correctamente la altura entre pisos (300 cm), identifica que la altura recorrida es 15·n y explica que llegar a un nuevo piso equivale a que 15·n sea múltiplo de 300. El ejemplo n = 20 produce 15·20 = 300, divisible por 300. La justificación es completa y correcta.\n- Opción D: El feedback vuelve a señalar correctamente el problema de unidades en 15 + n y usa el contraejemplo n = 20, donde se llega a un nuevo piso pero 15 + 20 = 35 no es divisible por 300. Esto muestra que la condición no se cumple cuando sí se llega a un piso, por lo que no garantiza nada. \n\nLa resolución paso a paso repite el razonamiento correcto: calcula 300 cm entre pisos, define 15·n como altura recorrida, introduce un entero k con 15·n = k·300 y concluye que 15·n debe ser divisible por 300. Luego revisa cada alternativa con ejemplos coherentes. No hay errores de cálculo ni de lógica."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio: se explican conceptos como 'múltiplo', 'divisible' y la relación entre número de peldaños y altura sin tecnicismos innecesarios. Cada feedback es auto-contenido: recuerda los datos del problema (20 peldaños, 15 cm cada uno), explicita qué representa cada expresión (15·n como altura, 15 + n como suma sin sentido de unidades) y aporta al menos un ejemplo numérico que muestra por qué la condición falla o funciona. \n\nLa solución paso a paso está bien estructurada en ítems numerados, va desde los datos básicos hasta la formalización con un entero k, y luego revisa cada alternativa con ejemplos concretos. No depende de información externa ni de cálculos que el estudiante deba hacer aparte para entender la corrección o incorrección de cada opción."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mn>, <mi>, <mo>) y no se usa LaTeX. No aparecen números con miles o decimales que requieran el formato chileno; solo se usan enteros pequeños (15, 20, 300, 4, 35, 60), por lo que no hay conflicto con separadores de miles o decimales. \n\nEn el procesamiento de respuesta, la alternativa correcta es ChoiceC y el bloque qti-response-else asigna FEEDBACK = ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no mostrar el feedback de la opción correcta en el fallback. La estructura de response-processing es coherente con la declaración de la respuesta correcta."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y justificada, los feedbacks de todas las alternativas son matemáticamente correctos y específicos al problema, y el formato QTI/MathML es adecuado. No se detectan errores de contenido ni de presentación relevantes."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "1) Datos: Hay 20 peldaños entre piso y piso, cada uno de 15 cm de altura.\n2) Altura entre dos pisos: 20 · 15 = 300 cm.\n3) Si la persona sube n peldaños, la altura total subida es 15·n cm.\n4) La persona llega exactamente a un nuevo piso cuando la altura subida es un múltiplo de 300 cm, es decir, cuando existe un entero k tal que 15·n = 300·k. Eso equivale a que 15·n sea divisible por 300.\n5) Revisando alternativas:\n   - A: “15·n es divisible por 20” → condición necesaria pero no suficiente; contraejemplo n = 4: 15·4 = 60, divisible por 20, pero no es un piso completo.\n   - B: “15 + n es divisible por 20” → mezcla unidades y además falla para n = 20 (llega a piso, pero 35 no es divisible por 20).\n   - C: “15·n es divisible por 300” → exactamente la condición hallada en (4).\n   - D: “15 + n es divisible por 300” → mismo problema de unidades y contraejemplo n = 20 (llega a piso, pero 35 no es divisible por 300).\n6) Por lo tanto, la alternativa correcta es la C, que coincide con <qti-correct-response> (ChoiceC).",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceC) explica correctamente que la altura entre pisos es 20·15 = 300 cm y que la condición para llegar a un nuevo piso es que 15·n sea múltiplo de 300. Los ejemplos numéricos (n = 20) son coherentes. Para la opción A, se muestra un contraejemplo n = 4 con 15·4 = 60, divisible por 20 pero sin llegar a un piso completo, lo que justifica que la condición no garantiza el objetivo. Para B y D se señala correctamente el problema de mezclar unidades (15 cm + n peldaños) y se da el contraejemplo n = 20, donde se llega a un piso pero 15 + 20 = 35 no es divisible ni por 20 ni por 300, mostrando que esas condiciones no son suficientes. La resolución paso a paso calcula bien la altura entre pisos, la expresión 15·n y la condición de divisibilidad por 300, y concluye correctamente que la respuesta es la alternativa C. No hay errores matemáticos ni conclusiones incorrectas en la retroalimentación."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata sobre divisibilidad, múltiplos y modelación de una situación con una expresión algebraica sencilla (15·n) y una condición de divisibilidad, contenidos que están dentro del temario de PAES Matemática M1 (números, divisibilidad, álgebra básica). Los valores numéricos (20 peldaños, 15 cm por peldaño, 300 cm entre pisos) son razonables y de magnitud adecuada. No hay errores de magnitud ni uso de contenidos fuera del currículo esperado."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada como la alternativa C y la condición de divisibilidad por 300 es la adecuada. La retroalimentación y la resolución son matemáticamente coherentes, sin errores de cálculo ni de lógica, y el contenido es claro y acorde al nivel PAES M1.",
+      "timestamp": "2026-02-07T02:18:06.486575+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

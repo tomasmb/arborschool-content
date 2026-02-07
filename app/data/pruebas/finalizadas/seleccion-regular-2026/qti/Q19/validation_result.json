@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q19",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:09:56.140197+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema pide calcular el 75 % del 75 % de 100. En formato chileno: 75 % = 0,75. Cálculo correcto: 0,75 × 0,75 × 100 = 0,5625 × 100 = 56,25. La opción correcta marcada es ChoiceC = 56,25, que coincide con este resultado. \n\nFeedback ChoiceC (correcta): Explica que se escribe como 0,75 × 0,75 × 100, calcula 0,75 × 0,75 = 0,5625 y luego 0,5625 × 100 = 56,25. Matemáticamente correcto y justifica por qué es la respuesta. \n\nFeedback ChoiceA (5625): Muestra el cálculo correcto 0,75 × 0,75 × 100 = 56,25 y contrasta con 5625, explicando que el resultado correcto es 56,25. No hay errores numéricos. \n\nFeedback ChoiceB (150): Repite el procedimiento correcto 0,75 × 0,75 × 100 = 56,25 y aclara que es distinto de 150. Cálculos correctos. \n\nFeedback ChoiceD (1,5): De nuevo usa 0,75 × 0,75 × 100 = 56,25 y señala que es muy diferente de 1,5. Cálculos correctos. \n\nBloque de solución: \n- Convierte 75 % a 0,75 usando 75/100 = 0,75 (correcto). \n- Calcula 0,75 × 100 = 75 (75 % de 100), correcto. \n- Luego 0,75 × 75, lo reescribe como (75/100) × 75 = (75×75)/100 = 5625/100 = 56,25, todo correcto. \n- Presenta también el método en un solo paso: 0,75 × 0,75 = 0,5625 y luego ×100 = 56,25, correcto. \nNo se detectan errores matemáticos ni justificaciones incorrectas; todos los feedbacks muestran explícitamente por qué la opción es o no es correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'producto de dos factores porcentuales' pero siempre acompañado de ejemplos numéricos claros. Cada feedback incluye el procedimiento completo (0,75 × 0,75 × 100) y el resultado 56,25, por lo que es auto-contenido: el estudiante no necesita hacer cálculos adicionales para entender el error. \n\nLos feedbacks para A, B y D son específicos a cada distractor, mencionando explícitamente el valor elegido (5625, 150, 1,5) y contrastándolo con 56,25. El feedback de la opción correcta explica por qué el procedimiento lleva a 56,25. La solución paso a paso desarrolla dos métodos (por etapas y en un solo paso), lo que refuerza la comprensión del concepto de porcentajes sucesivos. No hay frases genéricas ni referencias externas; todo está contextualizado en esta pregunta."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mn>, <mo>, <mfrac>), sin uso de LaTeX. Los números usan el formato chileno: coma como separador decimal (0,75; 0,5625; 56,25) y no se usan puntos de miles en este ítem, por lo que no hay inconsistencias. \n\nEn el procesamiento de respuesta, la respuesta correcta es ChoiceC y el bloque <qti-response-else> asigna FEEDBACK = ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no asignar el feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y todos los cálculos en los feedbacks y en la solución son coherentes y exactos. El lenguaje es claro, los feedbacks son específicos y auto-contenidos, y el uso de MathML y formato numérico chileno es correcto, por lo que el ítem cumple con todos los criterios."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "Interpretando en formato chileno:\n- 75 % = 0,75.\n- \"75 % del 75 % de 100\" = 0,75 × 0,75 × 100.\n1) 0,75 × 0,75 = 0,5625.\n2) 0,5625 × 100 = 56,25.\nPor lo tanto, el resultado correcto es 56,25, que corresponde a la alternativa ChoiceC, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceC explica correctamente que 75 % = 0,75 y que el cálculo es 0,75 × 0,75 × 100 = 56,25. Los feedbacks de ChoiceA, ChoiceB y ChoiceD muestran el mismo procedimiento correcto y concluyen que sus valores propuestos no coinciden con 56,25, justificando por qué son incorrectos. La solución paso a paso en el bloque SOLUTION desarrolla primero 75 % de 100 = 75 y luego 75 % de 75, llegando a 56,25, y también presenta el método en un solo paso con 0,75 × 0,75 × 100. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata de porcentajes sucesivos y conversión de porcentaje a decimal, completamente dentro del temario de PAES Matemática M1. Los valores numéricos (75 %, 100, resultado 56,25) son razonables y de magnitud adecuada para el nivel. No hay inconsistencias ni operaciones fuera del currículo."
+        }
+      },
+      "overall_reasoning": "El problema de porcentajes sucesivos está correctamente resuelto, la alternativa marcada coincide con el resultado 56,25 y toda la retroalimentación y solución detallada son matemáticamente coherentes. No se detectan errores de contenido, formato numérico ni de redacción relevantes.",
+      "timestamp": "2026-02-07T02:18:03.518385+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

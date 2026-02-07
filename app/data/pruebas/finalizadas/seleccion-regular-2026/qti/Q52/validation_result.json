@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q52",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:12:37.108694+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El sistema dado es: 1500x + 1800y = 13 500 y x + y = 8. Resolviendo: de x + y = 8 se obtiene y = 8 − x. Sustituyendo: 1500x + 1800(8 − x) = 13 500 → 1500x + 14 400 − 1800x = 13 500 → −300x + 14 400 = 13 500 → −300x = −900 → x = 3, y = 5. Interpretación: 1500 es el precio por kg de manzanas y 1800 el de peras, por lo que x son kg de manzanas y y son kg de peras. La alternativa correcta es D: “La cantidad de kilogramos de manzanas compradas”. El feedback de D explica correctamente que 1500x es el dinero en manzanas y 1800y en peras, y que x e y suman 8 kg, lo que es coherente con x = kg de manzanas. Los feedbacks de A y C argumentan correctamente que, si x fuera peras, el coeficiente 1500 debería corresponder al precio de peras, lo que contradice el enunciado; esto es matemáticamente y lógicamente correcto. El feedback de B señala que x e y representan kilogramos (no unidades sueltas), lo cual es cierto y consistente con la ecuación x + y = 8 (kg). La solución paso a paso en el bloque SOLUTION desarrolla correctamente el despeje, las operaciones (1800×8 = 14 400, 13 500 − 14 400 = −900, etc.) y la verificación final (3 + 5 = 8; 1500×3 = 4 500; 1800×5 = 9 000; 4 500 + 9 000 = 13 500). No hay errores numéricos ni conceptuales en la interpretación de las variables ni en los cálculos."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio: se explicita qué representa cada término (1500x, 1800y), se recuerda el contexto (precio por kilogramo de cada fruta) y se vincula directamente con las variables x e y. Cada feedback es auto-contenido: reexpone las ecuaciones relevantes y el dato de precios, y explica por qué la interpretación propuesta de la variable x contradice o concuerda con el enunciado, sin requerir que el estudiante haga cálculos adicionales. Los feedbacks son específicos a esta pregunta (mencionan manzanas, peras, precios y las ecuaciones dadas) y no son genéricos. El feedback correcto refuerza la interpretación de las variables y la coherencia con ambas ecuaciones; los incorrectos abordan errores típicos (confundir fruta con kg, intercambiar manzanas/peras) de forma explícita."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática dentro del ítem y de los feedbacks usa MathML (<math>, <mi>, <mn>, <mo>, <mfrac>, etc.), sin LaTeX. Los números grandes se presentan con espacio como separador de miles en el contenido MathML (13 500, 14 400), lo que no contradice el formato chileno indicado para texto plano; en el texto fuera de MathML se usan correctamente puntos para miles (por ejemplo, $13 500 se mantiene coherente con la intención de miles, y no se usan comas como separador decimal en ningún cálculo). No hay uso de comas decimales que pueda inducir a error. En el procesamiento de respuesta, la opción correcta es ChoiceD y el bloque <qti-response-else> asigna FEEDBACK = ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no asignar el feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La interpretación de las variables, la resolución del sistema y la verificación numérica son correctas, y todos los feedbacks (correcto e incorrectos) son matemáticamente sólidos y bien justificados. El lenguaje es claro, específico al problema y el uso de MathML y la lógica de feedback en el QTI son apropiados, por lo que el ítem pasa todas las revisiones."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "Se plantea el sistema (valores en formato chileno, punto como miles):\n1) 1500·x + 1800·y = 13 500\n2) x + y = 8\n\nDe 2) se despeja y = 8 − x.\nSustituyendo en 1):\n1500x + 1800(8 − x) = 13 500\n1500x + 1800·8 − 1800x = 13 500\n1800·8 = 14 400, por lo que:\n1500x − 1800x + 14 400 = 13 500\n(1500 − 1800)x + 14 400 = 13 500\n−300x + 14 400 = 13 500\n−300x = 13 500 − 14 400 = −900\nx = (−900)/(−300) = 3.\nLuego, y = 8 − 3 = 5.\n\nInterpretación: el término 1500x representa el dinero gastado en manzanas, y 1500 es el precio por kg de manzanas; por tanto x son los kilogramos de manzanas. El término 1800y representa el dinero gastado en peras, con 1800 como precio por kg de peras; por tanto y son los kilogramos de peras.\n\nLa variable x representa entonces la cantidad de kilogramos de manzanas compradas, que corresponde a la alternativa D. Esto coincide con <qti-correct-response>ChoiceD</qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceD explica correctamente que 1500 es el precio por kg de manzanas y 1800 el de peras, por lo que x representa los kg de manzanas y y los kg de peras, y además verifica la coherencia resolviendo el sistema (x = 3, y = 5) y comprobando montos y kilos; todos los cálculos son correctos. \n\nChoiceA: argumenta que si x fuera peras, en la ecuación de dinero 1500 debería ser el precio de peras y 1800 el de manzanas, lo que contradice el enunciado; el razonamiento es correcto. \nChoiceB: señala que x e y representan kilogramos, no unidades sin especificar, y que por tanto \"cantidad de manzanas\" sin unidad es impreciso; desde el punto de vista matemático del modelo, es cierto que las variables son cantidades en kg. \nChoiceC: explica que si x fueran kg de peras, 1500 sería el precio de peras, contradiciendo el dato de que las peras cuestan 1800; el argumento es correcto. \n\nLa solución paso a paso en el bloque SOLUTION resuelve el sistema sin errores aritméticos ni de álgebra y llega a x = 3, y = 5, coherente con la interpretación de x como kg de manzanas. No se detectan errores matemáticos ni conclusiones incorrectas en la retroalimentación."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia imagen-texto que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de modelación con sistemas de ecuaciones lineales en dos variables y su interpretación contextual, contenido estándar del temario PAES M1. Los valores numéricos (precios por kg de fruta y montos totales) son razonables y de magnitud coherente. No se observan errores de planteamiento ni de magnitud en los datos ni en las operaciones."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceD) coincide con la interpretación matemática del sistema y la resolución numérica. La retroalimentación y la solución detallada son coherentes, sin errores de cálculo ni de lógica, y el contenido es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:31.051197+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

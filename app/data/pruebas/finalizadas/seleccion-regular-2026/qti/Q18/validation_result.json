@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q18",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:32.620039+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Del enunciado “p es el 25 % de k” se obtiene p = (25/100)·k = (1/4)·k, por lo que k = 4p. La alternativa D propone (100·p)/25, que se simplifica a 4p, por lo que es correcta. \n\nFeedback A: Explica correctamente que p = (1/4)k, despeja k = 4p y compara con p/25, mostrando con el ejemplo k = 100, p = 25 que p/25 = 1 ≠ 100. Matemáticamente consistente. \n\nFeedback B: Repite el razonamiento p = (25/100)k = (1/4)k, despeja k = 4p y compara con p/75, usando el ejemplo k = 100, p = 25, obteniendo p/75 = 25/75 = 1/3 ≠ 100. Correcto. \n\nFeedback C: Muestra que (100·p)/75 = (4p)/3, distinto de 4p, y con el ejemplo k = 100, p = 25 calcula (100·25)/75 = 2500/75 ≈ 33,3333, que no coincide con 100. Correcto. \n\nFeedback D: Desarrolla p = (25/100)k, simplifica a p = (1/4)k, despeja k = 4p y luego muestra que (100·p)/25 = 4p. Todo el procedimiento es matemáticamente correcto. \n\nLa solución paso a paso repite estos mismos pasos, sin errores de cálculo ni de álgebra, y llega a la alternativa D como correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando pasos explícitos: traducción del porcentaje a fracción, simplificación, despeje de la variable y verificación con un ejemplo numérico. Cada feedback es auto-contenido: recuerda la ecuación p = (25/100)k, muestra la simplificación y compara explícitamente la expresión de la alternativa con el valor correcto de k, incluyendo un ejemplo concreto (k = 100, p = 25) que permite ver por qué la opción no sirve. La retroalimentación es específica a esta pregunta (porcentajes y despeje de k) y no es genérica."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los números que aparecen con punto se usan como separador de miles (por ejemplo, 2.500 = 2500), y las comas se usan como separador decimal (33,3333), en coherencia con el formato chileno indicado. No hay inconsistencias en el uso de separadores. En el bloque de procesamiento de respuestas, la opción correcta es ChoiceD y el fallback (qti-response-else) asigna el feedback de ChoiceA, que es una opción incorrecta, lo que cumple la condición pedida."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y toda la retroalimentación (por opción y la solución general) es matemáticamente correcta, clara y específica. El formato de notación matemática y el manejo de números y feedback por defecto cumplen con los requisitos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Enunciado: «p es el 25 % de k».\n2) Traducimos a ecuación: 25 % = 25/100, por lo tanto p = (25/100)·k.\n3) Simplificamos 25/100 dividiendo numerador y denominador por 25: 25/100 = 1/4, luego p = (1/4)·k.\n4) Despejamos k: multiplicamos ambos lados por 4: 4p = k, es decir k = 4p.\n5) Escribimos 4 como fracción con denominador 25: 4 = 100/25, por lo tanto k = 4p = (100/25)·p = (100·p)/25.\n6) Esta expresión coincide exactamente con la alternativa D: (100·p)/25.\n7) El <qti-correct-response> marca ChoiceD, que es coherente con la resolución.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceD: Parte de p = 25/100·k, simplifica a p = (1/4)k, despeja k = 4p y muestra que (100·p)/25 se simplifica a 4p. Todo es algebraicamente correcto y concluye coherentemente que D es correcta.\nFeedback ChoiceA: Explica que p = (1/4)k implica k = 4p = (100·p)/25 y que la opción A es p/25, mucho menor que k; el ejemplo con k = 100, p = 25 da p/25 = 1 ≠ 100. Cálculos correctos.\nFeedback ChoiceB: Repite el razonamiento p = 25/100·k → p = (1/4)k → k = 4p y muestra que la opción B es p/75, usando el ejemplo k = 100, p = 25: p/75 = 25/75 = 1/3 ≠ 100. Correcto.\nFeedback ChoiceC: Muestra que (100·p)/75 se simplifica a (4p)/3, distinto de 4p. Con k = 100, p = 25: (100·25)/75 = 2500/75 ≈ 33,3333, distinto de 100. Cálculos correctos en formato chileno (33,3333 = 33.3333). \nSolución paso a paso: Traduce el porcentaje a fracción, simplifica, despeja k, reescribe 4 como 100/25 y llega a (100·p)/25, verificando con k = 100, p = 25 que se recupera k = 100. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes; solo contiene texto y expresiones MathML, por lo que no hay consistencia imagen-texto que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de porcentajes y despeje de una variable en una ecuación lineal simple (p es el 25 % de k), completamente dentro del temario de PAES Matemática M1 (números, porcentajes, álgebra básica). Los valores y operaciones son razonables y no presentan errores de magnitud."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceD) coincide con la resolución algebraica k = (100·p)/25. La retroalimentación y la solución paso a paso son matemáticamente consistentes y adecuadas al nivel PAES M1, sin errores de contenido ni de formato.",
+      "timestamp": "2026-02-07T02:18:06.854487+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q36-Q36_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:46.187280+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: ingreso primera mitad = 30·800 = 24.000; ingreso segunda mitad = 1000·x; ingreso total = 24.000 + 1000x. La condición “superior a 100.000” se traduce como 24.000 + 1000x > 100.000, equivalente a 30·800 + 1000x > 100.000, que corresponde a la alternativa D. Al resolver la inecuación: 24.000 + 1000x > 100.000 ⇒ 1000x > 76.000 ⇒ x > 76, por lo que se requieren al menos 77 alfajores para superar 100.000. \n\nRevisión de feedbacks:\n- Opción D (correcta): Explica correctamente el cálculo 30·800 = 24.000, modela el ingreso total como 24.000 + 1000x y justifica el uso de “> 100.000”. Matemáticamente consistente y demuestra por qué la inecuación es la adecuada.\n- Opción C: Reconoce bien que 30·800 + 1000x modela el ingreso total, y explica correctamente que el símbolo debe ser “>” y no “<”, incluso da un ejemplo numérico (x = 100) que muestra que el total sería 124.000, mayor que 100.000, lo que contradice el uso de “<”. Todo es correcto.\n- Opciones A y B: Señalan correctamente que 30·800·x hace depender el ingreso de la primera mitad de x, lo que no corresponde al enunciado, y en A además se identifica bien el error de usar “<” en vez de “>”. No hay errores matemáticos en estas justificaciones.\n- Solución paso a paso: Todos los cálculos (24.000, 100.000 − 24.000 = 76.000, 76.000/1000 = 76) son correctos usando el formato chileno. La interpretación de x > 76 como “al menos 77 alfajores” es correcta. La solución llega a la misma inecuación que la alternativa D y lo explicita.\nEn conjunto, no se detectan errores matemáticos ni justificaciones incorrectas; cada feedback incluye la demostración o argumento necesario para sustentar su afirmación."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explican los pasos de modelación (ingreso primera mitad, ingreso segunda mitad, suma total, traducción de la condición verbal a inecuación) con frases sencillas. Cada feedback es auto-contenido: \n- A y B explican explícitamente por qué el término 30·800·x es incorrecto en el contexto y, en A, por qué el símbolo “<” no representa “superior a 100.000”.\n- C explica que la expresión algebraica del ingreso es correcta pero el símbolo de desigualdad no, y aporta un ejemplo numérico concreto que ilustra la contradicción.\n- D reconstruye el razonamiento completo que lleva a la inecuación correcta.\nLa solución paso a paso está bien estructurada en ítems numerados, con una progresión lógica desde la lectura del contexto hasta la resolución opcional de la inecuación. No se observan formulaciones genéricas; todo el contenido está claramente vinculado a esta situación específica."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números usan el formato chileno de miles: 24.000, 76.000, 100.000, 124.000, etc., y se interpretan correctamente en los cálculos. No se usan comas decimales en los números presentes, por lo que no hay inconsistencias. El bloque de procesamiento de respuestas marca ChoiceD como correcta y, en el fallback (qti-response-else), asigna SCORE = 0 y FEEDBACK = FB_ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el else. No se detectan problemas de formato ni de asignación de feedback en el procesamiento."
+      },
+      "overall_reasoning": "La inecuación correcta es 30·800 + 1000x > 100.000 (alternativa D), y todos los cálculos y argumentos en los feedbacks y en la solución paso a paso son matemáticamente consistentes, claros y bien formateados según el estándar chileno y QTI/MathML. Por ello, todos los chequeos se consideran aprobados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Primera mitad del mes: vende 30 alfajores a $800 cada uno.\n   Ingreso fijo: 30 · 800 = 24.000 (veinticuatro mil pesos).\n\n2) Segunda mitad del mes: el precio es $1.000 por alfajor.\n   Si vende x alfajores, el ingreso variable es 1000 · x = 1000x.\n\n3) Ingreso total del mes:\n   Ingreso total = 24.000 + 1000x.\n\n4) Condición del problema: necesita un monto superior a $100.000.\n   Eso se traduce en la inecuación:\n   24.000 + 1000x > 100.000.\n\n5) Reescritura usando el producto original:\n   24.000 = 30 · 800, por lo que la inecuación equivalente es:\n   30 · 800 + 1000x > 100.000.\n\n6) Comparación con las alternativas:\n   ChoiceA: 30·800·x + 1000 < 100.000  → estructura y sentido de desigualdad incorrectos.\n   ChoiceB: 30·800·x + 1000 > 100.000  → estructura incorrecta (30·800 depende de x).\n   ChoiceC: 30·800 + 1000x < 100.000   → desigualdad en sentido contrario.\n   ChoiceD: 30·800 + 1000x > 100.000   → coincide exactamente con la inecuación obtenida.\n\nPor lo tanto, la alternativa correcta es ChoiceD, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceD explica correctamente que 30·800 = 24.000 representa el ingreso fijo de la primera mitad y que 1000x representa el ingreso de la segunda mitad, concluyendo la inecuación 30·800 + 1000x > 100.000, que es correcta. Los feedbacks de A y B identifican adecuadamente el error de hacer depender el término 30·800 de x y, en el caso de A y C, el uso incorrecto del símbolo < en lugar de > para 'superior a $100.000'. El feedback de C reconoce que la expresión 30·800 + 1000x modela bien el ingreso total, pero señala correctamente que el sentido de la desigualdad es erróneo, incluso con un ejemplo numérico consistente. La resolución paso a paso desarrolla el modelo, plantea la inecuación 24.000 + 1000x > 100.000, la reescribe como 30·800 + 1000x > 100.000 y, opcionalmente, resuelve x > 76, concluyendo que se necesitan al menos 77 alfajores; todos los cálculos (100.000 − 24.000 = 76.000; 76.000 / 1000 = 76) son correctos en formato chileno. No hay errores matemáticos ni conclusiones contradictorias."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes; todo el contenido es textual y en MathML, por lo que no hay posibles contradicciones texto-imagen que evaluar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema modela una situación de ingresos con una inecuación lineal en una variable, contenido plenamente dentro del temario de PAES Matemática M1 (modelación algebraica, inecuaciones lineales, interpretación de contexto). Los valores numéricos (precios de $800 y $1.000, meta de $100.000, cantidades de decenas de unidades) son razonables y de magnitud adecuada. No hay desajustes de escala ni supuestos irreales que afecten la validez matemática del ítem."
+        }
+      },
+      "overall_reasoning": "La inecuación correcta que modela la situación es 30·800 + 1000x > 100.000, correspondiente a la alternativa D, y todos los cálculos y argumentos del feedback y la solución son consistentes y correctos. No se detectan errores tipográficos relevantes ni problemas de contenido o de validez curricular.",
+      "timestamp": "2026-02-07T02:00:22.549007+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

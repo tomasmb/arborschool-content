@@ -372,12 +372,35 @@ def _update_validation_result(
         "model": "gpt-5.1",
         "reasoning_effort": "high",
         "checks": {
-            "correct_answer_check": result.correct_answer_check.status.value,
-            "feedback_check": result.feedback_check.status.value,
-            "content_quality_check": result.content_quality_check.status.value,
-            "image_check": result.image_check.status.value,
-            "math_validity_check": result.math_validity_check.status.value,
+            "correct_answer_check": {
+                "status": result.correct_answer_check.status.value,
+                "marked_answer": result.correct_answer_check.marked_answer,
+                "verification_steps": result.correct_answer_check.verification_steps,
+                "issues": result.correct_answer_check.issues,
+            },
+            "feedback_check": {
+                "status": result.feedback_check.status.value,
+                "issues": result.feedback_check.issues,
+                "reasoning": result.feedback_check.reasoning,
+            },
+            "content_quality_check": {
+                "status": result.content_quality_check.status.value,
+                "typos_found": result.content_quality_check.typos_found,
+                "character_issues": result.content_quality_check.character_issues,
+                "clarity_issues": result.content_quality_check.clarity_issues,
+            },
+            "image_check": {
+                "status": result.image_check.status.value,
+                "issues": result.image_check.issues,
+                "reasoning": result.image_check.reasoning,
+            },
+            "math_validity_check": {
+                "status": result.math_validity_check.status.value,
+                "issues": result.math_validity_check.issues,
+                "reasoning": result.math_validity_check.reasoning,
+            },
         },
+        "overall_reasoning": result.overall_reasoning,
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
     data["can_sync"] = can_sync

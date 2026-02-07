@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q36-Q36_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:31.430110+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: en la primera etapa se recaudan 60 · 2.000 = 120.000 pesos. En la segunda etapa se venden x números a 3.000 pesos cada uno, es decir 3.000x pesos. El total es 120.000 + 3.000x y debe ser superior a 300.000, por lo que la inecuación correcta es 60·2000 + 3000x > 300.000, que corresponde a la alternativa D. \n\nRevisión de feedbacks:\n- Opción D (correcta): Explica correctamente los montos de cada etapa, muestra el cálculo 60·2000 = 120.000 y construye la inecuación 120.000 + 3000x > 300.000. La justificación es matemáticamente correcta y suficiente.\n- Opción A: Identifica bien que 60·2000 representa la primera etapa y señala correctamente que el término de la segunda etapa está mal (3000 en vez de 3000x, por lo que no depende de x). También detecta correctamente que el signo debería ser > y no < porque se pide un monto superior a 300.000. Todo es matemáticamente correcto.\n- Opción B: Misma corrección sobre el término 3000 en vez de 3000x, y reconoce que el signo > sí es coherente con “monto superior a 300.000”, pero que el modelo de la segunda etapa es incorrecto. Coherente y correcto.\n- Opción C: Reconoce correctamente que 60·2000 + 3000x sí modela el total recaudado, pero que el signo < es incorrecto porque se requiere un monto superior a 300.000. El ejemplo numérico con x = 100: 120.000 + 3.000·100 = 120.000 + 300.000 = 420.000 > 300.000, y explica que la inecuación propuesta diría que debe ser menor, lo que contradice la situación. Los cálculos son correctos.\n- Bloque de solución: Todos los pasos son correctos: 60·2000 = 120.000; total = 120.000 + 3000x; se plantea 120.000 + 3000x > 300.000; se resta 120.000 obteniendo 3000x > 180.000; se divide por 3.000 (positivo) manteniendo el sentido de la desigualdad y se obtiene x > 60. La interpretación “deben vender más de 60 números” es correcta. No hay errores matemáticos ni de justificación."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explica qué representa cada término (60·2000, 3000x), se menciona explícitamente la relación con el contexto (primera y segunda etapa de venta) y se vincula el signo de la inecuación con la frase “monto superior a 300.000”.\nCada feedback es auto-contenido: el de cada alternativa incorrecta explica por qué el modelo es inadecuado (ya sea por el término de la segunda etapa o por el signo de la desigualdad) sin requerir cálculos adicionales del estudiante. El feedback correcto no solo afirma que está bien, sino que detalla el razonamiento.\nLa solución paso a paso es específica de esta pregunta, sigue una secuencia lógica (calcular primera etapa, modelar segunda, sumar, plantear inecuación, simplificar y concluir) y no se apoya en referencias externas. No hay formulaciones genéricas ni confusas."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números grandes se presentan como 120 000, 300 000, 180 000 dentro de MathML usando <mn>120</mn><mspace/><mn>000</mn>, lo que es coherente con la intención de separar miles; en el texto se usa “300.000” con punto como separador de miles, consistente con el formato chileno indicado. No se usan comas como separador decimal en los números de este ítem, por lo que no hay conflicto.\nEn el procesamiento de respuesta, la opción correcta es ChoiceD y el bloque <qti-response-else> asigna el feedback FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La inecuación correcta es 60·2000 + 3000x > 300.000 (alternativa D), y tanto los feedbacks como la solución paso a paso modelan y resuelven correctamente la situación. El lenguaje es claro, los cálculos son correctos y el formato QTI/MathML respeta las convenciones numéricas chilenas y la lógica de feedback."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Primera etapa: venden 60 números a $2.000 cada uno.\n   Monto recaudado = 60 · 2000 = 120.000 pesos.\n\n2) Segunda etapa: venden x números a $3.000 cada uno.\n   Monto recaudado = 3000·x pesos.\n\n3) Monto total recaudado = 120.000 + 3000·x.\n\n4) La condición del problema es recaudar un monto superior a 300.000 pesos, es decir:\n   120.000 + 3000·x > 300.000.\n\n5) Esta es exactamente la inecuación que aparece en la alternativa D:\n   60·2000 + 3000x > 300 000.\n\n6) Por lo tanto, la alternativa correcta es ChoiceD, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la alternativa correcta (ChoiceD) explica correctamente el modelo: 60·2000 = 120.000 para la primera etapa, 3000·x para la segunda, y la necesidad de que la suma sea mayor que 300.000, justificando la inecuación 60·2000 + 3000x > 300.000.\n\nPara ChoiceA y ChoiceB, el feedback identifica correctamente que el término de la segunda etapa está mal modelado como 3000 en vez de 3000x, por lo que no depende de x; además, en A se señala correctamente que el signo debería ser > y no <.\n\nPara ChoiceC, el feedback reconoce que la expresión 60·2000 + 3000x sí representa el total recaudado, pero que el signo < contradice la condición de \"monto superior a 300.000\"; el ejemplo numérico con x = 100 está bien calculado: 60·2000 = 120.000, 3000·100 = 300.000, total 420.000 > 300.000, lo que muestra la incoherencia con el signo <.\n\nLa solución paso a paso desarrolla correctamente la inecuación: parte de 120.000 + 3000x > 300.000, resta 120.000 en ambos lados para obtener 3000x > 180.000, y luego divide por 3000 (positivo) para llegar a x > 60. El cálculo 180.000 / 3000 = 60 es correcto y la interpretación \"deben vender más de 60 números\" es coherente con la desigualdad estricta. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y expresiones en MathML; no hay nada que contrastar visualmente."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema modela una situación de recaudación con una inecuación lineal en una variable, contenido plenamente dentro del temario de PAES Matemática M1 (álgebra, modelación con inecuaciones). Los montos (2000, 3000, 300.000) son razonables para una rifa escolar. La interpretación de \"monto superior a 300.000\" como una desigualdad estricta (>) es matemáticamente válida y coherente con el enunciado. No hay errores de magnitud ni de concepto."
+        }
+      },
+      "overall_reasoning": "La inecuación correcta que modela la situación es 60·2000 + 3000x > 300.000, correspondiente a la alternativa D, y todos los cálculos y justificaciones en la retroalimentación y la solución paso a paso son consistentes y correctos. No se detectan errores tipográficos relevantes ni problemas de contenido o de validez matemática para PAES M1.",
+      "timestamp": "2026-02-07T02:00:20.865288+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

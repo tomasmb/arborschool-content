@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q40",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:12:11.757227+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema describe un estanque con 720 litros iniciales que se vacía a razón de 3 litros por minuto. El modelo lineal debe ser de la forma f(x) = mx + b, con b = 720 (valor inicial) y m = -3 (disminuye 3 litros por minuto), por lo que la función correcta es f(x) = -3x + 720, que corresponde a la alternativa A. \n\nFeedback A: Verifica f(0) = -3·0 + 720 = 720 y muestra que la pendiente -3 representa la disminución de 3 litros por minuto, con ejemplos numéricos (f(1) = 717, f(2) = 714). Todo es matemáticamente correcto y demuestra por qué el modelo es adecuado.\n\nFeedback B: Evalúa g(0) = 3·0 - 720 = -720, mostrando que el valor inicial sería -720 litros (no tiene sentido físico y no coincide con 720). Además, explica que la pendiente 3 es positiva, lo que implicaría aumento de agua, y ejemplifica con g(1) = 3 - 720 = -717. Esto prueba correctamente que no modela la situación.\n\nFeedback C: Evalúa p(0) = (0 - 720)/3 = -720/3 = -240, mostrando que el valor inicial sería -240 litros, distinto de 720. Luego simplifica p(x) = x/3 - 240, identificando pendiente positiva 1/3, lo que implicaría aumento de agua en 1/3 de litro por minuto, contrario a la disminución de 3 litros por minuto. Los cálculos y conclusiones son correctos.\n\nFeedback D: Evalúa h(0) = (-0 + 720)/3 = 720/3 = 240, mostrando que el valor inicial sería 240 litros, distinto de 720. Luego simplifica h(x) = -x/3 + 240, identificando pendiente negativa -1/3, lo que implicaría disminución de 1/3 de litro por minuto, no de 3 litros por minuto. Los cálculos y la interpretación de la pendiente son correctos.\n\nLa solución paso a paso reconstituye el modelo lineal, identifica correctamente b = 720 y m = -3, verifica con valores concretos (0, 1, 2 minutos) y concluye que la alternativa A es la correcta. No se observan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio: se explican conceptos como 'valor inicial' y 'pendiente' en contexto, sin tecnicismos innecesarios. Cada feedback es auto-contenido: se reescribe la función de la alternativa, se evalúa explícitamente en x = 0, se muestran los cálculos intermedios y se interpreta el resultado en términos de litros de agua, sin exigir que el estudiante haga cálculos adicionales. Además, se vincula explícitamente la pendiente con 'aumenta' o 'disminuye' cierta cantidad de litros por minuto, lo que es específico a esta situación de vaciado de estanque y no genérico. La solución paso a paso sigue una estructura ordenada (identificar datos, interpretar pendiente e intercepto, construir la función, verificarla y compararla con las alternativas), lo que favorece la comprensión."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mi>, <mn>, <mo>, <mfrac>), sin uso de LaTeX. No aparecen números con separador de miles ni decimales en el enunciado ni en los feedbacks; todos los valores son enteros pequeños (0, 1, 2, 3, 6, 240, 714, 717, 720), por lo que no hay riesgo de conflicto con el formato numérico chileno. El bloque de procesamiento de respuestas asigna correctamente el feedback de la opción correcta (FeedbackA) solo cuando la respuesta es ChoiceA. En el fallback (<qti-response-else>), se asigna FeedbackB, que corresponde a una opción incorrecta, lo que cumple la condición de no entregar feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La función correcta que modela la situación es f(x) = -3x + 720 (alternativa A), y todos los feedbacks y la solución paso a paso justifican correctamente esta elección y muestran por qué las otras alternativas fallan. El contenido es matemáticamente sólido, pedagógicamente claro y bien formateado según las especificaciones QTI y el contexto chileno."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) Datos: El estanque parte con 720 litros. Se vacía a razón de 3 litros por minuto. Sea x el número de minutos transcurridos y f(x) la cantidad de agua en litros.\n2) Modelo lineal: Una función lineal que modele la situación tiene la forma f(x) = mx + b, donde b es el valor inicial y m la variación por minuto.\n3) Valor inicial: Al minuto 0, debe cumplirse f(0) = 720. Por tanto, b = 720.\n4) Tasa de cambio: El estanque se vacía 3 litros por minuto, es decir, la cantidad disminuye 3 por cada minuto. Entonces la pendiente es m = -3.\n5) Función buscada: f(x) = -3x + 720.\n6) Revisión de alternativas:\n   - ChoiceA: f(x) = -3x + 720 → coincide exactamente con el modelo obtenido.\n   - ChoiceB: g(x) = 3x - 720 → g(0) = -720 (no coincide con 720) y la pendiente es +3 (aumenta, no disminuye).\n   - ChoiceC: p(x) = (x - 720)/3 = x/3 - 240 → p(0) = -240 (no coincide con 720) y la pendiente es +1/3 (aumenta, no disminuye).\n   - ChoiceD: h(x) = (-x + 720)/3 = -x/3 + 240 → h(0) = 240 (no coincide con 720) y la pendiente es -1/3 (disminuye, pero no 3 litros por minuto).\n7) La única alternativa que modela correctamente la situación es ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback A: Explica correctamente que el valor inicial debe ser 720 litros (f(0) = 720) y que la pendiente debe ser -3 porque la cantidad disminuye 3 litros por minuto. Los ejemplos numéricos f(0) = 720, f(1) = 717, f(2) = 714 están bien calculados.\nFeedback B: Evalúa g(0) = 3·0 - 720 = -720, concluye correctamente que no tiene sentido físico y no coincide con 720. Además, identifica que la pendiente es +3, lo que implicaría aumento, no disminución. El cálculo g(1) = 3·1 - 720 = -717 es correcto y refuerza la incorrección del modelo.\nFeedback C: Evalúa p(0) = (0 - 720)/3 = -240, detecta que no coincide con 720. Simplifica correctamente p(x) = x/3 - 240, identifica pendiente positiva 1/3 y concluye que implicaría aumento de 1/3 litro por minuto, contrario al enunciado.\nFeedback D: Evalúa h(0) = (-0 + 720)/3 = 240, detecta que no coincide con 720. Simplifica correctamente h(x) = -x/3 + 240, identifica pendiente -1/3 y concluye que implicaría disminución de 1/3 litro por minuto, no de 3 litros por minuto.\nLa resolución paso a paso repite el razonamiento estándar para funciones lineales (identificar valor inicial y pendiente) y llega a f(x) = -3x + 720, coincidiendo con la alternativa A. No se observan errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y expresiones en MathML; no hay posibles contradicciones visuales que evaluar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de modelación con funciones lineales, contenido central del temario PAES M1. Los valores numéricos (720 litros iniciales, variación de 3 litros por minuto) son razonables y coherentes con una situación realista de vaciado de un estanque. No hay magnitudes absurdas ni temas fuera de currículo."
+        }
+      },
+      "overall_reasoning": "La función correcta que modela la situación es f(x) = -3x + 720, coincidiendo con la alternativa marcada (ChoiceA). La retroalimentación y la resolución paso a paso son matemáticamente correctas y coherentes, y el contenido es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:19.765770+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

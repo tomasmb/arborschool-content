@@ -34,9 +34,16 @@ def read_validation_data(folder: Path) -> dict | None:
 
 
 def is_can_sync(vdata: dict | None) -> bool:
-    """True when validation passed and the item is ready to sync."""
+    """True when validation passed and the item is ready to sync.
+
+    Returns True if either:
+    - Automated validation passed (can_sync=True), or
+    - A human marked it as manually validated (manually_validated=True)
+    """
     if vdata is None:
         return False
+    if vdata.get("manually_validated", False):
+        return True
     return bool(vdata.get("can_sync", False))
 
 

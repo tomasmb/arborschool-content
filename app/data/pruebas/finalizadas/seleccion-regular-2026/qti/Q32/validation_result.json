@@ -1,0 +1,46 @@
+{
+  "question_id": "seleccion-regular-2026-Q32",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:44.201772+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: Sea x el precio de un lápiz. Como ambos tienen la misma cantidad de dinero, se plantea 7x + 900 = 6x + 2.330. Restando 6x: x + 900 = 2.330. Restando 900: x = 2.330 − 900 = 1.430. Por tanto, el precio correcto es $1.430 (ChoiceC). \n\nRevisión de cada feedback:\n- ChoiceC: Calcula 7 × 1.430 = 10.010 y 10.010 + 900 = 10.910 para Daniela; 6 × 1.430 = 8.580 y 8.580 + 2.330 = 10.910 para Marcos. Ambos montos coinciden, demostrando correctamente que $1.430 satisface la condición.\n- ChoiceA ($110): 7 × 110 = 770; 770 + 900 = 1.670. Para Marcos: 6 × 110 = 660; 660 + 2.330 = 2.990. Como 1.670 ≠ 2.990, se demuestra correctamente que no cumplen la condición.\n- ChoiceB ($248): 7 × 248 = 1.736; 1.736 + 900 = 2.636. Para Marcos: 6 × 248 = 1.488; 1.488 + 2.330 = 3.818. Como 2.636 ≠ 3.818, la justificación es correcta.\n- ChoiceD ($3.230): 7 × 3.230 = 22.610; 22.610 + 900 = 23.510. Para Marcos: 6 × 3.230 = 19.380; 19.380 + 2.330 = 21.710. Como 23.510 ≠ 21.710, se prueba correctamente que no sirve.\n\nLa solución paso a paso en el bloque SOLUTION reproduce exactamente la ecuación 7x + 900 = 6x + 2.330, realiza las restas correctas y llega a x = 1.430, además de verificar con los datos. No hay errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio: se explicita qué representa x, se construyen las expresiones de dinero total y se indica claramente por qué se igualan. En cada alternativa incorrecta se muestra el cálculo del gasto y del dinero total de Daniela y Marcos, y luego se compara explícitamente ambos montos para concluir que no son iguales; el estudiante no necesita hacer cálculos adicionales para entender por qué la opción falla. El feedback de la opción correcta no solo afirma que es correcta, sino que verifica con los datos del problema. La solución general es específica de este ítem (usa los nombres Daniela y Marcos, los montos 900 y 2.330, y las cantidades de lápices) y no es genérica. La estructura paso a paso (definir x, plantear ecuación, resolver, interpretar y verificar) es pedagógicamente clara."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, no se usa LaTeX. Los números siguen el formato chileno: punto como separador de miles (por ejemplo, 1.430, 2.330, 10.010, 10.910, 22.610, 23.510) y no se usan comas decimales en este ítem. Las operaciones son coherentes con esa interpretación (por ejemplo, 2.330 − 900 = 1.430 se entiende como 2330 − 900 = 1430). En el procesamiento de respuestas, la opción correcta es ChoiceC y el bloque qti-response-else asigna el feedback de ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback."
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada, todos los cálculos en los feedbacks y en la solución paso a paso son consistentes y correctos, y el formato (MathML y notación numérica chilena) está bien aplicado. No se detectan errores matemáticos, de claridad ni de formato, por lo que el ítem y su retroalimentación son adecuados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "manual_review",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "not_applicable",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-07T02:18:17.835669+00:00",
+      "manual_approval_reason": "Falso positivo del validador. El propio modelo reconoce que no hay errores matemáticos en su razonamiento y que el estado correcto debería ser 'pass'. Toda la aritmética usa formato numérico chileno correctamente: 1.430 = 1430, 2.330 = 2330, etc. Verificado: 7×1430+900 = 10910 = 6×1430+2330."
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

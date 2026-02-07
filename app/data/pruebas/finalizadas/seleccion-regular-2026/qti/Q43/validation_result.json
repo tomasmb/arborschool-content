@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q43",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:11:28.579969+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: d(t) = a·t^2/2, con a = 10 m/s^2 y d = 45 m. Se plantea 45 = 10·t^2/2. Multiplicando por 2: 90 = 10·t^2. Dividiendo por 10: 9 = t^2. Entonces t = 3 s (se toma la raíz positiva por ser tiempo). La alternativa correcta es ChoiceA = 3. \n\nFeedback ChoiceA: Reproduce exactamente estos pasos (sustituye a = 10, plantea 45 = 10·t^2/2, multiplica por 2, divide por 10, obtiene t^2 = 9 y luego t = 3). La justificación es matemáticamente correcta y muestra por qué la opción es correcta.\n\nFeedback ChoiceB (t = 4,5): Calcula 4,5^2 = 20,25; luego t^2/2 = 20,25/2 = 10,125; después d(4,5) = 10·10,125 = 101,25 m, que es distinto de 45 m. Todos los cálculos son correctos con formato chileno (4,5 = 4.5; 20,25 = 20.25; 10,125 = 10.125; 101,25 = 101.25) y demuestran que no resuelve el problema.\n\nFeedback ChoiceC (t = √45): Usa t^2 = (√45)^2 = 45; luego t^2/2 = 45/2; después d(√45) = 10·(45/2) = 450/2 = 225 m. Esto es distinto de 45 m, por lo que la opción es incorrecta. Los pasos son correctos.\n\nFeedback ChoiceD (t = 9): Calcula 9^2 = 81; luego t^2/2 = 81/2; después d(9) = 10·(81/2) = 810/2 = 405 m, distinto de 45 m. Los cálculos son correctos.\n\nLa solución paso a paso del bloque SOLUTION repite el mismo despeje de manera detallada y llega a t = 3 s correctamente. No hay errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio: explica qué representa cada variable (d, t, a) y las unidades físicas. La retroalimentación de la opción correcta muestra el procedimiento completo de sustitución y despeje, indicando explícitamente cómo se llega a t = 3 s y que coincide con la alternativa 3.\n\nEn las opciones incorrectas, cada feedback es específico: toma el valor propuesto de t, lo sustituye en la función d(t) = 10·t^2/2, realiza los cálculos numéricos paso a paso y concluye explícitamente que la distancia obtenida es distinta de 45 m, por lo que esa t no resuelve el problema. Esto hace que cada feedback sea auto-contenido; el estudiante no necesita hacer cálculos adicionales para entender por qué su opción es incorrecta.\n\nLa solución general (feedback-block) está organizada en pasos numerados, con explicaciones textuales intercaladas con las expresiones matemáticas, lo que favorece la comprensión del procedimiento de despeje de t en una ecuación cuadrática simple en contexto físico."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mi>, <mn>, <mo>, <mfrac>, <msup>, <msqrt>), sin uso de LaTeX. Los números decimales en los cálculos de los distractores usan coma como separador decimal (4,5; 20,25; 10,125; 101,25), coherente con el formato chileno indicado. No se usan puntos como separador de miles en este ítem, por lo que no hay conflicto.\n\nEn el procesamiento de respuestas, la opción correcta está declarada como ChoiceA y el bloque <qti-response-else> asigna el feedback de ChoiceB (una opción incorrecta), lo que es aceptable según el criterio: el fallback no entrega la retroalimentación de la opción correcta. Por tanto, el formato y la lógica de asignación de feedback cumplen con los requisitos."
+      },
+      "overall_reasoning": "La respuesta correcta (3 segundos) está bien determinada y todos los feedbacks, tanto de la alternativa correcta como de las incorrectas y la solución general, son matemáticamente correctos, claros y específicos al problema. El uso de MathML y del formato numérico chileno es adecuado, y la lógica de feedback en el QTI no presenta problemas."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "Se da la función de distancia para un móvil que parte del reposo:\n\nd(t) = a · t^2 / 2.\n\nDatos del problema:\n- a = 10 m/s^2\n- d = 45 m\n\nReemplazamos en la expresión:\n45 = 10 · t^2 / 2.\n\nMultiplicamos ambos lados por 2:\n2 · 45 = 10 · t^2\n90 = 10 · t^2.\n\nDividimos por 10:\n90 / 10 = t^2\n9 = t^2.\n\nTomamos raíz cuadrada (tiempo positivo):\nt = √9 = 3 segundos.\n\nLa alternativa con valor 3 es ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: Reemplaza a = 10 en d(t) = a·t^2/2, plantea 45 = 10·t^2/2, multiplica por 2 (90 = 10·t^2), divide por 10 (9 = t^2) y concluye t = 3 s. Todo el razonamiento es correcto y consistente con la respuesta.\n\nFeedback ChoiceB: Sustituye t = 4,5 en la fórmula. Calcula 4,5^2 = 20,25; luego 20,25/2 = 10,125; después 10 · 10,125 = 101,25 m. Esta distancia es distinta de 45 m, por lo que t = 4,5 no es solución. Los cálculos son correctos en formato chileno.\n\nFeedback ChoiceC: Sustituye t = √45. Calcula (√45)^2 = 45; luego 45/2; después 10 · (45/2) = 450/2 = 225 m. Esta distancia es distinta de 45 m, por lo que t = √45 no es solución. El procedimiento es correcto.\n\nFeedback ChoiceD: Sustituye t = 9. Calcula 9^2 = 81; luego 81/2; después 10 · (81/2) = 810/2 = 405 m. Esta distancia es distinta de 45 m, por lo que t = 9 no es solución. Los cálculos son correctos.\n\nLa solución paso a paso en el bloque SOLUTION repite el mismo despeje correcto y concluye t = 3 s. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata de movimiento rectilíneo uniformemente acelerado con la fórmula d(t) = (1/2)·a·t^2, que es estándar y acorde al currículo de Física/Matemática de enseñanza media y compatible con el nivel PAES M1 en cuanto a uso de funciones cuadráticas y despeje de incógnitas. Los valores numéricos (a = 10 m/s^2, d = 45 m, tiempo resultante t = 3 s) son razonables físicamente y de magnitud adecuada."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceA = 3) coincide con la resolución matemática del problema. Todos los feedbacks y la solución desarrollada son coherentes, sin errores de cálculo ni de lógica, y el contenido es claro y adecuado al nivel PAES M1.",
+      "timestamp": "2026-02-07T02:18:23.673712+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

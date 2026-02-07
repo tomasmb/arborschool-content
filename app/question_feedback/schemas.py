@@ -70,26 +70,22 @@ FEEDBACK_REVIEW_SCHEMA: dict = {
 FINAL_VALIDATION_SCHEMA: dict = {
     "type": "object",
     "properties": {
-        "validation_result": {
-            "type": "string",
-            "enum": ["pass", "fail"],
-        },
+        # Checks come FIRST so the model reasons before committing to a verdict
         "correct_answer_check": {
             "type": "object",
             "properties": {
                 "status": {"type": "string", "enum": ["pass", "fail"]},
-                "expected_answer": {"type": "string"},
-                "marked_answer": {"type": "string"},
-                "verification_steps": {"type": "string"},
+                "marked_answer": {
+                    "type": "string",
+                    "description": "The Choice marked in qti-correct-response",
+                },
+                "verification_steps": {
+                    "type": "string",
+                    "description": "Step-by-step solution to verify the answer",
+                },
                 "issues": {"type": "array", "items": {"type": "string"}},
             },
-            "required": [
-                "status",
-                "expected_answer",
-                "marked_answer",
-                "verification_steps",
-                "issues",
-            ],
+            "required": ["status", "marked_answer", "verification_steps", "issues"],
         },
         "feedback_check": {
             "type": "object",
@@ -137,14 +133,20 @@ FINAL_VALIDATION_SCHEMA: dict = {
             "required": ["status", "issues", "reasoning"],
         },
         "overall_reasoning": {"type": "string"},
+        # Verdict comes LAST — must match the checks above
+        "validation_result": {
+            "type": "string",
+            "enum": ["pass", "fail"],
+            "description": "Must match individual check statuses",
+        },
     },
     "required": [
-        "validation_result",
         "correct_answer_check",
         "feedback_check",
         "content_quality_check",
         "image_check",
         "math_validity_check",
         "overall_reasoning",
+        "validation_result",
     ],
 }
