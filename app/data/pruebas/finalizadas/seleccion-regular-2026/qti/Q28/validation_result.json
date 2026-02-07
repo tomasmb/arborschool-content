@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q28",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:44.682887+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La razón dada es 3 : 5 (rojo : amarillo). Si se usan 30 gotas amarillas, el factor de escala es 30 ÷ 5 = 6, por lo que las gotas rojas deben ser 3 × 6 = 18. El feedback de la opción correcta (ChoiceA) explica exactamente este procedimiento y llega a 18. Para las opciones incorrectas: \n- ChoiceB: 28 : 30 se simplifica dividiendo por 2 a 14 : 15, que no es 3 : 5; la explicación es correcta. \n- ChoiceC: 30 : 30 se simplifica dividiendo por 30 a 1 : 1, que no es 3 : 5; la explicación es correcta. \n- ChoiceD: 32 : 30 se simplifica dividiendo por 2 a 16 : 15, que no es 3 : 5; la explicación es correcta. \nLa solución paso a paso repite el razonamiento de proporciones (factor de escala 6 y 3 × 6 = 18) sin errores. No hay inconsistencias matemáticas ni omisiones en la justificación de por qué cada opción incorrecta no satisface la razón pedida."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explican conceptos como 'razón', 'grupo de referencia' y 'factor de escala' con ejemplos numéricos explícitos. Cada feedback es auto-contenido: se recalcula la razón con los valores de la alternativa, se muestra la simplificación y se concluye explícitamente que no coincide con 3 : 5. El feedback de la opción correcta explica paso a paso cómo usar la razón para encontrar la cantidad de gotas rojas. La solución general también es específica de este problema y no recurre a comentarios genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<m:math>, <m:mn>, <m:mo>, etc.), sin LaTeX. No aparecen números con separador de miles o decimales, solo enteros pequeños (3, 5, 18, 28, 30, 32), por lo que no hay conflicto con el formato numérico chileno. El bloque de response-processing marca correctamente ChoiceA como respuesta correcta y asigna su feedback solo en ese caso. El fallback (qti-response-else) asigna el feedback de ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el else."
+      },
+      "overall_reasoning": "La resolución del problema y todos los feedbacks son matemáticamente correctos, claros y específicos al ítem, y el formato QTI/MathML está bien implementado. No se detectan errores de contenido ni de formato relevantes."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "La razón dada es rojo : amarillo = 3 : 5.\nSi se usan 30 gotas de amarillo, buscamos x tal que:\n3 : 5 = x : 30.\nEsto equivale a la proporción 3/5 = x/30.\nDespejamos x: x = 30 * (3/5) = 30 * 3 / 5 = 90 / 5 = 18.\nPor lo tanto, se necesitan 18 gotas de colorante rojo.\nLa alternativa que indica 18 es ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA: Explica correctamente que la razón 3:5 implica que al multiplicar ambas cantidades por el mismo factor (30/5 = 6) se obtienen 18 gotas rojas (3*6). Cálculos y conclusión son correctos.\nFeedback ChoiceB: Calcula la razón 28:30, la simplifica a 14:15 dividiendo por 2 y concluye correctamente que 14:15 ≠ 3:5. No hay errores numéricos.\nFeedback ChoiceC: Calcula la razón 30:30, la simplifica a 1:1 dividiendo por 30 y concluye correctamente que 1:1 ≠ 3:5. Correcto.\nFeedback ChoiceD: Calcula la razón 32:30, la simplifica a 16:15 dividiendo por 2 y concluye correctamente que 16:15 ≠ 3:5. Correcto.\nLa resolución paso a paso repite el razonamiento proporcional (factor 6) y llega a 18 gotas rojas sin errores. No se detectan fallos matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML; no hay nada visual que contrastar con el enunciado."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de razones y proporciones simples (mezcla de colorantes), contenido plenamente alineado con el temario de PAES Matemática M1. Los valores numéricos (3, 5, 30, 18, etc.) son pequeños y razonables para el contexto. No hay errores de magnitud ni contenidos fuera de currículo."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta es 18 gotas rojas (ChoiceA), coherente con la razón 3:5 y 30 gotas amarillas. Toda la retroalimentación y la resolución paso a paso son matemáticamente correctas y el contenido es claro y adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:10.959054+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

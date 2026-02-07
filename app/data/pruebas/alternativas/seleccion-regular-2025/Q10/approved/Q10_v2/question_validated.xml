@@ -1,0 +1,151 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="naegele-rule-calculation-v2" title="Cálculo de Fecha de Parto - Regla de Naegele V2" adaptive="false" time-dependent="false" xml:lang="es">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La regla de Naegele es un método que permite determinar la fecha probable de parto de una mujer, determinando el día, mes y año tal como se representa en el siguiente diagrama:</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q10_fixed.png" alt="Diagrama titulado 'Cálculo de la fecha probable de parto'. Muestra tres bloques de instrucciones: 1. Día: Día de la última menstruación más siete días. 2. Mes: Mes de la última menstruación menos tres meses. 3. Año: Dependiendo de la fecha de la última menstruación se podría sumar un año."/>
+    </p>
+    <p>Si la fecha de la última menstruación de una mujer embarazada fue el 10/09/2024, ¿cuál será la probable fecha de parto de esta mujer según la regla de Naegele?</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">17/06/2025
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! La regla de Naegele se puede interpretar como “sumar 9 meses y 7 días” a la fecha de la última menstruación. Primero se suman 9 meses al 10/09/2024: septiembre es el mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn></math>, por lo que al avanzar 9 meses se llega a junio del año siguiente, es decir, al 10/06/2025. Luego se suman 7 días al día <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math>: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>17</mn></math>, obteniendo el 17/06/2025. Así, la fecha probable de parto es 17/06/2025.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">10/06/2025
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Esta fecha solo considera el efecto de sumar 9 meses a la fecha de la última menstruación, pero omite los 7 días adicionales de la regla de Naegele. Desde el 10/09/2024, al avanzar 9 meses se llega al 10/06/2025. Sin embargo, la regla indica además sumar 7 días al día <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math>, lo que da <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>17</mn></math>. Por lo tanto, la fecha probable de parto es 17/06/2025 y no 10/06/2025.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">03/06/2025
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para aplicar correctamente la regla de Naegele se debe sumar 9 meses y 7 días a la fecha de la última menstruación. Desde el 10/09/2024, al avanzar 9 meses se obtiene el 10/06/2025, y luego se suman 7 días al día <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math>, obteniendo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>17</mn></math>. La fecha 03/06/2025 tiene un día menor que <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math>, por lo que no puede resultar de sumar días a la fecha inicial. La fecha que satisface la regla es 17/06/2025.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">13/06/2025
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La regla de Naegele indica sumar 9 meses y 7 días a la fecha de la última menstruación. Desde el 10/09/2024, al avanzar 9 meses se llega al 10/06/2025. Luego se suman 7 días al día <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math>, obteniendo <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>17</mn></math>, por lo que la fecha correcta es 17/06/2025. La alternativa 13/06/2025 corresponde a sumar solo 3 días al 10/06/2025, lo que no coincide con los 7 días que establece la regla.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Aplicación paso a paso de la regla de Naegele</strong></p>
+        <ol>
+          <li>Identificar la fecha de la última menstruación: 10/09/2024 (10 de septiembre de 2024).</li>
+          <li>Interpretar la regla de Naegele. Una forma habitual de expresarla es: “sumar 9 meses y 7 días” a la fecha de la última menstruación para aproximar la fecha probable de parto.</li>
+          <li>Sumar 9 meses a la fecha inicial. Septiembre es el mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>9</mn></math>. Al avanzar 9 meses desde septiembre se llega nuevamente al mes <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>6</mn></math> (junio) del año siguiente:
+            <ul>
+              <li>10/09/2024 → 10/10/2024 (1 mes)</li>
+              <li>10/10/2024 → 10/11/2024 (2 meses)</li>
+              <li>10/11/2024 → 10/12/2024 (3 meses)</li>
+              <li>10/12/2024 → 10/01/2025 (4 meses)</li>
+              <li>10/01/2025 → 10/02/2025 (5 meses)</li>
+              <li>10/02/2025 → 10/03/2025 (6 meses)</li>
+              <li>10/03/2025 → 10/04/2025 (7 meses)</li>
+              <li>10/04/2025 → 10/05/2025 (8 meses)</li>
+              <li>10/05/2025 → 10/06/2025 (9 meses)</li>
+            </ul>
+            Así, después de sumar 9 meses se obtiene la fecha 10/06/2025.
+          </li>
+          <li>Sumar 7 días al día de la fecha obtenida. Se parte del día <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> y se suman <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>7</mn></math> días:
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>10</mn>
+              <mo>+</mo>
+              <mn>7</mn>
+              <mo>=</mo>
+              <mn>17</mn>
+            </math>
+            . De este modo, se llega al 17/06/2025.
+          </li>
+          <li>Reunir los resultados obtenidos:
+            <ul>
+              <li>Día: 17</li>
+              <li>Mes: junio (06)</li>
+              <li>Año: 2025</li>
+            </ul>
+            Por lo tanto, la fecha probable de parto según la regla de Naegele es 17/06/2025.
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

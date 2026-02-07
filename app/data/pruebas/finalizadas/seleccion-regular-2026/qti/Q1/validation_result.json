@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:09:30.230784+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cálculo del puntaje: se parte con 10 (corazón) como puntaje inicial. Luego: +6 = 16; −3 = 13; +9 = 22; −10 = 12; −5 = 7; +8 = 15; −2 = 13; −10 = 3; −7 = −4. El resultado correcto es −4, coherente con la alternativa ChoiceB. \n\nFeedback ChoiceB (correcta): describe exactamente la misma secuencia de operaciones y llega a −4, demostrando por qué es correcta.\n\nFeedback ChoiceA: afirma que el resultado no es −14 y luego detalla la misma secuencia de operaciones que lleva a −4, por lo que demuestra que −14 no satisface el problema.\n\nFeedback ChoiceC: explica que si el resultado fuera 3, al aplicar la última resta (−7) no se mantendría en 3; reproduce el cálculo hasta llegar a 3 antes de la última carta y luego indica que se resta 7, por lo que el resultado final no es 3. Esto es matemáticamente correcto.\n\nFeedback ChoiceD: indica que al seguir todas las operaciones el resultado no es 11 y describe la secuencia de sumas y restas (aunque sin recalcular cada valor intermedio), lo que es consistente con el cálculo correcto que lleva a −4.\n\nLa solución paso a paso en el bloque SOLUTION reproduce todas las operaciones con MathML y llega a −4 correctamente. No se observan errores numéricos ni contradicciones internas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°–4° medio. Se explicita la regla del juego (corazón = suma, estrella = resta) y se sigue el orden de las cartas. \n\nCada feedback es auto-contenido: \n- ChoiceB muestra el cálculo paso a paso con los valores intermedios, permitiendo al estudiante seguir todo el proceso sin cálculos adicionales. \n- ChoiceA y ChoiceC no solo dicen que la respuesta es incorrecta, sino que muestran la secuencia de operaciones que lleva a un resultado distinto del propuesto, lo que permite al estudiante identificar en qué se diferencia su respuesta. \n- ChoiceD explica que al aplicar todas las operaciones el resultado no es 11 y enumera las operaciones en orden; aunque no da todos los valores intermedios, es suficientemente específico y claramente vinculado a esta pregunta. \n\nLa solución general también es clara, ordenada en pasos numerados y con operaciones explícitas, lo que refuerza la comprensión del procedimiento."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática estructurada en la solución se presenta en MathML (<math>, <mn>, <mo>), sin uso de LaTeX. Los números son enteros pequeños, por lo que no se requiere separador de miles ni decimales; no hay conflicto con el formato numérico chileno. \n\nEl procesamiento de respuestas asigna correctamente la alternativa correcta (ChoiceB) en <qti-correct-response>. El bloque de respuesta por defecto (qti-response-else) asigna SCORE = 0 y FEEDBACK = FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el fallback. No se observan problemas de formato ni de enrutamiento de feedback."
+      },
+      "overall_reasoning": "Los cálculos en todos los feedbacks y en la solución son correctos y coherentes, el lenguaje es claro y específico para esta pregunta, y el formato QTI/MathML está bien implementado, incluyendo un fallback adecuado. Por ello, todos los chequeos se consideran aprobados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "Según el enunciado y la imagen, las cartas en orden son:\n1) Carta inicial: 10 corazón → puntaje inicial = 10.\nLuego, para cada carta siguiente: corazón = suma, estrella = resta.\n2) 6 corazón: 10 + 6 = 16.\n3) 3 estrella: 16 − 3 = 13.\n4) 9 corazón: 13 + 9 = 22.\n5) 10 estrella: 22 − 10 = 12.\n6) 5 estrella: 12 − 5 = 7.\n7) 8 corazón: 7 + 8 = 15.\n8) 2 estrella: 15 − 2 = 13.\n9) 10 estrella: 13 − 10 = 3.\n10) 7 estrella: 3 − 7 = −4.\nEl puntaje final es −4, que corresponde a la alternativa ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceB) reproduce exactamente el cálculo paso a paso y concluye en −4, coherente con la solución. Los feedbacks de las opciones incorrectas explican que, al seguir el procedimiento descrito (mismas sumas y restas), no se obtienen los valores propuestos (−14, 3, 11); aunque no muestran un cálculo alternativo completo, no contienen errores numéricos ni contradicciones. El bloque de solución detallada repite el procedimiento con operaciones correctas y llega a −4."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra, en orden, las cartas: 10 corazón (inicial), luego 6 corazón, 3 estrella, 9 corazón, 10 estrella, 5 estrella, 8 corazón, 2 estrella, 10 estrella y 7 estrella, coincidiendo con la descripción textual del alt y con las operaciones usadas en el enunciado y la solución. La imagen es simple y legible, sin contradicciones factuales con el texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trabaja con sumas y restas de números enteros en un contexto de juego, completamente alineado con el temario de PAES M1 (aritmética básica, interpretación de reglas y operaciones). Los valores numéricos son pequeños y razonables, sin errores de magnitud."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (−4) coincide con el cálculo paso a paso, la retroalimentación y la solución son matemáticamente coherentes, y no se observan problemas de redacción, formato ni de consistencia con la imagen. El ítem es válido para PAES M1.",
+      "timestamp": "2026-02-07T02:18:04.912471+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

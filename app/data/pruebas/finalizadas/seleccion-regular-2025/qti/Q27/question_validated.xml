@@ -1,0 +1,206 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="algebra-yogurt-purchase" title="Algebra Word Problem - Yogurt Purchase" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una persona va a comprar 18 yogures y el precio de cada uno es $M. Para ello lleva un monto de $P, el cual es suficiente para comprar.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes expresiones corresponde al dinero que le sobra?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mo>$</mo>
+          <mrow>
+            <mo>(</mo>
+            <mi>P</mi>
+            <mo>-</mo>
+            <mn>18</mn>
+            <mo>&#183;</mo>
+            <mi>M</mi>
+            <mo>)</mo>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_ChoiceA" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El costo total de los 18 yogures es el precio de cada yogur multiplicado por la cantidad de yogures, es decir, 18&#183;M. El dinero que lleva la persona es P, por lo que el dinero que le sobra se obtiene restando al dinero que lleva el costo total de la compra: P - 18&#183;M. Por lo tanto, la expresión que representa el dinero que le sobra es (P - 18&#183;M).</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mo>$</mo>
+          <mrow>
+            <mo>(</mo>
+            <mfrac>
+              <mrow>
+                <mn>18</mn>
+                <mo>&#183;</mo>
+                <mi>M</mi>
+              </mrow>
+              <mi>P</mi>
+            </mfrac>
+            <mo>)</mo>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_ChoiceB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La fracción (18&#183;M)/P representa el cociente entre el costo total de los yogures y el dinero que lleva la persona, no el dinero que le sobra. Por ejemplo, si M = 500 y P = 15.000, entonces el costo total es 18&#183;500 = 9.000 y el dinero que le sobra es 15.000 - 9.000 = 6.000. En cambio, (18&#183;M)/P = 9.000/15.000 = 0,6, que no corresponde al dinero que le sobra.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mo>$</mo>
+          <mrow>
+            <mo>(</mo>
+            <mi>P</mi>
+            <mo>-</mo>
+            <mi>M</mi>
+            <mo>)</mo>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_ChoiceC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La expresión (P - M) solo descuenta el precio de un yogur, no de los 18 yogures que se compran. Por ejemplo, si M = 500 y P = 15.000, el costo total de los 18 yogures es 18&#183;500 = 9.000 y el dinero que le sobra es 15.000 - 9.000 = 6.000. En cambio, P - M = 15.000 - 500 = 14.500, que no corresponde al dinero que le sobra después de comprar los 18 yogures.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mo>$</mo>
+          <mrow>
+            <mo>(</mo>
+            <mfrac>
+              <mrow>
+                <mi>P</mi>
+                <mo>-</mo>
+                <mn>18</mn>
+              </mrow>
+              <mi>M</mi>
+            </mfrac>
+            <mo>)</mo>
+          </mrow>
+        </math>
+        <qti-feedback-inline identifier="FB_ChoiceD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La fracción (P - 18)/M no representa el dinero que le sobra, sino un cociente entre una diferencia y el precio de un yogur. Por ejemplo, si M = 500 y P = 15.000, el costo total de los 18 yogures es 18&#183;500 = 9.000 y el dinero que le sobra es 15.000 - 9.000 = 6.000. En cambio, (P - 18)/M = (15.000 - 18)/500 = 14.982/500 = 29,964, que no corresponde al dinero que le sobra.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Se indica que una persona va a comprar 18 yogures y que el precio de cada uno es M pesos. Entonces, el costo total de los 18 yogures se obtiene multiplicando la cantidad de yogures por el precio de cada uno.</p>
+            <p>En notación matemática, el costo total es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mn>18</mn>
+                <mo>&#183;</mo>
+                <mi>M</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p>La persona lleva un monto total de dinero igual a P pesos, y este monto es suficiente para comprar los 18 yogures. El dinero que le sobra después de la compra se obtiene restando al dinero que lleva el costo total de los yogures.</p>
+            <p>Por lo tanto, el dinero que le sobra es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mrow>
+                <mi>P</mi>
+                <mo>-</mo>
+                <mn>18</mn>
+                <mo>&#183;</mo>
+                <mi>M</mi>
+              </mrow>
+            </math>
+          </li>
+          <li>
+            <p>La expresión que representa el dinero que le sobra, incluyendo el símbolo de pesos, es:</p>
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mo>$</mo>
+              <mrow>
+                <mo>(</mo>
+                <mi>P</mi>
+                <mo>-</mo>
+                <mn>18</mn>
+                <mo>&#183;</mo>
+                <mi>M</mi>
+                <mo>)</mo>
+              </mrow>
+            </math>
+            <p>Esta expresión corresponde a la alternativa correcta.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_ChoiceB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

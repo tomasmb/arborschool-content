@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q31",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:31.317213+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: la fórmula de calorías de galletas es K = (180·x)/4. El total ingerido es (180·x)/4 + 90 = 405. Restando 90: (180·x)/4 = 315. Multiplicando por 4: 180·x = 1.260. Dividiendo por 180: x = 1.260/180 = 7. Por lo tanto, la alternativa correcta es 7 (ChoiceB).\n\nRevisión de cada feedback:\n- ChoiceB (correcta): Calcula K = (180·7)/4 = 1.260/4 = 315 y luego 315 + 90 = 405. Coincide con el enunciado; la justificación es completa y correcta.\n- ChoiceA (2 galletas): Calcula K = (180·2)/4 = 360/4 = 90 y luego 90 + 90 = 180, que no es 405. La demostración de que no satisface el problema es correcta.\n- ChoiceC (9 galletas): Calcula K = (180·9)/4 = 1.620/4 = 405 y luego 405 + 90 = 495, distinto de 405. El razonamiento muestra claramente por qué no sirve.\n- ChoiceD (11 galletas): Calcula K = (180·11)/4 = 1.980/4 = 495 y luego 495 + 90 = 585, distinto de 405. También es matemáticamente correcto.\n\nLa solución paso a paso repite exactamente estos cálculos: plantea la ecuación, resta 90, multiplica por 4, obtiene 1.260, divide por 180 y llega a x = 7. No hay errores numéricos ni conceptuales."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio: se explican operaciones básicas (restar, multiplicar, dividir) y el despeje de x de forma ordenada. Cada feedback incluye el cálculo completo de las calorías de las galletas y del total con el jugo, y explicita que el resultado no coincide (o sí coincide) con las 405 kilocalorías del enunciado, por lo que son auto-contenidos y específicos a esta pregunta. La solución general también está estructurada en pasos numerados claros, mostrando cómo se arma y resuelve la ecuación, sin requerir cálculos adicionales por parte del estudiante."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los números usan el formato chileno: 1.260 y 1.620 representan mil doscientos sesenta y mil seiscientos veinte, respectivamente, y se usan solo como enteros (no hay comas decimales), lo que es consistente con el estándar indicado. En el procesamiento de respuesta, la alternativa correcta es ChoiceB y el bloque <qti-response-else> asigna el feedback FB_A, que corresponde a una opción incorrecta, por lo que el fallback no entrega nunca la retroalimentación de la opción correcta."
+      },
+      "overall_reasoning": "Los cálculos en todos los feedbacks y en la solución paso a paso son correctos y coherentes con el enunciado, el lenguaje es claro y específico, y el formato (MathML, uso de puntos como separador de miles y manejo del fallback) cumple con los requisitos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) Dato: 4 galletas → 180 kilocalorías. Modelo dado: K = (180·x)/4, donde x es el número de galletas.\n2) El total ingerido es 405 kilocalorías, de las cuales 90 provienen del jugo. Entonces las galletas aportan: 405 − 90 = 315 kilocalorías.\n3) Planteamos la ecuación para las galletas: (180·x)/4 = 315.\n4) Multiplicamos ambos lados por 4: 180·x = 315·4 = 1260.\n5) Despejamos x: x = 1260 / 180 = 7.\n6) La persona consumió 7 galletas, que corresponde a la alternativa con identificador ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback correcta (ChoiceB): Calcula K = (180·7)/4 = 1260/4 = 315 y luego 315 + 90 = 405, coincidiendo con el enunciado; la notación 1.260 se interpreta correctamente como mil doscientos sesenta en formato chileno.\nFeedback ChoiceA: Para 2 galletas, K = (180·2)/4 = 360/4 = 90; total 90 + 90 = 180 ≠ 405. Cálculos y conclusión son correctos.\nFeedback ChoiceC: Para 9 galletas, K = (180·9)/4 = 1620/4 = 405; total 405 + 90 = 495 ≠ 405. Cálculos y conclusión son correctos; 1.620 se interpreta como mil seiscientos veinte.\nFeedback ChoiceD: Para 11 galletas, K = (180·11)/4 = 1980/4 = 495; total 495 + 90 = 585 ≠ 405. Cálculos y conclusión son correctos; 1.980 se interpreta como mil novecientos ochenta.\nLa solución paso a paso reproduce exactamente el procedimiento correcto: plantea (180x)/4 + 90 = 405, resta 90, multiplica por 4, obtiene 180x = 1260, divide por 180 y llega a x = 7. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML; no hay nada que contrastar visualmente."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de proporcionalidad directa y modelación con una ecuación lineal simple, completamente dentro del temario PAES M1. Los valores numéricos (180 kcal por 4 galletas, 90 kcal de jugo, total 405 kcal) son realistas y de magnitud razonable. No hay inconsistencias ni resultados físicamente absurdos."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (7 galletas) coincide con la marcada en el QTI y todos los cálculos en la retroalimentación y en la solución paso a paso son coherentes y correctos en formato numérico chileno. No se detectan errores tipográficos ni de contenido matemático, y el contexto es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:15.259192+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

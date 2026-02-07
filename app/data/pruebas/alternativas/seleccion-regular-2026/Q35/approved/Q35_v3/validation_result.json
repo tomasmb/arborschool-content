@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q35-Q35_v3",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:37:52.391877+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el sistema: de x + y = 10 se tiene x = 10 − y. Sustituyendo en 12.000x + 18.000y = 150.000: 12.000(10 − y) + 18.000y = 150.000 → 120.000 − 12.000y + 18.000y = 150.000 → 120.000 + 6.000y = 150.000 → 6.000y = 30.000 → y = 5. Por tanto, y representa la cantidad de horas extra trabajadas, coherente con la opción D. El feedback de la opción correcta explica que los coeficientes 12.000 y 18.000 son cobros por hora y que x e y son cantidades de horas, y asocia correctamente y a horas extra. Los feedbacks de A y B aclaran correctamente que las variables representan horas (no montos de dinero) y que los cobros por hora son los coeficientes, lo cual es matemáticamente correcto. El feedback de C identifica correctamente que el término con 12.000 corresponde a horas normales y por tanto la variable asociada es x, no y. La solución paso a paso resuelve el sistema sin errores (todas las operaciones con 12.000, 18.000, 150.000, etc. están bien hechas) y verifica el resultado calculando los pagos 12.000×5 = 60.000 y 18.000×5 = 90.000, sumando 150.000. No hay errores de contenido ni de justificación."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio, usando términos como 'cantidad de horas', 'cobro por hora', 'total de horas trabajadas'. Cada feedback explica explícitamente por qué la interpretación propuesta es incorrecta o correcta, sin depender de información externa al ítem. Los feedbacks incorrectos señalan con precisión la confusión típica (confundir variable con coeficiente, confundir tipo de hora) y la corrigen en el contexto de las ecuaciones dadas. La solución desarrollada es detallada, ordenada en pasos numerados, y muestra el razonamiento desde la interpretación del contexto hasta la verificación numérica final, por lo que es auto-contenida y específica a esta pregunta."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los montos monetarios en el enunciado y en la solución usan el formato chileno de miles con punto (por ejemplo, 150.000, 12.000, 18.000, 120.000, 30.000, 60.000, 90.000), y no se usan decimales, por lo que no hay conflicto con el separador decimal. El bloque de procesamiento de respuestas marca correctamente ChoiceD como respuesta correcta y asigna su feedback solo en ese caso. El fallback (qti-response-else) asigna el feedback de una opción incorrecta (FB_ChoiceA), lo que es válido según el criterio dado, y no asigna nunca el feedback de la opción correcta en respuestas erróneas."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada, todas las justificaciones y cálculos en los feedbacks y en la solución son matemáticamente correctos y coherentes con el contexto, y el formato cumple con los requisitos de MathML y notación numérica chilena."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "Se plantea el sistema (valores en pesos chilenos, usando punto como separador de miles):\n\n1) 12.000·x + 18.000·y = 150.000  (ecuación del dinero)\n2) x + y = 10                         (ecuación de horas totales)\n\nDe 2): x = 10 − y.\n\nSustituimos en 1):\n12.000·(10 − y) + 18.000·y = 150.000\n12.000·10 − 12.000·y + 18.000·y = 150.000\n120.000 + (−12.000 + 18.000)·y = 150.000\n120.000 + 6.000·y = 150.000\n6.000·y = 150.000 − 120.000 = 30.000\n\nEntonces:\ny = 30.000 / 6.000 = 5.\n\nComo x + y = 10, se tiene x = 10 − 5 = 5.\n\nInterpretación: x e y representan cantidades de horas, porque su suma es 10 horas. En la ecuación del dinero, 12.000 es el valor por hora normal y 18.000 el valor por hora extra. El término 12.000·x corresponde a horas normales, por lo que x son horas normales; el término 18.000·y corresponde a horas extra, por lo que y son horas extra.\n\nPor tanto, la variable y representa la cantidad de horas extra trabajadas, que corresponde a la alternativa \"La cantidad de horas extra trabajadas\" = ChoiceD, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceD explica correctamente que en la ecuación del dinero los coeficientes 12.000 y 18.000 son cobros por hora y que x e y son cantidades de horas; asocia 12.000·x a horas normales y 18.000·y a horas extra, concluyendo que y son horas extra, lo cual es correcto. Los feedbacks de A y B aclaran que las variables representan horas (no montos) y que los cobros están dados por los coeficientes, lo que es matemáticamente correcto. El feedback de C identifica correctamente que el término con 12.000 corresponde a horas normales y por tanto la variable asociada es x, no y. La solución paso a paso resuelve el sistema correctamente (obtiene x = 5, y = 5), verifica los montos 12.000·5 = 60.000 y 18.000·5 = 90.000, y la suma 60.000 + 90.000 = 150.000, concluyendo coherentemente que y representa la cantidad de horas extra trabajadas. No hay errores de cálculo ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "No se incluyen imágenes externas; solo se usan expresiones MathML integradas en el texto, que son coherentes con la descripción del problema y entre sí."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem trata sobre interpretación de variables en un sistema de ecuaciones lineales 2×2 en contexto de cobros por horas normales y extra, contenido plenamente dentro del temario de PAES M1 (modelación con ecuaciones lineales y sistemas). Los valores numéricos (12.000, 18.000, 150.000 pesos, 10 horas) son razonables y de magnitud adecuada; el modelo es coherente y no presenta inconsistencias matemáticas."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceD) coincide con la interpretación matemática del sistema y la resolución numérica. La retroalimentación y la solución detallada son coherentes, sin errores de cálculo ni de interpretación, y el contenido es claro y adecuado al nivel PAES M1.",
+      "timestamp": "2026-02-07T02:44:01.835550+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

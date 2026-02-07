@@ -1,0 +1,45 @@
+{
+  "question_id": "seleccion-regular-2025-Q61",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T00:35:50.484778+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema pide el número por el cual multiplicar el largo (en mm) para obtener el volumen de aluminio (en mm³); ese número debe ser el área de la sección transversal de aluminio (en mm²). El área correcta es área exterior menos área interior: A_ext = 101,6·50,8 y A_int = (101,6 − 2·4,8)·(50,8 − 2·4,8). Esto coincide exactamente con la alternativa D, por lo que la respuesta correcta está bien identificada. \n\nFeedback D (correcta): Explica que el volumen es área de la sección por el largo, identifica correctamente el área exterior, las dimensiones interiores restando 2·4,8 en cada lado y construye la expresión 101,6·50,8 − (101,6 − 2·4,8)·(50,8 − 2·4,8). Matemáticamente es correcto y justifica por qué esa expresión es el factor buscado.\n\nFeedback A: Señala que el error es restar solo 4,8 una vez en cada dimensión interior, en vez de 2·4,8, lo que hace que el rectángulo interior quede demasiado grande y el área de aluminio menor que la real. Esto describe correctamente la expresión de la alternativa A y el tipo de error.\n\nFeedback B: Indica que el área correcta debe ser 101,6·50,8 − (101,6 − 2·4,8)·(50,8 − 2·4,8) y que en la alternativa B solo se descuenta 4,8 una vez en el lado de 101,6 mm y dos veces en el lado de 50,8 mm. Eso coincide con la fórmula de B: (101,6 − 4,8)·(50,8 − 2·4,8). La crítica es matemáticamente correcta.\n\nFeedback C: Explica que el área interior correcta requiere restar 2·4,8 en ambas dimensiones, mientras que la alternativa C descuenta dos veces el grosor en el lado de 101,6 mm y una vez en el de 50,8 mm, lo que coincide con (101,6 − 2·4,8)·(50,8 − 4,8). La descripción del error es precisa.\n\nLa solución paso a paso (feedback-block) desarrolla correctamente: identifica que se busca un área, calcula A_ext, determina dimensiones interiores restando 2·4,8 en cada lado, define A_int, luego A_Al = A_ext − A_int y finalmente V = A_Al·L, concluyendo con la misma expresión de la alternativa D. No hay errores de unidades ni de operaciones."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es adecuado para estudiantes de 3°-4° medio: se usan términos como 'sección transversal', 'rectángulo exterior/interior', 'grosor en todo el contorno' y se explicita que se resta el grosor dos veces (una por cada lado), lo que ayuda a visualizar el sólido. Cada feedback menciona explícitamente las dimensiones (101,6 mm, 50,8 mm, 4,8 mm) y cómo se construye el rectángulo interior, de modo que el estudiante puede entender el error sin cálculos adicionales. \n\nLos feedbacks de A, B y C son específicos a la forma de cada alternativa (indican exactamente en qué lado se restó 4,8 una o dos veces) y no son genéricos. El feedback de la opción correcta no solo afirma que es correcta, sino que explica por qué el volumen se obtiene como área de la sección por el largo y cómo se construye esa área, lo que es pedagógicamente útil. La solución general (feedback-block) está organizada en pasos numerados claros (identificar lo que se pide, área exterior, dimensiones interiores, área de aluminio, relación área-volumen), lo que facilita el seguimiento."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mn>, <mo>, <mfenced>, etc.), sin uso de LaTeX. Los números usan coma como separador decimal (101,6; 50,8; 4,8) y no se usan puntos como separador de miles, lo que es consistente con el formato chileno indicado. \n\nEn el procesamiento de respuesta, la alternativa correcta está declarada como ChoiceD y el bloque <qti-response-else> asigna SCORE = 0 y FEEDBACK = FB_A, que corresponde a una opción incorrecta, cumpliendo la condición de no asignar el feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y justificada, los feedbacks describen con precisión los errores de cada alternativa y la solución paso a paso es matemáticamente sólida. El lenguaje es claro, específico al ítem y el formato (MathML, números y lógica QTI) cumple con los requisitos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": "pass",
+        "feedback_check": "pass",
+        "content_quality_check": "pass",
+        "image_check": "pass",
+        "math_validity_check": "pass"
+      },
+      "timestamp": "2026-02-07T00:45:31.014310+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

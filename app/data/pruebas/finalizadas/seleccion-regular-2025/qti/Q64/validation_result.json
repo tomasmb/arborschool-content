@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q64",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:03:12.197964+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Se verifica primero la alternativa correcta (C): desde e2, tres movimientos ↗ llevan a f3, g4, h5; luego dos movimientos ↖ llevan a g6, f7; finalmente tres movimientos ← llevan a e7, d7, c7. La casilla final es c7, por lo que la respuesta correcta es ChoiceC, coherente con qti-correct-response y con el feedback de C y la solución paso a paso. \n\nRevisión de cada feedback:\n- Opción A: Desde e2, tres ↗: f3, g4, h5; dos ↙: g4, f3; tres ←: e3, d3, c3. El feedback indica exactamente esta secuencia y concluye c3 (fila 3), por lo que es matemáticamente correcto y demuestra por qué no llega a c7.\n- Opción B: Desde e2, cuatro ←: d2, c2, b2, a2; cinco ↑: a3, a4, a5, a6, a7; tres →: b7, c7, d7. El feedback describe correctamente cada paso y concluye en d7, mostrando que no es c7. Correcto y demostrativo.\n- Opción C: El feedback indica f3, g4, h5 (tres ↗), luego g6, f7 (dos ↖) y luego e7, d7, c7 (tres ←). Todo coincide con el recorrido real y justifica que la casilla final es c7.\n- Opción D: Desde e2, seis ↑: e3, e4, e5, e6, e7, e8; tres ←: d8, c8, b8. El feedback reproduce correctamente esta secuencia y concluye en b8, distinto de c7.\n\nLa solución global repite el razonamiento de la alternativa C de forma ordenada y llega a la misma respuesta. No hay errores de conteo de movimientos, de interpretación de direcciones ni de notación de casillas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio: se explica explícitamente qué representan letras (columnas) y números (filas) del tablero, y se describe cada movimiento con frases simples (\"Desde e2, un movimiento ↗ lleva al rey a f3\"). Cada feedback es auto-contenido: indica la posición inicial, detalla paso a paso la trayectoria y nombra la casilla final, explicando por qué no coincide (o sí coincide) con c7. No se usan referencias vagas ni comentarios genéricos; todo está contextualizado en esta pregunta específica. La solución paso a paso refuerza el procedimiento sin asumir conocimientos adicionales más allá de lo ya explicado en el enunciado."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "No se utilizan expresiones matemáticas que requieran notación especial, por lo que la ausencia de MathML no genera conflicto en este ítem (solo se usan nombres de casillas como e2, c7 y flechas direccionales). No aparecen números con separadores de miles o decimales, así que no hay riesgo de incumplir el formato numérico chileno. En el procesamiento de respuesta, el fallback (qti-response-else) asigna FEEDBACK = FB_A, que corresponde a una alternativa incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "Todos los recorridos descritos en los feedbacks y en la solución son matemáticamente correctos y coherentes con las reglas de movimiento del rey. El lenguaje es claro, específico y auto-contenido, y el formato del QTI respeta las condiciones solicitadas, por lo que el ítem y su retroalimentación pasan la revisión."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "Partimos en e2.\n\nOpción A: ↗ ↗ ↗ ↙ ↙ ← ← ←\n- e2 ↗ f3\n- f3 ↗ g4\n- g4 ↗ h5\n- h5 ↙ g4\n- g4 ↙ f3\n- f3 ← e3\n- e3 ← d3\n- d3 ← c3\nTermina en c3, no c7.\n\nOpción B: ← ← ← ← ↑ ↑ ↑ ↑ ↑ → → →\n- e2 ← d2\n- d2 ← c2\n- c2 ← b2\n- b2 ← a2\n- a2 ↑ a3\n- a3 ↑ a4\n- a4 ↑ a5\n- a5 ↑ a6\n- a6 ↑ a7\n- a7 → b7\n- b7 → c7\n- c7 → d7\nTermina en d7, no c7.\n\nOpción C: ↗ ↗ ↗ ↖ ↖ ← ← ←\n- e2 ↗ f3\n- f3 ↗ g4\n- g4 ↗ h5\n- h5 ↖ g6\n- g6 ↖ f7\n- f7 ← e7\n- e7 ← d7\n- d7 ← c7\nTermina en c7, que es la casilla pedida.\n\nOpción D: ↑ ↑ ↑ ↑ ↑ ↑ ← ← ←\n- e2 ↑ e3\n- e3 ↑ e4\n- e4 ↑ e5\n- e5 ↑ e6\n- e6 ↑ e7\n- e7 ↑ e8\n- e8 ← d8\n- d8 ← c8\n- c8 ← b8\nTermina en b8, no c7.\n\nLa única serie que lleva desde e2 a c7 es la de la alternativa C, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la alternativa correcta (ChoiceC) describe exactamente la misma secuencia de casillas que en la resolución anterior y concluye correctamente que se llega a c7. Los feedbacks de A, B y D detallan paso a paso las casillas intermedias y la casilla final; al recalcular, coinciden: A termina en c3, B en d7 y D en b8, todas distintas de c7. La solución paso a paso del bloque de resolución reproduce correctamente el recorrido de la opción C y verifica que la casilla final es c7. No hay errores matemáticos ni conclusiones incorrectas en las retroalimentaciones."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La primera imagen muestra un tablero rotulado de a a h en columnas y 1 a 8 en filas, con el rey ubicado en e2, coherente con el enunciado. La segunda imagen muestra el rey moviéndose desde e2 a f3 con una flecha diagonal hacia arriba y a la derecha (↗), tal como se describe en el texto. No hay contradicciones factuales entre las imágenes y la descripción textual, y los elementos son legibles para interpretar la situación planteada."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trabaja con movimientos en un tablero cuadriculado y coordenadas tipo ajedrez, lo que se enmarca en razonamiento espacial y secuencias de movimientos, contenidos compatibles con el temario de PAES M1 (geometría y pensamiento lógico). No se usan magnitudes numéricas extremas ni conceptos fuera del currículo; todo es razonable y matemáticamente válido."
+        }
+      },
+      "overall_reasoning": "La alternativa correcta identificada por el ítem (ChoiceC) coincide con la única secuencia de movimientos que lleva de e2 a c7, y todas las retroalimentaciones describen recorridos y conclusiones coherentes. El contenido es claro, sin errores tipográficos relevantes, y las imágenes son consistentes con el texto y apropiadas para el nivel PAES M1.",
+      "timestamp": "2026-02-07T01:39:30.972935+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

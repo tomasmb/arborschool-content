@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q38-Q38_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:58:29.633526+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: Sea n la cantidad de envíos. Costos totales: C1(n) = 3.000 + 1.500·n y C2(n) = 3.800 + 1.300·n. Para que convenga la segunda empresa: 3.800 + 1.300·n < 3.000 + 1.500·n ⇒ 3.800 − 3.000 < (1.500 − 1.300)·n ⇒ 800 < 200·n ⇒ 4 < n. Como n es entero positivo, el mínimo n que cumple es 5. Verificación puntual: para n = 5, C1 = 3.000 + 1.500·5 = 3.000 + 7.500 = 10.500 y C2 = 3.800 + 1.300·5 = 3.800 + 6.500 = 10.300, y 10.300 < 10.500, por lo que la respuesta correcta es 5 (ChoiceC). \n\nRevisión de cada feedback:\n- ChoiceA (3 envíos): Calcula C1 = 3.000 + 1.500·3 = 3.000 + 4.500 = 7.500 y C2 = 3.800 + 1.300·3 = 3.800 + 3.900 = 7.700, concluyendo 7.500 < 7.700, por lo que la segunda empresa no conviene. Todo es matemáticamente correcto y demuestra por qué 3 no sirve.\n- ChoiceB (4 envíos): Calcula C1 = 3.000 + 1.500·4 = 3.000 + 6.000 = 9.000 y C2 = 3.800 + 1.300·4 = 3.800 + 5.200 = 9.000, concluyendo que los costos son iguales y que la segunda empresa no es más conveniente. Correcto y suficiente para descartar 4 como mínimo.\n- ChoiceC (5 envíos): Calcula C1 = 3.000 + 1.500·5 = 3.000 + 7.500 = 10.500 y C2 = 3.800 + 1.300·5 = 3.800 + 6.500 = 10.300, y afirma 10.300 < 10.500, indicando que a partir de 5 envíos la segunda empresa es más conveniente y que 5 es la cantidad mínima. Esto es correcto y explica por qué es la respuesta.\n- ChoiceD (6 envíos): Calcula C1 = 3.000 + 1.500·6 = 3.000 + 9.000 = 12.000 y C2 = 3.800 + 1.300·6 = 3.800 + 7.800 = 11.600, concluyendo 11.600 < 12.000 (la segunda conviene) pero aclara que no es la cantidad mínima porque con 5 también conviene. Matemáticamente correcto y conceptualmente adecuado.\n\nSolución paso a paso: Define n, plantea C1(n) y C2(n), arma la desigualdad 3.800 + 1.300·n < 3.000 + 1.500·n, simplifica correctamente hasta 4 < n, interpreta que n debe ser entero mayor que 4 (5, 6, 7, …), verifica con n = 5 y concluye que la respuesta correcta es 5. No hay errores de cálculo ni de razonamiento."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Cada feedback:\n- Explica explícitamente cómo se calcula el costo total con cada empresa (suscripción + valor por envío × número de envíos).\n- Muestra los cálculos intermedios y la comparación final de montos, de modo que el estudiante no necesita hacer operaciones adicionales para entender por qué la opción es o no correcta.\n- Es específico al contexto de la pregunta (planes de envío, suscripción, costo por envío) y no usa mensajes genéricos.\n\nLa solución paso a paso es detallada pero accesible: define la variable n, construye las funciones de costo, plantea y resuelve la desigualdad con justificación en cada transformación (restar términos, agrupar, dividir por un número positivo), e interpreta correctamente la solución en términos de números enteros. Además, verifica el resultado con un ejemplo numérico. Todo esto favorece la comprensión conceptual y procedimental sin requerir conocimientos más avanzados que los esperables en el nivel."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mn>, <mo>, <mi>, <mfrac>, etc.), sin uso de LaTeX. Los números usan el formato chileno: punto como separador de miles (3.000, 3.800, 1.500, 1.300, 7.500, 7.700, 9.000, 10.500, 10.300, 11.600, 800, 200) y no se emplean comas decimales, lo que es consistente con el contexto del problema (valores enteros en pesos). \n\nEn el procesamiento de respuestas, la opción correcta declarada es ChoiceC y el bloque <qti-response-else> asigna el feedback de ChoiceA, que corresponde a una opción incorrecta, por lo que el fallback es válido. No se asigna nunca el feedback de la opción correcta en el else. Por tanto, el formato y la lógica de asignación de feedback cumplen con los requisitos."
+      },
+      "overall_reasoning": "Los cálculos y la argumentación en todos los feedbacks y en la solución paso a paso son matemáticamente correctos, claros y específicos al problema, y el formato (MathML, uso de puntos como separadores de miles y lógica de fallback) es adecuado. No se detectan errores ni ambigüedades relevantes."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "Sea n la cantidad de envíos en el mes.\n\nCosto 1ª empresa: C1(n) = 3.000 + 1.500·n\nCosto 2ª empresa: C2(n) = 3.800 + 1.300·n\n\nConviene la segunda cuando C2(n) < C1(n):\n3.800 + 1.300n < 3.000 + 1.500n\nRestamos 1.300n a ambos lados:\n3.800 < 3.000 + 200n\nRestamos 3.000 a ambos lados:\n800 < 200n\nDividimos por 200 (>0):\n800/200 < n → 4 < n\nComo n es entero positivo, los valores que satisfacen son n = 5, 6, 7, ...\nLa cantidad mínima es n = 5.\n\nVerificación directa con n = 5:\nC1(5) = 3.000 + 1.500·5 = 3.000 + 7.500 = 10.500\nC2(5) = 3.800 + 1.300·5 = 3.800 + 6.500 = 10.300\n10.300 < 10.500, por lo que la segunda empresa es más conveniente desde 5 envíos.\n\nLa alternativa correcta es 5, que corresponde a ChoiceC, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Opción A (3 envíos): Calcula C1 = 3.000 + 1.500·3 = 3.000 + 4.500 = 7.500 y C2 = 3.800 + 1.300·3 = 3.800 + 3.900 = 7.700; concluye correctamente que 7.500 < 7.700, por lo que la segunda no conviene.\n\nOpción B (4 envíos): Calcula C1 = 3.000 + 1.500·4 = 3.000 + 6.000 = 9.000 y C2 = 3.800 + 1.300·4 = 3.800 + 5.200 = 9.000; concluye correctamente que los costos son iguales y que la segunda no es más conveniente.\n\nOpción C (5 envíos, correcta): Calcula C1 = 3.000 + 1.500·5 = 3.000 + 7.500 = 10.500 y C2 = 3.800 + 1.300·5 = 3.800 + 6.500 = 10.300; afirma correctamente que 10.300 < 10.500 y que a partir de 5 envíos la segunda empresa es más conveniente, siendo 5 la cantidad mínima.\n\nOpción D (6 envíos): Calcula C1 = 3.000 + 1.500·6 = 3.000 + 9.000 = 12.000 y C2 = 3.800 + 1.300·6 = 3.800 + 7.800 = 11.600; reconoce correctamente que 11.600 < 12.000 (la segunda conviene) pero explica bien que no es la cantidad mínima porque con 5 ya conviene.\n\nLa solución paso a paso plantea las funciones de costo, resuelve la desigualdad 3.800 + 1.300n < 3.000 + 1.500n hasta obtener 4 < n, interpreta n como entero positivo y concluye n = 5 como mínimo, verificando con los costos. Todo es matemáticamente correcto y coherente con la respuesta marcada."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes; solo contiene texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de comparación de costos lineales, planteo y resolución de una desigualdad lineal en una variable y análisis de soluciones enteras, todo dentro del temario de PAES Matemática M1 (funciones lineales, modelación y desigualdades). Los valores numéricos (suscripciones de 3.000 y 3.800 pesos, costos por envío de 1.500 y 1.300 pesos) son razonables y de magnitud coherente con un contexto realista. No hay errores de magnitud ni de modelo matemático."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (5 envíos, ChoiceC) coincide con la resolución matemática y todos los cálculos en la retroalimentación y en la solución paso a paso son correctos. No se detectan errores tipográficos relevantes ni problemas de contenido o de validez curricular.",
+      "timestamp": "2026-02-07T02:00:21.599847+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

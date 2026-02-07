@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q60-Q60_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:37:29.331039+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: altura inicial = 5 cm, altura final = 20 cm, tiempo = 5 semanas. Aumento total = 20 − 5 = 15 cm. Crecimiento promedio = 15 / 5 = 3 cm por semana, por lo que la alternativa correcta es ChoiceA (3 cm). \n\nFeedback ChoiceA: Explica correctamente que el aumento total es 15 cm (20 − 5) y que el promedio es 15 / 5 = 3; la justificación es matemática y completa.\nFeedback ChoiceB: Muestra que si creciera 4 cm/semana, en 5 semanas el aumento sería 4 × 5 = 20 cm y la altura final sería 5 + 20 = 25 cm, que no coincide con 20 cm; la demostración es correcta.\nFeedback ChoiceC: Muestra que si creciera 5 cm/semana, en 5 semanas el aumento sería 5 × 5 = 25 cm y la altura final sería 5 + 25 = 30 cm, que no coincide con 20 cm; la demostración es correcta.\nFeedback ChoiceD: Muestra que si creciera 12,5 cm/semana, en 5 semanas el aumento sería 12,5 × 5 = 62,5 cm y la altura final sería 5 + 62,5 = 67,5 cm, que no coincide con 20 cm; la demostración es correcta y respeta el formato decimal chileno.\nSolución paso a paso: Identifica datos, calcula aumento (20 − 5 = 15), luego el promedio (15 / 5 = 3) y verifica (3 × 5 = 15; 5 + 15 = 20). Todo es matemáticamente correcto y llega a la respuesta correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando términos simples como 'altura inicial', 'altura final', 'aumento total' y 'crecimiento promedio'. Cada feedback es auto-contenido: explica el supuesto de crecimiento semanal, realiza los cálculos completos y concluye explícitamente por qué esa opción no coincide con la altura final del enunciado. La retroalimentación es específica a esta pregunta (usa los 5 cm iniciales, 20 cm finales y 5 semanas) y no es genérica. La solución detallada también guía paso a paso de forma comprensible."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, no se usa LaTeX. Los números con decimales usan coma (12,5; 62,5; 67,5), respetando el formato chileno; no hay miles, por lo que no se requiere punto como separador de miles. El fallback en qti-response-else asigna FEEDBACK = FB_ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "Los cálculos y justificaciones en todos los feedbacks y en la solución son correctos, claros y específicos al problema, y el formato (MathML y notación numérica chilena) está bien aplicado. No se detectan errores matemáticos, de claridad ni de formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) Datos: altura inicial = 5 cm; altura final tras cinco semanas = 20 cm.\n2) Aumento total de altura: 20 − 5 = 15 cm.\n3) Crecimiento promedio semanal = aumento total / número de semanas = 15 / 5 = 3 cm por semana.\n4) Revisión de alternativas: ChoiceA = 3 cm (coincide con el cálculo); las demás (4 cm, 5 cm, 12,5 cm) no coinciden.\n5) En el XML, <qti-correct-response> indica ChoiceA, que corresponde a 3 cm, por lo que la respuesta marcada es correcta.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceA explica correctamente que el aumento total es 20 − 5 = 15 cm y que el promedio semanal es 15 / 5 = 3 cm, concluyendo adecuadamente que la respuesta es 3 cm por semana. Para ChoiceB, se muestra que 4 × 5 = 20 cm de aumento, lo que llevaría a 5 + 20 = 25 cm, distinto de 20 cm, por lo que se descarta correctamente. Para ChoiceC, se razona que 5 × 5 = 25 cm de aumento y 5 + 25 = 30 cm, también distinto de 20 cm. Para ChoiceD, se calcula 12,5 × 5 = 62,5 cm de aumento y 5 + 62,5 = 67,5 cm, nuevamente distinto de 20 cm. La solución paso a paso repite el mismo razonamiento: identifica datos, calcula aumento total, divide por semanas y verifica, llegando a 3 cm. No hay errores matemáticos ni conclusiones incorrectas en los feedbacks ni en la solución."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes; todo el contenido es textual y en MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de crecimiento promedio (razón de cambio promedio) en un contexto cotidiano, contenido plenamente dentro del temario de PAES M1 (números, proporcionalidad, razones). Los valores numéricos (5 cm, 20 cm, 5 semanas, promedio de 3 cm/semana) son razonables y de magnitud adecuada. No se observa ningún desajuste con el currículo ni con la escala de los datos."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (3 cm por semana, ChoiceA) coincide con la resolución matemática y con lo marcado en el XML. La retroalimentación y la solución paso a paso son coherentes y correctas, y no se detectan errores de contenido ni de formato.",
+      "timestamp": "2026-02-07T02:44:02.274155+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

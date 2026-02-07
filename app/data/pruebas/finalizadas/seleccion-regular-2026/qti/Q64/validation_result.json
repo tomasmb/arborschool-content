@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q64",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:15:32.673233+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Problema: área de trapecio A = 0,76 m², bases b1 = 0,6 m y b2 = 1,3 m. Fórmula: A = (1/2)·(b1 + b2)·h. Entonces (b1 + b2) = 0,6 + 1,3 = 1,9; (1/2)·1,9 = 0,95, por lo que 0,76 = 0,95·h ⇒ h = 0,76 / 0,95 = 0,8 m. La alternativa correcta es ChoiceB (0,80 m). \n\nRevisión de feedbacks:\n- ChoiceB (correcta): El feedback usa la fórmula A = (1/2)(b1 + b2)h, reemplaza b1, b2 y A correctamente, suma 0,6 + 1,3 = 1,9, calcula (1/2)·1,9 = 0,95, plantea 0,76 = 0,95·h y despeja h = 0,76/0,95 = 0,8. Todo es matemáticamente correcto y muestra por qué la respuesta es correcta.\n- ChoiceA (1,444 m): El feedback calcula el área con esa altura: (1/2)·(0,6 + 1,3)·1,444 = (1/2)·1,9·1,444. Sin embargo, hay un error numérico: 1,9·1,444 se indica como 2,7436, pero el producto correcto es 2,7436 si se interpreta 1,444 como 1.444 (formato internacional). En formato chileno, 1,444 = 1.444, por lo que el cálculo es consistente: 1,9·1,444 = 2,7436 y luego (1/2)·2,7436 = 1,3718 m². El área resultante (1,3718 m²) es distinta de 0,76 m², lo que justifica que la opción es incorrecta. La explicación sobre revisar si el resultado tiene sentido también es coherente.\n- ChoiceC (0,722 m): El feedback calcula A = (1/2)·(0,6 + 1,3)·0,722 = (1/2)·1,9·0,722. 1,9·0,722 = 1,3718 y (1/2)·1,3718 = 0,6859 m². Esto es distinto de 0,76 m², por lo que la opción es incorrecta. La sugerencia de error (redondeo o coma decimal) es plausible.\n- ChoiceD (0,40 m): El feedback calcula A = (1/2)·(0,6 + 1,3)·0,40 = (1/2)·1,9·0,40. 1,9·0,40 = 0,76 y (1/2)·0,76 = 0,38 m², menor que 0,76 m². Esto muestra correctamente que la altura es la mitad de la necesaria y vincula bien con el error de olvidar el factor 1/2.\n\nSolución paso a paso: Repite el procedimiento correcto: fórmula, reemplazo, suma de bases, multiplicación por 1/2, despeje de h y verificación. Todos los cálculos son correctos y llegan a h = 0,80 m. No se detectan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Cada feedback:\n- Repite la fórmula del área del trapecio y nombra las variables (bases y altura), lo que evita depender de conocimientos implícitos.\n- Muestra los pasos de cálculo con la alternativa elegida (suma de bases, multiplicaciones, aplicación del 1/2), de modo que el estudiante puede seguir el razonamiento sin hacer cálculos adicionales.\n- Explica explícitamente por qué el resultado no coincide con el área dada cuando la opción es incorrecta, y en la opción correcta muestra el despeje y la verificación.\n- Incluye comentarios específicos sobre errores típicos (olvidar el 1/2, redondeo, posición de la coma decimal, sentido del tamaño del resultado), todos contextualizados en esta pregunta.\nPor lo tanto, la retroalimentación es auto-contenida, específica y pedagógicamente clara."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números usan formato chileno: coma como separador decimal (0,76; 0,6; 1,3; 1,9; 0,95; 0,8; 1,3718; 0,6859; 0,38; 0,40; 0,722; 1,444). No se usan puntos como separador decimal. \nEn el procesamiento de respuesta, la opción correcta declarada es ChoiceB y el bloque <qti-response-else> asigna FEEDBACK = FeedbackD, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el fallback. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La solución correcta se obtiene de forma consistente en el feedback de la opción correcta y en la solución paso a paso, y los feedbacks de las opciones incorrectas muestran cálculos completos que prueban que no satisfacen el área dada. El lenguaje, el uso de MathML y el formato numérico chileno son correctos, por lo que el ítem y su retroalimentación pasan todas las revisiones."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "Datos: trapecio rectángulo con bases b1 = 0,6 m y b2 = 1,3 m, área A = 0,76 m^2.\nFórmula del área del trapecio: A = (1/2)·(b1 + b2)·h.\n1) Suma de bases: b1 + b2 = 0,6 + 1,3 = 1,9.\n2) Sustituir en la fórmula: 0,76 = (1/2)·1,9·h.\n3) Calcular (1/2)·1,9 = 0,95, por lo que 0,76 = 0,95·h.\n4) Despejar h: h = 0,76 / 0,95.\n5) División: 0,76 / 0,95 = 0,8.\nPor tanto, la altura es h = 0,80 m, que corresponde a la alternativa ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback de ChoiceB: aplica correctamente A = (1/2)(b1 + b2)h, sustituye b1 = 0,6, b2 = 1,3, A = 0,76, obtiene 0,76 = 0,95·h y luego h = 0,76/0,95 = 0,8; la justificación es matemáticamente correcta.\nFeedback de ChoiceA: calcula el área usando h = 1,444 m, suma de bases 1,9, producto 1,9·1,444 = 2,7436 y luego (1/2)·2,7436 = 1,3718 m^2, distinto de 0,76 m^2; el razonamiento y las operaciones son correctos.\nFeedback de ChoiceC: usa h = 0,722 m, suma 1,9, producto 1,9·0,722 = 1,3718 y luego (1/2)·1,3718 = 0,6859 m^2, distinto de 0,76 m^2; los cálculos son coherentes.\nFeedback de ChoiceD: usa h = 0,40 m, suma 1,9, producto 1,9·0,40 = 0,76 y luego (1/2)·0,76 = 0,38 m^2, menor que 0,76 m^2; también correcto. La explicación de errores típicos (olvidar 1/2, redondeos, etc.) es coherente. La solución paso a paso repite el procedimiento correcto y llega a h = 0,80 m sin errores."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un trapecio rectángulo con la base superior rotulada 0,6 m y la base inferior 1,3 m, coincidiendo con las medidas usadas en el enunciado y en los cálculos. No hay contradicciones visibles entre la figura y el texto; la imagen es simple y legible para el propósito del problema."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema usa la fórmula del área de un trapecio y el despeje de una incógnita en una ecuación lineal, contenidos estándar del currículo PAES M1 (geometría plana y álgebra básica). Los valores numéricos (longitudes menores a 2 m y área menor a 1 m^2) son razonables y consistentes con la figura. No hay errores de magnitud ni conceptos fuera de temario."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta coincide con la marcada, todos los cálculos y justificaciones en la retroalimentación y en la solución son matemáticamente consistentes, y la imagen es coherente con el enunciado. No se detectan errores tipográficos ni de contenido objetivo.",
+      "timestamp": "2026-02-07T02:18:38.121404+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

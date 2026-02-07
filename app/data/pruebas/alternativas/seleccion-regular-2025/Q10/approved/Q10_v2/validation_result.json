@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q10-Q10_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:58:06.057904+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "La regla de Naegele se aplica sumando 9 meses y 7 días a la fecha de la última menstruación. Desde 10/09/2024: al sumar 9 meses se llega a 10/06/2025 (se detalla correctamente en la solución y en los feedbacks), y luego al sumar 7 días al día 10 se obtiene 17 (10 + 7 = 17), por lo que la fecha correcta es 17/06/2025 (ChoiceA). El feedback de ChoiceA explica explícitamente esta suma de meses y días y llega a 17/06/2025. Los feedbacks de las alternativas incorrectas explican por qué cada una no cumple la regla: ChoiceB omite los 7 días; ChoiceC tiene un día menor que 10, lo que es incompatible con 'sumar días'; ChoiceD solo suma 3 días en vez de 7. La solución paso a paso enumera mes a mes el avance de 9 meses y luego suma 7 días, llegando correctamente a 17/06/2025. No hay errores matemáticos ni contradicciones internas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, explicando la regla de Naegele en términos simples ('sumar 9 meses y 7 días') y mostrando el cálculo explícito del avance de meses y de la suma de días. Cada feedback es auto-contenido: recuerda la regla, aplica el cálculo y explica por qué la alternativa es correcta o incorrecta sin requerir información externa. Además, los comentarios son específicos a esta pregunta (usan la fecha 10/09/2024 y las alternativas dadas) y no son genéricos. La solución global también está bien estructurada en pasos numerados, lo que favorece la comprensión."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática simbólica (números, sumas) está correctamente expresada en MathML, sin uso de LaTeX. No aparecen números con miles o decimales, solo fechas y enteros pequeños (10, 7, 17, 9, 6), por lo que no hay conflicto con el formato numérico chileno. El bloque de procesamiento de respuestas marca ChoiceA como correcta y, en el fallback (qti-response-else), asigna el feedback de ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La regla de Naegele está aplicada correctamente en todos los textos, la fecha correcta se justifica bien y los feedbacks para las alternativas incorrectas explican con precisión el error. El formato QTI y el uso de MathML son adecuados, por lo que el ítem y su retroalimentación pasan todas las revisiones."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "La regla de Naegele, según el enunciado y la retroalimentación, se aplica como “sumar 9 meses y 7 días” a la fecha de la última menstruación.\n1) Fecha inicial: 10/09/2024 (10 de septiembre de 2024).\n2) Sumar 9 meses:\n   - 10/09/2024 → 10/10/2024 (1 mes)\n   - 10/10/2024 → 10/11/2024 (2 meses)\n   - 10/11/2024 → 10/12/2024 (3 meses)\n   - 10/12/2024 → 10/01/2025 (4 meses)\n   - 10/01/2025 → 10/02/2025 (5 meses)\n   - 10/02/2025 → 10/03/2025 (6 meses)\n   - 10/03/2025 → 10/04/2025 (7 meses)\n   - 10/04/2025 → 10/05/2025 (8 meses)\n   - 10/05/2025 → 10/06/2025 (9 meses)\n   Resultado intermedio: 10/06/2025.\n3) Sumar 7 días al día 10: 10 + 7 = 17, manteniendo el mismo mes (junio) porque no se supera el número de días del mes.\n   Resultado final: 17/06/2025.\n4) Comparación con las alternativas:\n   - ChoiceA: 17/06/2025 → coincide con el cálculo.\n   - Las demás alternativas tienen día 10, 3 o 13, que no corresponden a sumar 7 días al 10.\nPor lo tanto, la alternativa correcta es ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceA explica correctamente que la regla se interpreta como sumar 9 meses y 7 días, muestra el avance mes a mes desde septiembre de 2024 hasta junio de 2025 y luego el cálculo 10 + 7 = 17, concluyendo 17/06/2025. El feedback de ChoiceB identifica que solo se sumaron 9 meses y faltan los 7 días, corrigiendo a 17/06/2025. El de ChoiceC señala que el día 3 es menor que 10, por lo que no puede resultar de sumar días, y reafirma el procedimiento correcto. El de ChoiceD indica que solo se habrían sumado 3 días en vez de 7 y vuelve a 17/06/2025. La solución paso a paso en el bloque SOLUTION reproduce el mismo razonamiento y llega a la fecha correcta. No hay errores matemáticos ni conclusiones incorrectas en las retroalimentaciones."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un esquema con tres bloques: Día (día de la última menstruación más siete días), Mes (mes de la última menstruación menos tres meses) y Año (dependiendo de la fecha se podría sumar un año). Esto es coherente con la descripción textual y con la interpretación usual de la regla de Naegele, que en el desarrollo se reexpresa como sumar 9 meses y 7 días. No hay contradicción factual entre la imagen y el texto, y el contenido es legible y pertinente a la pregunta."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema se centra en el manejo de fechas y suma de meses y días, que se enmarca en aritmética básica y razonamiento con números naturales, contenidos compatibles con el nivel PAES M1. Los valores de fechas y el resultado (17/06/2025) son razonables para un embarazo calculado desde 10/09/2024 según la regla de Naegele. No hay errores de magnitud ni contenidos fuera del currículo esperado."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada como 17/06/2025, todas las retroalimentaciones son matemáticamente coherentes y la solución paso a paso es correcta. No se observan errores de contenido, de imagen ni de adecuación al temario.",
+      "timestamp": "2026-02-07T02:00:22.651666+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q38-Q38_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:34.880173+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: costo primer centro C1(n) = 1.000 + 250·n, costo segundo centro C2(n) = 1.300 + 200·n. Para que convenga el segundo centro se requiere C2(n) < C1(n): 1.300 + 200n < 1.000 + 250n ⇒ 1.300 − 1.000 < 50n ⇒ 300 < 50n ⇒ 6 < n, por lo que el menor entero que cumple es n = 7. Verificación: para n = 7, C1 = 1.000 + 7·250 = 2.750 y C2 = 1.300 + 7·200 = 2.700, por lo que el segundo es más barato. Todos los cálculos en los feedbacks coinciden con esto: \n- Opción A (5 fotos): C1 = 1.000 + 5·250 = 2.250, C2 = 1.300 + 5·200 = 2.300, y se concluye correctamente que el segundo es más caro.\n- Opción B (6 fotos): C1 = 1.000 + 6·250 = 2.500, C2 = 1.300 + 6·200 = 2.500, se muestra que empatan y por tanto aún no conviene el segundo.\n- Opción C (7 fotos): se calculan correctamente 2.750 y 2.700, se compara 2.700 < 2.750 y se explica que, como con 6 eran iguales, 7 es la cantidad mínima.\n- Opción D (8 fotos): C1 = 3.000, C2 = 2.900, se reconoce que el segundo es más barato pero no mínimo, remitiendo a que 7 es la mínima. La solución paso a paso desarrolla correctamente la desigualdad, mantiene el sentido al dividir por 50 > 0, llega a 6 < n y justifica que el menor entero es 7, además de verificar con n = 7 y n = 6. No hay errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando expresiones como “membresía más fotos” y explicando explícitamente qué se compara (costos totales). Cada feedback es auto-contenido: incluye el cálculo completo del costo en ambos centros para la cantidad de fotos de la alternativa, muestra la comparación numérica (mayor, menor o igual) y concluye explícitamente por qué esa opción no responde a la pregunta o por qué sí lo hace en el caso correcto. La solución general también es detallada, explica el significado de la desigualdad 6 < n, recuerda que n debe ser entero positivo y verifica con ejemplos concretos (n = 7 y n = 6). No se observan saltos lógicos que requieran cálculos adicionales por parte del estudiante ni mensajes genéricos; todo está contextualizado en este problema específico."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números usan el formato chileno: punto como separador de miles (1.000, 1.300, 2.250, 2.300, 2.500, 2.700, 2.750, 2.900, 3.000) y no se emplean comas decimales, lo que es consistente con montos enteros en pesos. Las operaciones y desigualdades se representan correctamente en MathML. En el procesamiento de respuesta, la opción correcta es ChoiceC y el bloque <qti-response-else> asigna el feedback FB_A, que corresponde a una opción incorrecta, por lo que el fallback no entrega nunca la retroalimentación de la opción correcta. Esto cumple con el criterio solicitado."
+      },
+      "overall_reasoning": "La respuesta correcta (7 fotografías) está bien determinada y todos los feedbacks, incluyendo la solución paso a paso, son matemáticamente correctos, claros y específicos al problema. El formato de notación y el manejo del fallback en el procesamiento de respuestas también son adecuados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "Centro 1: costo C1(n) = 1.000 + 250·n.\nCentro 2: costo C2(n) = 1.300 + 200·n.\nSe pide la cantidad mínima de fotos n para que convenga el segundo centro, es decir, C2(n) < C1(n).\nPlanteamos la desigualdad:\n1.300 + 200·n < 1.000 + 250·n\nRestamos 200·n en ambos lados:\n1.300 < 1.000 + 50·n\nRestamos 1.000 en ambos lados:\n300 < 50·n\nDividimos por 50 (>0):\n300 / 50 < n → 6 < n.\nComo n es entero (cantidad de fotos), el menor entero que cumple es n = 7.\nVerificación numérica:\n- Para n = 6: C1 = 1.000 + 6·250 = 1.000 + 1.500 = 2.500; C2 = 1.300 + 6·200 = 1.300 + 1.200 = 2.500 (iguales, no conviene más el segundo).\n- Para n = 7: C1 = 1.000 + 7·250 = 1.000 + 1.750 = 2.750; C2 = 1.300 + 7·200 = 1.300 + 1.400 = 2.700; 2.700 < 2.750, por lo que el segundo centro es más barato y 7 es la cantidad mínima.\nLa alternativa correcta es, por tanto, 7, que corresponde a ChoiceC, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceA (5 fotos): Calcula C1 = 1.000 + 5·250 = 1.000 + 1.250 = 2.250 y C2 = 1.300 + 5·200 = 1.300 + 1.000 = 2.300; concluye 2.300 > 2.250, por lo que el segundo centro es más caro. Todo es correcto.\nFeedback ChoiceB (6 fotos): Calcula C1 = 1.000 + 6·250 = 1.000 + 1.500 = 2.500 y C2 = 1.300 + 6·200 = 1.300 + 1.200 = 2.500; concluye que los costos son iguales y que el segundo centro no es más conveniente, solo empata. Correcto.\nFeedback ChoiceC (7 fotos): Calcula C1 = 1.000 + 7·250 = 1.000 + 1.750 = 2.750 y C2 = 1.300 + 7·200 = 1.300 + 1.400 = 2.700; como 2.700 < 2.750, el segundo centro es más barato. Además, recuerda que con 6 fotos los costos eran iguales, por lo que 7 es la cantidad mínima. Todo el razonamiento es matemáticamente correcto.\nFeedback ChoiceD (8 fotos): Calcula C1 = 1.000 + 8·250 = 1.000 + 2.000 = 3.000 y C2 = 1.300 + 8·200 = 1.300 + 1.600 = 2.900; 2.900 < 3.000, por lo que el segundo centro es más barato, pero explica correctamente que la pregunta pide la cantidad mínima y que esta es 7, no 8. Correcto.\nLa solución paso a paso en el bloque SOLUTION plantea C2(n) < C1(n), desarrolla la desigualdad 1.300 + 200·n < 1.000 + 250·n, llega a 300 < 50·n y luego a 6 < n, concluyendo n = 7 como mínimo entero, y verifica con n = 7 y n = 6. No hay errores de cálculo ni de lógica; la conclusión coincide con la respuesta correcta."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML; no hay nada que contrastar visualmente."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de comparación de costos lineales y resolución de una desigualdad lineal en una variable, contenido estándar de funciones lineales y proporcionalidad, plenamente dentro del temario PAES M1. Los valores numéricos (membresías de 1.000 y 1.300 pesos, costos por foto de 250 y 200 pesos) son razonables y de magnitud coherente. No se observan inconsistencias matemáticas ni de contexto."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (7 fotos, ChoiceC) coincide con la marcada en el QTI y todos los cálculos y desigualdades en la retroalimentación y la solución detallada son correctos. No se detectan errores tipográficos relevantes ni problemas de contenido.",
+      "timestamp": "2026-02-07T02:00:23.290824+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

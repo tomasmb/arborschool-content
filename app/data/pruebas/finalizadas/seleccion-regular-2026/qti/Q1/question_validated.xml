@@ -1,0 +1,181 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="card-game-score" title="Cálculo de puntaje en juego de cartas" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>En un juego hay dos tipos de cartas, unas tienen una estrella y las otras tienen un corazón, todas con un número.</p>
+    <p>El puntaje de cada jugador se calcula de la siguiente forma:</p>
+    <ul>
+      <li>Primero se extrae una carta al azar (carta inicial) y su valor se considera como puntaje inicial.</li>
+      <li>Luego, se extrae otra carta:
+        <ul>
+          <li>si esta tiene una estrella, le debe restar el valor de la carta a su puntaje;</li>
+          <li>si esta tiene un corazón, le debe sumar el valor de la carta a su puntaje.</li>
+        </ul>
+      </li>
+      <li>El puntaje final se obtiene al repetir el procedimiento anterior, hasta tener diez cartas.</li>
+    </ul>
+    <p>Un jugador extrae las siguientes cartas, en este orden:</p>
+    <p>Carta inicial</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2026/Q1_img1.png" alt="Secuencia de 10 cartas mostrada de izquierda a derecha. Carta 1 (Inicial): 10 Corazón. Carta 2: 6 Corazón. Carta 3: 3 Estrella. Carta 4: 9 Corazón. Carta 5: 10 Estrella. Carta 6: 5 Estrella. Carta 7: 8 Corazón. Carta 8: 2 Estrella. Carta 9: 10 Estrella. Carta 10: 7 Estrella."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál es el puntaje final del jugador?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">−14<qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Si se calcula el puntaje siguiendo el orden de las cartas, se obtiene un resultado distinto de −14. El cálculo correcto es: primero, la carta inicial de corazón con valor 10 da un puntaje inicial de 10. Luego, se suman o restan los valores de las siguientes cartas según su símbolo: se suma 6 (corazón), se resta 3 (estrella), se suma 9 (corazón), se resta 10 (estrella), se resta 5 (estrella), se suma 8 (corazón), se resta 2 (estrella), se resta 10 (estrella) y se resta 7 (estrella). Al efectuar todas estas operaciones, el puntaje final no es −14.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">−4<qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! El puntaje se obtiene partiendo de la carta inicial y luego sumando o restando según el símbolo de cada carta. La carta inicial es un corazón con valor 10, por lo que el puntaje inicial es 10. Después: se suma 6 (corazón) y queda 16; se resta 3 (estrella) y queda 13; se suma 9 (corazón) y queda 22; se resta 10 (estrella) y queda 12; se resta 5 (estrella) y queda 7; se suma 8 (corazón) y queda 15; se resta 2 (estrella) y queda 13; se resta 10 (estrella) y queda 3; finalmente, se resta 7 (estrella) y queda −4. Por lo tanto, el puntaje final del jugador es −4.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">3<qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Si el puntaje final fuera 3, al aplicar todas las sumas y restas desde la carta inicial no se llegaría a ese valor. Siguiendo el orden de las cartas: se parte con 10 (corazón), luego se suma 6 (corazón) y queda 16, se resta 3 (estrella) y queda 13, se suma 9 (corazón) y queda 22, se resta 10 (estrella) y queda 12, se resta 5 (estrella) y queda 7, se suma 8 (corazón) y queda 15, se resta 2 (estrella) y queda 13, se resta 10 (estrella) y queda 3, y finalmente se resta 7 (estrella), por lo que el resultado final no se mantiene en 3.</qti-feedback-inline></qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">11<qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El valor 11 no coincide con el resultado de aplicar todas las operaciones indicadas por las cartas. Al seguir el orden dado, se comienza con 10 (corazón) como puntaje inicial, luego se suma 6 (corazón), se resta 3 (estrella), se suma 9 (corazón), se resta 10 (estrella), se resta 5 (estrella), se suma 8 (corazón), se resta 2 (estrella), se resta 10 (estrella) y se resta 7 (estrella). Al efectuar estas operaciones, el puntaje final obtenido es distinto de 11.</qti-feedback-inline></qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo paso a paso del puntaje final</strong></p>
+        <ol>
+          <li>Se parte con la carta inicial, que es un corazón con valor 10. Como es la carta inicial, su valor se toma directamente como puntaje inicial: 
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>10</mn>
+            </math>.
+          </li>
+          <li>Luego se consideran, en orden, las 9 cartas siguientes, sumando si tienen corazón y restando si tienen estrella:
+            <ol>
+              <li>2.ª carta: corazón con valor 6. Se suma:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>10</mn><mo>+</mo><mn>6</mn><mo>=</mo><mn>16</mn>
+                </math>.
+              </li>
+              <li>3.ª carta: estrella con valor 3. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>16</mn><mo>−</mo><mn>3</mn><mo>=</mo><mn>13</mn>
+                </math>.
+              </li>
+              <li>4.ª carta: corazón con valor 9. Se suma:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>13</mn><mo>+</mo><mn>9</mn><mo>=</mo><mn>22</mn>
+                </math>.
+              </li>
+              <li>5.ª carta: estrella con valor 10. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>22</mn><mo>−</mo><mn>10</mn><mo>=</mo><mn>12</mn>
+                </math>.
+              </li>
+              <li>6.ª carta: estrella con valor 5. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>12</mn><mo>−</mo><mn>5</mn><mo>=</mo><mn>7</mn>
+                </math>.
+              </li>
+              <li>7.ª carta: corazón con valor 8. Se suma:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>7</mn><mo>+</mo><mn>8</mn><mo>=</mo><mn>15</mn>
+                </math>.
+              </li>
+              <li>8.ª carta: estrella con valor 2. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>15</mn><mo>−</mo><mn>2</mn><mo>=</mo><mn>13</mn>
+                </math>.
+              </li>
+              <li>9.ª carta: estrella con valor 10. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>13</mn><mo>−</mo><mn>10</mn><mo>=</mo><mn>3</mn>
+                </math>.
+              </li>
+              <li>10.ª carta: estrella con valor 7. Se resta:
+                <math xmlns="http://www.w3.org/1998/Math/MathML">
+                  <mn>3</mn><mo>−</mo><mn>7</mn><mo>=</mo><mn>−4</mn>
+                </math>.
+              </li>
+            </ol>
+          </li>
+          <li>Después de aplicar todas las sumas y restas indicadas por las diez cartas, el puntaje final del jugador es 
+            <math xmlns="http://www.w3.org/1998/Math/MathML">
+              <mn>−4</mn>
+            </math>.
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

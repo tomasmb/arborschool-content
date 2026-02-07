@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q56",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:12:43.734367+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema pide contar estudiantes con 5 años o más en el establecimiento. De la tabla: 5 años = 12, 6 años = 29, 7 años = 14, 8 años = 9, 9 o más = 16. La suma es 12 + 29 = 41; 41 + 14 = 55; 55 + 9 = 64; 64 + 16 = 80. Por lo tanto, la alternativa correcta es 80 (ChoiceD). \n\nFeedback ChoiceA: explica correctamente que solo considera los 12 estudiantes de 5 años y que faltan los grupos de 6, 7, 8 y 9 o más; esto es matemáticamente correcto y coherente con la tabla.\nFeedback ChoiceB: indica que si se suman solo 5 y 6 años se obtiene 12 + 29 = 41, que ya es mayor que 35, por lo que 35 no puede ser la respuesta. El cálculo 12 + 29 = 41 es correcto y la argumentación también.\nFeedback ChoiceC: muestra la suma completa 12 + 29 + 14 + 9 + 16 = 80 y concluye que, como el resultado correcto es 80, 68 no satisface lo pedido. La suma es correcta y la justificación también.\nFeedback ChoiceD: desarrolla paso a paso la suma 12 + 29 = 41; 41 + 14 = 55; 55 + 9 = 64; 64 + 16 = 80 y concluye que hay 80 estudiantes; todo es matemáticamente correcto.\nLa solución paso a paso repite la misma descomposición y llega a 80 sin errores. No hay inconsistencias numéricas ni conceptuales en ninguna retroalimentación."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Se explicita claramente la condición \"5 años o más\" y se identifican las filas relevantes de la tabla. Cada feedback es auto-contenido: \n- ChoiceA: explica qué representa el 12, por qué es insuficiente y qué grupos faltan.\n- ChoiceB: muestra un cálculo concreto (12 + 29) que basta para descartar 35, sin requerir que el estudiante haga cálculos adicionales.\n- ChoiceC: presenta la suma completa que lleva a 80 y explica explícitamente por qué 68 no sirve.\n- ChoiceD: detalla la suma paso a paso y vincula cada número con los años correspondientes.\nLa solución general también enumera los grupos, explica por qué se suman todos y muestra la suma en pasos. Todo el feedback está claramente contextualizado en esta pregunta específica, no es genérico y no presupone conocimientos avanzados más allá de suma básica y comprensión de tablas de frecuencia."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática dentro de la retroalimentación y la solución está en MathML (<math>, <mn>, <mo>), sin uso de LaTeX. Los números utilizados (12, 29, 14, 9, 16, 35, 41, 55, 64, 68, 80) no requieren separador de miles ni decimales, por lo que no hay conflicto con el formato numérico chileno; no se usan puntos ni comas en estos valores, lo que es aceptable. El bloque de response-processing asigna correctamente el feedback de la opción correcta (FB_ChoiceD) solo cuando la respuesta es ChoiceD. En el fallback (<qti-response-else>), se asigna FB_ChoiceC, que corresponde a una opción incorrecta, lo cual es válido según el criterio dado (no se asigna feedback de la opción correcta en el else)."
+      },
+      "overall_reasoning": "La respuesta correcta (80 estudiantes) está bien determinada y todas las retroalimentaciones, incluida la solución paso a paso, son matemáticamente correctas, claras y específicas al ítem. El formato QTI y el uso de MathML son adecuados y el manejo del fallback de feedback es correcto."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "Se pide: cantidad de estudiantes que llevan 5 años o más en el establecimiento.\n\nDe la tabla:\n- 5 años: 12 estudiantes\n- 6 años: 29 estudiantes\n- 7 años: 14 estudiantes\n- 8 años: 9 estudiantes\n- 9 o más años: 16 estudiantes\n\nSumamos todos estos grupos:\n12 + 29 = 41\n41 + 14 = 55\n55 + 9 = 64\n64 + 16 = 80\n\nPor lo tanto, el número correcto de estudiantes que llevan 5 años o más es 80, que corresponde a la alternativa \"ChoiceD\". Esto coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceD: explica correctamente que se deben sumar las filas de 5, 6, 7, 8 y 9 o más años y muestra los cálculos 12+29=41, 41+14=55, 55+9=64, 64+16=80, concluyendo 80 estudiantes; es matemáticamente correcto.\nFeedback ChoiceA: indica que solo considera los 12 estudiantes de 5 años y que faltan los de 6, 7, 8 y 9 o más; esto es correcto y coherente con la tabla.\nFeedback ChoiceB: argumenta que incluso sumando solo 5 y 6 años se obtiene 12+29=41>35, por lo que 35 no puede ser la respuesta; el cálculo y la conclusión son correctos.\nFeedback ChoiceC: señala que la suma correcta de los que llevan 5 o más años es 12+29+14+9+16=80 y que, por tanto, 68 no satisface lo pedido; la suma y la conclusión son correctas.\nLa solución paso a paso repite el mismo procedimiento y llega a 80 estudiantes, consistente con la respuesta correcta. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El enunciado solo incluye una tabla en HTML dentro del propio texto, no hay imágenes externas que contrastar. No aplica verificación de consistencia imagen-texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem trata de lectura e interpretación de una tabla de frecuencias y suma de frecuencias, contenido estándar de estadística descriptiva básica, plenamente dentro del temario PAES M1. Los valores numéricos (cantidades de estudiantes por años en el establecimiento) son razonables y de magnitud adecuada. No hay inconsistencias ni resultados desproporcionados."
+        }
+      },
+      "overall_reasoning": "La suma de las frecuencias para 5 años o más está bien realizada y coincide con la alternativa marcada como correcta. Toda la retroalimentación y la resolución paso a paso son matemáticamente coherentes y el contenido es claro y apropiado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:32.002870+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

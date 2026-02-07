@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q48",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:17:37.288313+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: 4 galletas → 180 kcal, por lo que la fórmula K = (180·x)/4 es correcta. El total ingerido es 405 kcal, de las cuales 90 kcal son del jugo, así que las galletas aportan 405 − 90 = 315 kcal. Se resuelve 315 = (180·x)/4 → 315·4 = 180x → 1.260 = 180x → x = 1.260/180 = 7. Por tanto, la alternativa correcta es 7 (ChoiceB). \n\nRevisión de cada feedback:\n- ChoiceB (correcta): El feedback resta 405 − 90 = 315, plantea 315 = (180x)/4, multiplica por 4 (315·4 = 1.260 y (180x/4)·4 = 180x), luego divide por 180 (1.260/180 = 7) y concluye x = 7. Todos los pasos y operaciones son matemáticamente correctos y justifican por qué la opción es correcta.\n- ChoiceA (2 galletas): Calcula K = (180·2)/4. 180·2 = 360, 360/4 = 90 kcal de galletas; sumando 90 del jugo da 90 + 90 = 180 kcal, que no coincide con 405. El razonamiento y las operaciones son correctos y prueban que la opción no satisface el enunciado.\n- ChoiceC (9 galletas): Calcula K = (180·9)/4. 180·9 = 1.620, 1.620/4 = 405 kcal de galletas; sumando 90 del jugo da 405 + 90 = 495 kcal, distinto de 405. Los cálculos son correctos y muestran claramente por qué es incorrecta.\n- ChoiceD (11 galletas): Calcula K = (180·11)/4. 180·11 = 1.980, 1.980/4 = 495 kcal de galletas; sumando 90 del jugo da 495 + 90 = 585 kcal, distinto de 405. También es matemáticamente correcto y demuestra que no cumple el problema.\n- Solución paso a paso: Repite el procedimiento anterior: identifica datos, resta 405 − 90 = 315, plantea 315 = (180x)/4, multiplica por 4 (315·4 = 1.260, (180x/4)·4 = 180x), luego divide por 180 (1.260/180 = 7) y concluye que se consumieron 7 galletas. No hay errores de cálculo ni de planteamiento.\nEn conjunto, todos los feedbacks y la solución son matemáticamente correctos y contienen la demostración necesaria."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje utilizado es claro y adecuado para estudiantes de 3°–4° medio: se explican los pasos con verbos como \"reemplazar\", \"multiplicar\", \"dividir\", \"restar\" y se indica explícitamente qué representa cada variable (x es la cantidad de galletas, K las kilocalorías). \nCada feedback es auto-contenido: para cada alternativa se recalcula el aporte calórico de las galletas usando la fórmula dada, se suma el jugo y se compara con las 405 kcal del enunciado, sin exigir que el estudiante haga cálculos adicionales para entender por qué es correcta o incorrecta. \nLos mensajes son específicos a esta pregunta (mencionan galletas, jugo, 405 kcal, la fórmula K = (180x)/4) y no son genéricos. La solución paso a paso está estructurada en una lista ordenada, con cada transformación de la ecuación explicada y acompañada de la operación numérica correspondiente, lo que favorece la comprensión del procedimiento algebraico."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mi>, <mn>, <mo>, <mfrac>, etc.), sin uso de LaTeX. \nEl formato numérico respeta la convención chilena: se usa punto como separador de miles (por ejemplo, 1.260, 1.620, 1.980) y no se emplean comas como separador decimal en estos cálculos, lo que es consistente con que todos los valores son enteros. \nEn el procesamiento de respuesta, la opción correcta está declarada como ChoiceB y el bloque <qti-response-else> asigna el feedback FB_C, que corresponde a una opción incorrecta, cumpliendo la condición de que el fallback no entregue la retroalimentación de la alternativa correcta. Por tanto, no hay problemas de formato ni de asignación de feedback en el else."
+      },
+      "overall_reasoning": "La respuesta correcta (7 galletas) está bien determinada y todos los feedbacks, tanto para la opción correcta como para las incorrectas, contienen cálculos y argumentos matemáticos correctos, claros y específicos al problema. La notación matemática y el formato numérico son adecuados, y la lógica de asignación de feedback en el procesamiento de respuestas es correcta."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) Datos: 4 galletas → 180 kilocalorías. Fórmula: K = (180·x)/4, donde x es la cantidad de galletas. Jugo: 90 kilocalorías. Total ingerido: 405 kilocalorías.\n2) Primero se determinan las kilocalorías que corresponden solo a las galletas: 405 − 90 = 315 kilocalorías.\n3) Se plantea la ecuación usando la fórmula: 315 = (180·x)/4.\n4) Se multiplica ambos lados por 4: 315·4 = 180·x → 1.260 = 180·x.\n5) Se divide por 180: x = 1.260 / 180 = 7.\n6) Por lo tanto, la persona consumió 7 galletas, que corresponde a la alternativa con identificador ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceB: Explica correctamente restar primero las 90 kcal del jugo (405 − 90 = 315), luego usar 315 = (180·x)/4, multiplicar por 4 (315·4 = 1.260), obtener 1.260 = 180x y finalmente x = 1.260/180 = 7. Todos los cálculos son correctos en formato chileno y la conclusión coincide con la respuesta.\nFeedback ChoiceA: Reemplaza x = 2 en K = (180·x)/4, calcula 180·2 = 360, luego 360/4 = 90 kcal de galletas, suma 90 + 90 = 180 kcal totales y concluye correctamente que no coincide con 405. Cálculos y conclusión correctos.\nFeedback ChoiceC: Reemplaza x = 9, calcula 180·9 = 1.620, luego 1.620/4 = 405 kcal de galletas, suma 405 + 90 = 495 kcal totales y concluye que no coincide con 405. Todos los pasos son correctos.\nFeedback ChoiceD: Reemplaza x = 11, calcula 180·11 = 1.980, luego 1.980/4 = 495 kcal de galletas, suma 495 + 90 = 585 kcal totales y concluye que no coincide con 405. Cálculos y conclusión correctos.\nLa solución paso a paso repite el mismo procedimiento de forma detallada y llega a x = 7 sin errores. No se observan errores matemáticos ni conclusiones contradictorias en ningún feedback."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia imagen-texto que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trabaja proporcionalidad directa y resolución de ecuaciones lineales simples en un contexto de información nutricional, completamente dentro del temario de PAES Matemática M1. Los valores numéricos (kilocalorías por porción, totales, etc.) son razonables y de magnitud adecuada. No hay inconsistencias ni resultados físicamente absurdos."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada (ChoiceB) coincide con la resolución matemática y todos los cálculos en el enunciado, feedback y solución paso a paso son coherentes y correctos. No se detectan errores tipográficos ni de contenido, y el ítem es adecuado al nivel PAES M1.",
+      "timestamp": "2026-02-07T02:18:25.241973+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

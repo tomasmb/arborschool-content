@@ -1,0 +1,219 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="fonasa-tramo-d-probabilidad-v2" title="Probabilidad de estar en el tramo D de Fonasa - Variante 2" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>El Fondo Nacional de Salud (Fonasa) es un tipo de previsión de salud, junto con las Isapres y otras instituciones.</p>
+    <p>Las personas solo pueden tener un tipo de previsión y las que tienen Fonasa se categorizan en los tramos A, B, C y D, según su nivel socioeconómico.</p>
+    <p>En los gráficos adjuntos se presenta la distribución de la población de acuerdo con los tipos de previsión y la distribución de la población con Fonasa en los distintos tramos en 2021.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q55_fixed.png" alt="Dos gráficos de torta. El primero muestra la distribución de la población nacional por tipo previsional de salud en 2021: Fonasa 77 %, Isapres 17 %, Otros 6 %. El segundo muestra la distribución de la población con Fonasa por tramo en 2021: tramo A 20 %, tramo B 39 %, tramo C 16 %, tramo D 25 %."/></p>
+    <p>Adaptado de: Fonasa (2022). Cuenta Pública Participativa 2022.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>Si se escogía al azar a una persona de la población nacional en 2021, ¿cuál es la probabilidad de que hubiera estado clasificada en el tramo D de Fonasa?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mtext>0,25</mtext>
+        </math>
+        <qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>0,25</mtext></math> corresponde solo al porcentaje de personas del tramo D dentro de Fonasa, es decir, a la probabilidad condicional de estar en el tramo D dado que la persona ya está en Fonasa. La probabilidad pedida es respecto de toda la población nacional, por lo que se debe multiplicar el porcentaje de personas con Fonasa por el porcentaje de personas en el tramo D: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn><mo>&#xD7;</mo><mn>0,25</mn><mo>=</mo><mn>0,1925</mn></math>, que se aproxima a <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>0,193</mtext></math>, no a <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>0,25</mtext></math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mtext>0,193</mtext>
+        </math>
+        <qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! La probabilidad de que una persona de la población nacional esté en el tramo D de Fonasa se obtiene multiplicando la probabilidad de que tenga Fonasa por la probabilidad de que, teniendo Fonasa, esté en el tramo D. Del primer gráfico, la probabilidad de tener Fonasa es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>77</mn><mo>%</mo><mo>=</mo><mn>0,77</mn></math>. Del segundo gráfico, la probabilidad de estar en el tramo D entre quienes tienen Fonasa es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn><mo>%</mo><mo>=</mo><mn>0,25</mn></math>. Entonces, la probabilidad pedida es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn><mo>&#xD7;</mo><mn>0,25</mn><mo>=</mo><mn>0,1925</mn></math>. Al redondear a tres cifras decimales, se obtiene <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,193</mn></math>, que coincide con la alternativa dada.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mtext>0,154</mtext>
+        </math>
+        <qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Para que la probabilidad de estar en el tramo D de Fonasa fuera <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>0,154</mtext></math>, el producto entre la probabilidad de tener Fonasa y la probabilidad de estar en el tramo D dentro de Fonasa debería ser <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,154</mn></math>. Sin embargo, de los gráficos se obtiene: probabilidad de tener Fonasa <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn></math> y probabilidad de estar en el tramo D dado que se tiene Fonasa <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,25</mn></math>. El producto es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn><mo>&#xD7;</mo><mn>0,25</mn><mo>=</mo><mn>0,1925</mn></math>, que al redondear a tres cifras decimales da <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,193</mn></math>, distinto de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,154</mn></math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mtext>0,77</mtext>
+        </math>
+        <qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El valor <math xmlns="http://www.w3.org/1998/Math/MathML"><mtext>0,77</mtext></math> corresponde a la probabilidad de que una persona de la población nacional tenga Fonasa, sin considerar en qué tramo está. La probabilidad de que esté específicamente en el tramo D de Fonasa debe incluir además el porcentaje de personas del tramo D dentro de Fonasa, que es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,25</mn></math>. Por lo tanto, la probabilidad buscada es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn><mo>&#xD7;</mo><mn>0,25</mn><mo>=</mo><mn>0,1925</mn></math>, que se aproxima a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,193</mn></math>, no a <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn></math>.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p>Del primer gráfico, la probabilidad de que una persona de la población nacional tenga Fonasa es de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>77</mn><mo>%</mo><mo>=</mo><mn>0,77</mn></math>.</p>
+          </li>
+          <li>
+            <p>Del segundo gráfico, entre las personas que tienen Fonasa, el porcentaje que está en el tramo D es de <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn><mo>%</mo><mo>=</mo><mn>0,25</mn></math>. Esto corresponde a la probabilidad condicional de estar en el tramo D dado que la persona tiene Fonasa.</p>
+          </li>
+          <li>
+            <p>La probabilidad de que una persona de la población nacional esté en el tramo D de Fonasa es la probabilidad de que tenga Fonasa y, además, esté en el tramo D. Como ambas condiciones deben cumplirse simultáneamente, se multiplican las probabilidades:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mi>P</mi>
+                <mo>(</mo>
+                <mtext>Fonasa y tramo D</mtext>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mi>P</mi>
+                <mo>(</mo>
+                <mtext>Fonasa</mtext>
+                <mo>)</mo>
+                <mo>&#xD7;</mo>
+                <mi>P</mi>
+                <mo>(</mo>
+                <mtext>tramo D | Fonasa</mtext>
+                <mo>)</mo>
+                <mo>=</mo>
+                <mn>0,77</mn>
+                <mo>&#xD7;</mo>
+                <mn>0,25</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Calculamos el producto paso a paso:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,77</mn>
+                <mo>&#xD7;</mo>
+                <mn>0,25</mn>
+                <mo>=</mo>
+                <mn>0,77</mn>
+                <mo>&#xD7;</mo>
+                <mfrac>
+                  <mn>25</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mfrac>
+                  <mrow>
+                    <mn>0,77</mn>
+                    <mo>&#xD7;</mo>
+                    <mn>25</mn>
+                  </mrow>
+                  <mn>100</mn>
+                </mfrac>
+              </math>
+            </p>
+            <p>Primero multiplicamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,77</mn></math> por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,77</mn>
+                <mo>&#xD7;</mo>
+                <mn>25</mn>
+                <mo>=</mo>
+                <mn>19,25</mn>
+              </math>
+            </p>
+            <p>Luego dividimos por <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>100</mn></math>:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mfrac>
+                  <mn>19,25</mn>
+                  <mn>100</mn>
+                </mfrac>
+                <mo>=</mo>
+                <mn>0,1925</mn>
+              </math>
+            </p>
+          </li>
+          <li>
+            <p>Por lo tanto, la probabilidad de que una persona de la población nacional esté en el tramo D de Fonasa es <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>0,1925</mn></math>. Al redondear este valor a tres cifras decimales, se obtiene:</p>
+            <p>
+              <math xmlns="http://www.w3.org/1998/Math/MathML">
+                <mn>0,1925</mn>
+                <mo>&#x2248;</mo>
+                <mn>0,193</mn>
+              </math>
+            </p>
+            <p>Por ello, la alternativa correcta es <strong>0,193</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

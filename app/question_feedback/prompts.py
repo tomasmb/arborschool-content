@@ -280,73 +280,95 @@ QTI XML COMPLETO (pregunta + retroalimentación):
 
 {images_section}
 </context>
-
-<task>
-Validar completamente esta pregunta. Encontrar CUALQUIER error o problema.
-</task>
 """ + CHILEAN_NUMBER_FORMAT_SECTION + """
+<task>
+Verificar que esta pregunta es matemáticamente correcta y su retroalimentación
+es precisa. Solo reportar errores concretos y demostrables.
+</task>
+
 <checks>
+Evalúa cada check de forma INDEPENDIENTE. Un error en un check NO debe
+contaminar otros checks.
+
 1. RESPUESTA CORRECTA (correct_answer_check):
-   - Resuelve el problema paso a paso (usando formato chileno para interpretar números)
-   - Verifica que <qti-correct-response> tenga la respuesta matemáticamente correcta
-   - FAIL si la respuesta marcada no es correcta
+   - Resuelve el problema paso a paso usando formato numérico chileno
+   - Identifica cuál Choice es correcta según tu resolución
+   - Verifica que coincide con el valor en <qti-correct-response>
+   - FAIL SOLO si tu resolución llega a una respuesta DIFERENTE a la marcada
+   - PASS si la respuesta marcada es matemáticamente correcta
 
 2. RETROALIMENTACIÓN (feedback_check):
-   - ¿Feedback de opción correcta explica POR QUÉ es correcta?
-   - ¿Feedbacks incorrectos identifican errores conceptuales reales?
-   - ¿Solución paso a paso llega a la respuesta correcta?
-   - FAIL si hay errores en el feedback
+   - ¿El feedback de la opción correcta demuestra por qué es correcta?
+   - ¿Los feedbacks de opciones incorrectas demuestran por qué son incorrectas?
+   - ¿La solución paso a paso llega a la respuesta correcta?
+   - FAIL SOLO si hay un error matemático concreto o una conclusión incorrecta
+   - PASS si el feedback es matemáticamente correcto, aunque pudiera redactarse mejor
 
 3. CALIDAD DE CONTENIDO (content_quality_check):
-   - Errores tipográficos
-   - Caracteres mal codificados (excepto entidades HTML válidas como &#x00A1;)
-   - Expresiones matemáticas incorrectas (signos, exponentes)
-   - Formato numérico chileno: punto para miles, coma para decimal
-   - Claridad del lenguaje para 3°-4° medio
-   - FAIL si hay errores de calidad reales
+   - Errores tipográficos reales (no diferencias de estilo)
+   - Caracteres mal codificados (excepto entidades HTML válidas: &#x00A1; etc.)
+   - Expresiones matemáticas con errores de signos o exponentes
+   - FAIL SOLO si hay errores objetivos de contenido
+   - PASS si el contenido es legible y correcto
 
 4. IMÁGENES (image_check):
-   - Referencias corresponden a imágenes reales
-   - Imágenes son relevantes y correctas
-   - Alt-text adecuado
-   - NOT_APPLICABLE si no hay imágenes
+   - NOT_APPLICABLE si no hay imágenes adjuntas
+   - Verifica que imágenes son consistentes con descripciones textuales
+   - FAIL SOLO si hay una contradicción FACTUAL clara entre imagen y texto
+     (ej: texto dice "punto en (3,2)" pero imagen muestra punto en (5,1))
+   - PASS si las imágenes son legibles y no contradicen el contenido textual
+   - NO fallar por diferencias sutiles de interpretación visual
 
 5. VALIDEZ MATEMÁTICA PAES (math_validity_check):
-   - Contenido dentro del temario PAES M1
-   - Valores numéricos razonables
-   - Unidades correctas si aplica
-   - FAIL si está fuera de temario o tiene errores de magnitud
+   - ¿El contenido está dentro del temario PAES M1?
+   - ¿Los valores numéricos son razonables?
+   - FAIL SOLO si el tema está claramente fuera del currículo o hay error de magnitud
+   - PASS si el contenido es apropiado para PAES M1
 </checks>
 
+<consistency_rule>
+REGLA CRÍTICA — tu veredicto DEBE ser consistente con tu análisis:
+- Si resolviste el problema y llegaste a la misma respuesta marcada
+  → correct_answer_check.status = "pass"
+- Si no encontraste errores matemáticos concretos en el feedback
+  → feedback_check.status = "pass"
+- Si TODOS los checks tienen status "pass" (o "not_applicable")
+  → validation_result DEBE ser "pass"
+- Si reportas status "fail", DEBES citar el error específico en issues[]
+- Un campo issues[] vacío con status "fail" es una CONTRADICCIÓN prohibida
+</consistency_rule>
+
+<constraints>
+NO marcar como error:
+- "¡Correcto!" en feedback de opción correcta
+- qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
+- Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
+- Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
+- Cálculos correctos en formato chileno (punto=miles, coma=decimal)
+- Diferencias de estilo o redacción que no afectan la corrección matemática
+- Descripciones de imágenes que son razonables aunque no pixel-perfect
+
+SÍ marcar como error:
+- Resultado numérico incorrecto en un cálculo
+- Respuesta marcada que no es la matemáticamente correcta
+- Feedback que llega a una conclusión opuesta a lo que demuestra
+- Contradicción factual clara entre texto e imagen
+</constraints>
+
 <output_format>
-JSON con este schema:
-- validation_result: "pass" o "fail"
-- correct_answer_check: {{status, expected_answer, marked_answer, verification_steps, issues[]}}
+Responde en JSON. Evalúa TODOS los checks ANTES de asignar validation_result.
+- correct_answer_check: {{status, marked_answer, verification_steps, issues[]}}
 - feedback_check: {{status, issues[], reasoning}}
 - content_quality_check: {{status, typos_found[], character_issues[], clarity_issues[]}}
 - image_check: {{status, issues[], reasoning}}
 - math_validity_check: {{status, issues[], reasoning}}
 - overall_reasoning: resumen de 1-2 oraciones
+- validation_result: "pass" o "fail" (DEBE coincidir con los checks anteriores)
 </output_format>
 
-<constraints>
-- Sé riguroso pero no excesivamente estricto ni pedante
-- NO marcar como error:
-  - "¡Correcto!" en feedback de opción correcta (es apropiado)
-  - qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
-  - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
-  - Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
-  - Cálculos correctos en formato chileno (recuerda: punto=miles, coma=decimal)
-- SÍ marcar como error:
-  - Errores matemáticos reales (resultado numérico incorrecto)
-  - Respuesta correcta marcada incorrectamente
-  - Feedback que no corresponde a la alternativa
-- Cita contenido exacto cuando reportes issues
-- Issues deben ser específicos y accionables
-- IMPORTANTE: Verifica cálculos interpretando números en formato chileno
-</constraints>
-
 <final_instruction>
-Basándote en el QTI XML arriba, valida completamente y responde en JSON.
+Basándote en el QTI XML y las imágenes (si las hay), valida la pregunta.
+Recuerda: solo falla por errores concretos y demostrables, no por preferencias
+de estilo ni interpretaciones subjetivas de imágenes.
 </final_instruction>
 """

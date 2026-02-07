@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q34",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:40.239987+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema describe dos rectas: ingresos acumulados que parten del origen y gastos acumulados que parten de 2.000.000 de pesos, ambas crecientes, que se intersectan alrededor del mes 6. Matemáticamente, el punto de intersección es el (mes, dinero) donde ambas funciones tienen el mismo valor en el eje vertical, es decir, I(m) = G(m). Eso corresponde exactamente a la alternativa B: “Es el mes donde los ingresos acumulados igualan a los gastos acumulados”. El feedback de la opción correcta explica explícitamente que en el punto de intersección se cumple I = G y lo interpreta como equilibrio entre ingresos y gastos, lo que es matemáticamente correcto. Los feedbacks de las opciones A, C y D muestran por qué esas interpretaciones no corresponden al gráfico: A aclara que los ingresos siguen aumentando después del cruce; C señala que los gastos siguen aumentando después del cruce; D distingue correctamente entre gastos iniciales (intersección con el eje vertical en 2.000.000 en el mes 0) y gastos acumulados en el punto de intersección, que son mayores. La solución paso a paso también es coherente: identifica qué representa cada recta, explica que en el cruce se cumple I(m) = G(m), interpreta esto como punto de equilibrio y descarta correctamente las otras alternativas. No hay errores numéricos ni de interpretación económica o gráfica."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando términos como “ingresos acumulados”, “gastos acumulados” y “punto de equilibrio” con explicaciones contextuales. Cada feedback es auto-contenido: A explica por qué no es el mes de mayores ingresos acumulados, C da un ejemplo concreto (mes 6 vs mes 7) para mostrar que los gastos siguen aumentando, y D explica claramente qué son los gastos iniciales y por qué en el punto de intersección los montos son mayores. El feedback correcto (B) no solo afirma que es correcto, sino que explica la igualdad de alturas en el eje vertical y la traduce a la igualdad I = G, además de nombrar el concepto de punto de equilibrio. La solución general recorre paso a paso la interpretación del gráfico, el significado del cruce y la revisión de las alternativas, todo específico a esta pregunta y sin depender de información externa."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática se presenta en MathML (por ejemplo, <math><mi>I</mi><mo>=</mo><mi>G</mi></math>, funciones I(m), G(m), y montos como 3.000.000) sin uso de LaTeX. Los números usan el formato chileno correctamente: punto como separador de miles (2.000.000, 3.000.000) y no se usan decimales, por lo que no hay conflicto con la coma decimal. El fallback en qti-response-else asigna el feedback de ChoiceA, que es una opción incorrecta, por lo que no hay riesgo de entregar retroalimentación de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y justificada, los feedbacks para todas las alternativas son matemáticamente sólidos y específicos al contexto del gráfico, y el formato (MathML y notación numérica chilena) es adecuado. No se detectan errores conceptuales ni de presentación."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) El gráfico muestra dos rectas: 'Ingresos acumulados' que parte del origen (0 pesos en el mes 0) y 'Gastos acumulados' que parte de 2.000.000 de pesos en el mes 0. Ambas crecen con el tiempo. 2) El punto de intersección de las rectas corresponde al mismo valor en el eje vertical (dinero) para un mismo valor en el eje horizontal (mes). 3) Eso significa que, en ese mes, el monto de ingresos acumulados es igual al monto de gastos acumulados: I = G. 4) Revisando las alternativas: A) habla del mes con mayor ingreso acumulado, lo cual no es cierto porque la recta de ingresos sigue subiendo después del cruce. C) dice que desde ese mes no habrá más gastos acumulados, lo que contradice que la recta de gastos sigue aumentando. D) habla de igualdad con los gastos iniciales, que son 2.000.000 en el mes 0, distinto del valor mayor que se observa en el punto de intersección. 5) La única descripción correcta del punto de intersección es 'Es el mes donde los ingresos acumulados igualan a los gastos acumulados', que corresponde a la alternativa ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceB) explica adecuadamente que en el punto de intersección ambas rectas tienen el mismo valor en el eje vertical, formaliza la igualdad I = G y la interpreta como equilibrio entre ingresos y gastos; esto es matemáticamente correcto. Para las opciones incorrectas: A) justifica que no es el mes de mayor ingreso porque la recta de ingresos sigue aumentando después del cruce; correcto. C) argumenta que los gastos siguen aumentando después del punto de intersección, dando un ejemplo numérico coherente; correcto. D) distingue claramente entre gastos iniciales (valor en el eje vertical en el mes 0) y gastos acumulados en el punto de intersección, señalando que en el cruce el valor es mayor que 2.000.000; también correcto. La solución paso a paso describe bien el significado del cruce de rectas, usa notación funcional I(m), G(m) y concluye la alternativa B sin errores matemáticos ni contradicciones."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un eje vertical 'Dinero en pesos' y un eje horizontal 'Mes', con una recta de ingresos acumulados que parte del origen y una recta de gastos acumulados que parte de 2 000 000 en el eje vertical. Ambas se intersectan alrededor del mes 6, marcado con una línea punteada vertical. Esto coincide con la descripción textual del ítem y con las explicaciones de la retroalimentación; no hay contradicciones factuales ni problemas de legibilidad relevantes para la interpretación requerida en la pregunta."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata la interpretación del punto de intersección de dos rectas que representan ingresos y gastos acumulados en función del tiempo, es decir, lectura de gráficos y noción de punto de equilibrio, contenidos plenamente alineados con el temario de PAES Matemática M1 (funciones lineales, representación gráfica y análisis cualitativo). Los valores numéricos (2.000.000 de pesos, 12 meses, intersección en torno al mes 6) son razonables y no presentan errores de magnitud."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta identificada en el QTI coincide con la interpretación matemática del punto de intersección de las rectas. La retroalimentación y la solución son coherentes, sin errores matemáticos ni contradicciones con la imagen, y el contenido es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:18:19.768470+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

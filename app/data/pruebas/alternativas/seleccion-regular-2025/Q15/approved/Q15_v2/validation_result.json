@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q15-Q15_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:58:22.963527+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Al resolver el problema: totales de hombres postulantes = 120 + 80 = 200; hombres contratados = 30 + 10 = 40; por lo tanto 40/200 = 1/5 = 20%, de modo que la opción A es correcta. En Ingeniería: postulantes = 120 + 80 = 200, contratados = 30 + 20 = 50, porcentaje = 50/200 = 1/4 = 25%, por lo que B es falsa. Para mujeres contratadas: total = 20 + 60 = 80, de Ingeniería = 20, porcentaje = 20/80 = 1/4 = 25%, por lo que C es falsa. En Marketing: hombres 10/80 = 1/8 = 12,5% (no 50%) y mujeres 60/120 = 1/2 = 50%, por lo que D es falsa. Todos estos cálculos coinciden exactamente con los que se muestran en los feedbacks y en la resolución paso a paso; no hay errores numéricos ni de razonamiento, y la opción correcta está bien justificada."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cada retroalimentación explica explícitamente los datos usados, muestra las sumas necesarias, calcula las fracciones y las interpreta como porcentajes, sin requerir que el estudiante haga pasos adicionales. El lenguaje es directo y adecuado para 3°–4° medio (usa términos como 'postularon', 'contratados', 'porcentaje'), y cada feedback se refiere específicamente a la afirmación de su alternativa, indicando por qué es verdadera o falsa. La solución global organiza la información, calcula totales y analiza cada opción de forma ordenada, lo que es pedagógicamente claro."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los números usados no requieren separador de miles ni decimales salvo el 12,5%, que correctamente usa coma como separador decimal según el formato chileno. El bloque de procesamiento de respuestas marca ChoiceA como correcta y, en el 'response-else', asigna el feedback de ChoiceB, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar feedback de la opción correcta en el fallback."
+      },
+      "overall_reasoning": "Los cálculos de porcentajes y totales son correctos, la alternativa correcta está bien justificada y las incorrectas se refutan con argumentos numéricos claros. El formato QTI y el uso de MathML y notación numérica chilena son adecuados, por lo que todos los chequeos se cumplen."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "1) De la tabla:\n- Ingeniería: H 120 postulantes, 30 contratados; M 80 postulantes, 20 contratadas.\n- Marketing: H 80 postulantes, 10 contratados; M 120 postulantes, 60 contratadas.\n\n2) Totales por sexo:\n- Hombres postulantes: 120 + 80 = 200.\n- Hombres contratados: 30 + 10 = 40.\n- Mujeres postulantes: 80 + 120 = 200.\n- Mujeres contratadas: 20 + 60 = 80.\n\n3) Revisar cada afirmación:\n- Opción A: porcentaje de hombres contratados = 40 / 200 = 1/5 = 0,2 = 20%. Verdadera.\n- Opción B: en Ingeniería postulan 200 y se contratan 50, porcentaje = 50 / 200 = 1/4 = 25%, no 30%. Falsa.\n- Opción C: mujeres contratadas totales 80, en Ingeniería 20, porcentaje = 20 / 80 = 1/4 = 25%, no 20%. Falsa.\n- Opción D: en Marketing, hombres: 10 / 80 = 1/8 = 12,5%, no 50%; mujeres: 60 / 120 = 1/2 = 50%. No se cumple para ambos sexos. Falsa.\n\n4) La única afirmación verdadera es la opción A, que coincide con <qti-correct-response> (ChoiceA).",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback Choice A: calcula correctamente 200 hombres postulantes (120+80), 40 contratados (30+10) y el porcentaje 40/200 = 1/5 = 20%. Concluye correctamente que la afirmación es verdadera.\nFeedback Choice B: identifica 200 postulantes y 50 contratados en Ingeniería, calcula 50/200 = 1/4 = 25% y explica que no es 30%. Correcto.\nFeedback Choice C: suma 20+60 = 80 mujeres contratadas, toma 20 de Ingeniería y calcula 20/80 = 1/4 = 25%, indicando que no es 20%. Correcto.\nFeedback Choice D: para Marketing hombres, 10/80 = 1/8 = 12,5%, distinto de 50%; para mujeres, 60/120 = 1/2 = 50%. Concluye que no se cumple el 50% para ambos sexos. Correcto.\nLa resolución paso a paso repite estos cálculos sin errores y concluye que la alternativa correcta es A. No hay errores matemáticos ni conclusiones contradictorias."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "La información se entrega en una tabla HTML dentro del ítem, no hay imágenes externas que contrastar con el texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata porcentajes y conteo de frecuencias a partir de una tabla de datos categóricos, contenido estándar de estadística descriptiva y proporcionalidad, plenamente dentro del temario PAES M1. Los valores numéricos (cantidades de postulantes y contratados, porcentajes resultantes) son razonables y de magnitud adecuada. No hay inconsistencias numéricas."
+        }
+      },
+      "overall_reasoning": "Los cálculos de porcentajes y totales están correctos, la alternativa marcada coincide con la única afirmación verdadera y la retroalimentación explica adecuadamente por qué cada opción es correcta o incorrecta. No se detectan errores tipográficos ni de contenido matemático.",
+      "timestamp": "2026-02-07T02:00:20.787651+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

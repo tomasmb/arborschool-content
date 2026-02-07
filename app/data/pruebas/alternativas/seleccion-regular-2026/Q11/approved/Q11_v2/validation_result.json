@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q11-Q11_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:37:45.130220+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema: hay 30 peldaños entre pisos, cada uno de 12 cm, por lo que la altura entre pisos es 30·12 = 360 cm. Si la persona sube n peldaños, sube 12·n cm. Para que llegue exactamente a un nuevo piso, se requiere que 12·n sea múltiplo de 360, es decir, que 12·n sea divisible por 360. Esto corresponde a la alternativa C. \n\nRevisión por opción:\n- Opción C (correcta): El feedback explica que la altura entre pisos es 360 cm, que la altura recorrida es 12·n, y que la condición de llegar a un piso nuevo es que 12·n sea múltiplo de 360. Luego formaliza la divisibilidad con un k natural, divide por 12 y concluye n = 30·k, es decir, n múltiplo de 30. Todo es matemáticamente correcto y demuestra por qué la condición garantiza llegar a un nuevo piso.\n- Opción A: El feedback señala correctamente que exigir que 12·n sea divisible por 30 es insuficiente, porque la altura entre pisos es 360, no 30. El contraejemplo n = 5 da 12·5 = 60, que es divisible por 30 pero no corresponde a un piso completo (se necesitan 30 peldaños). El razonamiento es correcto y muestra explícitamente por qué la condición no garantiza llegar a un nuevo piso.\n- Opción B: El feedback explica que la altura recorrida debe ser 12·n y que 12 + n mezcla unidades distintas (cm y peldaños), por lo que no representa una altura. Da el ejemplo n = 30, donde sí se llega a un nuevo piso, pero 12 + 30 = 42 no es divisible por 30, mostrando que la condición no es equivalente a llegar a un piso. La argumentación es correcta y suficiente.\n- Opción D: Análogo a B, pero con divisibilidad por 360. Se explica que la altura correcta es 12·n, que 12 + n no es una altura, y se da el ejemplo n = 30: se llega a un nuevo piso, pero 12 + 30 = 42 no es divisible por 360, por lo que la condición no garantiza haber llegado a un piso. Matemáticamente consistente.\n\nLa solución paso a paso repite el razonamiento correcto: calcula 360 cm entre pisos, establece 12·n como altura recorrida, plantea la condición de múltiplo de 360, formaliza la divisibilidad con un k natural, divide por 12 y concluye n = 30·k. Llega a la alternativa C sin errores. No se observan fallos de cálculo ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Se explican explícitamente las ideas clave: altura entre pisos, altura recorrida al subir n peldaños, y el significado de que una cantidad sea divisible por otra. \n\nCada feedback es auto-contenido: \n- En A, se recuerda qué representa 12·n, se calcula la altura entre pisos, se explica por qué debe ser múltiplo de 360 y se da un contraejemplo concreto con n = 5. El estudiante no necesita información externa para entender el error.\n- En B y D, se explica claramente el problema de mezclar unidades (cm y peldaños) en 12 + n, y se da un ejemplo numérico (n = 30) que muestra que la condición propuesta no coincide con llegar a un piso. Esto es específico de esta pregunta y no genérico.\n- En C, se detalla por qué la condición es correcta, se introduce la notación con k natural y se muestra paso a paso cómo se llega a que n es múltiplo de 30. \n\nLa solución general también está bien estructurada en pasos numerados, con explicaciones textuales y fórmulas, lo que favorece la comprensión. No se observan saltos lógicos que requieran conocimientos no razonables para el nivel."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (etiquetas <math>, <mi>, <mn>, <mo>, <mfrac>, etc.), sin uso de LaTeX. Los números usados (12, 30, 360, 5, 42, etc.) no requieren separadores de miles ni decimales, por lo que no hay conflicto con el formato chileno; no se usan puntos ni comas en los valores numéricos, lo que es compatible con la convención indicada. \n\nEn el procesamiento de respuesta, la opción correcta declarada es ChoiceC y el bloque <qti-response-else> asigna FEEDBACK = ChoiceA, que corresponde a una opción incorrecta, cumpliendo la condición de que el fallback no entregue el feedback de la opción correcta. Por tanto, el formato y la lógica de asignación de feedback son adecuados."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y justificada, los feedbacks de todas las alternativas son matemáticamente correctos, específicos y comprensibles, y el formato QTI con MathML y manejo de feedback cumple los requisitos. No se detectan errores de contenido ni de formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "1) Entre piso y piso hay 30 peldaños, cada uno de 12 cm.\n2) Altura entre dos pisos: 30 · 12 = 360 cm.\n3) Si la persona sube n peldaños, la altura total subida es 12·n cm.\n4) Para que haya llegado exactamente a un nuevo piso, esa altura debe ser un múltiplo de 360 cm, es decir, 12·n es divisible por 360.\n5) Esto equivale a que exista k natural tal que 12·n = 360·k, luego n = (360/12)·k = 30·k, o sea n múltiplo de 30.\n6) Entre las alternativas, la condición correcta es: “Que 12·n es divisible por 360”, que corresponde a ChoiceC.\n7) El <qti-correct-response> marca ChoiceC, que coincide con la resolución.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceC: Explica correctamente que la altura entre pisos es 360 cm, que la altura recorrida es 12·n, y que exigir que 12·n sea divisible por 360 garantiza haber llegado a un piso; la deducción n = 30·k es correcta.\nFeedback ChoiceA: Señala bien que la condición correcta es que 12·n sea múltiplo de 360, no solo de 30; el contraejemplo n=5 muestra que 12·5=60 es divisible por 30 pero no corresponde a un piso completo. Todo es matemáticamente correcto.\nFeedback ChoiceB y ChoiceD: Indican que 12+n no representa una altura en cm porque mezcla una longitud fija con una cantidad de peldaños; los ejemplos con n=30 muestran que la condición no se cumple aun cuando sí se llega a un piso. El razonamiento es coherente y sin errores.\nLa solución paso a paso repite el mismo razonamiento, calcula 30·12=360 correctamente, plantea la condición de divisibilidad adecuada y concluye correctamente que la alternativa correcta es la C."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de divisibilidad, múltiplos y modelación de una situación con peldaños y pisos, contenidos propios del currículo de PAES Matemática M1. Los valores numéricos (30 peldaños, 12 cm por peldaño, 360 cm entre pisos) son razonables y las magnitudes están bien manejadas. No hay errores de orden de magnitud ni contenidos fuera de temario."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta (ChoiceC) coincide con la resolución matemática y con lo marcado en el QTI. La retroalimentación y la solución paso a paso son coherentes, sin errores numéricos ni conceptuales, y el contenido es adecuado para PAES M1.",
+      "timestamp": "2026-02-07T02:44:00.736834+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q49",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:11:50.475152+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Resolviendo el problema: sea x el precio de un lápiz. Daniela: 7x + 900; Marcos: 6x + 2.330. Como tienen la misma cantidad de dinero: 7x + 900 = 6x + 2.330 ⇒ x + 900 = 2.330 ⇒ x = 2.330 − 900 = 1.430. Por tanto, la alternativa correcta es $1.430 (ChoiceC). \n\nRevisión de cada feedback:\n- ChoiceA ($110): Daniela: 7·110 + 900 = 770 + 900 = 1.670; Marcos: 6·110 + 2.330 = 660 + 2.330 = 2.990. 1.670 ≠ 2.990. El feedback muestra exactamente estos cálculos y la conclusión es correcta.\n- ChoiceB ($248): Daniela: 7·248 + 900 = 1.736 + 900 = 2.636; Marcos: 6·248 + 2.330 = 1.488 + 2.330 = 3.818. 2.636 ≠ 3.818. El feedback presenta estos valores correctamente y concluye que no pueden tener el mismo dinero.\n- ChoiceC ($1.430): Daniela: 7·1.430 = 10.010; 10.010 + 900 = 10.910. Marcos: 6·1.430 = 8.580; 8.580 + 2.330 = 10.910. Ambos tienen 10.910, por lo que la justificación de que es el precio correcto es matemáticamente correcta.\n- ChoiceD ($3.230): Daniela: 7·3.230 = 22.610; 22.610 + 900 = 23.510. Marcos: 6·3.230 = 19.380; 19.380 + 2.330 = 21.710. 23.510 ≠ 21.710. El feedback reproduce estos cálculos correctamente.\n\nLa solución paso a paso en el bloque SOLUTION plantea correctamente las expresiones, iguala 7·x + 900 = 6·x + 2.330, resta 6·x en ambos lados, obtiene x + 900 = 2.330, luego resta 900 y llega a x = 1.430, y verifica sustituyendo. No hay errores numéricos ni algebraicos. Por tanto, toda la retroalimentación es matemáticamente correcta y demuestra adecuadamente por qué la opción correcta lo es y por qué las incorrectas no satisfacen la condición."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°–4° medio: se explicita qué representa x, se describen las expresiones de dinero total de Daniela y Marcos, y se indica claramente que deben ser iguales porque el enunciado dice que tienen la misma cantidad de dinero. \n\nCada feedback de alternativa incorrecta es auto-contenido: para cada precio propuesto se calcula explícitamente el dinero total de Daniela y de Marcos, se muestran los productos y sumas, y se compara con una igualdad o desigualdad explícita (por ejemplo, 1.670 ≠ 2.990), concluyendo que no pueden tener la misma cantidad de dinero. El estudiante no necesita hacer cálculos adicionales para entender por qué la opción es incorrecta. \n\nEl feedback de la opción correcta no solo afirma que es correcta, sino que muestra los cálculos para ambos y la coincidencia de 10.910, reforzando la idea de verificación. La solución general es específica de este problema (usa los datos concretos 7, 6, 900, 2.330) y no es un texto genérico. La estructura en pasos numerados y subpasos facilita el seguimiento del razonamiento."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mrow>, <mn>, <mi>, <mo>), sin uso de LaTeX. Los números usan consistentemente el formato chileno: punto como separador de miles (por ejemplo, 1.670, 2.330, 10.010, 10.910, 22.610, 23.510, 21.710) y no se usan comas decimales, lo que es coherente con montos enteros en pesos. \n\nEn el procesamiento de respuestas, la alternativa correcta es ChoiceC y el bloque <qti-response-else> asigna FEEDBACK = FB_ChoiceA, que corresponde a una opción incorrecta, lo cual es válido como fallback. No se asigna nunca el feedback de la opción correcta en el caso por defecto. Por tanto, el formato y la lógica de asignación de feedback cumplen con los requisitos."
+      },
+      "overall_reasoning": "La resolución algebraica y todos los cálculos numéricos en los feedbacks y en la solución son correctos y coherentes con el formato numérico chileno. El lenguaje es claro, específico al problema y auto-contenido, y el uso de MathML y la configuración de feedback en el QTI son adecuados."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "Sea x el precio de un lápiz.\n\nDaniela: tiene 7x + 900.\nMarcos: tiene 6x + 2.330.\n\nComo tienen la misma cantidad de dinero:\n7x + 900 = 6x + 2.330\nRestamos 6x en ambos lados:\nx + 900 = 2.330\nRestamos 900 en ambos lados:\nx = 2.330 - 900 = 1.430\n\nPor lo tanto, el precio de un lápiz es $1.430, que corresponde a la alternativa ChoiceC, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Opción A: Calculan 7·110 = 770 y 770 + 900 = 1.670; 6·110 = 660 y 660 + 2.330 = 2.990; como 1.670 ≠ 2.990, la conclusión de que no es el precio correcto es válida.\n\nOpción B: 7·248 = 1.736; 1.736 + 900 = 2.636; 6·248 = 1.488; 1.488 + 2.330 = 3.818; 2.636 ≠ 3.818, por lo que también es incorrecta.\n\nOpción C: 7·1.430 = 10.010; 10.010 + 900 = 10.910; 6·1.430 = 8.580; 8.580 + 2.330 = 10.910; ambos montos coinciden, por lo que la justificación de que es correcta es matemática y lógicamente consistente.\n\nOpción D: 7·3.230 = 22.610; 22.610 + 900 = 23.510; 6·3.230 = 19.380; 19.380 + 2.330 = 21.710; 23.510 ≠ 21.710, por lo que se justifica que es incorrecta.\n\nLa solución paso a paso plantea correctamente la ecuación 7x + 900 = 6x + 2.330, la resuelve obteniendo x = 1.430 y luego verifica sustituyendo; todos los cálculos son correctos y las conclusiones coinciden con la respuesta correcta."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema corresponde a un sistema lineal sencillo (igualación de dos expresiones lineales en una variable) y al uso de ecuaciones de primer grado, contenidos plenamente dentro del temario de PAES M1. Los valores numéricos (precios en pesos chilenos del orden de miles) son razonables y no presentan errores de magnitud."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada (x = 1.430, alternativa C), todos los cálculos en la retroalimentación y en la solución paso a paso son coherentes y correctos, y el contenido es adecuado para PAES M1 sin errores formales relevantes.",
+      "timestamp": "2026-02-07T02:18:25.005984+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

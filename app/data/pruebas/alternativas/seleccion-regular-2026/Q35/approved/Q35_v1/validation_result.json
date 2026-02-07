@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q35-Q35_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:43:29.521068+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El sistema es: 1500x + 6000y = 13.500 y x + y = 3. Resolviendo: de x + y = 3 se obtiene y = 3 − x. Sustituyendo: 1500x + 6000(3 − x) = 13.500 → 1500x + 18.000 − 6000x = 13.500 → −4500x + 18.000 = 13.500 → −4500x = −4500 → x = 1, y = 2. En contexto, x e y son kilogramos, y el coeficiente 1500 (precio del pan) multiplica a x, por lo que x representa los kilogramos de pan. La alternativa correcta D (“cantidad de kilogramos de pan comprado”) coincide con esto. \n\nFeedbacks:\n- ChoiceD (correcta): Explica que 1500 es el precio por kg de pan y que multiplica a x, y que en x + y = 3 el 3 son kg totales, por lo que x e y están en kg. Concluye que x son kg de pan. Es matemáticamente correcto y demuestra por qué.\n- ChoiceA: Señala que 1500 es el precio del pan y está con x, mientras que 6000 (precio del queso) está con y, por lo que x no puede ser cantidad de queso. Es correcto.\n- ChoiceB: Indica que x representa una cantidad en kilogramos y que la alternativa correcta es la que explicita la unidad (“kilogramos de pan”). Matemáticamente es coherente: no niega que x sea pan, solo que la opción B omite la unidad. No hay error factual.\n- ChoiceC: Explica que 6000 es el precio del queso y multiplica a y, por lo que y representa los kg de queso y no x. Es correcto.\nLa solución paso a paso resuelve el sistema correctamente, con operaciones aritméticas bien hechas y coherentes con el formato chileno (13.500, 18.000, etc.). No hay errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°-4° medio, usando términos como “precio por kilogramo”, “costo total”, “masa total comprada” y explicando cada paso. Cada feedback es auto-contenido: el de cada alternativa incorrecta explica por qué esa interpretación no coincide con la asociación coeficiente–variable en el sistema y, cuando corresponde, menciona explícitamente qué variable representa pan o queso. El feedback de la opción B aclara la importancia de la unidad (kilogramos) y remite a la alternativa que la explicita, lo que es pedagógicamente razonable. La solución general desarrolla el contexto, interpreta cada ecuación, determina el significado de x e y y luego resuelve el sistema para verificar coherencia, todo dentro del mismo bloque, sin requerir cálculos adicionales por parte del estudiante. No hay mensajes genéricos ni ambiguos; todo está vinculado directamente a este problema."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin LaTeX. Los montos monetarios usan el formato chileno de miles: 13.500, 18.000, etc., y no se usan comas decimales, por lo que no hay conflicto con el formato requerido. El procesamiento de respuesta marca ChoiceD como correcta y, en el bloque qti-response-else, se asigna el feedback de una opción incorrecta (FB_ChoiceA), no el de la correcta, cumpliendo la condición de fallback. No se observan problemas de formato ni de asignación de feedback en el XML."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada, la solución paso a paso es matemáticamente consistente y todos los feedbacks son precisos, específicos y claros. El formato QTI y la notación numérica y matemática cumplen con los requisitos, por lo que el ítem y su retroalimentación pasan la revisión."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Del enunciado: se compran 3 kg en total entre pan y queso. Precio pan: $1.500/kg. Precio queso: $6.000/kg. Total gastado: $13.500.\n2) El sistema dado es:\n   1500·x + 6000·y = 13 500  (costo total)\n   x + y = 3                (kilogramos totales)\n3) En la ecuación de costo, 1500 es el precio por kg de pan, por lo que x debe ser una cantidad de kilogramos de pan; 6000 es el precio por kg de queso, por lo que y es una cantidad de kilogramos de queso.\n4) En la ecuación x + y = 3, el 3 representa 3 kilogramos totales, por lo que x e y están medidos en kilogramos.\n5) Por tanto, x representa la cantidad de kilogramos de pan comprado.\n6) La alternativa que expresa esto es ChoiceD: \"La cantidad de kilogramos de pan comprado\", que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceD) explica adecuadamente que 1500 es el precio por kg de pan y que al multiplicar a x, esta variable representa kilogramos de pan; además vincula x + y = 3 con la unidad de kilogramos, lo que es matemáticamente correcto. Los feedbacks de las opciones incorrectas señalan de forma coherente por qué x no puede ser queso (ChoiceA y C) y por qué la descripción sin unidad en B es menos precisa que D, sin cometer errores matemáticos. La solución paso a paso resuelve correctamente el sistema (x = 1, y = 2) y verifica la coherencia con el contexto, con todos los cálculos correctos en formato chileno (13.500, 18.000, etc.). No hay conclusiones erróneas ni pasos de cálculo incorrectos."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "No se incluyen imágenes externas; solo se usan fórmulas en MathML que coinciden con las expresiones textuales del enunciado y la solución. No hay posibilidad de contradicción imagen-texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem trata interpretación de variables en un sistema de ecuaciones lineales 2×2 con contexto de compra, completamente dentro del temario PAES M1 (modelación con ecuaciones lineales y sistemas). Los valores numéricos (precios por kg, total gastado, total de kg) son razonables y coherentes. No hay errores de magnitud ni planteamientos fuera del currículo."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta marcada coincide con la interpretación matemática del sistema, la retroalimentación y la solución son coherentes y sin errores de cálculo, y el contenido es adecuado para PAES M1 y está bien presentado.",
+      "timestamp": "2026-02-07T02:44:02.892712+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

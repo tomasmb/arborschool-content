@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q24",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:10:07.975262+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cálculo del problema: Precio original $25.000. Primer descuento 20 % → se paga 80 %: 0,8 · 25.000 = 20.000. Segundo descuento 25 % sobre 20.000 → se paga 75 %: 0,75 · 20.000 = 15.000. Equivalente en una sola expresión: 0,8 · 0,75 · 25.000 = 0,6 · 25.000 = 15.000. La alternativa correcta es C, que coincide con esta expresión. \n\nRevisión de feedbacks:\n- Opción C: Explica que cada descuento se representa con el porcentaje que queda (0,8 y 0,75), muestra el producto 0,8 · 0,75 · 25.000, calcula 0,8 · 0,75 = 0,6 y luego 0,6 · 25.000 = 15.000. Todo es matemáticamente correcto y justifica por qué la expresión representa el precio final.\n- Opción A: Indica que 0,2 · 0,25 · 25.000 calcula el producto de los porcentajes de descuento con el precio original, no el precio final. Calcula 0,2 · 0,25 = 0,05 y luego 0,05 · 25.000 = 1.250, valor que efectivamente es mucho menor que el precio final esperado. La interpretación y los cálculos son correctos.\n- Opción B: Explica que (0,2 + 0,25) · 25.000 suma los porcentajes de descuento y aplica un 45 % de una sola vez. Calcula 0,2 + 0,25 = 0,45 y 0,45 · 25.000 = 11.250, que corresponde a un descuento total de 45 % sobre el precio original, no a dos descuentos sucesivos. Esto es correcto y muestra por qué no responde al problema.\n- Opción D: Señala que (0,8 + 0,75) · 25.000 suma los factores de precio restante en vez de aplicarlos sucesivamente. Calcula 0,8 + 0,75 = 1,55 y 1,55 · 25.000 = 38.750, valor mayor que el precio original, lo que es incompatible con aplicar descuentos. Los cálculos y la conclusión son correctos.\n- Bloque de solución: Reproduce paso a paso el proceso: 0,8 · 25.000 = 20.000, luego 0,75 · 20.000 = 15.000, y también la forma compacta 0,8 · 0,75 · 25.000 = 0,6 · 25.000 = 15.000. Toda la aritmética y las interpretaciones de porcentajes son correctas.\nEn conjunto, no se detectan errores matemáticos ni justificaciones incorrectas."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°-4° medio. Cada feedback:\n- Explica qué hace exactamente la expresión de la alternativa (por ejemplo, sumar porcentajes, multiplicar porcentajes entre sí, sumar factores de precio restante).\n- Incluye los cálculos numéricos intermedios (por ejemplo, 0,2 + 0,25 = 0,45; 0,45 · 25.000 = 11.250; 0,8 · 0,75 = 0,6; 0,6 · 25.000 = 15.000), de modo que el estudiante no necesita hacer operaciones adicionales para entender por qué la opción es incorrecta o correcta.\n- Está claramente contextualizado en esta pregunta (descuentos sucesivos sobre un precio de $25.000), no es genérico.\nEl bloque de solución desarrolla el procedimiento paso a paso, explicando el significado de cada porcentaje (qué parte del precio se paga) y mostrando tanto el enfoque secuencial como el producto de factores, lo que refuerza la comprensión conceptual. No se observan ambigüedades ni saltos lógicos que exijan conocimientos no razonables para el nivel."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML, sin uso de LaTeX. Los números respetan el formato chileno: punto como separador de miles (25.000, 20.000, 15.000, 11.250, 38.750) y coma como separador decimal (0,2; 0,25; 0,8; 0,75; 0,6; 1,55). Esto es consistente en enunciado, alternativas, feedbacks y solución. \nEn el procesamiento de respuestas, la alternativa correcta es ChoiceC y el bloque <qti-response-else> asigna SCORE = 0 y FEEDBACK = FeedbackA, que corresponde a una opción incorrecta, cumpliendo la condición de no usar el feedback de la opción correcta como fallback. No se detectan problemas de formato ni de asignación de feedback por defecto."
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada y todos los cálculos de porcentajes y precios son consistentes. La retroalimentación es específica, auto-contenida y bien formateada, por lo que el ítem cumple con los criterios de precisión, claridad y formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceC",
+          "verification_steps": "1) Precio original: $25.000.\n2) Primer descuento 20 %: se paga el 80 % del precio original.\n   80 % = 0,8, entonces nuevo precio = 0,8 · 25.000 = 20.000.\n3) Segundo descuento 25 % sobre 20.000: se paga el 75 % de 20.000.\n   75 % = 0,75, entonces precio final = 0,75 · 20.000 = 15.000.\n4) Expresión equivalente aplicando ambos factores al precio original:\n   0,8 · 0,75 · 25.000 = 0,6 · 25.000 = 15.000.\n5) La alternativa que representa esta expresión es ChoiceC: 0,8 · 0,75 · 25 000.\n6) En el XML, <qti-correct-response> marca ChoiceC como correcta, que coincide con la resolución.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback ChoiceC: Explica correctamente que un descuento de 20 % deja el 80 % (0,8) y uno de 25 % deja el 75 % (0,75), muestra el producto 0,8 · 0,75 · 25.000, calcula 0,8 · 0,75 = 0,6 y luego 0,6 · 25.000 = 15.000; todo es matemáticamente correcto.\nFeedback ChoiceA: Indica que 0,2 · 0,25 · 25.000 calcula el producto de los porcentajes de descuento sobre el precio original, no el precio final. Calcula 0,2 · 0,25 = 0,05 y 0,05 · 25.000 = 1.250; estos valores son correctos y la interpretación también.\nFeedback ChoiceB: Explica que (0,2 + 0,25) · 25.000 aplica un 45 % de descuento de una sola vez. Calcula 0,2 + 0,25 = 0,45 y 0,45 · 25.000 = 11.250; los cálculos son correctos y se aclara que esto no corresponde a descuentos sucesivos.\nFeedback ChoiceD: Señala que (0,8 + 0,75) · 25.000 suma los factores de precio restante en vez de aplicarlos sucesivamente. Calcula 0,8 + 0,75 = 1,55 y 1,55 · 25.000 = 38.750, mayor que 25.000, por lo que no puede ser un precio con descuentos; todo es correcto.\nLa solución detallada repite el procedimiento correcto: primero 0,8 · 25.000 = 20.000, luego 0,75 · 20.000 = 15.000, y también 0,8 · 0,75 · 25.000 = 15.000. No hay errores matemáticos ni conclusiones incorrectas."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML; no hay posibles contradicciones visuales que evaluar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de porcentajes y descuentos sucesivos sobre un precio, contenido estándar del temario PAES M1 (proporcionalidad, porcentajes, aritmética). Los valores numéricos (25.000, descuentos de 20 % y 25 %, precio final 15.000) son razonables y de magnitud adecuada. No hay inconsistencias ni resultados absurdos."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada (ChoiceC) y todos los cálculos de la pregunta, feedback y solución son coherentes con el formato numérico chileno. No se detectan errores matemáticos ni de contenido objetivo.",
+      "timestamp": "2026-02-07T02:18:16.621024+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

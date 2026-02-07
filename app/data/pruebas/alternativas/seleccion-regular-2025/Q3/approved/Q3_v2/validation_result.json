@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q3-Q3_v2",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:32.538303+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Al resolver la expresión original ((3/5)·(4·2−9)) : ((7/9)·(20−4·3)) se obtiene: 4·2=8, 8−9=−1; 4·3=12, 20−12=8, por lo que queda (3/5·−1) : (7/9·8) = (−3/5) : (56/9) = (−3/5)·(9/56) = −27/280. El procedimiento del enunciado comete el error en el Paso 1 al reemplazar 4·2−9 por −28 y 20−4·3 por 48. Los Pasos 2, 3 y 4 son correctos dados esos valores erróneos. El feedback de ChoiceA explica correctamente el error en los paréntesis y muestra los cálculos correctos. El feedback de ChoiceB verifica correctamente las multiplicaciones con los valores equivocados del Paso 1 y concluye que el error no se origina allí. El feedback de ChoiceC explica correctamente la regla de división de fracciones y la aplica bien. El feedback de ChoiceD muestra una simplificación válida (84:28=3, 112:28=4) que lleva a −9/20, consistente con el Paso 3. La solución paso a paso reproduce el procedimiento correcto y llega a −27/280, sin errores matemáticos. No hay afirmaciones falsas ni justificaciones incorrectas en los feedbacks."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio: se usan expresiones como 'se resuelven las operaciones dentro de los paréntesis internos', 'dividir por una fracción es multiplicar por su inversa', y se explicita cada operación intermedia. Cada feedback es auto-contenido: el de la opción correcta detalla los cálculos correctos en numerador y denominador y señala explícitamente por qué el Paso 1 es el que contiene el error; los feedbacks de las opciones incorrectas muestran los cálculos que justifican que esos pasos son coherentes y no son el origen del error. La solución paso a paso está bien estructurada en ítems numerados, con todas las operaciones necesarias y una conclusión explícita sobre dónde se produce el error. Todo el contenido está claramente vinculado a esta pregunta específica, sin mensajes genéricos ni referencias que requieran información externa."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mfrac>, <mn>, <mo>, etc.), sin uso de LaTeX. No aparecen números con separador de miles ni decimales en el enunciado ni en los feedbacks, solo enteros pequeños (3, 5, 7, 9, 20, 28, 48, 56, 84, 112, 280), por lo que no hay conflicto con el formato numérico chileno. El bloque de procesamiento de respuestas marca ChoiceA como correcta y, en el fallback (<qti-response-else>), asigna SCORE=0 y FEEDBACK=FB_B, es decir, un feedback de opción incorrecta, lo que cumple la condición de no entregar la retroalimentación de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La resolución matemática es correcta y consistente en todos los pasos, los feedbacks explican y justifican adecuadamente por qué cada opción es o no es el origen del error, y el formato QTI/MathML está bien implementado sin problemas de notación ni de asignación de feedback."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "Se analiza la expresión original:\n\nE = ( (3/5) · (4·2 − 9) ) : ( (7/9) · (20 − 4·3) ).\n\n1) Cálculo correcto de los paréntesis internos:\n- En el numerador: 4·2 = 8, luego 8 − 9 = −1.\n- En el denominador: 4·3 = 12, luego 20 − 12 = 8.\nPor tanto, la expresión correcta tras el Paso 1 debería ser:\nE = ( (3/5) · (−1) ) : ( (7/9) · 8 ).\n\nEn el enunciado, en cambio, se escribe tras el Paso 1:\n( (3/5 · (−28)) ) : ( (7/9 · 48) ),\nlo que implica que se calculó 4·2 − 9 = −28 y 20 − 4·3 = 48, ambos incorrectos.\n\n2) Verificación de los demás pasos usando los valores que aparecen en el enunciado:\n- Paso 2 (con los valores erróneos):\n  Numerador: (3/5) · (−28) = −(3·28)/5 = −84/5.\n  Denominador: (7/9) · 48 = (7·48)/9 = 336/9 = 112/3.\n  Esto coincide con el Paso 2 dado: −84/5 : 112/3.\n\n- Paso 3: dividir por 112/3 es multiplicar por su inversa 3/112:\n  −84/5 : 112/3 = −84/5 · 3/112, que coincide con el Paso 3.\n\n- Paso 4: simplificando y multiplicando:\n  −84/5 · 3/112 = −(84·3)/(5·112).\n  Se puede simplificar por 28: 84/112 = 3/4, quedando −(3·3)/(5·4) = −9/20,\n  que coincide con el Paso 4.\n\nConclusión: El único paso donde se comete un error respecto de la expresión original es el Paso 1; los Pasos 2, 3 y 4 son correctos dados los resultados (equivocados) del Paso 1. Por lo tanto, la opción correcta es \"En el Paso 1\", es decir, ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "Feedback de ChoiceA: Explica correctamente que en el Paso 1 se calcularon mal los paréntesis internos, mostrando el cálculo correcto: 4·2 = 8, 8 − 9 = −1 (no −28) y 4·3 = 12, 20 − 12 = 8 (no 48). La conclusión de que el error está en el Paso 1 es coherente.\n\nFeedback de ChoiceB: Verifica las multiplicaciones del Paso 2 usando los valores erróneos del Paso 1 y muestra que son correctas: (3/5)·(−28) = −84/5 y (7/9)·48 = 336/9 = 112/3. Concluye correctamente que el Paso 2 no es el origen del error.\n\nFeedback de ChoiceC: Indica que en el Paso 3 se aplica bien la regla de división de fracciones (multiplicar por la inversa), pasando de −84/5 : 112/3 a −84/5 · 3/112, lo cual es matemáticamente correcto.\n\nFeedback de ChoiceD: Muestra que desde −84/5 · 3/112 se puede simplificar (por ejemplo, por 28) para obtener −9/20, lo que es correcto y consistente con el Paso 3. La explicación de que el error no está en el Paso 4 es válida.\n\nLa solución paso a paso (feedback-block) desarrolla la resolución correcta de la expresión original, llega a −27/280 y explica que el único error del procedimiento dado está en el Paso 1. No hay errores matemáticos ni conclusiones incorrectas en esa resolución."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem solo contiene texto y fórmulas MathML; no se incluyen imágenes externas que deban contrastarse con el enunciado."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata operaciones combinadas con fracciones, multiplicación, resta y división de fracciones, así como identificación de errores de procedimiento, todo dentro del temario de PAES Matemática M1. Los valores numéricos son pequeños y razonables, sin magnitudes extrañas ni inconsistencias."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta identificada (Paso 1) coincide con la marcada en el QTI, los cálculos y justificaciones en los feedbacks y en la solución detallada son matemáticamente correctos, y no se observan problemas de contenido ni de formato.",
+      "timestamp": "2026-02-07T02:00:22.349699+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

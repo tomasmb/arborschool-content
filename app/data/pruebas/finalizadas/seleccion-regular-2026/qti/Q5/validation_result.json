@@ -1,0 +1,70 @@
+{
+  "question_id": "seleccion-regular-2026-Q5",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:13:26.730982+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Al resolver la expresión original −(4/6 · −8/12) + (2/30 + 2/60 − 4/10):\n1) Simplificación (Paso 1) es correcta: 4/6 = 2/3, 8/12 = 4/6, 2/30 = 1/15, 2/60 = 1/30, 4/10 = 2/5.\n2) Primer paréntesis correcto: −(2/3 · −4/6) = −(−8/18) = −(−4/9) = 4/9. El procedimiento del estudiante que obtiene 1 es efectivamente erróneo, por lo que el error está en el Paso 2.\n3) Segundo paréntesis correcto: 1/15 + 1/30 − 2/5 = 2/30 + 1/30 − 12/30 = (2+1−12)/30 = −9/30 = −3/10.\n4) 1 − (−3/10) no es lo que realmente corresponde a la expresión correcta (debería ser 4/9 − (−3/10)), pero el feedback evalúa solo la operación 1 − 3/10, que está bien resuelta: 1 = 10/10, 10/10 − 3/10 = 7/10.\n5) Cálculo final en la solución: 4/9 − 3/10 = 40/90 − 27/90 = 13/90, correcto.\nCada feedback:\n- FB_A demuestra que todas las simplificaciones del Paso 1 son correctas.\n- FB_B muestra el producto 2/3 · −4/6 = −8/18 = −4/9 y luego −(−4/9) = 4/9, probando que el Paso 2 está mal y es donde está el error.\n- FB_C recalcula el segundo paréntesis con denominador 30 y llega a −3/10, mostrando que el Paso 3 es correcto.\n- FB_D recalcula 1 − 3/10 = 7/10, mostrando que el Paso 4 es correcto.\nLa solución paso a paso es coherente, sin errores matemáticos y llega al resultado 13/90."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro y adecuado para estudiantes de 3°–4° medio, usando términos como “simplificar”, “denominador común”, “producto” y explicando cada transformación. Cada feedback es auto-contenido: incluye la fracción original, la operación realizada y el resultado, sin exigir que el estudiante haga cálculos adicionales para entender por qué una opción es correcta o incorrecta. Además, todos los comentarios se refieren explícitamente a los pasos de este procedimiento (Paso 1, Paso 2, etc.), por lo que son específicos a la pregunta y no genéricos."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mfrac>, <mo>, <mn>, etc.), sin uso de LaTeX. No aparecen números con separador de miles o decimales en formato textual, solo fracciones con enteros pequeños en <mn>, por lo que no hay conflicto con el formato numérico chileno. En el procesamiento de respuesta, la opción correcta es ChoiceB y el bloque <qti-response-else> asigna el feedback FB_A (una opción incorrecta), lo que cumple la condición de no entregar el feedback de la opción correcta en el fallback."
+      },
+      "overall_reasoning": "La resolución matemática, los feedbacks por alternativa y la solución detallada son correctos y coherentes, y la retroalimentación es clara y específica. El formato QTI y la notación matemática cumplen con los requisitos establecidos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "Se resuelve la expresión original:\n\nE = -(4/6 · -8/12) + (2/30 + 2/60 - 4/10)\n\n1) Simplificar fracciones (como en el Paso 1):\n4/6 = 2/3,\n8/12 = 4/6,\n2/30 = 1/15,\n2/60 = 1/30,\n4/10 = 2/5.\n\nLa expresión queda:\nE = -(2/3 · -4/6) + (1/15 + 1/30 - 2/5).\n\n2) Primer paréntesis:\n2/3 · -4/6 = -(2·4)/(3·6) = -8/18 = -4/9.\nLuego, -( -4/9 ) = 4/9.\n\n3) Segundo paréntesis:\n1/15 = 2/30,\n1/30 = 1/30,\n2/5 = 12/30.\nEntonces:\n1/15 + 1/30 - 2/5 = 2/30 + 1/30 - 12/30 = (2 + 1 - 12)/30 = -9/30 = -3/10.\n\n4) Expresión completa:\nE = 4/9 + (-3/10) = 4/9 - 3/10.\nMCM(9,10) = 90.\n4/9 = 40/90,\n3/10 = 27/90.\nEntonces:\n40/90 - 27/90 = 13/90.\n\nEl procedimiento correcto muestra que el valor del primer paréntesis es 4/9, no 1, por lo que el error del procedimiento dado está en el Paso 2. La alternativa correcta es “En el Paso 2”, que corresponde a ChoiceB, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceB explica correctamente que, tras el Paso 1, el producto 2/3 · -4/6 = -8/18 = -4/9 y que al aplicar el signo menos externo se obtiene 4/9, no 1; identifica correctamente el error en el Paso 2. El feedback de ChoiceA verifica correctamente las simplificaciones de todas las fracciones, mostrando que el Paso 1 es correcto. El feedback de ChoiceC desarrolla el segundo paréntesis con denominador común 30 y llega a -3/10, coincidiendo con el cálculo correcto, por lo que justifica que el Paso 3 no es el error. El feedback de ChoiceD muestra correctamente que 1 - 3/10 = 10/10 - 3/10 = 7/10, por lo que el Paso 4 es correcto. La solución paso a paso reproduce todo el procedimiento correcto y concluye que el error está en el Paso 2 y que el valor final de la expresión es 13/90, lo cual es matemáticamente correcto. No hay errores de cálculo ni conclusiones contradictorias en la retroalimentación."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": [
+            "En el enunciado del Paso 2 se dice que se \"desarrolla el primer paréntesis ... obteniendo 1\" sin mostrar cómo llegó a 1, pero esto es intencional como parte del error del estudiante y no afecta la corrección matemática del ítem."
+          ]
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem solo utiliza expresiones en MathML y texto, sin imágenes externas. No hay posibles contradicciones entre imágenes y texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata operaciones con fracciones, simplificación, productos y sumas/restas con denominador común, todos temas estándar del currículo de Educación Media y plenamente dentro del temario PAES M1. Los valores numéricos (fracciones simples) son razonables y no presentan problemas de magnitud ni de contexto."
+        }
+      },
+      "overall_reasoning": "La resolución correcta de la expresión confirma que el error del procedimiento está en el Paso 2, coincidiendo con la alternativa marcada ChoiceB. La retroalimentación y la solución detallada son matemáticamente consistentes y el contenido es adecuado para PAES M1, sin errores tipográficos ni de notación relevantes.",
+      "timestamp": "2026-02-07T02:18:27.349924+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q15-Q15_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:42.603052+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cálculos base: Ventas → 100 hombres (20 contratados), 150 mujeres (30 contratadas): 250 postulantes, 50 contratados. Logística → 200 hombres (10 contratados), 50 mujeres (5 contratadas): 250 postulantes, 15 contratados. Totales: 300 hombres postulantes, 200 mujeres postulantes, 30 hombres contratados, 35 mujeres contratadas, 65 contratados en total. \n- Opción A: 30 hombres contratados de 300 postulantes → 30/300 = 1/10 = 0,1 = 10%. El enunciado dice 15%, por lo tanto es falsa. El feedback explica exactamente esto y es correcto. \n- Opción B: 50 contratados de 250 postulantes en Ventas → 50/250 = 1/5 = 0,2 = 20%. El enunciado dice 20%, por lo tanto es verdadera. El feedback muestra el cálculo y la simplificación correctamente. \n- Opción C: mujeres contratadas totales = 30 + 5 = 35; en Ventas = 30 → 30/35 = 6/7 ≈ 0,857 = 85,7%, no 30%. El feedback reproduce estos cálculos correctamente. \n- Opción D: en Logística, hombres: 10/200 = 1/20 = 0,05 = 5%; mujeres: 5/50 = 1/10 = 0,1 = 10%. La afirmación dice 10% para ambos, por lo que es falsa; el feedback lo demuestra correctamente. \nLa resolución paso a paso repite estos mismos cálculos sin errores y concluye correctamente que la alternativa B es la única verdadera."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio, usando términos como 'total de postulantes', 'porcentaje', 'se simplifica dividiendo numerador y denominador', que son estándar en este nivel. Cada feedback es auto-contenido: recuerda los datos relevantes (totales, contratados) y muestra la fracción, su simplificación y la conversión a porcentaje, sin exigir que el estudiante recurra al enunciado para entender por qué la opción es correcta o incorrecta. La retroalimentación es específica a cada alternativa (usa los números concretos de la tabla y la frase textual de la opción) y no es genérica. La solución paso a paso organiza primero toda la información, luego analiza cada opción con cálculos explícitos y termina con una conclusión clara."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mfrac>, <mn>, <mo>), sin LaTeX. Los números decimales usan coma (0,1; 0,2; 0,05; 0,1; 0,857), consistente con el formato chileno indicado. No se usan puntos como separador de miles en este ítem, por lo que no hay conflicto. El bloque de procesamiento de respuestas marca correctamente ChoiceB como respuesta correcta y asigna su feedback solo cuando se elige esa opción. El fallback (qti-response-else) asigna el feedback de una opción incorrecta (FB_ChoiceA), no el de la correcta, cumpliendo la condición pedida."
+      },
+      "overall_reasoning": "Los cálculos de porcentajes y totales son consistentes en todos los feedbacks y en la resolución, y la única afirmación verdadera es la alternativa B. La retroalimentación es matemáticamente correcta, clara y bien formateada según las especificaciones QTI y el formato numérico chileno."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) De la tabla:\n- Ventas: Hombres 100 postulantes, 20 contratados; Mujeres 150 postulantes, 30 contratadas.\n- Logística: Hombres 200 postulantes, 10 contratados; Mujeres 50 postulantes, 5 contratadas.\n\n2) Verificar cada afirmación:\n\nOpción A: \"Del total de los hombres que postularon, exactamente un 15% fue contratado.\"\n- Hombres postulantes: 100 + 200 = 300.\n- Hombres contratados: 20 + 10 = 30.\n- Porcentaje = 30/300 = 1/10 = 0,1 = 10%. No es 15%. → Falsa.\n\nOpción B: \"En Ventas se contrató al 20% del total de quienes postularon a ese departamento.\"\n- Postulantes a Ventas: 100 + 150 = 250.\n- Contratados en Ventas: 20 + 30 = 50.\n- Porcentaje = 50/250 = 1/5 = 0,2 = 20%. Coincide con la afirmación. → Verdadera.\n\nOpción C: \"Exactamente un 30% de las mujeres que fueron contratadas corresponden al departamento de Ventas.\"\n- Mujeres contratadas: 30 (Ventas) + 5 (Logística) = 35.\n- De Ventas: 30.\n- Porcentaje = 30/35 = 6/7 ≈ 0,857 ≈ 85,7%. No es 30%. → Falsa.\n\nOpción D: \"En Logística se contrató al 10% de los hombres y al 10% de las mujeres postulantes a ese departamento.\"\n- Hombres en Logística: 10/200 = 1/20 = 0,05 = 5%.\n- Mujeres en Logística: 5/50 = 1/10 = 0,1 = 10%.\n- Solo las mujeres alcanzan 10%; los hombres no. → Falsa.\n\nConclusión: la única afirmación verdadera es la opción B, que coincide con <qti-correct-response> ChoiceB.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción A calcula correctamente 300 hombres postulantes, 30 contratados y el porcentaje 30/300 = 0,1 = 10%, concluyendo bien que no es 15%. El feedback de la opción B calcula 250 postulantes a Ventas, 50 contratados, la fracción 50/250 = 1/5 = 0,2 y la interpreta correctamente como 20%, concluyendo que la afirmación es verdadera. El feedback de la opción C suma correctamente 35 mujeres contratadas, calcula 30/35 = 6/7 ≈ 0,857 ≈ 85,7% y concluye que no es 30%. El feedback de la opción D calcula 10/200 = 1/20 = 0,05 = 5% para hombres y 5/50 = 1/10 = 0,1 = 10% para mujeres, concluyendo correctamente que la afirmación es falsa. La resolución paso a paso repite estos cálculos de forma coherente y llega a la alternativa B como única correcta. No hay errores matemáticos ni conclusiones contradictorias."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El enunciado solo incluye una tabla HTML integrada en el texto, sin imágenes externas. No hay elementos gráficos adicionales que puedan generar contradicciones factuales."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El ítem trabaja con conteo, porcentajes y proporciones a partir de una tabla de frecuencias, contenidos plenamente dentro del temario de PAES Matemática M1. Los valores numéricos (cantidades de postulantes y contratados, porcentajes resultantes) son razonables y de magnitud adecuada para un contexto de selección de personal. No se observan desajustes de escala ni temas fuera del currículo."
+        }
+      },
+      "overall_reasoning": "Los cálculos de porcentajes y totales son correctos, la alternativa marcada como correcta coincide con la única afirmación verdadera y la retroalimentación explica adecuadamente por qué cada opción es verdadera o falsa. No se detectan errores tipográficos ni de contenido que afecten la validez del ítem.",
+      "timestamp": "2026-02-07T02:00:22.252836+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

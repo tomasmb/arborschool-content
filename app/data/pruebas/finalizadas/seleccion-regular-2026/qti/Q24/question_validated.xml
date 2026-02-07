@@ -1,0 +1,186 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="question-24" title="Cálculo de precio con descuentos sucesivos" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceC</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>Una tienda vendía un producto a $25 000. Como no se vendía lo suficiente, la tienda rebajó su precio un 20 %. Sin embargo, el precio rebajado no aumentó lo suficiente las ventas, por lo que rebajaron un 25 % el precio ya rebajado.</p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa el precio del producto luego de los dos descuentos, en pesos?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>0,2</mn>
+          <mo>&#183;</mo>
+          <mn>0,25</mn>
+          <mo>&#183;</mo>
+          <mn>25</mn>
+          <mspace width="0.167em"/>
+          <mn>000</mn>
+        </math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. El producto <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,2</mn><mo>&#183;</mo><mn>0,25</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> calcula el valor correspondiente a aplicar un 20 % y luego un 25 % como porcentajes del precio original, no el precio final después de los descuentos. Primero, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,2</mn><mo>&#183;</mo><mn>0,25</mn></math> da <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,05</mn></math>, y luego <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,05</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>1.250</mn></math>. Ese valor no corresponde al precio del producto después de los dos descuentos, sino a una fracción mucho menor del precio original.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mo>(</mo>
+          <mn>0,2</mn>
+          <mo>+</mo>
+          <mn>0,25</mn>
+          <mo>)</mo>
+          <mo>&#183;</mo>
+          <mn>25</mn>
+          <mspace width="0.167em"/>
+          <mn>000</mn>
+        </math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La expresión <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>(</mo><mn>0,2</mn><mo>+</mo><mn>0,25</mn><mo>)</mo><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> suma los porcentajes de descuento y los aplica de una sola vez al precio original. Primero, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,2</mn><mo>+</mo><mn>0,25</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,45</mn></math>, y luego <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,45</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>11.250</mn></math>. Ese valor representa un descuento total de 45 % sobre el precio original, no el precio final del producto después de aplicar primero un 20 % y luego un 25 % sobre el precio ya rebajado.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mn>0,8</mn>
+          <mo>&#183;</mo>
+          <mn>0,75</mn>
+          <mo>&#183;</mo>
+          <mn>25</mn>
+          <mspace width="0.167em"/>
+          <mn>000</mn>
+        </math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">¡Correcto! Cada descuento se representa multiplicando por el porcentaje que queda del precio original. Un descuento de 20 % deja el 80 % del precio, es decir, se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn></math>. Luego, un descuento de 25 % sobre el nuevo precio deja el 75 % de ese valor, es decir, se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,75</mn></math>. Así, el precio final se calcula como <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn><mo>&#183;</mo><mn>0,75</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math>. Primero, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn><mo>&#183;</mo><mn>0,75</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,6</mn></math>, y luego <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,6</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>15.000</mn></math>, que corresponde al precio del producto después de los dos descuentos.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+          <mo>(</mo>
+          <mn>0,8</mn>
+          <mo>+</mo>
+          <mn>0,75</mn>
+          <mo>)</mo>
+          <mo>&#183;</mo>
+          <mn>25</mn>
+          <mspace width="0.167em"/>
+          <mn>000</mn>
+        </math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. La expresión <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mo>(</mo><mn>0,8</mn><mo>+</mo><mn>0,75</mn><mo>)</mo><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> suma los factores que representan los precios después de cada descuento, en lugar de aplicarlos sucesivamente. Primero, <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn><mo>+</mo><mn>0,75</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>1,55</mn></math>, y luego <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>1,55</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math> es igual a <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>38.750</mn></math>. Ese valor es mayor que el precio original de <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>25.000</mn></math>, por lo que no puede representar el precio del producto después de aplicar dos descuentos sucesivos.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cálculo del precio con dos descuentos sucesivos</strong></p>
+        <ol>
+          <li>
+            <p>El precio original del producto es de $25.000.</p>
+          </li>
+          <li>
+            <p>Primero se aplica un descuento de 20 %. Eso significa que el cliente paga el 80 % del precio original.</p>
+            <p>En forma decimal, 80 % es <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn></math>, por lo que el nuevo precio después del primer descuento es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,8</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math></p>
+            <p>Calculando:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,8</mn><mo>&#183;</mo><mn>25.000</mn><mo>=</mo><mn>20.000</mn></math></p>
+            <p>Entonces, después del primer descuento, el precio es $20.000.</p>
+          </li>
+          <li>
+            <p>Luego se aplica un segundo descuento de 25 % sobre el precio ya rebajado.</p>
+            <p>Un descuento de 25 % significa que se paga el 75 % del nuevo precio.</p>
+            <p>En forma decimal, 75 % es <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,75</mn></math>, por lo que el precio final es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,75</mn><mo>&#183;</mo><mn>20.000</mn></math></p>
+            <p>Calculando:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,75</mn><mo>&#183;</mo><mn>20.000</mn><mo>=</mo><mn>15.000</mn></math></p>
+            <p>Por lo tanto, el precio final del producto después de los dos descuentos es $15.000.</p>
+          </li>
+          <li>
+            <p>También se puede expresar el cálculo aplicando ambos factores de una sola vez al precio original:</p>
+            <p>Después del 20 % de descuento queda el 80 % del precio, es decir, se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn></math>.</p>
+            <p>Después del 25 % de descuento sobre el nuevo precio queda el 75 % de ese valor, es decir, se multiplica por <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,75</mn></math>.</p>
+            <p>Entonces, el precio final se obtiene con la expresión:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,8</mn><mo>&#183;</mo><mn>0,75</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math></p>
+            <p>Primero se multiplican los factores decimales:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,8</mn><mo>&#183;</mo><mn>0,75</mn><mo>=</mo><mn>0,6</mn></math></p>
+            <p>Luego se multiplica por el precio original:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><mn>0,6</mn><mo>&#183;</mo><mn>25.000</mn><mo>=</mo><mn>15.000</mn></math></p>
+            <p>Así se confirma que el precio final es $15.000 y que la expresión correcta que representa el precio del producto luego de los dos descuentos es <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mn>0,8</mn><mo>&#183;</mo><mn>0,75</mn><mo>&#183;</mo><mn>25</mn><mspace width="0.167em"/><mn>000</mn></math>, correspondiente a la alternativa C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

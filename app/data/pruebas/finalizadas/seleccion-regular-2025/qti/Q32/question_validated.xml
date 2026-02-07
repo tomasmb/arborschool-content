@@ -1,0 +1,146 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:m="http://www.w3.org/1998/Math/MathML" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="pascal-triangle-relation" title="Triángulo de Pascal - Relación entre variables" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La figura adjunta corresponde a una representación del triángulo de Pascal. En esta representación, el número en cada casilla blanca corresponde a la suma de las dos casillas inmediatamente superiores.</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q32_img1.png" alt="Diagrama del triángulo de Pascal mostrando filas de celdas hexagonales. Una fila contiene '1, 5, x, 5, 1'. La fila inferior contiene '1, 15, p, 15, 1'."/>
+    </p>
+    <p>Ejemplo</p>
+    <p>
+      <img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/seleccion-regular-2025/Q32_img0.png" alt="Ejemplo que muestra tres celdas hexagonales: dos superiores con los números 1 y 2, y una inferior con el número 3, indicando que 1 + 2 = 3."/>
+    </p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>¿Cuál de las siguientes expresiones representa a x en términos de p ?</qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <m:math>
+          <m:mi>p</m:mi>
+          <m:mo>-</m:mo>
+          <m:mn>14</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackA" outcome-identifier="FEEDBACK" show-hide="show">Correcto. En la fila inferior se observa que cada <m:math><m:mn>15</m:mn></m:math> se obtiene sumando el <m:math><m:mn>1</m:mn></m:math> del borde con el número que está sobre él. Por lo tanto, sobre cada <m:math><m:mn>15</m:mn></m:math> debe haber un <m:math><m:mn>14</m:mn></m:math>, ya que <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>=</m:mo><m:mn>15</m:mn></m:math>. En la casilla con <m:math><m:mi>p</m:mi></m:math> se cumple entonces <m:math><m:mn>14</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:math>. Al despejar <m:math><m:mi>x</m:mi></m:math> se obtiene <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>, que coincide exactamente con la expresión propuesta en esta alternativa.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <m:math>
+          <m:mi>p</m:mi>
+          <m:mo>-</m:mo>
+          <m:mn>10</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackB" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Del triángulo se deduce que sobre cada <m:math><m:mn>15</m:mn></m:math> hay un <m:math><m:mn>14</m:mn></m:math>, pues <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>=</m:mo><m:mn>15</m:mn></m:math>. En la casilla con <m:math><m:mi>p</m:mi></m:math> se cumple <m:math><m:mn>14</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:math>, de donde se obtiene <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>. La expresión de esta alternativa resta <m:math><m:mn>10</m:mn></m:math> en lugar de <m:math><m:mn>14</m:mn></m:math>, por lo que no representa correctamente la relación entre <m:math><m:mi>x</m:mi></m:math> y <m:math><m:mi>p</m:mi></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <m:math>
+          <m:mi>p</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>10</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackC" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. A partir de la estructura del triángulo, sobre cada <m:math><m:mn>15</m:mn></m:math> hay un <m:math><m:mn>14</m:mn></m:math>, ya que <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>=</m:mo><m:mn>15</m:mn></m:math>. En la casilla con <m:math><m:mi>p</m:mi></m:math> se cumple <m:math><m:mn>14</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:math>, por lo que <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>. Esta alternativa propone una suma, <m:math><m:mi>p</m:mi><m:mo>+</m:mo><m:mn>10</m:mn></m:math>, que no corresponde a la resta que se obtiene al despejar <m:math><m:mi>x</m:mi></m:math>.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <m:math>
+          <m:mi>p</m:mi>
+          <m:mo>+</m:mo>
+          <m:mn>15</m:mn>
+        </m:math>
+        <qti-feedback-inline identifier="FeedbackD" outcome-identifier="FEEDBACK" show-hide="show">Incorrecto. Del triángulo se obtiene que el número sobre cada <m:math><m:mn>15</m:mn></m:math> es <m:math><m:mn>14</m:mn></m:math>, pues <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>=</m:mo><m:mn>15</m:mn></m:math>. En la casilla con <m:math><m:mi>p</m:mi></m:math> se cumple <m:math><m:mn>14</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:math>, de donde <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>. La alternativa propone <m:math><m:mi>p</m:mi><m:mo>+</m:mo><m:mn>15</m:mn></m:math>, que además de usar suma en vez de resta, utiliza <m:math><m:mn>15</m:mn></m:math> en lugar de <m:math><m:mn>14</m:mn></m:math>, por lo que no representa la relación correcta.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso usando la propiedad del triángulo de Pascal</strong></p>
+        <ol>
+          <li>En el triángulo de Pascal, cada número es la suma de los dos que están justo encima. Esto se observa en el ejemplo: <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>2</m:mn><m:mo>=</m:mo><m:mn>3</m:mn></m:math>.</li>
+          <li>En la fila inferior de la figura principal aparecen los números <m:math><m:mn>1</m:mn></m:math>, <m:math><m:mn>15</m:mn></m:math>, <m:math><m:mi>p</m:mi></m:math>, <m:math><m:mn>15</m:mn></m:math> y <m:math><m:mn>1</m:mn></m:math>. Sobre cada <m:math><m:mn>15</m:mn></m:math> debe haber un número tal que, sumado con el <m:math><m:mn>1</m:mn></m:math> del borde, dé <m:math><m:mn>15</m:mn></m:math>. Por lo tanto, el número sobre cada <m:math><m:mn>15</m:mn></m:math> es <m:math><m:mn>14</m:mn></m:math>, ya que <m:math><m:mn>1</m:mn><m:mo>+</m:mo><m:mn>14</m:mn><m:mo>=</m:mo><m:mn>15</m:mn></m:math>.</li>
+          <li>En la casilla con <m:math><m:mi>p</m:mi></m:math>, el número se obtiene sumando los dos que están sobre ella: uno de ellos es <m:math><m:mn>14</m:mn></m:math> (el que está sobre el <m:math><m:mn>15</m:mn></m:math> de la izquierda) y el otro es <m:math><m:mi>x</m:mi></m:math>. Por lo tanto, se cumple la ecuación <m:math><m:mn>14</m:mn><m:mo>+</m:mo><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi></m:math>.</li>
+          <li>Despejamos <m:math><m:mi>x</m:mi></m:math> en función de <m:math><m:mi>p</m:mi></m:math>:<br/>Restamos <m:math><m:mn>14</m:mn></m:math> en ambos lados de la ecuación:<br/><m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>.</li>
+          <li>Por lo tanto, la expresión que representa a <m:math><m:mi>x</m:mi></m:math> en términos de <m:math><m:mi>p</m:mi></m:math> es <m:math><m:mi>x</m:mi><m:mo>=</m:mo><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>. Entre las alternativas dadas, la única que coincide exactamente con esta relación es <m:math><m:mi>p</m:mi><m:mo>-</m:mo><m:mn>14</m:mn></m:math>, correspondiente a la opción A.</li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackA</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackC</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackD</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FeedbackB</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

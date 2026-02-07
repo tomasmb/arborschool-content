@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q22",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:09:30.864480+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Cálculo del problema: cantidad inicial 2022 = 3000 millones, aumento 2023 = 120 millones. Porcentaje de aumento = (aumento / cantidad inicial) × 100 = (120 / 3000) × 100. Simplificando: 120/3000 = 12/300 = 2/50 = 0,04; 0,04 × 100 = 4 %, por lo tanto la alternativa correcta es 4 % (ChoiceB). \n\nRevisión de cada feedback:\n- ChoiceB (correcta): Explica que el porcentaje se calcula como (120/3000)×100, muestra la simplificación 120/3000 = 12/300 = 2/50 y concluye 4 %. Matemáticamente correcto y demuestra por qué es correcta.\n- ChoiceA (2,5 %): Muestra el mismo cálculo correcto (120/3000)×100 = 4 y concluye que 2,5 % no corresponde. No hay errores numéricos ni conceptuales.\n- ChoiceC (25 %): Calcula el aumento que correspondería a 25 %: 25 × (3000/100) = 25 × 30 = 750 millones, distinto de 120 millones. Luego recuerda que el porcentaje correcto para 120 sobre 3000 es (120/3000)×100 = 4 %. Todo es consistente.\n- ChoiceD (40 %): Calcula el aumento que correspondería a 40 %: 40 × (3000/100) = 40 × 30 = 1200 millones, distinto de 120 millones. Luego indica que el porcentaje correcto para 120 sobre 3000 es (120/3000)×100 = 4 %. También consistente.\n\nSolución paso a paso: Identifica datos, da la fórmula porcentaje = aumento / cantidad inicial × 100, reemplaza 120 y 3000, simplifica 120/3000 → 12/300 → 2/50, convierte 2/50 a 0,04 y luego a 4 % al multiplicar por 100. Todo el procedimiento es correcto y llega a la respuesta correcta."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°-4° medio: se explicita qué es la cantidad inicial, qué es el aumento y cómo se aplica la fórmula del porcentaje de aumento. Cada feedback es auto-contenido: incluye el cálculo clave (ya sea el porcentaje correcto o el aumento que correspondería al porcentaje propuesto) y explica por qué la opción no satisface el problema. No se usan frases genéricas; todas las explicaciones se refieren explícitamente a los 3000 millones y los 120 millones de aumento. La solución desarrollada detalla los pasos de simplificación de la fracción y la conversión a porcentaje de forma clara y secuencial."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática está en MathML (<math>, <mfrac>, <mn>, <mo>, <mi>), sin LaTeX. No se usan puntos como separador de miles ni comas como separador decimal en los números dados (120, 3000, 25, 40, 750, 1200, 0,04, 100), y donde aparece decimal se usa coma (0,04), consistente con el formato chileno. El bloque de procesamiento de respuestas marca ChoiceB como correcta y, en el fallback (<qti-response-else>), asigna el feedback de ChoiceA, que es una opción incorrecta, por lo que no hay riesgo de entregar feedback de respuesta correcta en el caso por defecto."
+      },
+      "overall_reasoning": "Los cálculos de porcentaje y las justificaciones en todos los feedbacks y en la solución paso a paso son matemáticamente correctos, claros y específicos al problema, y el formato QTI/MathML respeta el uso de notación y formato numérico requerido. No se detectan errores de contenido ni de formato."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceB",
+          "verification_steps": "1) Cantidad inicial 2022: 3000 millones.\n2) Aumento 2023: 120 millones.\n3) Porcentaje de aumento respecto del año anterior:\n   porcentaje = (aumento / cantidad inicial) × 100 = (120 / 3000) × 100.\n4) Simplificando: 120/3000 = 12/300 = 2/50 = 0,04.\n5) 0,04 × 100 = 4.\n6) El porcentaje de aumento es 4 %, que corresponde a la alternativa \"4 %\" (ChoiceB), coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceB) explica adecuadamente la fórmula del porcentaje de aumento (aumento / cantidad inicial × 100) y realiza el cálculo 120/3000 = 12/300 = 2/50 = 4 %, concluyendo 4 %, lo cual es correcto. Los feedbacks de las opciones incorrectas (A, C y D) muestran por qué no corresponden: para C y D se calcula el aumento que implicarían 25 % y 40 % sobre 3000 millones (750 y 1200 millones, respectivamente) y se contrasta con los 120 millones dados; para A se recalcula correctamente el porcentaje y se muestra que es 4 %, no 2,5 %. La solución paso a paso repite el mismo procedimiento, simplifica correctamente la fracción, convierte 2/50 a 0,04 y luego a 4 %, llegando a la respuesta correcta. No hay errores matemáticos ni conclusiones contradictorias."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem no incluye imágenes, solo texto y fórmulas MathML, por lo que no hay consistencia gráfica que verificar."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El contenido trata sobre cálculo de porcentaje de aumento respecto de una cantidad inicial, tema plenamente dentro del temario de PAES Matemática M1 (proporcionalidad, porcentajes). Los valores numéricos (3000 millones de personas y un aumento de 120 millones, equivalente a un 4 %) son razonables en el contexto mundial y no presentan errores de magnitud ni incoherencias."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada como 4 %, todos los cálculos y explicaciones en la retroalimentación y en la solución son matemáticamente consistentes y el contenido es adecuado para PAES M1 sin problemas de forma ni de claridad.",
+      "timestamp": "2026-02-07T02:18:04.185409+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

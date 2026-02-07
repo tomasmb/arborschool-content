@@ -1,0 +1,203 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="choice-estanque-funcion-lineal" title="Función lineal de volumen de agua en estanque" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceA</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-prompt>
+        <p>Un estanque contiene 720 litros de agua y, cada vez que se abre la llave, este se vacía a razón de 3 litros por minuto.</p>
+        <p>¿Cuál de las siguientes funciones modela la cantidad de agua que queda en el estanque por cada minuto que la llave se encuentra abierta, tal que <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> son los minutos transcurridos desde que se abre la llave?</p>
+      </qti-prompt>
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mi>f</mi>
+          <mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mrow>
+            <mo>-</mo><mn>3</mn><mi>x</mi>
+          </mrow>
+          <mo>+</mo>
+          <mn>720</mn>
+        </math>
+        <qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK">¡Correcto! La función debe representar que el estanque parte con 720 litros y que, por cada minuto que pasa, se pierden 3 litros. Si llamamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> a los minutos transcurridos, la cantidad de agua que queda se obtiene restando 3 litros por cada minuto al volumen inicial: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>3</mn><mi>x</mi></math>. Esto se puede escribir como <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mn>720</mn><mo>-</mo><mn>3</mn><mi>x</mi></math>, que es equivalente a <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>720</mn></math>. Verificamos con un ejemplo concreto: si han pasado <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn></math> minutos, se han vaciado <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>30</mn></math> litros, por lo que deben quedar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>30</mn><mo>=</mo><mn>690</mn></math> litros. Con la función propuesta: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>+</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>30</mn><mo>+</mo><mn>720</mn><mo>=</mo><mn>690</mn></math>, que coincide con el razonamiento.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mi>g</mi>
+          <mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mn>3</mn><mi>x</mi>
+          <mo>-</mo>
+          <mn>720</mn>
+        </math>
+        <qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK">Incorrecto. La función debe dar 720 litros cuando han pasado 0 minutos y debe disminuir 3 litros por cada minuto que pasa. Probemos con <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>0</mn></math>. Con la situación descrita, al inicio hay 720 litros, por lo que la función correcta debe cumplir <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>720</mn></math>. En cambio, con la función propuesta: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>&#xD7;</mo><mn>0</mn><mo>-</mo><mn>720</mn><mo>=</mo><mn>0</mn><mo>-</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>720</mn></math>, lo que indica un volumen negativo de agua, algo imposible en este contexto. Además, si tomamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>10</mn></math>, la función da <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>g</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>-</mo><mn>720</mn><mo>=</mo><mn>30</mn><mo>-</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>690</mn></math>, mientras que, según el problema, después de 10 minutos deben quedar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>720</mn><mo>-</mo><mn>30</mn><mo>=</mo><mn>690</mn></math> litros, un valor positivo. Por lo tanto, esta función no modela correctamente la situación.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mi>p</mi>
+          <mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mi>x</mi>
+              <mo>-</mo>
+              <mn>720</mn>
+            </mrow>
+            <mn>3</mn>
+          </mfrac>
+        </math>
+        <qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK">Incorrecto. La función debe entregar directamente la cantidad de litros que quedan en el estanque, no el tiempo ni otra magnitud. Verifiquemos con un valor concreto, por ejemplo <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>10</mn></math> minutos. Según el problema, después de 10 minutos se han vaciado <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>30</mn></math> litros, por lo que deben quedar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>30</mn><mo>=</mo><mn>690</mn></math> litros. En cambio, con la función propuesta: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>p</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mfrac><mrow><mn>10</mn><mo>-</mo><mn>720</mn></mrow><mn>3</mn></mfrac></math>. Primero calculamos el numerador: <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>10</mn><mo>-</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>710</mn></math>. Luego dividimos por 3: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mrow><mo>-</mo><mn>710</mn></mrow><mn>3</mn></mfrac></math>, que es aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mn>236,666&#x2026;</mn></math>. Este resultado no coincide con los 690 litros que deberían quedar, y además es negativo, lo que no tiene sentido como cantidad de agua. Por lo tanto, esta función no representa correctamente el volumen de agua en el estanque.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mi>h</mi>
+          <mo>(</mo><mi>x</mi><mo>)</mo>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <mo>-</mo>
+              <mi>x</mi>
+              <mo>+</mo>
+              <mn>720</mn>
+            </mrow>
+            <mn>3</mn>
+          </mfrac>
+        </math>
+        <qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK">Incorrecto. La función debe dar el volumen de agua que queda en el estanque, en litros, para cada minuto transcurrido. Probemos con un valor concreto, por ejemplo <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>10</mn></math> minutos. Según el problema, después de 10 minutos se han vaciado <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>30</mn></math> litros, por lo que deben quedar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>30</mn><mo>=</mo><mn>690</mn></math> litros. En cambio, con la función propuesta: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>h</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mfrac><mrow><mo>-</mo><mn>10</mn><mo>+</mo><mn>720</mn></mrow><mn>3</mn></mfrac></math>. Primero calculamos el numerador: <math xmlns="http://www.w3.org/1998/Math/MathML"><mo>-</mo><mn>10</mn><mo>+</mo><mn>720</mn><mo>=</mo><mn>710</mn></math>. Luego dividimos por 3: <math xmlns="http://www.w3.org/1998/Math/MathML"><mfrac><mn>710</mn><mn>3</mn></mfrac></math>, que es aproximadamente <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>236,666&#x2026;</mn></math>. Este valor no coincide con los 690 litros que deberían quedar en el estanque. Además, si tomamos <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>0</mn></math>, la función da <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>h</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mfrac><mn>720</mn><mn>3</mn></mfrac><mo>=</mo><mn>240</mn></math>, pero al inicio el estanque tiene 720 litros, no 240. Por lo tanto, esta función no modela correctamente la situación.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Resolución paso a paso</strong></p>
+        <ol>
+          <li>
+            <p><strong>Identificar las variables y la situación</strong></p>
+            <p>El problema describe un estanque que contiene inicialmente 720 litros de agua y que se vacía a razón de 3 litros por minuto cuando se abre la llave.</p>
+            <p>Se define <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> como los minutos transcurridos desde que se abre la llave. Buscamos una función que entregue la cantidad de agua que queda en el estanque, en litros, después de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> minutos.</p>
+          </li>
+          <li>
+            <p><strong>Determinar el valor inicial</strong></p>
+            <p>Al momento de abrir la llave, es decir, cuando han pasado 0 minutos, el estanque tiene 720 litros.</p>
+            <p>Esto se traduce en que la función debe cumplir:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mn>720</mn></math></p>
+            <p>Por lo tanto, el término independiente (ordenada al origen) de la función debe ser 720.</p>
+          </li>
+          <li>
+            <p><strong>Determinar la tasa de cambio</strong></p>
+            <p>El estanque se vacía a razón de 3 litros por minuto. Esto significa que, por cada minuto que pasa, la cantidad de agua disminuye en 3 litros.</p>
+            <p>En una función lineal de la forma <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mi>m</mi><mi>x</mi><mo>+</mo><mi>b</mi></math>, el coeficiente <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>m</mi></math> representa la tasa de cambio.</p>
+            <p>Como la cantidad de agua disminuye, la tasa de cambio debe ser negativa: se pierden 3 litros por cada minuto, por lo que <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>m</mi><mo>=</mo><mo>-</mo><mn>3</mn></math>.</p>
+          </li>
+          <li>
+            <p><strong>Plantear la función lineal</strong></p>
+            <p>Con la información anterior, la función que modela la cantidad de agua que queda en el estanque después de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> minutos es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>720</mn></math></p>
+            <p>Esta expresión también se puede leer como: volumen inicial (720 litros) menos 3 litros por cada minuto transcurrido.</p>
+          </li>
+          <li>
+            <p><strong>Verificar la función con ejemplos concretos</strong></p>
+            <p>Para asegurarnos de que la función es coherente con la situación, probamos con algunos valores de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math>.</p>
+            <p><strong>Caso 1: al inicio, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>0</mn></math></strong></p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mn>0</mn><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mo>&#xD7;</mo><mn>0</mn><mo>+</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>0</mn><mo>+</mo><mn>720</mn><mo>=</mo><mn>720</mn></math></p>
+            <p>Coincide con el dato inicial: el estanque parte con 720 litros.</p>
+            <p><strong>Caso 2: después de 10 minutos, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi><mo>=</mo><mn>10</mn></math></strong></p>
+            <p>En 10 minutos se vacían <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>=</mo><mn>30</mn></math> litros, por lo que deberían quedar <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>720</mn><mo>-</mo><mn>30</mn><mo>=</mo><mn>690</mn></math> litros.</p>
+            <p>Con la función:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>V</mi><mo>(</mo><mn>10</mn><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mo>&#xD7;</mo><mn>10</mn><mo>+</mo><mn>720</mn><mo>=</mo><mo>-</mo><mn>30</mn><mo>+</mo><mn>720</mn><mo>=</mo><mn>690</mn></math></p>
+            <p>El resultado coincide con el razonamiento, lo que confirma que la función es adecuada.</p>
+          </li>
+          <li>
+            <p><strong>Conclusión</strong></p>
+            <p>La función lineal que modela la cantidad de agua que queda en el estanque, en litros, después de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>x</mi></math> minutos desde que se abre la llave es:</p>
+            <p><math xmlns="http://www.w3.org/1998/Math/MathML"><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mo>-</mo><mn>3</mn><mi>x</mi><mo>+</mo><mn>720</mn></math></p>
+            <p>Esta corresponde a la alternativa identificada como correcta.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceA</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceB</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceC</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">ChoiceD</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">0</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

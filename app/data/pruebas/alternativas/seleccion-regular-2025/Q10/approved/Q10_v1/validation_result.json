@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2025-Q10-Q10_v1",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T01:57:30.153710+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Aplicando la regla de Naegele a la fecha 15/06/2023: día = 15 + 7 = 22; mes = 6 − 3 = 3 (marzo); año = 2023 + 1 = 2024, por lo que la fecha probable de parto es 22/03/2024, que corresponde a ChoiceA. El feedback de ChoiceA explica correctamente estos tres pasos y justifica por qué la alternativa es correcta. Los feedbacks de ChoiceB, ChoiceC y ChoiceD señalan explícitamente que el error está en el día, muestran el cálculo 15 + 7 = 22 y comparan con el día propuesto en cada alternativa, demostrando por qué no cumplen la regla. La solución paso a paso repite el mismo procedimiento con operaciones correctas y llega a 22/03/2024. No hay errores matemáticos ni contradicciones en ninguna de las retroalimentaciones."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es directo y adecuado para estudiantes de 3°–4° medio, explicando cada paso (día, mes, año) de forma separada y con ejemplos numéricos claros. Cada feedback es auto-contenido: recuerda la fecha inicial, indica la operación que exige la regla (sumar 7 días, restar 3 meses, eventualmente sumar 1 año) y muestra el cálculo necesario sin requerir información externa. Además, los mensajes se refieren explícitamente a esta pregunta y a esta fecha, no son genéricos, y explicitan la diferencia entre la alternativa elegida y la fecha correcta."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Todas las expresiones matemáticas se presentan en MathML, sin uso de LaTeX. No se utilizan números con separadores de miles ni decimales, solo fechas y enteros pequeños (15, 7, 22, 6, 3, 2023, 2024), por lo que no hay conflicto con el formato numérico chileno. En el bloque de response-processing, el fallback (qti-response-else) asigna el feedback FB_B, que corresponde a una opción incorrecta, cumpliendo la condición de no entregar el feedback de la opción correcta en el caso por defecto."
+      },
+      "overall_reasoning": "La regla de Naegele está aplicada correctamente en todos los textos, la fecha correcta se justifica bien y las alternativas incorrectas se descartan con cálculos explícitos. El formato QTI y la notación matemática son adecuados y coherentes con los requisitos."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceA",
+          "verification_steps": "Se aplica la regla de Naegele a la fecha 15/06/2023.\n1) Día: se suman 7 días al día de la última menstruación.\n   15 + 7 = 22, por lo que el día probable de parto es 22.\n2) Mes: se restan 3 meses al mes de la última menstruación.\n   Junio es mes 6, entonces 6 - 3 = 3, que corresponde a marzo.\n3) Año: al restar 3 meses a junio se llega a marzo del año siguiente, por lo que se suma 1 año al año de la última menstruación.\n   2023 + 1 = 2024.\nLa fecha probable de parto es 22/03/2024. Entre las alternativas, esto corresponde a ChoiceA, que coincide con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de ChoiceA explica correctamente los tres pasos: suma 7 días (15 + 7 = 22), resta 3 meses (6 - 3 = 3) y suma 1 año (2023 + 1 = 2024), concluyendo 22/03/2024.\nLos feedbacks de B, C y D identifican correctamente que el error está en el día (no se aplicó 15 + 7) y señalan que, aunque mes y año coinciden, el día correcto es 22. La solución paso a paso repite el mismo procedimiento y llega a 22/03/2024 sin errores matemáticos ni contradicciones."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "La imagen muestra un esquema con tres bloques: Día (día de la última menstruación más siete días), Mes (mes de la última menstruación menos tres meses) y Año (dependiendo de la fecha se podría sumar un año). Esto coincide con la descripción textual y con el procedimiento usado en el enunciado y la solución. El contenido es legible y no hay contradicción factual entre imagen y texto."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema requiere interpretar un diagrama y aplicar operaciones aritméticas básicas con fechas (sumar y restar cantidades pequeñas, razonar sobre año siguiente), lo que es coherente con el tipo de modelación y aritmética esperada en PAES M1. Los valores numéricos (fechas de 2023–2024) son razonables y no presentan errores de magnitud."
+        }
+      },
+      "overall_reasoning": "La regla de Naegele se aplica correctamente, la alternativa marcada coincide con el resultado correcto y toda la retroalimentación y la solución paso a paso son matemáticamente consistentes. No se detectan errores de contenido, de imagen ni de adecuación al temario.",
+      "timestamp": "2026-02-07T02:00:18.845726+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

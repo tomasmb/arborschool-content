@@ -1,0 +1,68 @@
+{
+  "question_id": "seleccion-regular-2026-Q54",
+  "pipeline_version": "3.0",
+  "timestamp": "2026-02-07T02:12:35.722589+00:00",
+  "success": true,
+  "stage_failed": null,
+  "error": null,
+  "xsd_errors": null,
+  "stages": {
+    "feedback_review": {
+      "review_result": "pass",
+      "feedback_accuracy": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El problema pide la mayor cantidad de trabajadores cuya edad no supere los 34 años. De la tabla: 18–24 → 5 trabajadores, 25–34 → 7 trabajadores. Los intervalos que cumplen la condición son 18–24 y 25–34, por lo que la cantidad máxima es 5 + 7 = 12. La respuesta correcta (ChoiceD) coincide con este resultado. \n\nFeedback A: Explica que los beneficiarios son los de 18–24 y 25–34, indica correctamente 5 y 7, y muestra la suma 5 + 7 = 12, justificando por qué 6 no puede ser la mayor cantidad. Matemáticamente correcto. \nFeedback B: Repite correctamente la condición, identifica los dos intervalos y la suma 5 + 7 = 12, explicando que 7 solo considera un intervalo. Correcto. \nFeedback C: Indica que se deben sumar los trabajadores de 18–24 y 25–34, da los valores 5 y 7 y la suma 5 + 7 = 12, señalando que 9 es menor que 12. Correcto. \nFeedback D: Justifica que los beneficiarios son los de 18–24 y 25–34, da los valores 5 y 7 y la suma 5 + 7 = 12, concluyendo que la mayor cantidad es 12. Correcto. \nLa solución paso a paso repite el mismo razonamiento, identifica correctamente los intervalos, las cantidades y la suma, llegando a 12 sin errores matemáticos."
+      },
+      "feedback_clarity": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "El lenguaje es claro, directo y adecuado para estudiantes de 3°–4° medio. Cada feedback reexpone la condición clave (“edad no supere los 34 años”), identifica explícitamente los intervalos relevantes (18–24 y 25–34) y las cantidades asociadas (5 y 7), y muestra la suma 5 + 7 = 12. No requiere que el estudiante haga cálculos adicionales para entender por qué su opción es incorrecta o correcta, por lo que son auto-contenidos. Además, los comentarios se refieren específicamente a esta tabla y a estos intervalos, no son genéricos. La solución paso a paso está estructurada en pasos numerados, con listas claras de intervalos y cantidades, y una conclusión explícita, lo que favorece la comprensión."
+      },
+      "formatting_check": {
+        "status": "pass",
+        "issues": [],
+        "reasoning": "Toda la notación matemática explícita está en MathML (<math><mn>5</mn><mo>+</mo><mn>7</mn><mo>=</mo><mn>12</mn></math>), sin uso de LaTeX. No se utilizan separadores de miles ni decimales en los números presentes (solo se usan enteros pequeños: 5, 7, 9, 12), por lo que no hay conflicto con el formato numérico chileno. El procesamiento de respuesta (qti-response-processing) asigna el feedback correcto (FEEDBACK_D) solo cuando la respuesta es ChoiceD, y en el bloque qti-response-else asigna FEEDBACK_A, que corresponde a una opción incorrecta, cumpliendo la condición de no usar el feedback de la opción correcta como fallback."
+      },
+      "overall_reasoning": "La respuesta correcta está bien determinada (12) y todos los feedbacks, incluida la solución paso a paso, son matemáticamente correctos, específicos y claros. El formato QTI y la notación matemática cumplen con los requisitos, por lo que el ítem y su retroalimentación pasan todas las revisiones."
+    },
+    "final_validation": {
+      "status": "pass",
+      "model": "gpt-5.1",
+      "reasoning_effort": "high",
+      "checks": {
+        "correct_answer_check": {
+          "status": "pass",
+          "marked_answer": "ChoiceD",
+          "verification_steps": "1) Se pide la mayor cantidad de trabajadores cuya edad no supere los 34 años.\n2) Según la tabla, los intervalos que cumplen \"no supera los 34\" son 18–24 y 25–34.\n3) Cantidades: 18–24 → 5 trabajadores; 25–34 → 7 trabajadores.\n4) Se suman: 5 + 7 = 12.\n5) Por lo tanto, la respuesta correcta es 12, que corresponde a ChoiceD, coincidiendo con <qti-correct-response>.",
+          "issues": []
+        },
+        "feedback_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El feedback de la opción correcta (ChoiceD) explica adecuadamente que se consideran los intervalos 18–24 y 25–34, y muestra el cálculo 5 + 7 = 12, concluyendo correctamente que 12 es la mayor cantidad posible de beneficiarios. Los feedbacks de las opciones incorrectas (6, 7 y 9) señalan que no se están sumando todos los trabajadores de los intervalos pertinentes y recalcan el cálculo correcto 5 + 7 = 12, justificando por qué esos valores no pueden ser la mayor cantidad. La resolución paso a paso repite el mismo razonamiento y llega a 12 sin errores matemáticos ni contradicciones."
+        },
+        "content_quality_check": {
+          "status": "pass",
+          "typos_found": [],
+          "character_issues": [],
+          "clarity_issues": []
+        },
+        "image_check": {
+          "status": "not_applicable",
+          "issues": [],
+          "reasoning": "El ítem solo contiene una tabla en HTML dentro del texto, sin imágenes externas adjuntas que puedan generar contradicciones factuales."
+        },
+        "math_validity_check": {
+          "status": "pass",
+          "issues": [],
+          "reasoning": "El problema trata de lectura e interpretación de una tabla de frecuencias por intervalos de edad y suma de cantidades, contenido plenamente dentro del temario de PAES M1 (estadística descriptiva básica). Los valores numéricos (cantidades de trabajadores 5, 7, 14, 11, 13) son razonables y de magnitud adecuada. No hay supuestos extraños ni errores de escala."
+        }
+      },
+      "overall_reasoning": "La respuesta correcta está bien identificada como 12, el feedback y la resolución son matemáticamente coherentes y consistentes, y el contenido es claro y adecuado al nivel PAES M1 sin errores formales relevantes.",
+      "timestamp": "2026-02-07T02:18:29.741778+00:00"
+    }
+  },
+  "can_sync": true,
+  "validated_qti_path": "question_validated.xml"
+}

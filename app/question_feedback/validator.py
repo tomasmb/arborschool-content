@@ -187,8 +187,21 @@ class FinalValidator:
             reasoning=math_check.get("reasoning", ""),
         )
 
+        # Enforce reasoning-verdict consistency
+        all_checks = [
+            correct_answer_check,
+            feedback_check,
+            content_quality_check,
+            image_check,
+            math_validity_check,
+        ]
+        raw_verdict = result.get("validation_result", "fail")
+        computed_verdict = self._compute_consistent_verdict(
+            all_checks, raw_verdict
+        )
+
         return ValidationResult(
-            validation_result=result.get("validation_result", "fail"),
+            validation_result=computed_verdict,
             correct_answer_check=correct_answer_check,
             feedback_check=feedback_check,
             content_quality_check=content_quality_check,
@@ -196,6 +209,72 @@ class FinalValidator:
             math_validity_check=math_validity_check,
             overall_reasoning=result.get("overall_reasoning", ""),
         )
+
+    def _compute_consistent_verdict(
+        self,
+        checks: list[CorrectAnswerCheck | CheckResult | ContentQualityCheck],
+        raw_verdict: str,
+    ) -> str:
+        """Enforce consistency between individual checks and overall verdict.
+
+        Rules:
+        - If ALL checks pass/not_applicable → verdict must be "pass"
+        - If ANY check has "fail" with non-empty issues → verdict must be "fail"
+        - If a check says "fail" but has NO issues → auto-correct to "pass"
+
+        Args:
+            checks: List of parsed check results.
+            raw_verdict: The LLM's raw validation_result.
+
+        Returns:
+            Consistent verdict string ("pass" or "fail").
+        """
+        any_real_failure = False
+
+        for check in checks:
+            if check.status == CheckStatus.FAIL:
+                has_issues = self._check_has_issues(check)
+                if has_issues:
+                    any_real_failure = True
+                else:
+                    # Fail with no issues = contradiction → auto-correct
+                    check.status = CheckStatus.PASS
+                    logger.warning(
+                        "Auto-corrected check with fail status but "
+                        "no issues to pass"
+                    )
+
+        computed = "fail" if any_real_failure else "pass"
+
+        if computed != raw_verdict:
+            logger.warning(
+                f"Verdict inconsistency: LLM said '{raw_verdict}' "
+                f"but checks compute to '{computed}'. "
+                f"Using computed verdict."
+            )
+
+        return computed
+
+    def _check_has_issues(
+        self,
+        check: CorrectAnswerCheck | CheckResult | ContentQualityCheck,
+    ) -> bool:
+        """Return True if a check has any concrete issues reported.
+
+        Args:
+            check: A parsed check result of any type.
+
+        Returns:
+            True if the check has at least one non-empty issue.
+        """
+        if isinstance(check, ContentQualityCheck):
+            return bool(
+                check.typos_found
+                or check.character_issues
+                or check.clarity_issues
+            )
+        # CorrectAnswerCheck and CheckResult both have .issues
+        return bool(check.issues)
 
     def _create_error_result(self, error_message: str) -> ValidationResult:
         """Create an error ValidationResult.
