@@ -340,19 +340,22 @@ def _build_local_question_atoms(
     """Build local question-atom pairs from extracted questions.
 
     Each item has 'id' (composite key), 'relevance', and 'reasoning'.
+    Deduplicates by composite key, keeping the last occurrence (same
+    semantics as INSERT ... ON CONFLICT DO UPDATE).
     """
-    pairs: list[dict[str, str | None]] = []
+    seen: dict[str, dict[str, str | None]] = {}
     for q in questions:
         for atom_data in getattr(q, "atoms", []):
             atom_id = atom_data.get("atom_id")
             if not atom_id:
                 continue
-            pairs.append({
-                "id": f"{q.id}:{atom_id}",
+            key = f"{q.id}:{atom_id}"
+            seen[key] = {
+                "id": key,
                 "relevance": atom_data.get("relevance", "primary"),
                 "reasoning": atom_data.get("reasoning"),
-            })
-    return pairs
+            }
+    return list(seen.values())
 
 
 def compute_sync_diff(
