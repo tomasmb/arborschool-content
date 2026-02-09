@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ArrowLeft, CheckCircle2, Circle, ChevronRight } from "lucide-react";
-import { getTests, getTestRawPdfUrl, type TestBrief } from "@/lib/api";
+import {
+  getTests, getTestRawPdfUrl, getTestsSyncStatus,
+  type TestBrief, type TestSyncDiff,
+} from "@/lib/api";
+import { SyncStatusCell } from "@/components/dashboard/DashboardCards";
 import { cn } from "@/lib/utils";
 
 export default function TestsPage() {
@@ -14,6 +18,7 @@ export default function TestsPage() {
   const [tests, setTests] = useState<TestBrief[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [syncMap, setSyncMap] = useState<Record<string, TestSyncDiff> | undefined>();
 
   useEffect(() => {
     if (courseId) {
@@ -21,6 +26,10 @@ export default function TestsPage() {
         .then(setTests)
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));
+      // Fetch sync status separately (non-blocking)
+      getTestsSyncStatus(courseId)
+        .then((res) => setSyncMap(res.tests))
+        .catch(() => setSyncMap({}));
     }
   }, [courseId]);
 
@@ -71,6 +80,7 @@ export default function TestsPage() {
               <th className="px-4 py-3 font-medium text-center">Enriched</th>
               <th className="px-4 py-3 font-medium text-center">Validated</th>
               <th className="px-4 py-3 font-medium text-center">Variants</th>
+              <th className="px-4 py-3 font-medium text-center">Sync</th>
               <th className="px-4 py-3 font-medium"></th>
             </tr>
           </thead>
@@ -169,6 +179,13 @@ export default function TestsPage() {
                   </td>
                   <td className="px-4 py-3 text-center text-sm">
                     {test.variants_count}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    <SyncStatusCell
+                      diff={syncMap === undefined
+                        ? undefined
+                        : (syncMap[test.id] ?? null)}
+                    />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link

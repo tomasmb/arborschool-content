@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { cn, formatEje } from "@/lib/utils";
 import { StatusIcon } from "@/components/ui/StatusBadge";
-import type { TestBrief } from "@/lib/api-types";
+import type { TestBrief, TestSyncDiff } from "@/lib/api-types";
 // -----------------------------------------------------------------------------
 // Knowledge Pipeline Card
 // -----------------------------------------------------------------------------
@@ -62,10 +62,53 @@ export function KnowledgePipelineCard({
 }
 
 // -----------------------------------------------------------------------------
+// Sync Status Cell
+// -----------------------------------------------------------------------------
+
+/**
+ * Compact sync status indicator for table cells.
+ * - null/undefined: still loading (shows "...")
+ * - error: shows "N/A" in gray
+ * - in sync: green checkmark
+ * - needs sync: shows count of new items in warning color
+ */
+export function SyncStatusCell({ diff }: { diff: TestSyncDiff | null | undefined }) {
+  if (diff === undefined) {
+    return <span className="text-xs text-text-secondary/50">...</span>;
+  }
+  if (diff === null || diff.error) {
+    return <span className="text-xs text-text-secondary">N/A</span>;
+  }
+  const newQ = diff.questions.new_count;
+  const newV = diff.variants.new_count;
+  const totalNew = newQ + newV;
+
+  if (!diff.has_changes) {
+    return <span className="text-xs text-success font-medium">In sync</span>;
+  }
+
+  const parts: string[] = [];
+  if (newQ > 0) parts.push(`${newQ}Q`);
+  if (newV > 0) parts.push(`${newV}V`);
+  const label = parts.length > 0
+    ? `${totalNew} new (${parts.join("+")})`
+    : "Changes";
+
+  return <span className="text-xs text-warning font-medium">{label}</span>;
+}
+
+// -----------------------------------------------------------------------------
 // Test Row
 // -----------------------------------------------------------------------------
 
-export function TestRow({ test, courseId }: { test: TestBrief; courseId: string }) {
+export function TestRow({
+  test, courseId, syncDiff,
+}: {
+  test: TestBrief;
+  courseId: string;
+  /** undefined = loading, null = no DB / error */
+  syncDiff?: TestSyncDiff | null;
+}) {
   const enrichedComplete =
     test.enriched_count === test.finalized_count && test.finalized_count > 0;
   const validatedComplete =
@@ -121,6 +164,9 @@ export function TestRow({ test, courseId }: { test: TestBrief; courseId: string 
       </td>
       <td className="px-4 py-2 text-center text-sm">
         <span className="font-mono text-text-secondary">{test.variants_count}</span>
+      </td>
+      <td className="px-4 py-2 text-center">
+        <SyncStatusCell diff={syncDiff} />
       </td>
       <td className="px-4 py-2 text-right">
         <Link href={`/courses/${courseId}/tests/${test.id}`} className="text-accent hover:underline">

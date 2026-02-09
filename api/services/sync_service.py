@@ -13,8 +13,7 @@ from pathlib import Path
 from api.config import PRUEBAS_ALTERNATIVAS_DIR, PRUEBAS_FINALIZADAS_DIR
 from api.services.sync_db import (
     batch_fetch_from_db,
-    fetch_test_question_ids,
-    fetch_test_variant_ids,
+    fetch_question_ids_by_tests,
     get_db_connection,
     upsert_question_qti,
 )
@@ -105,41 +104,6 @@ def _iter_variant_dirs(
 # -----------------------------------------------------------------------------
 
 
-def get_test_sync_diff(test_id: str, environment: SyncEnvironment) -> dict:
-    """Compute diff between local files and DB for a specific test."""
-    result: dict = {
-        "environment": environment, "has_changes": False,
-        "questions": _empty_diff(), "variants": _empty_diff(), "error": None,
-    }
-
-    local_q = _local_syncable_question_ids(test_id)
-    local_v = _local_syncable_variant_ids(test_id)
-    result["questions"]["local_count"] = len(local_q)
-    result["variants"]["local_count"] = len(local_v)
-
-    conn = get_db_connection(environment)
-    if conn is None:
-        result["error"] = f"Database not configured for {environment}"
-        return result
-
-    try:
-        db_q = fetch_test_question_ids(conn, test_id)
-        db_v = fetch_test_variant_ids(conn, test_id)
-        result["questions"] = _id_diff(local_q, db_q)
-        result["variants"] = _id_diff(local_v, db_v)
-        result["has_changes"] = (
-            result["questions"]["has_changes"]
-            or result["variants"]["has_changes"]
-        )
-    except Exception as e:
-        logger.exception("Error computing test sync diff")
-        result["error"] = str(e)
-    finally:
-        conn.close()
-
-    return result
-
-
 def _empty_diff() -> dict:
     return {
         "local_count": 0, "db_count": 0, "new_count": 0,
@@ -158,6 +122,65 @@ def _id_diff(local_ids: set[str], db_ids: dict[str, str]) -> dict:
         "unchanged_count": len(unchanged),
         "has_changes": bool(new or deleted),
     }
+
+
+def _build_diff_entry(
+    env: str, local_q: set, db_q: dict, local_v: set, db_v: dict,
+    error: str | None = None,
+) -> dict:
+    """Build a single test's diff result from local/DB ID sets."""
+    if error:
+        q = {**_empty_diff(), "local_count": len(local_q)}
+        v = {**_empty_diff(), "local_count": len(local_v)}
+    else:
+        q, v = _id_diff(local_q, db_q), _id_diff(local_v, db_v)
+    return {
+        "environment": env, "error": error,
+        "has_changes": q["has_changes"] or v["has_changes"],
+        "questions": q, "variants": v,
+    }
+
+
+def get_test_sync_diff(test_id: str, environment: SyncEnvironment) -> dict:
+    """Compute diff between local files and DB for a single test."""
+    return get_batch_sync_diff([test_id], environment)[test_id]
+
+
+def get_batch_sync_diff(
+    test_ids: list[str], environment: SyncEnvironment,
+) -> dict[str, dict]:
+    """Compute sync diff for multiple tests with one DB roundtrip."""
+    local = {
+        tid: (_local_syncable_question_ids(tid), _local_syncable_variant_ids(tid))
+        for tid in test_ids
+    }
+    err_msg = f"DB not configured for {environment}"
+
+    conn = get_db_connection(environment)
+    if conn is None:
+        return {
+            tid: _build_diff_entry(environment, lq, {}, lv, {}, error=err_msg)
+            for tid, (lq, lv) in local.items()
+        }
+
+    try:
+        db_data = fetch_question_ids_by_tests(conn, test_ids)
+        return {
+            tid: _build_diff_entry(
+                environment, local[tid][0], db_data.get(tid, ({}, {}))[0],
+                local[tid][1], db_data.get(tid, ({}, {}))[1],
+            )
+            for tid in test_ids
+        }
+    except Exception as e:
+        logger.exception("Error in batch sync diff")
+        return {
+            tid: _build_diff_entry(environment, set(), {}, set(), {},
+                                   error=str(e))
+            for tid in test_ids
+        }
+    finally:
+        conn.close()
 
 
 def _local_syncable_question_ids(test_id: str) -> set[str]:

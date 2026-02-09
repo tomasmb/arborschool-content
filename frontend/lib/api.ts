@@ -35,6 +35,7 @@ export type {
   TestSyncDiffEntity,
   TestSyncPreview,
   TestSyncResult,
+  TestsSyncStatusResponse,
   ValidationJobResponse,
   ValidationProgress,
   ValidationResult,
@@ -58,6 +59,7 @@ import type {
   TestSyncDiff,
   TestSyncPreview,
   TestSyncResult,
+  TestsSyncStatusResponse,
   ValidationJobResponse,
 } from "./api-types";
 
@@ -421,5 +423,18 @@ export async function executeTestSync(
       body: JSON.stringify(params),
     },
     { direct: true },
+  );
+}
+
+/**
+ * Get sync status for all tests in a course (single batch call).
+ * Returns a map of test_id -> TestSyncDiff.
+ */
+export async function getTestsSyncStatus(
+  subjectId: string,
+  environment: string = "local",
+): Promise<TestsSyncStatusResponse> {
+  return fetchAPI<TestsSyncStatusResponse>(
+    `/subjects/${subjectId}/sync/tests-status?environment=${environment}`,
   );
 }

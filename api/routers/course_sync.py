@@ -244,6 +244,39 @@ def execute_course_sync(
         )
 
 
+@router.get("/{subject_id}/sync/tests-status")
+def get_tests_sync_status(
+    subject_id: str,
+    environment: str = "local",
+) -> dict:
+    """Get sync status for all tests in one batch call.
+
+    Returns {tests: {test_id: TestSyncDiff, ...}, error: str | null}.
+    Efficient: uses a single DB connection for all tests.
+    """
+    if subject_id not in SUBJECTS_CONFIG:
+        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+
+    if environment not in VALID_SYNC_ENVIRONMENTS:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid environment: {environment}"
+        )
+
+    from api.services.status_tracker import StatusTracker
+    from api.services.sync_service import get_batch_sync_diff
+
+    tracker = StatusTracker(subject_id)
+    test_ids = [d.name for d in tracker.get_test_dirs()]
+
+    try:
+        diffs = get_batch_sync_diff(test_ids, environment)
+        return {"tests": diffs, "error": None}
+    except Exception as e:
+        logger.exception("Error computing batch sync status")
+        return {"tests": {}, "error": str(e)}
+
+
 @router.get("/{subject_id}/sync/diff")
 def get_course_sync_diff(
     subject_id: str,

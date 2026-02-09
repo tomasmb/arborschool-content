@@ -326,6 +326,12 @@ export interface TestSyncDiff {
   error: string | null;
 }
 
+/** Batch sync status for all tests in a course */
+export interface TestsSyncStatusResponse {
+  tests: Record<string, TestSyncDiff>;
+  error: string | null;
+}
+
 // -----------------------------------------------------------------------------
 // Graph Types
 // -----------------------------------------------------------------------------
