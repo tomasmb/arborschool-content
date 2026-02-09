@@ -136,6 +136,30 @@ def _api_to_db_subject_id(api_subject_id: str) -> str:
     return mapping.get(api_subject_id, api_subject_id.replace("-", "_").rsplit("_", 1)[0])
 
 
+def _collect_deletions(
+    diff: object, entities: list[str],
+) -> dict[str, list[str]]:
+    """Extract deletion IDs from a SyncDiff for requested entities.
+
+    Returns:
+        Dict mapping table name to list of IDs to delete.
+    """
+    deletions: dict[str, list[str]] = {}
+    ent = diff.entities if hasattr(diff, "entities") else {}
+
+    if "atoms" in entities and "atoms" in ent:
+        deleted = ent["atoms"].deleted_ids
+        if deleted:
+            deletions["atoms"] = deleted
+
+    if "question_atoms" in entities and "question_atoms" in ent:
+        deleted = ent["question_atoms"].deleted_ids
+        if deleted:
+            deletions["question_atoms"] = deleted
+
+    return deletions
+
+
 def _build_payload(
     extracted_data: dict,
     subject_id: str | None = None,
@@ -364,11 +388,19 @@ def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
 
         payload = _build_payload(extracted, entities=request.entities)
 
+        # Compute diff to find rows that should be deleted
+        from app.sync.diff import compute_sync_diff
+
+        diff = compute_sync_diff(extracted, request.environment)
+        deletions = _collect_deletions(diff, request.entities)
+
         # Connect to the appropriate database based on environment
         db_config = DBConfig.for_environment(request.environment)
         db_client = DBClient(db_config)
 
-        results = db_client.sync_all(payload, dry_run=False)
+        results = db_client.sync_all(
+            payload, dry_run=False, deletions=deletions,
+        )
 
         # Format results message
         total_affected = sum(results.values())
