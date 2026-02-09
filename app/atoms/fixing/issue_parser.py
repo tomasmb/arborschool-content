@@ -200,21 +200,59 @@ def _parse_coverage(
         )
 
     # Duplication issues → MERGE
-    duplications: list[str] = coverage.get("duplication_issues", [])
-    if duplications:
-        # Try to extract atom IDs mentioned in the duplication text.
-        atom_ids = _extract_atom_ids_from_text(duplications)
+    # The validator may return either plain strings or structured
+    # dicts with "atoms" and "description" keys.
+    raw_duplications: list[Any] = coverage.get("duplication_issues", [])
+    if raw_duplications:
+        texts, explicit_ids = _normalise_duplication_issues(raw_duplications)
+        atom_ids = explicit_ids or _extract_atom_ids_from_text(texts)
         actions.append(
             FixAction(
                 fix_type=FixType.MERGE,
                 standard_id=standard_id,
                 atom_ids=atom_ids,
-                issues=duplications,
+                issues=texts,
                 recommendations=[],
             ),
         )
 
     return actions
+
+
+# -----------------------------------------------------------------------------
+# Normalise duplication issues (string or dict)
+# -----------------------------------------------------------------------------
+
+
+def _normalise_duplication_issues(
+    raw: list[Any],
+) -> tuple[list[str], list[str]]:
+    """Convert duplication entries to (text_list, atom_ids).
+
+    Handles two shapes the validator can return:
+      - plain ``str``  →  kept as-is, atom IDs extracted later.
+      - ``{"atoms": [...], "description": "..."}``  →  description
+        becomes the text, atom IDs are collected directly.
+
+    Returns:
+        Tuple of (human-readable texts, explicitly listed atom IDs).
+    """
+    texts: list[str] = []
+    atom_ids: list[str] = []
+    for entry in raw:
+        if isinstance(entry, str):
+            texts.append(entry)
+        elif isinstance(entry, dict):
+            desc = entry.get("description", "")
+            atoms = entry.get("atoms", [])
+            if desc:
+                texts.append(desc)
+            atom_ids.extend(atoms)
+        else:
+            logger.warning("Unexpected duplication entry type: %s", type(entry))
+    # Deduplicate atom IDs, preserving order.
+    atom_ids = list(dict.fromkeys(atom_ids))
+    return texts, atom_ids
 
 
 # -----------------------------------------------------------------------------
