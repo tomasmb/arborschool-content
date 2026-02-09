@@ -83,8 +83,11 @@ export function CoverageTab({ subjectId }: CoverageTabProps) {
           color="text-amber-500"
         />
         <SummaryCard
-          label="Atoms w/ Questions"
-          value={data.atoms_with_direct_questions}
+          label="Atoms Covered"
+          value={
+            data.atoms_with_direct_questions +
+            data.atoms_with_transitive_coverage
+          }
           total={data.total_atoms}
           color="text-accent"
         />

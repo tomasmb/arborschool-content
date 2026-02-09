@@ -136,3 +136,48 @@ export interface SavedValidationSummary {
   atoms_passing: number;
   atoms_with_issues: number;
 }
+
+// -----------------------------------------------------------------------------
+// Course Sync (used by atom sync tab)
+// -----------------------------------------------------------------------------
+
+export interface CourseSyncTableSummary {
+  table: string;
+  total: number;
+  breakdown: Record<string, number>;
+}
+
+export interface CourseSyncPreview {
+  tables: CourseSyncTableSummary[];
+  summary: Record<string, unknown>;
+  warnings: string[];
+  environment: string;
+}
+
+export interface CourseSyncResult {
+  success: boolean;
+  results: Record<string, number>;
+  message: string;
+  errors: string[];
+  environment: string;
+}
+
+export interface CourseSyncDiff {
+  environment: string;
+  has_changes: boolean;
+  entities: Record<string, CourseSyncEntityDiff>;
+  error?: string;
+}
+
+export interface CourseSyncEntityDiff {
+  local_count: number;
+  db_count: number;
+  new: string[];
+  new_count: number;
+  modified: string[];
+  modified_count: number;
+  deleted: string[];
+  deleted_count: number;
+  unchanged: number;
+  has_changes: boolean;
+}

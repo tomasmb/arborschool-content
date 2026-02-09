@@ -145,6 +145,7 @@ export default function AtomsPage() {
           <AtomSyncTab
             subjectId={courseId}
             summary={summary}
+            onSyncComplete={handlePipelineSuccess}
           />
         )}
       </div>
