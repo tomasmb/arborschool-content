@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 14,
-    "atoms_passing_all_checks": 13,
-    "atoms_with_issues": 1,
+    "atoms_passing_all_checks": 12,
+    "atoms_with_issues": 2,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -10,7 +10,7 @@
   "atoms_evaluation": [
     {
       "atom_id": "A-M1-GEO-01-01",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -28,18 +28,25 @@
         }
       },
       "completeness": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La descripción menciona explícitamente distinguir el ángulo recto, pero los criterios atómicos no incluyen un indicador específico de identificación del ángulo recto."
+        ]
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Ligera desalineación entre descripción y criterios: falta un criterio explícito de 'identifica el ángulo recto' para hacer transparente qué se evalúa."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Agregar un criterio atómico del tipo: 'Identifica visualmente el ángulo recto en un triángulo rectángulo'.",
+        "En los ejemplos, incluir al menos un caso donde el estudiante deba señalar explícitamente el ángulo de 90°."
+      ]
     },
     {
       "atom_id": "A-M1-GEO-01-02",
@@ -109,16 +116,18 @@
     },
     {
       "atom_id": "A-M1-GEO-01-04",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "El átomo combina de forma explícita la modelización (identificar el triángulo rectángulo y el tipo de lado desconocido) con la ejecución completa del cálculo, que ya está cubierta en átomos procedimentales (A-02 y A-03). Esto puede dificultar evaluar aisladamente la habilidad de modelar."
+        ],
         "checks": {
-          "single_cognitive_intention": true,
+          "single_cognitive_intention": false,
           "reasonable_working_memory": true,
           "prerequisite_independence": true,
           "assessment_independence": true,
@@ -138,7 +147,10 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Aclarar en la descripción y criterios que el foco principal de evaluación es la traducción del enunciado al modelo (triángulo rectángulo + tipo de lado desconocido) y que la parte de cálculo reutiliza procedimientos ya trabajados.",
+        "Alternativamente, dividir en dos átomos: uno de pura identificación/modelización del triángulo rectángulo y tipo de lado, y dejar el cálculo explícito solo como referencia o en los átomos procedimentales."
+      ]
     },
     {
       "atom_id": "A-M1-GEO-01-05",
@@ -406,7 +418,7 @@
     },
     {
       "atom_id": "A-M1-GEO-01-13",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -415,7 +427,7 @@
         "score": "pass",
         "issues": [],
         "checks": {
-          "single_cognitive_intention": true,
+          "single_cognitive_intention": false,
           "reasonable_working_memory": true,
           "prerequisite_independence": true,
           "assessment_independence": true,
@@ -424,26 +436,19 @@
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "El átomo se describe como centrado en perímetros y áreas, pero lista como prerrequisito un átomo de modelación con Teorema de Pitágoras (A-M1-GEO-01-04), sin que el uso de Pitágoras aparezca explícitamente en su descripción o criterios."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
-        "score": "warning",
-        "issues": [
-          "Pequeña desalineación entre el alcance descrito (solo figuras compuestas con perímetros y áreas) y los prerrequisitos, que sugieren también la integración con problemas de Teorema de Pitágoras."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "Revisar si A-M1-GEO-01-04 debe ser realmente un prerrequisito directo. O bien se explicita en la descripción que los problemas integrados pueden requerir Pitágoras, o se elimina ese prerrequisito para mantener coherencia."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "recommendations": [
-        "Aclarar en la descripción si los problemas integrados incluyen también el uso del Teorema de Pitágoras. En caso afirmativo, mencionar explícitamente esta posibilidad.",
-        "Si se decide que A-M1-GEO-01-13 solo integra perímetros y áreas sin Pitágoras, eliminar A-M1-GEO-01-04 de los prerrequisitos directos."
+        "Mantener este átomo explícitamente etiquetado como 'integrador' en documentación curricular, ya que moviliza múltiples procedimientos previos (Pitágoras, perímetros, áreas, distinción perímetro/área)."
       ]
     },
     {
@@ -477,7 +482,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "En tareas de evaluación, asegurarse de incluir ejemplos que aborden los tres tipos de juicio mencionados: sentido del resultado, errores de fórmula y justificación de procedimientos."
+      ]
     }
   ],
   "coverage_analysis": {
@@ -520,8 +527,8 @@
     }
   },
   "global_recommendations": [
-    "Alinear completamente la descripción y los prerrequisitos de A-M1-GEO-01-13, explicitando si los problemas integrados incluyen también el uso del Teorema de Pitágoras o restringiéndolo a perímetros y áreas.",
-    "Mantener la distinción ya lograda entre algoritmos distintos (por ejemplo, área de rombo por base-altura vs. por diagonales) como modelo para futuros desarrollos de otros estándares.",
-    "En futuras iteraciones, se podrían añadir en las notas de alcance o ejemplos de algunos átomos menciones explícitas a errores comunes (por ejemplo, confundir radio y diámetro en A-M1-GEO-01-06 y A-M1-GEO-01-11) para reforzar la dimensión de argumentación y validación."
+    "Alinear estrictamente descripciones y criterios en todos los átomos, siguiendo el ejemplo de mejora sugerido para A-M1-GEO-01-01, de modo que cada elemento de la descripción tenga un criterio observable asociado.",
+    "Mantener clara la función de los átomos de modelización frente a los procedimentales: en átomos como A-M1-GEO-01-04, explicitar que el cálculo numérico se apoya en otros átomos y que el foco de evaluación es la construcción del modelo.",
+    "En el diseño de evaluaciones, utilizar A-M1-GEO-01-13 y A-M1-GEO-01-14 como cierre de unidad, asegurando que las tareas integren Pitágoras, perímetros, áreas y validación de resultados en un mismo contexto, para movilizar el conjunto de átomos previos."
   ]
 }

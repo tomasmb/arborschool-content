@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
-    "total_atoms": 18,
-    "atoms_passing_all_checks": 16,
-    "atoms_with_issues": 2,
+    "total_atoms": 19,
+    "atoms_passing_all_checks": 18,
+    "atoms_with_issues": 1,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -339,44 +339,6 @@
       "recommendations": []
     },
     {
-      "atom_id": "A-M1-PROB-01-11",
-      "overall_score": "good",
-      "fidelity": {
-        "score": "pass",
-        "issues": []
-      },
-      "granularity": {
-        "score": "warning",
-        "issues": [
-          "El átomo mezcla varias intenciones cognitivas distintas: lectura/comparación cualitativa de sectores, lectura cuantitativa de porcentajes/ángulos y cálculo de ángulos (frecuencia relativa·360°) más la identificación de pasos de construcción. Esto dificulta aislar qué subhabilidad falla en una evaluación.",
-          "La carga de memoria de trabajo y la cantidad de subpasos diferentes es alta para un solo átomo instruccional."
-        ],
-        "checks": {
-          "single_cognitive_intention": false,
-          "reasonable_working_memory": false,
-          "prerequisite_independence": true,
-          "assessment_independence": false,
-          "generalization_boundary": true,
-          "integrator_validity": false
-        }
-      },
-      "completeness": {
-        "score": "pass",
-        "issues": []
-      },
-      "content_quality": {
-        "score": "pass",
-        "issues": []
-      },
-      "prerequisites": {
-        "score": "pass",
-        "issues": []
-      },
-      "recommendations": [
-        "Dividir este átomo al menos en dos: (a) lectura e interpretación de gráficos circulares (identificar mayor/menor sector, leer porcentajes o frecuencias dadas, comparar sectores); (b) cálculo de ángulos/proporciones a partir de frecuencias relativas y comprensión del proceso de construcción. La parte de \"identificar y ordenar los pasos de construcción\" podría ir en el segundo átomo."
-      ]
-    },
-    {
       "atom_id": "A-M1-PROB-01-13",
       "overall_score": "excellent",
       "fidelity": {
@@ -565,21 +527,90 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Uno de los ejemplos menciona explícitamente 'correlación' vs 'causalidad', lo que introduce terminología potencialmente más avanzada que el resto del estándar; puede simplificarse el lenguaje del ejemplo sin cambiar la intención evaluativa."
+        ]
       },
       "prerequisites": {
         "score": "warning",
         "issues": [
-          "El átomo menciona explícitamente la evaluación de afirmaciones basadas en datos en tablas y gráficos, pero solo lista como prerrequisitos átomos de gráficos (barras, línea, circular). Falta como prerrequisito directo A-M1-PROB-01-19 (interpretación de información en tablas de frecuencia)."
+          "El átomo declara como prerrequisitos la interpretación de gráficos (barras, línea, circular) pero no incluye A-M1-PROB-01-19, a pesar de que la descripción menciona explícitamente evaluar afirmaciones basadas también en tablas de frecuencia."
         ]
       },
       "recommendations": [
-        "Añadir A-M1-PROB-01-19 como prerrequisito directo para asegurar que la argumentación pueda basarse también en la lectura adecuada de tablas de frecuencia, no solo de gráficos."
+        "Agregar A-M1-PROB-01-19 como prerrequisito directo para coherencia con la mención explícita de 'tablas' en la descripción.",
+        "Reformular el ejemplo sobre causalidad/correlación usando un caso de sobreinterpretación más básico (por ejemplo, 'concluir que una categoría es mejor solo porque su barra es más alta') para evitar introducir terminología estadística adicional."
       ]
     },
     {
       "atom_id": "A-M1-PROB-01-19",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-PROB-01-20",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-PROB-01-21",
       "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
@@ -645,8 +676,8 @@
     }
   },
   "global_recommendations": [
-    "Reestructurar el átomo A-M1-PROB-01-11 en al menos dos átomos: uno focalizado en la lectura e interpretación de gráficos circulares (identificar categorías mayoritaria/minoritaria, leer porcentajes o proporciones dadas, comparar sectores) y otro en el cálculo de ángulos/proporciones y comprensión del proceso de construcción de un gráfico circular.",
-    "Ajustar los prerrequisitos de A-M1-PROB-01-18 para incluir A-M1-PROB-01-19, garantizando que la evaluación de afirmaciones se apoye también en la competencia de interpretar tablas de frecuencia.",
-    "Si se desea todavía más claridad curricular, considerar un átomo explícito de \"Construcción de gráficos circulares\" separado de la lectura/interpretación, alineado con cómo ya se diferencian construcción e interpretación en barras y líneas."
+    "Agregar A-M1-PROB-01-19 como prerrequisito de A-M1-PROB-01-18, para alinear los prerrequisitos con la referencia explícita a tablas en la descripción de ese átomo.",
+    "Revisar y, si se considera necesario para el nivel, simplificar el lenguaje de los ejemplos de A-M1-PROB-01-18, evitando terminología estadística adicional como 'correlación' y 'causalidad' sin perder el foco en la evaluación crítica de afirmaciones.",
+    "Mantener la separación actual entre átomos conceptuales, procedimentales y de interpretación/modelización, ya que la granularidad lograda permite diseñar progresiones didácticas claras desde la comprensión de tablas y gráficos hasta el uso del promedio y la argumentación basada en datos."
   ]
 }

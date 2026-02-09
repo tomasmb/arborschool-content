@@ -1,9 +1,9 @@
 {
   "evaluation_summary": {
     "total_atoms": 18,
-    "atoms_passing_all_checks": 17,
-    "atoms_with_issues": 1,
-    "overall_quality": "excellent",
+    "atoms_passing_all_checks": 12,
+    "atoms_with_issues": 6,
+    "overall_quality": "good",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
@@ -43,6 +43,39 @@
     },
     {
       "atom_id": "A-M1-NUM-03-02",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-NUM-03-03",
       "overall_score": "good",
       "fidelity": {
         "score": "pass",
@@ -65,55 +98,22 @@
         "issues": []
       },
       "content_quality": {
+        "score": "warning",
+        "issues": [
+          "Al trabajar con exponentes racionales, no se explicita la restricción de dominio en los números reales (por ejemplo, para exponentes con denominador par la base debe ser no negativa). Esto puede generar expresiones formalmente escritas pero no reales."
+        ]
+      },
+      "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "La comprensión de a^(-n) como 1/(a^n) supone conocer previamente potencias con exponente entero no negativo. Sería recomendable declarar explícitamente A-M1-NUM-03-01 como prerrequisito directo."
-        ]
-      },
       "recommendations": [
-        "Añadir A-M1-NUM-03-01 como prerrequisito directo, ya que la definición de exponentes negativos se apoya en la noción de potencias con exponente entero positivo y cero."
+        "Añadir en notas de alcance o criterios una aclaración sobre el dominio: se trabaja en los números reales y, para exponentes racionales con denominador par, la base debe ser ≥ 0; además, la base debe ser distinta de 0 cuando se usen exponentes negativos."
       ]
     },
     {
-      "atom_id": "A-M1-NUM-03-03",
-      "overall_score": "excellent",
-      "fidelity": {
-        "score": "pass",
-        "issues": []
-      },
-      "granularity": {
-        "score": "pass",
-        "issues": [],
-        "checks": {
-          "single_cognitive_intention": true,
-          "reasonable_working_memory": true,
-          "prerequisite_independence": true,
-          "assessment_independence": true,
-          "generalization_boundary": true,
-          "integrator_validity": true
-        }
-      },
-      "completeness": {
-        "score": "pass",
-        "issues": []
-      },
-      "content_quality": {
-        "score": "pass",
-        "issues": []
-      },
-      "prerequisites": {
-        "score": "pass",
-        "issues": []
-      },
-      "recommendations": []
-    },
-    {
       "atom_id": "A-M1-NUM-03-04",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -135,18 +135,22 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "No se explicita que la base común debe ser distinta de 0 para evitar divisiones por cero, ni las restricciones de dominio para exponentes racionales con denominador par en el contexto de los reales."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Añadir en la descripción o notas que se considera a ≠ 0 en a^m / a^n y que, en el caso de exponentes racionales con denominador par, se restringe la base a valores no negativos en el conjunto de los reales."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-05",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -168,18 +172,22 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Al permitir exponentes racionales en la propiedad (a^m)^n = a^(m·n) no se indica explícitamente la restricción de que, en los reales, ciertas combinaciones de base negativa y exponentes racionales (con denominador par) no están definidas."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Incluir una nota de alcance sobre las condiciones de validez en R (por ejemplo, mencionar que para exponentes con denominador par se trabaja con bases no negativas)."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-06",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -201,18 +209,22 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Se enuncia la propiedad a^n · b^n = (ab)^n para exponentes racionales sin matizar el dominio real (bases negativas con exponentes racionales de denominador par). Esto puede inducir a pensar que la propiedad aplica sin restricciones en R."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Añadir una breve aclaración de que se trabaja en R y que, cuando el exponente racional tiene denominador par, los radicandos asociados deben ser no negativos."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-07",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -234,14 +246,18 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "No se explicita la condición b ≠ 0 en a^n / b^n = (a/b)^n ni las restricciones de dominio para exponentes racionales en los reales, lo que podría dar lugar a expresiones no definidas sin que el estudiante lo note."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Indicar explícitamente que b ≠ 0 en la propiedad y, si se trabajan exponentes racionales, aclarar que la expresión se entiende en el conjunto de los números reales con las restricciones habituales sobre radicandos e índices."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-08",
@@ -373,7 +389,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "El prerrequisito A-M1-NUM-03-08 no es estrictamente necesario para aplicar la propiedad de multiplicación de raíces; puede mantenerse si se quiere enfatizar la conexión con exponentes racionales, pero no es imprescindible."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-12",
@@ -406,7 +424,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Se podría añadir en notas que se evitan denominadores nulos al aplicar la propiedad, aunque a este nivel suele darse por supuesto."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-13",
@@ -439,7 +459,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Opcionalmente, vincular esta propiedad con la equivalencia de exponentes racionales (a^(1/n))^(1/m) = a^(1/(nm)) para reforzar la coherencia entre notaciones."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-14",
@@ -472,7 +494,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "La nota sobre factorización prima es útil; si existe un átomo específico de factorización en el currículo global, podría citarse explícitamente como prerrequisito en futuras iteraciones."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-15",
@@ -538,7 +562,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Enriquecer con un ejemplo numérico completamente desarrollado (por ejemplo, 1/∛2 → ∛4/2) para dejar explícito el paso donde desaparece la raíz del denominador."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-17",
@@ -571,11 +597,13 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Agregar un ejemplo explícitamente contextualizado con raíces (no solo potencias) reforzaría el vínculo con la parte de raíces enésimas del estándar."
+      ]
     },
     {
       "atom_id": "A-M1-NUM-03-18",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -593,8 +621,10 @@
         }
       },
       "completeness": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La descripción menciona problemas matemáticos o contextualizados, pero los criterios y ejemplos se centran en simplificación de expresiones, sin un criterio específico que asegure la presencia de problemas de aplicación contextualizados, que son parte explícita del estándar."
+        ]
       },
       "content_quality": {
         "score": "pass",
@@ -604,7 +634,10 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Añadir un criterio atómico del tipo: 'Resuelve problemas contextualizados que requieren interpretar y manipular potencias y raíces para responder preguntas sobre la situación'.",
+        "Incorporar al menos un ejemplo conceptual contextualizado (por ejemplo, escalas, áreas/volúmenes, crecimiento) donde se combinen potencias y raíces."
+      ]
     }
   ],
   "coverage_analysis": {
@@ -640,8 +673,10 @@
     }
   },
   "global_recommendations": [
-    "Explicitar A-M1-NUM-03-01 como prerrequisito directo de A-M1-NUM-03-02 para reflejar claramente la dependencia conceptual entre exponentes no negativos y exponentes negativos.",
-    "Mantener en las futuras revisiones la consistencia entre la descripción de la base (racional) y los ejemplos con variables, aclarando que las variables representan números reales/racionales cuando aparezcan.",
-    "Al desarrollar materiales didácticos asociados, aprovechar A-M1-NUM-03-08 y A-M1-NUM-03-09 para enfatizar explícitamente las dos interpretaciones equivalentes de a^(m/n): como (raíz enésima de a)^m y como raíz enésima de a^m, tal como sugiere el ejemplo canónico 27^(2/3)."
+    "Unificar y explicitar en uno o dos átomos (o en notas globales) las restricciones de dominio cuando se trabajan exponentes racionales y raíces enésimas en el conjunto de los números reales, para evitar contradicciones implícitas entre átomos de propiedades y el átomo de existencia de raíces.",
+    "Revisar átomos de propiedades de potencias con exponentes racionales (A-M1-NUM-03-03 a 07) para añadir comentarios breves sobre casos no definidos (bases negativas con exponentes de denominador par, bases nulas en exponentes negativos, divisiones por cero) sin sobrecargar el nivel de detalle.",
+    "Fortalecer el átomo integrador A-M1-NUM-03-18 incorporando explícitamente criterios y ejemplos de problemas contextualizados, alineando mejor la evaluación con el énfasis del estándar en aplicaciones en diversos contextos.",
+    "Considerar, en futuros ajustes, aligerar la lista de prerrequisitos donde se han incluido conexiones conceptuales deseables pero no estrictamente necesarias (por ejemplo, A-M1-NUM-03-11 con A-M1-NUM-03-08), para mantener la red de dependencias más transparente.",
+    "Mantener la clara separación lograda entre átomos de representación (conversión potencia–raíz), de propiedades algebraicas y de aplicaciones/modelado, ya que la granularidad actual permite diseñar progresiones didácticas y evaluaciones bien escalonadas."
   ]
 }

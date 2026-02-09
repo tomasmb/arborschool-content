@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 9,
-    "atoms_passing_all_checks": 9,
-    "atoms_with_issues": 0,
+    "atoms_passing_all_checks": 7,
+    "atoms_with_issues": 2,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -40,12 +40,12 @@
         "issues": []
       },
       "recommendations": [
-        "Podrías añadir de forma explícita que los datos deben estar ordenados para que la definición de cuartil tenga sentido práctico, aunque ya se mencione en notas de alcance."
+        "Opcional: aclarar explícitamente que el concepto se aplica a cualquier conjunto de datos ordenados (discretos o continuos) para reforzar la generalidad."
       ]
     },
     {
       "atom_id": "A-M1-PROB-03-02",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -67,16 +67,18 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La descripción \"los 99 valores que dividen un conjunto de datos ordenados en 100 partes porcentualmente iguales\" puede sugerir implícitamente que siempre existen 99 valores distintos en la práctica, lo que no siempre sucede en muestras finitas."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Considera añadir explícitamente A-M1-PROB-03-01 como prerrequisito, dado que los criterios usan la relación entre percentiles y cuartiles.",
-        "Podrías precisar que se trata de datos ordenados para mantener simetría con el átomo de cuartiles."
+        "Matizar la definición para indicar que los percentiles son puntos de corte teóricos que, en conjuntos de datos finitos, pueden coincidir o no corresponder a valores distintos (por ejemplo: \"los percentiles son valores de corte que dividen la distribución conceptual en 100 partes de 1% cada una\").",
+        "Mantener el vínculo con los cuartiles (P25, P50, P75) tal como se hace en los criterios, ya que refuerza la conexión conceptual con átomos de cuartiles."
       ]
     },
     {
@@ -111,13 +113,12 @@
         "issues": []
       },
       "recommendations": [
-        "Si tu contexto curricular usa una fórmula específica para la posición de cuartiles (por ejemplo (n+1)·p), podrías mencionarla en las notas de alcance para evitar ambigüedad entre convenciones escolares.",
-        "Podría aclararse en las notas cómo se tratan explícitamente los casos de n par/impar para Q1 y Q3, aunque ya está implícito en 'promediando si corresponde'."
+        "Si el currículo nacional fija una convención específica para el cálculo de cuartiles (por ejemplo, inclusión o exclusión de la mediana al formar las mitades), convendría mencionarla explícitamente en las notas de alcance."
       ]
     },
     {
       "atom_id": "A-M1-PROB-03-04",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -139,16 +140,20 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Se menciona \"la fórmula de posición correspondiente\" sin explicitar cuál es (por ejemplo, k·(n+1)/100 u otra variante), lo que puede generar ambigüedad didáctica.",
+          "En las notas se fija un único criterio de tratamiento cuando la posición no es entera (promediar datos adyacentes); podría no coincidir con todas las convenciones curriculares si no se verifica explícitamente."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Sería útil explicitar en las notas de alcance la fórmula de posición concreta (por ejemplo L = (k/100)·(n+1) o similar) para alinear la implementación.",
-        "Aclara que la convención de 'promediar cuando la posición no es entera' es una elección didáctica frente a otras posibles interpolaciones, para evitar conflictos con otras fuentes."
+        "Especificar la fórmula de posición que se utilizará para el percentil k (por ejemplo, Pk en la posición k·(n+1)/100) para asegurar consistencia entre materiales y evaluaciones.",
+        "Verificar alineación del método de interpolación (promedio de datos adyacentes) con las orientaciones oficiales; si existe libertad curricular, mencionarlo explícitamente en las notas de alcance.",
+        "Añadir un ejemplo resuelto completo en las notas (con cálculo de posición, análisis de si es entera o no, y determinación final del percentil) para guiar la implementación."
       ]
     },
     {
@@ -183,7 +188,8 @@
         "issues": []
       },
       "recommendations": [
-        "Podrías incluir un ejemplo donde se evalúe explícitamente una afirmación incorrecta sobre cuartiles para reforzar el componente de 'argumentar'."
+        "Incluir en las notas de alcance la recomendación de trabajar contextos variados (salud, educación, economía) para alinearse mejor con el ítem de estándar \"diversos contextos\".",
+        "Mantener ejemplos donde la interpretación del cuartil permita evaluar afirmaciones como \"la mayoría aprobó\" o \"la mitad superior del grupo\" para reforzar la dimensión de argumentar."
       ]
     },
     {
@@ -218,8 +224,8 @@
         "issues": []
       },
       "recommendations": [
-        "Sería conveniente que al menos uno de los ejemplos conceptuales incluya una interpretación en un contexto de evaluación (por ejemplo pruebas estandarizadas) para conectar con usos frecuentes de percentiles.",
-        "Puedes alinear la redacción con A-M1-PROB-03-05 usando frases similares de 'estar por sobre/bajo un percentil' para reforzar paralelismo didáctico."
+        "Asegurar que los ejemplos incluyan tanto percentiles altos (e.g. P90) como bajos (e.g. P10) para evitar sesgos de interpretación (\"alto percentil siempre es bueno\").",
+        "Sugerir en las notas el uso de gráficos típicos de percentiles (por ejemplo, tablas de crecimiento infantil) como apoyo visual para la habilidad de modelar."
       ]
     },
     {
@@ -254,8 +260,8 @@
         "issues": []
       },
       "recommendations": [
-        "Podrías explicitar en notas de alcance que no se abordan valores atípicos u otras variantes de box plot (como bigotes a 1,5·RIQ) para dejar claro el modelo de diagrama usado.",
-        "Añadir un criterio que mencione explícitamente el 'rango intercuartil' como nombre podría ayudar a vincular con vocabulario estándar."
+        "Aclarar en las notas si se considerarán o no valores atípicos (outliers) y, en caso afirmativo, cómo se representarían, aunque no se profundice formalmente en su análisis.",
+        "Mantener el enfoque en la lectura de los cinco números resumen para asegurar un puente claro con los átomos de construcción (A-M1-PROB-03-08) y comparación (A-M1-PROB-03-09)."
       ]
     },
     {
@@ -290,8 +296,8 @@
         "issues": []
       },
       "recommendations": [
-        "Si se quiere enfatizar más la transferencia de representaciones, puede añadirse un criterio específico sobre 'dado un conjunto de datos crudos, calcula primero los cinco números resumen y luego construye el diagrama'.",
-        "Aclara en notas que la elección de la escala numérica debe cubrir desde el mínimo hasta el máximo, para guiar decisiones de representación."
+        "Añadir en las notas de alcance indicaciones sobre elección de escala (por ejemplo, incluir siempre el rango completo de datos con márgenes razonables) para apoyar decisiones de representación.",
+        "Incluir ejemplos en los que se parta tanto de datos crudos como de los cinco números resumen, reforzando la transferencia entre formas numéricas y gráficas."
       ]
     },
     {
@@ -326,8 +332,8 @@
         "issues": []
       },
       "recommendations": [
-        "Podrías precisar en notas de alcance que, aunque se habla de 'forma' de la distribución de manera visual, no se requieren conceptos formales de asimetría o curtosis para mantener alineación con el 'no_incluye'.",
-        "Considera incluir un ejemplo donde las medianas sean similares pero la dispersión distinta, para enfatizar la comparación de homogeneidad entre grupos."
+        "En las notas, sugerir parámetros claros de comparación (posición de las medianas, longitud de cajas, longitud de bigotes) para estructurar la argumentación del estudiantado.",
+        "Recomendar la inclusión de tareas donde el estudiantado deba refutar afirmaciones incorrectas basadas en la lectura de diagramas de cajón, para reforzar la habilidad de argumentar."
       ]
     }
   ],
@@ -365,8 +371,9 @@
     }
   },
   "global_recommendations": [
-    "Mantener la clara separación entre átomos conceptuales (definiciones), procedimentales (cálculo, construcción) y de modelización/argumentación (interpretación y comparación), que aquí está muy bien lograda.",
-    "Revisar de forma global que las convenciones de cálculo de posiciones de cuartiles y percentiles (fórmulas y tratamiento de índices no enteros) sean coherentes con el currículo oficial o los materiales de aula para evitar conflictos de método.",
-    "Considerar, en futuros refinamientos, un átomo integrador de resolución de problemas que combine cálculo e interpretación de cuartiles/percentiles y uso del diagrama de cajón en un mismo contexto aplicado, si se ve necesario para la evaluación de desempeño global del estándar."
+    "Verificar y documentar explícitamente la convención seleccionada para el cálculo de percentiles (fórmula de posición e interpolación), para asegurar coherencia entre materiales, docentes y evaluaciones. Esto impacta principalmente en A-M1-PROB-03-04 y, conceptualmente, en A-M1-PROB-03-02 y A-M1-PROB-03-06.",
+    "Considerar, si el currículo lo valora, la creación de un átomo específico para el rango intercuartil (definición, cálculo sencillo como Q3−Q1 e interpretación básica), ya que el concepto se utiliza en ejemplos y en el análisis con diagramas de cajón.",
+    "Revisar la rotulación de habilidad_principal en los átomos puramente definicionales (A-M1-PROB-03-01 y A-M1-PROB-03-02) para confirmar que \"representar\" es la categoría más alineada con el marco institucional; si el marco asocia más las definiciones a \"modelar\" u otra habilidad, podría ajustarse sin cambiar el contenido.",
+    "Asegurar que, en la implementación curricular, se usen tareas que conecten explícitamente los distintos átomos: por ejemplo, calcular cuartiles (A-M1-PROB-03-03), interpretarlos en contexto (A-M1-PROB-03-05) y luego representarlos en un diagrama de cajón (A-M1-PROB-03-08), culminando en comparaciones y argumentaciones (A-M1-PROB-03-09)."
   ]
 }
