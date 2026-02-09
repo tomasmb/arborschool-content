@@ -1,8 +1,8 @@
 """Atom validation service for LLM-based quality checks.
 
-Manages async validation jobs that run validate_atoms_with_gemini()
-per standard. Uses in-memory storage for job state (same pattern as
-enrichment_service.py).
+Manages async validation jobs that run validate_atoms_with_llm()
+per standard, with bounded parallelism. Uses in-memory storage for
+job state (same pattern as enrichment_service.py).
 
 Reuses existing domain functions -- never reimplements validation logic.
 """
@@ -26,12 +26,16 @@ from app.utils.paths import (
 logger = logging.getLogger(__name__)
 
 
-# Cost estimate per standard (GPT-5.1, medium reasoning)
-# Input ~8K tokens  @ $1.25/1M  = $0.01
-# Output ~4K tokens @ $10.00/1M = $0.04
-# Reasoning ~8K tokens (billed as output) @ $10.00/1M = $0.08
-# Total ~$0.13 -- using $0.15 with safety buffer
-COST_PER_STANDARD_USD = 0.15
+# Cost estimate per standard (GPT-5.1, medium reasoning, no output cap)
+# Input  ~13K tokens @ $1.25/1M  = $0.016
+# Output  ~8K tokens @ $10.00/1M = $0.08
+# Reasoning ~15K tokens (billed as output) @ $10.00/1M = $0.15
+# Total ~$0.25 -- rounded up as safety buffer
+COST_PER_STANDARD_USD = 0.25
+
+# Max concurrent LLM calls.  Keeps us within OpenAI rate limits
+# while still being ~4x faster than sequential execution.
+_MAX_CONCURRENT_VALIDATIONS = 4
 
 
 @dataclass
@@ -208,15 +212,19 @@ async def start_validation_job(
 
 
 async def _validate_single_standard(
-    gemini: Any,
+    client: Any,
     validate_fn: Any,
     standard: dict[str, Any],
     all_atoms: list[dict[str, Any]],
     job: AtomValidationJob,
+    semaphore: asyncio.Semaphore,
 ) -> None:
-    """Validate atoms for one standard and update job state."""
+    """Validate atoms for one standard and update job state.
+
+    Acquires ``semaphore`` before making the LLM call so that at
+    most ``_MAX_CONCURRENT_VALIDATIONS`` requests run in parallel.
+    """
     std_id = standard.get("id", "unknown")
-    job.current_standard = std_id
 
     std_atoms = [
         a for a in all_atoms
@@ -232,9 +240,23 @@ async def _validate_single_standard(
         })
         return
 
-    result = await asyncio.to_thread(
-        validate_fn, gemini, standard, std_atoms,
-    )
+    async with semaphore:
+        logger.info("Starting validation for %s", std_id)
+        try:
+            result = await asyncio.to_thread(
+                validate_fn, client, standard, std_atoms,
+            )
+        except Exception as e:
+            job.completed += 1
+            job.with_issues += 1
+            job.results.append({
+                "standard_id": std_id,
+                "status": "error", "error": str(e),
+            })
+            logger.exception(
+                "Validation failed for %s: %s", std_id, e,
+            )
+            return
 
     # Persist result to disk
     output_path = (
@@ -283,7 +305,12 @@ async def _run_validation(
     standards: list[dict[str, Any]],
     all_atoms: list[dict[str, Any]],
 ) -> None:
-    """Run LLM validation in background, one standard at a time."""
+    """Run LLM validation in background with bounded parallelism.
+
+    Up to ``_MAX_CONCURRENT_VALIDATIONS`` standards are validated
+    concurrently.  Each task handles its own errors so one failure
+    does not cancel the rest.
+    """
     job = _jobs.get(job_id)
     if not job:
         logger.error("Job %s not found", job_id)
@@ -306,23 +333,16 @@ async def _run_validation(
 
     ATOM_VALIDATION_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    for standard in standards:
-        try:
-            await _validate_single_standard(
-                client, validate_atoms_with_llm,
-                standard, all_atoms, job,
-            )
-        except Exception as e:
-            std_id = standard.get("id", "unknown")
-            job.completed += 1
-            job.with_issues += 1
-            job.results.append({
-                "standard_id": std_id,
-                "status": "error", "error": str(e),
-            })
-            logger.exception(
-                "Validation failed for %s: %s", std_id, e,
-            )
+    semaphore = asyncio.Semaphore(_MAX_CONCURRENT_VALIDATIONS)
+
+    tasks = [
+        _validate_single_standard(
+            client, validate_atoms_with_llm,
+            standard, all_atoms, job, semaphore,
+        )
+        for standard in standards
+    ]
+    await asyncio.gather(*tasks)
 
     job.status = "completed"
     job.current_standard = None

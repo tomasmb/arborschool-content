@@ -252,6 +252,9 @@ def validate_atoms_with_llm(
 
     Returns:
         Validation result as dictionary.
+
+    Raises:
+        ValueError: If the LLM returns an empty or non-dict response.
     """
     prompt = build_validation_prompt(standard, atoms)
 
@@ -260,7 +263,8 @@ def validate_atoms_with_llm(
         type(client).__name__,
     )
 
-    # OpenAIClient supports reasoning_effort; GeminiService ignores it
+    # OpenAIClient supports reasoning_effort; GeminiService ignores it.
+    # No max_tokens cap — the client lets the API use its model default.
     generate_kwargs: dict[str, Any] = {
         "response_mime_type": "application/json",
     }
@@ -268,6 +272,13 @@ def validate_atoms_with_llm(
         generate_kwargs["reasoning_effort"] = _ATOM_VALIDATION_REASONING
 
     raw_response = client.generate_text(prompt, **generate_kwargs)
+
+    # Guard against empty responses (e.g. model returned nothing)
+    if not raw_response or not raw_response.strip():
+        raise ValueError(
+            "LLM returned an empty response. Check API key, "
+            "model availability, or try again."
+        )
 
     # Parse JSON response
     result = parse_json_response(raw_response)
