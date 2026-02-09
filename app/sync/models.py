@@ -107,8 +107,8 @@ class AtomRow:
 class QuestionRow:
     """Represents a row in the questions table.
 
-    Note: correct_answer, title, and feedback are parsed directly from qti_xml
-    rather than stored as separate fields.
+    Fields like title, correct_answer, and feedback are populated by the
+    enrichment pipeline. They default to None until enrichment runs.
     """
 
     id: str
@@ -120,6 +120,13 @@ class QuestionRow:
     difficulty_score: float | None = None
     source_test_id: str | None = None
     source_question_number: int | None = None
+    # Fields populated by enrichment / metadata extraction
+    title: str | None = None
+    correct_answer: str | None = None
+    difficulty_analysis: str | None = None
+    general_analysis: str | None = None
+    feedback_general: str | None = None
+    feedback_per_option: dict | None = None
 
 
 @dataclass

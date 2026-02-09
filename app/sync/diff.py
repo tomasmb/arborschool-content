@@ -94,25 +94,68 @@ def _compute_content_hash(data: dict[str, Any]) -> str:
     return hashlib.md5(content.encode()).hexdigest()[:16]
 
 
+# Columns used for content-hash comparison per table.
+# Only include columns that represent "content" (not IDs or timestamps).
+_ATOM_HASH_COLS = (
+    "axis", "standard_ids", "atom_type", "primary_skill",
+    "secondary_skills", "title", "description", "mastery_criteria",
+    "conceptual_examples", "scope_notes", "prerequisite_ids",
+)
+
+_QA_HASH_COLS = ("relevance", "reasoning")
+
+
 def _fetch_db_ids(
     conn: psycopg.Connection,
     table: str,
     subject_id: str | None = None,
     variants_only: bool = False,
+    with_content_hash: bool = False,
 ) -> dict[str, str]:
     """Fetch all IDs and content hashes from a database table.
 
     Args:
         conn: Database connection
         table: Table name to query
-        subject_id: Optional subject ID for filtering (standards, atoms, tests)
-        variants_only: If True and table is 'questions', only fetch variant IDs
-            (questions with parent_question_id IS NOT NULL)
+        subject_id: Optional subject ID for filtering
+        variants_only: If True and table is 'questions', fetch variants only
+        with_content_hash: If True, fetch content columns and compute hash.
+            Supported for 'atoms' and 'question_atoms' tables.
 
     Returns:
-        Dict mapping ID to content hash (or empty string if no hash column)
+        Dict mapping ID to content hash (empty string when not computed)
     """
     with conn.cursor(row_factory=dict_row) as cur:
+        if table == "atoms" and with_content_hash:
+            cols = ", ".join(_ATOM_HASH_COLS)
+            if subject_id:
+                cur.execute(
+                    f"SELECT id, {cols} FROM atoms WHERE subject_id = %s",  # noqa: S608
+                    (subject_id,),
+                )
+            else:
+                cur.execute(f"SELECT id, {cols} FROM atoms")  # noqa: S608
+            return {
+                row["id"]: _compute_content_hash(
+                    {c: row[c] for c in _ATOM_HASH_COLS}
+                )
+                for row in cur.fetchall()
+            }
+
+        if table == "question_atoms" and with_content_hash:
+            cols = ", ".join(_QA_HASH_COLS)
+            cur.execute(
+                "SELECT question_id || ':' || atom_id AS id, "
+                f"{cols} FROM question_atoms"
+            )
+            return {
+                row["id"]: _compute_content_hash(
+                    {c: row[c] for c in _QA_HASH_COLS}
+                )
+                for row in cur.fetchall()
+            }
+
+        # Default: ID-only fetch
         if subject_id and table in ("standards", "atoms", "tests"):
             cur.execute(
                 f"SELECT id FROM {table} WHERE subject_id = %s",  # noqa: S608
@@ -120,15 +163,25 @@ def _fetch_db_ids(
             )
         elif table == "questions":
             if variants_only:
-                # Only fetch variants (questions that have a parent)
-                cur.execute("SELECT id FROM questions WHERE parent_question_id IS NOT NULL")
+                cur.execute(
+                    "SELECT id FROM questions "
+                    "WHERE parent_question_id IS NOT NULL"
+                )
             else:
-                # Fetch only original questions (not variants)
-                cur.execute("SELECT id FROM questions WHERE parent_question_id IS NULL")
+                cur.execute(
+                    "SELECT id FROM questions "
+                    "WHERE parent_question_id IS NULL"
+                )
         elif table == "question_atoms":
-            cur.execute("SELECT question_id || ':' || atom_id as id FROM question_atoms")
+            cur.execute(
+                "SELECT question_id || ':' || atom_id AS id "
+                "FROM question_atoms"
+            )
         elif table == "test_questions":
-            cur.execute("SELECT test_id || ':' || question_id as id FROM test_questions")
+            cur.execute(
+                "SELECT test_id || ':' || question_id AS id "
+                "FROM test_questions"
+            )
         else:
             cur.execute(f"SELECT id FROM {table}")  # noqa: S608
 
@@ -140,6 +193,7 @@ def compute_entity_diff(
     db_ids: dict[str, str],
     id_field: str = "id",
     compute_deletions: bool = True,
+    hash_fields: tuple[str, ...] | None = None,
 ) -> EntityDiff:
     """Compute diff between local items and database IDs.
 
@@ -147,8 +201,10 @@ def compute_entity_diff(
         local_items: List of local items (dataclasses or dicts)
         db_ids: Dict of database IDs to content hashes
         id_field: Field name to use as ID
-        compute_deletions: If False, skip computing deleted items. Useful for
-            additive-only entities like variants that shouldn't delete parent items.
+        compute_deletions: If False, skip deleted items.
+        hash_fields: When provided (and db_ids has hashes), compute a
+            content hash from these fields on each local item and compare
+            to the DB hash to detect true modifications.
 
     Returns:
         EntityDiff with new, modified, deleted items
@@ -157,8 +213,9 @@ def compute_entity_diff(
         local_count=len(local_items),
         db_count=len(db_ids),
     )
+    use_hashes = hash_fields and any(db_ids.values())
 
-    local_ids = set()
+    local_ids: set[str] = set()
     for item in local_items:
         if hasattr(item, id_field):
             item_id = getattr(item, id_field)
@@ -171,16 +228,67 @@ def compute_entity_diff(
 
         if item_id not in db_ids:
             diff.new_ids.append(item_id)
+        elif use_hashes:
+            # Compare content hashes to detect real modifications
+            local_data = _extract_hash_data(item, hash_fields)
+            local_hash = _compute_content_hash(local_data)
+            if local_hash != db_ids[item_id]:
+                diff.modified_ids.append(item_id)
+            else:
+                diff.unchanged_count += 1
         else:
-            # For now, treat all existing items as potentially modified
-            # A more sophisticated approach would compare content hashes
             diff.unchanged_count += 1
 
     # Find deleted items (in DB but not in local) - only if requested
     if compute_deletions:
-        diff.deleted_ids = [id_ for id_ in db_ids if id_ not in local_ids]
+        diff.deleted_ids = [
+            id_ for id_ in db_ids if id_ not in local_ids
+        ]
 
     return diff
+
+
+def _extract_hash_data(
+    item: Any,
+    fields: tuple[str, ...],
+) -> dict[str, Any]:
+    """Extract fields from an item for hashing."""
+    data: dict[str, Any] = {}
+    for f in fields:
+        if hasattr(item, f):
+            val = getattr(item, f)
+            # Normalize enums and lists of enums for consistent hashing
+            if hasattr(val, "value"):
+                val = val.value
+            elif isinstance(val, list):
+                val = [
+                    v.value if hasattr(v, "value") else v for v in val
+                ]
+            data[f] = val
+        elif isinstance(item, dict):
+            data[f] = item.get(f)
+    return data
+
+
+def _build_local_question_atoms(
+    questions: list[Any],
+) -> list[dict[str, str | None]]:
+    """Build local question-atom pairs from extracted questions.
+
+    Each item has 'id' (composite key), 'relevance', and 'reasoning'.
+    """
+    pairs: list[dict[str, str | None]] = []
+    for q in questions:
+        for atom_data in getattr(q, "atoms", []):
+            atom_id = atom_data.get("atom_id")
+            if not atom_id:
+                continue
+            pairs.append({
+                "id": f"{q.id}:{atom_id}",
+                "relevance": atom_data.get("relevance", "primary"),
+                "reasoning": atom_data.get("reasoning"),
+            })
+    return pairs
 
 
 def compute_sync_diff(
@@ -214,38 +322,59 @@ def compute_sync_diff(
             if extracted_data.get("standards"):
                 db_ids = _fetch_db_ids(conn, "standards", subject_id)
                 result.entities["standards"] = compute_entity_diff(
-                    extracted_data["standards"], db_ids
+                    extracted_data["standards"], db_ids,
                 )
 
-            # Atoms
+            # Atoms — with content-hash comparison
             if extracted_data.get("atoms"):
-                db_ids = _fetch_db_ids(conn, "atoms", subject_id)
+                db_ids = _fetch_db_ids(
+                    conn, "atoms", subject_id, with_content_hash=True,
+                )
                 result.entities["atoms"] = compute_entity_diff(
-                    extracted_data["atoms"], db_ids
+                    extracted_data["atoms"],
+                    db_ids,
+                    hash_fields=_ATOM_HASH_COLS,
                 )
 
             # Tests
             if extracted_data.get("tests"):
                 db_ids = _fetch_db_ids(conn, "tests", subject_id)
                 result.entities["tests"] = compute_entity_diff(
-                    extracted_data["tests"], db_ids
+                    extracted_data["tests"], db_ids,
                 )
 
-            # Questions (original questions only, not variants)
+            # Questions (original only, not variants)
             if extracted_data.get("questions"):
-                db_ids = _fetch_db_ids(conn, "questions", variants_only=False)
+                db_ids = _fetch_db_ids(
+                    conn, "questions", variants_only=False,
+                )
                 result.entities["questions"] = compute_entity_diff(
-                    extracted_data["questions"], db_ids
+                    extracted_data["questions"], db_ids,
                 )
 
-            # Variants (also go into questions table, but tracked separately)
-            # Variants are additive - they should never cause deletion of parent questions
+            # Variants — additive only, no deletions
             if extracted_data.get("variants"):
-                db_ids = _fetch_db_ids(conn, "questions", variants_only=True)
+                db_ids = _fetch_db_ids(
+                    conn, "questions", variants_only=True,
+                )
                 result.entities["variants"] = compute_entity_diff(
                     extracted_data["variants"],
                     db_ids,
-                    compute_deletions=False,  # Variants are additive only
+                    compute_deletions=False,
+                )
+
+            # Question-atom links — with content-hash comparison
+            if extracted_data.get("questions"):
+                local_qa = _build_local_question_atoms(
+                    extracted_data["questions"],
+                )
+                db_ids = _fetch_db_ids(
+                    conn, "question_atoms", with_content_hash=True,
+                )
+                result.entities["question_atoms"] = compute_entity_diff(
+                    local_qa,
+                    db_ids,
+                    hash_fields=_QA_HASH_COLS,
                 )
 
         # Check if any entity has changes

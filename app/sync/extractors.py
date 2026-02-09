@@ -61,8 +61,8 @@ class ExtractedStandard:
 class ExtractedQuestion:
     """Raw question data extracted from QTI XML and metadata JSON.
 
-    Note: correct_answer, title, and feedback are parsed directly from qti_xml
-    at display time rather than stored separately.
+    Fields like title, correct_answer, and feedback are populated by the
+    enrichment pipeline. They default to None until enrichment runs.
     """
 
     id: str
@@ -75,6 +75,14 @@ class ExtractedQuestion:
     difficulty_score: float | None
     # Image paths found in QTI
     image_paths: list[str]
+    # From metadata (analysis fields, populated if present)
+    general_analysis: str | None = None
+    difficulty_analysis: str | None = None
+    # From enrichment (populated later by enrichment pipeline)
+    title: str | None = None
+    correct_answer: str | None = None
+    feedback_general: str | None = None
+    feedback_per_option: dict | None = None
 
 
 @dataclass
@@ -185,38 +193,91 @@ def extract_standards(standards_file: Path | None = None) -> list[ExtractedStand
     return standards
 
 
-def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[ExtractedQuestion]]:
-    """Extract a test and its questions from a finalizadas test directory.
+def _parse_question_metadata(
+    metadata: dict[str, Any],
+) -> dict[str, Any]:
+    """Parse question-level fields from metadata_tags.json.
+
+    Returns a flat dict with atoms, difficulty, analysis, and enrichment
+    fields ready for ExtractedQuestion construction.
+    """
+    # Atoms
+    atoms_data: list[dict[str, Any]] = [
+        {
+            "atom_id": a.get("atom_id"),
+            "relevance": a.get("relevance", "primary").lower(),
+            "reasoning": a.get("reasoning"),
+        }
+        for a in metadata.get("selected_atoms", [])
+    ]
+
+    # Difficulty
+    difficulty = metadata.get("difficulty", {})
+    level = (
+        difficulty.get("level", "medium").lower()
+        if difficulty else "medium"
+    )
+    if level not in ("low", "medium", "high"):
+        level = "medium"
+
+    return {
+        "atoms": atoms_data,
+        "difficulty_level": level,
+        "difficulty_score": difficulty.get("score") if difficulty else None,
+        # Analysis (populated after tagging)
+        "general_analysis": metadata.get("general_analysis"),
+        "difficulty_analysis": (
+            difficulty.get("analysis") if difficulty else None
+        ),
+        # Enrichment (populated by enrichment pipeline)
+        "title": metadata.get("title"),
+        "correct_answer": metadata.get("correct_answer"),
+        "feedback_general": metadata.get("feedback_general"),
+        "feedback_per_option": metadata.get("feedback_per_option"),
+    }
+
+
+def _parse_test_name(
+    test_name: str,
+) -> tuple[int | None, str | None]:
+    """Extract admission year and application type from a test name."""
+    admission_year = None
+    year_match = re.search(r"(\d{4})", test_name)
+    if year_match:
+        admission_year = int(year_match.group(1))
+
+    lower = test_name.lower()
+    if "invierno" in lower:
+        application_type = "invierno"
+    elif "regular" in lower:
+        application_type = "regular"
+    elif "seleccion" in lower:
+        application_type = "seleccion"
+    else:
+        application_type = None
+
+    return admission_year, application_type
+
+
+def extract_test_questions(
+    test_dir: Path,
+) -> tuple[ExtractedTest, list[ExtractedQuestion]]:
+    """Extract a test and its questions from a finalizadas directory.
 
     Args:
-        test_dir: Path to the test directory (e.g., pruebas/finalizadas/prueba-invierno-2026)
+        test_dir: Path to the test directory
 
     Returns:
         Tuple of (ExtractedTest, list of ExtractedQuestion)
     """
     test_name = test_dir.name
     test_id = test_name.lower()
+    admission_year, application_type = _parse_test_name(test_name)
 
-    # Parse admission year and application type from test name
-    admission_year = None
-    application_type = None
-    year_match = re.search(r"(\d{4})", test_name)
-    if year_match:
-        admission_year = int(year_match.group(1))
-
-    if "invierno" in test_name.lower():
-        application_type = "invierno"
-    elif "regular" in test_name.lower():
-        application_type = "regular"
-    elif "seleccion" in test_name.lower():
-        application_type = "seleccion"
-
-    # Find all question directories
     qti_dir = test_dir / "qti"
     if not qti_dir.exists():
         return ExtractedTest(
-            id=test_id,
-            name=test_name,
+            id=test_id, name=test_name,
             admission_year=admission_year,
             application_type=application_type,
             question_ids=[],
@@ -225,7 +286,6 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
     questions: list[ExtractedQuestion] = []
     question_ids: list[str] = []
 
-    # Sort question directories by number
     q_dirs = sorted(
         [d for d in qti_dir.iterdir() if d.is_dir() and d.name.startswith("Q")],
         key=lambda x: int(re.search(r"\d+", x.name).group()) if re.search(r"\d+", x.name) else 0,
@@ -238,38 +298,19 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
         q_num = int(q_num_match.group(1))
         question_id = f"{test_id}-Q{q_num}"
 
-        # Read QTI XML
         qti_file = q_dir / "question.xml"
         if not qti_file.exists():
             continue
-
         with open(qti_file, encoding="utf-8") as f:
             qti_xml = f.read()
 
-        # Read metadata
+        # Read and parse metadata
         metadata_file = q_dir / "metadata_tags.json"
         metadata: dict[str, Any] = {}
         if metadata_file.exists():
             with open(metadata_file, encoding="utf-8") as f:
                 metadata = json.load(f)
-
-        # Extract atoms info
-        atoms_data: list[dict[str, Any]] = []
-        for atom_info in metadata.get("selected_atoms", []):
-            atoms_data.append(
-                {
-                    "atom_id": atom_info.get("atom_id"),
-                    "relevance": atom_info.get("relevance", "primary").lower(),
-                    "reasoning": atom_info.get("reasoning"),
-                }
-            )
-
-        # Extract difficulty
-        difficulty = metadata.get("difficulty", {})
-        difficulty_level = difficulty.get("level", "medium").lower() if difficulty else "medium"
-        # Normalize difficulty level
-        if difficulty_level not in ("low", "medium", "high"):
-            difficulty_level = "medium"
+        parsed = _parse_question_metadata(metadata)
 
         questions.append(
             ExtractedQuestion(
@@ -277,22 +318,18 @@ def extract_test_questions(test_dir: Path) -> tuple[ExtractedTest, list[Extracte
                 test_id=test_id,
                 question_number=q_num,
                 qti_xml=qti_xml,
-                atoms=atoms_data,
-                difficulty_level=difficulty_level,
-                difficulty_score=difficulty.get("score") if difficulty else None,
                 image_paths=_find_images_in_qti(qti_xml),
+                **parsed,
             )
         )
         question_ids.append(question_id)
 
     test = ExtractedTest(
-        id=test_id,
-        name=test_name,
+        id=test_id, name=test_name,
         admission_year=admission_year,
         application_type=application_type,
         question_ids=question_ids,
     )
-
     return test, questions
 
 

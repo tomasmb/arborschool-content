@@ -60,17 +60,42 @@ export function BlockedSection({
 // DB State Section
 // ---------------------------------------------------------------------------
 
-/** Current database state for atoms. */
+/** Reusable row of stat cards for a single entity type. */
+function DiffStatRow({ label, diff }: { label: string; diff: CourseSyncEntityDiff }) {
+  const cells: [string, number, string][] = [
+    ["", diff.db_count, "In DB"],
+    ["text-success", diff.new_count, "New"],
+    ["text-accent", diff.modified_count, "Modified"],
+    ["text-error", diff.deleted_count, "Deleted"],
+  ];
+  return (
+    <div>
+      <p className="text-xs text-text-secondary font-medium mb-2 uppercase tracking-wide">{label}</p>
+      <div className="grid grid-cols-4 gap-3">
+        {cells.map(([color, count, lbl]) => (
+          <div key={lbl} className="text-center p-2 bg-background rounded-lg">
+            <p className={cn("text-lg font-semibold", color)}>{count}</p>
+            <p className="text-[11px] text-text-secondary">{lbl}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Current database state for atoms and question links. */
 export function DbStateSection({
   envLabel,
   syncDiff,
   atomsDiff,
+  questionAtomsDiff,
   loading,
   onRefresh,
 }: {
   envLabel: string;
   syncDiff: CourseSyncDiff | null;
   atomsDiff: CourseSyncEntityDiff | null;
+  questionAtomsDiff: CourseSyncEntityDiff | null;
   loading: boolean;
   onRefresh: () => void;
 }) {
@@ -115,31 +140,14 @@ export function DbStateSection({
             </span>
           </div>
         ) : atomsDiff ? (
-          <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-3 bg-background rounded-lg">
-              <p className="text-2xl font-semibold">
-                {atomsDiff.db_count}
-              </p>
-              <p className="text-xs text-text-secondary">
-                Atoms in DB
-              </p>
-            </div>
-            <div className="text-center p-3 bg-background rounded-lg">
-              <p className="text-2xl font-semibold text-success">
-                {atomsDiff.new_count}
-              </p>
-              <p className="text-xs text-text-secondary">
-                New (not in DB)
-              </p>
-            </div>
-            <div className="text-center p-3 bg-background rounded-lg">
-              <p className="text-2xl font-semibold text-accent">
-                {atomsDiff.modified_count}
-              </p>
-              <p className="text-xs text-text-secondary">
-                Modified
-              </p>
-            </div>
+          <div className="space-y-4">
+            <DiffStatRow label="Atoms" diff={atomsDiff} />
+            {questionAtomsDiff && (
+              <DiffStatRow
+                label="Question Links"
+                diff={questionAtomsDiff}
+              />
+            )}
           </div>
         ) : (
           <p className="text-sm text-text-secondary">
@@ -251,6 +259,7 @@ export function PreviewSection({
   syncPreview,
   atomsTable,
   atomsDiff,
+  questionAtomsDiff,
   loading,
   error,
   warnings,
@@ -259,6 +268,7 @@ export function PreviewSection({
   syncPreview: CourseSyncPreview | null;
   atomsTable: { table: string; total: number } | null;
   atomsDiff: CourseSyncEntityDiff | null;
+  questionAtomsDiff: CourseSyncEntityDiff | null;
   loading: boolean;
   error: string | null;
   warnings: string[];
@@ -307,6 +317,7 @@ export function PreviewSection({
           <PreviewContent
             atomsTable={atomsTable}
             atomsDiff={atomsDiff}
+            questionAtomsDiff={questionAtomsDiff}
             warnings={warnings}
           />
         ) : (
@@ -319,41 +330,89 @@ export function PreviewSection({
   );
 }
 
+/** Inline diff summary for a single entity type. */
+function DiffLine({
+  diff,
+  fallbackTotal,
+  fallbackLabel,
+}: {
+  diff: CourseSyncEntityDiff | null;
+  fallbackTotal: number;
+  fallbackLabel: string;
+}) {
+  if (!diff) {
+    return (
+      <span className="text-accent">
+        UPSERT {fallbackTotal} {fallbackLabel}
+      </span>
+    );
+  }
+  return (
+    <div className="flex gap-4">
+      {diff.new_count > 0 && (
+        <span className="text-success">
+          + {diff.new_count} new
+        </span>
+      )}
+      {diff.modified_count > 0 && (
+        <span className="text-accent">
+          ~ {diff.modified_count} modified
+        </span>
+      )}
+      {diff.deleted_count > 0 && (
+        <span className="text-error">
+          - {diff.deleted_count} deleted
+        </span>
+      )}
+      <span className="text-text-secondary">
+        = {diff.unchanged} unchanged
+      </span>
+    </div>
+  );
+}
+
 /** Preview content when data is available. */
 function PreviewContent({
   atomsTable,
   atomsDiff,
+  questionAtomsDiff,
   warnings,
 }: {
   atomsTable: { table: string; total: number };
   atomsDiff: CourseSyncEntityDiff | null;
+  questionAtomsDiff: CourseSyncEntityDiff | null;
   warnings: string[];
 }) {
   return (
-    <div className="space-y-3">
-      <p className="text-sm font-medium mb-2">Atoms:</p>
-      {atomsDiff ? (
-        <div className="flex gap-4 text-sm">
-          <span className="text-success">
-            + INSERT {atomsDiff.new_count} new
-          </span>
-          <span className="text-accent">
-            ~ UPDATE {atomsDiff.modified_count} existing
-          </span>
-          <span className="text-text-secondary">
-            = UNCHANGED {atomsDiff.unchanged}
-          </span>
+    <div className="space-y-4">
+      {/* Atoms diff */}
+      <div>
+        <p className="text-sm font-medium mb-1">Atoms:</p>
+        <div className="text-sm">
+          <DiffLine
+            diff={atomsDiff}
+            fallbackTotal={atomsTable.total}
+            fallbackLabel="atoms"
+          />
         </div>
-      ) : (
-        <div className="flex gap-4 text-sm">
-          <span className="text-accent">
-            UPSERT {atomsTable.total} atoms
-          </span>
+      </div>
+
+      {/* Question links diff */}
+      <div>
+        <p className="text-sm font-medium mb-1">
+          Question Links:
+        </p>
+        <div className="text-sm">
+          <DiffLine
+            diff={questionAtomsDiff}
+            fallbackTotal={0}
+            fallbackLabel="links"
+          />
         </div>
-      )}
+      </div>
 
       {warnings.length > 0 && (
-        <div className="mt-3 p-3 bg-warning/10 border border-warning/20 rounded-lg space-y-1">
+        <div className="p-3 bg-warning/10 border border-warning/20 rounded-lg space-y-1">
           {warnings.map((w, i) => (
             <p
               key={i}
@@ -366,10 +425,10 @@ function PreviewContent({
         </div>
       )}
 
-      <div className="mt-4 p-3 bg-warning/10 border border-warning/20 rounded-lg">
+      <div className="p-3 bg-warning/10 border border-warning/20 rounded-lg">
         <p className="text-sm text-warning flex items-center gap-2">
           <AlertTriangle className="w-4 h-4" />
-          Sync will UPSERT atoms — existing data is overwritten
+          Sync will UPSERT — existing data is overwritten
         </p>
       </div>
     </div>
@@ -381,11 +440,9 @@ function PreviewContent({
 // ---------------------------------------------------------------------------
 
 /** Shows result after sync execution. */
-export function SyncResultSection({
-  result,
-}: {
-  result: CourseSyncResult;
-}) {
+export function SyncResultSection({ result }: { result: CourseSyncResult }) {
+  const Icon = result.success ? CheckCircle2 : XCircle;
+  const color = result.success ? "text-success" : "text-error";
   return (
     <section className="bg-surface border border-border rounded-lg">
       <div className="px-4 py-3 border-b border-border">
@@ -393,53 +450,26 @@ export function SyncResultSection({
       </div>
       <div className="p-4">
         <div className="flex items-center gap-3 mb-4">
-          {result.success ? (
-            <CheckCircle2 className="w-6 h-6 text-success" />
-          ) : (
-            <XCircle className="w-6 h-6 text-error" />
-          )}
-          <p
-            className={cn(
-              "font-medium",
-              result.success ? "text-success" : "text-error",
-            )}
-          >
-            {result.success
-              ? "Sync Complete!"
-              : "Sync Failed"}
+          <Icon className={cn("w-6 h-6", color)} />
+          <p className={cn("font-medium", color)}>
+            {result.success ? "Sync Complete!" : "Sync Failed"}
           </p>
         </div>
-
-        <p className="text-sm text-text-secondary mb-3">
-          {result.message}
-        </p>
-
-        {/* Rows affected breakdown */}
+        <p className="text-sm text-text-secondary mb-3">{result.message}</p>
         {Object.keys(result.results).length > 0 && (
           <div className="grid grid-cols-2 gap-2 text-sm">
-            {Object.entries(result.results).map(
-              ([table, count]) => (
-                <div
-                  key={table}
-                  className="p-3 bg-background rounded-lg"
-                >
-                  <p className="font-semibold">{count}</p>
-                  <p className="text-text-secondary text-xs capitalize">
-                    {table} rows
-                  </p>
-                </div>
-              ),
-            )}
+            {Object.entries(result.results).map(([table, count]) => (
+              <div key={table} className="p-3 bg-background rounded-lg">
+                <p className="font-semibold">{count}</p>
+                <p className="text-text-secondary text-xs capitalize">{table} rows</p>
+              </div>
+            ))}
           </div>
         )}
-
-        {/* Errors list */}
         {result.errors.length > 0 && (
           <div className="mt-3 max-h-32 overflow-y-auto border border-error/20 rounded-lg p-3">
             {result.errors.map((e, i) => (
-              <p key={i} className="text-sm text-error">
-                {e}
-              </p>
+              <p key={i} className="text-sm text-error">{e}</p>
             ))}
           </div>
         )}

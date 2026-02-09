@@ -106,11 +106,13 @@ function useAtomSyncData(
     ) ?? null;
   const atomsDiff: CourseSyncEntityDiff | null =
     syncDiff?.entities?.atoms ?? null;
+  const questionAtomsDiff: CourseSyncEntityDiff | null =
+    syncDiff?.entities?.question_atoms ?? null;
 
   return {
     syncDiff, diffLoading, fetchDiff,
     syncPreview, previewLoading, previewError, fetchPreview,
-    atomsTable, questionAtomsTable, atomsDiff,
+    atomsTable, questionAtomsTable, atomsDiff, questionAtomsDiff,
   };
 }
 
@@ -218,6 +220,7 @@ export function AtomSyncTab({
             envLabel={envLabel(selectedEnv)}
             syncDiff={data.syncDiff}
             atomsDiff={data.atomsDiff}
+            questionAtomsDiff={data.questionAtomsDiff}
             loading={data.diffLoading}
             onRefresh={data.fetchDiff}
           />
@@ -226,6 +229,7 @@ export function AtomSyncTab({
             syncPreview={data.syncPreview}
             atomsTable={data.atomsTable}
             atomsDiff={data.atomsDiff}
+            questionAtomsDiff={data.questionAtomsDiff}
             loading={data.previewLoading}
             error={data.previewError}
             warnings={data.syncPreview?.warnings ?? []}
@@ -242,6 +246,7 @@ export function AtomSyncTab({
           atomsTable={data.atomsTable}
           questionAtomsTable={data.questionAtomsTable}
           atomsDiff={data.atomsDiff}
+          questionAtomsDiff={data.questionAtomsDiff}
           selectedEnv={selectedEnv}
           syncing={exec.syncing}
           previewLoading={data.previewLoading}
@@ -305,6 +310,7 @@ function SyncActionBar({
   atomsTable,
   questionAtomsTable,
   atomsDiff,
+  questionAtomsDiff,
   selectedEnv,
   syncing,
   previewLoading,
@@ -312,13 +318,35 @@ function SyncActionBar({
 }: {
   atomsTable: { total: number } | null;
   questionAtomsTable: { total: number } | null;
-  atomsDiff: { new_count: number; modified_count: number } | null;
+  atomsDiff: CourseSyncEntityDiff | null;
+  questionAtomsDiff: CourseSyncEntityDiff | null;
   selectedEnv: SyncEnvironment;
   syncing: boolean;
   previewLoading: boolean;
   onSync: () => void;
 }) {
   const qaCount = questionAtomsTable?.total ?? 0;
+
+  // Build a concise summary line
+  const parts: string[] = [];
+  if (atomsDiff) {
+    const aParts: string[] = [];
+    if (atomsDiff.new_count > 0) aParts.push(`${atomsDiff.new_count} new`);
+    if (atomsDiff.modified_count > 0) aParts.push(`${atomsDiff.modified_count} modified`);
+    if (atomsDiff.deleted_count > 0) aParts.push(`${atomsDiff.deleted_count} deleted`);
+    if (aParts.length > 0) parts.push(`Atoms: ${aParts.join(", ")}`);
+  }
+  if (questionAtomsDiff) {
+    const qParts: string[] = [];
+    if (questionAtomsDiff.new_count > 0) qParts.push(`${questionAtomsDiff.new_count} new`);
+    if (questionAtomsDiff.modified_count > 0) qParts.push(`${questionAtomsDiff.modified_count} modified`);
+    if (questionAtomsDiff.deleted_count > 0) qParts.push(`${questionAtomsDiff.deleted_count} deleted`);
+    if (qParts.length > 0) parts.push(`Links: ${qParts.join(", ")}`);
+  }
+  const summaryLine = parts.length > 0
+    ? parts.join(" · ")
+    : `To ${envLabel(selectedEnv)} database`;
+
   return (
     <div
       className={cn(
@@ -335,10 +363,7 @@ function SyncActionBar({
             {qaCount > 0 && ` + ${qaCount} question links`}
           </p>
           <p className="text-sm text-text-secondary">
-            {atomsDiff
-              ? `${atomsDiff.new_count} new, ` +
-                `${atomsDiff.modified_count} modified`
-              : `To ${envLabel(selectedEnv)} database`}
+            {summaryLine}
           </p>
         </div>
         <ActionButton
