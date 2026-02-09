@@ -70,14 +70,14 @@ def _extract_data(
 
     Args:
         entities: List of entity types to extract (standards, atoms, tests,
-            questions, variants)
-        subject_id: Optional subject ID to scope extraction. If provided, only
-            data for that subject is extracted.
+            questions, variants, question_atoms).
+            "question_atoms" extracts question metadata (for atom links)
+            without marking questions for content sync.
+        subject_id: Optional subject ID to scope extraction.
 
     Returns:
         Dict with extracted data for each entity type
     """
-    # Lazy import to avoid loading sync modules at startup
     from app.sync.extractors import (
         extract_all_tests,
         extract_atoms,
@@ -85,7 +85,7 @@ def _extract_data(
     )
     from app.sync.variant_extractors import extract_all_variants
 
-    result = {
+    result: dict = {
         "standards": [],
         "atoms": [],
         "tests": [],
@@ -93,17 +93,17 @@ def _extract_data(
         "variants": [],
     }
 
-    # Get subject-specific file paths if subject_id provided
     standards_file, atoms_file = None, None
     if subject_id:
         standards_file, atoms_file = _get_subject_files(subject_id)
 
-    # Determine what to extract based on entities list
     sync_standards = "standards" in entities
     sync_atoms = "atoms" in entities
     sync_tests = "tests" in entities
     sync_questions = "questions" in entities
     sync_variants = "variants" in entities
+    # "question_atoms" needs question metadata for atom-link extraction
+    need_question_metadata = "question_atoms" in entities
 
     if sync_standards:
         result["standards"] = extract_standards(standards_file)
@@ -111,11 +111,11 @@ def _extract_data(
     if sync_atoms:
         result["atoms"] = extract_atoms(atoms_file)
 
-    if sync_tests or sync_questions:
+    if sync_tests or sync_questions or need_question_metadata:
         tests, questions = extract_all_tests()
         if sync_tests:
             result["tests"] = tests
-        if sync_questions:
+        if sync_questions or need_question_metadata:
             result["questions"] = questions
 
     if sync_variants:
@@ -136,26 +136,45 @@ def _api_to_db_subject_id(api_subject_id: str) -> str:
     return mapping.get(api_subject_id, api_subject_id.replace("-", "_").rsplit("_", 1)[0])
 
 
-def _build_payload(extracted_data: dict, subject_id: str | None = None):
+def _build_payload(
+    extracted_data: dict,
+    subject_id: str | None = None,
+    entities: list[str] | None = None,
+):
     """Build sync payload from extracted data.
 
     Args:
         extracted_data: Dict with extracted data
         subject_id: Optional API subject ID (e.g., "paes-m1-2026")
+        entities: If provided, filter the payload to only include
+            tables corresponding to these entity types.
+
+    Returns:
+        SyncPayload (filtered if entities was provided)
     """
     from app.sync.transformers import build_sync_payload
 
-    # Convert API subject_id to DB format
-    db_subject_id = _api_to_db_subject_id(subject_id) if subject_id else "paes_m1"
+    db_subject_id = (
+        _api_to_db_subject_id(subject_id) if subject_id else "paes_m1"
+    )
 
-    return build_sync_payload(
+    payload = build_sync_payload(
         standards=extracted_data["standards"],
         atoms=extracted_data["atoms"],
         tests=extracted_data["tests"],
         questions=extracted_data["questions"],
-        variants=extracted_data["variants"] if extracted_data["variants"] else None,
+        variants=(
+            extracted_data["variants"]
+            if extracted_data["variants"] else None
+        ),
         subject_id=db_subject_id,
     )
+
+    # Filter payload to only the requested entity types
+    if entities:
+        payload.filter_for_entities(entities)
+
+    return payload
 
 
 @router.post("/preview", response_model=SyncPreviewResponse)
@@ -177,7 +196,7 @@ def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
         extracted = _extract_data(request.entities)
 
         # Build the payload to get accurate counts
-        payload = _build_payload(extracted)
+        payload = _build_payload(extracted, entities=request.entities)
         summary = payload.summary()
 
         # Build table summaries
@@ -317,9 +336,10 @@ def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
         # Extract and transform data
         extracted = _extract_data(request.entities)
 
-        # Auto-upload images to S3 if configured and questions are being synced
+        # Auto-upload images to S3 only when syncing question content
         images_uploaded = 0
-        if _check_s3_config() and extracted["questions"]:
+        sync_question_content = "questions" in request.entities
+        if sync_question_content and _check_s3_config() and extracted["questions"]:
             from app.sync.s3_client import (
                 ImageUploader,
                 S3Config,
@@ -329,22 +349,20 @@ def execute_sync(request: SyncExecuteRequest) -> SyncExecuteResponse:
             s3_config = S3Config.from_env()
             uploader = ImageUploader(s3_config)
 
-            # Process images and get updated QTI XML
             updated_qti = process_all_questions_images(
                 extracted["questions"],
                 PRUEBAS_FINALIZADAS_DIR,
                 uploader,
             )
 
-            # Update the extracted questions with S3 URLs in their QTI
             for q in extracted["questions"]:
                 if q.id in updated_qti:
                     q.qti_xml = updated_qti[q.id]
                     images_uploaded += 1
 
-            logger.info(f"Processed {images_uploaded} questions for S3 images")
+            logger.info("Processed %d questions for S3 images", images_uploaded)
 
-        payload = _build_payload(extracted)
+        payload = _build_payload(extracted, entities=request.entities)
 
         # Connect to the appropriate database based on environment
         db_config = DBConfig.for_environment(request.environment)

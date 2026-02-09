@@ -195,3 +195,29 @@ class SyncPayload:
             "tests": len(self.tests),
             "test_questions": len(self.test_questions),
         }
+
+    def filter_for_entities(self, entities: list[str]) -> None:
+        """Remove data for entity types not in the requested list.
+
+        This allows extracting all data (e.g. questions for deriving
+        question_atoms) but only syncing the requested tables.
+
+        Mapping from entity request → tables kept:
+          "standards"      → standards
+          "atoms"          → atoms
+          "questions"      → questions (content)
+          "question_atoms" → question_atoms (links only)
+          "tests"          → tests, test_questions
+          "variants"       → (already in questions list)
+        """
+        if "standards" not in entities:
+            self.standards = []
+        if "atoms" not in entities:
+            self.atoms = []
+        if "questions" not in entities and "variants" not in entities:
+            self.questions = []
+        if "question_atoms" not in entities and "questions" not in entities:
+            self.question_atoms = []
+        if "tests" not in entities:
+            self.tests = []
+            self.test_questions = []

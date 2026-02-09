@@ -26,10 +26,10 @@ import {
 
 export type SyncEnvironment = "local" | "staging" | "prod";
 
-// Sync atoms + questions together so that question-atom links
-// (stored in the question_atoms table) stay in sync with atom
-// changes (e.g. after fix-pipeline renames/removals).
-const SYNC_ENTITIES = ["atoms", "questions"];
+// Atom sync: push atoms, standards, and question-atom links (tagging).
+// Question content (QTI, difficulty, feedback) is synced separately
+// from the test pipeline.
+const SYNC_ENTITIES = ["standards", "atoms", "question_atoms"];
 
 export const envLabel = (env: SyncEnvironment): string =>
   env === "prod"

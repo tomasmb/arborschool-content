@@ -90,7 +90,10 @@ def preview_course_sync(
             subject_id=subject_id,
         )
 
-        payload = _build_payload(extracted, subject_id=subject_id)
+        payload = _build_payload(
+            extracted, subject_id=subject_id,
+            entities=request.entities,
+        )
         summary = payload.summary()
         tables = _build_table_summaries(summary, extracted)
 
@@ -180,9 +183,10 @@ def execute_course_sync(
             subject_id=subject_id,
         )
 
-        # Auto-upload images to S3 if configured and questions are being synced
+        # Auto-upload images to S3 only when syncing question content
         images_uploaded = 0
-        if _check_s3_config() and extracted["questions"]:
+        sync_question_content = "questions" in request.entities
+        if sync_question_content and _check_s3_config() and extracted["questions"]:
             from app.sync.s3_client import (
                 ImageUploader,
                 S3Config,
@@ -203,7 +207,10 @@ def execute_course_sync(
                     q.qti_xml = updated_qti[q.id]
                     images_uploaded += 1
 
-        payload = _build_payload(extracted, subject_id=subject_id)
+        payload = _build_payload(
+            extracted, subject_id=subject_id,
+            entities=request.entities,
+        )
 
         # Connect to the appropriate database based on environment
         db_config = DBConfig.for_environment(request.environment)
