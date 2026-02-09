@@ -97,6 +97,41 @@ def fetch_test_variant_ids(
         return {row["id"]: "" for row in cur.fetchall()}
 
 
+def fetch_question_ids_by_tests(
+    conn: psycopg.Connection,
+    test_ids: list[str],
+) -> dict[str, tuple[dict[str, str], dict[str, str]]]:
+    """Fetch official + variant IDs for multiple tests in one query.
+
+    Returns {test_id: (official_ids, variant_ids)} where each dict
+    maps question_id -> '' (for compatibility with _id_diff).
+    """
+    if not test_ids:
+        return {}
+
+    result: dict[str, tuple[dict[str, str], dict[str, str]]] = {
+        tid: ({}, {}) for tid in test_ids
+    }
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT source_test_id, id, "
+            "parent_question_id IS NOT NULL AS is_variant "
+            "FROM questions WHERE source_test_id = ANY(%s)",
+            (test_ids,),
+        )
+        for row in cur.fetchall():
+            tid = row["source_test_id"]
+            if tid not in result:
+                continue
+            officials, variants = result[tid]
+            if row["is_variant"]:
+                variants[row["id"]] = ""
+            else:
+                officials[row["id"]] = ""
+
+    return result
+
+
 def batch_fetch_from_db(
     environment: SyncEnvironment,
     ids: list[str],

@@ -1,11 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Play } from "lucide-react";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { StatusIcon } from "@/components/ui/StatusBadge";
-import type { SubjectDetail } from "@/lib/api-types";
+import type { SubjectDetail, TestSyncDiff } from "@/lib/api-types";
+import { getTestsSyncStatus } from "@/lib/api";
 import { computeProgress, type NextActionType } from "./ProgressComputation";
 import { KnowledgePipelineCard, TestRow } from "./DashboardCards";
 
@@ -30,6 +32,14 @@ export function CourseProgressDashboard({
 }: CourseProgressDashboardProps) {
   const router = useRouter();
   const progress = computeProgress(data);
+
+  // Fetch sync status for all tests (async, non-blocking)
+  const [syncMap, setSyncMap] = useState<Record<string, TestSyncDiff> | undefined>();
+  useEffect(() => {
+    getTestsSyncStatus(courseId)
+      .then((res) => setSyncMap(res.tests))
+      .catch(() => setSyncMap({}));
+  }, [courseId]);
 
   const hasTemario = data.temario_exists;
   const hasStandards = data.standards.length > 0;
@@ -191,12 +201,18 @@ export function CourseProgressDashboard({
                 <th className="px-4 py-2 font-medium text-center">Enriched</th>
                 <th className="px-4 py-2 font-medium text-center">Validated</th>
                 <th className="px-4 py-2 font-medium text-center">Qs w/Vars</th>
+                <th className="px-4 py-2 font-medium text-center">Sync</th>
                 <th className="px-4 py-2 font-medium"></th>
               </tr>
             </thead>
             <tbody>
               {data.tests.map((test) => (
-                <TestRow key={test.id} test={test} courseId={courseId} />
+                <TestRow
+                  key={test.id}
+                  test={test}
+                  courseId={courseId}
+                  syncDiff={syncMap === undefined ? undefined : (syncMap[test.id] ?? null)}
+                />
               ))}
             </tbody>
           </table>
