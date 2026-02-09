@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 12,
-    "atoms_passing_all_checks": 9,
-    "atoms_with_issues": 3,
+    "atoms_passing_all_checks": 8,
+    "atoms_with_issues": 4,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -10,18 +10,20 @@
   "atoms_evaluation": [
     {
       "atom_id": "A-M1-PROB-02-01",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "El criterio 'Distingue conceptualmente la media aritmética de la mediana y la moda' introduce dependencia conceptual de medidas que, típicamente, se definen después. Esto tensiona la independencia del átomo respecto de prerrequisitos que no están listados y sugiere que podría fragmentarse o reubicarse en un átomo integrador posterior."
+        ],
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -36,10 +38,15 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Para evaluar el criterio de distinguir la media de la mediana y la moda, el estudiante debe conocer previamente esos conceptos (A-M1-PROB-02-03 y A-M1-PROB-02-06), pero no aparecen como prerrequisitos. O bien se deben añadir esos prerrequisitos, o mover ese criterio a un átomo posterior donde ya se hayan introducido todas las medidas."
+        ]
       },
-      "recommendations": []
+      "recommendations": [
+        "Eliminar del átomo 01 el criterio de diferenciación respecto de mediana y moda, y trasladarlo a un átomo integrador (por ejemplo A-M1-PROB-02-10 o A-M1-PROB-02-11); o bien añadir como prerrequisitos directos A-M1-PROB-02-03 y A-M1-PROB-02-06 y ajustar la secuenciación.",
+        "Mantener este átomo estrictamente centrado en el significado de 'reparto equitativo' y 'punto de equilibrio' de la media."
+      ]
     },
     {
       "atom_id": "A-M1-PROB-02-02",
@@ -72,9 +79,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcional: hacer explícito en los criterios el paso de 'contar la cantidad de datos' antes de dividir, para alinear mejor con el algoritmo típico que se enseña."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-03",
@@ -140,9 +145,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Podría añadirse un ejemplo que explicite la fórmula de la posición central (por ejemplo, 'posición (n+1)/2') como apoyo opcional, manteniendo el foco en la identificación conceptual del dato central."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-05",
@@ -175,9 +178,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Aclarar en notas o ejemplos que la 'media aritmética de los dos valores centrales' es un caso particular del procedimiento de A-M1-PROB-02-02, para reforzar la conexión entre ambos algoritmos."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-06",
@@ -210,9 +211,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Se podría incluir un ejemplo explícito con datos cualitativos (por ejemplo, colores preferidos) para reforzar la idea de que la moda se aplica también a variables no numéricas."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-07",
@@ -249,18 +248,20 @@
     },
     {
       "atom_id": "A-M1-PROB-02-08",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "El criterio 'Distingue el rango (dispersión) de las medidas de tendencia central (posición)' presupone conocimiento previo de media, mediana y moda, que no están declaradas como prerrequisitos y suelen introducirse en otros átomos. Esto compromete la independencia del átomo respecto de otros aprendizajes."
+        ],
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -275,10 +276,15 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Para distinguir explícitamente rango de 'medidas de tendencia central', el estudiante debe conocer esas medidas (al menos conceptualmente). Se recomienda agregar como prerrequisito un átomo conceptual de tendencia central (p. ej. A-M1-PROB-02-01, A-M1-PROB-02-03 o A-M1-PROB-02-06) o mover ese criterio a un átomo integrador posterior."
+        ]
       },
-      "recommendations": []
+      "recommendations": [
+        "Mantener en este átomo solo la definición e interpretación básica del rango como amplitud (máximo − mínimo).",
+        "Trasladar la comparación explícita con las medidas de tendencia central a un átomo integrador (p. ej. A-M1-PROB-02-10 o A-M1-PROB-02-11) o declarar al menos un átomo conceptual de tendencia central como prerrequisito directo."
+      ]
     },
     {
       "atom_id": "A-M1-PROB-02-09",
@@ -315,7 +321,7 @@
     },
     {
       "atom_id": "A-M1-PROB-02-10",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -337,20 +343,14 @@
         "issues": []
       },
       "content_quality": {
-        "score": "warning",
-        "issues": [
-          "Se mencionan 'valores atípicos (outliers)' y 'forma de la distribución' sin precisar, ni siquiera de manera cualitativa, cómo reconocer estos casos, lo que puede generar ambigüedad en la evaluación de la habilidad argumentativa."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Incluir un criterio o ejemplo que explicite, de forma cualitativa, qué se entiende por 'valor atípico' (por ejemplo, 'un dato mucho más grande o mucho más pequeño que la mayoría').",
-        "Matizar la referencia a la 'forma de la distribución' para mantenerla en un nivel descriptivo (simétrica vs. muy sesgada) sin introducir conceptos formales de asimetría que están fuera del alcance.",
-        "Agregar un ejemplo adicional donde no haya valores atípicos y la media sea claramente la medida más adecuada, para equilibrar los casos trabajados."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-11",
@@ -365,29 +365,30 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "La descripción habla de 'medidas de tendencia central' en general, pero los criterios y ejemplos solo hacen referencia explícita a media y mediana, sin considerar la moda en la comparación de grupos."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
         "score": "pass",
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "El criterio 'Compara la dispersión de dos grupos usando el rango' requiere la comprensión conceptual del rango como medida de dispersión (A-M1-PROB-02-08), pero solo se lista el átomo procedimental A-M1-PROB-02-09. Para interpretar adecuadamente la diferencia de dispersión, el prerrequisito conceptual debiera declararse explícitamente.",
+          "De forma análoga, para comparar modas en términos de 'categoría más habitual', puede ser útil declarar también el átomo conceptual de moda (A-M1-PROB-02-06) además del procedimental A-M1-PROB-02-07."
+        ]
       },
       "recommendations": [
-        "Alinear la descripción con los criterios: o bien restringirla explícitamente a media/mediana, o bien añadir un criterio y un ejemplo que incluyan la comparación usando la moda (por ejemplo, comparación de categorías más frecuentes entre grupos).",
-        "Aclarar en las notas de alcance que la comparación puede hacerse tanto cuando las medidas están dadas como cuando el estudiante las ha calculado previamente, especificando que el foco de este átomo es el análisis/comparación, no el cálculo."
+        "Añadir A-M1-PROB-02-08 como prerrequisito directo para asegurar que el estudiante comprende conceptualmente qué significa una mayor o menor dispersión al comparar rangos.",
+        "Considerar añadir A-M1-PROB-02-06 como prerrequisito para reforzar la interpretación de la moda en la comparación entre grupos."
       ]
     },
     {
@@ -403,7 +404,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -420,13 +421,14 @@
       "prerequisites": {
         "score": "warning",
         "issues": [
-          "El prerequisito A-M1-PROB-02-10 implica que todos los problemas contextuales exijan también seleccionar y justificar la medida más adecuada, lo cual puede ser más exigente que lo requerido para problemas rutinarios centrados solo en cálculo e interpretación básica."
+          "Además de los átomos procedimentales, la interpretación de resultados en contexto ('Interpreta los resultados numéricos en el contexto de la situación planteada') requiere los conceptos de las medidas (media, mediana, moda, rango). Solo se incluye A-M1-PROB-02-10 como conceptual de tendencia central, pero no A-M1-PROB-02-08 para el rango ni necesariamente los conceptos individuales de cada medida.",
+          "Como átomo integrador final, convendría explicitar al menos un prerrequisito conceptual de rango (A-M1-PROB-02-08) y, opcionalmente, referir al átomo de comparación de grupos (A-M1-PROB-02-11) si los problemas incluyen comparaciones entre conjuntos."
         ]
       },
       "recommendations": [
-        "Precisar en la descripción si este átomo se refiere únicamente a problemas donde, además de calcular, se debe decidir qué medida usar (en cuyo caso A-M1-PROB-02-10 como prerequisito es coherente), o si también incluye problemas más rutinarios.",
-        "Considerar dividir este átomo en dos: uno para problemas rutinarios de cálculo e interpretación básica de medidas, y otro (más avanzado) para problemas que exigen seleccionar/justificar la medida adecuada usando criterios como valores atípicos.",
-        "Si no se desea dividir, matizar en las notas de alcance que en algunas tareas asociadas a este átomo bastará con el cálculo e interpretación, mientras que en otras se activará también la selección/justificación trabajada en A-M1-PROB-02-10."
+        "Añadir A-M1-PROB-02-08 como prerrequisito directo para sostener la interpretación de la variabilidad mediante el rango en contextos reales.",
+        "Valorar añadir como prerrequisitos conceptuales explícitos A-M1-PROB-02-01, A-M1-PROB-02-03 y A-M1-PROB-02-06 si se espera una interpretación rica de cada medida en problemas contextualizados.",
+        "Si una proporción relevante de los problemas supone comparar grupos, considerar añadir también A-M1-PROB-02-11 como prerrequisito."
       ]
     }
   ],
@@ -465,10 +467,9 @@
     }
   },
   "global_recommendations": [
-    "Mantener la separación conceptual/procedimental lograda (media, mediana, moda, rango) y la existencia de átomos integradores (comparación de grupos, resolución de problemas), que están bien alineados con el estándar.",
-    "En A-M1-PROB-02-10, clarificar de forma cualitativa 'valores atípicos' y la referencia a la 'forma de la distribución' para evitar interpretaciones que excedan el nivel esperado y para facilitar la evaluación coherente de la habilidad argumentativa.",
-    "En A-M1-PROB-02-11, alinear la descripción con los criterios incorporando explícitamente la moda en la comparación de grupos o restringiendo el alcance del átomo a media/mediana, de modo que 'medidas de tendencia central' no quede sobregeneralizado.",
-    "Revisar el alcance y los prerrequisitos de A-M1-PROB-02-12 para decidir si debe abarcar tanto problemas rutinarios como problemas que exigen selección/justificación de la medida; en caso afirmativo, considerar explicitar subtipos de tareas o separar en dos átomos.",
-    "Seguir usando notas de alcance para marcar que todos los procedimientos se restringen a datos no agrupados y que no se trabajan medidas de dispersión avanzadas (varianza, desviación estándar), en coherencia con la sección 'no_incluye' del estándar."
+    "Alinear estrictamente los criterios que requieren comparar o distinguir entre varias medidas con átomos integradores o que ya tengan como prerrequisito la introducción de todas esas medidas, para no generar dependencias circulares o adelantadas.",
+    "En átomos integradores de análisis e interpretación (A-M1-PROB-02-11 y A-M1-PROB-02-12), explicitar al menos un prerrequisito conceptual para cada familia de medidas utilizada (por ejemplo, A-M1-PROB-02-08 para el rango) además de los átomos procedimentales, dado que el foco es interpretar y argumentar, no solo calcular.",
+    "Mantener la separación actual entre átomos conceptuales y procedimentales, así como entre casos par/impar para la mediana, que ofrece una granularidad adecuada y coherente con la carga cognitiva esperada.",
+    "Revisar que, en la implementación curricular y de evaluación, los átomos conceptuales se enseñen y evalúen en una secuencia coherente con los prerrequisitos sugeridos, especialmente cuando se incluyan criterios de diferenciación entre medidas."
   ]
 }

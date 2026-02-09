@@ -1,9 +1,9 @@
 {
   "evaluation_summary": {
-    "total_atoms": 18,
-    "atoms_passing_all_checks": 16,
-    "atoms_with_issues": 2,
-    "overall_quality": "excellent",
+    "total_atoms": 19,
+    "atoms_passing_all_checks": 18,
+    "atoms_with_issues": 1,
+    "overall_quality": "good",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
@@ -171,7 +171,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Mantener explícito en materiales de apoyo que los productos notables se evalúan por separado, para evitar solapamientos con este átomo en la práctica docente."
+      ]
     },
     {
       "atom_id": "A-M1-ALG-01-06",
@@ -237,7 +239,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "En ejemplos adicionales podría explicitarse el error frecuente de confundir (a+b)^2 con a^2+b^2, para reforzar el objetivo conceptual de reconocimiento."
+      ]
     },
     {
       "atom_id": "A-M1-ALG-01-08",
@@ -340,7 +344,7 @@
     },
     {
       "atom_id": "A-M1-ALG-01-11",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -358,10 +362,8 @@
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "El átomo se centra en aplicar la fórmula del cubo de binomio pero no explicita el reconocimiento de la estructura (a ± b)^3, pese a que el estándar menciona 'identificación y aplicación' del cubo de binomio."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
         "score": "pass",
@@ -372,8 +374,7 @@
         "issues": []
       },
       "recommendations": [
-        "Añadir un criterio atómico del tipo 'Reconoce expresiones de la forma (a ± b)^3 como cubos de binomio' para alinear explícitamente con el componente de 'identificación' del estándar.",
-        "Opcionalmente, considerar un átomo conceptual paralelo de reconocimiento de cubo de binomio, análogo a A-M1-ALG-01-07 y A-M1-ALG-01-09, si se desea mantener simetría en el diseño."
+        "Para mantener simetría con el cuadrado de binomio, podría considerarse (opcionalmente) separar reconocimiento de patrón y desarrollo, o al menos explicitar en la descripción que el reconocimiento es parte del procedimiento."
       ]
     },
     {
@@ -407,7 +408,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "En notas de alcance podría aclararse si se espera también reconocimiento del factor común cuando es solo numérico o solo literal, o siempre mixto."
+      ]
     },
     {
       "atom_id": "A-M1-ALG-01-13",
@@ -506,7 +509,9 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Podría añadirse en notas de alcance si se excluyen explícitamente casos donde c=0 (que degeneran a factorización por factor común)."
+      ]
     },
     {
       "atom_id": "A-M1-ALG-01-16",
@@ -540,11 +545,11 @@
         "issues": []
       },
       "recommendations": [
-        "En la implementación de ítems, mantener las fracciones algebraicas dentro de casos 'simples' (monomios y binomios lineales o trinomios básicos factorizables con A-12 a A-15) para respetar el límite de complejidad del estándar."
+        "En notas de alcance podría aclararse con ejemplos qué se entiende por fracciones algebraicas 'simples' para alinear expectativas de dificultad."
       ]
     },
     {
-      "atom_id": "A-M1-ALG-01-17",
+      "atom_id": "A-M1-ALG-01-18",
       "overall_score": "good",
       "fidelity": {
         "score": "pass",
@@ -553,12 +558,12 @@
       "granularity": {
         "score": "warning",
         "issues": [
-          "El átomo combina tres comportamientos que, aunque relacionados, pueden requerir estrategias cognitivas diferenciadas: (1) expresar área/perímetro en forma algebraica, (2) interpretar geométricamente productos notables y (3) interpretar geométricamente la factorización como reconfiguración de áreas."
+          "El átomo integra detección de errores en productos notables, factorización y manejo de signos, pero solo declara como prerrequisitos algunos productos notables (A-08, A-10) y suma/resta de polinomios (A-04). Al incluir explícitamente 'factorización' en la descripción, debería declarar también como prerrequisitos directos los átomos de factorización correspondientes."
         ],
         "checks": {
-          "single_cognitive_intention": false,
+          "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -573,16 +578,19 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Faltan como prerrequisitos directos algunos átomos cuyo dominio se presupone para poder detectar errores: factorización por factor común (A-M1-ALG-01-12), diferencia de cuadrados (A-M1-ALG-01-13), trinomio cuadrado perfecto (A-M1-ALG-01-14) y trinomios x^2+bx+c (A-M1-ALG-01-15). Dependiendo de los ejemplos que se usen, también podría ser pertinente incluir el cubo de binomio (A-M1-ALG-01-11)."
+        ]
       },
       "recommendations": [
-        "Considerar dividir este átomo en dos: uno centrado en 'expresar área y perímetro algebraicamente' y otro en 'interpretación geométrica de productos notables y factorización', lo que facilitaría la evaluación y la progresión de dificultad.",
-        "Si se mantiene integrado, explicitar en la planificación que la evaluación puede requerir varios ítems diferenciados para cubrir las tres destrezas."
+        "Añadir como prerrequisitos directos los átomos de factorización A-M1-ALG-01-12, A-M1-ALG-01-13, A-M1-ALG-01-14 y A-M1-ALG-01-15, para alinear el alcance declarado ('productos notables, factorización o signos') con los conocimientos previos requeridos.",
+        "Si se prevé trabajar explícitamente con errores en el cubo de binomio, añadir también A-M1-ALG-01-11 como prerrequisito.",
+        "Opcionalmente, acotar en notas de alcance qué tipos de errores de factorización y productos notables se priorizarán (por ejemplo, centrarse en cuadrado de binomio y suma por diferencia) para reducir la carga cognitiva si se mantiene en un solo átomo."
       ]
     },
     {
-      "atom_id": "A-M1-ALG-01-18",
+      "atom_id": "A-M1-ALG-01-19",
       "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
@@ -612,7 +620,44 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": []
+      "recommendations": [
+        "Se podría agregar un criterio complementario de interpretación inversa (dada una expresión, describir el área o perímetro que representa) para reforzar la conexión con la habilidad de representar."
+      ]
+    },
+    {
+      "atom_id": "A-M1-ALG-01-20",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Si se van a interpretar geométricamente también la suma por diferencia, puede añadirse A-M1-ALG-01-10 como prerrequisito directo en lugar de asumirlo por transitividad desde A-M1-ALG-01-05."
+      ]
     }
   ],
   "coverage_analysis": {
@@ -631,7 +676,7 @@
         "Factorización de expresiones algebraicas (ej. factor común, trinomio cuadrado perfecto, diferencia de cuadrados, trinomios de la forma x^2+bx+c).": "covered",
         "Realización de operaciones de suma, resta, multiplicación y división simple con expresiones algebraicas.": "covered",
         "Simplificación de expresiones algebraicas mediante factorización y operatoria.": "covered",
-        "Resolución de problemas contextualizados que requieren el uso y manipulación de expresiones algebraicas.": "partially_covered"
+        "Resolución de problemas contextualizados que requieren el uso y manipulación de expresiones algebraicas.": "covered"
       },
       "subcontenidos_covered": {
         "Reconocimiento de patrones de productos notables.": "covered",
@@ -653,9 +698,9 @@
     }
   },
   "global_recommendations": [
-    "Incorporar explícitamente el componente de 'identificación' para el cubo de binomio, ya sea ampliando A-M1-ALG-01-11 con un criterio de reconocimiento o creando un átomo conceptual específico, para lograr simetría con cuadrado de binomio y suma por diferencia.",
-    "Valorar la posible escisión de A-M1-ALG-01-17 en dos átomos más homogéneos en cuanto a intención cognitiva (modelado de área/perímetro vs. interpretación geométrica de productos notables y factorización), lo que simplificaría el diseño de evaluación y la secuenciación didáctica.",
-    "Al diseñar ítems que evalúen A-M1-ALG-01-16, asegurar que los ejemplos de fracciones algebraicas se mantengan en el ámbito de la simplificación directa, evitando situaciones de fracciones 'complejas' más allá de las factorizaciones ya incluidas en los átomos de factorización.",
-    "Para reforzar el ítem del estándar sobre 'problemas contextualizados', se puede, en la futura generación de tareas, enfatizar la presencia de contextos variados (no solo geométricos o de costo simple) que integren traducción, operatoria y factorización en situaciones de resolución de problemas."
+    "Ajustar el átomo A-M1-ALG-01-18 para alinear claramente los prerrequisitos con su alcance declarado: añadir explícitamente los átomos de factorización implicados y, si es necesario, acotar los tipos de errores que se trabajarán para mantener una carga cognitiva razonable.",
+    "Revisar la simetría entre los átomos de productos notables: actualmente el cuadrado de binomio tiene separación nítida entre reconocimiento (A-07) y desarrollo (A-08), mientras que el cubo de binomio (A-11) integra ambas dimensiones. Decidir si se mantiene esta diferencia como decisión pedagógica (y dejarlo explícito en notas) o se homogeneiza la estructura.",
+    "Considerar, en materiales curriculares complementarios, ampliar los contextos de modelización verbal más allá de las áreas y perímetros (por ejemplo, problemas de costo, mezcla, edades) usando los átomos A-M1-ALG-01-01, A-M1-ALG-01-02 y A-M1-ALG-01-19, para reforzar la dimensión de 'problemas contextualizados' del estándar sin necesidad de crear nuevos átomos.",
+    "Mantener consistentes en documentación y evaluación los límites de complejidad declarados (por ejemplo, en fracciones algebraicas 'simples' y en el tipo de trinomios factorizables) para evitar que las tareas se desplacen hacia el contenido explícitamente excluido en 'no_incluye'."
   ]
 }

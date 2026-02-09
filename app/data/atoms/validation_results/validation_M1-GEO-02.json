@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 16,
-    "atoms_passing_all_checks": 14,
-    "atoms_with_issues": 2,
+    "atoms_passing_all_checks": 13,
+    "atoms_with_issues": 3,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -39,13 +39,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Explícitamente incluir ejemplos tanto con cuerpos prismáticos como cilíndricos en la explicación verbal, para reforzar que la distinción área/volumen es transversal a todos los cuerpos del estándar."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-02",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -63,8 +61,10 @@
         }
       },
       "completeness": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Las notas de alcance mencionan solo bases poligonales regulares, cuando la descripción general del estándar permite prismas rectos con cualquier base poligonal. Esto podría interpretarse como una restricción innecesaria del tipo de bases abordadas en las redes."
+        ]
       },
       "content_quality": {
         "score": "pass",
@@ -75,12 +75,12 @@
         "issues": []
       },
       "recommendations": [
-        "Aclarar que las redes pueden presentarse en diferentes orientaciones o disposiciones de las caras, siempre que se conserven las adyacencias correctas."
+        "Ajustar las notas de alcance para indicar que la idea de la red (2 bases + caras laterales rectangulares) aplica a prismas rectos con cualquier base poligonal, no solo regulares."
       ]
     },
     {
       "atom_id": "A-M1-GEO-02-03",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -102,15 +102,19 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Aunque se entiende implícitamente, no se enfatiza explícitamente que el área total se expresa en unidades cuadradas, lo que podría reforzar la distinción clave entre área y volumen.",
+          "El criterio sobre 'determinar la medida de la arista dada su área total' podría beneficiarse de una breve mención del procedimiento típico (dividir por 6 y extraer raíz cuadrada) para orientar mejor el tipo de razonamiento esperado."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Indicar explícitamente el tipo de números a usar en los ejemplos (enteros positivos, fracciones, decimales) para alinear la dificultad aritmética con el curso objetivo."
+        "Mencionar explícitamente que los resultados de área deben expresarse en unidades cuadradas (por ejemplo, cm², m²).",
+        "Aclarar, al menos en las notas o ejemplos, que para hallar la arista desde el área total usualmente se divide el área total entre 6 y se extrae la raíz cuadrada, manteniendo el foco en números sencillos."
       ]
     },
     {
@@ -144,9 +148,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir un criterio u observación que enfatice la correcta elección de unidades de área (por ejemplo, m² vs cm²) al presentar resultados."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-05",
@@ -179,50 +181,10 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Agregar un ejemplo donde solo se requiera el área lateral (por ejemplo, un prisma abierto por las bases) y otro con área total, para reforzar la distinción operativa."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-06",
-      "overall_score": "good",
-      "fidelity": {
-        "score": "warning",
-        "issues": [
-          "La expresión \"justificando la fórmula general V = A_{base} · h\" puede acercarse al territorio de \"desarrollo o deducción de las fórmulas\", que está explícitamente en 'no_incluye'."
-        ]
-      },
-      "granularity": {
-        "score": "pass",
-        "issues": [],
-        "checks": {
-          "single_cognitive_intention": true,
-          "reasonable_working_memory": true,
-          "prerequisite_independence": true,
-          "assessment_independence": true,
-          "generalization_boundary": true,
-          "integrator_validity": true
-        }
-      },
-      "completeness": {
-        "score": "pass",
-        "issues": []
-      },
-      "content_quality": {
-        "score": "pass",
-        "issues": []
-      },
-      "prerequisites": {
-        "score": "pass",
-        "issues": []
-      },
-      "recommendations": [
-        "Reformular el criterio \"justifica la fórmula\" como \"explica intuitivamente por qué el volumen depende del área de la base y la altura, sin desarrollar la fórmula de manera algebraica\".",
-        "Evitar referencias técnicas como \"Principio de Cavalieri\" en evaluaciones de estudiantes si no se van a trabajar explícitamente; puede quedar solo en notas para docentes."
-      ]
-    },
-    {
-      "atom_id": "A-M1-GEO-02-07",
       "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
@@ -252,8 +214,45 @@
         "score": "pass",
         "issues": []
       },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-GEO-02-07",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "warning",
+        "issues": [
+          "El criterio sobre 'determinar la arista de un cubo dado su volumen' podría detallar brevemente que se espera el uso de raíces cúbicas en casos simples, para alinear explícitamente el procedimiento con el nivel de exigencia.",
+          "Al igual que en el átomo de área de cubos, podría reforzarse la mención explícita de las unidades cúbicas en los ejemplos."
+        ]
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
       "recommendations": [
-        "Incluir explícitamente que los volúmenes se expresan en unidades cúbicas para reforzar la conexión con el átomo conceptual A-M1-GEO-02-01."
+        "Indicar explícitamente que, para encontrar la arista a partir del volumen, se debe aplicar la raíz cúbica en casos numéricamente sencillos.",
+        "Agregar en ejemplos o notas la referencia explícita a unidades cúbicas (cm³, m³, etc.)."
       ]
     },
     {
@@ -287,9 +286,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir un ejemplo contextual sencillo (por ejemplo, volumen de una caja de envío) para conectar con los átomos de problemas contextualizados."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-09",
@@ -322,9 +319,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "En los criterios, enfatizar la correcta identificación de la altura del prisma (distinta de alturas internas de la base) como potencial foco de error frecuente."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-10",
@@ -357,9 +352,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Incluir en las notas de alcance que no se espera que el estudiante deduzca formalmente el área lateral a partir del desarrollo plano; este átomo se limita a identificación y correspondencias de medidas."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-11",
@@ -392,18 +385,14 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Considerar añadir un criterio que distinga claramente entre uso de radio y diámetro (por ejemplo, reconocer que si se da el diámetro, debe halarse primero el radio) para prevenir errores sistemáticos."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-12",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
-        "score": "warning",
-        "issues": [
-          "El criterio \"identifica que la fórmula V = πr² · h proviene de A_{base} · h\" roza el límite de \"desarrollo o deducción de fórmulas\" que el estándar excluye."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "granularity": {
         "score": "pass",
@@ -429,10 +418,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Reformular la conexión con la fórmula como una comprensión conceptual (\"reconoce que el volumen depende del área de la base circular y la altura\") y dejar la fórmula explícita para el átomo procedimental A-M1-GEO-02-13.",
-        "Evitar convertir este átomo en una deducción paso a paso; mantenerlo en el plano intuitivo y visual (pila de círculos)."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-13",
@@ -465,9 +451,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir de forma explícita el uso coherente de unidades (por ejemplo, conversión entre cm³ y litros cuando sea pertinente en problemas de capacidad)."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-14",
@@ -500,9 +484,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Incluir ejemplos que mezclen área lateral vs área total en cilindros y prismas para fortalecer la toma de decisión sobre qué parte del área es relevante en el modelo."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-15",
@@ -535,10 +517,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Asegurar que los problemas incluyan tanto situaciones de sólo área, sólo volumen y combinación de ambos, para explotar plenamente los prerrequisitos de modelación (A-M1-GEO-02-14).",
-        "Añadir una nota que mencione explícitamente la necesidad de revisar la razonabilidad de respuestas (órdenes de magnitud, unidades) como parte de la interpretación en contexto."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-GEO-02-16",
@@ -571,10 +550,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Incluir explícitamente en las notas de alcance que, aunque se combinen cuerpos de distinta base (triangular, poligonal, circular), no se considerarán cuerpos compuestos ni truncados, en línea con el 'no_incluye' del estándar.",
-        "Diseñar problemas que requieran decidir entre área lateral, área total y volumen para cilindros y prismas no rectangulares, reforzando la integración con A-M1-GEO-02-14."
-      ]
+      "recommendations": []
     }
   ],
   "coverage_analysis": {
@@ -612,10 +588,8 @@
     }
   },
   "global_recommendations": [
-    "Asegurar, en la implementación curricular, que los átomos conceptuales que aluden al origen de las fórmulas (especialmente A-M1-GEO-02-06 y A-M1-GEO-02-12) se trabajen de forma intuitiva y visual, sin convertirlos en deducciones formales que contravendrían el 'no_incluye' del estándar.",
-    "Mantener la separación didáctica entre casos particulares (cubos y paralelepípedos) y casos generales (prismas de base no rectangular y cilindros) para facilitar la progresión de dificultad, pero explicitar en materiales docentes la relación de estos casos particulares con la fórmula general V = A_{base} · h y las expresiones de área de superficie.",
-    "Al diseñar evaluaciones, aprovechar los átomos de modelación (A-M1-GEO-02-01 y A-M1-GEO-02-14) incluyendo ítems que sólo pidan elegir correctamente entre área, área lateral, área total o volumen, sin exigir cálculos, para evidenciar la competencia de modelar más allá de la mera operatoria.",
-    "Verificar que en problemas contextualizados (A-M1-GEO-02-15 y A-M1-GEO-02-16) se incluyan sistemáticamente comprobaciones de sentido físico (unidades, signos, órdenes de magnitud) para alinear con los criterios de 'resolver_problemas' y 'argumentar' del estándar.",
-    "Mantener consistencia en el tratamiento de unidades (cuadradas vs cúbicas) a lo largo de todos los átomos procedimentales, remitiendo de forma explícita al átomo conceptual de distinción área/volumen cuando sea pertinente."
+    "Reforzar de manera más sistemática, en los átomos procedimentales de área y volumen (especialmente cubos y paralelepípedos), la referencia explícita a las unidades cuadradas y cúbicas para consolidar la distinción entre área y volumen introducida en el átomo A-M1-GEO-02-01.",
+    "Evitar en las notas de alcance restricciones innecesarias del tipo de figuras (por ejemplo, bases poligonales solo regulares) cuando el estándar permite el caso general, a fin de no limitar implícitamente la generalización de los aprendizajes.",
+    "Cuando se plantean tareas inversas (deducir aristas o dimensiones a partir de área o volumen) en átomos básicos, explicitar brevemente el tipo de operación implicada (raíz cuadrada, raíz cúbica en casos simples) para alinear la expectativa cognitiva sin convertir el átomo en uno de álgebra avanzada."
   ]
 }

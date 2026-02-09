@@ -1,51 +1,13 @@
 {
   "evaluation_summary": {
-    "total_atoms": 9,
-    "atoms_passing_all_checks": 8,
-    "atoms_with_issues": 1,
-    "overall_quality": "excellent",
+    "total_atoms": 10,
+    "atoms_passing_all_checks": 4,
+    "atoms_with_issues": 6,
+    "overall_quality": "good",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
   "atoms_evaluation": [
-    {
-      "atom_id": "A-M1-ALG-04-01",
-      "overall_score": "good",
-      "fidelity": {
-        "score": "pass",
-        "issues": []
-      },
-      "granularity": {
-        "score": "warning",
-        "issues": [
-          "El átomo combina dos intenciones cognitivas distintas: (1) comprender qué es un sistema 2x2 (identificar componentes) y (2) verificar si un par ordenado es solución mediante sustitución. Podrían separarse en un átomo puramente conceptual (definición/identificación de sistema) y otro procedimental (verificación de soluciones) para mayor fineza atómica."
-        ],
-        "checks": {
-          "single_cognitive_intention": false,
-          "reasonable_working_memory": true,
-          "prerequisite_independence": true,
-          "assessment_independence": true,
-          "generalization_boundary": true,
-          "integrator_validity": true
-        }
-      },
-      "completeness": {
-        "score": "pass",
-        "issues": []
-      },
-      "content_quality": {
-        "score": "pass",
-        "issues": []
-      },
-      "prerequisites": {
-        "score": "pass",
-        "issues": []
-      },
-      "recommendations": [
-        "Considerar dividir este átomo en dos: uno centrado en la identificación y estructura de un sistema 2x2 (tipo 'concepto de sistema lineal 2x2') y otro centrado en la verificación de soluciones dadas (sustituir y evaluar).",
-        "Explicitar en la descripción o criterios que la verificación implica evaluar ambas ecuaciones y tomar una decisión argumentada ('es solución' / 'no es solución'), para reforzar la conexión con la habilidad de argumentar."
-      ]
-    },
     {
       "atom_id": "A-M1-ALG-04-02",
       "overall_score": "excellent",
@@ -77,9 +39,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Se podría añadir explícitamente en los criterios que esta interpretación corresponde al caso de solución única (rectas secantes), dejando claro que la clasificación completa de casos (paralelas/coincidentes) se aborda en el átomo A-M1-ALG-04-03."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-04-03",
@@ -112,9 +72,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir un ejemplo explícito de detección algebraica de inconsistencia (por ejemplo, llegar a una igualdad imposible como 0 = 5 o una identidad 0 = 0) podría reforzar la conexión entre clasificación y métodos algebraicos, sin cambiar el alcance central del átomo."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-04-04",
@@ -147,13 +105,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Podría explicitarse en notas de alcance o criterios que también se debe reconocer gráficamente los casos de 'sin solución' (rectas paralelas) y 'infinitas soluciones' (rectas coincidentes), aunque el foco esté en la obtención de la solución única mediante intersección."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-04-05",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -179,16 +135,18 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Incluye A-M1-ALG-04-11 (verificación de soluciones) como prerrequisito, aunque no es necesario de forma directa para ejecutar el algoritmo de sustitución. Podría dejarse como habilidad complementaria en lugar de prerrequisito obligatorio."
+        ]
       },
       "recommendations": [
-        "Agregar un criterio o ejemplo donde el método de sustitución conduzca a un sistema sin solución o con infinitas soluciones puede ayudar a vincular este procedimiento con el análisis de consistencia (A-M1-ALG-04-03)."
+        "Revisar si A-M1-ALG-04-11 debe ser un prerrequisito obligatorio o solo una habilidad relacionada; el método de sustitución puede enseñarse sin requerir previamente la verificación formal de soluciones."
       ]
     },
     {
       "atom_id": "A-M1-ALG-04-06",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -214,16 +172,18 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Al igual que en el átomo de sustitución, A-M1-ALG-04-11 no es un prerrequisito estrictamente necesario para aprender el algoritmo de igualación."
+        ]
       },
       "recommendations": [
-        "Especificar en notas de alcance o ejemplos cuándo es especialmente conveniente usar igualación (por ejemplo, cuando las dos ecuaciones ya están despejadas para y) puede apoyar la toma de decisiones estratégicas del estudiante."
+        "Considerar dejar como prerrequisito solo el dominio de ecuaciones lineales de una incógnita y el concepto de sistema (A-M1-ALG-04-10), manteniendo la verificación de soluciones como contenido relacionado pero no requerido."
       ]
     },
     {
       "atom_id": "A-M1-ALG-04-07",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -249,16 +209,18 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La inclusión de A-M1-ALG-04-11 como prerrequisito no es necesaria para la ejecución del algoritmo de reducción; basta con manejo de ecuaciones lineales y del concepto de sistema."
+        ]
       },
       "recommendations": [
-        "Incluir un ejemplo donde sea necesario multiplicar ambas ecuaciones por constantes distintas (no solo una de ellas) reforzaría la comprensión de casos menos inmediatos en el método de reducción."
+        "Alinear los prerrequisitos con las habilidades estrictamente necesarias: despeje y operaciones con ecuaciones lineales y reconocimiento de un sistema 2x2."
       ]
     },
     {
       "atom_id": "A-M1-ALG-04-08",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -284,15 +246,93 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "A-M1-ALG-04-11 (verificación de soluciones) no es un prerrequisito directo para el modelado; el estudiante puede plantear el sistema sin saber aún verificar pares ordenados como soluciones."
+        ]
       },
       "recommendations": [
-        "Añadir en criterios o ejemplos una referencia explícita a la coherencia de las unidades y al chequeo de que las dos ecuaciones sean realmente independientes ayudaría a fortalecer la calidad del modelado."
+        "Mantener como prerrequisito directo solo A-M1-ALG-04-10 (concepto de sistema 2x2) y, si se considera necesario, algún átomo de traducción básico lenguaje natural ↔ ecuaciones lineales de una incógnita de otras unidades."
       ]
     },
     {
       "atom_id": "A-M1-ALG-04-09",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "warning",
+        "issues": [
+          "La descripción declara explícitamente que el átomo integra el ciclo completo (modelar, resolver, validar), pero los criterios atómicos no incluyen un ítem que evalúe el modelado/planteamiento del sistema; solo se evalúa resolver, interpretar y validar."
+        ]
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Agregar un criterio atómico explícito del tipo: \"Plantea correctamente un sistema 2x2 que modela la situación dada\" para alinear criterios con la descripción de átomo integrador.",
+        "Mantener la nota aclaratoria sobre que el estudiante puede usar cualquiera de los tres métodos (sustitución, igualación o reducción), pero considerar si es útil marcar uno como mínimo esperado en el currículo local."
+      ]
+    },
+    {
+      "atom_id": "A-M1-ALG-04-10",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "warning",
+        "issues": [
+          "La descripción, el criterio atómico y el ejemplo conceptual son prácticamente idénticos y muy generales; no se explicitan claramente los \"componentes\" que el estudiante debe identificar (número de ecuaciones, incógnitas, coeficientes, términos independientes)."
+        ]
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Precisar qué se entiende por \"componentes\" de un sistema 2x2 (por ejemplo: dos ecuaciones lineales, dos incógnitas, coeficientes y constantes).",
+        "Reformular el ejemplo conceptual para que ilustre un caso concreto de identificación de un sistema 2x2 frente a otras expresiones que no lo son."
+      ]
+    },
+    {
+      "atom_id": "A-M1-ALG-04-11",
       "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
@@ -322,9 +362,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "En la descripción o notas de alcance, se podría reforzar que el estudiante puede utilizar cualquiera de los métodos algebraicos dominados (sustitución, igualación o reducción) y que un criterio de éxito es también justificar por qué la solución obtenida tiene sentido en el contexto (vínculo con A-M1-ALG-04-03 cuando el sistema no es compatible)."
-      ]
+      "recommendations": []
     }
   ],
   "coverage_analysis": {
@@ -362,8 +400,10 @@
     }
   },
   "global_recommendations": [
-    "Refinar ligeramente la granularidad del átomo A-M1-ALG-04-01 separando el concepto de 'qué es un sistema 2x2' de la verificación de soluciones, para alinear mejor cada átomo con una única intención cognitiva.",
-    "Asegurar explícitamente en algunos átomos procedimentales (por ejemplo, sustitución, igualación, reducción) la conexión con el análisis de consistencia (detectar sistemas sin solución o con infinitas soluciones) para reforzar la articulación con el átomo A-M1-ALG-04-03.",
-    "Verificar en la secuenciación curricular que los átomos conceptuales (A-M1-ALG-04-01, 02, 03) se presenten antes o en paralelo a los procedimentales (A-M1-ALG-04-04 a 07) y al integrador (A-M1-ALG-04-09), para que el estudiante cuente con el andamiaje conceptual necesario al abordar la resolución de problemas contextualizados."
+    "Alinear los prerrequisitos de los métodos algebraicos (A-M1-ALG-04-05, 06, 07) y del modelado (A-M1-ALG-04-08) con las habilidades estrictamente necesarias, evitando exigir la verificación de soluciones (A-M1-ALG-04-11) como condición previa cuando no aporta directamente al procedimiento.",
+    "En el átomo integrador A-M1-ALG-04-09, incorporar explícitamente un criterio de evaluación del modelado (planteamiento del sistema) para que los criterios reflejen el ciclo completo descrito.",
+    "En A-M1-ALG-04-10, detallar qué se entiende por \"componentes\" de un sistema 2x2 y ofrecer ejemplos más concretos, diferenciando sistemas 2x2 de otras colecciones de ecuaciones o expresiones.",
+    "Mantener la separación actual entre: interpretación geométrica (A-M1-ALG-04-02), clasificación por número de soluciones (A-M1-ALG-04-03), resolución gráfica (A-M1-ALG-04-04) y los tres métodos algebraicos (A-M1-ALG-04-05, 06, 07), dado que responde bien al criterio de algoritmos y estrategias cognitivas distintas.",
+    "Si el currículo lo requiere, podría valorarse en el futuro un átomo específico orientado al análisis de consistencia desde la resolución algebraica (p.ej. identificación de ecuaciones equivalentes o incompatibles al resolver), aunque el contenido esencial ya está cubierto en A-M1-ALG-04-03."
   ]
 }

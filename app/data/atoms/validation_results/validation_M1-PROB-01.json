@@ -3,8 +3,8 @@
     "total_atoms": 18,
     "atoms_passing_all_checks": 16,
     "atoms_with_issues": 2,
-    "overall_quality": "good",
-    "coverage_assessment": "incomplete",
+    "overall_quality": "excellent",
+    "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
   "atoms_evaluation": [
@@ -109,12 +109,10 @@
     },
     {
       "atom_id": "A-M1-PROB-01-04",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
-        "score": "warning",
-        "issues": [
-          "Incluye explícitamente la mención a 'histograma' en un criterio, pese a que los histogramas están en la lista de contenidos 'no_incluye'. Aunque se usa solo para contraste, introduce un concepto fuera de alcance."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "granularity": {
         "score": "pass",
@@ -140,9 +138,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Reformular el criterio 'Distingue un gráfico de barras de un histograma...' para evitar nombrar explícitamente el histograma, por ejemplo: 'Distingue los gráficos de barras (para datos no agrupados) de otros gráficos usados con datos agrupados en intervalos, sin profundizar en estos últimos'."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-01-05",
@@ -344,39 +340,6 @@
     },
     {
       "atom_id": "A-M1-PROB-01-11",
-      "overall_score": "excellent",
-      "fidelity": {
-        "score": "pass",
-        "issues": []
-      },
-      "granularity": {
-        "score": "pass",
-        "issues": [],
-        "checks": {
-          "single_cognitive_intention": true,
-          "reasonable_working_memory": true,
-          "prerequisite_independence": true,
-          "assessment_independence": true,
-          "generalization_boundary": true,
-          "integrator_validity": true
-        }
-      },
-      "completeness": {
-        "score": "pass",
-        "issues": []
-      },
-      "content_quality": {
-        "score": "pass",
-        "issues": []
-      },
-      "prerequisites": {
-        "score": "pass",
-        "issues": []
-      },
-      "recommendations": []
-    },
-    {
-      "atom_id": "A-M1-PROB-01-12",
       "overall_score": "good",
       "fidelity": {
         "score": "pass",
@@ -385,8 +348,8 @@
       "granularity": {
         "score": "warning",
         "issues": [
-          "Combina varias intenciones cognitivas distintas: cálculo de ángulos, verificación de suma total, comprensión de pasos de construcción y además interpretación de proporciones a partir de ángulos. Esto dificulta evaluarlo con una sola tarea y aumenta la carga cognitiva.",
-          "El último criterio ('Interpreta un gráfico circular identificando las proporciones a partir de los ángulos de los sectores') se solapa parcialmente con la interpretación tratada en el átomo A-M1-PROB-01-11."
+          "El átomo mezcla varias intenciones cognitivas distintas: lectura/comparación cualitativa de sectores, lectura cuantitativa de porcentajes/ángulos y cálculo de ángulos (frecuencia relativa·360°) más la identificación de pasos de construcción. Esto dificulta aislar qué subhabilidad falla en una evaluación.",
+          "La carga de memoria de trabajo y la cantidad de subpasos diferentes es alta para un solo átomo instruccional."
         ],
         "checks": {
           "single_cognitive_intention": false,
@@ -394,7 +357,7 @@
           "prerequisite_independence": true,
           "assessment_independence": false,
           "generalization_boundary": true,
-          "integrator_validity": true
+          "integrator_validity": false
         }
       },
       "completeness": {
@@ -410,8 +373,7 @@
         "issues": []
       },
       "recommendations": [
-        "Dividir este átomo en (al menos) dos: uno procedimental centrado en el cálculo de ángulos de sectores y verificación de la suma a 360°, y otro de representación/interpretación que vincule medidas angulares con proporciones, evitando solaparse con la lectura básica de porcentajes ya cubierta en A-M1-PROB-01-11.",
-        "Alternativamente, si se mantiene como un solo átomo, eliminar el criterio de interpretación y dejarlo solo como cálculo y comprensión del proceso de construcción, derivando la interpretación estrictamente a A-M1-PROB-01-11."
+        "Dividir este átomo al menos en dos: (a) lectura e interpretación de gráficos circulares (identificar mayor/menor sector, leer porcentajes o frecuencias dadas, comparar sectores); (b) cálculo de ángulos/proporciones a partir de frecuencias relativas y comprensión del proceso de construcción. La parte de \"identificar y ordenar los pasos de construcción\" podría ir en el segundo átomo."
       ]
     },
     {
@@ -581,6 +543,43 @@
     },
     {
       "atom_id": "A-M1-PROB-01-18",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "warning",
+        "issues": [
+          "El átomo menciona explícitamente la evaluación de afirmaciones basadas en datos en tablas y gráficos, pero solo lista como prerrequisitos átomos de gráficos (barras, línea, circular). Falta como prerrequisito directo A-M1-PROB-01-19 (interpretación de información en tablas de frecuencia)."
+        ]
+      },
+      "recommendations": [
+        "Añadir A-M1-PROB-01-19 como prerrequisito directo para asegurar que la argumentación pueda basarse también en la lectura adecuada de tablas de frecuencia, no solo de gráficos."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-01-19",
       "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
@@ -617,27 +616,23 @@
     "standards_covered": [
       "M1-PROB-01"
     ],
-    "coverage_completeness": "incomplete",
-    "missing_areas": [
-      "Lectura e interpretación directa de tablas de frecuencia (por ejemplo, identificar la frecuencia de una categoría, comparar frecuencias entre categorías y determinar la categoría con mayor frecuencia a partir de una tabla dada)."
-    ],
-    "duplication_issues": [
-      "Ligero solapamiento entre A-M1-PROB-01-11 y A-M1-PROB-01-12 en la interpretación de gráficos circulares a partir de los sectores; convendría concentrar la lectura básica de porcentajes y proporciones en un solo átomo y reservar el otro para el cálculo/uso de ángulos."
-    ],
+    "coverage_completeness": "complete",
+    "missing_areas": [],
+    "duplication_issues": [],
     "conceptual_coverage": "present",
     "procedural_coverage": "present",
     "standard_items_coverage": {
       "includes_covered": {
-        "Construcción e interpretación de tablas de frecuencia absoluta y relativa para datos no agrupados.": "partially_covered",
+        "Construcción e interpretación de tablas de frecuencia absoluta y relativa para datos no agrupados.": "covered",
         "Identificación y uso de gráficos adecuados (barras, circulares, de línea) para diferentes tipos de datos.": "covered",
-        "Resolución de problemas que impliquen la lectura y análisis de información presentada en tablas y gráficos.": "partially_covered",
+        "Resolución de problemas que impliquen la lectura y análisis de información presentada en tablas y gráficos.": "covered",
         "Cálculo e interpretación del promedio (media aritmética) de un conjunto de datos.": "covered"
       },
       "subcontenidos_covered": {
         "Organización de datos en tablas de frecuencia.": "covered",
         "Cálculo de frecuencias absolutas y relativas.": "covered",
         "Selección y construcción de gráficos de barras, circulares y de línea.": "covered",
-        "Lectura e interpretación de información en tablas y gráficos.": "partially_covered",
+        "Lectura e interpretación de información en tablas y gráficos.": "covered",
         "Cálculo de la media aritmética (promedio).": "covered",
         "Análisis de datos a partir de su representación gráfica o tabular.": "covered"
       },
@@ -650,8 +645,8 @@
     }
   },
   "global_recommendations": [
-    "Agregar un átomo específico de 'Interpretación de información en tablas de frecuencia' análogo a A-M1-PROB-01-05 (para gráficos de barras), con criterios como: leer la frecuencia de una categoría dada, identificar la categoría más frecuente (moda visual) y comparar frecuencias entre categorías en una tabla.",
-    "Revisar A-M1-PROB-01-12 para reducir su alcance o escindirlo en dos átomos (cálculo de ángulos vs. interpretación de ángulos como proporciones), manteniendo la coherencia con A-M1-PROB-01-11 para evitar solapamientos.",
-    "Ajustar la referencia a histogramas en A-M1-PROB-01-04 para no introducir formalmente un contenido declarado como fuera de alcance, usando descripciones más genéricas de 'otros tipos de gráficos para datos agrupados en intervalos' sin nombrarlos."
+    "Reestructurar el átomo A-M1-PROB-01-11 en al menos dos átomos: uno focalizado en la lectura e interpretación de gráficos circulares (identificar categorías mayoritaria/minoritaria, leer porcentajes o proporciones dadas, comparar sectores) y otro en el cálculo de ángulos/proporciones y comprensión del proceso de construcción de un gráfico circular.",
+    "Ajustar los prerrequisitos de A-M1-PROB-01-18 para incluir A-M1-PROB-01-19, garantizando que la evaluación de afirmaciones se apoye también en la competencia de interpretar tablas de frecuencia.",
+    "Si se desea todavía más claridad curricular, considerar un átomo explícito de \"Construcción de gráficos circulares\" separado de la lectura/interpretación, alineado con cómo ya se diferencian construcción e interpretación en barras y líneas."
   ]
 }

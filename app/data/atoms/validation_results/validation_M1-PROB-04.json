@@ -1,10 +1,10 @@
 {
   "evaluation_summary": {
     "total_atoms": 12,
-    "atoms_passing_all_checks": 9,
-    "atoms_with_issues": 3,
-    "overall_quality": "good",
-    "coverage_assessment": "complete",
+    "atoms_passing_all_checks": 12,
+    "atoms_with_issues": 0,
+    "overall_quality": "excellent",
+    "coverage_assessment": "incomplete",
     "granularity_assessment": "appropriate"
   },
   "atoms_evaluation": [
@@ -142,7 +142,7 @@
     },
     {
       "atom_id": "A-M1-PROB-04-05",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -153,7 +153,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": false,
+          "prerequisite_independence": true,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -168,18 +168,14 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "Para aplicar con seguridad la fórmula P(A ∪ B) = P(A) + P(B), es recomendable declarar como prerrequisito directo el átomo A-M1-PROB-04-03, que introduce explícitamente la notación de unión y la lectura de P(A ∪ B)."
-        ]
+        "score": "pass",
+        "issues": []
       },
-      "recommendations": [
-        "Agregar A-M1-PROB-04-03 como prerrequisito directo para garantizar que el estudiante ya domina la notación de unión de eventos antes de aplicar la regla aditiva."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-06",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -190,7 +186,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": false,
+          "prerequisite_independence": true,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -205,14 +201,10 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "Aunque el foco es el cálculo, el uso de la notación P(A ∪ B) y P(A ∩ B) se apoya en el átomo A-M1-PROB-04-03. Conviene declararlo como prerrequisito directo para asegurar comprensión de la representación simbólica."
-        ]
+        "score": "pass",
+        "issues": []
       },
-      "recommendations": [
-        "Incluir A-M1-PROB-04-03 como prerrequisito directo, ya que este átomo requiere operar con las notaciones de unión e intersección al usar la fórmula P(A ∪ B) = P(A) + P(B) − P(A ∩ B)."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-07",
@@ -348,7 +340,7 @@
     },
     {
       "atom_id": "A-M1-PROB-04-11",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -359,7 +351,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": false,
+          "prerequisite_independence": true,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -374,14 +366,10 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "El uso de la notación P(A ∩ B) en la fórmula P(A|B) = P(A ∩ B) / P(B) se apoya en el átomo A-M1-PROB-04-03. Sería conveniente declararlo como prerrequisito para asegurar que el estudiante ya comprende la intersección de eventos a nivel simbólico."
-        ]
+        "score": "pass",
+        "issues": []
       },
-      "recommendations": [
-        "Incorporar A-M1-PROB-04-03 como prerrequisito directo para alinear la competencia de representación simbólica (A ∩ B) con el uso de la fórmula algebraica de probabilidad condicional."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-12",
@@ -414,17 +402,17 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "En la práctica de diseño instruccional, considerar si siempre se requiere que el estudiante domine ambos métodos de cálculo de P(B|A) (intuitivo y algebraico) antes de introducir la regla multiplicativa para eventos dependientes, o si se puede flexibilizar según el contexto."
-      ]
+      "recommendations": []
     }
   ],
   "coverage_analysis": {
     "standards_covered": [
       "M1-PROB-04"
     ],
-    "coverage_completeness": "complete",
-    "missing_areas": [],
+    "coverage_completeness": "incomplete",
+    "missing_areas": [
+      "No hay ningún átomo cuya habilidad_principal sea 'modelar'; la habilidad aparece solo como secundaria, por lo que el trabajo específico de modelación podría quedar subatendido."
+    ],
     "duplication_issues": [],
     "conceptual_coverage": "present",
     "procedural_coverage": "present",
@@ -450,15 +438,14 @@
       },
       "habilidades_covered": {
         "resolver_problemas": "covered",
-        "modelar": "covered",
+        "modelar": "partially_covered",
         "representar": "covered",
         "argumentar": "covered"
       }
     }
   },
   "global_recommendations": [
-    "Alinear de forma sistemática los prerrequisitos de todos los átomos procedimentales que usan notación de unión/intersección (P(A ∪ B), P(A ∩ B)) con el átomo de representación simbólica A-M1-PROB-04-03, para reforzar la coherencia de la progresión.",
-    "Mantener la separación actual entre átomos conceptuales (definiciones y distinciones) y procedimentales (cálculos), que está bien lograda y favorece la evaluación independiente de cada habilidad.",
-    "Si se desea enfatizar más la habilidad de modelar, considerar al menos un átomo con habilidad_principal = \"modelar\" (por ejemplo, formulación de un modelo probabilístico de una situación verbal) usando como base los contenidos ya presentes."
+    "Agregar al menos un átomo con habilidad_principal = 'modelar' (por ejemplo, un átomo centrado en construir y ajustar un esquema probabilístico —tabla, diagrama de árbol o diagrama de Venn— a partir de una situación verbal) para que la habilidad de modelación no quede solo como apoyo secundario.",
+    "Mantener la separación actual entre métodos intuitivos y formales (A-10 vs A-11) y entre casos independientes vs dependientes (A-08 vs A-12), ya que cumple bien con la diferenciación de estrategias cognitivas solicitada."
   ]
 }

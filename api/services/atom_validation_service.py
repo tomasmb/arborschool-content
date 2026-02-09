@@ -318,6 +318,11 @@ async def _run_validation(
 
     job.status = "in_progress"
 
+    # Invalidate stale fix results — they were based on the
+    # previous validation run and are no longer applicable.
+    from app.atoms.fixing.results_store import clear_results
+    clear_results()
+
     # Import OpenAI client lazily to avoid import at module load
     try:
         from app.atoms.validation.validation import (

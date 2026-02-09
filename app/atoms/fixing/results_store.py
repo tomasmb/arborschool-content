@@ -117,6 +117,40 @@ def load_results(path: Path) -> list[FixResult]:
 
 
 # -----------------------------------------------------------------------------
+# Invalidation
+# -----------------------------------------------------------------------------
+
+
+def clear_results(
+    *,
+    run_dir: Path | None = None,
+) -> int:
+    """Delete all saved fix-result files.
+
+    Called when validation is re-run, because old fix results are
+    based on stale validation data and must not be offered to the user.
+
+    Args:
+        run_dir: Override storage directory (defaults to ATOM_FIX_RESULTS_DIR).
+
+    Returns:
+        Number of files deleted.
+    """
+    out_dir = run_dir or ATOM_FIX_RESULTS_DIR
+    if not out_dir.exists():
+        return 0
+
+    deleted = 0
+    for f in out_dir.glob(f"{_FILE_PREFIX}*{_FILE_SUFFIX}"):
+        f.unlink()
+        deleted += 1
+
+    if deleted:
+        logger.info("Cleared %d stale fix-result file(s) from %s", deleted, out_dir)
+    return deleted
+
+
+# -----------------------------------------------------------------------------
 # Helpers
 # -----------------------------------------------------------------------------
 

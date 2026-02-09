@@ -1,10 +1,10 @@
 {
   "evaluation_summary": {
-    "total_atoms": 11,
-    "atoms_passing_all_checks": 9,
-    "atoms_with_issues": 2,
+    "total_atoms": 14,
+    "atoms_passing_all_checks": 13,
+    "atoms_with_issues": 1,
     "overall_quality": "good",
-    "coverage_assessment": "incomplete",
+    "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
   "atoms_evaluation": [
@@ -67,8 +67,7 @@
       "content_quality": {
         "score": "warning",
         "issues": [
-          "En la descripción se menciona el método de 'encontrar dos números que sumen b y multipliquen ac', pero ese procedimiento no aparece explícitamente en los criterios atómicos; sería útil alinearlo.",
-          "El criterio 'Factoriza trinomios de la forma ax² + bx + c = 0 como (x - r₁)(x - r₂) = 0 o equivalente' puede inducir a pensar que solo se consideran casos con a = 1; convendría explicitar que para a ≠ 1 se aceptan factores del tipo (px+q)(rx+s)."
+          "En el ejemplo conceptual final aparece 'x = -\\u0003/2' en lugar de 'x = -3/2'; hay un error de codificación tipográfica que debería corregirse para evitar confusión."
         ]
       },
       "prerequisites": {
@@ -76,8 +75,7 @@
         "issues": []
       },
       "recommendations": [
-        "Agregar un criterio explícito para el procedimiento de búsqueda de dos números que sumen b y multipliquen ac, tal como se describe en la introducción del átomo.",
-        "Reformular el criterio de factorización para dejar claro que se contemplan trinomios con a ≠ 1 (por ejemplo, mencionando factores genéricos (px+q)(rx+s))."
+        "Corregir el ejemplo de '2x² + 5x + 3 = 0' para que las soluciones se muestren claramente como x = -3/2 y x = -1, eliminando el carácter de control '\\u0003'."
       ]
     },
     {
@@ -177,9 +175,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Homogeneizar la notación del vértice: si se introduce como (h, k), aclarar en los ejemplos que (h, k) corresponde a (x_v, y_v) para evitar posibles confusiones de notación."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-07",
@@ -212,9 +208,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Se podría añadir un criterio explícito que vincule los valores numéricos de las raíces con la idea de 'soluciones de la ecuación cuadrática asociada', reforzando la conexión ecuación–función."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-08",
@@ -281,7 +275,7 @@
         "issues": []
       },
       "recommendations": [
-        "Considerar agregar 'representar' como habilidad secundaria, dado que la comparación de gráficas y el análisis visual están explícitamente presentes en los criterios."
+        "Para evitar redundancia con A-M1-ALG-06-04, se podría explicitar que este átomo asume conocida la relación 'signo de a ↔ concavidad' y se centra en la amplitud y el desplazamiento vertical, manteniendo la mención a la concavidad de forma más referencial que instructiva."
       ]
     },
     {
@@ -315,13 +309,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Se puede añadir un ejemplo donde se vea claramente el eje de simetría cambiando al variar b, para reforzar la relación entre b y la simetría de la parábola."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-12",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -339,10 +331,8 @@
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "El átomo describe problemas de encontrar máximos o mínimos, pero en los criterios no se explicita que el estudiante deba determinar si el vértice corresponde a un máximo o a un mínimo según el signo de a, algo clave para la optimización con parábolas."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
         "score": "pass",
@@ -353,8 +343,7 @@
         "issues": []
       },
       "recommendations": [
-        "Agregar un criterio explícito del tipo: 'Determina si el vértice representa un máximo o un mínimo en función del signo de a, y usa esa información para responder la pregunta del problema'.",
-        "Incorporar al menos un ejemplo donde se justifique brevemente por qué la solución encontrada es máxima o mínima, apoyándose en la concavidad de la parábola."
+        "Podría explicitarse en las notas que la resolución de ecuaciones cuadráticas completas no es imprescindible aquí, dado que el foco está en el uso del vértice para máximos/mínimos; si se prevén problemas que requieran además raíces, se podría sugerir A-M1-ALG-06-03 como apoyo opcional."
       ]
     },
     {
@@ -389,37 +378,139 @@
         "issues": []
       },
       "recommendations": [
-        "Podría simplificarse la lista de prerrequisitos dejando solo A-M1-ALG-06-07 (que ya integra los métodos de resolución de ecuaciones cuadráticas), a menos que se quiera evaluar explícitamente qué método elige el estudiante.",
-        "Incluir un ejemplo donde se muestren claramente ambas ramas del átomo: un problema resuelto por raíces (f(x)=k) y otro resuelto por evaluación directa (sustituir x)."
+        "Aunque lista A-M1-ALG-06-07, A-M1-ALG-06-01, A-M1-ALG-06-02 y A-M1-ALG-06-03 como prerrequisitos, bastaría con mantener A-M1-ALG-06-07, que ya integra los métodos de resolución; sin embargo, esto no afecta la validez del átomo."
       ]
+    },
+    {
+      "atom_id": "A-M1-ALG-06-14",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-ALG-06-15",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
+    },
+    {
+      "atom_id": "A-M1-ALG-06-16",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": []
     }
   ],
   "coverage_analysis": {
     "standards_covered": [
       "M1-ALG-06"
     ],
-    "coverage_completeness": "incomplete",
-    "missing_areas": [
-      "Uso sistemático de tablas de valores para representar y analizar la función cuadrática (construcción y lectura de tablas f(x) = ax² + bx + c).",
-      "Construcción explícita de la gráfica de la parábola a partir de la expresión algebraica (más allá de comparar gráficas ya dadas al variar parámetros).",
-      "Interpretación de información a partir de una gráfica dada de una función cuadrática (identificar vértice, raíces, intersecciones con ejes, intervalos de crecimiento/decrecimiento) sin partir necesariamente de la expresión algebraica."
+    "coverage_completeness": "complete",
+    "missing_areas": [],
+    "duplication_issues": [
+      {
+        "atoms": [
+          "A-M1-ALG-06-04",
+          "A-M1-ALG-06-10"
+        ],
+        "description": "Ambos átomos incluyen la relación entre el signo del coeficiente 'a' y la concavidad de la parábola. En A-M1-ALG-06-10 ese punto podría tratarse como recordatorio o referencia a A-M1-ALG-06-04 para reducir repetición explícita."
+      }
     ],
-    "duplication_issues": [],
     "conceptual_coverage": "present",
     "procedural_coverage": "present",
     "standard_items_coverage": {
       "includes_covered": {
         "Resolución de ecuaciones de segundo grado (cuadráticas) en diversos contextos, utilizando métodos como la factorización y la fórmula general.": "covered",
-        "Análisis de la función cuadrática a través de tablas de valores y gráficos, comprendiendo cómo la variación de sus parámetros (a, b, c) afecta la forma y posición de la parábola.": "partially_covered",
+        "Análisis de la función cuadrática a través de tablas de valores y gráficos, comprendiendo cómo la variación de sus parámetros (a, b, c) afecta la forma y posición de la parábola.": "covered",
         "Identificación y cálculo de los puntos especiales de la gráfica de la función cuadrática: el vértice, los ceros de la función (raíces) y las intersecciones con los ejes coordenados.": "covered",
-        "Planteamiento y resolución de problemas que involucren la función cuadrática como modelo matemático en situaciones de la vida diaria o de las ciencias.": "covered"
+        "Planteamiento y resolución de problemas que involucran la función cuadrática como modelo matemático en situaciones de la vida diaria o de las ciencias.": "covered"
       },
       "subcontenidos_covered": {
         "Resolución de ecuaciones cuadráticas por factorización.": "covered",
         "Resolución de ecuaciones cuadráticas usando la fórmula general.": "covered",
         "Identificación y cálculo del vértice de una parábola.": "covered",
         "Determinación de los ceros (raíces) de una función cuadrática.": "covered",
-        "Interpretación de la gráfica de la función cuadrática y sus parámetros.": "partially_covered",
+        "Interpretación de la gráfica de la función cuadrática y sus parámetros.": "covered",
         "Modelado de situaciones contextualizadas con funciones cuadráticas.": "covered"
       },
       "habilidades_covered": {
@@ -431,10 +522,8 @@
     }
   },
   "global_recommendations": [
-    "Diseñar al menos un átomo adicional centrado en el uso de tablas de valores para representar funciones cuadráticas: construcción de la tabla, reconocimiento de la simetría y uso de la tabla como puente entre expresión algebraica y gráfica.",
-    "Incorporar un átomo (o ampliar uno existente) dedicado a la construcción e interpretación de gráficas de parábolas a partir de f(x) = ax² + bx + c, incluyendo identificación de vértice, raíces e intersecciones con ejes a partir de la gráfica misma.",
-    "Ajustar el átomo A-M1-ALG-06-12 para que incluya explícitamente el criterio de decidir si el vértice representa un máximo o un mínimo en función del signo de a, fortaleciendo la conexión con el concepto de optimización.",
-    "Revisar y alinear descripciones y criterios en átomos procedimentales (especialmente A-M1-ALG-06-02) para que todos los métodos mencionados en la descripción aparezcan también de forma explícita en los criterios atómicos evaluables.",
-    "Valorar la simplificación de listas de prerrequisitos en átomos integradores (como A-M1-ALG-06-13), usando como prerrequisito preferente aquellos átomos que ya integran submétodos (por ejemplo, A-M1-ALG-06-07 en lugar de listar nuevamente A-M1-ALG-06-01, 06-02 y 06-03)."
+    "Corregir el error tipográfico en el ejemplo de A-M1-ALG-06-02 donde aparece 'x = -\\u0003/2' y reemplazarlo por 'x = -3/2' para asegurar claridad en la presentación de las soluciones.",
+    "Revisar la redacción de A-M1-ALG-06-10 para que la mención de la concavidad remita explícitamente a A-M1-ALG-06-04, reduciendo la sensación de repetición de contenidos y dejando claro el foco adicional en la apertura (|a|) y la traslación vertical (c).",
+    "Opcionalmente simplificar la lista de prerrequisitos en A-M1-ALG-06-13 manteniendo solo A-M1-ALG-06-07 (que ya integra los métodos de resolución), para hacer más legible la progresión sin cambiar el fondo instruccional."
   ]
 }
