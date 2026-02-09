@@ -458,6 +458,14 @@ export async function getAtomStructuralChecks(
   );
 }
 
+export async function getSavedStructuralChecks(
+  subjectId: string,
+): Promise<StructuralChecksResult | null> {
+  return fetchAPI<StructuralChecksResult | null>(
+    `/subjects/${subjectId}/atoms/structural-checks/saved`,
+  );
+}
+
 export async function startAtomValidation(
   subjectId: string,
   params: { selection_mode: string; standard_ids?: string[] },

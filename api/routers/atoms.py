@@ -3,6 +3,7 @@
 Endpoints:
     GET  /api/subjects/{subject_id}/atoms/pipeline-summary
     GET  /api/subjects/{subject_id}/atoms/structural-checks
+    GET  /api/subjects/{subject_id}/atoms/structural-checks/saved
     POST /api/subjects/{subject_id}/atoms/validate
     GET  /api/subjects/{subject_id}/atoms/validate/status/{job_id}
     GET  /api/subjects/{subject_id}/atoms/validation-results
@@ -28,7 +29,12 @@ from api.schemas.atom_models import (
     StructuralChecksResult,
 )
 from api.services import atom_coverage_service, atom_validation_service
-from api.services.atom_structural_checks import run_structural_checks
+from api.services.atom_structural_checks import (
+    load_saved_results as load_saved_structural,
+)
+from api.services.atom_structural_checks import (
+    run_structural_checks,
+)
 from app.utils.paths import get_atoms_file, get_standards_file
 
 logger = logging.getLogger(__name__)
@@ -93,9 +99,11 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
         or r.get("atoms_with_issues", 0) > 0
     )
 
-    # Structural checks status: only set if results exist in cache
-    # (we don't run them on every summary call for perf)
-    structural_passed: bool | None = None
+    # Structural checks status: read from saved results on disk
+    saved_structural = load_saved_structural()
+    structural_passed: bool | None = (
+        saved_structural.passed if saved_structural else None
+    )
 
     return AtomPipelineSummary(
         has_standards=has_standards,
@@ -120,9 +128,27 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
 def get_structural_checks(
     subject_id: str,
 ) -> StructuralChecksResult:
-    """Run all deterministic structural checks on atoms."""
+    """Run all deterministic structural checks on atoms.
+
+    Runs checks, persists results to disk, and returns them.
+    """
     _validate_subject(subject_id)
     return run_structural_checks(subject_id)
+
+
+@router.get(
+    "/{subject_id}/atoms/structural-checks/saved",
+    response_model=StructuralChecksResult | None,
+)
+def get_saved_structural_checks(
+    subject_id: str,
+) -> StructuralChecksResult | None:
+    """Return previously saved structural check results.
+
+    Returns null if checks have never been run.
+    """
+    _validate_subject(subject_id)
+    return load_saved_structural()
 
 
 # -----------------------------------------------------------------
@@ -138,8 +164,26 @@ async def start_validation(
     subject_id: str,
     request: AtomValidationRequest,
 ) -> AtomValidationJobResponse:
-    """Start LLM validation job for atoms."""
+    """Start LLM validation job for atoms.
+
+    Requires structural checks to have passed first (errors = 0,
+    granularity warnings are allowed).
+    """
     _validate_subject(subject_id)
+
+    # Gate: structural checks must have passed
+    saved_structural = load_saved_structural()
+    if saved_structural is None:
+        raise HTTPException(
+            status_code=400,
+            detail="Run structural checks before LLM validation.",
+        )
+    if not saved_structural.passed:
+        raise HTTPException(
+            status_code=400,
+            detail="Structural checks have errors. "
+            "Fix them before running LLM validation.",
+        )
 
     atoms_path = get_atoms_file("paes_m1_2026")
     if not atoms_path.exists():

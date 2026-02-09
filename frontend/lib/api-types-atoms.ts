@@ -31,6 +31,7 @@ export interface StructuralCheckItem {
 export interface StructuralChecksResult {
   passed: boolean;
   total_atoms: number;
+  ran_at: string | null;
   schema_errors: number;
   id_eje_errors: number;
   circular_dependencies: number;

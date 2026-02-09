@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from app.llm_clients import GeminiService
+from app.llm_clients import GeminiService, OpenAIClient
 from app.standards.helpers import parse_json_response
 
 logger = logging.getLogger(__name__)
@@ -234,45 +234,40 @@ por ningún átomo, esto es un problema crítico que debe reportarse en
     return prompt
 
 
-def validate_atoms_with_gemini(
-    gemini: GeminiService,
+# Reasoning effort for atom validation (complex multi-criteria evaluation).
+_ATOM_VALIDATION_REASONING = "medium"
+
+
+def validate_atoms_with_llm(
+    client: OpenAIClient | GeminiService,
     standard: dict[str, Any],
     atoms: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    """Validate atoms using Gemini.
+    """Validate atoms using an LLM client.
 
     Args:
-        gemini: Gemini service instance
-        standard: The standard dictionary
-        atoms: List of atom dictionaries to validate
+        client: OpenAIClient (GPT-5.1) or GeminiService instance.
+        standard: The standard dictionary.
+        atoms: List of atom dictionaries to validate.
 
     Returns:
-        Validation result as dictionary
+        Validation result as dictionary.
     """
     prompt = build_validation_prompt(standard, atoms)
 
-    logger.info("Validating atoms with Gemini...")
-    # Try with high thinking level first, fallback to medium if safety filters trigger
-    try:
-        raw_response = gemini.generate_text(
-            prompt,
-            thinking_level="high",
-            response_mime_type="application/json",
-            temperature=0.0,
-            timeout=1200,  # 20 minutes
-        )
-    except ValueError as e:
-        if "Finish reason: 2" in str(e) or "safety filters" in str(e).lower():
-            logger.warning("High thinking level blocked by safety filters, retrying with medium...")
-            raw_response = gemini.generate_text(
-                prompt,
-                thinking_level="medium",  # Try with less restrictive thinking level
-                response_mime_type="application/json",
-                temperature=0.0,
-                timeout=1200,
-            )
-        else:
-            raise
+    logger.info(
+        "Validating atoms with %s...",
+        type(client).__name__,
+    )
+
+    # OpenAIClient supports reasoning_effort; GeminiService ignores it
+    generate_kwargs: dict[str, Any] = {
+        "response_mime_type": "application/json",
+    }
+    if isinstance(client, OpenAIClient):
+        generate_kwargs["reasoning_effort"] = _ATOM_VALIDATION_REASONING
+
+    raw_response = client.generate_text(prompt, **generate_kwargs)
 
     # Parse JSON response
     result = parse_json_response(raw_response)
@@ -281,6 +276,10 @@ def validate_atoms_with_gemini(
         raise ValueError(f"Expected dict, got {type(result)}")
 
     return result
+
+
+# Backward-compat alias
+validate_atoms_with_gemini = validate_atoms_with_llm
 
 
 def validate_atoms_from_files(

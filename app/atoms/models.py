@@ -66,8 +66,8 @@ class Atom(BaseModel):
     ejemplos_conceptuales: list[str] = Field(
         ...,
         min_length=1,
-        max_length=3,
-        description="1-3 non-exercise examples illustrating the atom",
+        max_length=4,
+        description="1-4 non-exercise examples illustrating the atom",
     )
     prerrequisitos: list[str] = Field(
         default_factory=list,

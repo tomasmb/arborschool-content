@@ -91,7 +91,8 @@ _DEFAULT_GEMINI_MODEL = "gemini-3-pro-preview"
 _DEFAULT_OPENAI_MODEL = "gpt-5.1"
 
 # GPT-5.1 reasoning effort levels
-ReasoningEffort = Literal["minimal", "low", "medium", "high"]
+# Valid values: "none" (no reasoning), "low", "medium", "high"
+ReasoningEffort = Literal["none", "low", "medium", "high"]
 
 _logger = logging.getLogger(__name__)
 
@@ -104,12 +105,14 @@ def _build_response_format(json_only: bool) -> Optional[Dict[str, Any]]:
     return None
 
 
-def _map_temperature_to_reasoning(temperature: Optional[float]) -> ReasoningEffort:
-    """
-    Map legacy temperature values to GPT-5.1 reasoning_effort.
+def _map_temperature_to_reasoning(
+    temperature: Optional[float],
+) -> ReasoningEffort:
+    """Map legacy temperature values to GPT-5.1 reasoning_effort.
 
     Lower temperature (more deterministic) maps to higher reasoning effort.
-    For QTI conversion, we generally want high accuracy, so default to "high".
+    For QTI conversion we generally want high accuracy, so default to "high".
+    High temperature (> 0.8) maps to "none" (no reasoning, cheapest).
     """
     if temperature is None:
         return "high"
@@ -119,7 +122,7 @@ def _map_temperature_to_reasoning(temperature: Optional[float]) -> ReasoningEffo
         return "medium"
     if temperature <= 0.8:
         return "low"
-    return "minimal"
+    return "none"
 
 
 def _call_gemini(
@@ -250,25 +253,36 @@ def _call_openai(
     if response_format:
         params["response_format"] = response_format
 
-    is_gpt51 = chosen_model.startswith("gpt-5")
+    is_reasoning_model = chosen_model.startswith("gpt-5")
 
-    if is_gpt51:
+    if is_reasoning_model:
         effort = reasoning_effort
         if effort is None and "temperature" in kwargs:
-            effort = _map_temperature_to_reasoning(kwargs.pop("temperature"))
-        params["reasoning_effort"] = effort or "high"
-        params["seed"] = 42
+            effort = _map_temperature_to_reasoning(
+                kwargs.pop("temperature"),
+            )
+        effort = effort or "high"
+        uses_reasoning = effort != "none"
+
+        if uses_reasoning:
+            params["reasoning_effort"] = effort
+            # temperature is NOT allowed with reasoning > none
+        elif "temperature" in kwargs:
+            params["temperature"] = kwargs.pop("temperature")
 
         if "max_tokens" in kwargs:
             params["max_completion_tokens"] = kwargs.pop("max_tokens")
 
-    # Filtrar parámetros internos de tracking antes de pasar a OpenAI
+    # Filter internal tracking params before passing to OpenAI
     internal_params = {"_output_dir", "_question_id", "_operation"}
-    filtered_kwargs = {k: v for k, v in kwargs.items() if k not in internal_params}
+    filtered_kwargs = {
+        k: v for k, v in kwargs.items()
+        if k not in internal_params
+    }
 
     for key, value in filtered_kwargs.items():
-        if is_gpt51 and key == "temperature":
-            continue
+        if is_reasoning_model and key == "temperature":
+            continue  # already handled above
         params[key] = value
 
     # Retry logic with exponential backoff

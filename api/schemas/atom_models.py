@@ -58,6 +58,9 @@ class StructuralChecksResult(BaseModel):
         description="True if zero errors (warnings are ok)"
     )
     total_atoms: int
+    ran_at: str | None = Field(
+        None, description="ISO timestamp of when checks were run"
+    )
     # Per-check summaries
     schema_errors: int = Field(
         0, description="Pydantic validation failures"

@@ -128,7 +128,7 @@ def evaluate_question_detail(pdf_content: Dict[str, Any], openai_api_key: str, s
         ],
         functions=[function_spec],
         function_call={"name": function_spec["name"]},
-        reasoning_effort="high",
+        reasoning_effort="medium",  # evaluation with clear rubric
     )
     choice = response.choices[0].message
     arguments = choice.function_call.arguments
@@ -159,7 +159,9 @@ def evaluate_question_detail(pdf_content: Dict[str, Any], openai_api_key: str, s
                 "content": (
                     "Validate the metrics against the PDF. "
                     f"This question is from a test administered to students in grade {grade_level}. "
-                    "Standards do not have to match the exact grade; select those that are most appropriate for the question and the test context."
+                    "Standards do not have to match the exact grade; "
+                    "select those that are most appropriate for the question "
+                    "and the test context."
                 ),
             },
             {
@@ -173,7 +175,7 @@ def evaluate_question_detail(pdf_content: Dict[str, Any], openai_api_key: str, s
         ],
         functions=[validate_spec],
         function_call={"name": validate_spec["name"]},
-        reasoning_effort="high",
+        reasoning_effort="medium",  # evaluation with clear rubric
     )
     corrections = json.loads(validate_response.choices[0].message.function_call.arguments)
     print(f"🛠️ Corrections applied: {corrections}")

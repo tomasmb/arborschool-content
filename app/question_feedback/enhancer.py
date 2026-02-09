@@ -4,18 +4,19 @@ from __future__ import annotations
 
 import importlib.util
 import logging
-import os
 from pathlib import Path
 from typing import Any
 
-from dotenv import load_dotenv
-
+from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.question_feedback.models import EnhancementResult
 from app.question_feedback.prompts import (
     FEEDBACK_CORRECTION_PROMPT,
     FEEDBACK_ENHANCEMENT_PROMPT,
 )
-from app.question_feedback.utils.image_utils import load_images_from_urls
+from app.question_feedback.utils.image_utils import (
+    build_images_section,
+    load_images_from_urls,
+)
 
 
 def _import_xml_validator() -> Any:
@@ -24,7 +25,6 @@ def _import_xml_validator() -> Any:
     Python doesn't allow hyphens in module names, so we use importlib.util
     to load the module directly from its file path.
     """
-    # Build path to the xml_validator module
     module_path = (
         Path(__file__).parent.parent
         / "pruebas"
@@ -37,7 +37,9 @@ def _import_xml_validator() -> Any:
     if not module_path.exists():
         return None
 
-    spec = importlib.util.spec_from_file_location("xml_validator", module_path)
+    spec = importlib.util.spec_from_file_location(
+        "xml_validator", module_path,
+    )
     if spec is None or spec.loader is None:
         return None
 
@@ -51,21 +53,28 @@ _xml_validator_module = _import_xml_validator()
 if _xml_validator_module:
     validate_qti_xml = _xml_validator_module.validate_qti_xml
 else:
-    # Fallback: define a stub if import fails
+    # Stub if import fails
     def validate_qti_xml(
-        qti_xml: str, validation_endpoint: str | None = None
+        qti_xml: str, validation_endpoint: str | None = None,
     ) -> dict[str, Any]:
         """Stub validator when real one is not available."""
-        return {"success": True, "valid": True, "message": "Validation skipped"}
+        return {
+            "success": True, "valid": True,
+            "message": "Validation skipped",
+        }
 
 logger = logging.getLogger(__name__)
+
+# Reasoning effort for generation / correction (structured output, not deep
+# reasoning) — "low" is sufficient and much cheaper than "high".
+_ENHANCE_REASONING = "low"
 
 
 class FeedbackEnhancer:
     """Enhance QTI XML with feedback using OpenAI GPT models.
 
-    This class takes a base QTI XML (without feedback) and generates a complete
-    QTI XML with embedded feedback using an LLM. XSD validation is performed
+    Takes a base QTI XML (without feedback) and generates a complete QTI XML
+    with embedded feedback using an LLM.  XSD validation is performed
     immediately after generation with retry logic.
     """
 
@@ -75,28 +84,26 @@ class FeedbackEnhancer:
         self,
         model: str | None = None,
         max_retries: int = 2,
-        api_key: str | None = None,
+        client: OpenAIClient | None = None,
     ):
-        """Initialize the enhancer.
+        """Initialise the enhancer.
 
         Args:
-            model: OpenAI model to use. Defaults to gpt-5.1.
+            model: OpenAI model to use.  Defaults to gpt-5.1.
             max_retries: Maximum XSD validation retries.
-            api_key: OpenAI API key. Defaults to OPENAI_API_KEY env var.
+            client: Pre-built client (DIP).  When ``None`` the factory
+                ``load_default_openai_client()`` is used.
         """
-        load_dotenv()
-        self._api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not self._api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
-
         self.model = model or self.DEFAULT_MODEL
         self.max_retries = max_retries
         self._last_xsd_errors: str | None = None
+        self._client = client or load_default_openai_client(
+            model=self.model,
+        )
 
-        # Import OpenAIClient from llm_clients
-        from app.llm_clients import OpenAIClient
-
-        self._client = OpenAIClient(api_key=self._api_key, model=self.model)
+    # ------------------------------------------------------------------
+    # Public API
+    # ------------------------------------------------------------------
 
     def enhance(
         self,
@@ -107,67 +114,48 @@ class FeedbackEnhancer:
 
         Args:
             qti_xml: Original QTI XML without feedback.
-            image_urls: Optional list of image URLs for multimodal input.
+            image_urls: Optional image URLs for multimodal input.
 
         Returns:
             EnhancementResult with success status and enhanced XML or errors.
         """
-        # Load images once (outside retry loop)
         images: list[Any] = []
         if image_urls:
             images = load_images_from_urls(image_urls)
 
         for attempt in range(self.max_retries + 1):
             logger.info(
-                f"Enhancement attempt {attempt + 1}/{self.max_retries + 1} "
-                f"({len(images)} images)"
+                "Enhancement attempt %d/%d (%d images)",
+                attempt + 1, self.max_retries + 1, len(images),
             )
 
-            # Build prompt with images section
-            images_section = ""
-            if images:
-                images_section = (
-                    f"IMÁGENES: {len(images)} imagen(es) adjuntas. "
-                    "Considera las imágenes al generar el feedback educativo."
-                )
-            elif image_urls:
-                images_section = (
-                    f"IMÁGENES: Se detectaron {len(image_urls)} imagen(es) pero "
-                    "no se pudieron cargar. Genera feedback basándote solo en el texto."
-                )
+            images_section = build_images_section(
+                images, image_urls,
+                action_verb="generar el feedback educativo",
+            )
 
             prompt = FEEDBACK_ENHANCEMENT_PROMPT.format(
                 original_qti_xml=qti_xml,
                 images_section=images_section,
             )
 
-            # Add XSD errors if this is a retry
             if attempt > 0 and self._last_xsd_errors:
-                prompt += f"\n\nERRORES XSD DEL INTENTO ANTERIOR:\n{self._last_xsd_errors}\n"
-                prompt += "Por favor corrige estos errores en tu respuesta."
+                prompt += (
+                    f"\n\nERRORES XSD DEL INTENTO ANTERIOR:\n"
+                    f"{self._last_xsd_errors}\n"
+                    "Por favor corrige estos errores en tu respuesta."
+                )
 
             try:
-                # Build multimodal prompt if we have images
-                if images:
-                    multimodal_prompt: list[Any] = [prompt]
-                    multimodal_prompt.extend(images)
-                    response_text = self._client.generate_text(
-                        multimodal_prompt,
-                        temperature=0.0,
-                        max_tokens=8000,
-                    )
-                else:
-                    response_text = self._client.generate_text(
-                        prompt,
-                        temperature=0.0,
-                        max_tokens=8000,
-                    )
-
+                response_text = self._client.call_with_images(
+                    prompt,
+                    images,
+                    reasoning_effort=_ENHANCE_REASONING,
+                    max_tokens=8000,
+                )
                 enhanced_xml = self._extract_xml(response_text)
 
-                # XSD Validation immediately
                 xsd_result = validate_qti_xml(enhanced_xml)
-
                 if xsd_result.get("valid"):
                     logger.info("XSD validation passed")
                     return EnhancementResult(
@@ -176,18 +164,19 @@ class FeedbackEnhancer:
                         attempts=attempt + 1,
                     )
 
-                # Store errors for retry
                 self._last_xsd_errors = str(
-                    xsd_result.get("validation_errors", "Unknown error")
+                    xsd_result.get("validation_errors", "Unknown error"),
                 )
-                logger.warning(f"XSD validation failed: {self._last_xsd_errors}")
+                logger.warning(
+                    "XSD validation failed: %s", self._last_xsd_errors,
+                )
 
             except Exception as e:
-                logger.error(f"Enhancement attempt {attempt + 1} failed: {e}")
+                logger.error("Enhancement attempt %d failed: %s", attempt + 1, e)
                 if attempt == self.max_retries:
                     return EnhancementResult(
                         success=False,
-                        error=f"Enhancement failed: {str(e)}",
+                        error=f"Enhancement failed: {e}",
                         attempts=attempt + 1,
                     )
                 continue
@@ -212,8 +201,8 @@ class FeedbackEnhancer:
 
         Args:
             qti_xml_with_errors: QTI XML with feedback that has errors.
-            review_issues: Description of the issues found by the reviewer.
-            image_urls: Optional list of image URLs for multimodal input.
+            review_issues: Issues found by the reviewer.
+            image_urls: Optional image URLs for multimodal input.
 
         Returns:
             EnhancementResult with success status and corrected XML or errors.
@@ -224,12 +213,10 @@ class FeedbackEnhancer:
         if image_urls:
             images = load_images_from_urls(image_urls)
 
-        images_section = ""
-        if images:
-            images_section = (
-                f"IMÁGENES: {len(images)} imagen(es) adjuntas. "
-                "Considera las imágenes al corregir el feedback."
-            )
+        images_section = build_images_section(
+            images, image_urls,
+            action_verb="corregir el feedback",
+        )
 
         prompt = FEEDBACK_CORRECTION_PROMPT.format(
             qti_xml_with_errors=qti_xml_with_errors,
@@ -238,36 +225,25 @@ class FeedbackEnhancer:
         )
 
         try:
-            if images:
-                multimodal_prompt: list[Any] = [prompt]
-                multimodal_prompt.extend(images)
-                response_text = self._client.generate_text(
-                    multimodal_prompt,
-                    temperature=0.0,
-                    max_tokens=8000,
-                )
-            else:
-                response_text = self._client.generate_text(
-                    prompt,
-                    temperature=0.0,
-                    max_tokens=8000,
-                )
-
+            response_text = self._client.call_with_images(
+                prompt,
+                images,
+                reasoning_effort=_ENHANCE_REASONING,
+                max_tokens=8000,
+            )
             corrected_xml = self._extract_xml(response_text)
 
-            # XSD Validation
             xsd_result = validate_qti_xml(corrected_xml)
-
             if xsd_result.get("valid"):
                 logger.info("Correction XSD validation passed")
                 return EnhancementResult(
-                    success=True,
-                    qti_xml=corrected_xml,
-                    attempts=1,
+                    success=True, qti_xml=corrected_xml, attempts=1,
                 )
 
-            xsd_errors = str(xsd_result.get("validation_errors", "Unknown error"))
-            logger.warning(f"Correction XSD validation failed: {xsd_errors}")
+            xsd_errors = str(
+                xsd_result.get("validation_errors", "Unknown error"),
+            )
+            logger.warning("Correction XSD validation failed: %s", xsd_errors)
             return EnhancementResult(
                 success=False,
                 error="Correction failed XSD validation",
@@ -276,12 +252,14 @@ class FeedbackEnhancer:
             )
 
         except Exception as e:
-            logger.error(f"Feedback correction failed: {e}")
+            logger.error("Feedback correction failed: %s", e)
             return EnhancementResult(
-                success=False,
-                error=f"Correction failed: {str(e)}",
-                attempts=1,
+                success=False, error=f"Correction failed: {e}", attempts=1,
             )
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
 
     def _extract_xml(self, response_text: str) -> str:
         """Extract QTI XML from response, handling any wrapping.
@@ -297,15 +275,16 @@ class FeedbackEnhancer:
         # Remove markdown code blocks if present
         if text.startswith("```"):
             lines = text.split("\n")
-            lines = lines[1:]  # Remove first line (```xml or ```)
+            lines = lines[1:]  # Remove opening fence line
             if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]  # Remove last line (```)
+                lines = lines[:-1]
             text = "\n".join(lines)
 
-        # Ensure it starts with the QTI element
+        # Extract QTI element
         if "<qti-assessment-item" in text:
             start = text.index("<qti-assessment-item")
-            end = text.rindex("</qti-assessment-item>") + len("</qti-assessment-item>")
+            end_tag = "</qti-assessment-item>"
+            end = text.rindex(end_tag) + len(end_tag)
             text = text[start:end]
 
         return text.strip()

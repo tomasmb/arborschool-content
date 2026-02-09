@@ -170,7 +170,7 @@ def fix_qti_xml_with_llm(
             ],
             api_key=openai_api_key,
             json_only=True,
-            reasoning_effort="high",
+            reasoning_effort="medium",  # XML structure understanding
             max_tokens=8000,
             question_id=question_id,
             output_dir=output_dir,

@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import logging
+from datetime import datetime, timezone
 from typing import Any
 
 from api.schemas.atom_models import (
@@ -25,7 +26,11 @@ from api.schemas.atom_models import (
 from app.atoms.generation import _validate_atom_granularity
 from app.atoms.models import Atom, validate_atom_id_matches_eje
 from app.atoms.scripts.check_circular_dependencies import find_cycles
-from app.utils.paths import get_atoms_file, get_standards_file
+from app.utils.paths import (
+    STRUCTURAL_CHECKS_FILE,
+    get_atoms_file,
+    get_standards_file,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -177,10 +182,44 @@ def _build_graph_stats(
     }
 
 
+def _save_results(result: StructuralChecksResult) -> None:
+    """Persist structural check results to disk."""
+    STRUCTURAL_CHECKS_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(STRUCTURAL_CHECKS_FILE, "w", encoding="utf-8") as f:
+        json.dump(
+            result.model_dump(), f, ensure_ascii=False, indent=2,
+        )
+    logger.info(
+        "Saved structural checks to %s (passed=%s)",
+        STRUCTURAL_CHECKS_FILE, result.passed,
+    )
+
+
+def load_saved_results() -> StructuralChecksResult | None:
+    """Load previously saved structural check results from disk.
+
+    Returns:
+        Saved result or None if no saved results exist.
+    """
+    if not STRUCTURAL_CHECKS_FILE.exists():
+        return None
+    try:
+        with open(STRUCTURAL_CHECKS_FILE, encoding="utf-8") as f:
+            data = json.load(f)
+        return StructuralChecksResult.model_validate(data)
+    except (json.JSONDecodeError, OSError, ValueError) as e:
+        logger.warning(
+            "Failed to load saved structural checks: %s", e,
+        )
+        return None
+
+
 def run_structural_checks(
     subject_id: str,
 ) -> StructuralChecksResult:
     """Run all deterministic structural checks on atoms.
+
+    Runs checks, saves results to disk, and returns the result.
 
     Args:
         subject_id: Subject identifier (e.g. "paes-m1-2026").
@@ -231,9 +270,11 @@ def run_structural_checks(
         1 for i in all_issues if i.severity == "error"
     )
 
-    return StructuralChecksResult(
+    ran_at = datetime.now(timezone.utc).isoformat()
+    result = StructuralChecksResult(
         passed=error_count == 0,
         total_atoms=len(atoms_list),
+        ran_at=ran_at,
         schema_errors=schema_errs,
         id_eje_errors=id_eje_errs,
         circular_dependencies=len(cycles),
@@ -244,3 +285,6 @@ def run_structural_checks(
         cycles=cycles,
         graph_stats=_build_graph_stats(validated),
     )
+
+    _save_results(result)
+    return result

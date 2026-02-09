@@ -40,6 +40,7 @@ DATA_DIR = APP_DIR / "data"
 # Atoms data
 ATOMS_DIR = DATA_DIR / "atoms"
 ATOM_VALIDATION_RESULTS_DIR = ATOMS_DIR / "validation_results"
+STRUCTURAL_CHECKS_FILE = ATOMS_DIR / "structural_checks_result.json"
 
 # Standards data
 STANDARDS_DIR = DATA_DIR / "standards"

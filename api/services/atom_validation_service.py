@@ -26,8 +26,12 @@ from app.utils.paths import (
 logger = logging.getLogger(__name__)
 
 
-# Cost estimate: ~$0.08 per standard (Gemini 3 Pro, high thinking)
-COST_PER_STANDARD_USD = 0.08
+# Cost estimate per standard (GPT-5.1, medium reasoning)
+# Input ~8K tokens  @ $1.25/1M  = $0.01
+# Output ~4K tokens @ $10.00/1M = $0.04
+# Reasoning ~8K tokens (billed as output) @ $10.00/1M = $0.08
+# Total ~$0.13 -- using $0.15 with safety buffer
+COST_PER_STANDARD_USD = 0.15
 
 
 @dataclass
@@ -287,17 +291,17 @@ async def _run_validation(
 
     job.status = "in_progress"
 
-    # Import Gemini service lazily to avoid import at module load
+    # Import OpenAI client lazily to avoid import at module load
     try:
         from app.atoms.validation.validation import (
-            validate_atoms_with_gemini,
+            validate_atoms_with_llm,
         )
-        from app.llm_clients import load_default_gemini_service
-        gemini = load_default_gemini_service()
+        from app.llm_clients import load_default_openai_client
+        client = load_default_openai_client()
     except Exception as e:
         job.status = "failed"
         job.completed_at = datetime.now(timezone.utc)
-        logger.exception("Failed to initialize Gemini: %s", e)
+        logger.exception("Failed to initialize OpenAI: %s", e)
         return
 
     ATOM_VALIDATION_RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -305,7 +309,7 @@ async def _run_validation(
     for standard in standards:
         try:
             await _validate_single_standard(
-                gemini, validate_atoms_with_gemini,
+                client, validate_atoms_with_llm,
                 standard, all_atoms, job,
             )
         except Exception as e:

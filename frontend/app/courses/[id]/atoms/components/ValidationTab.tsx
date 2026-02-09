@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import {
   getAtomStructuralChecks,
   getAtomValidationResults,
+  getSavedStructuralChecks,
   type AtomPipelineSummary,
   type StructuralChecksResult,
   type SavedValidationSummary,
@@ -50,8 +51,13 @@ export function ValidationTab({
     new Set(),
   );
 
-  // Load saved validation results on mount
+  // Load saved results on mount (structural checks + validation)
   useEffect(() => {
+    getSavedStructuralChecks(subjectId)
+      .then((saved) => {
+        if (saved) setStructural(saved);
+      })
+      .catch(() => {});
     getAtomValidationResults(subjectId)
       .then(setValidationResults)
       .catch(() => {});
@@ -70,9 +76,9 @@ export function ValidationTab({
     }
   }, [subjectId, onRefresh]);
 
-  // Determine next action
+  // Determine next action -- LLM validation requires structural pass
   const getNextAction = (): NextAction => {
-    if (!structural) return "structural";
+    if (!structural || !structural.passed) return "structural";
     const unvalidated =
       summary.standards_count - summary.standards_validated;
     if (unvalidated > 0) return "validate";
@@ -206,6 +212,14 @@ export function ValidationTab({
               </button>
             )}
           </div>
+
+          {/* Blocked message when structural checks failed */}
+          {structural && !structural.passed && (
+            <p className="text-sm text-amber-500 mb-4">
+              Structural checks have errors. Fix them and re-run
+              before starting LLM validation.
+            </p>
+          )}
 
           {/* Progress stats */}
           <div className="flex gap-4 text-sm">

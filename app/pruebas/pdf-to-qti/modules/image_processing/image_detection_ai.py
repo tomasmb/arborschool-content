@@ -58,7 +58,7 @@ Use high confidence only when there are clear visual indicators."""
                 {"role": "user", "content": prompt},
             ],
             response_format=VisualContentAssessment,
-            reasoning_effort="high",
+            reasoning_effort="low",  # simple detection task
         )
 
         assessment = response.choices[0].message.parsed
@@ -137,7 +137,7 @@ Categorize each text block as:
             model="gpt-5.1",
             messages=messages,
             response_format=ContentAnalysisResponse,
-            reasoning_effort="high",
+            reasoning_effort="low",  # simple detection task
         )
 
         analysis = response.choices[0].message.parsed
