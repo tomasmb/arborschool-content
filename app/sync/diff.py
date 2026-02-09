@@ -145,11 +145,11 @@ def _fetch_db_ids(
                 )
             else:
                 cur.execute(f"SELECT id, {cols} FROM atoms")  # noqa: S608
-            # Hash using canonical keys (positional index) so hashes
-            # match the local side regardless of field naming.
+            # Hash using positional keys + normalize so [] and None
+            # compare equally on both sides.
             return {
                 row["id"]: _compute_content_hash({
-                    str(i): row[c]
+                    str(i): _normalize_for_hash(row[c])
                     for i, c in enumerate(_ATOM_DB_COLS)
                 })
                 for row in cur.fetchall()
@@ -161,10 +161,10 @@ def _fetch_db_ids(
                 "SELECT question_id || ':' || atom_id AS id, "
                 f"{cols} FROM question_atoms"
             )
-            # Use positional keys to match local-side hashing
+            # Use positional keys + normalize for consistent hashing
             return {
                 row["id"]: _compute_content_hash({
-                    str(i): row[c]
+                    str(i): _normalize_for_hash(row[c])
                     for i, c in enumerate(_QA_HASH_COLS)
                 })
                 for row in cur.fetchall()
@@ -269,6 +269,43 @@ def compute_entity_diff(
     return diff
 
 
+def _parse_pg_array(text: str) -> list[str]:
+    """Parse a PostgreSQL text-format array like '{a,b}' into a list.
+
+    psycopg3 doesn't auto-decode arrays of custom enum types
+    (e.g. skill_type[]), returning raw strings like '{}' or
+    '{representar,modelar}'.  This helper converts them to
+    Python lists so hashing is consistent with the local side.
+    """
+    inner = text[1:-1]
+    if not inner:
+        return []
+    return inner.split(",")
+
+
+def _normalize_for_hash(val: Any) -> Any:
+    """Normalize a value for consistent hashing.
+
+    - Enums → their .value string
+    - Empty lists / empty PG arrays → None  (matches transformer)
+    - PG array strings like '{a,b}' → Python lists
+    - Lists of enums → lists of .value strings
+    """
+    if val is None:
+        return None
+    if hasattr(val, "value"):
+        return val.value
+    # PostgreSQL text-format array (custom enum arrays)
+    if isinstance(val, str) and val.startswith("{") and val.endswith("}"):
+        val = _parse_pg_array(val)
+        return None if not val else val
+    if isinstance(val, list):
+        if not val:
+            return None  # [] and None hash the same
+        return [v.value if hasattr(v, "value") else v for v in val]
+    return val
+
+
 def _extract_hash_data(
     item: Any,
     hash_keys: tuple[str, ...],
@@ -291,16 +328,9 @@ def _extract_hash_data(
     for i, attr in enumerate(fields):
         key = str(i)
         if hasattr(item, attr):
-            val = getattr(item, attr)
-            if hasattr(val, "value"):
-                val = val.value
-            elif isinstance(val, list):
-                val = [
-                    v.value if hasattr(v, "value") else v for v in val
-                ]
-            data[key] = val
+            data[key] = _normalize_for_hash(getattr(item, attr))
         elif isinstance(item, dict):
-            data[key] = item.get(attr)
+            data[key] = _normalize_for_hash(item.get(attr))
     return data
 
 
