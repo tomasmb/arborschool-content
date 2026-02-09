@@ -124,6 +124,29 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             required=True,
             options=["paes_m1_2026.json"],
         ),
+        PipelineParam(
+            name="eje",
+            type="select",
+            label="Eje (optional)",
+            required=False,
+            options=[
+                "numeros",
+                "algebra_y_funciones",
+                "geometria",
+                "probabilidad_y_estadistica",
+            ],
+            description="Leave empty to generate all ejes",
+        ),
+        PipelineParam(
+            name="standard_ids",
+            type="string",
+            label="Standard IDs (optional)",
+            required=False,
+            description=(
+                "Comma-separated list (e.g., M1-NUM-01,M1-NUM-02). "
+                "Leave empty for all."
+            ),
+        ),
     ],
     "pdf_split": [
         PipelineParam(

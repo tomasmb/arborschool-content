@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.config import get_settings
-from api.routers import course_sync, overview, pipelines, questions, subjects, sync, tests
+from api.routers import atoms, course_sync, overview, pipelines, questions, subjects, sync, tests
 
 settings = get_settings()
 
@@ -33,7 +33,11 @@ app.add_middleware(
 )
 
 # Include routers
+# NOTE: atoms router must come before subjects router because subjects has a
+# catch-all /{subject_id}/atoms/{atom_id} that would intercept atom pipeline
+# routes like /atoms/pipeline-summary, /atoms/structural-checks, etc.
 app.include_router(overview.router, prefix="/api", tags=["Overview"])
+app.include_router(atoms.router, prefix="/api/subjects", tags=["Atoms Pipeline"])
 app.include_router(subjects.router, prefix="/api/subjects", tags=["Subjects"])
 app.include_router(questions.router, prefix="/api/subjects", tags=["Questions"])
 app.include_router(course_sync.router, prefix="/api/subjects", tags=["Course Sync"])

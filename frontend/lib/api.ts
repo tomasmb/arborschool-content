@@ -5,12 +5,17 @@
 // Re-export types that are used by components
 export type {
   AtomBrief,
+  AtomPipelineSummary,
+  AtomQuestionCoverage,
   AtomTag,
+  AtomValidationJobResponse,
+  AtomValidationStatusResponse,
   CheckResult,
   CheckStatus,
   ContentQualityCheck,
   CorrectAnswerCheck,
   CostEstimate,
+  CoverageAnalysisResult,
   EnrichmentJobResponse,
   EnrichmentProgress,
   EnrichmentResult,
@@ -24,7 +29,11 @@ export type {
   QuestionBrief,
   QuestionDetail,
   QuestionOption,
+  SavedValidationSummary,
   StandardBrief,
+  StandardCoverageItem,
+  StandardValidationResult,
+  StructuralChecksResult,
   SubjectBrief,
   SubjectDetail,
   SubjectStats,
@@ -44,23 +53,13 @@ export type {
 } from "./api-types";
 
 import type {
-  AtomBrief,
-  CostEstimate,
-  EnrichmentJobResponse,
-  GraphData,
-  JobLogsResponse,
-  JobStatus,
-  OverviewResponse,
-  QuestionDetail,
-  StandardBrief,
-  SubjectDetail,
-  TestBrief,
-  TestDetail,
-  TestSyncDiff,
-  TestSyncPreview,
-  TestSyncResult,
-  TestsSyncStatusResponse,
-  ValidationJobResponse,
+  AtomBrief, AtomPipelineSummary, AtomValidationJobResponse,
+  AtomValidationStatusResponse, CostEstimate, CoverageAnalysisResult,
+  EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
+  OverviewResponse, QuestionDetail, SavedValidationSummary,
+  StandardBrief, StructuralChecksResult, SubjectDetail, TestBrief,
+  TestDetail, TestSyncDiff, TestSyncPreview, TestSyncResult,
+  TestsSyncStatusResponse, ValidationJobResponse,
 } from "./api-types";
 
 const API_BASE = "/api";
@@ -436,5 +435,60 @@ export async function getTestsSyncStatus(
 ): Promise<TestsSyncStatusResponse> {
   return fetchAPI<TestsSyncStatusResponse>(
     `/subjects/${subjectId}/sync/tests-status?environment=${environment}`,
+  );
+}
+
+// -----------------------------------------------------------------------------
+// Atom Pipeline API
+// -----------------------------------------------------------------------------
+
+export async function getAtomPipelineSummary(
+  subjectId: string,
+): Promise<AtomPipelineSummary> {
+  return fetchAPI<AtomPipelineSummary>(
+    `/subjects/${subjectId}/atoms/pipeline-summary`,
+  );
+}
+
+export async function getAtomStructuralChecks(
+  subjectId: string,
+): Promise<StructuralChecksResult> {
+  return fetchAPI<StructuralChecksResult>(
+    `/subjects/${subjectId}/atoms/structural-checks`,
+  );
+}
+
+export async function startAtomValidation(
+  subjectId: string,
+  params: { selection_mode: string; standard_ids?: string[] },
+): Promise<AtomValidationJobResponse> {
+  return fetchAPI<AtomValidationJobResponse>(
+    `/subjects/${subjectId}/atoms/validate`,
+    { method: "POST", body: JSON.stringify(params) },
+  );
+}
+
+export async function getAtomValidationStatus(
+  subjectId: string,
+  jobId: string,
+): Promise<AtomValidationStatusResponse> {
+  return fetchAPI<AtomValidationStatusResponse>(
+    `/subjects/${subjectId}/atoms/validate/status/${jobId}`,
+  );
+}
+
+export async function getAtomValidationResults(
+  subjectId: string,
+): Promise<SavedValidationSummary[]> {
+  return fetchAPI<SavedValidationSummary[]>(
+    `/subjects/${subjectId}/atoms/validation-results`,
+  );
+}
+
+export async function getAtomCoverage(
+  subjectId: string,
+): Promise<CoverageAnalysisResult> {
+  return fetchAPI<CoverageAnalysisResult>(
+    `/subjects/${subjectId}/atoms/coverage`,
   );
 }

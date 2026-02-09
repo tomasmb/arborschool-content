@@ -467,5 +467,23 @@ export interface JobLogsResponse {
   has_more: boolean;
 }
 
+// -----------------------------------------------------------------------------
+// Atom Pipeline Types (re-exported from separate file to stay < 500 lines)
+// -----------------------------------------------------------------------------
+
+export type {
+  AtomPipelineSummary,
+  AtomQuestionCoverage,
+  AtomValidationJobResponse,
+  AtomValidationStatusResponse,
+  CoverageAnalysisResult,
+  OverlapCandidate,
+  SavedValidationSummary,
+  StandardCoverageItem,
+  StandardValidationResult,
+  StructuralCheckItem,
+  StructuralChecksResult,
+} from "./api-types-atoms";
+
 // Note: Course progress types are computed client-side in
 // components/dashboard/ProgressComputation.ts - not API types
