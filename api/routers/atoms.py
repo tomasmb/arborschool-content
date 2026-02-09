@@ -1,4 +1,4 @@
-"""Atoms pipeline router - structural checks, LLM validation, coverage.
+"""Atoms pipeline router - structural checks, LLM validation, fix, coverage.
 
 Endpoints:
     GET  /api/subjects/{subject_id}/atoms/pipeline-summary
@@ -7,6 +7,8 @@ Endpoints:
     POST /api/subjects/{subject_id}/atoms/validate
     GET  /api/subjects/{subject_id}/atoms/validate/status/{job_id}
     GET  /api/subjects/{subject_id}/atoms/validation-results
+    POST /api/subjects/{subject_id}/atoms/fix
+    GET  /api/subjects/{subject_id}/atoms/fix/status/{job_id}
     GET  /api/subjects/{subject_id}/atoms/coverage
 """
 
@@ -17,6 +19,14 @@ import logging
 from fastapi import APIRouter, HTTPException
 
 from api.config import SUBJECTS_CONFIG
+from api.schemas.atom_fix_models import (
+    AtomFixActionResult,
+    AtomFixChangeReport,
+    AtomFixJobResponse,
+    AtomFixProgress,
+    AtomFixRequest,
+    AtomFixStatusResponse,
+)
 from api.schemas.atom_models import (
     AtomPipelineSummary,
     AtomValidationJobResponse,
@@ -29,6 +39,7 @@ from api.schemas.atom_models import (
     StructuralChecksResult,
 )
 from api.services import atom_coverage_service, atom_validation_service
+from api.services import atom_fix_service
 from api.services.atom_structural_checks import (
     load_saved_results as load_saved_structural,
 )
@@ -279,6 +290,95 @@ def get_validation_results(
         )
         for r in saved
     ]
+
+
+# -----------------------------------------------------------------
+# LLM fix (async job)
+# -----------------------------------------------------------------
+
+
+@router.post(
+    "/{subject_id}/atoms/fix",
+    response_model=AtomFixJobResponse,
+)
+async def start_fix(
+    subject_id: str,
+    request: AtomFixRequest,
+) -> AtomFixJobResponse:
+    """Start LLM fix job for atoms with validation issues.
+
+    Requires validation to have been run and issues to exist.
+    """
+    _validate_subject(subject_id)
+
+    # Gate: validation must have found issues
+    saved = atom_validation_service.get_saved_validation_results()
+    issues_count = sum(
+        1 for r in saved
+        if r.get("atoms_with_issues", 0) > 0
+    )
+    if issues_count == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="No validation issues found. Run validation first.",
+        )
+
+    job_id, count, cost = await atom_fix_service.start_fix_job(
+        dry_run=request.dry_run,
+        fix_types=request.fix_types,
+        standard_ids=request.standard_ids,
+    )
+
+    return AtomFixJobResponse(
+        job_id=job_id,
+        status="started",
+        actions_to_fix=count,
+        estimated_cost_usd=cost,
+        dry_run=request.dry_run,
+    )
+
+
+@router.get(
+    "/{subject_id}/atoms/fix/status/{job_id}",
+    response_model=AtomFixStatusResponse,
+)
+def get_fix_status(
+    subject_id: str,
+    job_id: str,
+) -> AtomFixStatusResponse:
+    """Get status of an atom fix job."""
+    _validate_subject(subject_id)
+
+    job = atom_fix_service.get_job_status(job_id)
+    if job is None:
+        raise HTTPException(
+            status_code=404, detail=f"Job '{job_id}' not found",
+        )
+
+    change_report = None
+    if job.change_report:
+        change_report = AtomFixChangeReport(**job.change_report)
+
+    return AtomFixStatusResponse(
+        job_id=job.job_id,
+        status=job.status,
+        dry_run=job.dry_run,
+        progress=AtomFixProgress(
+            total=job.total,
+            completed=job.completed,
+            succeeded=job.succeeded,
+            failed=job.failed,
+        ),
+        results=[
+            AtomFixActionResult(**r) for r in job.results
+        ],
+        change_report=change_report,
+        started_at=job.started_at.isoformat(),
+        completed_at=(
+            job.completed_at.isoformat()
+            if job.completed_at else None
+        ),
+    )
 
 
 # -----------------------------------------------------------------

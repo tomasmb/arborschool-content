@@ -4,7 +4,8 @@
 
 // Re-export types that are used by components
 export type {
-  AtomBrief, AtomPipelineSummary, AtomQuestionCoverage, AtomTag,
+  AtomBrief, AtomFixJobResponse, AtomFixStatusResponse,
+  AtomPipelineSummary, AtomQuestionCoverage, AtomTag,
   AtomValidationJobResponse, AtomValidationStatusResponse,
   CheckResult, CheckStatus, ContentQualityCheck, CorrectAnswerCheck,
   CostEstimate, CourseSyncDiff, CourseSyncEntityDiff,
@@ -23,7 +24,8 @@ export type {
 } from "./api-types";
 
 import type {
-  AtomBrief, AtomPipelineSummary, AtomValidationJobResponse,
+  AtomBrief, AtomFixJobResponse, AtomFixStatusResponse,
+  AtomPipelineSummary, AtomValidationJobResponse,
   AtomValidationStatusResponse, CostEstimate, CourseSyncDiff,
   CourseSyncPreview, CourseSyncResult, CoverageAnalysisResult,
   EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
@@ -120,10 +122,7 @@ export async function getQuestionDetail(
   );
 }
 
-/**
- * Get the URL for a question's PDF file.
- * This returns a URL that can be used directly in an anchor tag or window.open().
- */
+/** Get URL for a question's PDF (usable in anchor/window.open). */
 export function getQuestionPdfUrl(
   subjectId: string,
   testId: string,
@@ -132,16 +131,12 @@ export function getQuestionPdfUrl(
   return `${API_BASE}/subjects/${subjectId}/tests/${testId}/questions/${questionNum}/pdf`;
 }
 
-/**
- * Get the URL for a subject's temario PDF file.
- */
+/** Get URL for a subject's temario PDF. */
 export function getTemarioPdfUrl(subjectId: string): string {
   return `${API_BASE}/subjects/${subjectId}/temario/pdf`;
 }
 
-/**
- * Get the URL for a test's raw (original) PDF file.
- */
+/** Get URL for a test's raw (original) PDF. */
 export function getTestRawPdfUrl(subjectId: string, testId: string): string {
   return `${API_BASE}/subjects/${subjectId}/tests/${testId}/raw-pdf`;
 }
@@ -154,23 +149,16 @@ export async function estimatePipelineCost(
 ): Promise<CostEstimate> {
   return fetchAPI<CostEstimate>(
     `/pipelines/estimate?pipeline_id=${encodeURIComponent(pipelineId)}`,
-    {
-      method: "POST",
-      body: JSON.stringify(params),
-    }
+    { method: "POST", body: JSON.stringify(params) },
   );
 }
 
 export async function getConfirmationToken(
-  pipelineId: string,
-  params: Record<string, unknown>
+  pipelineId: string, params: Record<string, unknown>,
 ): Promise<{ confirmation_token: string }> {
   return fetchAPI<{ confirmation_token: string }>(
     `/pipelines/confirm?pipeline_id=${encodeURIComponent(pipelineId)}`,
-    {
-      method: "POST",
-      body: JSON.stringify(params),
-    }
+    { method: "POST", body: JSON.stringify(params) },
   );
 }
 
@@ -446,6 +434,29 @@ export async function getAtomValidationResults(
   );
 }
 
+export async function startAtomFix(
+  subjectId: string,
+  params: {
+    dry_run: boolean;
+    fix_types?: string[];
+    standard_ids?: string[];
+  },
+): Promise<AtomFixJobResponse> {
+  return fetchAPI<AtomFixJobResponse>(
+    `/subjects/${subjectId}/atoms/fix`,
+    { method: "POST", body: JSON.stringify(params) },
+  );
+}
+
+export async function getAtomFixStatus(
+  subjectId: string,
+  jobId: string,
+): Promise<AtomFixStatusResponse> {
+  return fetchAPI<AtomFixStatusResponse>(
+    `/subjects/${subjectId}/atoms/fix/status/${jobId}`,
+  );
+}
+
 export async function getAtomCoverage(
   subjectId: string,
 ): Promise<CoverageAnalysisResult> {
@@ -468,11 +479,7 @@ export async function getCourseSyncPreview(
 
 export async function executeCourseSyncAPI(
   subjectId: string,
-  params: {
-    entities: string[];
-    environment: string;
-    confirm: boolean;
-  },
+  params: { entities: string[]; environment: string; confirm: boolean },
 ): Promise<CourseSyncResult> {
   return fetchAPI<CourseSyncResult>(
     `/subjects/${subjectId}/sync/execute`,
@@ -482,8 +489,7 @@ export async function executeCourseSyncAPI(
 }
 
 export async function getCourseSyncDiff(
-  subjectId: string,
-  environment: string = "local",
+  subjectId: string, environment: string = "local",
 ): Promise<CourseSyncDiff> {
   return fetchAPI<CourseSyncDiff>(
     `/subjects/${subjectId}/sync/diff?environment=${environment}`,

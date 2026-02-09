@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Shield, Sparkles } from "lucide-react";
+import { Shield, Sparkles, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   getAtomStructuralChecks,
@@ -27,6 +27,7 @@ interface ValidationTabProps {
   subjectId: string;
   summary: AtomPipelineSummary;
   onOpenValidation: () => void;
+  onOpenFix: () => void;
   onRefresh: () => void;
 }
 
@@ -38,6 +39,7 @@ export function ValidationTab({
   subjectId,
   summary,
   onOpenValidation,
+  onOpenFix,
   onRefresh,
 }: ValidationTabProps) {
   const [structural, setStructural] =
@@ -189,28 +191,49 @@ export function ValidationTab({
                 Quality Validation (LLM)
               </h3>
             </div>
-            {nextAction === "validate" && (
-              <button
-                onClick={onOpenValidation}
-                className="flex items-center gap-2 px-4 py-2 bg-accent text-white text-sm rounded-lg font-medium hover:bg-accent/90 transition-colors"
-              >
-                <Sparkles className="w-4 h-4" />
-                Validate {unvalidatedCount} Standard
-                {unvalidatedCount !== 1 ? "s" : ""}
-              </button>
-            )}
-            {nextAction === "done" && (
-              <button
-                onClick={onOpenValidation}
-                className={cn(
-                  "px-4 py-2 bg-surface border border-border text-sm",
-                  "rounded-lg font-medium text-text-secondary",
-                  "hover:text-text-primary transition-colors",
-                )}
-              >
-                Re-validate
-              </button>
-            )}
+            <div className="flex items-center gap-2">
+              {issuesCount > 0 && (
+                <button
+                  onClick={onOpenFix}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 text-sm",
+                    "rounded-lg font-medium transition-colors",
+                    "bg-amber-500/10 border border-amber-500/30",
+                    "text-amber-400 hover:bg-amber-500/20",
+                  )}
+                >
+                  <Wrench className="w-4 h-4" />
+                  Fix Issues ({issuesCount})
+                </button>
+              )}
+              {nextAction === "validate" && (
+                <button
+                  onClick={onOpenValidation}
+                  className={cn(
+                    "flex items-center gap-2 px-4 py-2 text-sm",
+                    "bg-accent text-white rounded-lg font-medium",
+                    "hover:bg-accent/90 transition-colors",
+                  )}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Validate {unvalidatedCount} Standard
+                  {unvalidatedCount !== 1 ? "s" : ""}
+                </button>
+              )}
+              {nextAction === "done" && (
+                <button
+                  onClick={onOpenValidation}
+                  className={cn(
+                    "px-4 py-2 bg-surface border border-border",
+                    "text-sm rounded-lg font-medium",
+                    "text-text-secondary",
+                    "hover:text-text-primary transition-colors",
+                  )}
+                >
+                  Re-validate
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Blocked message when structural checks failed */}

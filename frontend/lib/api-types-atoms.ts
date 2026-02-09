@@ -138,6 +138,53 @@ export interface SavedValidationSummary {
 }
 
 // -----------------------------------------------------------------------------
+// LLM Fix Pipeline
+// -----------------------------------------------------------------------------
+
+export interface AtomFixJobResponse {
+  job_id: string;
+  status: string;
+  actions_to_fix: number;
+  estimated_cost_usd: number;
+  dry_run: boolean;
+}
+
+export interface AtomFixProgress {
+  total: number;
+  completed: number;
+  succeeded: number;
+  failed: number;
+}
+
+export interface AtomFixActionResult {
+  fix_type: string;
+  atom_ids: string[];
+  standard_id: string;
+  success: boolean;
+  error: string | null;
+}
+
+export interface AtomFixChangeReport {
+  atoms_added: string[];
+  atoms_removed: string[];
+  atoms_modified: string[];
+  prerequisite_cascades: number;
+  question_mapping_updates: number;
+  manual_review_needed: string[];
+}
+
+export interface AtomFixStatusResponse {
+  job_id: string;
+  status: string;
+  dry_run: boolean;
+  progress: AtomFixProgress;
+  results: AtomFixActionResult[];
+  change_report: AtomFixChangeReport | null;
+  started_at: string;
+  completed_at: string | null;
+}
+
+// -----------------------------------------------------------------------------
 // Course Sync (used by atom sync tab)
 // -----------------------------------------------------------------------------
 

@@ -9,6 +9,7 @@ import {
   type AtomPipelineSummary,
 } from "@/lib/api";
 import { GeneratePipelineModal } from "@/components/pipelines/GeneratePipelineModal";
+import { AtomFixModal } from "@/components/pipelines/AtomFixModal";
 import { AtomValidationModal } from "@/components/pipelines/AtomValidationModal";
 import {
   AtomTabs,
@@ -43,6 +44,7 @@ export default function AtomsPage() {
   // Modal state (owned by orchestrator)
   const [showGeneration, setShowGeneration] = useState(false);
   const [showValidation, setShowValidation] = useState(false);
+  const [showFix, setShowFix] = useState(false);
 
   // Fetch pipeline summary
   const fetchData = useCallback(async () => {
@@ -129,6 +131,7 @@ export default function AtomsPage() {
             subjectId={courseId}
             summary={summary}
             onOpenValidation={() => setShowValidation(true)}
+            onOpenFix={() => setShowFix(true)}
             onRefresh={fetchData}
           />
         )}
@@ -172,6 +175,15 @@ export default function AtomsPage() {
           standards_count: summary.standards_count,
           standards_validated: summary.standards_validated,
         }}
+        onSuccess={handlePipelineSuccess}
+      />
+
+      {/* Fix Modal */}
+      <AtomFixModal
+        open={showFix}
+        onOpenChange={setShowFix}
+        subjectId={courseId}
+        issuesCount={summary.standards_with_issues}
         onSuccess={handlePipelineSuccess}
       />
     </div>

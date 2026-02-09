@@ -472,6 +472,9 @@ export interface JobLogsResponse {
 // -----------------------------------------------------------------------------
 
 export type {
+  AtomFixChangeReport,
+  AtomFixJobResponse,
+  AtomFixStatusResponse,
   AtomPipelineSummary,
   AtomQuestionCoverage,
   AtomValidationJobResponse,
