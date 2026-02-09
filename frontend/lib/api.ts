@@ -432,7 +432,7 @@ export async function executeTestSync(
  */
 export async function getTestsSyncStatus(
   subjectId: string,
-  environment: string = "local",
+  environment: string = "prod",
 ): Promise<TestsSyncStatusResponse> {
   return fetchAPI<TestsSyncStatusResponse>(
     `/subjects/${subjectId}/sync/tests-status?environment=${environment}`,
