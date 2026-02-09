@@ -66,9 +66,17 @@ export function KnowledgePipelineCard({
 // -----------------------------------------------------------------------------
 
 export function TestRow({ test, courseId }: { test: TestBrief; courseId: string }) {
-  const enrichedComplete = test.enriched_count === test.finalized_count && test.finalized_count > 0;
+  const enrichedComplete =
+    test.enriched_count === test.finalized_count && test.finalized_count > 0;
   const validatedComplete =
     test.validated_count === test.finalized_count && test.finalized_count > 0;
+
+  // Variant enrichment/validation (show if variants exist)
+  const hasVariants = test.variants_count > 0;
+  const varEnriched = test.enriched_variants_count ?? 0;
+  const varValidated = test.validated_variants_count ?? 0;
+  const varEnrichedComplete = hasVariants && varEnriched === test.variants_count;
+  const varValidatedComplete = hasVariants && varValidated === test.variants_count;
 
   return (
     <tr className="border-b border-border last:border-b-0 hover:bg-white/5 transition-colors">
@@ -86,13 +94,30 @@ export function TestRow({ test, courseId }: { test: TestBrief; courseId: string 
         <span className={cn("font-mono", enrichedComplete ? "text-success" : "text-text-secondary")}>
           {test.enriched_count}/{test.finalized_count}
         </span>
+        {hasVariants && (
+          <div className={cn(
+            "text-xs font-mono",
+            varEnrichedComplete ? "text-success/70" : "text-text-secondary/60"
+          )}>
+            +{varEnriched}/{test.variants_count} var
+          </div>
+        )}
       </td>
       <td className="px-4 py-2 text-center text-sm">
-        <span
-          className={cn("font-mono", validatedComplete ? "text-success" : "text-text-secondary")}
-        >
+        <span className={cn(
+          "font-mono",
+          validatedComplete ? "text-success" : "text-text-secondary"
+        )}>
           {test.validated_count}/{test.finalized_count}
         </span>
+        {hasVariants && (
+          <div className={cn(
+            "text-xs font-mono",
+            varValidatedComplete ? "text-success/70" : "text-text-secondary/60"
+          )}>
+            +{varValidated}/{test.variants_count} var
+          </div>
+        )}
       </td>
       <td className="px-4 py-2 text-center text-sm">
         <span className="font-mono text-text-secondary">{test.variants_count}</span>

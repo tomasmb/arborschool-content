@@ -49,6 +49,42 @@ def _get_tracker(subject_id: str) -> StatusTracker:
     return StatusTracker(subject_id)
 
 
+def _build_test_brief(test_id: str, status: dict) -> TestBrief:
+    """Build a TestBrief from status_tracker output.
+
+    Single source of truth for constructing TestBrief across all endpoints.
+    """
+    # Parse year and type from test name
+    admission_year = None
+    application_type = None
+    year_match = re.search(r"(\d{4})", test_id)
+    if year_match:
+        admission_year = int(year_match.group(1))
+    if "invierno" in test_id.lower():
+        application_type = "invierno"
+    elif "regular" in test_id.lower():
+        application_type = "regular"
+    elif "seleccion" in test_id.lower():
+        application_type = "seleccion"
+
+    return TestBrief(
+        id=test_id,
+        name=test_id,
+        admission_year=admission_year,
+        application_type=application_type,
+        raw_pdf_exists=status["raw_pdf_exists"],
+        split_count=status["split_count"],
+        qti_count=status["qti_count"],
+        finalized_count=status["finalized_count"],
+        tagged_count=status["tagged_count"],
+        enriched_count=status["enriched_count"],
+        validated_count=status["validated_count"],
+        variants_count=status["variants_count"],
+        enriched_variants_count=status["enriched_variants_count"],
+        validated_variants_count=status["validated_variants_count"],
+    )
+
+
 @router.get("/{subject_id}", response_model=SubjectDetail)
 async def get_subject(subject_id: str) -> SubjectDetail:
     """Get full subject detail including standards, atoms count, and tests."""
@@ -67,39 +103,12 @@ async def get_subject(subject_id: str) -> SubjectDetail:
         for std in standards_data
     ]
 
-    # Get test briefs
+    # Get test briefs using shared helper
     tests = []
     for test_dir in tracker.get_test_dirs():
         test_id = test_dir.name
         status = tracker.get_test_status(test_id)
-
-        # Parse year and type from test name
-        admission_year = None
-        application_type = None
-        year_match = re.search(r"(\d{4})", test_id)
-        if year_match:
-            admission_year = int(year_match.group(1))
-        if "invierno" in test_id.lower():
-            application_type = "invierno"
-        elif "regular" in test_id.lower():
-            application_type = "regular"
-        elif "seleccion" in test_id.lower():
-            application_type = "seleccion"
-
-        tests.append(
-            TestBrief(
-                id=test_id,
-                name=test_id,
-                admission_year=admission_year,
-                application_type=application_type,
-                raw_pdf_exists=status["raw_pdf_exists"],
-                split_count=status["split_count"],
-                qti_count=status["qti_count"],
-                finalized_count=status["finalized_count"],
-                tagged_count=status["tagged_count"],
-                variants_count=status["variants_count"],
-            )
-        )
+        tests.append(_build_test_brief(test_id, status))
 
     return SubjectDetail(
         id=subject_id,
@@ -281,36 +290,7 @@ async def get_tests(subject_id: str) -> list[TestBrief]:
     for test_dir in tracker.get_test_dirs():
         test_id = test_dir.name
         status = tracker.get_test_status(test_id)
-
-        # Parse year and type
-        admission_year = None
-        application_type = None
-        year_match = re.search(r"(\d{4})", test_id)
-        if year_match:
-            admission_year = int(year_match.group(1))
-        if "invierno" in test_id.lower():
-            application_type = "invierno"
-        elif "regular" in test_id.lower():
-            application_type = "regular"
-        elif "seleccion" in test_id.lower():
-            application_type = "seleccion"
-
-        tests.append(
-            TestBrief(
-                id=test_id,
-                name=test_id,
-                admission_year=admission_year,
-                application_type=application_type,
-                raw_pdf_exists=status["raw_pdf_exists"],
-                split_count=status["split_count"],
-                qti_count=status["qti_count"],
-                finalized_count=status["finalized_count"],
-                tagged_count=status["tagged_count"],
-                enriched_count=status["enriched_count"],
-                validated_count=status["validated_count"],
-                variants_count=status["variants_count"],
-            )
-        )
+        tests.append(_build_test_brief(test_id, status))
 
     return tests
 

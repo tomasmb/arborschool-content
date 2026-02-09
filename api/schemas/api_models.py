@@ -22,6 +22,13 @@ class SubjectStats(BaseModel):
     questions_count: int = Field(description="Number of finalized questions")
     variants_count: int = Field(description="Number of approved variants")
     tagging_completion: float = Field(description="Percentage of questions tagged (0-100)")
+    # Enrichment & validation completion (0-100)
+    enrichment_completion: float = Field(
+        0.0, description="Percentage of questions enriched (0-100)"
+    )
+    validation_completion: float = Field(
+        0.0, description="Percentage of questions validated (0-100)"
+    )
 
 
 class SubjectBrief(BaseModel):
@@ -110,6 +117,13 @@ class TestBrief(BaseModel):
     enriched_count: int = Field(0, description="Number of enriched questions")
     validated_count: int = Field(0, description="Number of validated questions")
     variants_count: int = Field(description="Number of approved variants")
+    # Variant-level enrichment/validation
+    enriched_variants_count: int = Field(
+        0, description="Number of enriched variants"
+    )
+    validated_variants_count: int = Field(
+        0, description="Number of validated variants"
+    )
 
 
 class QuestionBrief(BaseModel):

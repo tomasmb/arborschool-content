@@ -341,6 +341,49 @@ class StatusTracker:
             return 0.0
         return round((tagged / total) * 100, 1)
 
+    def enrichment_completion(self) -> float:
+        """Calculate enrichment completion percentage (0-100)."""
+        total = 0
+        enriched = 0
+
+        for test_dir in self.get_test_dirs():
+            qti_dir = test_dir / "qti"
+            if not qti_dir.exists():
+                continue
+
+            for q_dir in qti_dir.iterdir():
+                if not q_dir.is_dir() or not (q_dir / "question.xml").exists():
+                    continue
+                total += 1
+                if (q_dir / "question_validated.xml").exists():
+                    enriched += 1
+
+        if total == 0:
+            return 0.0
+        return round((enriched / total) * 100, 1)
+
+    def validation_completion(self) -> float:
+        """Calculate validation completion percentage (0-100)."""
+        total = 0
+        validated = 0
+
+        for test_dir in self.get_test_dirs():
+            qti_dir = test_dir / "qti"
+            if not qti_dir.exists():
+                continue
+
+            for q_dir in qti_dir.iterdir():
+                if not q_dir.is_dir() or not (q_dir / "question.xml").exists():
+                    continue
+                total += 1
+                vdata = read_validation_data(q_dir)
+                if is_can_sync(vdata):
+                    validated += 1
+
+        if total == 0:
+            return 0.0
+        return round((validated / total) * 100, 1)
+
     def get_subject_stats(self) -> dict:
         """Get all stats for the subject."""
         return {
@@ -351,4 +394,6 @@ class StatusTracker:
             "questions_count": self.questions_count(),
             "variants_count": self.variants_count(),
             "tagging_completion": self.tagging_completion(),
+            "enrichment_completion": self.enrichment_completion(),
+            "validation_completion": self.validation_completion(),
         }
