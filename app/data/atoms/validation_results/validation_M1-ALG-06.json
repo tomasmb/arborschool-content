@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 11,
-    "atoms_passing_all_checks": 6,
-    "atoms_with_issues": 5,
+    "atoms_passing_all_checks": 9,
+    "atoms_with_issues": 2,
     "overall_quality": "good",
     "coverage_assessment": "incomplete",
     "granularity_assessment": "appropriate"
@@ -10,7 +10,7 @@
   "atoms_evaluation": [
     {
       "atom_id": "A-M1-ALG-06-01",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -36,15 +36,10 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "warning",
-        "issues": [
-          "El átomo asume dominio previo de factor común y propiedad del producto nulo pero no referencia explícitamente los átomos o contenidos prerrequisitos donde se abordan estas ideas."
-        ]
+        "score": "pass",
+        "issues": []
       },
-      "recommendations": [
-        "Agregar como prerrequisito explícito el átomo o unidad donde se trabaje factor común algebraico y producto nulo.",
-        "Aclarar en notas que los ejemplos incluyen también casos con coeficiente común distinto de 1, para reforzar la generalidad."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-02",
@@ -72,8 +67,8 @@
       "content_quality": {
         "score": "warning",
         "issues": [
-          "Se menciona la forma factorizada como (x - r₁)(x - r₂) = 0, lo cual es exacto solo cuando a = 1; para a ≠ 1 la forma general debería expresarse como (px + q)(rx + s) = 0.",
-          "La alusión al método de 'dos números que sumen b y multipliquen ac' podría explicitar mejor los pasos intermedios para evitar ambigüedad en la estrategia."
+          "En la descripción se menciona el método de 'encontrar dos números que sumen b y multipliquen ac', pero ese procedimiento no aparece explícitamente en los criterios atómicos; sería útil alinearlo.",
+          "El criterio 'Factoriza trinomios de la forma ax² + bx + c = 0 como (x - r₁)(x - r₂) = 0 o equivalente' puede inducir a pensar que solo se consideran casos con a = 1; convendría explicitar que para a ≠ 1 se aceptan factores del tipo (px+q)(rx+s)."
         ]
       },
       "prerequisites": {
@@ -81,13 +76,13 @@
         "issues": []
       },
       "recommendations": [
-        "Reescribir el criterio de factorización general como 'Factoriza trinomios de la forma ax² + bx + c = 0 como (px + q)(rx + s) = 0, o equivalente, identificando las raíces r₁ y r₂'.",
-        "Detallar brevemente el procedimiento asociado al método de 'ac' para que quede claro el algoritmo esperado."
+        "Agregar un criterio explícito para el procedimiento de búsqueda de dos números que sumen b y multipliquen ac, tal como se describe en la introducción del átomo.",
+        "Reformular el criterio de factorización para dejar claro que se contemplan trinomios con a ≠ 1 (por ejemplo, mencionando factores genéricos (px+q)(rx+s))."
       ]
     },
     {
       "atom_id": "A-M1-ALG-06-03",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -105,11 +100,8 @@
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "No se explicita el tratamiento de casos con una única raíz real (discriminante cero), lo que podría generar ambigüedad dado que se habla de 'las dos soluciones posibles'.",
-          "Tampoco se aclara si se restringirán los ítems de evaluación a ecuaciones con dos raíces reales distintas, aunque las notas indican que se excluyen soluciones complejas."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
         "score": "pass",
@@ -119,10 +111,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir una nota de alcance indicando que se considerarán ecuaciones con discriminante ≥ 0 y que, en el caso de discriminante cero, se obtendrá una única solución real (raíz doble).",
-        "Ajustar la redacción del criterio a 'Calcula las soluciones reales posibles' para incluir explícitamente el caso de raíz doble."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-04",
@@ -155,14 +144,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcionalmente, añadir una mención muy breve al dominio típico de la función cuadrática (todos los números reales) para reforzar la comprensión global de la función.",
-        "Asegurar alineación terminológica con otros átomos (usar siempre f(x) = ax² + bx + c como forma canónica cuando se hable de 'función cuadrática general')."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-06",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -184,24 +170,20 @@
         "issues": []
       },
       "content_quality": {
-        "score": "warning",
-        "issues": [
-          "En el ejemplo se escribe x = -(-4)/2(1) en lugar de x = -(-4) / (2·1), lo que puede inducir errores de notación en estudiantes al omitir paréntesis en el denominador.",
-          "Sería valioso explicitar en criterios o notas la relación entre el signo de 'a' y el hecho de que el vértice represente un máximo o un mínimo, conectando con el átomo A-04."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Corregir la notación del ejemplo a x = -(-4) / (2·1) para evitar ambigüedades.",
-        "Añadir en notas o criterios una referencia a que, si a > 0, el vértice corresponde a un mínimo y si a < 0, a un máximo, reforzando el vínculo con aplicaciones de optimización."
+        "Homogeneizar la notación del vértice: si se introduce como (h, k), aclarar en los ejemplos que (h, k) corresponde a (x_v, y_v) para evitar posibles confusiones de notación."
       ]
     },
     {
       "atom_id": "A-M1-ALG-06-07",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -219,11 +201,8 @@
         }
       },
       "completeness": {
-        "score": "warning",
-        "issues": [
-          "No se explicita si el átomo se limita a funciones cuadráticas con raíces reales (parábolas que cortan al eje X), ni cómo tratar el caso de ausencia de intersecciones reales.",
-          "Tampoco se menciona explícitamente el caso de raíz doble, en el que la parábola es tangente al eje X en un solo punto."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "content_quality": {
         "score": "pass",
@@ -234,8 +213,7 @@
         "issues": []
       },
       "recommendations": [
-        "Añadir en notas de alcance que se trabajará principalmente con funciones cuadráticas que tengan al menos una raíz real, señalando brevemente qué ocurre cuando no hay intersecciones reales.",
-        "Incluir al menos un ejemplo o mención al caso de raíz doble para completar el panorama conceptual de los ceros de la función."
+        "Se podría añadir un criterio explícito que vincule los valores numéricos de las raíces con la idea de 'soluciones de la ecuación cuadrática asociada', reforzando la conexión ecuación–función."
       ]
     },
     {
@@ -269,10 +247,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Conectar explícitamente en las notas que este átomo contribuye a la 'intersección con el eje Y' del estándar M1-ALG-06.",
-        "Añadir un ejemplo donde el término independiente sea cero, mostrando que el punto de corte coincide con el origen."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-06-10",
@@ -306,13 +281,12 @@
         "issues": []
       },
       "recommendations": [
-        "Aclarar si las comparaciones de gráficas se hacen a partir de representaciones dadas o si se espera que el estudiante trace las gráficas; esto impacta en los prerrequisitos de representación.",
-        "Conectar explícitamente este análisis con el uso de la función cuadrática en contextos (por ejemplo, cómo un cambio en 'c' afecta una altura inicial en problemas físicos)."
+        "Considerar agregar 'representar' como habilidad secundaria, dado que la comparación de gráficas y el análisis visual están explícitamente presentes en los criterios."
       ]
     },
     {
       "atom_id": "A-M1-ALG-06-11",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -342,8 +316,7 @@
         "issues": []
       },
       "recommendations": [
-        "Incluir una mención explícita a que el eje de simetría de la parábola es x = -b/(2a), reforzando el vínculo entre 'b', el vértice y la simetría.",
-        "Añadir al menos un ejemplo en contexto (por ejemplo, desplazamiento horizontal de la posición de un máximo) para conectar con aplicaciones."
+        "Se puede añadir un ejemplo donde se vea claramente el eje de simetría cambiando al variar b, para reforzar la relación entre b y la simetría de la parábola."
       ]
     },
     {
@@ -366,8 +339,10 @@
         }
       },
       "completeness": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "El átomo describe problemas de encontrar máximos o mínimos, pero en los criterios no se explicita que el estudiante deba determinar si el vértice corresponde a un máximo o a un mínimo según el signo de a, algo clave para la optimización con parábolas."
+        ]
       },
       "content_quality": {
         "score": "pass",
@@ -378,13 +353,13 @@
         "issues": []
       },
       "recommendations": [
-        "Incorporar explícitamente en los criterios la necesidad de verificar la coherencia de la solución en el contexto (por ejemplo, descartar valores de tiempo negativos), para reforzar la conexión con la habilidad de argumentar.",
-        "Considerar agregar como prerrequisito opcional un átomo de interpretación básica de funciones en contexto (si existe en otra unidad), para facilitar la comprensión de los significados de x e y."
+        "Agregar un criterio explícito del tipo: 'Determina si el vértice representa un máximo o un mínimo en función del signo de a, y usa esa información para responder la pregunta del problema'.",
+        "Incorporar al menos un ejemplo donde se justifique brevemente por qué la solución encontrada es máxima o mínima, apoyándose en la concavidad de la parábola."
       ]
     },
     {
       "atom_id": "A-M1-ALG-06-13",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -414,8 +389,8 @@
         "issues": []
       },
       "recommendations": [
-        "Valorar si conviene separar en dos átomos distintos las tareas de 'evaluar f(x) para un x dado' y 'resolver f(x) = k para encontrar x', aunque se mantengan juntas en la enseñanza; esto permitiría una evaluación más específica por tipo de habilidad.",
-        "Hacer más explícita en los criterios la traducción desde el lenguaje natural a la ecuación cuadrática (planteamiento del modelo), no solo su uso una vez dado."
+        "Podría simplificarse la lista de prerrequisitos dejando solo A-M1-ALG-06-07 (que ya integra los métodos de resolución de ecuaciones cuadráticas), a menos que se quiera evaluar explícitamente qué método elige el estudiante.",
+        "Incluir un ejemplo donde se muestren claramente ambas ramas del átomo: un problema resuelto por raíces (f(x)=k) y otro resuelto por evaluación directa (sustituir x)."
       ]
     }
   ],
@@ -425,46 +400,41 @@
     ],
     "coverage_completeness": "incomplete",
     "missing_areas": [
-      "Análisis y construcción sistemática de tablas de valores para funciones cuadráticas.",
-      "Procedimientos explícitos para trazar la gráfica completa de una parábola a partir de su expresión algebraica (usando vértice, ceros, intersecciones y otros puntos).",
-      "Identificación e interpretación del vértice y otros puntos clave directamente desde la gráfica, no solo a partir de la ecuación.",
-      "Átomos centrados en la interpretación de tablas y gráficos de funciones cuadráticas en contextos aplicados.",
-      "Modelado explícito: construcción de la expresión cuadrática a partir de una descripción verbal o datos (por ejemplo, áreas, trayectorias, ganancias).",
-      "Desarrollo más marcado de la habilidad de argumentar (evaluación de argumentos, identificación de errores en procedimientos sobre ecuaciones y funciones cuadráticas)."
+      "Uso sistemático de tablas de valores para representar y analizar la función cuadrática (construcción y lectura de tablas f(x) = ax² + bx + c).",
+      "Construcción explícita de la gráfica de la parábola a partir de la expresión algebraica (más allá de comparar gráficas ya dadas al variar parámetros).",
+      "Interpretación de información a partir de una gráfica dada de una función cuadrática (identificar vértice, raíces, intersecciones con ejes, intervalos de crecimiento/decrecimiento) sin partir necesariamente de la expresión algebraica."
     ],
-    "duplication_issues": [
-      "Existe un leve solapamiento conceptual entre A-M1-ALG-06-04 y A-M1-ALG-06-10 en el tratamiento de la concavidad, aunque A-10 profundiza en la apertura y traslación vertical. El solapamiento es aceptable pero debe gestionarse didácticamente."
-    ],
+    "duplication_issues": [],
     "conceptual_coverage": "present",
     "procedural_coverage": "present",
     "standard_items_coverage": {
       "includes_covered": {
         "Resolución de ecuaciones de segundo grado (cuadráticas) en diversos contextos, utilizando métodos como la factorización y la fórmula general.": "covered",
         "Análisis de la función cuadrática a través de tablas de valores y gráficos, comprendiendo cómo la variación de sus parámetros (a, b, c) afecta la forma y posición de la parábola.": "partially_covered",
-        "Identificación y cálculo de los puntos especiales de la gráfica de la función cuadrática: el vértice, los ceros de la función (raíces) y las intersecciones con los ejes coordenados.": "partially_covered",
-        "Planteamiento y resolución de problemas que involucran la función cuadrática como modelo matemático en situaciones de la vida diaria o de las ciencias.": "partially_covered"
+        "Identificación y cálculo de los puntos especiales de la gráfica de la función cuadrática: el vértice, los ceros de la función (raíces) y las intersecciones con los ejes coordenados.": "covered",
+        "Planteamiento y resolución de problemas que involucren la función cuadrática como modelo matemático en situaciones de la vida diaria o de las ciencias.": "covered"
       },
       "subcontenidos_covered": {
         "Resolución de ecuaciones cuadráticas por factorización.": "covered",
         "Resolución de ecuaciones cuadráticas usando la fórmula general.": "covered",
-        "Identificación y cálculo del vértice de una parábola.": "partially_covered",
+        "Identificación y cálculo del vértice de una parábola.": "covered",
         "Determinación de los ceros (raíces) de una función cuadrática.": "covered",
         "Interpretación de la gráfica de la función cuadrática y sus parámetros.": "partially_covered",
-        "Modelado de situaciones contextualizadas con funciones cuadráticas.": "partially_covered"
+        "Modelado de situaciones contextualizadas con funciones cuadráticas.": "covered"
       },
       "habilidades_covered": {
         "resolver_problemas": "covered",
-        "modelar": "partially_covered",
-        "representar": "partially_covered",
-        "argumentar": "partially_covered"
+        "modelar": "covered",
+        "representar": "covered",
+        "argumentar": "covered"
       }
     }
   },
   "global_recommendations": [
-    "Diseñar al menos uno o dos átomos específicos sobre representación gráfica: (a) construcción de tablas de valores y trazado de la parábola a partir de f(x) = ax² + bx + c, y (b) interpretación de información desde gráficas (identificar vértice, ceros, crecimiento/decrecimiento).",
-    "Incorporar un átomo de modelado explícito donde el estudiante deba formular la función cuadrática a partir de un enunciado (por ejemplo, problemas de área, trayectorias o costos), antes de aplicarla para resolver o evaluar.",
-    "Fortalecer la dimensión de 'argumentar' añadiendo criterios más explícitos de evaluación de la validez de procedimientos y resultados (detección de errores, justificación de por qué ciertas soluciones no son aceptables en el contexto).",
-    "Revisar y afinar pequeños detalles de notación y redacción en los átomos procedimentales (especialmente A-02, A-03, A-06 y A-07) para evitar ambigüedades sobre la forma factorizada general, el número de soluciones y la notación algebraica.",
-    "Explícitamente vincular cada átomo integrador (A-12, A-13) con los átomos conceptuales y procedimentales que reutiliza, de cara a la planificación didáctica, asegurando una progresión clara desde la técnica hasta la aplicación contextual."
+    "Diseñar al menos un átomo adicional centrado en el uso de tablas de valores para representar funciones cuadráticas: construcción de la tabla, reconocimiento de la simetría y uso de la tabla como puente entre expresión algebraica y gráfica.",
+    "Incorporar un átomo (o ampliar uno existente) dedicado a la construcción e interpretación de gráficas de parábolas a partir de f(x) = ax² + bx + c, incluyendo identificación de vértice, raíces e intersecciones con ejes a partir de la gráfica misma.",
+    "Ajustar el átomo A-M1-ALG-06-12 para que incluya explícitamente el criterio de decidir si el vértice representa un máximo o un mínimo en función del signo de a, fortaleciendo la conexión con el concepto de optimización.",
+    "Revisar y alinear descripciones y criterios en átomos procedimentales (especialmente A-M1-ALG-06-02) para que todos los métodos mencionados en la descripción aparezcan también de forma explícita en los criterios atómicos evaluables.",
+    "Valorar la simplificación de listas de prerrequisitos en átomos integradores (como A-M1-ALG-06-13), usando como prerrequisito preferente aquellos átomos que ya integran submétodos (por ejemplo, A-M1-ALG-06-07 en lugar de listar nuevamente A-M1-ALG-06-01, 06-02 y 06-03)."
   ]
 }

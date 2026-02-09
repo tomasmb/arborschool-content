@@ -1,8 +1,8 @@
 {
   "evaluation_summary": {
     "total_atoms": 12,
-    "atoms_passing_all_checks": 11,
-    "atoms_with_issues": 1,
+    "atoms_passing_all_checks": 9,
+    "atoms_with_issues": 3,
     "overall_quality": "excellent",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
@@ -39,9 +39,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Mantener explícito que la diferenciación con mediana y moda es a nivel intuitivo, para no depender de que esos conceptos hayan sido formalmente definidos antes."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-02",
@@ -75,7 +73,7 @@
         "issues": []
       },
       "recommendations": [
-        "En la verificación de que la media esté entre el mínimo y el máximo, explicitar que se trata de una comprobación de razonabilidad opcional, no de un paso obligatorio del algoritmo."
+        "Opcional: hacer explícito en los criterios el paso de 'contar la cantidad de datos' antes de dividir, para alinear mejor con el algoritmo típico que se enseña."
       ]
     },
     {
@@ -109,9 +107,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Mantener claro que es un átomo conceptual general, y que los casos par/impar se tratan procedimentalmente en otros átomos."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-04",
@@ -145,7 +141,7 @@
         "issues": []
       },
       "recommendations": [
-        "Podría añadirse una referencia opcional a estrategias para identificar la posición central (por ejemplo, eliminar extremos por pares) como apoyo conceptual."
+        "Podría añadirse un ejemplo que explicite la fórmula de la posición central (por ejemplo, 'posición (n+1)/2') como apoyo opcional, manteniendo el foco en la identificación conceptual del dato central."
       ]
     },
     {
@@ -180,7 +176,7 @@
         "issues": []
       },
       "recommendations": [
-        "Es adecuado que dependa del átomo de cálculo de la media; conservar esa relación para mantener coherencia conceptual entre mediana par e impar."
+        "Aclarar en notas o ejemplos que la 'media aritmética de los dos valores centrales' es un caso particular del procedimiento de A-M1-PROB-02-02, para reforzar la conexión entre ambos algoritmos."
       ]
     },
     {
@@ -215,7 +211,7 @@
         "issues": []
       },
       "recommendations": [
-        "Se sugiere aclarar brevemente qué se entiende por datos cualitativos nominales, para no introducir un término técnico sin referencia."
+        "Se podría incluir un ejemplo explícito con datos cualitativos (por ejemplo, colores preferidos) para reforzar la idea de que la moda se aplica también a variables no numéricas."
       ]
     },
     {
@@ -249,9 +245,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Mantener ejemplos que incluyan casos unimodales, bimodales y amodales, ya que son muy alineados con el estándar."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-08",
@@ -284,9 +278,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Es positivo que se distinga rango de medidas de posición; mantener esa aclaración para evitar confusiones conceptuales."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-09",
@@ -319,13 +311,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Mantener el énfasis en que el rango es no negativo, ya que ayuda a fijar el significado de la medida."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-02-10",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -347,21 +337,24 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Se mencionan 'valores atípicos (outliers)' y 'forma de la distribución' sin precisar, ni siquiera de manera cualitativa, cómo reconocer estos casos, lo que puede generar ambigüedad en la evaluación de la habilidad argumentativa."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Revisar el campo meta 'en_alcance_m1': el contenido es coherente con el estándar (ejemplo de robustez de la mediana), por lo que probablemente deba marcarse como en alcance.",
-        "Valorar si se necesita un apoyo conceptual mínimo sobre 'valores atípicos' y 'distribuciones simétricas' en otro lugar del currículo, aunque aquí se trate cualitativamente."
+        "Incluir un criterio o ejemplo que explicite, de forma cualitativa, qué se entiende por 'valor atípico' (por ejemplo, 'un dato mucho más grande o mucho más pequeño que la mayoría').",
+        "Matizar la referencia a la 'forma de la distribución' para mantenerla en un nivel descriptivo (simétrica vs. muy sesgada) sin introducir conceptos formales de asimetría que están fuera del alcance.",
+        "Agregar un ejemplo adicional donde no haya valores atípicos y la media sea claramente la medida más adecuada, para equilibrar los casos trabajados."
       ]
     },
     {
       "atom_id": "A-M1-PROB-02-11",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -379,8 +372,10 @@
         }
       },
       "completeness": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La descripción habla de 'medidas de tendencia central' en general, pero los criterios y ejemplos solo hacen referencia explícita a media y mediana, sin considerar la moda en la comparación de grupos."
+        ]
       },
       "content_quality": {
         "score": "pass",
@@ -391,7 +386,8 @@
         "issues": []
       },
       "recommendations": [
-        "Explícitamente señalar que la comparación puede usar diferentes medidas según el contexto (media, mediana o moda), aunque el foco principal sean media/mediana y rango."
+        "Alinear la descripción con los criterios: o bien restringirla explícitamente a media/mediana, o bien añadir un criterio y un ejemplo que incluyan la comparación usando la moda (por ejemplo, comparación de categorías más frecuentes entre grupos).",
+        "Aclarar en las notas de alcance que la comparación puede hacerse tanto cuando las medidas están dadas como cuando el estudiante las ha calculado previamente, especificando que el foco de este átomo es el análisis/comparación, no el cálculo."
       ]
     },
     {
@@ -424,12 +420,13 @@
       "prerequisites": {
         "score": "warning",
         "issues": [
-          "El átomo incluye ejemplos que implican comparar dos servicios usando las medidas, pero no declara como prerrequisito directo el átomo A-M1-PROB-02-11, que es el integrador específico de comparación de grupos."
+          "El prerequisito A-M1-PROB-02-10 implica que todos los problemas contextuales exijan también seleccionar y justificar la medida más adecuada, lo cual puede ser más exigente que lo requerido para problemas rutinarios centrados solo en cálculo e interpretación básica."
         ]
       },
       "recommendations": [
-        "Agregar A-M1-PROB-02-11 como prerrequisito directo, o bien ajustar ejemplos y criterios si se desea que la comparación de grupos se desarrolle exclusivamente dentro de este átomo.",
-        "Revisar si es necesario que dependa de A-M1-PROB-02-10 (selección de medida) para todos los casos, o explicitar que esa dependencia aplica solo a problemas donde se elige la medida más adecuada."
+        "Precisar en la descripción si este átomo se refiere únicamente a problemas donde, además de calcular, se debe decidir qué medida usar (en cuyo caso A-M1-PROB-02-10 como prerequisito es coherente), o si también incluye problemas más rutinarios.",
+        "Considerar dividir este átomo en dos: uno para problemas rutinarios de cálculo e interpretación básica de medidas, y otro (más avanzado) para problemas que exigen seleccionar/justificar la medida adecuada usando criterios como valores atípicos.",
+        "Si no se desea dividir, matizar en las notas de alcance que en algunas tareas asociadas a este átomo bastará con el cálculo e interpretación, mientras que en otras se activará también la selección/justificación trabajada en A-M1-PROB-02-10."
       ]
     }
   ],
@@ -468,9 +465,10 @@
     }
   },
   "global_recommendations": [
-    "Mantener el conjunto de átomos tal como está en términos de contenido, ya que cubre de forma completa y fiel todos los elementos del estándar, tanto conceptuales como procedimentales y de análisis.",
-    "Alinear los metadatos y prerrequisitos: (a) marcar A-M1-PROB-02-10 como 'en_alcance_m1' ya que responde directamente a ejemplos y habilidades de argumentación del estándar, y (b) añadir A-M1-PROB-02-11 como prerrequisito de A-M1-PROB-02-12 o ajustar los ejemplos de este último.",
-    "Cuidar la introducción de términos técnicos adicionales (p.ej. 'cualitativos nominales', 'valores atípicos', 'distribuciones simétricas') asegurando que haya soportes conceptuales en el currículo general, aunque aquí se usen solo de manera cualitativa.",
-    "Conservar la granularidad actual (separación media/mediana/moda/rango y casos par/impar), que es apropiada para diseño instruccional y favorece la evaluación independiente de cada microhabilidad."
+    "Mantener la separación conceptual/procedimental lograda (media, mediana, moda, rango) y la existencia de átomos integradores (comparación de grupos, resolución de problemas), que están bien alineados con el estándar.",
+    "En A-M1-PROB-02-10, clarificar de forma cualitativa 'valores atípicos' y la referencia a la 'forma de la distribución' para evitar interpretaciones que excedan el nivel esperado y para facilitar la evaluación coherente de la habilidad argumentativa.",
+    "En A-M1-PROB-02-11, alinear la descripción con los criterios incorporando explícitamente la moda en la comparación de grupos o restringiendo el alcance del átomo a media/mediana, de modo que 'medidas de tendencia central' no quede sobregeneralizado.",
+    "Revisar el alcance y los prerrequisitos de A-M1-PROB-02-12 para decidir si debe abarcar tanto problemas rutinarios como problemas que exigen selección/justificación de la medida; en caso afirmativo, considerar explicitar subtipos de tareas o separar en dos átomos.",
+    "Seguir usando notas de alcance para marcar que todos los procedimientos se restringen a datos no agrupados y que no se trabajan medidas de dispersión avanzadas (varianza, desviación estándar), en coherencia con la sección 'no_incluye' del estándar."
   ]
 }

@@ -1,9 +1,9 @@
 {
   "evaluation_summary": {
     "total_atoms": 13,
-    "atoms_passing_all_checks": 12,
-    "atoms_with_issues": 1,
-    "overall_quality": "excellent",
+    "atoms_passing_all_checks": 10,
+    "atoms_with_issues": 3,
+    "overall_quality": "good",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
@@ -237,13 +237,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcional: revisar la marca 'en_alcance_m1=false' porque el estándar canónico M1-ALG-02 sí incluye proporcionalidad inversa; puede ser una inconsistencia de metadatos, no de contenido."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-02-08",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -265,15 +263,18 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "El ejemplo de velocidad-tiempo podría generar ambigüedad si no se explicita claramente que la distancia total se mantiene fija; tal como está redactado, algunos estudiantes podrían generalizar erróneamente que en cualquier relación velocidad-tiempo el producto es constante."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Opcional: igual que en A-M1-ALG-02-07, revisar que el metadato 'en_alcance_m1=false' sea coherente con el estándar canónico, si se usa para planificación."
+        "Reformular el ejemplo de velocidad-tiempo indicando explícitamente que se trata de un caso donde la distancia total es fija (por ejemplo, 'para un mismo trayecto de 240 km, v·t = 240 es constante').",
+        "Considerar usar primero un contexto más simple (por ejemplo, área fija de un rectángulo) antes que velocidad-tiempo, para enfatizar la idea de producto constante sin interferencias de modelos previos de MRU."
       ]
     },
     {
@@ -307,13 +308,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcional: como en otros átomos de inversa, revisar la coherencia del campo 'en_alcance_m1'."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-02-10",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -335,15 +334,18 @@
         "issues": []
       },
       "content_quality": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "La mención explícita del término 'hipérbola' puede introducir tecnicismo innecesario si el currículo no lo ha presentado aún; podría bastar con describir la forma de la gráfica sin nombrarla formalmente."
+        ]
       },
       "prerequisites": {
         "score": "pass",
         "issues": []
       },
       "recommendations": [
-        "Opcional: aclarar explícitamente que la hipérbola corresponde a relaciones del tipo y = k/x, para reforzar el vínculo con el átomo de modelado algebraico de inversa."
+        "Mantener la descripción visual ('curva decreciente que se acerca a los ejes sin tocarlos') y dejar el término 'hipérbola' como opcional o entre paréntesis según el nivel del curso.",
+        "Agregar un ejemplo numérico simple para apoyar la construcción del gráfico (por ejemplo, tabla para y = 24/x con tres o cuatro puntos)."
       ]
     },
     {
@@ -377,9 +379,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcional: mencionar explícitamente la restricción x ≠ 0 para la forma y = k/x, si se considera pertinente para el nivel."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-02-12",
@@ -412,9 +412,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Opcional: al igual que en A-M1-ALG-02-06, se podría hacer más explícita la distinción verbal entre 'regla de tres directa' y 'regla de tres inversa' para apoyar la metacognición del estudiante."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-ALG-02-13",
@@ -424,14 +422,12 @@
         "issues": []
       },
       "granularity": {
-        "score": "warning",
-        "issues": [
-          "Como átomo integrador, combina análisis de situaciones verbales, tablas y gráficos; aunque es didácticamente razonable, exige coordinar varias representaciones en una misma unidad, lo que puede aumentar la carga cognitiva para algunos estudiantes."
-        ],
+        "score": "pass",
+        "issues": [],
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -448,12 +444,12 @@
       "prerequisites": {
         "score": "warning",
         "issues": [
-          "Para el criterio 'Clasifica gráficos mixtos identificando cuáles son directos (rectas al origen) y cuáles inversos (hipérbolas)', falta declarar como prerrequisitos directos los átomos de representación gráfica de directa e inversa (A-M1-ALG-02-04 y A-M1-ALG-02-10)."
+          "Uno de los criterios atómicos exige clasificar gráficos mixtos (rectas que pasan por el origen vs hipérbolas), lo que depende directamente de los átomos de representación gráfica de relaciones directa e inversa. Sin embargo, dichos átomos (A-M1-ALG-02-04 y A-M1-ALG-02-10) no están listados como prerrequisitos directos."
         ]
       },
       "recommendations": [
-        "Añadir explícitamente como prerrequisitos A-M1-ALG-02-04 (gráfica de proporcionalidad directa) y A-M1-ALG-02-10 (gráfica de proporcionalidad inversa) para sustentar la clasificación de gráficos.",
-        "Opcional: si se observa dificultad en aula, dividir este átomo integrador en dos: uno centrado en situaciones y tablas, y otro solo en clasificación de gráficos."
+        "Agregar explícitamente como prerrequisitos directos A-M1-ALG-02-04 y A-M1-ALG-02-10, al menos para el criterio que involucra clasificación de gráficos.",
+        "Si se quisiera mantener este átomo más centrado en el razonamiento sobre constantes (cociente vs producto), considerar explicitar en notas de alcance que la parte gráfica se apoya en los átomos de representación correspondientes."
       ]
     }
   ],
@@ -492,9 +488,9 @@
     }
   },
   "global_recommendations": [
-    "Mantener la estructura de pares de átomos (directa/inversa) y el desglose por tipo de representación, que ofrece una excelente alineación con el estándar y una granularidad muy adecuada.",
-    "Corregir o revisar los metadatos 'en_alcance_m1' para los átomos de proporcionalidad inversa si la intención curricular de M1-ALG-02 es efectivamente cubrir tanto directa como inversa; de lo contrario, se puede producir una falsa percepción de falta de cobertura.",
-    "En el átomo integrador A-M1-ALG-02-13, añadir como prerrequisitos los átomos de representación gráfica (A-M1-ALG-02-04 y A-M1-ALG-02-10) y, si se requiere, considerar su posible subdivisión en dos átomos para reducir la carga cognitiva.",
-    "Opcionalmente, homogenizar la notación y el planteo de las razones en los ejemplos de regla de tres (por ejemplo, en A-M1-ALG-02-06) para que las igualdades de razones sigan siempre el mismo patrón de correspondencia, facilitando la transferencia procedimental."
+    "Mantener la simetría ya lograda entre proporcionalidad directa e inversa (concepto, constante, tablas, gráficos, modelo algebraico, resolución de problemas), ya que facilita comparaciones y apoya el átomo integrador A-M1-ALG-02-13.",
+    "Revisar ejemplos en átomos de proporcionalidad inversa para enfatizar explícitamente la idea de 'producto constante' y evitar posibles interferencias con modelos ya conocidos (como distancia = velocidad × tiempo en MRU).",
+    "En átomos que mencionan términos potencialmente avanzados (por ejemplo, 'hipérbola' en A-M1-ALG-02-10), considerar señalar estos términos como opcionales o dependientes del nivel, privilegiando siempre descripciones visuales claras.",
+    "En átomos integradores que usan múltiples representaciones (como A-M1-ALG-02-13), verificar que todos los conocimientos de representación requeridos estén explícitos como prerrequisitos directos, para asegurar secuencias didácticas bien encadenadas."
   ]
 }

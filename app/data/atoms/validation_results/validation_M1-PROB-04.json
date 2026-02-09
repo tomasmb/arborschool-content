@@ -1,9 +1,9 @@
 {
   "evaluation_summary": {
     "total_atoms": 12,
-    "atoms_passing_all_checks": 12,
-    "atoms_with_issues": 0,
-    "overall_quality": "excellent",
+    "atoms_passing_all_checks": 9,
+    "atoms_with_issues": 3,
+    "overall_quality": "good",
     "coverage_assessment": "complete",
     "granularity_assessment": "appropriate"
   },
@@ -39,9 +39,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Considerar mencionar explícitamente que la probabilidad clásica se limita a experimentos con resultados equiprobables, también en los criterios atómicos, no solo en notas de alcance."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-02",
@@ -74,9 +72,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Asegurar que en los ejemplos se incluyan también contextos no clásicos (frecuencias en tablas) siempre que sigan usando conteo simple, para conectar con problemas de datos."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-03",
@@ -109,10 +105,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Se puede agregar en notas de alcance que no se asume manejo formal de álgebra de conjuntos más allá de unión e intersección.",
-        "Considerar incluir al menos un ejemplo con representación simultánea en lenguaje natural, diagrama (p.ej. Venn) y notación simbólica para reforzar la habilidad de representar."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-04",
@@ -145,14 +138,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Añadir en notas de alcance que se puede usar la idea de \"no hay resultados comunes\" como criterio verbal equivalente a \"intersección vacía\" para estudiantes con menor formalización.",
-        "Incluir ejemplos donde los eventos no provengan de un dado o urna (p.ej. características de personas) para reforzar la transferencia de la idea de exclusión mutua."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-05",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -163,7 +153,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -178,16 +168,18 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Para aplicar con seguridad la fórmula P(A ∪ B) = P(A) + P(B), es recomendable declarar como prerrequisito directo el átomo A-M1-PROB-04-03, que introduce explícitamente la notación de unión y la lectura de P(A ∪ B)."
+        ]
       },
       "recommendations": [
-        "Aclarar en notas de alcance que se espera que el alumno identifique la exclusión mutua antes de aplicar la suma de probabilidades, conectando explícitamente con el átomo A-04."
+        "Agregar A-M1-PROB-04-03 como prerrequisito directo para garantizar que el estudiante ya domina la notación de unión de eventos antes de aplicar la regla aditiva."
       ]
     },
     {
       "atom_id": "A-M1-PROB-04-06",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -198,7 +190,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -213,12 +205,13 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "Aunque el foco es el cálculo, el uso de la notación P(A ∪ B) y P(A ∩ B) se apoya en el átomo A-M1-PROB-04-03. Conviene declararlo como prerrequisito directo para asegurar comprensión de la representación simbólica."
+        ]
       },
       "recommendations": [
-        "Cambiar el campo 'en_alcance_m1' a true, ya que la aplicación de la regla aditiva para eventos no mutuamente excluyentes está explícitamente descrita en el estándar.",
-        "Incluir en notas de alcance que típicamente P(A ∩ B) será provista o deducida de tablas/diagramas para evitar introducir conteos avanzados."
+        "Incluir A-M1-PROB-04-03 como prerrequisito directo, ya que este átomo requiere operar con las notaciones de unión e intersección al usar la fórmula P(A ∪ B) = P(A) + P(B) − P(A ∩ B)."
       ]
     },
     {
@@ -252,10 +245,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Matizar en notas de alcance que \"con reposición\" y \"sin reposición\" son ejemplos típicos pero no una caracterización completa de independencia/dependencia, para evitar sobregeneralizaciones conceptuales.",
-        "Agregar un ejemplo donde los eventos sean independientes por su naturaleza (p.ej. \"la cara de un dado\" y \"el clima\") para reforzar la idea de que no siempre hay experimentos secuenciales."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-08",
@@ -288,10 +278,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Cambiar el campo 'en_alcance_m1' a true, ya que la regla multiplicativa para eventos independientes forma parte explícita del estándar.",
-        "En las notas de alcance, enfatizar que antes de aplicar la fórmula se debe haber establecido (conceptualmente) la independencia con el átomo A-07."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-09",
@@ -324,9 +311,7 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Agregar un ejemplo que explicite la idea de \"restringir el espacio muestral\" con números pequeños (p.ej. 10 casos totales, 4 cumplen B, de esos 2 cumplen A)."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-10",
@@ -359,13 +344,11 @@
         "score": "pass",
         "issues": []
       },
-      "recommendations": [
-        "Dejar claro en notas de alcance que este átomo se centra en contextos donde se dispone de tabla/diagrama, para diferenciarlo del uso puramente simbólico del átomo A-11."
-      ]
+      "recommendations": []
     },
     {
       "atom_id": "A-M1-PROB-04-11",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
@@ -376,7 +359,7 @@
         "checks": {
           "single_cognitive_intention": true,
           "reasonable_working_memory": true,
-          "prerequisite_independence": true,
+          "prerequisite_independence": false,
           "assessment_independence": true,
           "generalization_boundary": true,
           "integrator_validity": true
@@ -391,12 +374,13 @@
         "issues": []
       },
       "prerequisites": {
-        "score": "pass",
-        "issues": []
+        "score": "warning",
+        "issues": [
+          "El uso de la notación P(A ∩ B) en la fórmula P(A|B) = P(A ∩ B) / P(B) se apoya en el átomo A-M1-PROB-04-03. Sería conveniente declararlo como prerrequisito para asegurar que el estudiante ya comprende la intersección de eventos a nivel simbólico."
+        ]
       },
       "recommendations": [
-        "Cambiar el campo 'en_alcance_m1' a true, ya que el estándar sí incluye el cálculo de probabilidad condicional y esta es la definición formal.",
-        "En notas de alcance, aclarar que no se está introduciendo el Teorema de Bayes, solo la definición directa P(A|B)=P(A ∩ B)/P(B)."
+        "Incorporar A-M1-PROB-04-03 como prerrequisito directo para alinear la competencia de representación simbólica (A ∩ B) con el uso de la fórmula algebraica de probabilidad condicional."
       ]
     },
     {
@@ -431,8 +415,7 @@
         "issues": []
       },
       "recommendations": [
-        "En notas de alcance, enfatizar que esta regla multiplicativa general P(A ∩ B)=P(A)·P(B|A) incluye como caso particular la independencia cuando P(B|A)=P(B), para conectar ambos átomos (A-08 y A-12) conceptualmente.",
-        "Incluir al menos un ejemplo resuelto paso a paso que use primero A-10/A-11 para hallar P(B|A) y luego este átomo para hallar P(A ∩ B)."
+        "En la práctica de diseño instruccional, considerar si siempre se requiere que el estudiante domine ambos métodos de cálculo de P(B|A) (intuitivo y algebraico) antes de introducir la regla multiplicativa para eventos dependientes, o si se puede flexibilizar según el contexto."
       ]
     }
   ],
@@ -467,16 +450,15 @@
       },
       "habilidades_covered": {
         "resolver_problemas": "covered",
-        "modelar": "partially_covered",
+        "modelar": "covered",
         "representar": "covered",
         "argumentar": "covered"
       }
     }
   },
   "global_recommendations": [
-    "Alinear el metadato 'en_alcance_m1' con el estándar: marcar como true al menos los átomos A-M1-PROB-04-06 (regla aditiva no excluyente), A-M1-PROB-04-08 (regla multiplicativa para independientes) y A-M1-PROB-04-11 (definición formal de probabilidad condicional), ya que cubren contenudos explícitos del estándar.",
-    "Fortalecer la habilidad de 'modelar' incluyendo al menos un átomo donde sea habilidad_principal (p.ej. uso de tablas de contingencia, diagramas de árbol o diagramas de Venn para representar y resolver situaciones de probabilidad compuesta y condicional).",
-    "Reforzar explícitamente en las notas de alcance de los átomos de reglas aditiva y multiplicativa la relación entre la identificación conceptual de tipos de eventos (mutuamente excluyentes vs no excluyentes; independientes vs dependientes) y la elección de la fórmula adecuada, para apoyar la transferencia entre conceptos y procedimientos.",
-    "Mantener la separación actual entre métodos intuitivos (conteo en espacio reducido) y formales (fórmula algebraica) para probabilidad condicional, pero añadir ejemplos que muestren que ambos producen el mismo resultado en un mismo problema, ayudando a integrar conceptualmente los dos enfoques."
+    "Alinear de forma sistemática los prerrequisitos de todos los átomos procedimentales que usan notación de unión/intersección (P(A ∪ B), P(A ∩ B)) con el átomo de representación simbólica A-M1-PROB-04-03, para reforzar la coherencia de la progresión.",
+    "Mantener la separación actual entre átomos conceptuales (definiciones y distinciones) y procedimentales (cálculos), que está bien lograda y favorece la evaluación independiente de cada habilidad.",
+    "Si se desea enfatizar más la habilidad de modelar, considerar al menos un átomo con habilidad_principal = \"modelar\" (por ejemplo, formulación de un modelo probabilístico de una situación verbal) usando como base los contenidos ya presentes."
   ]
 }

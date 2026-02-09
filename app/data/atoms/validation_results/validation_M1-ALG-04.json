@@ -10,16 +10,18 @@
   "atoms_evaluation": [
     {
       "atom_id": "A-M1-ALG-04-01",
-      "overall_score": "excellent",
+      "overall_score": "good",
       "fidelity": {
         "score": "pass",
         "issues": []
       },
       "granularity": {
-        "score": "pass",
-        "issues": [],
+        "score": "warning",
+        "issues": [
+          "El átomo combina dos intenciones cognitivas distintas: (1) comprender qué es un sistema 2x2 (identificar componentes) y (2) verificar si un par ordenado es solución mediante sustitución. Podrían separarse en un átomo puramente conceptual (definición/identificación de sistema) y otro procedimental (verificación de soluciones) para mayor fineza atómica."
+        ],
         "checks": {
-          "single_cognitive_intention": true,
+          "single_cognitive_intention": false,
           "reasonable_working_memory": true,
           "prerequisite_independence": true,
           "assessment_independence": true,
@@ -40,8 +42,8 @@
         "issues": []
       },
       "recommendations": [
-        "Considerar mencionar explícitamente la notación de par ordenado (x, y) en los criterios o ejemplos para reforzar la conexión con la representación en el plano cartesiano.",
-        "Podría añadirse en notas de alcance que se asume dominio previo de ecuaciones lineales de una incógnita y del concepto de variable."
+        "Considerar dividir este átomo en dos: uno centrado en la identificación y estructura de un sistema 2x2 (tipo 'concepto de sistema lineal 2x2') y otro centrado en la verificación de soluciones dadas (sustituir y evaluar).",
+        "Explicitar en la descripción o criterios que la verificación implica evaluar ambas ecuaciones y tomar una decisión argumentada ('es solución' / 'no es solución'), para reforzar la conexión con la habilidad de argumentar."
       ]
     },
     {
@@ -76,17 +78,15 @@
         "issues": []
       },
       "recommendations": [
-        "Podría incorporarse brevemente en criterios o notas la mención explícita de rectas coincidentes como caso especial (para enlazar más naturalmente con el átomo de clasificación A-M1-ALG-04-03)."
+        "Se podría añadir explícitamente en los criterios que esta interpretación corresponde al caso de solución única (rectas secantes), dejando claro que la clasificación completa de casos (paralelas/coincidentes) se aborda en el átomo A-M1-ALG-04-03."
       ]
     },
     {
       "atom_id": "A-M1-ALG-04-03",
-      "overall_score": "good",
+      "overall_score": "excellent",
       "fidelity": {
-        "score": "warning",
-        "issues": [
-          "El átomo aborda exactamente el 'análisis de la consistencia de sistemas 2x2 (solución única, infinitas soluciones, sin solución)', que está explícitamente incluido en el estándar, pero está marcado con en_alcance_m1 = false, generando una inconsistencia entre el estándar y la marca de alcance."
-        ]
+        "score": "pass",
+        "issues": []
       },
       "granularity": {
         "score": "pass",
@@ -113,8 +113,7 @@
         "issues": []
       },
       "recommendations": [
-        "Cambiar en_alcance_m1 a true, ya que el análisis de consistencia (solución única, infinitas, sin solución) es parte explícita del estándar M1-ALG-04.",
-        "Si se desea enfatizar la conexión con la interpretación geométrica, podría añadirse un criterio explícito que relacione rectas secantes con solución única (complementando los puntos sobre paralelas y coincidentes)."
+        "Añadir un ejemplo explícito de detección algebraica de inconsistencia (por ejemplo, llegar a una igualdad imposible como 0 = 5 o una identidad 0 = 0) podría reforzar la conexión entre clasificación y métodos algebraicos, sin cambiar el alcance central del átomo."
       ]
     },
     {
@@ -149,7 +148,7 @@
         "issues": []
       },
       "recommendations": [
-        "Se podría mencionar en notas que, aunque el foco está en encontrar el punto de intersección (caso de solución única), los casos sin intersección o con rectas coincidentes se abordan en el átomo de clasificación A-M1-ALG-04-03, para dejar clara la articulación entre ambos."
+        "Podría explicitarse en notas de alcance o criterios que también se debe reconocer gráficamente los casos de 'sin solución' (rectas paralelas) y 'infinitas soluciones' (rectas coincidentes), aunque el foco esté en la obtención de la solución única mediante intersección."
       ]
     },
     {
@@ -184,7 +183,7 @@
         "issues": []
       },
       "recommendations": [
-        "Podría añadirse explícitamente en criterios o notas que, tras encontrar la solución (x, y), el estudiante debería ser capaz de verificarla en el sistema (apoyándose en A-M1-ALG-04-01), aunque la verificación se evalúe en ese átomo."
+        "Agregar un criterio o ejemplo donde el método de sustitución conduzca a un sistema sin solución o con infinitas soluciones puede ayudar a vincular este procedimiento con el análisis de consistencia (A-M1-ALG-04-03)."
       ]
     },
     {
@@ -219,7 +218,7 @@
         "issues": []
       },
       "recommendations": [
-        "En ejemplos, podría incluirse un caso donde el despeje no sea inmediato (por ejemplo, con coeficientes distintos de 1) para dejar claro el alcance del procedimiento."
+        "Especificar en notas de alcance o ejemplos cuándo es especialmente conveniente usar igualación (por ejemplo, cuando las dos ecuaciones ya están despejadas para y) puede apoyar la toma de decisiones estratégicas del estudiante."
       ]
     },
     {
@@ -254,7 +253,7 @@
         "issues": []
       },
       "recommendations": [
-        "Podría añadirse un ejemplo que muestre explícitamente qué ocurre cuando, tras la reducción, se obtiene una igualdad imposible (sistema incompatible) o una identidad (infinitas soluciones), enlazando con A-M1-ALG-04-03."
+        "Incluir un ejemplo donde sea necesario multiplicar ambas ecuaciones por constantes distintas (no solo una de ellas) reforzaría la comprensión de casos menos inmediatos en el método de reducción."
       ]
     },
     {
@@ -289,7 +288,7 @@
         "issues": []
       },
       "recommendations": [
-        "Incluir en notas o ejemplos una referencia a la necesidad de interpretar correctamente las unidades y el contexto (por ejemplo, cantidades de objetos, precios, mezclas) para reforzar el vínculo con la habilidad 'modelar'."
+        "Añadir en criterios o ejemplos una referencia explícita a la coherencia de las unidades y al chequeo de que las dos ecuaciones sean realmente independientes ayudaría a fortalecer la calidad del modelado."
       ]
     },
     {
@@ -324,8 +323,7 @@
         "issues": []
       },
       "recommendations": [
-        "En la descripción o notas, enfatizar que el estudiante puede usar cualquiera de los métodos algebraicos dominados (sustitución, igualación o reducción), tal como ya se indica en notas, para que la evaluación no obligue innecesariamente al dominio de los tres.",
-        "Incluir explícitamente en los criterios la verificación de la solución en el sistema (sustitución en las ecuaciones) como parte del proceso de validación, conectando con A-M1-ALG-04-01."
+        "En la descripción o notas de alcance, se podría reforzar que el estudiante puede utilizar cualquiera de los métodos algebraicos dominados (sustitución, igualación o reducción) y que un criterio de éxito es también justificar por qué la solución obtenida tiene sentido en el contexto (vínculo con A-M1-ALG-04-03 cuando el sistema no es compatible)."
       ]
     }
   ],
@@ -364,9 +362,8 @@
     }
   },
   "global_recommendations": [
-    "Alinear la marca en_alcance_m1 del átomo A-M1-ALG-04-03 con el estándar, cambiándola a true, ya que el análisis de la consistencia de los sistemas (única, infinitas, sin solución) es un componente explícito del estándar M1-ALG-04.",
-    "Mantener la estructura actual de granularidad (átomos separados para cada método algebraico, para modelado, verificación, interpretación geométrica y clasificación), ya que cubre de forma limpia todos los subcontenidos y permite evaluar con independencia cada habilidad.",
-    "Al diseñar evaluaciones integradas, aprovechar explícitamente la conexión entre los átomos de verificación de soluciones (A-M1-ALG-04-01), clasificación de sistemas (A-M1-ALG-04-03) y resolución algebraica (A-M1-ALG-04-05/06/07), de modo que los estudiantes practiquen el ciclo completo: resolver, clasificar y verificar.",
-    "Verificar en la implementación curricular que los prerrequisitos conceptuales generales (manejo de ecuaciones lineales de una incógnita, representación de rectas, noción de variable) estén asegurados en unidades previas, ya que los átomos correctamente los asumen como conocimientos previos y no directos."
+    "Refinar ligeramente la granularidad del átomo A-M1-ALG-04-01 separando el concepto de 'qué es un sistema 2x2' de la verificación de soluciones, para alinear mejor cada átomo con una única intención cognitiva.",
+    "Asegurar explícitamente en algunos átomos procedimentales (por ejemplo, sustitución, igualación, reducción) la conexión con el análisis de consistencia (detectar sistemas sin solución o con infinitas soluciones) para reforzar la articulación con el átomo A-M1-ALG-04-03.",
+    "Verificar en la secuenciación curricular que los átomos conceptuales (A-M1-ALG-04-01, 02, 03) se presenten antes o en paralelo a los procedimentales (A-M1-ALG-04-04 a 07) y al integrador (A-M1-ALG-04-09), para que el estudiante cuente con el andamiaje conceptual necesario al abordar la resolución de problemas contextualizados."
   ]
 }
