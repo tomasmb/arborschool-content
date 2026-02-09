@@ -23,6 +23,7 @@ interface AtomFixModalProps {
   onOpenChange: (open: boolean) => void;
   subjectId: string;
   issuesCount: number;
+  hasSavedResults?: boolean;
   onSuccess?: () => void;
 }
 
@@ -31,6 +32,7 @@ export function AtomFixModal({
   onOpenChange,
   subjectId,
   issuesCount,
+  hasSavedResults = false,
   onSuccess,
 }: AtomFixModalProps) {
   const [step, setStep] = useState<ModalStep>("configure");
@@ -217,6 +219,7 @@ export function AtomFixModal({
               dryRun={dryRun}
               onDryRunChange={setDryRun}
               error={error}
+              hasSavedResults={hasSavedResults}
             />
           )}
 
@@ -245,8 +248,10 @@ export function AtomFixModal({
             <ConfigureFooter
               onClose={handleClose}
               onStart={handleStart}
+              onApplySaved={handleApplySaved}
               dryRun={dryRun}
               issuesCount={issuesCount}
+              hasSavedResults={hasSavedResults}
             />
           )}
           {step === "results" && (
@@ -271,13 +276,17 @@ export function AtomFixModal({
 function ConfigureFooter({
   onClose,
   onStart,
+  onApplySaved,
   dryRun,
   issuesCount,
+  hasSavedResults,
 }: {
   onClose: () => void;
   onStart: () => void;
+  onApplySaved: () => void;
   dryRun: boolean;
   issuesCount: number;
+  hasSavedResults: boolean;
 }) {
   return (
     <>
@@ -291,6 +300,20 @@ function ConfigureFooter({
       >
         Cancel
       </button>
+      {hasSavedResults && (
+        <button
+          onClick={onApplySaved}
+          className={cn(
+            "flex items-center gap-1.5",
+            "px-4 py-2 text-sm rounded-lg font-medium",
+            "bg-success text-white hover:bg-success/90",
+            "transition-colors",
+          )}
+        >
+          <Play className="w-3.5 h-3.5" />
+          Apply Saved Results
+        </button>
+      )}
       <button
         onClick={onStart}
         disabled={issuesCount === 0}

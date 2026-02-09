@@ -15,6 +15,7 @@ export interface AtomPipelineSummary {
   structural_checks_passed: boolean | null;
   standards_validated: number;
   standards_with_issues: number;
+  has_saved_fix_results: boolean;
 }
 
 // -----------------------------------------------------------------------------

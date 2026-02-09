@@ -115,6 +115,10 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
         saved_structural.passed if saved_structural else None
     )
 
+    # Check whether saved fix results exist on disk.
+    from app.atoms.fixing.results_store import load_latest_results
+    has_saved_fix = load_latest_results() is not None
+
     return AtomPipelineSummary(
         has_standards=has_standards,
         atom_count=atom_count,
@@ -123,6 +127,7 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
         structural_checks_passed=structural_passed,
         standards_validated=standards_validated,
         standards_with_issues=standards_with_issues,
+        has_saved_fix_results=has_saved_fix,
     )
 
 

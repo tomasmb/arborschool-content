@@ -23,11 +23,13 @@ export function ConfigureStep({
   dryRun,
   onDryRunChange,
   error,
+  hasSavedResults,
 }: {
   issuesCount: number;
   dryRun: boolean;
   onDryRunChange: (v: boolean) => void;
   error: string | null;
+  hasSavedResults?: boolean;
 }) {
   return (
     <div className="space-y-5">
@@ -43,6 +45,19 @@ export function ConfigureStep({
         </span>
         <span className="font-medium">{issuesCount}</span>
       </div>
+
+      {hasSavedResults && (
+        <div className="flex items-start gap-2 p-3 rounded-lg bg-success/10 border border-success/20">
+          <CheckCircle2 className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
+          <p className="text-xs text-text-secondary">
+            Saved dry-run results found. Click{" "}
+            <span className="font-medium text-text-primary">
+              Apply Saved Results
+            </span>{" "}
+            to write changes without re-running the LLM pipeline.
+          </p>
+        </div>
+      )}
 
       {/* Dry-run toggle */}
       <label className="flex items-center gap-3 cursor-pointer">

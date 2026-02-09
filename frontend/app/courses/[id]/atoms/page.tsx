@@ -184,6 +184,7 @@ export default function AtomsPage() {
         onOpenChange={setShowFix}
         subjectId={courseId}
         issuesCount={summary.standards_with_issues}
+        hasSavedResults={summary.has_saved_fix_results}
         onSuccess={handlePipelineSuccess}
       />
     </div>

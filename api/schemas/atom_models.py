@@ -33,6 +33,10 @@ class AtomPipelineSummary(BaseModel):
     standards_with_issues: int = Field(
         0, description="Standards where validation found issues"
     )
+    has_saved_fix_results: bool = Field(
+        False,
+        description="Whether saved fix results exist on disk for apply-saved",
+    )
 
 
 # -----------------------------------------------------------------------------
