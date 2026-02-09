@@ -28,14 +28,12 @@ def build_validation_prompt(standard: dict[str, Any], atoms: list[dict[str, Any]
         Complete validation prompt as string
     """
     prompt = f"""<educational_context>
-Este es contenido educativo matemático puro para evaluación curricular. Todos los términos
-("cubo", "factor", "producto", "raíz", etc.) se refieren exclusivamente a conceptos matemáticos
-estándar de álgebra y aritmética. No hay contenido inapropiado, solo matemáticas educativas.
+Contenido educativo matemático puro. Todos los términos ("cubo", "factor",
+"producto", "raíz", etc.) son conceptos matemáticos estándar.
 </educational_context>
 
 <role>
-Eres un experto evaluador de diseño instruccional y granularidad de aprendizaje.
-Tu tarea es evaluar la calidad de átomos de aprendizaje generados a partir de un estándar curricular.
+Experto evaluador de diseño instruccional y granularidad de aprendizaje.
 </role>
 
 <context>
@@ -49,32 +47,54 @@ Tu tarea es evaluar la calidad de átomos de aprendizaje generados a partir de u
 </context>
 
 <task>
-Evalúa la calidad de los átomos generados considerando:
+Evalúa los átomos generados en estas dimensiones:
 
-1. **Fidelidad**: ¿Los átomos cubren completamente el estándar sin agregar contenido fuera de alcance?
+1. **Fidelidad**: ¿Cubren el estándar sin agregar contenido de "no_incluye"?
 2. **Granularidad**: ¿Cada átomo cumple los 6 criterios de granularidad atómica?
-3. **Completitud y Cobertura del Estándar (CRÍTICO)**:
-   - Verifica punto por punto que CADA elemento del estándar esté representado en los átomos:
-     * Revisa cada ítem en "incluye" del estándar y verifica que haya átomos que lo cubran
-     * Revisa cada "subcontenidos_clave" y verifica que esté representado
-     * Revisa las "habilidades_relacionadas" y verifica que se reflejen en los átomos
-     * Verifica que los "ejemplos_conceptuales" del estándar puedan ser abordados con los átomos generados
-   - Identifica específicamente qué elementos del estándar NO están cubiertos por ningún átomo
-   - Verifica que no haya contenido en los átomos que esté explícitamente en "no_incluye" del estándar
-4. **Calidad del contenido**: ¿Las descripciones, criterios y ejemplos son claros y apropiados?
-5. **Prerrequisitos**: ¿Los prerrequisitos están correctamente identificados y son exhaustivos en átomos integradores?
-6. **Cobertura**: ¿No hay duplicaciones ni áreas faltantes?
+3. **Cobertura del estándar**: ¿Cada ítem de "incluye", cada
+   "subcontenido_clave" y cada "habilidad_relacionada" está representado?
+4. **Calidad del contenido**: ¿Descripciones, criterios y ejemplos son claros?
+5. **Prerrequisitos**: ¿Correctamente identificados? ¿Exhaustivos en
+   átomos integradores?
+6. **Duplicaciones**: ¿Hay solapamientos significativos entre átomos?
 </task>
 
 <rules>
 1. Evalúa cada átomo individualmente y luego el conjunto completo.
 2. Identifica problemas específicos con ejemplos concretos.
 3. Proporciona recomendaciones accionables.
-4. Usa el formato JSON estructurado especificado.
+4. Verifica separación correcta de: procedimientos con estrategias cognitivas
+   distintas, versiones simples vs complejas, representaciones diferentes, y
+   variantes con algoritmos fundamentalmente distintos.
+5. Verifica consistencia entre habilidad_principal y criterios_atomicos.
+6. Si un elemento del estándar NO está cubierto por ningún átomo, repórtalo
+   en "missing_areas" y marca "coverage_completeness" como "incomplete".
 </rules>
 
+<constraints>
+NO marques como problema ninguno de estos casos:
+
+1. **Campo `en_alcance_m1`**: Ignorar completamente. Es una decisión de
+   alcance de prueba, no de calidad. No mencionarlo en issues ni
+   recomendaciones.
+2. **Métodos matemáticamente equivalentes**: Si dos métodos en un átomo
+   requieren la misma estrategia cognitiva (ej: "inverso multiplicativo" vs
+   "multiplicación cruzada"), no es un problema. Solo marca si los algoritmos
+   son fundamentalmente distintos. Ante la duda, asume equivalencia.
+3. **Prerrequisitos transitivos**: Si A→B→C, entonces C solo necesita listar
+   B, no A. Solo marca prerrequisitos DIRECTOS faltantes. Ante la duda,
+   asume transitividad.
+4. **Procedimientos limitados a casos específicos**: Cuando un átomo
+   procedimental cubre solo casos simples (ej: ejes coordenados, origen)
+   pero el átomo conceptual correspondiente cubre el caso general, es una
+   decisión pedagógica válida.
+5. **Estrategias integradas**: Cuando un átomo combina estrategias
+   conceptualmente relacionadas, del mismo procedimiento general, evaluables
+   en el mismo contexto, es válido.
+</constraints>
+
 <output_format>
-Responde SOLO con un objeto JSON válido con esta estructura:
+Responde SOLO con un objeto JSON válido:
 
 {{
   "evaluation_summary": {{
@@ -91,11 +111,11 @@ Responde SOLO con un objeto JSON válido con esta estructura:
       "overall_score": "excellent" | "good" | "needs_improvement",
       "fidelity": {{
         "score": "pass" | "warning" | "fail",
-        "issues": ["<problema 1>", "<problema 2>"]
+        "issues": []
       }},
       "granularity": {{
         "score": "pass" | "warning" | "fail",
-        "issues": ["<problema 1>", "<problema 2>"],
+        "issues": [],
         "checks": {{
           "single_cognitive_intention": true | false,
           "reasonable_working_memory": true | false,
@@ -107,128 +127,53 @@ Responde SOLO con un objeto JSON válido con esta estructura:
       }},
       "completeness": {{
         "score": "pass" | "warning" | "fail",
-        "issues": ["<problema 1>", "<problema 2>"]
+        "issues": []
       }},
       "content_quality": {{
         "score": "pass" | "warning" | "fail",
-        "issues": ["<problema 1>", "<problema 2>"]
+        "issues": []
       }},
       "prerequisites": {{
         "score": "pass" | "warning" | "fail",
-        "issues": ["<problema 1>", "<problema 2>"]
+        "issues": []
       }},
-      "recommendations": ["<recomendación 1>", "<recomendación 2>"]
+      "recommendations": []
     }}
   ],
   "coverage_analysis": {{
-    "standards_covered": ["<standard_id>"],
+    "standards_covered": [],
     "coverage_completeness": "complete" | "incomplete",
-    "missing_areas": ["<área faltante 1>", "<área faltante 2>"],
-    "duplication_issues": ["<problema 1>", "<problema 2>"],
+    "missing_areas": [],
+    "duplication_issues": [],
     "conceptual_coverage": "present" | "missing",
     "procedural_coverage": "present" | "missing",
     "standard_items_coverage": {{
       "includes_covered": {{
-        "<item del campo 'incluye'>": "covered" | "missing" | "partially_covered",
-        "<item del campo 'incluye'>": "covered" | "missing" | "partially_covered"
+        "<item de 'incluye'>": "covered" | "missing" | "partially_covered"
       }},
       "subcontenidos_covered": {{
-        "<subcontenido clave>": "covered" | "missing" | "partially_covered",
-        "<subcontenido clave>": "covered" | "missing" | "partially_covered"
+        "<subcontenido>": "covered" | "missing" | "partially_covered"
       }},
       "habilidades_covered": {{
-        "<habilidad_id>": "covered" | "missing" | "partially_covered",
         "<habilidad_id>": "covered" | "missing" | "partially_covered"
       }}
     }}
   }},
-  "global_recommendations": [
-    "<recomendación global 1>",
-    "<recomendación global 2>"
-  ]
+  "global_recommendations": []
 }}
 </output_format>
 
 <final_instruction>
-Basándote en el estándar y los átomos generados, realiza una evaluación exhaustiva.
+Basándote en el estándar y los átomos anteriores, evalúa siguiendo estos pasos:
 
-**PASO 1 - Verificación de Cobertura Completa del Estándar (HACER PRIMERO)**:
-1. Toma cada elemento del campo "incluye" del estándar y verifica que haya al menos un átomo que lo cubra
-2. Toma cada "subcontenidos_clave" y verifica que esté representado en los átomos
-3. Toma cada "habilidad_id" en "habilidades_relacionadas" y verifica que haya átomos que la desarrollen
-4. Identifica específicamente qué elementos del estándar NO están cubiertos (si los hay)
-5. Verifica que ningún átomo incluya contenido explícitamente mencionado en "no_incluye"
+**Paso 1 — Cobertura del estándar (hacer primero)**:
+Toma cada ítem de "incluye", cada "subcontenido_clave" y cada "habilidad_id"
+del estándar. Verifica que haya al menos un átomo que lo cubra. Reporta
+elementos no cubiertos en "missing_areas".
 
-**PASO 2 - Evaluación de Calidad Individual y Global**:
-Identifica problemas específicos, especialmente relacionados con:
-- Separación de procedimientos con estrategias cognitivas diferentes
-- Separación de versiones simples vs complejas del mismo procedimiento
-- Prerrequisitos exhaustivos en átomos integradores (tanto conceptuales como procedimentales)
-- Uso de métodos estándar preferentes (evitar métodos alternativos inusuales o confusos)
-- Separación de representaciones diferentes que requieren estrategias cognitivas distintas
-- Consistencia entre habilidad_principal y criterios_atomicos
-- Separación correcta de variantes con algoritmos fundamentalmente distintos (ej: decimal finito vs periódico)
-
-**VERIFICACIÓN CRÍTICA - MÉTODOS EQUIVALENTES**:
-Antes de marcar como problema que un átomo menciona "múltiples métodos", DEBES
-verificar si son realmente métodos distintos o el mismo método explicado de
-forma diferente:
-- Si dos métodos mencionados son matemáticamente equivalentes y requieren la
-  misma estrategia cognitiva, NO es un problema
-- Ejemplos de métodos equivalentes (NO son problemas):
-  * "Multiplicar por el inverso multiplicativo" vs "Multiplicación cruzada"
-    (división de fracciones) → Son el mismo método
-  * "Sumar opuestos" vs "Restar" (en enteros) → Pueden ser equivalentes según
-    el contexto
-- Solo marca como problema si los métodos requieren algoritmos o estrategias
-  cognitivas fundamentalmente distintos
-- Si tienes duda, asume que son equivalentes y NO marques como problema
-
-**VERIFICACIÓN CRÍTICA - TRANSITIVIDAD DE PRERREQUISITOS**:
-Los prerrequisitos son TRANSITIVOS. Si A es prerrequisito de B, y B es
-prerrequisito de C, entonces C solo necesita listar B como prerrequisito,
-NO necesita listar A explícitamente.
-- **REGLA DE ORO**: NO marques como problema si un átomo no lista un
-  prerrequisito transitivo
-- Ejemplo: Si A-01 → A-04 → A-17, entonces A-17 solo necesita listar A-04,
-  NO A-01
-- Solo marca como problema si falta un prerrequisito DIRECTO (no transitivo)
-- Si un átomo requiere operar con enteros pero ya tiene un prerrequisito que
-  a su vez requiere enteros, NO es un problema
-- Si tienes duda sobre si un prerrequisito es directo o transitivo, asume que
-  es transitivo y NO marques como problema
-
-**PRINCIPIOS PEDAGÓGICOS GENERALES - NO MARCAR COMO PROBLEMAS**:
-Los siguientes casos representan decisiones pedagógicas válidas que pueden
-aplicarse a cualquier conjunto de átomos. NO los marques como problemas:
-
-1. **Limitaciones intencionales de procedimientos**:
-   - Cuando los procedimientos están limitados a casos específicos (ej: ejes
-     coordenados, origen, casos simples) pero los conceptos correspondientes
-     cubren el caso general, esto es una decisión pedagógica válida: conceptos
-     generales, procedimientos específicos para el nivel educativo.
-   - **NO marques como problema** si un átomo procedimental está limitado a
-     casos específicos mientras el átomo conceptual correspondiente cubre el
-     caso general.
-
-2. **Estrategias integradas válidas**:
-   - Cuando un átomo integra múltiples estrategias o niveles de complejidad
-     que son conceptualmente relacionados, parte de un mismo procedimiento
-     general, y pueden evaluarse en el mismo contexto, esto es una decisión
-     pedagógica válida.
-   - **NO marques como problema** si un átomo integra múltiples estrategias
-     válidas para el mismo objetivo cognitivo, siempre que puedan evaluarse
-     coherentemente en el mismo contexto.
-
-3. **Métodos equivalentes**:
-   - Si un átomo menciona métodos que son matemáticamente equivalentes
-     (ej: "multiplicación cruzada" vs "inverso multiplicativo" en división de
-     fracciones), NO marques como problema. Los métodos equivalentes son
-     válidos y la elección puede ser pedagógica.
-
-**IMPORTANTE**: Si encuentras elementos del estándar que NO están cubiertos
-por ningún átomo, esto es un problema crítico que debe reportarse en
-"missing_areas" y debe afectar el "coverage_completeness" a "incomplete".
+**Paso 2 — Evaluación individual y global**:
+Evalúa cada átomo en las 5 dimensiones (fidelidad, granularidad, completitud,
+calidad, prerrequisitos). Respeta las restricciones de `<constraints>`.
 </final_instruction>
 """
     return prompt

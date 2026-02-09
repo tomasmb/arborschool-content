@@ -1,0 +1,396 @@
+{
+  "evaluation_summary": {
+    "total_atoms": 9,
+    "atoms_passing_all_checks": 4,
+    "atoms_with_issues": 5,
+    "overall_quality": "good",
+    "coverage_assessment": "complete",
+    "granularity_assessment": "appropriate"
+  },
+  "atoms_evaluation": [
+    {
+      "atom_id": "A-M1-PROB-03-01",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Agregar un ejemplo numérico muy breve en la descripción o ejemplos (por ejemplo, explicar Q1, Q2 y Q3 en una lista corta de datos) para reforzar la comprensión."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-02",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "warning",
+        "issues": [
+          "El campo 'en_alcance_m1' está en false, a pesar de que el estándar M1-PROB-03 incluye explícitamente percentiles; esto puede provocar que el contenido no se considere al mapear el estándar."
+        ]
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Corregir 'en_alcance_m1' a true para alinear con el estándar que explícitamente incluye percentiles.",
+        "Opcionalmente explicitar que la definición se limita a datos ordenados y a distribuciones univariadas para evitar ambigüedades."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-03",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "warning",
+        "issues": [
+          "El procedimiento no fija una convención específica de cálculo de la posición de los cuartiles (solo menciona 'procedimientos básicos' e 'interpolación simple o promedio según convención escolar'), lo que vuelve el algoritmo algo vago para un átomo procedimental."
+        ],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": false,
+          "generalization_boundary": false,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "warning",
+        "issues": [
+          "No se explicita qué fórmula o regla se usa para determinar la posición de Q1, Q2 y Q3 (por ejemplo, n+1 vs n), lo que puede generar resultados distintos según la interpretación."
+        ]
+      },
+      "content_quality": {
+        "score": "warning",
+        "issues": [
+          "La referencia genérica a 'procedimientos básicos' y 'interpolación según convención escolar' puede ser confusa para docentes o sistemas automáticos que esperan un único método claro."
+        ]
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Especificar explícitamente una convención de cálculo de la posición de los cuartiles (por ejemplo, posición = (n+1)*p, o la que use el currículo) para asegurar uniformidad.",
+        "Aclarar explícitamente el tratamiento de casos con n par o impar (por ejemplo, si se promedia entre dos valores para la mediana y eventualmente para Q1 y Q3)."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-04",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "warning",
+        "issues": [
+          "El campo 'en_alcance_m1' está en false, aunque el estándar incluye 'cálculo e interpretación de percentiles'. Esto desajusta el mapeo estándar–átomos."
+        ]
+      },
+      "granularity": {
+        "score": "warning",
+        "issues": [
+          "El criterio 'Aplica la fórmula de posición correspondiente' no especifica cuál fórmula se usará para hallar la posición del percentil, dejando abierto el método a distintas convenciones."
+        ],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": false,
+          "generalization_boundary": false,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "warning",
+        "issues": [
+          "No se detalla la fórmula ni el manejo de posiciones no enteras (interpolación, redondeo, etc.), lo que afecta la especificidad del procedimiento."
+        ]
+      },
+      "content_quality": {
+        "score": "warning",
+        "issues": [
+          "La falta de una fórmula concreta puede dificultar que diferentes docentes o recursos evalúen el mismo desempeño de manera consistente."
+        ]
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Establecer explícitamente la fórmula de posición para Pk (por ejemplo, k*(n+1)/100 o k*n/100) y el criterio de tratamiento cuando la posición no es entera.",
+        "Ajustar 'en_alcance_m1' a true para asegurar que el cálculo de percentiles quede correctamente incluido en el mapa del estándar.",
+        "Agregar en las notas de alcance una breve mención de cómo se resuelven los casos de posición fraccionaria para guiar a docentes y estudiantes."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-05",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Agregar al menos un ejemplo explícitamente comparativo (por ejemplo, interpretar la posición de dos estudiantes respecto a Q1 y Q3) para reforzar la dimensión argumentativa.",
+        "Considerar hacer referencia directa a contextos variados (educación, salud, ingresos) en la descripción para alinearse aún más con el estándar."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-06",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "warning",
+        "issues": [
+          "El campo 'en_alcance_m1' está en false aunque la interpretación de percentiles es parte explícita del estándar M1-PROB-03."
+        ]
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Cambiar 'en_alcance_m1' a true para reflejar que esta interpretación es requerida por el estándar.",
+        "Añadir un ejemplo que involucre explícitamente la toma de decisiones (por ejemplo, decidir si un resultado es preocupante según su percentil) para reforzar el uso en contextos reales."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-07",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Incluir en las notas de alcance una mención explícita de que no se tratan valores atípicos ni variaciones de box plot, para delimitar aun más el alcance.",
+        "Agregar un ejemplo con dos diagramas simples donde el estudiante deba señalar todos los elementos (mínimo, Q1, mediana, Q3, máximo) para reforzar el criterio de identificación."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-08",
+      "overall_score": "excellent",
+      "fidelity": {
+        "score": "pass",
+        "issues": []
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Aclarar en las notas de alcance si se espera o no el tratamiento de valores atípicos (por ejemplo, puntos individuales fuera de los bigotes), aunque el estándar no lo exija.",
+        "Agregar un ejemplo donde se parta de datos crudos y otro donde se parta de los cinco números resumen, para enfatizar ambas entradas posibles."
+      ]
+    },
+    {
+      "atom_id": "A-M1-PROB-03-09",
+      "overall_score": "good",
+      "fidelity": {
+        "score": "warning",
+        "issues": [
+          "El campo 'en_alcance_m1' está en false, pero la comparación de distribuciones mediante diagramas de cajón está explícita en los 'subcontenidos_clave' del estándar."
+        ]
+      },
+      "granularity": {
+        "score": "pass",
+        "issues": [],
+        "checks": {
+          "single_cognitive_intention": true,
+          "reasonable_working_memory": true,
+          "prerequisite_independence": true,
+          "assessment_independence": true,
+          "generalization_boundary": true,
+          "integrator_validity": true
+        }
+      },
+      "completeness": {
+        "score": "pass",
+        "issues": []
+      },
+      "content_quality": {
+        "score": "pass",
+        "issues": []
+      },
+      "prerequisites": {
+        "score": "pass",
+        "issues": []
+      },
+      "recommendations": [
+        "Actualizar 'en_alcance_m1' a true para alinear con el estándar que incluye explícitamente la comparación de distribuciones con diagramas de cajón.",
+        "Incluir al menos un ejemplo que considere tres grupos en lugar de solo dos, para reforzar la habilidad de comparar múltiples distribuciones."
+      ]
+    }
+  ],
+  "coverage_analysis": {
+    "standards_covered": [
+      "M1-PROB-03"
+    ],
+    "coverage_completeness": "complete",
+    "missing_areas": [],
+    "duplication_issues": [],
+    "conceptual_coverage": "present",
+    "procedural_coverage": "present",
+    "standard_items_coverage": {
+      "includes_covered": {
+        "Cálculo e interpretación de cuartiles para uno o más grupos de datos.": "covered",
+        "Cálculo e interpretación de percentiles para uno o más grupos de datos.": "covered",
+        "Construcción e interpretación del diagrama de cajón (box plot) para representar la distribución de datos.": "covered",
+        "Resolución de problemas que involucren medidas de posición en contextos variados.": "partially_covered"
+      },
+      "subcontenidos_covered": {
+        "Definición y significado de cuartiles (Q1, Q2, Q3).": "covered",
+        "Definición y significado de percentiles (P_k).": "covered",
+        "Cálculo de cuartiles y percentiles en datos no agrupados.": "covered",
+        "Interpretación de cuartiles y percentiles en un contexto dado.": "covered",
+        "Elementos del diagrama de cajón (mínimo, máximo, cuartiles, mediana).": "covered",
+        "Construcción de diagramas de cajón.": "covered",
+        "Comparación de distribuciones de datos usando diagramas de cajón.": "covered"
+      },
+      "habilidades_covered": {
+        "resolver_problemas": "covered",
+        "modelar": "covered",
+        "representar": "covered",
+        "argumentar": "covered"
+      }
+    }
+  },
+  "global_recommendations": [
+    "Corregir el campo 'en_alcance_m1' a true en todos los átomos vinculados a percentiles (A-M1-PROB-03-02, A-M1-PROB-03-04, A-M1-PROB-03-06) y a comparación de diagramas de cajón (A-M1-PROB-03-09), ya que estos contenidos están explícitamente incluidos en el estándar M1-PROB-03.",
+    "Especificar de manera unívoca las convenciones de cálculo para cuartiles y percentiles (fórmula de posición y tratamiento de posiciones no enteras) en los átomos procedimentales A-M1-PROB-03-03 y A-M1-PROB-03-04 para mejorar la coherencia y la evaluabilidad.",
+    "Considerar la creación de un átomo adicional específicamente orientado a 'resolución de problemas integradores' que combine cálculo e interpretación de cuartiles, percentiles y diagramas de cajón en contextos variados (por ejemplo, comparar rendimientos académicos y salarios), para cubrir de forma más directa el ítem de problemas en diversos contextos.",
+    "Mantener explícito en los átomos de diagramas de cajón (A-M1-PROB-03-07, A-M1-PROB-03-08, A-M1-PROB-03-09) que no se abordarán formalmente asimetría ni curtosis, alineándose con el apartado 'no_incluye' y evitando solapamientos con estándares futuros.",
+    "Revisar las descripciones y ejemplos para asegurar que haya variedad de contextos (educativos, económicos, biomédicos, etc.) en los átomos de interpretación (A-M1-PROB-03-05 y A-M1-PROB-03-06), reforzando la transferencia a 'contextos variados' indicada en el estándar."
+  ]
+}
