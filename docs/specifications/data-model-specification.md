@@ -124,7 +124,7 @@ CREATE TABLE questions (
     question_set_id VARCHAR(100) REFERENCES question_sets(id),
     qti_xml TEXT NOT NULL,
     title VARCHAR(255),
-    correct_answer VARCHAR(50) NOT NULL,
+    correct_answer VARCHAR(50),
     difficulty_level difficulty_level NOT NULL,
     difficulty_score DECIMAL(3,2),
     difficulty_analysis TEXT,

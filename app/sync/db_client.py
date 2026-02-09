@@ -76,6 +76,34 @@ class DBClient:
                 yield cur
 
     # -------------------------------------------------------------------------
+    # Schema management
+    # -------------------------------------------------------------------------
+
+    def ensure_schema(self, conn: psycopg.Connection) -> None:
+        """Ensure all required columns exist on synced tables.
+
+        Uses ADD COLUMN IF NOT EXISTS so this is safe to call repeatedly.
+        Runs outside the main transaction so schema changes are committed
+        before the data upsert transaction begins.
+        """
+        with conn.cursor() as cur:
+            # Columns added after the initial questions table was created.
+            # All nullable since they are populated by enrichment pipeline.
+            for col, col_type in (
+                ("title", "VARCHAR(255)"),
+                ("correct_answer", "VARCHAR(50)"),
+                ("difficulty_analysis", "TEXT"),
+                ("general_analysis", "TEXT"),
+                ("feedback_general", "TEXT"),
+                ("feedback_per_option", "JSONB"),
+            ):
+                cur.execute(
+                    "ALTER TABLE questions "
+                    f"ADD COLUMN IF NOT EXISTS {col} {col_type}"
+                )
+            conn.commit()
+
+    # -------------------------------------------------------------------------
     # Helper methods
     # -------------------------------------------------------------------------
 
@@ -378,6 +406,9 @@ class DBClient:
         results: dict[str, int] = {}
 
         with self.connection() as conn:
+            # Ensure schema is up-to-date before syncing data
+            self.ensure_schema(conn)
+
             try:
                 with self.transaction(conn) as cur:
                     # Upsert in dependency order (subjects are master data, not synced)
