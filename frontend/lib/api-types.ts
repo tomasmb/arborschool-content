@@ -15,6 +15,10 @@ export interface SubjectStats {
   questions_count: number;
   variants_count: number;
   tagging_completion: number;
+  /** Percentage of questions enriched (0-100) */
+  enrichment_completion: number;
+  /** Percentage of questions validated (0-100) */
+  validation_completion: number;
 }
 
 export interface SubjectBrief {
@@ -59,6 +63,10 @@ export interface TestBrief {
   enriched_count: number;
   validated_count: number;
   variants_count: number;
+  /** Number of variants that have been enriched */
+  enriched_variants_count: number;
+  /** Number of variants that passed validation */
+  validated_variants_count: number;
 }
 
 export interface SubjectDetail {

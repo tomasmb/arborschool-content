@@ -60,11 +60,28 @@ export interface ComputedProgress {
 }
 
 // -----------------------------------------------------------------------------
+// Helpers
+// -----------------------------------------------------------------------------
+
+/**
+ * Build a human-readable "next action" message for enrichment/validation,
+ * covering official questions and/or variants as applicable.
+ */
+function formatItemsMessage(
+  verb: string, questionsLeft: number, variantsLeft: number
+): string {
+  const parts: string[] = [];
+  if (questionsLeft > 0) parts.push(`${questionsLeft} questions`);
+  if (variantsLeft > 0) parts.push(`${variantsLeft} variants`);
+  return `${verb} ${parts.join(" + ")}`;
+}
+
+// -----------------------------------------------------------------------------
 // Progress Computation
 // -----------------------------------------------------------------------------
 
 export function computeProgress(data: SubjectDetail): ComputedProgress {
-  // Aggregate counts across all tests
+  // Aggregate counts across all tests (official questions + variants)
   let totalSplit = 0;
   let totalQti = 0;
   let totalFinalized = 0;
@@ -72,6 +89,8 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
   let totalEnriched = 0;
   let totalValidated = 0;
   let totalVariants = 0;
+  let totalVariantsEnriched = 0;
+  let totalVariantsValidated = 0;
 
   for (const test of data.tests) {
     totalSplit += test.split_count;
@@ -81,11 +100,18 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
     totalEnriched += test.enriched_count;
     totalValidated += test.validated_count;
     totalVariants += test.variants_count;
+    totalVariantsEnriched += test.enriched_variants_count ?? 0;
+    totalVariantsValidated += test.validated_variants_count ?? 0;
   }
 
   const totalTests = data.tests.length;
   const testsWithPdf = data.tests.filter((t) => t.raw_pdf_exists).length;
   const totalQuestions = totalFinalized;
+
+  // Combined totals: official questions + variants
+  const allItems = totalQuestions + totalVariants;
+  const allEnriched = totalEnriched + totalVariantsEnriched;
+  const allValidated = totalValidated + totalVariantsValidated;
 
   // Standards by eje
   const standardsByEje: Record<string, number> = {};
@@ -97,7 +123,7 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
   const hasStandards = data.standards.length > 0;
   const hasAtoms = data.atoms_count > 0;
 
-  // Questions pipeline stages
+  // Questions pipeline stages (official questions only for pipeline stages)
   const questionsPipeline: PipelineStage[] = [
     { label: "PDF Tests", done: testsWithPdf, total: totalTests },
     { label: "Split", done: totalSplit, total: totalQuestions || totalSplit },
@@ -156,6 +182,10 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
     return test?.id ?? null;
   };
 
+  // Unenriched/unvalidated counts (official questions + variants)
+  const unenrichedItems = allItems - allEnriched;
+  const unvalidatedItems = allItems - allValidated;
+
   if (!data.temario_exists) {
     nextAction = "Upload temario PDF";
     nextActionType = "upload_temario";
@@ -171,7 +201,9 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
   } else if (totalSplit === 0) {
     nextAction = "Run PDF splitting";
     nextActionType = "run_split";
-    nextActionTestId = findTestNeedingWork((t) => t.raw_pdf_exists && t.split_count === 0);
+    nextActionTestId = findTestNeedingWork(
+      (t) => t.raw_pdf_exists && t.split_count === 0
+    );
   } else if (totalQti < totalSplit) {
     nextAction = `Parse ${totalSplit - totalQti} questions to QTI`;
     nextActionType = "run_qti_parse";
@@ -179,31 +211,45 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
   } else if (totalTagged < totalFinalized) {
     nextAction = `Tag ${totalFinalized - totalTagged} questions`;
     nextActionType = "run_tagging";
-    nextActionTestId = findTestNeedingWork((t) => t.tagged_count < t.finalized_count);
-  } else if (totalEnriched < totalFinalized) {
-    nextAction = `Enrich ${totalFinalized - totalEnriched} questions`;
+    nextActionTestId = findTestNeedingWork(
+      (t) => t.tagged_count < t.finalized_count
+    );
+  } else if (unenrichedItems > 0) {
+    nextAction = formatItemsMessage(
+      "Enrich", totalFinalized - totalEnriched,
+      totalVariants - totalVariantsEnriched
+    );
     nextActionType = "run_enrichment";
-    nextActionTestId = findTestNeedingWork((t) => t.enriched_count < t.finalized_count);
-  } else if (totalValidated < totalFinalized) {
-    nextAction = `Validate ${totalFinalized - totalValidated} questions`;
+    nextActionTestId = findTestNeedingWork(
+      (t) => t.enriched_count < t.finalized_count
+        || (t.enriched_variants_count ?? 0) < t.variants_count
+    );
+  } else if (unvalidatedItems > 0) {
+    nextAction = formatItemsMessage(
+      "Validate", totalFinalized - totalValidated,
+      totalVariants - totalVariantsValidated
+    );
     nextActionType = "run_validation";
-    nextActionTestId = findTestNeedingWork((t) => t.validated_count < t.finalized_count);
+    nextActionTestId = findTestNeedingWork(
+      (t) => t.validated_count < t.finalized_count
+        || (t.validated_variants_count ?? 0) < t.variants_count
+    );
   }
 
-  // Action items
+  // Action items (include variants)
   const actionItems: ActionItem[] = [];
-  if (totalFinalized - totalEnriched > 0) {
+  if (unenrichedItems > 0) {
     actionItems.push({
       type: "warning",
-      message: "questions need enrichment",
-      count: totalFinalized - totalEnriched,
+      message: "items need enrichment",
+      count: unenrichedItems,
     });
   }
-  if (totalFinalized - totalValidated > 0) {
+  if (unvalidatedItems > 0) {
     actionItems.push({
       type: "warning",
-      message: "questions need validation",
-      count: totalFinalized - totalValidated,
+      message: "items need validation",
+      count: unvalidatedItems,
     });
   }
   if (totalVariants === 0 && totalValidated > 0) {
@@ -213,6 +259,11 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
       count: totalValidated,
     });
   }
+
+  // Count questions that have at least one variant
+  const questionsWithVariants = data.tests.reduce(
+    (sum, t) => sum + (t.variants_count > 0 ? 1 : 0), 0
+  );
 
   return {
     overallPercent,
@@ -234,12 +285,12 @@ export function computeProgress(data: SubjectDetail): ComputedProgress {
     },
     questionsPipeline,
     variants: {
-      questionsWithVariants: 0,
+      questionsWithVariants,
       questionsWithValidatedVariants: 0,
       totalQuestions: totalFinalized,
       totalVariants,
-      variantsEnriched: 0,
-      variantsValidated: 0,
+      variantsEnriched: totalVariantsEnriched,
+      variantsValidated: totalVariantsValidated,
     },
     actionItems,
   };

@@ -14,8 +14,6 @@ interface SubjectCardProps {
  * Compute overall progress for a subject based on pipeline stages.
  * Knowledge pipeline: temario (5%) + standards (10%) + atoms (10%) = 25%
  * Questions pipeline: tagging (25%) + enrichment (25%) + validation (25%) = 75%
- *
- * Note: This is a simplified view. The course detail page shows more granular progress.
  */
 function computeSubjectProgress(stats: SubjectBrief["stats"]): {
   percent: number;
@@ -30,10 +28,9 @@ function computeSubjectProgress(stats: SubjectBrief["stats"]): {
   if (stats.atoms_count > 0) progress += 10;
 
   // Questions pipeline (75% total) - tagging, enrichment, validation each 25%
-  // Note: tagging_completion is a percentage (0-100), not a decimal (0-1)
-  // For now, we only have tagging completion from the overview API
-  // TODO: Add enrichment_completion and validation_completion to overview API
   progress += Math.round((stats.tagging_completion / 100) * 25);
+  progress += Math.round((stats.enrichment_completion / 100) * 25);
+  progress += Math.round((stats.validation_completion / 100) * 25);
 
   // Determine next action
   let nextAction: string | null = null;
@@ -47,9 +44,12 @@ function computeSubjectProgress(stats: SubjectBrief["stats"]): {
     nextAction = "Upload test PDFs";
   } else if (stats.tagging_completion < 100) {
     nextAction = "Tag questions";
+  } else if (stats.enrichment_completion < 100) {
+    nextAction = "Enrich questions";
+  } else if (stats.validation_completion < 100) {
+    nextAction = "Validate questions";
   } else {
-    // Tagging complete, need enrichment/validation
-    nextAction = "Enrich & validate questions";
+    nextAction = null;
   }
 
   // Needs attention if there's incomplete work

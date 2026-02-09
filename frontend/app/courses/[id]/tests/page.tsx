@@ -68,69 +68,119 @@ export default function TestsPage() {
               <th className="px-4 py-3 font-medium text-center">Split</th>
               <th className="px-4 py-3 font-medium text-center">QTI</th>
               <th className="px-4 py-3 font-medium text-center">Tagged</th>
+              <th className="px-4 py-3 font-medium text-center">Enriched</th>
+              <th className="px-4 py-3 font-medium text-center">Validated</th>
               <th className="px-4 py-3 font-medium text-center">Variants</th>
               <th className="px-4 py-3 font-medium"></th>
             </tr>
           </thead>
           <tbody>
-            {tests.map((test) => (
-              <tr
-                key={test.id}
-                className="border-b border-border last:border-b-0 hover:bg-white/5 transition-colors"
-              >
-                <td className="px-4 py-3">
-                  <div className="font-medium">{test.name}</div>
-                  {test.application_type && (
-                    <div className="text-xs text-text-secondary capitalize">
-                      {test.application_type} {test.admission_year}
-                    </div>
-                  )}
-                </td>
-                <td className="px-4 py-3 text-center">
-                  {test.raw_pdf_exists ? (
-                    <a
-                      href={getTestRawPdfUrl(courseId, test.id)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center hover:opacity-80"
-                      title="View raw PDF"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-success" />
-                    </a>
-                  ) : (
-                    <Circle className="w-4 h-4 text-text-secondary mx-auto" />
-                  )}
-                </td>
-                <td className="px-4 py-3 text-center text-sm">
-                  {test.split_count}
-                </td>
-                <td className="px-4 py-3 text-center text-sm">
-                  {test.qti_count}
-                </td>
-                <td className="px-4 py-3 text-center text-sm">
-                  <span
-                    className={cn(
-                      test.tagged_count === test.finalized_count && test.tagged_count > 0
-                        ? "text-success"
-                        : "text-text-secondary"
+            {tests.map((test) => {
+              const hasVariants = test.variants_count > 0;
+              const varEnriched = test.enriched_variants_count ?? 0;
+              const varValidated = test.validated_variants_count ?? 0;
+
+              return (
+                <tr
+                  key={test.id}
+                  className="border-b border-border last:border-b-0 hover:bg-white/5 transition-colors"
+                >
+                  <td className="px-4 py-3">
+                    <div className="font-medium">{test.name}</div>
+                    {test.application_type && (
+                      <div className="text-xs text-text-secondary capitalize">
+                        {test.application_type} {test.admission_year}
+                      </div>
                     )}
-                  >
-                    {test.tagged_count}/{test.finalized_count}
-                  </span>
-                </td>
-                <td className="px-4 py-3 text-center text-sm">
-                  {test.variants_count}
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <Link
-                    href={`/courses/${courseId}/tests/${test.id}`}
-                    className="text-accent hover:text-accent/80"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {test.raw_pdf_exists ? (
+                      <a
+                        href={getTestRawPdfUrl(courseId, test.id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center hover:opacity-80"
+                        title="View raw PDF"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-success" />
+                      </a>
+                    ) : (
+                      <Circle className="w-4 h-4 text-text-secondary mx-auto" />
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    {test.split_count}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    {test.qti_count}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    <span
+                      className={cn(
+                        test.tagged_count === test.finalized_count && test.tagged_count > 0
+                          ? "text-success"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {test.tagged_count}/{test.finalized_count}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    <span
+                      className={cn(
+                        "font-mono",
+                        test.enriched_count === test.finalized_count && test.finalized_count > 0
+                          ? "text-success"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {test.enriched_count}/{test.finalized_count}
+                    </span>
+                    {hasVariants && (
+                      <div className={cn(
+                        "text-xs font-mono",
+                        varEnriched === test.variants_count
+                          ? "text-success/70" : "text-text-secondary/60"
+                      )}>
+                        +{varEnriched}/{test.variants_count} var
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    <span
+                      className={cn(
+                        "font-mono",
+                        test.validated_count === test.finalized_count && test.finalized_count > 0
+                          ? "text-success"
+                          : "text-text-secondary"
+                      )}
+                    >
+                      {test.validated_count}/{test.finalized_count}
+                    </span>
+                    {hasVariants && (
+                      <div className={cn(
+                        "text-xs font-mono",
+                        varValidated === test.variants_count
+                          ? "text-success/70" : "text-text-secondary/60"
+                      )}>
+                        +{varValidated}/{test.variants_count} var
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-4 py-3 text-center text-sm">
+                    {test.variants_count}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href={`/courses/${courseId}/tests/${test.id}`}
+                      className="text-accent hover:text-accent/80"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
