@@ -96,10 +96,20 @@ def _compute_content_hash(data: dict[str, Any]) -> str:
 
 # Columns used for content-hash comparison per table.
 # Only include columns that represent "content" (not IDs or timestamps).
-_ATOM_HASH_COLS = (
+#
+# For atoms the DB uses English names but the extracted dataclass uses
+# Spanish names.  Both tuples are positionally aligned so the same
+# canonical key set is used on each side of the hash comparison.
+_ATOM_DB_COLS = (
     "axis", "standard_ids", "atom_type", "primary_skill",
     "secondary_skills", "title", "description", "mastery_criteria",
     "conceptual_examples", "scope_notes", "prerequisite_ids",
+)
+_ATOM_LOCAL_FIELDS = (
+    "eje", "standard_ids", "tipo_atomico", "habilidad_principal",
+    "habilidades_secundarias", "titulo", "descripcion",
+    "criterios_atomicos", "ejemplos_conceptuales", "notas_alcance",
+    "prerrequisitos",
 )
 
 _QA_HASH_COLS = ("relevance", "reasoning")
@@ -127,7 +137,7 @@ def _fetch_db_ids(
     """
     with conn.cursor(row_factory=dict_row) as cur:
         if table == "atoms" and with_content_hash:
-            cols = ", ".join(_ATOM_HASH_COLS)
+            cols = ", ".join(_ATOM_DB_COLS)
             if subject_id:
                 cur.execute(
                     f"SELECT id, {cols} FROM atoms WHERE subject_id = %s",  # noqa: S608
@@ -135,10 +145,13 @@ def _fetch_db_ids(
                 )
             else:
                 cur.execute(f"SELECT id, {cols} FROM atoms")  # noqa: S608
+            # Hash using canonical keys (positional index) so hashes
+            # match the local side regardless of field naming.
             return {
-                row["id"]: _compute_content_hash(
-                    {c: row[c] for c in _ATOM_HASH_COLS}
-                )
+                row["id"]: _compute_content_hash({
+                    str(i): row[c]
+                    for i, c in enumerate(_ATOM_DB_COLS)
+                })
                 for row in cur.fetchall()
             }
 
@@ -148,10 +161,12 @@ def _fetch_db_ids(
                 "SELECT question_id || ':' || atom_id AS id, "
                 f"{cols} FROM question_atoms"
             )
+            # Use positional keys to match local-side hashing
             return {
-                row["id"]: _compute_content_hash(
-                    {c: row[c] for c in _QA_HASH_COLS}
-                )
+                row["id"]: _compute_content_hash({
+                    str(i): row[c]
+                    for i, c in enumerate(_QA_HASH_COLS)
+                })
                 for row in cur.fetchall()
             }
 
@@ -194,6 +209,7 @@ def compute_entity_diff(
     id_field: str = "id",
     compute_deletions: bool = True,
     hash_fields: tuple[str, ...] | None = None,
+    local_fields: tuple[str, ...] | None = None,
 ) -> EntityDiff:
     """Compute diff between local items and database IDs.
 
@@ -202,9 +218,13 @@ def compute_entity_diff(
         db_ids: Dict of database IDs to content hashes
         id_field: Field name to use as ID
         compute_deletions: If False, skip deleted items.
-        hash_fields: When provided (and db_ids has hashes), compute a
-            content hash from these fields on each local item and compare
-            to the DB hash to detect true modifications.
+        hash_fields: Canonical keys used as hash dict keys.  When
+            provided (and db_ids has hashes), enables content
+            comparison to detect true modifications.
+        local_fields: Attribute/key names on local_items that
+            correspond positionally to *hash_fields*.  When the
+            local schema uses different names (e.g. Spanish) than
+            the DB schema.  Defaults to *hash_fields* if omitted.
 
     Returns:
         EntityDiff with new, modified, deleted items
@@ -214,6 +234,7 @@ def compute_entity_diff(
         db_count=len(db_ids),
     )
     use_hashes = hash_fields and any(db_ids.values())
+    attr_names = local_fields or hash_fields
 
     local_ids: set[str] = set()
     for item in local_items:
@@ -229,8 +250,9 @@ def compute_entity_diff(
         if item_id not in db_ids:
             diff.new_ids.append(item_id)
         elif use_hashes:
-            # Compare content hashes to detect real modifications
-            local_data = _extract_hash_data(item, hash_fields)
+            local_data = _extract_hash_data(
+                item, hash_fields, attr_names,
+            )
             local_hash = _compute_content_hash(local_data)
             if local_hash != db_ids[item_id]:
                 diff.modified_ids.append(item_id)
@@ -239,7 +261,6 @@ def compute_entity_diff(
         else:
             diff.unchanged_count += 1
 
-    # Find deleted items (in DB but not in local) - only if requested
     if compute_deletions:
         diff.deleted_ids = [
             id_ for id_ in db_ids if id_ not in local_ids
@@ -250,23 +271,36 @@ def compute_entity_diff(
 
 def _extract_hash_data(
     item: Any,
-    fields: tuple[str, ...],
+    hash_keys: tuple[str, ...],
+    local_fields: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
-    """Extract fields from an item for hashing."""
+    """Extract fields from an item for hashing.
+
+    Uses positional indices as dict keys so the hash matches the
+    DB-side computation regardless of field/column naming.
+
+    Args:
+        item: Dataclass or dict to extract from
+        hash_keys: Reference field names (used for positional count)
+        local_fields: Actual attribute/key names on *item*.
+            Positionally aligned with *hash_keys*.  Defaults to
+            *hash_keys* when local names match DB names.
+    """
+    fields = local_fields or hash_keys
     data: dict[str, Any] = {}
-    for f in fields:
-        if hasattr(item, f):
-            val = getattr(item, f)
-            # Normalize enums and lists of enums for consistent hashing
+    for i, attr in enumerate(fields):
+        key = str(i)
+        if hasattr(item, attr):
+            val = getattr(item, attr)
             if hasattr(val, "value"):
                 val = val.value
             elif isinstance(val, list):
                 val = [
                     v.value if hasattr(v, "value") else v for v in val
                 ]
-            data[f] = val
+            data[key] = val
         elif isinstance(item, dict):
-            data[f] = item.get(f)
+            data[key] = item.get(attr)
     return data
 
 
@@ -333,7 +367,8 @@ def compute_sync_diff(
                 result.entities["atoms"] = compute_entity_diff(
                     extracted_data["atoms"],
                     db_ids,
-                    hash_fields=_ATOM_HASH_COLS,
+                    hash_fields=_ATOM_DB_COLS,
+                    local_fields=_ATOM_LOCAL_FIELDS,
                 )
 
             # Tests
