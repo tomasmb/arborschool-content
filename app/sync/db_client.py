@@ -394,13 +394,17 @@ class DBClient:
     def delete_atoms(
         self, cur: psycopg.Cursor, atom_ids: list[str],
     ) -> int:
-        """Delete atoms by ID, cascading to question_atoms first."""
+        """Delete atoms by ID, cascading to all referencing tables first."""
         if not atom_ids:
             return 0
-        cur.execute(
-            "DELETE FROM question_atoms WHERE atom_id = ANY(%s)",
-            (atom_ids,),
-        )
+        # Delete from all tables that reference atoms via FK
+        for fk_table in (
+            "question_atoms", "atom_mastery", "lessons", "question_sets",
+        ):
+            cur.execute(
+                f"DELETE FROM {fk_table} WHERE atom_id = ANY(%s)",  # noqa: S608
+                (atom_ids,),
+            )
         cur.execute("DELETE FROM atoms WHERE id = ANY(%s)", (atom_ids,))
         return cur.rowcount
 
