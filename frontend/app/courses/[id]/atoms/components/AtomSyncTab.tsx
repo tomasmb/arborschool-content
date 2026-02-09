@@ -26,6 +26,11 @@ import {
 
 export type SyncEnvironment = "local" | "staging" | "prod";
 
+// Sync atoms + questions together so that question-atom links
+// (stored in the question_atoms table) stay in sync with atom
+// changes (e.g. after fix-pipeline renames/removals).
+const SYNC_ENTITIES = ["atoms", "questions"];
+
 export const envLabel = (env: SyncEnvironment): string =>
   env === "prod"
     ? "Production"
@@ -69,7 +74,7 @@ function useAtomSyncData(
     try {
       setSyncPreview(
         await getCourseSyncPreview(subjectId, {
-          entities: ["atoms"],
+          entities: SYNC_ENTITIES,
           environment: selectedEnv,
         }),
       );
@@ -95,13 +100,17 @@ function useAtomSyncData(
   const atomsTable =
     syncPreview?.tables.find((t) => t.table === "atoms") ??
     null;
+  const questionAtomsTable =
+    syncPreview?.tables.find(
+      (t) => t.table === "question_atoms",
+    ) ?? null;
   const atomsDiff: CourseSyncEntityDiff | null =
     syncDiff?.entities?.atoms ?? null;
 
   return {
     syncDiff, diffLoading, fetchDiff,
     syncPreview, previewLoading, previewError, fetchPreview,
-    atomsTable, atomsDiff,
+    atomsTable, questionAtomsTable, atomsDiff,
   };
 }
 
@@ -128,7 +137,7 @@ function useAtomSyncExec(
         const result = await executeCourseSyncAPI(
           subjectId,
           {
-            entities: ["atoms"],
+            entities: SYNC_ENTITIES,
             environment: selectedEnv,
             confirm: true,
           },
@@ -231,6 +240,7 @@ export function AtomSyncTab({
       {!isBlocked && (
         <SyncActionBar
           atomsTable={data.atomsTable}
+          questionAtomsTable={data.questionAtomsTable}
           atomsDiff={data.atomsDiff}
           selectedEnv={selectedEnv}
           syncing={exec.syncing}
@@ -293,6 +303,7 @@ function EnvironmentSelector({
 
 function SyncActionBar({
   atomsTable,
+  questionAtomsTable,
   atomsDiff,
   selectedEnv,
   syncing,
@@ -300,12 +311,14 @@ function SyncActionBar({
   onSync,
 }: {
   atomsTable: { total: number } | null;
+  questionAtomsTable: { total: number } | null;
   atomsDiff: { new_count: number; modified_count: number } | null;
   selectedEnv: SyncEnvironment;
   syncing: boolean;
   previewLoading: boolean;
   onSync: () => void;
 }) {
+  const qaCount = questionAtomsTable?.total ?? 0;
   return (
     <div
       className={cn(
@@ -319,6 +332,7 @@ function SyncActionBar({
         <div>
           <p className="font-medium">
             Ready to sync {atomsTable?.total ?? 0} atoms
+            {qaCount > 0 && ` + ${qaCount} question links`}
           </p>
           <p className="text-sm text-text-secondary">
             {atomsDiff
