@@ -180,6 +180,7 @@ export interface AtomFixStatusResponse {
   progress: AtomFixProgress;
   results: AtomFixActionResult[];
   change_report: AtomFixChangeReport | null;
+  has_saved_results: boolean;
   started_at: string;
   completed_at: string | null;
 }

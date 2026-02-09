@@ -24,13 +24,11 @@ export type {
 } from "./api-types";
 
 import type {
-  AtomBrief, AtomFixJobResponse, AtomFixStatusResponse,
-  AtomPipelineSummary, AtomValidationJobResponse,
-  AtomValidationStatusResponse, CostEstimate, CourseSyncDiff,
-  CourseSyncPreview, CourseSyncResult, CoverageAnalysisResult,
+  AtomBrief, CostEstimate, CourseSyncDiff,
+  CourseSyncPreview, CourseSyncResult,
   EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
-  OverviewResponse, QuestionDetail, SavedValidationSummary,
-  StandardBrief, StructuralChecksResult, SubjectDetail, TestBrief,
+  OverviewResponse, QuestionDetail,
+  StandardBrief, SubjectDetail, TestBrief,
   TestDetail, TestSyncDiff, TestSyncPreview, TestSyncResult,
   TestsSyncStatusResponse, ValidationJobResponse,
 } from "./api-types";
@@ -42,15 +40,16 @@ const API_BASE = "/api";
 const BACKEND_DIRECT =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000/api";
 
-interface FetchAPIConfig {
+export interface FetchAPIConfig {
   /** When true, call the backend directly instead of via the Next.js proxy. */
   direct?: boolean;
 }
 
 /**
  * Generic fetch wrapper with error handling.
+ * Exported for use by split API modules (e.g. api-atoms-pipeline.ts).
  */
-async function fetchAPI<T>(
+export async function fetchAPI<T>(
   endpoint: string,
   options?: RequestInit,
   config?: FetchAPIConfig,
@@ -381,89 +380,21 @@ export async function getTestsSyncStatus(
   );
 }
 
-// --- Atom Pipeline API ---
+// --- Atom Pipeline API (split to api-atoms-pipeline.ts) ---
 
-export async function getAtomPipelineSummary(
-  subjectId: string,
-): Promise<AtomPipelineSummary> {
-  return fetchAPI<AtomPipelineSummary>(
-    `/subjects/${subjectId}/atoms/pipeline-summary`,
-  );
-}
-
-export async function getAtomStructuralChecks(
-  subjectId: string,
-): Promise<StructuralChecksResult> {
-  return fetchAPI<StructuralChecksResult>(
-    `/subjects/${subjectId}/atoms/structural-checks`,
-  );
-}
-
-export async function getSavedStructuralChecks(
-  subjectId: string,
-): Promise<StructuralChecksResult | null> {
-  return fetchAPI<StructuralChecksResult | null>(
-    `/subjects/${subjectId}/atoms/structural-checks/saved`,
-  );
-}
-
-export async function startAtomValidation(
-  subjectId: string,
-  params: { selection_mode: string; standard_ids?: string[] },
-): Promise<AtomValidationJobResponse> {
-  return fetchAPI<AtomValidationJobResponse>(
-    `/subjects/${subjectId}/atoms/validate`,
-    { method: "POST", body: JSON.stringify(params) },
-  );
-}
-
-export async function getAtomValidationStatus(
-  subjectId: string,
-  jobId: string,
-): Promise<AtomValidationStatusResponse> {
-  return fetchAPI<AtomValidationStatusResponse>(
-    `/subjects/${subjectId}/atoms/validate/status/${jobId}`,
-  );
-}
-
-export async function getAtomValidationResults(
-  subjectId: string,
-): Promise<SavedValidationSummary[]> {
-  return fetchAPI<SavedValidationSummary[]>(
-    `/subjects/${subjectId}/atoms/validation-results`,
-  );
-}
-
-export async function startAtomFix(
-  subjectId: string,
-  params: {
-    dry_run: boolean;
-    fix_types?: string[];
-    standard_ids?: string[];
-  },
-): Promise<AtomFixJobResponse> {
-  return fetchAPI<AtomFixJobResponse>(
-    `/subjects/${subjectId}/atoms/fix`,
-    { method: "POST", body: JSON.stringify(params) },
-  );
-}
-
-export async function getAtomFixStatus(
-  subjectId: string,
-  jobId: string,
-): Promise<AtomFixStatusResponse> {
-  return fetchAPI<AtomFixStatusResponse>(
-    `/subjects/${subjectId}/atoms/fix/status/${jobId}`,
-  );
-}
-
-export async function getAtomCoverage(
-  subjectId: string,
-): Promise<CoverageAnalysisResult> {
-  return fetchAPI<CoverageAnalysisResult>(
-    `/subjects/${subjectId}/atoms/coverage`,
-  );
-}
+export {
+  applyAtomFixSaved,
+  getAtomCoverage,
+  getAtomFixStatus,
+  getAtomPipelineSummary,
+  getAtomStructuralChecks,
+  getAtomValidationResults,
+  getAtomValidationStatus,
+  getSavedStructuralChecks,
+  retryAtomFixFailed,
+  startAtomFix,
+  startAtomValidation,
+} from "./api-atoms-pipeline";
 
 // --- Course Sync API (used by atom sync tab) ---
 

@@ -6,9 +6,9 @@ results returned after applying LLM-powered fixes.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import asdict, dataclass, field
 from enum import Enum
-
+from typing import Any
 
 # -----------------------------------------------------------------------------
 # Fix type taxonomy
@@ -72,6 +72,24 @@ class FixAction:
         """GPT-5.1 reasoning effort for this fix type."""
         return REASONING_EFFORT[self.fix_type]
 
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to a JSON-safe dict."""
+        d = asdict(self)
+        d["fix_type"] = self.fix_type.value
+        return d
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> FixAction:
+        """Deserialize from a dict."""
+        return cls(
+            fix_type=FixType(d["fix_type"]),
+            standard_id=d["standard_id"],
+            atom_ids=d["atom_ids"],
+            issues=d["issues"],
+            recommendations=d["recommendations"],
+            missing_areas=d.get("missing_areas", []),
+        )
+
 
 @dataclass
 class FixResult:
@@ -94,3 +112,32 @@ class FixResult:
         default_factory=dict,
     )
     error: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to a JSON-safe dict."""
+        return {
+            "action": self.action.to_dict(),
+            "success": self.success,
+            "new_atoms": self.new_atoms,
+            "removed_atom_ids": self.removed_atom_ids,
+            "id_mapping": self.id_mapping,
+            "prerequisite_updates": self.prerequisite_updates,
+            "question_mapping_suggestions": self.question_mapping_suggestions,
+            "error": self.error,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> FixResult:
+        """Deserialize from a dict."""
+        return cls(
+            action=FixAction.from_dict(d["action"]),
+            success=d["success"],
+            new_atoms=d.get("new_atoms", []),
+            removed_atom_ids=d.get("removed_atom_ids", []),
+            id_mapping=d.get("id_mapping", {}),
+            prerequisite_updates=d.get("prerequisite_updates", {}),
+            question_mapping_suggestions=d.get(
+                "question_mapping_suggestions", {},
+            ),
+            error=d.get("error"),
+        )

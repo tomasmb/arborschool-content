@@ -7,7 +7,6 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field
 
-
 # -----------------------------------------------------------------------------
 # Request
 # -----------------------------------------------------------------------------
@@ -88,10 +87,16 @@ class AtomFixStatusResponse(BaseModel):
     """Full status response for an atom fix job."""
 
     job_id: str
-    status: str = Field(description="started | in_progress | completed | failed")
+    status: str = Field(
+        description="started | in_progress | completed | failed",
+    )
     dry_run: bool
     progress: AtomFixProgress
     results: list[AtomFixActionResult] = Field(default_factory=list)
     change_report: AtomFixChangeReport | None = None
+    has_saved_results: bool = Field(
+        False,
+        description="Whether full results are saved to disk for apply/retry.",
+    )
     started_at: str
     completed_at: str | None = None

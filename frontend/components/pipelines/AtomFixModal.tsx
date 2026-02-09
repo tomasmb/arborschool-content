@@ -1,15 +1,20 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  X, CheckCircle2, AlertTriangle, XCircle, Wrench,
-} from "lucide-react";
+import { X, Wrench, RotateCcw, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   startAtomFix,
   getAtomFixStatus,
+  applyAtomFixSaved,
+  retryAtomFixFailed,
   type AtomFixStatusResponse,
 } from "@/lib/api";
+import {
+  ConfigureStep,
+  ProgressStep,
+  ResultsStep,
+} from "./AtomFixModalSteps";
 
 type ModalStep = "configure" | "progress" | "results";
 
@@ -37,7 +42,7 @@ export function AtomFixModal({
   const [estimatedCost, setEstimatedCost] = useState<number>(0);
   const intervalRef = useRef<ReturnType<typeof setInterval>>();
 
-  // Cleanup on close
+  // Cleanup on close.
   useEffect(() => {
     if (!open) {
       if (intervalRef.current) clearInterval(intervalRef.current);
@@ -53,7 +58,7 @@ export function AtomFixModal({
     }
   }, [open]);
 
-  // Poll for progress
+  // Poll for progress.
   const pollProgress = useCallback(
     async (jid: string) => {
       try {
@@ -66,7 +71,11 @@ export function AtomFixModal({
           if (intervalRef.current)
             clearInterval(intervalRef.current);
           setStep("results");
-          if (result.status === "completed") onSuccess?.();
+          if (
+            result.status === "completed" && !result.dry_run
+          ) {
+            onSuccess?.();
+          }
         }
       } catch {
         if (intervalRef.current)
@@ -78,22 +87,70 @@ export function AtomFixModal({
     [subjectId, onSuccess],
   );
 
+  // Start polling a new job.
+  const startPolling = useCallback(
+    (jid: string) => {
+      setJobId(jid);
+      setStep("progress");
+      setError(null);
+      intervalRef.current = setInterval(
+        () => pollProgress(jid), 2000,
+      );
+    },
+    [pollProgress],
+  );
+
+  // Start fresh fix run.
   const handleStart = async () => {
     setError(null);
+    setStatus(null);
     try {
       const resp = await startAtomFix(subjectId, {
         dry_run: dryRun,
       });
-      setJobId(resp.job_id);
       setEstimatedCost(resp.estimated_cost_usd);
-      setStep("progress");
-      intervalRef.current = setInterval(
-        () => pollProgress(resp.job_id),
-        2000,
-      );
+      startPolling(resp.job_id);
     } catch (err: unknown) {
       setError(
         err instanceof Error ? err.message : "Failed to start",
+      );
+    }
+  };
+
+  // Apply previously saved dry-run results (no LLM re-run).
+  const handleApplySaved = async () => {
+    setError(null);
+    setStatus(null);
+    try {
+      const resp = await applyAtomFixSaved(subjectId);
+      setDryRun(false);
+      setEstimatedCost(0);
+      startPolling(resp.job_id);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to apply saved results",
+      );
+    }
+  };
+
+  // Retry only failed actions.
+  const handleRetryFailed = async () => {
+    setError(null);
+    setStatus(null);
+    try {
+      const resp = await retryAtomFixFailed(subjectId, {
+        dry_run: true,
+      });
+      setDryRun(true);
+      setEstimatedCost(resp.estimated_cost_usd);
+      startPolling(resp.job_id);
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to retry",
       );
     }
   };
@@ -111,6 +168,14 @@ export function AtomFixModal({
       ? (progress.completed / progress.total) * 100
       : 0;
   const report = status?.change_report ?? null;
+  const hasFailed = (progress?.failed ?? 0) > 0;
+  const hasSucceeded = (progress?.succeeded ?? 0) > 0;
+  const isDryRunDone =
+    step === "results" &&
+    status?.dry_run === true &&
+    status?.status === "completed";
+  const canApply = isDryRunDone && hasSucceeded;
+  const canRetry = step === "results" && hasFailed;
 
   return (
     <div
@@ -177,43 +242,21 @@ export function AtomFixModal({
         {/* Footer */}
         <div className="flex justify-end gap-3 px-6 py-4 border-t border-border">
           {step === "configure" && (
-            <>
-              <button
-                onClick={handleClose}
-                className={cn(
-                  "px-4 py-2 text-sm rounded-lg",
-                  "text-text-secondary hover:text-text-primary",
-                  "transition-colors",
-                )}
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleStart}
-                disabled={issuesCount === 0}
-                className={cn(
-                  "px-4 py-2 text-sm rounded-lg font-medium",
-                  "transition-colors",
-                  issuesCount > 0
-                    ? "bg-accent text-white hover:bg-accent/90"
-                    : "bg-surface text-text-secondary cursor-not-allowed",
-                )}
-              >
-                {dryRun ? "Start Dry Run" : "Start Fix"}
-              </button>
-            </>
+            <ConfigureFooter
+              onClose={handleClose}
+              onStart={handleStart}
+              dryRun={dryRun}
+              issuesCount={issuesCount}
+            />
           )}
           {step === "results" && (
-            <button
-              onClick={handleClose}
-              className={cn(
-                "px-4 py-2 text-sm rounded-lg bg-accent",
-                "text-white font-medium hover:bg-accent/90",
-                "transition-colors",
-              )}
-            >
-              Done
-            </button>
+            <ResultsFooter
+              canApply={canApply}
+              canRetry={canRetry}
+              onApply={handleApplySaved}
+              onRetry={handleRetryFailed}
+              onClose={handleClose}
+            />
           )}
         </div>
       </div>
@@ -222,260 +265,103 @@ export function AtomFixModal({
 }
 
 // ---------------------------------------------------------------------------
-// Step sub-components (keep modal file under 500 lines)
+// Footer sub-components (tightly coupled to modal actions)
 // ---------------------------------------------------------------------------
 
-function ConfigureStep({
+function ConfigureFooter({
+  onClose,
+  onStart,
+  dryRun,
   issuesCount,
-  dryRun,
-  onDryRunChange,
-  error,
 }: {
+  onClose: () => void;
+  onStart: () => void;
+  dryRun: boolean;
   issuesCount: number;
-  dryRun: boolean;
-  onDryRunChange: (v: boolean) => void;
-  error: string | null;
 }) {
   return (
-    <div className="space-y-5">
-      <p className="text-sm text-text-secondary">
-        Use GPT-5.1 to automatically fix atoms with validation
-        issues. Handles splits, merges, content quality, fidelity,
-        prerequisites, and coverage gaps.
-      </p>
-
-      <div className="bg-background rounded-lg p-3 text-sm">
-        <span className="text-text-secondary">
-          Standards with issues:{" "}
-        </span>
-        <span className="font-medium">{issuesCount}</span>
-      </div>
-
-      {/* Dry-run toggle */}
-      <label className="flex items-center gap-3 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={dryRun}
-          onChange={(e) => onDryRunChange(e.target.checked)}
-          className="w-4 h-4 accent-accent rounded"
-        />
-        <div>
-          <span className="text-sm font-medium">Dry run</span>
-          <p className="text-xs text-text-secondary mt-0.5">
-            Preview changes without modifying files
-          </p>
-        </div>
-      </label>
-
-      {!dryRun && (
-        <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-          <AlertTriangle className="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" />
-          <p className="text-xs text-amber-400">
-            This will modify the atoms file, update prerequisites,
-            and rewrite question mappings. Make sure you have a
-            backup or can revert via git.
-          </p>
-        </div>
-      )}
-
-      {error && (
-        <div className="text-sm text-error">{error}</div>
-      )}
-    </div>
+    <>
+      <button
+        onClick={onClose}
+        className={cn(
+          "px-4 py-2 text-sm rounded-lg",
+          "text-text-secondary hover:text-text-primary",
+          "transition-colors",
+        )}
+      >
+        Cancel
+      </button>
+      <button
+        onClick={onStart}
+        disabled={issuesCount === 0}
+        className={cn(
+          "px-4 py-2 text-sm rounded-lg font-medium",
+          "transition-colors",
+          issuesCount > 0
+            ? "bg-accent text-white hover:bg-accent/90"
+            : "bg-surface text-text-secondary cursor-not-allowed",
+        )}
+      >
+        {dryRun ? "Start Dry Run" : "Start Fix"}
+      </button>
+    </>
   );
 }
 
-function ProgressStep({
-  progress,
-  progressPct,
-  dryRun,
+function ResultsFooter({
+  canApply,
+  canRetry,
+  onApply,
+  onRetry,
+  onClose,
 }: {
-  progress: AtomFixStatusResponse["progress"] | undefined;
-  progressPct: number;
-  dryRun: boolean;
+  canApply: boolean;
+  canRetry: boolean;
+  onApply: () => void;
+  onRetry: () => void;
+  onClose: () => void;
 }) {
   return (
-    <div className="space-y-4">
-      <p className="text-sm text-text-secondary">
-        {dryRun ? "Analysing fixes (dry run)..." : "Applying fixes..."}
-      </p>
-
-      <div>
-        <div className="flex justify-between text-xs text-text-secondary mb-1">
-          <span>
-            {progress?.completed ?? 0}/{progress?.total ?? 0} actions
-          </span>
-          <span>{progressPct.toFixed(0)}%</span>
-        </div>
-        <div className="h-2 bg-background rounded-full">
-          <div
-            className="h-full bg-accent rounded-full transition-all"
-            style={{ width: `${progressPct}%` }}
-          />
-        </div>
-      </div>
-
-      <div className="flex gap-4 text-sm">
-        <span className="text-success">
-          {progress?.succeeded ?? 0} succeeded
-        </span>
-        <span className="text-error">
-          {progress?.failed ?? 0} failed
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function ResultsStep({
-  error,
-  status,
-  progress,
-  report,
-  dryRun,
-}: {
-  error: string | null;
-  status: AtomFixStatusResponse | null;
-  progress: AtomFixStatusResponse["progress"] | undefined;
-  report: AtomFixStatusResponse["change_report"];
-  dryRun: boolean;
-}) {
-  return (
-    <div className="space-y-4">
-      {/* Status banner */}
-      {error ? (
-        <div className="flex items-center gap-2 text-error text-sm">
-          <XCircle className="w-4 h-4" />
-          {error}
-        </div>
-      ) : status?.status === "completed" ? (
-        <div className="flex items-center gap-2 text-success text-sm font-medium">
-          <CheckCircle2 className="w-5 h-5" />
-          {dryRun ? "Dry Run Complete" : "Fixes Applied"}
-        </div>
-      ) : (
-        <div className="flex items-center gap-2 text-error text-sm font-medium">
-          <XCircle className="w-5 h-5" />
-          Fix Pipeline Failed
-        </div>
+    <>
+      <button
+        onClick={onClose}
+        className={cn(
+          "px-4 py-2 text-sm rounded-lg",
+          "text-text-secondary hover:text-text-primary",
+          "transition-colors",
+        )}
+      >
+        Done
+      </button>
+      {canRetry && (
+        <button
+          onClick={onRetry}
+          className={cn(
+            "flex items-center gap-1.5",
+            "px-4 py-2 text-sm rounded-lg font-medium",
+            "bg-amber-500/10 text-amber-400 border",
+            "border-amber-500/20 hover:bg-amber-500/20",
+            "transition-colors",
+          )}
+        >
+          <RotateCcw className="w-3.5 h-3.5" />
+          Retry Failed
+        </button>
       )}
-
-      {/* Counters */}
-      {progress && (
-        <div className="grid grid-cols-3 gap-3">
-          <StatCard label="Total" value={progress.total} />
-          <StatCard
-            label="Succeeded"
-            value={progress.succeeded}
-            className="text-success"
-          />
-          <StatCard
-            label="Failed"
-            value={progress.failed}
-            className="text-error"
-          />
-        </div>
+      {canApply && (
+        <button
+          onClick={onApply}
+          className={cn(
+            "flex items-center gap-1.5",
+            "px-4 py-2 text-sm rounded-lg font-medium",
+            "bg-success text-white hover:bg-success/90",
+            "transition-colors",
+          )}
+        >
+          <Play className="w-3.5 h-3.5" />
+          Apply Results
+        </button>
       )}
-
-      {/* Change report */}
-      {report && <ChangeReportSection report={report} />}
-
-      {/* Per-action results */}
-      {status?.results && status.results.length > 0 && (
-        <div className="max-h-40 overflow-y-auto space-y-1">
-          {status.results.map((r, i) => (
-            <div
-              key={`${r.standard_id}-${r.fix_type}-${i}`}
-              className="flex items-center gap-2 text-sm px-2 py-1"
-            >
-              {r.success ? (
-                <CheckCircle2 className="w-3.5 h-3.5 text-success flex-shrink-0" />
-              ) : (
-                <XCircle className="w-3.5 h-3.5 text-error flex-shrink-0" />
-              )}
-              <span className="font-mono text-xs">
-                {r.fix_type}
-              </span>
-              <span className="text-xs text-text-secondary truncate">
-                {r.atom_ids.join(", ") || r.standard_id}
-              </span>
-              {r.error && (
-                <span className="text-xs text-error truncate ml-auto">
-                  {r.error}
-                </span>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Small reusable pieces
-// ---------------------------------------------------------------------------
-
-function StatCard({
-  label,
-  value,
-  className,
-}: {
-  label: string;
-  value: number;
-  className?: string;
-}) {
-  return (
-    <div className="bg-background rounded-lg p-3 text-center">
-      <div className={cn("text-lg font-bold", className)}>
-        {value}
-      </div>
-      <div className="text-xs text-text-secondary">{label}</div>
-    </div>
-  );
-}
-
-function ChangeReportSection({
-  report,
-}: {
-  report: NonNullable<AtomFixStatusResponse["change_report"]>;
-}) {
-  const items = [
-    { label: "Atoms added", value: report.atoms_added.length },
-    { label: "Atoms removed", value: report.atoms_removed.length },
-    { label: "Atoms modified", value: report.atoms_modified.length },
-    { label: "Prereq cascades", value: report.prerequisite_cascades },
-    { label: "Q-mapping updates", value: report.question_mapping_updates },
-  ];
-  const hasManualReview = report.manual_review_needed.length > 0;
-
-  return (
-    <div className="bg-background rounded-lg p-3 space-y-2">
-      <h4 className="text-xs font-medium text-text-secondary uppercase tracking-wide">
-        Change Report
-      </h4>
-      <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-        {items.map((item) => (
-          <div key={item.label} className="flex justify-between">
-            <span className="text-text-secondary">
-              {item.label}
-            </span>
-            <span className="font-medium">{item.value}</span>
-          </div>
-        ))}
-      </div>
-      {hasManualReview && (
-        <div className="mt-2 pt-2 border-t border-border">
-          <p className="text-xs text-amber-400 font-medium mb-1">
-            Manual review needed:
-          </p>
-          <ul className="text-xs text-text-secondary space-y-0.5">
-            {report.manual_review_needed.map((msg, i) => (
-              <li key={i}>• {msg}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+    </>
   );
 }

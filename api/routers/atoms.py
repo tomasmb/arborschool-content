@@ -38,8 +38,7 @@ from api.schemas.atom_models import (
     StandardValidationResult,
     StructuralChecksResult,
 )
-from api.services import atom_coverage_service, atom_validation_service
-from api.services import atom_fix_service
+from api.services import atom_coverage_service, atom_fix_service, atom_validation_service
 from api.services.atom_structural_checks import (
     load_saved_results as load_saved_structural,
 )
@@ -338,6 +337,66 @@ async def start_fix(
     )
 
 
+@router.post(
+    "/{subject_id}/atoms/fix/apply-saved",
+    response_model=AtomFixJobResponse,
+)
+async def apply_saved_fix(
+    subject_id: str,
+) -> AtomFixJobResponse:
+    """Apply the most recently saved dry-run fix results.
+
+    No LLM calls — just writes the already-computed changes to files.
+    """
+    _validate_subject(subject_id)
+    try:
+        job_id, count = await atom_fix_service.start_apply_saved_job()
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    return AtomFixJobResponse(
+        job_id=job_id,
+        status="started",
+        actions_to_fix=count,
+        estimated_cost_usd=0.0,
+        dry_run=False,
+    )
+
+
+@router.post(
+    "/{subject_id}/atoms/fix/retry-failed",
+    response_model=AtomFixJobResponse,
+)
+async def retry_failed_fix(
+    subject_id: str,
+    request: AtomFixRequest,
+) -> AtomFixJobResponse:
+    """Retry only the actions that failed in the most recent run."""
+    _validate_subject(subject_id)
+    try:
+        job_id, count, cost = (
+            await atom_fix_service.start_retry_failed_job(
+                dry_run=request.dry_run,
+            )
+        )
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+    if count == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="No failed actions to retry.",
+        )
+
+    return AtomFixJobResponse(
+        job_id=job_id,
+        status="started",
+        actions_to_fix=count,
+        estimated_cost_usd=cost,
+        dry_run=request.dry_run,
+    )
+
+
 @router.get(
     "/{subject_id}/atoms/fix/status/{job_id}",
     response_model=AtomFixStatusResponse,
@@ -373,6 +432,7 @@ def get_fix_status(
             AtomFixActionResult(**r) for r in job.results
         ],
         change_report=change_report,
+        has_saved_results=job.has_saved_results,
         started_at=job.started_at.isoformat(),
         completed_at=(
             job.completed_at.isoformat()
