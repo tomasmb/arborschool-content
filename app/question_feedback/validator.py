@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import json
 import logging
-import os
 from typing import Any
 
-from dotenv import load_dotenv
-
+from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.question_feedback.models import (
     CheckResult,
     CheckStatus,
@@ -18,15 +16,21 @@ from app.question_feedback.models import (
 )
 from app.question_feedback.prompts import FINAL_VALIDATION_PROMPT
 from app.question_feedback.schemas import FINAL_VALIDATION_SCHEMA
-from app.question_feedback.utils.image_utils import load_images_from_urls
+from app.question_feedback.utils.image_utils import (
+    build_images_section,
+    load_images_from_urls,
+)
 
 logger = logging.getLogger(__name__)
+
+# Reasoning effort for math-correctness / feedback-quality checks.
+_VALIDATION_REASONING = "medium"
 
 
 class FinalValidator:
     """Final LLM validation for PAES questions.
 
-    This class performs comprehensive validation of QTI XML with embedded feedback,
+    Performs comprehensive validation of QTI XML with embedded feedback,
     checking mathematical correctness, feedback quality, and content quality.
     """
 
@@ -35,25 +39,19 @@ class FinalValidator:
     def __init__(
         self,
         model: str | None = None,
-        api_key: str | None = None,
+        client: OpenAIClient | None = None,
     ):
-        """Initialize the validator.
+        """Initialise the validator.
 
         Args:
             model: OpenAI model to use. Defaults to gpt-5.1.
-            api_key: OpenAI API key. Defaults to OPENAI_API_KEY env var.
+            client: Pre-built client (DIP). When ``None`` the factory
+                ``load_default_openai_client()`` is used.
         """
-        load_dotenv()
-        self._api_key = api_key or os.getenv("OPENAI_API_KEY")
-        if not self._api_key:
-            raise ValueError("OPENAI_API_KEY environment variable is required")
-
         self.model = model or self.DEFAULT_MODEL
-
-        # Import OpenAIClient from llm_clients
-        from app.llm_clients import OpenAIClient
-
-        self._client = OpenAIClient(api_key=self._api_key, model=self.model)
+        self._client = client or load_default_openai_client(
+            model=self.model,
+        )
 
     def validate(
         self,
@@ -69,70 +67,46 @@ class FinalValidator:
         Returns:
             ValidationResult with detailed check results.
         """
-        # Load images if provided
         images: list[Any] = []
         if image_urls:
             images = load_images_from_urls(image_urls)
 
-        # Build images section text (for context in prompt)
-        images_section = ""
-        if images:
-            images_section = (
-                f"IMÁGENES: {len(images)} imagen(es) adjuntas para validación visual. "
-                "Examina las imágenes cuidadosamente para verificar que son correctas, "
-                "legibles y relevantes para la pregunta."
-            )
-        elif image_urls:
-            # Had URLs but failed to load
-            images_section = (
-                f"IMÁGENES: Se detectaron {len(image_urls)} imagen(es) en el XML pero "
-                "no se pudieron cargar. Valida basándote solo en el texto."
-            )
+        images_section = build_images_section(
+            images, image_urls, action_verb="validación visual",
+        )
 
         prompt = FINAL_VALIDATION_PROMPT.format(
             qti_xml_with_feedback=qti_xml_with_feedback,
             images_section=images_section,
         )
-
-        # Add JSON schema instruction
         prompt += "\n\nRespuesta en formato JSON siguiendo este schema:\n"
-        prompt += json.dumps(FINAL_VALIDATION_SCHEMA, indent=2, ensure_ascii=False)
+        prompt += json.dumps(
+            FINAL_VALIDATION_SCHEMA, indent=2, ensure_ascii=False,
+        )
 
         logger.info(
-            f"Running final validation with {self.model} "
-            f"({len(images)} images attached)"
+            "Running final validation with %s (%d images attached)",
+            self.model, len(images),
         )
 
         try:
-            # Build multimodal prompt if we have images
-            if images:
-                # OpenAIClient expects list with text first, then PIL images
-                multimodal_prompt: list[Any] = [prompt]
-                multimodal_prompt.extend(images)
-                response_text = self._client.generate_text(
-                    multimodal_prompt,
-                    response_mime_type="application/json",
-                    temperature=0.0,
-                    max_tokens=4000,
-                )
-            else:
-                response_text = self._client.generate_text(
-                    prompt,
-                    response_mime_type="application/json",
-                    temperature=0.0,
-                    max_tokens=4000,
-                )
+            response_text = self._client.call_with_images(
+                prompt,
+                images,
+                reasoning_effort=_VALIDATION_REASONING,
+                response_mime_type="application/json",
+                max_tokens=4000,
+            )
 
             result = json.loads(response_text)
-            logger.info(f"Validation result: {result.get('validation_result')}")
-
+            logger.info("Validation result: %s", result.get("validation_result"))
             return self._parse_result(result)
 
         except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse validation response as JSON: {e}")
+            logger.error("Failed to parse validation response as JSON: %s", e)
             return self._create_error_result(f"Invalid JSON response: {e}")
         except Exception as e:
-            logger.error(f"Validation failed: {e}")
+            logger.error("Validation failed: %s", e)
             return self._create_error_result(str(e))
 
     def _parse_result(self, result: dict[str, Any]) -> ValidationResult:

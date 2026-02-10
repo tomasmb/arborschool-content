@@ -389,7 +389,11 @@ class RunPipelineResponse(BaseModel):
 # -----------------------------------------------------------------------------
 
 # Valid sync entity types
-VALID_SYNC_ENTITIES = ["standards", "atoms", "tests", "questions", "variants"]
+# "question_atoms" syncs atom-question tagging without touching question content
+VALID_SYNC_ENTITIES = [
+    "standards", "atoms", "tests", "questions", "variants",
+    "question_atoms",
+]
 
 # Valid sync environments
 VALID_SYNC_ENVIRONMENTS = ["local", "staging", "prod"]

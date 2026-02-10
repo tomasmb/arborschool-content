@@ -194,7 +194,7 @@ def assess_qti_compatibility(text_blocks: list[dict[str, Any]], page_image_base6
             messages=messages,
             api_key=openai_api_key,
             json_only=True,
-            reasoning_effort="high",
+            reasoning_effort="medium",  # structured analysis
         )
 
         analysis = parse_compatibility_response(response_text)
@@ -240,7 +240,7 @@ def categorize_content_blocks(text_blocks: list[dict[str, Any]], page_image_base
             model="gpt-5.1",
             messages=messages,
             response_format={"type": "json_object"},
-            reasoning_effort="high",
+            reasoning_effort="medium",  # structured analysis
             seed=42,
         )
 

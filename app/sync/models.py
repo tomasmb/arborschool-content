@@ -107,8 +107,8 @@ class AtomRow:
 class QuestionRow:
     """Represents a row in the questions table.
 
-    Note: correct_answer, title, and feedback are parsed directly from qti_xml
-    rather than stored as separate fields.
+    Fields like title, correct_answer, and feedback are populated by the
+    enrichment pipeline. They default to None until enrichment runs.
     """
 
     id: str
@@ -120,6 +120,13 @@ class QuestionRow:
     difficulty_score: float | None = None
     source_test_id: str | None = None
     source_question_number: int | None = None
+    # Fields populated by enrichment / metadata extraction
+    title: str | None = None
+    correct_answer: str | None = None
+    difficulty_analysis: str | None = None
+    general_analysis: str | None = None
+    feedback_general: str | None = None
+    feedback_per_option: dict | None = None
 
 
 @dataclass
@@ -188,3 +195,29 @@ class SyncPayload:
             "tests": len(self.tests),
             "test_questions": len(self.test_questions),
         }
+
+    def filter_for_entities(self, entities: list[str]) -> None:
+        """Remove data for entity types not in the requested list.
+
+        This allows extracting all data (e.g. questions for deriving
+        question_atoms) but only syncing the requested tables.
+
+        Mapping from entity request → tables kept:
+          "standards"      → standards
+          "atoms"          → atoms
+          "questions"      → questions (content)
+          "question_atoms" → question_atoms (links only)
+          "tests"          → tests, test_questions
+          "variants"       → (already in questions list)
+        """
+        if "standards" not in entities:
+            self.standards = []
+        if "atoms" not in entities:
+            self.atoms = []
+        if "questions" not in entities and "variants" not in entities:
+            self.questions = []
+        if "question_atoms" not in entities and "questions" not in entities:
+            self.question_atoms = []
+        if "tests" not in entities:
+            self.tests = []
+            self.test_questions = []

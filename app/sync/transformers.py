@@ -151,6 +151,14 @@ def transform_question(
         difficulty_score=extracted.difficulty_score,
         source_test_id=extracted.test_id,
         source_question_number=extracted.question_number,
+        # Analysis fields (from tagging metadata)
+        general_analysis=extracted.general_analysis,
+        difficulty_analysis=extracted.difficulty_analysis,
+        # Enrichment fields (None until enrichment pipeline runs)
+        title=extracted.title,
+        correct_answer=extracted.correct_answer,
+        feedback_general=extracted.feedback_general,
+        feedback_per_option=extracted.feedback_per_option,
     )
 
     # Create question-atom relationships

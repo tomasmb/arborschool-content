@@ -173,7 +173,7 @@ Categorize each block to help identify where visual content is located."""
                 },
             ],
             response_format=VisualContentAnalysis,
-            reasoning_effort="high",
+            reasoning_effort="medium",  # visual analysis, moderate complexity
         )
 
         print("🔍 ✅ Received response from OpenAI")

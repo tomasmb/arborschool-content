@@ -424,38 +424,41 @@ def get_validation_cost_estimate(
     """Calculate estimated cost for validation with GPT-5.1.
 
     Pricing (as of Feb 2026):
-    - GPT-5.1 Input: $1.25 per 1M tokens
+    - GPT-5.1 Input:  $1.25 per 1M tokens
     - GPT-5.1 Output: $10.00 per 1M tokens
+    - Reasoning tokens are billed as output tokens.
 
-    Token estimates per question:
+    Token estimates per question (with medium reasoning):
     - Text input (QTI XML + prompt): ~3,000 tokens
     - Text output (validation JSON): ~800 tokens
-    - Images: ~700 tokens per image (high detail, typical 800x600 image)
-      Formula: base(70) + tiles(4) × 140 = 630 tokens, rounded up for safety
+    - Reasoning tokens: ~2,000 tokens (billed as output)
+    - Images: ~700 tokens per image (high detail)
 
     Args:
         question_count: Number of questions to validate.
-        avg_images_per_question: Average images per question (default 0.5).
+        avg_images_per_question: Average images per question.
 
     Returns:
         Estimated cost in USD.
     """
-    # Token estimates
     text_input_tokens = 3000
     text_output_tokens = 800
+    reasoning_tokens = 2000  # medium reasoning overhead
     tokens_per_image = 700
 
-    # Pricing per token
-    input_price_per_token = 1.25 / 1_000_000  # $1.25 per 1M
-    output_price_per_token = 10.00 / 1_000_000  # $10.00 per 1M
+    input_price_per_token = 1.25 / 1_000_000
+    output_price_per_token = 10.00 / 1_000_000
 
-    # Calculate per-question cost
-    input_tokens = text_input_tokens + (tokens_per_image * avg_images_per_question)
-    output_tokens = text_output_tokens
+    input_tokens = (
+        text_input_tokens
+        + (tokens_per_image * avg_images_per_question)
+    )
+    # Reasoning tokens are billed at the output rate
+    output_tokens = text_output_tokens + reasoning_tokens
 
     cost_per_question = (
-        input_tokens * input_price_per_token +
-        output_tokens * output_price_per_token
+        input_tokens * input_price_per_token
+        + output_tokens * output_price_per_token
     )
 
     total_cost = question_count * cost_per_question

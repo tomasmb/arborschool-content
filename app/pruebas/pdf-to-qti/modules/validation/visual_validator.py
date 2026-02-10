@@ -239,7 +239,7 @@ def compare_images_with_llm(original_image: str, rendered_image: str, openai_api
         response = client.chat.completions.create(
             model="gpt-5.1",
             messages=messages,
-            reasoning_effort="high",
+            reasoning_effort="medium",  # structured image comparison
             seed=42,
         )
 

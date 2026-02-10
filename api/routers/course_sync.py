@@ -90,7 +90,10 @@ def preview_course_sync(
             subject_id=subject_id,
         )
 
-        payload = _build_payload(extracted, subject_id=subject_id)
+        payload = _build_payload(
+            extracted, subject_id=subject_id,
+            entities=request.entities,
+        )
         summary = payload.summary()
         tables = _build_table_summaries(summary, extracted)
 
@@ -132,9 +135,11 @@ def execute_course_sync(
         raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
 
     from api.routers.sync import (
+        _api_to_db_subject_id,
         _build_payload,
         _check_db_config,
         _check_s3_config,
+        _collect_deletions,
         _extract_data,
     )
 
@@ -173,6 +178,7 @@ def execute_course_sync(
 
     try:
         from app.sync.db_client import DBClient, DBConfig
+        from app.sync.diff import compute_sync_diff
         from app.utils.paths import PRUEBAS_FINALIZADAS_DIR
 
         extracted = _extract_data(
@@ -180,9 +186,10 @@ def execute_course_sync(
             subject_id=subject_id,
         )
 
-        # Auto-upload images to S3 if configured and questions are being synced
+        # Auto-upload images to S3 only when syncing question content
         images_uploaded = 0
-        if _check_s3_config() and extracted["questions"]:
+        sync_question_content = "questions" in request.entities
+        if sync_question_content and _check_s3_config() and extracted["questions"]:
             from app.sync.s3_client import (
                 ImageUploader,
                 S3Config,
@@ -203,12 +210,24 @@ def execute_course_sync(
                     q.qti_xml = updated_qti[q.id]
                     images_uploaded += 1
 
-        payload = _build_payload(extracted, subject_id=subject_id)
+        payload = _build_payload(
+            extracted, subject_id=subject_id,
+            entities=request.entities,
+        )
+
+        # Compute diff to find rows that should be deleted
+        db_subject_id = _api_to_db_subject_id(subject_id)
+        diff = compute_sync_diff(
+            extracted, request.environment, db_subject_id,
+        )
+        deletions = _collect_deletions(diff, request.entities)
 
         # Connect to the appropriate database based on environment
         db_config = DBConfig.for_environment(request.environment)
         db_client = DBClient(db_config)
-        results = db_client.sync_all(payload, dry_run=False)
+        results = db_client.sync_all(
+            payload, dry_run=False, deletions=deletions,
+        )
 
         total_affected = sum(results.values())
         msg = f"Sync to {request.environment} completed for {subject_id}. "

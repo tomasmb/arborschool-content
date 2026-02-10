@@ -88,7 +88,17 @@ class GeminiClient:
 
 
 class OpenAIClient:
-    """Lightweight client for OpenAI API with thinking support."""
+    """Lightweight client for OpenAI Chat Completions API.
+
+    Supports GPT-5.1 reasoning effort: when ``reasoning_effort`` is set to
+    anything other than ``"none"``, the ``temperature`` parameter is
+    automatically omitted (the API rejects it for reasoning requests).
+
+    See https://platform.openai.com/docs/api-reference/chat/create
+    """
+
+    # Valid reasoning effort values for GPT-5.1
+    _VALID_EFFORTS = {"none", "low", "medium", "high"}
 
     def __init__(self, api_key: str, model: str = "gpt-5.1") -> None:
         self._api_key = api_key
@@ -96,58 +106,139 @@ class OpenAIClient:
         self._url = "https://api.openai.com/v1/chat/completions"
 
     def _pil_to_base64(self, pil_img: Image.Image) -> str:
+        """Convert a PIL image to a base64-encoded JPEG string."""
         buffered = io.BytesIO()
-        # Ensure image is in a web-compatible format
         if pil_img.mode in ("RGBA", "P"):
             pil_img = pil_img.convert("RGB")
         pil_img.save(buffered, format="JPEG")
         return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
+    # ------------------------------------------------------------------
+    # Core generation
+    # ------------------------------------------------------------------
+
     def generate_text(
         self,
         prompt: Union[str, List[Any]],
         *,
+        reasoning_effort: Optional[str] = None,
         response_mime_type: Optional[str] = None,
         temperature: float = 0.0,
         **kwargs: Any,
     ) -> str:
-        headers = {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"}
+        """Call the Chat Completions API and return the response text.
 
-        messages: list[dict[str, Any]] = []
+        Parameters
+        ----------
+        prompt:
+            A string or list of parts (strings / PIL images).
+        reasoning_effort:
+            GPT-5.1 reasoning depth.  ``"none"`` (default behaviour when
+            ``None``) allows ``temperature``; any other value (``"low"``,
+            ``"medium"``, ``"high"``) disables ``temperature``.
+        response_mime_type:
+            Pass ``"application/json"`` for JSON-mode output.
+        temperature:
+            Sampling temperature. Ignored when reasoning is active.
+        """
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json",
+        }
+
+        messages = [{"role": "user", "content": self._build_content(prompt)}]
+
+        data: dict[str, Any] = {"model": self._model, "messages": messages}
+
+        # --- reasoning vs temperature (mutually exclusive) ---
+        is_reasoning_model = "gpt-5" in self._model or "o1" in self._model
+        uses_reasoning = (
+            reasoning_effort is not None
+            and reasoning_effort != "none"
+        )
+
+        if is_reasoning_model and uses_reasoning:
+            data["reasoning_effort"] = reasoning_effort
+            # temperature is NOT allowed with reasoning > none
+        else:
+            data["temperature"] = temperature
+
+        # --- token limit (only set when caller explicitly requests) ---
+        max_tokens = kwargs.get("max_tokens")
+        if max_tokens is not None:
+            key = (
+                "max_completion_tokens"
+                if is_reasoning_model
+                else "max_tokens"
+            )
+            data[key] = max_tokens
+
+        # --- JSON mode ---
+        if response_mime_type == "application/json":
+            data["response_format"] = {"type": "json_object"}
+
+        resp = requests.post(
+            self._url, headers=headers, json=data, timeout=300,
+        )
+        resp.raise_for_status()
+        return resp.json()["choices"][0]["message"]["content"]
+
+    # ------------------------------------------------------------------
+    # Multimodal helper  (DRY -- used by enhancer / validator)
+    # ------------------------------------------------------------------
+
+    def call_with_images(
+        self,
+        prompt: str,
+        images: list[Any],
+        *,
+        reasoning_effort: Optional[str] = None,
+        response_mime_type: Optional[str] = None,
+        max_tokens: Optional[int] = None,
+    ) -> str:
+        """Send *prompt* to the LLM, attaching *images* when present.
+
+        Eliminates the duplicated ``if images … else …`` dispatch
+        pattern that was repeated across enhancer / validator callers.
+
+        When ``max_tokens`` is None the API uses its model default.
+        """
+        kwargs: dict[str, Any] = {
+            "reasoning_effort": reasoning_effort,
+            "response_mime_type": response_mime_type,
+        }
+        if max_tokens is not None:
+            kwargs["max_tokens"] = max_tokens
+
+        if images:
+            multimodal_prompt: list[Any] = [prompt, *images]
+            return self.generate_text(multimodal_prompt, **kwargs)
+        return self.generate_text(prompt, **kwargs)
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+
+    def _build_content(
+        self, prompt: Union[str, List[Any]],
+    ) -> list[dict[str, Any]]:
+        """Convert a prompt (str or list of parts) to API content array."""
         content: list[dict[str, Any]] = []
-
-        # Handle multimodal prompt
         if isinstance(prompt, list):
             for part in prompt:
                 if isinstance(part, str):
                     content.append({"type": "text", "text": part})
-                elif hasattr(part, "save"):  # Assume PIL Image
-                    base64_img = self._pil_to_base64(part)
-                    content.append({"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_img}"}})
+                elif hasattr(part, "save"):  # PIL Image
+                    b64 = self._pil_to_base64(part)
+                    content.append({
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/jpeg;base64,{b64}",
+                        },
+                    })
         else:
             content.append({"type": "text", "text": str(prompt)})
-
-        messages.append({"role": "user", "content": content})
-
-        data = {
-            "model": self._model,
-            "messages": messages,
-            "temperature": temperature,
-        }
-
-        # Reasoning-capable models use max_completion_tokens
-        if "gpt-5" in self._model or "o1" in self._model:
-            data["max_completion_tokens"] = kwargs.get("max_tokens", 4000)
-        else:
-            data["max_tokens"] = kwargs.get("max_tokens", 4000)
-
-        if response_mime_type == "application/json":
-            data["response_format"] = {"type": "json_object"}
-
-        response = requests.post(self._url, headers=headers, json=data, timeout=300)
-        response.raise_for_status()
-
-        return response.json()["choices"][0]["message"]["content"]
+        return content
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
@@ -228,9 +319,21 @@ class GeminiService:
             return getattr(response, "text", str(response))
         except google_exceptions.ResourceExhausted as e:
             if self._openai:
-                print(f"\n⚠️ Gemini Quota Exhausted (429). Falling back to OpenAI ({self._openai._model})...")
+                print(
+                    f"\n⚠️ Gemini Quota Exhausted (429). "
+                    f"Falling back to OpenAI ({self._openai._model})..."
+                )
                 try:
-                    return self._openai.generate_text(prompt, response_mime_type=response_mime_type, temperature=temperature or 0.0, **kwargs)
+                    fallback_kwargs: dict[str, Any] = {
+                        "reasoning_effort": "low",
+                        "response_mime_type": response_mime_type,
+                    }
+                    # Forward max_tokens if the caller set one
+                    if "max_tokens" in kwargs:
+                        fallback_kwargs["max_tokens"] = kwargs["max_tokens"]
+                    return self._openai.generate_text(
+                        prompt, **fallback_kwargs,
+                    )
                 except Exception as oa_err:
                     print(f"❌ OpenAI Fallback also failed: {oa_err}")
                     raise oa_err
@@ -238,7 +341,6 @@ class GeminiService:
                 print("❌ Gemini Quota Exhausted and no OpenAI key found.")
                 raise e
         except Exception as e:
-            # Re-raise other exceptions
             raise e
 
 
@@ -258,3 +360,24 @@ def load_default_gemini_service() -> GeminiService:
 
     config = GeminiConfig(api_key=api_key)
     return GeminiService(config)
+
+
+def load_default_openai_client(
+    model: str = "gpt-5.1",
+) -> OpenAIClient:
+    """Construct an `OpenAIClient` from the app `.env`.
+
+    Expects ``OPENAI_API_KEY`` to be defined.
+
+    Parameters
+    ----------
+    model:
+        Model string passed to the client (default ``gpt-5.1``).
+    """
+    load_dotenv()
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError(
+            "Environment variable OPENAI_API_KEY is required."
+        )
+    return OpenAIClient(api_key=api_key, model=model)

@@ -78,7 +78,7 @@ Example response:
                 {"role": "user", "content": prompt},
             ],
             response_format=FilteredTables,
-            reasoning_effort="high",
+            reasoning_effort="low",  # simple binary keep/discard decision
         )
 
         result = response.choices[0].message.parsed

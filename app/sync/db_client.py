@@ -76,6 +76,34 @@ class DBClient:
                 yield cur
 
     # -------------------------------------------------------------------------
+    # Schema management
+    # -------------------------------------------------------------------------
+
+    def ensure_schema(self, conn: psycopg.Connection) -> None:
+        """Ensure all required columns exist on synced tables.
+
+        Uses ADD COLUMN IF NOT EXISTS so this is safe to call repeatedly.
+        Runs outside the main transaction so schema changes are committed
+        before the data upsert transaction begins.
+        """
+        with conn.cursor() as cur:
+            # Columns added after the initial questions table was created.
+            # All nullable since they are populated by enrichment pipeline.
+            for col, col_type in (
+                ("title", "VARCHAR(255)"),
+                ("correct_answer", "VARCHAR(50)"),
+                ("difficulty_analysis", "TEXT"),
+                ("general_analysis", "TEXT"),
+                ("feedback_general", "TEXT"),
+                ("feedback_per_option", "JSONB"),
+            ):
+                cur.execute(
+                    "ALTER TABLE questions "
+                    f"ADD COLUMN IF NOT EXISTS {col} {col_type}"
+                )
+            conn.commit()
+
+    # -------------------------------------------------------------------------
     # Helper methods
     # -------------------------------------------------------------------------
 
@@ -360,39 +388,84 @@ class DBClient:
         return affected
 
     # -------------------------------------------------------------------------
+    # Deletion operations
+    # -------------------------------------------------------------------------
+
+    def delete_atoms(
+        self, cur: psycopg.Cursor, atom_ids: list[str],
+    ) -> int:
+        """Delete atoms by ID, cascading to all referencing tables first."""
+        if not atom_ids:
+            return 0
+        # Delete from all tables that reference atoms via FK
+        for fk_table in (
+            "question_atoms", "atom_mastery", "lessons", "question_sets",
+        ):
+            cur.execute(
+                f"DELETE FROM {fk_table} WHERE atom_id = ANY(%s)",  # noqa: S608
+                (atom_ids,),
+            )
+        cur.execute("DELETE FROM atoms WHERE id = ANY(%s)", (atom_ids,))
+        return cur.rowcount
+
+    def delete_question_atoms(
+        self, cur: psycopg.Cursor, composite_ids: list[str],
+    ) -> int:
+        """Delete question_atom rows by 'question_id:atom_id' keys."""
+        if not composite_ids:
+            return 0
+        pairs = [cid.split(":", 1) for cid in composite_ids]
+        affected = 0
+        for qid, aid in pairs:
+            cur.execute(
+                "DELETE FROM question_atoms "
+                "WHERE question_id = %s AND atom_id = %s",
+                (qid, aid),
+            )
+            affected += cur.rowcount
+        return affected
+
+    # -------------------------------------------------------------------------
     # Sync operations
     # -------------------------------------------------------------------------
 
-    def sync_all(self, payload: SyncPayload, dry_run: bool = False) -> dict[str, int]:
-        """Sync all data in the payload to the database.
-
-        Executes upserts in dependency order within a single transaction.
+    def sync_all(
+        self,
+        payload: SyncPayload,
+        dry_run: bool = False,
+        deletions: dict[str, list[str]] | None = None,
+    ) -> dict[str, int]:
+        """Sync all data: upserts in dependency order, then deletes stale rows.
 
         Args:
-            payload: SyncPayload containing all data to sync
-            dry_run: If True, rollback transaction instead of committing
-
-        Returns:
-            Dict mapping table name to number of rows affected
+            payload: Data to upsert
+            dry_run: If True, rollback instead of committing
+            deletions: Table name → list of IDs to delete
+                (supports 'atoms', 'question_atoms')
         """
         results: dict[str, int] = {}
+        deletions = deletions or {}
 
         with self.connection() as conn:
+            self.ensure_schema(conn)
             try:
                 with self.transaction(conn) as cur:
-                    # Upsert in dependency order (subjects are master data, not synced)
                     results["standards"] = self.upsert_standards(cur, payload.standards)
                     results["atoms"] = self.upsert_atoms(cur, payload.atoms)
                     results["tests"] = self.upsert_tests(cur, payload.tests)
                     results["questions"] = self.upsert_questions(cur, payload.questions)
                     results["question_atoms"] = self.upsert_question_atoms(cur, payload.question_atoms)
                     results["test_questions"] = self.upsert_test_questions(cur, payload.test_questions)
-
+                    # Delete stale rows (reverse dependency order)
+                    results["deleted_question_atoms"] = self.delete_question_atoms(
+                        cur, deletions.get("question_atoms", []),
+                    )
+                    results["deleted_atoms"] = self.delete_atoms(
+                        cur, deletions.get("atoms", []),
+                    )
                     if dry_run:
-                        # Raise Rollback to abort the transaction cleanly
                         raise psycopg.Rollback()
             except psycopg.Rollback:
-                # Expected in dry-run mode
                 pass
 
         return results

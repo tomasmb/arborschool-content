@@ -4,63 +4,33 @@
 
 // Re-export types that are used by components
 export type {
-  AtomBrief,
-  AtomTag,
-  CheckResult,
-  CheckStatus,
-  ContentQualityCheck,
-  CorrectAnswerCheck,
-  CostEstimate,
-  EnrichmentJobResponse,
-  EnrichmentProgress,
-  EnrichmentResult,
-  FailedItem,
-  GraphData,
-  GraphEdge,
-  GraphNode,
-  JobLogsResponse,
-  JobStatus,
-  OverviewResponse,
-  QuestionBrief,
-  QuestionDetail,
-  QuestionOption,
-  StandardBrief,
-  SubjectBrief,
-  SubjectDetail,
-  SubjectStats,
-  SyncDetailEntry,
-  TestBrief,
-  TestDetail,
-  TestSyncDiff,
-  TestSyncDiffEntity,
-  TestSyncPreview,
-  TestSyncResult,
-  TestsSyncStatusResponse,
-  ValidationJobResponse,
-  ValidationProgress,
-  ValidationResult,
-  ValidationResultDetail,
-  VariantBrief,
+  AtomBrief, AtomFixJobResponse, AtomFixStatusResponse,
+  AtomPipelineSummary, AtomQuestionCoverage, AtomTag,
+  AtomValidationJobResponse, AtomValidationStatusResponse,
+  CheckResult, CheckStatus, ContentQualityCheck, CorrectAnswerCheck,
+  CostEstimate, CourseSyncDiff, CourseSyncEntityDiff,
+  CourseSyncPreview, CourseSyncResult, CourseSyncTableSummary,
+  CoverageAnalysisResult, EnrichmentJobResponse, EnrichmentProgress,
+  EnrichmentResult, FailedItem, GraphData, GraphEdge, GraphNode,
+  JobLogsResponse, JobStatus, OverviewResponse,
+  QuestionBrief, QuestionDetail, QuestionOption,
+  SavedValidationSummary, StandardBrief, StandardCoverageItem,
+  StandardValidationResult, StructuralChecksResult,
+  SubjectBrief, SubjectDetail, SubjectStats, SyncDetailEntry,
+  TestBrief, TestDetail, TestSyncDiff, TestSyncDiffEntity,
+  TestSyncPreview, TestSyncResult, TestsSyncStatusResponse,
+  ValidationJobResponse, ValidationProgress,
+  ValidationResult, ValidationResultDetail, VariantBrief,
 } from "./api-types";
 
 import type {
-  AtomBrief,
-  CostEstimate,
-  EnrichmentJobResponse,
-  GraphData,
-  JobLogsResponse,
-  JobStatus,
-  OverviewResponse,
-  QuestionDetail,
-  StandardBrief,
-  SubjectDetail,
-  TestBrief,
-  TestDetail,
-  TestSyncDiff,
-  TestSyncPreview,
-  TestSyncResult,
-  TestsSyncStatusResponse,
-  ValidationJobResponse,
+  AtomBrief, CostEstimate, CourseSyncDiff,
+  CourseSyncPreview, CourseSyncResult,
+  EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
+  OverviewResponse, QuestionDetail,
+  StandardBrief, SubjectDetail, TestBrief,
+  TestDetail, TestSyncDiff, TestSyncPreview, TestSyncResult,
+  TestsSyncStatusResponse, ValidationJobResponse,
 } from "./api-types";
 
 const API_BASE = "/api";
@@ -70,15 +40,16 @@ const API_BASE = "/api";
 const BACKEND_DIRECT =
   process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000/api";
 
-interface FetchAPIConfig {
+export interface FetchAPIConfig {
   /** When true, call the backend directly instead of via the Next.js proxy. */
   direct?: boolean;
 }
 
 /**
  * Generic fetch wrapper with error handling.
+ * Exported for use by split API modules (e.g. api-atoms-pipeline.ts).
  */
-async function fetchAPI<T>(
+export async function fetchAPI<T>(
   endpoint: string,
   options?: RequestInit,
   config?: FetchAPIConfig,
@@ -99,17 +70,13 @@ async function fetchAPI<T>(
   return res.json();
 }
 
-// -----------------------------------------------------------------------------
-// Overview API
-// -----------------------------------------------------------------------------
+// --- Overview API ---
 
 export async function getOverview(): Promise<OverviewResponse> {
   return fetchAPI<OverviewResponse>("/overview");
 }
 
-// -----------------------------------------------------------------------------
-// Subject API
-// -----------------------------------------------------------------------------
+// --- Subject API ---
 
 export async function getSubject(subjectId: string): Promise<SubjectDetail> {
   return fetchAPI<SubjectDetail>(`/subjects/${subjectId}`);
@@ -134,9 +101,7 @@ export async function getAtomsGraph(subjectId: string): Promise<GraphData> {
   return fetchAPI<GraphData>(`/subjects/${subjectId}/atoms/graph`);
 }
 
-// -----------------------------------------------------------------------------
-// Tests & Questions API
-// -----------------------------------------------------------------------------
+// --- Tests & Questions API ---
 
 export async function getTests(subjectId: string): Promise<TestBrief[]> {
   return fetchAPI<TestBrief[]>(`/subjects/${subjectId}/tests`);
@@ -156,10 +121,7 @@ export async function getQuestionDetail(
   );
 }
 
-/**
- * Get the URL for a question's PDF file.
- * This returns a URL that can be used directly in an anchor tag or window.open().
- */
+/** Get URL for a question's PDF (usable in anchor/window.open). */
 export function getQuestionPdfUrl(
   subjectId: string,
   testId: string,
@@ -168,23 +130,17 @@ export function getQuestionPdfUrl(
   return `${API_BASE}/subjects/${subjectId}/tests/${testId}/questions/${questionNum}/pdf`;
 }
 
-/**
- * Get the URL for a subject's temario PDF file.
- */
+/** Get URL for a subject's temario PDF. */
 export function getTemarioPdfUrl(subjectId: string): string {
   return `${API_BASE}/subjects/${subjectId}/temario/pdf`;
 }
 
-/**
- * Get the URL for a test's raw (original) PDF file.
- */
+/** Get URL for a test's raw (original) PDF. */
 export function getTestRawPdfUrl(subjectId: string, testId: string): string {
   return `${API_BASE}/subjects/${subjectId}/tests/${testId}/raw-pdf`;
 }
 
-// -----------------------------------------------------------------------------
-// Pipeline API
-// -----------------------------------------------------------------------------
+// --- Pipeline API ---
 
 export async function estimatePipelineCost(
   pipelineId: string,
@@ -192,23 +148,16 @@ export async function estimatePipelineCost(
 ): Promise<CostEstimate> {
   return fetchAPI<CostEstimate>(
     `/pipelines/estimate?pipeline_id=${encodeURIComponent(pipelineId)}`,
-    {
-      method: "POST",
-      body: JSON.stringify(params),
-    }
+    { method: "POST", body: JSON.stringify(params) },
   );
 }
 
 export async function getConfirmationToken(
-  pipelineId: string,
-  params: Record<string, unknown>
+  pipelineId: string, params: Record<string, unknown>,
 ): Promise<{ confirmation_token: string }> {
   return fetchAPI<{ confirmation_token: string }>(
     `/pipelines/confirm?pipeline_id=${encodeURIComponent(pipelineId)}`,
-    {
-      method: "POST",
-      body: JSON.stringify(params),
-    }
+    { method: "POST", body: JSON.stringify(params) },
   );
 }
 
@@ -262,9 +211,7 @@ export async function clearPipelineOutputs(
   );
 }
 
-// -----------------------------------------------------------------------------
-// Enrichment API
-// -----------------------------------------------------------------------------
+// --- Enrichment API ---
 
 export interface StartEnrichmentParams {
   question_ids?: string[];
@@ -297,9 +244,7 @@ export async function getEnrichmentStatus(
   );
 }
 
-// -----------------------------------------------------------------------------
-// Validation API
-// -----------------------------------------------------------------------------
+// --- Validation API ---
 
 export interface StartValidationParams {
   question_ids?: string[];
@@ -331,9 +276,7 @@ export async function getValidationStatus(
   );
 }
 
-// -----------------------------------------------------------------------------
-// Variant Enrichment & Validation API (DRY - reuses same job status endpoints)
-// -----------------------------------------------------------------------------
+// --- Variant Enrichment & Validation API (DRY - reuses same job status endpoints) ---
 
 export interface StartVariantEnrichmentParams {
   question_num?: string;
@@ -377,9 +320,7 @@ export async function startVariantValidation(
 // Note: Variant jobs use the same status endpoints as questions
 // getEnrichmentStatus and getValidationStatus work for both
 
-// -----------------------------------------------------------------------------
-// Test Sync API
-// -----------------------------------------------------------------------------
+// --- Test Sync API ---
 
 export interface TestSyncParams {
   environment?: string;
@@ -436,5 +377,52 @@ export async function getTestsSyncStatus(
 ): Promise<TestsSyncStatusResponse> {
   return fetchAPI<TestsSyncStatusResponse>(
     `/subjects/${subjectId}/sync/tests-status?environment=${environment}`,
+  );
+}
+
+// --- Atom Pipeline API (split to api-atoms-pipeline.ts) ---
+
+export {
+  applyAtomFixSaved,
+  getAtomCoverage,
+  getAtomFixStatus,
+  getAtomPipelineSummary,
+  getAtomStructuralChecks,
+  getAtomValidationResults,
+  getAtomValidationStatus,
+  getSavedStructuralChecks,
+  retryAtomFixFailed,
+  startAtomFix,
+  startAtomValidation,
+} from "./api-atoms-pipeline";
+
+// --- Course Sync API (used by atom sync tab) ---
+
+export async function getCourseSyncPreview(
+  subjectId: string,
+  params: { entities: string[]; environment: string },
+): Promise<CourseSyncPreview> {
+  return fetchAPI<CourseSyncPreview>(
+    `/subjects/${subjectId}/sync/preview`,
+    { method: "POST", body: JSON.stringify(params) },
+  );
+}
+
+export async function executeCourseSyncAPI(
+  subjectId: string,
+  params: { entities: string[]; environment: string; confirm: boolean },
+): Promise<CourseSyncResult> {
+  return fetchAPI<CourseSyncResult>(
+    `/subjects/${subjectId}/sync/execute`,
+    { method: "POST", body: JSON.stringify(params) },
+    { direct: true },
+  );
+}
+
+export async function getCourseSyncDiff(
+  subjectId: string, environment: string = "local",
+): Promise<CourseSyncDiff> {
+  return fetchAPI<CourseSyncDiff>(
+    `/subjects/${subjectId}/sync/diff?environment=${environment}`,
   );
 }

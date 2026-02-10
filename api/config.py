@@ -12,6 +12,7 @@ from pydantic_settings import BaseSettings
 # Re-export paths from app.utils.paths for convenience
 # These are imported and re-exported for use by API modules
 from app.utils.paths import (  # noqa: F401
+    ATOM_VALIDATION_RESULTS_DIR,
     ATOMS_DIR,
     DATA_DIR,
     PRUEBAS_ALTERNATIVAS_DIR,

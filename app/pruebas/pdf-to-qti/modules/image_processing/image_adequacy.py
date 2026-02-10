@@ -200,7 +200,7 @@ Be conservative - if you suspect the images might be partial (like just a small 
             model="gpt-5.1",
             messages=messages,
             response_format=ImageCompletenessAssessment,
-            reasoning_effort="high",
+            reasoning_effort="low",  # simple completeness assessment
         )
 
         assessment = response.choices[0].message.parsed

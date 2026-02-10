@@ -80,7 +80,7 @@ Example of what to keep:
                 {"role": "user", "content": prompt},
             ],
             response_format=FilteredImages,
-            reasoning_effort="high",
+            reasoning_effort="low",  # simple binary keep/discard decision
         )
 
         result = response.choices[0].message.parsed

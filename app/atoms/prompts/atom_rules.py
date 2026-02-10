@@ -26,7 +26,7 @@ ATOM_GENERATION_RULES = """
      poder justificarse con referencia explícita al estándar.
 3. Granularidad atómica: cada átomo = una sola intención cognitiva.
 4. Mínimo 1 criterio_atomico por átomo.
-5. 1-3 ejemplos_conceptuales por átomo (NO ejercicios completos).
+5. 1-4 ejemplos_conceptuales por átomo (NO ejercicios completos).
 6. NO usar LaTeX; usar texto plano para notación matemática.
 7. "tipo_atomico" debe ser uno de: concepto, procedimiento, representacion,
    argumentacion, modelizacion, concepto_procedimental.

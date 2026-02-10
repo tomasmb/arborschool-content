@@ -160,6 +160,40 @@ def decode_data_url(data_url: str) -> Any | None:
         return None
 
 
+def build_images_section(
+    images: list[Any],
+    image_urls: list[str] | None,
+    action_verb: str = "validación visual",
+) -> str:
+    """Build the images context string appended to LLM prompts.
+
+    Centralises the pattern that was previously duplicated across
+    ``enhancer.py`` and ``validator.py``.
+
+    Args:
+        images: Successfully loaded PIL Image objects.
+        image_urls: Original URL list (used for the "failed to load" case).
+        action_verb: Short description of how the images will be used.
+
+    Returns:
+        A context string for the prompt, or ``""`` if no images.
+    """
+    if images:
+        return (
+            f"IMÁGENES: {len(images)} imagen(es) adjuntas para "
+            f"{action_verb}. "
+            "Examina las imágenes cuidadosamente para verificar "
+            "que son correctas, legibles y relevantes para la pregunta."
+        )
+    if image_urls:
+        return (
+            f"IMÁGENES: Se detectaron {len(image_urls)} imagen(es) "
+            "en el XML pero no se pudieron cargar. "
+            "Valida basándote solo en el texto."
+        )
+    return ""
+
+
 def load_images_from_urls(image_urls: list[str]) -> list[Any]:
     """Load images from URLs (HTTP, HTTPS, or data URLs).
 

@@ -155,7 +155,18 @@ class PipelineRunner:
 
     def _cmd_atoms_gen(self, params: dict[str, Any]) -> list[str]:
         """Build command for atoms generation."""
-        return ["python", "-m", "app.atoms.scripts.run_single_standard"]
+        cmd = ["python", "-m", "app.atoms.scripts.generate_all_atoms"]
+        if params.get("eje"):
+            cmd.extend(["--eje", params["eje"]])
+        if params.get("standard_ids"):
+            ids = [
+                s.strip()
+                for s in params["standard_ids"].split(",")
+                if s.strip()
+            ]
+            if ids:
+                cmd.extend(["--standard-ids"] + ids)
+        return cmd
 
     def _cmd_pdf_split(self, params: dict[str, Any]) -> list[str]:
         """Build command for PDF splitting."""
