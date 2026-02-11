@@ -1,13 +1,7 @@
 """Atom question generation pipeline orchestrator.
 
-Sequences all 11 phases (0-10) from the v3.1 spec, connecting
-enrichment, planning, generation, validation, feedback, and sync.
-
-Usage:
-    from app.question_generation.pipeline import AtomQuestionPipeline
-
-    pipeline = AtomQuestionPipeline()
-    result = pipeline.run("A-M1-ALG-01-02")
+Sequences phases 0-10 from the v3.1 spec with prerequisite
+enforcement, checkpoint persistence, and image generatability gates.
 """
 
 from __future__ import annotations
@@ -22,12 +16,19 @@ from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
     build_pipeline_meta,
+    check_prerequisites,
     load_atom,
-    load_checkpoint,
+    load_phase_state,
     print_pipeline_header,
     print_pipeline_summary,
     save_checkpoint,
     save_pipeline_results,
+    serialize_items,
+)
+from app.question_generation.image_generator import ImageGenerator
+from app.question_generation.image_types import (
+    can_generate_all,
+    get_unsupported_types,
 )
 from app.question_generation.models import (
     PHASE_GROUPS,
@@ -41,7 +42,10 @@ from app.question_generation.models import (
     PlanSlot,
 )
 from app.question_generation.planner import PlanGenerator, validate_plan
-from app.question_generation.syncer import QuestionSyncer
+from app.question_generation.syncer import (
+    QuestionSyncer,
+    persist_enrichment,
+)
 from app.question_generation.validators import (
     BaseValidator,
     DuplicateGate,
@@ -53,11 +57,10 @@ logger = logging.getLogger(__name__)
 
 
 class AtomQuestionPipeline:
-    """Orchestrates the full per-atom question generation pipeline.
+    """Orchestrates phases 0-10 of the per-atom question pipeline.
 
-    Phases 0-10 as defined in the v3.1 spec. Each phase is a
-    private method that returns a PhaseResult. Gate phases
-    short-circuit the pipeline on failure.
+    Gate phases short-circuit on failure. Prerequisites are enforced
+    when running individual phase groups.
     """
 
     def __init__(
@@ -65,12 +68,7 @@ class AtomQuestionPipeline:
         config: PipelineConfig | None = None,
         client: OpenAIClient | None = None,
     ) -> None:
-        """Initialize the pipeline with all component classes.
-
-        Args:
-            config: Pipeline configuration. Built from defaults if None.
-            client: OpenAI client. Loaded from env if None.
-        """
+        """Initialize with config and LLM client (defaults from env)."""
         self._config = config or PipelineConfig(atom_id="")
         self._client = client or load_default_openai_client()
 
@@ -84,6 +82,7 @@ class AtomQuestionPipeline:
         self._generator = BaseQtiGenerator(
             self._client, self._config.max_retries,
         )
+        self._image_generator = ImageGenerator(self._client)
         self._dedupe_gate = DuplicateGate()
         self._base_validator = BaseValidator(self._client)
         self._final_validator = FinalValidator(self._client)
@@ -93,15 +92,9 @@ class AtomQuestionPipeline:
     def run(self, atom_id: str) -> PipelineResult:
         """Run the pipeline for a single atom.
 
-        Supports running all phases or a specific phase group
-        (set via config.phase). When running a subset, prior
-        phase outputs are loaded from checkpoints on disk.
-
-        Args:
-            atom_id: Target atom identifier.
-
-        Returns:
-            PipelineResult with all phase reports and final items.
+        Supports phase groups via config.phase. Prerequisites are
+        enforced: a phase group cannot run unless prior phases
+        completed (checkpoint exists on disk).
         """
         self._config.atom_id = atom_id
         result = PipelineResult(atom_id=atom_id)
@@ -112,55 +105,120 @@ class AtomQuestionPipeline:
 
         print_pipeline_header(atom_id)
 
-        # Phase 0-1 — Inputs + Enrichment
+        # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)
         if ctx is None:
             return result
+
+        # Prerequisite check + state loading when starting late
         enrichment: AtomEnrichment | None = None
-        if end >= 1:
+        plan_slots: list[PlanSlot] | None = None
+        base_items: list[GeneratedItem] | None = None
+
+        if start > 0:
+            ok, missing = check_prerequisites(
+                self._config.phase, output_dir,
+            )
+            if not ok:
+                result.phase_results.append(PhaseResult(
+                    phase_name="prerequisite_check",
+                    success=False, errors=missing,
+                ))
+                return self._finalize(result, output_dir)
+            state = load_phase_state(
+                self._config.phase, output_dir,
+            )
+            enrichment = state.get("enrichment")
+            plan_slots = state.get("plan_slots")
+            base_items = state.get("items")
+
+        # Phase 1 — Enrichment
+        if start <= 1 and end >= 1:
             enrichment = self._phase_1_enrichment(ctx, result)
-        if end <= 1:
+            if enrichment is not None:
+                persist_enrichment(atom_id, enrichment)
             save_checkpoint(output_dir, 1, "enrichment", {
                 "has_enrichment": enrichment is not None,
+                "enrichment_data": (
+                    enrichment.model_dump() if enrichment else None
+                ),
             })
+
+        if end <= 1:
             return self._finalize(result, output_dir)
 
+        # Generatability gate — block if unsupported image types
+        if enrichment and enrichment.required_image_types:
+            if not can_generate_all(enrichment.required_image_types):
+                unsupported = get_unsupported_types(
+                    enrichment.required_image_types,
+                )
+                result.phase_results.append(PhaseResult(
+                    phase_name="image_generatability_gate",
+                    success=False,
+                    errors=[
+                        f"Atom requires unsupported image types: "
+                        f"{unsupported}. Pipeline blocked.",
+                    ],
+                ))
+                return self._finalize(result, output_dir)
+
         # Phases 2-3 — Plan Generation + Validation
-        plan_slots = self._phase_2_3_plan(ctx, enrichment, result)
-        if plan_slots is None:
-            return result
-        result.total_planned = len(plan_slots)
-        save_checkpoint(output_dir, 3, "plan", {
-            "slots": [s.model_dump() for s in plan_slots],
-        })
+        if start <= 3 and plan_slots is None:
+            plan_slots = self._phase_2_3_plan(
+                ctx, enrichment, result,
+            )
+            if plan_slots is None:
+                return result
+            result.total_planned = len(plan_slots)
+            save_checkpoint(output_dir, 3, "plan", {
+                "slots": [s.model_dump() for s in plan_slots],
+            })
+
         if end <= 3:
             return self._finalize(result, output_dir)
 
-        # Phase 4 — Base QTI Generation
-        base_items = self._phase_4_generation(
-            plan_slots, ctx, enrichment, result,
-        )
-        if base_items is None:
-            return result
-        result.total_generated = len(base_items)
-        save_checkpoint(output_dir, 4, "generation", {
-            "item_count": len(base_items),
-        })
+        # Phase 4 + 4b — Base QTI Generation + Images
+        if start <= 4 and base_items is None:
+            base_items = self._phase_4_generation(
+                plan_slots, ctx, enrichment, result,
+            )
+            if base_items is None:
+                return result
+
+            if any(s.image_required for s in (plan_slots or [])):
+                base_items = self._phase_4b_image_generation(
+                    base_items, plan_slots or [], ctx, result,
+                )
+                if base_items is None:
+                    return result
+
+            result.total_generated = len(base_items)
+            save_checkpoint(output_dir, 4, "generation", {
+                "item_count": len(base_items),
+                "items": serialize_items(base_items),
+            })
+
         if end <= 4:
             return self._finalize(result, output_dir)
 
-        # Phases 5-6 — Dedupe Gate + Base Validation
-        deduped = self._phase_5_dedupe(base_items, result)
+        # Phases 5-6 — Dedupe + Base Validation
+        items = base_items or []
+        deduped = self._phase_5_dedupe(items, result)
         if deduped is None:
             return result
         result.total_passed_dedupe = len(deduped)
-        validated = self._phase_6_base_validation(deduped, ctx, result)
+        validated = self._phase_6_base_validation(
+            deduped, ctx, result,
+        )
         if validated is None:
             return result
         result.total_passed_base_validation = len(validated)
         save_checkpoint(output_dir, 6, "base_validation", {
             "valid_count": len(validated),
+            "items": serialize_items(validated),
         })
+
         if end <= 6:
             return self._finalize(result, output_dir)
 
@@ -173,12 +231,16 @@ class AtomQuestionPipeline:
         result.total_passed_feedback = len(enriched)
         save_checkpoint(output_dir, 8, "feedback", {
             "enriched_count": len(enriched),
+            "items": serialize_items(enriched),
         })
+
         if end <= 8:
             return self._finalize(result, output_dir)
 
         # Phases 9-10 — Final Validation + Sync
-        final = self._phase_9_final_validation(enriched, ctx, result)
+        final = self._phase_9_final_validation(
+            enriched, ctx, result,
+        )
         if final is None:
             return result
         result.total_final = len(final)
@@ -311,6 +373,25 @@ class AtomQuestionPipeline:
 
         return items
 
+    def _phase_4b_image_generation(
+        self,
+        items: list[GeneratedItem],
+        slots: list[PlanSlot],
+        ctx: AtomContext,
+        result: PipelineResult,
+    ) -> list[GeneratedItem] | None:
+        """Phase 4b: Generate and embed images via Gemini + S3."""
+        logger.info("Phase 4b: Image generation for %s", ctx.atom_id)
+        slot_map = {s.slot_index: s for s in slots}
+        phase = self._image_generator.generate_images(
+            items, slot_map, ctx.atom_id,
+        )
+        result.phase_results.append(phase)
+        if not phase.success:
+            return None
+        enriched: list[GeneratedItem] = phase.data["items"]
+        return enriched if enriched else None
+
     def _phase_5_dedupe(
         self,
         items: list[GeneratedItem],
@@ -345,37 +426,27 @@ class AtomQuestionPipeline:
         result: PipelineResult,
     ) -> list[GeneratedItem] | None:
         """Phases 7-8: Feedback enrichment via QuestionPipeline."""
-        logger.info(
-            "Phases 7-8: Feedback enrichment for %d items", len(items),
-        )
-
+        logger.info("Phases 7-8: Feedback for %d items", len(items))
         enriched: list[GeneratedItem] = []
         errors: list[str] = []
-
         for item in items:
-            fb_result = self._feedback_pipeline.process(
+            fb = self._feedback_pipeline.process(
                 question_id=item.item_id,
-                qti_xml=item.qti_xml,
-                output_dir=None,
+                qti_xml=item.qti_xml, output_dir=None,
             )
-
-            if fb_result.success and fb_result.qti_xml_final:
-                item.qti_xml = fb_result.qti_xml_final
+            if fb.success and fb.qti_xml_final:
+                item.qti_xml = fb.qti_xml_final
                 enriched.append(item)
             else:
                 errors.append(
-                    f"{item.item_id}: feedback failed — "
-                    f"{fb_result.stage_failed}: {fb_result.error}",
+                    f"{item.item_id}: {fb.stage_failed}: {fb.error}",
                 )
-
         phase = PhaseResult(
             phase_name="feedback_enrichment",
             success=len(enriched) > 0,
-            data={"enriched_items": enriched},
-            errors=errors,
+            data={"enriched_items": enriched}, errors=errors,
         )
         result.phase_results.append(phase)
-
         return enriched if enriched else None
 
     def _phase_9_final_validation(

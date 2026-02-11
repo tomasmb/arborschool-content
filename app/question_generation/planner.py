@@ -27,6 +27,7 @@ from app.question_generation.prompts.planning import (
     PLAN_GENERATION_PROMPT,
     build_difficulty_distribution,
     build_enrichment_section,
+    build_image_instruction,
 )
 
 logger = logging.getLogger(__name__)
@@ -124,6 +125,12 @@ class PlanGenerator:
         pool_size: int,
     ) -> str:
         """Build the plan generation prompt."""
+        image_types = (
+            enrichment.required_image_types if enrichment else None
+        )
+        image_instruction, image_rules = build_image_instruction(
+            image_types,
+        )
         return PLAN_GENERATION_PROMPT.format(
             atom_id=ctx.atom_id,
             atom_title=ctx.atom_title,
@@ -135,7 +142,11 @@ class PlanGenerator:
             exemplars_section=build_exemplars_section(ctx.exemplars),
             existing_count=ctx.existing_item_count,
             pool_size=pool_size,
-            difficulty_distribution=build_difficulty_distribution(pool_size),
+            difficulty_distribution=build_difficulty_distribution(
+                pool_size,
+            ),
+            image_instruction=image_instruction,
+            image_rules=image_rules,
         )
 
     def _parse_response(self, response: str) -> list[PlanSlot]:

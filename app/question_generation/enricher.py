@@ -19,6 +19,11 @@ from app.question_generation.models import (
     Exemplar,
     PhaseResult,
 )
+from app.question_generation.image_types import (
+    NOT_IMAGES_DESCRIPTION,
+    build_image_type_catalog,
+    filter_valid_types,
+)
 from app.question_generation.prompts.enrichment import (
     ATOM_ENRICHMENT_PROMPT,
     build_exemplars_section,
@@ -151,10 +156,15 @@ class AtomEnricher:
             notas_alcance=", ".join(ctx.notas_alcance) or "N/A",
             standard_ids=", ".join(ctx.standard_ids),
             exemplars_section=build_exemplars_section(exemplars),
+            image_type_catalog=build_image_type_catalog(),
+            not_images_description=NOT_IMAGES_DESCRIPTION,
         )
 
     def _parse_response(self, response: str) -> AtomEnrichment:
         """Parse and validate the LLM enrichment response.
+
+        Validates required_image_types against the known taxonomy,
+        stripping any unrecognized values.
 
         Args:
             response: Raw JSON string from LLM.
@@ -167,7 +177,18 @@ class AtomEnricher:
             ValueError: If JSON doesn't match expected schema.
         """
         data: dict[str, Any] = json.loads(response)
-        return AtomEnrichment.model_validate(data)
+        enrichment = AtomEnrichment.model_validate(data)
+
+        # Filter image types to only recognized values
+        raw_types = enrichment.required_image_types
+        enrichment.required_image_types = filter_valid_types(raw_types)
+        if len(raw_types) != len(enrichment.required_image_types):
+            stripped = set(raw_types) - set(enrichment.required_image_types)
+            logger.warning(
+                "Stripped unrecognized image types: %s", stripped,
+            )
+
+        return enrichment
 
     def _failure_result(self, warning_msg: str) -> PhaseResult:
         """Build a non-blocking failure result.

@@ -145,6 +145,8 @@ class AtomEnrichment(BaseModel):
             "small_integers", "fractions", "mixed", "decimals",
         ],
     )
+    # Image type analysis (Phase 1 enrichment extension)
+    required_image_types: list[str] = Field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -167,6 +169,10 @@ class PlanSlot(BaseModel):
     # Exemplar anchoring (required when exemplars exist)
     target_exemplar_id: str | None = None
     distance_level: str | None = None
+    # Image generation fields (set by planner when atom needs images)
+    image_required: bool = False
+    image_type: str | None = None
+    image_description: str | None = None
 
 
 # ---------------------------------------------------------------------------

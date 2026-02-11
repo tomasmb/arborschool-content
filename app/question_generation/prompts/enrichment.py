@@ -2,6 +2,11 @@
 
 Generates scope guardrails, difficulty rubric, and pedagogical guidance
 for an atom. Uses GPT-5.1 with JSON response format.
+
+Format placeholders:
+- {image_type_catalog}: detailed catalog of available image types
+- {not_images_description}: table prohibition text
+Both injected by the enricher from image_types.py.
 """
 
 # Temperature: 0.0 (deterministic structured output)
@@ -46,6 +51,14 @@ Genera un objeto de enriquecimiento para este átomo con los siguientes campos:
    (gráfica, tabular, simbólica, verbal, etc.).
 7. **numbers_profiles**: Perfiles numéricos apropiados para los ítems
    (small_integers, fractions, mixed, decimals, etc.).
+8. **required_image_types**: Tipos de imagen que las preguntas de este
+   átomo podrían necesitar. Usa SOLO las keys del catálogo siguiente.
+   Si no se necesitan imágenes, devuelve una lista vacía [].
+
+CATÁLOGO DE TIPOS DE IMAGEN DISPONIBLES:
+{image_type_catalog}
+
+IMPORTANTE: {not_images_description}
 </task>
 
 <rules>
@@ -76,7 +89,8 @@ Responde con JSON puro (sin bloques markdown) con esta estructura:
   ],
   "future_targets": ["..."],
   "representation_variants": ["..."],
-  "numbers_profiles": ["small_integers", "fractions", ...]
+  "numbers_profiles": ["small_integers", "fractions", ...],
+  "required_image_types": ["function_graph"]
 }}
 </output_format>
 
