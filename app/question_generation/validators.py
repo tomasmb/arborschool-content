@@ -27,6 +27,7 @@ from app.question_generation.validation_checks import (
     check_paes_structure,
     compute_fingerprint,
     extract_correct_option,
+    extract_qti_skeleton,
     is_skeleton_near_duplicate,
     validate_qti_xml,
 )
@@ -67,8 +68,10 @@ class DuplicateGate:
         seen: dict[str, str] = {}  # fingerprint -> item_id
         passed: list[GeneratedItem] = []
         duplicates: list[str] = []
-        # skeleton -> list of item_ids for structural near-dupe check
+        # Plan skeleton -> item_ids (from planner's operation_skeleton_ast)
         skeleton_items: dict[str, list[str]] = {}
+        # QTI skeleton -> item_ids (derived from generated XML)
+        qti_skeleton_items: dict[str, list[str]] = {}
 
         for item in items:
             fp = compute_fingerprint(item.qti_xml)
@@ -90,17 +93,33 @@ class DuplicateGate:
                 )
                 continue
 
-            # Skeleton near-duplicate check (enforces cap of 2)
+            # Plan skeleton near-duplicate check (cap at 2)
             if is_skeleton_near_duplicate(item, skeleton_items):
                 duplicates.append(
                     f"{item.item_id}: near-duplicate "
-                    f"(same skeleton, >2 in pool)",
+                    f"(same plan skeleton, >2 in pool)",
                 )
-                logger.info("Near-duplicate (skeleton): %s", item.item_id)
+                logger.info("Near-dupe (plan skeleton): %s", item.item_id)
+                continue
+
+            # QTI structural near-duplicate check (cap at 2)
+            qti_skel = extract_qti_skeleton(item.qti_xml)
+            existing_qti = qti_skeleton_items.get(qti_skel, [])
+            if len(existing_qti) >= 2:
+                duplicates.append(
+                    f"{item.item_id}: QTI structural near-duplicate "
+                    f"(>2 items with same structure)",
+                )
+                logger.info(
+                    "Near-dupe (QTI structure): %s", item.item_id,
+                )
                 continue
 
             seen[fp] = item.item_id
-            # Track skeletons for structural comparison
+            # Track both plan and QTI skeletons
+            qti_skeleton_items.setdefault(
+                qti_skel, [],
+            ).append(item.item_id)
             if item.pipeline_meta:
                 sk = item.pipeline_meta.operation_skeleton_ast
                 skeleton_items.setdefault(sk, []).append(item.item_id)

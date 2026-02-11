@@ -1,6 +1,6 @@
 # Question Generation Pipeline -- Gap Analysis & Remaining Work
 
-Status: **Core pipeline complete, pending real-data testing.**
+Status: **All gaps resolved. Pending real-data testing + prompt tuning.**
 Date: 2026-02-11 (updated)
 
 This document lists every known gap, required change, and missing feature
@@ -87,42 +87,46 @@ requires genuine mathematical reasoning.
 
 ---
 
-## 3. Image Generation -- Does Not Exist
+## 3. ~~Image Generation~~ DONE
 
-**Priority: HIGH -- entire capability missing**
+**Priority: HIGH** -- Completed 2026-02-11
 
-No image generation module exists anywhere in the codebase. Some PAES
-questions require diagrams, graphs, geometric figures, or data tables
-as images. Currently:
+Full image generation pipeline built with two-level decision making
+(atom-level type tagging + per-question image decisions).
 
-- The variant pipeline reuses images from source questions
-- The feedback pipeline handles existing image URLs
-- No pipeline can generate new images from scratch
+### What was built
 
-### What needs to be built
+1. **`image_types.py`**: Rich `ImageTypeSpec` dataclass taxonomy with
+   12+ image types (function graphs, geometric figures, statistical
+   charts, etc.). Each type has `name_es`, `description`, `examples`,
+   `when_to_use`, and `generatable` flag. `build_image_type_catalog()`
+   formats the taxonomy for LLM prompt injection.
 
-1. **New module**: `app/question_generation/image_generator.py`
-   - Uses Gemini (the one exception to GPT-5.1 rule) for image generation
-   - Input: description of the image needed (from plan slot or generation phase)
-   - Output: generated image URL (uploaded to S3) or local file path
+2. **`image_generator.py`**: `ImageGenerator` class orchestrating
+   Phase 4b -- uses GPT-5.1 for detailed image descriptions, Gemini
+   (`GeminiImageClient`) for image generation, S3 for upload, and
+   embeds URLs into QTI XML. Excludes failed items gracefully.
 
-2. **Plan slot extension**: Add an `image_required` field to `PlanSlot`
-   that indicates whether the item needs a generated image, and an
-   `image_description` field for the prompt.
+3. **`prompts/image_generation.py`**: Separated prompts --
+   `IMAGE_DESCRIPTION_PROMPT` (GPT-5.1, what to draw) and
+   `GEMINI_IMAGE_GENERATION_PROMPT` (visual style rules).
 
-3. **Generation phase integration**: After Phase 4 generates base QTI,
-   items with `image_required=True` go through image generation before
-   proceeding to Phase 5.
+4. **Model extensions**:
+   - `AtomEnrichment.required_image_types: list[str]` -- atom-level
+     image type tagging during Phase 1 enrichment.
+   - `PlanSlot.image_required`, `.image_type`, `.image_description`
+     -- per-question image decisions during Phase 2 planning.
 
-4. **S3 upload**: Images need to be uploaded to S3 (existing `app/sync/s3_client.py`)
-   and the URL embedded in the QTI XML `<img>` tag.
+5. **Generatability gate**: Pipeline blocks QTI generation if an atom
+   requires image types that cannot be generated (only Gemini-generated
+   types are supported; programmatic SVG / image bank excluded).
 
-### Gemini image generation details
+6. **`GeminiImageClient`** added to `app/llm_clients.py` for native
+   Gemini image generation.
 
-- Model to use: needs research (Gemini's Imagen API or similar)
-- Must produce clean mathematical diagrams suitable for PAES
-- Must handle: coordinate planes, geometric figures, data tables,
-  statistical charts, function graphs
+7. **Enrichment + planning prompts** updated to inject the full image
+   type catalog and `NOT_IMAGES_DESCRIPTION` (tables/data are HTML,
+   not images).
 
 ---
 
@@ -137,14 +141,24 @@ This catches exact duplicates but NOT:
 - Trivial numeric perturbations (5 changed to 6, same structure)
 - Same mathematical structure with different variable names
 
-### What needs to happen
+### What was built
 
-1. Normalize option order before fingerprinting (sort choices
-   alphabetically or by their text content).
-2. Add structural comparison that extracts the mathematical
-   operation pattern and compares skeletons.
-3. Consider adding an LLM-based similarity check for borderline
-   cases (would use GPT-5.1 with `reasoning_effort="low"`).
+1. **Option order normalization**: `_sort_choices()` sorts
+   `<qti-simple-choice>` blocks alphabetically before hashing,
+   so commuted option order produces the same fingerprint.
+2. **Plan skeleton cap**: `is_skeleton_near_duplicate()` limits items
+   per planner-assigned `operation_skeleton_ast` to 2 per pool.
+3. **QTI structural skeleton**: `extract_qti_skeleton()` derives a
+   structural pattern from the actual generated QTI XML (numbers
+   replaced with `N`, tags stripped, normalized). `DuplicateGate`
+   caps items sharing the same QTI skeleton at 2, catching items
+   with identical mathematical structure but different numbers.
+4. **Numeric signature**: `compute_numeric_signature()` hashes the
+   sorted numeric values from QTI content, available for distance
+   comparisons.
+
+LLM-based similarity for borderline cases deferred to prompt-tuning
+phase (gap #8) -- the structural checks cover the most common cases.
 
 ---
 
@@ -156,14 +170,21 @@ Current `_check_exemplar_copy()` only detects identical fingerprints.
 The spec (section 3.2) requires items to be "sufficiently far" from
 exemplars -- not just non-identical.
 
-### What needs to happen
+### What was built
 
-1. Implement structural distance calculation between generated item
-   and exemplar (compare operation skeletons, numeric profiles,
-   context types).
-2. Use the `distance_level` field from `PlanSlot` (near/medium/far)
-   to set the threshold.
-3. Consider using an LLM-based comparison for nuanced cases.
+`check_exemplar_distance()` now enforces graduated thresholds
+based on `distance_level` from `PlanSlot`:
+
+- **"near"**: reject only identical fingerprints (lenient -- item
+  should resemble the exemplar in style, just not be a copy).
+- **"medium"**: also reject items with the same QTI structural
+  skeleton (numbers replaced with N, via `is_qti_structurally_similar`).
+- **"far"**: also reject items sharing the same numeric signature
+  (via `compute_numeric_signature`), ensuring genuine difference.
+- **None/unset**: behaves like "near" for backward compatibility.
+
+LLM-based comparison for nuanced cases deferred to prompt-tuning
+phase (gap #8).
 
 ---
 
@@ -194,13 +215,21 @@ The pipeline saves results to disk after completion, but cannot
 resume from a failed phase. If Phase 7 fails after Phase 4 generated
 good items, the entire pipeline must re-run from scratch.
 
-### What needs to happen
+### What was built
 
-1. Save intermediate phase results to disk after each phase completes.
-2. On pipeline start, check for existing phase outputs in the
-   output directory.
-3. Skip phases whose outputs already exist and are valid.
-4. Add a `--resume` flag to the CLI.
+1. **Checkpoints**: `save_checkpoint()` persists phase results to
+   disk after each phase completes (phases 1, 3, 4, 6, 8).
+2. **Checkpoint loading**: `load_checkpoint()` and `load_phase_state()`
+   reconstruct enrichment, plan slots, and items from disk.
+3. **`--resume` flag**: CLI flag in `run_generation.py`, stored in
+   `PipelineConfig.resume`.
+4. **Auto-skip in `pipeline.py`**: When `--resume` and `--phase all`,
+   `find_resume_phase_group()` scans checkpoints, finds the highest
+   completed phase, and sets `start` to the next phase group.
+   Prerequisites are validated and prior state is loaded from
+   checkpoints before the resumed phase begins.
+5. **Per-phase resume**: Running a specific phase group (e.g.
+   `--phase plan`) already checks prerequisites and loads state.
 
 ---
 
@@ -271,17 +300,43 @@ pipeline in the API, and the CLI had no way to run individual phases.
 
 ---
 
+## 11. ~~Sequential Phase Enforcement + Frontend Gating~~ DONE
+
+**Priority: MEDIUM** -- Completed 2026-02-11
+
+Pipeline phases were not enforced as sequential -- any phase could be
+run regardless of whether its prerequisites had completed.
+
+### What was built
+
+1. **`PHASE_PREREQUISITES`** mapping in `helpers.py`: defines which
+   checkpoint files must exist before each phase group can run.
+2. **`check_prerequisites()`**: validates required checkpoints exist
+   on disk before allowing a phase to start.
+3. **`load_phase_state()`**: loads `AtomEnrichment`, `list[PlanSlot]`,
+   or `list[GeneratedItem]` from checkpoint files when resuming.
+4. **`get_last_completed_phase()`**: scans checkpoint directory and
+   returns the highest phase number, exposed via the atoms API as
+   `AtomBrief.last_completed_phase`.
+5. **Frontend phase gating**: `PhaseControls` in `GenerationTab.tsx`
+   disables buttons whose prerequisite phase hasn't completed. Shows
+   a lock icon and "Complete the previous phase first" tooltip.
+   "Enrich" (phase 1) is always enabled.
+
+---
+
 ## Summary: Prioritized Work Items
 
 | # | Item | Priority | Effort | Status |
 |---|---|---|---|---|
 | 1 | Switch LLM from Gemini to GPT-5.1 | HIGH | Small | DONE |
 | 2 | Implement solvability check (Phase 6) | HIGH | Medium | DONE |
-| 3 | Build image generation module | HIGH | Large | Excluded (not in scope) |
-| 4 | Improve near-duplicate detection | MEDIUM | Medium | DONE |
-| 5 | Implement exemplar distance checking | MEDIUM | Medium | DONE |
+| 3 | Build image generation module | HIGH | Large | DONE |
+| 4 | Improve near-duplicate detection (QTI skeleton) | MEDIUM | Medium | DONE |
+| 5 | Exemplar distance with distance_level thresholds | MEDIUM | Medium | DONE |
 | 6 | Populate question_set_id in sync | MEDIUM | Small | DONE |
-| 7 | Add pipeline resume support | LOW | Medium | DONE |
-| 8 | Prompt tuning after real testing | LOW | Ongoing | Excluded (iterative) |
+| 7 | Pipeline resume (--resume wired to pipeline.py) | LOW | Medium | DONE |
+| 8 | Prompt tuning after real testing | LOW | Ongoing | Pending (iterative) |
 | 9 | Frontend: question generation page | HIGH | Large | DONE |
 | 10 | API + CLI: pipeline registration & phases | HIGH | Medium | DONE |
+| 11 | Sequential phase enforcement + frontend gating | MEDIUM | Medium | DONE |

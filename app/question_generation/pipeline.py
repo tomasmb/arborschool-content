@@ -17,6 +17,7 @@ from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
     build_pipeline_meta,
     check_prerequisites,
+    find_resume_phase_group,
     load_atom,
     load_phase_state,
     print_pipeline_header,
@@ -103,6 +104,16 @@ class AtomQuestionPipeline:
             self._config.phase, (0, 10),
         )
 
+        # Resume: detect completed phases and skip ahead
+        eff_phase = self._config.phase
+        if self._config.resume and start == 0:
+            rg = find_resume_phase_group(output_dir)
+            if rg:
+                eff_phase, start = rg, PHASE_GROUPS[rg][0]
+                logger.info(
+                    "Resuming: '%s' (phase %d)", rg, start,
+                )
+
         print_pipeline_header(atom_id)
 
         # Phase 0 — Inputs (always runs, no LLM)
@@ -117,7 +128,7 @@ class AtomQuestionPipeline:
 
         if start > 0:
             ok, missing = check_prerequisites(
-                self._config.phase, output_dir,
+                eff_phase, output_dir,
             )
             if not ok:
                 result.phase_results.append(PhaseResult(
@@ -125,9 +136,7 @@ class AtomQuestionPipeline:
                     success=False, errors=missing,
                 ))
                 return self._finalize(result, output_dir)
-            state = load_phase_state(
-                self._config.phase, output_dir,
-            )
+            state = load_phase_state(eff_phase, output_dir)
             enrichment = state.get("enrichment")
             plan_slots = state.get("plan_slots")
             base_items = state.get("items")
@@ -153,13 +162,10 @@ class AtomQuestionPipeline:
                 unsupported = get_unsupported_types(
                     enrichment.required_image_types,
                 )
+                err = f"Unsupported image types: {unsupported}"
                 result.phase_results.append(PhaseResult(
                     phase_name="image_generatability_gate",
-                    success=False,
-                    errors=[
-                        f"Atom requires unsupported image types: "
-                        f"{unsupported}. Pipeline blocked.",
-                    ],
+                    success=False, errors=[err],
                 ))
                 return self._finalize(result, output_dir)
 
@@ -223,9 +229,7 @@ class AtomQuestionPipeline:
             return self._finalize(result, output_dir)
 
         # Phases 7-8 — Feedback Enrichment
-        enriched = self._phase_7_8_feedback(
-            validated, output_dir, result,
-        )
+        enriched = self._phase_7_8_feedback(validated, result)
         if enriched is None:
             return result
         result.total_passed_feedback = len(enriched)
@@ -422,7 +426,6 @@ class AtomQuestionPipeline:
     def _phase_7_8_feedback(
         self,
         items: list[GeneratedItem],
-        output_dir: Path,
         result: PipelineResult,
     ) -> list[GeneratedItem] | None:
         """Phases 7-8: Feedback enrichment via QuestionPipeline."""
@@ -438,9 +441,7 @@ class AtomQuestionPipeline:
                 item.qti_xml = fb.qti_xml_final
                 enriched.append(item)
             else:
-                errors.append(
-                    f"{item.item_id}: {fb.stage_failed}: {fb.error}",
-                )
+                errors.append(f"{item.item_id}: {fb.stage_failed}: {fb.error}")
         phase = PhaseResult(
             phase_name="feedback_enrichment",
             success=len(enriched) > 0,
