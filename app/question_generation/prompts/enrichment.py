@@ -51,9 +51,27 @@ Genera un objeto de enriquecimiento para este átomo con los siguientes campos:
    (gráfica, tabular, simbólica, verbal, etc.).
 7. **numbers_profiles**: Perfiles numéricos apropiados para los ítems
    (small_integers, fractions, mixed, decimals, etc.).
-8. **required_image_types**: Tipos de imagen que las preguntas de este
-   átomo podrían necesitar. Usa SOLO las keys del catálogo siguiente.
-   Si no se necesitan imágenes, devuelve una lista vacía [].
+8. **required_image_types**: Tipos de imagen IMPRESCINDIBLES para evaluar
+   este átomo. Devuelve [] salvo que sea IMPOSIBLE crear preguntas válidas
+   sin contenido visual. Usa SOLO keys del catálogo más abajo.
+
+PRINCIPIO DE MINIMALIDAD DE IMÁGENES:
+Menos imágenes = mejor. La lista vacía [] es el valor por defecto.
+Solo agrega un tipo si el átomo NO PUEDE evaluarse correctamente sin él.
+
+NECESITAN imágenes (ejemplos de átomos):
+- Interpretar o analizar gráficos de funciones → function_graph
+- Transformaciones geométricas (reflexión, rotación) → geometric_figure
+- Lectura de gráficos estadísticos (torta, barras, boxplot) → statistical_chart
+- Ubicar o comparar valores en recta numérica → number_line
+
+NO necesitan imágenes (devuelve []):
+- Factorización, productos notables, expresiones algebraicas
+- Resolución de ecuaciones e inecuaciones
+- Probabilidades y combinatoria
+- Porcentajes, razones y proporciones
+- Potencias, raíces, logaritmos
+- Sucesiones y series numéricas
 
 CATÁLOGO DE TIPOS DE IMAGEN DISPONIBLES:
 {image_type_catalog}
@@ -90,7 +108,7 @@ Responde con JSON puro (sin bloques markdown) con esta estructura:
   "future_targets": ["..."],
   "representation_variants": ["..."],
   "numbers_profiles": ["small_integers", "fractions", ...],
-  "required_image_types": ["function_graph"]
+  "required_image_types": []
 }}
 </output_format>
 
