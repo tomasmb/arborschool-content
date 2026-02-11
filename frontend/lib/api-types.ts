@@ -48,6 +48,8 @@ export interface AtomBrief {
   titulo: string;
   question_set_count: number;
   has_lesson: boolean;
+  /** Highest pipeline phase completed (null = never ran). */
+  last_completed_phase: number | null;
 }
 
 export interface TestBrief {

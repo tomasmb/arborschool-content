@@ -241,6 +241,59 @@ class OpenAIClient:
         return content
 
 
+# ---------------------------------------------------------------------------
+# Gemini Image Generation (uses google-genai SDK)
+# ---------------------------------------------------------------------------
+
+# Default model for image generation (fast and cost-effective)
+_IMAGE_MODEL = "gemini-2.5-flash-image"
+
+
+class GeminiImageClient:
+    """Client for Gemini image generation using the google-genai SDK.
+
+    Uses the newer google.genai SDK which supports native image
+    generation via response_modalities=['TEXT', 'IMAGE'].
+    """
+
+    def __init__(
+        self, api_key: str, model: str = _IMAGE_MODEL,
+    ) -> None:
+        from google import genai as google_genai
+
+        self._client = google_genai.Client(api_key=api_key)
+        self._model = model
+
+    def generate_image(self, prompt: str) -> bytes | None:
+        """Generate an image from a text prompt.
+
+        Args:
+            prompt: Detailed description of the image to generate.
+
+        Returns:
+            Raw PNG bytes if generation succeeded, None otherwise.
+        """
+        from google.genai import types as genai_types
+
+        response = self._client.models.generate_content(
+            model=self._model,
+            contents=[prompt],
+            config=genai_types.GenerateContentConfig(
+                response_modalities=["TEXT", "IMAGE"],
+            ),
+        )
+
+        # Extract image data from response parts
+        if not response.candidates:
+            return None
+
+        for part in response.parts:
+            if part.inline_data is not None:
+                return part.inline_data.data
+
+        return None
+
+
 ENV_API_KEY = "GEMINI_API_KEY"
 
 
@@ -381,3 +434,26 @@ def load_default_openai_client(
             "Environment variable OPENAI_API_KEY is required."
         )
     return OpenAIClient(api_key=api_key, model=model)
+
+
+def load_default_gemini_image_client(
+    model: str = _IMAGE_MODEL,
+) -> GeminiImageClient:
+    """Construct a `GeminiImageClient` from the app `.env`.
+
+    Expects ``GEMINI_API_KEY`` to be defined.
+
+    Parameters
+    ----------
+    model:
+        Gemini image model (default ``gemini-2.5-flash-image``).
+    """
+    load_dotenv()
+    api_key = os.getenv(ENV_API_KEY)
+    if not api_key:
+        msg = (
+            f"Environment variable {ENV_API_KEY} is required "
+            f"for Gemini image generation."
+        )
+        raise RuntimeError(msg)
+    return GeminiImageClient(api_key=api_key, model=model)
