@@ -27,6 +27,16 @@ type ModalState =
   | "failed"
   | "error";
 
+/** Label overrides for common parameter keys */
+const PARAM_LABELS: Record<string, string> = {
+  atom_id: "Atom",
+  phase: "Phase",
+  test_id: "Test",
+  pool_size: "Pool Size",
+  dry_run: "Dry Run",
+  variants_per_question: "Variants / Question",
+};
+
 interface GeneratePipelineModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -35,6 +45,8 @@ interface GeneratePipelineModalProps {
   pipelineName: string;
   pipelineDescription: string;
   params: Record<string, unknown>;
+  /** Optional display labels for param values (e.g. atom title) */
+  paramLabels?: Record<string, string>;
 }
 
 /**
@@ -49,6 +61,7 @@ export function GeneratePipelineModal({
   pipelineName,
   pipelineDescription,
   params,
+  paramLabels,
 }: GeneratePipelineModalProps) {
   const [state, setState] = useState<ModalState>("estimating");
   const [estimate, setEstimate] = useState<CostEstimate | null>(null);
@@ -196,9 +209,15 @@ export function GeneratePipelineModal({
             </div>
           )}
 
-          {/* Confirm state - show cost estimate */}
+          {/* Confirm state - show params + cost estimate */}
           {state === "confirm" && estimate && (
             <div className="space-y-4">
+              {/* Parameters summary */}
+              <ParamsSummary
+                params={params}
+                paramLabels={paramLabels}
+              />
+
               <div className="p-4 bg-background border border-border rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
                   <DollarSign className="w-5 h-5 text-warning" />
@@ -362,6 +381,55 @@ export function GeneratePipelineModal({
             </button>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+
+// ---------------------------------------------------------------------------
+// Parameters summary (shows what the user is about to run)
+// ---------------------------------------------------------------------------
+
+function ParamsSummary({
+  params,
+  paramLabels,
+}: {
+  params: Record<string, unknown>;
+  paramLabels?: Record<string, string>;
+}) {
+  const entries = Object.entries(params).filter(
+    ([, v]) => v !== undefined && v !== null && v !== "",
+  );
+
+  if (entries.length === 0) return null;
+
+  return (
+    <div className="p-4 bg-background border border-border rounded-lg">
+      <h3 className="text-sm font-medium mb-2">
+        Run Configuration
+      </h3>
+      <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+        {entries.map(([key, value]) => {
+          const label =
+            PARAM_LABELS[key] ||
+            key.replace(/_/g, " ").replace(/\b\w/g, (c) =>
+              c.toUpperCase(),
+            );
+          const display =
+            paramLabels?.[key] || String(value);
+
+          return (
+            <div key={key}>
+              <p className="text-text-secondary text-xs">
+                {label}
+              </p>
+              <p className="font-mono truncate" title={display}>
+                {display}
+              </p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
