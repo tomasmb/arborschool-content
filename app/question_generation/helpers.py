@@ -218,6 +218,39 @@ def load_checkpoint(
         return None
 
 
+def get_last_completed_phase(atom_id: str) -> int | None:
+    """Get the highest completed phase for an atom.
+
+    Scans the atom's checkpoint directory for phase files.
+    Returns the highest phase number found, or None if no
+    checkpoints exist. Used by the API to enable/disable
+    frontend phase buttons.
+
+    Args:
+        atom_id: Atom identifier.
+
+    Returns:
+        Highest completed phase number, or None.
+    """
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    ckpt_dir = QUESTION_GENERATION_DIR / atom_id / "checkpoints"
+    if not ckpt_dir.exists():
+        return None
+
+    max_phase: int | None = None
+    for path in ckpt_dir.glob("phase_*_*.json"):
+        # Filename: phase_{num}_{name}.json
+        try:
+            phase_num = int(path.stem.split("_")[1])
+            if max_phase is None or phase_num > max_phase:
+                max_phase = phase_num
+        except (IndexError, ValueError):
+            continue
+
+    return max_phase
+
+
 def check_prerequisites(
     phase_group: str,
     output_dir: Path,

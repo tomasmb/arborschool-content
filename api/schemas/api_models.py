@@ -69,8 +69,20 @@ class AtomBrief(BaseModel):
     standard_ids: list[str]
     tipo_atomico: str
     titulo: str
-    question_set_count: int = Field(0, description="Number of questions in question set")
-    has_lesson: bool = Field(False, description="Whether lesson exists")
+    question_set_count: int = Field(
+        0, description="Number of questions in question set",
+    )
+    has_lesson: bool = Field(
+        False, description="Whether lesson exists",
+    )
+    last_completed_phase: int | None = Field(
+        None,
+        description=(
+            "Highest pipeline phase completed (1=enrichment, "
+            "3=plan, 4=generation, 6=validation, 8=feedback). "
+            "None if pipeline never ran."
+        ),
+    )
 
 
 class AtomDetail(BaseModel):

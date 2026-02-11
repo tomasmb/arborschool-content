@@ -9,47 +9,56 @@ import {
   Circle,
   ChevronDown,
   ChevronRight,
+  Lock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AtomBrief } from "@/lib/api";
 
-// Phase groups matching backend PHASE_GROUPS
+// Phase groups matching backend PHASE_GROUPS + PHASE_PREREQUISITES.
+// requiredPhase: the minimum last_completed_phase needed to enable
+// this button (null = always enabled, i.e. "enrich").
 const PHASES = [
   {
     id: "enrich",
     label: "Enrich",
     phases: "0-1",
     description: "Scope guardrails + difficulty rubric",
+    requiredPhase: null,
   },
   {
     id: "plan",
     label: "Plan",
     phases: "2-3",
     description: "Diverse item specs + plan validation",
+    requiredPhase: 1,
   },
   {
     id: "generate",
     label: "Generate QTI",
     phases: "4",
     description: "Base QTI 3.0 XML items",
+    requiredPhase: 3,
   },
   {
     id: "validate",
     label: "Validate",
     phases: "5-6",
     description: "Dedup, XSD, solvability, PAES checks",
+    requiredPhase: 4,
   },
   {
     id: "feedback",
     label: "Feedback",
     phases: "7-8",
     description: "Per-option feedback + worked solutions",
+    requiredPhase: 6,
   },
   {
     id: "finalize",
     label: "Finalize & Sync",
     phases: "9-10",
     description: "Final validation + DB sync",
+    requiredPhase: 8,
   },
 ] as const;
 
@@ -315,6 +324,7 @@ function AtomRow({
           <td colSpan={5} className="p-0">
             <PhaseControls
               atomId={atom.id}
+              lastCompletedPhase={atom.last_completed_phase}
               onRunPhase={onRunPhase}
             />
           </td>
@@ -385,11 +395,22 @@ function ActionBtn({
 
 function PhaseControls({
   atomId,
+  lastCompletedPhase,
   onRunPhase,
 }: {
   atomId: string;
+  lastCompletedPhase: number | null;
   onRunPhase: (atomId: string, phase: string) => void;
 }) {
+  /** True when the phase's prerequisite has been completed. */
+  const isUnlocked = (
+    requiredPhase: number | null,
+  ): boolean => {
+    if (requiredPhase === null) return true;
+    if (lastCompletedPhase === null) return false;
+    return lastCompletedPhase >= requiredPhase;
+  };
+
   return (
     <div className="px-6 py-4 border-b border-border">
       <div className="flex items-center justify-between mb-3">
@@ -409,30 +430,58 @@ function PhaseControls({
         </button>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-        {PHASES.map((phase, idx) => (
-          <button
-            key={phase.id}
-            onClick={() => onRunPhase(atomId, phase.id)}
-            className={cn(
-              "flex items-center gap-2 px-3 py-2 text-left group",
-              "bg-surface border border-border rounded-md",
-              "hover:border-accent/30 transition-colors",
-            )}
-          >
-            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-accent/10 text-accent text-xs font-semibold flex-shrink-0">
-              {idx + 1}
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="text-xs font-medium group-hover:text-accent transition-colors">
-                {phase.label}
+        {PHASES.map((phase, idx) => {
+          const unlocked = isUnlocked(phase.requiredPhase);
+          return (
+            <button
+              key={phase.id}
+              disabled={!unlocked}
+              onClick={() => onRunPhase(atomId, phase.id)}
+              title={
+                unlocked
+                  ? phase.description
+                  : "Complete the previous phase first"
+              }
+              className={cn(
+                "flex items-center gap-2 px-3 py-2 text-left",
+                "border rounded-md transition-colors",
+                unlocked
+                  ? "bg-surface border-border group hover:border-accent/30"
+                  : "bg-surface/50 border-border/50 opacity-50 cursor-not-allowed",
+              )}
+            >
+              <span
+                className={cn(
+                  "flex items-center justify-center w-5 h-5",
+                  "rounded-full text-xs font-semibold flex-shrink-0",
+                  unlocked
+                    ? "bg-accent/10 text-accent"
+                    : "bg-white/5 text-text-secondary",
+                )}
+              >
+                {idx + 1}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div
+                  className={cn(
+                    "text-xs font-medium transition-colors",
+                    unlocked && "group-hover:text-accent",
+                  )}
+                >
+                  {phase.label}
+                </div>
+                <div className="text-[10px] text-text-secondary truncate">
+                  {phase.description}
+                </div>
               </div>
-              <div className="text-[10px] text-text-secondary truncate">
-                {phase.description}
-              </div>
-            </div>
-            <Play className="w-3 h-3 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
-          </button>
-        ))}
+              {unlocked ? (
+                <Play className="w-3 h-3 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
+              ) : (
+                <Lock className="w-3 h-3 text-text-secondary flex-shrink-0" />
+              )}
+            </button>
+          );
+        })}
       </div>
     </div>
   );

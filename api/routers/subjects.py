@@ -37,6 +37,7 @@ from api.schemas.api_models import (
     UnlockStatus,
 )
 from api.services.status_tracker import StatusTracker
+from app.question_generation.helpers import get_last_completed_phase
 from app.utils.paths import TEMARIOS_JSON_DIR
 
 router = APIRouter()
@@ -163,8 +164,9 @@ async def get_atoms(
             standard_ids=atom.get("standard_ids", []),
             tipo_atomico=atom["tipo_atomico"],
             titulo=atom["titulo"],
-            question_set_count=0,  # TODO: implement when question sets exist
-            has_lesson=False,  # TODO: implement when lessons exist
+            question_set_count=0,  # TODO: implement
+            has_lesson=False,  # TODO: implement
+            last_completed_phase=get_last_completed_phase(atom["id"]),
         )
         for atom in atoms_data
     ]
