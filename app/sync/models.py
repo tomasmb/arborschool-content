@@ -139,6 +139,31 @@ class QuestionAtomRow:
     reasoning: str | None = None
 
 
+class QuestionSetStatus(str, Enum):
+    """Matches question_set_status enum in DB."""
+
+    PENDING = "pending"
+    GENERATED = "generated"
+    REVIEWED = "reviewed"
+
+
+@dataclass
+class QuestionSetRow:
+    """Represents a row in the question_sets table.
+
+    Links an atom to its generated question pool with difficulty counts.
+    ID format: "qs-{atom_id}" (per data-model-specification.md).
+    """
+
+    id: str
+    atom_id: str
+    status: QuestionSetStatus = QuestionSetStatus.GENERATED
+    low_count: int = 0
+    medium_count: int = 0
+    high_count: int = 0
+    generated_at: str | None = None
+
+
 @dataclass
 class TestRow:
     """Represents a row in the tests table."""
@@ -175,11 +200,13 @@ class TestQuestionRow:
 class SyncPayload:
     """Container for all data to be synced to the database.
 
-    Note: Subjects are master data managed separately and not synced from the content repo.
+    Note: Subjects are master data managed separately and not synced
+    from the content repo.
     """
 
     standards: list[StandardRow] = field(default_factory=list)
     atoms: list[AtomRow] = field(default_factory=list)
+    question_sets: list[QuestionSetRow] = field(default_factory=list)
     questions: list[QuestionRow] = field(default_factory=list)
     question_atoms: list[QuestionAtomRow] = field(default_factory=list)
     tests: list[TestRow] = field(default_factory=list)
@@ -190,6 +217,7 @@ class SyncPayload:
         return {
             "standards": len(self.standards),
             "atoms": len(self.atoms),
+            "question_sets": len(self.question_sets),
             "questions": len(self.questions),
             "question_atoms": len(self.question_atoms),
             "tests": len(self.tests),

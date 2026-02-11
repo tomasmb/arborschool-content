@@ -12,7 +12,7 @@ import logging
 import re
 from typing import Any
 
-from app.llm_clients import GeminiService
+from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
     AtomContext,
     AtomEnrichment,
@@ -31,6 +31,9 @@ from app.question_generation.prompts.planning import (
 logger = logging.getLogger(__name__)
 
 
+_GENERATION_REASONING = "medium"
+
+
 class BaseQtiGenerator:
     """Generates base QTI 3.0 XML items from plan slots (Phase 4).
 
@@ -40,16 +43,16 @@ class BaseQtiGenerator:
 
     def __init__(
         self,
-        gemini: GeminiService,
+        client: OpenAIClient,
         max_retries: int = 2,
     ) -> None:
         """Initialize the generator.
 
         Args:
-            gemini: Gemini service for LLM calls.
+            client: OpenAI client for LLM calls.
             max_retries: Max retry attempts on failure.
         """
-        self._gemini = gemini
+        self._client = client
         self._max_retries = max_retries
 
     def generate(
@@ -79,10 +82,10 @@ class BaseQtiGenerator:
 
         for attempt in range(self._max_retries + 1):
             try:
-                response = self._gemini.generate_text(
+                response = self._client.generate_text(
                     prompt,
                     response_mime_type="application/json",
-                    temperature=0.0,
+                    reasoning_effort=_GENERATION_REASONING,
                 )
                 items = self._parse_response(
                     response, atom_context.atom_id, plan_slots,

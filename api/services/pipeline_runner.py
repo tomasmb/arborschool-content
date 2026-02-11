@@ -80,7 +80,10 @@ class PipelineRunner:
         job_id = f"{pipeline_id}-{datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:6]}"
 
         # Pipelines that support resume (have item-level processing)
-        resumable_pipelines = {"tagging", "variant_gen", "pdf_to_qti", "pdf_split"}
+        resumable_pipelines = {
+            "tagging", "variant_gen", "pdf_to_qti", "pdf_split",
+            "question_gen",
+        }
 
         job = JobStatus(
             job_id=job_id,
@@ -138,7 +141,7 @@ class PipelineRunner:
             "finalize": self._cmd_finalize,
             "tagging": self._cmd_tagging,
             "variant_gen": self._cmd_variant_gen,
-            # question_sets and lessons are future enhancements
+            "question_gen": self._cmd_question_gen,
         }
 
         builder = commands.get(pipeline_id)
@@ -215,6 +218,22 @@ class PipelineRunner:
             cmd.extend(["--questions", params["question_ids"]])
         if params.get("variants_per_question"):
             cmd.extend(["--variants-per-question", str(params["variants_per_question"])])
+        return cmd
+
+    def _cmd_question_gen(self, params: dict[str, Any]) -> list[str]:
+        """Build command for question generation."""
+        cmd = [
+            "python", "-m",
+            "app.question_generation.scripts.run_generation",
+            "--atom-id", params.get("atom_id", ""),
+        ]
+        phase = params.get("phase", "all")
+        if phase and phase != "all":
+            cmd.extend(["--phase", phase])
+        if params.get("pool_size"):
+            cmd.extend(["--pool-size", str(params["pool_size"])])
+        if params.get("dry_run") == "true":
+            cmd.append("--dry-run")
         return cmd
 
     def _run_subprocess(self, job_id: str, cmd: list[str]) -> None:

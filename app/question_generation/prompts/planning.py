@@ -1,7 +1,7 @@
 """Prompt template for Phase 2 — Plan Generation.
 
 Generates a diverse set of plan slots for an atom's question pool.
-Uses Gemini with JSON response format.
+Uses GPT-5.1 with JSON response format.
 """
 
 # Temperature: 0.0 (deterministic structured output)

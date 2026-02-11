@@ -69,13 +69,13 @@ PIPELINES: dict[str, PipelineDefinition] = {
         requires=["tagged_questions"],
         produces="alternativas/{test}/Q*/approved/*",
     ),
-    "question_sets": PipelineDefinition(
-        id="question_sets",
-        name="Question Sets (PP100)",
-        description="Generate ~60 practice questions per atom",
+    "question_gen": PipelineDefinition(
+        id="question_gen",
+        name="Question Generation",
+        description="Generate PAES-style question pools per atom (PP100)",
         has_ai_cost=True,
         requires=["atoms", "all_tagged"],
-        produces="question_sets/{atom_id}/*.json",
+        produces="question-generation/{atom_id}/*.json",
     ),
     "lessons": PipelineDefinition(
         id="lessons",
@@ -236,7 +236,41 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             default=3,
         ),
     ],
-    # question_sets and lessons are future enhancements (no params yet)
-    "question_sets": [],
+    "question_gen": [
+        PipelineParam(
+            name="atom_id",
+            type="string",
+            label="Atom ID",
+            required=True,
+            description="Single atom ID (e.g. A-M1-ALG-01-02)",
+        ),
+        PipelineParam(
+            name="phase",
+            type="select",
+            label="Phase",
+            required=False,
+            options=[
+                "all", "enrich", "plan", "generate",
+                "validate", "feedback", "finalize",
+            ],
+            description="Phase group to run (default: all)",
+        ),
+        PipelineParam(
+            name="pool_size",
+            type="number",
+            label="Pool Size",
+            required=False,
+            default=9,
+            description="Items per atom (default 9 = 3 per difficulty)",
+        ),
+        PipelineParam(
+            name="dry_run",
+            type="select",
+            label="Dry Run",
+            required=False,
+            options=["false", "true"],
+            description="Skip DB sync if true",
+        ),
+    ],
     "lessons": [],
 }

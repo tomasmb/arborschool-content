@@ -38,6 +38,20 @@ class EnrichmentStatus(str, Enum):
 # Configuration
 # ---------------------------------------------------------------------------
 
+# Phase groups that can be run individually.
+# Each maps to one or more pipeline phases (0-10).
+PHASE_GROUPS: dict[str, tuple[int, int]] = {
+    "all": (0, 10),
+    "enrich": (0, 1),        # Phases 0-1: inputs + enrichment
+    "plan": (2, 3),           # Phases 2-3: plan generation + validation
+    "generate": (4, 4),       # Phase 4: base QTI generation
+    "validate": (5, 6),       # Phases 5-6: dedupe + base validation
+    "feedback": (7, 8),       # Phases 7-8: feedback enrichment
+    "finalize": (9, 10),      # Phases 9-10: final validation + sync
+}
+
+PHASE_GROUP_CHOICES = list(PHASE_GROUPS.keys())
+
 
 @dataclass
 class PipelineConfig:
@@ -51,6 +65,8 @@ class PipelineConfig:
         skip_enrichment: Skip Phase 1 enrichment.
         skip_sync: Skip Phase 10 DB sync.
         dry_run: Run through Phase 9 but skip DB sync.
+        resume: Resume from last checkpoint if available.
+        phase: Phase group to run (default "all"). See PHASE_GROUPS.
     """
 
     atom_id: str
@@ -60,6 +76,8 @@ class PipelineConfig:
     skip_enrichment: bool = False
     skip_sync: bool = False
     dry_run: bool = False
+    resume: bool = False
+    phase: str = "all"
 
 
 # ---------------------------------------------------------------------------
@@ -177,6 +195,9 @@ class PipelineMeta(BaseModel):
     surface_context: str = "pure_math"
     numbers_profile: str = "small_integers"
     fingerprint: str = ""
+    # Exemplar anchoring (carried from PlanSlot for validation)
+    target_exemplar_id: str | None = None
+    distance_level: str | None = None
     validators: ValidatorReports = Field(
         default_factory=ValidatorReports,
     )

@@ -24,6 +24,7 @@ from app.sync.models import (
     DifficultyLevel,
     QuestionAtomRow,
     QuestionRow,
+    QuestionSetRow,
     QuestionSource,
     SyncPayload,
 )
@@ -114,6 +115,9 @@ class QuestionSyncer:
     ) -> SyncPayload:
         """Transform generated items into a SyncPayload.
 
+        Creates the question_set record, sets question_set_id on each
+        question, and builds question-atom links.
+
         Args:
             items: Final validated items.
             atom_id: Atom ID for question-atom links.
@@ -121,14 +125,20 @@ class QuestionSyncer:
         Returns:
             SyncPayload ready for DB upsert.
         """
+        question_set_id = f"qs-{atom_id}"
+        question_set = _build_question_set_row(
+            question_set_id, atom_id, items,
+        )
+
         questions: list[QuestionRow] = []
         question_atoms: list[QuestionAtomRow] = []
 
         for item in items:
-            question_row = self._item_to_question_row(item)
+            question_row = self._item_to_question_row(
+                item, question_set_id,
+            )
             questions.append(question_row)
 
-            # Link question to atom (primary relevance)
             question_atoms.append(
                 QuestionAtomRow(
                     question_id=item.item_id,
@@ -139,6 +149,7 @@ class QuestionSyncer:
             )
 
         return SyncPayload(
+            question_sets=[question_set],
             questions=questions,
             question_atoms=question_atoms,
         )
@@ -146,11 +157,13 @@ class QuestionSyncer:
     def _item_to_question_row(
         self,
         item: GeneratedItem,
+        question_set_id: str,
     ) -> QuestionRow:
         """Convert a GeneratedItem to a QuestionRow.
 
         Args:
             item: The generated item.
+            question_set_id: ID of the parent question set.
 
         Returns:
             DB-compatible QuestionRow.
@@ -163,6 +176,7 @@ class QuestionSyncer:
             source=QuestionSource.QUESTION_SET,
             qti_xml=item.qti_xml,
             difficulty_level=diff_level,
+            question_set_id=question_set_id,
         )
 
     def _execute_sync(
@@ -196,4 +210,37 @@ def _map_difficulty(meta: PipelineMeta) -> DifficultyLevel:
     return _DIFFICULTY_MAP.get(
         meta.difficulty_level.value,
         DifficultyLevel.MEDIUM,
+    )
+
+
+def _build_question_set_row(
+    question_set_id: str,
+    atom_id: str,
+    items: list[GeneratedItem],
+) -> QuestionSetRow:
+    """Build a QuestionSetRow with per-difficulty counts.
+
+    Args:
+        question_set_id: ID for the question set (qs-{atom_id}).
+        atom_id: Atom that owns this question set.
+        items: Final validated items.
+
+    Returns:
+        QuestionSetRow populated with difficulty counts.
+    """
+    from datetime import datetime, timezone
+
+    counts = {"low": 0, "medium": 0, "high": 0}
+    for item in items:
+        if item.pipeline_meta:
+            db_diff = _map_difficulty(item.pipeline_meta)
+            counts[db_diff.value] = counts.get(db_diff.value, 0) + 1
+
+    return QuestionSetRow(
+        id=question_set_id,
+        atom_id=atom_id,
+        low_count=counts["low"],
+        medium_count=counts["medium"],
+        high_count=counts["high"],
+        generated_at=datetime.now(timezone.utc).isoformat(),
     )

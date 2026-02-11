@@ -9,61 +9,29 @@ All phases are MANDATORY and BLOCKING.
 
 from __future__ import annotations
 
-import hashlib
-import importlib.util
+import json
 import logging
-import re
-from pathlib import Path
-from typing import Any
 
-from app.llm_clients import GeminiService
+from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
     Exemplar,
     GeneratedItem,
     PhaseResult,
 )
+from app.question_generation.prompts.validation import (
+    build_solvability_prompt,
+)
+from app.question_generation.validation_checks import (
+    check_exemplar_distance,
+    check_feedback_completeness,
+    check_paes_structure,
+    compute_fingerprint,
+    extract_correct_option,
+    is_skeleton_near_duplicate,
+    validate_qti_xml,
+)
 
 logger = logging.getLogger(__name__)
-
-
-# ---------------------------------------------------------------------------
-# XSD validator import (same approach as question_feedback/enhancer.py)
-# ---------------------------------------------------------------------------
-
-def _import_xsd_validator() -> Any:
-    """Import validate_qti_xml from the pdf-to-qti module."""
-    module_path = (
-        Path(__file__).parent.parent
-        / "pruebas"
-        / "pdf-to-qti"
-        / "modules"
-        / "validation"
-        / "xml_validator.py"
-    )
-    if not module_path.exists():
-        return None
-
-    spec = importlib.util.spec_from_file_location(
-        "xml_validator", module_path,
-    )
-    if spec is None or spec.loader is None:
-        return None
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module
-
-
-_xml_validator_mod = _import_xsd_validator()
-if _xml_validator_mod:
-    _validate_qti_xml = _xml_validator_mod.validate_qti_xml
-else:
-    def _validate_qti_xml(
-        qti_xml: str,
-        validation_endpoint: str | None = None,
-    ) -> dict[str, Any]:
-        """Stub when real validator is unavailable."""
-        return {"success": True, "valid": True, "message": "Skipped"}
 
 
 # ---------------------------------------------------------------------------
@@ -76,6 +44,7 @@ class DuplicateGate:
 
     Uses SHA-256 fingerprinting on normalized QTI content to
     identify duplicates within a batch and against existing inventory.
+    Also detects structural near-duplicates via skeleton comparison.
     """
 
     def run(
@@ -98,9 +67,11 @@ class DuplicateGate:
         seen: dict[str, str] = {}  # fingerprint -> item_id
         passed: list[GeneratedItem] = []
         duplicates: list[str] = []
+        # skeleton -> list of item_ids for structural near-dupe check
+        skeleton_items: dict[str, list[str]] = {}
 
         for item in items:
-            fp = _compute_fingerprint(item.qti_xml)
+            fp = compute_fingerprint(item.qti_xml)
 
             if fp in existing:
                 duplicates.append(
@@ -119,15 +90,25 @@ class DuplicateGate:
                 )
                 continue
 
+            # Skeleton near-duplicate check (enforces cap of 2)
+            if is_skeleton_near_duplicate(item, skeleton_items):
+                duplicates.append(
+                    f"{item.item_id}: near-duplicate "
+                    f"(same skeleton, >2 in pool)",
+                )
+                logger.info("Near-duplicate (skeleton): %s", item.item_id)
+                continue
+
             seen[fp] = item.item_id
-            # Store fingerprint in pipeline_meta if present
+            # Track skeletons for structural comparison
             if item.pipeline_meta:
+                sk = item.pipeline_meta.operation_skeleton_ast
+                skeleton_items.setdefault(sk, []).append(item.item_id)
                 item.pipeline_meta.fingerprint = f"sha256:{fp}"
                 item.pipeline_meta.validators.dedupe = "pass"
             passed.append(item)
 
         success = len(passed) > 0
-
         logger.info(
             "Dedupe gate: %d passed, %d duplicates",
             len(passed), len(duplicates),
@@ -144,34 +125,12 @@ class DuplicateGate:
         )
 
 
-def _compute_fingerprint(qti_xml: str) -> str:
-    """Compute a SHA-256 fingerprint of normalized QTI content.
-
-    Normalizes whitespace and removes identifiers to catch
-    near-duplicates that differ only in formatting or IDs.
-
-    Args:
-        qti_xml: Raw QTI XML string.
-
-    Returns:
-        Hex-encoded SHA-256 hash.
-    """
-    normalized = qti_xml.strip()
-    # Remove XML comments
-    normalized = re.sub(r"<!--.*?-->", "", normalized, flags=re.DOTALL)
-    # Normalize whitespace
-    normalized = re.sub(r"\s+", " ", normalized)
-    # Remove identifier attributes (they're always unique)
-    normalized = re.sub(r'identifier="[^"]*"', "", normalized)
-    # Remove title attributes
-    normalized = re.sub(r'title="[^"]*"', "", normalized)
-
-    return hashlib.sha256(normalized.encode("utf-8")).hexdigest()
-
-
 # ---------------------------------------------------------------------------
 # Phase 6 — Base Validation
 # ---------------------------------------------------------------------------
+
+
+_SOLVABILITY_REASONING = "high"
 
 
 class BaseValidator:
@@ -182,16 +141,16 @@ class BaseValidator:
     - Solvability (LLM-based independent solve)
     - PAES compliance (4 options, 1 correct)
     - Scope compliance (atom-only)
-    - Exemplar non-copy rule
+    - Exemplar non-copy / distance rule
     """
 
-    def __init__(self, gemini: GeminiService) -> None:
+    def __init__(self, client: OpenAIClient) -> None:
         """Initialize the validator.
 
         Args:
-            gemini: Gemini service for solvability checks.
+            client: OpenAI client for solvability checks.
         """
-        self._gemini = gemini
+        self._client = client
 
     def validate(
         self,
@@ -235,6 +194,45 @@ class BaseValidator:
             errors=errors,
         )
 
+    def _check_solvability(self, item: GeneratedItem) -> str | None:
+        """Independently solve the question and verify the answer.
+
+        Sends the QTI XML to GPT-5.1 with high reasoning effort.
+        Compares the model's answer to the declared correct option.
+
+        Args:
+            item: Generated item with QTI XML.
+
+        Returns:
+            Error message if solve fails, None if it matches.
+        """
+        prompt = build_solvability_prompt(item.qti_xml)
+        try:
+            raw = self._client.generate_text(
+                prompt,
+                response_mime_type="application/json",
+                reasoning_effort=_SOLVABILITY_REASONING,
+            )
+            result = json.loads(raw)
+            model_answer = result.get("answer", "").strip().upper()
+        except Exception as exc:
+            logger.warning(
+                "Solvability LLM call failed for %s: %s",
+                item.item_id, exc,
+            )
+            return f"Solvability check LLM error: {exc}"
+
+        declared = extract_correct_option(item.qti_xml)
+        if not declared:
+            return "Could not extract declared correct option from XML"
+        if model_answer != declared.upper():
+            steps = result.get("steps", "no steps provided")
+            return (
+                f"Solvability mismatch: model={model_answer}, "
+                f"declared={declared} — {steps}"
+            )
+        return None
+
     def _validate_single(
         self,
         item: GeneratedItem,
@@ -246,10 +244,12 @@ class BaseValidator:
             List of error messages (empty = passed).
         """
         errors: list[str] = []
-        reports = item.pipeline_meta.validators if item.pipeline_meta else None
+        reports = (
+            item.pipeline_meta.validators if item.pipeline_meta else None
+        )
 
         # Check 1: XSD validity
-        xsd_result = _validate_qti_xml(item.qti_xml)
+        xsd_result = validate_qti_xml(item.qti_xml)
         xsd_ok = xsd_result.get("valid", False)
         if not xsd_ok:
             errors.append(
@@ -260,14 +260,23 @@ class BaseValidator:
             reports.xsd = "pass" if xsd_ok else "fail"
 
         # Check 2: PAES structural compliance
-        paes_errors = _check_paes_structure(item.qti_xml)
-        errors.extend(
-            f"{item.item_id}: {e}" for e in paes_errors
-        )
+        paes_errors = check_paes_structure(item.qti_xml)
+        errors.extend(f"{item.item_id}: {e}" for e in paes_errors)
 
-        # Check 3: Exemplar non-copy
+        # Check 3: Solvability (LLM-based independent solve)
+        solve_err = self._check_solvability(item)
+        if solve_err:
+            errors.append(f"{item.item_id}: {solve_err}")
+            if reports:
+                reports.solve_check = "fail"
+        elif reports:
+            reports.solve_check = "pass"
+
+        # Check 4: Exemplar distance check
         if exemplars:
-            copy_err = _check_exemplar_copy(item.qti_xml, exemplars)
+            copy_err = check_exemplar_distance(
+                item.qti_xml, exemplars, item.pipeline_meta,
+            )
             if copy_err:
                 errors.append(f"{item.item_id}: {copy_err}")
                 if reports:
@@ -293,9 +302,9 @@ class FinalValidator:
     Only items passing final validation are eligible for DB sync.
     """
 
-    def __init__(self, gemini: GeminiService) -> None:
-        self._gemini = gemini
-        self._base_validator = BaseValidator(gemini)
+    def __init__(self, client: OpenAIClient) -> None:
+        self._client = client
+        self._base_validator = BaseValidator(client)
 
     def validate(
         self,
@@ -342,104 +351,10 @@ class FinalValidator:
         item: GeneratedItem,
         exemplars: list[Exemplar] | None,
     ) -> list[str]:
-        """Validate a single enriched item.
-
-        Runs base checks + feedback completeness.
-        """
+        """Validate a single enriched item (base + feedback)."""
         errors = self._base_validator._validate_single(item, exemplars)
 
-        # Additional: check feedback elements exist
-        feedback_errors = _check_feedback_completeness(item.qti_xml)
+        feedback_errors = check_feedback_completeness(item.qti_xml)
         errors.extend(f"{item.item_id}: {e}" for e in feedback_errors)
 
         return errors
-
-
-# ---------------------------------------------------------------------------
-# Shared validation helpers
-# ---------------------------------------------------------------------------
-
-
-def _check_paes_structure(qti_xml: str) -> list[str]:
-    """Check PAES structural compliance (4 options, 1 correct).
-
-    Args:
-        qti_xml: QTI XML to check.
-
-    Returns:
-        List of error messages (empty = passed).
-    """
-    errors: list[str] = []
-
-    # Count choice options
-    choices = re.findall(
-        r"<qti-simple-choice\b", qti_xml,
-    )
-    if len(choices) != 4:
-        errors.append(
-            f"Expected 4 options (A-D), found {len(choices)}",
-        )
-
-    # Check for correct response declaration
-    if "<qti-response-declaration" not in qti_xml:
-        errors.append("Missing qti-response-declaration")
-
-    if "<qti-correct-response" not in qti_xml:
-        errors.append("Missing qti-correct-response")
-
-    return errors
-
-
-def _check_exemplar_copy(
-    qti_xml: str,
-    exemplars: list[Exemplar],
-) -> str | None:
-    """Check that generated item is not a near-copy of any exemplar.
-
-    Uses fingerprint similarity as a rough proxy.
-
-    Args:
-        qti_xml: Generated item XML.
-        exemplars: Reference exemplars.
-
-    Returns:
-        Error message if too similar, None otherwise.
-    """
-    item_fp = _compute_fingerprint(qti_xml)
-
-    for ex in exemplars:
-        ex_fp = _compute_fingerprint(ex.qti_xml)
-        if item_fp == ex_fp:
-            return (
-                f"Item is a near-copy of exemplar {ex.question_id}"
-            )
-
-    return None
-
-
-def _check_feedback_completeness(qti_xml: str) -> list[str]:
-    """Check that enriched QTI contains required feedback elements.
-
-    Required by spec section 7.1:
-    - Per-option feedback
-    - Worked solution
-
-    Args:
-        qti_xml: Enriched QTI XML.
-
-    Returns:
-        List of error messages (empty = complete).
-    """
-    errors: list[str] = []
-
-    # Check for feedback elements (modalFeedback or feedbackInline)
-    has_feedback = (
-        "<qti-modal-feedback" in qti_xml.lower()
-        or "<modalfeedback" in qti_xml.lower()
-        or "feedbackinline" in qti_xml.lower()
-        or "<qti-feedback-inline" in qti_xml.lower()
-    )
-    if not has_feedback:
-        errors.append("Missing per-option feedback in enriched QTI")
-
-    return errors

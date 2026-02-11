@@ -15,7 +15,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from app.llm_clients import GeminiService, load_default_gemini_service
+from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
@@ -23,11 +23,14 @@ from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
     build_pipeline_meta,
     load_atom,
+    load_checkpoint,
     print_pipeline_header,
     print_pipeline_summary,
+    save_checkpoint,
     save_pipeline_results,
 )
 from app.question_generation.models import (
+    PHASE_GROUPS,
     AtomContext,
     AtomEnrichment,
     EnrichmentStatus,
@@ -60,35 +63,39 @@ class AtomQuestionPipeline:
     def __init__(
         self,
         config: PipelineConfig | None = None,
-        gemini: GeminiService | None = None,
+        client: OpenAIClient | None = None,
     ) -> None:
         """Initialize the pipeline with all component classes.
 
         Args:
             config: Pipeline configuration. Built from defaults if None.
-            gemini: Gemini service. Loaded from env if None.
+            client: OpenAI client. Loaded from env if None.
         """
         self._config = config or PipelineConfig(atom_id="")
-        self._gemini = gemini or load_default_gemini_service()
+        self._client = client or load_default_openai_client()
 
         # Component classes (dependency injection)
         self._enricher = AtomEnricher(
-            self._gemini, self._config.max_retries,
+            self._client, self._config.max_retries,
         )
         self._planner = PlanGenerator(
-            self._gemini, self._config.max_retries,
+            self._client, self._config.max_retries,
         )
         self._generator = BaseQtiGenerator(
-            self._gemini, self._config.max_retries,
+            self._client, self._config.max_retries,
         )
         self._dedupe_gate = DuplicateGate()
-        self._base_validator = BaseValidator(self._gemini)
-        self._final_validator = FinalValidator(self._gemini)
+        self._base_validator = BaseValidator(self._client)
+        self._final_validator = FinalValidator(self._client)
         self._feedback_pipeline = QuestionPipeline()
         self._syncer = QuestionSyncer()
 
     def run(self, atom_id: str) -> PipelineResult:
-        """Run the full pipeline for a single atom.
+        """Run the pipeline for a single atom.
+
+        Supports running all phases or a specific phase group
+        (set via config.phase). When running a subset, prior
+        phase outputs are loaded from checkpoints on disk.
 
         Args:
             atom_id: Target atom identifier.
@@ -99,64 +106,98 @@ class AtomQuestionPipeline:
         self._config.atom_id = atom_id
         result = PipelineResult(atom_id=atom_id)
         output_dir = self._get_output_dir(atom_id)
+        start, end = PHASE_GROUPS.get(
+            self._config.phase, (0, 10),
+        )
 
         print_pipeline_header(atom_id)
 
-        # Phase 0 — Inputs
+        # Phase 0-1 — Inputs + Enrichment
         ctx = self._phase_0_inputs(atom_id, result)
         if ctx is None:
             return result
+        enrichment: AtomEnrichment | None = None
+        if end >= 1:
+            enrichment = self._phase_1_enrichment(ctx, result)
+        if end <= 1:
+            save_checkpoint(output_dir, 1, "enrichment", {
+                "has_enrichment": enrichment is not None,
+            })
+            return self._finalize(result, output_dir)
 
-        # Phase 1 — Atom Enrichment (non-blocking)
-        enrichment = self._phase_1_enrichment(ctx, result)
-
-        # Phases 2-3 — Plan Generation + Validation (blocking)
+        # Phases 2-3 — Plan Generation + Validation
         plan_slots = self._phase_2_3_plan(ctx, enrichment, result)
         if plan_slots is None:
             return result
         result.total_planned = len(plan_slots)
+        save_checkpoint(output_dir, 3, "plan", {
+            "slots": [s.model_dump() for s in plan_slots],
+        })
+        if end <= 3:
+            return self._finalize(result, output_dir)
 
-        # Phase 4 — Base QTI Generation (blocking)
+        # Phase 4 — Base QTI Generation
         base_items = self._phase_4_generation(
             plan_slots, ctx, enrichment, result,
         )
         if base_items is None:
             return result
         result.total_generated = len(base_items)
+        save_checkpoint(output_dir, 4, "generation", {
+            "item_count": len(base_items),
+        })
+        if end <= 4:
+            return self._finalize(result, output_dir)
 
-        # Phase 5 — Dedupe Gate (blocking)
+        # Phases 5-6 — Dedupe Gate + Base Validation
         deduped = self._phase_5_dedupe(base_items, result)
         if deduped is None:
             return result
         result.total_passed_dedupe = len(deduped)
-
-        # Phase 6 — Base Validation (blocking)
         validated = self._phase_6_base_validation(deduped, ctx, result)
         if validated is None:
             return result
         result.total_passed_base_validation = len(validated)
+        save_checkpoint(output_dir, 6, "base_validation", {
+            "valid_count": len(validated),
+        })
+        if end <= 6:
+            return self._finalize(result, output_dir)
 
-        # Phases 7-8 — Feedback Enrichment (blocking, reuses QuestionPipeline)
-        enriched = self._phase_7_8_feedback(validated, output_dir, result)
+        # Phases 7-8 — Feedback Enrichment
+        enriched = self._phase_7_8_feedback(
+            validated, output_dir, result,
+        )
         if enriched is None:
             return result
         result.total_passed_feedback = len(enriched)
+        save_checkpoint(output_dir, 8, "feedback", {
+            "enriched_count": len(enriched),
+        })
+        if end <= 8:
+            return self._finalize(result, output_dir)
 
-        # Phase 9 — Final Validation (blocking)
+        # Phases 9-10 — Final Validation + Sync
         final = self._phase_9_final_validation(enriched, ctx, result)
         if final is None:
             return result
         result.total_final = len(final)
         result.final_items = final
-
-        # Phase 10 — DB Sync
         self._phase_10_sync(final, atom_id, result)
 
-        # Save results to disk
+        return self._finalize(result, output_dir)
+
+    def _finalize(
+        self,
+        result: PipelineResult,
+        output_dir: Path,
+    ) -> PipelineResult:
+        """Save results and print summary."""
         save_pipeline_results(output_dir, result)
         print_pipeline_summary(result)
-
-        result.success = result.total_final > 0
+        result.success = result.total_final > 0 or any(
+            p.success for p in result.phase_results
+        )
         return result
 
     # ------------------------------------------------------------------

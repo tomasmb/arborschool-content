@@ -11,7 +11,7 @@ import json
 import logging
 from typing import Any
 
-from app.llm_clients import GeminiService
+from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
     AtomContext,
     AtomEnrichment,
@@ -27,6 +27,9 @@ from app.question_generation.prompts.enrichment import (
 logger = logging.getLogger(__name__)
 
 
+_ENRICHMENT_REASONING = "low"
+
+
 class AtomEnricher:
     """Generates atom enrichment via LLM (Phase 1).
 
@@ -36,16 +39,16 @@ class AtomEnricher:
 
     def __init__(
         self,
-        gemini: GeminiService,
+        client: OpenAIClient,
         max_retries: int = 2,
     ) -> None:
         """Initialize the enricher.
 
         Args:
-            gemini: Gemini service instance for LLM calls.
+            client: OpenAI client for LLM calls.
             max_retries: Maximum retry attempts on failure.
         """
-        self._gemini = gemini
+        self._client = client
         self._max_retries = max_retries
 
     def enrich(
@@ -77,10 +80,10 @@ class AtomEnricher:
             )
 
             try:
-                response = self._gemini.generate_text(
+                response = self._client.generate_text(
                     prompt,
                     response_mime_type="application/json",
-                    temperature=0.0,
+                    reasoning_effort=_ENRICHMENT_REASONING,
                 )
                 enrichment = self._parse_response(response)
 

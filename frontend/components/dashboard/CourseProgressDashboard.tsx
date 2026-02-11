@@ -180,6 +180,33 @@ export function CourseProgressDashboard({
         )}
       </section>
 
+      {/* Question Generation */}
+      {hasAtoms && (
+        <section>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
+              Question Generation
+            </h3>
+          </div>
+          <Link
+            href={`/courses/${courseId}/question-generation`}
+            className="block bg-surface border border-border rounded-lg p-4 hover:border-accent/50 transition-colors group"
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="font-medium text-sm group-hover:text-accent transition-colors">
+                  Question Pools (PP100)
+                </h4>
+                <p className="text-sm text-text-secondary mt-1">
+                  Generate PAES-style question pools per atom
+                </p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-text-secondary group-hover:text-accent transition-colors" />
+            </div>
+          </Link>
+        </section>
+      )}
+
       {/* Tests Table */}
       <section>
         <div className="flex items-center justify-between mb-3">

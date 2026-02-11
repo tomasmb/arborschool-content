@@ -20,7 +20,11 @@ import argparse
 import sys
 from pathlib import Path
 
-from app.question_generation.models import PipelineConfig, PipelineResult
+from app.question_generation.models import (
+    PHASE_GROUP_CHOICES,
+    PipelineConfig,
+    PipelineResult,
+)
 from app.question_generation.pipeline import AtomQuestionPipeline
 from app.utils.logging_config import setup_logging
 
@@ -46,6 +50,8 @@ def main() -> None:
             skip_sync=args.skip_sync,
             dry_run=args.dry_run,
             skip_enrichment=args.skip_enrichment,
+            resume=args.resume,
+            phase=args.phase,
         )
         pipeline = AtomQuestionPipeline(config=config)
         result = pipeline.run(atom_id)
@@ -90,6 +96,16 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--dry-run", action="store_true",
         help="Run through Phase 9 but skip DB sync",
+    )
+    parser.add_argument(
+        "--resume", action="store_true",
+        help="Resume from last checkpoint (skip completed phases)",
+    )
+    parser.add_argument(
+        "--phase",
+        choices=PHASE_GROUP_CHOICES,
+        default="all",
+        help="Run a specific phase group (default: all)",
     )
     parser.add_argument(
         "-v", "--verbose", action="store_true",

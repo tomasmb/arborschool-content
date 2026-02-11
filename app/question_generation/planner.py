@@ -12,7 +12,7 @@ import logging
 from collections import Counter
 from typing import Any
 
-from app.llm_clients import GeminiService
+from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
     AtomContext,
     AtomEnrichment,
@@ -35,21 +35,24 @@ logger = logging.getLogger(__name__)
 MAX_SKELETON_REPETITIONS = 2
 
 
+_PLANNING_REASONING = "medium"
+
+
 class PlanGenerator:
     """Generates a plan of item specifications for an atom (Phase 2)."""
 
     def __init__(
         self,
-        gemini: GeminiService,
+        client: OpenAIClient,
         max_retries: int = 2,
     ) -> None:
         """Initialize the plan generator.
 
         Args:
-            gemini: Gemini service for LLM calls.
+            client: OpenAI client for LLM calls.
             max_retries: Max retry attempts on parse failure.
         """
-        self._gemini = gemini
+        self._client = client
         self._max_retries = max_retries
 
     def generate_plan(
@@ -77,10 +80,10 @@ class PlanGenerator:
 
         for attempt in range(self._max_retries + 1):
             try:
-                response = self._gemini.generate_text(
+                response = self._client.generate_text(
                     prompt,
                     response_mime_type="application/json",
-                    temperature=0.0,
+                    reasoning_effort=_PLANNING_REASONING,
                 )
                 plan_slots = self._parse_response(response)
 

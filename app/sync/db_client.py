@@ -20,6 +20,7 @@ from .models import (
     AtomRow,
     QuestionAtomRow,
     QuestionRow,
+    QuestionSetRow,
     StandardRow,
     SyncPayload,
     TestQuestionRow,
@@ -82,9 +83,7 @@ class DBClient:
     def ensure_schema(self, conn: psycopg.Connection) -> None:
         """Ensure all required columns exist on synced tables.
 
-        Uses ADD COLUMN IF NOT EXISTS so this is safe to call repeatedly.
-        Runs outside the main transaction so schema changes are committed
-        before the data upsert transaction begins.
+        Safe to call repeatedly (ADD COLUMN IF NOT EXISTS).
         """
         with conn.cursor() as cur:
             # Columns added after the initial questions table was created.
@@ -225,6 +224,35 @@ class DBClient:
             )
             affected += cur.rowcount
 
+        return affected
+
+    def upsert_question_sets(
+        self, cur: psycopg.Cursor, question_sets: list[QuestionSetRow],
+    ) -> int:
+        """Upsert question sets to the database."""
+        if not question_sets:
+            return 0
+        affected = 0
+        for qs in question_sets:
+            data = self._row_to_dict(qs)
+            cur.execute(
+                """
+                INSERT INTO question_sets (
+                    id, atom_id, status, low_count,
+                    medium_count, high_count, generated_at)
+                VALUES (
+                    %(id)s, %(atom_id)s, %(status)s, %(low_count)s,
+                    %(medium_count)s, %(high_count)s, %(generated_at)s)
+                ON CONFLICT (id) DO UPDATE SET
+                    status = EXCLUDED.status,
+                    low_count = EXCLUDED.low_count,
+                    medium_count = EXCLUDED.medium_count,
+                    high_count = EXCLUDED.high_count,
+                    generated_at = EXCLUDED.generated_at
+                """,
+                data,
+            )
+            affected += cur.rowcount
         return affected
 
     def upsert_questions(self, cur: psycopg.Cursor, questions: list[QuestionRow]) -> int:
@@ -390,7 +418,6 @@ class DBClient:
     # -------------------------------------------------------------------------
     # Deletion operations
     # -------------------------------------------------------------------------
-
     def delete_atoms(
         self, cur: psycopg.Cursor, atom_ids: list[str],
     ) -> int:
@@ -428,7 +455,6 @@ class DBClient:
     # -------------------------------------------------------------------------
     # Sync operations
     # -------------------------------------------------------------------------
-
     def sync_all(
         self,
         payload: SyncPayload,
@@ -452,6 +478,9 @@ class DBClient:
                 with self.transaction(conn) as cur:
                     results["standards"] = self.upsert_standards(cur, payload.standards)
                     results["atoms"] = self.upsert_atoms(cur, payload.atoms)
+                    results["question_sets"] = self.upsert_question_sets(
+                        cur, payload.question_sets,
+                    )
                     results["tests"] = self.upsert_tests(cur, payload.tests)
                     results["questions"] = self.upsert_questions(cur, payload.questions)
                     results["question_atoms"] = self.upsert_question_atoms(cur, payload.question_atoms)

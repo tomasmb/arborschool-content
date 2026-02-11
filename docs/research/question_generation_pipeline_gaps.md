@@ -1,16 +1,16 @@
 # Question Generation Pipeline -- Gap Analysis & Remaining Work
 
-Status: **Scaffold complete, not production-ready.**
-Date: 2026-02-10
+Status: **Core pipeline complete, pending real-data testing.**
+Date: 2026-02-11 (updated)
 
 This document lists every known gap, required change, and missing feature
 in `app/question_generation/` before the pipeline is ready for real use.
 
 ---
 
-## 1. LLM Client: Switch from Gemini to GPT-5.1
+## 1. ~~LLM Client: Switch from Gemini to GPT-5.1~~ DONE
 
-**Priority: HIGH -- affects 3 files**
+**Priority: HIGH -- affects 3 files** -- Completed 2026-02-11
 
 The pipeline was built using `GeminiService` for Phases 1, 2, and 4.
 Per project decision, **all text generation must use GPT-5.1** via
@@ -53,9 +53,9 @@ response_text = self._client.call_with_images(
 
 ---
 
-## 2. Solvability Check (Phase 6) -- Not Implemented
+## 2. ~~Solvability Check (Phase 6)~~ DONE
 
-**Priority: HIGH -- spec-required validation missing**
+**Priority: HIGH -- spec-required validation missing** -- Completed 2026-02-11
 
 The spec (section 8, Phase 6) requires:
 > "Solvability: independent solve matches declared correct option"
@@ -126,9 +126,9 @@ as images. Currently:
 
 ---
 
-## 4. Near-Duplicate Detection (Phase 5) -- Basic Only
+## 4. ~~Near-Duplicate Detection (Phase 5)~~ DONE
 
-**Priority: MEDIUM**
+**Priority: MEDIUM** -- Completed 2026-02-11
 
 Current implementation uses SHA-256 fingerprinting on normalized XML.
 This catches exact duplicates but NOT:
@@ -148,9 +148,9 @@ This catches exact duplicates but NOT:
 
 ---
 
-## 5. Exemplar Distance Checking -- Fingerprint Only
+## 5. ~~Exemplar Distance Checking~~ DONE
 
-**Priority: MEDIUM**
+**Priority: MEDIUM** -- Completed 2026-02-11
 
 Current `_check_exemplar_copy()` only detects identical fingerprints.
 The spec (section 3.2) requires items to be "sufficiently far" from
@@ -167,9 +167,9 @@ exemplars -- not just non-identical.
 
 ---
 
-## 6. `question_set_id` Not Populated in DB Sync
+## 6. ~~`question_set_id` Not Populated in DB Sync~~ DONE
 
-**Priority: MEDIUM**
+**Priority: MEDIUM** -- Completed 2026-02-11
 
 When syncing to DB, `QuestionRow.question_set_id` is not set. This
 field links questions to their atom's question set, which is needed
@@ -186,9 +186,9 @@ for the PP100 adaptive algorithm to serve questions correctly.
 
 ---
 
-## 7. Pipeline Resume Support -- Not Implemented
+## 7. ~~Pipeline Resume Support~~ DONE
 
-**Priority: LOW**
+**Priority: LOW** -- Completed 2026-02-11
 
 The pipeline saves results to disk after completion, but cannot
 resume from a failed phase. If Phase 7 fails after Phase 4 generated
@@ -223,15 +223,65 @@ iterative refinement based on actual output quality.
 
 ---
 
+## 9. ~~Frontend: Question Generation Page~~ DONE
+
+**Priority: HIGH** -- Completed 2026-02-11
+
+No frontend existed to trigger or monitor question generation.
+
+### What was built
+
+1. **New route**: `frontend/app/courses/[id]/question-generation/page.tsx`
+2. **OverviewTab**: Summary stats (total atoms, generated count, pending),
+   progress bar, clickable atom list with cross-tab navigation.
+3. **GenerationTab**: Filterable atom table (All / Pending / Generated) with
+   per-atom Generate or Regenerate buttons. Expandable rows show individual
+   phase controls (Enrich, Plan, Generate QTI, Validate, Feedback, Finalize).
+4. **ResultsTab**: Atoms grouped by eje, question counts, per-atom
+   Regenerate action on hover.
+5. **QuestionGenTabs**: Tab navigation with status badges.
+6. **Confirmation modal**: `GeneratePipelineModal` updated with a
+   "Run Configuration" summary showing atom name + phase before cost
+   estimate and confirm.
+
+---
+
+## 10. ~~API + CLI: Pipeline Registration & Phase Groups~~ DONE
+
+**Priority: HIGH** -- Completed 2026-02-11
+
+The question generation pipeline was not registered as a runnable
+pipeline in the API, and the CLI had no way to run individual phases.
+
+### What was built
+
+1. **`api/services/pipeline_definitions.py`**: Registered `question_gen`
+   with params `atom_id`, `phase`, `pool_size`, `dry_run`.
+2. **`api/services/pipeline_runner.py`**: Added `_cmd_question_gen()`
+   command builder and registered it in `_build_command()` dispatcher.
+   Added `question_gen` to `resumable_pipelines`.
+3. **`app/question_generation/scripts/run_generation.py`**: Added
+   `--phase` flag (choices: enrich, plan, generate, validate, feedback,
+   finalize, all) and `--resume` flag.
+4. **`app/question_generation/models.py`**: Added `PHASE_GROUPS` dict
+   and `PHASE_GROUP_CHOICES` list. Added `phase` field to
+   `PipelineConfig`.
+5. **`app/question_generation/pipeline.py`**: `run()` respects phase
+   group boundaries, loading checkpoints for prior phases.
+
+---
+
 ## Summary: Prioritized Work Items
 
-| # | Item | Priority | Effort | Files affected |
+| # | Item | Priority | Effort | Status |
 |---|---|---|---|---|
-| 1 | Switch LLM from Gemini to GPT-5.1 | HIGH | Small | enricher, planner, generator, validators, pipeline |
-| 2 | Implement solvability check (Phase 6) | HIGH | Medium | validators.py |
-| 3 | Build image generation module | HIGH | Large | New file + plan slot model + generation integration |
-| 4 | Improve near-duplicate detection | MEDIUM | Medium | validators.py |
-| 5 | Implement exemplar distance checking | MEDIUM | Medium | validators.py |
-| 6 | Populate question_set_id in sync | MEDIUM | Small | syncer.py |
-| 7 | Add pipeline resume support | LOW | Medium | pipeline.py, helpers.py |
-| 8 | Prompt tuning after real testing | LOW | Ongoing | prompts/*.py |
+| 1 | Switch LLM from Gemini to GPT-5.1 | HIGH | Small | DONE |
+| 2 | Implement solvability check (Phase 6) | HIGH | Medium | DONE |
+| 3 | Build image generation module | HIGH | Large | Excluded (not in scope) |
+| 4 | Improve near-duplicate detection | MEDIUM | Medium | DONE |
+| 5 | Implement exemplar distance checking | MEDIUM | Medium | DONE |
+| 6 | Populate question_set_id in sync | MEDIUM | Small | DONE |
+| 7 | Add pipeline resume support | LOW | Medium | DONE |
+| 8 | Prompt tuning after real testing | LOW | Ongoing | Excluded (iterative) |
+| 9 | Frontend: question generation page | HIGH | Large | DONE |
+| 10 | API + CLI: pipeline registration & phases | HIGH | Medium | DONE |

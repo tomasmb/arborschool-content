@@ -1,7 +1,7 @@
 """Prompt template for Phase 1 — Atom Enrichment.
 
 Generates scope guardrails, difficulty rubric, and pedagogical guidance
-for an atom. Uses Gemini with JSON response format.
+for an atom. Uses GPT-5.1 with JSON response format.
 """
 
 # Temperature: 0.0 (deterministic structured output)

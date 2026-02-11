@@ -77,6 +77,8 @@ def build_pipeline_meta(atom_id: str, slot: PlanSlot) -> PipelineMeta:
         operation_skeleton_ast=slot.operation_skeleton_ast,
         surface_context=slot.surface_context,
         numbers_profile=slot.numbers_profile,
+        target_exemplar_id=slot.target_exemplar_id,
+        distance_level=slot.distance_level,
     )
 
 
@@ -139,6 +141,61 @@ def _build_report_dict(result: PipelineResult) -> dict:
             for p in result.phase_results
         ],
     }
+
+
+# ---------------------------------------------------------------------------
+# Checkpoint save / load (resume support)
+# ---------------------------------------------------------------------------
+
+
+def save_checkpoint(
+    output_dir: Path,
+    phase_num: int,
+    phase_name: str,
+    data: dict,
+) -> None:
+    """Save a phase checkpoint to disk.
+
+    Args:
+        output_dir: Pipeline output directory.
+        phase_num: Phase number (0-10).
+        phase_name: Human-readable phase name.
+        data: Serializable data to checkpoint.
+    """
+    ckpt_dir = output_dir / "checkpoints"
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
+    path = ckpt_dir / f"phase_{phase_num}_{phase_name}.json"
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False, default=str)
+    logger.info("Checkpoint saved: %s", path.name)
+
+
+def load_checkpoint(
+    output_dir: Path,
+    phase_num: int,
+    phase_name: str,
+) -> dict | None:
+    """Load a phase checkpoint from disk if it exists.
+
+    Args:
+        output_dir: Pipeline output directory.
+        phase_num: Phase number (0-10).
+        phase_name: Human-readable phase name.
+
+    Returns:
+        Checkpoint data dict, or None if not found.
+    """
+    path = output_dir / "checkpoints" / f"phase_{phase_num}_{phase_name}.json"
+    if not path.exists():
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+        logger.info("Checkpoint loaded: %s", path.name)
+        return data
+    except (json.JSONDecodeError, OSError) as exc:
+        logger.warning("Invalid checkpoint %s: %s", path.name, exc)
+        return None
 
 
 # ---------------------------------------------------------------------------
