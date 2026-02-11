@@ -218,13 +218,34 @@ def load_checkpoint(
         return None
 
 
+def _scan_max_checkpoint_phase(ckpt_dir: Path) -> int | None:
+    """Scan a checkpoint directory for the highest phase number.
+
+    Args:
+        ckpt_dir: Directory containing phase_*_*.json files.
+
+    Returns:
+        Highest phase number found, or None if no checkpoints.
+    """
+    if not ckpt_dir.exists():
+        return None
+
+    max_phase: int | None = None
+    for path in ckpt_dir.glob("phase_*_*.json"):
+        try:
+            phase_num = int(path.stem.split("_")[1])
+            if max_phase is None or phase_num > max_phase:
+                max_phase = phase_num
+        except (IndexError, ValueError):
+            continue
+
+    return max_phase
+
+
 def get_last_completed_phase(atom_id: str) -> int | None:
     """Get the highest completed phase for an atom.
 
-    Scans the atom's checkpoint directory for phase files.
-    Returns the highest phase number found, or None if no
-    checkpoints exist. Used by the API to enable/disable
-    frontend phase buttons.
+    Used by the API to enable/disable frontend phase buttons.
 
     Args:
         atom_id: Atom identifier.
@@ -235,20 +256,37 @@ def get_last_completed_phase(atom_id: str) -> int | None:
     from app.utils.paths import QUESTION_GENERATION_DIR
 
     ckpt_dir = QUESTION_GENERATION_DIR / atom_id / "checkpoints"
-    if not ckpt_dir.exists():
+    return _scan_max_checkpoint_phase(ckpt_dir)
+
+
+# Checkpoint phase → next phase group for --resume support
+_CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
+    8: "finalize",
+    6: "feedback",
+    4: "validate",
+    3: "generate",
+    1: "plan",
+}
+
+
+def find_resume_phase_group(output_dir: Path) -> str | None:
+    """Find the phase group to resume from based on checkpoints.
+
+    Scans the checkpoint directory for the highest completed phase
+    and maps it to the next phase group that should run.
+
+    Args:
+        output_dir: Pipeline output directory with checkpoints.
+
+    Returns:
+        Phase group name to resume from, or None if no checkpoints.
+    """
+    ckpt_dir = output_dir / "checkpoints"
+    max_phase = _scan_max_checkpoint_phase(ckpt_dir)
+    if max_phase is None:
         return None
 
-    max_phase: int | None = None
-    for path in ckpt_dir.glob("phase_*_*.json"):
-        # Filename: phase_{num}_{name}.json
-        try:
-            phase_num = int(path.stem.split("_")[1])
-            if max_phase is None or phase_num > max_phase:
-                max_phase = phase_num
-        except (IndexError, ValueError):
-            continue
-
-    return max_phase
+    return _CHECKPOINT_TO_NEXT_GROUP.get(max_phase)
 
 
 def check_prerequisites(

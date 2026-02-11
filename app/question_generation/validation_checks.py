@@ -145,6 +145,86 @@ def is_skeleton_near_duplicate(
 
 
 # ---------------------------------------------------------------------------
+# QTI Structural Analysis (Phase 5 near-dupe + Phase 6 exemplar)
+# ---------------------------------------------------------------------------
+
+
+def extract_qti_text(qti_xml: str) -> str:
+    """Strip XML tags to get plain text content from QTI.
+
+    Args:
+        qti_xml: Raw QTI XML string.
+
+    Returns:
+        Plain text content with tags removed.
+    """
+    text = re.sub(r"<[^>]+>", " ", qti_xml)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def extract_qti_skeleton(qti_xml: str) -> str:
+    """Extract a structural skeleton from QTI XML content.
+
+    Replaces all numbers with 'N' and normalizes text to
+    capture mathematical structure without specific values.
+    Items with identical structure but different numbers will
+    share the same skeleton.
+
+    Args:
+        qti_xml: Raw QTI XML string.
+
+    Returns:
+        Normalized skeleton string.
+    """
+    text = extract_qti_text(qti_xml)
+    # Replace decimal numbers (e.g. 3.14) before integers
+    skeleton = re.sub(r"\d+\.\d+", "N", text)
+    # Replace remaining integers
+    skeleton = re.sub(r"\d+", "N", skeleton)
+    # Normalize whitespace and case
+    return re.sub(r"\s+", " ", skeleton).strip().lower()
+
+
+def compute_numeric_signature(qti_xml: str) -> str:
+    """Extract a numeric signature from QTI XML content.
+
+    Collects all numbers and creates a sorted hash. Items
+    with the same structure but different numbers will differ.
+
+    Args:
+        qti_xml: Raw QTI XML string.
+
+    Returns:
+        Short hex hash of sorted numeric values.
+    """
+    text = extract_qti_text(qti_xml)
+    numbers = re.findall(r"\d+\.?\d*", text)
+    sorted_nums = sorted(numbers, key=float)
+    signature = "|".join(sorted_nums)
+    return hashlib.sha256(signature.encode("utf-8")).hexdigest()[:16]
+
+
+def is_qti_structurally_similar(
+    xml_a: str,
+    xml_b: str,
+) -> bool:
+    """Check if two QTI XMLs share the same mathematical structure.
+
+    Compares normalized skeletons where numbers are replaced
+    with N. Two items are structurally similar when they differ
+    only in their specific numeric values.
+
+    Args:
+        xml_a: First QTI XML.
+        xml_b: Second QTI XML.
+
+    Returns:
+        True if items share the same skeleton.
+    """
+    return extract_qti_skeleton(xml_a) == extract_qti_skeleton(xml_b)
+
+
+# ---------------------------------------------------------------------------
 # Structural checks (Phase 6 / Phase 9 support)
 # ---------------------------------------------------------------------------
 
@@ -199,9 +279,11 @@ def check_exemplar_distance(
 ) -> str | None:
     """Check that generated item is sufficiently far from exemplars.
 
-    Uses distance_level from pipeline_meta to set the threshold.
-    All distance levels reject identical fingerprints; higher levels
-    provide stricter logging for future refinement.
+    Uses distance_level from pipeline_meta to enforce thresholds:
+    - "near":   reject only identical fingerprints (lenient).
+    - "medium": also reject items with identical QTI skeleton.
+    - "far":    also reject items with similar numeric profiles.
+    - None/unset: behaves like "near" for backward compatibility.
 
     Args:
         qti_xml: Generated item XML.
@@ -216,11 +298,33 @@ def check_exemplar_distance(
 
     for ex in exemplars:
         ex_fp = compute_fingerprint(ex.qti_xml)
+
+        # All levels: reject identical fingerprints
         if item_fp == ex_fp:
             return (
                 f"Identical to exemplar {ex.question_id} "
                 f"(distance_level={distance_level})"
             )
+
+        # Medium + Far: reject same structural skeleton
+        if distance_level in ("medium", "far"):
+            if is_qti_structurally_similar(qti_xml, ex.qti_xml):
+                return (
+                    f"Same structure as exemplar "
+                    f"{ex.question_id} "
+                    f"(distance_level={distance_level})"
+                )
+
+        # Far: also reject similar numeric profile
+        if distance_level == "far":
+            item_sig = compute_numeric_signature(qti_xml)
+            ex_sig = compute_numeric_signature(ex.qti_xml)
+            if item_sig == ex_sig:
+                return (
+                    f"Similar numbers to exemplar "
+                    f"{ex.question_id} "
+                    f"(distance_level={distance_level})"
+                )
 
     return None
 
