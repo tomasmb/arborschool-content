@@ -75,7 +75,6 @@ class FeedbackReviewer:
                 prompt,
                 response_mime_type="application/json",
                 temperature=0.0,
-                max_tokens=2000,
             )
 
             result = json.loads(response_text)

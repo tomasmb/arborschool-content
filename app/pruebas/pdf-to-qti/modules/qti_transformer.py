@@ -181,7 +181,6 @@ def _call_llm_with_retry(
                 question_id=question_id,
                 output_dir=output_dir,
                 operation="transform_to_qti",
-                max_tokens=16384,
             )
 
             # Check if response is empty

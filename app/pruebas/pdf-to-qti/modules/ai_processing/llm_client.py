@@ -24,14 +24,12 @@ try:
     from ..utils.retry_handler import (
         extract_retry_after,
         is_retryable_error,
-        retry_with_backoff,
     )
 except ImportError:
     try:
         from modules.utils.retry_handler import (
             extract_retry_after,
             is_retryable_error,
-            retry_with_backoff,
         )
     except ImportError:
         # Fallback if retry handler not available
@@ -40,12 +38,6 @@ except ImportError:
 
         def extract_retry_after(e: Exception) -> Optional[float]:
             return None
-
-        def retry_with_backoff(*args: Any, **kwargs: Any):
-            def decorator(func: Any) -> Any:
-                return func
-
-            return decorator
 
 
 # Import usage tracker
@@ -131,7 +123,6 @@ def _call_gemini(
     *,
     json_only: bool = True,
     thinking_level: str = "high",
-    max_tokens: int = 8192,
     **kwargs: Any,
 ) -> str:
     """Call Gemini API and return content."""
@@ -190,10 +181,9 @@ def _call_gemini(
         if not parts:
             raise ValueError("No content to send to Gemini")
 
-        # Build config
+        # Build config — generous output limit, let the model decide length
         config_dict: Dict[str, Any] = {
-            "temperature": 0.0,
-            "max_output_tokens": max(max_tokens, 32768),
+            "max_output_tokens": 65536,
             "safety_settings": [],
         }
 
@@ -269,9 +259,6 @@ def _call_openai(
             # temperature is NOT allowed with reasoning > none
         elif "temperature" in kwargs:
             params["temperature"] = kwargs.pop("temperature")
-
-        if "max_tokens" in kwargs:
-            params["max_completion_tokens"] = kwargs.pop("max_tokens")
 
     # Filter internal tracking params before passing to OpenAI
     internal_params = {"_output_dir", "_question_id", "_operation"}
@@ -356,10 +343,9 @@ def _call_openai(
 
     finish_reason = response.choices[0].finish_reason
     if finish_reason == "length":
-        _logger.warning("Response hit token limit - may be truncated")
-        # Aún así, intentar usar el contenido parcial si existe
+        _logger.warning("Response hit model token limit — output may be truncated")
         if not content or not content.strip():
-            raise RuntimeError("Response hit token limit and content is empty - increase max_tokens")
+            raise RuntimeError("Response hit token limit and content is empty")
 
     if json_only:
         first_char = content.strip()[0] if content else ""
@@ -378,7 +364,6 @@ def chat_completion(
     reasoning_effort: ReasoningEffort | None = None,
     thinking_level: str = "high",
     provider: str | None = None,
-    max_tokens: int = 8192,
     output_dir: str | None = None,
     question_id: str | None = None,
     operation: str = "api_call",
@@ -386,34 +371,28 @@ def chat_completion(
 ) -> str:
     """Call the LLM and return the content of the first choice.
 
-    Uses Gemini Preview 3 by default, with automatic fallback to OpenAI GPT-5.1
-    if Gemini fails (e.g., credits exhausted).
+    Uses Gemini Preview 3 by default, with automatic fallback to
+    OpenAI GPT-5.1 if Gemini fails (e.g., credits exhausted).
+
+    Output length is NOT capped — reasoning_effort (GPT-5.1) and
+    thinking_level (Gemini) control how much the model produces.
 
     Parameters
     ----------
     messages:
-        List of chat messages as expected by the OpenAI Chat Completions API.
+        Chat messages (OpenAI Chat Completions format).
     api_key:
-        API key (Gemini or OpenAI). If None, uses GEMINI_API_KEY from env.
+        API key. If None, reads from env.
     model:
         Model name (for OpenAI). Ignored for Gemini.
     json_only:
-        If ``True`` (default) instruct the model to respond with JSON.
+        If True (default) instruct the model to respond with JSON.
     reasoning_effort:
-        OpenAI GPT-5.1 reasoning effort level (ignored for Gemini).
+        GPT-5.1 reasoning effort: "none", "low", "medium", "high".
     thinking_level:
         Gemini thinking level: "low" or "high" (default: "high").
     provider:
-        Force provider: "gemini" or "openai". If None, uses default (Gemini).
-    max_tokens:
-        Maximum output tokens.
-    **kwargs:
-        Additional arguments forwarded to the provider.
-
-    Returns
-    -------
-    str
-        The text content of the first LLM choice.
+        Force "gemini" or "openai". Default: Gemini first.
     """
     # Determine provider
     if provider is None:
@@ -446,7 +425,6 @@ def chat_completion(
                 gemini_key or "",
                 json_only=json_only,
                 thinking_level=thinking_level,
-                max_tokens=max_tokens,
                 **kwargs,
             )
             # TODO: Track Gemini usage when response object is available
@@ -469,6 +447,5 @@ def chat_completion(
         model=model,
         json_only=json_only,
         reasoning_effort=reasoning_effort,
-        max_tokens=max_tokens,
         **kwargs,
     )

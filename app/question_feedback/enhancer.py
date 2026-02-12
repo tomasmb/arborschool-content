@@ -151,7 +151,6 @@ class FeedbackEnhancer:
                     prompt,
                     images,
                     reasoning_effort=_ENHANCE_REASONING,
-                    max_tokens=8000,
                 )
                 enhanced_xml = self._extract_xml(response_text)
 
@@ -229,7 +228,6 @@ class FeedbackEnhancer:
                 prompt,
                 images,
                 reasoning_effort=_ENHANCE_REASONING,
-                max_tokens=8000,
             )
             corrected_xml = self._extract_xml(response_text)
 

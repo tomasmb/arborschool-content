@@ -95,7 +95,6 @@ class FinalValidator:
                 images,
                 reasoning_effort=_VALIDATION_REASONING,
                 response_mime_type="application/json",
-                max_tokens=4000,
             )
 
             result = json.loads(response_text)

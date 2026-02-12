@@ -63,8 +63,11 @@ export function EnrichmentModal({
         ? failedValidationCount
         : stats.tagged_count - stats.enriched_count;
 
-  // Estimated cost: ~$0.024 per item (GPT 5.1 medium reasoning)
-  const estimatedCost = itemsToProcess * 0.024;
+  // Per question (GPT-5.1, $1.25/1M in, $10/1M out):
+  //   enhance (low reasoning): ~2,500 in + 3,200 out (3K visible + 200 reasoning)
+  //   review  (no reasoning):  ~2,500 in + 600 out
+  // Total: ~5,000 in + ~3,800 out → ~$0.044/item
+  const estimatedCost = itemsToProcess * 0.044;
 
   // Reset state when modal opens
   useEffect(() => {
@@ -271,7 +274,7 @@ export function EnrichmentModal({
                     <p className="font-mono text-warning">~${estimatedCost.toFixed(2)}</p>
                   </div>
                 </div>
-                <p className="text-xs text-text-secondary mt-2">Model: GPT 5.1 (medium reasoning)</p>
+                <p className="text-xs text-text-secondary mt-2">Model: GPT-5.1 ($1.25/1M in, $10/1M out)</p>
               </div>
 
               {itemsToProcess === 0 && (

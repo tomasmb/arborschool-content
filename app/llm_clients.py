@@ -163,16 +163,6 @@ class OpenAIClient:
         else:
             data["temperature"] = temperature
 
-        # --- token limit (only set when caller explicitly requests) ---
-        max_tokens = kwargs.get("max_tokens")
-        if max_tokens is not None:
-            key = (
-                "max_completion_tokens"
-                if is_reasoning_model
-                else "max_tokens"
-            )
-            data[key] = max_tokens
-
         # --- JSON mode ---
         if response_mime_type == "application/json":
             data["response_format"] = {"type": "json_object"}
@@ -194,21 +184,16 @@ class OpenAIClient:
         *,
         reasoning_effort: Optional[str] = None,
         response_mime_type: Optional[str] = None,
-        max_tokens: Optional[int] = None,
     ) -> str:
         """Send *prompt* to the LLM, attaching *images* when present.
 
         Eliminates the duplicated ``if images … else …`` dispatch
         pattern that was repeated across enhancer / validator callers.
-
-        When ``max_tokens`` is None the API uses its model default.
         """
         kwargs: dict[str, Any] = {
             "reasoning_effort": reasoning_effort,
             "response_mime_type": response_mime_type,
         }
-        if max_tokens is not None:
-            kwargs["max_tokens"] = max_tokens
 
         if images:
             multimodal_prompt: list[Any] = [prompt, *images]
@@ -381,9 +366,6 @@ class GeminiService:
                         "reasoning_effort": "low",
                         "response_mime_type": response_mime_type,
                     }
-                    # Forward max_tokens if the caller set one
-                    if "max_tokens" in kwargs:
-                        fallback_kwargs["max_tokens"] = kwargs["max_tokens"]
                     return self._openai.generate_text(
                         prompt, **fallback_kwargs,
                     )

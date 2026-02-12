@@ -100,11 +100,21 @@ reasoning (brief explanation)"""
 
         # Make LLM call
         completion = openai_client.chat.completions.create(
-            model="gpt-5.1",  # Using gpt-5.1 for precision matching
-            messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
-            response_format={"type": "json_schema", "json_schema": {"name": "block_match_result", "schema": BLOCK_MATCH_SCHEMA, "strict": True}},
-            temperature=0.0,  # Low temperature for consistent results
-            seed=42,  # Deterministic output
+            model="gpt-5.1",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            response_format={
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "block_match_result",
+                    "schema": BLOCK_MATCH_SCHEMA,
+                    "strict": True,
+                },
+            },
+            reasoning_effort="low",  # Precision matching, simple task
+            seed=42,
         )
 
         # Parse response

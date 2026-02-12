@@ -224,15 +224,23 @@ def _get_ai_split_points(doc: fitz.Document, input_pdf_path: str, model: str) ->
         "additionalProperties": False,
     }
 
-    # Call OpenAI LLM
+    # Call OpenAI LLM (GPT-5.1 with low reasoning for simple split task)
     client = openai.Client()
     response = client.chat.completions.create(
         model=model,
-        messages=[{"role": "system", "content": "You are a helpful assistant."}, {"role": "user", "content": prompt}],
-        response_format={"type": "json_schema", "json_schema": {"name": "logical_pdf_split", "schema": split_schema, "strict": True}},
-        temperature=0,
-        top_p=1,
-        max_tokens=512,
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        response_format={
+            "type": "json_schema",
+            "json_schema": {
+                "name": "logical_pdf_split",
+                "schema": split_schema,
+                "strict": True,
+            },
+        },
+        reasoning_effort="low",
         seed=42,
     )
 
