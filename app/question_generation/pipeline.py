@@ -1,8 +1,4 @@
-"""Atom question generation pipeline orchestrator.
-
-Sequences phases 0-10 from the v3.1 spec with prerequisite
-enforcement, checkpoint persistence, and image generatability gates.
-"""
+"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-10)."""
 
 from __future__ import annotations
 
@@ -20,6 +16,7 @@ from app.question_generation.helpers import (
     check_prerequisites,
     find_resume_phase_group,
     load_atom,
+    load_existing_fingerprints,
     load_phase_state,
     print_pipeline_header,
     print_pipeline_summary,
@@ -214,7 +211,10 @@ class AtomQuestionPipeline:
 
         # Phases 5-6 — Dedupe + Base Validation
         items = base_items or []
-        deduped = self._phase_5_dedupe(items, result)
+        existing_fps = load_existing_fingerprints(atom_id)
+        deduped = self._phase_5_dedupe(
+            items, result, existing_fingerprints=existing_fps,
+        )
         if deduped is None:
             return result
         result.total_passed_dedupe = len(deduped)
@@ -269,10 +269,6 @@ class AtomQuestionPipeline:
             p.success for p in result.phase_results
         )
         return result
-
-    # ------------------------------------------------------------------
-    # Phase implementations
-    # ------------------------------------------------------------------
 
     def _phase_0_inputs(
         self, atom_id: str, result: PipelineResult,
@@ -404,9 +400,14 @@ class AtomQuestionPipeline:
         self,
         items: list[GeneratedItem],
         result: PipelineResult,
+        existing_fingerprints: set[str] | None = None,
     ) -> list[GeneratedItem] | None:
         """Phase 5: Deterministic duplicate gate."""
-        phase = self._dedupe_gate.run(items)
+        phase = self._dedupe_gate.run(
+            items,
+            existing_fingerprints=existing_fingerprints,
+            pool_total=result.total_planned or len(items),
+        )
         result.phase_results.append(phase)
 
         if not phase.success:

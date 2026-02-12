@@ -23,13 +23,7 @@ from app.utils.paths import ATOMS_DIR
 logger = logging.getLogger(__name__)
 
 
-# ---------------------------------------------------------------------------
-# Phase prerequisite map
-# ---------------------------------------------------------------------------
-
-# Each phase group lists the checkpoint(s) that MUST exist before
-# it can run. Format: (phase_num, phase_name) matching checkpoint
-# filenames produced by save_checkpoint.
+# Phase group -> required checkpoints that MUST exist before running.
 PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
     "all": [],
     "enrich": [],
@@ -40,10 +34,6 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
     "finalize": [(8, "feedback")],
 }
 
-
-# ---------------------------------------------------------------------------
-# Atom loading
-# ---------------------------------------------------------------------------
 
 
 def load_atom(atom_id: str) -> Atom | None:
@@ -75,10 +65,6 @@ def load_atom(atom_id: str) -> Atom | None:
     return None
 
 
-# ---------------------------------------------------------------------------
-# Metadata building
-# ---------------------------------------------------------------------------
-
 
 def build_pipeline_meta(atom_id: str, slot: PlanSlot) -> PipelineMeta:
     """Build pipeline metadata from a plan slot.
@@ -101,10 +87,6 @@ def build_pipeline_meta(atom_id: str, slot: PlanSlot) -> PipelineMeta:
         distance_level=slot.distance_level,
     )
 
-
-# ---------------------------------------------------------------------------
-# Result saving
-# ---------------------------------------------------------------------------
 
 
 def save_pipeline_results(
@@ -162,10 +144,6 @@ def _build_report_dict(result: PipelineResult) -> dict:
         ],
     }
 
-
-# ---------------------------------------------------------------------------
-# Checkpoint save / load (resume support)
-# ---------------------------------------------------------------------------
 
 
 def save_checkpoint(
@@ -258,10 +236,6 @@ def get_last_completed_phase(atom_id: str) -> int | None:
     ckpt_dir = QUESTION_GENERATION_DIR / atom_id / "checkpoints"
     return _scan_max_checkpoint_phase(ckpt_dir)
 
-
-# ---------------------------------------------------------------------------
-# Enrichment image status helpers
-# ---------------------------------------------------------------------------
 
 
 def get_enrichment_image_types(atom_id: str) -> list[str] | None:
@@ -384,10 +358,6 @@ def load_phase_state(
     return state
 
 
-# ---------------------------------------------------------------------------
-# Item serialization (for checkpoints)
-# ---------------------------------------------------------------------------
-
 
 def serialize_items(items: list[GeneratedItem]) -> list[dict]:
     """Serialize GeneratedItem list for checkpoint storage.
@@ -436,9 +406,61 @@ def _deserialize_items(data: list[dict]) -> list[GeneratedItem]:
     return items
 
 
-# ---------------------------------------------------------------------------
-# Console output
-# ---------------------------------------------------------------------------
+
+def load_existing_fingerprints(atom_id: str) -> set[str]:
+    """Load fingerprints of existing DB questions for an atom.
+
+    Queries the question_atoms + questions tables for all items
+    already linked to this atom, computes SHA-256 fingerprints
+    of their QTI XML, and returns the set.
+
+    Args:
+        atom_id: Atom identifier (e.g. "A-M1-ALG-01-02").
+
+    Returns:
+        Set of hex-encoded SHA-256 fingerprints. Empty set if
+        the DB is unreachable or the atom has no questions.
+    """
+    from app.question_generation.validation_checks import (
+        compute_fingerprint,
+    )
+    from app.sync.config import DBConfig
+    from app.sync.db_client import DBClient
+
+    try:
+        config = DBConfig.for_environment("local")
+        client = DBClient(config)
+        with client.connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT q.qti_xml
+                    FROM questions q
+                    JOIN question_atoms qa ON qa.question_id = q.id
+                    WHERE qa.atom_id = %(atom_id)s
+                      AND q.qti_xml IS NOT NULL
+                    """,
+                    {"atom_id": atom_id},
+                )
+                rows = cur.fetchall()
+
+        fingerprints = {
+            compute_fingerprint(row["qti_xml"]) for row in rows
+        }
+        if fingerprints:
+            logger.info(
+                "Loaded %d existing fingerprints for atom %s",
+                len(fingerprints), atom_id,
+            )
+        return fingerprints
+
+    except Exception as exc:
+        logger.warning(
+            "Could not load existing fingerprints for %s: %s",
+            atom_id, exc,
+        )
+        return set()
+
 
 
 def print_pipeline_header(atom_id: str) -> None:

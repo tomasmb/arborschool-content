@@ -15,7 +15,6 @@ from typing import Any
 
 from app.question_generation.models import Exemplar, GeneratedItem
 
-
 # ---------------------------------------------------------------------------
 # XSD validator import (same approach as question_feedback/enhancer.py)
 # ---------------------------------------------------------------------------
@@ -122,16 +121,17 @@ def _sort_choices(xml_text: str) -> str:
 def is_skeleton_near_duplicate(
     item: GeneratedItem,
     skeleton_items: dict[str, list[str]],
+    cap: int = 2,
 ) -> bool:
     """Check if item is a near-duplicate by skeleton repetition.
 
-    The planning phase already caps skeletons at 2 per pool.
-    This gate enforces the same limit at generation time: if
-    more than 2 items share a skeleton, the excess are flagged.
+    Uses the same cap as plan validation (skeleton_repetition_cap)
+    to avoid contradictory constraints between phases 3 and 5.
 
     Args:
         item: Item to check.
         skeleton_items: Map of skeleton -> list of existing item_ids.
+        cap: Max items per skeleton (from skeleton_repetition_cap).
 
     Returns:
         True if the item is a near-duplicate.
@@ -141,7 +141,7 @@ def is_skeleton_near_duplicate(
     skeleton = item.pipeline_meta.operation_skeleton_ast
     if skeleton not in skeleton_items:
         return False
-    return len(skeleton_items[skeleton]) >= 2
+    return len(skeleton_items[skeleton]) >= cap
 
 
 # ---------------------------------------------------------------------------

@@ -18,6 +18,7 @@ from app.question_generation.models import (
     GeneratedItem,
     PhaseResult,
 )
+from app.question_generation.planner import skeleton_repetition_cap
 from app.question_generation.prompts.validation import (
     build_solvability_prompt,
 )
@@ -52,17 +53,24 @@ class DuplicateGate:
         self,
         items: list[GeneratedItem],
         existing_fingerprints: set[str] | None = None,
+        pool_total: int | None = None,
     ) -> PhaseResult:
         """Run the duplicate gate on a batch of items.
 
         Args:
             items: Generated items to check.
             existing_fingerprints: Fingerprints of existing inventory.
+            pool_total: Total pool size for skeleton cap scaling.
+                If None, defaults to len(items).
 
         Returns:
             PhaseResult with filtered items and dedupe report.
         """
         logger.info("Phase 5: Running duplicate gate on %d items", len(items))
+
+        effective_pool = pool_total or len(items)
+        skel_cap = skeleton_repetition_cap(effective_pool)
+        logger.info("Skeleton cap: %d (pool=%d)", skel_cap, effective_pool)
 
         existing = existing_fingerprints or set()
         seen: dict[str, str] = {}  # fingerprint -> item_id
@@ -93,22 +101,24 @@ class DuplicateGate:
                 )
                 continue
 
-            # Plan skeleton near-duplicate check (cap at 2)
-            if is_skeleton_near_duplicate(item, skeleton_items):
+            # Plan skeleton near-duplicate check (scaled cap)
+            if is_skeleton_near_duplicate(
+                item, skeleton_items, cap=skel_cap,
+            ):
                 duplicates.append(
                     f"{item.item_id}: near-duplicate "
-                    f"(same plan skeleton, >2 in pool)",
+                    f"(same plan skeleton, >{skel_cap} in pool)",
                 )
                 logger.info("Near-dupe (plan skeleton): %s", item.item_id)
                 continue
 
-            # QTI structural near-duplicate check (cap at 2)
+            # QTI structural near-duplicate check (scaled cap)
             qti_skel = extract_qti_skeleton(item.qti_xml)
             existing_qti = qti_skeleton_items.get(qti_skel, [])
-            if len(existing_qti) >= 2:
+            if len(existing_qti) >= skel_cap:
                 duplicates.append(
                     f"{item.item_id}: QTI structural near-duplicate "
-                    f"(>2 items with same structure)",
+                    f"(>{skel_cap} items with same structure)",
                 )
                 logger.info(
                     "Near-dupe (QTI structure): %s", item.item_id,
@@ -303,8 +313,9 @@ class BaseValidator:
             elif reports:
                 reports.exemplar_copy_check = "pass"
 
+        # Scope is enforced at plan time (Phase 3), not per-item.
         if reports:
-            reports.scope = "pass" if not errors else "fail"
+            reports.scope = "pass"
 
         return errors
 
