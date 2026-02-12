@@ -1,0 +1,124 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicar monomio por monomio aplicando correctamente las propiedades de las potencias (producto de potencias de igual base, manejo de coeficientes numéricos positivos y negativos).",
+        "Multiplicar monomio por polinomio usando la propiedad distributiva, asegurando que cada término del polinomio sea multiplicado por el monomio.",
+        "Multiplicar polinomio por polinomio aplicando distributividad término a término (incluye binomio por binomio, binomio por trinomio, trinomio por trinomio, etc.), sin tratarlo como producto notable especial.",
+        "Simplificar el resultado ordenando términos semejantes y combinando coeficientes cuando corresponda.",
+        "Trabajar con exponentes naturales y eventualmente cero en las variables (incluyendo casos como x^0 = 1 en contextos simples)."
+      ],
+      "out_of_scope": [
+        "Uso de productos notables específicos (cuadrado de binomio, diferencia de cuadrados, cubo de binomio, suma y diferencia de cubos) como atajo explícito.",
+        "Multiplicación de polinomios que involucran raíces, radicales o exponentes fraccionarios o negativos.",
+        "Expresiones con más de dos variables distintas que requieran técnicas avanzadas de organización (por ejemplo, polinomios con muchas variables simultáneas y alto grado).",
+        "Factorización de polinomios (inversa de la multiplicación), salvo que se use solo como contexto y no como habilidad central evaluada.",
+        "Multiplicación de expresiones algebraicas dentro de contextos funcionales avanzados (por ejemplo, composición de funciones) o ecuaciones/desequaciones complejas.",
+        "Operaciones que mezclen de manera relevante fracciones algebraicas (cocientes de polinomios)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01 Manejo de coeficientes numéricos enteros (incluyendo positivos, negativos y cero).",
+        "A-M1-ALG-01-02 Identificación de términos, monomios, polinomios y términos semejantes.",
+        "A-M1-ALG-01-03 Aplicación básica de la propiedad distributiva en expresiones numéricas y algebraicas simples.",
+        "A-M1-ALG-01-04 Aplicación de leyes de exponentes con exponentes naturales (producto de potencias de igual base, potencia de potencia sencilla)."
+      ],
+      "common_traps": [
+        "Aplicar la distributiva de forma incompleta, dejando uno o más términos del polinomio sin multiplicar por el monomio o por el otro polinomio.",
+        "Sumar o restar exponentes en lugar de sumarlos al multiplicar potencias de igual base, o multiplicar exponentes de forma incorrecta.",
+        "Confundir la multiplicación de coeficientes con la suma (p. ej., 2x * 3x = 5x^2 en lugar de 6x^2).",
+        "Olvidar el signo de algunos términos al multiplicar (especialmente en productos que involucran números negativos).",
+        "No reducir términos semejantes al final, dejando resultados poco simplificados o con términos repetidos.",
+        "Tratar automáticamente todo binomio por binomio como un producto notable, sin aplicar sistemáticamente la distributiva término a término.",
+        "Desordenar el resultado de manera que se dificulte reconocer errores (no ordenar por grado ni agrupar por variable cuando es sencillo hacerlo)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos monomio por monomio con una sola variable y exponentes pequeños (0, 1, 2, 3), con coeficientes enteros pequeños (entre -5 y 5) y sin necesidad de combinar términos semejantes.",
+        "Productos monomio por polinomio donde el polinomio tiene a lo más 3 términos, todos con la misma variable, y el resultado no requiere reordenar ni combinar más de dos términos semejantes.",
+        "Expresiones sin signos mixtos complejos: a lo más un coeficiente negativo en todo el producto.",
+        "Ítems donde se pide directamente el resultado del producto, sin contexto verbal, y con alternativas claramente distintas en coeficientes y grados.",
+        "Situaciones donde cada término resultante tiene un solo factor literal (por ejemplo, solo x, no x y)."
+      ],
+      "medium": [
+        "Productos monomio por polinomio con 3 o 4 términos, con mezcla de coeficientes positivos y negativos, y que requieren ordenar el resultado según el grado.",
+        "Productos polinomio por polinomio donde al menos uno es un binomio y el otro puede ser binomio o trinomio, con necesidad de combinar 2 o 3 pares de términos semejantes.",
+        "Expresiones que involucren dos variables (por ejemplo, x e y) pero en configuraciones simples, exigiendo reconocer correctamente qué términos son semejantes.",
+        "Ítems contextualizados breves (problemas verbales simples) donde sea necesario traducir a expresión algebraica y luego multiplicar polinomios.",
+        "Casos con más de un término negativo y donde las alternativas de respuesta incluyan errores típicos de signos y de exponentes."
+      ],
+      "hard": [
+        "Productos polinomio por polinomio donde al menos uno tiene 3 o más términos, generando 6 o más términos intermedios antes de simplificar.",
+        "Productos con varias variables (por ejemplo, x, y y z) y distintos grados en las variables, que requieran decidir con cuidado qué términos son semejantes y cómo ordenarlos.",
+        "Ítems donde el resultado contenga términos con exponente cero en alguna variable (por ejemplo, x^0) y el estudiante deba simplificarlos correctamente.",
+        "Situaciones donde se deban encadenar dos multiplicaciones de polinomios (por ejemplo, multiplicar y luego volver a multiplicar el resultado por otro polinomio simple).",
+        "Problemas contextualizados que requieran formular el modelo algebraico, multiplicar polinomios, simplificar y, además, interpretar el significado de un término específico del resultado.",
+        "Ítems con distractores muy cercanos que incorporan combinaciones de errores: omisión de un término, exponente incorrecto y error de signo simultáneamente."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones con notación de potencia poco clara; siempre usar paréntesis cuando un exponente afecta a un grupo (por ejemplo, (2x)^2 y no 2x^2 si se quiere que el 2 quede elevado).",
+      "No mezclar multiplicación implícita y explícita de forma confusa; preferir formas como 2x(3x+1) o (2x)(3x+1), evitando 2x3x+1 sin paréntesis.",
+      "Evitar el uso de la letra x como símbolo de multiplicación en expresiones algebraicas; usar punto, paréntesis o yuxtaposición (·, ( ), o ab) para la multiplicación.",
+      "No plantear ítems donde distintas variables puedan confundirse con números (por ejemplo, usar k o l cuando la tipografía pueda parecer 1).",
+      "Especificar claramente cuando se pide desarrollar, simplificar o dejar en una forma particular (por ejemplo, \"desarrolla y simplifica\", \"expresión equivalente desarrollada\"), evitando que el estudiante dude entre expandir o factorizar.",
+      "Evitar contextos verbales excesivamente largos o con información irrelevante que oculte la operación central de multiplicación de expresiones algebraicas.",
+      "No incluir en la misma pregunta estructuras de productos notables reconocibles como tales si el propósito es evaluar solo la distributividad básica; aclarar en la construcción del ítem que debe aplicarse distributividad término a término.",
+      "Evitar notaciones no estándar como usar el símbolo ^ para potencias sin la adecuada presentación tipográfica (asegurar formato matemático correcto)."
+    ],
+    "error_families": [
+      {
+        "name": "Distribución_incompleta",
+        "description": "El estudiante no multiplica todos los términos del polinomio por el monomio o por cada término del otro polinomio (por ejemplo, omite el último término o solo multiplica parte de los términos).",
+        "how_to_address": "Incluir ítems donde el número de términos del resultado sea un indicio clave, y generar distractores que muestren explícitamente la omisión de un término para que el estudiante compare cantidad y tipo de términos esperados."
+      },
+      {
+        "name": "Manejo_incorrecto_de_exponentes",
+        "description": "Errores al sumar exponentes de la misma base durante la multiplicación, o confusión entre sumar, restar o multiplicar exponentes. Ejemplo: x^2 * x^3 escrito como x^6 o x^5 escrito como x^2 + x^3.",
+        "how_to_address": "Diseñar opciones que muestren las distintas formas de error (suma incorrecta, producto de exponentes, conservación de un exponente) y contrastarlas con la regla correcta para reforzar la idea de que al multiplicar potencias de igual base se suman los exponentes."
+      },
+      {
+        "name": "Coeficientes_mal_multiplicados",
+        "description": "El estudiante suma o resta coeficientes donde debería multiplicarlos, o multiplica uno y deja el otro igual. Ejemplo: 2x * 3x → 5x^2 o 2x * 3x → 2x^2.",
+        "how_to_address": "Usar ítems con coeficientes distintos y distractores que reflejen suma en lugar de producto, para que la comparación entre alternativas enfatice la necesidad de multiplicar coeficientes numéricos."
+      },
+      {
+        "name": "Signos_erróneos",
+        "description": "Pérdida o cambio de signos al multiplicar términos con coeficientes negativos, especialmente cuando hay varios productos sucesivos.",
+        "how_to_address": "Proponer productos donde intervengan varios signos negativos y construir distractores que contengan todos los términos correctos pero con algunos signos cambiados, para forzar la revisión sistemática de las reglas de signos."
+      },
+      {
+        "name": "No_simplificación_de_términos_semejantes",
+        "description": "El estudiante deja el resultado como suma de varios términos semejantes sin agrupar, o agrupa términos que no son semejantes (por tener distinta parte literal o distinto exponente).",
+        "how_to_address": "Incluir ítems donde distintas alternativas representen el mismo producto con diferente nivel de simplificación, destacando en la correcta la agrupación apropiada de términos semejantes y usando en las otras combinaciones incorrectas de términos."
+      },
+      {
+        "name": "Confusión_productos_notables",
+        "description": "El estudiante aplica fórmulas de productos notables cuando no corresponden o viceversa, especialmente en binomio por binomio, sin revisar la distributividad término a término.",
+        "how_to_address": "Evitar depender de fórmulas de productos notables en este átomo y proponer ítems donde la única vía segura sea el desarrollo distributivo; usar distractores que contengan la estructura típica del producto notable mal aplicado para evidenciar el error."
+      }
+    ],
+    "future_targets": [
+      "Dominio de productos notables y factorización de polinomios, al reconocer patrones que provienen de multiplicaciones específicas.",
+      "Resolución de ecuaciones polinómicas de mayor grado que requieren expandir y simplificar expresiones antes de resolver.",
+      "Operaciones con funciones polinómicas (por ejemplo, producto de funciones, determinación de expresiones de modelos polinómicos).",
+      "Manejo de fracciones algebraicas donde es necesario multiplicar numeradores y/o denominadores polinomiales.",
+      "Desarrollo de expresiones algebraicas en contextos de modelación (áreas, perímetros, costos, ingresos) donde la relación entre variables se expresa como producto de polinomios.",
+      "Cálculo de potencias de binomios y uso posterior de teoremas como el binomio de Newton.",
+      "Simplificación de expresiones algebraicas complejas en cursos posteriores (por ejemplo, en cálculo) donde productos de polinomios aparecen en derivadas y factorizaciones."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal_contextual",
+      "tabular_simple"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

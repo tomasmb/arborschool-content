@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Juzgar si un resultado numérico (longitud, área, perímetro) es plausible en el contexto geométrico dado usando solo Teorema de Pitágoras, perímetros y áreas de figuras planas trabajadas en átomos previos.",
+        "Detectar errores puntuales en la aplicación de fórmulas geométricas conocidas (ej.: uso incorrecto de radio/diámetro, confundir base con altura, omitir un factor 1/2).",
+        "Comparar distintos procedimientos propuestos para un mismo problema y decidir cuál es correcto o más adecuado, justificando con propiedades y fórmulas ya trabajadas.",
+        "Rechazar resultados que contradicen explícitamente una propiedad trabajada (ej.: hipotenusa menor que un cateto, área negativa, perímetro menor que uno de los lados).",
+        "Argumentar por qué un resultado dado no cumple con las condiciones del problema (ej.: una medida que no coincide con las restricciones del enunciado).",
+        "Validar un procedimiento aún sin hacer todos los cálculos, a partir de la estructura de la fórmula usada (ej.: identificar que faltó elevar al cuadrado en Pitágoras).",
+        "Elegir entre alternativas de solución la que utiliza apropiadamente las fórmulas de área o perímetro pertinentes a la figura descrita."
+      ],
+      "out_of_scope": [
+        "Introducir o exigir el uso de propiedades geométricas no tratadas en átomos previos, como desigualdad triangular, propiedades avanzadas de triángulos, semejanza, congruencia o razones trigonométricas.",
+        "Problemas centrados principalmente en el cálculo numérico extenso (muchas operaciones) sin requerir análisis de validez o justificación del procedimiento.",
+        "Demostraciones formales de teoremas o propiedades geométricas nuevas; el foco no es probar nuevos resultados, sino validar el uso correcto de los ya conocidos.",
+        "Argumentaciones sobre figuras 3D (volúmenes, áreas de superficie de cuerpos geométricos).",
+        "Análisis de transformaciones geométricas (traslaciones, rotaciones, simetrías) como contenido central.",
+        "Uso de herramientas de geometría analítica (pendientes, ecuaciones de rectas, coordenadas) para la validación.",
+        "Justificaciones puramente empíricas basadas en la apariencia del dibujo (ej.: ‘se ve más grande’) sin vincularlas a fórmulas o propiedades trabajadas."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01",
+        "A-M1-GEO-01-02",
+        "A-M1-GEO-01-05",
+        "A-M1-GEO-01-08",
+        "A-M1-GEO-01-11",
+        "A-M1-GEO-01-12",
+        "A-M1-GEO-01-13"
+      ],
+      "common_traps": [
+        "Plantear ejercicios donde todas las alternativas muestran procedimientos incorrectos sin indicar que se debe elegir la ‘menos incorrecta’; esto genera ambigüedad en la validación.",
+        "Usar dibujos claramente fuera de escala que puedan inducir a juicios basados en la vista y no en las propiedades o fórmulas entregadas en el enunciado.",
+        "Proponer resultados numéricamente ‘raros’ pero posibles (por ejemplo, decimales no exactos) y marcarlos como erróneos solo por no ser ‘bonitos’, en lugar de por violar una propiedad.",
+        "Exigir que el estudiante detecte un error que depende de una propiedad no mencionada ni trabajada antes (por ejemplo, desigualdad triangular) para concluir que la configuración es imposible.",
+        "Enunciar situaciones con datos insuficientes donde más de un procedimiento podría ser razonable, haciendo imposible juzgar de manera única la validez del resultado.",
+        "Mezclar unidades de medida sin aclararlo (cm y m) de manera que la detección de error dependa más de lectura atenta de unidades que del razonamiento geométrico.",
+        "Hacer depender la respuesta correcta de redondeos no especificados (ej.: usar o no aproximaciones de √2), generando dobles interpretaciones sobre si un resultado ‘tiene sentido’."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Situaciones con una sola propiedad o fórmula involucrada (por ejemplo, solo Teorema de Pitágoras o solo área de rectángulo/triángulo), con números enteros pequeños y resultados exactos.",
+        "Errores groseros y evidentes, como áreas o longitudes negativas, hipotenusas menores que los catetos, o perímetros menores que alguno de los lados.",
+        "Ítems donde se muestra un procedimiento casi completo y el estudiante debe identificar un paso único claramente incorrecto (ej.: confundir radio con diámetro indicado explícitamente en el enunciado).",
+        "Preguntas que piden escoger entre alternativas de resultado donde solo una cumple una propiedad básica evidente (ej.: única opción donde la hipotenusa es el mayor de los tres lados).",
+        "Justificaciones breves, centradas en una sola razón o fórmula, sin necesidad de combinar varios hechos."
+      ],
+      "medium": [
+        "Problemas que requieren revisar y contrastar uno o dos procedimientos distintos y decidir cuál es válido, utilizando conscientemente la fórmula adecuada (por ejemplo, comparar dos maneras de hallar el área de un triángulo).",
+        "Errores más sutiles en la aplicación de fórmulas: uso incorrecto de base y altura, omisión de un factor 1/2, elevación al cuadrado en un solo término en Pitágoras, etc.",
+        "Escenarios donde el estudiante debe verificar si un resultado propuesto es razonable haciendo al menos un cálculo parcial (por ejemplo, comparar el cuadrado de la hipotenusa con la suma de los cuadrados de los catetos).",
+        "Ítems que combinan dos conceptos básicos (por ejemplo, usar Pitágoras para encontrar un lado y luego analizar si el área calculada con ese lado tiene sentido).",
+        "Enunciados verbales donde hay que traducir correctamente la situación a la fórmula apropiada antes de poder juzgar la validez."
+      ],
+      "hard": [
+        "Situaciones donde se presentan varios pasos de un procedimiento y el error está en una decisión conceptual menos obvia (por ejemplo, elección inadecuada de la altura en un triángulo no rectángulo, o área de figura compuesta separada de forma incorrecta).",
+        "Problemas que requieren combinar más de una fórmula o propiedad (por ejemplo, Pitágoras y luego perímetro, o área de partes y ver si su suma es plausible respecto de la figura total) para evaluar la validez.",
+        "Ítems donde más de un procedimiento parece razonable, pero solo uno se ajusta completamente a las condiciones del problema o usa coherentemente todos los datos disponibles.",
+        "Errores que no son puramente numéricos, sino de interpretación geométrica (por ejemplo, tratar el lado inclinado como altura sin justificarlo, o considerar como radio la longitud de un diámetro en un esquema poco guiado).",
+        "Situaciones que exigen detectar inconsistencias internas entre varias magnitudes (ej.: área demasiado pequeña comparada con un perímetro grande, o resultados que implican que una figura ‘encajaría’ físicamente de forma imposible) usando solo las propiedades trabajadas.",
+        "Contextos con datos poco ‘amigables’ (enteros ligeramente mayores, raíces cuadradas simples o decimales con uno o dos decimales) donde no es inmediato ver el error sin análisis cuidadoso."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde la validez del resultado dependa de si el dibujo está o no a escala; siempre indicar que la conclusión debe basarse en las medidas o fórmulas, no en la apariencia del gráfico.",
+      "No usar palabras vagas como ‘parece’, ‘se ve’, ‘aproximadamente igual’ sin precisar el criterio de comparación o el margen de aproximación aceptado.",
+      "Evitar figuras sin etiquetas claras de lados, ángulos o medidas, que obliguen al estudiante a adivinar qué segmento o ángulo se está usando en cada fórmula.",
+      "No plantear preguntas donde varias alternativas usen procedimientos distintos pero todos correctos, pidiendo elegir ‘el mejor’ sin un criterio explícito de comparación.",
+      "Evitar problemas con datos incompletos o contradictorios que permitan más de una interpretación razonable de la figura o de las condiciones del problema.",
+      "No mezclar distintas unidades sin aclararlas explícitamente; si se espera detectar un error por cambio de unidades, esto debe ser claramente parte de la argumentación requerida y no un detalle oculto.",
+      "Evitar enunciados donde la detección del error requiera una propiedad no trabajada previamente (por ejemplo, desigualdad triangular) sin mencionarla o sugerirla, pues se desdibuja si el error es conceptual o de contenido no visto.",
+      "No utilizar términos técnicos ambiguos como ‘lado más largo’ si en la figura hay varios lados iguales sin especificar claramente a cuál se alude.",
+      "Evitar dar resultados ya redondeados sin indicar el criterio de redondeo esperado, si la validez depende de ello.",
+      "No combinar múltiples pequeñas imprecisiones (ligero error de dato más ligera aproximación) que puedan hacer dudar si el resultado es efectivamente incorrecto o solo aproximado."
+    ],
+    "error_families": [
+      {
+        "name": "Resultado físicamente imposible",
+        "description": "Aceptar como válidos resultados que contradicen condiciones mínimas del problema, como longitudes negativas, áreas negativas, hipotenusas menores que sus catetos o perímetros menores que cualquiera de sus lados.",
+        "how_to_address": "Enfatizar la interpretación de los resultados numéricos: todo largo, área o perímetro debe ser positivo; la hipotenusa debe ser el mayor de los tres lados en un triángulo rectángulo. Trabajar con ejemplos donde se comparen resultados plausibles e implausibles para que el estudiante adquiera criterios rápidos de validación."
+      },
+      {
+        "name": "Aplicación mecánica equivocada de fórmulas",
+        "description": "Usar la fórmula correcta pero aplicarla mal: olvidar elevar al cuadrado en Pitágoras, no sumar todos los lados para el perímetro, omitir el 1/2 en el área del triángulo, o usar la suma en vez de la diferencia según corresponda.",
+        "how_to_address": "Descomponer la fórmula paso a paso, explicitando el rol de cada término. Hacer que los estudiantes expliquen en palabras qué representa cada parte (por ejemplo, ‘a² es el cuadrado de un cateto’) antes de efectuar los cálculos. Utilizar ejercicios de revisión de procedimientos donde se corrijan estos pasos específicos."
+      },
+      {
+        "name": "Confusión entre datos geométricos",
+        "description": "Confundir radio con diámetro, base con altura, lado de una figura con la diagonal, o identificar mal cuál es el cateto o la hipotenusa en un triángulo rectángulo.",
+        "how_to_address": "Trabajar con figuras claramente etiquetadas y pedir que el estudiante identifique primero qué medida corresponde a qué elemento geométrico antes de usar cualquier fórmula. Usar preguntas que solo pidan nombrar qué dato se usaría como base, altura, radio, etc., sin cálculo, para consolidar estas distinciones."
+      },
+      {
+        "name": "Confianza excesiva en el dibujo",
+        "description": "Tomar decisiones sobre la validez de un resultado o procedimiento solo porque ‘se ve bien’ en el dibujo, sin basarse en las medidas ni en las fórmulas trabajadas.",
+        "how_to_address": "Insistir en que, en problemas de la PAES, los dibujos no siempre están a escala. Proponer actividades donde el dibujo engaña a la vista pero las medidas muestran otra cosa, obligando a usar las fórmulas para validar. Destacar siempre en el enunciado que la justificación debe basarse en razones geométricas y no en la apariencia."
+      },
+      {
+        "name": "No ver la inconsistencia interna",
+        "description": "Aceptar procedimientos donde, aunque cada paso aislado parece razonable, el conjunto lleva a un resultado incompatible con los datos iniciales (por ejemplo, un área menor que la de una de sus partes, o un lado calculado que contradice otra medida ya dada).",
+        "how_to_address": "Entrenar la revisión global del resultado: comparar el valor obtenido con los datos originales y preguntarse si es ‘coherente’ (por ejemplo, si el área total es mayor que la suma de las partes, o si una medida calculada respeta la condición de ser el lado más largo). Plantear preguntas donde la tarea sea solo revisar si el resultado final es coherente sin repetir todos los cálculos."
+      },
+      {
+        "name": "Elección inadecuada de procedimiento",
+        "description": "Seleccionar una fórmula o estrategia que no corresponde a la figura o situación (por ejemplo, usar Pitágoras en un triángulo no rectángulo sin justificación, o usar el área de rectángulo para una figura que no lo es).",
+        "how_to_address": "Comparar explícitamente distintas estrategias posibles para un mismo problema y discutir cuál corresponde a las condiciones dadas. Trabajar ítems donde haya que justificar por qué una fórmula sí aplica y otra no, incluso sin realizar el cálculo completo."
+      }
+    ],
+    "future_targets": [
+      "Desarrollar la capacidad de argumentar y justificar soluciones en problemas geométricos más complejos y abiertos, donde no se indique explícitamente qué procedimiento usar.",
+      "Facilitar el estudio de demostraciones simples en geometría, ya que el estudiante aprende a basar sus juicios en propiedades y no solo en cálculos.",
+      "Apoyar el trabajo con figuras compuestas y problemas de modelamiento geométrico, donde se requiere validar si el modelo usado es adecuado a la situación real.",
+      "Fortalecer la habilidad general de revisión y control de errores en procedimientos matemáticos, útil en todos los ejes (álgebra, funciones, probabilidades).",
+      "Preparar al estudiante para tareas de comparación y análisis de soluciones en evaluaciones superiores, donde se pide explicar por qué un método es más eficiente o más apropiado que otro.",
+      "Servir de base para el razonamiento en contextos de geometría analítica y trigonometría, donde será necesario juzgar la coherencia de resultados obtenidos con nuevas herramientas."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "numérica",
+      "descripción_geométrica_en_texto",
+      "procedimental_paso_a_paso"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_decimals",
+      "simple_fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

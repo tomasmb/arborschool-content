@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Suma de dos o más números decimales positivos o negativos alineando la coma decimal.",
+        "Resta de dos números decimales positivos o negativos alineando la coma decimal.",
+        "Uso de ceros a la derecha para completar decimales con distinta cantidad de cifras (manejo de ‘huecos’).",
+        "Aplicación de valor posicional en números decimales (unidades, décimas, centésimas, milésimas, etc.).",
+        "Aplicación de reglas de signos al sumar y restar cuando intervienen decimales negativos.",
+        "Traducción directa de un contexto verbal simple a una suma o resta de decimales (por ejemplo, dinero o medidas) SI el foco principal es el algoritmo de suma/resta."
+      ],
+      "out_of_scope": [
+        "Multiplicación o división de números decimales.",
+        "Operaciones combinadas con más de una prioridad (paréntesis, productos y sumas mezcladas).",
+        "Cálculo mental sofisticado con decimales (redondeos estratégicos, aproximaciones complejas).",
+        "Porcentajes, fracciones o razones que requieran convertir entre representaciones antes de sumar o restar.",
+        "Números en notación científica o potencias de 10 con decimales.",
+        "Problemas donde la principal dificultad sea modelar algebraicamente la situación (introducción de ecuaciones) más que efectuar la suma o resta decimal.",
+        "Ubicación de decimales en la recta numérica o comparación de decimales sin efectuar suma o resta."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Lectura y escritura de números decimales en notación estándar.",
+        "A-M1-NUM-01-05: Comprensión de valor posicional en el sistema decimal (incluyendo décimas, centésimas, etc.).",
+        "A-M1-NUM-01-10: Suma y resta de números naturales con algoritmo estándar en columnas.",
+        "A-M1-NUM-01-15: Interpretación básica de números negativos y reglas de signos para suma y resta con enteros."
+      ],
+      "common_traps": [
+        "No alinear por la coma decimal, sino por el borde izquierdo o derecho de los números.",
+        "Olvidar agregar ceros a la derecha en el número con menos cifras decimales antes de operar.",
+        "Colocar la coma decimal del resultado en la misma posición relativa que uno de los sumandos, sin considerar la alineación posicional.",
+        "Confundir la operación indicada (por ejemplo, restar en vez de sumar en contextos verbales).",
+        "Aplicar incorrectamente las reglas de signos cuando hay decimales negativos (por ejemplo, asumir que ‘restar un número negativo’ siempre disminuye el resultado).",
+        "Tratar las cifras decimales como si fueran números enteros separados, sin respetar el valor posicional.",
+        "Errores de acarreo o préstamo (llevadas y préstamos) al operar en cada columna decimal."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ítems con suma o resta de dos números decimales positivos sin cambio de signo en el resultado.",
+        "Números con la misma cantidad de cifras decimales (no requiere completar con ceros).",
+        "Como máximo dos cifras decimales en cada número.",
+        "Sin necesidad de realizar muchos acarreos o préstamos (por ejemplo, que la mayoría de las columnas no requieran llevar).",
+        "Contextos verbales muy directos (por ejemplo, dinero o longitud) donde la operación a realizar es evidente y única."
+      ],
+      "medium": [
+        "Ítems con números decimales que tienen distinta cantidad de cifras decimales, requiriendo completar con ceros.",
+        "Presencia de al menos un número decimal negativo, pero con operación de suma o resta directa (sin dobles negativos).",
+        "Requieren acarreos o préstamos en al menos una columna decimal o entera.",
+        "Suma o resta de tres números decimales cuando el foco sigue siendo la alineación y el algoritmo.",
+        "Contextos verbales donde hay que identificar correctamente si se suma o se resta, pero con información clara y poca lectura."
+      ],
+      "hard": [
+        "Ítems que combinan varios aspectos: decimales con diferente cantidad de cifras, presencia de números negativos y múltiples acarreos o préstamos.",
+        "Situaciones con resta que conduce a un resultado negativo o que incluye la estructura ‘restar un número negativo’.",
+        "Sumas o restas de tres o más números decimales con signos distintos, requiriendo agrupar y aplicar con cuidado reglas de signos.",
+        "Contextos verbales más elaborados (por ejemplo, comparaciones de cambios, ganancias y pérdidas sucesivas) donde identificar la expresión numérica correcta exige varios pasos, aunque la habilidad clave siga siendo sumar/restar decimales.",
+        "Números con hasta tres o cuatro cifras decimales donde la precisión en la alineación y en las llevadas es crucial."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados verbales donde no quede claro si corresponde sumar o restar (por ejemplo, usar palabras vagas como ‘diferencia’ sin contexto suficiente).",
+      "No mezclar en la misma pregunta decimales y fracciones si la conversión no es el foco del ítem; en este átomo se debe privilegiar que la dificultad sea la alineación decimal.",
+      "No usar notación decimal ambigua en español/chileno (por ejemplo, alternar coma y punto como separadores decimales). Para la PAES se debe usar coma decimal consistentemente.",
+      "Evitar números con muchos ceros intermedios que puedan confundirse visualmente (por ejemplo, 0,004005) salvo que el propósito explícito sea el valor posicional dentro del átomo.",
+      "No usar formatos de tabla mal alineados que dificulten ver la alineación por coma; si se presentan en columna, la alineación debe ser claramente visible.",
+      "Evitar consignas que mezclen instrucciones de redondear con instrucciones de sumar/restar, a menos que el redondeo NO sea necesario ni relevante para resolver.",
+      "No introducir símbolos de moneda o unidades en posiciones que generen confusión sobre dónde está la coma decimal (por ejemplo, $1,5m mezclando símbolo monetario y unidad)."
+    ],
+    "error_families": [
+      {
+        "name": "Desalineación_por_coma",
+        "description": "El estudiante alinea los números por la izquierda o por la derecha, pero no por la coma decimal, provocando que sume o reste cifras de distinto valor posicional.",
+        "how_to_address": "Insistir en marcar visualmente la coma decimal antes de escribir los números en columna y reforzar el vínculo entre posición y valor (unidades con unidades, décimas con décimas, etc.). Proponer ejercicios donde deban reescribir operaciones mal alineadas y corregirlas."
+      },
+      {
+        "name": "Olvido_de_ceros_de_relleno",
+        "description": "El estudiante no completa con ceros el número que tiene menos cifras decimales y deja ‘huecos’ que luego interpreta erróneamente como ausencia de cifra.",
+        "how_to_address": "Practicar la equivalencia entre, por ejemplo, 3,5 y 3,50 o 3,500, remarcando que agregar ceros a la derecha no cambia el valor. Usar ejercicios donde explícitamente se pida reescribir todos los números con la misma cantidad de cifras decimales antes de operar."
+      },
+      {
+        "name": "Coma_mal_ubicada_en_el_resultado",
+        "description": "Después de sumar o restar correctamente las columnas, el estudiante ubica la coma decimal del resultado en una posición incorrecta.",
+        "how_to_address": "Hacer que el estudiante trace una línea vertical por la coma de los sumandos y extienda esa línea hacia el resultado. Reforzar que la coma del resultado queda en la misma columna que las comas de los números originales."
+      },
+      {
+        "name": "Reglas_de_signos_incorrectas",
+        "description": "En presencia de decimales negativos, el estudiante trata la operación como si todos los números fueran positivos o interpreta mal estructuras como ‘restar un número negativo’.",
+        "how_to_address": "Conectar con la suma y resta de enteros, usando recta numérica conceptual (aunque no se evalúe gráficamente) para entender qué ocurre al sumar o restar cantidades negativas. Proponer parejas de ejemplos con y sin signo para comparar patrones (por ejemplo, 3,5 − 1,2 versus 3,5 − (−1,2))."
+      },
+      {
+        "name": "Acarreos_y_prestamos_erroneos",
+        "description": "El estudiante falla al llevar o pedir prestado entre columnas (tanto en la parte entera como en la decimal), produciendo errores aritméticos aunque la alineación sea correcta.",
+        "how_to_address": "Revisar previamente el algoritmo de suma y resta con números naturales en columnas. Luego trasladar el mismo procedimiento a las columnas decimales, destacando que las ‘llevadas’ funcionan igual a la derecha y a la izquierda de la coma."
+      },
+      {
+        "name": "Traduccion_contextual_equivocada",
+        "description": "En problemas verbales simples, el estudiante identifica mal la operación (por ejemplo, suma en vez de resta) aunque luego maneje bien el algoritmo decimal.",
+        "how_to_address": "Practicar lectura detenida de enunciados cortos, subrayando las expresiones clave (aumenta, disminuye, le faltan, le quedan). Proponer actividades donde el foco sea solo decidir la operación antes de efectuar los cálculos."
+      }
+    ],
+    "future_targets": [
+      "Operaciones combinadas con números decimales (incluyendo paréntesis y jerarquía de operaciones).",
+      "Cálculo con porcentajes expresados como decimales (por ejemplo, 0,15 de una cantidad).",
+      "Manejo de promedios, diferencias y variaciones en contextos estadísticos con datos decimales.",
+      "Cálculos con medidas en contextos geométricos (perímetros, longitudes, medidas de ángulos) que involucran decimales.",
+      "Resolución de problemas de aritmética financiera básica (vuelto, descuentos, aumentos sucesivos) donde se opera con decimales.",
+      "Trabajo con aproximaciones y redondeos de resultados decimales después de realizar operaciones.",
+      "Transición fluida entre fracciones y decimales en problemas que requieren operar en ambas representaciones."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "decimals",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de inecuaciones lineales de una variable con coeficientes distintos de cero y operaciones en varios pasos.",
+        "Inecuaciones con paréntesis que requieren uso explícito de propiedad distributiva antes de agrupar términos.",
+        "Inecuaciones con la variable en ambos miembros que exigen trasladar términos para dejar la variable en un solo lado.",
+        "Manejo correcto de coeficientes negativos, incluyendo el cambio de sentido de la desigualdad al multiplicar o dividir por un número negativo.",
+        "Obtención del conjunto solución como intervalo en R (por ejemplo, x > a, x ≤ b, a < x ≤ b), expresado en forma verbal o simbólica.",
+        "Inecuaciones lineales que combinan sumas, restas y multiplicaciones por constantes racionales simples (enteros o fracciones sencillas)."
+      ],
+      "out_of_scope": [
+        "Inecuaciones con valor absoluto (por ejemplo, |x - a| > b).",
+        "Sistemas de inecuaciones (intersección de dos o más inecuaciones).",
+        "Inecuaciones cuadráticas, racionales, con raíces, potencias no enteras o expresiones no lineales.",
+        "Representación gráfica detallada de la solución en la recta numérica o en el plano (eso pertenece a otros átomos).",
+        "Modelación verbal extensa donde lo principal sea traducir texto a inecuaciones; aquí el foco es el procedimiento algebraico una vez dada la inecuación.",
+        "Resolución de ecuaciones (igualdades) sin desigualdad, salvo como subpaso análogo dentro de la inecuación.",
+        "Uso de parámetros o incógnitas múltiples; este átomo se limita a una variable."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01",
+        "A-M1-ARI-01-02",
+        "A-M1-ALG-01-03",
+        "A-M1-ALG-02-07",
+        "A-M1-ALG-03-11",
+        "A-M1-ALG-03-12"
+      ],
+      "common_traps": [
+        "Olvidar cambiar el sentido de la desigualdad al multiplicar o dividir por un número negativo.",
+        "Aplicar incorrectamente la propiedad distributiva al eliminar paréntesis, especialmente con signos negativos delante.",
+        "Mover términos de un lado a otro cambiando signos de forma errónea (por ejemplo, pasar −2x al otro lado y dejar −2x en vez de +2x).",
+        "Operar con fracciones sin unificar denominadores correctamente, lo que lleva a soluciones numéricas incorrectas.",
+        "Detener el procedimiento en una expresión del tipo ax > b sin despejar completamente la variable.",
+        "Interpretar mal el símbolo de desigualdad (confundir > con ≥ o < con ≤ al escribir la respuesta final).",
+        "Perder el orden de la desigualdad en soluciones tipo a < x < b (invertir extremos o dejar a > b).",
+        "Confundir que en pasos intermedios se puede operar igual que en ecuaciones y creer erróneamente que nunca cambia el sentido de la desigualdad."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones lineales de un solo paso o de dos pasos, sin paréntesis y con la variable en un solo lado desde el inicio.",
+        "Coeficientes enteros pequeños (entre −5 y 5), evitando fracciones y decimales.",
+        "Ausencia de necesidad de cambiar el sentido de la desigualdad (no se multiplica ni divide por números negativos en el despeje).",
+        "Máximo una operación de suma/resta y una de multiplicación/división para aislar la variable.",
+        "Enunciados simbólicos directos del tipo ax + b > c, con a positivo."
+      ],
+      "medium": [
+        "Inecuaciones con paréntesis que requieren al menos una aplicación de propiedad distributiva, con uno o dos paréntesis.",
+        "Variable presente en ambos lados de la desigualdad, obligando a agrupar términos semejantes.",
+        "Presencia de coeficientes negativos en algún término, pero donde el cambio de sentido de la desigualdad ocurre a lo más una vez.",
+        "Uso de fracciones simples (denominadores 2, 3, 4 o 5) o decimales con un decimal, sin operaciones aritméticas muy pesadas.",
+        "Secuencia de 3 a 4 pasos algebraicos claramente diferenciados antes de llegar al conjunto solución.",
+        "Posible requerimiento de interpretar la solución en forma de intervalo simple hacia la derecha o izquierda (por ejemplo, x ≥ a o x < b)."
+      ],
+      "hard": [
+        "Inecuaciones que combinan simultáneamente paréntesis, variable en ambos lados y coeficientes negativos en al menos uno de los miembros.",
+        "Necesidad de cambiar el sentido de la desigualdad una o más veces, por ejemplo al dividir por un coeficiente negativo o al factorizar un −1.",
+        "Uso de fracciones no triviales (denominadores distintos, necesidad de mínimo común múltiplo) o combinación de fracciones y enteros.",
+        "Procedimientos con 5 o más pasos encadenados (distributiva, reducción de términos semejantes, traslado de términos, factor común, despeje final).",
+        "Soluciones tipo intervalo acotado (a < x ≤ b) donde se debe cuidar el orden de los extremos y los símbolos <, >, ≤, ≥.",
+        "Distractores diseñados a partir de errores sutiles en el cambio de sentido de la desigualdad o en la manipulación de signos, que exigen alta atención al detalle."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados verbales demasiado largos o con contexto irrelevante cuando el foco es puramente algebraico; el lenguaje debe ser claro y directo.",
+      "No mezclar en el mismo ítem la necesidad de interpretar un contexto complejo y, además, realizar un procedimiento algorítmico largo, para no confundir comprensión lectora con procedimiento algebraico.",
+      "Evitar preguntas donde más de una alternativa represente la misma solución escrita en formatos levemente distintos, a menos que se explicite claramente el criterio (por ejemplo, intervalo vs. desigualdad).",
+      "No usar notación ambigua para intervalos, como paréntesis y corchetes sin aclarar si se refieren a abierto/cerrado; preferir escribir la inecuación o indicar explícitamente el tipo de intervalo.",
+      "Evitar el uso confuso de símbolos de desigualdad, por ejemplo, colocar ≥ y > muy juntos visualmente; dejar espacio suficiente y usar tipografía clara.",
+      "No plantear inecuaciones donde el coeficiente de la variable pueda ser cero sin aclararlo, ya que podría transformarse en una proposición siempre verdadera o falsa, lo que sale del foco de este átomo.",
+      "Evitar expresiones donde al simplificar se obtengan desigualdades tautológicas o contradictorias (0 > 0, 3 ≤ 3) salvo que el objetivo explícito del ítem sea distinguir estos casos.",
+      "No mezclar en un mismo ítem dos variables distintas (x e y) si solo se va a resolver respecto de una; esto puede generar dudas sobre qué se debe despejar."
+    ],
+    "error_families": [
+      {
+        "name": "No invertir la desigualdad con coeficientes negativos",
+        "description": "El estudiante multiplica o divide ambos lados de la inecuación por un número negativo, pero mantiene el mismo símbolo de desigualdad, obteniendo un conjunto solución invertido.",
+        "how_to_address": "Incluir ítems donde el paso crítico sea explícitamente dividir por un coeficiente negativo y diseñar distractores que reflejen este error. En la retroalimentación, enfatizar que multiplicar o dividir por un número negativo invierte el orden en la recta numérica, por lo tanto se debe cambiar el sentido de la desigualdad."
+      },
+      {
+        "name": "Distributiva con signo incorrecto",
+        "description": "El estudiante aplica mal la propiedad distributiva cuando hay un signo negativo delante de un paréntesis, afectando solo un término o cambiando solo un signo.",
+        "how_to_address": "Proponer inecuaciones donde la correcta apertura de paréntesis sea determinante para la solución. En la retroalimentación, mostrar el desarrollo paso a paso, destacando gráficamente cómo el signo afecta a todos los términos dentro del paréntesis."
+      },
+      {
+        "name": "Traslado de términos con cambio de signo erróneo",
+        "description": "Al pasar un término de un lado al otro de la desigualdad, el estudiante olvida cambiar el signo o lo cambia dos veces, alterando la expresión equivalente.",
+        "how_to_address": "Usar ítems con variable en ambos lados y distractores producidos exactamente por este tipo de error. En la explicación, recomendar escribir explícitamente la operación (sumar o restar la misma cantidad en ambos lados) en vez de 'pasar cambiando de signo', para reforzar el sentido de la operación."
+      },
+      {
+        "name": "Manejo deficiente de fracciones",
+        "description": "Errores al sumar, restar o simplificar fracciones al interior de la inecuación, que llevan a un valor numérico final incorrecto aunque la secuencia de pasos algebraicos sea razonable.",
+        "how_to_address": "Incluir algunos ítems con fracciones simples y ofrecer retroalimentación que recuerde el uso de denominador común y la simplificación final. Separar el problema en subpasos numéricos claros en la explicación."
+      },
+      {
+        "name": "Interpretación equivocada del símbolo de desigualdad",
+        "description": "El estudiante resuelve correctamente los pasos algebraicos pero al escribir la solución invierte el símbolo (por ejemplo, escribe x ≥ 3 en lugar de x ≤ 3) o ubica mal la variable (3 ≤ x en lugar de x ≥ 3, generando confusión).",
+        "how_to_address": "Plantear opciones de respuesta que difieran solo en el sentido de la desigualdad para detectar este error. En la retroalimentación, relacionar la desigualdad con ejemplos numéricos concretos en la recta real para fijar la dirección correcta."
+      },
+      {
+        "name": "Pérdida del orden en soluciones acotadas",
+        "description": "En desigualdades del tipo a < x < b, el estudiante termina con b < x < a o con extremos mal ordenados, especialmente cuando a y b son negativos o fraccionarios.",
+        "how_to_address": "Usar ítems donde la comparación de extremos sea central y remarcar en la explicación que el menor número va a la izquierda y el mayor a la derecha, apoyándose en comparaciones numéricas simples antes de volver a la expresión algebraica."
+      },
+      {
+        "name": "No completar el despeje de la variable",
+        "description": "El estudiante se queda en una expresión del tipo 3x − 2 > 5 sin realizar los pasos finales para dejar x sola, o confunde esta expresión intermedia con la solución.",
+        "how_to_address": "Diseñar ítems de selección múltiple donde algunas alternativas contengan expresiones intermedias sin despeje completo. En la retroalimentación, enfatizar que el objetivo es obtener una desigualdad con x aislada y explicar por qué las expresiones intermedias no representan el conjunto solución."
+      }
+    ],
+    "future_targets": [
+      "Resolución de sistemas de inecuaciones lineales en una variable y su interpretación en la recta numérica.",
+      "Resolución de inecuaciones lineales en dos variables y representación de semiplanos en el plano cartesiano.",
+      "Modelación de situaciones reales mediante inecuaciones lineales y determinación de rangos de valores posibles para variables de contexto.",
+      "Resolución de inecuaciones con valor absoluto mediante descomposición en casos.",
+      "Resolución de inecuaciones cuadráticas y racionales, incluyendo análisis de signos de factores.",
+      "Análisis de dominios y rangos de funciones mediante condiciones de desigualdad.",
+      "Optimización lineal básica (programación lineal elemental) donde las restricciones se expresan como inecuaciones."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal_breve"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_fractions",
+      "mixed",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

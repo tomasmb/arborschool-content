@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del total (100%) cuando se conoce una parte y el porcentaje que esta representa",
+        "Uso de la relación: parte = porcentaje * total y su inversión total = parte / (porcentaje en forma decimal)",
+        "Problemas verbales del tipo: 'Si x es el y% de una cantidad, ¿cuál es la cantidad?' en contextos cotidianos (precios, personas, cantidades de objetos, etc.)",
+        "Situaciones donde el porcentaje entregado corresponde explícitamente a un porcentaje del total (descuento, impuesto, proporción de un grupo, etc.)",
+        "Uso de porcentajes expresados como enteros (10%, 25%, 40%), fracciones simples (1/4, 3/5) o decimales (2,5%) siempre que representen parte de un total"
+      ],
+      "out_of_scope": [
+        "Cálculo de la parte cuando se conoce el total y el porcentaje (eso corresponde al átomo directo de porcentaje, no al inverso)",
+        "Problemas que requieren más de un paso porcentual encadenado (por ejemplo, aplicar dos porcentajes sucesivos antes de recuperar el total original)",
+        "Porcentajes de porcentajes (por ejemplo, calcular el total a partir de 'el 30% del 40% es x')",
+        "Situaciones que requieren proporcionalidad compuesta o regla de tres con más de una razón",
+        "Cálculo de aumentos o descuentos sucesivos y recuperación del precio original desde el precio final con varios cambios intermedios",
+        "Porcentajes asociados a probabilidades o estadística inferencial",
+        "Uso de ecuaciones algebraicas con varias incógnitas; aquí solo se permite una incógnita asociada al total"
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de las cuatro operaciones básicas con números naturales",
+        "A-M1-NUM-01-03: División con números decimales positivos",
+        "A-M1-NUM-02-01: Interpretación de porcentaje como razón sobre 100",
+        "A-M1-NUM-02-02: Conversión entre porcentaje y número decimal",
+        "A-M1-NUM-02-04: Cálculo de un porcentaje de una cantidad conocida (parte a partir del total)"
+      ],
+      "common_traps": [
+        "Dividir por el porcentaje expresado en forma entera en lugar de su forma decimal (por ejemplo, usar 20 en vez de 0,20)",
+        "Multiplicar la parte por el porcentaje en vez de dividir por él al buscar el total",
+        "Confundir la parte entregada con el total y no identificar que corresponde solo a un porcentaje",
+        "No distinguir entre porcentaje de descuento y porcentaje del precio original, perdiendo el referente del 100%",
+        "Errores al convertir porcentajes con coma (por ejemplo, 2,5% → 2,5 en vez de 0,025)",
+        "Responder con la parte restante (por ejemplo, el 80% restante) en lugar del 100% total solicitado",
+        "Interpretar mal expresiones verbales como 'el 30% corresponde a 45' o 'el 30% del curso son 9 estudiantes'"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Porcentaje expresado como entero simple y común (10%, 20%, 25%, 50%)",
+        "Números pequeños y que dan resultados enteros sin decimales (por ejemplo, '15 es el 30% de un número')",
+        "Enunciado directo y breve del tipo 'x es el y% de un número, ¿cuál es el número?' sin contexto verbal complejo",
+        "No se requiere conversión de unidades ni interpretación adicional del resultado",
+        "Cálculo que puede resolverse con una sola operación de conversión de porcentaje a decimal seguida de una división sencilla"
+      ],
+      "medium": [
+        "Porcentajes menos habituales pero todavía enteros (15%, 35%, 60%, 80%) o fracciones equivalentes fáciles (1/5, 3/4)",
+        "Resultados que pueden incluir decimales sencillos (por ejemplo, 37,5; 62,5), pero con operaciones manejables",
+        "Contextos verbales cotidianos de una o dos frases (precio, impuestos, proporción de estudiantes, etc.) que exigen identificar claramente qué cantidad es la parte y cuál es el total buscado",
+        "Posible presencia de información irrelevante que el estudiante debe descartar, sin que esto implique varios pasos porcentuales",
+        "Puede requerir convertir unidades simples (por ejemplo, de gramos a kilogramos) después de hallar el total numérico"
+      ],
+      "hard": [
+        "Porcentajes no enteros (2,5%, 12,5%, 37,5%) o presentados como fracciones menos evidentes (3/8, 5/6) que exigen conversión cuidadosa",
+        "Resultados que no son enteros y que involucran división con decimales no terminantes o con varios pasos intermedios",
+        "Enunciados verbales más extensos que esconden la estructura 'parte–porcentaje–total', por ejemplo, en problemas de precios con recargos o partes de un grupo donde hay que identificar qué dato corresponde al porcentaje dado",
+        "Situaciones donde el porcentaje implica aumento o disminución, pero se entrega el valor del cambio (por ejemplo, 'el aumento fue el 15% del precio original y correspondió a $x') y se pide recuperar el precio original",
+        "Tareas que exigen reorganizar información tabular o textual para identificar correctamente qué cifra es la parte asociada al porcentaje del total",
+        "Necesidad de realizar explicitamente la división por un número decimal con más de una cifra significativa (por ejemplo, 0,375; 0,085)"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar frases sin referente claro para el porcentaje, como 'el 30% es 24' sin indicar 'de una cantidad' o 'del total de ...'",
+      "No mezclar 'porcentaje de aumento/disminución' con 'porcentaje de la cantidad' sin aclarar si el dato entregado es el cambio o el valor final",
+      "Evitar contextos donde haya dos posibles totales (por ejemplo, curso y colegio) sin especificar claramente a qué total se refiere el porcentaje",
+      "No usar expresiones como 'la mayoría', 'una parte importante', 'casi la mitad' que no correspondan a un porcentaje numérico concreto",
+      "Evitar que el mismo número pueda interpretarse tanto como parte como total; explicitar 'corresponde a', 'es el y% del total', etc.",
+      "No usar simultáneamente varios porcentajes relacionados (30% mujeres, 70% hombres) si solo se da una cifra de cantidad; especificar cuál es la parte cuantificada",
+      "Evitar porcentajes escritos de forma inconsistente (mezcla de coma y punto decimal) que puedan causar confusión en la conversión",
+      "No sobrecargar el ítem con datos irrelevantes que tengan también porcentajes, para no inducir a escoger el porcentaje equivocado como referente"
+    ],
+    "error_families": [
+      {
+        "name": "Dividir_por_el_porcentaje_entero",
+        "description": "El estudiante calcula el total dividiendo por el porcentaje expresado como número entero en lugar de su forma decimal, por ejemplo, total = parte / 20 en vez de parte / 0,20.",
+        "how_to_address": "Reforzar la idea de que el porcentaje representa 'por cada 100' y que siempre debe convertirse a fracción o decimal antes de operar (20% = 20/100 = 0,20). Incluir ítems que contraponen explícitamente 20 y 0,20 para que el estudiante vea el efecto numérico."
+      },
+      {
+        "name": "Operación_inversa_incorrecta",
+        "description": "En lugar de dividir por el porcentaje en formato decimal, el estudiante multiplica la parte por el porcentaje o por (1 - porcentaje), confundiendo el cálculo de la parte con el del total.",
+        "how_to_address": "Trabajar con la relación simbólica parte = porcentaje * total y practicar aislar 'total' de esa ecuación. Proponer comparaciones entre el cálculo correcto e incorrecto para que el estudiante observe que el total debe ser mayor que la parte cuando el porcentaje es menor que 100%."
+      },
+      {
+        "name": "Confusión_parte_total",
+        "description": "El estudiante toma el total como si fuera la parte o responde con la parte restante (por ejemplo, el 70% restante) en lugar del 100% total.",
+        "how_to_address": "Incluir enunciados que obliguen a subrayar o identificar explícitamente qué dato es 'parte' y qué se busca como 'total'. Usar representaciones con diagramas de barras (verbales o simbólicos) que muestren visualmente parte y todo para consolidar el rol de cada uno."
+      },
+      {
+        "name": "Conversión_errónea_de_porcentajes_decimales",
+        "description": "Errores al convertir porcentajes con coma o fracciones a su forma decimal, por ejemplo, 2,5% → 2,5 en vez de 0,025, o 12,5% → 0,1250 mal posicionado.",
+        "how_to_address": "Practicar explícitamente la regla de 'mover la coma dos posiciones hacia la izquierda' y realizar equivalencias sistemáticas (2,5% = 2,5/100 = 0,025). Usar ejemplos contrastivos donde una mala conversión produce un total evidentemente ilógico (más pequeño que la parte)."
+      },
+      {
+        "name": "Resultados_ilógicos_no_detectados",
+        "description": "El estudiante no verifica si el resultado tiene sentido (por ejemplo, obtiene un total menor que la parte para un porcentaje menor a 100% y lo acepta sin cuestionar).",
+        "how_to_address": "Incorporar preguntas de estimación previa ('El total debiera ser mayor o menor que 50?') y de verificación posterior ('¿Tiene sentido que el total sea menor que la parte si el porcentaje es 20%?'). Fomentar la comparación cualitativa entre parte, porcentaje y total."
+      },
+      {
+        "name": "Manejo_deficiente_de_división_con_decimales",
+        "description": "El error proviene de dificultades técnicas al dividir por decimales (por ejemplo, 150 / 0,75) más que de la comprensión conceptual del porcentaje.",
+        "how_to_address": "Revisar la estrategia de transformar la división por un decimal en una división por un entero (multiplicando numerador y denominador por una potencia de 10). Incluir ítems donde se vea claramente que 150 / 0,75 es equivalente a 15000 / 75 para estabilizar la técnica."
+      }
+    ],
+    "future_targets": [
+      "Resolución de problemas de descuentos e impuestos donde se requiere recuperar el precio original desde un valor de cambio o desde el valor del impuesto",
+      "Análisis de variaciones porcentuales sucesivas (aumento y disminución) y recuperación del valor inicial desde el valor final",
+      "Interpretación de gráficos estadísticos donde se muestran porcentajes de subgrupos y es necesario estimar o calcular el tamaño total de la población",
+      "Manejo de proporcionalidad directa e inversa en contextos más complejos, usando la estructura parte–tasa–total",
+      "Modelación de situaciones financieras básicas (interés simple, reajustes) donde se necesita deducir capital inicial a partir de intereses ganados o pagados",
+      "Resolución de ecuaciones lineales sencillas que incluyen coeficientes porcentuales, a partir de la ecuación parte = porcentaje * total",
+      "Trabajo con escalas y mapas donde se dan medidas parciales que representan un porcentaje de la longitud o área real"
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "decimals",
+      "simple_fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

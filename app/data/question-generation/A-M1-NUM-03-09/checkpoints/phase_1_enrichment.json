@@ -1,0 +1,109 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Traducir una raíz enésima simple a una potencia con exponente racional equivalente, por ejemplo \\(\\sqrt[n]{a^m} = a^{m/n}\\).",
+        "Identificar el índice de la raíz como el denominador del exponente racional.",
+        "Identificar el exponente del radicando (o 1 si no aparece escrito) como el numerador del exponente racional.",
+        "Trabajar con variables, constantes numéricas o productos simples como radicando, siempre que la tarea central sea el cambio de notación de raíz a potencia.",
+        "Reconocer que \\(\\sqrt[n]{a} = a^{1/n}\\) cuando el radicando no tiene exponente explícito."
+      ],
+      "out_of_scope": [
+        "Ir desde potencias con exponente racional hacia notación radical (eso corresponde al átomo inverso A-M1-NUM-03-08).",
+        "Operar o simplificar expresiones con exponentes racionales (sumar, restar, multiplicar, dividir exponentes, etc.).",
+        "Aplicar propiedades de potencias para descomponer productos o cocientes dentro del radicando (por ejemplo, separar \\(\\sqrt[n]{ab}\\) en \\(a^{1/n}b^{1/n}\\)).",
+        "Racionalización de denominadores que contienen radicales.",
+        "Evaluar numéricamente el valor de la expresión (calcular aproximaciones o simplificar raíces específicas como \\(\\sqrt{9} = 3\\)).",
+        "Uso de exponentes irracionales o notaciones fuera de la forma fracción simple \\(m/n\\).",
+        "Contextos funcionales o gráficos donde la raíz aparece como parte de la definición de una función (allí el foco no sería el cambio de notación)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Comprender y usar la notación de potencias con exponentes enteros positivos.",
+        "A-M1-NUM-03-02: Identificar los elementos de una raíz enésima (radical, índice, radicando, exponente del radicando).",
+        "A-M1-NUM-03-08: Comprender la relación inversa básica entre notación radical y exponente fraccionario (desde potencia racional a raíz), aunque aquí se usa en el sentido opuesto."
+      ],
+      "common_traps": [
+        "Intercambiar numerador y denominador del exponente racional, escribiendo por ejemplo \\(\\sqrt[3]{a^2}\\) como \\(a^{3/2}\\) en lugar de \\(a^{2/3}\\).",
+        "Olvidar que un radicando sin exponente explícito corresponde a exponente 1, por ejemplo transformar \\(\\sqrt[5]{x}\\) como \\(x^{5}\\) o \\(x^{1/5}\\) pero confundiendo el 1.",
+        "Confundir el índice de la raíz con un coeficiente numérico del radicando, por ejemplo en \\(2\\sqrt[4]{x}\\) tomar el 2 como índice.",
+        "No usar paréntesis cuando el exponente racional se aplica a todo un grupo de factores, generando expresiones ambiguas o incorrectas.",
+        "Interpretar que también se debe simplificar o operar con la expresión (por ejemplo combinar exponentes) cuando la instrucción solo pide reescribir en notación de potencia."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Índice pequeño y familiar (2, 3 o 4) y radicando con una sola letra o número, sin exponente explícito o con exponente muy simple (1 o 2), por ejemplo \\(\\sqrt[3]{x}\\) o \\(\\sqrt{y^2}\\).",
+        "Ítems donde solo se pide elegir la potencia equivalente directa, con alternativas que difieren obvia y principalmente en el numerador o el denominador del exponente.",
+        "Ausencia de coeficientes externos, productos o cocientes dentro del radical que puedan distraer o generar pasos adicionales.",
+        "Uso de una sola raíz en la expresión, sin raíces anidadas ni combinaciones de varias raíces."
+      ],
+      "medium": [
+        "Índices mayores o menos habituales (5, 6, 8, 10) y exponentes del radicando mayores que 1, por ejemplo \\(\\sqrt[5]{a^3}\\).",
+        "Expresiones con más de una variable o con coeficientes externos, donde se debe identificar correctamente qué parte está afectada por la raíz, por ejemplo \\(3\\sqrt[4]{x^2}\\) focalizando sólo en \\(x^2\\).",
+        "Alternativas de respuesta que incluyen errores típicos (invertir m/n, olvidar el 1 en el numerador, cambiar el índice) de forma sutil, exigiendo atención a la estructura \\(m/n\\).",
+        "Situaciones verbales breves donde se describe una raíz y se pide su expresión con exponente racional, por ejemplo “la raíz séptima de \\(y^3\\)” → \\(y^{3/7}\\)."
+      ],
+      "hard": [
+        "Expresiones con raíces anidadas o potencias encadenadas donde es necesario identificar correctamente el exponente global, por ejemplo \\(\\sqrt{\\sqrt[3]{a^2}}\\) o \\((\\sqrt[4]{x^3})^2\\), siempre que la tarea central siga siendo escribir el exponente racional equivalente.",
+        "Presencia de exponentes negativos enteros en el radicando, que lleven a exponentes racionales negativos, por ejemplo \\(\\sqrt[3]{x^{-2}} = x^{-2/3}\\).",
+        "Expresiones donde el exponente racional se aplica a una expresión entre paréntesis, obligando a distinguir qué parte queda elevada, por ejemplo \\(\\sqrt[5]{(ab^2)^3}\\) → \\((ab^2)^{3/5}\\) sin requerir simplificar más allá.",
+        "Ítems en los que hay que comparar o decidir entre varias escrituras de una misma expresión y seleccionar todas las formas equivalentes que estén correctamente en notación de potencia racional, exigiendo discriminar errores finos de numerador/denominador o de alcance de los paréntesis."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar escribir exponentes racionales sin paréntesis cuando afectan a más de un factor, por ejemplo no usar \\(ab^{2/3}\\) si se pretende \\((ab)^{2/3}\\); en su lugar, usar siempre paréntesis claros.",
+      "No mezclar varias raíces distintas en una misma expresión si no es necesario para el objetivo del ítem, para evitar que el foco se desplace desde la conversión de una raíz específica.",
+      "Evitar instrucciones vagas como “reescribe la siguiente expresión” sin indicar explícitamente que se debe usar notación de potencia con exponente fraccionario.",
+      "No usar notaciones poco estándar como raíces con índice fraccionario o exponentes escritos en forma mixta (por ejemplo 1 1/2) que entren en conflicto con la idea de exponente racional \\(m/n\\).",
+      "Evitar ítems donde el índice de la raíz pueda confundirse visualmente con un coeficiente (por ejemplo colocarlo demasiado separado del símbolo radical); en la formulación simbólica debe ser inequívocamente un índice.",
+      "No combinar en la misma pregunta cambios de notación raíz↔exponente con operaciones avanzadas de potencias (como simplificación completa de la expresión), si eso hace difícil aislar qué se está evaluando."
+    ],
+    "error_families": [
+      {
+        "name": "Numerador_y_denominador_invertidos",
+        "description": "El estudiante confunde qué va en el numerador y qué va en el denominador del exponente racional, escribiendo \\(\\sqrt[n]{a^m}\\) como \\(a^{n/m}\\) en lugar de \\(a^{m/n}\\).",
+        "how_to_address": "Reforzar la correspondencia estructural \\(m\\) ↔ exponente del radicando (arriba) y \\(n\\) ↔ índice de la raíz (abajo). Proponer tablas de correspondencia y ejercicios de emparejamiento entre \\(m, n\\) y numerador/denominador para automatizar la asociación correcta."
+      },
+      {
+        "name": "Exponente_uno_omitido_o_mal_ubicado",
+        "description": "Cuando el radicando no tiene exponente explícito, el estudiante ignora el 1 o lo coloca en el denominador, llegando a expresiones como \\(\\sqrt[5]{x} = x^{5}\\) o confundiendo la forma \\(x^{1/5}\\).",
+        "how_to_address": "Trabajar intencionalmente con ejemplos donde el radicando esté a la 1, explicitar siempre \\(x^1\\) en una primera fase, y luego pedir que se traduzca a \\(x^{1/n}\\). Usar comparaciones directas: \\(\\sqrt[n]{x} = \\sqrt[n]{x^1} = x^{1/n}\\)."
+      },
+      {
+        "name": "Índice_confundido_con_coeficiente",
+        "description": "El estudiante toma un número externo como si fuera el índice de la raíz o no reconoce el índice small, por ejemplo en \\(2\\sqrt[4]{x}\\) cree que el 2 es el índice o que el índice es 1.",
+        "how_to_address": "Diferenciar visual y verbalmente 'número afuera' (coeficiente) de 'número chiquito en la raíz' (índice). Proponer actividades de identificación de partes del radical antes de pedir la conversión a potencia, remarcando dónde está el índice en varios ejemplos."
+      },
+      {
+        "name": "Alcance_incorrecto_del_exponente",
+        "description": "El estudiante aplica el exponente racional solo a una parte de la expresión que estaba bajo la raíz, o extiende el exponente más allá de lo que corresponde por falta de paréntesis, generando equivalencias falsas.",
+        "how_to_address": "Trabajar conscientemente el uso de paréntesis: practicar primero con expresiones simples \\((ab)^{1/3}\\) versus \\(a^{1/3}b\\), y conectar con la idea de que la raíz afecta a todo lo que está debajo del símbolo radical. Incluir ejercicios donde se subraye qué parte está dentro de la raíz antes de convertir."
+      },
+      {
+        "name": "Simplificación_no_requerida_que_induce_error",
+        "description": "El estudiante intenta además simplificar o operar con la expresión (por ejemplo combinar exponentes) y en ese proceso comete errores, aunque solo se pedía cambiar de notación.",
+        "how_to_address": "Plantear consignas muy explícitas de 'solo reescribe en forma de potencia', y entrenar en separar etapas: primero convertir a exponente racional, luego, en otros contextos, simplificar. Usar ejemplos donde la forma convertida ya es una respuesta válida sin necesidad de más pasos."
+      }
+    ],
+    "future_targets": [
+      "Manipulación y simplificación de expresiones algebraicas con exponentes racionales (sumar, multiplicar, potenciar potencias).",
+      "Resolución de ecuaciones e inecuaciones que incluyen raíces, reescribiéndolas en términos de exponentes racionales para aplicar técnicas algebraicas estándar.",
+      "Estudio de funciones radicales y funciones de potencia con exponentes racionales, incluyendo su análisis gráfico y de dominios.",
+      "Comprensión y uso de propiedades de potencias para descomponer radicales de productos y cocientes, y para racionalizar denominadores.",
+      "Extensión a exponentes reales generales y al manejo de potencias y raíces en contextos de crecimiento, escalas y modelos matemáticos."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "algebraica_en_contexto"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed",
+      "integers_with_variables"
+    ],
+    "required_image_types": []
+  }
+}

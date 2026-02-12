@@ -1,0 +1,139 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicación de dos números decimales positivos y negativos aplicando el algoritmo estándar: multiplicar como si fueran enteros y luego ubicar la coma.",
+        "Multiplicación de un número decimal por un entero (positivo o negativo) usando el conteo de cifras decimales solo del factor decimal.",
+        "Conteo correcto del total de cifras decimales en los factores para determinar la posición de la coma en el producto.",
+        "Aplicación de la regla de los signos en productos con números decimales.",
+        "Ítems puramente procedimentales o insertos en contextos simples donde el foco es el procedimiento de multiplicar decimales.",
+        "Casos en que uno o ambos factores tienen ceros a la derecha o a la izquierda de la coma (por ejemplo 0,02; 1,20; 0,004)."
+      ],
+      "out_of_scope": [
+        "Problemas que exijan interpretación de porcentajes, razones o proporciones como idea central (aunque se usen decimales).",
+        "Operaciones combinadas con varias sumas, restas, multiplicaciones y divisiones donde el foco ya no es aisladamente la multiplicación de decimales.",
+        "Uso de notación científica o potencias de 10 como herramienta principal para multiplicar.",
+        "Multiplicación de fracciones no expresadas en forma decimal.",
+        "Aproximaciones, redondeos o estimaciones de productos decimales como objetivo principal.",
+        "Multiplicación de más de dos factores decimales cuando la dificultad principal pasa a ser manejo de muchas operaciones y no el algoritmo de ubicación de la coma.",
+        "Uso de calculadora o tecnologías: el objetivo es el algoritmo manual, no la verificación tecnológica."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01 (lectura y escritura de números decimales, valor posicional).",
+        "A-M1-NUM-01-05 (suma y resta de números enteros, regla de los signos básica).",
+        "A-M1-NUM-01-10 (multiplicación de números enteros sin decimales, incluyendo más de una cifra).",
+        "A-M1-NUM-01-18 (interpretación de la coma decimal y relación con décimas, centésimas, milésimas).",
+        "A-M1-NUM-01-21 (comprensión de producto de un decimal por 10, 100, 1000 y corrimiento de la coma)."
+      ],
+      "common_traps": [
+        "Olvidar contar todas las cifras decimales de ambos factores y considerar solo las de uno.",
+        "Contar mal el número de cifras decimales (por ejemplo, no considerar ceros a la derecha o contar más de la cuenta).",
+        "Mover la coma en sentido incorrecto (hacia la derecha en vez de hacia la izquierda o viceversa).",
+        "Aplicar mal la regla de los signos, especialmente en productos de un decimal negativo por un entero positivo o viceversa.",
+        "Confundir multiplicación con suma repetida y pensar que multiplicar por decimal siempre hace el número más grande.",
+        "Perder ceros necesarios en el producto final (por ejemplo, escribir 0,8 en lugar de 0,08).",
+        "Introducir un redondeo que no se pide (por ejemplo, truncar el resultado en vez de respetar todas las cifras)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos de un número decimal por un entero positivo, con un solo factor decimal y 1 o 2 cifras decimales como máximo (por ejemplo 1,2 × 3).",
+        "Productos de dos decimales positivos con hasta 1 cifra decimal cada uno (por ejemplo 0,5 × 0,3), donde el conteo de cifras decimales es inmediato.",
+        "Cálculos donde el producto entero resultante del algoritmo sin coma es de pocas cifras (hasta 2 o 3) y no requiere acarreo complejo.",
+        "Ausencia de ceros internos o finales difíciles en los factores (evitar números como 0,04; 1,20; 0,30).",
+        "Enunciados directos del tipo: «Calcula el resultado de…» sin contexto verbal ni interpretación posterior.",
+        "Uso de la regla de signos solo en casos donde ambos factores son positivos o muy claramente uno negativo y uno positivo sin ambigüedad visual."
+      ],
+      "medium": [
+        "Productos de dos decimales (positivos o negativos) donde el total de cifras decimales entre ambos factores es 2 o 3 (por ejemplo 0,25 × 1,4; -0,6 × 0,3).",
+        "Incluyen ceros a la izquierda o a la derecha en al menos uno de los factores, lo que exige cuidar el conteo de cifras decimales (por ejemplo 0,02 × 0,4).",
+        "El producto entero sin coma tiene 3 a 4 cifras, requiriendo manejar acarreos con cierta atención.",
+        "Uso explícito de la regla de los signos en contextos con uno o dos factores negativos, pero con enunciado claro (por ejemplo «el producto de -1,2 por 3»).",
+        "Problemas de contexto breve donde se debe identificar correctamente la operación de multiplicar decimales pero la dificultad principal sigue siendo el cálculo.",
+        "Casos donde el resultado tiene uno o más ceros antes de la primera cifra significativa (por ejemplo 0,004 × 0,3 → 0,0012)."
+      ],
+      "hard": [
+        "Productos de dos decimales (positivos o negativos) donde el total de cifras decimales es 4 o más (por ejemplo 0,032 × 0,45; -0,006 × -0,25).",
+        "Factores con ceros internos y finales que hacen difícil visualizar el número de cifras decimales reales (por ejemplo 1,20 × 0,040).",
+        "Productos en que el resultado exige anteponer varios ceros después de la coma (por ejemplo resultados del tipo 0,00048), obligando a un conteo muy preciso.",
+        "Incorporar la regla de los signos con dos factores negativos o mezclada con notación verbal que puede confundir (por ejemplo pérdidas, descuentos, profundidades).",
+        "Problemas de contexto donde el estudiante debe decidir correctamente multiplicar, elegir los factores decimales involucrados y luego aplicar el algoritmo con precisión.",
+        "Ítems donde uno de los distractores corresponde a errores sutiles de ubicación de coma (por ejemplo corrimiento en una posición) o a confusión con redondeo, obligando a un control de razonabilidad del resultado.",
+        "Cálculos donde el producto entero sin coma tiene 4 o más cifras y requiere varios acarreos, incrementando la carga de trabajo procedimental."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si el punto se usa como coma decimal o como separador de miles; en contexto PAES usar siempre coma decimal (0,5; 1,25) y punto solo si el formato oficial lo define explícitamente.",
+      "No mezclar dentro del mismo ítem distintas convenciones de escritura decimal (coma en un número y punto en otro).",
+      "Evitar contextos verbales en los que el lenguaje cotidiano pueda confundirse con suma o resta (por ejemplo «ganó 0,5 veces más»). En este átomo debe ser explícito que se trata de una multiplicación.",
+      "No usar expresiones verbales ambiguas como «aumentó 0,5» cuando se podría interpretar como suma en vez de multiplicación; preferir «multiplicó por 0,5» o «la cantidad equivale a 0,5 de…».",
+      "Evitar ítems donde el resultado necesite además redondeo a cierto número de decimales, a menos que el redondeo NO sea el foco ni genere confusión sobre la respuesta correcta.",
+      "No usar formatos de respuesta donde dos alternativas se diferencian solo en el uso de coma o punto sin que la convención haya sido claramente establecida.",
+      "Evitar enunciados demasiado largos o con información contextual irrelevante que haga perder de vista que la habilidad evaluada es el algoritmo de multiplicar decimales.",
+      "No combinar en el mismo ítem productos de decimales con otros procedimientos avanzados (por ejemplo raíces, potencias) que puedan desplazar el foco del átomo.",
+      "Evitar intervalos de respuestas del tipo «entre 0,2 y 0,3»; este átomo apunta a un resultado exacto, no a estimación ni cotas.",
+      "No usar símbolos como «×» y «·» mezclados sin aclaración previa, si el curso objetivo no está familiarizado con ambos."
+    ],
+    "error_families": [
+      {
+        "name": "Coma_mal_posicionada",
+        "description": "El estudiante multiplica correctamente como enteros, pero ubica mal la coma: cuenta mal las cifras decimales totales o mueve la coma una posición de más o de menos.",
+        "how_to_address": "Incluir ítems donde el cálculo entero sea simple, pero el conteo de decimales sea clave. Distractores que representen movimientos de coma erróneos permiten diagnosticar si el problema está en el algoritmo decimal y no en la multiplicación base."
+      },
+      {
+        "name": "Ignorar_decimales_de_un_factor",
+        "description": "Solo considera las cifras decimales de uno de los factores al decidir la posición de la coma en el producto.",
+        "how_to_address": "Diseñar ítems con factores que tengan distinto número de cifras decimales (por ejemplo 1,2 × 0,03) y alternativas que reflejen contar decimales de solo uno de ellos. En la retroalimentación se debe recalcar la regla de sumar cifras decimales de ambos factores."
+      },
+      {
+        "name": "Errores_con_ceros",
+        "description": "Se pierden o se agregan ceros al escribir el resultado, especialmente cuando hay ceros a la derecha o izquierda de la coma en los factores o cuando el resultado comienza con varios ceros después de la coma.",
+        "how_to_address": "Proponer productos con factores como 0,02; 0,04; 0,30 donde el resultado correcto incluya ceros significativos. Los distractores deben incluir resultados con ceros omitidos o extra, para forzar al estudiante a revisar la relación entre cantidad de decimales y posición de la coma."
+      },
+      {
+        "name": "Regla_de_signos_inconsistente",
+        "description": "El estudiante calcula bien el valor absoluto del producto, pero se equivoca en el signo del resultado, en especial en productos con un número negativo y uno positivo.",
+        "how_to_address": "Plantear ítems que contrasten productos con diferentes combinaciones de signos (positivo×positivo, positivo×negativo, negativo×negativo) donde los distractores cambien solo el signo del resultado. En la revisión, reforzar la regla de signos ligada a ejemplos concretos (pérdida de dinero, profundidad, etc.)."
+      },
+      {
+        "name": "Confusion_multiplicar_vs_sumar",
+        "description": "El estudiante interpreta multiplicar por un decimal como sumar ese decimal o como otra operación, generando resultados completamente alejados del valor correcto.",
+        "how_to_address": "Incluir contextos breves donde se compare la idea de multiplicar por un número mayor o menor que 1 y la magnitud esperada del resultado (producto menor o mayor que uno de los factores). Los distractores pueden incluir valores que coincidan con la suma de los factores para evidenciar el error."
+      },
+      {
+        "name": "Fallo_en_multiplicacion_entera_base",
+        "description": "El error se produce al hacer la multiplicación como si fueran enteros (acarreo, tabla de multiplicar), no en la ubicación de la coma.",
+        "how_to_address": "Proponer ítems donde los factores decimales se transformen en enteros relativamente simples (por ejemplo 12 × 3; 25 × 4) y verificar si el estudiante falla aún sin la parte decimal. La retroalimentación debe fortalecer las tablas de multiplicar y el algoritmo de multiplicación tradicional."
+      },
+      {
+        "name": "Sobre_redondeo_no_requerido",
+        "description": "El estudiante entrega un resultado redondeado o truncado aunque el ítem pide el valor exacto, especialmente cuando el producto tiene muchas cifras decimales.",
+        "how_to_address": "Evitar pedir redondeos en este átomo y en cambio incluir alternativas que representen el resultado exacto frente a versiones redondeadas. Explicitar en el enunciado que se requiere el valor exacto para desalentar el redondeo automático."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de porcentajes expresados en forma decimal (por ejemplo 0,25 del total).",
+      "Resolución de problemas de proporcionalidad directa que utilicen factores decimales.",
+      "Manejo de tarifas, precios unitarios, descuentos e intereses simples que se modelan con multiplicación de decimales.",
+      "Aplicación de la multiplicación de decimales en cálculo de áreas, escalas y conversiones de unidades (por ejemplo metros a kilómetros, litros, etc.).",
+      "Comprensión y uso fluido de la multiplicación por potencias de 10 y desplazamiento de coma en notación científica.",
+      "Resolución de ecuaciones lineales que impliquen coeficientes y soluciones decimales.",
+      "Trabajo con promedios, varianzas y otros estadígrafos donde aparecen productos con decimales.",
+      "Modelación de situaciones continuas (tiempo, distancia, velocidad, densidad) que requieren multiplicar medidas en formato decimal."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular",
+      "contextual"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "decimals_simple",
+      "decimals_with_trailing_zeros",
+      "mixed_integers_and_decimals"
+    ],
+    "required_image_types": []
+  }
+}

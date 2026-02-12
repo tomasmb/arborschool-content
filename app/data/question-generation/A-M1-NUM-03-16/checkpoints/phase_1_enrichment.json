@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Racionalización de denominadores que son monomios con una sola raíz enésima (índice 3 o mayor) en el denominador.",
+        "Identificación del exponente que falta para completar una potencia del radicando igual al índice (por ejemplo, completar a potencia 3, 4, 5, etc.).",
+        "Multiplicación (amplificación) de numerador y denominador por una raíz enésima que haga que el radicando del denominador quede con exponente múltiplo del índice.",
+        "Simplificación del denominador usando propiedades de potencias y raíces para eliminar la raíz (por ejemplo, raíz cúbica de a^3 = a).",
+        "Casos donde el radicando es un solo factor (número, variable o producto simple de ambos: a, 2, 2a, 3x^2, etc.).",
+        "Uso de notación radical y notación de potencia fraccionaria de manera equivalente cuando sea pertinente, pero sin exigir el uso de potencias fraccionarias para resolver."
+      ],
+      "out_of_scope": [
+        "Denominadores que sean binomios o expresiones con suma o diferencia de raíces (por ejemplo, 1 / (√[3]{2} + 1)).",
+        "Racionalización de denominadores con varias raíces diferentes simultáneamente (por ejemplo, 1 / (√[3]{2}√[5]{3})).",
+        "Racionalización en expresiones con operaciones avanzadas adicionales como fracciones complejas con varios términos, sistemas de ecuaciones o contextos funcionales.",
+        "Casos que requieren factorización no trivial previa del radicando (por ejemplo, descomponer un polinomio de mayor grado para luego racionalizar).",
+        "Racionalización de numeradores (solo se trabaja con raíces en el denominador).",
+        "Raíces cuadradas (índice 2) como foco principal; se pueden mencionar en instrucciones, pero el logro esperado es con raíces cúbicas o enésimas mayores.",
+        "Uso obligatorio de propiedades de valor absoluto ligadas a raíces pares de potencias pares (tratamiento fino de signos)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01",
+        "A-M1-NUM-03-02",
+        "A-M1-NUM-03-05",
+        "A-M1-NUM-03-06",
+        "A-M1-NUM-03-10"
+      ],
+      "common_traps": [
+        "Confundir el índice de la raíz con el exponente del radicando y sumar en vez de completar hasta el múltiplo del índice (por ejemplo, en 1/√[3]{a^2} multiplicar por √[3]{a} en vez de √[3]{a}.).",
+        "Olvidar que al amplificar se debe multiplicar tanto numerador como denominador por la misma expresión, generando fracciones no equivalentes.",
+        "Aplicar reglas correctas de racionalización para raíces cuadradas a casos de raíces cúbicas o mayores sin ajustar la estrategia (por ejemplo, intentar usar conjugado cuando el denominador es un monomio).",
+        "Completar la potencia equivocada (por ejemplo, en 1/√[5]{a^2} multiplicar por √[5]{a^2} en vez de √[5]{a^3}, dejando aún una raíz en el denominador).",
+        "Perder factores al simplificar el denominador luego de completar la potencia, quedando con exponentes incorrectos en la base.",
+        "Equivocarse en la multiplicación de los radicandos del numerador (por ejemplo, confundir multiplicar radicandos con sumar exponentes o sumar radicandos).",
+        "Omitir el índice en la notación de la raíz enésima al escribir el resultado, induciendo confusión con raíz cuadrada.",
+        "Simplificar indebidamente variables con exponentes fraccionarios sin considerar la relación índice–exponente (por ejemplo, interpretar raíz cúbica de a^4 como a en vez de a·raíz cúbica de a)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Denominador con raíz enésima de un solo factor numérico pequeño y exponente 1 (por ejemplo, 1/√[3]{2}, 1/√[4]{3}).",
+        "Índices bajos (3, 4 o 5) y radicandos sin variables, o con una sola variable con exponente 1.",
+        "El exponente que falta para completar la potencia es pequeño y evidente (por ejemplo, pasar de 2 a 3, o de 1 a 4).",
+        "No se requiere simplificación posterior en el numerador (por ejemplo, el numerador es 1 y basta escribir la raíz amplificada).",
+        "La consigna indica explícitamente que se debe racionalizar el denominador, sin pasos intermedios adicionales."
+      ],
+      "medium": [
+        "Denominador con raíz enésima de un monomio con variable con exponente distinto de 1 (por ejemplo, 1/√[3]{a^2}, 1/√[5]{x^3}).",
+        "Índices entre 3 y 6, con exponente inicial del radicando que no es cercano al índice, obligando a determinar cuántas potencias faltan (por ejemplo, exponente 2 y índice 5).",
+        "Radicando que es un producto simple número–variable (por ejemplo, √[3]{2a^2}), donde el estudiante debe aplicar la completación de potencia sobre el exponente de la variable o del número según corresponda.",
+        "Se requiere simplificar el resultado final en el denominador y, eventualmente, factorizar un exponente (por ejemplo, √[3]{a^5} → a·√[3]{a^2}).",
+        "Incorporación de fracciones sencillas en el numerador o coeficientes numéricos que obligan a manejar fracciones al ampliar."
+      ],
+      "hard": [
+        "Denominador con raíz enésima de un monomio con varios factores (por ejemplo, √[4]{2a^3b^2}), requiriendo decidir sobre qué factor(es) completar la potencia para eliminar la raíz.",
+        "Índices mayores (5, 6 o más) y exponentes del radicando que implican completar con exponentes distintos para cada factor, manteniendo la expresión como monomio (por ejemplo, √[6]{a^4b}).",
+        "Presencia de exponentes negativos o fraccionarios en el radicando que obligan a pensar en términos de potencias fraccionarias y su equivalencia con raíces.",
+        "Ítems donde la racionalización es un paso intermedio para decidir entre alternativas que dan distintas formas simplificadas (por ejemplo, comparar varias expresiones ya racionalizadas y elegir la equivalente).",
+        "Numerador no trivial (por ejemplo, con factores que se combinan al multiplicar por la raíz usada en la racionalización), lo que exige cuidar la distribución y la simplificación final.",
+        "Situaciones donde más de una alternativa parece correcta superficialmente, y solo una conserva equivalencia exacta con la fracción original tras la racionalización, exigiendo verificación cuidadosa de exponente–índice."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar consignas genéricas como \"simplifica la expresión\" cuando el foco es la racionalización; indicar explícitamente \"racionaliza el denominador\" o \"elige la expresión con denominador racionalizado\".",
+      "No mezclar en un mismo ítem racionalización de raíces cuadradas y raíces enésimas sin distinguir claramente qué se pide en cada caso.",
+      "Evitar expresiones donde el índice de la raíz pueda confundirse visualmente con un exponente (por ejemplo, escribir √[3]{a^2} con tipografía clara y consistente).",
+      "No presentar como alternativas expresiones algebraicamente equivalentes pero escritas en formas distintas de factorización si el foco del ítem no es la equivalencia algebraica sino la eliminación de la raíz.",
+      "Evitar el uso de notación de potencias fraccionarias en las alternativas si en el enunciado solo se usan radicales, a menos que expresamente se evalúe reconocer la equivalencia.",
+      "No combinar en el mismo denominador términos sumados o restados, ya que eso deriva en estrategias de conjugado y sale del alcance del átomo.",
+      "Evitar situaciones donde la raíz afecta solo parte del denominador de forma poco clara (por ejemplo, 1/√[3]{2x}/3); usar paréntesis para delimitar claramente qué está bajo la raíz.",
+      "No incluir opciones de respuesta con errores de transcripción de índice o de paréntesis que generen ambigüedad más que evaluar el procedimiento de racionalización."
+    ],
+    "error_families": [
+      {
+        "name": "Completar_potencia_incorrecta",
+        "description": "El estudiante identifica mal el exponente que falta para completar la potencia compatible con el índice. Por ejemplo, en 1/√[5]{a^2} multiplica por √[5]{a^2} (quedando √[5]{a^4}) en vez de √[5]{a^3}.",
+        "how_to_address": "En ítems de diagnóstico, incluir alternativas que muestren estos errores y contrastarlos con la estrategia correcta explicando que se debe sumar exponentes hasta llegar a un múltiplo del índice, no solo repetir el exponente inicial."
+      },
+      {
+        "name": "Amplificar_solo_el_denominador",
+        "description": "El estudiante multiplica solo el denominador por la raíz elegida, alterando el valor de la fracción.",
+        "how_to_address": "Diseñar preguntas que obliguen a comparar la fracción original con la racionalizada y descartar opciones que cambiaron el numerador, insistiendo en que se multiplica por 1 escrito como raíz/raíz."
+      },
+      {
+        "name": "Aplicar_conjugado_donde_no_corresponde",
+        "description": "Se intenta usar la técnica del conjugado (propia de binomios con raíz cuadrada) en denominadores que son monomios con raíz enésima.",
+        "how_to_address": "Incluir distractores que usan conjugados solo en ítems de nivel medio o alto, y luego explicitar que en monomios basta completar la potencia del radicando, enfatizando la diferencia entre monomios y binomios en el denominador."
+      },
+      {
+        "name": "Manejo_erroneo_de_exponentes",
+        "description": "Errores al sumar o multiplicar exponentes al combinar radicales: sumar radicandos en vez de multiplicarlos, confundir a^m·a^n con a^{m+n}, o mal uso de propiedades al simplificar la raíz completa.",
+        "how_to_address": "Diseñar ítems donde la clave se diferencia de distractores solo por el manejo correcto de exponentes, para reforzar la propiedad a^m·a^n = a^{m+n} y que al multiplicar raíces de igual índice se multiplican radicandos manteniendo el índice."
+      },
+      {
+        "name": "Olvidar_simplificar_la_raiz",
+        "description": "Después de completar la potencia, el estudiante deja el denominador aún con raíz (por ejemplo, √[3]{a^3} en vez de a), o no extrae factores completos del radical.",
+        "how_to_address": "Proponer ítems donde algunas alternativas muestran el paso intermedio sin simplificar y otras el resultado final, pidiendo explícitamente denominador sin raíz, de modo que se valore la simplificación completa."
+      },
+      {
+        "name": "Confusion_notacional",
+        "description": "Interpretación equivocada del índice de la raíz o de qué parte está dentro del radical por falta de paréntesis, lo que lleva a racionalizar una expresión distinta a la dada.",
+        "how_to_address": "Usar notación muy clara en los enunciados y generar distractores que representen interpretaciones equivocadas para luego realzar el rol de los paréntesis e índices en la lectura correcta."
+      }
+    ],
+    "future_targets": [
+      "Racionalización de denominadores más complejos, incluyendo binomios con raíces cuadradas y enésimas.",
+      "Manejo fluido de potencias con exponentes racionales y su relación con la notación radical.",
+      "Simplificación de expresiones algebraicas con raíces y potencias en contextos de funciones y ecuaciones.",
+      "Resolución de ecuaciones que involucran raíces enésimas y potencias fraccionarias.",
+      "Operaciones con radicales (suma, resta, multiplicación y división) en expresiones algebraicas más extensas.",
+      "Aplicación de propiedades de potencias y raíces en el estudio de funciones de tipo potencia y radical.",
+      "Trabajo con expresiones irracionales en contextos de límites y aproximaciones numéricas en cursos posteriores."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integer_coefficients",
+      "algebraic_monomials",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

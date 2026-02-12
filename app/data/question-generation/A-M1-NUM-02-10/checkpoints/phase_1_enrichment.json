@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de una disminución porcentual aplicada una sola vez sobre una cantidad inicial para obtener la cantidad final.",
+        "Situaciones de descuentos comerciales simples (ofertas, rebajas, liquidaciones) expresadas en porcentaje.",
+        "Situaciones de pérdidas o disminuciones de cantidad o valor (por ejemplo, merma, depreciación de un bien, pérdida de cierto porcentaje de un depósito).",
+        "Cálculo mediante el método de dos pasos: hallar el monto del descuento o pérdida y restarlo a la cantidad inicial.",
+        "Cálculo mediante el factor de disminución: multiplicar la cantidad inicial por (1 − porcentaje en forma decimal).",
+        "Interpretación de expresiones verbales de disminución porcentual: \"se rebaja en un 20%\", \"pierde el 15% de su valor\", \"disminuye en un 30%\".",
+        "Uso de porcentajes que pueden ser múltiplos de 5 o 10, o porcentajes menos familiares pero manejables (por ejemplo 12%, 17%).",
+        "Comparación de resultados entre diferentes métodos de cálculo (restar el porcentaje vs. factor de disminución) manteniendo una sola disminución."
+      ],
+      "out_of_scope": [
+        "Aplicación de descuentos o disminuciones sucesivas (por ejemplo, primero 10% y luego otro 20%).",
+        "Aumentos porcentuales, intereses o recargos (eso corresponde a incrementos, no disminuciones).",
+        "Problemas que requieran porcentajes compuestos o cambios porcentuales encadenados en varios pasos temporales.",
+        "Cálculo de porcentaje a partir de cantidades final e inicial (por ejemplo, deducir qué porcentaje de descuento se aplicó).",
+        "Situaciones que exijan resolver ecuaciones con la incógnita en el porcentaje o en la cantidad inicial.",
+        "Uso de porcentajes sobre cantidades ya modificadas más de una vez (precio con IVA y luego con descuento, o viceversa).",
+        "Problemas que involucren estructuras financieras complejas (interés compuesto, impuestos acumulativos, comisiones múltiples).",
+        "Cálculo de porcentajes con fracciones de porcentaje muy poco habituales o innecesariamente complejas para este nivel (por ejemplo 7,3% sin un propósito didáctico claro)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-02-01",
+        "A-M1-NUM-02-05",
+        "A-M1-NUM-02-07"
+      ],
+      "common_traps": [
+        "Confundir disminución porcentual con disminución en puntos porcentuales (por ejemplo, creer que pasar de 30% a 20% siempre es restar 10% del valor inicial).",
+        "Aplicar mal el factor de disminución, usando (1 + porcentaje) en vez de (1 − porcentaje).",
+        "Tratar el porcentaje como cantidad absoluta y restarlo numéricamente sin convertirlo a valor monetario o numérico (por ejemplo, creer que un 20% de $5 000 es restar 20 a 5000).",
+        "Olvidar pasar el porcentaje a decimal o a fracción equivalente antes de operar (trabajar con 20 en lugar de 0,20 o 20/100).",
+        "Aplicar el porcentaje sobre la cantidad equivocada (por ejemplo, sobre la cantidad final en lugar de la inicial cuando el enunciado es claro).",
+        "Redondear en pasos intermedios de forma excesiva y obtener ligeras discrepancias con las alternativas.",
+        "No diferenciar entre \"queda en el X% del valor\" y \"disminuye en X%\" (confusión entre factor restante y porcentaje de disminución).",
+        "Ignorar unidades de medida o contexto (dinero, kilos, litros), lo que puede llevar a respuestas con unidades incoherentes."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Porcentajes comunes y fáciles de operar mentalmente (10%, 20%, 25%, 50%).",
+        "Cantidades iniciales enteras pequeñas o con múltiplos claros de 10, 100 o 1 000 (por ejemplo, $2 000, $5 000, 100 kg).",
+        "Contextos cotidianos simples y directos, con una sola cantidad y un solo descuento o pérdida explícita.",
+        "Indicaciones directas de cálculo, por ejemplo \"¿Cuál es el precio final luego de aplicar un descuento de 20%?\" sin pasos intermedios implícitos.",
+        "Enunciados donde es evidente que se debe restar el valor del descuento o multiplicar por (1 − porcentaje), sin distractores textuales.",
+        "Opciones de respuesta suficientemente separadas numéricamente para que pequeños errores de redondeo no confundan."
+      ],
+      "medium": [
+        "Porcentajes no tan inmediatos pero todavía manejables (por ejemplo 15%, 30%, 35%).",
+        "Cantidades iniciales con más dígitos o que no sean múltiplos directos de 100 (por ejemplo, $7 800, $12 500).",
+        "Contextos que mezclan una pequeña cantidad de información adicional (por ejemplo, varias ofertas, pero se pide calcular solo una).",
+        "Necesidad implícita de elegir el método más eficiente (restar monto vs. factor de disminución) sin que el enunciado lo indique de forma explícita.",
+        "Posibles distractores en las alternativas que correspondan a errores típicos (por ejemplo, usar 1 + porcentaje en vez de 1 − porcentaje).",
+        "Puede requerir comprender bien el lenguaje verbal del descuento (\"se rebaja en un\", \"queda en el\", \"pierde el\")."
+      ],
+      "hard": [
+        "Porcentajes menos familiares (12%, 17%, 22%, 27%) que dificultan el cálculo mental directo.",
+        "Cantidades iniciales que conduzcan a resultados con decimales no exactos, obligando a manejar aproximaciones o redondeos.",
+        "Contextos con información redundante o distractora, donde el estudiante debe identificar la cantidad inicial correcta sobre la cual aplicar la disminución.",
+        "Enunciados donde el porcentaje aparece de forma indirecta u oculto en el texto, pero sigue siendo una sola disminución (por ejemplo, \"pierde casi una quinta parte de su valor\").",
+        "Comparación de dos posibles descuentos o pérdidas y elección de cuál deja menor cantidad final, requiriendo calcular o estimar ambas disminuciones.",
+        "Alternativas de respuesta muy cercanas entre sí, que exigen precisión en el manejo del porcentaje y del redondeo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones vagas como \"baja un porcentaje\" sin indicar claramente de cuánto es ese porcentaje.",
+      "No usar indistintamente \"disminuye al X%\" y \"disminuye en X%\"; especificar siempre \"disminuye en X%\" para este átomo.",
+      "No mezclar en el mismo ítem descuentos sobre productos distintos si no queda inequívocamente claro cuál se debe usar en el cálculo.",
+      "Evitar frases que puedan interpretarse como aumento o disminución (por ejemplo, \"cambia en un 20%\") sin aclarar el sentido.",
+      "No usar expresiones temporales confusas que parezcan implicar varias disminuciones sucesivas (por ejemplo, \"cada mes\", \"todos los años\") dentro del mismo problema.",
+      "Especificar siempre si la respuesta debe expresarse en pesos, unidades físicas o porcentaje restante, para no dejar duda sobre la magnitud pedida.",
+      "No introducir simultáneamente impuestos o aumentos junto con un descuento si eso requiere más de una operación porcentual, ya que saldría del alcance del átomo.",
+      "Evitar usar porcentajes negativos o notaciones poco habituales (como −20% para representar descuento) en el enunciado."
+    ],
+    "error_families": [
+      {
+        "name": "Usar incremento en vez de disminución",
+        "description": "El estudiante aplica el porcentaje como si fuera un aumento, usando (1 + porcentaje) o sumando el valor del porcentaje en vez de restarlo.",
+        "how_to_address": "Incluir ítems que contrasten explícitamente incremento y disminución, reforzando la interpretación verbal de \"descuento\", \"rebaja\" y \"pérdida\" como reducción. Mostrar el uso sistemático de (1 − porcentaje) para disminuciones y comparar resultados con el método de restar la parte."
+      },
+      {
+        "name": "No convertir adecuadamente el porcentaje",
+        "description": "El estudiante trata el porcentaje como número entero sin convertirlo a decimal o fracción sobre 100 (por ejemplo, multiplica por 20 en vez de por 0,20).",
+        "how_to_address": "Diseñar ítems donde usar 20 en lugar de 0,20 produzca resultados claramente irreales en el contexto. Reforzar la equivalencia 20% = 20/100 = 0,20 y solicitar a veces la escritura explícita de esta conversión antes del cálculo mental."
+      },
+      {
+        "name": "Calcular el porcentaje sobre la cantidad equivocada",
+        "description": "El estudiante identifica mal la cantidad inicial sobre la que se aplica el porcentaje, o lo aplica sobre una cantidad intermedia no pertinente.",
+        "how_to_address": "Plantear problemas con varias cantidades y preguntar explícitamente sobre cuál corresponde aplicar el descuento, para que el estudiante deba identificar primero la base del porcentaje. Trabajar con esquemas o tablas que distingan \"valor inicial\", \"descuento\" y \"valor final\"."
+      },
+      {
+        "name": "Confundir descuento con precio que queda",
+        "description": "El estudiante interpreta erróneamente el porcentaje como lo que queda y no como lo que se descuenta (o viceversa), por ejemplo toma 20% como que queda 20% del precio en lugar de 80%.",
+        "how_to_address": "Usar ítems que comparen \"disminuir en 20%\" con \"quedar en el 80% del valor\". Proponer representaciones con barras o diagramas sencillos donde se visualice la parte descontada y la parte restante."
+      },
+      {
+        "name": "Errores de redondeo o aproximación excesiva",
+        "description": "El estudiante redondea demasiado pronto (por ejemplo, redondea el monto del descuento antes de restar) y se aleja de la respuesta correcta.",
+        "how_to_address": "Diseñar alternativas cercanas entre sí para enfatizar la importancia de mantener la precisión hasta el final. Indicar en algunos ítems si se debe redondear al peso más cercano o a cierto número de decimales, y trabajar ejemplos donde se compare el efecto de distintos momentos de redondeo."
+      },
+      {
+        "name": "No reconocer equivalencia entre métodos",
+        "description": "El estudiante piensa que restar el monto del descuento y multiplicar por el factor de disminución son procesos distintos e incompatibles, y desconfía del método más eficiente.",
+        "how_to_address": "Proponer ítems donde se presenten ambos procedimientos y se pida verificar que conducen al mismo resultado. Fomentar el uso del factor (1 − porcentaje) en situaciones con números grandes o porcentajes menos cómodos, explicando su ventaja."
+      }
+    ],
+    "future_targets": [
+      "Aplicación de aumentos porcentuales simples (intereses, recargos, reajustes de precios).",
+      "Cálculo de porcentajes compuestos en varios periodos (por ejemplo, depreciaciones o rebajas repetidas).",
+      "Resolución de problemas de porcentaje inverso (determinar el porcentaje de descuento a partir de valores inicial y final).",
+      "Aplicación de porcentajes combinados de aumento y disminución en contextos financieros básicos (descuentos con IVA, promociones mixtas).",
+      "Análisis de variaciones porcentuales en contextos estadísticos (aumento o disminución de población, datos económicos, tasas).",
+      "Comprensión de interés simple y compuesto en educación financiera escolar.",
+      "Modelación de cambios porcentuales sucesivos mediante expresiones algebraicas y funciones."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_up_to_10000",
+      "decimals_1_decimal",
+      "decimals_2_decimals",
+      "percents_common",
+      "percents_uncommon"
+    ],
+    "required_image_types": []
+  }
+}

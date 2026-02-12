@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Comparar dos o más números decimales usando valor posicional (parte entera, décimas, centésimas, milésimas, etc.).",
+        "Ordenar listas de números decimales (positivos y negativos) en forma ascendente o descendente.",
+        "Decidir cuál de dos números decimales es mayor, menor o si son iguales, a partir de la comparación cifra a cifra de izquierda a derecha.",
+        "Comparar decimales con distinta cantidad de cifras decimales, incluyendo anexar ceros a la derecha para facilitar la comparación.",
+        "Comparar y ordenar decimales en contextos verbales (dinero, medidas, puntajes, promedios, etc.), siempre que la tarea central sea la comparación numérica.",
+        "Comparar enteros y decimales entre sí, interpretando que un entero es un decimal con parte decimal 0."
+      ],
+      "out_of_scope": [
+        "Conversión entre fracciones y decimales y comparación a través de fracciones equivalentes.",
+        "Comparación de fracciones comunes utilizando denominador común o productos cruzados.",
+        "Cálculos aritméticos con decimales (suma, resta, multiplicación, división) más allá de lo mínimo necesario para entender el contexto.",
+        "Ubicación precisa de decimales en la recta numérica como objetivo principal (eso corresponde a recta numérica; aquí solo se permite si es mero apoyo a la comparación).",
+        "Comparación de números irracionales o aproximaciones decimales de raíces o π como objetivo principal.",
+        "Trabajo con notación científica o potencias de 10 vinculadas a decimales.",
+        "Problemas que requieran interpretar gráficos estadísticos o funciones para luego comparar valores; ese análisis gráfico no es parte de este átomo."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de valor posicional en números naturales (unidades, decenas, centenas).",
+        "A-M1-NUM-01-10: Lectura y escritura de números decimales en forma simbólica y verbal.",
+        "A-M1-NUM-01-12: Comparación y orden de números naturales (>, <, =).",
+        "A-M1-NUM-01-14: Significado de números negativos en contexto y comparación básica de enteros."
+      ],
+      "common_traps": [
+        "Comparar decimales solo por el número de cifras después de la coma, creyendo que más cifras implica siempre mayor valor.",
+        "Ignorar la parte entera y concentrarse solo en la parte decimal al comparar.",
+        "Ordenar erróneamente decimales negativos aplicando la misma lógica que con positivos (por ejemplo, pensar que -2,8 > -2,5 porque 8 > 5).",
+        "Comparar 0,5 y 0,35 fijándose solo en la primera cifra decimal y concluyendo que 0,35 es mayor por tener más dígitos.",
+        "Tratar el punto/ coma decimal como separador de miles y no como separador decimal.",
+        "No alinear mentalmente las cifras decimales, comparando mal cuando los números tienen distinta cantidad de decimales.",
+        "Confundir orden ascendente con descendente, sobre todo cuando se agregan números negativos a la lista.",
+        "Malinterpretar el contexto verbal (por ejemplo, “gasta menos”, “tarda más tiempo”) y asociarlo de forma incorrecta a mayor o menor valor numérico."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Comparación directa de dos números decimales positivos con la misma cantidad de cifras decimales (por ejemplo, hasta décimas o centésimas).",
+        "Ordenar tres o cuatro números decimales positivos, todos con igual cantidad de cifras decimales y sin incluir negativos.",
+        "Ítems donde la parte entera es distinta y determina la comparación sin necesidad de revisar la parte decimal.",
+        "Contextos verbales muy simples (por ejemplo, dinero con una sola unidad de medida) donde la relación mayor/menor es explícita.",
+        "Números con pocas cifras totales (no más de 3 cifras en la parte entera y 2 en la parte decimal)."
+      ],
+      "medium": [
+        "Comparar números decimales positivos con distinta cantidad de cifras decimales (por ejemplo, 3,4; 3,40; 3,405).",
+        "Ordenar listas de 4 a 6 números decimales positivos, algunos con dos y otros con tres cifras decimales.",
+        "Incluir mezcla de enteros y decimales en la comparación u orden, manteniendo solo valores positivos.",
+        "Incluir uno o dos números con parte entera igual, obligando a comparar posición por posición en la parte decimal.",
+        "Contextos verbales donde haya que traducir primero a una comparación numérica (por ejemplo, comparar distancias, tiempos, precios por unidad).",
+        "Presencia eventual de un único número negativo en la lista, donde aun así la comparación principal sea entre positivos cercanos."
+      ],
+      "hard": [
+        "Ordenar listas de 5 a 8 números decimales que mezclen positivos y negativos, algunos con parte entera igual, otros con distinta y con longitud decimal variable.",
+        "Comparar números decimales negativos muy próximos entre sí, donde se requiere un análisis fino de valor posicional (por ejemplo, -2,37; -2,4; -2,305).",
+        "Ítems donde todos los números tienen la misma parte entera y se diferencian recién en la segunda o tercera cifra decimal.",
+        "Contextos donde la comparación numérica no es directa, por ejemplo, comparar magnitudes dadas en distintas formas decimales pero referidas a tasas, promedios o diferencias pequeñas.",
+        "Listas donde existan números muy próximos (por ejemplo, diferencias de 0,01 o 0,005) que exijan comparar hasta milésimas o diezmilésimas.",
+        "Incluir casos fronterizos que requieran entender que agregar ceros a la derecha no cambia el valor (por ejemplo, reconocer 0,5 = 0,50) dentro de un ordenamiento."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar simultáneamente punto y coma para decimales en el mismo ítem; mantener un único formato (idealmente coma decimal).",
+      "Evitar números con separador de miles que pueda confundirse con separador decimal (por ejemplo, 1.234 vs 1,234); si se usan, dejar MUY claro el formato o preferir no usarlos.",
+      "No usar expresiones verbales ambiguas como “más grande” o “más chico” sin contexto; preferir “mayor valor numérico” o “menor valor numérico” cuando sea necesario precisar.",
+      "Evitar contextos donde mayor cantidad física no coincida con mayor valor numérico sin explicitar bien la relación (por ejemplo, descuentos, deudas, profundidades).",
+      "No mezclar en el mismo ítem decimales y fracciones si la comparación requiere convertir entre representaciones; en este átomo se evalúa comparación directa de decimales.",
+      "Evitar rangos o intervalos si no es absolutamente claro qué significa “dentro”, “fuera”, “al menos”, “a lo más”.",
+      "No usar notaciones poco habituales como 0,0,5 o puntos de relleno que puedan confundirse con cifras decimales.",
+      "Evitar enunciados excesivamente largos donde la tarea de lectura o contexto tape el foco matemático de comparar y ordenar decimales.",
+      "No plantear ítems donde la respuesta correcta dependa de redondeos no explicitados o de aproximaciones decimales adicionales."
+    ],
+    "error_families": [
+      {
+        "name": "Cuenta_dígitos_no_valor_posicional",
+        "description": "El estudiante decide cuál decimal es mayor fijándose solo en cuántos dígitos hay después de la coma (por ejemplo, cree que 0,125 < 0,5 porque 5 es mayor que 125).",
+        "how_to_address": "Diseñar ítems que enfrenten directamente este error (por ejemplo, decimales con diferentes longitudes pero mismo valor aproximado) y enfatizar la comparación cifra a cifra alineando decimales, mostrando que agregar ceros a la derecha no cambia el valor."
+      },
+      {
+        "name": "Ignora_parte_entera",
+        "description": "El estudiante compara solo la parte decimal, sin considerar la parte entera; por ejemplo, cree que 2,05 < 1,9 porque 05 < 9.",
+        "how_to_address": "Incluir ítems donde la diferencia principal está en la parte entera y trabajar la lectura completa del número (\"dos coma cero cinco\", \"uno coma nueve\"), reforzando que primero se compara la parte entera y solo si son iguales se mira la decimal."
+      },
+      {
+        "name": "Negativos_como_positivos",
+        "description": "Al comparar decimales negativos, el estudiante aplica la misma regla que para positivos, sin considerar que estar más cerca de cero significa ser mayor (por ejemplo, concluye que -3,8 > -3,2 porque 8 > 2).",
+        "how_to_address": "Proponer comparaciones específicas de decimales negativos, favoreciendo representaciones verbales (por ejemplo, \"deuda mayor\" vs \"deuda menor\") y, cuando sea pertinente, apoyarse en la idea de la recta numérica para reforzar la dirección de los negativos."
+      },
+      {
+        "name": "Confusion_ceros_a_la_derecha",
+        "description": "El estudiante cree que 0,5 y 0,50 representan cantidades distintas, o que más ceros a la derecha siempre hacen el número más grande.",
+        "how_to_address": "Presentar pares de números equivalentes y pedir decidir si son iguales o diferentes, mostrando explícitamente que agregar ceros a la derecha no cambia el valor y practicando la comparación después de igualar la cantidad de cifras decimales."
+      },
+      {
+        "name": "Interpreta_mal_la_indicacion_de_orden",
+        "description": "Errores al confundir orden ascendente con descendente, especialmente cuando hay negativos o cuando los números son cercanos (por ejemplo, ordena de mayor a menor en vez de menor a mayor).",
+        "how_to_address": "Enfatizar en los enunciados palabras clave como \"de menor a mayor\" y \"de mayor a menor\" y usar ejercicios donde se compare explícitamente dos órdenes distintos, además de pedir que el estudiante verifique mentalmente cuál número queda al principio y al final de la lista."
+      },
+      {
+        "name": "Lee_mal_el_contexto_verbal",
+        "description": "En contextos, el estudiante confunde qué cantidad es preferible (por ejemplo, escoge el mayor precio cuando el contexto pide pagar menos, o el menor tiempo cuando se pide el que dura más).",
+        "how_to_address": "Proponer ítems donde se pida explícitamente identificar primero el mayor/menor número y luego vincularlo con la pregunta contextual, subrayando expresiones como \"paga menos\", \"tarda más\", \"mayor puntaje\" para que se alineen correctamente con > o <."
+      }
+    ],
+    "future_targets": [
+      "Ubicar y representar números decimales (positivos y negativos) en la recta numérica.",
+      "Comparar y ordenar fracciones y decimales, incluyendo conversiones entre ambas representaciones.",
+      "Trabajar con porcentajes, tasas y razones que usan decimales (por ejemplo, intereses, descuentos, promedios).",
+      "Cálculos de perímetros, áreas y volúmenes donde las medidas se expresan en decimales.",
+      "Interpretar y comparar datos en tablas y gráficos estadísticos que presenten decimales (por ejemplo, promedios, desviaciones).",
+      "Resolver problemas de aproximación y redondeo de decimales, incluido el análisis de errores de redondeo.",
+      "Trabajar con potencias de 10 y notación científica vinculadas a desplazar la coma decimal.",
+      "Comprender funciones y gráficos donde la lectura y comparación de valores decimales es necesaria (por ejemplo, lectura de valores en ejes)."
+    ],
+    "representation_variants": [
+      "simbólica (números decimales escritos con coma en forma aislada o en listas).",
+      "verbal (descripciones en lenguaje natural de cantidades que implican decimales, como precios, medidas, tiempos).",
+      "tabular (tablas de datos numéricos que incluyan columnas con decimales a comparar u ordenar).",
+      "contextual (situaciones de la vida diaria: compras, puntajes, distancias, tiempos de viaje, consumo, etc.)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "decimals_terminating_simple",
+      "decimals_terminating_extended",
+      "mixed_integers_and_decimals",
+      "negative_decimals"
+    ],
+    "required_image_types": []
+  }
+}

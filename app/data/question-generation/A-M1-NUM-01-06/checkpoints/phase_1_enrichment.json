@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicar dos números enteros aplicando explícitamente la regla de los signos.",
+        "Determinar solo el signo del producto de dos números enteros dados.",
+        "Calcular el producto de los valores absolutos de dos enteros (sin contexto adicional).",
+        "Usar conmutatividad básica de la multiplicación de enteros (cambiar el orden de los factores sin justificar).",
+        "Ítems en formato simbólico y/o verbal sencillo donde la tarea central es aplicar la regla de los signos y efectuar el cálculo aritmético directo."
+      ],
+      "out_of_scope": [
+        "Multiplicación de más de dos factores enteros en la misma operación.",
+        "Uso de propiedades avanzadas (distributiva, asociativa en expresiones largas, productos notables).",
+        "Operaciones mixtas con suma, resta, división o potencias en la misma expresión.",
+        "Problemas de contexto verbal donde sea necesario modelar la situación con una multiplicación (eso corresponde a otro átomo de modelación).",
+        "Multiplicación de fracciones, decimales o números racionales no enteros.",
+        "Uso de recta numérica u otras representaciones para fundamentar la regla de los signos.",
+        "Trabajo con expresiones algebraicas (letras, coeficientes, monomios).",
+        "Uso de calculadora o estimaciones; se espera cálculo exacto y directo."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprender el conjunto de los números enteros y su representación simbólica.",
+        "A-M1-NUM-01-02: Comparar y ordenar números enteros (noción de magnitud y signo).",
+        "A-M1-NUM-01-03: Calcular el valor absoluto de un número entero.",
+        "A-M1-NUM-01-04: Manejar la multiplicación de números naturales (tablas, producto básico).",
+        "A-M1-NUM-01-05: Comprender el significado de la multiplicación como suma reiterada en naturales (para el componente de magnitud del producto)."
+      ],
+      "common_traps": [
+        "Confundir la regla de los signos de la multiplicación con la de la suma y resta (creer que \"+ y -\" siempre da \"+\" o viceversa).",
+        "Olvidar que el producto de dos números negativos es positivo.",
+        "Solo mirar un signo (por ejemplo, el del número mayor en valor absoluto) para decidir el signo del resultado.",
+        "Equivocarse en la multiplicación de los valores absolutos por fallas de tablas de multiplicar básicas.",
+        "Interpretar el signo de agrupación como resta (confundir \"-5 · -3\" con \"-5 - 3\").",
+        "Cambiar de operación al ver paréntesis o signos múltiples (asociarlo erróneamente a suma o resta).",
+        "Creer que el cero puede volverse positivo o negativo según la regla de los signos (no reconocer que el producto con cero siempre es cero)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Producto de dos números enteros de un solo dígito cada uno, con valores absolutos pequeños (entre 1 y 9).",
+        "Situaciones donde el estudiante solo debe decidir el signo del producto y/o hacer una multiplicación de tabla directa.",
+        "Casos con signos explícitos y sin paréntesis ambiguos (por ejemplo, -3 · 4, 5 · -2).",
+        "Ítems en los que el estudiante puede resolver mentalmente en uno o dos pasos sin necesidad de escribir operaciones.",
+        "Preguntas donde el foco está en aplicar la regla de los signos en un contexto muy directo, sin distractores adicionales."
+      ],
+      "medium": [
+        "Producto de dos números enteros de dos dígitos (por ejemplo, -12 · 8, -15 · -7), que requieren cálculo escrito básico.",
+        "Ítems que piden primero determinar el signo y luego calcular el valor absoluto en un mismo enunciado.",
+        "Uso de paréntesis que obliga a identificar claramente cada factor como entero con su signo (por ejemplo, (-12) · (-5)).",
+        "Alternativas que incluyen resultados con signo correcto pero valor absoluto incorrecto, o viceversa, exigiendo atención a ambos aspectos.",
+        "Formulaciones verbales cortas donde se describen dos cantidades negativas o positivas y se pide su producto, pero sin requerir modelación compleja."
+      ],
+      "hard": [
+        "Números enteros con uno o ambos factores de dos o tres dígitos, que implican cálculo más largo (por ejemplo, -125 · 24) aunque sigan siendo solo dos factores.",
+        "Ítems que separan en pasos lógicos la determinación del signo y del valor absoluto, pero donde la respuesta final exige integrar ambos correctamente.",
+        "Alternativas de respuesta cuidadosamente diseñadas para explotar errores típicos de signo y de cálculo (por ejemplo, opciones que corresponden al valor absoluto correcto pero signo incorrecto, o viceversa, y también errores de multiplicación habituales).",
+        "Enunciados textuales más densos, pero donde el modelamiento ya viene dado (la multiplicación está explícita) y la dificultad recae en procesar la información y no perder de vista la regla de los signos.",
+        "Productos que involucran el número cero como uno de los factores, mezclado con otros distractores negativos y positivos, para verificar comprensión sólida de la regla en casos límite."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde el signo menos pueda confundirse con símbolo de resta en lugar de indicar número negativo; usar paréntesis claros para números negativos, por ejemplo (-3) · 5.",
+      "No mezclar en el mismo ítem notaciones distintas para multiplicación sin necesidad (·, x, paréntesis pegados), para no generar dudas sobre qué operación se aplica.",
+      "Evitar frases verbales donde no quede explícito que la operación a realizar es una multiplicación entre dos enteros (por ejemplo, \"combinar\" o \"juntar\" sin aclarar).",
+      "No incluir enunciados demasiado largos o con múltiples operaciones encadenadas que sobrepasen el foco atómico (dos factores y una única multiplicación).",
+      "Evitar el uso de formatos como \"--3\" que puedan interpretarse como error tipográfico; en su lugar, simplificar el signo o reescribir el factor.",
+      "No utilizar formas gráficas o contextos donde el signo pueda interpretarse como dirección espacial (arriba/abajo, izquierda/derecha) si eso no es estrictamente necesario, para que el foco siga siendo el cálculo del producto.",
+      "Evitar preguntas donde la multiplicación esté implícita en notación poco estándar (por ejemplo, juxtaposición de letras o símbolos no habituales en nivel M1)."
+    ],
+    "error_families": [
+      {
+        "name": "Regla_de_signos_incompleta",
+        "description": "El estudiante recuerda solo parcialmente la regla de los signos, por ejemplo, sabe que \"más por menos es menos\" pero no que \"menos por menos es más\", o asume erróneamente que todo producto con un número negativo da resultado negativo.",
+        "how_to_address": "Diseñar ítems que aíslen cada caso de la regla (positivo·positivo, positivo·negativo, negativo·positivo, negativo·negativo) y que contrasten pares de situaciones similares, pidiendo comparar signos de resultados."
+      },
+      {
+        "name": "Confusion_con_suma_y_resta",
+        "description": "El estudiante aplica intuitivamente reglas de suma y resta a la multiplicación de enteros, por ejemplo, cree que \"signos iguales dan negativo\" porque lo asocia con la resta o combina signos como si sumara.",
+        "how_to_address": "Incluir distractores que representen este error y usar preguntas que separen claramente la noción de operación (preguntar expresamente por 'producto' y no por 'resultado' genérico), reforzando la diferencia entre operaciones."
+      },
+      {
+        "name": "Ignorar_valor_absoluto",
+        "description": "Determina mal el valor absoluto de los factores, ya sea olvidando que siempre es positivo o copiando el signo del número original al multiplicar (por ejemplo, cree que |-5| = -5 o que -5 · -3 = -15 por conservar un signo menos).",
+        "how_to_address": "Proponer ítems donde se explicite en el enunciado el cálculo de valores absolutos antes de multiplicar, o donde una alternativa muestre el valor absoluto aislado, para hacer visible esta etapa intermedia."
+      },
+      {
+        "name": "Fallas_en_tablas_de_multiplicar",
+        "description": "El estudiante aplica bien la regla de los signos, pero se equivoca en el producto de los valores absolutos por debilidades en la multiplicación de naturales.",
+        "how_to_address": "Usar números de complejidad aritmética controlada en ítems centrados en el signo, y solo ocasionalmente exigir productos más grandes para diferenciar entre error de signo y error de cálculo básico."
+      },
+      {
+        "name": "Manejo_incorrecto_de_parentesis_y_signos",
+        "description": "Confunde paréntesis y signos adyacentes (por ejemplo, interpreta \"(-2)(-3)\" como dos números separados sin operación, o como resta; o no distingue entre \"-2 · -3\" y \"-(2 · -3)\").",
+        "how_to_address": "Presentar sistemáticamente los números negativos entre paréntesis cuando se los usa como factores, y en algunos ítems pedir explícitamente identificar los factores antes de calcular el producto."
+      },
+      {
+        "name": "Desconocimiento_del_rol_del_cero",
+        "description": "No reconoce que cualquier entero multiplicado por cero da cero, y trata de aplicar la regla de signos al cero como si fuera positivo o negativo.",
+        "how_to_address": "Incluir ítems donde uno de los factores sea cero junto con distractores que muestren resultados con signos variados, para reforzar que el producto con cero es cero independientemente del otro factor."
+      }
+    ],
+    "future_targets": [
+      "Multiplicación de más de dos enteros, incluyendo manejo de paridad de signos negativos.",
+      "División de números enteros y aplicación análoga de la regla de los signos.",
+      "Operaciones combinadas con enteros (suma, resta, multiplicación y división en una misma expresión).",
+      "Uso de propiedades distributiva y asociativa en expresiones numéricas con enteros.",
+      "Resolución de ecuaciones lineales sencillas con coeficientes enteros (multiplicar y dividir por enteros negativos).",
+      "Manejo de potencias con base y/o exponente entero, incluyendo interpretación de signos.",
+      "Manipulación de expresiones algebraicas con coeficientes enteros (por ejemplo, productos de monomios).",
+      "Modelación de situaciones de la vida real que impliquen ganancias y pérdidas, temperaturas, altitudes, usando productos de enteros."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers"
+    ],
+    "required_image_types": []
+  }
+}

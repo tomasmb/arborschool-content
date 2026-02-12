@@ -1,0 +1,118 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del volumen de un cubo a partir de la medida de su arista usando V = a^3, con unidades cúbicas correctas (cm³, m³, etc.).",
+        "Determinación de la medida de la arista de un cubo a partir de su volumen cuando la raíz cúbica es exacta (por ejemplo 8, 27, 64, 125, 1000).",
+        "Uso coherente de unidades: conversión simple entre unidades lineales y cúbicas cuando se da explícitamente (por ejemplo, si el enunciado ya está en cm y se pide el volumen en cm³).",
+        "Problemas verbales sencillos donde se reconozca que el objeto descrito es un cubo (todas las aristas iguales) y se aplique V = a^3 o su inversa.",
+        "Trabajar con números racionales simples como medidas de arista (enteros positivos pequeños y algunas fracciones sencillas) cuando el volumen resultante sea un número manejable."
+      ],
+      "out_of_scope": [
+        "Volúmenes de prismas rectos, paralelepípedos u otros sólidos que no sean cubos.",
+        "Cálculo de áreas de superficie (lateral o total) de cubos u otros cuerpos.",
+        "Contextos que requieran aproximar raíces cúbicas no exactas o usar calculadora para ello.",
+        "Transformaciones geométricas, vistas en perspectiva, redes de cubos (desplegados) o conteo de cubitos en estructuras 3D complejas.",
+        "Conversión entre diferentes unidades de volumen que no se indiquen claramente en el enunciado (por ejemplo, de cm³ a litros) o que supongan fórmulas adicionales.",
+        "Uso de potencias y raíces de orden distinto de 3 para este contexto.",
+        "Uso de números irracionales o raíces cúbicas no exactas en las medidas de arista o de volumen."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de números naturales y enteros positivos, comparación y orden.",
+        "A-M1-NUM-02-01: Manejo básico de potencias con exponente natural pequeño (por ejemplo a^2, a^3).",
+        "A-M1-GEO-01-01: Reconocimiento de cuerpos geométricos básicos, en particular el cubo, y sus elementos (arista, caras, vértices).",
+        "A-M1-MAG-01-02: Comprensión de unidades de longitud y volumen, y su notación (cm, m, cm³, m³)."
+      ],
+      "common_traps": [
+        "Confundir la fórmula de volumen del cubo (V = a^3) con la del área de superficie (6a^2) o usarlas indistintamente.",
+        "Olvidar elevar al cubo y multiplicar solo por 3 (V = 3a en lugar de V = a^3).",
+        "Perder o cambiar las unidades: dar la respuesta en unidades lineales cuando se pide volumen, o mezclar cm con m sin conversión explícita.",
+        "No reconocer que la figura descrita debe ser un cubo (todas las aristas iguales) y tratarla como un prisma rectangular cualquiera.",
+        "Al determinar la arista a partir del volumen, intentar una división en lugar de aplicar la raíz cúbica (por ejemplo, hacer 27 ÷ 3 en lugar de a = ³√27).",
+        "Errores de cálculo en multiplicaciones repetidas, especialmente con números algo mayores (por ejemplo, confundir 4³ con 4² o con 4×3)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Volumen de un cubo con medida de la arista dada como entero positivo pequeño (entre 1 y 5) y resultado con potencia de cálculo inmediato (por ejemplo 2³, 3³, 4³).",
+        "Determinación de la arista cuando el volumen es una potencia de 3 obvia (por ejemplo 8, 27) indicada en las mismas unidades sin exigencias de conversión.",
+        "Enunciados directos y cortos, sin contexto verbal complejo ni información superflua.",
+        "Sin necesidad de interpretar descripciones geométricas: el enunciado nombra explícitamente un cubo y entrega la arista o el volumen ya aislado."
+      ],
+      "medium": [
+        "Uso de medidas de arista o volumen con enteros positivos algo mayores (entre 6 y 12) manteniendo potencias de 3 exactas (por ejemplo 5³, 10³, 12³ si se espera cálculo factorizando).",
+        "Problemas verbales sencillos donde la condición de cubo se dé de manera implícita pero clara (por ejemplo ‘caja con todas sus aristas iguales’).",
+        "Tareas que exigen decidir si se debe calcular volumen a partir de la arista o la arista a partir del volumen, sin indicarlo de forma literal.",
+        "Ítems donde se requiere coordinar una sola conversión simple de unidades lineales a cúbicas en un mismo sistema (por ejemplo, dato y respuesta ambos en cm y cm³, pero explicitando el significado de las unidades)."
+      ],
+      "hard": [
+        "Problemas verbales con contexto más elaborado (situaciones cotidianas o de aplicación) donde la información relevante para identificar el cubo y la magnitud buscada está dispersa.",
+        "Situaciones donde se deba inferir primero la medida de la arista a partir de otra información sencilla (por ejemplo, se da el perímetro de una cara cuadrada) y luego calcular el volumen, o viceversa.",
+        "Combinaciones de varios pasos de cálculo: por ejemplo, calcular volumen de varios cubos y comparar, o determinar cuántos cubos de una arista dada ‘caben’ en un volumen cúbico mayor, sin salir del caso de cubos.",
+        "Uso de fracciones simples o decimales con una cifra decimal como medida de la arista, manteniendo resultados manejables y exactos (por ejemplo (1/2)³, 1,5³ cuando se espera que el resultado se reconozca o se pueda calcular razonadamente)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar indistintamente los términos ‘cubo’ y ‘caja’ sin aclarar que todas las aristas son iguales; si el objeto es un cubo, debe quedar explícito o deducible sin duda.",
+      "No usar palabras como ‘lado’ si puede confundirse entre lado de la cara cuadrada y arista espacial; preferir ‘arista del cubo’.",
+      "No mezclar diferentes unidades de longitud (cm y m) salvo que se explicite qué se espera y se provea suficiente claridad sobre la unidad de la respuesta.",
+      "Evitar enunciados donde no esté claro si la magnitud dada corresponde a volumen, área o longitud; la unidad debe guiar inequívocamente (cm, cm², cm³).",
+      "No usar volúmenes que no sean raíces cúbicas exactas si se pide calcular la arista, para no inducir soluciones aproximadas fuera del alcance del átomo.",
+      "Evitar figuras o descripciones donde un cubo pueda confundirse con un prisma rectangular; si se ilustra, usar medidas iguales en todas las aristas.",
+      "No usar el término ‘tamaño del cubo’ sin precisar si se refiere a la arista o al volumen."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_area_volumen",
+        "description": "El estudiante aplica fórmulas de área de superficie (por ejemplo 6a²) o de área de una cara (a²) en lugar de la fórmula de volumen V = a³.",
+        "how_to_address": "En el enunciado y en las alternativas incorrectas, diferenciar explícitamente entre unidades cuadradas y cúbicas, reforzando que el volumen se expresa en unidades cúbicas y se calcula como producto de tres longitudes iguales."
+      },
+      {
+        "name": "Exponente_incorrecto",
+        "description": "El estudiante multiplica por 3 (3a) o eleva al cuadrado (a²) en vez de elevar al cubo (a³).",
+        "how_to_address": "Diseñar distractores que reflejen estos errores (resultados de 3a o a²) y en la retroalimentación enfatizar que el cubo tiene tres dimensiones iguales, por lo que se multiplican tres factores iguales."
+      },
+      {
+        "name": "Manejo_deficiente_de_raiz_cubica",
+        "description": "Al recuperar la arista desde el volumen, el estudiante no reconoce la raíz cúbica exacta o intenta operaciones inadecuadas (dividir por 3, tomar raíz cuadrada).",
+        "how_to_address": "Incluir volúmenes que sean cubos perfectos pequeños en los ítems y en la retroalimentación recordar la relación inversa a³ = V ↔ a = ³√V, mostrando ejemplos simples (8 ↔ 2, 27 ↔ 3)."
+      },
+      {
+        "name": "Errores_de_unidades",
+        "description": "El estudiante entrega respuestas con unidades lineales cuando se pide volumen, o ignora las unidades dadas, mezclando cm y m sin conversión.",
+        "how_to_address": "Incorporar unidades explícitas en los datos y en las alternativas, incluyendo distractores con unidades incorrectas, y remarcar en la retroalimentación la importancia de distinguir longitud (cm, m) y volumen (cm³, m³)."
+      },
+      {
+        "name": "Multiplicaciones_erroneas",
+        "description": "Fallas en el cálculo de productos repetidos, especialmente para aristas mayores (por ejemplo, confundir 4³ con 12, 15 o 16).",
+        "how_to_address": "Proponer ítems con aristas moderadas y, en feedback, sugerir estrategias de cálculo estructurado (por ejemplo, primero 4×4 y luego el resultado ×4), así como el reconocimiento de cubos perfectos más comunes."
+      },
+      {
+        "name": "No_reconocer_el_caso_de_cubo",
+        "description": "El estudiante no usa la simplificación de que todas las aristas son iguales y piensa en dimensiones distintas, análogas a un prisma rectangular general.",
+        "how_to_address": "Usar enunciados que destaquen la igualdad de las aristas y, en la retroalimentación, recordarle al estudiante que en un cubo basta conocer una arista para determinar el volumen."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de volumen de prismas rectos y paralelepípedos a partir de dimensiones distintas.",
+      "Comprensión y uso más amplio de potencias y raíces en contextos geométricos y algebraicos.",
+      "Resolución de problemas de conversión de unidades de volumen y capacidad (cm³, m³, litros).",
+      "Cálculo de áreas de superficie de cubos y otros sólidos, conectando longitud, área y volumen.",
+      "Modelamiento de situaciones de la vida cotidiana que involucren empaquetamiento y capacidad de contenedores.",
+      "Trabajo con funciones de la forma V(a) = a³ y análisis básico de cómo cambia el volumen al variar la arista."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "numérica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "decimals"
+    ],
+    "required_image_types": []
+  }
+}

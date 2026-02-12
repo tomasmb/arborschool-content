@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicación de fracción por fracción usando el algoritmo directo: producto de numeradores y producto de denominadores.",
+        "Multiplicación de número entero por fracción, interpretando al entero como fracción con denominador 1.",
+        "Aplicación explícita de la regla de los signos en productos que involucren fracciones positivas y negativas.",
+        "Simplificación de fracciones antes de multiplicar (cancelación cruzada) y/o simplificación del resultado final.",
+        "Productos que generan resultados impropios y su simplificación a fracción irreducible (sin exigir conversión a número mixto)."
+      ],
+      "out_of_scope": [
+        "Suma o resta de fracciones (mismo o distinto denominador).",
+        "División de fracciones o producto por el inverso multiplicativo.",
+        "Problemas de proporcionalidad o razones donde la dificultad principal no sea la multiplicación de fracciones.",
+        "Operaciones combinadas extensas que involucren varias sumas, restas y potencias, donde el producto de fracciones no sea la destreza central.",
+        "Multiplicación de expresiones algebraicas con fracciones (literales en numerador o denominador).",
+        "Representación geométrica detallada de fracciones (áreas sombreadas, sectores circulares) como foco principal.",
+        "Manejo de fracciones con raíces, π u otros irracionales en numerador o denominador."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprender el significado de fracción como parte de un todo o razón.",
+        "A-M1-NUM-01-05: Lectura y escritura de fracciones propias, impropias y números mixtos.",
+        "A-M1-NUM-01-10: Simplificación de fracciones usando factores comunes en numerador y denominador.",
+        "A-M1-NUM-01-12: Equivalencia de fracciones (generar y reconocer fracciones equivalentes).",
+        "A-M1-NUM-01-15: Multiplicación de números enteros y manejo del producto como operación.",
+        "A-M1-NUM-01-16: Regla de los signos para la multiplicación de enteros."
+      ],
+      "common_traps": [
+        "Multiplicar cruzado en vez de multiplicar numeradores entre sí y denominadores entre sí (confundir con división de fracciones).",
+        "Olvidar aplicar la regla de los signos o aplicarla como si fuera suma y resta (por ejemplo, pensar que positivo por negativo da positivo).",
+        "No simplificar el resultado final cuando el numerador y el denominador tienen factores comunes.",
+        "Simplificar de forma incorrecta antes de multiplicar, dividiendo solo uno de los factores por un número común y no el correspondiente del otro factor.",
+        "Tratar el entero como si no tuviera denominador, dificultando la aplicación del algoritmo (en lugar de verlo como n/1).",
+        "Confundir multiplicación con suma repetida en contextos con fracciones, intentando sumar los numeradores o denominadores.",
+        "Interpretar el producto de dos fracciones como una fracción mayor que ambos factores en contextos donde el resultado es menor que 1."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos de dos fracciones propias con numeradores y denominadores pequeños (entre 1 y 9) que no requieren simplificación o cuya simplificación es evidente (por 2 o 3).",
+        "Casos donde ambas fracciones son positivas, sin necesidad de aplicar la regla de los signos.",
+        "Multiplicación de un entero pequeño positivo por una fracción simple (por ejemplo, entero entre 2 y 9 y fracción con denominador hasta 10).",
+        "Ítems en formato directo y simbólico, sin contexto verbal, del tipo 'calcule el producto'.",
+        "Solo una etapa de cálculo (multiplicar y, a lo más, una simplificación trivial)."
+      ],
+      "medium": [
+        "Productos que requieren simplificación no inmediata, por ejemplo, factores comunes mayores (4, 5, 6) ya sea antes o después de multiplicar.",
+        "Fracciones con al menos un numerador o denominador de dos dígitos (entre 10 y 20), manteniendo números manejables.",
+        "Inclusión de signos negativos en uno de los factores, obligando a aplicar la regla de los signos en el producto.",
+        "Multiplicación de entero (positivo o negativo) por fracción, donde el resultado es fracción impropia que debe simplificarse.",
+        "Problemas verbales breves donde la principal dificultad matemática es armar y calcular el producto de fracciones (por ejemplo, interpretar una parte de una parte).",
+        "Ítems que intencionan el uso de cancelación cruzada para evitar productos de números grandes, aunque no sea estrictamente necesario."
+      ],
+      "hard": [
+        "Productos de tres fracciones en cadena, requiriendo varias decisiones de simplificación (antes y/o después del producto).",
+        "Participación de signos negativos en más de un factor, exigiendo aplicar correctamente la regla de los signos en secuencia.",
+        "Fracciones con numeradores y denominadores de dos dígitos no triviales, que hacen más propensa la aparición de errores de cálculo si no se simplifica antes.",
+        "Situaciones de contexto donde se compone más de un 'una parte de otra parte' y el estudiante debe reconocer implícitamente la estructura multiplicativa de fracciones.",
+        "Ítems diseñados para diferenciar entre quienes multiplican directo y quienes aplican simplificación estratégica (cancelación cruzada eficiente).",
+        "Presencia de fracciones impropias en los factores, generando un resultado mayor que 1 que debe simplificarse, pudiendo pedirse comparar productos o interpretar el resultado dentro del contexto.",
+        "Incluir distractores que resultan de errores comunes (suma de numeradores, multiplicación cruzada, error de signo) sin que el ítem se vuelva adivinable, obligando a un manejo seguro del algoritmo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar consignas vagas como 'opere las siguientes fracciones' sin especificar claramente que se trata de multiplicación.",
+      "No mezclar en el mismo ítem símbolos de suma y multiplicación si el foco es la multiplicación de fracciones, salvo que el rol del producto sea claramente dominante.",
+      "Evitar enunciados verbales donde 'la mitad de la mitad de algo' pueda interpretarse tanto como suma como multiplicación si no se explicita el carácter multiplicativo.",
+      "No usar el símbolo 'x' como letra y como signo de multiplicación en la misma expresión.",
+      "Evitar formatos donde la fracción aparezca visualmente confusa (por ejemplo, numeradores o denominadores extensos sin paréntesis adecuados).",
+      "No usar barras de fracción anidadas sin paréntesis o separación clara, para que no se confunda con división de fracciones.",
+      "En contextos verbales, no sobrecargar el problema con datos irrelevantes que puedan hacer dudar si es necesario sumar, restar o multiplicar fracciones.",
+      "Evitar expresiones como 'reduzca la fracción' si el objetivo es que el estudiante reconozca la necesidad de simplificar el producto; preferir 'exprese el resultado como fracción irreducible'."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_en_vez_de_producto",
+        "description": "El estudiante suma numeradores y/o denominadores en lugar de multiplicarlos, obteniendo resultados del tipo (a+c)/(b+d). Suele venir de sobregeneralizar el procedimiento de suma de fracciones.",
+        "how_to_address": "En los distractores incluir alternativas que correspondan a esta suma errónea para diagnosticarla. En la retroalimentación, contrastar explícitamente el algoritmo de suma y el de multiplicación y reforzar que en la multiplicación se operan numeradores entre sí y denominadores entre sí."
+      },
+      {
+        "name": "Producto_cruzado_erroneo",
+        "description": "El estudiante multiplica cruzado (a·d y b·c) confundiendo la multiplicación de fracciones con la división (producto por el inverso).",
+        "how_to_address": "Construir ítems donde el producto cruzado lleve a una fracción plausible, visible en un distractor. En la explicación, remarcar que el producto cruzado se asocia a comparación/división de fracciones, no al producto directo, mostrando el patrón correcto a·c / b·d."
+      },
+      {
+        "name": "Ignorar_regla_de_signos",
+        "description": "Se calcula bien el producto de los valores absolutos, pero el signo final es incorrecto (por ejemplo, positivo en lugar de negativo).",
+        "how_to_address": "Ofrecer distractores que difieran solo en el signo. En la retroalimentación, enfatizar la regla de signos específica para el producto (signos iguales dan positivo; signos distintos, negativo) y separar el tratamiento del signo del cálculo numérico."
+      },
+      {
+        "name": "Error_en_simplificacion",
+        "description": "Se realiza una simplificación incorrecta, ya sea antes o después de multiplicar, por ejemplo, dividir numerador por un número y no dividir el denominador correspondiente, o simplificar solo uno de los factores.",
+        "how_to_address": "Diseñar ítems donde el resultado previo a la simplificación coincida con un distractor, y otro distractor represente una simplificación mal hecha. La explicación debe mostrar el uso correcto de factores comunes y la necesidad de aplicar la misma división en numerador y denominador asociados."
+      },
+      {
+        "name": "No_simplificar_resultado",
+        "description": "El estudiante obtiene un producto correcto pero no lo lleva a fracción irreducible, dejando el resultado con factores comunes evidentes.",
+        "how_to_address": "Incluir como distractor la fracción no simplificada y marcar como correcta solo la versión irreducible. En la retroalimentación, enfatizar que en la PAES se espera la fracción simplificada completamente, mostrando al menos un ejemplo de simplificación posterior al producto."
+      },
+      {
+        "name": "Manejo_incorrecto_de_enteros",
+        "description": "Dificultad para tratar el entero como fracción con denominador 1, lo que lleva a errores al multiplicar entero por fracción (por ejemplo, multiplicar solo el numerador pero no entender el denominador).",
+        "how_to_address": "Incluir ítems específicos de entero por fracción con distractores que revelen este error. En la explicación, representar siempre el entero como n/1 y recalcar que el procedimiento es idéntico al de fracción por fracción."
+      },
+      {
+        "name": "Calculo_aritmetico_fallido",
+        "description": "Errores de cálculo en el producto de numeradores o denominadores (por ejemplo, 3·4 = 10, 5·6 = 25), incluso teniendo claro el procedimiento.",
+        "how_to_address": "Ofrecer distractores que surjan de estos productos mal hechos para diferenciarlos de errores conceptuales. En la retroalimentación, sugerir simplificar antes de multiplicar para reducir el tamaño de los números y revisar productos básicos."
+      }
+    ],
+    "future_targets": [
+      "División de fracciones mediante el uso del inverso multiplicativo.",
+      "Resolución de problemas de proporcionalidad directa e inversa donde se operan razones como fracciones.",
+      "Operaciones combinadas con fracciones que incluyen múltiples productos, sumas y restas.",
+      "Trabajo con expresiones algebraicas racionales (fracciones algebraicas) donde se multipliquen numeradores y denominadores polinómicos.",
+      "Aplicación de escalas, tasas y probabilidades que se modelan naturalmente como productos de fracciones.",
+      "Comprensión de potencias con exponente fraccionario y cambio de unidades que implican factores fraccionarios.",
+      "Cálculo porcentual avanzado expresando porcentajes como fracciones y encadenando varios porcentajes sucesivos."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed",
+      "signed"
+    ],
+    "required_image_types": []
+  }
+}

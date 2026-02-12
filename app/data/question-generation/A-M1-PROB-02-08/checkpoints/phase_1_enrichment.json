@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del rango en datos no agrupados como diferencia entre el valor máximo y el mínimo.",
+        "Identificación correcta de valor máximo y valor mínimo en una lista de datos, ya estén ordenados o desordenados.",
+        "Interpretación del rango como medida de cuán extendidos están los datos entre sus extremos.",
+        "Comparación de la dispersión de dos conjuntos de datos usando solo el rango.",
+        "Distinción conceptual entre rango (dispersión) y medidas de tendencia central (media, mediana, moda).",
+        "Predicción cualitativa de cómo cambia el rango si se agrega, elimina o modifica uno de los valores extremos."
+      ],
+      "out_of_scope": [
+        "Cálculo de rango en datos agrupados en intervalos (tablas de frecuencia con clases).",
+        "Uso de varianza, desviación estándar u otras medidas de dispersión más avanzadas.",
+        "Cálculo de media, mediana o moda como objetivo principal (solo pueden aparecer de forma contextual para contrastar con el rango).",
+        "Interpretación de gráficos estadísticos complejos (boxplot, histogramas, ojivas) más allá de identificar máximos y mínimos numéricos ya explícitos.",
+        "Análisis probabilístico a partir del rango (por ejemplo, probabilidades condicionadas al rango).",
+        "Contextos que requieran fórmulas o procedimientos de estadística inferencial."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-01-03",
+        "A-M1-PROB-02-01"
+      ],
+      "common_traps": [
+        "Confundir el rango con el valor máximo (responder máx en vez de máx − mín).",
+        "Confundir el rango con el promedio o con la mediana cuando se habla de \"cuánto se concentran los datos\".",
+        "Olvidar ordenar mentalmente los datos y tomar como extremos el primer y último dato tal como están escritos, aunque la lista no esté ordenada.",
+        "Restar en el orden inverso (mín − máx) y no interpretar el resultado negativo como error de procedimiento.",
+        "Incluir solo la diferencia entre valores consecutivos o intermedios en lugar de usar los verdaderos extremos.",
+        "Creer que modificar un dato intermedio cambia siempre el rango, incluso si los extremos se mantienen iguales.",
+        "Interpretar erróneamente expresiones verbales como \"varían entre\" o \"oscilan de ... a ...\" y no traducirlas a máximo y mínimo claros."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Los datos se entregan explícitamente como una lista corta (3 a 7 valores) de números pequeños, ya ordenados de menor a mayor o mayor a menor.",
+        "Se indica de forma explícita cuáles son el valor mínimo y el máximo, y solo se pide aplicar la definición de rango (máximo − mínimo).",
+        "No se requiere interpretar un contexto; basta con efectuar una resta directa con números enteros positivos pequeños.",
+        "Las alternativas incluyen distractores simples como máximo, mínimo o suma de extremos, pero no implican razonamientos encadenados.",
+        "No se pide comparar rangos de dos conjuntos, solo calcular el de uno."
+      ],
+      "medium": [
+        "Los datos se presentan desordenados en forma de lista o pequeña tabla, requiriendo identificar primero el mínimo y el máximo.",
+        "Pueden aparecer números enteros negativos o decimales sencillos, pero el foco sigue siendo reconocer extremos y restar correctamente.",
+        "Se plantea un breve contexto (por ejemplo, temperaturas, puntajes, alturas) y se pide interpretar la amplitud de la variación usando el rango.",
+        "Se puede pedir comparar qué conjunto tiene mayor dispersión usando el rango, pero con datos sencillos y rangos de cálculo directo.",
+        "Puede requerirse inferir el nuevo rango después de agregar o modificar un dato, siempre que quede claro si se afecta o no a los extremos, con un solo paso de razonamiento."
+      ],
+      "hard": [
+        "Se presentan dos o más conjuntos de datos y se requiere comparar rangos cuando no es inmediato a simple vista (por ejemplo, con negativos o decimales mezclados).",
+        "Los datos pueden estar descritos solo en forma verbal (\"las ventas variaron entre 15 y 42 unidades\", \"las temperaturas oscilaron de −3 °C a 12 °C\") exigiendo traducir correctamente a máximo y mínimo.",
+        "Se plantean situaciones donde se modifica específicamente un extremo (máximo o mínimo) y se debe determinar cómo cambia el rango en términos cuantitativos, posiblemente en varios pasos.",
+        "Las alternativas incluyen distractores que requieren distinguir claramente entre tendencia central y dispersión (por ejemplo, opciones centradas en la media o la mediana).",
+        "Puede requerirse analizar qué ajustes a los datos mantienen constante el rango o lo aumentan/disminuyen, sin necesidad de recalcular todo, sino razonando sobre extremos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si los valores dados son máximos y mínimos o solo ejemplos de datos intermedios.",
+      "No usar lenguaje vago como \"más o menos\", \"aproximadamente entre\" sin entregar valores numéricos concretos cuando se pide calcular el rango exacto.",
+      "No mezclar en la misma pregunta el cálculo de rango con el de media o mediana si no queda claramente especificado cuál medida se está solicitando.",
+      "Evitar tablas o listas en las que haya más de un valor repetido como posible máximo o mínimo sin que todos estén visibles (no usar puntos suspensivos que oculten datos relevantes).",
+      "No presentar datos en formatos donde la unidad pueda ser ambigua (por ejemplo, mezclar °C y °F, cm y m) si el ejercicio no aclara explícitamente que son magnitudes comparables.",
+      "Evitar redactar alternativas que dependan de suposiciones sobre datos no dados (por ejemplo, \"si el dato faltante es mayor que los demás\" sin especificar cuánto).",
+      "No usar expresiones temporales ambiguas como \"casi siempre estuvo entre\" cuando lo que se requiere es un máximo y mínimo absolutos, no habituales o frecuentes.",
+      "Evitar contextos donde el estudiante pueda interpretar un límite como exclusivo o inclusivo si eso cambia el máximo o mínimo y no se aclara (por ejemplo, \"inferior a 10\" vs \"hasta 10\")."
+    ],
+    "error_families": [
+      {
+        "name": "Rango_como_maximo",
+        "description": "El estudiante identifica correctamente el mayor valor pero responde ese valor en lugar de la diferencia máximo − mínimo.",
+        "how_to_address": "Reforzar verbalmente la idea de \"amplitud\" o \"largo del tramo\" entre el menor y el mayor; usar rectas numéricas o ejemplos concretos donde se vea la distancia entre extremos, no solo el valor más grande."
+      },
+      {
+        "name": "Rango_como_promedio",
+        "description": "Confunde el concepto de rango con la media aritmética u otra medida de posición, especialmente cuando el contexto habla de \"en promedio\" o \"en general\".",
+        "how_to_address": "Contrastar explícitamente en ejercicios la información que da el rango (extensión total) con la que dan la media o mediana (centro). Pedir que expliquen con sus palabras qué pregunta responde cada medida."
+      },
+      {
+        "name": "Extremos_mal_identificados",
+        "description": "Toma como máximo y mínimo el primer y el último elemento de la lista dada, sin revisar si la lista está ordenada, o ignora valores negativos que deberían ser el mínimo.",
+        "how_to_address": "Practicar el proceso sistemático de buscar el menor y el mayor valor en listas desordenadas y con números negativos; sugerir estrategias como subrayar el mínimo y el máximo antes de calcular el rango."
+      },
+      {
+        "name": "Resta_invertida",
+        "description": "Realiza mínimo − máximo, obteniendo un número negativo que a veces entrega como respuesta o convierte en positivo sin justificar.",
+        "how_to_address": "Enfatizar que el rango representa una distancia o longitud, por lo que debe ser un número no negativo; hacer ejercicios donde comparen visualmente en una recta numérica la diferencia máximo − mínimo."
+      },
+      {
+        "name": "Ignorar_extremos_en_cambios_de_datos",
+        "description": "En preguntas donde se agrega o modifica un dato, asume que el rango cambia siempre, aunque el nuevo dato no altere el máximo ni el mínimo.",
+        "how_to_address": "Trabajar ejemplos donde se agregan datos intermedios que no tocan los extremos y mostrar que el rango se mantiene; pedir que identifiquen primero si cambia algún extremo antes de calcular un nuevo rango."
+      },
+      {
+        "name": "Rango_en_contextos_verbales_mal_leido",
+        "description": "Interpreta incorrectamente frases como \"varía entre\", \"oscila de ... a ...\" o \"se mueve desde\" y no traduce esos valores en un máximo y un mínimo claros.",
+        "how_to_address": "Practicar lectura de enunciados verbales con expresiones típicas de máximo y mínimo; pedir que subrayen en los textos las palabras clave y los números que representan los extremos."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y cálculo de otras medidas de dispersión como varianza y desviación estándar.",
+      "Interpretación de diagramas de caja (boxplots), donde el rango total y el rango intercuartílico son fundamentales.",
+      "Análisis comparativo de distribuciones de datos utilizando conjuntamente medidas de posición (media, mediana) y de dispersión.",
+      "Toma de decisiones basada en datos, considerando no solo el valor típico sino también cuán variables son los resultados.",
+      "Lectura e interpretación de gráficos estadísticos (histogramas, diagramas de dispersión) donde la idea de amplitud de los datos es clave.",
+      "Resolución de problemas que requieren estimar rangos posibles de resultados o acotar valores en contextos de incertidumbre."
+    ],
+    "representation_variants": [
+      "verbal",
+      "lista_de_datos",
+      "tabla_simple",
+      "descripción_contextual_con_extremos_explícitos",
+      "descripción_contextual_con_extremos_implícitos"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_negatives",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

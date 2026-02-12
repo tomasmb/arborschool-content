@@ -1,0 +1,141 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Traducción de expresiones en lenguaje natural a expresiones algebraicas sin signo igual, por ejemplo, frases como 'el doble de un número aumentado en cinco'.",
+        "Traducción de expresiones algebraicas simples y compuestas a lenguaje natural claro y correcto en castellano de uso cotidiano.",
+        "Identificación y uso de variables para representar cantidades desconocidas o que cambian (edad, tiempo, precio, cantidad de objetos, etc.).",
+        "Identificación y uso de constantes numéricas en las expresiones (tarifa fija, precio por unidad, cantidad inicial, etc.).",
+        "Traducción de relaciones de cantidad como doble, triple, mitad, tercio, sucesor, antecesor, parte de, porcentaje de, fracción de.",
+        "Construcción de expresiones algebraicas lineales en uno o dos términos a partir de situaciones cotidianas (cobros proporcionales, descuentos, cantidades compradas, puntajes en juegos).",
+        "Interpretación de expresiones algebraicas dadas en contextos simples (por ejemplo, costo total, cantidad total, puntaje total).",
+        "Traducción de expresiones que combinan suma, resta, producto y cociente, incluyendo uso correcto de paréntesis cuando el orden de las operaciones no es evidente en el lenguaje natural.",
+        "Uso de letras distintas para representar distintas cantidades cuando el contexto lo requiere (por ejemplo, x para cantidad de un producto, y para otro)."
+      ],
+      "out_of_scope": [
+        "Resolución de ecuaciones o inecuaciones (encontrar el valor numérico de las variables).",
+        "Planteamiento y resolución de sistemas de ecuaciones; solo se permite identificar o interpretar una de las expresiones que los componen.",
+        "Trabajo con funciones en su dimensión de variación o análisis gráfico (crecimiento, intersecciones, pendiente); aquí solo se considera la expresión algebraica como representación simbólica.",
+        "Traducción que involucre potencias avanzadas, raíces, logaritmos o expresiones con notación científica fuera de contextos muy básicos.",
+        "Modelación completa de problemas de optimización o de conteo; solo se incluye la etapa de expresar algebraicamente una relación verbal concreta.",
+        "Interpretación de gráficos estadísticos o de funciones a partir de imágenes; tablas numéricas sí están permitidas pero no son imprescindibles.",
+        "Uso de notación exclusiva de otros niveles (sumatoria, productos infinitos, notación sigma, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Comprensión de las operaciones básicas con números naturales y enteros (suma, resta, multiplicación, división).",
+        "A-M1-ARI-01-02: Manejo de fracciones y porcentajes en contextos cotidianos.",
+        "A-M1-ALG-00-01: Comprensión básica de qué es una variable y una constante en una expresión.",
+        "A-M1-ALG-00-02: Dominio del orden de las operaciones y uso de paréntesis en expresiones numéricas.",
+        "A-M1-REP-01-01: Lectura e interpretación básica de información en tablas y enunciados verbales."
+      ],
+      "common_traps": [
+        "Confundir 'aumentado en' con multiplicación en lugar de suma (interpretar 'un número aumentado en 5' como 5x en vez de x + 5).",
+        "Invertir el orden de las cantidades en expresiones del tipo 'la diferencia entre A y B', escribiendo B − A en vez de A − B.",
+        "Olvidar paréntesis cuando una parte completa de la frase debe ser multiplicada, por ejemplo, escribir 3x + 2 en lugar de 3(x + 2) para 'el triple de la suma de un número y 2'.",
+        "Confundir expresiones como 'el doble de la suma' con 'la suma del doble', que sí tienen el mismo valor pero pueden generar errores cuando se extiende a más de dos términos.",
+        "Interpretar erróneamente frases con porcentajes o fracciones, como 'el 20 % de un número' escrito como x/20 en vez de 0,2x o x·20/100.",
+        "No distinguir entre 'hace n años' y 'en n años más' al modelar situaciones de edad (pasado versus futuro).",
+        "No identificar correctamente qué cantidad representa cada variable cuando el contexto tiene más de una magnitud (por ejemplo, confundir cantidad de productos con precio unitario).",
+        "Representar relaciones verbales como ecuaciones completas con signo igual cuando la tarea solo pide la expresión algebraica.",
+        "En la traducción de algebraico a verbal, usar una descripción mecánica sin sentido contextual cuando el ítem está claramente situado en un contexto real."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados breves, de una sola oración, con una o dos operaciones básicas (suma y resta, o multiplicación sin necesidad de paréntesis).",
+        "Uso de una sola variable para representar una cantidad desconocida (por ejemplo, solo la edad de una persona o la cantidad de un producto).",
+        "Relaciones directas de proporcionalidad simple, como 'precio por unidad', 'cantidad de objetos', 'n veces un número'.",
+        "Frases verbales con conectores estándar y frecuentes: 'el doble de', 'la mitad de', 'aumentado en', 'disminuido en', evitando anidamiento.",
+        "Traducción de expresiones algebraicas simples a lenguaje natural, sin necesidad de referirse a un contexto específico (por ejemplo, 'x + 3' o '2x − 5').",
+        "Números pequeños y familiares (enteros positivos menores a 100), sin fracciones ni porcentajes complicados.",
+        "Distractores que reflejan errores muy directos (por ejemplo, falta de 3 o +3 en lugar de −3) y que se distinguen fácilmente si se entiende el enunciado."
+      ],
+      "medium": [
+        "Enunciados de una o dos oraciones, que combinan al menos dos operaciones distintas (por ejemplo, suma y multiplicación, o multiplicación y división), requiriendo decidir si usar paréntesis.",
+        "Uso de dos variables para representar cantidades distintas (por ejemplo, cantidad de dos productos, edad de dos personas, cantidad de caras y sellos).",
+        "Inclusión de relaciones como porcentaje de, fracción de, o expresiones como 'tres quintas partes de', 'el 25 % de', ligadas a contextos cotidianos (compras, descuentos, ahorros).",
+        "Necesidad de interpretar el orden correcto en expresiones como 'la diferencia entre A y B', 'la mitad de la suma de', 'el triple de la cantidad que queda'.",
+        "Traducción desde expresiones algebraicas con al menos dos términos y más de una variable hacia lenguaje natural, manteniendo coherencia con un contexto dado.",
+        "Contextos algo más elaborados (tarifas con parte fija y parte variable, puntajes de juegos, modelación de un cobro lineal), pero con información numérica directa y explícita.",
+        "Distractores que incorporan errores más sutiles de modelación (paréntesis omitidos, porcentaje mal aplicado, orden de la diferencia invertido) de modo que la elección correcta exija una lectura cuidadosa."
+      ],
+      "hard": [
+        "Enunciados con varias oraciones o condiciones encadenadas, donde es necesario distinguir y representar más de una relación en la misma expresión (por ejemplo, cantidades iniciales, cambios sucesivos, descuentos y aumentos, etc.).",
+        "Uso de dos o más variables que representan tipos de magnitudes distintos (por ejemplo, tiempo y cantidad, diferentes categorías en un gráfico o tabla), requiriendo escoger notación adecuada y consistente.",
+        "Frases que exigen reconocer una estructura anidada u operaciones agrupadas, tales como 'el doble de la suma de...', 'la mitad de la diferencia entre...', 'el triple de lo que queda después de...'.",
+        "Traducción de enunciados que contienen porcentajes encadenados, fracciones no triviales o razones compuestas, obligando a decidir el orden correcto de las operaciones y el uso preciso de paréntesis.",
+        "Interpretación de expresiones algebraicas relativamente largas (tres o más términos, o producto de un número por una suma o diferencia) en un contexto aplicado, eligiendo la descripción verbal que conserva tanto el significado matemático como el contextual.",
+        "Tareas en que parte de la información se presenta en forma tabular o semi-estructurada, y el estudiante debe abstraer la relación para expresarla algebraicamente o describirla con precisión en lenguaje natural.",
+        "Distractores diseñados para capturar errores de lectura fina o de interpretación contextual (por ejemplo, confundir pasado y futuro en edades, confundir cantidad total con cantidad adicional, malinterpretar la relación entre variables), de modo que se requiera un control conceptual sólido para seleccionar la alternativa correcta."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar expresiones verbales que puedan interpretarse de más de una forma sin más contexto, por ejemplo, 'la diferencia de dos números' sin especificar el orden si eso es relevante.",
+      "No mezclar en el mismo enunciado expresiones técnicas poco usadas en educación media con lenguaje cotidiano; preferir un vocabulario coherente y consistente ('aumentado en' y 'disminuido en', en lugar de términos inusuales).",
+      "No usar pronombres o referencias vagas como 'esa cantidad', 'lo anterior', si no está muy claro a qué magnitud se refiere; en su lugar, nombrar la cantidad explícitamente.",
+      "Evitar frases largas con muchos incisos sin puntuación clara; dividir en oraciones bien delimitadas cuando se encadenan varias operaciones.",
+      "No usar el término 'por' con doble sentido (como sinónimo de 'veces' o como 'por cada') sin clarificar el contexto; si es necesario, agregar 'por cada' cuando sea una razón, y 'veces' cuando sea multiplicación directa.",
+      "Evitar expresiones como 'de un número' cuando hay más de una variable implicada; especificar a qué variable se refiere cada descripción.",
+      "No utilizar construcciones del tipo 'a lo más', 'al menos' dentro del enunciado cuando no se va a trabajar desigualdades; centrarse en describir la magnitud a modelar.",
+      "Evitar notación poco estándar en la expresión algebraica (por ejemplo, x·y escrito como xy si puede confundirse con una variable nueva en contextos donde no se ha explicitado la convención).",
+      "No entregar alternativas que solo se diferencien por un leve cambio de redacción verbal pero representen el mismo significado matemático; las alternativas deben corresponder a expresiones algebraicas matemáticamente distintas.",
+      "Evitar mezclar español y símbolos de forma confusa, como 'el doble de x + 3' sin paréntesis ni aclaración, si la comparación con alternativas requiere distinguir entre 2x + 3 y 2(x + 3)."
+    ],
+    "error_families": [
+      {
+        "name": "Operador_incorrecto",
+        "description": "Selección de la operación equivocada al traducir: interpretar 'aumentado en' o 'más que' como multiplicación en lugar de suma, o 'la mitad de' como 'dividido por 2' aplicado a la cantidad incorrecta.",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente diferentes operaciones en alternativas (por ejemplo, x + 5 vs. 5x) y usar retroalimentación que enfatice la lectura atenta de las palabras clave ('aumentado en' = sumar, 'veces' = multiplicar). Incluir ejercicios donde se clasifiquen expresiones verbales según la operación principal."
+      },
+      {
+        "name": "Orden_en_restas_y_diferencias",
+        "description": "Intercambiar el minuendo y el sustraendo en expresiones del tipo 'la diferencia entre A y B' o 'A menos B', lo que lleva a escribir B − A en lugar de A − B.",
+        "how_to_address": "Incluir ítems donde el orden afecte claramente el significado (por ejemplo, 'la edad actual menos la edad hace 3 años') y proponer como distractor la inversión de términos. En la retroalimentación, destacar la importancia del orden de lectura en las frases 'A menos B' y 'la diferencia entre A y B'."
+      },
+      {
+        "name": "Omisión_de_paréntesis",
+        "description": "No agrupar con paréntesis cuando el lenguaje natural indica que una expresión compuesta debe ser tratada como una sola unidad antes de aplicar otra operación, por ejemplo, escribir 3x + 2 en lugar de 3(x + 2).",
+        "how_to_address": "Proponer ítems que comparen expresiones con y sin paréntesis y que inviten a probar con valores numéricos simples para ver la diferencia. En la retroalimentación, resaltar que palabras como 'suma de', 'diferencia entre' suelen indicar un bloque que luego es multiplicado o dividido."
+      },
+      {
+        "name": "Variables_mal_asignadas",
+        "description": "Confundir qué representa cada variable, por ejemplo, usar la misma letra para cantidades distintas o intercambiar el rol de las variables (precio unitario vs. cantidad).",
+        "how_to_address": "Usar enunciados donde las variables estén claramente definidas al inicio ('sea x la cantidad de... y y el precio de...') y diseñar alternativas que muestren los errores típicos de asignación. La retroalimentación debe enfatizar la lectura de las definiciones de variables antes de traducir o interpretar expresiones."
+      },
+      {
+        "name": "Porcentajes_y_fracciones_mal_modelados",
+        "description": "Representar 'el 20 % de x' como x/20, o confundir 'tres quintas partes de x' con x/3 o 5/x, mostrando dificultades para pasar de lenguaje porcentual o fraccionario a expresión algebraica.",
+        "how_to_address": "Incluir ítems específicos de porcentajes y fracciones donde los distractores reflejen estos errores. En la retroalimentación, recordar que 'p % de x' se escribe como (p/100)x y que 'a/b de x' se modela como (a/b)x, con ejemplos numéricos concretos."
+      },
+      {
+        "name": "Confusión_tiempo_pasado_futuro",
+        "description": "Al modelar edades u otros procesos temporales, confundir expresiones del tipo 'hace n años' con 'en n años más', lo que resulta en sumar cuando se debería restar o viceversa.",
+        "how_to_address": "Plantear ítems que distingan explícitamente entre tiempo pasado y futuro, con alternativas que usen tanto suma como resta respecto de la edad actual. En la retroalimentación, sugerir la estrategia de probar con un número concreto de años para verificar si la expresión verbal corresponde al pasado o al futuro."
+      }
+    ],
+    "future_targets": [
+      "Planteamiento de ecuaciones lineales a partir de problemas verbales, incluyendo aquellos de tarifas, descuentos, mezclas y edades.",
+      "Modelación de situaciones con funciones lineales y afines, incluyendo la interpretación de pendientes e interceptos en contextos reales.",
+      "Formulación y resolución de sistemas de ecuaciones lineales en dos variables a partir de situaciones descritas en lenguaje natural.",
+      "Interpretación y construcción de modelos algebraicos más complejos (cuadráticos, exponenciales básicos) desde contextos verbales.",
+      "Traducción entre diferentes representaciones de funciones (tabla, expresión algebraica, gráfico, descripción verbal).",
+      "Desarrollo de habilidades de modelación matemática en problemas de economía cotidiana, física escolar y ciencias, donde se requiera expresar relaciones cuantitativas simbólicamente.",
+      "Comprensión de la sintaxis algebraica necesaria para manipulación de expresiones (simplificación, factorización, expansión) respetando el significado contextual cuando exista."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica_algebraica",
+      "tabular",
+      "verbal_contextual_con_datos_numéricos"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed",
+      "decimals",
+      "percentages"
+    ],
+    "required_image_types": []
+  }
+}

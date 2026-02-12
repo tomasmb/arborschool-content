@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Sustituir un valor numérico concreto en una inecuación lineal de una variable y calcular el valor numérico resultante.",
+        "Evaluar si la desigualdad obtenida tras la sustitución es verdadera o falsa (por ejemplo, decidir si 7 < -1 es verdadero o falso).",
+        "Decidir si un valor dado pertenece o no al conjunto solución de una inecuación ya planteada, SOLO mediante verificación puntual.",
+        "Trabajar con inecuaciones lineales simples del tipo ax + b < c, ax + b ≥ c, etc., con una sola incógnita real.",
+        "Considerar correctamente los símbolos de desigualdad: <, >, ≤, ≥ al momento de juzgar la veracidad de la afirmación."
+      ],
+      "out_of_scope": [
+        "Resolver inecuaciones de manera general (encontrar intervalos solución) sin que se entregue un valor específico a verificar.",
+        "Manejo de sistemas de inecuaciones o intersección/unión de soluciones.",
+        "Inecuaciones no lineales (con x², raíces, valor absoluto, productos entre expresiones con x, etc.).",
+        "Representación gráfica de la solución en recta numérica o en el plano.",
+        "Uso de parámetros o letras adicionales (por ejemplo, verificar en función de un parámetro k).",
+        "Análisis de intervalos completos o estudios de signos; solo se analiza la veracidad para un valor puntual."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01",
+        "A-M1-ARI-01-02",
+        "A-M1-ALG-01-02",
+        "A-M1-ALG-03-01",
+        "A-M1-ALG-03-02"
+      ],
+      "common_traps": [
+        "Confundir la verificación de un valor puntual con la resolución completa de la inecuación y tratar de despejar x.",
+        "Ignorar el orden de las operaciones al sustituir (por ejemplo, no aplicar primero multiplicación antes que suma).",
+        "Errores de signo al operar con números negativos, especialmente al multiplicar o sumar términos negativos.",
+        "Leer mal el símbolo de la desigualdad (interpretar ≥ como > o confundir < con >).",
+        "Pensar que si al sustituir se obtiene una igualdad (por ejemplo, 3 ≥ 3), esta es falsa para los símbolos ≥ o ≤.",
+        "No completar la sustitución usando paréntesis, especialmente si el valor es negativo (por ejemplo, escribir 2·-3 + 1 en vez de 2(-3) + 1 y confundirse).",
+        "Creer que cualquier valor sugerido en el enunciado está construido para ser solución y no verificar realmente la desigualdad."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones lineales muy simples con coeficientes y términos independientes enteros pequeños (entre -5 y 5).",
+        "Sustitución directa con un solo paso aritmético o dos pasos muy sencillos (por ejemplo, una multiplicación y una suma).",
+        "Valores a verificar que sean enteros pequeños (positivos o 0) sin presencia de fracciones ni decimales.",
+        "Desigualdades que, tras sustituir, dan comparaciones numéricas muy evidentes (por ejemplo, 2 < 10, 5 ≥ 1).",
+        "Uso de un único símbolo de desigualdad estándar sin combinaciones (solo <, >, ≤ o ≥).",
+        "Enunciados cortos, sin contexto verbal complejo ni información irrelevante."
+      ],
+      "medium": [
+        "Inecuaciones lineales con coeficientes y términos independientes enteros de valor absoluto mayor (entre -10 y 10) que requieren 2 o 3 operaciones.",
+        "Valores a verificar que pueden ser negativos o que están dados como fracciones simples (denominadores 2, 3, 4, 5) o decimales con 1 cifra.",
+        "Comparaciones que no son tan obvias de vista y exigen realizar efectivamente los cálculos para decidir (por ejemplo, -3,5 ≥ -2,7).",
+        "Enunciados verbales sencillos donde la inecuación está dada o se presenta en notación simbólica clara.",
+        "Presencia de paréntesis sencillos al sustituir (por ejemplo, 2(x - 1) > 3), sin requerir desarrollo distributivo complejo.",
+        "Distractores que incluyen resultados numéricamente cercanos que se obtienen por pequeños errores de signo o de operación."
+      ],
+      "hard": [
+        "Inecuaciones lineales que involucran más de una operación y requieren manejar correctamente signos negativos en varias etapas (por ejemplo, restar números negativos, multiplicar por negativos).",
+        "Valores a verificar que son fracciones menos obvias (por ejemplo, -3/4, 5/6) o decimales con 2 cifras, lo que exige cuidado en los cálculos.",
+        "Incuaciones donde, al sustituir, se obtienen comparaciones cercanas (por ejemplo, 2,9 ≥ 3,05), que demandan buena comprensión del valor posicional y de números racionales.",
+        "Contextos verbales donde el estudiante debe interpretar una condición en lenguaje natural que ya está traducida a inecuación, pero debe identificar cuál valor propuesto cumple la condición.",
+        "Presencia de términos agrupados que exigen más de un paso al evaluar (por ejemplo, -3(2 - x) + 1 ≥ 0), aunque sin requerir resolver la inecuación de forma general.",
+        "Distractores diseñados a partir de errores típicos (como invertir el sentido de la comparación al ver un número negativo, o tratar la desigualdad como igualdad) que resultan muy plausibles.",
+        "Ítems donde se proponen varios valores y el estudiante debe decidir cuál(es) pertenecen al conjunto solución, evaluando más de una sustitución."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si se pide verificar un valor puntual o resolver completamente la inecuación; usar verbos como \"verificar si x = a es solución\" o \"determinar si el valor dado pertenece al conjunto solución\".",
+      "No mezclar en la misma pregunta objetivos distintos (por ejemplo, pedir primero resolver la inecuación y luego verificar un valor) dentro de este átomo.",
+      "Evitar usar lenguaje impreciso como \"cumple con la ecuación\" cuando se trata de inecuaciones; especificar siempre \"inecuación\" o \"desigualdad\".",
+      "No usar varios símbolos de desigualdad en la misma expresión si no es necesario (por ejemplo, a < x < b) para este átomo, pues puede confundir respecto de qué se está verificando.",
+      "Evitar expresiones verbales ambiguas para las desigualdades (por ejemplo, \"no menor que\" o \"a lo más\" si no se acompañan de la notación simbólica correspondiente).",
+      "No proponer rangos o intervalos como respuesta correcta; la tarea se centra en decidir sobre valores puntuales, por lo que las alternativas deben estar formuladas como afirmaciones sobre un valor específico.",
+      "Evitar inecuaciones que, al sustituir, lleven a comparaciones indeterminadas o no numéricas (por ejemplo, división por cero) dentro de este átomo.",
+      "No usar notaciones poco estándar para los símbolos de desigualdad (por ejemplo, \"=>\" por ≥)."
+    ],
+    "error_families": [
+      {
+        "name": "Lectura_incorrecta_de_la_desigualdad",
+        "description": "El estudiante confunde los símbolos <, >, ≤, ≥, o no distingue entre \"estricto\" (<, >) y \"no estricto\" (≤, ≥). Por ejemplo, considera falsa una afirmación como 3 ≥ 3 o verdadera 2 < 2.",
+        "how_to_address": "Reforzar la interpretación del símbolo como \"menor/ mayor que\" versus \"menor/ mayor o igual que\" usando ejemplos numéricos simples. Incorporar ítems donde la sustitución lleva a igualdades (casos frontera) para que el estudiante deba decidir correctamente."
+      },
+      {
+        "name": "Errores_de_sustitucion_sin_parentesis",
+        "description": "Al reemplazar un valor, especialmente negativo, el estudiante omite paréntesis, generando operaciones incorrectas (por ejemplo, interpretar 2x - 3 con x = -1 como 2x - 3 = 2·1 - 3).",
+        "how_to_address": "Modelar el uso sistemático de paréntesis al sustituir (x = -2 → 3(-2) + 1). Proponer ejercicios de práctica que comparen la evaluación con y sin paréntesis para evidenciar el error."
+      },
+      {
+        "name": "Manejo_deficiente_de_signos",
+        "description": "Errores en sumas y restas con negativos o en productos de signos, lo que lleva a calcular mal el valor numérico tras la sustitución.",
+        "how_to_address": "Recordar reglas de suma y producto de números con distinto signo y ofrecer ítems que aíslen el paso aritmético clave. Posicionar distractores que muestren el error de signo para que el estudiante confronte su procedimiento."
+      },
+      {
+        "name": "Comparacion_numerica_erronea",
+        "description": "Dificultad para decidir qué número es mayor cuando se comparan negativos, fracciones o decimales (por ejemplo, creer que -2 > -1 o que 0,5 < 0,45).",
+        "how_to_address": "Trabajar comparaciones explícitas de números racionales en contextos simples, usar recta numérica como apoyo conceptual en la enseñanza (aunque no sea requerida en el ítem PAES), y variar ítems donde el cálculo esté bien pero el fallo esté en la comparación final."
+      },
+      {
+        "name": "Confundir_verificar_con_resolver",
+        "description": "El estudiante intenta resolver la inecuación en lugar de simplemente sustituir el valor propuesto, lo que aumenta la probabilidad de error y se sale del foco del átomo.",
+        "how_to_address": "En la instrucción de aula, diferenciar claramente entre \"probar si un número es solución\" y \"encontrar todas las soluciones\". Diseñar ítems donde resolver completamente resulte innecesario y largo, pero la verificación puntual sea inmediata."
+      },
+      {
+        "name": "Asumir_que_el_valor_dado_es_solucion",
+        "description": "El estudiante marca que el valor pertenece al conjunto solución sin realizar la verificación, confiando en la intuición o en que el valor está \"sugerido\" como correcto.",
+        "how_to_address": "Plantear preguntas donde el valor propuesto NO sea solución pero parezca plausiblemente correcto. En la retroalimentación insistir en la necesidad del procedimiento de sustitución antes de decidir."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-03-09",
+      "A-M1-ALG-03-10",
+      "A-M1-ALG-03-11",
+      "A-M1-ALG-04-01",
+      "A-M1-FUN-01-01",
+      "A-M1-FUN-01-03",
+      "A-M1-EST-02-02"
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

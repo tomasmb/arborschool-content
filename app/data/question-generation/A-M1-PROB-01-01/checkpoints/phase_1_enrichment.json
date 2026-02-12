@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación de la columna que representa la variable de estudio en una tabla de frecuencias para datos no agrupados.",
+        "Reconocimiento de la columna de frecuencia absoluta como el conteo de casos para cada valor de la variable.",
+        "Reconocimiento de la columna de frecuencia relativa como la proporción de casos que corresponde a cada valor de la variable.",
+        "Comprensión de que la suma de todas las frecuencias absolutas corresponde al total de datos N.",
+        "Comprensión cualitativa de que la suma de todas las frecuencias relativas es 1 (o 100%) aunque no se exija el cálculo.",
+        "Interpretación verbal sencilla de lo que significa un valor en la columna de frecuencia absoluta o relativa (por ejemplo, traducirlo a una frase en lenguaje cotidiano)."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico de frecuencias absolutas o relativas a partir de datos crudos.",
+        "Tablas de frecuencia para datos agrupados en intervalos (clases, marcas de clase, amplitud de intervalo).",
+        "Cálculo o interpretación de frecuencias acumuladas (absolutas o relativas).",
+        "Cálculo de medidas de tendencia central o dispersión (media, mediana, moda, rango, varianza, etc.).",
+        "Interpretación de gráficos estadísticos (barras, histogramas, diagramas de caja, gráficos circulares).",
+        "Probabilidades formales a partir de tablas (uso de notación P(A), probabilidades condicionales, etc.).",
+        "Transformación de una tabla de frecuencias a otra representación (por ejemplo, construir un gráfico de barras).",
+        "Manejo de variables continuas en formato agrupado; solo se consideran valores discretos listados sin intervalos."
+      ],
+      "prerequisites": [
+        "A-M1-DATOS-01-01: Reconoce un conjunto de datos como lista de valores de una variable.",
+        "A-M1-DATOS-01-02: Distingue entre variable y valor de la variable en contextos simples (por ejemplo, 'color favorito' vs 'azul').",
+        "A-M1-NUM-01-01: Comprende la idea de conteo de elementos en un conjunto (cardinalidad).",
+        "A-M1-NUM-02-01: Comprende intuitivamente la noción de proporción o parte de un todo (sin necesidad de cálculo formal)."
+      ],
+      "common_traps": [
+        "Confundir la columna de la variable con la columna de frecuencia absoluta cuando esta última está primero o resaltada.",
+        "Interpretar la frecuencia absoluta como un porcentaje o proporción solo porque aparecen números relativamente pequeños o la tabla incluye un total.",
+        "Pensar que la frecuencia relativa es siempre un porcentaje y no reconocerla cuando está en forma decimal o fracción.",
+        "No notar que la suma de las frecuencias absolutas coincide con el total de datos indicado al final de la tabla o enunciado.",
+        "Pensar que los nombres de las categorías (por ejemplo, 'rojo', 'azul') forman parte de la frecuencia, y no de la variable.",
+        "Creer que una tabla sin encabezados explícitos de columna no puede interpretarse, aunque el contexto permita deducir qué representa cada columna.",
+        "Confundir el total N de datos con el número de categorías distintas de la variable."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Tablas pequeñas con pocas categorías (3 a 5 filas) y encabezados claramente etiquetados: 'Color', 'Frecuencia absoluta', 'Frecuencia relativa'.",
+        "Ítems que piden identificar directamente cuál columna corresponde a la variable de estudio, con alternativas que difieren de forma evidente (por ejemplo, una columna con textos y otra con números).",
+        "Preguntas que solo exigen distinguir entre frecuencia absoluta y relativa cuando las columnas están nombradas explícitamente con esas palabras.",
+        "Uso de ejemplos cotidianos muy familiares (color favorito, medio de transporte al colegio, mascota preferida).",
+        "Formato de tabla ordenado y sin información extra (sin totales parciales ni más de una tabla)."
+      ],
+      "medium": [
+        "Tablas con un número moderado de categorías (5 a 8 filas) y encabezados que no usan exactamente la misma palabra del enunciado (por ejemplo, 'opción', 'respuesta', 'tipo de comida').",
+        "Ítems que piden interpretar un valor puntual de frecuencia absoluta o relativa en lenguaje natural (por ejemplo, seleccionar la afirmación que mejor describe ese valor).",
+        "Situaciones donde la columna de frecuencia relativa está expresada en forma decimal o fracción, sin símbolo de porcentaje, y el estudiante debe reconocerla como 'proporción'.",
+        "Preguntas donde la columna de la variable no está en la primera posición, o el orden columna-variable / columna-frecuencia varía respecto de la presentación más habitual.",
+        "Tablas donde el total N aparece solo en una nota o al final de la tabla y el estudiante debe conectar ese total con la suma de frecuencias absolutas (sin hacer cálculo, solo reconociendo el rol de N)."
+      ],
+      "hard": [
+        "Tablas con encabezados menos directos, que requieren inferir cuál es la variable a partir del contexto (por ejemplo, 'Categoría', 'Resultado', 'Respuesta del encuestado').",
+        "Ítems donde se presentan dos columnas numéricas y el estudiante debe decidir cuál corresponde a frecuencia absoluta y cuál a frecuencia relativa en función de sus propiedades (por ejemplo, una suma a N y la otra suma aproximadamente a 1).",
+        "Preguntas que exigen evaluar afirmaciones sobre la estructura de la tabla (por ejemplo, identificar la afirmación incorrecta respecto de qué representa cada columna).",
+        "Casos en que la frecuencia relativa está dada en formatos mixtos (algunas filas en decimal, otras en porcentaje), y se evalúa si el estudiante reconoce que todas corresponden al mismo tipo de columna (proporciones) sin hacer conversiones numéricas.",
+        "Ítems con distractores que mezclan la idea de 'número de categorías', 'total de datos' y 'frecuencia máxima', exigiendo una comprensión más profunda del rol de cada columna y del total N."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar tablas sin encabezado en las columnas; siempre rotular cada columna con un nombre o descripción mínima.",
+      "No usar el mismo término para la variable y para uno de sus valores (por ejemplo, variable 'Deporte' y valor también llamado 'Deporte'); usar valores claramente distintos (fútbol, básquetbol, etc.).",
+      "Evitar el uso indistinto de 'número', 'cantidad', 'casos' para referirse a frecuencia absoluta y a total N en el mismo ítem sin aclaración.",
+      "No mezclar en una misma columna frecuencias absolutas y relativas; cada columna debe tener un solo tipo de dato estadístico.",
+      "Evitar porcentajes aproximados cuya suma difiera demasiado de 100%, de forma que pueda crear duda sobre cuál es la columna de frecuencia relativa.",
+      "No usar formatos de tabla donde no sea claro cuándo una fila corresponde a totales (por ejemplo, Total, N) y cuándo corresponde a una categoría de la variable.",
+      "Evitar preguntas en las que la respuesta correcta dependa de interpretar si una proporción está redondeada o no; este átomo no evalúa cálculos finos.",
+      "No usar abreviaturas ambiguas en los encabezados (como 'F', 'Fr') sin aclarar si se trata de frecuencia absoluta o relativa.",
+      "Evitar enunciados que sugieran cálculo ('¿cuánto es la frecuencia relativa?') cuando el ítem solo pide identificar o definir; usar verbos como 'corresponde a', 'representa', 'indica', 'significa'."
+    ],
+    "error_families": [
+      {
+        "name": "Confusion_columna_variable_frecuencia",
+        "description": "El estudiante identifica como columna de la variable a una de las columnas de frecuencia, especialmente cuando la variable también está expresada con números (por ejemplo, número de hermanos).",
+        "how_to_address": "Enfatizar que la columna de la variable contiene los posibles valores o categorías que puede tomar la característica estudiada, y que las columnas de frecuencia indican cuántas veces aparece cada uno de esos valores, sin agregar nuevos valores de la variable."
+      },
+      {
+        "name": "Frecuencia_absoluta_vs_relativa",
+        "description": "El estudiante no distingue conceptualmente entre frecuencia absoluta (conteo) y relativa (proporción), y suele tomar cualquier número menor que 1 o un porcentaje como frecuencia absoluta.",
+        "how_to_address": "Trabajar con ejemplos donde se muestre la misma información en ambas columnas y traducirla a lenguaje cotidiano: '5 personas' versus '5 de cada 20 personas', resaltando que la relativa siempre compara con el total N."
+      },
+      {
+        "name": "Suma_frecuencias_absolutas",
+        "description": "El estudiante no reconoce que la suma de las frecuencias absolutas es el total de datos N, o la confunde con el número de categorías distintas.",
+        "how_to_address": "Realizar actividades donde se parta de una lista de datos, se cuente cuántas veces aparece cada valor y luego se verifique que la suma de esos conteos es igual al número total de datos listados, explicitando la relación con N en la tabla."
+      },
+      {
+        "name": "Interpretacion_erronea_de_N",
+        "description": "El estudiante interpreta N como la frecuencia máxima o como la cantidad de veces que aparece una categoría específica, en lugar de entenderlo como el total de observaciones.",
+        "how_to_address": "Mostrar tablas donde N sea claramente diferente de cualquier frecuencia individual y pedir que comparen; verbalizar reiteradamente 'N es el número total de personas/datos/situaciones consideradas en la tabla'."
+      },
+      {
+        "name": "Frecuencia_relativa_solo_como_porcentaje",
+        "description": "El estudiante solo reconoce la frecuencia relativa cuando está expresada en porcentaje, pero no cuando está en decimal o fracción.",
+        "how_to_address": "Presentar la misma tabla con la columna de frecuencia relativa en diferentes formatos (decimal, fracción simple, porcentaje) y discutir que en todos los casos se representa una parte del total, resaltando que el formato no cambia el rol de la columna."
+      },
+      {
+        "name": "Lectura_literal_sin_contexto",
+        "description": "El estudiante lee los números de la tabla sin conectarlos con el contexto (por ejemplo, '5' sin poder decir '5 estudiantes eligieron esta opción').",
+        "how_to_address": "Practicar la traducción sistemática de entradas de la tabla a oraciones en lenguaje natural, incluyendo contexto, valor de la variable y tipo de frecuencia ('X estudiantes', 'X de cada Y estudiantes')."
+      }
+    ],
+    "future_targets": [
+      "Construcción de tablas de frecuencia a partir de datos crudos (contar y organizar datos).",
+      "Cálculo de frecuencia relativa (como fracción, decimal o porcentaje) a partir de la frecuencia absoluta y el total N.",
+      "Cálculo e interpretación de frecuencias acumuladas (absolutas y relativas).",
+      "Lectura e interpretación de gráficos estadísticos basados en tablas de frecuencia (gráficos de barras, histogramas, gráficos circulares).",
+      "Cálculo e interpretación de medidas de tendencia central y dispersión utilizando tablas de frecuencia.",
+      "Cálculo de probabilidades simples a partir de tablas de frecuencia (modelar la probabilidad como frecuencia relativa).",
+      "Comparación de distribuciones de datos a partir de sus tablas de frecuencia (diferencias en concentración de valores, categorías más frecuentes, etc.)."
+    ],
+    "representation_variants": [
+      "tabular",
+      "verbal",
+      "simbólica"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "decimals",
+      "percentages"
+    ],
+    "required_image_types": []
+  }
+}

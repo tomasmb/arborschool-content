@@ -1,0 +1,122 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Factorización de trinomios cuadráticos mónicos de la forma x^2 + bx + c con b y c enteros.",
+        "Búsqueda de dos números enteros p y q tales que p+q = b y p·q = c.",
+        "Escritura del trinomio como (x + p)(x + q) o (x - p)(x - q), incluyendo signos adecuados.",
+        "Casos donde b o c son negativos, incluyendo combinación de signos (p y q ambos negativos o uno positivo y otro negativo).",
+        "Reconocimiento de que no siempre es posible factorizar sobre los enteros (trinomio irreducible) y dejar explícito que no se factoriza en ese caso."
+      ],
+      "out_of_scope": [
+        "Trinomios no mónicos, es decir, con coeficiente principal distinto de 1 (ax^2 + bx + c con a ≠ 1).",
+        "Factorización usando fórmula general, completación de cuadrados u otros métodos más avanzados.",
+        "Coeficientes fraccionarios, decimales o irracionales en b o c.",
+        "Factorización de expresiones con más de una variable (por ejemplo, x^2 + xy + y^2).",
+        "Relación explícita con raíces de la ecuación x^2 + bx + c = 0 (eso pertenece a resolución de ecuaciones cuadráticas).",
+        "Aplicaciones geométricas o de funciones cuadráticas (vértice, eje de simetría, gráficos de parábolas)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-05: Multiplicación de binomios y reconocimiento del patrón (x + p)(x + q) = x^2 + (p+q)x + pq.",
+        "A-M1-ALG-01-02: Manejo de operaciones con números enteros (suma y producto, especialmente con signos).",
+        "A-M1-ALG-01-03: Notación algebraica básica y manejo de términos semejantes en expresiones polinómicas."
+      ],
+      "common_traps": [
+        "Confundir p+q = b con p−q = b, llevando a pares equivocados.",
+        "Elegir números p y q que multiplican bien (pq = c) pero no suman b, sin verificar ambas condiciones.",
+        "Errores de signo: olvidar que si c < 0, p y q deben tener signos distintos; si c > 0 y b < 0, ambos p y q deben ser negativos.",
+        "Cambiar el orden o los signos en la factorización, por ejemplo escribir (x − p)(x − q) cuando corresponde (x + p)(x + q).",
+        "Asumir que siempre se puede factorizar y forzar una descomposición incorrecta cuando no existe par de enteros p, q.",
+        "Olvidar la x en los factores y escribir (p)(q) en vez de (x + p)(x + q).",
+        "Interpretar b o c como coeficientes de x^0 o x^1 mal ubicados, especialmente cuando b = 0 o c = 0."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Trinomios con coeficientes pequeños en valor absoluto (por ejemplo, |b|, |c| ≤ 10) y positivos, donde p y q son positivos.",
+        "Casos en que c tiene pocas descomposiciones posibles (número primo o producto muy simple) y b es positivo.",
+        "Ítems que preguntan directamente por la factorización de un único trinomio sin contexto adicional ni pasos intermedios.",
+        "Situaciones en que la pareja (p, q) coincide con factores muy familiares (por ejemplo 2 y 3, 1 y 4).",
+        "Opciones de respuesta claramente distintas en los pares (p, q), sin distractores con suma o producto casi correctos."
+      ],
+      "medium": [
+        "Trinomios con combinación de signos, por ejemplo b positivo y c negativo, o ambos negativos.",
+        "Coeficientes con valor absoluto moderado (por ejemplo, hasta 20 o 30) que generan varias parejas de factores posibles para c.",
+        "Casos en que b = 0 o c = 0, que requieren interpretar expresiones como x^2 − 9 o x^2 + 7x.",
+        "Ítems que contextualizan la factorización dentro de una tarea breve, por ejemplo elegir la forma factorizada correcta dentro de una simplificación.",
+        "Distractores que corresponden a pares (p, q) que cumplen solo una de las condiciones (p+q = b o pq = c) pero no ambas."
+      ],
+      "hard": [
+        "Trinomios con coeficientes en valor absoluto más grandes (por ejemplo, |c| entre 30 y 80) con muchas descomposiciones posibles y donde la pareja correcta no es la más evidente.",
+        "Casos límite donde el trinomio es irreducible sobre los enteros, requiriendo que el estudiante concluya que no puede factorizarse en (x + p)(x + q) con p, q enteros.",
+        "Ítems en que se deba comparar varias factorizaciones propuestas y seleccionar cuáles son correctas o equivalentes.",
+        "Situaciones donde la factorización es un paso intermedio para justificar una igualdad algebraica o simplificar una expresión, y no se explicita de inmediato qué trinomio se debe factorizar.",
+        "Distractores diseñados con sumas y productos muy cercanos a los correctos (por ejemplo, misma suma pero producto distinto o viceversa), que exigen verificación cuidadosa de ambas condiciones."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones del tipo 'factorizar la siguiente expresión cuadrática' sin mostrarla completa en notación clara; siempre escribir x^2 + bx + c explícitamente.",
+      "No mezclar distintos tipos de factorización en el mismo ítem (por ejemplo, diferencia de cuadrados y trinomio mónico) sin señalar claramente cuál se trabaja.",
+      "Evitar usar letras distintas de x en el enunciado y en las alternativas (por ejemplo, usar x en el enunciado y t en las alternativas) salvo que se explicite que son equivalentes.",
+      "No presentar opciones donde el mismo trinomio esté factorizado con factores escritos en orden distinto pero se considere solo una opción como correcta; reconocer el carácter conmutativo.",
+      "Evitar formulaciones como '¿qué números cumplen la condición?' sin indicar con claridad p+q = b y pq = c o sin vincularlos explícitamente con la factorización.",
+      "No usar notaciones incompletas como (x + ?) o 'p y q' sin definir a qué se refieren, especialmente en opciones de respuesta.",
+      "Evitar coeficientes que no sean enteros (fracciones o decimales) ya que eso saca al ítem del alcance del átomo.",
+      "Cuidar la tipografía de los signos: diferenciar claramente entre x − 3 y x + (−3), y evitar omitir paréntesis cuando se usa signo menos."
+    ],
+    "error_families": [
+      {
+        "name": "Solo_producto_correcto",
+        "description": "El estudiante elige p y q que multiplican correctamente a c (pq = c), pero no verifica que su suma sea b, aceptando pares como correctos aunque p+q ≠ b.",
+        "how_to_address": "En ítems y retroalimentación, enfatizar la verificación de ambas condiciones: mostrar explícitamente el cálculo de p+q y pq, y proponer comparaciones entre pares que cumplen una sola de las condiciones."
+      },
+      {
+        "name": "Solo_suma_correcta",
+        "description": "El estudiante selecciona p y q que suman b correctamente pero no revisa su producto, por ejemplo tomando pares intuitivos relacionados con b sin considerar a c.",
+        "how_to_address": "Destacar en ejemplos guiados que la suma por sí sola no determina la factorización; incluir ejercicios donde varios pares tienen la misma suma pero distinto producto y solo uno factoriza el trinomio."
+      },
+      {
+        "name": "Signos_invertidos",
+        "description": "Errores sistemáticos al manejar signos, como proponer (x − 2)(x − 3) para un trinomio con término lineal positivo, o no reconocer que c < 0 implica signos distintos en los factores.",
+        "how_to_address": "Trabajar tablas de signos para distintas combinaciones de p y q y relacionarlas con el signo de b y c; usar preguntas dirigidas del tipo 'si c es negativo, ¿qué puedes concluir sobre los signos de p y q?'."
+      },
+      {
+        "name": "Ignora_irreducibilidad",
+        "description": "Intentar forzar una factorización aunque no exista par de enteros p y q que cumplan las condiciones, generando expresiones incorrectas.",
+        "how_to_address": "Incluir ejemplos de trinomios irreducibles y explicitar el criterio para decidir que no se puede factorizar con enteros; reforzar la importancia de revisar todas las posibles parejas de factores de c."
+      },
+      {
+        "name": "Olvido_de_la_variable",
+        "description": "Escribir solo (p)(q) o combinar mal la variable, como (x + p)(q + x^2), perdiendo la estructura estándar (x + p)(x + q).",
+        "how_to_address": "Reforzar la conexión con la multiplicación de binomios, mostrando el paso inverso y destacando que ambos factores deben tener la misma variable x en grado 1."
+      },
+      {
+        "name": "Conmutacion_misinterpretada",
+        "description": "Pensar que (x + p)(x + q) y (x + q)(x + p) son factorizaciones distintas y considerar solo una como válida o confundirse si aparece otra forma equivalente.",
+        "how_to_address": "Mostrar deliberadamente factores en distinto orden y evidenciar que el producto es el mismo; introducir la idea de conmutatividad como propiedad que no cambia el resultado."
+      },
+      {
+        "name": "Lectura_erronea_de_coeficientes",
+        "description": "Confundir b con c o leer mal el signo de los coeficientes, especialmente cuando falta un término (b = 0 o c = 0).",
+        "how_to_address": "Proponer ejercicios donde el estudiante identifique explícitamente b y c antes de factorizar, incluyendo casos con términos faltantes reescritos (por ejemplo, x^2 − 9 como x^2 + 0x − 9)."
+      }
+    ],
+    "future_targets": [
+      "Resolución de ecuaciones cuadráticas mónicas con coeficientes enteros mediante factorización.",
+      "Análisis de funciones cuadráticas, identificación de ceros y puntos de corte con el eje x a partir de la forma factorizada.",
+      "Factorización de polinomios de mayor grado mediante descomposición en factores lineales sucesivos.",
+      "Simplificación de expresiones racionales algebraicas cuadráticas al factorizar numerador y denominador.",
+      "Aplicación de factorizaciones en problemas de modelación algebraica y optimización básica (por ejemplo, áreas de rectángulos).",
+      "Reconocimiento y uso de productos notables como caso particular de factorización de trinomios (por ejemplo, cuadrados perfectos)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers"
+    ],
+    "required_image_types": []
+  }
+}

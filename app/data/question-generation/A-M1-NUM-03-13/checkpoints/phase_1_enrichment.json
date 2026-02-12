@@ -1,0 +1,111 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Reconocer expresiones con una raíz inmediatamente dentro de otra raíz (una sola anidación).",
+        "Simplificar expresiones del tipo √(√a), √[m](√[n](a)), √[m](√[n](x^k)), aplicando el producto de índices m·n.",
+        "Reescribir una raíz de una raíz como una sola raíz con índice igual al producto de los índices.",
+        "Trabajar tanto con radicandos numéricos como con literales simples (una variable o potencia sencilla).",
+        "Verificar casos en que la simplificación lleva a radicales de índice mayor (por ejemplo, de 2 y 3 a 6)."
+      ],
+      "out_of_scope": [
+        "Más de un nivel de anidación (por ejemplo, raíz de raíz de raíz).",
+        "Composición simultánea con otras propiedades de radicales (por ejemplo, racionalización de denominadores, extracción de factores del radicando) más allá de una simplificación muy directa.",
+        "Raíces con índices fraccionarios, negativos o expresados como expresiones algebraicas complejas.",
+        "Uso sistemático de notación de potencias fraccionarias (a^(1/n)) como objetivo principal del ítem.",
+        "Contextos verbales extensos o problemas de aplicación; aquí el foco es el procedimiento simbólico.",
+        "Raíces combinadas con operaciones avanzadas (logaritmos, trigonometría, funciones complejas)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01",
+        "A-M1-NUM-03-02",
+        "A-M1-NUM-03-03",
+        "A-M1-NUM-03-05"
+      ],
+      "common_traps": [
+        "Confundir la propiedad y sumar los índices de las raíces en lugar de multiplicarlos.",
+        "Olvidar el índice 2 en la raíz cuadrada y no considerarlo en el producto de índices.",
+        "Aplicar la propiedad cuando la raíz interior no afecta a todo el radicando (por ejemplo, solo una parte está bajo la raíz interior).",
+        "Intentar combinar la propiedad de raíz de una raíz con la de producto de radicales en un solo paso y cometer errores de índice o de radicando.",
+        "Perder la variable o modificar indebidamente su exponente al pasar a una única raíz.",
+        "Simplificar indebidamente el valor numérico del radicando cuando no es necesario ni ventajoso para el ítem."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Raíces anidadas directamente con índices pequeños e implícitos (principalmente raíces cuadradas y cúbicas) y radicando numérico sencillo.",
+        "Expresiones donde ambos índices son visibles y el radicando es una sola cantidad (por ejemplo, un número entero positivo menor a 100).",
+        "Ítems donde basta reconocer que √(√a) = √[4](a) sin pasos intermedios adicionales.",
+        "Alternativas de respuesta claramente diferenciadas por el índice del radical (errores típicos: suma de índices vs. producto), sin distracciones adicionales con el radicando."
+      ],
+      "medium": [
+        "Raíces anidadas con al menos uno de los índices mayor que 3 (por ejemplo, 4, 5 o 6), pero todavía enteros positivos simples.",
+        "Radicandos literales simples, como x, x^2, a^3, o productos muy sencillos (por ejemplo, 4x).",
+        "Necesidad de considerar el índice 2 implícito de la raíz cuadrada y multiplicarlo por otro índice explícito.",
+        "Ítems donde es necesario distinguir entre simplificar el exponente de la variable y el índice de la raíz, aunque el foco siga siendo combinar los índices.",
+        "Alternativas en que varios distractores son radicales con diferentes índices y radicandos, lo que exige verificar cuidadosamente cuál es la simplificación correcta."
+      ],
+      "hard": [
+        "Raíces anidadas con índices mayores y/o combinaciones menos habituales (por ejemplo, índice 5 con índice 4, o 6 con 3), manteniéndose enteros positivos.",
+        "Radicandos que ya contienen potencias, de modo que la expresión final requiera mostrar correctamente tanto el nuevo índice de la raíz como el exponente del radicando (por ejemplo, √[3](√(x^8))).",
+        "Ítems que presentan varias expresiones con raíces anidadas y piden identificar la expresión equivalente o seleccionar la única correctamente simplificada.",
+        "Situaciones en que, además de multiplicar índices, conviene simplificar exponentes por medio de la relación con potencias fraccionarias, aunque esto no sea obligatorio para llegar a la alternativa correcta.",
+        "Distractores construidos cuidadosamente que resultan de aplicar parcialmente bien la propiedad (por ejemplo, multiplicar solo uno de los índices, o cambiar erroneamente el exponente del radicando) y que requieren comprensión sólida para descartarlos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde no quede claro hasta dónde llega cada radical; usar siempre paréntesis o notación de raíz bien anidada para indicar el alcance de cada raíz.",
+      "No mezclar en el mismo ítem raíces anidadas correctas con otras en que la raíz interior no abarca todo el radicando, salvo que la diferencia esté indicada explícitamente y sea fácil de leer.",
+      "Evitar índices escritos de forma poco legible o muy pequeña que pueden confundirse con exponentes.",
+      "No usar notaciones mixtas confusas, como escribir a^(1/2·1/3) sin paréntesis, si el foco es la propiedad de raíz de una raíz; preferir la notación radical o potencias fraccionarias claramente parentetizadas.",
+      "No introducir condiciones de signo (por ejemplo, x ≥ 0) si no son necesarias para la tarea del ítem, para no desviar el foco desde la operación con índices de raíces.",
+      "Evitar preguntas donde el estudiante deba decidir entre varias convenciones de valor absoluto o raíz principal; asumir la raíz principal positiva y no plantear casos límite que involucren esa discusión."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_de_indices",
+        "description": "El estudiante suma los índices de las raíces anidadas (m + n) en vez de multiplicarlos (m·n), obteniendo un índice incorrecto para la raíz final.",
+        "how_to_address": "Incluir distractores donde el índice resultante sea la suma de los índices para que el error sea diagnosticable, y reforzar en las explicaciones que la propiedad proviene de multiplicar los exponentes fraccionarios asociados (1/m · 1/n = 1/(m·n))."
+      },
+      {
+        "name": "Olvido_del_indice_2",
+        "description": "El estudiante ignora que la raíz cuadrada tiene índice 2 y no la incluye al multiplicar índices (por ejemplo, trata √(√[3](a)) como si fuera raíz de índice 3 y no de 6).",
+        "how_to_address": "Proponer ítems donde la raíz exterior es cuadrada (sin índice escrito) y la interior tiene índice explícito, y contrastar opciones en que se ve claramente la diferencia entre considerar o no el 2 implícito."
+      },
+      {
+        "name": "Alcance_incorrecto_del_radicando",
+        "description": "El estudiante aplica la propiedad como si toda la expresión estuviera bajo ambas raíces, incluso cuando, en otras tareas, solo parte del radicando está afectada por la raíz interior.",
+        "how_to_address": "En este átomo, usar solo casos donde la raíz interior abarque todo el radicando para consolidar la estructura correcta, y reforzar visualmente (con paréntesis y disposición clara) qué parte está dentro de cada raíz."
+      },
+      {
+        "name": "Confusion_indice_vs_exponente",
+        "description": "El estudiante mezcla la manipulación de índices de raíces con la de exponentes de las variables, cambiando indebidamente el exponente del radicando al combinar raíces.",
+        "how_to_address": "Incluir ejemplos donde el radicando tenga una potencia simple (x^k) y mostrar, en la retroalimentación, la diferencia entre el índice del radical y el exponente del radicando, enfatizando que la propiedad de raíz de una raíz afecta al índice, no al exponente interno directamente."
+      },
+      {
+        "name": "Simplificacion_numerica_innecesaria_o_erronea",
+        "description": "El estudiante intenta calcular el valor numérico del radicando (por ejemplo, de 64) y comete errores de cálculo o de orden de operaciones, perdiendo de vista que bastaba con combinar los índices.",
+        "how_to_address": "Diseñar ítems donde la respuesta correcta no requiere operar el radicando (solo reescribir la raíz) y ofrecer explicaciones que destaquen que el objetivo es simplificar la estructura de la raíz, no necesariamente obtener un número final."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y uso de potencias fraccionarias y su relación con radicales.",
+      "Simplificación de expresiones con múltiples radicales y potencias combinadas.",
+      "Resolución de ecuaciones que involucran raíces de índice mayor, transformándolas en potencias fraccionarias equivalentes.",
+      "Manipulación algebraica avanzada de expresiones radicales (incluyendo conjugados y racionalización) donde aparecen raíces anidadas.",
+      "Trabajo con funciones radicales, incluyendo la determinación de dominios que involucran raíces compuestas.",
+      "Transición fluida entre notación radical y notación exponencial para simplificar expresiones en contextos de álgebra y funciones."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal_breve"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "perfect_powers",
+      "literal_simple"
+    ],
+    "required_image_types": []
+  }
+}

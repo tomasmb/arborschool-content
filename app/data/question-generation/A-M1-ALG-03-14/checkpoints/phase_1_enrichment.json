@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Traducción directa de enunciados verbales con términos como 'al menos', 'como máximo', 'a lo más', 'no menos que', 'no mayor que', 'superior a', 'inferior a', 'más que', 'menos que' a una única inecuación lineal en una variable.",
+        "Elección del símbolo de desigualdad correcto (<, >, ≤, ≥) a partir de la interpretación del contexto verbal.",
+        "Construcción de inecuaciones lineales simples del tipo ax + b ≤ c, ax ≥ b, x > k, donde la variable representa una magnitud del contexto (edad, puntaje, precio, cantidad de objetos, tiempo, etc.).",
+        "Identificación explícita de la variable y de su significado en el contexto al formular la inecuación.",
+        "Casos donde la comparación se hace con expresiones como 'al menos la mitad', 'el doble', 'tres veces', siempre en contexto lineal (sin potencias ni productos cruzados entre variables)."
+      ],
+      "out_of_scope": [
+        "Resolución de la inecuación (encontrar el conjunto solución o representarlo en recta numérica).",
+        "Traducción de sistemas de inecuaciones o múltiples restricciones simultáneas (más de una inecuación a la vez).",
+        "Modelación con dos o más variables (por ejemplo, problemas de programación lineal con restricciones en x e y).",
+        "Inecuaciones cuadráticas, racionales, de valor absoluto o con exponentes (no lineales).",
+        "Análisis gráfico de regiones solución en el plano (semiplano, intersección de semiplanos).",
+        "Interpretación de representaciones gráficas de inecuaciones ya dadas (eso pertenece a átomos de representación gráfica).",
+        "Contextos que requieran probabilidad, estadística u operaciones avanzadas; aquí solo se modela la desigualdad, no se calculan probabilidades ni medidas estadísticas."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de números enteros y su orden en la recta numérica (mayor, menor).",
+        "A-M1-ALG-01-02: Comprender el uso de letras como variables para representar cantidades desconocidas.",
+        "A-M1-ALG-03-01: Comprensión conceptual de las desigualdades y de los símbolos <, >, ≤, ≥ sin contexto verbal complejo.",
+        "A-M1-ALG-03-05: Comprensión básica de expresiones lineales simples del tipo ax + b con significado en contexto."
+      ],
+      "common_traps": [
+        "Invertir el sentido de la desigualdad al traducir expresiones como 'al menos', 'como máximo', 'no menos que', 'no mayor que'.",
+        "Confundir 'más de' con 'al menos', y 'menos de' con 'a lo más', es decir, no distinguir entre estricta (> , <) y no estricta (≥, ≤).",
+        "Interpretar mal enunciados con negación doble, por ejemplo, 'no es menor que', 'no puede ser inferior a'.",
+        "Olvidar que la variable representa una cantidad que no puede ser negativa en ciertos contextos (edades, número de objetos), lo que puede inducir a aceptar inecuaciones formalmente correctas pero conceptualmente inadecuadas.",
+        "Perder de vista desde qué lado se está comparando: confusión entre 'El puntaje de Ana supera a 600' y '600 supera al puntaje de Ana'.",
+        "No traducir correctamente expresiones de límite superior asociadas a verbos como 'no puede exceder', 'no debe sobrepasar', 'no superar', asociándolas a '>' en lugar de '≤'.",
+        "Interpretar cantidades referidas a 'por lo menos X más que' o 'a lo más X menos que' sin considerar el desplazamiento (diferencia) en la expresión algebraica."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados breves y directos con una sola comparación, por ejemplo, 'al menos', 'como máximo', sin negaciones ni matices adicionales.",
+        "Variable explícita indicada o prácticamente obvia (por ejemplo, 'la edad de Juan', 'el puntaje obtenido'), con estructura de inecuación x ≥ k o x ≤ k o x > k o x < k, sin términos ax + b.",
+        "Números enteros pequeños y positivos, sin necesidad de interpretar expresiones como 'el doble', 'la mitad'.",
+        "Ausencia de contexto narrativo largo: una sola oración simple a traducir.",
+        "No se incluye distinción fina entre estricta y no estricta cuando el lenguaje es muy evidente (por ejemplo, 'más de 10' → > 10)."
+      ],
+      "medium": [
+        "Enunciados con vocabulario más variado: 'no mayor que', 'no menos que', 'no superar', 'no sobrepasar', que exigen identificar desigualdades no estrictas correctamente.",
+        "Contextos donde la variable aparece dentro de una expresión lineal simple (por ejemplo, 'tres veces el número de entradas', 'el precio total es 4000 pesos por persona'), llevando a inecuaciones del tipo ax ≥ b, ax + b ≤ c.",
+        "Enunciados de dos frases donde la información relevante para la inecuación no está en la primera oración, requiriendo discriminar datos imprescindibles.",
+        "Necesidad de decidir entre desigualdad estricta y no estricta cuando el lenguaje puede inducir duda leve ('como máximo', 'al menos').",
+        "Presencia ocasional de números decimales o enteros mayores, pero con operaciones aritméticas muy sencillas o nulas (la dificultad principal sigue estando en la traducción verbal-simbólica)."
+      ],
+      "hard": [
+        "Enunciados más largos con redacción cercana a problemas reales (presupuesto, tiempo, puntajes, promociones), que incluyen información irrelevante mezclada con la condición que se debe modelar.",
+        "Uso de estructuras de lenguaje complejas: negaciones dobles o combinaciones como 'no es menor que', 'no puede ser inferior a', 'no debe ser superior a', que obligan a un análisis cuidadoso del sentido de la desigualdad.",
+        "Comparaciones donde la cantidad de referencia también incluye expresiones algebraicas simples ('el doble de', 'la mitad de', '5 menos que', '3 más que'), requiriendo que el estudiante arme una expresión lineal antes de elegir el símbolo de desigualdad.",
+        "Casos donde el criterio de estricta/no estricta no se menciona con una palabra clave directa, sino que se deduce del contexto ('para obtener el beneficio, se requiere al menos 60 puntos', 'si se pasa de 10 kg, se cobra recargo').",
+        "Contextos donde la variable tiene restricción implícita (por ejemplo, ser un número entero de objetos, entradas, cursos) y la inecuación debe ser coherente con esa magnitud, aunque no se pida explícitamente trabajar con enteros.",
+        "Formulaciones que contrastan dos cantidades del contexto (por ejemplo, 'la cantidad de X es al menos 3 unidades mayor que la cantidad de Y') pero donde solo se pide modelar respecto de una variable, obligando a una lectura fina para identificar correctamente qué representa la variable y cómo se relaciona con la otra cantidad."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones coloquiales ambiguas como 'más o menos', 'como por ahí de', 'cerca de', que no establecen un límite claro para modelar una inecuación.",
+      "No usar frases con doble negación confusa sin necesidad, por ejemplo, 'no es que no pueda ser menor que', que exceden el nivel de complejidad lingüística deseado.",
+      "No mezclar en un mismo enunciado dos tipos de límite sin ser explícito (por ejemplo, 'al menos 10 y como máximo cerca de 20'), donde 'cerca de' no tiene traducción unívoca.",
+      "Evitar contextos donde sea dudoso si el límite es incluido o excluido por ambigüedad de lenguaje, como 'más o menos', 'aproximadamente', 'en torno a', si no se aclara de forma inequívoca el tipo de desigualdad.",
+      "No usar símbolos de comparación dentro del texto (>, <, ≥, ≤) mezclados con palabras como 'mayor que', porque puede generar redundancia o confusión sobre qué se debe traducir.",
+      "Evitar cambios de perspectiva desnecesarios como alternar entre 'X no supera a Y' y 'Y no es superado por X' en el mismo ítem, ya que puede generar confusión más lingüística que matemática.",
+      "No incluir información temporal o condicional excesiva que distraiga del enunciado clave de comparación ('si ocurre A, entonces B, a menos que C'), a menos que sea estrictamente necesaria para el objetivo del ítem.",
+      "Evitar contextos donde sea poco natural concebir valores negativos (por ejemplo, edad negativa) si eso no se va a aclarar, para que el foco esté en la traducción de la desigualdad y no en interpretar excepciones poco realistas."
+    ],
+    "error_families": [
+      {
+        "name": "Signo_invertido",
+        "description": "El estudiante elige el símbolo de desigualdad en el sentido contrario al que corresponde: por ejemplo, modela 'al menos 50' como x ≤ 50 o 'a lo más 100' como x ≥ 100. Suele ocurrir cuando el foco está solo en el número, sin considerar el significado de la expresión verbal completa.",
+        "how_to_address": "Trabajar con tablas de correspondencia entre frases típicas ('al menos', 'como máximo', 'más de', 'menos de', 'no menos que', 'no mayor que') y símbolos, acompañadas de ejemplos contextualizados. Proponer actividades de 'verdadero/falso' donde se discuta en voz alta por qué un signo es inadecuado, enfatizando la lectura en lenguaje natural de la inecuación resultante (por ejemplo, leer x ≥ 50 como 'x es mayor o igual que 50' y comprobar si coincide con la frase original)."
+      },
+      {
+        "name": "Inclusiva_vs_exclusiva",
+        "description": "Confusión entre desigualdad estricta y no estricta: el estudiante usa '>' en vez de '≥' o '<' en vez de '≤' (o al revés) al traducir 'al menos', 'como máximo', 'más de', 'menos de'.",
+        "how_to_address": "Diseñar ejercicios que pidan comparar pares de frases muy próximas ('más de 10', 'al menos 10', 'como máximo 10', 'menos de 10') y decidir si el 10 se incluye o no, idealmente apoyándose en ejemplos numéricos concretos (por ejemplo, casos de puntaje que alcanza exactamente el límite). Hacer que los estudiantes expliquen si la situación permite el valor límite, reforzando la relación entre inclusión/exclusión y ≥/≤ vs >/ <."
+      },
+      {
+        "name": "Lectura_literal_de_negaciones",
+        "description": "Manejo inadecuado de frases con 'no' que llevan a interpretar al revés expresiones como 'no menor que', 'no mayor que', 'no puede exceder', traduciendo, por ejemplo, 'no superar 100' como x > 100.",
+        "how_to_address": "Trabajar explícitamente con ejemplos de lenguaje cotidiano que incluyan estas expresiones y reescribirlas en lenguaje positivo: 'no menor que 10' → 'mayor o igual que 10', 'no puede exceder 100' → 'a lo más 100'. Pedir al estudiantado que reformule con sus propias palabras cada frase antes de elegir el símbolo, y luego traducir la versión reformulada. Practicar con ejercicios de sustitución de expresiones equivalentes ('no superar' ↔ 'ser a lo más')."
+      },
+      {
+        "name": "Variable_mal_planteada",
+        "description": "El estudiante elige una variable que no representa exactamente lo que el enunciado pide (por ejemplo, define x como el total cuando el texto se refiere al número de objetos, o viceversa), lo que conduce a una inecuación formalmente correcta respecto de x, pero que no modela la situación descrita.",
+        "how_to_address": "Insistir en que siempre se enuncie qué representa la variable antes de escribir la inecuación. Proponer ejercicios donde se muestren distintas posibles definiciones de variable y se discuta cuál es la más directa o coherente con la pregunta. Incluir ítems de diagnóstico donde se analicen inecuaciones ya formadas y se pregunte si la elección de variable es adecuada según el contexto dado."
+      },
+      {
+        "name": "Omisión_del_contexto",
+        "description": "El estudiante ignora restricciones implícitas del contexto (por ejemplo, que el número de entradas debe ser entero no negativo) y construye una inecuación que, aunque sintácticamente correcta, no es coherente con lo que se modela o permite interpretaciones inadecuadas.",
+        "how_to_address": "Promover preguntas del tipo '¿qué puede valer esta cantidad en la vida real?' antes de traducir. Ejercitar comparando dos inecuaciones diferentes para el mismo contexto y discutiendo cuál refleja mejor la situación. Señalar explícitamente cuándo una magnitud solo tiene sentido con valores no negativos o enteros, aun cuando la inecuación misma no exprese esa restricción adicional."
+      },
+      {
+        "name": "Error_en_la_expresion_lineal",
+        "description": "Errores en la construcción de la expresión algebraica previa a la desigualdad cuando el enunciado incluye frases como 'el doble de', '5 más que', '3 menos que'. Por ejemplo, escribir x + 5 en vez de x − 5 para '5 menos que x'.",
+        "how_to_address": "Separar el trabajo en dos etapas: primero, practicar solo la traducción de frases a expresiones (sin desigualdad) y luego incorporar el símbolo de desigualdad. Usar esquemas de paráfrasis ('cantidad final = cantidad inicial + aumento' o 'cantidad final = cantidad inicial − descuento') y representar con diagramas sencillos la relación entre las cantidades, antes de formalizarla con símbolos."
+      }
+    ],
+    "future_targets": [
+      "Modelación de problemas de programación lineal con varias restricciones expresadas como sistemas de inecuaciones lineales.",
+      "Interpretación y representación gráfica de inecuaciones y sistemas de inecuaciones en la recta numérica y en el plano cartesiano.",
+      "Formulación de funciones lineales a partir de descripciones verbales más complejas, donde las desigualdades definen dominios o condiciones de validez.",
+      "Resolución de problemas de optimización elementales en contexto (presupuestos, producción, mezclas) apoyados en restricciones expresadas mediante inecuaciones.",
+      "Comprensión de intervalos en notación matemática (por ejemplo, [a, b), (−∞, c]) y su relación con desigualdades.",
+      "Uso de inecuaciones en contextos estadísticos y probabilísticos, por ejemplo, al definir eventos del tipo X ≥ k o X < k.",
+      "Desarrollo de argumentos matemáticos que incluyan condiciones necesarias o suficientes expresadas mediante desigualdades."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "decimals"
+    ],
+    "required_image_types": []
+  }
+}

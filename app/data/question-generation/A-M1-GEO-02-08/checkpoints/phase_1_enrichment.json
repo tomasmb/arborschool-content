@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del volumen de paralelepípedos rectos usando la fórmula V = l · a · h, donde las tres dimensiones son perpendiculares entre sí",
+        "Determinación de una dimensión desconocida (largo, ancho o alto) a partir del volumen y las otras dos dimensiones conocidas",
+        "Uso de números racionales positivos en las dimensiones y/o el volumen (enteros, fracciones y decimales)",
+        "Interpretación verbal sencilla asociada a situaciones de contexto (cajas, prismas rectangulares, contenedores) siempre que se reduzca claramente al cálculo de V = l · a · h",
+        "Conversión básica entre unidades lineales y cúbicas coherentes cuando la conversión es directa y simple (por ejemplo, pasar de cm a m antes de calcular el volumen, sin cambios de escala complejos)",
+        "Reforzar la diferencia entre volumen (unidades cúbicas) y área (unidades cuadradas) solo en el marco del cálculo de V = l · a · h"
+      ],
+      "out_of_scope": [
+        "Volumen de cuerpos que no son paralelepípedos rectos (cilindros, prismas oblicuos, pirámides, conos, esferas, etc.)",
+        "Casos especiales de cubos como foco principal de evaluación (volumen de cubo tratado como fórmula separada o exclusiva)",
+        "Cálculo de áreas de superficies laterales o totales de paralelepípedos",
+        "Problemas que requieran descomponer figuras 3D complejas en varios sólidos para sumar o restar volúmenes",
+        "Conversión avanzada entre unidades de volumen no triviales (por ejemplo, cm³ a litros con varios pasos intermedios o factores poco habituales)",
+        "Uso de fórmulas de determinantes o productos vectoriales para volumen de paralelepípedos en contexto de geometría analítica",
+        "Contextos que involucren integración, funciones continuas o modelamiento avanzado del volumen",
+        "Situaciones donde no se puede suponer que las dimensiones son perpendiculares (paralelepípedos oblicuos) o donde falta claridad de que se trata de un paralelepípedo recto"
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01",
+        "A-M1-ARI-01-02",
+        "A-M1-GEO-02-02",
+        "A-M1-GEO-02-03"
+      ],
+      "common_traps": [
+        "Confundir volumen con área y multiplicar solo dos dimensiones o interpretar el resultado como unidades cuadradas en vez de cúbicas",
+        "Olvidar una dimensión al multiplicar (por ejemplo, V = l · a y no incluir la altura)",
+        "Ordenar erróneamente las operaciones al despejar una dimensión desconocida, especialmente cuando aparecen fracciones o decimales",
+        "No identificar que todas las medidas deben estar en la misma unidad antes de calcular el volumen",
+        "Asumir que largo, ancho y alto tienen posiciones fijas (por ejemplo, creer que solo una medida puede ser la altura) cuando en realidad cualquiera de las tres dimensiones puede jugar ese rol",
+        "Interpretar mal enunciados verbales que describen dimensiones indirectamente (por ejemplo, confundir largo interior con exterior o considerar el espesor de las paredes cuando no corresponde)",
+        "Errores de cálculo con productos de tres factores, especialmente cuando hay números decimales o fracciones",
+        "Suponer que si una dimensión es mayor que otra, necesariamente corresponde a un nombre específico (por ejemplo, confundir ancho con largo por prejuicio del contexto físico)"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Todas las dimensiones dadas explícitamente como números enteros positivos pequeños (entre 1 y 20) en la misma unidad",
+        "Tarea directa de cálculo de volumen: multiplicar las tres dimensiones sin necesidad de interpretar contexto complejo",
+        "Sin necesidad de despejar dimensiones desconocidas: solo aplicar V = l · a · h de forma directa",
+        "Redacción breve, con rol claro de cada dimensión y sin datos irrelevantes",
+        "Sin cambios de unidades ni combinaciones de fracciones con decimales",
+        "Opciones de respuesta que incluyan errores típicos simples (por ejemplo, producto de solo dos dimensiones) para discriminar comprensión básica"
+      ],
+      "medium": [
+        "Una de las dimensiones o el volumen se presenta como número racional no entero (fracción simple o decimal con uno o dos decimales)",
+        "Problemas que requieren determinar una dimensión desconocida usando V = l · a · h, con despeje sencillo (por ejemplo, dividir por el producto de dos enteros pequeños)",
+        "Incorporación de un breve contexto cotidiano (caja, acuario, contenedor) que obliga a identificar correctamente qué datos corresponden a largo, ancho y alto",
+        "Posible presencia de información accesoria que el estudiante debe descartar",
+        "Puede implicar una conversión simple de unidades lineales antes de calcular el volumen (por ejemplo, pasar de cm a m dividiendo por 100 o 1000, sin cambios de unidades cúbicas explícitos)",
+        "Cálculo con productos de tres factores que no dan resultados demasiado grandes, pero que requieren atención (por ejemplo, dos dígitos por dos dígitos)"
+      ],
+      "hard": [
+        "Al menos una de las dimensiones o el volumen dados como fracción no trivial o decimal con más de un decimal, requiriendo operaciones con racionales",
+        "Determinación de una dimensión desconocida donde el despeje involucra dividir por una fracción o por un número decimal (incluido el caso de fracciones resultantes)",
+        "Contextos en que las dimensiones se deben inferir indirectamente desde la descripción (por ejemplo, distinguir entre base y altura a partir del texto), sin apoyo de dibujo explícito",
+        "Presencia de cambios de unidades que, si bien no son el foco, exigen cuidado (por ejemplo, interpretar correctamente metros y centímetros en las dimensiones antes de usar la fórmula, sin dar explícito el factor ya preparado)",
+        "Ítems que obligan a comparar dos volúmenes de paralelepípedos dados por sus dimensiones para determinar cuál es mayor o menor, sin cálculo completo evidente, lo que requiere estrategias multiplicativas más elaboradas o estimación",
+        "Distractores diseñados a partir de errores de razonamiento más sutiles (por ejemplo, sumar dimensiones, multiplicar dos dimensiones y luego sumar la tercera, confundir dimensiones que se dan como totales con las que realmente forman el volumen útil)"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar términos cotidianos equívocos como \"fondo\" o \"profundidad\" sin aclarar claramente su rol como una de las tres dimensiones del paralelepípedo",
+      "No describir figuras que puedan interpretarse como cuerpos no rectos (por ejemplo, usar solo palabras como \"caja inclinada\" o \"paralelepípedo\" sin especificar que es recto si el contexto genera duda)",
+      "No mezclar en el mismo enunciado varias magnitudes diferentes (por ejemplo, volumen y capacidad en litros) sin dejar explícita la relación, ya que el átomo no evalúa conversiones complejas de unidades de volumen",
+      "Evitar escalar dibujos donde las dimensiones gráficas no respeten la proporción indicada por los datos numéricos si se da un esquema, para no inducir a respuestas basadas en la apariencia y no en el cálculo",
+      "No presentar situaciones donde no quede claro si las medidas son interiores o exteriores (por ejemplo, considerar grosor de paredes) si esa diferencia es relevante para el volumen, ya que sale del foco del átomo",
+      "Evitar textos donde una misma medida pueda interpretarse como largo o ancho indistintamente y eso afecte qué datos se usan; todas las dimensiones deben identificarse sin ambigüedad aunque el nombre específico no importe",
+      "No incluir términos que sugieran otras figuras 3D (prisma, bloque irregular) si de los datos no se puede concluir con certeza que se trata de un paralelepípedo recto",
+      "Evitar símbolos de unidades mal ubicados o diferentes para cada dimensión si no es intencional, para no generar dudas sobre si se deben convertir o no"
+    ],
+    "error_families": [
+      {
+        "name": "Producto_incompleto_dos_dimensiones",
+        "description": "El estudiante calcula solo el producto de dos dimensiones (área de la base) y olvida multiplicar por la tercera dimensión, confundiendo área con volumen.",
+        "how_to_address": "Diseñar ítems donde el distractor corresponda exactamente al área de la base o al producto de dos dimensiones, y enfatizar en retroalimentación la idea de que el volumen ocupa espacio en las tres direcciones. Reforzar el uso explícito de los tres factores en V = l · a · h."
+      },
+      {
+        "name": "Confusion_area_volumen_unidades",
+        "description": "El estudiante no distingue entre unidades cuadradas y cúbicas, entregando el resultado con unidades de área o interpretando mal el significado del valor numérico.",
+        "how_to_address": "Incluir ítems donde las alternativas difieran solo en las unidades (cm² vs cm³) y comentar en la retroalimentación que el volumen siempre se mide en unidades cúbicas al multiplicar tres longitudes."
+      },
+      {
+        "name": "Despeje_incorrecto_dim_desconocida",
+        "description": "Al buscar una dimensión desconocida, el estudiante divide solo por una dimensión o realiza operaciones en el orden incorrecto, obteniendo una medida incoherente.",
+        "how_to_address": "Proponer ítems que exijan el cálculo inverso con números sencillos y mostrar paso a paso que la dimensión desconocida se obtiene dividiendo el volumen por el producto de las otras dos dimensiones, verificando luego si el resultado es razonable."
+      },
+      {
+        "name": "Manejo_deficiente_de_racionales",
+        "description": "Errores al multiplicar o dividir fracciones y decimales en el cálculo del volumen o en el despeje de una dimensión, aun cuando el modelo matemático usado es correcto.",
+        "how_to_address": "Usar problemas que mantengan la estructura correcta pero con operaciones con fracciones/decimales simples, acompañados de retroalimentación que recuerde las reglas básicas de multiplicación y división de racionales y la conveniencia de simplificar antes de multiplicar."
+      },
+      {
+        "name": "Ignorar_conversión_de_unidades_lineales",
+        "description": "El estudiante combina longitudes en distintas unidades (por ejemplo, cm y m) sin convertirlas a una misma unidad antes de calcular el volumen.",
+        "how_to_address": "Introducir ítems donde la única dificultad adicional sea la conversión de una de las dimensiones a la misma unidad de las otras, destacando en la explicación la necesidad de homogeneizar las unidades antes de aplicar V = l · a · h."
+      },
+      {
+        "name": "Dimension_mal_identificada_en_contexto",
+        "description": "En problemas contextualizados, el estudiante toma como dimensiones del paralelepípedo datos que no corresponden o confunde qué medidas describen realmente el largo, el ancho y la altura.",
+        "how_to_address": "Usar contextos claros con más de tres longitudes, donde algunas sean irrelevantes, y acompañar con retroalimentación que muestre cómo subrayar en el texto solo las medidas que efectivamente conforman el paralelepípedo."
+      },
+      {
+        "name": "Estrategia_suma_en_lugar_de_producto",
+        "description": "El estudiante suma las dimensiones o combina suma y producto, mostrando una comprensión débil del significado multiplicativo del volumen.",
+        "how_to_address": "Incluir distractores que correspondan a la suma de dimensiones y explicar en la retroalimentación que el volumen resulta de acumular capas en tres direcciones, lo que justifica el uso del producto de las tres longitudes."
+      }
+    ],
+    "future_targets": [
+      "Cálculo y comparación de volúmenes de otros cuerpos geométricos (prismas, cilindros, pirámides, conos) a partir de fórmulas de volumen",
+      "Resolución de problemas de aplicación que involucren capacidad, almacenamiento y empaque en contextos reales",
+      "Optimización básica de dimensiones de envases o cajas manteniendo un volumen fijo (problemas de máximo y mínimo en cursos posteriores)",
+      "Modelación de situaciones físicas y geométricas usando volúmenes en ciencias (por ejemplo, densidad, flujo, cantidad de material)",
+      "Trabajo con razones y proporciones relacionadas con cambios de escala y su efecto en el volumen (escalamiento de figuras en 3D)",
+      "Comprensión y uso de unidades de volumen estándar (cm³, m³, litros) en contextos más avanzados",
+      "Geometría analítica en 3D, incluyendo interpretación de cajas rectangulares definidas por intervalos en los ejes cartesianos",
+      "Análisis de problemas compuestos que requieren descomponer o recomponer volúmenes de varios sólidos"
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "mixed",
+      "fractions",
+      "decimals"
+    ],
+    "required_image_types": []
+  }
+}

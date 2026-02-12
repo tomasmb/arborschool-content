@@ -1,0 +1,124 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Lectura directa de la altura de una barra para obtener la frecuencia exacta de una categoría.",
+        "Comparación visual de alturas de barras para decidir cuál categoría tiene mayor o menor frecuencia.",
+        "Identificación de la categoría con mayor frecuencia (moda visual) o menor frecuencia en un solo gráfico de barras.",
+        "Lectura de valores cuando el eje vertical está marcado en unidades regulares y fáciles de interpretar.",
+        "Comparaciones simples entre dos categorías (por ejemplo, cuál es mayor, cuál es menor).",
+        "Inferencias inmediatas que no requieren cálculo adicional, por ejemplo, decidir si dos frecuencias son iguales al observar las barras."
+      ],
+      "out_of_scope": [
+        "Cálculo de probabilidades o porcentajes a partir del gráfico de barras.",
+        "Cálculo de medidas de tendencia central (media, mediana, moda numérica) a partir del gráfico.",
+        "Comparación de dos gráficos distintos en tiempo o contexto diferente.",
+        "Interpretación de gráficos de barras apiladas o dobles que requieran operaciones entre segmentos.",
+        "Lectura de datos en histogramas (intervalos de clase) o diagramas de caja.",
+        "Transformar la información del gráfico en tablas y luego operar con ella (más allá de la lectura directa).",
+        "Uso de escalas no uniformes o logarítmicas en el eje vertical.",
+        "Análisis de variabilidad, dispersión o interpretación de tendencias complejas."
+      ],
+      "prerequisites": [
+        "A-M1-NUME-01-01",
+        "A-M1-PROB-01-01",
+        "A-M1-PROB-01-02"
+      ],
+      "common_traps": [
+        "Confundir la categoría con mayor espacio horizontal con la de mayor frecuencia, sin fijarse en la altura de la barra.",
+        "Leer solo las marcas numéricas del eje vertical sin relacionarlas correctamente con la parte superior de la barra (interpolación incorrecta).",
+        "Ignorar que el eje vertical puede partir desde 0 y asumir que pequeñas diferencias de altura son irrelevantes.",
+        "Confundir frecuencia absoluta con etiquetas de categorías (p. ej., pensar que el nombre de la categoría implica un número).",
+        "No considerar la leyenda o rotulación del eje horizontal y responder según intuiciones del contexto (por ejemplo, asumir que una fruta es más consumida por experiencia personal).",
+        "Interpretar el ancho de la barra como indicador de frecuencia en lugar de la altura.",
+        "Olvidar leer la unidad del eje vertical (personas, días, puntos, etc.), lo que puede llevar a errores en la comparación si hay distractores redactados con otras unidades."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Gráfico de barras con pocas categorías (3 a 5) claramente etiquetadas y sin rotación de texto.",
+        "Eje vertical con escala simple, con incrementos de 1, 2, 5 o 10, y valores de frecuencia que coinciden exactamente con las marcas.",
+        "Preguntas que piden leer la frecuencia de una sola categoría sin necesidad de comparación.",
+        "Preguntas que piden identificar la categoría con mayor o menor frecuencia cuando la diferencia de alturas es evidente.",
+        "Sin necesidad de interpolar entre marcas del eje vertical (la parte superior de la barra coincide con una marca)."
+      ],
+      "medium": [
+        "Gráfico de barras con un número moderado de categorías (5 a 8), todas legibles pero algo más densas.",
+        "Eje vertical con escala regular pero en incrementos que requieren un poco más de atención (por ejemplo, de 2 en 2 o de 5 en 5 con valores no triviales).",
+        "Preguntas que requieren comparar dos o tres categorías para decidir cuál tiene mayor o menor frecuencia.",
+        "Situaciones donde las alturas de algunas barras son cercanas, pero claramente distintas al observar con atención.",
+        "Posible necesidad de contar mentalmente marcas intermedias simples (por ejemplo, barras que llegan a 6 cuando el eje está marcado en 2, 4, 6, 8)."
+      ],
+      "hard": [
+        "Gráfico de barras con varias categorías (8 a 10) donde algunas etiquetas pueden estar abreviadas o en orientación vertical, pero siguen siendo legibles.",
+        "Eje vertical con escala que obliga a interpolar entre marcas (por ejemplo, incrementos de 5 y barras que no coinciden exactamente con una marca, como 7 u 11).",
+        "Preguntas que requieren encadenar más de una comparación, por ejemplo, identificar simultáneamente la categoría con mayor y con menor frecuencia, o elegir la opción que describe correctamente varias comparaciones simples.",
+        "Ítems donde varias alternativas de respuesta describen comparaciones entre categorías y el estudiante debe identificar cuál (o cuáles) son verdaderas según el gráfico.",
+        "Situaciones en que las alturas de algunas barras son muy parecidas y exigen una lectura cuidadosa del eje y de la parte superior de las barras, sin ser ambigua."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar gráficos en que dos barras pretendidamente distintas parezcan de la misma altura visual; las diferencias deben ser claras para las comparaciones requeridas.",
+      "No usar escalas truncadas en el eje vertical (que no parten de 0) para este átomo, ya que introduce interpretaciones más complejas fuera de alcance.",
+      "Evitar rotular categorías o ejes con textos largos que obliguen a abreviaturas confusas o superposición de etiquetas.",
+      "No mezclar en una misma pregunta la lectura de frecuencia absoluta y la interpretación de porcentajes si estos no están explícitamente marcados en el gráfico.",
+      "Evitar preguntas donde la categoría mencionada en el enunciado no coincida exactamente en nombre y ortografía con la etiqueta del gráfico.",
+      "No usar colores demasiado similares entre barras si se hace referencia a ellas por color en la leyenda (si se menciona el color, este debe ser claramente distinguible).",
+      "Evitar usar barras de ancho muy distinto que puedan llevar a pensar que el ancho, y no la altura, representa la frecuencia.",
+      "No formular alternativas que dependan de estimaciones excesivamente finas (por ejemplo, decidir entre 19 y 20 si la barra no llega claramente a una marca)."
+    ],
+    "error_families": [
+      {
+        "name": "Lectura_de_altura_inexacta",
+        "description": "El estudiante lee mal la altura de la barra, ya sea porque no alinea correctamente con las marcas del eje vertical, o porque no reconoce el tamaño del incremento entre marcas.",
+        "how_to_address": "Incluir ítems que obliguen a identificar explícitamente el valor de una barra marcada en una posición intermedia, y reforzar la interpretación de la escala del eje antes de leer la altura."
+      },
+      {
+        "name": "Comparacion_por_impresion_global",
+        "description": "El estudiante decide cuál barra es mayor o menor basándose en una mirada rápida o en creencias previas sobre el contexto, sin observar con precisión la altura.",
+        "how_to_address": "Diseñar ítems donde la respuesta intuitiva del contexto no coincida con la del gráfico, de modo que el alumno deba apoyarse estrictamente en la lectura visual de las barras."
+      },
+      {
+        "name": "Confusion_escala_del_eje",
+        "description": "El estudiante asume que cada marca del eje vertical vale 1 unidad, aunque la escala sea distinta (por ejemplo, de 2, 5 o 10), lo que lo lleva a leer mal las frecuencias.",
+        "how_to_address": "En las preguntas, destacar la escala del eje con números claros y, en algunos casos, incorporar alternativas de respuesta que evidencien este tipo de error para diagnosticarlo."
+      },
+      {
+        "name": "Moda_visual_incorrecta",
+        "description": "El estudiante no identifica correctamente la categoría con mayor frecuencia, usualmente porque no recorre todas las barras o porque confunde barras cercanas en altura.",
+        "how_to_address": "Proponer ítems en que la barra de mayor frecuencia no sea la primera ni la última, obligando a revisar todo el gráfico, y pedir comparaciones que incluyan categorías no contiguas."
+      },
+      {
+        "name": "Ignorar_igualdades_de_altura",
+        "description": "El estudiante no percibe cuando dos barras tienen la misma altura y, por tanto, la misma frecuencia, y responde como si una fuera mayor que la otra.",
+        "how_to_address": "Incluir gráficos donde dos o más categorías tengan exactamente la misma altura, con preguntas que requieran reconocer la igualdad de frecuencias."
+      },
+      {
+        "name": "Fijacion_en_ancho_o_color",
+        "description": "El estudiante infiere la frecuencia observando el ancho de la barra o el color (por ejemplo, pensando que el color más intenso indica mayor frecuencia) en lugar de la altura.",
+        "how_to_address": "Utilizar gráficos donde todas las barras tengan el mismo ancho y evitar codificar información cuantitativa adicional en el color; centrar preguntas en la comparación de alturas."
+      }
+    ],
+    "future_targets": [
+      "Interpretación de otros tipos de gráficos estadísticos (histogramas, gráficos circulares, diagramas de caja).",
+      "Cálculo e interpretación de medidas de tendencia central y dispersión a partir de datos presentados en gráficos.",
+      "Análisis y comparación de distribuciones de datos representadas en más de un gráfico.",
+      "Lectura e interpretación de probabilidades a partir de frecuencias relativas mostradas en gráficos.",
+      "Modelación y comunicación de información estadística mediante la construcción de gráficos adecuados.",
+      "Razonamiento porcentual a partir de gráficos de barras que incluyan información de totales y frecuencias relativas."
+    ],
+    "representation_variants": [
+      "grafica_barras_verticales",
+      "grafica_barras_horizontales",
+      "enunciado_verbal_describiendo_grafico_de_barras"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "mixed"
+    ],
+    "required_image_types": [
+      "statistical_chart"
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Conversión de decimales periódicos puros (ejemplo: 0,3̅; 0,27̅; 0,142857̅) a fracción usando el método algebraico estándar.",
+        "Conversión de decimales periódicos mixtos (ejemplo: 0,16̅; 2,45̅) a fracción mediante planteamiento de ecuaciones y potencias de 10 adecuadas.",
+        "Identificación del período y, si corresponde, de la parte no periódica en la escritura decimal.",
+        "Uso de ecuaciones del tipo x = decimal periódico, multiplicar por 10^n y 10^m según cantidad de cifras no periódicas y periódicas, restar y despejar x.",
+        "Expresión del resultado como fracción irreducible (simplificación final obligatoria).",
+        "Reconocimiento de que todo decimal periódico representa un número racional."
+      ],
+      "out_of_scope": [
+        "Conversión de decimales finitos a fracción mediante potencias de 10 directas (sin parte periódica).",
+        "Conversión de fracciones a decimales periódicos.",
+        "Identificación y conversión de decimales no periódicos (incluyendo irracionales).",
+        "Justificaciones teóricas profundas sobre por qué todo racional tiene expansión decimal periódica.",
+        "Uso de métodos avanzados o no estándar (por ejemplo, series infinitas, notación sigma).",
+        "Contextos que exijan operar algebraicamente con fracciones obtenidas en varios pasos posteriores (resolver ecuaciones complejas, problemas de aplicación extensos).",
+        "Uso de calculadora para hacer la conversión; el foco es el procedimiento algebraico a mano."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprender el valor posicional en el sistema decimal y la diferencia entre decimales finitos y periódicos a nivel descriptivo.",
+        "A-M1-NUM-01-05: Manejo básico de fracciones (lectura, escritura, interpretación).",
+        "A-M1-NUM-01-06: Simplificación de fracciones a su mínima expresión (uso de divisores comunes, MCD).",
+        "A-M1-NUM-01-08: Operaciones básicas con números enteros y potencias de 10 (multiplicar y dividir por 10, 100, 1000, etc.).",
+        "A-M1-ALG-01-01: Despeje de ecuaciones lineales simples del tipo ax = b.",
+        "A-M1-NOT-01-02: Comprender e identificar correctamente la notación de decimal periódico (barra sobre el período, uso de puntos, etc.)."
+      ],
+      "common_traps": [
+        "Confundir parte periódica con parte no periódica en un decimal mixto (por ejemplo, pensar que en 0,16̅ el 6 no es parte del período).",
+        "Olvidar que en un decimal periódico puro no hay parte no periódica, lo que lleva a multiplicar por una potencia de 10 innecesariamente grande.",
+        "Elegir mal las potencias de 10 en el método algebraico para decimales mixtos (multiplicar por 10^m y 10^n incorrectos y generar una resta que no elimina la parte periódica).",
+        "No restar correctamente las ecuaciones (por ejemplo, x = … y 10x = …) y cometer errores de alineación de decimales.",
+        "Omitir la simplificación final de la fracción o creer que una fracción grande ya está simplificada por tener números grandes.",
+        "Tratar decimales periódicos como si fueran finitos al transformarlos (ejemplo: escribir 0,3̅ = 3/10 en vez de 1/3).",
+        "Interpretar mal la barra de período cuando cubre varias cifras, sobre todo si hay más de dos dígitos en el período.",
+        "Errores de copia en la parte periódica extensa (perder o duplicar dígitos al escribir la ecuación)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Decimales periódicos puros con un solo dígito en el período (ejemplo tipo 0,6̅, 0,9̅) que requieren solo una multiplicación por 10 y una resta sencilla.",
+        "Períodos cortos (1 dígito) y sin parte entera distinta de cero (entre 0 y 1).",
+        "Cálculos intermedios con enteros pequeños, restas simples y fracciones resultantes fáciles de simplificar (por ejemplo, divisibles por 2, 3 o 5).",
+        "Ítems que guían explícitamente el procedimiento (por ejemplo, indicando la ecuación x = 0,3̅ o la potencia de 10 a utilizar).",
+        "Distractores basados principalmente en errores aritméticos simples o en no simplificar la fracción, sin exigir decisiones complejas sobre el método."
+      ],
+      "medium": [
+        "Decimales periódicos puros con período de 2 o 3 dígitos (ejemplo tipo 0,27̅, 0,142̅) que requieren multiplicar por 100 o 1000.",
+        "Incluyen parte entera distinta de cero pero siguen siendo periódicos puros (ejemplo tipo 2,7̅).",
+        "Decimales periódicos mixtos con una sola cifra no periódica antes del período (ejemplo tipo 0,1̅6 o 0,3̅4, según notación explícita) que exigen dos multiplicaciones por potencias de 10 distintas y una resta bien organizada.",
+        "Fracciones resultantes que requieren una simplificación no del todo inmediata (divisores distintos de 2, 5, 10; por ejemplo, divisores 3, 7, 11).",
+        "Distractores que reflejan errores típicos del método (tratar el número como decimal finito, olvidar restar ecuaciones, no eliminar la parte periódica correctamente) más allá de simples errores de cálculo."
+      ],
+      "hard": [
+        "Decimales periódicos mixtos en que la parte no periódica tiene más de una cifra y el período también incluye varias cifras (por ejemplo, 0,ab c̅d o 1,23̅45, con notación clara del período).",
+        "Períodos más largos (3 o más cifras) que aumentan la probabilidad de error en la copia y la resta de las ecuaciones.",
+        "Necesidad de combinar adecuadamente dos potencias de 10 (una para 'mover' la parte no periódica y otra para abarcar el período completo) generando ecuaciones con números grandes.",
+        "Fracciones resultantes con numeradores y denominadores relativamente grandes que exigen encontrar el MCD no evidente (por ejemplo, 7, 9, 11, 13 como factores) para simplificar a mínima expresión.",
+        "Ítems que no explicitan el método y exigen al estudiante decidir cómo plantear la ecuación o qué potencias de 10 usar.",
+        "Distractores diseñados para encarnar razonamientos aparentemente plausibles pero incorrectos (por ejemplo, usar solo una potencia de 10 en un periódico mixto, o simplificar parcialmente pero no completamente)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar notaciones no estándar o mezcladas para el período; siempre usar una sola convención clara (idealmente barra sobre todas las cifras que se repiten) y explicitarla cuando sea necesario.",
+      "No usar simultáneamente barra y puntos o paréntesis para señalar el período si no se explica explícitamente cuál es el período; escoger una sola notación consistente.",
+      "Evitar escribir números como 0,16… sin marcar explícitamente qué parte es periódica; siempre indicar el período de forma inequívoca.",
+      "No usar tres puntos suspensivos '…' como única indicación de periodicidad; los puntos pueden interpretarse como truncamiento y no como repetición infinita.",
+      "Evitar contextos de problema donde no quede claro si un decimal dado es aproximación redondeada o es exacto y periódico.",
+      "No mezclar en la misma alternativa fracciones equivalentes y no equivalentes sin considerar que más de una puede representar el mismo valor si el estudiante simplifica; asegurar que solo una alternativa represente el valor correcto.",
+      "Evitar números con formatos poco frecuentes (uso de coma vs punto decimal) sin aclaración; mantener la convención chilena de coma para decimal.",
+      "No incluir instrucciones ambiguas como 'escriba la fracción correspondiente' sin aclarar si se requiere fracción irreducible; en PAES se debe asumir 'forma más simple' o explicitarlo.",
+      "Evitar textos largos donde la identificación del número a convertir sea confusa (por ejemplo, varios decimales en el enunciado sin destacar cuál se debe convertir)."
+    ],
+    "error_families": [
+      {
+        "name": "Período_mal_identificado",
+        "description": "El estudiante identifica equivocadamente las cifras que se repiten. Por ejemplo, en un decimal mixto interpreta que solo la última cifra es periódica cuando el período completo abarca varias cifras, o confunde parte no periódica con parte periódica.",
+        "how_to_address": "Proponer ítems intermedios centrados en marcar visualmente el período antes de convertir. Reforzar la lectura de la notación (barra sobre todas las cifras repetidas) y hacer ejercicios de clasificación: '¿cuál(es) cifra(s) forman el período?'."
+      },
+      {
+        "name": "Uso_incorrecto_de_potencias_de_10",
+        "description": "Se eligen mal las potencias de 10 en el método algebraico, ya sea usando una potencia demasiado pequeña o demasiado grande, o usando la misma potencia para ecuaciones que debieran diferir en la cantidad de cifras desplazadas.",
+        "how_to_address": "Enseñar el criterio: la potencia depende del número de cifras no periódicas y del largo del período. Trabajar con tablas que indiquen claramente cuántas cifras se deben 'correr' en cada caso y diseñar pasos guiados para decidir 10^n y 10^m."
+      },
+      {
+        "name": "Resta_mal_ejecutada",
+        "description": "Errores en la resta de las ecuaciones (por ejemplo, 10x − x) debido a mala alineación de decimales o pérdida de cifras en el período, generando un numerador o denominador incorrectos.",
+        "how_to_address": "Insistir en la escritura en columna de las ecuaciones, alineando comas decimales, y practicar con ejemplos donde los términos se eliminen de forma visible. Hacer que el estudiantado verbalice qué se cancela y por qué, antes de efectuar la resta numérica."
+      },
+      {
+        "name": "Trato_como_decimal_finito",
+        "description": "El estudiante ignora la periodicidad y trata el número como si terminara, escribiéndolo directamente como fracción de denominador 10, 100, etc. (por ejemplo, 0,3̅ → 3/10).",
+        "how_to_address": "Contrastar resultados aproximados vs exactos mostrando que el valor no cuadra (por ejemplo, verificar multiplicando la fracción propuesta para ver si el decimal resultante coincide). Resaltar que el '…' o la barra indica una repetición infinita, no truncada."
+      },
+      {
+        "name": "No_simplificar_fracción",
+        "description": "Se obtiene una fracción correcta pero no simplificada, o se simplifica solo parcialmente, lo que puede provocar elección de distractores diseñados con esa fracción sin reducir.",
+        "how_to_address": "Reforzar la regla de 'siempre revisar si se puede simplificar' e integrar pasos explícitos de búsqueda de divisores comunes (2, 3, 5, 9, 11, etc.). Practicar ejercicios donde la única diferencia entre alternativas sea el grado de simplificación."
+      },
+      {
+        "name": "Manejo_deficiente_de_fracciones",
+        "description": "Dificultades generales con fracciones (resolución de ax = b, dividir por un número, interpretar numerador y denominador) que llevan a despejes mal hechos después de la resta (por ejemplo, 9x = 6 → x = 9/6).",
+        "how_to_address": "Revisar brevemente la resolución de ecuaciones lineales simples y el significado de 'dividir ambos lados por el mismo número'. Practicar con ejemplos sencillos de la forma kx = n exclusivamente antes de combinarlos con decimales periódicos."
+      },
+      {
+        "name": "Confusión_con_parte_entera",
+        "description": "En decimales con parte entera, el estudiante pierde o altera esa parte al convertir, produciendo fracciones menores que 1 o mayores de lo correcto (por ejemplo, 1,3̅ → 1/3).",
+        "how_to_address": "Enseñar el procedimiento separando claramente parte entera y parte decimal, y mostrar que una fracción impropia puede descomponerse en parte entera + fracción propia para comprobar consistencia."
+      }
+    ],
+    "future_targets": [
+      "Conversión de fracciones a decimales periódicos y clasificación de racionales según su expansión decimal.",
+      "Operaciones con números racionales en forma fraccionaria y decimal, incluyendo comparación y ordenamiento.",
+      "Resolución de problemas que requieran pasar entre representaciones decimal y fraccionaria para simplificar cálculos o interpretar resultados.",
+      "Estudio de sucesiones decimales y patrones numéricos relacionados con periodicidad.",
+      "Introducción formal a los números reales y a la distinción entre racionales e irracionales mediante su representación decimal.",
+      "Manipulación algebraica de expresiones que involucran números racionales representados de distintas maneras.",
+      "Cálculo de porcentajes y razones en contextos donde aparezcan aproximaciones decimales periódicas.",
+      "Comprensión de equivalencias numéricas en contextos de proporcionalidad y escalas (por ejemplo, tasas que se expresan como decimales periódicos)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "decimals",
+      "fractions",
+      "mixed_numbers"
+    ],
+    "required_image_types": []
+  }
+}

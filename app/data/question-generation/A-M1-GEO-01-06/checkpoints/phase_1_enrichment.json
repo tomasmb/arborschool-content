@@ -1,0 +1,129 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de la longitud de la circunferencia de un círculo conociendo su radio o su diámetro.",
+        "Uso correcto de las fórmulas P = 2·π·r y P = π·d.",
+        "Identificación de radio y diámetro a partir de un enunciado verbal o de datos numéricos explícitos.",
+        "Interpretación de frases como \"alrededor del círculo\", \"contorno del círculo\", \"perímetro del círculo\" como longitud de la circunferencia.",
+        "Uso de un valor aproximado de π indicado en el enunciado (por ejemplo 3,14 o 22/7) o dejar el resultado expresado en función de π cuando se solicite.",
+        "Conversión simple entre radio y diámetro cuando solo uno de ellos está dado (d = 2r, r = d/2)."
+      ],
+      "out_of_scope": [
+        "Cálculo del área del círculo.",
+        "Perímetros de otras figuras (polígonos, figuras compuestas con partes no circulares).",
+        "Longitudes de arcos, sectores circulares o circunferencias incompletas.",
+        "Problemas que requieran trigonometría, ángulos centrales o radianes.",
+        "Uso de fórmulas avanzadas relacionadas con circunferencias (por ejemplo longitud de espirales u otras curvas).",
+        "Cambio de unidades no triviales (por ejemplo de cm a km en varios pasos o conversión entre unidades cuadradas).",
+        "Cálculo inverso que requiera resolver ecuaciones no lineales; solo se admite despeje directo de r o d a partir de P en casos simples."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01: Manejo de operaciones básicas con números naturales y enteros.",
+        "A-M1-ARIT-02-01: Manejo de operaciones con decimales y fracciones simples.",
+        "A-M1-GEO-01-01: Reconocer e identificar elementos de un círculo (centro, radio, diámetro, circunferencia).",
+        "A-M1-ALG-01-01: Sustituir valores numéricos en fórmulas simples y evaluar expresiones."
+      ],
+      "common_traps": [
+        "Confundir radio con diámetro y usar el valor que no corresponde en la fórmula.",
+        "Olvidar que el diámetro es el doble del radio y no realizar la conversión cuando es necesaria.",
+        "Usar una fórmula mezclada o incorrecta, por ejemplo P = π·r o P = 2·π·d.",
+        "No respetar la indicación del valor de π (usar 3,14 cuando se pidió dejar en función de π, o viceversa).",
+        "Errores de redondeo excesivo o en la posición decimal en el resultado final.",
+        "Interpretar mal el contexto y calcular área en lugar de perímetro (por ejemplo al hablar de la \"superficie\" o \"tamaño\" de la mesa).",
+        "Perder o cambiar unidades de medida (por ejemplo dar la respuesta en cm cuando los datos están en m)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Radio o diámetro dado explícitamente como un número entero pequeño (por ejemplo entre 1 y 20).",
+        "Se indica claramente qué fórmula usar o se nombra explícitamente radio o diámetro en el enunciado.",
+        "Se especifica de manera directa el valor de π a utilizar (por ejemplo π = 3,14) y no se requiere redondeo adicional.",
+        "No hay cambio de unidades; los datos y la respuesta están en la misma unidad.",
+        "El ítem requiere solo una sustitución directa en la fórmula y una o dos operaciones aritméticas simples.",
+        "No se pide despejar r o d; siempre se calcula P a partir de r o d."
+      ],
+      "medium": [
+        "Radio o diámetro puede ser un número decimal simple o fracción sencilla (por ejemplo 2,5; 1,5; 3/2).",
+        "El contexto es verbal y el estudiante debe decidir si el dato dado corresponde a radio o a diámetro (por ejemplo \"el ancho de la mesa es 80 cm\").",
+        "Puede ser necesario convertir de diámetro a radio o de radio a diámetro antes de aplicar la fórmula.",
+        "Se permite o requiere dejar la respuesta en función de π, o se pide redondear a una cierta cantidad de decimales (por ejemplo a las centésimas).",
+        "Puede pedirse calcular el radio o el diámetro a partir de la longitud de la circunferencia usando un despeje directo de la fórmula.",
+        "Contextos donde el radio o diámetro no se destaca explícitamente y debe inferirse a partir de la lectura atenta (por ejemplo \"el radio de la rueda mide 35 cm\")."
+      ],
+      "hard": [
+        "Uso de radios o diámetros con decimales menos amigables (por ejemplo 7,8; 12,3) que generan productos no exactos con π.",
+        "Requiere más de un paso de razonamiento: por ejemplo, obtener primero el diámetro a partir de otra información simple (como dos radios alineados) y luego el perímetro.",
+        "Problemas en los que se debe trabajar hacia atrás: dada la longitud de la circunferencia, encontrar radio o diámetro y luego usar ese valor en otra comparación o decisión.",
+        "Contextos donde se comparan longitudes de circunferencia de dos círculos distintos y se debe determinar cuál es mayor o cuántas veces mayor, exigiendo interpretar la fórmula más allá del cálculo directo.",
+        "Enunciados que combinan perímetro de circunferencia con perímetros de figuras no circulares, siempre que la parte no circular sea muy simple (por ejemplo un tramo recto) y no desplace el foco del átomo.",
+        "Requieren control cuidadoso de aproximaciones y redondeo (por ejemplo elegir entre alternativas muy cercanas numéricamente)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar indistintamente los términos \"círculo\" y \"circunferencia\" cuando se refiere específicamente a la longitud del borde; preferir \"longitud de la circunferencia\" o \"perímetro del círculo\" de forma consistente.",
+      "No usar palabras como \"tamaño\" o \"superficie\" cuando la intención es perímetro; especificar claramente que se pregunta por \"perímetro\" o \"longitud de la circunferencia\".",
+      "No presentar en el mismo ítem información de radio y diámetro sin aclarar cuál es cuál; etiquetar explícitamente si un valor corresponde a radio o a diámetro si pueden confundirse.",
+      "Evitar enunciados en que la medida dada pueda interpretarse de dos maneras (por ejemplo, \"el largo de la rueda\" sin aclarar que se refiere al diámetro).",
+      "Si se debe usar un valor específico de π, enunciarlo claramente (\"use π = 3,14\") y no dejarlo implícito.",
+      "Cuando se pide dejar el resultado en función de π, indicarlo explícitamente en la pregunta (\"exprese el resultado en función de π\").",
+      "Especificar siempre la unidad de medida de entrada y, si corresponde, la unidad esperada en la respuesta, para evitar dudas sobre conversión de unidades.",
+      "No usar diagramas mal proporcionados para inferir radio o diámetro si no están numéricamente etiquetados (en este átomo, si se usa figura debe ir con medida clara)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión radio-diámetro",
+        "description": "El estudiante toma el diámetro como si fuera el radio o viceversa, afectando directamente el resultado (por ejemplo usar r = 10 cuando en realidad 10 es el diámetro).",
+        "how_to_address": "Incluir ítems que obliguen a identificar explícitamente radio y diámetro en el contexto (\"ancho total\" versus \"distancia del centro al borde\"). Reforzar la relación d = 2r con preguntas que pidan primero encontrar radio o diámetro antes de aplicar la fórmula."
+      },
+      {
+        "name": "Fórmula incorrecta o incompleta",
+        "description": "Uso de fórmulas mal recordadas, como P = π·r o P = 2r, o mezclas como P = 2·d·π.",
+        "how_to_address": "Diseñar ítems que exploren la comprensión estructural de la fórmula (doblar el radio duplica la circunferencia, etc.), no solo su memorización. Incluir distractores calculados con fórmulas erróneas para evidenciar el error y poder retroalimentar sobre la estructura correcta 2·π·r y π·d."
+      },
+      {
+        "name": "Manejo inadecuado de π",
+        "description": "Usar un valor de π distinto al solicitado, sustituir π por 3 o 3,1 sin indicación, o no dejar la respuesta en función de π cuando se pide.",
+        "how_to_address": "Plantear ítems diferenciando claramente entre \"use π = 3,14\" y \"exprese en función de π\". Ofrecer alternativas que distingan entre ambos tratamientos para reforzar la importancia de seguir la indicación sobre π."
+      },
+      {
+        "name": "Errores aritméticos y de redondeo",
+        "description": "Multiplicaciones incorrectas (especialmente con decimales), desplazamiento de la coma decimal, o redondeo a una cantidad de decimales distinta a la solicitada.",
+        "how_to_address": "Usar números que exijan atención al lugar decimal y pedir redondeos específicos. En la retroalimentación, enfatizar la verificación con estimaciones aproximadas (por ejemplo, comparar con 3·r·2 ≈ 6r como control)."
+      },
+      {
+        "name": "Confusión perímetro-área",
+        "description": "El estudiante aplica la fórmula de área del círculo (π·r²) en lugar de la de perímetro, o interpreta el contexto como área cuando se pregunta por perímetro.",
+        "how_to_address": "Incluir ítems que contrasten explícitamente situaciones donde se requiere área y donde se requiere perímetro, destacando palabras clave del contexto (borde, contorno versus superficie). Trabajar con distractores asociados al cálculo de área para evidenciar la confusión."
+      },
+      {
+        "name": "Pérdida o cambio de unidades",
+        "description": "Entregar respuestas sin unidad, con una unidad distinta a la de los datos, o confundir unidades lineales con cuadradas.",
+        "how_to_address": "Proponer preguntas que incluyan comparación de respuestas con distintas unidades en las alternativas. Reforzar que la longitud de la circunferencia siempre tiene unidades lineales (cm, m, etc.) y que deben mantenerse coherentes con los datos."
+      }
+    ],
+    "future_targets": [
+      "Cálculo del área de círculos y sectores circulares.",
+      "Cálculo de longitudes de arcos y perímetros de sectores circulares.",
+      "Perímetros de figuras compuestas que incluyan tramos de circunferencia (por ejemplo pistas de atletismo, figuras con semicírculos).",
+      "Aplicaciones de proporcionalidad y escalas en contextos circulares (por ejemplo ruedas de distinto tamaño y distancias recorridas).",
+      "Introducción a la noción de radian a partir de la relación entre arco y radio.",
+      "Modelación de problemas físicos simples que involucren movimiento circular uniforme (por ejemplo distancia recorrida por una rueda que gira)."
+    ],
+    "representation_variants": [
+      "verbal_contextual",
+      "simbólica_algebraica",
+      "numérica",
+      "gráfica_simple_sin_escala"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_decimals",
+      "mixed_decimals",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

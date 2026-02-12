@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de sistemas de ecuaciones lineales 2x2 con dos incógnitas mediante el método de igualación, partiendo desde la forma simbólica del sistema.",
+        "Despejar explícitamente la misma incógnita en ambas ecuaciones, incluso si requiere operaciones previas (sumar/restar en ambos lados, dividir por un coeficiente distinto de 1).",
+        "Igualar las dos expresiones obtenidas para la misma incógnita y resolver la ecuación resultante de una variable.",
+        "Sustituir el valor encontrado en cualquiera de los despejes iniciales para obtener el valor de la segunda incógnita.",
+        "Verificación básica de la solución sustituyendo ambos valores en las ecuaciones originales (como paso intermedio o distractor).",
+        "Sistemas con soluciones únicas donde el método de igualación conduce a una ecuación lineal de primer grado en una variable."
+      ],
+      "out_of_scope": [
+        "Uso de otros métodos de resolución de sistemas (suma y resta, reducción, método gráfico, método de sustitución explícito distinto de igualación).",
+        "Sistemas no lineales (cuadráticos, con productos de incógnitas, raíces, valor absoluto, etc.).",
+        "Sistemas con más de dos ecuaciones o más de dos incógnitas.",
+        "Determinación de casos de infinitas soluciones o sin solución mediante criterios de proporcionalidad o rango de matrices.",
+        "Interpretación geométrica avanzada del sistema (rectas paralelas, coincidentes, punto de intersección) más allá de un comentario simple.",
+        "Resolución de ecuaciones o sistemas con parámetros que requieran análisis de casos (por ejemplo, dependiendo de un valor k).",
+        "Problemas que exijan modelar desde un contexto verbal complejo sin que quede claro que se debe aplicar método de igualación."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-02-01: Comprensión y uso del lenguaje algebraico básico (variables, términos, coeficientes, constantes).",
+        "A-M1-ALG-03-01: Resolución de ecuaciones lineales de una incógnita con operaciones de suma, resta, multiplicación y división.",
+        "A-M1-ALG-03-02: Despeje de una incógnita en ecuaciones lineales simples (por ejemplo, aislar x en ax + b = c).",
+        "A-M1-ALG-04-01: Identificación y escritura de sistemas de ecuaciones lineales 2x2 a partir de expresiones simbólicas.",
+        "A-M1-ALG-04-03: Manipulación algebraica segura (transposición de términos, manejo de signos, distribución de factores)."
+      ],
+      "common_traps": [
+        "Despejar incógnitas distintas en cada ecuación (por ejemplo x en la primera y y en la segunda) y luego intentar igualar expresiones que no corresponden.",
+        "Olvidar cambiar de signo al transponer términos al otro lado de la igualdad.",
+        "Dividir solo una parte de la ecuación por el coeficiente al despejar, en lugar de dividir ambos lados.",
+        "Perder paréntesis al sustituir el valor encontrado de una incógnita, lo que genera errores de signos.",
+        "Confundir el método de igualación con el de sustitución, reemplazando directamente una expresión en la otra sin antes igualar ambas expresiones de la misma variable.",
+        "Elegir despejes innecesariamente complicados (por ejemplo, despejar una variable con coeficiente fraccionario cuando otra variable tiene coeficiente 1), aumentando la probabilidad de error.",
+        "No completar el procedimiento: encontrar solo una de las incógnitas y no calcular la segunda.",
+        "Intercambiar los valores finales de x e y al responder, aunque el procedimiento haya sido correcto."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Sistemas donde al menos una ecuación ya está despejada para una variable o requiere un único paso simple para despejar (por ejemplo, x + y = 10, x − y = 2).",
+        "Coeficientes enteros pequeños (entre −10 y 10) y sin fracciones ni decimales.",
+        "Despejes que no implican dividir por números distintos de 1 o −1.",
+        "Ausencia de signos negativos en ambos lados simultáneamente, reduciendo el riesgo de errores de signo.",
+        "Estructura muy guiada del ítem, donde se explicita que se debe despejar la misma incógnita en ambas ecuaciones e igualar las expresiones.",
+        "Distractores construidos a partir de errores simples de suma/resta pero sin pasos algebraicos complejos."
+      ],
+      "medium": [
+        "Sistemas donde ninguna ecuación viene despejada y se requiere al menos dos pasos para despejar la misma variable en ambas (por ejemplo, trasladar términos y luego dividir).",
+        "Presencia de algunos coeficientes distintos de 1, que obligan a dividir (por ejemplo 2x + y = 7, 3x − y = 5).",
+        "Posible aparición de fracciones en pasos intermedios o en la solución, pero con números manejables.",
+        "Signos negativos en uno o más coeficientes, requiriendo atención al manejo de signos al igualar y resolver.",
+        "Enunciados que no nombran explícitamente el método, pero donde se presenta el sistema únicamente en forma simbólica esperando que el estudiante aplique igualación.",
+        "Distractores que recogen errores típicos de despeje o de igualación (por ejemplo, no cambiar signo, dividir mal o igualar expresiones de incógnitas distintas)."
+      ],
+      "hard": [
+        "Sistemas en los que el despeje natural de la misma variable implica trabajar con fracciones o decimales desde etapas tempranas del procedimiento.",
+        "Coeficientes enteros de valor absoluto mayor a 10 o coeficientes fraccionarios (por ejemplo 3/2, −5/3) que generan expresiones más largas al igualar.",
+        "Ecuaciones reorganizadas de forma poco habitual (términos de ambos lados, incógnitas en ambos lados), exigiendo reordenar antes de despejar.",
+        "Necesidad de tomar decisiones estratégicas sobre qué variable conviene despejar para simplificar el cálculo; una mala elección hace el procedimiento más largo pero sigue siendo resoluble por igualación.",
+        "Contextos verbales breves donde el estudiante deba extraer el sistema y luego resolverlo específicamente por igualación, sin indicación explícita del método.",
+        "Distractores basados en soluciones de métodos alternativos mal aplicados (por ejemplo, como si se hubiera usado suma y resta, o sustitución incompleta), o en el abandono del proceso al encontrar solo una incógnita."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde el sistema pueda resolverse de manera mucho más directa por otro método sugerido implícitamente (por ejemplo, ecuaciones ya preparadas para suma y resta), si se exige explícitamente el método de igualación en la consigna.",
+      "No mezclar instrucciones del tipo \"resuelva por cualquier método\" con una rúbrica o alternativas que solo son coherentes con el método de igualación.",
+      "No usar notación confusa para el sistema; escribir siempre las ecuaciones claramente separadas con llaves, punto y coma o en líneas distintas.",
+      "Evitar que la misma letra represente cosas diferentes en el mismo ítem (por ejemplo, x como incógnita y x como cantidad de objetos en el contexto).",
+      "No plantear sistemas donde una ecuación ya esté resuelta para x y la otra para y si se quiere evaluar estrictamente el método de igualación; en ese caso aclarar qué variable se debe igualar.",
+      "Evitar contextos verbales demasiado largos o con información irrelevante que oculte cuál es la variable a despejar e igualar.",
+      "No incluir sistemas sin solución o con infinitas soluciones salvo que el ítem explicite claramente qué se espera hacer con el resultado de la igualación, para no generar interpretaciones múltiples.",
+      "Evitar escribir resultados o pasos intermedios en las alternativas que puedan confundirse con los valores finales de las incógnitas (por ejemplo, mostrar solo el valor de una variable sin aclararlo)."
+    ],
+    "error_families": [
+      {
+        "name": "Despeje_incompleto_o_incorrecto",
+        "description": "El estudiante intenta despejar la variable pero no aplica la misma operación a ambos lados, deja términos sin mover o se equivoca al dividir, lo que produce expresiones incorrectas antes de igualar.",
+        "how_to_address": "Diseñar ítems paso a paso en los que se pregunte explícitamente por el despeje correcto de una variable en una ecuación dada y ofrecer distractores que representen distintos errores de despeje, reforzando que toda operación debe aplicarse simétricamente a ambos lados."
+      },
+      {
+        "name": "Igualar_variables_distintas",
+        "description": "El estudiante despeja x en una ecuación e y en la otra, y luego iguala ambas expresiones sin notar que corresponden a incógnitas diferentes.",
+        "how_to_address": "Incluir alternativas que correspondan a este error para visibilizarlo y formular ítems donde se enfatice, en el enunciado o en apoyo visual simbólico, que la igualación solo es válida entre expresiones de la misma incógnita."
+      },
+      {
+        "name": "Manejo_deficiente_de_signos",
+        "description": "Errores al trasladar términos (olvido de cambiar de signo), al distribuir negativos o al simplificar al resolver la ecuación de una incógnita obtenida tras igualar.",
+        "how_to_address": "Usar sistemas que tengan signos negativos tanto en coeficientes como en términos independientes y construir distractores que difieran solo en el signo de una de las incógnitas, de modo que se pueda diagnosticar este error y reforzar el chequeo sistemático de signos en cada paso."
+      },
+      {
+        "name": "División_parcial_al_despejar",
+        "description": "Al dividir por un coeficiente distinto de 1, el estudiante divide solo un término, olvidando dividir todo el lado de la ecuación.",
+        "how_to_address": "Proponer ítems donde uno de los pasos clave sea dividir por un mismo número todo un lado de la ecuación, incluyendo como distractor la expresión donde solo se dividió un término, y enfatizar verbalmente que el denominador afecta a todo el lado de la igualdad."
+      },
+      {
+        "name": "Abandono_del_procedimiento",
+        "description": "El estudiante encuentra el valor de una de las incógnitas al resolver la ecuación resultante de la igualación, pero no sustituye de vuelta para hallar la segunda incógnita.",
+        "how_to_address": "Diseñar ítems en los que algunas alternativas contengan únicamente el valor de una variable o pares de valores donde solo uno es correcto, acompañados de consignas que recalquen la necesidad de encontrar el par ordenado (x, y)."
+      },
+      {
+        "name": "Sustitucion_erronea_en_el_ultimo_paso",
+        "description": "Al calcular la segunda incógnita, el estudiante sustituye el valor de la primera en la ecuación original equivocada, o pierde paréntesis al reemplazar, generando errores de cálculo.",
+        "how_to_address": "Plantear ejercicios que muestren explícitamente los despejes correctos y luego pregunten por el valor de la segunda incógnita al sustituir, ofreciendo distractores que reflejen la sustitución en la ecuación incorrecta o sin paréntesis, reforzando el uso cuidadoso de la expresión despejada."
+      },
+      {
+        "name": "Confusion_con_otro_metodo",
+        "description": "El estudiante intenta aplicar suma y resta o sustitución directa en lugar de igualación, lo que conlleva pasos inconclusos o resultados erróneos.",
+        "how_to_address": "En algunos ítems, indicar explícitamente que se utilice el método de igualación y construir distractores asociados a procedimientos de otros métodos mal aplicados, para hacer evidente la diferencia y consolidar el algoritmo de igualación: mismo despeje, igualdad de expresiones, resolución y sustitución."
+      }
+    ],
+    "future_targets": [
+      "Resolución eficiente de sistemas de ecuaciones lineales por otros métodos (suma y resta, sustitución, matrices, método de Cramer).",
+      "Interpretación geométrica de sistemas de ecuaciones como intersección de rectas en el plano cartesiano.",
+      "Modelación de situaciones reales mediante sistemas 2x2, como problemas de mezcla, tarifas, movimientos y repartos proporcionales.",
+      "Extensión del razonamiento a sistemas de mayor dimensión (3x3) utilizando analogías con el procedimiento de igualación.",
+      "Comprensión de la relación entre sistemas lineales y funciones lineales (puntos de intersección de funciones).",
+      "Uso de técnicas algebraicas más avanzadas que requieren despejes reiterados de variables, como cambios de variable en funciones o ecuaciones.",
+      "Transición al trabajo con matrices y vectores donde los sistemas lineales se representan y resuelven de manera más estructurada."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_fractions",
+      "mixed",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

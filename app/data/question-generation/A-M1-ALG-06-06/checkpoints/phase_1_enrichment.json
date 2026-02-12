@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de la coordenada x del vértice de una función cuadrática dada en forma general f(x) = ax^2 + bx + c usando la fórmula x = -b/(2a).",
+        "Cálculo de la coordenada y del vértice evaluando la función cuadrática en el valor de x obtenido.",
+        "Expresar el vértice como par ordenado (h, k) con notación adecuada.",
+        "Identificar correctamente los coeficientes a, b y c en expresiones cuadráticas simples o levemente reordenadas (por ejemplo, con términos escritos en distinto orden, coeficientes negativos, términos faltantes).",
+        "Aplicar el procedimiento de forma numérica (sin necesidad de interpretación gráfica), aun cuando en el enunciado se haga referencia al vértice de la parábola."
+      ],
+      "out_of_scope": [
+        "Determinación del vértice a partir de una gráfica de la parábola (eso corresponde a interpretación de gráficos, no a cálculo algebraico).",
+        "Obtención del vértice mediante completación de cuadrados como objetivo principal del ítem.",
+        "Uso de transformaciones de funciones (traslaciones, reflejos, estiramientos) para encontrar el vértice a partir de una función base.",
+        "Cálculo de raíces, intersecciones con los ejes o eje de simetría como objetivo central (solo pueden aparecer como contexto muy secundario).",
+        "Análisis de concavidad, rango o máximos/mínimos en lenguaje variacional más allá de identificar la coordenada del vértice.",
+        "Funciones que no sean cuadráticas (por ejemplo, valor absoluto, cúbicas, racionales) aunque tengan un punto mínimo o máximo.",
+        "Resolución de problemas extensos de modelación donde el cálculo del vértice sea solo una parte de un razonamiento mucho más amplio."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Identificar y operar con números enteros y racionales (incluyendo negativos y fracciones simples).",
+        "A-M1-ALG-03-02: Reconocer coeficientes y términos en expresiones polinómicas de segundo grado.",
+        "A-M1-ALG-06-01: Reconocer la forma general de una función cuadrática f(x) = ax^2 + bx + c, con a ≠ 0.",
+        "A-M1-ALG-02-01: Evaluar una expresión algebraica dada un valor numérico para la variable."
+      ],
+      "common_traps": [
+        "Olvidar que a ≠ 0 y aplicar la fórmula del vértice a expresiones que en realidad son lineales.",
+        "Confundir el signo en la fórmula x = -b/(2a), especialmente cuando b es negativo (por ejemplo, escribir -(-4) como -4).",
+        "Olvidar el paréntesis en el denominador y calcular -b/2 · a en lugar de -b/(2a).",
+        "Confundir el valor de a con 1 cuando no está escrito explícitamente, o de b o c cuando el término correspondiente falta.",
+        "Calcular x = -b/(2a) correctamente pero no reemplazar ese valor en la función para encontrar la coordenada y del vértice.",
+        "Encontrar correctamente x e y pero no escribir el vértice como par ordenado, o intercambiar las coordenadas (k, h) en lugar de (h, k).",
+        "Errores aritméticos al simplificar fracciones o trabajar con números negativos en la evaluación de f(x)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Funciones cuadráticas con coeficientes enteros pequeños (entre -5 y 5) y a = 1 o a = -1.",
+        "Términos ordenados en forma estándar ax^2 + bx + c, sin términos faltantes.",
+        "Valor de x del vértice resultando en un número entero sencillo.",
+        "Coordenada y del vértice resultando también en entero pequeño luego de evaluar la función.",
+        "Enunciado que indica explícitamente el uso de la fórmula x = -b/(2a) y guía el procedimiento paso a paso (primero x, luego y).",
+        "Opciones de respuesta distantes entre sí, con distractores que sean errores aritméticos simples o cambios de signo evidentes."
+      ],
+      "medium": [
+        "Funciones cuadráticas con a entero distinto de ±1 (por ejemplo, 2, -3) y/o con coeficientes b o c de dos dígitos moderados.",
+        "Ecuación puede estar escrita con términos desordenados o faltando algún término (por ejemplo, sin término lineal o sin término independiente).",
+        "Valor de x del vértice dando una fracción con denominador pequeño (por ejemplo, 1/2, -3/4).",
+        "Coordenada y del vértice puede ser fracción simple o decimal finito al evaluar la función.",
+        "Enunciado que nombra al vértice como (h, k) sin detallar la fórmula, esperando que el estudiante recuerde el procedimiento.",
+        "Distractores basados en errores típicos de la fórmula (usar b/2a, usar -b/2, no dividir por 2a) o en evaluar la función en una x equivocada."
+      ],
+      "hard": [
+        "Coeficientes que incluyen fracciones o decimales (por ejemplo, a = 1/2 o a = 0,5) o enteros de mayor magnitud en b y c.",
+        "Ecuación dada en forma expandida pero no estándar, que requiere reordenar términos o factorizar un número común antes de identificar a, b y c sin inducir a error.",
+        "Valor de x del vértice resultando en fracción no trivial (por ejemplo, 7/6, -5/8), requiriendo manejo cuidadoso de signos.",
+        "Coordenada y del vértice dando fracción con numerador y denominador relativamente grandes, o decimal que exija varias operaciones intermedias cuidadosas.",
+        "Contexto verbal donde se habla de la 'altura máxima' o 'mínima' de una parábola y se exige identificar que corresponde al vértice y luego calcular sus coordenadas.",
+        "Distractores diseñados a partir de errores de concepto (confundir vértice con raíces, usar c como coordenada y del vértice, intercambiar h y k) y no solo de cálculo.",
+        "Ítems en que la respuesta correcta es solo una de las coordenadas del vértice (h o k), pero el estudiante debe deducir que primero necesita la otra, no evidente de inmediato."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar cuadráticas donde a = 0 o que se simplifiquen a una función lineal; debe quedar claro que es de segundo grado.",
+      "No mezclar en el mismo ítem múltiples representaciones (gráfico y algebraica) si no está explícito cuál debe usarse para el cálculo del vértice.",
+      "Evitar formas factorizadas como (x - p)(x - q) si el foco es estrictamente la fórmula del vértice; eso se asocia más al eje que calcula raíces.",
+      "No usar letras distintas a x e y en la función cuadrática si el enunciado luego habla del vértice como (h, k), para no confundir notaciones.",
+      "No formular preguntas donde pueda confundirse el vértice con otro punto notable (por ejemplo, intersecciones con los ejes) si se incluyen en el contexto.",
+      "Evitar enunciados que pidan 'punto máximo' o 'punto mínimo' sin mencionar que corresponde al vértice, a menos que el contexto lo haga totalmente inequívoco.",
+      "No combinar en la misma pregunta el uso de distintas fórmulas relacionadas al cuadrático (fórmula general para raíces y fórmula del vértice), porque puede inducir a usar la fórmula equivocada.",
+      "Evitar valores numéricos que den lugar a fracciones equivalentes ambiguas en las alternativas (por ejemplo, 2/4 y 1/2 a la vez) salvo que se especifique simplificación."
+    ],
+    "error_families": [
+      {
+        "name": "Signo_de_b_mal_aplicado",
+        "description": "El estudiante identifica correctamente b pero no aplica el signo negativo de la fórmula x = -b/(2a), o interpreta mal -(-b). Por ejemplo, usa x = b/(2a) o transforma -(-4) en -4.",
+        "how_to_address": "Incluir ítems con b negativo y positivo, destacando distractores que muestren la confusión de signo. En la retroalimentación, enfatizar que el signo '–' de la fórmula es fijo y que luego se reemplaza el valor de b con su signo original."
+      },
+      {
+        "name": "Denominador_mal_formado",
+        "description": "El estudiante interpreta 2a como 2 · a separado de la fracción y calcula -b/2 · a o -b/2a con prioridad de operaciones incorrecta.",
+        "how_to_address": "Diseñar alternativas que reflejen x = -b/2 y x = -b/a como distractores. Reforzar en la explicación el uso de paréntesis en -b/(2a) y la lectura verbal 'menos b dividido por dos a'."
+      },
+      {
+        "name": "Coeficientes_mal_identificados",
+        "description": "El estudiante confunde los coeficientes a, b, c, especialmente cuando la expresión no está ordenada o falta algún término (por ejemplo, interpreta c como 0 cuando no hay término independiente pero no lo explicita).",
+        "how_to_address": "Incluir ejercicios donde los términos estén desordenados o haya términos faltantes. En la retroalimentación, mostrar cómo reescribir la función en forma ax^2 + bx + c identificando cada coeficiente, incluyendo ceros cuando corresponda."
+      },
+      {
+        "name": "Solo_calcula_x_pero_no_y",
+        "description": "El estudiante se queda con la coordenada x del vértice y la reporta como respuesta, omitiendo calcular la coordenada y o el par ordenado.",
+        "how_to_address": "Proponer ítems que pidan explícitamente el par (h, k) o la coordenada y. Destacar en el feedback que el vértice es un punto del plano y requiere ambas coordenadas."
+      },
+      {
+        "name": "Evaluacion_erronea_de_f_x",
+        "description": "Errores al evaluar la función: sustituye mal el valor de x, se equivoca en las potencias, en el orden de operaciones o en el manejo de fracciones y números negativos.",
+        "how_to_address": "Crear ejercicios que separen el paso de sustitución del de simplificación, incluyendo alternativas que representen errores típicos. En la explicación, mostrar la evaluación paso a paso con énfasis en el uso de paréntesis al reemplazar x."
+      },
+      {
+        "name": "Confusion_vertice_raices_o_c",
+        "description": "El estudiante responde usando las raíces de la ecuación cuadrática o el valor de c (término independiente) como si fueran la coordenada y del vértice.",
+        "how_to_address": "Incluir distractores que correspondan a (raíz1, 0), (raíz2, 0) y (0, c). En la retroalimentación, explicar que el vértice no es la intersección con los ejes y que se obtiene exclusivamente desde x = -b/(2a) y luego f(x)."
+      },
+      {
+        "name": "Orden_de_las_coordenadas_invertido",
+        "description": "El estudiante calcula correctamente h y k pero los escribe como (k, h) o solo como una lista de dos números sin orden claro.",
+        "how_to_address": "Proponer preguntas que contrasten explícitamente entre (h, k) y (k, h) como alternativas. Reforzar la convención 'primero x, luego y'."
+      }
+    ],
+    "future_targets": [
+      "Identificación y análisis del máximo o mínimo de una función cuadrática en contextos de modelación (problemas de optimización elementales).",
+      "Interpretación de la forma canónica de la función cuadrática f(x) = a(x - h)^2 + k a partir del vértice.",
+      "Estudio de transformaciones de funciones (traslaciones verticales y horizontales) usando el vértice como referencia.",
+      "Análisis gráfico más profundo de las parábolas: eje de simetría, rango y comparación entre funciones cuadráticas.",
+      "Resolución de problemas aplicados que usan el vértice para interpretar situaciones físicas o económicas (altura máxima, beneficio máximo, etc.).",
+      "Conexión entre soluciones de la ecuación cuadrática, eje de simetría y vértice (relación promedio de raíces = coordenada x del vértice)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed",
+      "decimals"
+    ],
+    "required_image_types": []
+  }
+}

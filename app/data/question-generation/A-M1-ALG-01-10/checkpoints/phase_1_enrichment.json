@@ -1,0 +1,124 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar directamente la identidad notable (a + b)(a - b) = a^2 - b^2 para expresar el producto como diferencia de cuadrados.",
+        "Identificar correctamente qué parte de la expresión dada corresponde a a y qué parte corresponde a b, incluso cuando son monomios o binomios simples (por ejemplo, a = 3x, b = 4; a = a^2, b = 1).",
+        "Elevar al cuadrado términos que pueden incluir coeficientes y potencias de una sola variable (por ejemplo, (3x)^2, (5y^2)^2).",
+        "Simplificar el resultado de la diferencia de cuadrados, combinando factores numéricos y simplificando potencias de una variable.",
+        "Reconocer estructuras que ya están en forma (a + b)(a - b) aunque el orden de los factores o de los sumandos esté cambiado (por ejemplo, (x - 2)(x + 2), (2x + 3)(2x - 3)).",
+        "Uso de la fórmula en contextos algebraicos simples (por ejemplo, en un paso intermedio de simplificación de expresiones o en ejercicios directos de productos notables)."
+      ],
+      "out_of_scope": [
+        "Factorización de expresiones de la forma a^2 - b^2 hacia (a + b)(a - b); este átomo solo considera el desarrollo del producto, no la factorización inversa.",
+        "Aplicación de otras identidades notables como binomio al cuadrado, cubo de binomio o suma y diferencia de cubos.",
+        "Productos de binomios genéricos que no son suma por diferencia, como (a + b)(c + d) o (x + 1)^2.",
+        "Expresiones que involucren más de una diferencia de cuadrados encadenada o compuesta, que requieran varios pasos de razonamiento algebraico.",
+        "Resolución de ecuaciones o inecuaciones que surgen a partir de la diferencia de cuadrados; aquí solo se evalúa el desarrollo del producto.",
+        "Contextos funcionales o gráficos donde la identidad se usa para analizar el comportamiento de funciones (por ejemplo, hallar raíces o vértices)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo de operaciones con números enteros y fracciones (suma, resta, multiplicación).",
+        "A-M1-ALG-01-02: Manejo de potencias con exponente natural, incluyendo potencias de monomios (por ejemplo, (3x)^2).",
+        "A-M1-ALG-01-03: Comprender y usar la notación algebraica básica (variables, coeficientes, términos).",
+        "A-M1-ALG-01-06: Identificar y operar con monomios y binomios simples.",
+        "A-M1-ALG-01-09: Reconocer la estructura de la identidad (a + b)(a - b) y su forma desarrollada a^2 - b^2 a nivel conceptual."
+      ],
+      "common_traps": [
+        "Confundir la identidad (a + b)(a - b) con el binomio al cuadrado (a + b)^2 o (a - b)^2, incluyendo el término cruzado 2ab cuando no corresponde.",
+        "Elevar incorrectamente al cuadrado un producto, por ejemplo interpretar (3x)^2 como 3x^2 en vez de 9x^2.",
+        "Cambiar el signo de manera errónea al aplicar a^2 - b^2, obteniendo a^2 + b^2 o b^2 - a^2.",
+        "No identificar correctamente a y b cuando son expresiones con exponentes o coeficientes, por ejemplo tomar a = x^2 y b = 2 en lugar de a = x, b = 2 cuando corresponde.",
+        "Desarrollar el producto aplicando distributiva término a término en vez de usar la identidad, aumentando la probabilidad de errores y perdiendo el foco del átomo.",
+        "Olvidar simplificar el resultado final, por ejemplo dejar (2x)^2 - 3^2 en vez de 4x^2 - 9.",
+        "Interpretar (a - b)(a + c) como suma por diferencia solo porque empieza por (a - ...), sin verificar que los segundos términos sean exactamente opuestos."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos donde a y b son números enteros pequeños o monomios muy simples (por ejemplo, a = x, b = 3; a = 2x, b = 5), sin fracciones ni exponentes mayores que 2.",
+        "Estructura de suma por diferencia presentada de forma canónica y en el mismo orden (a + b)(a - b), sin cambios de orden en los factores ni en los sumandos.",
+        "Enunciados puramente simbólicos sin contexto verbal, centrados solo en realizar el desarrollo directo.",
+        "Resultados esperados con coeficientes y exponentes sencillos, que no requieren múltiples pasos de simplificación.",
+        "Distractores que reflejan errores básicos evidentes (por ejemplo, a^2 + b^2 o a^2 - 2ab + b^2), fáciles de descartar por estudiantes que recuerdan la fórmula."
+      ],
+      "medium": [
+        "Casos donde a y/o b son monomios con coeficientes distintos de 1 y con exponentes mayores (por ejemplo, a = 3x^2, b = 4), exigiendo cuidar el cuadrado de coeficientes y exponentes.",
+        "Suma por diferencia escrita con cambio de orden de los factores o de los términos (por ejemplo, (3 - x)(x + 3), (2x - 5)(2x + 5)), requiriendo reconocer que la estructura sigue siendo (a + b)(a - b).",
+        "Ítems que mezclan números enteros con fracciones simples o números negativos como términos de la suma por diferencia.",
+        "Ejercicios que piden elegir la expresión desarrollada correcta entre varias opciones que incluyen errores más sutiles (por ejemplo, a^2 - 4ab + b^2, a^2 - b^2 pero con algún coeficiente mal).",
+        "Contextos verbales breves donde se da una expresión en lenguaje natural y se pide su desarrollo usando suma por diferencia, sin necesidad de modelar una situación compleja."
+      ],
+      "hard": [
+        "Casos donde a y b son expresiones algebraicas compuestas pero que aún forman una suma por diferencia directa (por ejemplo, a = x^2, b = 3y; a = 2x, b = 1/3), requiriendo cuadrar productos con fracciones o múltiplos.",
+        "Estructuras equivalentes a suma por diferencia que requieren una leve re-escritura mental para ser reconocidas, por ejemplo, (4 - x)(x + 4) o (-a - b)(-a + b), manteniendo el foco en la aplicación de la identidad.",
+        "Uso de coeficientes fraccionarios o decimales no triviales en a o b, que incrementan la posibilidad de error al calcular los cuadrados y la diferencia.",
+        "Ítems donde el estudiante debe comparar dos expresiones desarrolladas y decidir cuál corresponde al desarrollo correcto de una suma por diferencia dada, con distractores diseñados para recoger errores de signo o de cuadrado de coeficientes.",
+        "Situaciones en las que el desarrollo por suma por diferencia es un paso intermedio necesario para simplificar una expresión mayor, siempre que se especifique o quede claro que el foco es la aplicación correcta de la identidad en ese paso."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde los segundos términos de los binomios no sean exactamente opuestos (por ejemplo, (x + 3)(x - 4)), ya que no corresponden a suma por diferencia y podrían confundir el foco del átomo.",
+      "No mezclar en el mismo ítem distintas identidades notables sin dejar claro cuál se espera aplicar, para no generar dudas entre suma por diferencia y binomio al cuadrado.",
+      "Evitar notaciones poco estándar como a^2 - b^2 escrito de formas confusas (por ejemplo, a² - b² sin paréntesis cuando a o b son binomios), que dificulten ver qué se está elevando al cuadrado.",
+      "No usar letras distintas para la misma expresión dentro de un mismo ejercicio (por ejemplo, llamar a una vez a, otra vez p) que dificulten identificar a y b.",
+      "Evitar contextos verbales largos o con información irrelevante que hagan ambiguo cuál es la expresión que debe desarrollarse mediante suma por diferencia.",
+      "No plantear ítems donde sea igualmente razonable desarrollar por distributiva general o por suma por diferencia sin indicar que se busca el uso de la identidad (por ejemplo, mediante la estructura de alternativas).",
+      "Evitar signos menos encadenados sin paréntesis claros, como x - 3 - x + 3 en lugar de (x - 3)(x + 3), que puedan interpretarse erróneamente como sumas y restas en vez de producto de binomios."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_con_binomio_al_cuadrado",
+        "description": "El estudiante aplica la fórmula (a ± b)^2 = a^2 ± 2ab + b^2 en lugar de (a + b)(a - b) = a^2 - b^2, incluyendo incorrectamente el término 2ab o cambiando el signo final.",
+        "how_to_address": "Enfatizar la diferencia estructural entre (a ± b)^2 y (a + b)(a - b), utilizando ejemplos comparativos y destacando que en la suma por diferencia desaparece el término cruzado. Proponer ejercicios de clasificación de expresiones según la identidad que corresponde."
+      },
+      {
+        "name": "Cuadrado_de_monomios_mal_calculado",
+        "description": "Errores al elevar al cuadrado a o b, como pensar que (3x)^2 = 3x^2 o que (1/2 x)^2 = 1/2 x^2, sin cuadrar el coeficiente.",
+        "how_to_address": "Reforzar que (kx)^2 = k^2 x^2 y practicar con varios ejemplos de cuadrados de monomios, incluyendo fracciones y números negativos. Trabajar primero el cálculo del cuadrado de cada término de forma aislada antes de armar a^2 - b^2."
+      },
+      {
+        "name": "Signo_equivocado_en_la_diferencia",
+        "description": "Obtener a^2 + b^2 o b^2 - a^2 en vez de a^2 - b^2, ya sea por descuido al copiar la fórmula o por invertir el orden de los términos.",
+        "how_to_address": "Hacer que el estudiante verbalice la identidad completa (\"cuadrado del primero menos cuadrado del segundo\") y usar ejemplos donde el orden cambie (como (3 - x)(3 + x)) para practicar que el resultado siempre se expresa como a^2 - b^2 con el mismo a y b identificados inicialmente."
+      },
+      {
+        "name": "Identificacion_incorrecta_de_a_y_b",
+        "description": "Tomar como a o b una parte equivocada de la expresión, especialmente cuando hay coeficientes o exponentes, por ejemplo considerar a = x^2 cuando en realidad la estructura conveniente es a = x.",
+        "how_to_address": "Practicar el reconocimiento de la estructura (algo + algo)(algo - algo) resaltando que esos \"algo\" deben ser exactamente iguales. Proponer ejercicios de solo identificación de a y b sin desarrollar, para fijar la idea antes de aplicar la fórmula."
+      },
+      {
+        "name": "Uso_de_distributiva_con_error",
+        "description": "Intentar desarrollar (a + b)(a - b) aplicando distributiva término a término, pero cometer errores en los productos cruzados o en la combinación de términos semejantes.",
+        "how_to_address": "Mostrar el desarrollo por distributiva completa y luego simplificar para llegar a a^2 - b^2, explicando que la identidad notable es una forma abreviada y más segura. Proponer ejercicios donde el alumno compare su desarrollo distributivo con la fórmula para validar resultados."
+      },
+      {
+        "name": "No_simplificar_el_resultado_final",
+        "description": "Dejar el resultado en forma de cuadrados sin calcular, como (2x)^2 - 5^2, o con factores comunes sin expandir, lo que muestra una aplicación incompleta del procedimiento.",
+        "how_to_address": "Insistir en la necesidad de expresar el resultado como un binomio de la forma Ax^n - B, donde A y B están calculados. Incluir en la rúbrica y correcciones el requisito de simplificación total de coeficientes y potencias."
+      }
+    ],
+    "future_targets": [
+      "Uso de la factorización de a^2 - b^2 en la resolución de ecuaciones cuadráticas y de mayor grado.",
+      "Simplificación de expresiones racionales donde se factoriza numerador o denominador como diferencia de cuadrados para cancelar factores.",
+      "Reconocimiento y manipulación de formas cuadráticas en el estudio de funciones cuadráticas y polinomiales.",
+      "Aplicación de identidades notables combinadas en problemas más complejos que involucran varias expresiones algebraicas.",
+      "Modelación algebraica de problemas geométricos o de física donde aparezcan diferencias de cuadrados (por ejemplo, áreas o variaciones de magnitudes).",
+      "Preparación para trabajar con identidades trigonométricas que utilizan estructuras de diferencia de cuadrados.",
+      "Comprensión de técnicas de completación de cuadrados y transformaciones de expresiones en contextos avanzados de álgebra."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "fractions",
+      "simple_decimals",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

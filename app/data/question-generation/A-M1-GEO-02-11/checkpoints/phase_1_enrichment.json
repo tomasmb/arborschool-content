@@ -1,0 +1,139 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de área lateral de cilindros rectos usando la fórmula 2πrh, con r y h dados explícitamente o deducibles de datos sencillos.",
+        "Cálculo de área total de cilindros rectos usando la fórmula 2πrh + 2πr², incluyendo contextos verbales (latas, tubos, envases).",
+        "Determinación del radio o la altura a partir del área lateral en casos simples donde basta despejar en 2πrh = A.",
+        "Uso de π como número aproximado (por ejemplo 3,14) o manteniendo π simbólico, según se indique.",
+        "Interpretación de frases como “lata cerrada” (incluye tapas) y “solo la etiqueta” (solo área lateral).",
+        "Distinción entre área lateral y área de las bases en términos geométricos y en contextos de material de fabricación."
+      ],
+      "out_of_scope": [
+        "Cálculo de volúmenes de cilindros o de otras figuras de revolución.",
+        "Cilindros oblicuos o no rectos.",
+        "Combinaciones de cilindros con otras figuras (prismas, conos, esferas) que requieran descomponer sólidos complejos.",
+        "Desarrollo formal de las fórmulas de área del cilindro (deducción teórica).",
+        "Problemas que requieran trigonometría, semejanza o teorema de Pitágoras para hallar r o h.",
+        "Optimización (por ejemplo, minimizar material de una lata para volumen fijo).",
+        "Conversión avanzada de unidades no triviales (por ejemplo, de cm² a m² con factores compuestos en contexto complejo)."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-02-01: Comprender y calcular el perímetro de un círculo (longitud de circunferencia 2πr).",
+        "A-M1-GEO-02-02: Calcular el área de un círculo (πr²).",
+        "A-M1-GEO-01-01: Manejar unidades de longitud y área en el sistema métrico (cm, m, cm², m²) y convertir en casos simples.",
+        "A-M1-NUM-01-02: Operar con enteros y decimales (sumar, multiplicar, dividir) y usar aproximaciones con π.",
+        "A-M1-ALG-01-01: Despejar una variable en ecuaciones lineales simples (por ejemplo A = 2πrh)."
+      ],
+      "common_traps": [
+        "Confundir la fórmula de área lateral del cilindro (2πrh) con la de volumen (πr²h).",
+        "Olvidar sumar el área de las dos bases al calcular el área total (usar solo 2πrh).",
+        "Usar un solo πr² para las bases en vez de 2πr² al calcular el área total.",
+        "Confundir diámetro con radio cuando se entrega la medida del círculo de la base.",
+        "Interpretar mal expresiones como “sin tapas”, “solo la superficie curva”, “abierta por arriba”, llevando a incluir o excluir áreas de base equivocadamente.",
+        "Errores de unidades: dar la respuesta en unidades de longitud (cm, m) en lugar de unidades de área (cm², m²).",
+        "Al despejar r o h desde 2πrh = A, olvidar dividir por todos los factores (2πr o 2πh) o manipular mal el orden de las operaciones.",
+        "Confundir área lateral con perímetro del desarrollo plano (2πr) o con el área de un rectángulo mal dimensionado (por ejemplo r × h en vez de 2πr × h)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Datos entregados directamente para r y h como enteros pequeños (menores o iguales a 10) y claramente identificados como radio y altura.",
+        "Contexto simple o enunciado directo: ‘calcula el área lateral’ o ‘calcula el área total’ de un cilindro con medidas dadas explícitamente.",
+        "Uso de una sola fórmula a la vez (solo área lateral o solo área total) sin necesidad de interpretar condiciones de inclusión/exclusión de tapas.",
+        "Permitir mantener π en la respuesta (área en términos de π) o usar π ≈ 3,14 indicado explícitamente.",
+        "Sin necesidad de despejar incógnitas: solo sustituir y operar.",
+        "En ítems verbales, descripciones muy directas (por ejemplo, ‘lata cerrada’ explicitada como ‘incluye las dos tapas’)."
+      ],
+      "medium": [
+        "Requiere distinguir entre área lateral y área total a partir de un contexto (por ejemplo, etiqueta versus lata completa).",
+        "Incluye un paso intermedio, como convertir diámetro a radio o identificar qué medida corresponde a la altura.",
+        "Combina área lateral y de bases en situaciones donde se incluye solo una base (por ejemplo, cilindro abierto por arriba o por abajo).",
+        "Necesita seleccionar la fórmula adecuada entre varias conocidas (área lateral vs total) sin que esté explicitada.",
+        "Puede requerir despejar r o h desde el área lateral con números sencillos (división por un entero pequeño y π).",
+        "Uso de decimales simples o medidas con una cifra decimal, manteniendo cálculos aritméticos accesibles."
+      ],
+      "hard": [
+        "Problemas inversos donde se debe determinar r o h a partir de área lateral o total dada, con requerimiento de varios pasos (por ejemplo, primero identificar si el área dada es lateral o total, luego despejar).",
+        "Contextos donde se debe decidir correctamente si una o dos bases están incluidas, a partir de una descripción menos literal (por ejemplo, envase cilíndrico pegado a una pared, macetero abierto, tubo sin una tapa).",
+        "Cálculos que implican combinaciones de números no triviales (decimales con dos cifras, fracciones simples) manteniendo la factibilidad de cálculo a mano.",
+        "Ítems que requieren comparar dos cilindros o dos configuraciones (por ejemplo, mismo radio distinta altura) en términos de área lateral o total para elegir cuál necesita más material, sin hacer todos los cálculos numéricos exhaustivos.",
+        "Problemas que exigen decidir si conviene mantener π simbólico o aproximarlo para responder con la precisión requerida.",
+        "Despeje de r o h cuando el área se entrega en términos numéricos con π aproximado, lo que obliga a dividir por un número decimal compuesto (por ejemplo 18,84 ≈ 2πr)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar indistintamente ‘diámetro’ y ‘radio’; siempre especificar claramente cuál se entrega y, si se usa el otro, indicar explícitamente la conversión necesaria.",
+      "No usar expresiones vagas como ‘toda la superficie’ sin aclarar si incluye bases; preferir ‘incluyendo las dos bases’, ‘sin considerar las tapas’, ‘solo la superficie curva’, etc.",
+      "Precisar si el cilindro está ‘cerrado’ o ‘abierto’ por arriba y/o por abajo; evitar descripciones ambiguas de recipientes o envases.",
+      "No mezclar unidades de longitud y área en el mismo enunciado sin aclarar; especificar siempre la unidad en la que se espera la respuesta.",
+      "Evitar figuras o descripciones que no distingan cuál medida corresponde a la altura y cuál al radio/diámetro; etiquetar de forma clara las dimensiones.",
+      "No pedir resultados con un cierto redondeo sin indicar explícitamente el criterio (‘redondea al entero más cercano’, ‘redondea a una cifra decimal’).",
+      "Evitar que la fórmula quede implícita en símbolos dudosos; si se menciona simbólicamente, usar notación estándar (2πrh, 2πrh + 2πr²).",
+      "No combinar demasiadas condiciones en la descripción (por ejemplo, varias perforaciones o partes faltantes) que hagan dudoso qué superficie se incluye."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_entre_área_lateral_y_total",
+        "description": "El estudiante calcula solo 2πrh cuando se pide área total, o incluye las bases cuando el problema pide solo área lateral (etiqueta). También puede confundir situaciones como ‘lata cerrada’ con ‘lata sin tapas’.",
+        "how_to_address": "Diseñar ítems que fuercen a interpretar con cuidado el contexto (lata cerrada/abierta, etiqueta, tapas) y retroalimentar destacando qué partes del cilindro se están considerando. Incluir contraejemplos mostrando la diferencia entre área lateral y total en dibujos o descripciones claras."
+      },
+      {
+        "name": "Olvido_de_una_de_las_bases",
+        "description": "Al calcular el área total, el estudiante suma área lateral + πr² en lugar de + 2πr², como si el cilindro tuviera solo una base.",
+        "how_to_address": "Proponer ejercicios donde se compare un cilindro con una sola base (abierto por un lado) con uno con dos bases, enfatizando cómo cambia la fórmula. En la retroalimentación, representar el cilindro y marcar visualmente las dos bases que deben sumarse."
+      },
+      {
+        "name": "Mal_uso_de_radio_y_diámetro",
+        "description": "El estudiante toma el diámetro como radio al sustituir en las fórmulas, o divide por 2 cuando no corresponde, generando errores de factor 2 en el área.",
+        "how_to_address": "Incluir ítems que entreguen explícitamente diámetro y pidan usar radio, obligando a hacer la conversión de manera consciente. Reforzar con esquemas que muestren radio y diámetro en la base del cilindro y ejercicios de identificación rápida de r y d."
+      },
+      {
+        "name": "Errores_de_operatoria_con_π",
+        "description": "Dificultad para manejar π: aproxímalo mal (por ejemplo 3,1), lo multiplica incorrectamente, o mezcla resultados simbólicos y aproximados (por ejemplo, 2π × 3,14).",
+        "how_to_address": "Diseñar ítems que indiquen claramente si se debe usar π aproximado o dejar π simbólico. En la retroalimentación, mostrar paso a paso cómo factorizar π y cómo hacer la sustitución numérica correcta, diferenciando claramente entre ‘en términos de π’ y valor aproximado."
+      },
+      {
+        "name": "Confusión_con_unidades_de_área",
+        "description": "El estudiante entrega la respuesta en unidades de longitud (cm, m) o mezcla unidades, olvidando que se trata de un área (cm², m²).",
+        "how_to_address": "Incluir alternativas de respuesta que distingan correctamente las unidades para que el distractor revele el error. En las explicaciones, subrayar que la multiplicación de dos longitudes genera unidades cuadradas y vincularlo con el desarrollo plano del cilindro (rectángulo)."
+      },
+      {
+        "name": "Despeje_incorrecto_de_r_o_h",
+        "description": "Al resolver 2πrh = A, el estudiante divide solo por 2π o solo por r/h, o reorganiza mal los factores, obteniendo un valor numéricamente incorrecto para el radio o la altura.",
+        "how_to_address": "Proponer ejercicios específicos de despeje paso a paso, primero con letras y luego con números simples. En la retroalimentación, explicitar el procedimiento algebraico: ‘para dejar h sola, divide ambos lados por 2πr’, y mostrar cómo verificar el resultado sustituyéndolo en la fórmula original."
+      },
+      {
+        "name": "Desarrollo_plano_mal_identificado",
+        "description": "Al pensar el área lateral como rectángulo, el estudiante usa base = r o base = πr en vez de 2πr, subestimando el área lateral.",
+        "how_to_address": "Presentar el desarrollo plano del cilindro y trabajar explícitamente la relación entre la circunferencia de la base y el lado del rectángulo (2πr). Incluir ítems donde se deba identificar cuál medida del rectángulo corresponde a la altura y cuál a la circunferencia."
+      }
+    ],
+    "future_targets": [
+      "Cálculo del volumen de cilindros y comparación de volúmenes en contextos geométricos y de aplicaciones.",
+      "Análisis y optimización de superficies en sólidos de revolución (por ejemplo, diseño eficiente de envases).",
+      "Cálculo de área de superficie de otros cuerpos redondos (conos, troncos de cono, esferas y combinaciones).",
+      "Problemas integrados de geometría y proporcionalidad, donde se comparan cilindros semejantes (escalamiento de r y h y efecto en área).",
+      "Aplicaciones en física y tecnología, como cálculo de material para cañerías, aislación térmica de tubos, etc.",
+      "Modelación de situaciones reales que usan áreas de superficies curvas en contextos de costos, desperdicio de material y diseño industrial."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "numérica",
+      "desarrollo_plano_simplificado",
+      "contextual_práctico"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_up_to_100",
+      "decimals_1dp",
+      "decimals_2dp",
+      "simple_fractions",
+      "pi_symbolic",
+      "mixed_pi_and_decimal"
+    ],
+    "required_image_types": []
+  }
+}

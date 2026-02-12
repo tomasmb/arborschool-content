@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación de la red de construcción (desarrollo plano) que corresponde a un prisma recto dado, considerando el número y la forma de las caras.",
+        "Reconocimiento de que en un prisma recto todas las caras laterales son rectángulos (no cuadrados necesariamente) y que hay exactamente dos caras basales congruentes.",
+        "Relación entre las dimensiones de las caras laterales rectangulares y las dimensiones de la base: cada rectángulo lateral tiene un lado igual a la altura del prisma y el otro igual a un lado del polígono base.",
+        "Comprensión de que al desplegar un prisma recto, las caras laterales pueden disponerse como una “tira” de rectángulos cuyo largo total equivale al perímetro de la base.",
+        "Análisis y comparación de distintas redes propuestas para un mismo prisma recto (detectar redes imposibles o que no corresponden).",
+        "Prismas rectos con base triangular, cuadrangular o poligonal (regular o irregular), siempre con 2 bases congruentes y n caras laterales rectangulares."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico detallado de área lateral o total de un prisma (pertenece a otro átomo que se basa en este).",
+        "Prismas oblicuos o figuras tridimensionales que no sean prismas (pirámides, cilindros, conos, cuerpos compuestos).",
+        "Transformaciones geométricas (rotaciones, traslaciones, simetrías) de redes o prismas.",
+        "Cálculo de volumen de prismas.",
+        "Cilindros y sus desarrollos planos.",
+        "Redes de pirámides, conos u otros sólidos que no sean prismas rectos.",
+        "Uso de trigonometría o teorema de Pitágoras para obtener medidas de lados de la base o de las caras laterales."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01: Reconocer y clasificar polígonos (triángulos, cuadriláteros y polígonos de más lados).",
+        "A-M1-GEO-01-02: Identificar prismas rectos a partir de representaciones gráficas (3D o esquemas).",
+        "A-M1-GEO-01-03: Comprender y calcular el perímetro de polígonos simples.",
+        "A-M1-GEO-01-04: Comprender la noción de caras, aristas y vértices en cuerpos geométricos."
+      ],
+      "common_traps": [
+        "Elegir como red válida cualquier dibujo con el número correcto de caras, sin verificar si efectivamente se puede plegar hasta formar el prisma (configuración imposible).",
+        "Confundir la altura del prisma con una dimensión de la base (por ejemplo, usar un lado del triángulo base como altura del prisma al analizar las caras laterales).",
+        "Pensar que todas las caras laterales deben ser congruentes, incluso cuando la base es un polígono irregular.",
+        "Suponer que las bases pueden ser cualquier par de caras opuestas, sin reconocer que deben ser congruentes y paralelas y que las otras caras deben ser rectangulares.",
+        "No identificar que el largo total de la tira de rectángulos laterales es igual al perímetro de la base y, por tanto, aceptar redes en las que la suma de esos lados no coincide con dicho perímetro.",
+        "Confundir el concepto de área total con el de perímetro, intentando sumar solo perímetros de las caras en lugar de considerar las superficies.",
+        "No considerar que una misma red puede estar rotada o reflejada y seguir siendo equivalente (rechazar opciones correctas por la orientación del dibujo)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Prismas rectos con base triangular o cuadrangular, con dimensiones pequeñas y sin necesidad de realizar cálculos más allá de contar caras o comparar formas básicas.",
+        "Ítems donde se pide identificar la red correcta entre pocas alternativas (2–3), con diferencias evidentes en el número o tipo de caras (por ejemplo, alguna alternativa tiene caras no rectangulares o faltan bases).",
+        "Redes dibujadas con la tira de caras laterales alineadas y contiguas a una de las bases, sin configuraciones poco usuales (sin ‘quiebres’ en la tira).",
+        "Preguntas centradas en reconocer que las caras laterales de un prisma recto son rectángulos, sin exigir relacionar explícitamente perímetro de la base y dimensiones de los rectángulos.",
+        "Uso mínimo de notación simbólica: etiquetas simples de lados y alturas, sin expresiones algebraicas."
+      ],
+      "medium": [
+        "Prismas rectos con bases de 4 o más lados (inclusive polígonos irregulares simples), donde es necesario asociar cada lado de la base con un rectángulo lateral correspondiente.",
+        "Ítems que requieren verificar si el largo de la secuencia de rectángulos laterales es coherente con el perímetro de la base (por ejemplo, mediante sumas simples de longitudes enteras).",
+        "Redes en las que la tira de rectángulos no es lineal (por ejemplo, un rectángulo lateral se ‘dobla’ hacia arriba o hacia abajo en el esquema), pero sigue siendo plegable, lo que exige visualizar el plegado en 3D.",
+        "Comparación de dos o más redes propuestas para decidir cuál(es) corresponde(n) a un mismo prisma recto, considerando congruencia de bases y compatibilidad de las caras laterales.",
+        "Introducción moderada de notación simbólica como P (perímetro de la base) y h (altura del prisma), donde se pide relacionar estas cantidades con las dimensiones de la red (por ejemplo, identificar qué expresión representa el largo total de la tira de rectángulos)."
+      ],
+      "hard": [
+        "Prismas rectos con bases poligonales irregulares o de más de 5 lados, donde hay que seguir la correspondencia entre lados de la base y rectángulos laterales con longitudes distintas.",
+        "Ítems que presentan redes parcialmente dibujadas o con algunas medidas omitidas, y piden inferir qué falta o qué valor debe tener una dimensión para que la red corresponda al prisma dado.",
+        "Preguntas que requieren integrar visualización espacial y relaciones métricas, por ejemplo, usar la igualdad entre el perímetro de la base y la suma de ciertos segmentos de la red para descartar opciones.",
+        "Alternativas distractoras bien construidas que tienen el número correcto de caras y rectángulos, pero con organización o adosamiento de caras que hace imposible el plegado (el estudiante debe razonar sobre cómo se unen las aristas en 3D).",
+        "Uso más intensivo de símbolos y letras (P, h, a, b, c, etc.) y descripciones verbales más densas de la red (por ejemplo, ‘una tira de n rectángulos con bases de longitudes a, b, c,...’), sin apoyos numéricos explícitos, demandando razonamiento estructural más abstracto."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar la palabra ‘altura’ sin especificar si se refiere a la altura del prisma o a la altura de un triángulo de la base; preferir ‘altura del prisma’ y ‘altura del triángulo de la base’.",
+      "Evitar dibujos donde no se distinga claramente cuáles caras son las bases y cuáles son laterales; siempre marcar o describir explícitamente las bases cuando sea relevante.",
+      "No presentar redes en las que no sea evidente qué lados están destinados a unirse al plegar (evitar líneas interrumpidas o mal alineadas que pueden generar más de una interpretación).",
+      "Evitar figuras en las que algunas caras estén parcialmente tapadas o superpuestas en la red; en el desarrollo plano todas las caras deben verse completas y sin solapamiento.",
+      "No usar escala engañosa en las figuras (por ejemplo, dibujar iguales lados que supuestamente tienen longitudes diferentes en el enunciado); la apariencia gráfica debe ser coherente con las medidas declaradas o, si no lo es, explicitar que el dibujo no está a escala.",
+      "Evitar formulaciones del tipo ‘todas las redes posibles’ o ‘cualquier red’ sin precisar a qué configuraciones se refiere; en PAES las alternativas deben estar completamente especificadas.",
+      "No usar letras de lados repetidas en figuras distintas sin aclarar que se trata de medidas congruentes; cada congruencia importante debe estar indicada con marcas o etiquetas consistentes.",
+      "Evitar redes extremadamente rotadas o reflejadas donde el estudiante pueda dudar si algunas caras están adosadas o no; la conectividad entre caras debe ser clara.",
+      "No plantear preguntas en las que más de una alternativa pueda ser considerada red válida para el mismo prisma salvo que explícitamente se pida seleccionar todas las que correspondan (y el formato de respuesta lo permita)."
+    ],
+    "error_families": [
+      {
+        "name": "Conteo_superficial_de_caras",
+        "description": "El estudiante elige la red basándose solo en que tiene el mismo número de caras que el prisma (por ejemplo, 5 caras para un prisma triangular), sin verificar la disposición ni la congruencia de las bases, ni la posibilidad real de plegado.",
+        "how_to_address": "Diseñar ítems donde varias alternativas tengan el mismo número de caras, pero solo una pueda plegarse correctamente, forzando a que el estudiante imagine el proceso de plegado. En la retroalimentación, enfatizar la necesidad de analizar qué caras se unen entre sí y recordar que las dos bases deben ser congruentes y paralelas."
+      },
+      {
+        "name": "Confusion_altura_prisma_vs_dimensiones_base",
+        "description": "El estudiante usa un lado de la base como si fuera la altura del prisma en la red (o viceversa), lo que lleva a emparejar dimensiones incorrectamente entre la base y las caras laterales.",
+        "how_to_address": "Incluir esquemas donde se etiqueten claramente la altura del prisma y los lados de la base, pidiendo relacionarlos con los lados de los rectángulos laterales. En la retroalimentación, destacar que cada rectángulo lateral tiene un lado igual a la altura del prisma y el otro igual a uno de los lados de la base."
+      },
+      {
+        "name": "Suposicion_de_lateralidad_congruente",
+        "description": "Creer que todas las caras laterales deben ser iguales (congruentes) en cualquier prisma, incluso cuando la base es un polígono irregular.",
+        "how_to_address": "Proponer prismas con base irregular donde los rectángulos laterales tengan longitudes distintas y preguntar específicamente por esa variación. Reforzar que solo en prismas con bases regulares (o rectángulos con lados iguales) las caras laterales resultan congruentes; en general, cada lado de la base genera un rectángulo lateral distinto."
+      },
+      {
+        "name": "Perimetro_mal_entendido_en_la_red",
+        "description": "Confundir el perímetro de la base con la suma de áreas o con otra magnitud; por ejemplo, creer que el perímetro es la suma de los anchos de los rectángulos laterales en vez de los largos adosados a la base.",
+        "how_to_address": "Plantear ítems donde haya que identificar explícitamente qué lado de cada rectángulo lateral corresponde a un lado de la base y mostrar en retroalimentación cómo la suma de esos segmentos es el perímetro. Usar esquemas con colores o marcas (en explicación) que enlacen cada lado de la base con su rectángulo respectivo."
+      },
+      {
+        "name": "Eleccion_de_bases_erroneas",
+        "description": "Tomar como bases caras que no son congruentes o que no son paralelas en el prisma, lo que lleva a interpretar mal la estructura de la red y a aceptar redes incorrectas.",
+        "how_to_address": "Incluir prismas dibujados desde distintas perspectivas y pedir explícitamente identificar las bases antes de analizar la red. En correcciones, recalcar la definición de prisma: dos bases congruentes y paralelas, con caras laterales rectangulares que unen estas bases."
+      },
+      {
+        "name": "Aceptacion_de_redes_imposibles",
+        "description": "No detectar que ciertas redes no pueden plegarse porque alguna cara está mal ubicada (por ejemplo, dos caras que deberían unirse no comparten arista en la red, o una cara aparece duplicada).",
+        "how_to_address": "Usar distractores que sean redes casi correctas pero con un error de conectividad y pedir justificar por qué no sirven. En la retroalimentación, mostrar un plegado paso a paso, real o esquemático, señalando dónde falla la red incorrecta."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de área lateral y área total de prismas rectos a partir de sus dimensiones o su red de construcción.",
+      "Cálculo de volumen de prismas rectos, conectando la base y la altura del prisma.",
+      "Análisis y construcción de redes de otros cuerpos geométricos (pirámides, cilindros, cuerpos compuestos), usando la experiencia con prismas rectos como base.",
+      "Resolución de problemas geométricos aplicada (por ejemplo, diseño de envases, cajas y embalajes) que requieren desplegar y optimizar superficies.",
+      "Transición a razonamientos más formales sobre áreas superficiales en contextos de geometría 3D en cursos superiores.",
+      "Comprensión de la relación entre perímetro de la base y dimensiones de superficies laterales en contextos como recubrimientos, pintura o revestimientos."
+    ],
+    "representation_variants": [
+      "grafica_3D_esquematica_del_prisma (dibujo de un prisma en perspectiva para identificar sus caras y relacionarlas con la red)",
+      "red_grafica (desarrollo plano del prisma con caras etiquetadas y medidas indicadas)",
+      "verbal (descripciones textuales de la forma de la base y de la disposición de las caras en la red)",
+      "simbolica_simple (uso de letras para lados de la base y altura del prisma: a, b, c, h, P)",
+      "mixta_grafica-verbal (figura de la red acompañada de texto que describe algunas relaciones entre las caras)"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "mixed",
+      "decimals_simple"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

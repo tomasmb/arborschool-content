@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de P(A ∩ B) cuando A y B son eventos dependientes usando la fórmula P(A ∩ B) = P(A) · P(B|A).",
+        "Problemas de extracciones sucesivas sin reposición en contextos discretos (cartas, bolas en urnas, personas seleccionadas, etc.).",
+        "Problemas con dos o más eventos secuenciales donde la probabilidad del segundo depende explícitamente del resultado del primero.",
+        "Traducción de un contexto verbal a la expresión algebraica correcta de la probabilidad de intersección con probabilidad condicional.",
+        "Reconocimiento de la diferencia entre usar P(A) · P(B) (eventos independientes) y P(A) · P(B|A) (eventos dependientes) en situaciones de contexto."
+      ],
+      "out_of_scope": [
+        "Cálculo de probabilidades condicionadas en general sin llegar a la intersección (solo P(B|A)).",
+        "Aplicación de la regla multiplicativa para eventos claramente independientes (usar P(A ∩ B) = P(A) · P(B) cuando se sabe o se da la independencia).",
+        "Regla de Bayes y reversiones P(A|B) a partir de P(B|A).",
+        "Problemas que exigen conteo avanzado (combinatoria compleja) más allá de contar casos simples o listar posibilidades razonables.",
+        "Eventos continuos o uso de distribuciones de probabilidad avanzadas (binomial, normal, etc.).",
+        "Uso de diagramas de Venn con medidas de tres o más conjuntos para deducir intersecciones que no se plantean como eventos secuenciales dependientes."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-02-01: Interpretar y calcular probabilidades simples en experimentos aleatorios discretos.",
+        "A-M1-PROB-03-05: Comprender y calcular probabilidad condicional P(B|A) desde frecuencias o tablas de contingencia.",
+        "A-M1-PROB-03-06: Aplicar la fórmula de probabilidad condicional P(B|A) = P(A ∩ B) / P(A) en contextos sencillos.",
+        "A-M1-PROB-04-10: Distinguir entre eventos dependientes e independientes a partir de un contexto dado."
+      ],
+      "common_traps": [
+        "Usar erróneamente la fórmula de eventos independientes P(A ∩ B) = P(A) · P(B) en contextos explícitamente dependientes (como extracciones sin reposición).",
+        "Confundir P(A ∩ B) con P(A ∪ B) y sumar probabilidades en lugar de multiplicar o condicionar.",
+        "Interpretar mal la notación P(B|A), pensando que es igual a P(A|B) o a P(B) sin considerar la condición.",
+        "Olvidar actualizar el número total de elementos luego de la primera extracción sin reposición (mantener el mismo denominador).",
+        "Interpretar el contexto al revés: calcular P(B) · P(A|B) cuando el orden relevante es primero A y luego B.",
+        "No identificar qué evento ocurre primero en la secuencia, mezclando el orden de los factores en la fórmula.",
+        "Simplificar numéricamente la fracción de probabilidad de forma incorrecta o transformar mal a porcentaje (por ejemplo, error de factor 10 o 100)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Situaciones con solo dos eventos secuenciales claramente descritos, donde se indica explícitamente que la segunda probabilidad es condicional (por ejemplo, se da directamente P(B|A)).",
+        "Contextos estandarizados y muy familiares (por ejemplo, sacar cartas de una baraja chilena o bolas de una urna) con números pequeños y denominadores simples.",
+        "No se requiere construir P(B|A); esta se entrega explícita en el enunciado o es obvia a partir de una descripción muy directa.",
+        "El estudiante solo debe aplicar una vez la fórmula P(A ∩ B) = P(A) · P(B|A) sin pasos intermedios de conteo complicados.",
+        "Cálculos con fracciones simples o probabilidades como razones directas (por ejemplo, 2/10, 3/9) sin necesidad de simplificación compleja."
+      ],
+      "medium": [
+        "Problemas donde es necesario deducir P(B|A) a partir de una descripción de extracciones sin reposición o de una tabla simple de frecuencias.",
+        "Contextos cotidianos pero menos estandarizados (por ejemplo, selección de estudiantes, productos defectuosos, condiciones climáticas dependientes).",
+        "Involucran hasta dos pasos de razonamiento: primero determinar P(A), luego P(B|A), y recién después multiplicar para obtener P(A ∩ B).",
+        "Pueden mezclar representaciones verbales y tabulares (por ejemplo, tabla de resultados posibles antes y después de una extracción).",
+        "Requieren elegir el orden correcto de los eventos en la expresión, diferenciando entre P(A ∩ B) y P(B ∩ A) según la pregunta concreta."
+      ],
+      "hard": [
+        "Situaciones con tres eventos secuenciales donde al menos dos dependencias deben explicitarse usando probabilidad condicional, aplicando repetidamente la regla multiplicativa.",
+        "Problemas donde la dependencia no es obvia y debe inferirse cuidadosamente del contexto (por ejemplo, condiciones climáticas enlazadas, resultados dependientes entre sí).",
+        "Ítems que presentan información parcial, obligando a calcular primero P(B|A) desde otro dato (como P(A ∩ B) o P(A|B)), y luego usarla en la fórmula principal.",
+        "Contextos que exigen distinguir entre varios caminos posibles para que ocurra una secuencia de eventos y separar claramente cuál intersección específica se pide.",
+        "Cálculos con fracciones menos directas (por ejemplo, sin simplificación inmediata) o que requieren manipular expresiones algebraicas sencillas para obtener la probabilidad final."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones vagas como \"se sacan dos cartas\" sin indicar si hay o no reposición; siempre especificar explícitamente \"con reposición\" o \"sin reposición\".",
+      "No usar palabras como \"y luego\" o \"y\" de forma ambigua; dejar claro el orden de los eventos y cuántas acciones hay en la secuencia.",
+      "Evitar enunciados donde no quede claro cuál es el evento A y cuál es el evento B; cuando se use notación P(A ∩ B) y P(B|A), definir qué representa cada evento.",
+      "No mezclar tiempos verbales que generen confusión entre \"que ya ocurrió\" y \"que va a ocurrir\"; mantener una secuencia temporal coherente.",
+      "Evitar contextos donde la independencia o dependencia sea discutible o interpretable de más de una forma; debe ser evidente que la probabilidad del segundo evento cambia.",
+      "No usar expresiones como \"al menos uno\" o \"como mínimo\" si el foco del ítem es la intersección puntual de eventos específicos; estas expresiones derivan en uniones de eventos.",
+      "Evitar tablas o diagramas mal rotulados donde no se distinga claramente la condición (por ejemplo, encabezados que no especifican el evento condicionante).",
+      "No cambiar el orden de los eventos en el texto y en la notación simbólica sin aclararlo, para evitar confundir P(A ∩ B) con P(B ∩ A)."
+    ],
+    "error_families": [
+      {
+        "name": "Independencia_supuesta",
+        "description": "El estudiante aplica P(A ∩ B) = P(A) · P(B) sin considerar que los eventos son dependientes (por ejemplo, extracciones sin reposición).",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente situaciones con y sin reposición y pidan justificar el uso de P(B|A), reforzando la idea de actualización del total de casos."
+      },
+      {
+        "name": "Confusion_condicional",
+        "description": "Se confunde P(B|A) con P(B) o con P(A|B), o se interpreta la probabilidad condicional en el sentido inverso al requerido.",
+        "how_to_address": "Utilizar enunciados que den los valores de P(A|B) y P(B|A) y pidan distinguirlos, además de enfatizar en el lenguaje que la barra \"|\" significa \"dado que...\" antes de aplicar la fórmula de intersección."
+      },
+      {
+        "name": "Numerador_no_actualizado",
+        "description": "No se descuenta el elemento ya extraído en el numerador al calcular P(B|A), manteniendo la misma cantidad de casos favorables que al inicio.",
+        "how_to_address": "Proponer contextos donde el objeto extraído sea del mismo tipo que se quiere conseguir después, de modo que el cambio en el numerador sea evidente, y acompañar con conteo explícito en lenguaje natural (\"quedan tantos de este tipo\")."
+      },
+      {
+        "name": "Denominador_fijo",
+        "description": "Se mantiene el mismo número total de casos en el denominador al calcular la segunda probabilidad, ignorando la ausencia de reposición.",
+        "how_to_address": "Plantear ejercicios en los que el tamaño del conjunto cambie de una forma muy evidente (por ejemplo, muy pocos elementos) y hacer que el estudiante explicite cuántos elementos quedan en total tras cada extracción."
+      },
+      {
+        "name": "Union_vs_interseccion",
+        "description": "Se interpreta el \"y\" como un \"o\" en lenguaje cotidiano y se suman probabilidades en lugar de multiplicarlas mediante la probabilidad condicional.",
+        "how_to_address": "Contrastar ítems donde se pide probabilidad de \"al menos uno\" (unión) con otros donde se pide probabilidad de \"ambos\" (intersección), explicitando las diferencias en la estructura de cálculo."
+      },
+      {
+        "name": "Orden_invertido",
+        "description": "Se formula incorrectamente la probabilidad condicional por invertir el orden de los eventos en el producto, calculando P(B) · P(A|B) cuando lo relevante es primero A y después B.",
+        "how_to_address": "Incluir preguntas que pidan describir en palabras P(A) · P(B|A) y P(B) · P(A|B) y vincular cada expresión con una secuencia de eventos, reforzando que la primera probabilidad del producto siempre corresponde al primer evento de la secuencia."
+      },
+      {
+        "name": "Manejo_aritmetico_deficiente",
+        "description": "Errores al multiplicar fracciones o simplificar resultados (por ejemplo, errores de cancelación indebida o paso incorrecto a porcentaje).",
+        "how_to_address": "Asegurar que los ítems prioricen la interpretación correcta de la estructura de la probabilidad sobre la aritmética, y en las retroalimentaciones insistir en procedimientos ordenados de multiplicación y simplificación de fracciones."
+      }
+    ],
+    "future_targets": [
+      "Aplicación sistemática de la regla multiplicativa en cadenas más largas de eventos dependientes (tres o más sucesos en secuencia).",
+      "Comprensión y aplicación de la regla de Bayes, que requiere una base sólida en probabilidad condicional e intersecciones.",
+      "Análisis de árboles de probabilidad con ramas dependientes para modelar procesos secuenciales complejos.",
+      "Estudio de distribuciones discretas que se modelan naturalmente a través de ensayos dependientes en contextos acotados.",
+      "Modelación de fenómenos reales donde la ocurrencia de un evento afecta la probabilidad de otro (por ejemplo, riesgo en salud, fiabilidad de sistemas).",
+      "Resolución de problemas que combinan regla aditiva y multiplicativa para distintos tipos de eventos en un mismo contexto."
+    ],
+    "representation_variants": [
+      "verbal",
+      "tabular",
+      "simbolica"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "simple_decimals",
+      "probabilities_as_percentages"
+    ],
+    "required_image_types": []
+  }
+}

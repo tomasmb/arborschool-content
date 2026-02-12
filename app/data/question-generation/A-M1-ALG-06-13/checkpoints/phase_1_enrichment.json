@@ -1,0 +1,137 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas de contexto (vida diaria o ciencias) modelables explícitamente por una función cuadrática dada en forma simbólica.",
+        "Decidir, a partir del enunciado, si se requiere resolver para la variable independiente (encontrar x dado un valor de la función) o evaluar la función (calcular el valor de la función para un x dado).",
+        "Plantear y resolver ecuaciones cuadráticas del tipo f(x) = 0 o f(x) = k, donde f es una función cuadrática y k es un valor de contexto (altura, costo, población, etc.).",
+        "Evaluar funciones cuadráticas sustituyendo valores numéricos en la variable independiente y realizando las operaciones aritméticas correspondientes.",
+        "Interpretar y filtrar soluciones en el contexto (por ejemplo, descartar tiempos negativos, considerar solo intervalos de validez indicados en el enunciado).",
+        "Problemas donde la función cuadrática ya está entregada o se modela de manera directa a partir de la descripción (por ejemplo, altura en función del tiempo con una fórmula explícita)."
+      ],
+      "out_of_scope": [
+        "Construir o ajustar una función cuadrática a partir de varios datos experimentales o tablas incompletas (modelación avanzada o ajuste de curva).",
+        "Uso de técnicas específicas de factorización avanzadas o completación de cuadrados como objetivo principal; aquí solo se usan en tanto permitan resolver la ecuación requerida.",
+        "Optimización explícita (encontrar máximos o mínimos de la función cuadrática, uso sistemático del vértice para optimizar).",
+        "Problemas que requieren derivadas, integrales u otras herramientas de cálculo para interpretar la función cuadrática.",
+        "Análisis gráfico detallado de la parábola (vértice, concavidad, intersecciones con ejes) como foco central del ítem.",
+        "Trabajar con funciones de grado mayor que dos o con modelos no cuadráticos (exponenciales, logarítmicos, racionales, etc.).",
+        "Ecuaciones cuadráticas sin contexto, puramente formales, cuyo objetivo sea solo practicar álgebra."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-05-01: Manejo de operaciones con números enteros, fraccionarios y decimales.",
+        "A-M1-ALG-03-02: Comprensión del concepto de función y notación f(x), variable independiente y dependiente.",
+        "A-M1-ALG-06-01: Reconocimiento de funciones cuadráticas y su expresión simbólica (ax^2 + bx + c).",
+        "A-M1-ALG-06-02: Evaluación numérica de funciones cuadráticas simples (sustitución y cálculo aritmético).",
+        "A-M1-ALG-06-03: Resolución de ecuaciones cuadráticas por métodos estándar (factorización simple, fórmula general o cálculo de raíces con apoyo tecnológico).",
+        "A-M1-MOD-01-01: Lectura y comprensión de enunciados verbales y traducción básica de lenguaje cotidiano a lenguaje algebraico."
+      ],
+      "common_traps": [
+        "No distinguir entre resolución y evaluación: el estudiante calcula f(x) para un valor dado cuando en realidad se le pide encontrar el instante o valor de x que produce una altura, costo o población dada.",
+        "Interpretar automáticamente todas las situaciones con valor 0 como raíces, aunque el enunciado hable de otros valores específicos (por ejemplo, confundir altura máxima con altura cero).",
+        "No considerar las restricciones de contexto (por ejemplo, aceptar tiempos negativos o valores fuera del intervalo de validez indicado en el problema).",
+        "Confundir variable independiente con la magnitud pedida (por ejemplo, tomar la altura como x en lugar del tiempo).",
+        "Errores de lectura en unidades o escalas (por ejemplo, confundir segundos con minutos o metros con centímetros, cuando el modelo explicita la unidad).",
+        "Resolver correctamente la ecuación cuadrática pero elegir la raíz incorrecta en el contexto (por ejemplo, escoger el tiempo más pequeño cuando el contexto claramente exige el mayor, o viceversa).",
+        "En problemas de evaluación, sustituir el valor en x incorrectamente por descuidos de signos o por mal uso de paréntesis (especialmente cuando x es negativo)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "La función cuadrática se entrega explícita y directamente en forma estándar con coeficientes enteros pequeños (por ejemplo, h(t) = -5t^2 + 20t).",
+        "El problema indica de manera muy clara si se debe encontrar un valor de la variable independiente (resolver) o de la dependiente (evaluar), con frases como '¿cuánto vale h(3)?' o '¿para qué valor de t la altura es 0?'.",
+        "Se requiere solo una etapa de traducción del contexto al modelo: por ejemplo, 'cuando el objeto toca el suelo' se traduce directamente en h(t) = 0, o 'cuando el costo es 1000 pesos' se traduce en C(x) = 1000.",
+        "La resolución de la ecuación cuadrática se puede hacer por factorizar fácilmente o usando valores enteros claros, y las raíces son enteros o fracciones simples.",
+        "En problemas de evaluación, basta con un reemplazo directo en la fórmula y uno o dos pasos aritméticos simples (sumas y multiplicaciones con números pequeños).",
+        "La validación de soluciones en el contexto es evidente (por ejemplo, una raíz negativa claramente no tiene sentido como tiempo y la otra es positiva)."
+      ],
+      "medium": [
+        "La función cuadrática se entrega en forma estándar pero con algún coeficiente no trivial (por ejemplo, coeficientes decimales simples o fracciones fáciles).",
+        "El enunciado requiere que el estudiante identifique correctamente si debe evaluar o resolver sin indicarlo explícitamente, a partir de formulaciones como '¿en qué momento ocurre...?' o '¿cuál es la altura en ese instante?'.",
+        "La ecuación resultante de f(x) = k no se factoriza de forma obvia, requiriendo el uso de la fórmula general o tecnología, o bien un razonamiento numérico simple.",
+        "Las soluciones de la ecuación pueden ser no enteras (fracciones o decimales que no son exactos de una sola vista), requiriendo cierto cuidado en el cálculo.",
+        "La situación contextual exige descartar una de las soluciones por razones no totalmente triviales (por ejemplo, el intervalo de tiempo de validez está acotado, o la cantidad de objetos debe ser número natural).",
+        "En problemas de evaluación, se requiere manejar correctamente potencias de números negativos y multiplicaciones con números fraccionarios o decimales."
+      ],
+      "hard": [
+        "La identificación de si se trata de un problema de resolución o de evaluación no es directa, pudiendo involucrar varios enunciados encadenados o la necesidad de interpretar correctamente qué variable representa cada magnitud.",
+        "El problema requiere más de una aplicación de la función cuadrática, por ejemplo, evaluar la función en un valor, luego usar ese resultado para plantear una ecuación y resolverla.",
+        "La ecuación cuadrática resultante tiene coeficientes no enteros o un valor k que genera raíces poco sencillas (decimales con varios dígitos o fracciones menos evidentes), aumentando la carga de cálculo o de interpretación.",
+        "Se deben comparar o justificar las soluciones en función de restricciones de contexto más sutiles (por ejemplo, elegir el tiempo de ascenso en vez del de descenso, o considerar que cierta magnitud no puede superar un límite dado).",
+        "El enunciado puede involucrar una breve tabla o varios datos del contexto antes de llegar al uso de la función cuadrática, incrementando la demanda de comprensión lectora y organización de información.",
+        "Se espera que el estudiante interprete cualitativamente el significado de las raíces halladas (por ejemplo, dos tiempos distintos en que ocurre un mismo fenómeno) y seleccione la opción correcta considerando esa interpretación, no solo el cálculo numérico."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar expresiones vagas como 'en qué punto' o 'en qué valor' sin aclarar si se refiere al tiempo, a la posición u otra variable; siempre nombrar la magnitud de la variable independiente (por ejemplo 'en qué instante t', 'para qué número de unidades x').",
+      "No mezclar libremente x, t, n, etc. sin explicar a qué magnitud corresponde cada variable; definir explícitamente el significado de la variable usada en la función.",
+      "Evitar enunciados donde no queda claro si el valor dado corresponde a la variable independiente o al valor de la función (por ejemplo, 'cuando vale 3' debe especificar 'cuando el tiempo es 3 segundos' o 'cuando la altura es 3 metros').",
+      "No usar expresiones que puedan confundirse con diferentes estados del fenómeno (por ejemplo, 'cuando llega al máximo' versus 'cuando deja de subir'); si no se está evaluando optimización, no referirse al vértice.",
+      "Evitar que en la pregunta aparezcan varios valores numéricos candidatos a ser el k de la ecuación f(x) = k sin indicar con claridad cuál corresponde a la magnitud buscada.",
+      "No usar notación funcional ambigua (como h = -5t^2 + 20t sin h(t) o sin el texto que aclare que h depende de t).",
+      "Evitar intervalos de tiempo o dominios implícitos que puedan generar dudas respecto de cuál raíz es válida; si se requiere un intervalo específico (por ejemplo, 0 ≤ t ≤ 10), debe mencionarse explícitamente.",
+      "No mezclar unidades sin aclaración (por ejemplo, segundos y minutos, metros y centímetros) si eso no es parte explícita del desafío; mantener consistente la unidad usada en el modelo.",
+      "Evitar preguntas en las que dos o más operaciones distintas (evaluar y luego resolver, por ejemplo) se mezclen en una sola interrogante sin delimitar claramente las etapas."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_resolucion_vs_evaluacion",
+        "description": "El estudiante interpreta mal el tipo de tarea: resuelve f(x) = k cuando el problema pedía simplemente evaluar f en un valor dado de x, o intenta evaluar la función para un valor arbitrario cuando se debía hallar el valor de la variable independiente que hace que la función tome un cierto valor.",
+        "how_to_address": "Diseñar ítems que pongan en contraste explícito preguntas del tipo '¿cuál es la altura en t = 3?' versus '¿en qué instante la altura es 10 m?', pidiendo identificar qué tipo de operación se requiere antes de hacer cálculos. Reforzar la lectura atenta de frases como '¿cuándo ocurre…?' (resolver para x) y '¿cuánto vale…?' (evaluar f(x))."
+      },
+      {
+        "name": "Traduccion_contexto_modelo_incorrecta",
+        "description": "Errores al transformar la descripción verbal en una ecuación del tipo f(x) = 0 o f(x) = k. Por ejemplo, plantear h(t) = 10 en lugar de h(t) = 0 cuando el objeto toca el suelo, o asociar el valor k a la variable equivocada.",
+        "how_to_address": "Incluir pasos intermedios de formulación en los que el estudiante seleccione entre posibles ecuaciones equivalentes al texto del problema. Trabajar explícitamente con el significado físico de 'altura cero', 'costo total de 5000 pesos', 'población de 200 individuos', etc."
+      },
+      {
+        "name": "Manejo_algebraico_deficiente_en_cuadraticas",
+        "description": "Errores de factorización, aplicación de la fórmula general o manejo de signos que llevan a raíces incorrectas, aunque la ecuación estuviera bien planteada.",
+        "how_to_address": "Proponer ítems con énfasis en revisar la plausibilidad numérica de los resultados (por ejemplo, verificar aproximadamente las soluciones sustituyéndolas en la función) y utilizar coeficientes que permitan detectar errores de signos o de cálculo con cierta facilidad."
+      },
+      {
+        "name": "Uso_incorrecto_de_parentesis_en_evaluacion",
+        "description": "Al evaluar la función para valores negativos o fraccionarios de la variable independiente, el estudiante omite paréntesis y calcula mal potencias o productos, por ejemplo, interpretando -2^2 como 4 en lugar de -4 o viceversa.",
+        "how_to_address": "Incorporar ejemplos con sustitución cuidadosa, remarcando la diferencia entre x^2 y (-x)^2. En ítems de opción múltiple, incluir distractores que reflejen típicos errores de paréntesis para hacerlos visibles y abordables en la retroalimentación."
+      },
+      {
+        "name": "No_validar_soluciones_en_el_contexto",
+        "description": "El estudiante acepta todas las raíces de la ecuación cuadrática como respuestas posibles, sin filtrar según el contexto (por ejemplo, tiempos negativos, cantidades no enteras cuando deben ser enteras, valores fuera del intervalo específico).",
+        "how_to_address": "Plantear ítems que obliguen a elegir entre raíces o a justificar cuál solución es aceptable en el escenario descrito. Incluir explícitamente dominios o restricciones en el enunciado y pedir que se tomen en cuenta al decidir la respuesta correcta."
+      },
+      {
+        "name": "Confusion_de_variables_y_unidades",
+        "description": "El estudiante intercambia el significado de la variable independiente y el valor de la función (por ejemplo, trata al tiempo como altura o viceversa) o ignora las unidades, lo que conduce a interpretaciones erróneas incluso si el cálculo numérico está bien hecho.",
+        "how_to_address": "Reforzar el uso sistemático de frases como 't en segundos', 'h(t) en metros' y preguntas que exijan identificar qué representa cada letra antes de resolver. Incluir distractores que correspondan a una mala interpretación de las unidades para evidenciar este tipo de falla."
+      },
+      {
+        "name": "Sobre_reliance_en_recetas_sin_comprension",
+        "description": "Aplicar mecánicamente métodos (como usar siempre la fórmula general o igualar la función a cero) sin analizar si el procedimiento es coherente con lo que pide el problema.",
+        "how_to_address": "Diseñar preguntas que se centren en la elección del procedimiento más adecuado (por ejemplo, seleccionar entre 'evaluar', 'resolver f(x)=0', 'resolver f(x)=k'), antes de pedir cálculos extensos. Destacar en la retroalimentación la importancia de decidir el método a partir del enunciado."
+      }
+    ],
+    "future_targets": [
+      "Modelación más compleja de fenómenos físicos con funciones cuadráticas y otras funciones (por ejemplo, combinar etapas lineales y cuadráticas).",
+      "Optimización con funciones cuadráticas: identificación y uso del vértice para encontrar máximos y mínimos en problemas de contexto.",
+      "Análisis gráfico e interpretación de la gráfica de una parábola en contextos variados, vinculando raíces, vértice e intersecciones con significado real.",
+      "Resolución y modelación de problemas de movimiento vertical, energía, trayectorias y otros fenómenos de física escolar usando funciones cuadráticas.",
+      "Comparación de modelos funcionales distintos (lineales versus cuadráticos) en contextos de crecimiento, costo, producción, etc.",
+      "Transición a funciones de grado superior o a funciones no polinomiales, manteniendo la habilidad de decidir entre evaluación y resolución en modelos más generales.",
+      "Trabajo con inecuaciones cuadráticas en contexto (por ejemplo, determinar intervalos de tiempo en los cuales una magnitud supera o no cierto umbral)."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "simple_decimals",
+      "simple_fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

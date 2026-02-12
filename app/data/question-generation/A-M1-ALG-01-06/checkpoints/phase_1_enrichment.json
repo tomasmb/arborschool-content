@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Dividir un polinomio (con dos o más términos) por un monomio no nulo aplicando la propiedad distributiva de la división respecto de la suma/resta.",
+        "Escribir la división de un polinomio por un monomio como suma de fracciones, una por cada término del polinomio.",
+        "Simplificar cada término usando leyes de exponentes para el cociente de potencias de la misma base, incluyendo variables con exponentes naturales.",
+        "Incluir monomios con coeficientes enteros positivos y negativos.",
+        "Incluir divisiones donde algunos términos del polinomio se simplifican completamente y otros quedan con fracciones en el coeficiente o con exponente positivo remanente.",
+        "Expresar el resultado como polinomio (suma algebraica de monomios) una vez simplificados los términos, cuando sea posible."
+      ],
+      "out_of_scope": [
+        "División de polinomio por polinomio (incluida división larga y sintética).",
+        "División donde el divisor no es un monomio (por ejemplo, binomios o polinomios de mayor grado).",
+        "Leyes de exponentes con exponentes fraccionarios, negativos o no enteros.",
+        "Situaciones de aritmética fraccionaria compleja ajenas al foco algebraico (por ejemplo, problemas verbales extensos de contexto aplicado).",
+        "Operar con más de tres variables distintas en un mismo polinomio (mantener foco en comprensión del procedimiento, no en la carga notacional).",
+        "Uso de notación funcional explícita (f(x), g(x)) más allá de expresar la división simbólicamente."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Reconocer y escribir monomios y polinomios, identificando coeficientes, variables y exponentes.",
+        "A-M1-ALG-01-02: Sumar y restar polinomios en una variable con exponentes naturales.",
+        "A-M1-ALG-01-03: Aplicar leyes de exponentes para productos y cocientes de potencias con la misma base y exponentes naturales.",
+        "A-M1-ALG-01-04: Operar con números enteros (suma, resta, multiplicación y división) y simplificar fracciones sencillas.",
+        "A-M1-ALG-01-05: Aplicar la propiedad distributiva de la multiplicación respecto de la suma/resta en expresiones algebraicas."
+      ],
+      "common_traps": [
+        "Dividir solo el primer término del polinomio por el monomio y olvidar distribuir la división a todos los términos.",
+        "Simplificar incorrectamente el cociente de potencias: restar exponentes en el orden equivocado (dividendo − divisor), independientemente de cuál sea mayor.",
+        "Cancelar variables de forma indebida cuando el exponente del divisor es mayor que el del dividendo (por ejemplo, eliminar la variable en lugar de dejarla en el denominador).",
+        "Perder el signo de algún término al dividir, especialmente cuando el polinomio tiene términos negativos.",
+        "No simplificar completamente los coeficientes numéricos (por ejemplo, dejar 6/2 en vez de 3).",
+        "Mezclar el procedimiento con el de división polinómica por polinomio (intentar hacer pasos de división larga).",
+        "Suponer que todos los términos siempre quedan con exponente entero positivo en el numerador, evitando resultados legítimos con variables en el denominador."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Polinomios con 2 términos y divisor monomio con coeficiente 1 o 2, todos los coeficientes enteros pequeños (entre -9 y 9, excluido 0).",
+        "Solo una variable involucrada (por ejemplo, x) con exponentes naturales pequeños (0 a 3) y donde el exponente del dividendo es mayor o igual al del divisor en todos los términos, evitando variables en el denominador.",
+        "Cálculos de cociente de potencias directos, sin necesidad de simplificar fracciones numéricas no triviales (por ejemplo, 4/2, 6/3).",
+        "Ítems en los que basta con aplicar mecánicamente la distribución y la resta de exponentes, con resultados que son monomios o binomios simples.",
+        "Ausencia de signos mixtos críticos (por ejemplo, todos los términos positivos o solo un término negativo claramente visible)."
+      ],
+      "medium": [
+        "Polinomios con 2 o 3 términos y divisor monomio con coeficiente distinto de 1, incluyendo coeficientes negativos.",
+        "Existen términos donde, tras dividir, el exponente del numerador es menor que el del denominador, generando variables en el denominador para esos términos.",
+        "Coeficientes que requieren simplificación fraccionaria simple pero no inmediata (por ejemplo, 15/6, -12/8), pudiendo quedar fracciones irreducibles.",
+        "Uso de hasta 2 variables (por ejemplo, ax, ab, xy), requiriendo aplicar leyes de exponentes de manera coordinada en ambas variables.",
+        "Ítems que requieren elegir entre alternativas muy parecidas, donde se distinguen por signos, exponentes o simplificación completa, forzando atención a detalle del procedimiento."
+      ],
+      "hard": [
+        "Polinomios con 3 o 4 términos, con combinación de coeficientes positivos y negativos, y divisor monomio con coeficiente distinto de 1 (incluyendo negativos), que obliga a manejar signos con cuidado en todos los términos.",
+        "Expresiones con 2 variables y exponentes mayores (hasta 4 o 5) donde en algunos términos el exponente del divisor es mayor y en otros menor, generando mezcla de variables solo en numerador y otras en el denominador dentro de la misma expresión.",
+        "Coeficientes que conducen a fracciones no triviales (por ejemplo, 21/14, -18/27) donde el estudiante debe reducir a la fracción irreducible para obtener la alternativa correcta.",
+        "Estructuras donde el polinomio está escrito de forma no ordenada (por ejemplo, términos desordenados en grado o mezclados por variables) y la alternativa correcta requiere reordenar y simplificar completamente.",
+        "Presencia de distractores que contienen errores frecuentes de leyes de exponentes o de distribución (por ejemplo, división aplicada solo a parte de un término o resta de exponentes en orden incorrecto), de modo que la tarea exige controlar varios posibles errores simultáneos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar polinomios o monomios con letra que pueda confundirse con números (por ejemplo, usar x y y en lugar de l, o, etc.).",
+      "No mezclar demasiadas variables distintas en un mismo ítem (máximo 2) para no generar confusión sobre qué se está dividiendo por qué.",
+      "Especificar claramente la expresión completa del dividendo y del divisor usando paréntesis cuando sea necesario, por ejemplo, (4x^3 + 6x^2) / 2x, para evitar dudas sobre qué parte está siendo dividida.",
+      "No usar barra de fracción sin paréntesis si puede llevar a interpretaciones distintas (por ejemplo, escribir (ax^2 + bx) / 3x en lugar de ax^2 + bx / 3x).",
+      "Evitar expresiones de respuesta que cambien solo en el orden de los términos cuando ese orden no sea importante; si se evalúa la simplificación, que el foco esté en los coeficientes, signos y exponentes.",
+      "No mezclar en el mismo ítem distintos niveles de simplificación en las alternativas (por ejemplo, unas completamente simplificadas y otras con factores comunes evidentes) sin indicarlo, para que el criterio de selección sea uniforme.",
+      "Evitar escribir exponentes ambiguos o poco legibles (asegurar uso consistente de notación x^2, a^3b^2, etc.).",
+      "No introducir contexto verbal largo que sugiera interpretación de modelos o funciones; mantener claro que la tarea central es operar simbólicamente la división por monomio."
+    ],
+    "error_families": [
+      {
+        "name": "Falta_de_distribución_total",
+        "description": "El estudiante divide el primer término del polinomio por el monomio, pero olvida aplicar la división a uno o más de los términos restantes.",
+        "how_to_address": "Enfatizar la escritura intermedia (a + b + c) / m = a/m + b/m + c/m y practicar con ejemplos donde el término olvidado tenga un coeficiente o variable distintiva que haga evidente el error."
+      },
+      {
+        "name": "Restar_exponentes_en_orden_incorrecto",
+        "description": "Al aplicar la ley de exponentes en el cociente, el estudiante siempre hace exponente_mayor − exponente_menor, sin respetar qué exponente está en el numerador o denominador.",
+        "how_to_address": "Trabajar con tablas o esquemas que señalen explícitamente numerador y denominador, y pedir que escriban la fracción de potencias antes de simplificar, reforzando la regla base: exponente_del_numerador − exponente_del_denominador."
+      },
+      {
+        "name": "Cancelación_ilegal_de_variables",
+        "description": "Cuando el exponente en el divisor es mayor, el estudiante elimina completamente la variable en vez de dejarla en el denominador (por ejemplo, x^2 / x^3 → 1 en lugar de 1/x).",
+        "how_to_address": "Usar ejemplos concretos con números (por ejemplo, 2^2 / 2^3) y paralelos con fracciones (por ejemplo, 2·2 / 2·2·2) para visualizar que queda un factor en el denominador, luego traducir esa comprensión a variables."
+      },
+      {
+        "name": "Manejo_incorrecto_de_signos",
+        "description": "Errores al dividir coeficientes negativos, especialmente cuando tanto el polinomio como el monomio tienen signos alternados, lo que lleva a cambiar o mantener signos de manera incorrecta.",
+        "how_to_address": "Proponer ejercicios focalizados solo en el signo (ignorando momentáneamente las variables) y luego reincorporar variables, destacando patrones (+)/(−) y (−)/(−) con ejemplos variados."
+      },
+      {
+        "name": "No_simplificación_de_coeficientes",
+        "description": "El estudiante deja fracciones numéricas no reducidas (por ejemplo, 12/8 en lugar de 3/2) o comete errores al simplificar, afectando el resultado final.",
+        "how_to_address": "Reforzar la simplificación de fracciones con factores comunes, usando ejemplos exclusivamente numéricos, y luego integrarlos en expresiones algebraicas, insistiendo en llegar a la fracción irreducible como convención estándar."
+      },
+      {
+        "name": "Pérdida_de_términos_o_variables",
+        "description": "Durante el proceso de división y simplificación, el estudiante omite alguna variable o término completo, resultando en un polinomio incompleto.",
+        "how_to_address": "Sugerir un procedimiento paso a paso con revisiones intermedias (contar términos antes y después, subrayar variables a conservar) y comparar con la expresión original para verificar consistencia de variables presentes."
+      },
+      {
+        "name": "Confusión_con_división_polinómica",
+        "description": "El estudiante intenta usar procedimientos de división de polinomio por polinomio (tipo división larga) aun cuando el divisor es monomio, complicando innecesariamente el ejercicio.",
+        "how_to_address": "Contrastar explícitamente ambos procedimientos en un cuadro comparativo, mostrando que con divisor monomio es más eficiente usar distribución, y hacer ejercicios donde la diferencia de tiempo y pasos sea evidente."
+      }
+    ],
+    "future_targets": [
+      "División de polinomios por polinomios mediante algoritmo de división larga y división sintética.",
+      "Simplificación de expresiones racionales algebraicas (cociente de polinomios) mediante factorización y cancelación de factores comunes.",
+      "Manipulación algebraica en la resolución de ecuaciones y sistemas donde se requiere dividir expresiones polinómicas por monomios.",
+      "Derivación y simplificación de expresiones en cálculo diferencial (futuro), donde se reescriben cocientes de polinomios para facilitar la derivación.",
+      "Estudio de funciones racionales simples donde el numerador o el denominador es un monomio.",
+      "Reescritura de expresiones algebraicas para modelar situaciones de proporcionalidad y tasas en contextos aplicados."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integer_negatives",
+      "fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

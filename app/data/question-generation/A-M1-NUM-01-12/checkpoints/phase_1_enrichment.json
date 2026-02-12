@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar el algoritmo de la división para convertir una fracción común a número decimal.",
+        "Determinar si el decimal obtenido es finito o periódico puro o mixto a partir de la división.",
+        "Asignar correctamente el signo del decimal resultante en función del signo de la fracción original.",
+        "Reconocer la repetición del residuo o de grupos de dígitos para identificar periodicidad.",
+        "Trabajar con fracciones propias e impropias, incluyendo fracciones negativas."
+      ],
+      "out_of_scope": [
+        "Conversión de números decimales a fracciones.",
+        "Reconocimiento de racionalidad/irracionalidad a partir de raíces u otras expresiones no fraccionarias.",
+        "Operaciones entre fracciones (suma, resta, producto, división) previas a la conversión.",
+        "Aproximaciones decimales por redondeo sin hacer la división explícita.",
+        "Uso de porcentajes, razones o proporciones que no requieran la conversión explícita fracción→decimal.",
+        "Análisis de fracciones en contexto geométrico o de probabilidad sin solicitar la forma decimal.",
+        "Justificación teórica de por qué ciertas fracciones generan decimales finitos o periódicos (factorización de denominadores, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-01-02",
+        "A-M1-NUM-01-05",
+        "A-M1-NUM-01-07",
+        "A-M1-NUM-01-10"
+      ],
+      "common_traps": [
+        "Olvidar mantener el mismo valor al transformar una fracción mixta a fracción impropia antes de dividir.",
+        "Perder el signo durante la división y entregar un resultado positivo cuando la fracción original era negativa (o viceversa).",
+        "Cortar un decimal periódico y confundirlo con un decimal finito por detener la división demasiado pronto.",
+        "No agregar ceros al numerador (o al resto) cuando se pasa de parte entera a parte decimal en la división.",
+        "Confundir decimal periódico puro con mixto al identificar el período (incluir dígitos que no se repiten).",
+        "Equivocarse al colocar la coma decimal al convertir una fracción impropia (tratar solo la parte decimal y olvidar la parte entera).",
+        "Suponer que todo decimal con pocos dígitos es finito sin revisar si la división efectivamente termina (resto cero)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Fracciones con denominador que es potencia de 10 o que se puede asociar fácilmente a décimos, centésimos, etc. (por ejemplo, 1/2, 3/4, 7/5) donde la división termina en pocos pasos.",
+        "Números pequeños en numerador y denominador (entre −10 y 10) y resultados decimales finitos cortos (1 o 2 cifras decimales).",
+        "Signos positivos, o negativos evidentes con indicación clara, sin necesidad de razonar el signo (por ejemplo, solo un número negativo).",
+        "Ítems que no requieren identificar el tipo de decimal (solo pedir el valor decimal).",
+        "Contextos sin texto extenso: fracción dada explícitamente en forma simbólica y conversión directa."
+      ],
+      "medium": [
+        "Fracciones con denominadores que generan decimales periódicos simples (por ejemplo, 1/3, 2/9, 5/6) donde se deba reconocer que el resultado no es finito.",
+        "Incluyen fracciones negativas donde el estudiante debe determinar el signo en función de los signos de numerador y denominador.",
+        "Resultados con parte entera distinta de cero (fracciones impropias) que obligan a manejar adecuadamente el cociente y el residuo.",
+        "Se solicita explícitamente identificar si el decimal es finito, periódico puro o mixto, o elegir entre alternativas que diferencian estos casos.",
+        "Contextos verbales breves donde la fracción aparece en una situación y se pide su forma decimal, sin cálculos adicionales más allá de la división."
+      ],
+      "hard": [
+        "Fracciones con denominadores que producen decimales periódicos mixtos, en los que el estudiante debe distinguir correctamente parte no periódica y período (por ejemplo, 1/6, 7/12, 5/22).",
+        "Divisiones que requieren varios pasos (3 o más cifras decimales) antes de reconocer el período o determinar que el decimal es finito.",
+        "Ítems donde la identificación del tipo de decimal es clave para discriminar entre alternativas muy similares (por ejemplo, diferencias sutiles en el período o en la ubicación de la coma).",
+        "Uso de fracciones negativas con signos en numerador y denominador diferentes, donde el estudiante deba razonar el signo final correctamente en medio de una división más larga.",
+        "Contextos verbales o tabulares donde la fracción no está explícita, pero debe inferirse y luego convertirse a decimal, siempre manteniendo el foco en el procedimiento de división para obtener el decimal.",
+        "Ítems que exploran errores típicos, por ejemplo, alternativas distractoras con decimales truncados o con períodos mal ubicados, que exigen al estudiante revisar con cuidado la división."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar la notación de puntos suspensivos sin aclarar periodicidad cuando el decimal es periódico (usar notación estándar de decimal periódico o especificar que los puntos indican repetición de los últimos dígitos).",
+      "Evitar fracciones que, al simplificarse, cambien completamente el tipo de decimal sin explicitar si se trabaja con la fracción simplificada o no; en este átomo se debe asumir simplificación previa o usar fracciones ya simplificadas.",
+      "No mezclar en la misma pregunta tareas de conversión fracción→decimal y decimal→fracción si el objetivo es evaluar solo la primera conversión.",
+      "Evitar enunciados donde no quede claro si se pide el resultado exacto (con notación de periódico) o una aproximación decimal; siempre explicitar si se requiere valor exacto.",
+      "No usar contextos donde la respuesta pueda obtenerse por simple reconocimiento o memoria (por ejemplo, porcentajes típicos) sin hacer la división, a menos que la tarea explicite el procedimiento.",
+      "Evitar fracciones con denominadores muy grandes o poco manejables que generen cálculos engorrosos que distraen del foco conceptual (finito vs periódico, ubicación de la coma, signo).",
+      "No usar coma y punto decimal mezclados en el mismo ítem; mantener uso consistente de coma decimal según norma chilena.",
+      "Evitar tablas o descripciones donde aparezcan varios formatos numéricos si no está claramente indicado cuál de ellos debe convertirse a decimal."
+    ],
+    "error_families": [
+      {
+        "name": "Pérdida_del_signo",
+        "description": "El estudiante realiza correctamente la división en valor absoluto, pero olvida aplicar el signo negativo cuando la fracción original es negativa o cuando numerador y denominador tienen signos distintos.",
+        "how_to_address": "Incluir ítems donde se destaque explícitamente el razonamiento sobre el signo antes y después de la división, y distractores con el mismo valor absoluto pero signos opuestos para forzar la atención al signo."
+      },
+      {
+        "name": "Colocación_incorrecta_de_la_coma",
+        "description": "Errores al ubicar la coma decimal en el cociente, especialmente con fracciones impropias donde hay parte entera y parte decimal.",
+        "how_to_address": "Diseñar ítems que obliguen a diferenciar claramente entre parte entera y decimal, con opciones que representen los errores típicos (mover la coma una posición a la izquierda o derecha)."
+      },
+      {
+        "name": "Detención_prematura_de_la_división",
+        "description": "El estudiante detiene la división apenas ve repeticiones parciales o después de pocos pasos y concluye equivocadamente que el decimal es finito o asigna un período incorrecto.",
+        "how_to_address": "Proponer fracciones que generen períodos no inmediatos, exigiendo que el estudiante observe la repetición del resto y no solo de uno o dos dígitos; incluir alternativas con decimales truncados como distractores."
+      },
+      {
+        "name": "Identificación_errónea_del_período",
+        "description": "Se confunden los dígitos que pertenecen al período con los que no, clasificando mal un decimal como periódico puro, mixto o incluso finito.",
+        "how_to_address": "Incluir ítems que comparen diferentes formas de escribir el mismo decimal periódico, y pedir seleccionar la representación correcta del período, diferenciando parte no periódica y periódica."
+      },
+      {
+        "name": "Omisión_de_ceros_en_la_división",
+        "description": "Al continuar la división tras la parte entera, el estudiante no 'baja' correctamente ceros al resto, lo que lleva a resultados erróneos.",
+        "how_to_address": "Diseñar problemas donde la necesidad de agregar ceros sea evidente y evaluar pasos intermedios a través de distractores que reflejen la omisión de ceros."
+      },
+      {
+        "name": "No_simplificar_la_fracción",
+        "description": "El estudiante realiza la división con una fracción no simplificada, generando un proceso más largo y proclive a errores, o concluye un tipo de decimal distinto al que obtendría con la fracción simplificada.",
+        "how_to_address": "Aunque la simplificación completa no es el foco, usar ítems con fracciones ya simplificadas o indicar explícitamente si se requiere simplificar; incluir un par de ítems que muestren cómo la simplificación facilita la división."
+      }
+    ],
+    "future_targets": [
+      "Conversión de decimales a fracciones y representación equivalente de números racionales en distintas formas.",
+      "Cálculos con porcentajes que requieren pasar de fracción a decimal o viceversa con fluidez.",
+      "Comparación y ordenamiento de números racionales usando sus formas decimal y fraccionaria.",
+      "Resolución de problemas de proporcionalidad directa e inversa donde se alternan representaciones fraccionarias y decimales.",
+      "Cálculo de probabilidades simples expresadas en forma fraccionaria y decimal.",
+      "Trabajo con representaciones gráficas de datos (por ejemplo, porcentajes en gráficos circulares) que se vinculan a fracciones y decimales.",
+      "Estudio de series decimales periódicas y su relación con fracciones racionales en cursos posteriores."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed_numbers",
+      "decimals"
+    ],
+    "required_image_types": []
+  }
+}

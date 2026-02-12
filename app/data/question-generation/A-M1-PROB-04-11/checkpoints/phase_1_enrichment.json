@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo directo de P(A|B) usando la fórmula algebraica P(A|B) = P(A ∩ B) / P(B)",
+        "Identificación de P(A ∩ B) y P(B) a partir de un enunciado verbal, una tabla de contingencia o notación simbólica",
+        "Uso de probabilidades dadas explícitamente como P(A ∩ B), P(B), o equivalentes numéricos presentados en tablas o texto",
+        "Cálculo aritmético de la razón entre probabilidades (división de fracciones o decimales) para obtener la probabilidad condicional",
+        "Interpretación de P(A|B) como un número entre 0 y 1, o como porcentaje cuando corresponda",
+        "Casos donde se entrega P(A ∩ B) de forma indirecta pero claramente deducible (por ejemplo, a partir de totales en una tabla sencilla)",
+        "Verificación básica de que P(B) > 0 para que la probabilidad condicional esté bien definida (sin profundizar en excepciones teóricas)"
+      ],
+      "out_of_scope": [
+        "Cálculo de P(A ∩ B) a partir de información combinatoria o de conteo de casos sin que se entreguen o deduzcan explícitamente las probabilidades",
+        "Uso del enfoque intuitivo de reducción del espacio muestral sin aplicar explícitamente la fórmula P(A|B) = P(A ∩ B) / P(B)",
+        "Probabilidad total, teorema de Bayes o árboles de probabilidad con múltiples ramificaciones y pasos",
+        "Probabilidad condicional encadenada con más de dos eventos (por ejemplo P(A ∩ C | B))",
+        "Independencia de eventos y verificación de condiciones del tipo P(A ∩ B) = P(A)P(B)",
+        "Problemas que requieran manipulación simbólica avanzada de expresiones de probabilidad (álgebra compleja con muchas variables)",
+        "Uso de distribuciones de probabilidad específicas (binomial, normal, etc.)",
+        "Contextos donde no se proporciona suficiente información para determinar numéricamente P(A ∩ B) y P(B)"
+      ],
+      "prerequisites": [
+        "A-M1-PROB-01-01: Interpretación básica de probabilidad como número entre 0 y 1 o porcentaje",
+        "A-M1-PROB-02-01: Lectura e interpretación de eventos y sus probabilidades en lenguaje natural y notación P(A), P(B)",
+        "A-M1-PROB-03-01: Comprensión de intersección de eventos A ∩ B en contextos simples",
+        "A-M1-NUM-01-01: Manejo de fracciones sencillas (suma y, especialmente, división)",
+        "A-M1-NUM-01-02: Manejo de decimales y porcentajes básicos",
+        "A-M1-ALG-01-01: Sustitución de valores en fórmulas algebraicas simples"
+      ],
+      "common_traps": [
+        "Confundir P(A ∩ B) con P(A) + P(B) o con P(A)P(B)",
+        "Usar P(A) en el denominador en lugar de P(B), es decir, invertir incorrectamente la condición",
+        "Olvidar que P(B) debe ser distinta de 0 y no cuestionar en casos límite",
+        "Interpretar mal el evento condicionante en el contexto verbal (por ejemplo, confundir 'si ocurrió B' con 'si ocurrió A')",
+        "Tratar P(A ∩ B) como P(A|B) o viceversa, confundiendo notaciones",
+        "Errores de cálculo al dividir fracciones o decimales (por ejemplo, mala conversión de porcentaje a número entre 0 y 1)",
+        "No verificar que el resultado final esté entre 0 y 1, aceptando resultados imposibles (>1 o negativos)",
+        "Tomar datos de la fila o columna equivocada en tablas de frecuencias o de doble entrada al identificar P(A ∩ B) y P(B)"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Se entregan explícitamente P(A ∩ B) y P(B) en forma numérica sencilla (fracciones con denominadores pequeños o decimales con una cifra) y solo se pide calcular P(A|B)",
+        "El enunciado indica claramente qué es A y qué es B, sin ambigüedad en la condición ('la probabilidad de A dado que ocurrió B')",
+        "No se requiere interpretar tablas ni reorganizar información: los valores se dan en notación de probabilidad directamente",
+        "Operaciones aritméticas simples: división de un decimal por otro con resultado exacto o de fracciones fáciles (por ejemplo 1/2, 1/4, 3/4)",
+        "Las alternativas incluyen distractores que se diferencian claramente, sin cálculos intermedios complejos"
+      ],
+      "medium": [
+        "P(A ∩ B) y P(B) no se dan directamente en notación P(·) sino en una tabla de frecuencias o de probabilidades de doble entrada de lectura sencilla",
+        "Requiere identificar correctamente la intersección (celda) y el total condicionante (suma de una fila o columna) antes de aplicar la fórmula",
+        "Los números pueden ser fracciones o decimales con 2 cifras decimales, pudiendo requerir una conversión simple (por ejemplo, de porcentaje a decimal)",
+        "El contexto verbal puede ser un poco más elaborado (dos características de individuos o sucesos en un experimento aleatorio) pero con una sola probabilidad condicional a calcular",
+        "Puede haber información irrelevante que el estudiante debe ignorar, pero sin necesidad de múltiples pasos de razonamiento probabilístico"
+      ],
+      "hard": [
+        "P(A ∩ B) o P(B) se obtienen de forma indirecta, por ejemplo a partir de totales o complementos en una tabla donde parte de la información está dada como frecuencias absolutas y otra como probabilidades o porcentajes",
+        "Se requiere más de un paso sencillo antes de aplicar la fórmula, por ejemplo calcular primero P(A ∩ B) como fracción de un total y luego dividir por P(B) que también se debe deducir",
+        "Los números involucrados incluyen fracciones no triviales o decimales que generan resultados no exactos, pudiendo requerir simplificación o comparación entre alternativas muy cercanas",
+        "El contexto verbal puede inducir a confusión entre P(A|B) y P(B|A), por lo que se exige una lectura cuidadosa para seleccionar el evento condicionante correcto",
+        "Las alternativas de respuesta pueden incluir resultados intermedios plausibles (como P(A ∩ B), P(B|A) o P(A)P(B)) que exigen comprensión clara de la fórmula y del rol de cada término"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresar la condición de manera ambigua, por ejemplo frases como 'sabiendo que ocurrió uno de ellos' sin especificar claramente cuál es el evento condicionante",
+      "No usar simultáneamente 'dado que', 'sabiendo que' y 'considerando que' para referirse a cosas distintas; mantener una sola frase estándar para la condición",
+      "No usar letras A y B en el texto para otras cosas (como variables numéricas) distintas de los eventos de probabilidad",
+      "Evitar tablas donde no se distinga claramente filas (un evento) y columnas (otro evento), lo que puede confundir qué corresponde a A, B y A ∩ B",
+      "No mezclar probabilidades y frecuencias sin explicitar qué representan (por ejemplo, si se dan 30 personas de 100, aclarar si se entiende como frecuencia absoluta o probabilidad)",
+      "No usar notación P(A/B) para la probabilidad condicional, siempre usar P(A|B)",
+      "Evitar contextos donde A y B sean casi idénticos en lenguaje natural, generando dificultades para distinguir eventos y su intersección",
+      "No plantear situaciones donde P(B) pueda ser 0 sin aclarar que en ese caso la probabilidad condicional no está definida, para no generar interpretaciones distintas"
+    ],
+    "error_families": [
+      {
+        "name": "Denominador_invertido",
+        "description": "El estudiante usa P(A) en el denominador al calcular P(A|B), o calcula P(B|A) en vez de P(A|B), invirtiendo el rol de la condición.",
+        "how_to_address": "Reforzar la lectura 'probabilidad de A dado B' y asociarla directamente a la fórmula P(A|B) = P(A ∩ B) / P(B). Usar ejemplos donde P(A|B) y P(B|A) tengan valores claramente distintos, para que vean la diferencia."
+      },
+      {
+        "name": "Interseccion_mal_identificada",
+        "description": "Confunde P(A ∩ B) con P(A) + P(B), P(A)P(B) o toma un valor de fila o columna completa en vez de la celda de intersección en una tabla.",
+        "how_to_address": "Trabajar con representaciones tabulares donde se destaque visualmente la celda de intersección y se haga el vínculo explícito 'A y B al mismo tiempo'. Practicar traducciones entre lenguaje cotidiano ('tiene ambas características') y notación A ∩ B."
+      },
+      {
+        "name": "Uso_del_total_equivocado",
+        "description": "En tablas de doble entrada, el estudiante usa el total general como denominador en vez del total del evento B (la fila o columna condicionante).",
+        "how_to_address": "Enfatizar la idea de que la condición B reduce el 'universo' a una parte de la tabla. Hacer ejercicios donde se marque el subconjunto correspondiente a B y se muestre que solo esa fila o columna cuenta para el denominador."
+      },
+      {
+        "name": "Manejo_numerico_deficiente",
+        "description": "Errores en la división de fracciones o decimales, conversión incorrecta de porcentajes a probabilidades, o resultados fuera del rango [0,1] que no son detectados como imposibles.",
+        "how_to_address": "Reforzar técnicas básicas: pasar porcentajes a decimales dividiendo por 100, revisar que las fracciones estén en el rango 0–1, usar estimaciones rápidas para validar el orden de magnitud del resultado. Incluir ítems que pidan comparar en vez de calcular exactamente."
+      },
+      {
+        "name": "Confusion_eventos_y_condicion",
+        "description": "Interpreta mal el contexto verbal y toma como condición el evento equivocado (por ejemplo, 'probabilidad de que sea mujer sabiendo que aprobó', pero condiciona en 'ser mujer' en lugar de 'haber aprobado').",
+        "how_to_address": "Entrenar la identificación explícita de 'qué se quiere saber' y 'qué se supone conocido'. Subrayar en el enunciado la parte 'dado que...' y construir la notación P( ? | ? ) desde el lenguaje natural antes de usar números."
+      },
+      {
+        "name": "Olvido_de_la_condicion",
+        "description": "Calcula simplemente P(A ∩ B) o P(A) en lugar de la probabilidad condicional, omitiendo el paso de dividir por P(B).",
+        "how_to_address": "Hacer que el estudiantado escriba siempre la fórmula completa P(A|B) = P(A ∩ B) / P(B) antes de sustituir valores. Proponer ejercicios donde P(A ∩ B) y P(A|B) sean claramente distintos para hacer evidente el error."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y aplicación del teorema de Bayes en contextos simples y compuestos",
+      "Cálculo de probabilidades totales usando descomposición en eventos condicionados",
+      "Análisis de independencia de eventos verificando si P(A ∩ B) = P(A)P(B) o si P(A|B) = P(A)",
+      "Uso de árboles de probabilidad y diagramas para problemas multietapa con eventos condicionados",
+      "Modelación de fenómenos aleatorios en contextos reales (diagnósticos médicos, test de selección, calidad de procesos) utilizando probabilidades condicionales",
+      "Interpretación crítica de información estadística en medios (por ejemplo, riesgos relativos y absolutos) que se basan en probabilidades condicionadas",
+      "Trabajo con distribuciones de probabilidad discretas y continuas donde las probabilidades condicionales juegan un rol central"
+    ],
+    "representation_variants": [
+      "verbal_contextual: enunciados en lenguaje natural que describen eventos A y B en situaciones cotidianas o experimentos simples",
+      "symbolic_notation: uso directo de notación P(A), P(B), P(A ∩ B), P(A|B) en fórmulas y datos entregados",
+      "tabular: tablas de doble entrada con frecuencias absolutas, relativas o probabilidades para identificar P(A ∩ B) y P(B)",
+      "set_based: descripción de A, B y A ∩ B mediante conjuntos y subconjuntos (sin llegar a diagramas de Venn gráficos obligatorios)",
+      "mixed_verbal_tabular: combinación de un relato contextual breve con una tabla que organiza la información relevante para aplicar la fórmula"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "decimals",
+      "percentages",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

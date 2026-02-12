@@ -1,0 +1,140 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo directo de x% de una cantidad total y como producto de y por el equivalente decimal del porcentaje (x/100).",
+        "Cálculo directo de x% de una cantidad total y usando fracciones equivalentes simples (por ejemplo, 25% como 1/4, 50% como 1/2).",
+        "Ejercicios donde se da explícitamente el porcentaje y el total, y se pide hallar la parte correspondiente (sin pasos intermedios adicionales).",
+        "Contextos verbales simples donde la única operación necesaria es calcular x% de una cantidad (por ejemplo, descuentos directos, porciones de un conjunto, partes de un monto de dinero).",
+        "Uso de porcentajes mayores que 100% y menores que 1% siempre que solo se requiera el cálculo directo de la parte (por ejemplo, 120% de 50; 0,5% de 2000).",
+        "Uso de distintos formatos de porcentaje: con símbolo %, en palabras (\"por ciento\"), o con decimales (por ejemplo, 7,5%)."
+      ],
+      "out_of_scope": [
+        "Problemas donde se desconoce el porcentaje y se debe determinar qué porcentaje representa una parte del total.",
+        "Problemas donde se desconoce el total y se debe reconstruir a partir de una parte y un porcentaje dado.",
+        "Cálculo de porcentajes encadenados o sucesivos (por ejemplo, aplicar 10% y luego 20% sobre el resultado).",
+        "Comparación de porcentajes entre sí o interpretación de aumentos y disminuciones porcentuales relativos.",
+        "Interés simple o compuesto, tasa de crecimiento, o situaciones financieras que requieran más de un paso de cálculo.",
+        "Cálculo de porcentajes de cantidades expresadas con álgebra simbólica (por ejemplo, 20% de x).",
+        "Lectura o interpretación de porcentajes en gráficos estadísticos (tortas, barras, etc.).",
+        "Redondeo avanzado o estimación aproximada de porcentajes (el foco aquí es el cálculo exacto)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de las cuatro operaciones básicas con números naturales.",
+        "A-M1-NUM-01-02: Manejo de operaciones básicas con decimales positivos.",
+        "A-M1-NUM-01-03: Manejo de operaciones básicas con fracciones positivas.",
+        "A-M1-NUM-02-01: Comprensión del concepto de porcentaje como razón sobre 100.",
+        "A-M1-NUM-02-02: Conversión entre porcentaje y fracción equivalente sencilla.",
+        "A-M1-NUM-02-03: Conversión entre porcentaje y número decimal.",
+        "A-M1-NUM-02-04: Interpretación verbal básica de porcentajes en contextos cotidianos."
+      ],
+      "common_traps": [
+        "Tratar el porcentaje como una cantidad para sumar o restar directamente al total (por ejemplo, 20% de 500 interpretado como 500 − 20).",
+        "Olvidar dividir por 100 al convertir de porcentaje a decimal (usar 20 en lugar de 0,20).",
+        "Errores de posición decimal al multiplicar cantidades grandes por decimales (mover mal la coma).",
+        "Confundir fracciones equivalentes de porcentajes comunes (por ejemplo, usar 1/5 en vez de 1/4 para 25%).",
+        "Interpretar mal porcentajes con decimales (por ejemplo, 7,5% como 0,75 en lugar de 0,075).",
+        "Confundir \"x% de y\" con \"y% de x\" en situaciones de contexto donde ambos números son significativos.",
+        "Ignorar unidades (pesos, personas, litros) y cometer errores al interpretar la respuesta o al comparar alternativas.",
+        "Redondear intermedios innecesariamente, produciendo pequeñas diferencias que generan distractores plausibles."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Porcentajes familiares y fracciones equivalentes simples: 10%, 20%, 25%, 50%, 75%, 100%.",
+        "Cantidades totales pequeñas o con estructura que facilita el cálculo mental (múltiplos claros de 10, 100 o del denominador fraccionario: 40, 80, 100, 200, 400).",
+        "Números enteros positivos sin decimales ni fracciones en el total ni en el resultado esperado.",
+        "Contexto verbal muy directo y breve o enunciado puramente numérico (\"Calcular el 30% de 200\").",
+        "Una sola operación de porcentaje, sin necesidad de interpretar información adicional (tablas o datos múltiples).",
+        "Alternativas que difieren claramente en orden de magnitud, de modo que detectar errores gruesos sea sencillo."
+      ],
+      "medium": [
+        "Porcentajes que no siempre son fracciones tan obvias: 15%, 30%, 35%, 40%, 60%, 80%.",
+        "Totales de dos o tres cifras que no son múltiplos evidentes de 100, pero permiten cálculo razonable (por ejemplo, 150, 240, 360, 750).",
+        "Incorporación de decimales en el total o en el resultado esperado, con productos que generan uno o dos decimales.",
+        "Contextos cotidianos algo más elaborados (descuentos, porciones de grupos, cantidades de productos) pero que solo requieran un paso de porcentaje.",
+        "Necesidad de elegir entre usar equivalente decimal o fraccionario, sin que el método sea totalmente obvio.",
+        "Alternativas que incluyen errores típicos de procedimiento (no dividir por 100, fracción incorrecta, redondeo inadecuado), lo que exige precisión en el cálculo."
+      ],
+      "hard": [
+        "Porcentajes no estándar o con decimales: 7,5%, 12,5%, 17%, 22,5%, 33,3%, 62,5%.",
+        "Totales con decimales o cantidades grandes (4 o más cifras) que exigen manejo seguro de la multiplicación con decimales (por ejemplo, 7,5% de 3200; 12% de 8450).",
+        "Uso de equivalencias fraccionarias menos evidentes (12,5% como 1/8; 37,5% como 3/8; 66,6% aproximado como 2/3) cuando facilitan el cálculo.",
+        "Situaciones verbales donde el total no se presenta explícito en la misma expresión del porcentaje y el estudiante debe identificar correctamente cuál es la \"cantidad total\" sobre la que se aplica el porcentaje (sin dejar de ser un solo cálculo de x% de y).",
+        "Productos que requieren manejo cuidadoso de la coma decimal y, eventualmente, un redondeo final indicado explícitamente (\"aproximar al peso más cercano\").",
+        "Distractores muy cercanos al resultado correcto (por ejemplo, errores de una posición decimal, errores por no dividir por 100 o por usar el porcentaje complementario), que exigen alto control de procedimiento y revisión."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar contextos donde existan dos cantidades posibles que puedan interpretarse como total si no se explicita claramente cuál es la base del porcentaje.",
+      "No usar expresiones coloquiales ambiguas como \"le rebajan un 20% del precio y le dejan en...\" sin aclarar a qué se aplica exactamente el porcentaje.",
+      "Evitar preguntar simultáneamente por la parte y por el total en el mismo ítem dentro de este átomo; aquí solo se debe calcular la parte con total y porcentaje dados.",
+      "No mezclar porcentajes sucesivos en el mismo ítem (por ejemplo, descuento y luego impuesto) si no se explicita cuál porcentaje se debe calcular; este átomo es de un solo porcentaje directo.",
+      "Evitar formatos como \"20 de 50%\" o frases desordenadas que puedan confundirse con productos o fracciones; usar siempre la forma estándar \"20% de 50\".",
+      "No usar notación ambigua para decimales (asegurar uso consistente de coma decimal y no mezclar con punto en el mismo ítem).",
+      "Evitar tablas o descripciones largas donde no quede nítido cuál número es el total y cuál es la parte ya calculada; debe estar claro que se pide x% de una cantidad concreta.",
+      "No utilizar simultáneamente varias unidades diferentes en el mismo enunciado si no cumplen un rol claro (por ejemplo, pesos y kilos) para no confundir qué cantidad es la base del porcentaje."
+    ],
+    "error_families": [
+      {
+        "name": "Porcentaje_sin_dividir_entre_100",
+        "description": "El estudiante toma el número del porcentaje como factor directo en lugar de convertirlo a decimal o fracción equivalente. Por ejemplo, para 20% de 50 calcula 20 × 50 en lugar de 0,20 × 50.",
+        "how_to_address": "Reforzar la idea de que porcentaje significa \"por cada 100\" y explicitar siempre el paso x% = x/100 antes de multiplicar. Incluir ítems donde el error produce resultados claramente desproporcionados respecto del contexto para que el estudiante detecte la inconsistencia."
+      },
+      {
+        "name": "Fracccion_equivalente_incorrecta",
+        "description": "Al usar fracciones para porcentajes comunes, el estudiante asocia una fracción errónea (por ejemplo, 25% = 1/5, 20% = 1/4).",
+        "how_to_address": "Trabajar con rectas numéricas o diagramas de reparto simples para construir y recordar las equivalencias 10%, 20%, 25%, 50%, 75%, etc. Proponer ejercicios que comparen el resultado al usar 1/4 vs 1/5 para el mismo total, mostrando la diferencia."
+      },
+      {
+        "name": "Error_posicion_decimal",
+        "description": "Errores al ubicar la coma decimal al multiplicar un número por un decimal (por ejemplo, 0,2 × 500 = 1000 o 10 en lugar de 100).",
+        "how_to_address": "Descomponer el cálculo en pasos usando potencias de 10 (por ejemplo, 0,2 × 500 = 2/10 × 500 = 100) y practicar con ejemplos donde solo cambian ceros en la cantidad. Reforzar la regla de contar cifras decimales en el producto e interpretar el resultado en el contexto."
+      },
+      {
+        "name": "Porcentaje_decimal_mal_convertido",
+        "description": "Confusión al convertir porcentajes con decimales a número decimal (por ejemplo, 7,5% como 0,75 en lugar de 0,075).",
+        "how_to_address": "Mostrar explícitamente la doble división entre 100: 7,5% = 7,5/100 = 0,075. Comparar 7,5% con 75% en rectas o tablas para enfatizar que es mucho menor y no puede corresponder a 0,75."
+      },
+      {
+        "name": "Parte_vs_total_confundidos",
+        "description": "El estudiante interpreta la cantidad dada como \"parte\" en lugar de \"total\" y viceversa, aplicando el porcentaje a la magnitud equivocada dentro del contexto.",
+        "how_to_address": "Usar preguntas dirigidas que obliguen a identificar primero \"¿de qué cantidad estás sacando el porcentaje?\". Presentar pares de ejercicios muy similares donde solo cambie quién es el total y discutir la diferencia."
+      },
+      {
+        "name": "Redondeo_inadecuado",
+        "description": "El estudiante redondea en pasos intermedios o no sigue la indicación de redondeo final, generando resultados distintos al esperado.",
+        "how_to_address": "Enseñar a mantener más cifras en los pasos intermedios y redondear solo al final. Explicitar en los enunciados cuándo NO es necesario redondear. Practicar lectura cuidadosa de instrucciones como \"aproximar al entero más cercano\" o \"dar resultado exacto\"."
+      },
+      {
+        "name": "Uso_incorrecto_del_porcentaje_complementario",
+        "description": "En contextos de descuentos o partes restantes, el estudiante calcula por error el complemento (por ejemplo, halla el 80% en vez del 20% o viceversa).",
+        "how_to_address": "Trabajar con representaciones de todo-parte (diagramas de barra, esquemas 100%) para visualizar qué porcentaje corresponde a la parte pedida. Ejercitar la identificación explícita de \"lo que se saca\" versus \"lo que queda\" antes de calcular."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de descuentos, recargos e impuestos en contextos de consumo y finanzas personales.",
+      "Determinación de porcentajes desconocidos a partir de relaciones parte–total (\"¿qué porcentaje representa?\").",
+      "Cálculo del total cuando se conoce una parte y su porcentaje correspondiente.",
+      "Análisis de variaciones porcentuales, aumentos y disminuciones relativas.",
+      "Cálculo de probabilidades simples expresadas en porcentaje.",
+      "Interpretación y comparación de datos estadísticos presentados en porcentajes en tablas y gráficos.",
+      "Cálculo de interés simple y compuesto en contextos financieros.",
+      "Modelación de fenómenos de crecimiento y decrecimiento expresados mediante tasas porcentuales (por ejemplo, crecimiento poblacional)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "large_integers",
+      "decimals",
+      "fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

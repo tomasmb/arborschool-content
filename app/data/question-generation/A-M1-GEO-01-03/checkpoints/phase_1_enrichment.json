@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Uso del Teorema de Pitágoras exclusivamente para calcular un cateto desconocido a partir de la hipotenusa y el otro cateto.",
+        "Planteo correcto de la igualdad c^2 = a^2 + b^2 y despeje explícito a^2 = c^2 - b^2 (o b^2 = c^2 - a^2).",
+        "Cálculo numérico del cateto aplicando la raíz cuadrada a la diferencia de cuadrados.",
+        "Contextos geométricos sencillos donde se reconozca un triángulo rectángulo (por ejemplo, diagonales de rectángulos, alturas en triángulos rectángulos, escalas, pendientes representadas como triángulos rectángulos).",
+        "Resultados tanto exactos con raíz (por ejemplo, 3√5) como aproximados con redondeo indicado en el enunciado."
+      ],
+      "out_of_scope": [
+        "Cálculo de la hipotenusa (uso de suma de cuadrados c^2 = a^2 + b^2 como objetivo principal).",
+        "Problemas que requieran trigonometría (seno, coseno, tangente) para determinar lados o ángulos.",
+        "Aplicación del Teorema de Pitágoras en 3D (distancias espaciales, cuerpos geométricos).",
+        "Deducción o demostración del Teorema de Pitágoras.",
+        "Uso de Pitágoras para verificar si un triángulo es rectángulo (clasificación de triángulos).",
+        "Cálculo de áreas o perímetros como objetivo principal; solo se acepta si el paso clave es hallar el cateto por Pitágoras.",
+        "Problemas que mezclen de forma central razones trigonométricas, semejanza de triángulos u otros teoremas de geometría más allá del reconocimiento básico del triángulo rectángulo."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01: Identificación de la hipotenusa y los catetos en un triángulo rectángulo.",
+        "A-M1-GEO-01-02: Aplicación del Teorema de Pitágoras para calcular la hipotenusa.",
+        "A-M1-ARI-01-01: Operaciones con enteros y decimales (suma, resta, multiplicación).",
+        "A-M1-ARI-02-01: Potenciación de números reales, especialmente cuadrados de enteros y decimales.",
+        "A-M1-ARI-03-01: Raíz cuadrada de números positivos (exacta y aproximada).",
+        "A-M1-ALG-01-01: Despeje de una incógnita en ecuaciones simples (reconocer que a^2 = c^2 - b^2 implica a = √(c^2 - b^2))."
+      ],
+      "common_traps": [
+        "Confundir la fórmula para la hipotenusa con la del cateto y sumar en vez de restar (plantear a^2 = c^2 + b^2).",
+        "Olvidar que la hipotenusa es el lado mayor y asignar mal las longitudes, restando en el orden incorrecto (por ejemplo, b^2 - c^2).",
+        "Aplicar la raíz a cada término por separado de forma incorrecta (escribir a = √c^2 - √b^2 en lugar de a = √(c^2 - b^2)).",
+        "Realizar primero la raíz de la hipotenusa y luego el cuadrado, alterando el orden de operaciones pedido por la fórmula (por ejemplo, usar a = √c - b).",
+        "No verificar que el radicando sea positivo y aceptar resultados imposibles (por ejemplo, que el cateto sea mayor que la hipotenusa).",
+        "Perder la interpretación geométrica y olvidar que la longitud de un lado es siempre positiva, confundiendo con ±√(c^2 - b^2).",
+        "Errores de redondeo excesivo o inconsistente cuando se piden aproximaciones (no respetar el número de decimales solicitado o redondear antes de tiempo)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Datos dados explícitamente como lados de un triángulo rectángulo, indicando claramente cuál es la hipotenusa y cuál es el cateto conocido.",
+        "Uso de enteros pequeños que dan lugar a un triple pitagórico conocido o a raíces cuadradas exactas (por ejemplo, 3-4-5, 5-12-13), de modo que el resultado sea un entero.",
+        "Enunciado directo: se pregunta solo por el valor del cateto, sin contexto verbal complejo ni pasos intermedios.",
+        "Poca o nula necesidad de lectura de contexto: oraciones cortas, sin distractores numéricos ni información irrelevante.",
+        "No se exige expresar el resultado en forma radical; el resultado es exacto y sencillo."
+      ],
+      "medium": [
+        "Situaciones contextualizadas simples (por ejemplo, una escalera apoyada en un muro, la diagonal de una pantalla, un rectángulo en un plano) donde el estudiante debe identificar cuáles medidas corresponden a la hipotenusa y al cateto conocido.",
+        "Uso de números enteros un poco mayores o que conduzcan a raíces no exactas, permitiendo respuestas con radicales simples o decimales con redondeo indicado (por ejemplo, √37, 6.1 aprox.).",
+        "Requiere al menos dos pasos claros: plantear c^2 = a^2 + b^2, despejar a^2 = c^2 - b^2 y luego aplicar la raíz cuadrada.",
+        "Incorpora una pequeña cantidad de información irrelevante o una figura simple que se deba interpretar, pero sin múltiples triángulos ni configuraciones complejas.",
+        "Puede solicitar al estudiante decidir entre mantener el resultado exacto (con raíz) o usar un redondeo especificado."
+      ],
+      "hard": [
+        "Contextos verbales más elaborados donde el triángulo rectángulo no está explícito, y el estudiante debe inferir qué segmentos forman la hipotenusa y los catetos (por ejemplo, descomposición de una trayectoria o de una estructura).",
+        "Problemas con más de un paso previo de cálculo antes de aplicar Pitágoras (por ejemplo, primero encontrar la hipotenusa o un cateto intermedio usando otra información, y luego hallar el cateto pedido).",
+        "Uso de números que produzcan radicandos no triviales (por ejemplo, diferencias de cuadrados grandes, como 26^2 - 10^2) y requieran manipular raíces no simplificables o factorización parcial del radicando.",
+        "Presencia de distractores numéricos o de más de un triángulo en el mismo esquema, donde solo uno es relevante para el cálculo del cateto solicitado.",
+        "Exigencia explícita de justificación intermedia en el enunciado (por ejemplo, indicar cuál relación de Pitágoras se usa o comparar magnitudes para decidir si el resultado es razonable), aunque la respuesta final sea de opción múltiple."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados que no indiquen con claridad cuál es la hipotenusa cuando no se presenta un dibujo; si no hay figura, nombrar explícitamente el lado opuesto al ángulo recto como hipotenusa.",
+      "No usar letras o nombres de lados distintos en el texto y en la fórmula (por ejemplo, usar c como cateto en un contexto y como hipotenusa en otro); mantener una correspondencia clara entre notación y descripción.",
+      "No mezclar varios triángulos en el texto sin indicar de forma inequívoca a cuál se refiere la pregunta (por ejemplo, “el triángulo ABC” versus “el triángulo DEF”).",
+      "Evitar expresiones vagas como “el otro lado” cuando haya más de un lado posible; preferir “el cateto adyacente a…” o “el cateto opuesto a…”.",
+      "No incluir medidas innecesarias que puedan confundirse con la hipotenusa (por ejemplo, diagonales de otras figuras) sin identificarlas; si son distractores, deben estar claramente asociadas a otro objeto.",
+      "Especificar siempre el formato de la respuesta cuando haya posibilidad de dos interpretaciones (por ejemplo, “entregar el resultado en forma decimal, aproximando a un decimal”, o “dejar el resultado en forma exacta con raíz”).",
+      "Evitar configuraciones en las que no esté explícito que el ángulo es recto; si no se marca el ángulo de 90°, indicar en el texto que se trata de un triángulo rectángulo.",
+      "No usar la misma letra para distintas longitudes en partes diferentes del problema (por ejemplo, no reutilizar a para un segmento distinto al cateto a en Pitágoras)."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_en_vez_de_resta",
+        "description": "El estudiante usa la fórmula de la hipotenusa para encontrar un cateto, es decir, plantea a^2 = c^2 + b^2 en lugar de a^2 = c^2 - b^2, obteniendo un valor de cateto demasiado grande.",
+        "how_to_address": "Enfatizar el rol de la hipotenusa como el lado mayor y mostrar mediante ejemplos numéricos que la suma de cuadrados solo aplica para calcular la hipotenusa. Trabajar comparaciones: si la hipotenusa es 10 y un cateto es 6, el cateto faltante no puede medir más de 10, lo que obliga a restar."
+      },
+      {
+        "name": "Orden_incorrecto_de_la_resta",
+        "description": "El estudiante plantea la expresión como b^2 - c^2 en lugar de c^2 - b^2, produciendo un radicando negativo o un valor que no tiene sentido geométrico.",
+        "how_to_address": "Refuerza la idea de que siempre se resta el cuadrado del cateto conocido al cuadrado de la hipotenusa. Usar representaciones visuales donde se comparen áreas de cuadrados construidos sobre los lados para fijar la dirección de la sustracción."
+      },
+      {
+        "name": "Mala_aplicacion_de_la_raiz",
+        "description": "El estudiante interpreta mal la raíz cuadrada de la diferencia de cuadrados, escribiendo expresiones incorrectas como √c^2 - √b^2 o sacando la raíz antes de restar.",
+        "how_to_address": "Trabajar el uso correcto de paréntesis y el orden de operaciones: primero calcular c^2 y b^2, luego restar, y recién al final aplicar la raíz cuadrada. Proponer ejercicios que comparen (√(c^2 - b^2)) con (√c^2 - √b^2) para evidenciar la diferencia numérica."
+      },
+      {
+        "name": "Asignacion_erronea_de_hipotenusa",
+        "description": "El estudiante toma como hipotenusa un lado que no es el opuesto al ángulo recto (por ejemplo, en un rectángulo, confunde un lado con la diagonal) y usa su valor como c.",
+        "how_to_address": "Reforzar la identificación de la hipotenusa siempre como el lado opuesto al ángulo recto. Usar varias figuras (triángulo aislado, triángulo dentro de un rectángulo, triángulo en contexto de una escalera) donde se señale explícitamente el ángulo recto y se identifique la hipotenusa."
+      },
+      {
+        "name": "Desconocimiento_de_la_naturaleza_del_resultado",
+        "description": "El estudiante rechaza respuestas con raíces no exactas o comete errores de redondeo importantes, asumiendo que los resultados deben ser siempre enteros.",
+        "how_to_address": "Mostrar ejemplos donde la longitud de un lado no sea un número entero y se exprese correctamente en forma radical o decimal aproximada. Practicar el uso explícito de instrucciones de redondeo y discutir por qué ambas representaciones (exacta y aproximada) son válidas según el contexto."
+      },
+      {
+        "name": "Errores_aritmeticos_en_los_cuadrados",
+        "description": "El estudiante se equivoca al elevar al cuadrado (por ejemplo, 7^2 = 14 o 1.5^2 = 1.10) o al restar los cuadrados, dando un resultado erróneo aunque el planteo sea correcto.",
+        "how_to_address": "Reforzar cálculo de cuadrados de números frecuentes y revisar estrategias para multiplicación rápida. Trabajar tablas de cuadrados de 1 a 20 y ejercicios específicos de resta de cuadrados antes de incorporar la raíz cuadrada."
+      },
+      {
+        "name": "Interpretacion_geometrica_incorrecta",
+        "description": "El estudiante obtiene un valor numérico que contradice la configuración geométrica (por ejemplo, un cateto mayor que la hipotenusa) y aun así lo acepta como respuesta.",
+        "how_to_address": "Practicar la verificación de plausibilidad: comparar el resultado con la hipotenusa y el otro cateto, y usar el criterio de que ningún cateto puede ser mayor que la hipotenusa. Incluir en el entrenamiento preguntas donde se deba decidir si una solución es posible geométricamente."
+      }
+    ],
+    "future_targets": [
+      "Resolución de problemas geométricos más complejos que combinan Pitágoras con cálculo de áreas y perímetros de figuras compuestas.",
+      "Aplicación del Teorema de Pitágoras para determinar distancias entre puntos en el plano cartesiano.",
+      "Introducción y uso de razones trigonométricas (seno, coseno, tangente) en triángulos rectángulos, donde la comprensión de las relaciones entre lados es fundamental.",
+      "Trabajo con la circunferencia y el círculo en situaciones donde se requiera Pitágoras para calcular radios, cuerdas o apotemas.",
+      "Modelación de situaciones físicas básicas (por ejemplo, fuerzas, desplazamientos, diagonales en construcciones) que utilizan triángulos rectángulos y el cálculo de sus lados.",
+      "Comprensión de la noción de norma y distancia en contextos de álgebra lineal elemental (distancia entre vectores, longitud de vectores en el plano).",
+      "Análisis de funciones cuadráticas y representaciones geométricas que utilizan el concepto de distancia euclidiana."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "gráfica"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "mixed",
+      "decimals",
+      "radicals_simple"
+    ],
+    "required_image_types": []
+  }
+}

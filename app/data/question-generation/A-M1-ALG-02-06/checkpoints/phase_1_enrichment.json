@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas de contexto cotidiano o científico donde dos magnitudes están en proporción directa (si una aumenta, la otra también, manteniendo constante el cociente).",
+        "Uso explícito de igualdad de razones del tipo a/b = c/x para modelar la situación y encontrar el valor desconocido.",
+        "Aplicación de la regla de tres simple directa, incluyendo el uso de multiplicación cruzada para despejar la incógnita.",
+        "Verificación básica de la razonabilidad del resultado en el contexto (orden de magnitud, sentido del crecimiento, unidades).",
+        "Problemas con una sola incógnita y una única relación proporcional directa entre dos magnitudes.",
+        "Uso de tablas de proporcionalidad directa (filas o columnas) siempre que se resuelvan mediante igualdad de razones o regla de tres."
+      ],
+      "out_of_scope": [
+        "Regla de tres compuesta (más de dos magnitudes relacionadas simultáneamente).",
+        "Situaciones de proporcionalidad inversa u otras relaciones no lineales (cuadráticas, exponenciales, etc.).",
+        "Problemas que requieren primero determinar si la relación es proporcional a partir de datos incompletos o experimentales (eso corresponde a reconocimiento de proporcionalidad, no a su uso).",
+        "Uso de porcentajes, tasas de variación u otros contextos donde la estrategia principal NO sea la regla de tres simple directa (esos se evalúan en otros átomos específicos).",
+        "Ecuaciones lineales generales sin contexto proporcional (por ejemplo, ax + b = c sin interpretación de razón).",
+        "Trabajo avanzado con funciones (gráficos de funciones, pendiente de recta, interpretación de coeficientes) más allá de la igualdad de razones.",
+        "Cálculos que exijan técnicas algebraicas complejas (por ejemplo, manejo de fracciones algebraicas con binomios) más allá del despeje simple."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01",
+        "A-M1-ARI-01-02",
+        "A-M1-ALG-01-01",
+        "A-M1-ALG-01-02"
+      ],
+      "common_traps": [
+        "Interpretar erróneamente la situación como proporción directa cuando la relación no es estrictamente proporcional (por ejemplo, costos con cargo fijo o promociones tipo 2x1).",
+        "Plantear la igualdad de razones invirtiendo una sola de las fracciones (a/b = x/c en lugar de a/b = c/x), lo que genera un resultado recíproco.",
+        "Confundir qué magnitud se ubica en numerador y cuál en denominador, generando proporciones inconsistentes con el contexto (por ejemplo, tiempo sobre distancia en una fracción y distancia sobre tiempo en la otra).",
+        "Olvidar mantener el mismo orden en las razones (parejas correspondientes) y mezclar datos (por ejemplo, usar primero cantidad y luego precio en una razón, y luego precio y cantidad en la otra).",
+        "Errores de cálculo en la multiplicación cruzada o en el despeje de la incógnita (por ejemplo, no dividir por el factor correcto).",
+        "No revisar si el resultado tiene sentido (por ejemplo, obtener resultados no enteros cuando el contexto exige enteros, o cantidades negativas en contextos donde no aplica).",
+        "Confundir la proporcionalidad con una simple regla mnemotécnica sin interpretación, lo que dificulta resolver problemas menos estandarizados o con datos en formato tabular."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Problemas en lenguaje directo y breve, con un solo paso de proporcionalidad explícito y sin información irrelevante.",
+        "Números enteros pequeños y positivos, que conducen a resultados enteros (por ejemplo, múltiplos simples).",
+        "Relación de proporcionalidad directa claramente enunciada (por ejemplo, \"si se mantiene la misma velocidad\", \"el precio por unidad es constante\").",
+        "Estructura casi prototípica de regla de tres (por ejemplo, cantidad-precio, tiempo-distancia) con datos ordenados y unidad de medida igual para cada magnitud.",
+        "No requiere cambio de unidades ni interpretación compleja de los datos.",
+        "La variable desconocida está en el numerador de la razón y el despeje involucrado es del tipo x = (b·c)/a, sin fracciones previas."
+      ],
+      "medium": [
+        "Problemas con redacción moderadamente más extensa, con datos presentados en párrafos o tablas, o con algo de información no relevante que debe ignorarse.",
+        "Uso de números enteros medianos o decimales sencillos que pueden dar resultados no enteros, aunque manejables (por ejemplo, con uno o dos decimales).",
+        "Necesidad de identificar, a partir del texto, qué magnitudes son proporcionales, sin que se mencione expresamente \"proporción directa\".",
+        "La incógnita puede estar en cualquier posición de la igualdad de razones (numerador o denominador), requiriendo un despeje un poco menos inmediato.",
+        "Puede requerir una pequeña conversión de unidades sencilla (por ejemplo, minutos a horas, gramos a kilogramos) antes o después de la regla de tres.",
+        "Exige una verificación básica de la coherencia del resultado con el contexto (por ejemplo, revisar que una cantidad de tiempo no sea menor cuando debería aumentar)."
+      ],
+      "hard": [
+        "Problemas con contexto más elaborado o menos habitual, que exigen interpretar cuidadosamente el texto para identificar la relación proporcional (por ejemplo, tasas científicas, densidad, consumo por unidad).",
+        "Presencia de datos en formatos mixtos (tablas + texto, tasas expresadas como \"por cada\" o con unidades compuestas como km/h, g/L) que deben traducirse a una razón numérica.",
+        "Uso de fracciones o decimales no triviales que conllevan cálculos menos directos y resultados no enteros, pudiendo incluir redondeos contextualmente razonables.",
+        "La relación proporcional puede estar implícita en varios pasos, pero la resolución central sigue siendo una regla de tres simple (por ejemplo, primero interpretar una tasa y luego escalarla).",
+        "Necesidad de discriminar que solo una parte de la información del problema corresponde a una relación proporcional directa (el resto es distractor) sin que se requiera un modelo compuesto.",
+        "Exige un análisis más cuidadoso de la razonabilidad del resultado, por ejemplo, comparando con valores de referencia del contexto o detectando que una respuesta muy grande o muy pequeña es inverosímil.",
+        "Puede requerir uso de lenguaje simbólico ligero (por ejemplo, usar letras para etiquetar magnitudes en un esquema de razones) antes de aplicar la igualdad de razones."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si la relación entre magnitudes es directa, inversa o no proporcional (especificar constancia de la razón o dar datos que lo muestren con claridad).",
+      "No usar expresiones vagas como \"aumenta\" o \"disminuye\" sin indicar si es en la misma o en distinta dirección que la otra magnitud cuando esto sea crucial para identificar proporcionalidad directa.",
+      "Evitar problemas donde pueda interpretarse más de una magnitud como variable de interés sin señalar explícitamente qué se debe calcular.",
+      "No mezclar distintas unidades para la misma magnitud sin indicar claramente la conversión necesaria (por ejemplo, combinar kilómetros y metros sin señalar explícitamente las equivalencias o sin que sean evidentes).",
+      "Evitar redactar datos en orden distinto al que se presenta luego en la igualdad de razones de forma confusa (por ejemplo, mencionar primero 3 kg cuestan $x y luego 5 kg cuestan $y sin marcar con claridad a qué corresponde cada número).",
+      "No usar términos cotidianos ambiguos como \"promo\", \"paquete\", \"descuento\" cuando estos supongan rupturas de la proporcionalidad simple (dos por uno, cargo fijo); si aparecen, debe quedar explícito que la relación sigue siendo proporcional.",
+      "Evitar representar razones con notación inusual o ambigua (por ejemplo, \"3 en 5\" sin especificar unidades) que dificulte identificar numerador y denominador.",
+      "No incluir contextos donde existan múltiplos posibles de interpretación del \"por cada\" (por ejemplo, mezcla de personas y grupos) sin clarificar el nivel al que aplica la razón."
+    ],
+    "error_families": [
+      {
+        "name": "Cruces_incoherentes",
+        "description": "El estudiantado plantea la igualdad de razones con datos mal emparejados (por ejemplo, tiempo con distancia en la primera razón y distancia con tiempo en la segunda), obteniendo una proporción donde no se mantiene la razón correcta.",
+        "how_to_address": "Insistir en el uso sistemático de una tabla o esquema que ordene primero una magnitud (fila o columna) y luego la otra, destacando que cada razón debe mantener el mismo orden. Trabajar con ejemplos donde se compare la proporción correcta e incorrecta y se discuta por qué una no tiene sentido en el contexto."
+      },
+      {
+        "name": "Inversion_selectiva_de_razon",
+        "description": "Se invierte una sola de las fracciones (por ejemplo, a/b = x/c en vez de a/b = c/x), lo que produce un valor recíproco del correcto, aun cuando el procedimiento formal (multiplicación cruzada) se aplique bien.",
+        "how_to_address": "Entrenar el hábito de escribir las dos razones completas antes de realizar la multiplicación cruzada, y luego verificar con un caso sencillo si el resultado debería ser mayor o menor. Mostrar explícitamente el efecto de invertir una sola razón sobre el resultado esperado."
+      },
+      {
+        "name": "Confusion_directa_inversa",
+        "description": "El estudiantado interpreta como proporcionalidad directa una situación que en realidad es inversa (por ejemplo, número de trabajadores y tiempo de trabajo) y aplica regla de tres directa.",
+        "how_to_address": "Comparar intencionalmente pares de situaciones directas e inversas, explicitando con frases del tipo \"si esta magnitud aumenta, ¿qué pasa con la otra?\". Trabajar criterios de identificación previos antes de aplicar mecánicamente una regla de tres."
+      },
+      {
+        "name": "Errores_en_multiplicacion_cruzada",
+        "description": "Aunque la proporción esté bien planteada, fallan los cálculos (producto mal hecho, omitir la división, dividir por el número incorrecto).",
+        "how_to_address": "Reforzar el esquema general x = (b·c)/a asociado a un diagrama de regla de tres, y proponer ejercicios cortos orientados solo a la parte operativa (sin contexto) para automatizar productos y divisiones necesarios."
+      },
+      {
+        "name": "Manejo_deficiente_de_unidades",
+        "description": "Se mezclan unidades sin conversión (por ejemplo, horas con minutos, metros con kilómetros), o se obtiene una respuesta con unidad incorrecta o sin unidad.",
+        "how_to_address": "Insistir en que cada magnitud tenga siempre las mismas unidades antes de armar la razón. Incorporar preguntas específicas sobre la unidad esperada del resultado y ejercicios donde se deba decidir si se requiere conversión previa o posterior."
+      },
+      {
+        "name": "No_verificar_razonabilidad",
+        "description": "Aceptar cualquier resultado numérico sin evaluar si es razonable (por ejemplo, un precio menor cuando se compra más cantidad, o tiempos negativos).",
+        "how_to_address": "Incorporar sistemáticamente una etapa de \"chequeo rápido\" en la resolución: pedir que estimen mentalmente en qué rango debería estar la respuesta y comparen con el resultado obtenido. Proponer ítems donde varias alternativas se descarten solo por inverosimilitud contextual."
+      },
+      {
+        "name": "Dificultad_con_decimales_y_fracciones",
+        "description": "Errores al manipular fracciones o decimales en el contexto de la regla de tres (por ejemplo, multiplicar o dividir incorrectamente por 0,5 o 1/3).",
+        "how_to_address": "Practicar casos de regla de tres con razones que involucren fracciones y decimales simples, reforzando equivalencias (0,5 = 1/2, 0,25 = 1/4) y mostrando estrategias de cálculo mental o en columnas para reducir el peso operacional."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y modelación de funciones lineales a partir de contextos proporcionales (pendiente como razón constante).",
+      "Resolución de problemas de porcentajes y tasas (interés simple, variaciones porcentuales) que se apoyan en la idea de proporcionalidad directa.",
+      "Trabajo con razones y escalas en geometría (planos, mapas, escalas de reducción o ampliación).",
+      "Interpretación de gráficos donde la linealidad y la proporción directa sean centrales (crecimiento constante, velocidad constante).",
+      "Resolución de problemas de física básica (velocidad constante, densidad, caudal, concentración) donde se modelan relaciones directas entre magnitudes.",
+      "Regla de tres compuesta y situaciones con varias magnitudes interrelacionadas.",
+      "Uso de proporciones en estadística descriptiva (frecuencias relativas, tasas, razones de comparación entre grupos)."
+    ],
+    "representation_variants": [
+      "verbal",
+      "simbólica",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "decimals_1dp",
+      "decimals_2dp",
+      "simple_fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

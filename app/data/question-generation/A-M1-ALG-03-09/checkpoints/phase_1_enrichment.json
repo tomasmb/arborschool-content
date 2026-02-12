@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Representar en la recta numérica la solución de una sola inecuación lineal de una variable del tipo x > a, x ≥ a, x < b, x ≤ b",
+        "Interpretar una representación en recta numérica (punto abierto/cerrado y sombreado) para identificar la inecuación correspondiente",
+        "Usar correctamente círculo/punto abierto para desigualdades estrictas y cerrado/lleno para no estrictas",
+        "Sombrear en la dirección adecuada según el signo de la desigualdad (derecha para > o ≥, izquierda para < o ≤)",
+        "Trabajar con soluciones que se extienden hacia infinito en uno de los dos sentidos de la recta",
+        "Ubicar correctamente el valor límite en una escala de números enteros positivos y negativos"
+      ],
+      "out_of_scope": [
+        "Sistemas de inecuaciones o intersección/unión de varios intervalos en la misma recta",
+        "Inecuaciones con valor absoluto, productos o cocientes (por ejemplo, |x-2| > 3, (x-1)(x+2) ≥ 0)",
+        "Inecuaciones cuadráticas o de grado mayor a 1",
+        "Inecuaciones con dos variables y regiones en el plano cartesiano",
+        "Uso obligatorio de notación de intervalos con corchetes y paréntesis en lugar de la recta numérica",
+        "Contextos que exigen interpretar restricciones de dominio o rango de funciones (eso pertenece a otros átomos)",
+        "Trabajar con números irracionales exactos (como √2 o π) ubicados con precisión en la recta"
+      ],
+      "prerequisites": [
+        "A-M1-NT-01-01: Comprender la recta numérica y la ubicación de números enteros",
+        "A-M1-NT-01-02: Comparar y ordenar números enteros (incluyendo negativos)",
+        "A-M1-ALG-03-07: Interpretar el símbolo de desigualdad (<, >, ≤, ≥) en enunciados simples",
+        "A-M1-ALG-03-08: Resolver inecuaciones lineales simples de una variable del tipo x > a, x ≤ b"
+      ],
+      "common_traps": [
+        "Confundir el sentido del sombreado (marcar hacia la izquierda cuando la solución es x > a o x ≥ a)",
+        "Usar círculo cerrado cuando la desigualdad es estricta, o abierto cuando es no estricta",
+        "Ubicar el punto límite en la marca numérica equivocada, sobre todo con números negativos",
+        "Ignorar el signo de la desigualdad y graficar como si fuera siempre ≥ o ≤",
+        "No considerar que la solución se extiende indefinidamente y terminar el sombreado en un punto arbitrario",
+        "Interpretar que la recta numérica solo incluye naturales y no enteros negativos cuando estos aparecen en la inecuación"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones directas del tipo x > a o x ≥ a, con a entero pequeño (entre -5 y 5), dado explícitamente",
+        "La tarea es solo una: o bien elegir la gráfica correcta para una inecuación dada, o bien elegir la inecuación que corresponde a una única gráfica simple",
+        "Escalas de la recta numérica marcadas con todos los enteros relevantes y sin necesidad de interpolar entre marcas",
+        "Opciones de respuesta claramente diferenciadas en un solo aspecto (por ejemplo, solo cambia abierto/cerrado o solo cambia el sentido del sombreado)",
+        "Sin presencia de números negativos en el valor límite o, si los hay, con recta centrada en cero y marcas muy evidentes"
+      ],
+      "medium": [
+        "Incluir números enteros negativos como valor límite, requiriendo ubicar correctamente el punto en la recta",
+        "Inecuaciones con ≤ o ≥ donde se debe atender con cuidado al uso de círculo abierto o cerrado",
+        "Escalas donde no todos los enteros están etiquetados, obligando a inferir posiciones intermedias pero con patrón regular claro",
+        "Distractores que combinan dos tipos de errores frecuentes (por ejemplo, sombrear en sentido correcto pero usar abierto/cerrado incorrecto, o viceversa)",
+        "Ítems que piden interpretar una gráfica dada para reconstruir la inecuación simbólica incluyendo el signo correcto"
+      ],
+      "hard": [
+        "Rectas numéricas donde las marcas muestran solo algunos valores de referencia y el valor límite es un entero que no está etiquetado, obligando a contar intervalos con atención",
+        "Uso simultáneo de número límite negativo y desigualdad no estricta (por ejemplo x ≤ -4), donde se combinan dos focos de error típicos",
+        "Distractores muy cercanos a la respuesta correcta, que difieren en pequeños detalles (sentido del sombreado, tipo de círculo y posición del punto), exigiendo lectura muy precisa",
+        "Contextos verbales donde el estudiante debe primero traducir a inecuación y luego a la recta numérica (por ejemplo, referencias a \"más de\", \"a lo más\", \"como máximo\"), siempre dentro de inecuaciones lineales simples",
+        "Rectas numéricas con origen desplazado (por ejemplo, centradas en 10 o -10) que exigen reubicación mental del cero y del valor límite"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar rectas numéricas sin escala clara o sin al menos dos marcas numéricas etiquetadas que permitan deducir las demás posiciones",
+      "No usar puntos que visualmente puedan confundirse entre \"abiertos\" y \"cerrados\"; asegurar un código gráfico consistente (por ejemplo, círculo blanco vs círculo negro bien diferenciados)",
+      "No mezclar distintos estilos de representación de inclusión/exclusión (como usar corchetes o llaves en la imagen) que no hayan sido trabajados en el currículo",
+      "Evitar instrucciones vagas como \"marca la región correcta\" sin precisar si se refiere al punto límite, al sombreado o a ambos",
+      "No usar formulaciones verbales ambiguas del tipo \"por lo menos\", \"como mucho\", sin indicar claramente la relación con ≤ o ≥ cuando el ítem no pretende evaluar lenguaje natural",
+      "Evitar rectas partidas o con saltos que puedan hacer pensar en intervalos disjuntos (eso corresponde a otros átomos)",
+      "No usar escalas no uniformes en la recta numérica (distancia visual entre marcas debe corresponder a saltos numéricos constantes)"
+    ],
+    "error_families": [
+      {
+        "name": "Sentido_de_desigualdad_invertido",
+        "description": "El estudiante representa x > a como si fuera x < a (o viceversa), sombreando hacia el lado contrario de la recta numérica.",
+        "how_to_address": "En ítems diagnósticos, incluir distractores que representen el sombreado invertido. En la retroalimentación, enfatizar la lectura de la desigualdad como \"mayor que\" significa hacia la derecha y \"menor que\" hacia la izquierda, usando ejemplos con cero y con números negativos."
+      },
+      {
+        "name": "Confusion_abierto_cerrado",
+        "description": "El estudiante no distingue entre desigualdades estrictas y no estrictas, usando el mismo tipo de punto en ambos casos.",
+        "how_to_address": "Diseñar ítems donde la única diferencia entre opciones sea el tipo de círculo en el valor límite. La retroalimentación debe vincular explícitamente el trazo gráfico con la presencia o ausencia de la línea debajo del signo de desigualdad (≤, ≥)."
+      },
+      {
+        "name": "Mala_ubicacion_del_valor_limite",
+        "description": "El estudiante ubica el punto límite en la marca errónea, especialmente cuando se trata de números negativos o cuando no todas las marcas están etiquetadas.",
+        "how_to_address": "Incluir ítems donde varias opciones difieren solo en la posición del punto. En la explicación, insistir en leer la escala, contar las marcas y recordar que los enteros negativos decrecen hacia la izquierda."
+      },
+      {
+        "name": "Ignorar_la_extension_infinita",
+        "description": "El estudiante representa solo un segmento finito sombreado y no comprende que la solución continúa indefinidamente en uno de los sentidos.",
+        "how_to_address": "Usar ítems donde algunas opciones muestran sombreado que termina abruptamente. En la retroalimentación, explicitar que expresiones como x > a describen infinitos valores y se representan con un sombreado que se prolonga a lo largo de toda la recta en esa dirección."
+      },
+      {
+        "name": "Fijarse_solo_en_el_punto_limite",
+        "description": "El estudiante decide la respuesta mirando solo si el punto está bien ubicado, sin considerar el tipo de círculo ni la dirección del sombreado.",
+        "how_to_address": "Proponer ítems donde varias opciones tengan el punto en la misma posición pero difieran en abierto/cerrado o en el sentido del sombreado. Orientar a revisar sistemáticamente tres aspectos: posición, tipo de punto y dirección del sombreado."
+      },
+      {
+        "name": "Lectura_simbolica_deficiente",
+        "description": "Errores al pasar de una frase verbal a una inecuación simbólica o al interpretar ≤, ≥, <, > en el contexto del problema, lo que lleva luego a una representación gráfica incorrecta.",
+        "how_to_address": "En ítems mixtos, separar pasos: primero elegir la inecuación correcta a partir de un enunciado, luego representar o elegir la recta numérica. Reforzar equivalencias lingüísticas como \"a lo más\" ↔ ≤ y \"al menos\" ↔ ≥."
+      }
+    ],
+    "future_targets": [
+      "Representación de soluciones de sistemas de inecuaciones de una variable en la recta numérica",
+      "Uso de notación de intervalos y su relación con la recta numérica",
+      "Análisis de dominios de funciones reales utilizando restricciones expresadas con inecuaciones",
+      "Resolución y representación de inecuaciones con valor absoluto en la recta numérica",
+      "Interpretación de regiones solución de inecuaciones de dos variables en el plano cartesiano",
+      "Comprensión de conceptos de límite y entornos (abierto/cerrado) en cursos posteriores, apoyándose en la idea de puntos incluidos o excluidos"
+    ],
+    "representation_variants": [
+      "simbolica",
+      "grafica_recta_numerica",
+      "verbal_contextual"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_negatives",
+      "simple_decimals"
+    ],
+    "required_image_types": [
+      "number_line"
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Calcular el valor de f(x) en funciones lineales y afines de la forma f(x) = mx + n para un valor numérico dado de x",
+        "Sustituir correctamente un valor numérico (entero, fracción o decimal) en la expresión algebraica de una función lineal o afín",
+        "Realizar operaciones con números racionales (suma, resta, multiplicación y división sencillas) al evaluar f(x)",
+        "Interpretar en contexto el valor obtenido de f(x) como costo, distancia, temperatura, etc., cuando la función se presenta en un enunciado verbal",
+        "Trabajar con tablas donde se da la regla simbólica y se pide completar uno o pocos valores faltantes aplicando f(x) = mx + n",
+        "Evaluar funciones lineales o afines con coeficientes negativos o fraccionarios"
+      ],
+      "out_of_scope": [
+        "Encontrar el valor de x a partir de un valor dado de f(x) (resolver ecuaciones lineales)",
+        "Determinar la expresión algebraica de la función a partir de datos o un gráfico",
+        "Analizar crecimiento, decrecimiento, pendiente o interpretación de parámetros m y n",
+        "Trabajar con funciones no lineales (cuadráticas, exponenciales, valor absoluto, por tramos, etc.)",
+        "Operar con expresiones algebraicas generales sin llegar a un valor numérico (por ejemplo, calcular f(a), f(x+h))",
+        "Componer funciones (calcular f(g(x)) u operaciones entre funciones)",
+        "Lectura o interpretación de gráficos cartesianos de funciones lineales (eso pertenece a otros átomos)"
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01",
+        "A-M1-ARIT-02-01",
+        "A-M1-ALG-01-01",
+        "A-M1-ALG-04-01"
+      ],
+      "common_traps": [
+        "Confundir la sustitución de x por un número con \"pegar\" el número al lado de la variable, sin considerar la multiplicación (por ejemplo, escribir 2x con x = 3 como 23 en lugar de 2·3)",
+        "Olvidar aplicar la multiplicación antes de la suma o resta (prioridad de operaciones) al evaluar expresiones del tipo mx + n",
+        "Operar incorrectamente con fracciones o decimales, especialmente en el término independiente o en el coeficiente de x",
+        "Sustituir el valor de x solo en una de las apariciones de la variable cuando esta se repite (aunque en este átomo la forma estándar es mx + n, pueden aparecer variaciones simples)",
+        "Ignorar el signo negativo de x o de algún coeficiente, cambiando el resultado",
+        "Interpretar mal el contexto verbal y evaluar la función en el valor equivocado (por ejemplo, usar días en vez de horas)",
+        "Confundir evaluación de la función con el cálculo de la razón de cambio (m) o con el costo fijo (n)"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Funciones dadas explícitamente en forma simbólica sencilla f(x) = mx + n, con m y n enteros pequeños (entre -5 y 5) y al menos uno de ellos positivo",
+        "Valor de x entero pequeño y positivo (entre 0 y 10), sin necesidad de trabajar con números negativos",
+        "Operaciones involucradas son una sola multiplicación simple y una suma o resta simple, sin fracciones ni decimales",
+        "Enunciados directos y breves, sin contexto o con contexto muy transparente, donde se indica explícitamente el valor de x a usar",
+        "Solo se pide evaluar la función en un único valor de x"
+      ],
+      "medium": [
+        "Funciones afines con coeficientes enteros de valor absoluto mayor (hasta 20) o con uno de los coeficientes fraccionario o decimal sencillo (por ejemplo, 1/2, 0,25, 1,5)",
+        "Uso de valores de x que pueden ser negativos, fraccionarios o decimales simples",
+        "Presencia de al menos dos operaciones que involucran racionales (por ejemplo, multiplicar una fracción por un entero y luego sumar otra fracción)",
+        "Contextos verbales donde la función se describe con palabras y el estudiante debe identificar correctamente m y n antes de sustituir",
+        "Solicitar evaluar la función en dos valores distintos de x, sin requerir comparar ni analizar, solo calcular f(x) en ambos"
+      ],
+      "hard": [
+        "Funciones con coeficientes racionales menos amigables (por ejemplo, fracciones impropias, decimales con dos cifras) que exigen manejo cuidadoso de operaciones con racionales",
+        "Valores de x negativos o fraccionarios que, al sustituirse, generan resultados que no son enteros, requiriendo simplificación de fracciones o manejo de decimales",
+        "Enunciados contextuales donde la función está implícita en el texto y el estudiante debe construir mentalmente la expresión afín antes de evaluar",
+        "Situaciones donde se debe evaluar la misma función en más de un valor y luego interpretar uno de esos resultados dentro del contexto (por ejemplo, costo para cierto número de unidades) sin que esto implique comparar tasas ni resolver ecuaciones",
+        "Ítems que combinan sustitución y cuidado con signos, paréntesis o coeficientes negativos (por ejemplo, f(x) = -3x - 2 evaluada en x negativo o fraccionario)"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no queda claro qué valor de x se debe usar; siempre explicitar el valor de entrada o la variable independiente correspondiente al contexto",
+      "No usar funciones con varias letras (por ejemplo, f(x) = ax + b) si a y b no están definidos numéricamente en el mismo ítem",
+      "Evitar mezclar en el mismo ítem la tarea de evaluar f(x) con la de encontrar x a partir de f(x); eso puede confundir el objetivo del átomo",
+      "No utilizar expresiones tipográficamente ambiguas como 2x+3/4 sin paréntesis; preferir notaciones claras como 2x + 3/4 o (2x + 3)/4 según corresponda",
+      "Evitar contextos donde podría haber más de una interpretación razonable para la variable independiente (por ejemplo, \"tiempo\" que podría ser días u horas); definir siempre la unidad",
+      "No usar términos coloquiales que puedan confundirse con operaciones matemáticas (por ejemplo, \"doblar\" sin decir explícitamente \"multiplicar por 2\") cuando la regla debe quedar precisa",
+      "Evitar presentar tablas donde no se distingue claramente qué columna corresponde a x (entrada) y cuál a f(x) (salida)",
+      "No usar notaciones alternativas de funciones (como y = mx + n y f(x) = mx + n mezcladas en la misma pregunta) si no queda claro que representan lo mismo"
+    ],
+    "error_families": [
+      {
+        "name": "Sustitución_incompleta_o_errónea",
+        "description": "El estudiante no reemplaza correctamente x por el valor dado en toda la expresión, o lo hace de forma inadecuada (por ejemplo, pega el número en vez de multiplicar).",
+        "how_to_address": "Destacar el uso de paréntesis al sustituir (f(3) = 2·(3) + 1) y practicar ejemplos donde x aparece en diferentes posiciones, remarcando que toda x se reemplaza por el mismo número y que 2x significa 2 multiplicado por x."
+      },
+      {
+        "name": "Desconocimiento_de_prioridad_de_operaciones",
+        "description": "El estudiante suma o resta antes de multiplicar, o realiza operaciones en un orden incorrecto, obteniendo un valor de f(x) equivocado.",
+        "how_to_address": "Reforzar la lectura ordenada de la expresión (primero multiplicaciones, luego sumas/restas) y usar ejemplos comparativos mostrando cómo cambia el resultado si se altera el orden. Incluir ejercicios donde se marcan explícitamente los pasos intermedios."
+      },
+      {
+        "name": "Errores_con_racionales",
+        "description": "Dificultades al operar con fracciones o decimales al evaluar la función: mala suma/resta de fracciones, conversión errónea entre fracción y decimal, o manejo incorrecto de signos en racionales.",
+        "how_to_address": "Practicar sustitución en funciones con coeficientes fraccionarios/decimales en forma progresiva, recordando reglas básicas para sumar/multiplicar fracciones y trabajar con ejemplos con representación mixta (fracción y decimal) aclarando qué formato de respuesta se espera."
+      },
+      {
+        "name": "Manejo_incorrecto_de_signos",
+        "description": "Se pierden o cambian signos al sustituir x o al operar (por ejemplo, tratar -2·(-3) como -6 o escribir 5 - 2·3 como 5 - 2 - 3).",
+        "how_to_address": "Insistir en el uso de paréntesis cuando x es negativa (f(-2) = 3·(-2) + 1) y hacer énfasis en reglas de signos en multiplicaciones y sumas/restas. Proponer ejercicios enfocados solo en casos con negativos para automatizar el procedimiento."
+      },
+      {
+        "name": "Confusion_entrada_salida",
+        "description": "El estudiante confunde el valor de entrada (x) con el de salida (f(x)), responde con x en vez de f(x) o interpreta f(x) como un producto f·x.",
+        "how_to_address": "Trabajar con tablas de valores explícitas (columna x, columna f(x)), interpretar cada par (x, f(x)) dentro de un contexto sencillo y reforzar el significado de \"imagen\" y \"preimagen\" con ejemplos cotidianos (entrada/salida)."
+      },
+      {
+        "name": "Lectura_incorrecta_del_contexto",
+        "description": "En problemas verbales, el estudiante usa el valor incorrecto para x o interpreta mal qué cantidad está modelando la función (por ejemplo, toma el costo como x en vez del número de unidades).",
+        "how_to_address": "Practicar el subrayado de datos clave en el enunciado, identificar explícitamente qué representa x y qué representa f(x), y traducir la situación a una frase del tipo \"para cada x (unidades de ...), f(x) es ...\" antes de sustituir."
+      }
+    ],
+    "future_targets": [
+      "Interpretar y construir tablas de valores para funciones lineales y otras funciones",
+      "Analizar la variación de una función lineal (creciente, decreciente) y relacionarla con el coeficiente de la variable",
+      "Determinar la expresión de una función lineal a partir de puntos, tablas o gráficos",
+      "Resolver ecuaciones lineales de la forma f(x) = k para encontrar preimágenes",
+      "Modelar situaciones reales mediante funciones lineales y afines, incluyendo la identificación de parámetros como pendiente y término independiente",
+      "Trabajar con composiciones sencillas de funciones y cambios de variable",
+      "Aplicar funciones lineales en contextos de proporcionalidad y porcentajes",
+      "Comprender y utilizar la noción de función en contextos más complejos (cuadráticas, exponenciales, por tramos), donde la evaluación puntual sigue siendo fundamental"
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal_contextual",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_negatives",
+      "simple_fractions",
+      "simple_decimals",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

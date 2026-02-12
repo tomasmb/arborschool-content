@@ -1,0 +1,111 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Transformar una sustracción de enteros de la forma a - b en una adición del opuesto del sustraendo: a - b = a + (-b).",
+        "Identificar correctamente el minuendo y el sustraendo en expresiones de la forma a - b y a - (-b).",
+        "Aplicar reglas de adición de números enteros para resolver la operación transformada.",
+        "Trabajar con expresiones que involucren uno o dos pasos directos de transformación y suma (por ejemplo, (-4) - 7, 5 - (-3)).",
+        "Reescribir verbalmente una sustracción como suma del opuesto (por ejemplo, entender que 'quitar -3' equivale a 'sumar 3')."
+      ],
+      "out_of_scope": [
+        "Uso de recta numérica para representar o justificar la operación (eso corresponde a otro átomo de representación).",
+        "Sustracciones que involucren fracciones o decimales (este átomo se focaliza en enteros).",
+        "Resolución de expresiones con más de dos operaciones combinadas (por ejemplo, con paréntesis múltiples o varios signos seguidos).",
+        "Justificación formal con lenguaje algebraico avanzado o demostraciones (se centra en el procedimiento operativo).",
+        "Aplicación en contextos geométricos o estadísticos donde la dificultad principal no sea la operación con enteros."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión del conjunto de los números enteros y su representación en la recta numérica.",
+        "A-M1-NUM-01-02: Dominio de la adición de números enteros (reglas de signos para suma).",
+        "A-M1-NUM-01-03: Comprensión de opuesto aditivo: a + (-a) = 0.",
+        "A-M1-NUM-01-04: Identificación de minuendo y sustraendo en una sustracción simple de enteros."
+      ],
+      "common_traps": [
+        "Confundir el opuesto del sustraendo con su valor original (por ejemplo, transformar 5 - (-3) en 5 + (-3) en vez de 5 + 3).",
+        "Perder un signo al reescribir: escribir 7 - (-4) como 7 - 4 en lugar de 7 + 4.",
+        "Aplicar reglas de multiplicación de signos en vez de las de suma al resolver la operación transformada.",
+        "Convertir mal el minuendo en su opuesto en lugar del sustraendo (por ejemplo, transformar 6 - 2 como (-6) + (-2)).",
+        "Resolver mentalmente como sustracción directa sin hacer explícita la transformación a suma, cometiendo errores de signo.",
+        "Interpretar a - (-b) como a - b por pensar que 'dos signos negativos se anulan' sin distinguir suma de resta."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ítems con un solo paso de transformación y suma, donde ambos números son enteros pequeños (entre -10 y 10).",
+        "Expresiones con un solo signo negativo o ninguno: a - b, con a y b positivos, o uno de ellos negativo pero sin paréntesis: (-4) - 2.",
+        "Formulación puramente simbólica, sin contexto verbal que pueda generar interpretaciones adicionales.",
+        "Opciones de respuesta claramente diferenciadas en signo y magnitud, evitando distractores muy cercanos.",
+        "Casos directos como a - b con a > b y ambos positivos, que luego se transforma en a + (-b) y se suma fácilmente."
+      ],
+      "medium": [
+        "Ítems donde al menos uno de los enteros es negativo y se usan paréntesis en el sustraendo: a - (-b) o (-a) - b.",
+        "Valores de mayor magnitud (aprox. entre -30 y 30) que obligan a un poco más de cálculo mental pero siguen siendo manejables.",
+        "Contextos verbales simples en los que el estudiante debe traducir la situación a una sustracción de enteros antes de transformar a suma.",
+        "Combinar transformación y suma en secuencia con un pequeño encadenamiento, por ejemplo, dos sustracciones sencillas que se resuelven una a una pero sin paréntesis anidados.",
+        "Incluir distractores que representan errores de transformación de signos (por ejemplo, confundir a - (-b) con a - b)."
+      ],
+      "hard": [
+        "Ítems que involucran sustracciones con ambos términos negativos y sustraendo con signo explícito: (-a) - (-b).",
+        "Expresiones con dos sustracciones seguidas que exijan aplicar la transformación más de una vez, manteniéndose dentro del foco del átomo (por ejemplo, una expresión con dos restas lineales sin otras operaciones).",
+        "Contextos verbales menos directos, donde la identificación de qué número es minuendo y cuál es sustraendo no es inmediata (por ejemplo, cambios sucesivos de temperatura o saldo).",
+        "Números enteros de mayor magnitud (hasta dos cifras absolutas grandes como 70 u 80), que hacen más propenso el error de cálculo si no se domina la regla de transformación.",
+        "Distractores diseñados específicamente para recoger errores combinados: pérdida de signo al transformar y aplicación incorrecta de regla de adición de enteros."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones con varios signos seguidos sin paréntesis claros (por ejemplo, escribir 5 - - 3 en lugar de 5 - (-3)).",
+      "No mezclar en un mismo ítem operaciones de suma y resta de enteros con multiplicación o división, ya que difumina el foco en la transformación a suma del opuesto.",
+      "Evitar enunciados verbales donde no quede claro qué cantidad corresponde al minuendo y cuál al sustraendo (usar frases que expliciten 'antes' y 'después', 'se le resta', 'disminuye en', etc.).",
+      "No usar el lenguaje coloquial 'se anulan los signos' sin aclaración, porque puede llevar a confundir suma con resta.",
+      "Evitar notaciones poco estándar, como omitir paréntesis en el sustraendo negativo, que pueden cambiar la interpretación del signo.",
+      "No plantear preguntas en las que la tarea principal sea comparar resultados (mayor/menor) sin pedir explícitamente que se realice la transformación a suma.",
+      "Evitar opciones de respuesta que solo difieran por notación pero sean algebraicamente equivalentes si el objetivo es discriminar por procedimiento (por ejemplo, -3 y +(-3) en un ítem de cálculo)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_de_opuesto_del_sustraendo",
+        "description": "El estudiante al transformar a - b escribe a + b en lugar de a + (-b), o mantiene el sustraendo con el mismo signo que en la expresión original, especialmente en casos con negativos como 7 - (-4) → 7 + (-4).",
+        "how_to_address": "Enfatizar con ejemplos variados que el opuesto aditivo de un número cambia su signo; usar tablas de pares (n, -n) y ejercicios de solo identificar opuestos sin operar; practicar la transformación paso a paso antes de resolver la suma."
+      },
+      {
+        "name": "Pérdida_o_doble_conteo_de_signos",
+        "description": "Al reescribir la sustracción, se omite un signo o se agregan signos de más, produciendo expresiones incorrectas como (-3) - (-5) → (-3) + --5 o (-3) + 5 → (-3) + (-5).",
+        "how_to_address": "Trabajar el uso sistemático de paréntesis en el sustraendo; entrenar la lectura en voz alta de la expresión ('menos menos cinco', 'más menos cinco') para verificar coherencia; proponer actividades de detección de errores en expresiones ya transformadas."
+      },
+      {
+        "name": "Aplicación_incorrecta_de_reglas_de_suma_de_enteros",
+        "description": "Tras transformar correctamente la sustracción a suma del opuesto, el error se produce al sumar los enteros, por ejemplo, (-4) + (-2) = 2 o 5 + (-3) = -2.",
+        "how_to_address": "Reforzar el átomo previo de adición de enteros, usando representaciones como la recta numérica o balances; enfatizar el criterio de 'mismo signo: se suman y se conserva el signo; distinto signo: se restan y se conserva el signo del de mayor valor absoluto'."
+      },
+      {
+        "name": "Tratamiento_de_la_resta_como_operación_conmutativa",
+        "description": "El estudiante intercambia el orden de los términos pensando que no altera el resultado, por ejemplo, transformar a - b como b - a o resolver -3 - 5 como 5 - 3.",
+        "how_to_address": "Contrastar con ejemplos numéricos simples donde a - b ≠ b - a; vincular con contexto (por ejemplo, 'saldo inicial menos gasto' no es lo mismo que 'gasto menos saldo inicial'); hacer ejercicios donde se compare explícitamente a - b y b - a."
+      },
+      {
+        "name": "Saltarse_la_transformación_explícita",
+        "description": "El estudiante intenta operar la sustracción de enteros directamente sin pasar por la etapa de transformación a suma del opuesto, lo que aumenta la probabilidad de errores de signo, especialmente con negativos.",
+        "how_to_address": "Diseñar actividades que exijan escribir primero la transformación simbólica antes de calcular; usar corrección guiada donde se marque como paso obligatorio la reescritura a + (-b); mostrar cómo la transformación simplifica el cálculo con ejemplos comparativos."
+      }
+    ],
+    "future_targets": [
+      "Resolución de expresiones con sumas y restas combinadas de enteros de mayor complejidad.",
+      "Operaciones con enteros en contextos algebraicos, como simplificar expresiones con términos semejantes (coeficientes enteros).",
+      "Resolución de ecuaciones lineales con coeficientes enteros donde es necesario trasladar términos de un lado a otro usando suma del opuesto.",
+      "Comprensión de la resta como suma del opuesto en contextos de vectores y desplazamientos en la recta numérica.",
+      "Trabajo con enteros en contextos de funciones lineales (por ejemplo, cambios en la variable dependiente).",
+      "Manejo de diferencias de medidas en estadística descriptiva (variaciones, desviaciones respecto de la media) usando enteros."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers"
+    ],
+    "required_image_types": []
+  }
+}

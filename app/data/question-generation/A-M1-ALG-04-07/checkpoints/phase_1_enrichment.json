@@ -1,0 +1,138 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de sistemas de ecuaciones lineales 2x2 con dos incógnitas mediante el método de reducción (suma y resta de ecuaciones).",
+        "Elección y cálculo de factores por los cuales multiplicar una o ambas ecuaciones para igualar (en valor absoluto) los coeficientes de una de las incógnitas.",
+        "Decisión entre sumar o restar las ecuaciones para lograr la eliminación de una incógnita una vez igualados u opuestos los coeficientes.",
+        "Resolución de la ecuación lineal resultante en una sola incógnita.",
+        "Obtención del valor de la segunda incógnita por sustitución en una de las ecuaciones originales o repitiendo el proceso de reducción.",
+        "Verificación básica de la solución reemplazando en ambas ecuaciones (como paso implícito o como alternativa en ítems más complejos).",
+        "Sistemas con soluciones enteras, fraccionarias o decimales exactas.",
+        "Uso del método de reducción en contextos verbales sencillos donde se presente o se pueda escribir el sistema explícitamente."
+      ],
+      "out_of_scope": [
+        "Sistemas de ecuaciones con más de dos incógnitas o más de dos ecuaciones.",
+        "Uso de métodos matriciales como Regla de Cramer, eliminación Gaussiana o Gauss-Jordan.",
+        "Uso del método de sustitución o igualación como procedimiento principal (pueden aparecer en distractores, pero no como método esperado).",
+        "Sistemas no lineales (por ejemplo, con productos de incógnitas, potencias o raíces de las incógnitas).",
+        "Discusión formal de tipos de solución (única, infinita, sin solución) con análisis de dependencia lineal o determinantes.",
+        "Interpretación gráfica detallada de sistemas de ecuaciones en el plano cartesiano (intersección de rectas) más allá de una breve referencia conceptual.",
+        "Problemas que requieren modelar desde cero situaciones verbales complejas donde el foco principal ya no es el procedimiento de reducción, sino la modelización avanzada."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01",
+        "A-M1-ALG-01-02",
+        "A-M1-ALG-02-01",
+        "A-M1-ALG-03-01",
+        "A-M1-ARI-01-01"
+      ],
+      "common_traps": [
+        "Creer que siempre se debe igualar el coeficiente de x y no considerar la variable que lleva a números más simples.",
+        "Multiplicar ambas ecuaciones pero no todos los términos de la ecuación (olvidar el término independiente).",
+        "Igualar coeficientes en valor absoluto, pero no en signos, de modo que al sumar las ecuaciones la incógnita no se elimina.",
+        "Elegir incorrectamente entre sumar o restar, resultando en duplicar el coeficiente en vez de eliminarlo.",
+        "Cometer errores de signo al distribuir factores negativos o al restar las ecuaciones (confundir ‘restar ecuaciones’ con ‘restar término a término desordenadamente’).",
+        "Olvidar simplificar la ecuación resultante y obtener una fracción mal calculada para la incógnita.",
+        "Sustituir el valor encontrado de una incógnita en una ecuación modificada en lugar de usar alguna de las originales, generando errores de arrastre.",
+        "No reconocer que un sistema puede llevar a una ecuación imposible (por ejemplo, 0 = 5) o indeterminada (0 = 0) al aplicar la reducción, y forzar una solución numérica errónea."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Sistemas con coeficientes pequeños (entre -5 y 5) y términos independientes simples, que permiten eliminación directa sin necesidad de multiplicar ninguna ecuación (por ejemplo, coeficientes ya opuestos o iguales).",
+        "Ecuaciones presentadas ya alineadas por términos (x, y, constante) de manera clara y ordenada.",
+        "Requieren como máximo una operación de suma o resta simple para eliminar la incógnita (por ejemplo, x + y y x − y).",
+        "La solución del sistema son números enteros pequeños, sin fracciones ni decimales.",
+        "No se incluye contexto verbal o, si lo hay, la traducción al sistema está prácticamente dada y el foco está en ejecutar el procedimiento de reducción.",
+        "No se exige verificar la solución ni interpretar su significado, solo encontrar los valores de las incógnitas."
+      ],
+      "medium": [
+        "Sistemas que requieren multiplicar una sola ecuación por un factor entero pequeño (entre -5 y 5) para igualar en valor absoluto los coeficientes de una incógnita.",
+        "Coeficientes alineados pero con signos que obligan a decidir correctamente entre sumar o restar las ecuaciones.",
+        "Soluciones enteras o fraccionarias con denominadores pequeños (por ejemplo, 2, 3, 4, 5).",
+        "Contextos verbales donde el estudiante debe identificar las variables y escribir el sistema antes de aplicar la reducción, pero el modelo es directo (por ejemplo, suma y diferencia, combinación lineal sencilla).",
+        "Incluyen distractores que representan errores típicos de signo, de elección de la variable a eliminar o de aplicación incorrecta del factor multiplicador.",
+        "Pueden requerir una comprobación implícita de la coherencia de la solución (por ejemplo, descartar una alternativa que no satisface ambas ecuaciones)."
+      ],
+      "hard": [
+        "Sistemas que requieren multiplicar ambas ecuaciones por factores distintos (enteros de valor absoluto entre 2 y 9) para igualar los coeficientes de una incógnita.",
+        "Presencia de coeficientes negativos en ambas ecuaciones, lo que aumenta la probabilidad de errores de signo en la suma o resta.",
+        "Sistemas que conducen a soluciones fraccionarias menos evidentes (denominadores mayores o que surgen de la reducción, como 6, 8, 9, 10).",
+        "Contextos verbales donde se debe: identificar correctamente qué cantidades modelar, plantear un sistema no inmediato (por ejemplo, con condiciones combinadas o totales y diferencias), y luego aplicar con precisión el método de reducción.",
+        "Ítems que exigen interpretar el resultado (por ejemplo, escoger la afirmación correcta sobre la solución o detectar si el sistema es incompatible o con infinitas soluciones a partir de la ecuación resultante 0 = k o 0 = 0).",
+        "Configuraciones donde hay varias formas posibles de eliminación y solo una de ellas es eficiente, de modo que una mala elección lleva a operaciones más largas o a errores, y el ítem discrimina por planificación del procedimiento.",
+        "Incluyen distractores que reflejan específicamente la confusión entre un sistema sin solución y uno con infinitas soluciones luego del proceso de reducción."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar consignas vagas como ‘resuelva el siguiente sistema’ cuando se quiere evaluar específicamente el método de reducción; aclarar enunciando ‘usando el método de reducción’ si es relevante para el propósito del ítem.",
+      "No mezclar en el mismo ítem indicaciones simultáneas de distintos métodos (por ejemplo, ‘resuelva mediante sustitución o reducción’), ya que dificulta taggear el átomo y evaluar el procedimiento específico.",
+      "No presentar las ecuaciones en desorden de términos (por ejemplo, y + 3 = 2x en una y 4x + 2 = y en otra) sin un formateo claro que alinee las incógnitas, ya que puede introducir confusión ajena al objetivo del átomo.",
+      "Evitar escribir las ecuaciones solo en lenguaje verbal complejo sin dar una versión simbólica clara del sistema, cuando el foco es el procedimiento algebraico más que la comprensión lectora.",
+      "No usar coeficientes o términos que hagan que la eliminación sea poco natural o extremadamente engorrosa (por ejemplo, fracciones complicadas en ambos lados) si el objetivo del ítem no es discriminar por manejo de fracciones.",
+      "Evitar preguntas donde más de una alternativa corresponda a un par (x, y) que satisface solo una de las ecuaciones pero no ambas, sin dejar claro que se debe satisfacer el sistema completo.",
+      "No formular ítems donde se pueda llegar a la respuesta con un truco aritmético rápido o inspección numérica simple, eludiendo la aplicación del método de reducción.",
+      "Cuidar que, si se evalúa reconocimiento de sistemas sin solución o con infinitas soluciones, el enunciado explicite que se debe determinar ‘el tipo de solución del sistema’ para no inducir al estudiante a buscar forzadamente una pareja (x, y)."
+    ],
+    "error_families": [
+      {
+        "name": "Factor_incompleto",
+        "description": "El estudiante multiplica una ecuación por un número para igualar coeficientes, pero olvida multiplicar todos los términos, especialmente el término independiente. Esto altera la ecuación y lleva a una solución incorrecta.",
+        "how_to_address": "En la retroalimentación, enfatizar la estructura de la ecuación como igualdad y mostrar explícitamente cómo cada término, incluidos ambos lados, se multiplica por el mismo factor. Incluir ejemplos donde se marque cada término afectado por el factor."
+      },
+      {
+        "name": "Signos_invertidos",
+        "description": "Errores al trabajar con signos negativos: al distribuir un factor negativo, al sumar o restar ecuaciones, o al transponer términos, generando coeficientes o resultados con signo incorrecto.",
+        "how_to_address": "Mostrar paso a paso una versión correcta destacando dónde cambian los signos. Proponer mini-ejercicios de práctica solo de suma y resta de ecuaciones con negativos antes de presentar el sistema completo."
+      },
+      {
+        "name": "Eliminacion_fallida",
+        "description": "Después de igualar los coeficientes en valor absoluto, el estudiante elige la operación equivocada (suma en lugar de resta o viceversa), obteniendo un coeficiente distinto de cero y no eliminando la variable.",
+        "how_to_address": "Explicar la lógica: si los coeficientes tienen el mismo signo, se debe restar; si tienen signos opuestos, se debe sumar. Incluir tablas o ejemplos contrastivos que muestren ambas posibilidades y su efecto en la eliminación."
+      },
+      {
+        "name": "Mala_eleccion_variable",
+        "description": "El estudiante intenta eliminar la incógnita que produce factores de multiplicación más complejos, fracciones o números grandes, aumentando las probabilidades de error aritmético y alargando el procedimiento.",
+        "how_to_address": "En la retroalimentación, mostrar una estrategia de planificación: comparar coeficientes y elegir la variable cuya eliminación requiera factores más simples. Presentar dos soluciones paralelas (buena y mala elección) para evidenciar la diferencia en dificultad."
+      },
+      {
+        "name": "Error_en_aislamiento",
+        "description": "Una vez obtenida la ecuación con una sola incógnita, el estudiante comete errores al despejarla (por ejemplo, al dividir por el coeficiente o al manejar fracciones).",
+        "how_to_address": "Repasar brevemente el algoritmo para resolver ecuaciones lineales simples, con énfasis en la operación inversa y en la división por el coeficiente. Proponer ejercicios cortos de despeje antes o después del sistema para reforzar este paso."
+      },
+      {
+        "name": "Sustitucion_erronea",
+        "description": "El estudiante obtiene correctamente el valor de una incógnita pero lo sustituye mal en la ecuación original (por ejemplo, en el lugar equivocado, con signo cambiado o en una ecuación modificada incorrectamente).",
+        "how_to_address": "Recomendar escribir claramente la ecuación elegida y subrayar el término que será reemplazado antes de hacer la sustitución, evitando hacerlo mentalmente."
+      },
+      {
+        "name": "No_reconoce_sin_o_infinitas_soluciones",
+        "description": "Al aplicar la reducción, el estudiante llega a una igualdad del tipo 0 = 5 o 0 = 0 y no interpreta correctamente que el sistema es incompatible o con infinitas soluciones; intenta seguir despejando o inventa un valor para las incógnitas.",
+        "how_to_address": "Incluir ejemplos específicos donde se muestre el resultado de la reducción y se explique su significado en términos de las rectas correspondientes (paralelas o coincidentes). Proponer ejercicios de clasificación de sistemas solo a partir de la ecuación resultante."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-04-08",
+      "A-M1-ALG-04-09",
+      "A-M1-ALG-05-01",
+      "A-M1-ALG-06-01",
+      "A-M1-FUN-01-02",
+      "A-M1-MOD-01-01"
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "mixta_simbolica_verbal",
+      "tabular_simple"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integer_mixed",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

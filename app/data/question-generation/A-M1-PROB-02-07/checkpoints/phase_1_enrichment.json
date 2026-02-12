@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Determinar la(s) moda(s) de un conjunto de datos NO agrupados, presentados como lista o tabla simple de frecuencias absolutas.",
+        "Realizar conteo de frecuencias a partir de datos crudos (valores repetidos en una lista).",
+        "Reconocer y clasificar el conjunto de datos como amodal, unimodal o multimodal en función de las frecuencias.",
+        "Comparar frecuencias absolutas para identificar el o los valores con frecuencia máxima.",
+        "Trabajar con datos numéricos sencillos (enteros y eventualmente decimales simples) sin necesidad de operaciones aritméticas avanzadas."
+      ],
+      "out_of_scope": [
+        "Cálculo de media, mediana u otras medidas de tendencia central o dispersión.",
+        "Trabajo con datos agrupados en intervalos (tablas con rangos de clase).",
+        "Interpretación de gráficos estadísticos (barras, histogramas, circulares, boxplots).",
+        "Uso de frecuencias relativas, porcentuales o acumuladas para determinar la moda.",
+        "Datos categóricos complejos con muchas categorías semánticamente similares que generen ambigüedad en la modalidad.",
+        "Situaciones que requieran estimar la moda a partir de distribuciones continuas o funciones de densidad.",
+        "Demostrar propiedades teóricas de la moda o justificar su uso como medida de tendencia central."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de números enteros y su comparación básica (mayor, menor, igual).",
+        "A-M1-PROB-02-01: Lectura e interpretación de listas y tablas simples de datos no agrupados.",
+        "A-M1-PROB-02-02: Conteo de repeticiones de un mismo valor en un conjunto pequeño de datos (frecuencia absoluta)."
+      ],
+      "common_traps": [
+        "Confundir el valor de la moda con el valor de la frecuencia (por ejemplo, responder \"3\" porque aparece 3 veces, en lugar del dato que se repite).",
+        "Pensar que siempre debe existir moda y no considerar la posibilidad de conjunto amodal.",
+        "No reconocer el caso multimodal cuando dos o más valores tienen exactamente la misma frecuencia máxima.",
+        "Contar mal las repeticiones por leer apurado la lista o saltarse datos iguales que no están consecutivos.",
+        "Asumir que el número mayor del conjunto es la moda solo porque es el más grande, sin revisar su frecuencia.",
+        "Ignorar datos que aparecen una sola vez cuando se comparan frecuencias, lo que puede llevar a errores al decidir si el conjunto es amodal.",
+        "Malinterpretar tablas de frecuencia simple, tomando la etiqueta de fila o columna equivocada como la moda."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Conjuntos de datos pequeños (entre 5 y 8 valores) presentados como lista explícita en una sola línea.",
+        "Valores numéricos enteros positivos pequeños (entre 0 y 20) sin decimales ni fracciones.",
+        "Caso claramente unimodal, con un valor que se repite más veces de forma evidente (por ejemplo, aparece al menos dos veces más que los demás).",
+        "Datos con repeticiones agrupadas visualmente (por ejemplo, valores iguales juntos o casi juntos).",
+        "Preguntas que solo piden identificar la moda, sin necesidad de clasificar el conjunto como unimodal/multimodal/amodal."
+      ],
+      "medium": [
+        "Conjuntos de datos de tamaño moderado (entre 9 y 15 valores) donde el conteo requiere más atención.",
+        "Presencia de hasta un tipo de número no entero sencillo (por ejemplo, un par de decimales con un decimal, como 2,5 o 3,2) mezclado con enteros.",
+        "Casos unimodales o bimodales donde las frecuencias máximas están cercanas y requieren comparación explícita.",
+        "Datos no necesariamente agrupados visualmente; el estudiante debe recorrer toda la lista o tabla para contar.",
+        "Ítems que además de identificar la moda piden clasificar el conjunto como amodal, unimodal o multimodal, pero con un máximo de dos modas.",
+        "Tablas simples de frecuencia absoluta donde el estudiante debe identificar correctamente qué columna corresponde al valor y cuál a la frecuencia."
+      ],
+      "hard": [
+        "Conjuntos de datos más extensos (entre 16 y 25 valores) que exigen un conteo sistemático y ordenado.",
+        "Casos en que las frecuencias máximas están empatadas para tres o más valores, generando una distribución claramente multimodal.",
+        "Situaciones donde el conjunto es amodal, pero incluye varios valores repetidos exactamente dos veces, lo que puede inducir al error de considerar cualquiera como moda.",
+        "Datos presentados en formato mixto: por ejemplo, lista de datos crudos + tabla incompleta que debe ser mentalmente completada para identificar la moda.",
+        "Presencia de algunos valores negativos o decimales simples que obligan a distinguir bien los datos antes de contarlos.",
+        "Ítems que requieren determinar simultáneamente la(s) moda(s) y clasificar el tipo de distribución (amodal/unimodal/multimodal) en contextos verbales más largos (por ejemplo, descripción de encuestas), sin dar explícitamente una tabla de frecuencias.",
+        "Distractores construidos con valores de alta frecuencia pero no máxima, o con la cantidad de repeticiones en lugar del dato modal."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas como \"¿qué número se repite?\" cuando hay varios que se repiten; especificar claramente que se busca el valor o valores que se repiten MÁS veces.",
+      "Evitar conjuntos de datos donde haya más de 3 valores empatados con la misma frecuencia máxima si la pregunta no pide explícitamente reconocer una distribución multimodal.",
+      "No mezclar en la misma tabla valores y frecuencias en filas/columnas sin etiquetado claro; siempre indicar qué columna corresponde al dato y cuál a la frecuencia.",
+      "Evitar descripciones verbales muy largas de contextos (encuestas, resultados, etc.) si no se enumeran con claridad los datos recolectados.",
+      "No usar el término \"moda\" en enunciados de opción múltiple de manera coloquial (por ejemplo, \"lo más común\" o \"lo que más se ve\") sin aclarar que se trata de la medida estadística.",
+      "Evitar que los distractores incluyan simultáneamente un conjunto de valores (por ejemplo, {2 y 3}) y valores individuales sin indicar si la respuesta puede tener más de una moda.",
+      "No mezclar este átomo con interpretación de gráficos estadísticos; si se usan frecuencias deben estar en listas o tablas textuales, no en gráficos que requieran lectura visual detallada.",
+      "Evitar listas de datos donde un mismo valor aparezca escrito de formas distintas (por ejemplo, 1,0 y 1) si no se ha aclarado que representan el mismo número."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir moda con frecuencia",
+        "description": "El estudiante identifica correctamente cuántas veces aparece el valor modal, pero responde ese número en lugar del dato mismo (por ejemplo, responde \"4\" porque el dato modal aparece 4 veces).",
+        "how_to_address": "En los enunciados y alternativas, enfatizar la frase \"¿qué valor es la moda?\" o \"¿cuál(es) dato(s) es(son) la(s) moda(s)?\". Incluir distractores que sean frecuencias para poder diagnosticar este error y diferenciarlo de otros."
+      },
+      {
+        "name": "Asumir que la moda siempre existe",
+        "description": "El estudiante fuerza la elección de un valor como moda incluso cuando no hay un dato con frecuencia estrictamente mayor que los demás (caso amodal).",
+        "how_to_address": "Incluir alternativas que expliciten la opción \"no hay moda\". Diseñar ítems donde todos los valores aparezcan exactamente una vez para que la identificación del caso amodal sea necesaria."
+      },
+      {
+        "name": "Ignorar multimodalidad",
+        "description": "El estudiante identifica solo una moda cuando hay dos o más valores con la misma frecuencia máxima, o descarta respuestas con más de un valor.",
+        "how_to_address": "Plantear preguntas donde se indique que puede haber más de una moda, o pedir explícitamente \"¿qué valor o valores son la(s) moda(s)?\". Incluir distractores con un solo valor cuando la respuesta correcta requiere dos o más valores."
+      },
+      {
+        "name": "Conteo incompleto o desordenado",
+        "description": "El estudiante omite apariciones de algunos datos, repite conteos o se confunde cuando los valores no están agrupados visualmente, llevando a identificar un valor no modal como moda.",
+        "how_to_address": "Usar conjuntos donde la respuesta requiera revisar toda la lista. Incluir opciones distractoras asociadas a errores de conteo comunes (por ejemplo, considerar solo la primera parte de la lista)."
+      },
+      {
+        "name": "Interpretación errónea de tablas de frecuencia simple",
+        "description": "Al trabajar con tablas, el estudiante toma la columna de frecuencias como datos o interpreta equivocadamente las etiquetas, eligiendo como moda el valor de la frecuencia máxima en lugar del dato asociado.",
+        "how_to_address": "Rotular explícitamente las columnas (\"Dato\", \"Frecuencia\"). Construir distractores que incluyan el valor de la frecuencia máxima para detectar este error. Pedir a veces que se indique tanto la moda como cuántas veces aparece para reforzar el vínculo dato-frecuencia."
+      },
+      {
+        "name": "Elegir el valor numéricamente mayor o menor como moda",
+        "description": "El estudiante cree que la moda es el número más grande o el más pequeño del conjunto, sin revisar su frecuencia.",
+        "how_to_address": "Diseñar conjuntos en los que el número mayor y el menor no sean los más frecuentes, y ofrecerlos como distractores. En el enunciado, enfatizar que la moda depende del número de repeticiones, no del tamaño del número."
+      },
+      {
+        "name": "Confundir moda con otra medida de tendencia central",
+        "description": "El estudiante calcula (o intenta calcular) promedio o mediana en lugar de identificar el dato más frecuente.",
+        "how_to_address": "Evitar mencionar promedio o mediana en el enunciado. Construir distractores que correspondan al promedio o mediana del conjunto para detectar este error, y asegurarse de que al menos un ítem del bloque de evaluación pida explícitamente comparar la idea de \"más frecuente\" versus \"promedio\"."
+      }
+    ],
+    "future_targets": [
+      "Cálculo e interpretación de la moda en tablas de frecuencia de datos agrupados en intervalos.",
+      "Comparación de medidas de tendencia central (media, mediana, moda) para describir y analizar distribuciones.",
+      "Interpretación de gráficos estadísticos (barras, histogramas, diagramas de caja) donde la moda se reconoce visualmente.",
+      "Análisis de distribuciones sesgadas y elección de la medida de tendencia central más adecuada según el contexto.",
+      "Estadística descriptiva en contextos de toma de decisiones (por ejemplo, interpretar \"lo más frecuente\" en estudios de mercado o encuestas).",
+      "Introducción a la distribución de probabilidad empírica a partir de frecuencias relativas y su relación con la moda.",
+      "Trabajo con software estadístico básico donde se leen y contrastan medidas de tendencia central calculadas automáticamente."
+    ],
+    "representation_variants": [
+      "lista_de_datos_no_agrupados_en_notacion_de_conjunto_o_secuencia",
+      "tabla_de_frecuencia_absoluta_simple_con_columnas_dato_y_frecuencia",
+      "descripcion_verbal_de_resultados_de_una_encuesta_con_listado_explícito_de_respuestas",
+      "listado_de_datos_separados_por_comas_o_espacios_en_contexto_aplicado"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_including_zero_and_negative_small",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Factorizar expresiones algebraicas sencillas mediante extracción de un único factor común monomio.",
+        "Identificar el máximo común divisor de los coeficientes numéricos de todos los términos de un polinomio.",
+        "Identificar la menor potencia común de cada variable presente en todos los términos.",
+        "Reescribir la expresión original como producto entre el factor común monomio y el polinomio que queda dentro del paréntesis.",
+        "Trabajar con expresiones con 2 a 4 términos, de una o varias variables (por ejemplo x, a, b, x e y).",
+        "Incluir coeficientes enteros positivos y negativos, y eventualmente coeficientes fraccionarios sencillos.",
+        "Reconocer el 1 y el -1 como posibles factores comunes numéricos (por ejemplo, extraer -1 para cambiar signos)."
+      ],
+      "out_of_scope": [
+        "Factorización por agrupación de términos que requiera más de un paso de organización previa no evidente.",
+        "Factorización que combine factor común con trinomio cuadrado perfecto, diferencia de cuadrados u otros productos notables en una misma pregunta.",
+        "Factorización de expresiones racionales con polinomios en numerador y denominador.",
+        "Factorización de polinomios de grado alto que requieran métodos avanzados (por ejemplo, Ruffini o raíces especiales).",
+        "Contextos verbales que exijan modelar una situación real antes de factorizar (modelación está fuera del foco del átomo).",
+        "Uso de identidades trigonométricas, logarítmicas u operaciones con radicales complejos como parte de la factorización.",
+        "Factor común que no sea un monomio (por ejemplo, factor común binomio)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo de operaciones básicas con números enteros (suma, resta, multiplicación, divisiones sencillas).",
+        "A-M1-ALG-01-02: Comprensión de potencias con exponente natural y sus propiedades básicas (producto de potencias de igual base).",
+        "A-M1-ALG-01-03: Identificación de términos, coeficientes y parte literal en un monomio.",
+        "A-M1-ALG-01-04: Reducción de términos semejantes en expresiones algebraicas.",
+        "A-M1-ALG-01-05: Cálculo del máximo común divisor de números enteros sencillos."
+      ],
+      "common_traps": [
+        "No identificar correctamente el máximo común divisor y extraer un factor numérico que no es el máximo, dejando un factor común adicional dentro del paréntesis.",
+        "Olvidar que todas las variables del factor común deben estar presentes en todos los términos; extraer una variable que no es común a todos.",
+        "Confundir la menor potencia común con la mayor, extrayendo una potencia demasiado alta e introduciendo exponentes negativos o términos fraccionarios no deseados.",
+        "No distribuir correctamente los signos al extraer un factor común negativo, cambiando incorrectamente los signos dentro del paréntesis.",
+        "Perder un término o modificar un coeficiente al reescribir la expresión dentro del paréntesis, especialmente cuando hay más de tres términos.",
+        "Olvidar el factor común externo y responder solo con el polinomio entre paréntesis, dejando la factorización incompleta.",
+        "Creer que una expresión ya está factorizada solo por reordenar términos, sin extraer efectivamente el factor común."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Expresiones con 2 términos (binomios) con una sola variable y coeficientes enteros pequeños (entre -9 y 9, excluyendo 0).",
+        "Todos los términos comparten claramente el mismo factor común numérico y literal, sin necesidad de calcular un MCD no trivial (por ejemplo 4x y 8x, 5a^2 y 10a^2).",
+        "Exponentes naturales pequeños (1 o 2) y la misma potencia en todos los términos, de modo que la parte literal común sea evidente.",
+        "Factor común positivo, evitando cambios de signo que puedan generar confusiones.",
+        "Ítems donde la tarea principal es reconocer visualmente el factor común y reescribir la expresión, con pocas operaciones intermedias.",
+        "Alternativas de respuesta que difieran claramente en el factor común (por ejemplo, errores groseros) para hacer notoria la opción correcta."
+      ],
+      "medium": [
+        "Expresiones con 3 o 4 términos, aún con una sola variable o con dos variables pero con patrón simple (por ejemplo, x e y presentes en todos los términos).",
+        "Coeficientes enteros que requieren cálculo simple de MCD (por ejemplo, MCD de 6, 9 y 15), incluyendo algunos negativos.",
+        "Presencia de variables con exponentes distintos, de modo que haya que identificar la menor potencia común (por ejemplo, x^3, x^2, x).",
+        "Uso de factor común negativo cuando ayuda a simplificar la expresión dentro del paréntesis, exigiendo manejo cuidadoso de signos.",
+        "Ítems donde distinguir entre extraer el máximo factor común y un factor no máximo es relevante para elegir la alternativa correcta.",
+        "Presencia ocasional de coeficientes fraccionarios que se simplifican al extraer el factor común, pero con denominadores pequeños (2, 3, 4)."
+      ],
+      "hard": [
+        "Expresiones con 3 o 4 términos que involucren dos variables (por ejemplo x e y) con diferentes exponentes en cada término, exigiendo determinar la menor potencia común de cada variable simultáneamente.",
+        "Coeficientes enteros de dos dígitos que requieren un MCD menos inmediato (por ejemplo, 12, 18, 30; 24, 36, 60).",
+        "Mezcla de coeficientes positivos y negativos en magnitudes variadas, donde conviene extraer un factor común negativo para simplificar el polinomio restante.",
+        "Expresiones en las que el factor común involucra tanto un número como más de una variable, por ejemplo 6x^2y en todos los términos.",
+        "Ítems que proponen alternativas donde todas parecen factorizaciones razonables pero solo una usa el máximo factor común posible, obligando a revisar cuidadosamente el MCD y las potencias mínimas.",
+        "Situaciones donde la expresión presenta términos desordenados o con espacio visual poco favorecedor, de modo que el estudiante deba reorganizar mentalmente para ver el factor común.",
+        "Incorporar coeficientes fraccionarios y enteros a la vez, de manera que la extracción del factor común implique simplificar fracciones (como factor común 1/2 o 3, según convenga)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde no haya un factor común monomio distinto de 1, para no inducir a pensar que siempre debe factorizase aunque no sea posible o conveniente.",
+      "No mezclar en la misma pregunta distintos métodos de factorización (por ejemplo, factor común y diferencia de cuadrados) sin indicarlo claramente, ya que este átomo se centra solo en factor común monomio.",
+      "No usar instrucciones vagas como 'simplifique' sin especificar que se requiere 'factorizar extrayendo factor común'.",
+      "Evitar que dos alternativas representen la misma factorización pero en orden diferente de factores o términos, salvo que se explicite que se consideran equivalentes; esto puede percibirse como distractor ambiguo.",
+      "No incluir alternativas que difieran solo en un reordenamiento de términos de la expresión original sin haber extraído factor común, pues pueden confundirse con expresiones equivalentes.",
+      "Evitar coeficientes muy grandes o poco habituales que puedan hacer dudar si se espera realmente el máximo factor común o solo una factorización parcial.",
+      "Clarificar en el enunciado si se pide 'extraer el máximo factor común' cuando esta condición es crítica para discriminar entre alternativas.",
+      "No usar notación ambigua de exponentes (por ejemplo, sin paréntesis en expresiones lineales extensas) que pueda hacer dudar qué parte es potencia de qué base.",
+      "Evitar expresiones donde solo algunos términos compartan un factor común evidente y otros no, si eso puede sugerir agrupación; eso pertenece a otro átomo."
+    ],
+    "error_families": [
+      {
+        "name": "Factor_comun_no_maximo",
+        "description": "El estudiante extrae un factor común válido pero que no es el máximo posible (por ejemplo, extrae 2x en lugar de 4x), dejando un factor común adicional en el polinomio que queda dentro del paréntesis.",
+        "how_to_address": "En las alternativas, incluir factorizaciones con factores comunes no máximos como distractores. En la retroalimentación, enfatizar el uso del MCD de los coeficientes y la menor potencia de las variables. Proponer pasos explícitos: primero MCD numérico, luego variables comunes y potencias mínimas."
+      },
+      {
+        "name": "Error_en_signos_con_factor_negativo",
+        "description": "Al extraer un factor común negativo, el estudiante no cambia correctamente los signos de los términos dentro del paréntesis, produciendo una expresión no equivalente.",
+        "how_to_address": "Diseñar ítems donde el uso de factor negativo simplifique el polinomio, contrastando alternativas con signos correctos e incorrectos. En la retroalimentación, mostrar el paso intermedio de multiplicar el factor extraído por el polinomio interno para verificar que se recupera la expresión original."
+      },
+      {
+        "name": "Variable_no_comun_extraida",
+        "description": "Se extrae una variable en el factor común aunque no está presente en todos los términos (por ejemplo, se pone x en el factor común cuando algunos términos no tienen x).",
+        "how_to_address": "Incluir distractores donde el factor común tiene una variable de más. Insistir en la regla: 'el factor común debe dividir a cada término'; sugerir verificar cada término dividiéndolo mentalmente por el factor propuesto."
+      },
+      {
+        "name": "Confusion_potencias_minimas",
+        "description": "Se elige como parte literal del factor común la mayor potencia existente de una variable en lugar de la menor presente en todos los términos (por ejemplo, extraer x^3 cuando uno de los términos solo tenía x).",
+        "how_to_address": "Proponer ejercicios específicos donde las potencias sean distintas y comparar opciones de factor común. Destacar la idea de 'mínimo exponente compartido'. Invitar a rearmar la expresión original multiplicando para comprobar que no aparezcan exponentes mayores que los originales."
+      },
+      {
+        "name": "Perdida_o_modificacion_de_terminos",
+        "description": "Al reescribir la expresión factorizada, el estudiante altera un coeficiente, pierde un término o inventa uno nuevo, especialmente en expresiones con más de tres términos.",
+        "how_to_address": "Incorporar ítems que valoren la equivalencia al expandir la expresión factorizada. Recomendar como estrategia de verificación expandir mentalmente el producto para revisar si todos los términos de la expresión original aparecen correctamente."
+      },
+      {
+        "name": "No_reconocer_1_o_menos_1_como_factor_comun",
+        "description": "El estudiante no considera la posibilidad de extraer 1 o -1 como factor común y, por tanto, no ve una forma factorizada equivalente más simple, en particular para ordenar signos.",
+        "how_to_address": "Plantear ejercicios donde extraer -1 produzca una expresión más estándar (por ejemplo, con el primer coeficiente positivo). Explicar que 1 y -1 también son factores numéricos válidos y que pueden ayudar a simplificar la apariencia del polinomio."
+      },
+      {
+        "name": "Confusion_factorizacion_vs_simplificacion_aritmetica",
+        "description": "El estudiante intenta 'resolver' la expresión calculando valores numéricos o reduciendo términos semejantes en lugar de factorizar.",
+        "how_to_address": "En la redacción, usar verbos claros como 'factorizar' y no 'simplificar' cuando el objetivo es evidentemente la factorización. En la retroalimentación, diferenciar entre reducir términos semejantes (sumar/restar) y extraer un factor común (transformar suma en producto)."
+      }
+    ],
+    "future_targets": [
+      "Factorización por agrupación de términos en polinomios de mayor complejidad.",
+      "Aplicación de productos notables (trinomio cuadrado perfecto, diferencia de cuadrados, suma y diferencia de cubos).",
+      "Factorización completa de polinomios combinando distintos métodos en una misma expresión.",
+      "Resolución de ecuaciones polinómicas sencillas mediante factorización (por ejemplo, ax^2 + bx = 0).",
+      "Simplificación de fracciones algebraicas mediante extracción de factores comunes en numerador y denominador.",
+      "Estudio de funciones polinómicas, reconocimiento de raíces y ceros a partir de la forma factorizada.",
+      "Manipulación de expresiones algebraicas en contextos de modelación (por ejemplo, cálculo de áreas o volúmenes expresados como productos)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_negatives",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

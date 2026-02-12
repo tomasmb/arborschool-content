@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicación de potencias con distinta base pero con el MISMO exponente entero o racional positivo (por ejemplo a^n · b^n).",
+        "Reconocimiento de la estructura a^n · b^n y su reescritura como (a·b)^n.",
+        "Aplicación directa de la propiedad a^n · b^n = (a·b)^n en ejercicios puramente numéricos.",
+        "Aplicación de la propiedad con exponentes fraccionarios positivos (por ejemplo 1/2, 2/3, 3/4).",
+        "Trabajo con bases racionales positivas (fracciones propias e impropias) en forma simbólica.",
+        "Simplificación numérica de la multiplicación de bases antes o después de aplicar la propiedad, cuando los números son manejables mentalmente o con cálculo escrito sencillo."
+      ],
+      "out_of_scope": [
+        "Potencias con exponente negativo (a^(-n)) o cero.",
+        "Potencias con exponentes irracionales (por ejemplo √2, π).",
+        "Multiplicación de potencias con igual base y distinto exponente (propiedad a^m · a^n = a^(m+n)).",
+        "División de potencias, potencias de potencias o potencias de un producto más complejas (por ejemplo (ab)^m · (ab)^n).",
+        "Contextos de raíces y radicales que requieran simplificaciones radicales avanzadas más allá de aplicar la propiedad básica.",
+        "Problemas de modelación o aplicación contextual extensa (interés compuesto, crecimiento exponencial, etc.).",
+        "Uso de calculadora científica o funciones avanzadas; el foco es el manejo algebraico de la propiedad.",
+        "Demostraciones formales de la propiedad para exponentes racionales."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión y comparación de números racionales (incluidas fracciones y su multiplicación).",
+        "A-M1-NUM-03-01: Concepto de potencia con exponente natural y su interpretación como producto reiterado.",
+        "A-M1-NUM-03-02: Notación y lectura de potencias con base racional positiva.",
+        "A-M1-NUM-03-04: Manejo de exponentes fraccionarios como raíces (a^(1/n), a^(p/q) de forma básica).",
+        "A-M1-NUM-03-05: Propiedad de potencia de un producto para exponentes naturales ( (ab)^n = a^n · b^n ) en un sentido directo, aunque aquí se use en sentido inverso."
+      ],
+      "common_traps": [
+        "Confundir la propiedad a^n · b^n = (ab)^n con la propiedad de suma de exponentes en igual base (a^m · a^n = a^(m+n)).",
+        "Cambiar incorrectamente el exponente en lugar de mantenerlo igual (por ejemplo a^3 · b^3 → (ab)^6 en vez de (ab)^3).",
+        "Aplicar la propiedad cuando los exponentes son diferentes (por ejemplo a^2 · b^3) asumiendo erróneamente que se puede usar un exponente común.",
+        "Operar mal con fracciones al multiplicar las bases (errores en productos de fracciones propias e impropias).",
+        "Olvidar que la propiedad solo es válida cuando el exponente es exactamente el mismo, incluyendo exponentes fraccionarios iguales.",
+        "Confundir el orden de operaciones y transformar expresiones que no están en la forma a^n · b^n (por ejemplo (a·b)^n mal identificado como a^n · b^n sin serlo).",
+        "Errores de simplificación al combinar bases que ya están factorizadas o tienen signos, aunque en este átomo se evitan bases negativas."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ítems con exponentes enteros positivos pequeños (entre 2 y 4) e iguales en todas las potencias.",
+        "Bases enteras positivas pequeñas (entre 2 y 10), sin fracciones ni decimales.",
+        "Estructura muy directa de dos factores del tipo a^n · b^n, sin paréntesis adicionales ni operaciones previas.",
+        "Consignas explícitas que indiquen aplicar la propiedad o reconocer la equivalencia con (ab)^n.",
+        "Cálculos numéricos que no requieren simplificaciones adicionales complejas (por ejemplo 2^3 · 5^3)."
+      ],
+      "medium": [
+        "Ítems con exponentes enteros positivos algo mayores (hasta 6 u 8) o exponentes fraccionarios simples con denominador pequeño (1/2, 1/3, 2/3).",
+        "Bases que incluyen fracciones simples o enteros combinados con fracciones (por ejemplo 1/2, 3/4, 4/3).",
+        "Expresiones con más de dos factores que comparten el mismo exponente, requiriendo agrupar (por ejemplo a^n · b^n · c^n).",
+        "Necesidad de multiplicar fracciones y eventualmente simplificar el resultado después de aplicar la propiedad.",
+        "Formulaciones que no nombran explícitamente la propiedad, sino que exigen reconocer que los exponentes son iguales y decidir usarla.",
+        "Presencia de distractores que surgen de errores típicos (como sumar exponentes o dejar de conservar el exponente)."
+      ],
+      "hard": [
+        "Exponentes fraccionarios con numeradores y denominadores distintos de 1 y 2, pero manejables (por ejemplo 2/3, 3/4, 5/6), siempre iguales entre sí.",
+        "Bases racionales más complejas, como fracciones impropias o productos de fracciones que requieren varias simplificaciones (por ejemplo 5/4, 8/3, 9/2).",
+        "Expresiones en las que primero hay que reorganizar o factorizar para identificar un exponente común antes de aplicar la propiedad (pero sin mezclar otras propiedades de potencias fuera del átomo).",
+        "Combinaciones donde se presenta la equivalencia en sentido inverso: dado (ab)^n, reconocer que puede verse como a^n · b^n y usar eso para comparar o transformar expresiones.",
+        "Ítems que mezclan exponentes enteros y fraccionarios en la consigna, pero que solo requieren aplicar la propiedad en la parte donde los exponentes coinciden exactamente.",
+        "Opciones de respuesta numéricamente cercanas, que exigen cuidado en la multiplicación de bases racionales y en la conservación del exponente común, aumentando la carga de control de errores."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde no quede claro qué parte está afectada por el exponente por falta de paréntesis (por ejemplo escribir ab^2 cuando se quiere (ab)^2).",
+      "No mezclar en la misma expresión términos con igual base e igual exponente sin especificar claramente la operación que se espera, para no confundir con otras propiedades de potencias.",
+      "Evitar el uso simultáneo de varias propiedades de potencias en un mismo ítem si eso obliga a salir del foco de este átomo (por ejemplo incluir división de potencias o exponentes negativos en la misma expresión clave).",
+      "No usar notación con raíces si la intención es trabajar con exponentes fraccionarios, a menos que se explicite claramente la equivalencia, para no evaluar manejo de radicales fuera del alcance.",
+      "Evitar problemas contextuales extensos donde el uso de la propiedad quede oculto entre muchos pasos, dificultando saber qué se está evaluando.",
+      "No usar bases negativas ni expresiones donde el signo pueda generar dudas sobre si el exponente afecta al signo o solo a la base.",
+      "Evitar formular enunciados donde los exponentes parezcan iguales visualmente pero no lo sean (por ejemplo fracciones de distinto denominador pero misma aproximación decimal)."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_de_exponentes_en_distinta_base",
+        "description": "El estudiante trata la multiplicación de potencias con distinta base pero igual exponente como si fuera de igual base, sumando los exponentes: a^n · b^n → (ab)^(n+n) o similar.",
+        "how_to_address": "Reforzar la distinción entre las dos propiedades: igual base (se suman exponentes) vs. igual exponente (se multiplican bases y se mantiene el exponente). Proponer tablas comparativas y ejercicios de clasificación de expresiones según la propiedad que corresponde."
+      },
+      {
+        "name": "Cambio_incorrecto_del_exponente",
+        "description": "Al aplicar la propiedad, el estudiante altera el exponente (lo duplica, lo suma, lo resta) en vez de conservarlo: a^3 · b^3 → (ab)^6.",
+        "how_to_address": "Trabajar con ejemplos numéricos concretos y verificar equivalencias calculando ambos lados, para que vean que el exponente debe mantenerse. Usar frases guía como 'el exponente es el mismo para todo el producto'."
+      },
+      {
+        "name": "Aplicar_propiedad_sin_exponentes_iguales",
+        "description": "El estudiante fuerza la propiedad aunque los exponentes no son idénticos (por ejemplo a^2 · b^3 → (ab)^2 o (ab)^3).",
+        "how_to_address": "Diseñar tareas de reconocimiento donde solo deben indicar si se puede o no aplicar la propiedad, sin calcular. Enfatizar que la condición necesaria es la igualdad exacta de exponentes (mismo número o misma fracción)."
+      },
+      {
+        "name": "Errores_en_multiplicacion_de_fracciones",
+        "description": "La dificultad no está en la propiedad de potencias, sino en el cálculo de la multiplicación de bases fraccionarias (multiplicar numeradores entre sí y denominadores entre sí, simplificaciones incorrectas, etc.).",
+        "how_to_address": "Revisar brevemente la multiplicación de fracciones con ejemplos vinculados a potencias. Separar el paso 'aplico la propiedad' del paso 'multiplico las fracciones', para aislar y corregir el error aritmético."
+      },
+      {
+        "name": "Confusion_con_exponentes_fraccionarios",
+        "description": "El estudiante no reconoce que los exponentes fraccionarios siguen la misma propiedad que los enteros, o intenta tratarlos como fracciones ordinarias sumándolos o restándolos al combinar potencias.",
+        "how_to_address": "Presentar paralelos claros: usar la misma estructura con exponentes enteros y luego con fraccionarios para mostrar que la propiedad no cambia. Introducir ejemplos sencillos con 1/2 y 1/3 antes de fracciones más complejas."
+      },
+      {
+        "name": "Omisión_de_parentesis_en_el_producto_de_bases",
+        "description": "Al escribir (ab)^n, el estudiante omite paréntesis y anota ab^n, cambiando el significado de la expresión.",
+        "how_to_address": "Insistir en el rol de los paréntesis al elevar productos a una potencia. Proponer ejercicios de traducción verbal–simbólica para afianzar la notación correcta (\"el producto de a y b elevado a n\")."
+      }
+    ],
+    "future_targets": [
+      "Manejo fluido de expresiones con exponentes en álgebra básica y simplificación de expresiones potencias más complejas.",
+      "Trabajo con radicales y simplificación de raíces mediante la reescritura como exponentes fraccionarios y productos dentro de una misma raíz.",
+      "Manipulación de funciones exponenciales con productos de bases (por ejemplo propiedades de a^x · b^x).",
+      "Desarrollo de habilidades para factorizar expresiones que involucran potencias y productos de bases.",
+      "Resolución de ecuaciones exponenciales sencillas donde se reescriben productos como una sola potencia.",
+      "Comprensión de leyes de potencias aplicadas a situaciones de crecimiento y decrecimiento en contextos matemáticos superiores."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "tabular"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "mixed"
+    ],
+    "required_image_types": []
+  }
+}

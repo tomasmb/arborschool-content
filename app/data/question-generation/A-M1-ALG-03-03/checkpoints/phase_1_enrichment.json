@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Ecuaciones lineales de una incógnita de la forma ax + b = c con máximo dos pasos de despeje.",
+        "Ecuaciones lineales de la forma ax = b resolviendo mediante división o multiplicación por el inverso.",
+        "Uso explícito de inverso aditivo para aislar el término con la incógnita (sumar o restar la misma cantidad en ambos lados).",
+        "Uso explícito de inverso multiplicativo o división para despejar la incógnita cuando el coeficiente es distinto de 1.",
+        "Ecuaciones con coeficientes y términos independientes enteros o racionales simples (fracciones o decimales simples).",
+        "Problemas verbales simples que se modelan en una sola ecuación lineal de hasta dos pasos una vez que la ecuación ya está escrita o claramente inducida."
+      ],
+      "out_of_scope": [
+        "Ecuaciones que requieran más de dos pasos de despeje (por ejemplo, con términos a ambos lados que exigen reorganizar antes de aplicar los dos pasos finales).",
+        "Ecuaciones con paréntesis que requieran aplicar distributiva antes de despejar.",
+        "Ecuaciones con la incógnita en ambos lados (por ejemplo, 3x + 2 = x + 8).",
+        "Sistemas de ecuaciones lineales (más de una ecuación o más de una incógnita).",
+        "Ecuaciones con potencias, raíces, valor absoluto u operaciones no lineales.",
+        "Modelación compleja desde un contexto verbal donde el desafío principal es traducir al lenguaje algebraico (eso pertenece a otro átomo).",
+        "Uso de métodos gráficos o tabulares para resolver la ecuación."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01",
+        "A-M1-ARI-01-02",
+        "A-M1-ARI-02-01",
+        "A-M1-ALG-01-01",
+        "A-M1-ALG-03-01"
+      ],
+      "common_traps": [
+        "Olvidar aplicar la misma operación en ambos lados de la ecuación al usar inverso aditivo o multiplicativo.",
+        "Cambiar incorrectamente el signo al “mover” términos de un lado a otro sin explicitar la operación inversa.",
+        "Tratar el coeficiente de la incógnita como si fuera parte del término independiente (por ejemplo, en 3x + 5 = 11 restar 5 solo al 11 o solo al 3x).",
+        "Realizar las operaciones en orden incorrecto (por ejemplo, dividir antes de eliminar el término independiente en ax + b = c).",
+        "Errores de cálculo con enteros negativos (por ejemplo, al sumar o restar números de distinto signo).",
+        "Confundir multiplicación por el inverso con cambiar solo el numerador o solo el denominador en fracciones.",
+        "Interpretar mal el contexto verbal y asignar datos al lado equivocado de la ecuación, aunque el procedimiento de despeje sea correcto."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuaciones de un solo paso del tipo ax = b o x ± b = c con a, b, c enteros pequeños positivos (entre -10 y 10, preferentemente positivos).",
+        "Ecuaciones de dos pasos donde todos los números son enteros pequeños y del mismo signo (por ejemplo, todos positivos).",
+        "Coeficientes de la incógnita iguales a 1 o 2, evitando fracciones y decimales.",
+        "Contexto puramente simbólico (la ecuación ya está escrita) sin redacción verbal extensa.",
+        "Distractores construidos a partir de errores aritméticos simples, no de errores conceptuales sofisticados."
+      ],
+      "medium": [
+        "Ecuaciones de dos pasos de la forma ax + b = c con a, b o c negativos, pero con valores absolutos pequeños.",
+        "Presencia de fracción o decimal simple en uno de los términos (por ejemplo, 0,5x = 6 o x/4 + 2 = 5) manteniendo operaciones manejables.",
+        "Contextos verbales breves donde el estudiante debe identificar correctamente qué número corresponde a cada término de la ecuación, pero la ecuación resultante sigue siendo de hasta dos pasos.",
+        "Coeficientes de la incógnita que requieren división no inmediata (por ejemplo, 4, 5 o 6) pero con resultados enteros.",
+        "Distractores que incorporan errores frecuentes de signo o de aplicación incompleta de la misma operación en ambos lados."
+      ],
+      "hard": [
+        "Ecuaciones de dos pasos con fracciones o decimales en el coeficiente de la incógnita y/o en el término independiente, con resultados aún razonables (enteros o fracciones simples).",
+        "Ecuaciones donde el resultado es una fracción o decimal no inmediato (por ejemplo, x = 7/3 o x = 2,4).",
+        "Contextos verbales algo más elaborados (2–3 oraciones) donde los datos no aparecen en el mismo orden que en la ecuación, pero la ecuación que se obtiene sigue siendo de la forma ax + b = c.",
+        "Uso de números negativos combinados con fracciones o decimales (por ejemplo, -3x + 1/2 = 5).",
+        "Distractores diseñados a partir de errores conceptuales más sutiles (por ejemplo, sumar un valor a un solo lado, invertir mal el coeficiente, o cambiar incorrectamente signo al trasladar términos), no solo de errores de cálculo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones del tipo “pasar el 5 sumando” sin aclarar la operación efectivamente realizada; enunciados y alternativas deben sugerir explícitamente la aplicación de la misma operación en ambos lados.",
+      "No mezclar intencionalmente palabras cotidianas ambiguas como “ganar”, “perder”, “quedar con” sin precisar si se trata de suma o resta en el contexto.",
+      "No usar ecuaciones que sobrepasen el límite de dos pasos de despeje (por ejemplo, con términos en ambos lados que exijan más transformaciones), ya que desbordan el átomo.",
+      "Evitar que en un mismo ítem aparezcan varias letras distintas si solo una es incógnita (usar notación clara para que se entienda cuál se debe despejar).",
+      "No proponer ecuaciones que admitan más de una solución dentro del conjunto de números considerado; deben tener solución única en los reales.",
+      "Evitar notación poco estándar, como escribir fracciones en línea sin paréntesis que puedan generar dudas (usar siempre forma clara: x/3 + 2 = 5 o (x/3) + 2 = 5).",
+      "Cuidar que en contextos verbales las cantidades no sean interpretables como diferentes variables (por ejemplo, usar nombres distintos para personas y cantidades, y explicitar qué representa x).",
+      "No mezclar en la misma pregunta interpretación gráfica o tabular compleja que haga dudar si el foco es la lectura de datos o la resolución de la ecuación."
+    ],
+    "error_families": [
+      {
+        "name": "Operación en un solo lado",
+        "description": "El estudiante suma, resta, multiplica o divide solo un lado de la ecuación, rompiendo la igualdad (por ejemplo, en x - 3 = 5, escribe x = 5 + 3 pero no justifica la operación en ambos lados y a veces altera la estructura).",
+        "how_to_address": "Insistir en la idea de mantener el equilibrio de la balanza: toda operación que se hace a un lado debe hacerse al otro. Utilizar representaciones concretas (balanza, bloques) y luego formalizar en notación algebraica, mostrando ambos lados con la misma operación."
+      },
+      {
+        "name": "Traslado mecánico de términos",
+        "description": "El estudiante “mueve” términos de un lado a otro cambiando signo de manera automática, sin considerar la operación inversa (por ejemplo, transforma 3x - 5 = 10 en 3x = 10 + 5 pero en otros casos aplica mal el cambio de signo).",
+        "how_to_address": "Focalizar en escribir explícitamente la operación realizada (sumar 5 a ambos lados, restar 2x a ambos lados, etc.) antes de simplificar. Proponer ejercicios donde se describa la operación con palabras y luego se escriba en forma simbólica."
+      },
+      {
+        "name": "Manejo deficiente de enteros negativos",
+        "description": "Errores al sumar o restar números negativos que llevan a soluciones incorrectas (por ejemplo, -3 + 5 se interpreta como -8, o al resolver x - 7 = -2 el estudiante responde x = -9).",
+        "how_to_address": "Reforzar operaciones con enteros usando recta numérica mental o gráfica antes de aplicarlas en ecuaciones. Diseñar ítems que enfoquen específicamente en casos con signos distintos, pidiendo verificar la solución sustituyendo en la ecuación original."
+      },
+      {
+        "name": "División incorrecta por el coeficiente",
+        "description": "Al resolver ax = b, el estudiante divide mal (por ejemplo, en 3x = 12 responde 12 - 3 o 3/12) o no aplica la división a todo el lado correspondiente cuando hay ax + b.",
+        "how_to_address": "Trabajar el concepto de inverso multiplicativo y la idea de “deshacer” la multiplicación con ejemplos numéricos antes de incluir la incógnita. Mostrar paso a paso la división de ambos lados por el mismo número y practicar la sustitución para comprobar la solución."
+      },
+      {
+        "name": "Tratamiento desigual de términos en ax + b = c",
+        "description": "En ecuaciones de dos pasos, el estudiante solo opera con un componente del lado izquierdo (por ejemplo, en 2x + 5 = 11 resta 5 solo al 2x o ejecuta operaciones incorrectas como 2x = 11 - 5 pero luego se equivoca al dividir).",
+        "how_to_address": "Enfatizar la estructura de la expresión completa (2x + 5 es un bloque) y trabajar con representaciones de bloques o grupos para visualizar que la operación afecta al conjunto de ese lado. Pedir que repitan en voz alta o por escrito la operación completa: “resto 5 a cada lado de la ecuación”."
+      },
+      {
+        "name": "Errores con fracciones y decimales",
+        "description": "Al incluir fracciones o decimales, el estudiante se equivoca al sumarlos, restarlos o dividir por ellos (por ejemplo, confunde 0,5x con 5x o cree que dividir por 1/2 es lo mismo que dividir por 2).",
+        "how_to_address": "Revisar brevemente operaciones básicas con fracciones y decimales antes de usarlas en ecuaciones. Mostrar ejemplos comparativos (resolver primero 0,5·4 = 2, luego 0,5x = 2) y enfatizar el uso del inverso multiplicativo en caso de fracciones."
+      },
+      {
+        "name": "Interpretación errónea del contexto verbal",
+        "description": "En problemas de contexto, el estudiante arma una ecuación equivocada (datos en el lado incorrecto o operación mal elegida) aunque luego la resuelve bien.",
+        "how_to_address": "Hacer que los estudiantes subrayen datos y frases clave y los relacionen verbalmente con la ecuación antes de escribirla. Proponer pares de enunciados y ecuaciones para que identifiquen cuál representa correctamente la situación y justifiquen su elección."
+      }
+    ],
+    "future_targets": [
+      "Resolución de ecuaciones lineales más complejas con términos en ambos lados y paréntesis.",
+      "Resolución de sistemas de ecuaciones lineales en dos variables mediante distintos métodos (sustitución, igualación, suma y resta).",
+      "Análisis y construcción de funciones lineales, incluyendo la interpretación del coeficiente de x y del término independiente.",
+      "Aplicación de ecuaciones lineales en problemas de modelación más avanzados (proporcionalidad, mezclas, movimientos, finanzas básicas).",
+      "Resolución de inecuaciones lineales y representación de sus soluciones en la recta numérica.",
+      "Manejo de ecuaciones en contextos geométricos (por ejemplo, perímetros, áreas linealmente relacionadas con una variable).",
+      "Transición hacia la resolución de ecuaciones con expresiones algebraicas más complejas (productos notables, factorización simple, ecuaciones cuadráticas)."
+    ],
+    "representation_variants": [
+      "simbólica",
+      "verbal",
+      "situacional"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integer_mixed_sign",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

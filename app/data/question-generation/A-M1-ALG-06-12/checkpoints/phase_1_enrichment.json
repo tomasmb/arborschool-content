@@ -1,0 +1,147 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas contextualizados donde una magnitud se modela explícitamente con una función cuadrática en una variable real.",
+        "Identificar desde el enunciado que se requiere optimizar (maximizar o minimizar) una cantidad y vincularlo con el vértice de la parábola.",
+        "Uso de la forma y = ax^2 + bx + c para determinar si el vértice corresponde a máximo (a < 0) o mínimo (a > 0).",
+        "Cálculo del vértice mediante fórmulas algebraicas (x_v = -b/(2a) y sustitución para hallar y_v) o completando cuadrado cuando sea sencillo.",
+        "Interpretación contextual de las coordenadas del vértice: la abscisa como el valor de la variable de decisión (tiempo, cantidad, ancho, etc.) y la ordenada como valor máximo o mínimo de la magnitud a optimizar (altura, ganancia, área, costo, etc.).",
+        "Restricción del dominio según el contexto (por ejemplo, solo tiempos positivos, cantidades enteras aproximadas, longitudes no negativas) y uso de esa restricción para decidir si el vértice es o no solución válida en el contexto.",
+        "Problemas de optimización simples con una única variable de decisión y una sola función cuadrática ya construida o construible a partir del contexto mediante pasos básicos.",
+        "Comparación de alternativas usando la interpretación de máximo/mínimo (por ejemplo, justificar por qué no puede haber una ganancia mayor que la del vértice)."
+      ],
+      "out_of_scope": [
+        "Uso de derivadas, cálculo diferencial o notación de tasa de cambio para encontrar máximos o mínimos.",
+        "Optimización con más de una variable de decisión o problemas que requieran sistemas de ecuaciones para determinar el vértice.",
+        "Funciones de grado distinto de 2 (lineales, cúbicas, valor absoluto, exponenciales, etc.) aunque aparezcan en el contexto.",
+        "Estudio detallado del gráfico completo de la función (intersecciones con ejes, asíntotas, etc.) más allá de lo necesario para interpretar el vértice.",
+        "Problemas de programación lineal, regiones factibles y optimización con restricciones múltiples representadas gráficamente.",
+        "Ajuste de modelos cuadráticos a partir de datos experimentales mediante regresión o métodos estadísticos.",
+        "Uso intensivo de fracciones o radicales complejos que transfiere la dificultad al manejo algebraico en vez del razonamiento de optimización.",
+        "Ejercicios puramente procedimentales de cálculo de vértice sin contexto aplicado (eso pertenece a átomos de habilidades previas)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-04-01: Interpretación de coeficientes a, b y c en una función cuadrática y su gráfica básica (concavidad y posición aproximada).",
+        "A-M1-ALG-05-01: Cálculo del vértice de una función cuadrática dada en forma general y = ax^2 + bx + c.",
+        "A-M1-ALG-03-02: Traducción entre lenguaje verbal y expresiones algebraicas simples en una variable.",
+        "A-M1-ALG-02-01: Operaciones básicas con números enteros y decimales, sustitución de valores en expresiones.",
+        "A-M1-ALG-03-03: Resolución de ecuaciones lineales sencillas y manejo básico de fórmulas."
+      ],
+      "common_traps": [
+        "Confundir lo que se debe optimizar: tomar el máximo de la variable de decisión (por ejemplo, el tiempo) en vez del máximo de la función (la altura, la ganancia, el área, etc.).",
+        "Calcular correctamente el vértice pero interpretar al revés las coordenadas (confundir qué representa x_v y qué representa y_v en el contexto).",
+        "Asumir que toda parábola tiene máximo, sin revisar el signo de a (tomar como máximo un mínimo o viceversa).",
+        "Ignorar las condiciones del contexto (por ejemplo, aceptar tiempos negativos o cantidades de productos no realistas) y no cuestionar si el vértice es aplicable.",
+        "Elegir el valor máximo o mínimo entre opciones dadas solo comparando numéricamente sin justificar su relación con el vértice y la concavidad.",
+        "Focalizarse en el cálculo mecánico de -b/(2a) y cometer errores de signo que llevan a respuestas distractoras cercanas.",
+        "No notar que, en ciertos contextos, la solución debe aproximarse a un número entero (por ejemplo, número de productos) y no interpretar adecuadamente la aproximación.",
+        "Creer que si la parábola abre hacia arriba no puede modelar una situación de optimización útil (por ejemplo, costos mínimos) y descartar la opción correcta."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "La función cuadrática se entrega explícita en forma y = ax^2 + bx + c, con coeficientes enteros pequeños (|a|, |b|, |c| ≤ 10) y a ≠ 0.",
+        "El enunciado indica de manera directa que se busca un valor máximo o mínimo (usa palabras como 'altura máxima', 'ganancia máxima', 'costo mínimo') y señala claramente qué variable se debe optimizar.",
+        "La tarea principal es identificar correctamente que se usa el vértice y aplicar una fórmula sencilla para obtener x_v o y_v, con muy pocos pasos algebraicos.",
+        "El contexto es cotidiano y lineal (proyectil, ganancia de un producto, área de un rectángulo con perímetro fijo) sin información redundante ni distractores textuales.",
+        "No se exige justificar la elección del máximo o mínimo más allá de identificar el signo del coeficiente a y mencionar que la parábola abre hacia arriba o hacia abajo.",
+        "La interpretación del vértice se limita a una de las coordenadas (por ejemplo, solo la altura máxima, dado el tiempo ya calculado o viceversa)."
+      ],
+      "medium": [
+        "La función cuadrática debe derivarse a partir del contexto a partir de una descripción relativamente simple (por ejemplo, precio por entrada y aforo, relación entre largo y ancho de una figura, o descuentos que generan ganancia).",
+        "Los coeficientes pueden ser enteros de dos dígitos o decimales sencillos (una cifra decimal), lo que requiere más cuidado en el cálculo.",
+        "El problema requiere utilizar ambas coordenadas del vértice: primero encontrar el valor de la variable que optimiza (x_v) y luego el valor máximo o mínimo correspondiente (y_v), o viceversa.",
+        "El enunciado puede incluir datos adicionales no necesarios, por lo que se requiere discriminar qué información usar.",
+        "Se requiere explicitamente determinar si el vértice corresponde a máximo o mínimo a partir del signo de a y usar esa información para justificar la respuesta.",
+        "Puede pedirse comparar la situación óptima con otra propuesta (por ejemplo, otra cantidad de productos, otro tiempo) y decidir cuál da mayor o menor valor de la función, usando el carácter de máximo o mínimo global del vértice.",
+        "Se espera que el estudiante interprete correctamente restricciones básicas del contexto (tiempo ≥ 0, cantidad de objetos entera, etc.), aunque estas no provoquen casos borde complejos."
+      ],
+      "hard": [
+        "La modelización desde el contexto es menos directa: se necesita traducir una relación verbal en dos o más pasos antes de llegar a la expresión cuadrática (por ejemplo, ingresos menos costos, áreas con condiciones geométricas, o dependencias encadenadas).",
+        "Los coeficientes pueden ser decimales no tan simples o fracciones manejables, lo que aumenta la probabilidad de errores de cálculo si no se comprende bien la estructura del problema.",
+        "Se plantean restricciones contextuales que generan tensión con la posición del vértice (por ejemplo, el vértice cae fuera del rango admisible, o entre dos valores enteros posibles) y el estudiante debe decidir si: (a) el vértice es solución válida, o (b) el óptimo real se encuentra en uno de los extremos o en la aproximación entera más cercana.",
+        "El ítem puede exigir comparar más de una función cuadrática o comparar una alternativa óptima teórica (vértice) con alternativas propuestas por personajes del problema, justificando cuál es mejor con argumentos sobre concavidad y globalidad del máximo/mínimo.",
+        "Se requiere una interpretación fina de ambas coordenadas del vértice en un contexto con lenguaje menos directo (por ejemplo, 'tiempo transcurrido', 'cantidad adicional', 'variación respecto de un valor inicial') que obliga a identificar qué variable está siendo modelada.",
+        "El distractor correcto puede corresponder a errores sutiles de interpretación (por ejemplo, confundir x_v con y_v, o tomar el valor mínimo en lugar del máximo) y el ítem está diseñado para diferenciar entre desempeño superficial y comprensión profunda de la optimización.",
+        "Se pueden combinar brevemente distintas representaciones (verbal, simbólica y eventualmente un bosquejo gráfico simple) y exigir coherencia entre ellas al decidir el máximo o mínimo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar el término 'valor máximo' o 'valor mínimo' sin especificar claramente a qué magnitud se refiere (por ejemplo, 'altura del objeto', 'ganancia de la tienda', 'área del terreno').",
+      "No usar 'punto máximo' o 'punto mínimo' de manera indistinta cuando se necesita diferenciar coordenada en el eje horizontal (tiempo, cantidad) y coordenada en el eje vertical (valor de la función).",
+      "No presentar situaciones donde la función cuadrática no esté claramente identificada ni sea razonable suponer que el estudiante debe deducirla; siempre dejar pistas claras de qué variable depende de cuál.",
+      "Evitar contextos donde la variable de decisión pueda interpretarse de más de una manera (por ejemplo, 'número de pasajes' sin precisar si incluye adultos y niños por separado, etc.).",
+      "No mezclar dos funciones distintas (por ejemplo, ingreso y costo) sin aclarar cuál de ellas se está optimizando, o sin indicar que se optimiza la diferencia entre ambas.",
+      "Evitar enunciados en los que las restricciones de dominio no se especifiquen ni se deduzcan claramente del contexto, generando dudas sobre si se aceptan valores negativos o fraccionarios.",
+      "No usar lenguaje que pueda hacer pensar que se busca un 'máximo local' distinto del vértice; en contexto de parábolas, enfatizar que el máximo/mínimo es único y global.",
+      "Evitar tablas o gráficos donde no se identifique con claridad qué eje o columna corresponde a la variable independiente y cuál a la magnitud que se optimiza.",
+      "No combinar innecesariamente unidades distintas sin aclararlas (por ejemplo, mezclar metros y centímetros sin especificar conversiones).",
+      "Evitar datos superfluos que puedan ser interpretados razonablemente como relevantes cuando no lo son, a menos que el propósito sea discriminar comprensión lectora, pero sin generar ambigüedad sobre qué se está optimizando."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_de_variable_de_decisión_y_magnitud_optimizada",
+        "description": "El estudiante responde con la coordenada x_v cuando se pedía la y_v (o viceversa), por ejemplo, entrega el tiempo en lugar de la altura máxima o la cantidad de productos en lugar de la ganancia máxima.",
+        "how_to_address": "Diseñar ítems donde se exploren por separado y explícitamente ambas coordenadas del vértice, con preguntas del tipo: '¿En qué momento ocurre la altura máxima?' y luego '¿Cuál es esa altura máxima?', enfatizando en el enunciado qué representa cada variable."
+      },
+      {
+        "name": "Signo_de_a_y_tipo_de_extremo_erróneo",
+        "description": "El estudiante no relaciona correctamente el signo del coeficiente a con la naturaleza del vértice y asume que siempre se trata de un máximo o siempre de un mínimo.",
+        "how_to_address": "Incluir alternativas que obliguen a decidir si el vértice corresponde a máximo o mínimo antes de dar el valor, y usar distractores que muestren qué pasaría si se confundiera este aspecto; reforzar con ítems donde cambie el signo de a manteniendo el mismo contexto."
+      },
+      {
+        "name": "Cálculo_incorrecto_del_vértice",
+        "description": "Errores en la aplicación de la fórmula x_v = -b/(2a) (cambio de signos, mal uso del 2a, o usar b/(2a) sin el signo menos) y en la sustitución para hallar y_v.",
+        "how_to_address": "Proponer ejercicios con alternativas que contengan los errores de signo más frecuentes para que la retroalimentación pueda explicitar el procedimiento correcto; variar los coeficientes para que sea evidente el impacto de cada error en el resultado."
+      },
+      {
+        "name": "Ignorar_restricciones_del_contexto",
+        "description": "El estudiante acepta como solución un vértice que no tiene sentido en la realidad (tiempos negativos, cantidades no enteras donde se espera enteros, longitudes negativas).",
+        "how_to_address": "Diseñar problemas donde el vértice caiga fuera del rango permitido o entre dos valores enteros posibles, y preguntar explícitamente si ese valor es admisible; guiar a elegir entre extremos del intervalo o redondeos razonables, explicitando la necesidad de interpretar el contexto."
+      },
+      {
+        "name": "Optimización_de_la_variable_equivocada",
+        "description": "En contextos con varias magnitudes (por ejemplo, ingreso, costo y ganancia), el estudiante maximiza la equivocada (ingreso en lugar de ganancia) o minimiza algo distinto de lo pedido.",
+        "how_to_address": "Plantear ítems donde se muestre de manera explícita la relación entre las magnitudes (ganancia = ingreso − costo) y pedir que identifiquen primero cuál es la función relevante para el objetivo antes de calcular el vértice; usar distractores que reflejen maximizar la función equivocada para luego discutir por qué no es correcto."
+      },
+      {
+        "name": "Lectura_deficiente_de_la_representación",
+        "description": "Cuando se entrega tabla o expresión, el estudiante confunde qué variable va en el eje horizontal y cuál en el vertical, o malinterpreta los valores numéricos y las unidades.",
+        "how_to_address": "Incluir ítems con tablas y descripciones textuales donde se pida explícitamente interpretar cada columna o eje antes de realizar cálculos; destacar en el enunciado las unidades y qué representa cada fila o columna, pidiendo en ocasiones identificar la variable independiente y la dependiente."
+      },
+      {
+        "name": "Sobre_enfoque_procedimental",
+        "description": "El estudiante calcula el vértice de manera mecánica incluso cuando el máximo o mínimo podría identificarse con un razonamiento más directo (por ejemplo, comparación numérica en tabla), lo que aumenta los errores algebraicos.",
+        "how_to_address": "Proponer problemas donde el método más eficiente sea reconocer la forma de la función o interpretar el gráfico/tabla en lugar de aplicar fórmulas; en la retroalimentación, enfatizar la elección consciente de estrategias, no solo el procedimiento estándar."
+      }
+    ],
+    "future_targets": [
+      "Aplicación de cálculo diferencial para encontrar máximos y mínimos de funciones no necesariamente cuadráticas.",
+      "Optimización con restricciones múltiples y uso de sistemas de inecuaciones para definir dominios factibles.",
+      "Modelación de fenómenos físicos y económicos más complejos que usan funciones de mayor grado o combinaciones de funciones (por ejemplo, modelos de oferta y demanda).",
+      "Análisis gráfico avanzado de funciones, incluyendo estudio de crecimiento y decrecimiento, concavidad y puntos de inflexión.",
+      "Programación lineal y optimización en contextos con varias variables de decisión.",
+      "Uso de herramientas tecnológicas (calculadoras gráficas, software) para explorar y validar soluciones de optimización.",
+      "Comprensión de modelos estadísticos y econométricos que aproximan datos mediante funciones cuadráticas o polinómicas.",
+      "Resolución de problemas integrados que combinan funciones cuadráticas con conceptos de geometría (áreas, perímetros) y probabilidad (maximización de probabilidades)."
+    ],
+    "representation_variants": [
+      "verbal_contextual (descripción en lenguaje natural del problema sin dar la fórmula explícitamente, exigiendo al estudiante identificar qué se optimiza y cómo depende de la variable).",
+      "simbólica (expresión y = ax^2 + bx + c dada explícitamente, donde se debe calcular e interpretar el vértice).",
+      "tabular (tabla de valores de la variable independiente y de la magnitud asociada, que sugieren un comportamiento cuadrático y permiten inferir el máximo o mínimo).",
+      "mixta_verbal_simbólica (enunciado contextual más una ecuación dada o parcialmente dada que el estudiante debe completar antes de usar el vértice).",
+      "mixta_verbal_tabular (historia contextual apoyada en una tabla de datos de tiempo vs. valor de la magnitud, donde se detecta el valor máximo o mínimo y se interpreta).",
+      "gráfica_simple (representación conceptual de una parábola, incluso descrita en palabras, donde se identifique el vértice y se lo relacione con la situación real, sin necesidad de detalles métricos finos)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_two_digits",
+      "simple_decimals_one_place",
+      "simple_decimals_two_places_limited",
+      "simple_fractions_with_small_denominator"
+    ],
+    "required_image_types": []
+  }
+}
