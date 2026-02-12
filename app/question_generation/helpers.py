@@ -259,6 +259,42 @@ def get_last_completed_phase(atom_id: str) -> int | None:
     return _scan_max_checkpoint_phase(ckpt_dir)
 
 
+# ---------------------------------------------------------------------------
+# Enrichment image status helpers
+# ---------------------------------------------------------------------------
+
+
+def get_enrichment_image_types(atom_id: str) -> list[str] | None:
+    """Read required_image_types from the enrichment checkpoint."""
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    ckpt = load_checkpoint(
+        QUESTION_GENERATION_DIR / atom_id, 1, "enrichment",
+    )
+    if ckpt is None:
+        return None
+
+    enrichment_data = ckpt.get("enrichment_data")
+    if not enrichment_data:
+        return None
+
+    return enrichment_data.get("required_image_types", [])
+
+
+def classify_image_status(image_types: list[str] | None) -> str:
+    """Classify image handling: not_enriched/no_images/images_supported/images_unsupported."""
+    if image_types is None:
+        return "not_enriched"
+    if not image_types:
+        return "no_images"
+
+    from app.question_generation.image_types import can_generate_all
+
+    if can_generate_all(image_types):
+        return "images_supported"
+    return "images_unsupported"
+
+
 # Checkpoint phase → next phase group for --resume support
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
     8: "finalize",
@@ -270,17 +306,7 @@ _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
 
 
 def find_resume_phase_group(output_dir: Path) -> str | None:
-    """Find the phase group to resume from based on checkpoints.
-
-    Scans the checkpoint directory for the highest completed phase
-    and maps it to the next phase group that should run.
-
-    Args:
-        output_dir: Pipeline output directory with checkpoints.
-
-    Returns:
-        Phase group name to resume from, or None if no checkpoints.
-    """
+    """Find the phase group to resume from based on checkpoints."""
     ckpt_dir = output_dir / "checkpoints"
     max_phase = _scan_max_checkpoint_phase(ckpt_dir)
     if max_phase is None:
@@ -293,18 +319,7 @@ def check_prerequisites(
     phase_group: str,
     output_dir: Path,
 ) -> tuple[bool, list[str]]:
-    """Validate that required checkpoints exist for a phase group.
-
-    Each phase group requires specific prior phases to have
-    completed successfully (checkpoint files on disk).
-
-    Args:
-        phase_group: The phase group being requested.
-        output_dir: Pipeline output directory with checkpoints.
-
-    Returns:
-        Tuple of (all_prerequisites_met, list_of_missing).
-    """
+    """Validate required checkpoints exist for a phase group."""
     reqs = PHASE_PREREQUISITES.get(phase_group, [])
     missing: list[str] = []
 

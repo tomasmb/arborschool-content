@@ -13,6 +13,7 @@ import {
 import { OverviewTab } from "./components/OverviewTab";
 import { GenerationTab } from "./components/GenerationTab";
 import { ResultsTab } from "./components/ResultsTab";
+import { BatchEnrichModal } from "./components/BatchEnrichModal";
 
 const PIPELINE_INFO = {
   id: "question_gen",
@@ -34,6 +35,8 @@ export default function QuestionGenerationPage() {
   const [showGeneration, setShowGeneration] = useState(false);
   const [selectedAtomId, setSelectedAtomId] = useState<string>("");
   const [selectedPhase, setSelectedPhase] = useState<string>("all");
+  const [showBatchEnrich, setShowBatchEnrich] = useState(false);
+  const [batchEnrichMode, setBatchEnrichMode] = useState("unenriched_only");
 
   const fetchData = useCallback(async () => {
     try {
@@ -68,14 +71,16 @@ export default function QuestionGenerationPage() {
     [],
   );
 
-  /** Navigate from Overview to Generation tab, optionally
-   *  auto-expanding a specific atom */
+  /** Navigate from Overview to Generation tab */
   const handleNavigateToGeneration = useCallback(
-    (_atomId?: string) => {
-      setActiveTab("generation");
-    },
-    [],
+    (_atomId?: string) => { setActiveTab("generation"); }, [],
   );
+
+  /** Open batch enrichment modal with chosen mode */
+  const handleBatchEnrich = useCallback((mode: string) => {
+    setBatchEnrichMode(mode);
+    setShowBatchEnrich(true);
+  }, []);
 
   const atomsWithQuestions = atoms.filter(
     (a) => a.question_set_count > 0,
@@ -146,6 +151,7 @@ export default function QuestionGenerationPage() {
           <GenerationTab
             atoms={atoms}
             onRunPhase={handleRunPhase}
+            onBatchEnrich={handleBatchEnrich}
           />
         )}
 
@@ -175,6 +181,15 @@ export default function QuestionGenerationPage() {
           paramLabels={modalParamLabels}
         />
       )}
+
+      {/* Batch Enrichment Modal */}
+      <BatchEnrichModal
+        open={showBatchEnrich}
+        onOpenChange={setShowBatchEnrich}
+        subjectId={courseId}
+        mode={batchEnrichMode}
+        onSuccess={fetchData}
+      />
     </div>
   );
 }

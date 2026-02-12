@@ -36,8 +36,16 @@ from api.schemas.api_models import (
     TestDetail,
     UnlockStatus,
 )
+from api.services.atom_coverage_service import (
+    compute_atom_coverage_status,
+    load_atom_coverage_maps,
+)
 from api.services.status_tracker import StatusTracker
-from app.question_generation.helpers import get_last_completed_phase
+from app.question_generation.helpers import (
+    classify_image_status,
+    get_enrichment_image_types,
+    get_last_completed_phase,
+)
 from app.utils.paths import TEMARIOS_JSON_DIR
 
 router = APIRouter()
@@ -46,15 +54,15 @@ router = APIRouter()
 def _get_tracker(subject_id: str) -> StatusTracker:
     """Get tracker for subject, raising 404 if not found."""
     if subject_id not in SUBJECTS_CONFIG:
-        raise HTTPException(status_code=404, detail=f"Subject '{subject_id}' not found")
+        raise HTTPException(
+            status_code=404,
+            detail=f"Subject '{subject_id}' not found",
+        )
     return StatusTracker(subject_id)
 
 
 def _build_test_brief(test_id: str, status: dict) -> TestBrief:
-    """Build a TestBrief from status_tracker output.
-
-    Single source of truth for constructing TestBrief across all endpoints.
-    """
+    """Build a TestBrief from status_tracker output."""
     # Parse year and type from test name
     admission_year = None
     application_type = None
@@ -145,7 +153,9 @@ async def get_standards(subject_id: str) -> list[StandardBrief]:
 async def get_atoms(
     subject_id: str,
     eje: str | None = Query(None, description="Filter by eje"),
-    standard_id: str | None = Query(None, description="Filter by standard"),
+    standard_id: str | None = Query(
+        None, description="Filter by standard",
+    ),
 ) -> list[AtomBrief]:
     """Get atoms list with optional filters."""
     tracker = _get_tracker(subject_id)
@@ -153,23 +163,48 @@ async def get_atoms(
 
     # Apply filters
     if eje:
-        atoms_data = [a for a in atoms_data if a.get("eje") == eje]
+        atoms_data = [
+            a for a in atoms_data if a.get("eje") == eje
+        ]
     if standard_id:
-        atoms_data = [a for a in atoms_data if standard_id in a.get("standard_ids", [])]
+        atoms_data = [
+            a for a in atoms_data
+            if standard_id in a.get("standard_ids", [])
+        ]
 
-    return [
-        AtomBrief(
-            id=atom["id"],
+    # Compute question coverage (once for all atoms)
+    atom_qs, deps = load_atom_coverage_maps(atoms_data)
+
+    results: list[AtomBrief] = []
+    for atom in atoms_data:
+        aid = atom["id"]
+
+        # Image status from enrichment checkpoint
+        img_types = get_enrichment_image_types(aid)
+        img_status = classify_image_status(img_types)
+
+        # Question coverage
+        direct_count = len(atom_qs.get(aid, set()))
+        coverage = compute_atom_coverage_status(
+            aid, direct_count, deps, atom_qs,
+        )
+
+        results.append(AtomBrief(
+            id=aid,
             eje=atom["eje"],
             standard_ids=atom.get("standard_ids", []),
             tipo_atomico=atom["tipo_atomico"],
             titulo=atom["titulo"],
             question_set_count=0,  # TODO: implement
             has_lesson=False,  # TODO: implement
-            last_completed_phase=get_last_completed_phase(atom["id"]),
-        )
-        for atom in atoms_data
-    ]
+            last_completed_phase=get_last_completed_phase(aid),
+            image_status=img_status,
+            required_image_types=img_types or [],
+            question_coverage=coverage,
+            direct_question_count=direct_count,
+        ))
+
+    return results
 
 
 @router.get("/{subject_id}/atoms/graph", response_model=GraphData)

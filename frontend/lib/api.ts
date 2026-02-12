@@ -426,3 +426,58 @@ export async function getCourseSyncDiff(
     `/subjects/${subjectId}/sync/diff?environment=${environment}`,
   );
 }
+
+// --- Batch Atom Enrichment API ---
+
+export interface BatchEnrichEstimate {
+  atoms_to_process: number;
+  skipped: number;
+  estimated_cost_usd: number;
+}
+
+export interface BatchEnrichResponse {
+  job_id: string;
+  status: string;
+  atoms_to_process: number;
+  skipped: number;
+  estimated_cost_usd: number;
+}
+
+export interface BatchEnrichStatus {
+  job_id: string;
+  status: string;
+  total: number;
+  completed: number;
+  succeeded: number;
+  failed: number;
+  skipped: number;
+  current_atom: string | null;
+  results: { atom_id: string; status: string; error?: string }[];
+  started_at: string;
+  completed_at: string | null;
+}
+
+export async function getBatchEnrichEstimate(
+  subjectId: string, mode: string = "unenriched_only",
+): Promise<BatchEnrichEstimate> {
+  return fetchAPI<BatchEnrichEstimate>(
+    `/subjects/${subjectId}/atoms/batch-enrich/estimate?mode=${mode}`,
+  );
+}
+
+export async function startBatchEnrich(
+  subjectId: string, mode: string = "unenriched_only",
+): Promise<BatchEnrichResponse> {
+  return fetchAPI<BatchEnrichResponse>(
+    `/subjects/${subjectId}/atoms/batch-enrich`,
+    { method: "POST", body: JSON.stringify({ mode }) },
+  );
+}
+
+export async function getBatchEnrichStatus(
+  subjectId: string, jobId: string,
+): Promise<BatchEnrichStatus> {
+  return fetchAPI<BatchEnrichStatus>(
+    `/subjects/${subjectId}/atoms/batch-enrich/${jobId}`,
+  );
+}

@@ -47,10 +47,6 @@ class OverviewResponse(BaseModel):
     subjects: list[SubjectBrief]
 
 
-# -----------------------------------------------------------------------------
-# Subject detail models
-# -----------------------------------------------------------------------------
-
 
 class StandardBrief(BaseModel):
     """Brief standard info for lists."""
@@ -82,6 +78,28 @@ class AtomBrief(BaseModel):
             "3=plan, 4=generation, 6=validation, 8=feedback). "
             "None if pipeline never ran."
         ),
+    )
+    # Image handling status from enrichment
+    image_status: str = Field(
+        "not_enriched",
+        description=(
+            "Image handling: not_enriched, no_images, "
+            "images_supported, images_unsupported"
+        ),
+    )
+    required_image_types: list[str] = Field(
+        default_factory=list,
+        description="Image types needed (from enrichment)",
+    )
+    # Question coverage from PAES tests
+    question_coverage: str = Field(
+        "none",
+        description=(
+            "PAES question coverage: direct, transitive, none"
+        ),
+    )
+    direct_question_count: int = Field(
+        0, description="Number of direct PAES questions",
     )
 
 
@@ -258,11 +276,6 @@ class SubjectDetail(BaseModel):
     tests: list[TestBrief]
 
 
-# -----------------------------------------------------------------------------
-# Knowledge graph models
-# -----------------------------------------------------------------------------
-
-
 class GraphNode(BaseModel):
     """Node in the knowledge graph (React Flow format)."""
 
@@ -288,10 +301,6 @@ class GraphData(BaseModel):
     edges: list[GraphEdge]
     stats: dict = Field(default_factory=dict)
 
-
-# -----------------------------------------------------------------------------
-# Pipeline models
-# -----------------------------------------------------------------------------
 
 
 class PipelineDefinition(BaseModel):
@@ -396,12 +405,7 @@ class RunPipelineResponse(BaseModel):
     message: str
 
 
-# -----------------------------------------------------------------------------
-# Sync models
-# -----------------------------------------------------------------------------
-
-# Valid sync entity types
-# "question_atoms" syncs atom-question tagging without touching question content
+# Valid sync entity types ("question_atoms" syncs tagging without question content)
 VALID_SYNC_ENTITIES = [
     "standards", "atoms", "tests", "questions", "variants",
     "question_atoms",
@@ -473,17 +477,8 @@ class SyncExecuteResponse(BaseModel):
     environment: str = Field("local", description="Target environment used")
 
 
-# -----------------------------------------------------------------------------
-# Unlock status models
-# -----------------------------------------------------------------------------
-
-
 class UnlockStatus(BaseModel):
-    """Status of unlock conditions for question sets and lessons.
-
-    Question Sets and Lessons require all test questions to be tagged
-    before they can be generated for any atom.
-    """
+    """Status of unlock conditions for question sets and lessons."""
 
     all_questions_tagged: bool = Field(
         description="Whether ALL finalized questions are tagged"
