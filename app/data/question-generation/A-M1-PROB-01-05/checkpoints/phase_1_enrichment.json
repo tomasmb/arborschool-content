@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Leer la frecuencia exacta de una categoría a partir de la altura de una barra en un gráfico de barras simple.",
+        "Comparar visualmente qué categoría tiene mayor o menor frecuencia en un gráfico de barras.",
+        "Identificar la categoría o categorías con mayor frecuencia (moda visual) en un gráfico de barras.",
+        "Realizar comparaciones directas tipo 'más que', 'menos que' o 'igual que' entre dos o tres barras.",
+        "Trabajar con gráficos de barras verticales u horizontales, con escalas equidistantes y claramente rotuladas.",
+        "Leer frecuencias a partir de escalas con marcas regulares (por ejemplo, de 2 en 2, de 5 en 5, de 10 en 10)."
+      ],
+      "out_of_scope": [
+        "Cálculo de porcentajes, razones o tasas a partir del gráfico (por ejemplo, 'qué porcentaje prefiere tal opción').",
+        "Cálculo de medidas de tendencia central (media, mediana) o dispersión usando el gráfico.",
+        "Interpretación de gráficos de otros tipos (histograma, gráfico circular, diagrama de caja, dispersión).",
+        "Lectura o interpretación de datos agrupados en intervalos de clase.",
+        "Transformación del gráfico de barras a otras representaciones (tabla, diagrama de líneas, etc.).",
+        "Predicciones, extrapolaciones o análisis de tendencias más allá de las comparaciones inmediatas.",
+        "Análisis de gráficos con escalas no lineales, ejes truncados o doble eje vertical."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-01-01: Comprensión básica de la noción de dato y frecuencia (contar elementos en un conjunto pequeño).",
+        "A-M1-PROB-01-02: Lectura de información en tablas simples de frecuencias.",
+        "A-M1-PROB-01-03: Reconocimiento de categorías cualitativas y cuantitativas discretas.",
+        "A-M1-ARIT-01-01: Manejo de números naturales pequeños y conteo directo."
+      ],
+      "common_traps": [
+        "Escala del eje vertical que no comienza en 0, lo que puede inducir a sobreestimar diferencias entre barras.",
+        "Etiquetas de categorías muy parecidas (p. ej., 'azul claro' vs 'azul oscuro') que pueden confundir al estudiante.",
+        "Barras apiladas o agrupadas que mezclan más de una variable cuando el ítem solo pretende comparación simple.",
+        "Marcas de escala que no corresponden al extremo superior de las barras, generando lecturas intermedias poco claras.",
+        "Uso de colores muy similares o de poca legibilidad que dificulta asociar cada barra con su categoría.",
+        "Plantear preguntas cuya respuesta depende de contar visualmente divisiones no marcadas en la barra.",
+        "Pedir inferencias que impliquen cálculos adicionales (por ejemplo, suma de varias barras) más allá de la lectura directa o comparación."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Gráfico de barras con pocas categorías (3 a 5) y escala simple (por ejemplo, de 1 en 1 o de 5 en 5) comenzando en 0.",
+        "Preguntas que solicitan leer directamente la frecuencia de una sola categoría claramente etiquetada.",
+        "Preguntas que piden identificar la categoría con mayor o menor frecuencia cuando la diferencia entre barras es notoria.",
+        "Comparaciones binarias explícitas entre dos barras, sin necesidad de revisar todo el gráfico.",
+        "Barras con longitudes enteras que coinciden exactamente con una marca de la escala, sin puntos intermedios."
+      ],
+      "medium": [
+        "Gráfico con más categorías (5 a 8) y escala algo más densa (por ejemplo, de 2 en 2 o de 10 en 10).",
+        "Preguntas que requieren comparar simultáneamente 3 o más categorías para decidir cuál es mayor o menor.",
+        "Situaciones donde dos categorías tienen frecuencias cercanas y el estudiante debe discriminar con atención visual.",
+        "Ítems que combinan una lectura directa y una comparación (por ejemplo, leer una frecuencia y luego decidir si es mayor que otra).",
+        "Identificación de empate en la moda visual (dos o más categorías con igual altura máxima)."
+      ],
+      "hard": [
+        "Gráficos con muchas categorías (8 a 10) donde la respuesta exige recorrer todo el gráfico para identificar extremos (máximo o mínimo).",
+        "Escalas con saltos mayores (por ejemplo, de 5 en 5 o de 20 en 20) que obligan a interpretar correctamente valores intermedios exactos.",
+        "Preguntas que piden ordenar varias categorías de mayor a menor o de menor a mayor según su frecuencia, aunque sin operaciones numéricas explícitas.",
+        "Comparaciones que requieren integrar información dispersa (por ejemplo, identificar simultáneamente la categoría mayor y la menor, o varias categorías empatadas).",
+        "Gráficos en los que la lectura de la frecuencia implica identificar que la barra llega exactamente entre dos marcas consecutivas pero con valor indicado por referencia (por ejemplo, leyendo un rótulo numérico al extremo de la barra)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar escalas que no comiencen explícitamente en 0 sin advertirlo claramente; en este nivel es preferible siempre partir desde 0.",
+      "Evitar barras cuya altura no coincide exactamente con una marca o valor numérico legible en el eje y que no tengan su valor rotulado.",
+      "No mezclar en un mismo gráfico diferentes anchos de barra si no es relevante para la tarea, ya que puede interpretarse como diferencias de frecuencia.",
+      "Evitar categorías con nombres demasiado largos que se corten o superpongan en el eje horizontal, dificultando la lectura.",
+      "No usar colores de baja distinción o sin leyenda clara, especialmente si las barras están muy juntas.",
+      "Evitar preguntas que puedan responderse parcialmente por simple inspección de longitud sin considerar la escala (por ejemplo, cuando el eje no está rotulado).",
+      "No combinar en el mismo gráfico variables de naturaleza distinta (por ejemplo, mezclar personas y objetos en una misma escala) si no se explica claramente.",
+      "Evitar ítems en los que más de una alternativa parezca correcta por empates no intencionales en las alturas de las barras.",
+      "No usar formulaciones verbales ambiguas como 'la mayoría' si puede interpretarse tanto como 'la categoría con más frecuencia' o 'más de la mitad del total'."
+    ],
+    "error_families": [
+      {
+        "name": "Ignorar_escala_vertical",
+        "description": "El estudiante compara solo la altura visual de las barras sin considerar la escala (por ejemplo, asume que cada división vale 1 aunque marque 5 o 10).",
+        "how_to_address": "Incluir en el enunciado o en instrucciones previas la importancia de leer los números del eje vertical. Proponer ítems donde el valor de cada división esté claramente rotulado y exigir en la pregunta que se indique la cantidad exacta, no solo 'mayor' o 'menor'."
+      },
+      {
+        "name": "Confusion_de_categorias",
+        "description": "El estudiante asocia una barra con la categoría incorrecta debido a etiquetas poco claras o por leer la categoría contigua.",
+        "how_to_address": "Usar etiquetas breves y bien espaciadas. Plantear ítems que obliguen a revisar la correspondencia categoría-barra (por ejemplo, enfatizando 'según el gráfico, para la categoría X...'). Incluir en la práctica actividades de señalización (marcar la barra correspondiente)."
+      },
+      {
+        "name": "Lectura_aproximada_en_vez_de_exácta",
+        "description": "El estudiante redondea visualmente la altura de la barra al valor más cercano, aunque la barra no llegue exactamente a esa marca.",
+        "how_to_address": "Diseñar gráficos en los que la parte superior de la barra coincida claramente con una marca o incluir el valor numérico sobre la barra. En corrección formativa, pedir que el estudiante señale en el eje vertical el valor que eligió y lo compare con la posición real de la barra."
+      },
+      {
+        "name": "Focalizacion_parcial_del_grafico",
+        "description": "El estudiante solo observa las primeras o últimas barras y responde sin considerar todo el conjunto (por ejemplo, pasa por alto una barra más alta en el centro).",
+        "how_to_address": "Proponer ítems que obliguen a revisar todo el gráfico (por ejemplo, '¿cuál de las siguientes categorías, entre todas, tiene mayor frecuencia?'). Sugerir estrategias de lectura sistemática de izquierda a derecha o de arriba hacia abajo."
+      },
+      {
+        "name": "Dificultad_para_identificar_la_moda_visual",
+        "description": "El estudiante no reconoce correctamente la barra (o barras) de mayor altura, especialmente en presencia de empates.",
+        "how_to_address": "Incluir ejemplos con empates intencionales y pedir explícitamente 'todas las categorías' con máxima frecuencia. Trabajar verbalizaciones como 'estas dos barras llegan a la misma altura'."
+      },
+      {
+        "name": "Confundir_frecuencia_con_orden_de_presentacion",
+        "description": "El estudiante asume que la primera categoría representada es necesariamente la más frecuente o la más importante.",
+        "how_to_address": "Diseñar gráficos donde la categoría más frecuente no esté en los extremos, y explicitar en retroalimentaciones que el orden en el eje horizontal no indica la frecuencia."
+      }
+    ],
+    "future_targets": [
+      "Interpretar y comparar datos en otros tipos de gráficos estadísticos (histogramas, gráficos circulares, diagramas de caja).",
+      "Calcular medidas de tendencia central (media, mediana, moda) a partir de datos presentados en gráficos.",
+      "Realizar transformaciones entre tablas, gráficos de barras y gráficos de líneas.",
+      "Analizar y comparar distribuciones de datos (por ejemplo, datos de dos grupos en gráficos separados).",
+      "Resolver problemas de contexto que involucran porcentajes y razones usando información extraída de gráficos.",
+      "Evaluar críticamente la forma en que se presentan datos en medios de comunicación (lectura crítica de gráficos)."
+    ],
+    "representation_variants": [
+      "Gráfico de barras verticales con eje horizontal para categorías y eje vertical para frecuencia.",
+      "Gráfico de barras horizontales con eje vertical para categorías y eje horizontal para frecuencia.",
+      "Gráfico de barras con barras de un solo color y etiquetas numéricas de frecuencia sobre cada barra.",
+      "Gráfico de barras con distintas tonalidades o tramas para distinguir categorías, manteniendo una sola variable de frecuencia.",
+      "Gráfico de barras con escala de frecuencia marcada en pasos regulares (por ejemplo, 2, 5, 10) desde 0.",
+      "Gráfico de barras en el que algunas categorías tengan igual altura, permitiendo trabajo con empates en la moda visual."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_up_to_100",
+      "multiples_of_2",
+      "multiples_of_5",
+      "multiples_of_10"
+    ],
+    "required_image_types": [
+      "statistical_chart"
+    ]
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Modelar el perímetro de cuadrados y rectángulos usando una variable para una dimensión y expresiones algebraicas para el resto.",
+        "Modelar el área de cuadrados y rectángulos cuando al menos una dimensión se expresa en función de una variable (por ejemplo, x, x+2, 2x, 3x-1).",
+        "Obtener expresiones algebraicas simplificadas para áreas y perímetros (como polinomios de una variable de grado 1 o 2).",
+        "Relacionar verbalmente una situación geométrica simple (largo y ancho de un rectángulo) con una expresión algebraica dada o por encontrar.",
+        "Usar condiciones simples sobre la variable (por ejemplo, x > 0, x > 2) para que las dimensiones tengan sentido geométrico."
+      ],
+      "out_of_scope": [
+        "Cálculo de área o perímetro de figuras compuestas (L, T, varios rectángulos unidos) o polígonos no rectangulares.",
+        "Uso de triángulos, círculos u otras figuras que requieran fórmulas adicionales distintas a rectángulos o cuadrados.",
+        "Optimización o búsqueda de máximos/mínimos de área o perímetro (eso ya es un paso siguiente con funciones).",
+        "Problemas que requieran resolver ecuaciones a partir de áreas o perímetros dados (este átomo se centra en representar, no en resolver).",
+        "Uso de más de una variable independiente a la vez (por ejemplo, largo = x y ancho = y como variables separadas en un mismo ítem).",
+        "Cálculo numérico directo de área o perímetro sin presencia de variables (eso es aritmética/geométrica, no modelización algebraica).",
+        "Figuras tridimensionales (prismas, cajas, etc.) o superficies laterales y volúmenes."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Uso de letras para representar cantidades desconocidas o variables en expresiones sencillas.",
+        "A-M1-ALG-01-05: Suma y resta de expresiones algebraicas simples (monomios y binomios en una variable).",
+        "A-M1-ALG-01-07: Multiplicación de un binomio por un monomio y de dos binomios sencillos (distributiva).",
+        "A-M1-GEO-01-01: Cálculo de área y perímetro de rectángulos y cuadrados con medidas numéricas.",
+        "A-M1-NUM-01-02: Manejo fluido de enteros positivos y fracciones simples en contextos geométricos."
+      ],
+      "common_traps": [
+        "Confundir área con perímetro al traducir la situación (por ejemplo, usar largo·ancho para una pregunta claramente sobre bordes).",
+        "No considerar que en un rectángulo hay dos lados de cada longitud al modelar el perímetro (escribir P = x + (x+2) en vez de P = 2x + 2(x+2)).",
+        "Representar el área de un rectángulo sumando las dimensiones en lugar de multiplicarlas (A = x + (x+5) en vez de A = x(x+5)).",
+        "Errores algebraicos al simplificar (por ejemplo, (x+2)(x+5) = x^2 + 7 o 2(x+3) = 2x+3).",
+        "Plantear dimensiones que pueden dar valores negativos sin aclarar las restricciones de la variable (por ejemplo, ancho = x-5 sin indicar x > 5 si es relevante).",
+        "Usar expresiones demasiado complejas (coeficientes grandes, fracciones complicadas) que transforman el foco desde la modelización geométrica hacia el álgebra técnica.",
+        "Ambigüedad en la figura: no queda claro qué lado corresponde a qué expresión, o se asume que la figura está a escala cuando no se debe."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figuras: solo cuadrados o rectángulos, con lados descritos en texto o rotulados directamente con expresiones muy simples (por ejemplo, x, x+2, 2x).",
+        "Tarea principal: escribir la expresión de área o perímetro, sin necesidad de simplificar completamente (aceptando, por ejemplo, P = x + x + x + x).",
+        "Presencia de una sola operación algebraica clara: solo suma/repetición para perímetro o solo producto de dos factores muy simples para área (por ejemplo, A = x(x+3)).",
+        "Contextos poco cargados: sin historia larga; enunciados directos del tipo “Un rectángulo tiene… ¿Cuál es la expresión para…?”",
+        "Valores numéricos pequeños y positivos (como 2, 3, 4) sin fracciones ni números decimales en las expresiones."
+      ],
+      "medium": [
+        "Uso de expresiones levemente más complejas para los lados (por ejemplo, x+2, 2x+1, 3x-4) pero manteniendo una sola variable.",
+        "Requerir la simplificación correcta de la expresión de área o perímetro (por ejemplo, pasar de P = 2x + 2(x+3) a P = 4x+6).",
+        "Combinar información verbal con una figura sencilla, donde el estudiante debe identificar qué lado corresponde a cada expresión antes de modelar.",
+        "Incluir una condición simple sobre la variable (por ejemplo, x > 2) que el estudiante debe interpretar pero no usar para resolver ecuaciones.",
+        "Pedir comparar o elegir entre varias expresiones propuestas para identificar cuál representa correctamente un área o perímetro dado."
+      ],
+      "hard": [
+        "Dimensiones expresadas mediante binomios que requieren producto de binomios para el área (por ejemplo, lados (x+2) y (x+5)).",
+        "Situaciones en las que el estudiante debe inferir una o más dimensiones a partir de texto y luego modelar el área o perímetro (por ejemplo, “el ancho es 3 cm menos que el largo, que es x”).",
+        "Ítems que exigen manipulación algebraica más elaborada, como factorizar o reordenar una expresión de área/perímetro ya dada para interpretarla geométricamente (sin resolver ecuaciones).",
+        "Uso de coeficientes distintos de 1 en ambos lados, generando expresiones como A = (2x+1)(x+3) y su expansión o comparación con otras opciones.",
+        "Comparar dos expresiones de área o perímetro provenientes de descripciones diferentes y decidir si representan o no la misma figura (reconocer equivalencia algebraica en contexto geométrico)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar figuras donde no se indique explícitamente cuál lado está representado por cada expresión algebraica; siempre rotular o describir con claridad los lados correspondientes.",
+      "Evitar enunciados que mencionen “tamaño” o “dimensión” sin especificar claramente si se refiere a largo, ancho, lado o a un incremento respecto de otra medida.",
+      "No presentar rectángulos que visualmente parezcan cuadrados o desproporcionados respecto de las longitudes dadas, para no inducir a deducir relaciones desde la escala del dibujo.",
+      "Evitar problemas donde las expresiones de los lados puedan ser negativas para valores de x que también hacen sentido en el contexto, sin declarar explícitamente las restricciones de la variable.",
+      "No mezclar en forma confusa las unidades (por ejemplo, dar un lado en cm y otro en m sin aclarar o pedir conversiones).",
+      "Evitar fórmulas incompletas o no estandarizadas de área o perímetro; siempre usar y/o sugerir la forma canónica (P = suma de todos los lados, A = largo·ancho).",
+      "No usar letras distintas para la misma magnitud (por ejemplo, describir el largo como L en el texto y como x en la figura sin aclarar la equivalencia).",
+      "Evitar contextos en que la distancia descrita pueda interpretarse tanto como área como como perímetro (por ejemplo, “cantidad de pasto alrededor de la cancha” sin precisar si es superficie o borde)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión entre área y perímetro",
+        "description": "El/la estudiante utiliza la fórmula de área cuando el problema pide perímetro o viceversa, por ejemplo, multiplicar largo por ancho cuando se pregunta por la longitud de la cerca necesaria.",
+        "how_to_address": "Incluir en las alternativas distractores que evidencien este error (productos en vez de sumas o al revés) y diseñar retroalimentación que enfatice el significado geométrico: área como superficie interna y perímetro como longitud del contorno."
+      },
+      {
+        "name": "No contar ambos pares de lados en el perímetro",
+        "description": "Representar el perímetro de un rectángulo sumando solo dos lados distintos (P = largo + ancho) en lugar de sumar los cuatro lados o multiplicar por 2.",
+        "how_to_address": "Incorporar ítems donde la figura muestre claramente dos lados de cada longitud y en la retroalimentación reforzar la idea de que el rectángulo tiene dos lados iguales de cada tipo, mostrando la suma explícita antes de simplificar."
+      },
+      {
+        "name": "Sumar en vez de multiplicar para el área",
+        "description": "Plantear el área de un rectángulo como suma de sus lados (A = largo + ancho) en vez de como producto (A = largo·ancho).",
+        "how_to_address": "Usar opciones de respuesta que incluyan tanto sumas como productos para hacer visible la confusión y en la explicación insistir en la interpretación como “cantidad de cuadrados unitarios dentro de la figura”, lo que se obtiene multiplicando dimensiones."
+      },
+      {
+        "name": "Aplicación incorrecta de la distributiva",
+        "description": "Errores al expandir expresiones de perímetro o área, como 2(x+3) = 2x+3 o (x+2)(x+5) = x^2+7, que llevan a expresiones mal simplificadas.",
+        "how_to_address": "Diseñar ítems donde se pueda distinguir claramente entre la expresión no simplificada y varias simplificaciones posibles, algunas con errores típicos de distributiva. En la retroalimentación, mostrar el paso a paso de la expansión correcta."
+      },
+      {
+        "name": "Manejo incorrecto de signos",
+        "description": "Errores al operar con expresiones que incluyen términos negativos o restas en las dimensiones, por ejemplo, ancho = x-3 y luego desarrollar mal el producto o la suma.",
+        "how_to_address": "Utilizar pocos signos negativos pero suficientes para detectar el error, y en la retroalimentación recordar que la distributiva se aplica también al signo, explicando la interpretación geométrica de “3 cm menos que el largo”."
+      },
+      {
+        "name": "Desconexión entre el texto y la expresión algebraica",
+        "description": "El/la estudiante formula una expresión sin respetar la relación descrita verbalmente (por ejemplo, si el ancho es el doble del largo, escribir ancho = x+2 en lugar de ancho = 2x).",
+        "how_to_address": "Plantear alternativas que reflejen distintas interpretaciones posibles del texto y usar la retroalimentación para traducir explícitamente la frase verbal a ecuaciones simples antes de llegar a la expresión final de área o perímetro."
+      },
+      {
+        "name": "Ignorar restricciones sobre la variable",
+        "description": "Aceptar sin cuestionar expresiones de dimensiones que podrían dar valores negativos o nulos para ciertos x, lo que no tiene sentido como largo o ancho.",
+        "how_to_address": "Proponer ítems donde se deba identificar expresiones válidas para largos o anchos y usar la explicación para reforzar que longitudes deben ser positivas, mostrando ejemplos de valores de x que no sirven."
+      }
+    ],
+    "future_targets": [
+      "Modelación de situaciones geométricas más complejas usando álgebra, como figuras compuestas y recintos con subdivisiones internas.",
+      "Introducción y análisis de funciones lineales y cuadráticas que surgen de fórmulas de perímetro y área en función de una variable.",
+      "Resolución de ecuaciones y sistemas que involucran áreas o perímetros dados para determinar dimensiones desconocidas.",
+      "Problemas de optimización sencilla (maximizar área dado un perímetro, o minimizar perímetro para un área fija) usando modelos algebraicos.",
+      "Uso coordinado de distintas representaciones de funciones (tabla, expresión, gráfico) a partir de modelos de área/perímetro.",
+      "Generalización de patrones geométricos (por ejemplo, crecimiento de una cerca o baldosa) a fórmulas algebraicas en n."
+    ],
+    "representation_variants": [
+      "Descripción verbal de la figura (largo y ancho en palabras) y solicitud de escribir la expresión algebraica del área o perímetro.",
+      "Figura geométrica de rectángulo o cuadrado con lados rotulados por expresiones algebraicas, pidiendo la expresión de área o perímetro.",
+      "Tabla que muestre distintos valores de la variable y el área o perímetro correspondiente, pidiendo identificar la expresión general que los genera.",
+      "Expresión algebraica dada para área o perímetro y solicitud de interpretar qué significan sus términos en la figura (por ejemplo, relacionar 4x y 6 con lados de un rectángulo).",
+      "Comparación de dos representaciones: por ejemplo, texto que describe la relación entre lados y una expresión propuesta para el perímetro, para decidir si es o no correcta.",
+      "Contextos cotidianos simples (cercos, marcos, patios rectangulares) donde se traduzca la situación a un modelo de rectángulo con dimensiones variables."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "positive_integers",
+      "simple_fractions",
+      "integer_coefficients",
+      "simple_linear_expressions_in_one_variable",
+      "simple_quadratic_expressions_in_one_variable"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Dividir un polinomio entre un monomio aplicando la propiedad distributiva de la división respecto de la suma o resta, es decir, dividir cada término del polinomio por el monomio.",
+        "Simplificar cada término resultante utilizando leyes de exponentes para cociente de potencias con la misma base.",
+        "Trabajar con polinomios en una o varias variables (por ejemplo x, a y, m n) siempre que el divisor sea un único monomio.",
+        "Identificar y expresar el resultado como polinomio simplificado, eventualmente ordenado por grados decrecientes en alguna variable.",
+        "Incluir casos donde algunos términos del polinomio no son divisibles completamente por el monomio y quedan coeficientes fraccionarios (por ejemplo (3x^2 + x)/2x).",
+        "Reconocer y manejar signos en coeficientes y exponentes durante la división (incluyendo coeficientes negativos)."
+      ],
+      "out_of_scope": [
+        "División de polinomio por polinomio (división larga, división sintética, algoritmo de la división).",
+        "Determinación de cociente y resto en divisiones no exactas entre polinomios.",
+        "Problemas que requieran interpretar la división como función racional o simplificación de fracciones algebraicas complejas (por ejemplo (x^2+3x+2)/(x+1)).",
+        "Contextualización avanzada con funciones (por ejemplo interpretar (f(x)+g(x))/h(x) como nueva función) más allá del cálculo puramente algebraico.",
+        "Uso de factorización no trivial previa o posterior como objetivo principal (por ejemplo obligar a factorizar el polinomio para simplificar la división).",
+        "Expresiones con raíces, radicales o logaritmos en los monomios que cambien el foco desde la división de polinomios a manipulación de radicales o logaritmos.",
+        "Simplificación de fracciones algebraicas donde el numerador y el denominador sean polinomios generales y se espere cancelación de factores comunes obtenidos por factorización."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-00-01: Comprender la estructura de un monomio (coeficiente numérico, parte literal, exponentes naturales) y de un polinomio como suma de monomios.",
+        "A-M1-ALG-00-02: Operar con números enteros y fracciones (suma, resta, multiplicación y división) incluyendo manejo de signos.",
+        "A-M1-ALG-00-03: Aplicar leyes de exponentes para producto y cociente de potencias con la misma base, con exponentes naturales (a^m · a^n = a^(m+n), a^m / a^n = a^(m-n)).",
+        "A-M1-ALG-00-04: Identificar y sumar/restar términos semejantes en expresiones algebraicas sencillas.",
+        "A-M1-ALG-00-05: Aplicar la propiedad distributiva de la multiplicación respecto de la suma o resta en expresiones algebraicas."
+      ],
+      "common_traps": [
+        "Olvidar distribuir la división a TODOS los términos del polinomio y solo dividir el primer término.",
+        "Dividir coeficientes pero no dividir correctamente la parte literal (por ejemplo (6x^3)/3x escrito como 2x^3 en lugar de 2x^2).",
+        "Aplicar incorrectamente la ley de exponentes en el cociente (por ejemplo x^5/x^2 = x^10 o x^3 en lugar de x^3).",
+        "Restar exponentes en el orden equivocado (n − m en vez de m − n), lo que lleva a exponentes negativos no deseados dentro del alcance de este átomo.",
+        "Intentar sumar o restar términos semejantes ANTES de dividir, complicando innecesariamente el procedimiento o cometiendo errores de combinación de términos.",
+        "Perder o cambiar signos al dividir términos con coeficientes negativos (por ejemplo (−8x^2)/4x escrito como −8x en vez de −2x).",
+        "Confundir el divisor monomio con un factor solo del primer término, interpretando mal la notación de fracción cuando faltan paréntesis.",
+        "No simplificar completamente el resultado (dejar 4x^3/2x en vez de 2x^2) cuando el ítem explícitamente apunta a una expresión simplificada."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Polinomios con 2 o 3 términos y un solo tipo de variable (por ejemplo solo x).",
+        "Coeficientes enteros pequeños, positivos, donde todas las divisiones de coeficientes sean exactas y no generen fracciones.",
+        "Exponentes naturales pequeños (0 a 4) y siempre mayores o iguales que los del divisor, evitando exponentes negativos en los resultados.",
+        "Estructuras directamente del tipo ((ax^n + bx^m)/cx^k) escritas claramente con paréntesis, sin necesidad de reescribir la expresión.",
+        "Alternativas de respuesta que difieren en un solo aspecto (coeficiente o exponente) para focalizar el desafío en un solo paso del procedimiento."
+      ],
+      "medium": [
+        "Polinomios con 3 o 4 términos, con una o dos variables (por ejemplo x y o a b) donde cada término involucra algunas o todas las variables del divisor.",
+        "Coeficientes enteros que pueden ser negativos, con algunas divisiones que produzcan fracciones simples (por ejemplo 3/2, −5/3).",
+        "Exponentes naturales hasta 5 o 6, con algunos términos donde el exponente del numerador es igual al del divisor (resultando en exponente 0) y otros donde es mayor.",
+        "Enunciados donde la expresión aparece sin paréntesis explícitos, requiriendo que el estudiante infera que todo el polinomio está siendo dividido por el monomio, pero con redacción textual que lo aclare.",
+        "Ítems que pidan seleccionar la expresión simplificada equivalente entre varias opciones que muestran errores típicos de leyes de exponentes o manejo de signos.",
+        "Incorporar términos del polinomio que después de dividir produzcan monomios con una sola variable (por ejemplo xy^2 / y = xy) y otros con desaparición de la parte literal (por ejemplo 3x / x = 3), requiriendo distinguir bien las potencias."
+      ],
+      "hard": [
+        "Polinomios con 4 o más términos y hasta 2 o 3 variables distintas, con distintas combinaciones de las variables en cada término.",
+        "Coeficientes enteros de valor absoluto mayor (por ejemplo hasta 20) y divisiones que generen fracciones no triviales (por ejemplo −7/4, 11/6) que deban mantenerse en forma irreducible.",
+        "Casos donde algunos exponentes del numerador son menores que los del divisor en alguna variable, generando resultados con potencias a exponente negativo si se aplicara la regla m − n ingenuamente, obligando a reconocer que ese término no es simplificable en el marco dado o que debe quedar expresado como fracción con la variable en el denominador (solo si está claro en el enunciado que esto es aceptado).",
+        "Ítems que mezclen el procedimiento de división con un mini contexto algebraico (por ejemplo parte de una expresión más grande que luego requiere identificar un coeficiente específico tras simplificar).",
+        "Preguntas donde la división está incrustada en una expresión más compleja, como sumar o restar el resultado de la división con otro polinomio, obligando a dividir correctamente cada término antes de combinar.",
+        "Distractores diseñados con múltiples errores posibles simultáneos (error en coeficiente, en exponente y/o en signo) de manera que solo un control cuidadoso de todas las etapas de la división permita encontrar la respuesta correcta."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar escribir expresiones del tipo a x^2 + bx / cx sin paréntesis, porque podría interpretarse que solo el último término está dividido; usar siempre notación de fracción con numerador y denominador claros o indicar en palabras que todo el polinomio se divide por el monomio.",
+      "No mezclar en un mismo ítem división por monomio y por polinomio, ya que puede confundir el alcance del procedimiento esperado.",
+      "Evitar contextos verbales demasiado cargados donde la traducción algebraica sea la principal dificultad; el foco debe estar en la operación de división del polinomio por el monomio.",
+      "No usar notación poco habitual, como escribir el divisor a la derecha sin símbolo de división claro (por ejemplo (4x^2 + 2x)·1/(2x) puede interpretarse como otra operación).",
+      "Precisar en el enunciado si se espera una expresión completamente simplificada; de lo contrario, algunas respuestas podrían considerarse equivalentes y generar ambigüedad en la corrección.",
+      "Evitar introducir exponentes negativos en el resultado cuando el currículum esperado para este ítem aún no ha formalizado potencias con exponente entero negativo; en ese caso, preferir reescribir como fracción con variables en el denominador.",
+      "No plantear ítems donde sea razonable aplicar primero factorización no enseñada todavía; esto puede generar más de un procedimiento correcto esperado y ambigüedad sobre el foco del aprendizaje.",
+      "Cuidar que las alternativas de respuesta no sean algebraicamente equivalentes entre sí (por ejemplo 2x^2 y (4x^3)/(2x)), a menos que el ítem especifique que se busca la expresión simplificada."
+    ],
+    "error_families": [
+      {
+        "name": "No distribuir la división a todos los términos",
+        "description": "El estudiante divide solo el primer término del polinomio por el monomio y copia los demás términos sin dividir, por ejemplo (6x^2 + 4x)/2x → 3x + 4x.",
+        "how_to_address": "Reforzar la idea de que dividir un polinomio por un monomio equivale a dividir cada término individualmente. Usar representación en fracción, mostrando explícitamente (6x^2)/2x + (4x)/2x, y practicar con ejemplos donde se evidencie que todos los términos cambian."
+      },
+      {
+        "name": "Aplicación incorrecta de leyes de exponentes en el cociente",
+        "description": "Al dividir potencias con la misma base, el estudiante suma exponentes o los maneja de forma incorrecta, por ejemplo x^5/x^2 → x^7 o x^3/x → x^2.",
+        "how_to_address": "Trabajar específicamente la regla a^m / a^n = a^(m−n) con ejemplos numéricos simples (por ejemplo x^3/x^2 y su interpretación como x·x·x / (x·x)). Pedir que expliciten el paso de restar exponentes en un par de términos antes de automatizar el procedimiento."
+      },
+      {
+        "name": "Error en el manejo de signos",
+        "description": "Al dividir coeficientes negativos o mezclar signos distintos, el estudiante obtiene el signo contrario o pierde el signo, por ejemplo (−8x^2)/4x → 2x en lugar de −2x.",
+        "how_to_address": "Separar momentáneamente la división en parte numérica y parte literal: primero decidir el signo del resultado con la regla de signos y luego operar con los exponentes. Practicar ejercicios breves solo de división de coeficientes con signos, antes de incluir las variables."
+      },
+      {
+        "name": "Olvidar simplificar completamente la expresión",
+        "description": "El estudiante deja coeficientes o potencias sin simplificar aunque sea posible, por ejemplo (4x^3 + 6x^2)/2x → (4x^3)/(2x) + (6x^2)/(2x) y se detiene ahí o escribe 4x^3/2x + 6x^2/2x.",
+        "how_to_address": "Insistir en la convención de ‘expresión simplificada’ como parte de la respuesta final. Proponer comparaciones entre expresiones equivalentes y preguntar cuál está más simplificada y por qué, reforzando el uso de la simplificación de coeficientes y exponentes como paso final obligatorio."
+      },
+      {
+        "name": "Restar exponentes en orden inverso",
+        "description": "Al aplicar a^m / a^n, el estudiante calcula n − m en lugar de m − n, generando exponentes negativos o resultados incorrectos, por ejemplo x^2/x^5 → x^3 en vez de 1/x^3.",
+        "how_to_address": "Usar ejemplos concretos y representación desarrollada (por ejemplo x^2/x^5 = x·x/(x·x·x·x·x)) para visualizar que se cancelan factores del numerador con el denominador y que cuando el exponente del denominador es mayor, la potencia queda ‘abajo’ como 1/x^3. Aclarar si en el nivel se admite trabajar con exponentes negativos o se prefiere reescribir como fracción."
+      },
+      {
+        "name": "Mezclar variables incorrectamente",
+        "description": "El estudiante combina variables de manera errónea al dividir, por ejemplo (6a^2b)/3ab → 2a^2b^2 o 2ab en lugar de 2a.",
+        "how_to_address": "Separar la división por variables: primero dividir a^2/a → a, luego b/b → 1, enfatizando que solo se restan exponentes de la MISMA base. Proponer ejercicios donde se enfatice qué variables se cancelan y cuáles permanecen."
+      },
+      {
+        "name": "Interpretación errónea de la notación de fracción",
+        "description": "Si la expresión está escrita sin paréntesis, algunos estudiantes interpretan que solo el último término está dividido por el monomio, por ejemplo 4x^2 + 6x/2x → 4x^2 + 3 en lugar de (4x^2 + 6x)/2x → 2x + 3.",
+        "how_to_address": "Trabajar explícitamente la importancia de los paréntesis en la notación algebraica y proponer comparación entre pares de expresiones como (4x^2 + 6x)/2x y 4x^2 + 6x/2x para que identifiquen la diferencia en el alcance del divisor."
+      }
+    ],
+    "future_targets": [
+      "División de polinomios por polinomios (división larga o sintética) y cálculo de cociente y resto.",
+      "Simplificación de fracciones algebraicas complejas mediante factorización y cancelación de factores comunes.",
+      "Manipulación de expresiones racionales en contextos de funciones (por ejemplo simplificar f(x) = (x^2−1)/(x−1)).",
+      "Resolución de ecuaciones racionales que requieran simplificar primero expresiones del tipo polinomio/monomio.",
+      "Trabajo con derivadas simples en cálculo, donde se simplifican cocientes de polinomios antes o después de diferenciar (en niveles posteriores).",
+      "Modelación algebraica de situaciones donde se distribuye una cantidad en partes iguales y la expresión resultante implica dividir polinomios por un factor común.",
+      "Comprensión y aplicación generalizada de las leyes de exponentes, incluyendo exponentes enteros negativos y racionales en cursos posteriores."
+    ],
+    "representation_variants": [
+      "Expresiones escritas en forma de fracción con todo el polinomio en el numerador y el monomio en el denominador, por ejemplo (4x^3 + 6x^2)/2x.",
+      "Expresiones escritas usando el símbolo de división ‘:’ o ‘÷’ entre polinomio y monomio, por ejemplo (4x^3 + 6x^2) : 2x.",
+      "Expresiones donde la división por el monomio aparece implícita como multiplicación por el inverso, por ejemplo (4x^3 + 6x^2)·1/(2x), siempre que se mantenga el foco en la división término a término.",
+      "Representación expandida después de distribuir la división, mostrando cada término como fracción independiente, por ejemplo (4x^3)/(2x) + (6x^2)/(2x).",
+      "Ítems que pidan identificar la forma equivalente correcta entre varias representaciones (fracción única, suma de cocientes, expresión simplificada).",
+      "Situaciones textuales simples que describan ‘repartir’ o ‘distribuir’ una cantidad representada por un polinomio en grupos representados por un monomio, llevando a la expresión algebraica correspondiente."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers",
+      "negative_integers",
+      "simple_fractions",
+      "nontrivial_fractions",
+      "simple_decimals",
+      "coefficients_with_variables",
+      "multiple_variables"
+    ],
+    "required_image_types": []
+  }
+}

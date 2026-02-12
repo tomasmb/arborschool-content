@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar el Teorema de Pitágoras para calcular un cateto desconocido, conociendo la hipotenusa y el otro cateto en un triángulo rectángulo.",
+        "Despejar correctamente la fórmula en la forma a = sqrt(c^2 - b^2) o b = sqrt(c^2 - a^2).",
+        "Identificar, a partir del enunciado o de una figura, qué lado es la hipotenusa y cuáles son los catetos.",
+        "Resolver problemas geométricos simples en contexto (por ejemplo, altura, base, lado de rectángulo) que se reduzcan a hallar un cateto en un triángulo rectángulo.",
+        "Trabajar con resultados tanto enteros como expresados con raíz cuadrada (sin necesidad de aproximar)."
+      ],
+      "out_of_scope": [
+        "Cálculo de la hipotenusa conociendo dos catetos (suma de cuadrados).",
+        "Problemas que requieran trigonometría (razones seno, coseno, tangente) para hallar lados o ángulos.",
+        "Uso del Teorema de Pitágoras en el plano cartesiano para calcular distancias entre puntos (eso es otro átomo).",
+        "Cálculo de áreas o perímetros que no dependan esencialmente de encontrar un cateto mediante Pitágoras.",
+        "Demostraciones formales del Teorema de Pitágoras o de sus generalizaciones.",
+        "Triángulos oblicuángulos (no rectángulos) o uso de ley de cosenos."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01: Identificación de triángulo rectángulo, hipotenusa y catetos en dibujos y en enunciados verbales.",
+        "A-M1-GEO-01-02: Aplicación del Teorema de Pitágoras para encontrar la hipotenusa (c^2 = a^2 + b^2).",
+        "A-M1-ALG-RAI-01: Manejo de cuadrados y raíces cuadradas de números racionales simples.",
+        "A-M1-ALG-ARI-01: Cálculo aritmético con enteros y decimales (sumas, restas, multiplicaciones simples)."
+      ],
+      "common_traps": [
+        "Sumar los cuadrados (a^2 + b^2) en lugar de restar (c^2 - b^2) al buscar un cateto.",
+        "Restar en el orden incorrecto (b^2 - c^2), lo que lleva a un número negativo bajo la raíz.",
+        "Confundir el lado mayor dibujado con un cateto y no reconocer correctamente a la hipotenusa.",
+        "Usar directamente c - b en vez de sqrt(c^2 - b^2).",
+        "No verificar que la hipotenusa sea el lado de mayor longitud en los datos entregados.",
+        "Perder las unidades o no interpretar si el resultado debe quedar con raíz o decimal aproximado (según lo pida la pregunta)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciado directo, sin contexto, con triángulo claramente rectángulo y lados etiquetados explícitamente como hipotenusa y catetos.",
+        "Datos numéricos pequeños que formen ternas pitagóricas habituales (por ejemplo, 3-4-5, 5-12-13), de modo que el resultado del cateto sea un número entero sencillo.",
+        "Fórmula prácticamente dada o muy sugerida en el enunciado (por ejemplo, recordar explícitamente c^2 = a^2 + b^2).",
+        "Solo un paso de despeje casi inmediato (aplicar a^2 = c^2 - b^2) y luego extraer raíz de un cuadrado perfecto."
+      ],
+      "medium": [
+        "Problemas en contexto (escaleras, altura de un poste, diagonal de un rectángulo) donde el estudiante deba identificar por sí mismo qué lado es la hipotenusa y cuál es el cateto buscado.",
+        "Figuras donde los lados no estén rotulados como “hipotenusa” o “cateto”, pero el ángulo recto esté indicado claramente.",
+        "Números que no formen ternas pitagóricas exactas, dando como resultado una raíz no entera relativamente simple (por ejemplo, sqrt(27), sqrt(50)), sin necesidad de aproximar, o con una aproximación indicada explícitamente.",
+        "Requerir un mínimo de manipulación algebraica: escribir c^2 = a^2 + b^2, luego despejar el cateto y recién después reemplazar valores.",
+        "Distractores que incluyan c^2 + b^2 o c - b, evaluando comprensión del despeje correcto."
+      ],
+      "hard": [
+        "Problemas encadenados donde el valor de la hipotenusa o del otro cateto se obtiene primero a partir de otra relación geométrica (por ejemplo, dimensiones de un rectángulo, suma de lados, o un segundo triángulo).",
+        "Figuras más complejas con más de un triángulo rectángulo donde el estudiante debe seleccionar el triángulo pertinente antes de aplicar Pitágoras.",
+        "Datos numéricos que produzcan expresiones con raíces menos sencillas (por ejemplo, sqrt(221)), o que requieran simplificación algebraica de raíces para comparar opciones.",
+        "Contextos en que se deba interpretar o convertir unidades (por ejemplo, cm a m) antes o después del cálculo.",
+        "Distractores construidos a partir de errores muy cercanos: resultado de c^2 + b^2, resultado de |c - b|, o cifras con errores de cálculo menores en la resta de cuadrados o en la raíz, para discriminar precisión de procedimiento."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no esté claro cuál es el ángulo recto; siempre indicar explícitamente el ángulo de 90° en la figura o describir “triángulo rectángulo en C”, etc.",
+      "No usar la palabra genérica “lado” cuando pueda haber duda sobre si se refiere a hipotenusa o a cateto; especificar claramente el lado buscado.",
+      "No entregar datos numéricos inconsistentes con un triángulo rectángulo (por ejemplo, hipotenusa menor o igual que uno de los catetos).",
+      "Si la figura no está a escala, indicarlo o asegurarse de que la resolución no dependa de estimar longitudes visualmente.",
+      "Indicar claramente si se espera el resultado exacto (con raíz) o una aproximación decimal, y el nivel de redondeo si corresponde.",
+      "Evitar colocar letras muy parecidas en la figura (por ejemplo, c y e juntos) que dificulten distinguir hipotenusa y catetos.",
+      "No mezclar contexto con información irrelevante que pueda confundirse con datos del triángulo (por ejemplo, longitudes de objetos vecinos que no forman parte del triángulo rectángulo)."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_en_vez_de_resta",
+        "description": "El estudiante usa a^2 = c^2 + b^2 al buscar un cateto, tratando el problema como si estuviera buscando la hipotenusa.",
+        "how_to_address": "Enfatizar la diferencia conceptual entre ‘lado más largo’ (hipotenusa) y ‘lado más corto’ (cateto). Trabajar con ejemplos paralelos: un mismo triángulo, primero hallar la hipotenusa (suma) y luego un cateto (resta), comparando las fórmulas."
+      },
+      {
+        "name": "Orden_incorrecto_en_la_resta",
+        "description": "Se calcula b^2 - c^2 en lugar de c^2 - b^2, produciendo un número negativo dentro de la raíz o descartando el signo sin justificación.",
+        "how_to_address": "Reforzar que c es siempre el lado mayor (hipotenusa) por definición. Practicar con tablas donde se compare el valor de c, a y b, remarcando que el cuadrado del mayor debe ir primero en la resta al buscar un cateto."
+      },
+      {
+        "name": "Confusion_hipotenusa_cateto",
+        "description": "Identifica como hipotenusa un lado que no es el opuesto al ángulo recto, sobre todo cuando la figura no está orientada de forma habitual (hipotenusa horizontal).",
+        "how_to_address": "Incluir figuras rotadas y de diferentes orientaciones en la práctica. Pedir explícitamente que marquen el ángulo recto y el lado opuesto antes de aplicar cualquier fórmula."
+      },
+      {
+        "name": "Omitir_el_cuadrado_o_la_raiz",
+        "description": "Aplica directamente a = c - b o a = sqrt(c - b) sin elevar al cuadrado, o bien olvida extraer la raíz y se queda en a^2.",
+        "how_to_address": "Trabajar el ciclo completo: escribir c^2 = a^2 + b^2, luego despejar a^2, luego tomar raíz para obtener a. Hacer que el estudiantado verbalice cada paso: ‘primero cuadrados, luego raíz’."
+      },
+      {
+        "name": "Manejo_deficiente_de_raices",
+        "description": "Errores al calcular o simplificar raíces: interpretar sqrt(49) = 49, o simplificar mal expresiones como sqrt(100 - 36).",
+        "how_to_address": "Reforzar previamente cálculo de cuadrados y raíces de números perfectos y el orden de operaciones (primero potencias, luego restas). Proponer ejercicios aislados de cálculo de raíces similares a los que aparecen dentro de Pitágoras."
+      },
+      {
+        "name": "Ignorar_unidades_y_contexto",
+        "description": "Olvida considerar o transformar unidades, o entrega un resultado sin sentido en el contexto (por ejemplo, valor mayor que la hipotenusa o con unidad equivocada).",
+        "how_to_address": "Incluir sistemáticamente el chequeo final: ‘¿el valor del cateto es menor que la hipotenusa?’, ‘¿las unidades son coherentes?’. Proponer breves preguntas de reflexión sobre la plausibilidad del resultado."
+      }
+    ],
+    "future_targets": [
+      "Aplicación del Teorema de Pitágoras en el plano cartesiano para calcular distancias entre puntos.",
+      "Resolución de problemas de trigonometría básica (definición de seno, coseno y tangente a partir de catetos e hipotenusa).",
+      "Modelación de situaciones geométricas más complejas que combinan varios triángulos rectángulos.",
+      "Cálculo de diagonales de polígonos y cuerpos (por ejemplo, diagonal de un prisma rectangular) usando Pitágoras en más de una dimensión.",
+      "Demostraciones y razonamientos geométricos que usen Pitágoras como justificación de relaciones entre lados."
+    ],
+    "representation_variants": [
+      "Triángulo rectángulo representado explícitamente en una figura geométrica con medidas indicadas en los lados.",
+      "Enunciados puramente verbales que describen un triángulo rectángulo (por ejemplo, una escalera apoyada en un muro, la diagonal de una pantalla, un poste y su sombra).",
+      "Rectángulos cuyas diagonales y lados se relacionan mediante triángulos rectángulos (por ejemplo, diagonal conocida y un lado conocido para hallar el otro lado).",
+      "Uso de letras para representar lados (a, b, c) en expresiones simbólicas de Pitágoras donde se debe escoger el despeje correcto para un cateto.",
+      "Tablas de valores que incluyan diferentes pares (hipotenusa, cateto) donde se deba completar el cateto faltante aplicando la misma relación.",
+      "Figuras compuestas (por ejemplo, triángulo dentro de un rectángulo) donde se identifique un triángulo rectángulo relevante para aplicar el teorema."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "pythagorean_triples",
+      "integers_with_perfect_square_differences",
+      "integers_with_nonperfect_square_differences",
+      "simple_decimals",
+      "square_roots_simplifiable",
+      "square_roots_nonsimplifiable"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

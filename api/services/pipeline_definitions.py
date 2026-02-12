@@ -256,14 +256,6 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             description="Phase group to run (default: all)",
         ),
         PipelineParam(
-            name="pool_size",
-            type="number",
-            label="Pool Size",
-            required=False,
-            default=9,
-            description="Items per atom (default 9 = 3 per difficulty)",
-        ),
-        PipelineParam(
             name="dry_run",
             type="select",
             label="Dry Run",

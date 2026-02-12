@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar una traslación definida por un vector (a, b) a todos los vértices de un triángulo o cuadrilátero en el plano cartesiano.",
+        "Determinar las coordenadas de la imagen de cada vértice después de la traslación.",
+        "Identificar visualmente, entre varias figuras, cuál corresponde a la traslación de una figura dada.",
+        "Verificar que la figura trasladada mantiene forma, tamaño y orientación (isometría pura, sin giro ni cambio de sentido).",
+        "Reconocer el efecto geométrico de un vector de traslación sobre una figura (desplazamiento paralelo de todos sus puntos)."
+      ],
+      "out_of_scope": [
+        "Rotaciones, reflexiones, simetrías centrales o axiales, y giros combinados con traslación.",
+        "Homotecias, escalas o transformaciones que cambian tamaño o forma.",
+        "Cálculo de áreas o perímetros antes y después de la traslación (no es foco, aunque se pueden mencionar invarianzas solo de forma cualitativa).",
+        "Composición de varias traslaciones o de traslación con otras transformaciones en la misma pregunta.",
+        "Traslación de figuras complejas (polígonos de muchos lados, figuras curvas, regiones sombreadas complicadas).",
+        "Uso de matrices de transformación o notación vectorial avanzada (base canónica, combinación lineal, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-03-01: Identificación y lectura de coordenadas de puntos en el plano cartesiano.",
+        "A-M1-GEO-03-02: Interpretación de un vector de traslación en el plano cartesiano (desplazamiento horizontal y vertical).",
+        "A-M1-GEO-03-03: Aplicar una traslación a un punto dado sus coordenadas y un vector (x, y).",
+        "A-M1-GEO-03-04: Reconocer que las traslaciones conservan distancias y paralelismo entre segmentos."
+      ],
+      "common_traps": [
+        "Confundir traslación con reflexión: elegir una figura que está ‘al otro lado’ del eje pero no desplazada paralelamente.",
+        "Aplicar el vector con signo cambiado, por ejemplo usar (−a, −b) en vez de (a, b).",
+        "Trasladar solo algunos vértices y no toda la figura, generando un polígono deformado.",
+        "Elegir una imagen que tiene el mismo tamaño pero distinta orientación (rotada), creyendo que toda isometría es traslación.",
+        "Contar mal las unidades en la cuadrícula (especialmente cuando el vector es negativo o involucra ambos ejes).",
+        "Confundir el orden de las componentes del vector: interpretar (a, b) como ‘a hacia arriba, b hacia la derecha’.",
+        "No mantener la correspondencia de vértices (A con A’, B con B’, etc.), lo que puede llevar a asociar mal la imagen.",
+        "Interpretar la traslación como ‘mover hacia el origen’ o hacia algún eje sin respetar exactamente el vector dado."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figuras: triángulos o cuadriláteros sencillos, alineados ‘horizontal/verticalmente’ en una cuadrícula clara.",
+        "Vectores de traslación con coordenadas enteras pequeñas entre −3 y 3, evitando ceros simultáneos (para que se note el desplazamiento).",
+        "Plano cartesiano con cuadrícula y ejes visibles, marcas de unidades claras y pocos puntos relevantes.",
+        "Tareas directas: aplicar el vector a un solo vértice y reconocer la figura trasladada que aparece completa en la imagen.",
+        "Distractores que incluyan errores groseros (cambio de tamaño, giro evidente, desplazamiento en sentido totalmente opuesto).",
+        "En ítems sin coordenadas explícitas, bastará con ‘contar casillas’ en la cuadrícula para determinar la imagen correcta."
+      ],
+      "medium": [
+        "Figuras: triángulos no rectángulos o cuadriláteros no rectangulares (por ejemplo, un paralelogramo), sin simetrías triviales.",
+        "Vectores de traslación con coordenadas enteras de magnitud entre 4 y 6, pudiendo incluir signos negativos en una o ambas componentes.",
+        "Uso combinado de descripción verbal del vector (por ejemplo, ‘4 unidades a la derecha y 2 hacia abajo’) y/o notación (4, −2).",
+        "Requerir trasladar mentalmente todos los vértices, o bien calcular coordenadas de al menos dos vértices para descartar distractores similares.",
+        "Incluir distractores que conserven forma y tamaño pero sean rotaciones o reflejos, exigiendo notar que la orientación debe ser la misma.",
+        "Situaciones donde la figura original no está ‘pegada’ a los ejes, obligando a usar la lógica de la traslación y no solo referencia al origen."
+      ],
+      "hard": [
+        "Figuras: cuadriláteros oblicuos o polígonos de 4−5 lados donde la orientación sea menos evidente pero se mantenga el alcance del átomo.",
+        "Vectores de traslación con una componente entera mediana (entre −7 y 7) y la otra cero, o bien ambas no triviales; se puede incluir alguna fracción sencilla en un contexto puramente coordenado (sin cuadrícula) siempre que no sea cálculo engorroso.",
+        "Problemas donde se dan solo las coordenadas de los vértices (sin figura dibujada) y se pide determinar las coordenadas de la imagen o identificar entre opciones escritas la correcta.",
+        "Ítems donde se debe decidir cuál de varios vectores produce una figura trasladada dada, comparando pares de puntos correspondientes.",
+        "Distractores muy cercanos: traslaciones con el vector en un solo signo cambiado, o traslaciones aplicadas a solo algunos vértices, que exigen revisión cuidadosa.",
+        "Contextos donde deban usarse las propiedades de la traslación (paralelismo de segmentos correspondientes, igualdad de longitudes) para descartar opciones cuando el conteo directo no es inmediato."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar figuras casi simétricas respecto de un eje sin marcar claramente la orientación (por ejemplo, rombos o cuadrados sin indicar vértices), porque puede confundirse traslación con reflexión o rotación.",
+      "Evitar cuadrículas poco definidas o con escala no uniforme; siempre usar escala 1 unidad = 1 cuadrícula claramente visible.",
+      "No presentar varias figuras trasladadas muy juntas sin marcar los vértices correspondientes, ya que puede no quedar claro qué puntos comparan los estudiantes.",
+      "No combinar en el mismo ítem distinta información sobre transformaciones (por ejemplo, hablar de ‘desplazar y girar’) si solo interesa una traslación.",
+      "Evitar vectores descritos de forma vaga (‘mover un poco hacia la derecha’) sin valores numéricos o referencia clara a la cuadrícula.",
+      "No usar letras repetidas o poco legibles para los vértices (por ejemplo, A y A muy juntas, o uso confuso de apóstrofos); deben diferenciarse explícitamente A y A’, B y B’, etc.",
+      "Evitar ejes o referencias que queden fuera del recorte de la imagen, lo que impediría contar unidades correctamente.",
+      "No mezclar traslación con cambios de escala del dibujo entre original e imagen (por ejemplo, que la figura trasladada se vea visualmente más grande por zoom diferente)."
+    ],
+    "error_families": [
+      {
+        "name": "Vector_aplicado_con_signo_invertido",
+        "description": "El estudiante traslada la figura en la dirección opuesta al vector dado, usando (−a, −b) en lugar de (a, b). Esto se observa cuando toda la figura aparece desplazada ‘al revés’ de lo indicado.",
+        "how_to_address": "Diseñar ítems donde dos alternativas sean traslaciones opuestas, obligando a confrontar el sentido del vector con la cuadrícula (flecha orientada, conteo de unidades) y reforzar verbalmente ‘a la derecha/izquierda, hacia arriba/abajo’."
+      },
+      {
+        "name": "Confusion_orden_de_componentes",
+        "description": "Se interpreta el vector (a, b) como ‘a unidades verticales, b unidades horizontales’, intercambiando ejes.",
+        "how_to_address": "Incluir ejercicios donde la diferencia entre (a, b) y (b, a) sea evidente, y usar descripciones verbales explícitas: ‘primer número horizontal, segundo vertical’. Mostrar en esquemas que el eje x es horizontal y el y es vertical."
+      },
+      {
+        "name": "Traslacion_incompleta",
+        "description": "El estudiante traslada solo uno o algunos vértices correctamente, pero olvida aplicar el vector a todos los puntos de la figura, generando una imagen deformada.",
+        "how_to_address": "Proponer ítems donde una opción muestre una figura con un solo vértice bien trasladado como distractor. Resaltar que una traslación desplaza todos los puntos la misma cantidad y que los segmentos correspondientes deben seguir siendo paralelos y de igual longitud."
+      },
+      {
+        "name": "Confundir_traslacion_con_reflexion_o_rotacion",
+        "description": "Se elige una figura de mismo tamaño pero con orientación invertida o girada, pensando que cualquier isometría es una traslación.",
+        "how_to_address": "Diseñar ítems con distractores que sean reflejos o rotaciones muy claras. Destacar la conservación de la orientación (por ejemplo, el orden de los vértices A-B-C recorre la figura en el mismo sentido) y que en una traslación los segmentos ‘se mueven paralelos a sí mismos’."
+      },
+      {
+        "name": "Conteo_erroneo_en_la_cuadricula",
+        "description": "Errores al contar casillas en dirección horizontal o vertical, especialmente cuando el vector es negativo o relativamente grande.",
+        "how_to_address": "Usar cuadrículas bien definidas, pedir explícitamente que se marque el desplazamiento desde un punto de referencia y proponer opciones donde un error de una unidad produzca una alternativa plausible, para luego discutir la importancia de contar con cuidado."
+      },
+      {
+        "name": "Perdida_de_correspondencia_de_vertices",
+        "description": "El estudiante identifica mal qué vértice de la figura trasladada corresponde a cada vértice original, lo que lleva a aceptar figuras donde el ‘mapeo’ A→A’ no es consistente.",
+        "how_to_address": "Etiquetar con claridad todos los vértices en las figuras y plantear preguntas donde se pida explícitamente asociar A con A’, B con B’, etc. Incluir en la corrección verbal la idea de que la traslación es una función que asocia punto original con punto imagen."
+      }
+    ],
+    "future_targets": [
+      "Composición de traslaciones y otras isometrías (rotaciones, reflexiones) para describir desplazamientos más complejos.",
+      "Demostración formal de congruencia de figuras mediante transformaciones isométricas.",
+      "Uso de la traslación en el estudio de vectores (suma de vectores, regla del paralelogramo).",
+      "Introducción a transformaciones lineales representadas por matrices en cursos posteriores.",
+      "Aplicación de traslaciones en el análisis de gráficos de funciones (desplazamientos horizontales y verticales de curvas).",
+      "Uso de traslaciones en patrones geométricos, teselaciones y simetrías del plano."
+    ],
+    "representation_variants": [
+      "Plano cartesiano con cuadrícula, ejes y una figura (triángulo o cuadrilátero) dibujada, más el vector representado como flecha.",
+      "Plano cartesiano con la figura original y varias posibles imágenes ya dibujadas, donde el vector puede estar indicado numéricamente o solo sugerido por el desplazamiento.",
+      "Coordenadas de los vértices dadas en forma tabular o listada, junto con la notación vectorial (a, b), sin dibujo explícito.",
+      "Descripción verbal del vector de traslación (‘3 unidades a la derecha y 2 hacia abajo’) acompañada de la figura en cuadrícula.",
+      "Figura sin ejes visibles pero con cuadrícula uniforme, donde la traslación se realiza contando casillas.",
+      "Uso de letras para nombrar vértices (A, B, C, D) y sus imágenes (A’, B’, C’, D’) para enfatizar la correspondencia punto a punto.",
+      "Comparación de dos figuras ya dibujadas, donde el estudiante debe inferir si una es traslación de la otra y, de ser así, determinar el vector correspondiente."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_zero_components",
+      "simple_fractions_in_coordinates_only_for_hard_items"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

@@ -285,7 +285,7 @@ pipeline in the API, and the CLI had no way to run individual phases.
 ### What was built
 
 1. **`api/services/pipeline_definitions.py`**: Registered `question_gen`
-   with params `atom_id`, `phase`, `pool_size`, `dry_run`.
+   with params `atom_id`, `phase`, `dry_run`.
 2. **`api/services/pipeline_runner.py`**: Added `_cmd_question_gen()`
    command builder and registered it in `_build_command()` dispatcher.
    Added `question_gen` to `resumable_pipelines`.

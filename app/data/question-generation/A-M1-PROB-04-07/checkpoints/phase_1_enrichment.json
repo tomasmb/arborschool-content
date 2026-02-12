@@ -1,0 +1,129 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar si dos eventos son independientes o dependientes en contextos simples de azar (monedas, dados, cartas, urnas con bolas, encuestas básicas).",
+        "Distinguir entre experimentos con reposición (tienden a ser independientes) y sin reposición (tienden a ser dependientes), explicando por qué cambia o no cambia la probabilidad.",
+        "Justificar con palabras si la ocurrencia de un evento modifica la probabilidad de otro, incluso sin calcular numéricamente las probabilidades.",
+        "Reconocer, en enunciados verbales, frases que implican independencia (por ejemplo, 'cada vez se vuelve a mezclar', 'se reemplaza el objeto extraído') o dependencia (por ejemplo, 'sin devolver', 'se mantienen los elementos extraídos').",
+        "Relacionar la idea de independencia con el hecho de que la probabilidad del segundo evento se mantiene igual antes y después de que ocurra el primero."
+      ],
+      "out_of_scope": [
+        "Cálculo formal de probabilidad condicional con fórmula P(A|B) en contextos complejos o con notación simbólica avanzada.",
+        "Uso formal de la regla del producto P(A ∩ B) = P(A)·P(B) o P(A ∩ B) = P(A)·P(B|A) como objetivo central (solo puede aparecer de forma muy simple y aplicada).",
+        "Problemas de conteo avanzados (combinatoria compleja, permutaciones con repetición, etc.).",
+        "Modelación estadística avanzada o uso de distribuciones de probabilidad (binomial, normal, etc.).",
+        "Contextos con más de dos etapas muy encadenadas donde la dificultad principal sea el conteo y no la comprensión de dependencia/independencia.",
+        "Uso de lenguaje formal de teoría de conjuntos (intersección, unión, complementos) como foco principal."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-04-01",
+        "A-M1-PROB-04-02",
+        "A-M1-PROB-04-03"
+      ],
+      "common_traps": [
+        "Asumir que todo experimento 'al azar' implica eventos independientes, sin analizar si el número de resultados posibles cambia entre etapas.",
+        "Considerar que 'con reposición' es automáticamente independiente sin examinar si realmente se mantiene la misma composición del espacio muestral (por ejemplo, reponer con un objeto distinto).",
+        "Suponer que 'sin reposición' siempre implica dependencia incluso cuando el tamaño del conjunto es grande y el cambio es despreciable; en la PAES se debe mantener el criterio formal: si cambia la probabilidad, entonces es dependiente.",
+        "Confundir independencia con exclusión mutua (creer que si no pueden ocurrir juntos son independientes, cuando en realidad son altamente dependientes).",
+        "Pensar que porque una persona, objeto o condición es 'la misma' en dos etapas (por ejemplo, lanzar la misma moneda varias veces), los eventos son dependientes.",
+        "Enredarse con enunciados narrativos largos donde la información clave 'se devuelve' o 'no se devuelve' aparece implícita o dispersa: riesgo de que el ítem mida comprensión lectora más que el concepto de independencia.",
+        "Interpretar encuestas o selecciones secuenciales de personas como independientes solo porque 'cada persona decide por sí misma', ignorando si hay o no reemplazo en la selección de la muestra."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Situaciones directas con dos etapas claramente descritas y vocabulario explícito ('se repone', 'se devuelve', 'sin reposición').",
+        "Contextos muy familiares (lanzar monedas, lanzar dados, sacar bolas de una urna) donde se pregunta únicamente si los eventos son independientes o dependientes, sin exigir justificación elaborada.",
+        "Opciones de respuesta centradas en nombrar el tipo de eventos (independientes/dependientes) sin mezclar con cálculos de probabilidad.",
+        "Solo una característica decisiva para clasificar (por ejemplo, presencia explícita de reposición)."
+      ],
+      "medium": [
+        "Problemas donde se debe analizar si cambia o no la probabilidad del segundo evento al ocurrir el primero, aunque no se pidan los cálculos numéricos explícitos.",
+        "Enunciados donde la reposición o no reposición es implícita y debe inferirse del contexto (por ejemplo, 'se extraen dos bolas una después de la otra y no se mencionan devoluciones').",
+        "Ítems que presentan brevemente dos o tres situaciones y piden comparar cuáles corresponden a eventos independientes y cuáles a dependientes.",
+        "Preguntas que exigen justificar la clasificación con una razón simple, del tipo 'porque el número de opciones posibles se mantiene/cambia' o 'porque la probabilidad del segundo evento sigue siendo la misma/se modifica'.",
+        "Contextos de encuestas o selección de personas donde se deba distinguir entre 'con reemplazo' (selección con devolución al marco muestral) y 'sin reemplazo'."
+      ],
+      "hard": [
+        "Situaciones contextualizadas menos típicas (juegos, sorteos con reglas especiales, procesos de producción, ensayos clínicos) donde la independencia no es evidente y hay que rastrear cuidadosamente qué cambia entre etapas.",
+        "Ítems que requieren comparar dos versiones de un mismo experimento (una con reposición y otra sin) y concluir en cuál los eventos son independientes, explicando la diferencia.",
+        "Problemas que obligan a razonar a partir de probabilidades numéricas dadas (por ejemplo, señalar que si la probabilidad del segundo evento no cambia al conocer el resultado del primero, entonces hay independencia) sin usar notación formal P(A|B).",
+        "Preguntas que incorporan un distractor conceptual fuerte, como la confusión entre independencia y exclusión mutua, exigiendo al estudiante discriminar cuidadosamente entre ambos conceptos.",
+        "Enunciados donde hay más de dos etapas pero la clave del ítem es identificar en qué pares de eventos hay independencia o dependencia, manteniendo la carga de cálculo mínima.",
+        "Contextos donde la reposición es parcial o modificada (por ejemplo, se devuelve un objeto de otro tipo), exigiendo analizar el efecto real sobre la probabilidad."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones vagas sobre reposición como 'se mantiene el juego', 'se sigue jugando' sin decir explícitamente si se devuelve o no el objeto extraído.",
+      "No usar contextos donde el cambio en el espacio muestral sea discutible o negligiblemente pequeño (por ejemplo, sacar una persona de poblaciones enormes) si la intención es que el estudiante trate el caso como dependiente: en la PAES, el cambio debe ser claro.",
+      "Evitar que la información clave sobre reposición esté solo en notas al pie o en partes poco visibles del enunciado; debe aparecer de forma clara y única.",
+      "No mezclar simultáneamente en la misma pregunta demasiados tipos de relaciones entre eventos (independientes, mutuamente excluyentes, complementarios) si el objetivo principal es solo independencia/dependencia.",
+      "Evitar ítems donde la independencia dependa de interpretaciones subjetivas (por ejemplo, 'gusto personal', 'estado de ánimo') sin una estructura probabilística clara.",
+      "No usar formulaciones como 'no influye mucho' o 'casi no cambia la probabilidad'; la definición debe ser categórica: o cambia la probabilidad o no la cambia.",
+      "Evitar preguntas donde la respuesta dependa de supuestos no explicitados (por ejemplo, 'se mezclan bien las cartas' o 'todas las personas tienen la misma probabilidad') si estos supuestos son esenciales para la independencia.",
+      "No pedir cálculos extensos de probabilidades si el criterio evaluado es solo identificar independencia o dependencia, para no contaminar la dificultad con carga operativa."
+    ],
+    "error_families": [
+      {
+        "name": "Independencia_por_costumbre",
+        "description": "El estudiante asume que lanzar varias veces la misma moneda, dado, etc., siempre es independiente, y extrapola este patrón a cualquier experimento secuencial, aunque sea sin reposición (por ejemplo, sacar cartas de una baraja sin devolverlas).",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente lanzar un dado varias veces (independiente) con sacar objetos sin reposición, enfatizando cómo cambia el número de resultados posibles en el segundo caso. Incluir en opciones de respuesta justificaciones centradas en 'cambia o no cambia el conjunto de resultados posibles'."
+      },
+      {
+        "name": "Reposicion_simplista",
+        "description": "Creer que 'con reposición' es sinónimo de 'independiente' sin revisar si lo que se repone es realmente igual a lo extraído o si la composición del conjunto se mantiene.",
+        "how_to_address": "Plantear situaciones donde se repone pero con un objeto diferente, mostrando que en ese caso sí cambian las probabilidades. Pedir identificar y justificar en qué caso la probabilidad efectivamente se mantiene igual entre etapas."
+      },
+      {
+        "name": "Sin_reposicion_igual_independiente",
+        "description": "Pensar que aunque no haya reposición, los eventos pueden tratarse como independientes si el conjunto es 'grande', ignorando la definición formal basada en el cambio de probabilidad.",
+        "how_to_address": "Incluir ítems con conjuntos pequeños (por ejemplo, pocas bolas o cartas) donde el cambio en la probabilidad sea muy evidente. Hacer que la decisión sobre independencia dependa de reconocer ese cambio, no de la magnitud del conjunto."
+      },
+      {
+        "name": "Confusion_con_exclusion_mutua",
+        "description": "Confundir eventos independientes con eventos mutuamente excluyentes (por ejemplo, 'salir cara' y 'salir sello' en un solo lanzamiento), creyendo que si no pueden ocurrir juntos son independientes.",
+        "how_to_address": "Diseñar distractores que mencionen explícitamente 'no pueden ocurrir al mismo tiempo' y construir el corrector enfatizando que la independencia se refiere a que conocer el resultado de un evento no cambia la probabilidad del otro, no a que puedan o no coincidir."
+      },
+      {
+        "name": "Focalizacion_en_frecuencias_absolutas",
+        "description": "El estudiante se fija solo en el número de casos favorables o en la cantidad de elementos restantes, sin conectar eso con la probabilidad (proporción), por lo que no detecta el cambio real en la probabilidad.",
+        "how_to_address": "Usar ejemplos donde el número de casos favorables se mantiene pero el total cambia (o viceversa), pidiendo comparar probabilidades antes y después del primer evento. Forzar la reflexión en términos de razones o proporciones, no solo conteo bruto."
+      },
+      {
+        "name": "Dependencia_por_reutilizacion_del_mismo_objeto",
+        "description": "Creer que si se utiliza el mismo objeto físico (la misma moneda, el mismo dado) varias veces, los eventos son dependientes por 'memoria' del objeto, aunque el experimento sea con reposición implícita.",
+        "how_to_address": "Incluir enunciados que expliciten que el experimento comienza en las mismas condiciones cada vez (mismo dado bien lanzado, misma moneda bien mezclada), y que independencia se relaciona con el estado del sistema, no con el 'historial' del objeto."
+      },
+      {
+        "name": "Lectura_incompleta_del_contexto",
+        "description": "Omitir detalles textuales clave ('sin devolver', 'se vuelve a mezclar', 'se extraen simultáneamente') y decidir solo por intuición, lo que lleva a clasificaciones erróneas.",
+        "how_to_address": "Redactar alternativas incorrectas que reflejen interpretaciones basadas en lectura parcial. En la retroalimentación, señalar explícitamente las expresiones del enunciado que determinan la independencia o dependencia."
+      }
+    ],
+    "future_targets": [
+      "Aplicar correctamente la regla multiplicativa de la probabilidad diferenciando entre casos de eventos independientes y dependientes.",
+      "Calcular probabilidades condicionales P(A|B) cuando los eventos no son independientes.",
+      "Reconocer, en contextos estadísticos (muestreo, estudios, encuestas), cuándo es razonable modelar eventos como independientes y cuándo no.",
+      "Modelar procesos de varias etapas mediante diagramas de árbol identificando en qué ramas se mantiene o cambia la probabilidad.",
+      "Interpretar formalmente la condición de independencia usando la igualdad P(A ∩ B) = P(A)·P(B).",
+      "Analizar críticamente afirmaciones sobre causalidad y correlación, distinguiendo entre relaciones independientes y dependientes en contextos de datos.",
+      "Resolver problemas de probabilidad en contextos combinados (probabilidad y conteo) donde la elección correcta de modelo (independiente/dependiente) simplifica los cálculos."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales describiendo experimentos de azar (monedas, dados, urnas, cartas).",
+      "Tablas simples que muestren la composición inicial y posterior del conjunto de elementos (por ejemplo, cantidad de bolas de cada color antes y después de una extracción).",
+      "Listas o descripciones paso a paso de procesos (primero se hace A, luego B) donde se deba analizar si la segunda etapa se ve afectada por la primera.",
+      "Cuadros comparativos con dos versiones de un mismo experimento (con y sin reposición) para decidir en cuál hay independencia.",
+      "Breves esquemas textuales tipo árbol enumerando casos posibles de cada etapa, sin necesidad de diagrama gráfico formal.",
+      "Contextos cotidianos (sorteos, selección de premios, asignación de asientos, controles de calidad) descritos en lenguaje natural, sin fórmulas."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "simple_percentages"
+    ],
+    "required_image_types": []
+  }
+}

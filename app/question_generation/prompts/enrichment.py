@@ -4,7 +4,8 @@ Generates scope guardrails, difficulty rubric, and pedagogical guidance
 for an atom. Uses GPT-5.1 with JSON response format.
 
 Format placeholders:
-- {image_type_catalog}: detailed catalog of available image types
+- {image_type_catalog}: full catalog of available image types
+    (generatable + non-generatable, grouped and labeled)
 - {not_images_description}: table prohibition text
 Both injected by the enricher from image_types.py.
 """
@@ -36,48 +37,51 @@ EJEMPLARES DISPONIBLES (preguntas PAES reales taggeadas a este átomo):
 </context>
 
 <task>
-Genera un objeto de enriquecimiento para este átomo con los siguientes campos:
+Genera un JSON de enriquecimiento con estos campos:
 
-1. **scope_guardrails**: Qué está dentro y fuera del alcance de este átomo,
-   prerrequisitos necesarios, y trampas comunes.
-2. **difficulty_rubric**: Para cada nivel (easy, medium, hard), describe
-   qué características hacen que un ítem sea de ese nivel DENTRO de este átomo.
-3. **ambiguity_avoid**: Patrones de formulación o formato que deben evitarse
-   para no crear ambigüedad.
-4. **error_families**: Familias de errores comunes que los estudiantes cometen
-   en este átomo (nombre, descripción, cómo abordar).
-5. **future_targets**: Qué competencias futuras habilita dominar este átomo.
-6. **representation_variants**: Tipos de representación relevantes
-   (gráfica, tabular, simbólica, verbal, etc.).
-7. **numbers_profiles**: Perfiles numéricos apropiados para los ítems
-   (small_integers, fractions, mixed, decimals, etc.).
-8. **required_image_types**: Tipos de imagen IMPRESCINDIBLES para evaluar
-   este átomo. Devuelve [] salvo que sea IMPOSIBLE crear preguntas válidas
-   sin contenido visual. Usa SOLO keys del catálogo más abajo.
+1. **scope_guardrails**: Alcance (in/out), prerrequisitos y trampas.
+2. **difficulty_rubric**: Qué hace un ítem easy/medium/hard EN ESTE átomo.
+3. **ambiguity_avoid**: Patrones a evitar para no crear ambigüedad.
+4. **error_families**: Errores comunes (nombre, descripción, cómo abordar).
+5. **future_targets**: Competencias futuras que habilita este átomo.
+6. **representation_variants**: Representaciones relevantes.
+7. **numbers_profiles**: Perfiles numéricos apropiados.
+8. **required_image_types**: Ver sección ANÁLISIS DE IMÁGENES.
+</task>
 
-PRINCIPIO DE MINIMALIDAD DE IMÁGENES:
-Menos imágenes = mejor. La lista vacía [] es el valor por defecto.
-Solo agrega un tipo si el átomo NO PUEDE evaluarse correctamente sin él.
+<image_analysis>
+CRITERIO: ¿Un conjunto representativo de buenas preguntas PAES para
+este átomo incluiría contenido visual (gráficos, figuras, diagramas)
+como parte ESENCIAL del enunciado?
 
-NECESITAN imágenes (ejemplos de átomos):
-- Interpretar o analizar gráficos de funciones → function_graph
-- Transformaciones geométricas (reflexión, rotación) → geometric_figure
-- Lectura de gráficos estadísticos (torta, barras, boxplot) → statistical_chart
-- Ubicar o comparar valores en recta numérica → number_line
+Pregúntate: "¿Puedo diseñar preguntas PAES completas y representativas
+para este átomo sin ninguna imagen, o la mayoría necesitaría un
+gráfico, figura o diagrama como parte del problema?"
+
+NECESITAN imágenes:
+- Interpretar, comparar o graficar funciones → function_graph
+- Analizar efecto visual de parámetros en gráficos → function_graph
+- Figuras 2D: triángulos, polígonos, con medidas/ángulos → geometric_figure
+- Transformaciones isométricas de figuras en el plano → geometric_figure
+- Coordenadas, vectores, puntos en plano cartesiano → geometric_figure
+- Lectura de gráficos estadísticos (barras, histograma, torta,
+  boxplot, dispersión) → statistical_chart
+- Ubicar o comparar valores en la recta numérica → number_line
+- Visualizar cuerpos 3D (prismas, cilindros, pirámides) → complex_3d
 
 NO necesitan imágenes (devuelve []):
-- Factorización, productos notables, expresiones algebraicas
-- Resolución de ecuaciones e inecuaciones
-- Probabilidades y combinatoria
-- Porcentajes, razones y proporciones
+- Factorización, productos notables
+- Resolución algebraica de ecuaciones (sin gráficos)
+- Probabilidad y combinatoria sin diagramas
+- Porcentajes, razones, proporciones
 - Potencias, raíces, logaritmos
-- Sucesiones y series numéricas
+- Cálculos numéricos puros
 
-CATÁLOGO DE TIPOS DE IMAGEN DISPONIBLES:
+CATÁLOGO COMPLETO DE TIPOS DE IMAGEN:
 {image_type_catalog}
 
-IMPORTANTE: {not_images_description}
-</task>
+NOTA: {not_images_description}
+</image_analysis>
 
 <rules>
 - Responde SOLO en español de Chile.
@@ -88,7 +92,7 @@ IMPORTANTE: {not_images_description}
 </rules>
 
 <output_format>
-Responde con JSON puro (sin bloques markdown) con esta estructura:
+JSON puro (sin bloques markdown):
 {{
   "scope_guardrails": {{
     "in_scope": ["..."],
@@ -97,9 +101,9 @@ Responde con JSON puro (sin bloques markdown) con esta estructura:
     "common_traps": ["..."]
   }},
   "difficulty_rubric": {{
-    "easy": ["descripción de qué hace un ítem fácil..."],
-    "medium": ["descripción de qué hace un ítem medio..."],
-    "hard": ["descripción de qué hace un ítem difícil..."]
+    "easy": ["..."],
+    "medium": ["..."],
+    "hard": ["..."]
   }},
   "ambiguity_avoid": ["..."],
   "error_families": [
@@ -108,13 +112,15 @@ Responde con JSON puro (sin bloques markdown) con esta estructura:
   "future_targets": ["..."],
   "representation_variants": ["..."],
   "numbers_profiles": ["small_integers", "fractions", ...],
-  "required_image_types": []
+  "required_image_types": ["key_del_catalogo", ...]
 }}
+Para required_image_types: usa keys exactas del catálogo.
+Si el átomo no necesita imágenes, devuelve [].
 </output_format>
 
 <final_instruction>
-Basándote en toda la información anterior, genera el enriquecimiento
-para el átomo {atom_id}. Responde SOLO con el JSON.
+Genera el enriquecimiento para el átomo {atom_id}.
+Responde SOLO con el JSON.
 </final_instruction>
 """
 

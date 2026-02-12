@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar errores específicos en desarrollos de productos notables (cuadrado de binomio, producto de binomios conjugados, etc.).",
+        "Detectar errores de signos al eliminar paréntesis y al factorizar expresiones polinomiales simples.",
+        "Explicar por qué un paso algebraico dado no es válido, usando contraejemplos numéricos o propiedades algebraicas.",
+        "Reconocer procedimientos correctos e incorrectos en cadenas de igualdades o desarrollos paso a paso.",
+        "Comparar un desarrollo erróneo con el procedimiento correcto, indicando en qué paso se rompe la igualdad."
+      ],
+      "out_of_scope": [
+        "Pedir al estudiante que realice desarrollos o factorizaciones desde cero sin ofrecer un procedimiento para analizar.",
+        "Demostraciones formales avanzadas (p.ej., demostración general de identidades polinómicas).",
+        "Errores en resolución de ecuaciones o inecuaciones que no estén ligados a productos notables, factorización o signos.",
+        "Análisis de gráficos de funciones o interpretación de tablas de valores.",
+        "Contextos verbales extensos donde el foco esté en modelar la situación y no en revisar el procedimiento algebraico dado."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión de operaciones básicas con números reales y manejo de signos.",
+        "A-M1-ALG-01-05: Uso correcto de paréntesis y jerarquía de operaciones.",
+        "A-M1-ALG-01-10: Conocimiento de productos notables básicos (cuadrado de binomio, binomios conjugados, binomio al cubo simple).",
+        "A-M1-ALG-01-12: Factorización simple de polinomios (factor común, trinomio cuadrado perfecto, diferencia de cuadrados)."
+      ],
+      "common_traps": [
+        "Plantear ejercicios donde más de un paso esté incorrecto sin aclarar si se debe identificar el primero, todos los errores o el más relevante.",
+        "Usar notación poco estándar o ambigua (como omitir paréntesis necesarios) que haga dudar si el error es de escritura o de procedimiento.",
+        "Proponer expresiones artificialmente complejas en las que el foco se desplaza hacia el cálculo mecánico más que a la detección del error conceptual.",
+        "Confundir errores de cálculo puntual (p.ej., 3·4 = 10) con errores en el uso de propiedades algebraicas; este átomo privilegia lo segundo.",
+        "Pedir solo que corrijan el procedimiento sin exigir una breve justificación o explicación de por qué el paso original es incorrecto.",
+        "Incluir contextos verbales donde el \"error\" pueda interpretarse como de modelación del problema, no de manipulación algebraica."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Procedimientos cortos (2–3 pasos) donde solo un paso es claramente incorrecto y está directamente ligado a un error típico muy conocido (p.ej., cuadrado de binomio sin término central).",
+        "Expresiones con una sola variable y coeficientes enteros pequeños, sin fracciones ni potencias negativas.",
+        "Ítems donde se muestra la igualdad final evidentemente falsa al probar con un valor simple de la variable, facilitando la detección del error.",
+        "Opciones de respuesta que contrastan un error clásico con la corrección, sin distractores muy sutiles."
+      ],
+      "medium": [
+        "Procedimientos de 3–5 pasos donde el error está en un paso intermedio, no inmediatamente visible a primera lectura.",
+        "Expresiones que combinan productos notables con una factorización posterior o con eliminación de paréntesis con signos.",
+        "Errores de signos menos obvios (p.ej., cambio de signo asociado a factorizar un -1, o al distribuir un signo negativo delante de un paréntesis).",
+        "Preguntas que exigen identificar el paso incorrecto y además justificar brevemente por qué vulnera una propiedad algebraica.",
+        "Distractores que incluyen errores de cálculo numérico para diferenciar al estudiante que comprende el procedimiento del que solo revisa resultados."
+      ],
+      "hard": [
+        "Cadenas de igualdades más largas (5 o más pasos) donde todos salvo uno o dos pasos son correctos y coherentes, y los errores pueden estar combinados (producto notable + signo + factorización).",
+        "Procedimientos en los que el error no invalida de inmediato el resultado final (la expresión final puede coincidir para algunos valores), por lo que se requiere análisis algebraico y/o uso intencional de contraejemplos.",
+        "Ítems que piden comparar dos desarrollos distintos de la misma expresión, decidir cuál es incorrecto y justificar específicamente en qué difieren y por qué.",
+        "Situaciones donde se debe elegir, entre varias descripciones verbales, la explicación más precisa del error (p.ej., distinguir entre \"olvido de término\" y \"aplicación incorrecta de propiedad distributiva\").",
+        "Expresiones con mezcla moderada de fracciones, coeficientes negativos o exponentes naturales mayores que 2, manteniendo el foco en el razonamiento y no en el álgebra pesada."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones sin paréntesis cuando la agrupación pueda interpretarse de más de una forma (si hay un signo menos afectando a varias expresiones, debe estar claramente indicado con paréntesis).",
+      "Evitar escribir factorizaciones donde el orden de factores pueda dar lugar a interpretaciones distintas del supuesto error (p.ej., reordenamientos que son correctos pero parecen cambios de signo).",
+      "No formular preguntas donde sea discutible si el error es conceptual o simplemente una distracción tipográfica (p.ej., letra equivocada, índice mal escrito).",
+      "Evitar igualdad de expresiones que solo son equivalentes en un subconjunto de los reales sin explicitar el dominio, si eso puede generar discusión sobre si existe realmente un error.",
+      "No mezclar en la misma pregunta errores de conceptos que pertenezcan a otros ejes (p.ej., confusiones de dominio de funciones) de forma que el foco ya no sea la manipulación algebraica.",
+      "Evitar opciones de respuesta que se apoyen en explicaciones vagas como \"se aplicó mal la propiedad distributiva\" sin especificar sobre qué términos se aplica.",
+      "No usar notaciones no estándar (como omitir el signo de multiplicación en situaciones donde pueda confundirse con concatenación de variables o con potencias)."
+    ],
+    "error_families": [
+      {
+        "name": "Olvido del término central en el cuadrado de un binomio",
+        "description": "Transformar (a + b)^2 o (a - b)^2 en a^2 + b^2, omitiendo el término 2ab o -2ab.",
+        "how_to_address": "Diseñar ítems donde se muestre explícitamente el paso erróneo y pedir que se explique que (a + b)^2 representa (a + b)(a + b), resaltando la necesidad de multiplicar término a término. Proponer contraejemplos numéricos simples (p.ej., a = 1, b = 1) para evidenciar que a^2 + b^2 no coincide con (a + b)^2."
+      },
+      {
+        "name": "Confusión en binomios conjugados",
+        "description": "Aplicar mal la identidad (a + b)(a - b) = a^2 - b^2, obteniendo expresiones con término central o con signos incorrectos.",
+        "how_to_address": "Plantear desarrollos paso a paso donde se compare el producto de binomios conjugados con el de binomios no conjugados. Pedir que identifiquen el paso donde aparece injustificadamente el término central, enfatizando que los términos centrales se cancelan."
+      },
+      {
+        "name": "Distribución incorrecta de signo negativo",
+        "description": "No cambiar todos los signos al eliminar un paréntesis precedido por un signo negativo, p.ej., -(a - b) → -a - b.",
+        "how_to_address": "Incluir procedimientos donde la eliminación de paréntesis sea el paso clave y pedir que expliquen que el signo menos actúa como factor -1. Presentar ejemplos con más de dos términos dentro del paréntesis para reforzar que todos los términos se ven afectados."
+      },
+      {
+        "name": "Manejo inadecuado de factor común negativo",
+        "description": "Al factorizar sacando un -1 u otro factor negativo, cambiar solo algunos signos o perder coherencia entre la expresión factorizada y la original.",
+        "how_to_address": "Usar ítems donde se muestre la expresión original y la factorizada, solicitando decidir si son equivalentes. Hacer que el estudiante explique cómo se recupera la expresión original al distribuir nuevamente el factor común negativo."
+      },
+      {
+        "name": "Confusión entre diferencia de cuadrados y trinomio cuadrado perfecto",
+        "description": "Identificar erróneamente una expresión como trinomio cuadrado perfecto o como diferencia de cuadrados y aplicar la factorización que no corresponde.",
+        "how_to_address": "Proponer pares de expresiones muy parecidas, una que sea trinomio cuadrado perfecto y otra que no, y pedir que señalen en cuál se usó una factorización inadecuada. En la justificación, enfatizar la condición de que las raíces de los términos cuadrados extremos deben producir el término central adecuado."
+      },
+      {
+        "name": "Saltos de pasos sin justificación válida",
+        "description": "Realizar transformaciones entre expresiones equivalentes donde no se reconoce qué propiedad se usó, abriendo espacio a errores encubiertos (p.ej., pasar de una expresión factorizada a otra supuestamente equivalente sin respetar la distributiva).",
+        "how_to_address": "Construir cadenas donde entre dos pasos se omite información clave y pedir que el estudiante analice si el salto es válido. Favorecer ítems donde la explicación pida mencionar la propiedad específica vulnerada o correctamente utilizada."
+      },
+      {
+        "name": "Errores de signo al combinar productos notables con términos externos",
+        "description": "Aplicar correctamente un producto notable pero asignar mal los signos al sumar o restar otros términos que acompañan a la expresión.",
+        "how_to_address": "Presentar procedimientos donde el producto notable está bien resuelto, pero la equivocación está en la combinación posterior de términos semejantes. Solicitar identificar que el error no está en el producto notable, sino en la suma algebraica posterior."
+      }
+    ],
+    "future_targets": [
+      "Análisis crítico de soluciones de ecuaciones e inecuaciones más complejas, detectando pasos inválidos en procedimientos largos.",
+      "Revisión y validación de demostraciones algebraicas sencillas, identificando el primer paso en que se rompe una igualdad.",
+      "Modelación algebraica en contextos aplicados, con capacidad de verificar la coherencia de los desarrollos usados en la modelación.",
+      "Manejo de identidades algebraicas más avanzadas, donde la validación de cada paso es esencial (p.ej., simplificación de expresiones racionales).",
+      "Resolución colaborativa de problemas, con argumentación clara al señalar errores en el trabajo de otros y proponer correcciones fundamentadas.",
+      "Comprensión de la importancia del contraejemplo para refutar igualdades o procedimientos supuestamente generales."
+    ],
+    "representation_variants": [
+      "Cadena de igualdades escritas paso a paso, con uno o más pasos marcados para ser evaluados.",
+      "Procedimiento parcialmente oculto, mostrando solo algunos pasos clave para que el estudiante juzgue la validez de la transición.",
+      "Desarrollos comparativos de una misma expresión realizados por dos \"estudiantes\" distintos, para decidir cuál es correcto o en cuál paso está el error.",
+      "Expresiones con letras que representan constantes (a, b, k) mezcladas con valores numéricos para reforzar la generalidad del error detectado.",
+      "Presentación de un error en forma verbal (descripción del procedimiento) que el estudiante debe traducir mentalmente a pasos algebraicos y evaluar.",
+      "Igualdades propuestas como \"reglas\" supuestamente generales (p.ej., frases del tipo \"Siempre se puede...\"), que el estudiante debe aceptar o refutar señalando el error."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "simple_fractions",
+      "integer_coefficients_in_polynomials"
+    ],
+    "required_image_types": []
+  }
+}

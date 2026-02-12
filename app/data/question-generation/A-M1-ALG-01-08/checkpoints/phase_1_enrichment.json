@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Desarrollar expresiones de la forma (a + b)^2 y (a - b)^2 aplicando directamente la fórmula a^2 ± 2ab + b^2.",
+        "Trabajar con coeficientes numéricos y literales (por ejemplo 3x, -5y, 1/2x, 0,4y).",
+        "Reconocer el patrón del cuadrado de binomio dentro de una expresión para completarla o identificar términos faltantes.",
+        "Aplicar la fórmula cuando a y b son monomios simples (incluyendo potencias de una sola variable, como x^2, y^3).",
+        "Uso operativo de la fórmula sin requerir justificación teórica del producto notable."
+      ],
+      "out_of_scope": [
+        "Desarrollar productos generales de binomios que no sean cuadrados (por ejemplo (a + b)(c + d)).",
+        "Factorizar trinomios como cuadrados de binomio (ir de a^2 ± 2ab + b^2 a (a ± b)^2).",
+        "Trabajar con más de dos términos dentro del paréntesis (por ejemplo (a + b + c)^2).",
+        "Aplicar identidades notables distintas, como producto de binomios conjugados (a + b)(a - b) o cubo de binomio.",
+        "Resolver ecuaciones cuadráticas completas; solo se desarrolla el cuadrado del binomio, no se resuelve la ecuación.",
+        "Problemas que requieran interpretación gráfica de funciones cuadráticas o uso de vértice/raíces."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejar suma, resta y producto de números enteros y racionales (fracciones y decimales).",
+        "A-M1-ALG-01-02: Conocer notación algebraica básica y operar con monomios (coeficientes, parte literal).",
+        "A-M1-ALG-01-03: Aplicar reglas de potencias con exponente natural sobre números y variables (por ejemplo (kx)^2 = k^2x^2).",
+        "A-M1-ALG-01-05: Multiplicar monomio por binomio término a término (base para entender de dónde viene la fórmula)."
+      ],
+      "common_traps": [
+        "Confundir el cuadrado de binomio con un producto simple de binomios distintos, por ejemplo usar la fórmula en (a + b)(a + c).",
+        "Olvidar el término central 2ab, desarrollando (a ± b)^2 como a^2 + b^2.",
+        "Confundir 2ab con (a + b) o con ab; en especial al pasar de (2x + 5)^2 a 4x^2 + 10x + 25 en lugar de 20x.",
+        "Aplicar mal las potencias a los coeficientes: interpretar (3x)^2 como 3x^2 en vez de 9x^2.",
+        "Perder o cambiar signos al desarrollar (a - b)^2, convirtiendo el término central en -2ab en lugar de -2ab correcto (signo depende de a y b).",
+        "Tomar solo el signo de b para el término central y no considerar que siempre es ±2ab, por ejemplo en (x - 3y)^2 escribir x^2 + 6xy + 9y^2.",
+        "No agrupar términos semejantes si a o b ya contienen variables iguales, generando respuestas con términos no simplificados.",
+        "Plantear expresiones en las alternativas que se pueden factorizar por más de una vía, perdiendo el foco en el patrón de cuadrado de binomio."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Binomios con coeficientes enteros pequeños (entre -5 y 5) y una sola variable en cada término, como (2x + 3)^2, (x - 4)^2.",
+        "Estructura directa: se pide explícitamente desarrollar el cuadrado del binomio, sin contexto verbal adicional.",
+        "Términos a y b claramente identificables como monomios simples (sin fracciones, sin decimales, sin exponentes mayores a 1 en la parte literal).",
+        "Alternativas claramente diferenciadas, donde solo una respeta el patrón a^2 ± 2ab + b^2 en todos los términos.",
+        "No requiere operaciones con fracciones ni decimales; solo enteros positivos y negativos simples."
+      ],
+      "medium": [
+        "Binomios con coeficientes enteros de magnitud moderada (entre -10 y 10) o con fracciones simples (por ejemplo 1/2, -3/4).",
+        "Incluir variables en ambos términos del binomio (por ejemplo (2x - 3y)^2, (x/2 + 5y)^2).",
+        "Contexto verbal breve (por ejemplo, expresión intermedia en un problema) donde el estudiante deba identificar que corresponde usar el patrón del cuadrado de binomio.",
+        "Ítems donde se debe reconocer el término faltante en un trinomio que se sabe que es cuadrado de binomio (por ejemplo completar el término central o el término independiente).",
+        "Distractores que incorporan errores típicos: sin 2ab, con 2a + b, con cuadrado mal aplicado al coeficiente."
+      ],
+      "hard": [
+        "Binomios con coeficientes fraccionarios o decimales no triviales (por ejemplo 2,5x, -7/3y) que exigen manejo cuidadoso de productos numéricos.",
+        "Binomios donde a o b ya son potencias o productos, generando exponentes compuestos (por ejemplo (x^2 - 3y)^2, (2xy + 5)^2).",
+        "Ítems en que se combina el desarrollo del cuadrado de binomio con un paso adicional, como simplificar una expresión que incluye la suma o resta de varios cuadrados de binomios.",
+        "Reconocer, a partir de varias expresiones dadas, cuál corresponde al desarrollo correcto de un cuadrado de binomio cuando la estructura no está explícita (por ejemplo en el contexto de elegir la forma desarrollada de una fórmula).",
+        "Distractores muy cercanos al resultado correcto (errores solo en un signo o en un coeficiente), que requieren verificación cuidadosa de cada término."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en la misma pregunta el cuadrado de binomio con otros productos notables salvo que el foco evaluado quede explícito y el resto sea claramente accesorio.",
+      "Evitar expresiones donde a o b no estén bien determinados como monomios (por ejemplo escribir (x + 2 + y)^2 sin agrupar previamente), ya que puede generar dudas sobre qué se considera a y qué se considera b.",
+      "No usar notación ambigua en fracciones, asegurando paréntesis claros en expresiones como (x + 1/2y)^2 versus (x + (1/2)y)^2.",
+      "Evitar contextos verbales donde el estudiante pueda interpretar que debe multiplicar binomios distintos y no un cuadrado de binomio.",
+      "No proponer alternativas de respuesta que sean algebraicamente equivalentes entre sí sin indicarlo, lo que podría dar lugar a más de una alternativa correcta.",
+      "Evitar escribir expresiones sin el uso adecuado de paréntesis al elevar al cuadrado, por ejemplo x + 3^2 en lugar de (x + 3)^2.",
+      "No utilizar variables con subíndices o letras demasiado similares (como a y a1) si no son estrictamente necesarias, para no dificultar la identificación de a y b."
+    ],
+    "error_families": [
+      {
+        "name": "Sin_termino_central",
+        "description": "El estudiante desarrolla (a ± b)^2 como a^2 + b^2, omitiendo el término 2ab.",
+        "how_to_address": "Destacar la estructura del cuadrado de binomio con ejemplos y contraejemplos, enfatizando que el término central proviene de sumar dos veces el producto ab. Proponer ejercicios donde se compare (a + b)^2 con a^2 + b^2 numéricamente para mostrar que no son equivalentes."
+      },
+      {
+        "name": "Coeficiente_central_erroneo",
+        "description": "El término central se calcula como ab, a + b, o 2a + b, en lugar de 2ab; por ejemplo (2x + 5)^2 → 4x^2 + 10x + 25.",
+        "how_to_address": "Reforzar el origen del 2 en 2ab a partir del producto (a + b)(a + b), mostrando los dos productos cruzados ab. Hacer que el estudiante escriba explícitamente esos términos antes de aplicar la fórmula abreviada."
+      },
+      {
+        "name": "Cuadrado_mal_aplicado_al_coeficiente",
+        "description": "El estudiante eleva al cuadrado solo la parte literal o solo el coeficiente, como (3x)^2 → 3x^2 o (3x)^2 → 9x.",
+        "how_to_address": "Revisar la regla (kx)^2 = k^2x^2 con ejemplos numéricos (por ejemplo (3·2)^2 frente a 3·2^2) y ejercicios de entrenamiento donde el foco sea aislar el paso de elevar al cuadrado monomios antes de armar el trinomio completo."
+      },
+      {
+        "name": "Manejo_deficiente_de_signos",
+        "description": "Errores de signo especialmente en (a - b)^2, como escribir a^2 + 2ab + b^2 en lugar de a^2 - 2ab + b^2.",
+        "how_to_address": "Trabajar ejemplos separados de (a + b)^2 y (a - b)^2, pidiendo que el estudiante explicite a y b, y luego calcule 2ab con el signo correcto. Usar casos donde solo cambia el signo de b para que el efecto en el término central sea evidente."
+      },
+      {
+        "name": "Variables_y_potencias_confundidas",
+        "description": "Cuando a y b contienen variables similares, el estudiante combina incorrectamente exponentes o no identifica términos semejantes para simplificar.",
+        "how_to_address": "Proponer ejercicios donde primero se identifiquen claramente a y b como monomios, y luego se calculen por separado a^2, 2ab y b^2, antes de escribir el resultado final. Reforzar la suma de exponentes solo cuando se multiplican potencias con la misma base."
+      },
+      {
+        "name": "Fracciones_y_decimales_mal_manejados",
+        "description": "Errores al cuadrar coeficientes fraccionarios o decimales (por ejemplo (1/2x)^2 → 1/2x^2).",
+        "how_to_address": "Separar el trabajo numérico del algebraico: primero practicar el cuadrado de números fraccionarios y decimales, luego incorporarlos como coeficientes de monomios, enfatizando el patrón (k·x)^2 = k^2·x^2."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-01-09: Factorización de trinomios como cuadrados de binomio.",
+      "A-M1-ALG-01-10: Resolución de ecuaciones cuadráticas que surgen de desarrollar o factorizar cuadrados de binomios.",
+      "A-M1-ALG-02-01: Análisis de funciones cuadráticas donde la forma (x − h)^2 + k se relaciona con transformaciones en el plano.",
+      "A-M1-ALG-02-02: Simplificación de expresiones algebraicas más complejas que combinan varios productos notables.",
+      "A-M1-ALG-03-01: Modelación de situaciones de la vida real con funciones cuadráticas, donde se requiere expandir o compactar expresiones.",
+      "A-M1-ALG-01-11: Reconocimiento de patrones algebraicos y uso de identidades notables en demostraciones simples."
+    ],
+    "representation_variants": [
+      "Forma simbólica directa: expresiones del tipo (ax + b)^2, (ax + by)^2, (x^2 - 3)^2.",
+      "Enunciados verbales que describen un cuadrado de binomio y piden escribir la expresión desarrollada (por ejemplo, 'el cuadrado de la suma de x y 3').",
+      "Tablas incompletas con columnas para a, b, a^2, 2ab y b^2, donde el estudiante debe completar o identificar el desarrollo correcto.",
+      "Expresiones parcialmente desarrolladas donde falta uno de los términos (por ejemplo a^2 + ? + b^2) y se debe determinar el término que falta.",
+      "Comparación de varias expresiones propuestas como posibles desarrollos de un mismo cuadrado de binomio, para que el estudiante identifique la correcta.",
+      "Contextos numéricos simples (no geométricos) donde el cuadrado de un binomio simplifica el cálculo mental (por ejemplo (20 + 3)^2) como aplicación del patrón."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

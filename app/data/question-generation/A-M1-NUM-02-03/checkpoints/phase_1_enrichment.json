@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Convertir porcentajes a su forma decimal equivalente dividiendo por 100.",
+        "Conversión de porcentajes enteros (ej: 35% → 0,35).",
+        "Conversión de porcentajes con parte decimal (ej: 12,5% → 0,125).",
+        "Conversión de porcentajes menores que 1% (ej: 0,5% → 0,005).",
+        "Reconocimiento de que el símbolo % equivale a dividir por 100.",
+        "Uso de la idea de 'mover la coma dos lugares hacia la izquierda' como procedimiento para dividir por 100."
+      ],
+      "out_of_scope": [
+        "Cálculo de porcentajes de una cantidad (ej: 35% de 200).",
+        "Incrementos o descuentos porcentuales (IVA, rebajas, intereses).",
+        "Comparación de porcentajes en contexto estadístico complejo (gráficos, tablas).",
+        "Conversión de fracciones a porcentaje o a decimal (eso corresponde a otros átomos).",
+        "Operar algebraicamente con porcentajes (ej: x% de y).",
+        "Cálculo de porcentajes compuestos o sucesivos.",
+        "Problemas donde el foco sea interpretar gráficos circulares o de barras con porcentajes (eso requiere otros átomos y/o imágenes)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión del valor posicional y de la notación decimal (dígitos, coma decimal, décimos, centésimos).",
+        "A-M1-NUM-01-02: División de números por potencias de 10 (particularmente por 10 y 100).",
+        "A-M1-NUM-02-01: Comprensión básica del concepto de porcentaje como 'por cada 100'.",
+        "A-M1-NUM-02-02: Lectura y escritura de porcentajes en lenguaje natural y simbólico (ej: 'doce coma cinco por ciento' → 12,5%)."
+      ],
+      "common_traps": [
+        "Olvidar dividir por 100 y simplemente quitar el símbolo %, dejando el mismo número (ej: 35% → 35 en vez de 0,35).",
+        "Mover la coma en el sentido equivocado (ej: 35% → 3,5 o 350).",
+        "Aplicar el procedimiento de 'mover la coma' de manera inconsistente en porcentajes que ya tienen decimales (ej: 12,5% → 1,25 en vez de 0,125).",
+        "No considerar ceros necesarios al inicio para porcentajes pequeños (ej: 5% → 0,5 o 0,005% → 0,005 en vez de 0,00005).",
+        "Confusión entre 0,5% y 50% (asumir que 0,5% corresponde a 0,5 en forma decimal).",
+        "Uso ambiguo del separador decimal versus separador de miles (ej: 1.000% vs 1,000% según contexto)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ítems donde se pide convertir un único porcentaje entero a número decimal sin contexto verbal complejo (ej: 20%, 75%, 4%).",
+        "Números con pocas cifras y sin necesidad de agregar ceros intermedios (ej: 25% → 0,25; 8% → 0,08).",
+        "Enunciados directos del tipo '¿Cuál es la forma decimal de ...%?' sin distractores que mezclen otros tipos de representación.",
+        "Alternativas donde solo una opción mantiene la estructura correcta 'número dividido por 100', sin distractores muy cercanos."
+      ],
+      "medium": [
+        "Ítems que incluyen porcentajes con un decimal (ej: 12,5%, 7,3%, 0,5%).",
+        "Porcentajes menores a 1% pero con estructura simple (ej: 0,5%, 0,2%).",
+        "Enunciados que incluyen una breve situación contextual pero donde la tarea central sigue siendo solo convertir el porcentaje a decimal.",
+        "Necesidad de escribir o reconocer ceros de relleno correctamente (ej: 5% → 0,05; 0,5% → 0,005).",
+        "Distractores que representan errores típicos de movimiento de coma (se corre un lugar, se mantiene, se corre hacia la derecha, etc.)."
+      ],
+      "hard": [
+        "Ítems donde se combinan varios porcentajes a convertir y luego se pide comparar sus formas decimales (sin salir del foco de conversión).",
+        "Porcentajes con dos decimales o con más de tres cifras significativas (ej: 3,75%, 0,25%, 125,5%).",
+        "Porcentajes mayores a 100% que al convertirse generan decimales mayores que 1 (ej: 125% → 1,25; 250,5% → 2,505).",
+        "Situaciones donde el estudiante debe inferir primero el valor porcentual a partir de un enunciado y luego convertirlo a decimal, manteniendo que el paso clave es la división por 100.",
+        "Distractores construidos a partir de errores sutiles: coma corrida un solo lugar, valores sin el cero inicial, confusión entre 0,5% y 50%, o entre notación decimal y fraccionaria."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar problemas donde no quede claro si se pide 'convertir a decimal' (0,35) o 'expresar como fracción decimal' (35/100); explicitar siempre 'escribe el número decimal equivalente'.",
+      "No mezclar en la misma pregunta conversión de porcentaje a decimal con cálculo de porcentajes de cantidades, salvo que el objetivo evaluado siga siendo claramente la conversión.",
+      "Evitar contextos en los que la palabra 'por ciento' pueda confundirse con 'por cada' sin mencionar explícitamente el símbolo %.",
+      "No usar notaciones mezcladas de separador decimal (coma y punto) en el mismo ítem; mantener el uso de coma como estándar chileno.",
+      "Evitar escribir porcentajes como 1.000% cuando la notación de miles pueda interpretarse como decimal (especialmente en enunciados donde también aparezcan comas decimales).",
+      "No incluir fracciones y porcentajes muy similares en las alternativas si la tarea del ítem no es distinguir entre forma fraccionaria y decimal, para no desviar el foco del átomo.",
+      "Evitar preguntas de 'seleccione todas las correctas' o con múltiples condiciones lógicas; privilegiar ítems de única respuesta correcta centrados en la conversión."
+    ],
+    "error_families": [
+      {
+        "name": "Omisión de la división por 100",
+        "description": "El estudiante quita el símbolo % y deja el número igual, interpretando 35% como 35 en vez de 0,35.",
+        "how_to_address": "Enfatizar la equivalencia % = 'entre 100' y practicar la escritura intermedia como fracción 35/100 antes de pasar a 0,35."
+      },
+      {
+        "name": "Movimiento incorrecto de la coma",
+        "description": "El estudiante sabe que debe mover la coma, pero la mueve en el sentido equivocado o en un solo lugar en vez de dos (ej: 35% → 3,5 o 0,35% → 0,35).",
+        "how_to_address": "Refuerza la relación con la división por 10 y por 100, usando tablas de valor posicional y ejemplos contrastivos (35% vs 3,5% vs 0,35%)."
+      },
+      {
+        "name": "Manejo inadecuado de ceros",
+        "description": "Al convertir, el estudiante omite o agrega ceros incorrectamente (ej: 5% → 0,5; 0,5% → 0,05; 2% → 0,002).",
+        "how_to_address": "Trabajar con patrones de escritura de decimales menores que 1, y ejercicios específicos de completar con ceros al mover la coma dos lugares hacia la izquierda, verificando la magnitud del número resultante."
+      },
+      {
+        "name": "Confusión entre porcentaje y decimal homónimo",
+        "description": "Se confunde 0,5% con 0,5 o con 50%, o 5% con 0,5, ignorando que el símbolo % implica una segunda escala.",
+        "how_to_address": "Realizar comparaciones sistemáticas entre pares como 0,5; 0,5%; 50% y representarlos en una recta numérica o con cantidades concretas (por cada 100)."
+      },
+      {
+        "name": "Dificultad con porcentajes con decimales",
+        "description": "En números como 12,5% o 3,75%, el estudiante solo corre la coma un lugar (12,5% → 1,25) o conserva el número (12,5% → 12,5).",
+        "how_to_address": "Descomponer el número en parte entera y decimal (12,5% = 12% + 0,5%) y mostrar la conversión de cada parte, para después unificar el procedimiento abreviado de mover dos lugares la coma."
+      },
+      {
+        "name": "Resistencia a porcentajes mayores que 100%",
+        "description": "El estudiante asume que todo porcentaje debe ser menor que 1 al convertirlo a decimal, rechazando respuestas como 1,25 para 125%.",
+        "how_to_address": "Introducir ejemplos concretos de más del 100% (ej: 'un aumento del 150%') y conectar su interpretación con fracciones impropias (125/100 = 1,25)."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de porcentajes de cantidades usando la forma decimal (ej: 0,35 × 200).",
+      "Cálculo de aumentos y descuentos porcentuales en contextos financieros y comerciales.",
+      "Interpretación y comparación de datos estadísticos expresados en porcentajes y en decimales.",
+      "Conversión entre fracciones, porcentajes y decimales en ambos sentidos.",
+      "Resolución de problemas de proporcionalidad directa usando porcentajes.",
+      "Trabajo con tasas, índices y probabilidades expresadas en porcentaje y en forma decimal.",
+      "Comprensión de interés simple y compuesto donde las tasas se expresan tanto en % como en decimal."
+    ],
+    "representation_variants": [
+      "Porcentaje escrito con símbolo y número en notación estándar (ej: 12,5%).",
+      "Porcentaje descrito verbalmente en texto (ej: 'doce coma cinco por ciento').",
+      "Expresiones mixtas donde el porcentaje se da en una oración contextual (ej: 'el descuento es de 7,3% sobre el precio').",
+      "Escritura de la fracción equivalente sobre 100 como paso intermedio (ej: 12,5% = 12,5/100) antes de llegar al decimal.",
+      "Tablas que incluyan columnas de porcentaje y su forma decimal correspondiente, donde el estudiante deba completar una de las columnas.",
+      "Comparación de varias etiquetas numéricas (porcentaje vs decimal) para seleccionar las equivalencias correctas."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_up_to_1000",
+      "decimals_one_digit",
+      "decimals_two_digits",
+      "percent_less_than_1",
+      "percent_between_1_and_100",
+      "percent_greater_than_100"
+    ],
+    "required_image_types": []
+  }
+}

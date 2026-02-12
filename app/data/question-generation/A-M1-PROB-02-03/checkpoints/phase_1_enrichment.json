@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Definición de mediana como valor central en un conjunto de datos no agrupados ordenados.",
+        "Reconocimiento de que la mediana divide a los datos en dos mitades: 50% inferiores y 50% superiores (considerando repetidos).",
+        "Identificación de la mediana a partir de datos explícitos ya dados (lista, tabla simple) asumiendo que pueden estar desordenados.",
+        "Comprensión conceptual de la diferencia entre 'valor central' y 'valor más frecuente', sin exigir cálculo formal de la moda.",
+        "Comparaciones conceptuales del tipo: qué significa que la mediana sea X en un contexto (por ejemplo, salarios, alturas, puntajes), sin cálculo complejo."
+      ],
+      "out_of_scope": [
+        "Cálculo de mediana en datos agrupados en intervalos o tablas de frecuencia con clases.",
+        "Uso formal de fórmulas para posición de la mediana (por ejemplo, (n+1)/2) como objetivo principal.",
+        "Cálculo simultáneo de varias medidas (media, moda, rango, cuartiles) salvo menciones muy simples solo para contrastar con la mediana.",
+        "Interpretación de mediana en gráficos estadísticos (barras, histogramas, boxplots, etc.).",
+        "Mediana en distribuciones continuas o en contextos de probabilidad teórica.",
+        "Análisis profundo de sesgo, simetría o outliers usando mediana (eso corresponde a átomos más avanzados)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de número real y comparación de magnitudes.",
+        "A-M1-NUM-01-02: Ordenamiento de números en forma creciente y decreciente.",
+        "A-M1-PROB-01-01: Reconocimiento básico de un conjunto de datos y noción de dato estadístico.",
+        "A-M1-PROB-01-02: Lectura de listas y tablas simples de datos no agrupados."
+      ],
+      "common_traps": [
+        "Confundir mediana con promedio (media aritmética) y proponer ítems donde ambas coinciden sin aclarar el foco en la mediana.",
+        "No dejar claro que los datos deben estar ordenados, generando preguntas en las que el estudiante puede interpretar que debe tomar el 'dato de al medio' en el orden que aparecen.",
+        "Usar ejemplos en los que la mediana coincide con un extremo o con un valor atípico sin explicitar bien el contexto, lo que puede inducir a pensar erróneamente que la mediana siempre es un 'valor típico'.",
+        "Plantear situaciones en las que haya dos posibles interpretaciones sobre si un valor pertenece a la mitad inferior o superior (por ejemplo, fronteras ≤ o <) sin especificar si la comparación es estricta o incluye la igualdad.",
+        "Introducir conteos grandes o listas muy extensas que hagan que la dificultad sea de carga de trabajo y no conceptual sobre la mediana.",
+        "Diseñar alternativas donde se mezclan descripciones de media y mediana sin marcar claramente a cuál se refiere cada afirmación, produciendo ambigüedad conceptual."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Listas de datos cortas (5 a 7 valores) ya entregadas ordenadas, con cantidad impar de datos.",
+        "Contextos simples (alturas de personas, número de hermanos, puntajes en una prueba) donde basta identificar el valor del medio en la lista.",
+        "Preguntas directas del tipo: '¿Cuál es la mediana de los siguientes datos?' sin interpretación contextual adicional.",
+        "Números enteros pequeños y positivos, sin fracciones ni decimales.",
+        "Distractores que correspondan a errores obvios, como elegir el mínimo, el máximo o el promedio aproximado, claramente diferentes de la mediana."
+      ],
+      "medium": [
+        "Listas de datos de longitud moderada (8 a 12 valores), posiblemente desordenadas, donde el estudiante debe reconocer primero la necesidad de ordenar.",
+        "Cantidad par de datos, donde se espera que el estudiante identifique correctamente los dos valores centrales, aunque el foco sea conceptual (por ejemplo, reconocer que la mediana se ubica entre esos dos) más que el cálculo exacto del promedio de ellos.",
+        "Contextos donde se pide interpretar el significado de la mediana en términos de 'la mitad de los datos están por debajo o igual a...' sin requerir cálculos adicionales.",
+        "Incorporación de enteros negativos o decimales simples, manteniendo la comparación y el ordenamiento accesibles.",
+        "Ítems que confrontan la mediana con la media o la moda a nivel descriptivo (por ejemplo, elegir cuál afirmación describe mejor la mediana) sin hacer que el alumno calcule todas las medidas."
+      ],
+      "hard": [
+        "Listas de datos algo más extensas (hasta 20 datos) presentadas desordenadas, donde el estudiante debe razonar sobre la posición de la mediana sin necesariamente reescribir toda la lista (por ejemplo, identificando cuántos datos deben quedar a cada lado).",
+        "Situaciones en que se entrega información parcial sobre un conjunto de datos (por ejemplo, algunos valores conocidos y otros representados con variables o incógnitas simples) y se pregunta qué se puede inferir conceptualmente de la mediana.",
+        "Ítems donde se pide decidir cuál de varios conjuntos de datos (dados como listas) tiene mayor mediana, sin exigir cálculo exacto pero sí razonamiento comparativo basado en el orden.",
+        "Contextos en los que la mediana no coincide con ningún valor 'intuitivamente típico' (por ejemplo, distribuciones muy asimétricas), y el estudiante debe interpretar correctamente el enunciado '50% de los datos están por debajo o igual a la mediana'.",
+        "Preguntas que exploran casos límite o no habituales, como múltiples datos repetidos en torno a la mediana, donde se debe distinguir entre 'valor central' y 'dato más frecuente' sin confundirlos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no se explicite si los datos están o no ordenados, especialmente si se presentan en tablas o listas que parecen ya ordenadas por otro criterio (por ejemplo, por nombre).",
+      "No usar simultáneamente los términos 'promedio', 'término medio' y 'mediana' sin definirlos, ya que 'término medio' puede entenderse como media o como mediana según el estudiante.",
+      "Evitar conjuntos de datos en los que la mediana coincida exactamente con la media cuando la pregunta busca comparar ambas medidas, a menos que el ítem sea explícito sobre esa coincidencia.",
+      "No plantear contextos donde '50% de las personas' pueda interpretarse tanto como porcentaje de la población total como porcentaje de una muestra, si no se específica claramente de qué conjunto se habla.",
+      "Evitar frases como 'la mitad de las personas gana exactamente la mediana', que son estadísticamente inusuales y pueden inducir una interpretación literal equivocada; preferir 'el 50% gana menos o igual que la mediana'.",
+      "No usar rangos de valores abiertos o mal especificados (por ejemplo, 'cerca de', 'aproximadamente al medio') cuando se requiere identificar un valor puntual como mediana.",
+      "Evitar conjuntos con datos faltantes o indicados con puntos suspensivos ('...') si no se detalla exactamente cuántos y cuáles son, ya que vuelve indeterminable la posición central.",
+      "No mezclar, en la misma pregunta, la búsqueda de la mediana con tareas largas de cálculo de otros parámetros, para que quede claro qué se está evaluando."
+    ],
+    "error_families": [
+      {
+        "name": "No_ordenar_datos",
+        "description": "El estudiante identifica la mediana a partir del orden en que aparecen los datos en el enunciado, sin ordenarlos de menor a mayor, eligiendo el 'dato de al medio' de la lista original.",
+        "how_to_address": "Diseñar ítems donde los datos estén claramente desordenados y la respuesta correcta solo sea posible si se ordenan. En las retroalimentaciones, enfatizar explícitamente que 'la mediana se calcula siempre con los datos ordenados de menor a mayor (o mayor a menor)'."
+      },
+      {
+        "name": "Confusion_con_media",
+        "description": "El estudiante suma los datos y divide por la cantidad para hallar la media, creyendo que eso es la mediana, o elige como alternativa una descripción correspondiente a la media (promedio) en vez de a la mediana.",
+        "how_to_address": "Incluir ítems que pidan reconocer cuál afirmación corresponde a la mediana y cuál al promedio, usando el lenguaje de 'valor central' vs 'promedio de todos los valores'. En feedback, contrastar: la media usa todas las cantidades; la mediana solo la posición en el orden."
+      },
+      {
+        "name": "Elegir_minimo_o_maximo",
+        "description": "El estudiante cree que la mediana es el 'típico' y, en una distribución muy sesgada, elige un valor extremo (mínimo o máximo) porque 'representa mejor' al grupo.",
+        "how_to_address": "Proponer ejemplos donde el mínimo y el máximo estén muy alejados del resto y mostrar que el valor que deja la mitad de los datos por debajo no coincide con esos extremos. Repetir la idea de 'mitad de los datos abajo, mitad arriba', no de 'valor representativo subjetivo'."
+      },
+      {
+        "name": "Error_en_casos_par",
+        "description": "En conjuntos con cantidad par de datos, el estudiante toma solo uno de los dos valores centrales o toma un valor que no corresponde a ninguno de ellos.",
+        "how_to_address": "Aunque el foco del átomo es conceptual, se pueden incluir ítems que obliguen a identificar correctamente los DOS valores centrales. En la retroalimentación, insistir en que, cuando la cantidad es par, la mediana está entre esos dos valores y ellos determinan la frontera del 50%-50%."
+      },
+      {
+        "name": "Interpretacion_literalde_50porciento",
+        "description": "El estudiante interpreta '50% de los datos' como 'exactamente la mitad de los individuos tienen el valor de la mediana', en lugar de entender que la mitad está por debajo o igual a ese valor.",
+        "how_to_address": "Usar contextos con datos repetidos en los que muy pocos individuos tienen el valor de la mediana, pero muchos están por debajo o por encima de ella. Explicar en soluciones que la mediana no necesita ser un valor muy frecuente para dividir en dos mitades al ordenar."
+      },
+      {
+        "name": "Confusion_con_moda",
+        "description": "El estudiante elige como mediana el valor que más se repite, sin considerar su posición en el orden.",
+        "how_to_address": "Diseñar ítems donde la moda y la mediana sean claramente diferentes y ambas aparezcan como alternativas posibles. En la explicación, recalcar: 'moda = valor que más se repite'; 'mediana = valor central una vez ordenados los datos'."
+      },
+      {
+        "name": "Descuidar_signo_y_decimales",
+        "description": "En listas con números negativos o decimales, el estudiante comete errores de orden al comparar magnitudes (por ejemplo, cree que -2 es mayor que 1 porque 2>1, o desordena 1,5 y 1,25).",
+        "how_to_address": "Usar algunos ítems con números negativos o decimales sencillos, destacando en la solución el orden correcto y cómo este afecta la identificación del valor central."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de mediana en tablas de frecuencia simples (datos agrupados en valores discretos).",
+      "Cálculo de mediana en datos agrupados en intervalos de clase mediante posición acumulada.",
+      "Interpretación de mediana en gráficos estadísticos (diagramas de caja, histogramas, gráficos de barras).",
+      "Comparación entre media, mediana y moda para analizar la forma de una distribución (simetría, sesgo).",
+      "Uso de la mediana como medida robusta frente a valores atípicos en contextos de toma de decisiones.",
+      "Cálculo e interpretación de cuartiles y percentiles, generalizando la idea de posición dentro del conjunto ordenado.",
+      "Análisis de dispersiones (rango intercuartílico) en relación con la mediana.",
+      "Aplicaciones de la mediana en probabilidad empírica y simulaciones (por ejemplo, distribuciones de resultados repetidos)."
+    ],
+    "representation_variants": [
+      "Lista explícita de datos numéricos sin orden, donde se espera que el estudiante identifique la necesidad de ordenar.",
+      "Lista de datos ya ordenados de menor a mayor, para focalizar la atención en la idea de valor central.",
+      "Tabla simple de una columna 'Dato' (sin frecuencias), donde los valores pueden o no estar ordenados.",
+      "Contextos verbales que describen datos sin listarlos todos, pero que permiten inferir conceptualmente la mediana (por ejemplo, 'en una fila ordenada por altura, la tercera persona...').",
+      "Situaciones con datos repetidos, señalados explícitamente, para enfatizar que la mediana depende de la posición y no del número de repeticiones.",
+      "Descripción de subconjuntos (mitad superior, mitad inferior) en términos de cantidad de datos, para que el estudiante razone sobre dónde debe ubicarse la mediana sin listar todo."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_negatives",
+      "simple_decimals",
+      "contextual_quantities_with_units"
+    ],
+    "required_image_types": []
+  }
+}

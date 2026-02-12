@@ -1,0 +1,129 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del área de un círculo usando A = π·r² cuando se entrega directamente el radio.",
+        "Cálculo del área de un círculo cuando se entrega el diámetro, incluyendo la deducción del radio como la mitad del diámetro.",
+        "Cálculo de áreas de superficies circulares en contextos cotidianos simples (piscina circular, plato, rueda, cancha circular), siempre que el modelo geométrico sea un solo círculo.",
+        "Interpretación correcta de enunciados que describen 'radio', 'diámetro' o 'distancia desde el centro al borde' como radio.",
+        "Decidir entre alternativas numéricas que incluyen resultados erróneos típicos (por ejemplo usar 2πr o π·d²) manteniendo el foco en el área."
+      ],
+      "out_of_scope": [
+        "Cálculo de áreas de sectores circulares o segmentos circulares.",
+        "Cálculo de perímetro (circunferencia) como objetivo principal del ítem.",
+        "Combinación de varios círculos o figuras compuestas (por ejemplo anillos, coronas circulares, suma o diferencia de áreas de círculos).",
+        "Volúmenes o áreas de superficies de cuerpos 3D (cilindros, esferas, conos).",
+        "Problemas que requieren teorema de Pitágoras u otra herramienta adicional para hallar el radio.",
+        "Uso de fórmulas avanzadas de geometría del círculo (cuerdas, arcos, ángulos centrales o inscritos) más allá de identificar el radio o el diámetro."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-XX: Manejo de multiplicación con números enteros y decimales positivos.",
+        "A-M1-NUM-02-XX: Comprensión operativa de potencias con exponente 2 (cuadrado de un número).",
+        "A-M1-GEO-01-05: Reconocimiento de círculo, radio, diámetro y centro en contextos simples.",
+        "A-M1-MED-01-XX: Comprensión básica de unidades de longitud y área (cm, m, cm², m²) y su diferencia conceptual."
+      ],
+      "common_traps": [
+        "Confundir radio con diámetro cuando el enunciado entrega el diámetro, llevando a usar d en lugar de r en la fórmula.",
+        "Reemplazar r por el valor del diámetro sin dividir por 2.",
+        "Utilizar la fórmula del perímetro (2πr o π·d) pensando que corresponde al área.",
+        "No elevar al cuadrado el radio (hacer π·r en vez de π·r²) o elevar al cuadrado solo π·r (hacer (πr)² innecesariamente).",
+        "Elevar al cuadrado el diámetro en vez del radio (usar π·d²).",
+        "Errores de orden de operaciones al calcular r² y luego multiplicar por π (por ejemplo: 3²·π calculado como 3·(2π)).",
+        "Manejo inadecuado de π (redondeos excesivos, cortar demasiado pronto o usar 3 en lugar de un valor más razonable si se pide aproximación).",
+        "Olvidar o confundir unidades de área (responder en cm en lugar de cm²)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Radio entregado explícitamente como número entero pequeño (por ejemplo entre 1 y 10), sin contexto verbal complejo.",
+        "Instrucción explícita de usar la fórmula A = π·r² tal cual, sin requerir recordarla ni transformarla.",
+        "Posibilidad de dejar la respuesta en términos de π (por ejemplo 25π) o con un valor aproximado claro indicando el valor de π a usar (3,14) sin necesidad de redondeos adicionales.",
+        "Sin necesidad de convertir unidades ni interpretar descripciones verbales extensas para identificar el radio.",
+        "Distractores que se diferencian claramente en orden de magnitud o estructura (por ejemplo un distractor con 2πr y otro con solo r²)."
+      ],
+      "medium": [
+        "Diámetro entregado explícitamente; el estudiante debe deducir el radio como la mitad del diámetro antes de aplicar la fórmula.",
+        "Radio o diámetro dados como decimal simple o fracción sencilla (por ejemplo 2,5; 1,5; 3/2).",
+        "Contexto verbal moderado (por ejemplo descripción de un objeto circular en una situación cotidiana) donde el radio se menciona de manera indirecta pero inequívoca (\"la distancia del centro al borde\").",
+        "Se solicita aproximar el resultado con un valor dado de π y redondear a una cierta unidad (por ejemplo al entero más cercano).",
+        "Distractores construidos a partir de errores típicos (usar 2πr, usar d en lugar de r, no elevar al cuadrado, elevar el diámetro en lugar del radio)."
+      ],
+      "hard": [
+        "Radio deducido en dos pasos simples a partir de la información (por ejemplo conocido el diámetro total y una condición que obliga a dividirlo nuevamente: 'el radio es la mitad del diámetro de 8 m, que ya es el doble del radio de otra piscina').",
+        "Uso de números no tan amigables (por ejemplo radios con decimales de una o dos cifras como 7,3 o 12,4) que obligan a cálculos más largos pero manejables.",
+        "Interpretación de un contexto donde se entrega el diámetro de un elemento circular implícito en la descripción (por ejemplo 'la distancia entre dos puntos opuestos del borde es 10 m') y el estudiante debe reconocer que eso es el diámetro.",
+        "Comparación de áreas de dos círculos con radios diferentes, sin necesidad de cálculo exacto pero sí de entender que el área escala con el cuadrado del radio (por ejemplo decidir cuál tiene mayor área o cuántas veces es mayor).",
+        "Requiere combinar el cálculo de área con un paso aritmético adicional simple (por ejemplo costo por metro cuadrado de recubrimiento de una superficie circular)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar indistintamente los términos 'radio' y 'diámetro'; siempre nombrar explícitamente cuál cantidad se está entregando.",
+      "Si se describe el radio de manera verbal ('distancia del centro al borde', 'mitad de la distancia de un lado al otro pasando por el centro'), asegurarse de que la formulación no pueda interpretarse como el diámetro.",
+      "Indicar explícitamente si se debe usar π como símbolo o un valor aproximado (por ejemplo 'use π ≈ 3,14' o 'exprese el resultado en términos de π').",
+      "Evitar que el mismo número pueda interpretarse como radio o como diámetro dentro del mismo enunciado; si aparecen varias longitudes, etiquetarlas claramente.",
+      "No mezclar objetivos de área y perímetro en el mismo ítem de forma que el estudiante pueda dudar sobre qué magnitud está pidiendo el problema; el verbo debe ser inequívoco ('calcular el área de la superficie circular', '¿cuál es el área del círculo?').",
+      "Cuando haya unidades, especificarlas en la pregunta final y mantenerlas coherentes en todos los datos (no alternar metros y centímetros sin aclarar conversiones).",
+      "Si se pide redondeo, indicar con precisión a qué unidad se debe redondear (al entero más cercano, a un decimal, etc.) y evitar que dos alternativas correctas difieran solo por un criterio de redondeo no especificado.",
+      "No presentar círculos de dibujo a escala sin medidas numéricas como fuente de datos principal, para evitar interpretaciones por estimación visual."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir_radio_y_diametro",
+        "description": "El estudiante toma el valor del diámetro y lo usa directamente como radio en la fórmula A = π·r², lo que produce un área cuatro veces mayor que la correcta. También puede ocurrir lo contrario: tratar un radio como si fuera diámetro y dividirlo innecesariamente por 2.",
+        "how_to_address": "Plantear ítems donde explícitamente se pide identificar cuál de varias expresiones corresponde al área correcta dado un diámetro, destacando que r = d/2. Incluir comparaciones de áreas entre círculos que difieren solo en el diámetro para reforzar la relación A ∝ r² y la idea de que usar el diámetro sin dividirlo sobrestima el área."
+      },
+      {
+        "name": "Usar_formula_perimetro_en_lugar_de_area",
+        "description": "El estudiante recuerda 2πr o πd y la aplica cuando se le pide el área, entregando como respuesta un perímetro.",
+        "how_to_address": "Diseñar preguntas donde se presenten explícitamente ambas fórmulas y se solicite que identifiquen cuál corresponde al área y cuál al perímetro en un contexto dado. Incluir distractores con 2πr en ítems de área y pedir al estudiante justificar (en retroalimentación) por qué esa expresión no representa un área."
+      },
+      {
+        "name": "No_elevar_al_cuadrado_el_radio",
+        "description": "El estudiante multiplica π por r en vez de por r², o simplemente sustituye el radio y se olvida del exponente, obteniendo un resultado con magnitud errónea.",
+        "how_to_address": "Proponer ítems donde el cálculo intermedio de r² se presente como paso visible (por ejemplo, tablas donde se completan columnas de r y r² antes de calcular el área). Refuerzos visuales y numéricos que muestren cómo el área crece rápidamente al cuadrado del radio ayudan a fijar el rol del exponente."
+      },
+      {
+        "name": "Cuadrar_el_diametro_en_lugar_del_radio",
+        "description": "El estudiante recuerda parcialmente la estructura 'cuadrado' en la fórmula y aplica A = π·d² en lugar de A = π·r², mezclando radio y diámetro.",
+        "how_to_address": "Incluir distractores construidos específicamente con π·d², acompañados de ejercicios de contraste: dado un mismo círculo, presentar las expresiones posibles (π·r², π·d², 2πr, πd) y pedir seleccionar la que representa el área. Trabajar con ejemplos numéricos donde se muestre cuánto se desvía el resultado cuando se usa d en vez de r."
+      },
+      {
+        "name": "Errores_con_pi_y_redondeo",
+        "description": "Uso de valores poco precisos (π ≈ 3) o redondeos prematuros que llevan a resultados alejados del correcto, o confusión entre dejar el resultado en función de π y aproximarlo.",
+        "how_to_address": "Diseñar ítems que especifiquen claramente el uso de π y el tipo de respuesta esperado (exacta en términos de π o aproximada). Incluir alternativas que representen distintos redondeos para enfatizar la importancia de seguir la instrucción dada. En la retroalimentación, mostrar la diferencia numérica que produce usar distintos valores de π."
+      },
+      {
+        "name": "Unidades_de_area_incorrectas",
+        "description": "El estudiante entrega o selecciona resultados con unidades de longitud (cm, m) en lugar de unidades de área (cm², m²), o no considera las unidades en absoluto.",
+        "how_to_address": "Incorporar alternativas con unidades erróneas en los distractores, reforzando en explicaciones y retroalimentación que el área se mide en unidades cuadradas. Proponer ítems donde una parte de la tarea sea identificar la unidad correcta para el resultado, incluso cuando no se pide el cálculo completo del área."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de áreas de sectores circulares y segmentos de círculo, incluyendo el uso de ángulos centrales.",
+      "Cálculo de áreas de figuras compuestas que involucran uno o más círculos (por ejemplo coronas circulares, rectángulos con semicírculos adosados).",
+      "Aplicación del área del círculo en problemas de proporcionalidad y escalamiento (relación entre razón de radios y razón de áreas).",
+      "Cálculo de áreas laterales y totales de cilindros y conos, que requieren combinar perímetro de base circular y área de círculo.",
+      "Problemas de optimización simples donde se comparan áreas circulares para tomar decisiones (por ejemplo costo de materiales, maximización de superficie).",
+      "Aplicación del área del círculo en contextos estadísticos o físicos sencillos (densidad de puntos en una superficie circular, intensidad distribuida en un disco, etc.)."
+    ],
+    "representation_variants": [
+      "Enunciados puramente numéricos donde se entrega el radio de forma directa, con la fórmula sugerida o no.",
+      "Enunciados donde se entrega el diámetro, ya sea nombrándolo directamente como 'diámetro' o describiéndolo como la distancia entre dos puntos opuestos del borde pasando por el centro.",
+      "Contextos cotidianos descritos verbalmente (piscinas, ruedas, platos, canchas, tapas circulares) donde se explicita la dimensión relevante y el estudiante debe reconocer si corresponde al radio o al diámetro.",
+      "Tablas o listados que relacionan diferentes radios con las áreas correspondientes, pidiendo completar datos faltantes usando A = π·r².",
+      "Comparación de dos o más círculos a partir de sus radios o diámetros, enfocándose en cuál tiene mayor área o en cuánto se multiplica el área al cambiar el radio.",
+      "Situaciones que combinan el cálculo de área con un costo por unidad de superficie (pintar, recubrir, instalar pasto en una zona circular), donde el núcleo matemático sigue siendo A = π·r².",
+      "Ítems donde se presentan varias expresiones algebraicas posibles para el área en función del diámetro o el radio, y se pide seleccionar la expresión correcta."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "simple_decimals_1dp",
+      "simple_decimals_2dp",
+      "simple_fractions",
+      "pi_symbolic"
+    ],
+    "required_image_types": []
+  }
+}

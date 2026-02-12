@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo directo de la imagen de un punto (x, y) al rotarlo respecto del origen en 90°, 180° o 270° en sentido antihorario.",
+        "Uso explícito de las reglas: 90° antihorario (x, y) -> (-y, x); 180° (x, y) -> (-x, -y); 270° antihorario (o 90° horario) (x, y) -> (y, -x).",
+        "Identificación del ángulo de rotación equivalente cuando se da como 90° horario (equivalente a 270° antihorario) y aplicación de la regla correcta.",
+        "Rotación de uno o varios puntos individuales, sin necesidad de representar la figura completa.",
+        "Reconocer la relación entre el cuadrante original del punto y el cuadrante de su imagen luego de la rotación."
+      ],
+      "out_of_scope": [
+        "Rotaciones con centro distinto del origen (0,0).",
+        "Rotaciones con ángulos que no sean múltiplos de 90° (ej. 30°, 45°, 60°) que requieran uso de trigonometría.",
+        "Rotaciones de figuras completas que exijan razonamiento sobre congruencia de figuras o demostraciones formales de isometría.",
+        "Composición de transformaciones que incluyan traslaciones, reflexiones o homotecias además de la rotación, más allá de una simple cadena de rotaciones.",
+        "Cálculo vectorial formal de rotaciones usando matrices de rotación genéricas o productos de matrices.",
+        "Preguntas centradas en la definición formal de rotación como transformación isométrica o en propiedades teóricas avanzadas (preservación de distancias y ángulos, grupo de rotaciones)."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01: Interpretar y ubicar puntos en el plano cartesiano (pares ordenados (x, y), identificación de cuadrantes).",
+        "A-M1-ARI-01-02: Manejo fluido de enteros positivos y negativos (suma y cambio de signo).",
+        "A-M1-GEO-03-01: Comprender de forma cualitativa qué es una rotación en el plano y el sentido horario/antihorario (sin necesidad de trigonometría)."
+      ],
+      "common_traps": [
+        "Confundir el sentido de la rotación: aplicar la regla de 90° antihorario cuando se pide 90° horario (o viceversa).",
+        "Recordar mal las reglas de coordenadas, por ejemplo usar (x, y) -> (y, -x) para 90° antihorario en vez de (-y, x).",
+        "Olvidar que 270° antihorario es equivalente a 90° horario y, por lo tanto, usar la regla equivocada.",
+        "Cambiar solo el signo de una coordenada en la rotación de 180°, en lugar de cambiar ambos signos.",
+        "Intercambiar las coordenadas correctamente, pero asignar signos erróneos según el cuadrante (mezcla de procedimiento de regla con razonamiento por cuadrantes).",
+        "Pensar que la rotación mantiene la posición relativa respecto de un eje específico (por ejemplo, creer que un punto sobre el eje x permanece sobre el eje x tras cualquier rotación)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Un solo punto con coordenadas enteras pequeñas (entre -5 y 5) a rotar en un único ángulo notable (90°, 180° o 270°) en sentido claramente indicado y estándar (habitualmente antihorario).",
+        "Enunciados donde se indica de forma explícita la regla a usar o se recuerda la transformación correspondiente al ángulo.",
+        "Situaciones sin necesidad de interpretar contexto geométrico ni cuadrantes, centradas solo en aplicar mecánicamente la regla de coordenadas.",
+        "Rotaciones donde el sentido es antihorario para 90°, 180° o 270°, sin combinaciones ni equivalencias (no se menciona 90° horario)."
+      ],
+      "medium": [
+        "Rotar dos o más puntos y eventualmente identificar alguna relación simple entre sus imágenes (por ejemplo, comparar coordenadas resultantes).",
+        "Elegir la regla adecuada según el ángulo y el sentido indicados (por ejemplo, 90° horario, 270° antihorario) sin que se entregue la regla explícita.",
+        "Ítems que mezclan coordenadas positivas y negativas y exigen cierto control de signos al aplicar la regla.",
+        "Ejercicios donde se da un contexto verbal o una breve descripción geométrica (por ejemplo, un punto que representa una posición en un mapa) y se pide la nueva posición usando rotación alrededor del origen.",
+        "Preguntas que involucran reconocer o utilizar que una rotación de 180° equivale a cambiar ambos signos, sin recordar explícitamente la regla."
+      ],
+      "hard": [
+        "Composición de dos o más rotaciones alrededor del origen, requiriendo deducir la rotación total efectiva (ej. 90° antihorario seguido de 180°).",
+        "Ítems donde se entrega el punto imagen y el ángulo de rotación, y se pide determinar el punto original (inversa de la transformación), sin más guía.",
+        "Problemas donde hay que comparar varias alternativas de puntos imagen y seleccionar cuál podría corresponder a la rotación pedida, basándose en cuadrantes y reglas de coordenadas.",
+        "Situaciones en que se combinan diferentes ángulos de rotación para distintos puntos dentro del mismo ítem, o se cambia el sentido (horario/antihorario) entre apartados.",
+        "Ítems que requieren razonar sobre la ubicación en los cuadrantes antes y después de la rotación para descartar alternativas, no solo hacer el cálculo mecánico.",
+        "Uso de coordenadas enteras de valor algo mayor (entre -15 y 15) o incluidas en pequeñas expresiones (por ejemplo, (a, 2) con a entero dado), donde el estudiante deba manipular símbolos y no solo números concretos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en el mismo ítem rotaciones respecto del origen con rotaciones respecto de otros centros si no se aclara explícitamente, ya que este átomo asume centro en (0,0).",
+      "Especificar SIEMPRE el sentido de la rotación (antihorario u horario) cuando se indique un ángulo distinto de 180°, para evitar interpretaciones dobles.",
+      "Evitar formular ángulos como \"girar 90°\" sin aclarar el sentido, especialmente cuando la figura o contexto no lo hace obvio.",
+      "No usar enunciados que sugieran o muestren un dibujo a escala imprecisa y luego basar la respuesta en apreciación visual (el resultado debe ser deducible por la regla, no por estimación del dibujo).",
+      "No combinar en un mismo ítem varias convenciones de ángulos (por ejemplo, una parte en radianes y otra en grados) si no es estrictamente necesario, ya que este átomo se restringe a grados notables.",
+      "Evitar enunciados donde el punto esté descrito solo como \"un punto del primer cuadrante\" si luego las alternativas dan coordenadas específicas; indicar coordenadas concretas cuando se preguntan coordenadas numéricas.",
+      "No usar notación confusa para pares ordenados (ej. (x;y) o [x, y]) que pueda generar dudas frente a la notación estándar (x, y).",
+      "Evitar cambios de sistema de referencia (por ejemplo, llamar \"eje horizontal\" y \"eje vertical\" sin etiquetarlos como x e y) cuando la pregunta se centra en aplicar reglas algebraicas a (x, y)."
+    ],
+    "error_families": [
+      {
+        "name": "Sentido_incorrecto_de_rotacion",
+        "description": "El estudiante aplica la regla correspondiente al ángulo, pero en el sentido opuesto (por ejemplo, usa (x, y) -> (-y, x) cuando la rotación indicada es 90° horario, que debería usar (x, y) -> (y, -x)).",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente 90° horario con 90° antihorario y pidan elegir la imagen correcta entre varias opciones que reflejen ambos sentidos. Resaltar en la retroalimentación que el sentido de giro cambia qué coordenada cambia de signo y cómo se permutan."
+      },
+      {
+        "name": "Regla_memorizada_incorrectamente",
+        "description": "El estudiante recuerda de forma errónea las reglas de transformación, por ejemplo, cree que 90° antihorario es (x, y) -> (y, x) o que 270° antihorario es (x, y) -> (-y, -x).",
+        "how_to_address": "Proponer ejercicios donde el foco esté en verificar la coherencia con los cuadrantes (ej., punto del primer cuadrante y su imagen en rotación de 90°). Usar retroalimentación que conecte cada regla con el cuadrante resultante, ayudando a validar la regla más allá de la memorización mecánica."
+      },
+      {
+        "name": "Cambio_parcial_de_signos_en_180",
+        "description": "En rotaciones de 180°, el estudiante cambia solo una coordenada de signo (por ejemplo, (x, y) -> (-x, y)) en vez de ambas (x, y) -> (-x, -y).",
+        "how_to_address": "Presentar series de ejemplos de rotaciones de 180° donde se observe que el punto 'pasa' al cuadrante opuesto. Insistir en que 180° equivale a una simetría central en el origen, lo que cambia de signo tanto x como y."
+      },
+      {
+        "name": "Intercambio_correcto_pero_signos_erroneos",
+        "description": "En rotaciones de 90° o 270°, el estudiante intercambia correctamente x e y, pero asigna mal los signos (por ejemplo, (x, y) -> (y, x) o (x, y) -> (-y, -x)).",
+        "how_to_address": "Incluir tareas guiadas donde primero se realice solo el intercambio de coordenadas y luego, como paso separado, se determine qué coordenada debe tener signo negativo según el sentido del giro. Usar ejemplos concretos con puntos en distintos cuadrantes para reforzar el patrón de signos."
+      },
+      {
+        "name": "Confusion_entre_270_antihorario_y_90_horario",
+        "description": "El estudiante no reconoce que 270° antihorario es lo mismo que 90° horario y, por tanto, usa la regla incorrecta o cree que son transformaciones distintas.",
+        "how_to_address": "Plantear preguntas comparativas que pidan identificar cuál rotación lleva un punto a la misma imagen, mostrando que 270° antihorario y 90° horario coinciden. En la retroalimentación enfatizar la equivalencia de ángulos que difieren en 360° y relacionarla con las reglas de coordenadas."
+      },
+      {
+        "name": "Manejo_deficiente_de_enteros_y_signos",
+        "description": "Errores en el cálculo de la imagen que no vienen de aplicar mal la regla, sino de operaciones con números enteros y signos (por ejemplo, transformar (-3, -2) con la regla correcta pero obtener signos aritméticamente equivocados).",
+        "how_to_address": "Incluir ítems diagnósticos muy simples que aíslen el cálculo numérico luego de aplicar la regla para detectar esta dificultad. Reforzar operaciones con enteros (especialmente el cambio de signo y la multiplicación por -1) antes o paralelamente a las rotaciones."
+      },
+      {
+        "name": "Desconexion_con_los_cuadrantes",
+        "description": "El estudiante no verifica si la respuesta tiene sentido en términos de cuadrantes, aceptando resultados que ubican el punto en un cuadrante imposible para el ángulo dado.",
+        "how_to_address": "Diseñar preguntas donde varias alternativas correspondan a aplicar la misma regla pero con distintos signos, de modo que el estudiante deba usar el razonamiento sobre cuadrantes para discriminar. En la retroalimentación, usar el plano cartesiano como apoyo visual para consolidar este chequeo rápido de plausibilidad."
+      }
+    ],
+    "future_targets": [
+      "A-M1-GEO-03-11: Rotaciones de figuras completas en el plano cartesiano alrededor del origen, conservando distancias y ángulos.",
+      "A-M1-GEO-03-12: Composición de transformaciones isométricas (rotaciones, traslaciones y reflexiones) y análisis de sus efectos globales.",
+      "A-M1-GEO-04-01: Uso de matrices de transformación para describir rotaciones y otras isometrías en el plano.",
+      "A-M1-GEO-02-05: Resolución de problemas de geometría en contexto (mapas, planos, diseño) que involucren giros de 90°, 180° o 270° de puntos y figuras.",
+      "A-M1-ALG-03-04: Comprensión de cambios de sistema de referencia y simetrías que impliquen transformaciones en las coordenadas.",
+      "A-M1-GEO-05-02: Análisis de movimientos en el plano como parte del estudio de lugares geométricos y trayectorias."
+    ],
+    "representation_variants": [
+      "Coordenadas simbólicas o numéricas presentadas como pares ordenados (x, y) en texto, sin apoyo gráfico.",
+      "Descripción verbal del punto en el plano (por ejemplo, su cuadrante o posición relativa a los ejes) seguida de la solicitud explícita de las coordenadas de su imagen.",
+      "Tabla que liste puntos originales y se pida completar o seleccionar la fila que corresponda a las coordenadas de las imágenes tras la rotación.",
+      "Contextos aplicados simples (por ejemplo, un punto que representa la posición de un objeto en un plano) donde internamente el estudiante deba interpretar esa posición como coordenadas y luego rotarla.",
+      "Representaciones simbólicas con parámetros (por ejemplo, (a, b)) para razonar algebraicamente sobre el efecto de la rotación en términos de a y b, siempre manteniendo reglas simples de signo e intercambio."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "zero_as_coordinate",
+      "symbolic_parameters_simple"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del área de superficie total de un cubo a partir de la medida de su arista usando explícitamente la expresión AT = 6 · a^2.",
+        "Cálculo del área de una cara del cubo como a^2 cuando se conoce la arista.",
+        "Determinación de la medida de la arista de un cubo a partir del área de superficie total, usando AT/6 y extrayendo la raíz cuadrada.",
+        "Uso correcto de unidades cuadradas (cm², m², mm², u²) en el resultado.",
+        "Problemas contextualizados que involucren solo áreas de superficie de cubos (por ejemplo, pintar todas las caras, forrar un dado, empaquetar un cubo).",
+        "Cálculos con números racionales donde AT/6 sea un cuadrado perfecto (incluyendo fracciones o decimales simples que lleven a un cuadrado perfecto)."
+      ],
+      "out_of_scope": [
+        "Cálculo de volumen de cubos o de otros cuerpos (prismas, paralelepípedos, pirámides, cilindros, etc.).",
+        "Áreas de superficie de otros poliedros o cuerpos redondos (prismas, paralelepípedos, pirámides, cilindros, esferas).",
+        "Redes (desarrollos planos) de cubos cuando el foco es contar caras o identificar redes correctas, no el cálculo de área.",
+        "Uso de raíces cuadradas no exactas (casos donde AT/6 no es un cuadrado perfecto y se requeriría aproximación).",
+        "Comparaciones que requieran teoremas geométricos adicionales (Pitágoras, semejanza de triángulos, teorema de Tales, etc.).",
+        "Problemas que exijan trabajar con más de un cuerpo 3D distinto al cubo en el mismo ítem (por ejemplo, comparar área de cubo y prisma rectangular).",
+        "Interpretación de planos técnicos o vistas ortogonales complejas de sólidos que involucren más información que solo la arista del cubo."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo básico de operaciones con números naturales y enteros (suma, resta, multiplicación, división).",
+        "A-M1-NUM-02-01: Comprensión y uso de potencias de exponente 2 como producto de un número por sí mismo.",
+        "A-M1-NUM-03-01: Cálculo de raíces cuadradas exactas de cuadrados perfectos sencillos (por ejemplo, 4, 9, 16, 25, 36, 49, 64, 81, 100).",
+        "A-M1-GEO-01-01: Comprensión del área de figuras planas simples, en particular del cuadrado (A = lado^2) y uso de unidades cuadradas.",
+        "A-M1-GEO-02-01: Reconocimiento del cubo como cuerpo geométrico con 6 caras cuadradas congruentes e identificación de la arista como su medida característica.",
+        "A-M1-REP-01-01: Lectura y comprensión de enunciados verbales que incluyen datos geométricos y unidades de medida."
+      ],
+      "common_traps": [
+        "Confundir el cálculo del área de superficie total del cubo con el cálculo de volumen (usar a^3 en lugar de 6 · a^2).",
+        "Olvidar multiplicar por 6 al pasar del área de una cara (a^2) al área total del cubo.",
+        "Olvidar elevar al cuadrado la arista y calcular erróneamente AT = 6 · a.",
+        "Perder o cambiar unidades (dar el resultado en cm en lugar de cm², o no indicar unidades).",
+        "No identificar que todas las caras del cubo son congruentes, y tratar cada cara como si tuviera área distinta en contextos verbales.",
+        "Al recuperar la arista desde AT, dividir de manera incorrecta (por ejemplo, hacer 6/AT en vez de AT/6).",
+        "Al extraer la arista desde AT, olvidar que se debe sacar raíz cuadrada después de hallar AT/6.",
+        "Usar valores de AT que no sean compatibles con un cuadrado perfecto para AT/6 (en ítems generados), produciendo raíces no exactas que están fuera del alcance del átomo."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "La arista del cubo es un número entero pequeño (entre 1 y 10) y se pide directamente el área de superficie total usando AT = 6 · a^2.",
+        "Los datos se entregan explícitamente, sin contexto complejo (por ejemplo, 'Un cubo tiene arista de 4 cm...').",
+        "Se requiere un solo paso de cálculo (elevar al cuadrado y luego multiplicar por 6) con operaciones aritméticas sencillas.",
+        "Las unidades son homogéneas y típicas (cm, m) y no se exige conversión de unidades.",
+        "No se incluyen distractores ligados a volumen ni a otras fórmulas geométricas en las alternativas."
+      ],
+      "medium": [
+        "La arista es un número entero moderado (entre 11 y 30) o un número racional simple (por ejemplo, 1/2, 1,5, 2,5) que conduce a un cuadrado perfecto al elevarlo al cuadrado.",
+        "Se presenta un contexto verbal sencillo (pintar un dado, forrar una caja cúbica, cubrir todas las caras de un cubo con papel) que obliga a identificar que se trata del área de superficie total.",
+        "Se puede requerir calcular primero el área de una cara y luego la superficie total (dos pasos explícitos).",
+        "Se puede entregar el área de una cara y pedir el área de superficie total, o viceversa, sin cambio de unidades.",
+        "Para el caso inverso (hallar arista), el área total es un múltiplo de 6 que al dividir por 6 da un cuadrado perfecto sencillo (por ejemplo, AT = 54, 96, 150)."
+      ],
+      "hard": [
+        "Se requiere determinar primero qué dato representa el área total (por ejemplo, dado un texto con varios datos, identificar cuál corresponde a la superficie total del cubo) antes de aplicar la fórmula.",
+        "Se combinan dos direcciones de trabajo en un mismo ítem (por ejemplo, primero hallar el área total de un cubo y luego comparar esa área con la de otro cubo dado por su área total o por su arista).",
+        "La arista o el área total involucran números racionales que requieren operaciones en dos o más pasos, manteniendo que AT/6 sea un cuadrado perfecto (por ejemplo, AT = 54/1, 600 cm² que lleva a 100 cm² por cara).",
+        "Se usan contextos donde se mencionan tanto área de superficie como volumen o largo de bordes, y el estudiante debe discriminar correctamente que lo pedido es el área de superficie total.",
+        "Se plantea la situación inversa con un área total relativamente grande o menos familiar (por ejemplo, AT = 486 cm²) que igualmente conduce a un cuadrado perfecto al dividir por 6, exigiendo reconocer y aplicar raíz cuadrada de un número de dos o tres cifras."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si se pide área de superficie total del cubo o área de una sola cara; especificar siempre 'área de superficie total' o 'área de una cara' según corresponda.",
+      "No usar la palabra 'tamaño' o 'superficie' de forma vaga; preferir expresiones como 'área de superficie total', 'área de cada cara' o 'área de una cara del cubo'.",
+      "No mezclar en el mismo enunciado la idea de 'cubrir el piso' o 'cubrir una sola cara' con expresiones que sugieran cubrir todo el cubo, sin aclararlo explícitamente.",
+      "Si se menciona 'caja' en contexto de embalaje, indicar claramente que se trata de una 'caja cúbica' o 'cubo', para no confundir con un prisma rectangular cualquiera.",
+      "Evitar ítems donde se requiera inferir si el cubo está 'abierto' o 'cerrado'; si solo se consideran algunas caras (por ejemplo, 5 caras sin base), esto ya escapa del enfoque exclusivo en el cubo completo.",
+      "Evitar combinaciones de datos que permitan interpretar más de un sólido (por ejemplo, 'caja de 10 cm de largo, 10 cm de ancho y 10 cm de alto' está bien, pero no dar dimensiones distintas).",
+      "No usar valores de área total que al dividir por 6 no produzcan un número cuya raíz cuadrada sea exacta, ya que podría confundir sobre si se espera aproximación o respuesta exacta.",
+      "Ser consistente con las unidades de medida en todo el enunciado; no mezclar, por ejemplo, cm para la arista y m² para el área, a menos que se esté intencionadamente evaluando conversión de unidades (lo que está fuera de este átomo).",
+      "No incluir gráficos de sólidos que no sean cubos o que parezcan paralelepípedos, si el texto se refiere a un cubo, para evitar dudas sobre la congruencia de las caras."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_area_volumen",
+        "description": "El estudiante usa la fórmula del volumen de un cubo (a^3) o una idea de 'largo × ancho × alto' en lugar de la fórmula de área de superficie total AT = 6 · a^2.",
+        "how_to_address": "Resaltar que el volumen mide 'espacio interno' y se expresa en unidades cúbicas, mientras que el área de superficie mide la 'superficie externa' y se expresa en unidades cuadradas. Proponer comparar, para un mismo cubo, el valor numérico del volumen y del área para ver que son resultados distintos y que usan fórmulas diferentes."
+      },
+      {
+        "name": "Olvida_multiplicar_por_6",
+        "description": "El estudiante calcula correctamente a^2, pero no lo multiplica por 6 y reporta el área de una sola cara como si fuera el área de superficie total.",
+        "how_to_address": "Trabajar con representaciones del cubo (reales, maquetas o imágenes) donde cuente y marque las 6 caras congruentes, relacionando cada cara con su área. En ejercicios guiados, separar explícitamente 'área de una cara' y 'área total', mostrando el paso intermedio de multiplicar por 6."
+      },
+      {
+        "name": "No_elevar_al_cuadrado",
+        "description": "El estudiante multiplica directamente la arista por 6 (AT = 6 · a) en lugar de usar a^2, lo que muestra una comprensión incompleta de la fórmula.",
+        "how_to_address": "Reforzar la idea de que cada cara es un cuadrado y que el área del cuadrado es lado × lado. Hacer que el estudiante calcule primero el área de una cara como a · a y luego repetirlo 6 veces, para reconstruir la fórmula AT = 6 · a^2 desde el significado geométrico."
+      },
+      {
+        "name": "Manejo_incorrecto_de_unidades",
+        "description": "El estudiante entrega resultados sin unidades, con unidades lineales (cm en vez de cm²) o con unidades inconsistentes con los datos.",
+        "how_to_address": "Enfocar ejercicios en donde se pida explícitamente 'incluye las unidades en tu respuesta' y comparar respuestas con y sin unidades, mostrando por qué la unidad debe ser cuadrada al hablar de área. Relacionar el proceso de elevar al cuadrado la medida con 'elevar al cuadrado' las unidades (cm × cm = cm²)."
+      },
+      {
+        "name": "Error_en_la_inversion_desde_AT",
+        "description": "Al encontrar la arista a partir del área total, el estudiante comete errores como hacer a = AT/6 sin raíz, o tomar una raíz sin haber dividido primero por 6, o dividir mal por 6.",
+        "how_to_address": "Descomponer el procedimiento inverso en pasos: (1) encontrar el área de una cara A_cara = AT/6, (2) recordar que A_cara = a^2, (3) encontrar a como la raíz cuadrada de A_cara. Practicar con ejemplos numéricos simples donde se pueda verificar el resultado re-aplicando la fórmula directa AT = 6 · a^2 para comprobar coherencia."
+      },
+      {
+        "name": "Interpretacion_erronea_del_contexto",
+        "description": "En problemas verbales, el estudiante no identifica que se trata de un cubo (o que se requiere el área de superficie total) y puede calcular solo el área de una cara, de una base, o usar dimensiones erróneas.",
+        "how_to_address": "Trabajar lecturas guiadas de enunciados, subrayando palabras clave ('cubo', 'todas sus caras', 'forrar completamente', 'pintar por todos lados'). Discutir qué información indica que es un cubo y qué partes hay que cubrir/pintar para relacionarlo con la superficie total."
+      }
+    ],
+    "future_targets": [
+      "Cálculo del área de superficie de prismas rectos y paralelepípedos rectangulares, viendo al cubo como caso particular donde todas las dimensiones son iguales.",
+      "Cálculo del volumen de cubos y luego de prismas rectangulares, incorporando la relación entre aristas y volumen.",
+      "Problemas que combinan área de superficie y volumen para comparar envases o diseñar embalajes más eficientes.",
+      "Análisis de redes de cubos (desarrollos planos) y conteo de áreas en dichas redes.",
+      "Optimización simple en contextos geométricos (por ejemplo, comparar cubos con distinta arista para lograr mayor volumen con una cierta cantidad de material, introduciendo más adelante ideas de eficiencia).",
+      "Trabajar con raíces cuadradas no exactas y aproximaciones cuando el reparto de AT/6 no da cuadrados perfectos.",
+      "Extensión a otros cuerpos 3D (pirámides, cilindros) en el cálculo de áreas de superficie lateral y total."
+    ],
+    "representation_variants": [
+      "Enunciados puramente numéricos y simbólicos donde se da la medida de la arista y se pide aplicar directamente AT = 6 · a^2.",
+      "Problemas verbales contextualizados (dados, cajas cúbicas, cubos de hielo, cubos de madera) que requieran identificar que se trabaja con un cubo y con su superficie total.",
+      "Tablas que relacionan valores de la arista del cubo con su área de una cara y su área total, para inferir patrones y aplicar la fórmula.",
+      "Descripciones textuales de desarrollos planos de un cubo (por ejemplo, 'seis cuadrados iguales que forman un cubo al doblarlos') para razonar sobre el área total sin necesidad de imagen.",
+      "Representación algebraica explícita de los pasos: AT = 6 · a^2; a = √(AT/6), reforzando la conexión entre fórmula directa e inversa.",
+      "Comparaciones textuales entre dos cubos (uno definido por su arista y el otro por su área total) que obliguen a convertir ambas descripciones a la misma magnitud (área de superficie total o arista)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "perfect_squares",
+      "decimal_rationals_simple",
+      "fraction_rationals_simple"
+    ],
+    "required_image_types": []
+  }
+}

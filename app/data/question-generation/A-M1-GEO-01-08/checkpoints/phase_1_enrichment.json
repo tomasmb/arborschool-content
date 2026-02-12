@@ -1,0 +1,146 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del área de cuadrados a partir de su lado, usando A = b · h o A = l².",
+        "Cálculo del área de rectángulos cuando se entrega base y altura (o largo y ancho).",
+        "Cálculo del área de romboides (paralelogramos generales) usando base y altura perpendicular.",
+        "Cálculo del área de rombos usando base y altura perpendicular (no diagonales).",
+        "Identificación de base y altura en figuras dibujadas, donde la altura es el segmento perpendicular a la base.",
+        "Problemas de contexto (por ejemplo, terrenos, pisos, telas) donde la forma puede modelarse como cuadrado, rectángulo, romboide o rombo y se da base y altura."
+      ],
+      "out_of_scope": [
+        "Uso de fórmula de área del rombo a partir de diagonales (A = d1 · d2 / 2).",
+        "Cálculo de área de triángulos, trapecios, polígonos regulares u otras figuras que no sean cuadrado, rectángulo, romboide o rombo.",
+        "Cálculo de perímetros de estas figuras (eso pertenece a otro átomo).",
+        "Descomposición de figuras compuestas más allá de una sola figura de las indicadas (ej.: unión de varios rectángulos, figuras en L complejas).",
+        "Uso de razones trigonométricas para hallar alturas o lados.",
+        "Trabajo con coordenadas en el plano para hallar área (fórmula del polígono por coordenadas).",
+        "Problemas que requieren optimización geométrica (maximizar/minimizar área).",
+        "Cálculo de áreas en unidades cuadradas no convencionales (rejillas irregulares, aproximaciones)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01: Comprender y operar con multiplicación de números racionales positivos.",
+        "A-M1-GEO-01-01: Reconocer y distinguir cuadrados, rectángulos, rombos y romboides a partir de sus propiedades básicas.",
+        "A-M1-GEO-01-02: Comprender la noción de área como medida de superficie y sus unidades (m², cm², etc.).",
+        "A-M1-GEO-01-03: Reconocer la altura de una figura plana como segmento perpendicular a la base."
+      ],
+      "common_traps": [
+        "Confundir altura con un lado cualquiera: escoger como altura un lado oblicuo o una diagonal que no es perpendicular a la base.",
+        "Pensar que la altura debe ser siempre uno de los lados de la figura, sin considerar alturas exteriores (especialmente en rombos y romboides).",
+        "Tomar diagonales del rombo o del romboide como si fueran base o altura al azar, sin considerar perpendicularidad.",
+        "Intercambiar fórmulas: usar A = b · h para el rombo con diagonales dadas (caso que no corresponde a este átomo).",
+        "Olvidar unidades de medida del área o confundir unidades lineales (m) con cuadradas (m²).",
+        "Aplicar incorrectamente A = l² cuando el cuadrado se describe con dos medidas distintas, sin notar que entonces es un rectángulo.",
+        "Elegir como base y altura dos medidas de la figura que no están relacionadas perpendicularmente (por ejemplo, base y lado oblicuo de un romboide).",
+        "No distinguir entre base ‘geométrica’ y base ‘apoyada’ en el dibujo: creer que solo la base horizontal del dibujo puede ser la base en la fórmula."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figuras rectangulares o cuadradas, generalmente descritas en texto sin necesidad de interpretar un dibujo complejo.",
+        "Datos dados explícitamente como ‘base’ y ‘altura’, o ‘largo’ y ‘ancho’, con números enteros pequeños (1–30).",
+        "Preguntas de cálculo directo del área con una sola operación de multiplicación, sin pasos intermedios.",
+        "Contextos simples (ej.: piso rectangular, terreno cuadrado) donde la forma es evidente y ya identificada en el enunciado.",
+        "Ítems donde no se requiere distinguir entre varios segmentos posibles como altura; la altura es única y está nombrada claramente."
+      ],
+      "medium": [
+        "Figuras de rombos o romboides donde se debe identificar correctamente base y altura a partir de un dibujo, usando la perpendicularidad.",
+        "Problemas de contexto donde la figura se describe verbalmente como un paralelogramo, sin usar de inmediato la palabra ‘base’ o ‘altura’, pero se entregan longitud de un lado y la distancia perpendicular a un lado.",
+        "Números enteros algo mayores (hasta 100) o multiplicaciones que resulten en dos o tres dígitos, manteniéndose en el cálculo manual razonable.",
+        "Ítems donde hay más de una medida disponible (por ejemplo, lado y altura, o dos lados y una altura), y se debe escoger las adecuadas para aplicar A = b · h.",
+        "Uso de unidades no homogéneas que requieren una conversión simple (por ejemplo, cm y m) antes de aplicar la fórmula."
+      ],
+      "hard": [
+        "Figuras de rombos o romboides con varios segmentos dibujados (lados, diagonales, alturas interiores y exteriores), donde se debe discriminar qué segmentoes realmente la altura.",
+        "Situaciones en que la base indicada no es horizontal y la altura está dibujada como un segmento exterior a la figura, lo que exige comprensión abstracta de paralelismo y perpendicularidad.",
+        "Problemas de contexto donde primero se debe modelar la situación como un paralelogramo adecuado (decidir si es rectángulo, rombo o romboide) antes de aplicar la fórmula.",
+        "Ítems que requieren uno o dos pasos intermedios numéricos antes del cálculo de área (por ejemplo, hallar primero una de las medidas de base o altura mediante una suma o resta simple, o lectura combinada de datos).",
+        "Uso de números racionales (fracciones simples o decimales con uno o dos decimales) como base o altura, implicando multiplicación de fracciones o decimales.",
+        "Preguntas donde se pide comparar áreas de dos paralelogramos distintos (cuál es mayor, cuántas veces, etc.) obligando a realizar y contrastar dos cálculos de A = b · h."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No dibujar rombos o romboides donde las diagonales y las alturas se vean muy similares sin marcar claramente el ángulo recto en la altura; siempre señalar perpendicularidad con un símbolo de ángulo recto.",
+      "Evitar usar el término ‘altura’ para designar la dimensión vertical en un contexto físico (por ejemplo, altura de una muralla) cuando en el dibujo esa medida no es perpendicular a la base usada en el cálculo.",
+      "No mezclar en una misma figura demasiados segmentos no etiquetados; toda longitud relevante para el cálculo de área debe estar claramente etiquetada con su valor y nombre.",
+      "Evitar enunciados donde la ‘base’ pueda interpretarse como dos lados distintos (por ejemplo, en un rombo, decir solo ‘la base’ sin aclarar a cuál lado se refiere, si los lados tienen longitudes diferentes).",
+      "No presentar preguntas de rombos con diagonales dadas sin dejar claro que NO se usan las diagonales en este ítem; si aparecen, deben ser distractores evidentes y no etiquetarse como base o altura.",
+      "Evitar figuras sin escala visual aproximada donde resulte poco verosímil que una medida dada corresponda a la base o a la altura (por ejemplo, dibujar un lado visiblemente más corto pero etiquetarlo con una medida mayor).",
+      "No usar vocabulario ambiguo como ‘tamaño’, ‘dimensión’, ‘medida’ sin especificar si corresponde a lado, base, altura u otro segmento.",
+      "Evitar que la misma letra represente cosas distintas (por ejemplo, b como base y también como otro ancho en la misma figura).",
+      "No combinar en un mismo ítem fórmulas de área de diferentes figuras (triángulo, trapecio) si la respuesta correcta solo requiere A = b · h, para no desplazar el foco del átomo."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión de lado con altura",
+        "description": "El estudiantado usa un lado cualquiera de la figura como ‘altura’, sin verificar si es perpendicular a la base (frecuente en rombos y romboides).",
+        "how_to_address": "Incluir ítems donde se destaque visualmente el símbolo de ángulo recto y se pida identificar explícitamente cuál es el segmento altura, comparándolo con otros segmentos no perpendiculares."
+      },
+      {
+        "name": "Uso incorrecto de diagonales",
+        "description": "En rombos (y a veces en romboides), toman una de las diagonales como si fuera altura o confunden la fórmula con la de las diagonales (d1 · d2 / 2).",
+        "how_to_address": "Diseñar preguntas donde aparezcan diagonales dibujadas y la altura sea otro segmento; pedir seleccionar entre opciones cuál par de medidas permite calcular el área con A = b · h."
+      },
+      {
+        "name": "Aplicación mecánica de fórmula equivocada",
+        "description": "Aplican A = l² a cualquiera de los paralelogramos o usan fórmulas de otras figuras (como A = b · h / 2 de triángulos) por costumbre.",
+        "how_to_address": "Plantear ítems de selección múltiple donde se comparen expresiones simbólicas candidatas (b · h, l², b · h / 2, etc.) y se debe justificar mentalmente cuál corresponde al tipo de figura dada."
+      },
+      {
+        "name": "Selección errónea de datos",
+        "description": "En problemas con varias medidas disponibles, escogen pares de números que no corresponden a base y altura (por ejemplo, lado oblicuo y diagonal).",
+        "how_to_address": "Incluir contextos con más datos de los necesarios y pedir explícitamente qué par de datos permite calcular el área, antes de preguntar por el valor numérico."
+      },
+      {
+        "name": "Olvido o mal uso de unidades de área",
+        "description": "Entregan resultados sin unidades, o en unidades lineales (m en lugar de m²), o no convierten adecuadamente unidades diferentes (cm y m).",
+        "how_to_address": "Proponer ítems donde la alternativa correcta se diferencia solo por las unidades y su correcta conversión, reforzando que el área siempre se expresa en unidades cuadradas."
+      },
+      {
+        "name": "Dificultades con fracciones y decimales",
+        "description": "Al trabajar con bases o alturas fraccionarias o decimales, cometen errores al multiplicar, redondear o interpretar valores como 1,5 m.",
+        "how_to_address": "Usar números racionales sencillos (medios, cuartos, décimos) y centrarse en el procedimiento de multiplicar estos números y en la interpretación del resultado en el contexto del área."
+      },
+      {
+        "name": "Interpretación literal de ‘base’ solo como horizontal",
+        "description": "Creen que la base debe ser el lado dibujado horizontalmente, y no entienden que cualquier lado puede ser base si se toma la altura correspondiente.",
+        "how_to_address": "Incluir figuras rotadas donde la base no está horizontal, o donde se indiquen distintas elecciones de base posibles, enfatizando que la altura dependen de la base seleccionada."
+      }
+    ],
+    "future_targets": [
+      "A-M1-GEO-01-09: Cálculo del área de rombos mediante diagonales.",
+      "A-M1-GEO-01-10: Cálculo de áreas de figuras compuestas descomponiendo en rectángulos y otros paralelogramos.",
+      "A-M1-GEO-01-11: Resolución de problemas de perímetros y áreas combinadas (incluyendo medidas desconocidas).",
+      "A-M1-GEO-02-01: Aplicación del teorema de Pitágoras para hallar alturas o lados requeridos en el cálculo de áreas.",
+      "A-M1-GEO-02-02: Cálculo del área de triángulos y trapecios, relacionando con el área de paralelogramos.",
+      "A-M1-GEO-03-01: Cálculo de áreas de polígonos regulares y círculos, comparando con áreas de rectángulos o rombos.",
+      "A-M1-GEO-03-02: Problemas de escalas y semejanza donde el área cambia con el cuadrado de la razón de semejanza.",
+      "A-M1-GEO-04-01: Cálculo de volúmenes de prismas rectos a partir del área de la base y la altura del prisma."
+    ],
+    "representation_variants": [
+      "Dibujo explícito de cuadrados y rectángulos con base horizontal y altura vertical etiquetadas con sus medidas.",
+      "Paralelogramos (romboides) con lados inclinados y una altura interior marcada con ángulo recto desde un vértice hacia la base.",
+      "Paralelogramos con altura exterior (segmento desde un vértice prolongando la base) claramente dibujada y etiquetada.",
+      "Rombos con todos los lados iguales y una altura trazada desde un vértice a un lado opuesto, con marca de ángulo recto para distinguirla de las diagonales.",
+      "Figuras esbozadas en contexto real (terrenos, piezas, telas) donde se marcan sobre el dibujo las medidas de base y altura necesarias.",
+      "Representación puramente verbal donde se describen las medidas de base y altura sin acompañar de dibujo, para promover la abstracción de la fórmula A = b · h.",
+      "Tablas de valores con diferentes pares (b, h) y la correspondiente área, para trabajar la relación multiplicativa entre base, altura y área.",
+      "Figuras rotadas (sin lados horizontales) donde se indique cuál lado se considera base y se marque la altura correspondiente, forzando la comprensión de perpendicularidad más allá de la orientación del papel."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "large_integers_but_simple_products",
+      "unit_fractions",
+      "simple_proper_fractions",
+      "simple_decimals_one_decimal_place",
+      "simple_decimals_two_decimal_places",
+      "mixed_units_with_easy_conversion"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

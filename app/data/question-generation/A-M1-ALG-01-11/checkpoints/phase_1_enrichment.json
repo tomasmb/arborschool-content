@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Reconocer expresiones algebraicas de la forma (a + b)^3 y (a - b)^3 como cubos de binomio",
+        "Aplicar directamente la fórmula (a ± b)^3 = a^3 ± 3a^2b + 3ab^2 ± b^3 para desarrollar expresiones",
+        "Calcular correctamente los coeficientes numéricos que surgen del desarrollo cúbico",
+        "Manejar adecuadamente los signos en el caso (a - b)^3, incluyendo que los términos alternan signo",
+        "Sustituir correctamente expresiones simples (monomios o binomios breves) en el rol de a y b antes de aplicar la fórmula",
+        "Simplificar el resultado del desarrollo combinando términos semejantes cuando aparezcan"
+      ],
+      "out_of_scope": [
+        "Derivar la fórmula del cubo de binomio mediante demostraciones algebraicas o geométricas",
+        "Resolver ecuaciones o inecuaciones que surgen luego de desarrollar el cubo de binomio",
+        "Aplicar otros productos notables (trinomio cuadrado perfecto, diferencia de cuadrados, binomio al cuarto, etc.) fuera del cubo de binomio",
+        "Factorizar expresiones para obtener un cubo de binomio (trabajo inverso a este átomo)",
+        "Uso de identidades de suma y diferencia de cubos (a^3 ± b^3) que no correspondan a (a ± b)^3",
+        "Contextos verbales complejos donde lo esencial sea modelar la situación y no el uso de la fórmula"
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo de potencias con exponente natural en expresiones algebraicas",
+        "A-M1-ALG-01-02: Identificación y combinación de términos semejantes",
+        "A-M1-ALG-01-03: Producto de monomios y de monomio por binomio",
+        "A-M1-ALG-01-08: Reconocimiento y uso del cuadrado de binomio (a ± b)^2",
+        "A-M1-ALG-01-10: Reconocimiento general de productos notables simples"
+      ],
+      "common_traps": [
+        "Confundir (a ± b)^3 con (a ± b)^2 y omitir términos o usar coeficientes 1, 2, 1 en lugar de 1, 3, 3, 1",
+        "Aplicar incorrectamente los signos en (a - b)^3, por ejemplo, escribiendo a^3 - 3a^2b - 3ab^2 - b^3 en vez de alternar: a^3 - 3a^2b + 3ab^2 - b^3",
+        "Elevar solo a y b al cubo, ignorando los términos intermedios (reducir (a + b)^3 a a^3 + b^3)",
+        "No considerar los coeficientes numéricos que traen a y b (por ejemplo, tratar (2x + 3)^3 como si fuera (x + 3)^3)",
+        "Errores de potencia como dejar a^2 o b^2 donde corresponde a^3 o b^3, o repetir exponentes en los términos intermedios",
+        "Organizar el resultado en desorden que dificulta comparar con las alternativas (no ordenar por potencias decrecientes de a o de la variable principal)",
+        "Sobrecargar el ítem con expresiones demasiado largas que generan errores de copia más que de comprensión del cubo de binomio"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Expresiones de la forma (x ± k)^3 con x como única variable y k entero pequeño (entre -5 y 5, excluyendo 0 en el caso de la resta)",
+        "Coeficientes 1 en la variable principal y valores numéricos simples para el término constante",
+        "Pedir directamente el desarrollo completo, con alternativas que difieran en un solo término o en un signo para focalizar la habilidad",
+        "No incluir necesidad de combinar términos semejantes posteriores al desarrollo (la expresión queda ya ordenada y sin términos iguales)",
+        "Uso de la fórmula explícitamente recordada en el enunciado para reducir la carga de memoria"
+      ],
+      "medium": [
+        "Expresiones donde a y/o b tienen coeficientes distintos de 1, por ejemplo (2x + 3)^3 o (x - 4y)^3",
+        "Participación de dos variables (por ejemplo, (2x - y)^3) que obliga a manejar productos de monomios con más cuidado",
+        "No recordar la fórmula en el enunciado: el estudiante debe reconocer y aplicar la identidad desde la memoria",
+        "Incluir un paso de simplificación posterior al desarrollo (por ejemplo, sumar o restar otra expresión semejante)",
+        "Alternativas de respuesta que incluyan errores típicos de signo y de coeficientes para discriminar comprensión del patrón 1-3-3-1"
+      ],
+      "hard": [
+        "Cubos de binomios donde a y/o b son a su vez binomios simples, por ejemplo (x + (y + 1))^3 o (2x - (3y - 1))^3, requiriendo identificar primero a y b",
+        "Presencia de fracciones o coeficientes racionales en a y/o b, por ejemplo (1/2 x + 3)^3 o (x - 1/3)^3",
+        "Items donde se deba comparar dos desarrollos y determinar cuál corresponde a un cubo de binomio dado, o detectar el error en un desarrollo parcial",
+        "Uso del cubo de binomio como parte de una expresión más amplia que requiere desarrollar solo una sección para poder responder",
+        "Plantear una condición sobre uno de los coeficientes del desarrollo (por ejemplo, determinar un parámetro k para que cierto término tenga un coeficiente dado) manteniendo el foco en el uso de la fórmula"
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en un mismo ítem varios productos notables distintos sin indicar claramente cuál se espera usar, para evitar dudas entre cuadrado y cubo de binomio",
+      "Evitar expresiones donde no sea evidente qué parte actúa como a y qué parte como b, especialmente si hay más de dos términos dentro del paréntesis",
+      "No usar el símbolo ± dentro del mismo binomio del tipo (a ± b)^3 en los datos del ítem; siempre dar un caso concreto con + o - definidos",
+      "Evitar alternativas de respuesta demasiado largas y muy similares visualmente que dificulten diferenciar errores conceptuales de simples errores de copia",
+      "No introducir notación poco habitual (por ejemplo, omitir el signo de multiplicación en expresiones con varios factores numéricos y literales que puedan leerse de más de una forma)",
+      "Asegurar que el orden de los términos en las alternativas sea comparable (mismas potencias decrecientes) para que la comparación se centre en coeficientes y signos y no en el orden",
+      "No combinar este átomo con contextos verbales extensos donde el foco se traslade al modelamiento y no al desarrollo algebraico"
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_con_cuadrado_de_binomio",
+        "description": "El estudiante desarrolla (a ± b)^3 como si fuera (a ± b)^2, produciendo solo tres términos con coeficientes 1, 2, 1 o incluso dos términos a^2 + b^2.",
+        "how_to_address": "Destacar explícitamente el patrón de cuatro términos en el cubo (1-3-3-1) y compararlo con el de tres términos (1-2-1) del cuadrado; usar ejemplos en paralelo para que identifiquen la diferencia en número de términos y en coeficientes."
+      },
+      {
+        "name": "Omisión_de_términos_intermedios",
+        "description": "El estudiante escribe (a ± b)^3 = a^3 ± b^3, ignorando los términos 3a^2b y 3ab^2.",
+        "how_to_address": "Reforzar el uso sistemático de la fórmula completa; promover que verbalicen la secuencia: primer término al cubo, triple producto del cuadrado del primero por el segundo, triple producto del primero por el cuadrado del segundo, más/menos el cubo del segundo."
+      },
+      {
+        "name": "Error_en_signos_para_(a-b)^3",
+        "description": "En el caso de la resta, el estudiante mantiene todos los términos con signo negativo o alterna mal los signos, por ejemplo a^3 - 3a^2b - 3ab^2 + b^3.",
+        "how_to_address": "Trabajar específicamente el caso (a - b)^3 escribiendo el patrón de signos (+, -, +, -) y relacionándolo con reemplazar b por (-b) en la fórmula de (a + b)^3; practicar con ejemplos concretos destacando el cambio de signo en cada término que contiene b impar veces."
+      },
+      {
+        "name": "Manejo_incorrecto_de_coeficientes",
+        "description": "El estudiante no multiplica correctamente los coeficientes numéricos de a y b en los términos intermedios, generando coeficientes como 3ab en lugar de 3a^2b o errores en productos numéricos (3·2·2 = 8, por ejemplo).",
+        "how_to_address": "Separar explícitamente el trabajo numérico del literal: primero aplicar el coeficiente combinatorio (3), luego multiplicar los coeficientes de a y b, y finalmente aplicar los exponentes; usar ejemplos con colores o subrayados para distinguir cada factor."
+      },
+      {
+        "name": "Errores_de_exponentes",
+        "description": "El estudiante asigna mal las potencias a a y b, por ejemplo, repite a^3 en más de un término o no hace decrecer la potencia de a y aumentar la de b de manera complementaria (3 y 0, 2 y 1, 1 y 2, 0 y 3).",
+        "how_to_address": "Enfatizar el patrón de exponentes en la secuencia de términos: la suma de los exponentes de a y b siempre es 3, y a decrece de 3 a 0 mientras b aumenta de 0 a 3; practicar listando solo las potencias primero, sin coeficientes numéricos."
+      },
+      {
+        "name": "Sustitucion_erronea_de_a_y_b",
+        "description": "Cuando a y b incluyen coeficientes o más de una variable, el estudiante elige mal qué parte corresponde a a y cuál a b, o pierde parte de la expresión al elevarla.",
+        "how_to_address": "Practicar previamente la identificación de a y b subrayando cada bloque que se repetirá completo en los términos; insistir en que a y b pueden ser cualquier expresión y que siempre se copian completas cuando se elevan o se multiplican."
+      },
+      {
+        "name": "No_simplificar_terminos_semejantes",
+        "description": "Luego del desarrollo, el estudiante deja términos semejantes sin combinar o los combina mal, lo que lleva a una respuesta numérica/algebraica distinta aunque el esquema del cubo esté bien aplicado.",
+        "how_to_address": "Reforzar la revisión final del resultado: buscar términos con la misma parte literal y sumar sus coeficientes antes de elegir la alternativa; incluir ejercicios donde la simplificación sea necesaria para llegar a la forma de las opciones."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-01-12: Factorización de expresiones que son cubos de binomio (trabajo inverso de desarrollo)",
+      "A-M1-ALG-01-13: Uso combinado de distintos productos notables en expresiones más complejas",
+      "A-M1-ALG-02-01: Resolución de ecuaciones polinomiales sencillas que requieran expandir cubos de binomios",
+      "A-M1-FUN-01-02: Análisis de funciones polinomiales cúbicas construidas a partir del desarrollo de (x ± k)^3",
+      "A-M1-ALG-03-01: Simplificación de expresiones algebraicas que involucran productos notables y factorización",
+      "A-M2-ALG-XX: Demostraciones algebraicas que utilicen identidades notables en contextos más abstractos"
+    ],
+    "representation_variants": [
+      "Expresiones puramente algebraicas simbólicas, como (x + 2)^3 o (2a - 3b)^3",
+      "Expresiones donde a y/o b son binomios o expresiones compuestas, como (x + (y + 1))^3",
+      "Situaciones numéricas en las que se usa el cubo de binomio para calcular potencias de números como (10 + 1)^3 o (5 - 2)^3 enfocadas en el desarrollo algebraico previo",
+      "Expresiones con parámetros, por ejemplo (x + k)^3, donde se pida identificar el coeficiente de un término dado",
+      "Representación escrita del patrón general del cubo de binomio, pidiendo completar espacios en blanco de coeficientes o exponentes",
+      "Comparación de dos desarrollos dados y selección del que corresponde al cubo de un binomio específico"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_parameters"
+    ],
+    "required_image_types": []
+  }
+}

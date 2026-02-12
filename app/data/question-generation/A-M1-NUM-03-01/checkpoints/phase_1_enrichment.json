@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Interpretar a^n, con n entero no negativo, como multiplicación reiterada de la base racional a (n veces).",
+        "Calcular el valor numérico de potencias con base entera y exponente entero no negativo.",
+        "Calcular el valor numérico de potencias con base fraccionaria (racional) y exponente entero no negativo.",
+        "Aplicar y reconocer la propiedad del exponente cero: a^0 = 1 para toda base racional distinta de 0.",
+        "Relacionar expresiones del tipo a·a·a·a con su forma en potencia a^n, para exponentes pequeños (principalmente 2 a 5).",
+        "Comparar potencias simples a partir de su valor numérico (por ejemplo, decidir cuál es mayor entre dos potencias sencillas)."
+      ],
+      "out_of_scope": [
+        "Exponentes enteros negativos (como a^(-1), a^(-2)), incluso con base racional.",
+        "Exponentes racionales o reales no enteros (como a^(1/2), a^(3/2)).",
+        "Uso sistemático de leyes de exponentes (producto de potencias, potencia de una potencia, potencia de un producto) más allá de multiplicación reiterada explícita.",
+        "Potencias con base 0 y exponentes no definidos (0^0, 0^(-1), etc.).",
+        "Problemas que requieran logaritmos o resolver ecuaciones del tipo a^n = b encontrando n en forma general.",
+        "Expresiones con más de una operación combinada que exijan prioridad de operaciones compleja (por ejemplo, con paréntesis anidados y varias operaciones ajenas a la potencia).",
+        "Contextos que requieran modelar funciones exponenciales en general (crecimiento/decadencia), aún si hay potencias, pues corresponden a otro eje/átomo."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de números naturales y enteros en sumas y multiplicaciones.",
+        "A-M1-NUM-01-02: Comprensión de la multiplicación como suma reiterada.",
+        "A-M1-NUM-02-01: Lectura y escritura de fracciones y decimales como números racionales.",
+        "A-M1-NUM-02-02: Operación básica con fracciones (producto de fracciones sencillas)."
+      ],
+      "common_traps": [
+        "Incluir exponentes negativos o racionales en ítems de este átomo.",
+        "Plantear ítems donde la respuesta correcta dependa de aplicar leyes generales de exponentes no presentadas (por ejemplo, (a^2)^3 = a^6) en lugar de multiplicación reiterada explícita.",
+        "Usar bases no racionales (números irracionales o expresiones algebraicas con incógnitas) que exceden el foco numérico del átomo.",
+        "Involucrar 0 como base en situaciones dudosas (0^0) o cercanas a casos no definidos.",
+        "Combinar demasiadas operaciones (fracciones complejas, paréntesis múltiples, sumas y restas adicionales) que desplacen el foco desde el concepto de potencia hacia algorítmica de cálculo general.",
+        "Diseñar ítems donde la dificultad provenga solo de aritmética de fracciones muy engorrosa y no del concepto de potencia."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Potencias con base entera positiva pequeña (2 a 9) y exponente entre 0 y 4, con cálculo directo (por ejemplo, 3^2, 5^3, 7^0).",
+        "Potencias con base fraccionaria muy simple (1/2, 1/3, 2/3, 3/4) y exponente 2 o 3, donde el cálculo se reduzca a multiplicar numeradores y denominadores pequeños.",
+        "Reconocer la forma en potencia de multiplicaciones reiteradas cortas con bases pequeñas (por ejemplo, 4·4·4 como 4^3) o el valor de a^0 para bases sencillas distintas de 0.",
+        "Ítems con un solo paso de cálculo y sin necesidad de simplificar fracciones de manera compleja."
+      ],
+      "medium": [
+        "Potencias con base entera o fraccionaria donde el resultado implique fracciones que requieran simplificación no inmediata (por ejemplo, (6/8)^2).",
+        "Comparación de dos potencias sencillas sin necesidad de calcular exactamente ambas, pero sí de razonar sobre la multiplicación reiterada (por ejemplo, decidir cuál es mayor entre (3/4)^2 y (2/3)^2).",
+        "Ítems que combinen interpretación y cálculo: primero reconocer la multiplicación reiterada o un contexto verbal como una potencia, y luego evaluarla.",
+        "Uso explícito y razonado del exponente cero en bases racionales menos obvias (por ejemplo, (5/7)^0, (3,25)^0), distinguiendo claramente que la base puede ser fraccionaria o decimal.",
+        "Problemas en contexto sencillo (por ejemplo, área, conteo básico) donde la potencia represente una situación de multiplicación reiterada, siempre con una sola potencia central al problema."
+      ],
+      "hard": [
+        "Comparar o ordenar tres o más potencias con bases racionales distintas (incluyendo fracciones y enteros) y exponentes pequeños, donde se pueda aprovechar comprensión conceptual (por ejemplo, que una fracción menor que 1 elevada a un exponente mayor da un número más pequeño).",
+        "Ítems que requieran transformar primero una expresión mixta en una potencia y luego calcular, con alguna fracción no trivial (por ejemplo, (3/5)·(3/5)·(3/5)·(3/5) → (3/5)^4 y su valor).",
+        "Problemas que involucren más de una potencia en un mismo contexto y que requieran comparar sus valores o combinarlos mediante una operación adicional sencilla (suma o resta) manteniendo el foco en interpretar/evaluar potencias.",
+        "Uso intencional de distractores que representen errores típicos (como elevar solo el numerador o interpretar a^0 como 0), lo que exige al estudiante discriminar cuidadosamente el concepto correcto.",
+        "Fracciones con numeradores y denominadores de dos dígitos donde el cálculo siga siendo razonable, pero exija planificar el orden del cálculo para evitar errores aritméticos, sin introducir técnicas fuera del nivel."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones donde no quede claro si el exponente afecta a toda la fracción o solo al numerador o denominador; siempre usar paréntesis claros, por ejemplo, (2/3)^2 en lugar de 2/3^2.",
+      "No usar 0 como base con exponentes dudosos (0^0, 0^(-1)); limitar la base 0 a exponentes positivos claramente definidos si se llega a usar.",
+      "No mezclar potencias con otras notaciones que también usan superíndices (por ejemplo, índices de notas al pie) en el mismo enunciado.",
+      "Evitar contextos verbales donde la repetición pueda interpretarse como suma en vez de producto; explicitar que se repite multiplicando.",
+      "No usar letras que tradicionalmente representan otras cosas en PAES (como n de número de elementos) si se escribe a^n solo para mostrar forma general; preferir ejemplos concretos numéricos.",
+      "Evitar bases que sean expresiones sin simplificar donde pueda haber duda si primero se simplifica la fracción o se eleva al exponente; si se requiere, explicitar el orden o diseñar para que el orden no altere el resultado.",
+      "No combinar notación decimal y fraccionaria en la misma base de forma confusa (por ejemplo, (0,5/2)^3); preferir o bien fracción o bien decimal simple."
+    ],
+    "error_families": [
+      {
+        "name": "Exponente como multiplicador y no como conteo de factores",
+        "description": "Interpretar a^n como a·n en vez de a multiplicado por sí mismo n veces (por ejemplo, 3^4 = 12). Este error muestra falta de comprensión de la potencia como multiplicación reiterada.",
+        "how_to_address": "Incluir ítems que pidan explicitar la multiplicación reiterada asociada a una potencia y viceversa, especialmente con exponentes pequeños, y contrastar opciones que representen suma, producto por n y multiplicación reiterada."
+      },
+      {
+        "name": "Exponente cero mal aplicado",
+        "description": "Asumir que a^0 = 0 o que solo ciertas bases cumplen a^0 = 1 (por ejemplo, creer que (2/3)^0 = 2/3).",
+        "how_to_address": "Diseñar preguntas donde todas las alternativas sean números posibles (1, 0, la base misma, o un recíproco) y que se centre en reconocer que cualquier base racional no nula elevada a 0 vale 1, explorando bases enteras, fraccionarias y decimales."
+      },
+      {
+        "name": "Elevar solo numerador o solo denominador",
+        "description": "Al calcular (a/b)^n, aplicar el exponente al numerador pero no al denominador, o viceversa (por ejemplo, (2/3)^2 = 4/3).",
+        "how_to_address": "Proponer ítems que comparen distintas expresiones candidatas al resultado correcto (4/9, 4/3, 2/9, 2/3) para que el estudiante deba identificar que tanto numerador como denominador se multiplican reiteradamente."
+      },
+      {
+        "name": "Confusión con fracciones menores y mayores que 1",
+        "description": "Pensar que elevar una fracción menor que 1 siempre la hace más grande, o que elevar una fracción mayor que 1 siempre la hace más pequeña.",
+        "how_to_address": "Incluir tareas de comparación de potencias de fracciones con base menor y mayor que 1, enfatizando la interpretación multiplicativa (por ejemplo, (1/2)^2 vs (3/2)^2) y usando números fáciles de comparar."
+      },
+      {
+        "name": "Errores aritméticos en el producto reiterado",
+        "description": "Cometer errores al multiplicar varias veces el mismo número, especialmente en fracciones (por ejemplo, (3/4)^3 = 9/16).",
+        "how_to_address": "Mantener el número de factores razonable (exponentes bajos) y usar opciones que distingan entre errores típicos (multiplicar numeradores, pero no denominadores, olvidar un factor, etc.), para que la corrección dependa tanto de concepto como de cálculo cuidado."
+      },
+      {
+        "name": "Desatención al alcance del exponente en expresiones con paréntesis",
+        "description": "No considerar que el exponente afecta a todo lo que está dentro del paréntesis, o pensar que solo eleva un componente (por ejemplo, interpretar (2/3)^2 como 2/(3^2)).",
+        "how_to_address": "Diseñar ítems donde la presencia o ausencia de paréntesis cambie el resultado, y que pidan elegir o justificar la notación correcta asociada a la multiplicación reiterada dada."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y uso de leyes de exponentes con enteros (producto de potencias, cociente de potencias, potencia de una potencia, potencia de un producto).",
+      "Manejo de potencias con exponentes enteros negativos y su interpretación como recíprocos.",
+      "Estudio de potencias con exponentes racionales (raíces y radicales) y su relación con la radicación.",
+      "Modelación y análisis de funciones exponenciales en contextos de crecimiento y decrecimiento.",
+      "Simplificación de expresiones algebraicas con potencias, incluyendo polinomios con coeficientes racionales.",
+      "Resolución de ecuaciones y desigualdades exponenciales sencillas.",
+      "Trabajo con notación científica y órdenes de magnitud usando potencias de 10."
+    ],
+    "representation_variants": [
+      "Notación simbólica directa de potencias (a^n) con bases racionales enteras y fraccionarias.",
+      "Multiplicación reiterada escrita explícitamente (a·a·a·...·a) y su equivalencia con la notación de potencia.",
+      "Expresiones en lenguaje natural que describen multiplicación reiterada (por ejemplo, 'multiplicar tres veces por 1/2') y su traducción a una potencia.",
+      "Tablas pequeñas que relacionen base, exponente y resultado (por ejemplo, valor de n^2 o (1/2)^n para algunos n enteros no negativos).",
+      "Contextos verbales simples (áreas de cuadrados o rectángulos con lados fraccionarios iguales, duplicaciones o mitades sucesivas) que se modelan naturalmente con potencias.",
+      "Uso ocasional de representaciones mixtas fracción–decimal (por ejemplo, relacionar (1/2)^2 con 0,25) para reforzar la interpretación numérica de resultados."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "simple_unit_fractions",
+      "simple_non_unit_fractions",
+      "terminating_decimals",
+      "mixed_numbers_simple"
+    ],
+    "required_image_types": []
+  }
+}

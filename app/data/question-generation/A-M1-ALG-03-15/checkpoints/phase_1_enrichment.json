@@ -1,0 +1,142 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas de contexto real que se modelan con UNA sola inecuación lineal en una variable real.",
+        "Traducción de condiciones del enunciado a expresiones simbólicas del tipo ax + b ≥ c, ax + b > c, etc.",
+        "Resolución algebraica de inecuaciones lineales simples y con paréntesis (sin fracciones demasiado complejas).",
+        "Interpretación del conjunto solución según el contexto: usar solo valores que tengan sentido (enteros, positivos, rangos acotados).",
+        "Contextos habituales: ganancias/pérdidas (ingresos > costos), notas mínimas, cupos máximos, presupuestos, tiempos mínimos o máximos.",
+        "Verificación de la respuesta en el contexto (comprobación rápida con uno o más valores permitidos)."
+      ],
+      "out_of_scope": [
+        "Sistemas de inecuaciones (más de una inecuación a la vez).",
+        "Inecuaciones cuadráticas, racionales o con valor absoluto.",
+        "Interpretación o lectura de la solución en la recta numérica como representación principal.",
+        "Problemas que requieran optimización avanzada (máximos/mínimos) o funciones no lineales.",
+        "Cálculo de probabilidades, promedios ponderados u otros elementos estadísticos como foco principal.",
+        "Uso de modelos con más de una variable (programación lineal explícita, modelos bidimensionales)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-02: Manejo de expresiones algebraicas simples (suma, resta, multiplicación por constantes, uso de paréntesis).",
+        "A-M1-ALG-02-10: Resolución de ecuaciones lineales en una variable.",
+        "A-M1-ALG-03-10: Comprensión de la recta numérica y del orden en los números reales.",
+        "A-M1-ALG-03-12: Resolución de inecuaciones lineales simples en forma puramente algebraica (sin contexto).",
+        "A-M1-NUM-01-05: Manejo básico de fracciones, decimales y porcentajes."
+      ],
+      "common_traps": [
+        "Plantear una ecuación en vez de una inecuación cuando el contexto habla de ‘al menos’, ‘a lo más’, ‘más que’, ‘no superar’, etc.",
+        "Elegir el sentido incorrecto de la desigualdad (usar ‘>’ cuando el contexto exige ‘≥’, o viceversa).",
+        "Olvidar cambiar el sentido de la inecuación al multiplicar o dividir por un número negativo.",
+        "No restringir a números enteros cuando el contexto lo exige (personas, autos, cursos, pasajes).",
+        "Aceptar valores negativos o no realistas en el contexto (cantidad de objetos, notas, precios, tiempos negativos).",
+        "Confundir costo fijo con costo variable o interpretar mal ‘ganancia’ como ingreso en vez de ingreso − costo.",
+        "Resolver bien la inecuación, pero dar como respuesta solo un valor particular en vez de todo el intervalo pedido.",
+        "Interpretar mal expresiones verbales como ‘más de’, ‘al menos’, ‘a lo más’, ‘como mínimo’, ‘como máximo’."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciado corto con un único contexto cotidiano simple (ej.: compra/venta, notas, entradas) y una sola restricción principal.",
+        "Lenguaje directo, con conectores de desigualdad explícitos (‘al menos’, ‘a lo más’, ‘más que’), sin negaciones ni dobles condiciones.",
+        "Coeﬁcientes pequeños e íntegros (entre −10 y 10) y sin fracciones en la inecuación resultante.",
+        "Inecuación del tipo ax + b ≥ c, con x en un solo término y sin necesidad de cambiar el sentido de la desigualdad.",
+        "La interpretación contextual se limita a reconocer si la solución es ‘mayor o igual que’ o ‘menor o igual que’, sin restricciones adicionales (por ejemplo, no es necesario forzar enteros)."
+      ],
+      "medium": [
+        "Enunciado con dos o más datos que deben combinarse para construir la inecuación (por ejemplo, costo fijo + costo variable, o varias notas con ponderaciones simples).",
+        "Lenguaje ligeramente más elaborado, que puede incluir expresiones como ‘no menos que’, ‘no superar’, ‘al menos lo mismo que el año pasado’.",
+        "Presencia de paréntesis o necesidad de distribuir: a(bx + c) en la inecuación, o reordenamiento de términos en ambos lados.",
+        "Necesidad de interpretar correctamente ‘>’ vs ‘≥’ y luego ajustar la respuesta al contexto (por ejemplo, pasar de x > 7,3 a ‘8 o más personas’).",
+        "Incorporar una restricción adicional simple (por ejemplo, ‘x ≥ 0 porque se trata de una cantidad de productos’), que obliga a evaluar la validez de la solución matemática en el contexto."
+      ],
+      "hard": [
+        "Contexto más rico con varias condiciones, donde solo UNA se traduce en la inecuación principal y las otras funcionan como acotaciones o verificaciones.",
+        "Lenguaje con expresiones sutiles (‘como máximo’, ‘a lo más’, ‘no menos de’, ‘al menos tanto como’, ‘estrictamente mayor que’), o con doble negación que exige atención.",
+        "Inecuaciones que requieren varios pasos algebraicos, incluyendo manejo de fracciones simples o cambio de signo que obliga a invertir la desigualdad.",
+        "Necesidad de articular solución algebraica con más de una restricción contextual (por ejemplo, x > 4,5 y x ≤ 30, y además x entero), seleccionando la respuesta que refleje adecuadamente el rango permitido.",
+        "Problemas donde la variable representa una magnitud derivada (por ejemplo, ‘número de viajes’, ‘cantidad de paquetes de 6 unidades’) y se debe interpretar la solución considerando redondeos hacia arriba o hacia abajo según convenga.",
+        "Situaciones en que se debe verificar la solución probando uno o dos valores del conjunto solución para descartar alternativas distractoras aparentemente coherentes."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones de desigualdad vagas como ‘basta con’, ‘es suficiente que’ sin acompañarlas de términos como ‘al menos’, ‘a lo más’, etc.",
+      "Evitar enunciados con doble negación del tipo ‘no menos de que no supere’, que puedan interpretarse de formas distintas.",
+      "No mencionar simultáneamente expresiones verbales contradictorias (‘más de’ y ‘al menos’) referidas a la misma cantidad.",
+      "Especificar siempre qué representa la variable (por ejemplo, ‘Sea x el número de entradas vendidas’), evitando que el/la estudiante tenga que adivinar si x es dinero, cantidad de objetos, número de veces, etc.",
+      "Cuando se requieran números enteros o naturales, declarar explícitamente esa condición en el enunciado o en la formulación de la pregunta.",
+      "Evitar contextos con unidades mezcladas si no se indica con claridad cómo convertir (por ejemplo, horas y minutos) o cuál unidad debe usarse para la variable.",
+      "No plantear situaciones en que la inecuación admita dos interpretaciones razonables distintas (por ejemplo, considerar impuesto incluido o excluido) sin precisar qué se debe suponer.",
+      "Si se usan expresiones como ‘por lo menos’ y ‘al menos’, mantenerlas coherentes con el símbolo ≥ y no mezclarlas con opciones de respuesta que puedan sugerir un límite estricto.",
+      "No ocultar información clave sobre cotas naturales de la variable (por ejemplo, que las notas están entre 1,0 y 7,0) cuando dicha cota es necesaria para determinar la respuesta correcta."
+    ],
+    "error_families": [
+      {
+        "name": "Ecuación_en_vez_de_inecuación",
+        "description": "El/la estudiante modela la situación usando una ecuación (con ‘=’) en lugar de una inecuación, perdiendo la idea de ‘al menos’, ‘a lo más’ o ‘más que’.",
+        "how_to_address": "Enfatizar la lectura fina del lenguaje natural (‘al menos’, ‘más de’) y asociar cada expresión verbal con un símbolo de desigualdad. Proponer ejercicios de clasificación donde se decida si corresponde ‘=’, ‘>’, ‘≥’, etc., antes de resolver."
+      },
+      {
+        "name": "Sentido_incorrecto_de_la_desigualdad",
+        "description": "La inecuación se plantea con el símbolo opuesto (por ejemplo, x ≤ 10 cuando el contexto exige x ≥ 10), o se invierte mal al pasar términos.",
+        "how_to_address": "Trabajar con tablas donde se comparen enunciados verbales y el símbolo correcto. Destacar que ‘al menos’ incluye el valor (≥) y ‘más de’ lo excluye (>). Practicar traducción inversa: dado el símbolo, escribir un enunciado verbal coherente."
+      },
+      {
+        "name": "Olvido_inversion_signo",
+        "description": "Al multiplicar o dividir por un número negativo, se mantiene el sentido original de la desigualdad, produciendo un intervalo solución invertido.",
+        "how_to_address": "Reforzar con ejemplos concretos en recta numérica y mostrar por qué al multiplicar por −1 se invierte el orden. Hacer énfasis en este paso como ‘paso de alerta’ en las guías, pidiendo que lo marquen explícitamente."
+      },
+      {
+        "name": "Ignorar_restricciones_contextuales",
+        "description": "Se acepta el conjunto solución algebraico completo sin considerar que la variable representa cantidades que deben ser positivas, enteras, o estar acotadas (por ejemplo, notas entre 1,0 y 7,0).",
+        "how_to_address": "Incorporar siempre una etapa explícita de ‘chequeo contextual’ posterior a la resolución. Proponer problemas donde la solución algebraica incluya valores imposibles, y pedir directamente que se identifiquen y descarten."
+      },
+      {
+        "name": "No_ajustar_a_enteros",
+        "description": "Cuando el contexto exige enteros (personas, entradas, cajas), el/la estudiante entrega como respuesta un intervalo en reales o un número decimal sin ajustar (por ejemplo, x > 4,5 sin concluir que x ≥ 5).",
+        "how_to_address": "Hacer énfasis en la naturaleza discreta de la variable en distintos contextos. Trabajar con redondeos adecuados (si se requiere ‘al menos’, se redondea hacia arriba; si se requiere ‘a lo más’, hacia abajo) y justificar por qué."
+      },
+      {
+        "name": "Mala_interpretacion_de_ganancia",
+        "description": "Se confunde ‘ganancia’ con ‘ingreso’ y se plantea la inecuación comparando mal las expresiones (por ejemplo, ingreso ≥ 0 en vez de ingreso − costo ≥ 0).",
+        "how_to_address": "Reforzar el significado económico básico: ganancia = ingreso − costo. Proponer tablas donde se comparen estas tres magnitudes y se complete la fórmula correcta en distintos contextos (ventas, producción, servicios)."
+      },
+      {
+        "name": "Seleccionar_un_solo_valor_en_lugar_del_conjunto",
+        "description": "Luego de resolver la inecuación, el/la estudiante elige una respuesta que corresponde a un único valor (o a un ejemplo particular) y no al rango completo pedido.",
+        "how_to_address": "Trabajar la idea de ‘todos los valores que cumplen’ mostrando ejemplos y contraejemplos. Usar preguntas donde se deba determinar si ciertos valores pertenecen o no al conjunto solución antes de elegir la expresión de intervalo."
+      },
+      {
+        "name": "Confusion_en_lenguaje_verbal_de_cotas",
+        "description": "Se confunden expresiones como ‘a lo más’, ‘como máximo’, ‘no más de’ con ‘al menos’ o ‘como mínimo’, llevando a invertir el rol de mayor/menor.",
+        "how_to_address": "Hacer listas de expresiones verbales agrupadas por tipo (≥, ≤, >, <) y practicar su uso en mini-situaciones. Incluir contrastes directos: ‘a lo más 10’ versus ‘al menos 10’, pidiendo reescritura y explicación."
+      }
+    ],
+    "future_targets": [
+      "Modelación y resolución de sistemas de inecuaciones lineales en una y dos variables (programación lineal básica).",
+      "Interpretación gráfica de inecuaciones y sistemas de inecuaciones en la recta numérica y en el plano cartesiano.",
+      "Análisis de funciones lineales en contexto (ingresos, costos, puntos de equilibrio) y comparación de modelos.",
+      "Resolución de inecuaciones cuadráticas y racionales en contextos más complejos.",
+      "Razonamiento algebraico avanzado en optimización discreta (por ejemplo, maximizar/minimizar bajo restricciones enteras).",
+      "Lectura crítica de información cuantitativa en contextos reales (ofertas, planes de pago, tarifas escalonadas)."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales donde toda la información numérica está en texto y tablas simples.",
+      "Modelos simbólicos parciales entregados en el enunciado (por ejemplo, costo total = 5000 + 2000x) y el/la estudiante debe completar la inecuación con la condición contextual.",
+      "Uso de tablas numéricas que muestren diferentes valores de la variable y el resultado asociado (ingreso, costo, puntaje), para inferir o verificar la inecuación.",
+      "Presentación de alternativas de respuesta expresadas como desigualdades, intervalos o descripciones verbales del conjunto solución.",
+      "Situaciones con líneas de tiempo sencillas (por ejemplo, cantidad de horas o días) donde la desigualdad corresponde a un límite de tiempo mínimo o máximo indicado en texto.",
+      "Contextos con unidades explícitas (pesos chilenos, número de objetos, horas, notas) que obligan a interpretar restricciones naturales de la variable."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "decimals_simple",
+      "fractions_simple",
+      "contextual_money",
+      "percentages_simple"
+    ],
+    "required_image_types": []
+  }
+}

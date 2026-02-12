@@ -9,6 +9,7 @@ import {
   CheckCircle2,
   XCircle,
   AlertTriangle,
+  Trash2,
 } from "lucide-react";
 import {
   estimatePipelineCost,
@@ -32,7 +33,6 @@ const PARAM_LABELS: Record<string, string> = {
   atom_id: "Atom",
   phase: "Phase",
   test_id: "Test",
-  pool_size: "Pool Size",
   dry_run: "Dry Run",
   variants_per_question: "Variants / Question",
 };
@@ -217,6 +217,13 @@ export function GeneratePipelineModal({
                 params={params}
                 paramLabels={paramLabels}
               />
+
+              {/* Stale artifact cleanup warning */}
+              {estimate.stale_artifacts?.has_stale_data && (
+                <StaleArtifactsWarning
+                  artifacts={estimate.stale_artifacts}
+                />
+              )}
 
               <div className="p-4 bg-background border border-border rounded-lg">
                 <div className="flex items-center gap-2 mb-3">
@@ -431,6 +438,62 @@ function ParamsSummary({
           );
         })}
       </div>
+    </div>
+  );
+}
+
+
+// ---------------------------------------------------------------------------
+// Stale artifacts cleanup warning
+// ---------------------------------------------------------------------------
+
+/** Human-readable labels for checkpoint filenames. */
+function formatCheckpoint(filename: string): string {
+  return filename
+    .replace("phase_", "")
+    .replace(".json", "")
+    .replace(/_/g, " ");
+}
+
+function StaleArtifactsWarning({
+  artifacts,
+}: {
+  artifacts: NonNullable<CostEstimate["stale_artifacts"]>;
+}) {
+  const lines: string[] = [];
+
+  if (artifacts.checkpoint_files.length > 0) {
+    const names = artifacts.checkpoint_files
+      .map(formatCheckpoint)
+      .join(", ");
+    lines.push(
+      `${artifacts.checkpoint_files.length} checkpoint(s): ${names}`,
+    );
+  }
+  if (artifacts.item_count > 0) {
+    lines.push(
+      `${artifacts.item_count} generated question file(s)`,
+    );
+  }
+  if (artifacts.has_report) {
+    lines.push("Pipeline report");
+  }
+
+  if (lines.length === 0) return null;
+
+  return (
+    <div className="p-4 bg-error/10 border border-error/20 rounded-lg">
+      <div className="flex items-center gap-2 mb-2">
+        <Trash2 className="w-4 h-4 text-error flex-shrink-0" />
+        <h3 className="text-sm font-medium text-error">
+          Previous data will be deleted
+        </h3>
+      </div>
+      <ul className="text-sm text-error/80 space-y-1 ml-6 list-disc">
+        {lines.map((line) => (
+          <li key={line}>{line}</li>
+        ))}
+      </ul>
     </div>
   );
 }

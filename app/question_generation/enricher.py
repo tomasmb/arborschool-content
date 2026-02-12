@@ -20,6 +20,7 @@ from app.question_generation.models import (
     PhaseResult,
 )
 from app.question_generation.image_types import (
+    ALL_SPECS,
     NOT_IMAGES_DESCRIPTION,
     build_image_type_catalog,
     filter_valid_types,
@@ -152,11 +153,17 @@ class AtomEnricher:
             eje=ctx.eje,
             tipo_atomico=ctx.tipo_atomico,
             criterios_atomicos=", ".join(ctx.criterios_atomicos),
-            ejemplos_conceptuales=", ".join(ctx.ejemplos_conceptuales),
-            notas_alcance=", ".join(ctx.notas_alcance) or "N/A",
+            ejemplos_conceptuales=", ".join(
+                ctx.ejemplos_conceptuales,
+            ),
+            notas_alcance=(
+                ", ".join(ctx.notas_alcance) or "N/A"
+            ),
             standard_ids=", ".join(ctx.standard_ids),
             exemplars_section=build_exemplars_section(exemplars),
-            image_type_catalog=build_image_type_catalog(),
+            image_type_catalog=build_image_type_catalog(
+                ALL_SPECS, group_by_generatability=True,
+            ),
             not_images_description=NOT_IMAGES_DESCRIPTION,
         )
 

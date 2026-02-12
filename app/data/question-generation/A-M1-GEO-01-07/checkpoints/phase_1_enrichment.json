@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del área de triángulos usando exclusivamente A = (b·h)/2.",
+        "Identificación de una base y su altura correspondiente (perpendicular) en triángulos rectángulos, isósceles, equiláteros o escalenos.",
+        "Problemas directos donde se entrega base y altura, o donde deben leerse desde una figura.",
+        "Situaciones contextualizadas sencillas que se modelan como triángulos para calcular área.",
+        "Lectura de medidas de la figura (lados, alturas dadas, segmentos marcados) para usarlas en la fórmula."
+      ],
+      "out_of_scope": [
+        "Uso de la fórmula de Herón u otras fórmulas de área de triángulos basadas en lados y ángulos.",
+        "Cálculo de áreas de figuras compuestas que requieran sumar/restar áreas de varias figuras (más allá de identificar un único triángulo).",
+        "Demostraciones teóricas de la fórmula del área del triángulo.",
+        "Uso de razones trigonométricas (A = (ab·sen θ)/2) para calcular área.",
+        "Cálculo de perímetros o longitudes de lados como objetivo principal.",
+        "Cálculo de áreas de polígonos no triangulares o de cuerpos 3D."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-01-02",
+        "A-M1-GEO-01-01",
+        "A-M1-GEO-01-02"
+      ],
+      "common_traps": [
+        "Tomar como altura un lado que no es perpendicular a la base indicada.",
+        "Usar dos lados cualesquiera del triángulo como base y altura sin verificar perpendicularidad.",
+        "Olvidar dividir por 2 al aplicar la fórmula del área.",
+        "Confundir área con perímetro y sumar lados en vez de multiplicar base por altura.",
+        "Elegir una base para la cual la altura correspondiente no está dada (o no puede inferirse) y usar una medida incorrecta como altura.",
+        "Leer una medida de la figura que no corresponde al triángulo pedido (otro segmento, altura exterior, etc.).",
+        "Interpretar mal las unidades (por ejemplo, dar el resultado en metros en vez de m²)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Triángulo con base y altura explícitamente dadas en el enunciado numérico, sin necesidad de interpretar una figura.",
+        "Triángulo rectángulo donde los catetos se identifican directamente como base y altura, con números enteros pequeños (por ejemplo, menores o iguales a 20).",
+        "Figura simple donde la base y la altura están claramente etiquetadas y son perpendiculares, sin información extra irrelevante.",
+        "Cálculo directo que requiere solo una multiplicación sencilla y una división entre 2 sin fracciones."
+      ],
+      "medium": [
+        "Triángulo dibujado donde se debe seleccionar correctamente qué lado usar como base, y reconocer cuál de los segmentos marcados es la altura perpendicular correspondiente.",
+        "Presencia de información numérica adicional en la figura (otros lados o segmentos) que no se usa para el cálculo del área.",
+        "Uso de números que generan resultados con decimales simples o fracciones básicas (por ejemplo, base impar y altura par).",
+        "Contextos verbales donde el estudiante debe traducir la situación a un triángulo y extraer base y altura a partir de la descripción o de un esquema sencillo."
+      ],
+      "hard": [
+        "Triángulo no rectángulo donde la altura está exterior al triángulo o como un segmento trazado desde un vértice a la prolongación de la base, requiriendo buena interpretación gráfica.",
+        "Figuras en las que se debe inferir la medida de la altura o de la base a partir de otra información dada (por ejemplo, leer una altura indicada con tramo descompuesto en dos segmentos sumables).",
+        "Uso de fracciones o decimales menos amigables, que generen áreas no enteras, requiriendo varias operaciones intermedias.",
+        "Situaciones de contexto donde el triángulo está implícito (por ejemplo, pendiente de un techo, bandera triangular, terreno triangular) y el estudiante debe identificar correctamente qué dimensiones corresponden a base y altura, ignorando datos distractores.",
+        "Ítems que exigen comparar áreas de dos triángulos diferentes dados base y altura (o sus relaciones) usando la fórmula de manera conceptual, no solo numérica directa."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No dibujar alturas que no sean claramente perpendiculares a la base (marcar siempre el ángulo recto entre base y altura).",
+      "No omitir el símbolo de perpendicularidad cuando se representa una altura en la figura.",
+      "Evitar que haya más de un segmento que parezca la altura posible sin etiquetarlo claramente; si hay varios, nombrarlos y especificar el segmento que corresponde a la altura.",
+      "No mezclar en la misma figura varios triángulos superpuestos sin dejar claramente señalado (por letras o sombreado) de cuál triángulo se pide el área.",
+      "Evitar que la base indicada en el texto no coincida con el lado destacado o etiquetado como base en la figura.",
+      "No usar escalas engañosas donde el lado gráfico que parece más largo no corresponde a la medida mayor indicada numéricamente, salvo que esto se explicite claramente.",
+      "Evitar contextos en los que las medidas dadas no sean lineales (por ejemplo, entregar directamente un área como si fuese una longitud para usarla como base o altura).",
+      "No formular preguntas donde existan varias combinaciones de base y altura posibles (todas correctas) pero las alternativas solo contemplen una de ellas.",
+      "Evitar pedir al mismo tiempo área y otras magnitudes (perímetro, longitud de un lado desconocido) si eso genera cadenas de cálculo demasiado largas que mezclan otros contenidos no cubiertos por el átomo."
+    ],
+    "error_families": [
+      {
+        "name": "Olvido_del_factor_1_2",
+        "description": "El estudiante aplica A = b·h y no divide por 2, obteniendo un área exactamente el doble de la correcta.",
+        "how_to_address": "Incluir alternativas distractoras con el valor b·h para evidenciar el error y diseñar ítems que expliciten en el enunciado la idea de 'mitad del rectángulo correspondiente' para reforzar el factor 1/2."
+      },
+      {
+        "name": "Altura_no_perpendicular",
+        "description": "Se elige como altura un lado o segmento inclinado que no es perpendicular a la base seleccionada.",
+        "how_to_address": "Usar figuras donde se marquen con claridad los ángulos rectos entre base y altura, y proponer ítems de identificación de la altura correcta antes de calcular el área."
+      },
+      {
+        "name": "Base_y_altura_incompatibles",
+        "description": "El estudiante combina una base con una altura que corresponde a otro lado diferente o a otro triángulo de la misma figura.",
+        "how_to_address": "Diseñar ítems en que una misma figura tenga varias alturas posibles, pidiendo explícitamente el área respecto de una base indicada, para obligar a emparejar coherentemente base y altura."
+      },
+      {
+        "name": "Confusion_area_perimetro",
+        "description": "En lugar de usar la fórmula del área, el estudiante suma los lados del triángulo o multiplica varias medidas sin sentido geométrico.",
+        "how_to_address": "Plantear preguntas que contrasten área y perímetro del mismo triángulo, haciendo que el estudiante elija qué expresión representa el área y cuál el perímetro."
+      },
+      {
+        "name": "Mala_lectura_de_la_figura",
+        "description": "El estudiante interpreta mal las etiquetas o segmentaciones: usa solo una parte de una longitud compuesta, o suma segmentos que ya representan una medida total.",
+        "how_to_address": "Incluir figuras con segmentos descompuestos y señalar explícitamente cuáles longitudes deben sumarse o tomarse completas, además de dejar bien claras las letras de los puntos extremos."
+      },
+      {
+        "name": "Errores_de_calculo_numerico",
+        "description": "El estudiante identifica bien base y altura, pero se equivoca en multiplicaciones, divisiones o manejo de fracciones y decimales.",
+        "how_to_address": "Controlar la complejidad numérica de los ítems y, en algunos casos, centrar el distractor en errores típicos (por ejemplo, dividir solo una de las medidas por 2 en vez del producto)."
+      },
+      {
+        "name": "Ignorar_unidades_o_unidades_cuadradas",
+        "description": "Entrega el resultado sin unidades o con unidades lineales (m en lugar de m²), o interpreta mal cambios de unidades en el enunciado.",
+        "how_to_address": "Formular ítems donde al menos una alternativa incorrecta tenga el valor numérico correcto con unidades erróneas, y enfatizar en el enunciado la unidad de medida del resultado requerido."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de áreas de polígonos compuestos que se descomponen en triángulos.",
+      "Aplicación del teorema de Pitágoras para encontrar una altura faltante y luego calcular el área.",
+      "Cálculo de áreas de figuras en el plano cartesiano utilizando coordenadas de vértices de triángulos.",
+      "Cálculo de volumen y área lateral de pirámides y prismas usando áreas de bases triangulares.",
+      "Uso de razones trigonométricas para obtener la altura a partir de lados y ángulos en triángulos oblicuángulos.",
+      "Análisis de semejanza de triángulos para comparar áreas a partir de razones de semejanza.",
+      "Resolución de problemas de optimización geométrica simples que implican maximizar o minimizar áreas de triángulos en contextos variados."
+    ],
+    "representation_variants": [
+      "Triángulo aislado con vértices etiquetados y medidas de lados o alturas indicadas con segmentos y marcas de ángulo recto.",
+      "Triángulo dentro de una figura mayor (por ejemplo, un rectángulo dividido por diagonales), donde el triángulo está sombreado o destacado.",
+      "Descripción verbal de una situación cotidiana que se modela como triángulo (pendientes, techos, banderas, terrenos).",
+      "Esquemas con rejilla cuadriculada donde se puede inferir visualmente base y altura contando unidades de cuadrícula.",
+      "Triángulos rectángulos con catetos paralelos a los ejes cartesianos, apoyados en la interpretación geométrica sencilla.",
+      "Figuras con alturas trazadas desde un vértice a la base o a su prolongación, mostrando alturas interiores y exteriores."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "two_digit_integers",
+      "simple_decimals",
+      "fractions",
+      "mixed_numbers"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

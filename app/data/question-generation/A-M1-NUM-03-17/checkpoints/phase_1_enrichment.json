@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Modelar situaciones de crecimiento o decrecimiento usando potencias con exponente entero o racional sencillo (por ejemplo, duplicar, triplicar, crecimiento proporcional al cuadrado del tiempo).",
+        "Modelar relaciones geométricas básicas donde aparezcan áreas o volúmenes mediante potencias (por ejemplo, área de un cuadrado en función del lado, volumen de un cubo en función del lado).",
+        "Modelar la magnitud lineal (lado, radio, arista) a partir de un área o volumen dados usando raíces cuadradas o cúbicas.",
+        "Elegir entre un modelo de potencia o de raíz cuando el contexto entrega claramente qué variable depende de cuál (por ejemplo, si se conoce el volumen y se busca el lado, usar raíz cúbica).",
+        "Interpretar el significado contextual de la base y del exponente en modelos de potencias o raíces (por ejemplo, factor de crecimiento por periodo, número de dimensiones involucradas).",
+        "Usar modelos entregados explícitamente o construir modelos simples a partir de descripciones claras (por ejemplo, 'el área de la sombra es proporcional al cuadrado de la distancia').",
+        "Evaluar el modelo para responder preguntas numéricas o comparativas (por ejemplo, cuánto crece el área al duplicar el lado)."
+      ],
+      "out_of_scope": [
+        "Ajuste de datos experimentales para encontrar el mejor modelo de potencia o raíz (regresión, mínimos cuadrados).",
+        "Uso de logaritmos, cambios de base o linealización de modelos de potencia.",
+        "Modelado con funciones exponenciales del tipo a^x (crecimiento porcentual) que no se describan como potencias de una variable real (x^n).",
+        "Funciones con exponentes irracionales complicados o notación avanzada (por ejemplo, x^π, x^√2).",
+        "Demostraciones teóricas sobre por qué una situación se modela con cierta potencia (por ejemplo, demostración general de que el área escala con el cuadrado del factor de escala).",
+        "Cálculo de áreas o volúmenes de figuras complejas que requieran varios pasos geométricos avanzados.",
+        "Uso de raíces de orden mayor a 3 en contextos no triviales (más allá de referencias muy simples)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión y uso de números enteros y decimales en contextos cotidianos.",
+        "A-M1-NUM-02-05: Cálculo y significado de potencias con exponente natural y entero simple (incluyendo cuadrados y cubos).",
+        "A-M1-NUM-02-06: Interpretación y cálculo de raíces cuadradas y cúbicas simples (incluyendo uso aproximado de raíz cuadrada).",
+        "A-M1-NUM-02-08: Evaluación de expresiones numéricas con potencias y raíces usando orden de operaciones.",
+        "A-M1-GEO-01-03: Cálculo y comprensión de área de cuadrados y rectángulos y volumen de cubos y paralelepípedos simples."
+      ],
+      "common_traps": [
+        "Confundir modelos de potencia con modelos lineales, por ejemplo, suponer que el área crece linealmente con el lado en lugar de cuadráticamente.",
+        "Elegir un modelo de raíz cuando se debe usar potencia, o viceversa, por no identificar correctamente qué variable depende de cuál.",
+        "Interpretar mal el exponente como número de periodos de tiempo en vez de como potencia de la variable (por ejemplo, en relaciones geométricas).",
+        "Olvidar que al relacionar áreas o volúmenes con longitudes, el exponente indica la dimensión (2 para área, 3 para volumen).",
+        "Cometer errores de cálculo al evaluar la potencia o la raíz, y no de modelación (confundir 3^2 con 2^3, o √(a+b) con √a + √b).",
+        "No distinguir entre un factor de escala en la variable y su efecto en la magnitud modelada (por ejemplo, creer que al duplicar el lado de un cuadrado el área también solo se duplica).",
+        "Interpretar el modelo fuera del rango de sentido del contexto (por ejemplo, aceptar resultados negativos o no realistas para longitudes o cantidades físicas)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "El modelo de potencia o raíz está explícitamente dado en el enunciado y solo se requiere identificar qué representa cada variable y parámetro en el contexto.",
+        "La elección del modelo es directa y con pistas textuales claras (palabras como 'área de un cuadrado', 'volumen de un cubo', 'lado del cuadrado a partir del área').",
+        "Los exponentes son 2 o 3, y las raíces son cuadradas o cúbicas de números perfectos (por ejemplo, 4, 9, 16, 27, 64).",
+        "El ítem solo exige una evaluación simple del modelo en un valor dado, con un único paso de cálculo y sin necesidad de comparar distintas situaciones.",
+        "Las unidades son consistentes y no es necesario convertirlas ni razonar sobre ellas para responder."
+      ],
+      "medium": [
+        "Se debe elegir el modelo entre dos o tres expresiones posibles (por ejemplo, decidir entre A = 4l, A = l^2 o A = √l según el contexto descrito).",
+        "Los exponentes pueden ser fracciones sencillas relacionadas con raíces (1/2, 1/3) y se debe reconocer la equivalencia entre raíz y potencia fraccionaria.",
+        "Se requiere interpretar cómo cambia la magnitud modelada al modificar la variable (por ejemplo, al duplicar o triplicar el valor de entrada) sin cálculo exhaustivo.",
+        "Los valores involucrados incluyen algunos números no perfectos que requieren aproximación razonable de una raíz o cálculo estimado.",
+        "El ítem puede involucrar dos pasos: primero construir o seleccionar el modelo, luego evaluarlo o compararlo con otro resultado."
+      ],
+      "hard": [
+        "Se presentan varios posibles modelos de potencia o raíz, de los cuales solo uno representa correctamente la relación contextual, y las diferencias entre ellos no son evidentes (por ejemplo, variable dependiente e independiente intercambiadas, exponente distinto).",
+        "Es necesario razonar sobre el efecto de cambios en la variable usando propiedades de las potencias (por ejemplo, si el radio se triplica, describir el efecto exacto sobre el área o el volumen usando potencias).",
+        "Los exponentes pueden ser racionales que representen raíces en contextos menos directos (por ejemplo, relacionar tiempo con distancia cuando esta depende del cuadrado del tiempo).",
+        "Se requiere comparar dos modelos distintos de potencia o de raíz para decidir cuál se ajusta mejor al comportamiento descrito en el texto (crece más rápido, crece más lento, comportamiento ante ciertos cambios).",
+        "Los números implican cálculos no triviales (raíces aproximadas, potencias de números de dos dígitos) donde la clave del ítem es el modelo correcto y la interpretación, más que la aritmética.",
+        "El contexto incluye restricciones implícitas (dominios positivos, rangos físicos posibles) que se deben considerar para descartar modelos inadecuados."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar descripciones vagas del contexto donde no quede claro cuál es la variable independiente y cuál es la variable dependiente.",
+      "No usar términos como 'aumenta al cuadrado' o 'crece exponencialmente' de manera coloquial; si se usa 'al cuadrado' debe referirse explícitamente a una potencia de 2 sobre una variable bien definida.",
+      "No mezclar en el mismo ítem varios tipos de modelos (lineales, proporcionales simples, exponenciales, potencias) sin indicar que solo se considerarán modelos de potencia o raíz; esto puede generar dudas sobre el tipo de modelo esperado.",
+      "Evitar datos o historias donde el comportamiento real no sea aproximadamente de potencia o raíz (por ejemplo, situaciones claramente lineales) porque puede inducir a modelos alternativos plausibles.",
+      "No usar notación ambigua como letras sin especificar qué representa cada una en el contexto (por ejemplo, usar 'a' como área y como lado en el mismo ítem).",
+      "Evitar unidades implícitas o inconsistentes; siempre indicar claramente qué se mide (por ejemplo, 'lado en metros', 'área en m²') cuando esto sea relevante para interpretar la potencia.",
+      "No plantear situaciones donde varias relaciones de potencia sean razonables sin entregar un dato o pista que permita distinguir la correcta (por ejemplo, relaciones escalares sin referencia a área o volumen).",
+      "Evitar estructuras de enunciado donde la variable que aparece elevada al exponente parezca intercambiable con la que no lo está (por ejemplo, 'el tiempo según la distancia' versus 'la distancia según el tiempo')."
+    ],
+    "error_families": [
+      {
+        "name": "Modelo_lineal_en_lugar_de_potencia",
+        "description": "El estudiante elige o construye un modelo lineal (por ejemplo, A = k·l) para relaciones que deben modelarse con potencias (como áreas y volúmenes), asumiendo que la magnitud crece en proporción directa a la variable y no a su potencia.",
+        "how_to_address": "Incluir ítems que expliciten cambios en la variable (por ejemplo, duplicar el lado) y pidan comparar factores de cambio en la magnitud resultante, para hacer visible la diferencia entre crecimiento lineal y cuadrático/cúbico."
+      },
+      {
+        "name": "Intercambio_variable_dependiente_e_independiente",
+        "description": "El estudiante confunde qué variable depende de cuál, usando por ejemplo A^2 = l en vez de A = l^2, o define el lado en función del área con una potencia en lugar de una raíz.",
+        "how_to_address": "Diseñar preguntas donde se deba interpretar frases como 'área en función del lado' versus 'lado en función del área', pidiendo escoger expresiones entre opciones que muestren estos errores frecuentes."
+      },
+      {
+        "name": "Uso_incorrecto_de_raices",
+        "description": "El estudiante usa raíz cuando debe usar potencia, o al revés, al modelar relaciones de área o volumen, o bien aplica mal la raíz (por ejemplo, lado = A/2 en lugar de lado = √A).",
+        "how_to_address": "Proponer ítems que comparen varias fórmulas candidatas para pasar de área/volumen a lado, incluyendo opciones con divisiones y potencias equivocadas, y pedir justificar o elegir la que mantiene la coherencia dimensional."
+      },
+      {
+        "name": "Mala_interpretacion_del_exponente",
+        "description": "El estudiante desconoce o aplica mal el significado del exponente en el contexto: no reconoce que 2 representa área (bidimensional), 3 volumen (tridimensional), o interpreta el exponente como 'número de veces que aumenta' en vez de potencia.",
+        "how_to_address": "Plantear preguntas cualitativas donde se pida explicar o elegir la interpretación correcta del exponente (por ejemplo, qué significa el 2 en A = k·t^2 en ese contexto), más allá del cálculo numérico."
+      },
+      {
+        "name": "Errores_de_calculo_en_potencias_y_raices",
+        "description": "El modelo elegido es correcto, pero al evaluar la potencia o la raíz se cometen errores aritméticos (por ejemplo, pensar que (2l)^2 = 2l^2, o que √(a + b) = √a + √b).",
+        "how_to_address": "Incluir alternativas de respuesta que reflejen estos errores típicos para poder diagnosticarlos, y equilibrar algunos ítems centrados en el modelo con números sencillos que separen dificultad de modelación y de cálculo."
+      },
+      {
+        "name": "Ignorar_dominios_y_unidades",
+        "description": "El estudiante acepta resultados que no tienen sentido físico (longitudes negativas, raíces de números negativos en contextos de medidas) o no advierte incoherencias de unidades al interpretar el modelo.",
+        "how_to_address": "Diseñar ítems donde una de las alternativas provenga de aplicar mecánicamente la fórmula sin considerar el contexto, y que sea descartable al razonar sobre sentido físico y unidades."
+      }
+    ],
+    "future_targets": [
+      "Construcción e interpretación de modelos funcionales más complejos, incluyendo funciones polinomiales de mayor grado y funciones racionales.",
+      "Comprensión de escalamiento y semejanza en geometría, especialmente el efecto de factores de escala sobre áreas y volúmenes.",
+      "Trabajo con funciones exponenciales y logarítmicas, incluyendo interpretación de parámetros de crecimiento/decrecimiento.",
+      "Uso de transformaciones algebraicas y logaritmos para linealizar modelos de potencia y ajustar datos (regresión de potencia).",
+      "Modelación matemática en ciencias (física, biología) donde magnitudes se relacionan mediante potencias (por ejemplo, leyes de escala, intensidad de fenómenos físicos).",
+      "Razonamiento sobre tasas de cambio y preparación conceptual para el estudio del cálculo (derivada como tasa de cambio en modelos de potencia).",
+      "Análisis comparativo de diferentes tipos de modelos (lineales, de potencia, exponenciales) para decidir cuál describe mejor un fenómeno dado."
+    ],
+    "representation_variants": [
+      "Expresión algebraica explícita del modelo (por ejemplo, A = k·l^2, V = a^3, l = √A).",
+      "Descripción verbal del modelo en lenguaje natural (por ejemplo, 'el área es proporcional al cuadrado del lado', 'el diámetro se obtiene sacando la raíz cuadrada del área').",
+      "Tablas de valores que reflejen una relación de potencia o raíz entre dos magnitudes, donde se espera reconocer el patrón.",
+      "Comparación entre varias expresiones algebraicas candidatas, presentadas en lista, para elegir la que se ajusta al contexto.",
+      "Uso de variables nombradas con sentido contextual (por ejemplo, t para tiempo, A para área, V para volumen, r para radio) que deban ser interpretadas correctamente.",
+      "Situaciones con enunciados breves y datos numéricos concretos que exigen extraer el modelo (por ejemplo, si al duplicar el lado, el área se cuadruplica, ¿qué modelo es correcto?)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "perfect_squares_cubes",
+      "simple_decimals",
+      "fractions",
+      "radicals_simple",
+      "proportionality_constants_simple"
+    ],
+    "required_image_types": []
+  }
+}

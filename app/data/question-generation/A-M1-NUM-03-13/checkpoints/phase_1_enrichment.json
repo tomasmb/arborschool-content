@@ -1,0 +1,111 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Simplificar expresiones con una sola raíz anidada directamente dentro de otra, del tipo √[n](√[m](a)) o potencias equivalentes.",
+        "Identificar los índices de ambas raíces y multiplicarlos para obtener un único índice: √[n](√[m](a)) = √[n·m](a).",
+        "Aplicar la propiedad tanto con números como con expresiones algebraicas simples (una variable o producto sencillo).",
+        "Usar la propiedad en sentido directo (simplificar raíz de una raíz) y, si es necesario, en sentido inverso para verificar equivalencias."
+      ],
+      "out_of_scope": [
+        "Raíces anidadas en más de dos niveles (por ejemplo, √[a](√[b](√[c](x)))) como caso central; solo podrían aparecer si el alumno las simplifica paso a paso de dos en dos.",
+        "Combinación simultánea con racionalización de denominadores, factorización avanzada o ecuaciones con raíces como foco principal.",
+        "Raíces con índices fraccionarios o irracionales; solo índices naturales mayores o iguales a 2.",
+        "Contextos que requieran interpretación gráfica, geométrica o estadística de las raíces.",
+        "Potencias y radicales con exponentes negativos o notación científica como foco del ítem."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Comprensión de la notación de raíz n-ésima y su relación con potencias.",
+        "A-M1-NUM-03-02: Identificación del índice y del radicando en una raíz.",
+        "A-M1-NUM-03-05: Manejo básico de potencias con exponentes racionales del tipo a^(p/q).",
+        "A-M1-NUM-02-01: Operaciones básicas con números enteros y fracciones (si aparecen dentro del radicando)."
+      ],
+      "common_traps": [
+        "Sumar en lugar de multiplicar los índices: interpretar √[n](√[m](a)) como √[n+m](a).",
+        "Multiplicar el radicando por el índice o entre radicandos cuando no corresponde (por ejemplo, confundir √[3](√[2](9)) con √[6](18)).",
+        "Olvidar el índice 2 en la raíz cuadrada y tratarla como si no tuviera índice en el producto de índices.",
+        "Confundir la propiedad de raíz de una raíz con la de producto dentro de una raíz (√[n](a·b)) o con la de potencia de una raíz.",
+        "Tratar expresiones algebraicas bajo la raíz como si fueran números positivos sin considerar el dominio, generando igualdades que solo son válidas bajo ciertas condiciones (en PAES se asume usualmente radicandos no negativos cuando se trabaja con raíces pares, pero es importante no mezclar con valor absoluto)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Expresiones con números enteros positivos pequeños como radicandos (ej: 4, 9, 16, 64) y dos raíces con índices pequeños (2, 3, 4).",
+        "Estructura explícita y simple: una única raíz dentro de otra, sin operaciones adicionales (+, −, ×, ÷) entre radicales.",
+        "Índices dados en forma numérica clara, sin letras ni fracciones.",
+        "Ítems donde el estudiante solo debe reconocer la estructura y multiplicar índices, sin requerir además simplificar completamente el valor numérico del radicando."
+      ],
+      "medium": [
+        "Radicandos numéricos que permiten simplificación posterior (por ejemplo, √[3](√[2](64)) → √[6](64) → 2).",
+        "Presencia de variables sencillas, por ejemplo √[3](√[2](x)), √[4](√[3](a^2)), asumiendo variables positivas.",
+        "Expresiones con más de un radical en la misma alternativa, pero cada uno con una sola anidación (comparar o elegir la forma equivalente correcta).",
+        "Ítems donde se pide transformar de notación con raíces a notación con exponentes racionales y viceversa para llegar a la expresión simplificada."
+      ],
+      "hard": [
+        "Expresiones con tres raíces anidadas, donde el alumno debe aplicar la propiedad en dos pasos (por ejemplo, √[2](√[3](√[4](x))) → trabajar de dos en dos).",
+        "Radicandos que incluyen productos de constantes y variables (por ejemplo, √[3](√[2](9x^2))).",
+        "Combinación ligera con otras propiedades de potencias o raíces, siempre manteniendo como foco el producto de índices (por ejemplo, comparar si dos expresiones con diferentes secuencias de radicales representan la misma potencia).",
+        "Ítems donde la clave correcta exige distinguir correctamente el índice 2 implícito en la raíz cuadrada y manejar índices relativamente mayores (por ejemplo, 5, 6, 8) sin que los cálculos numéricos sean engorrosos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar variables sin aclarar implícitamente que se trabaja en el contexto de números reales y radicandos no negativos para raíces de índice par; evitar situaciones donde sea necesario introducir valor absoluto para que la igualdad sea rigurosa.",
+      "Evitar expresiones donde la misma letra represente tanto índice de raíz como exponente de potencia, generando confusión notacional.",
+      "No mezclar en el mismo ítem varios tipos de transformación de radicales (raíz de una raíz, producto de radicales, racionalización) si no es claro cuál es el foco; limitar el paso clave a multiplicar índices.",
+      "No usar índices fraccionarios escritos como raíces de raíces (por ejemplo, presentar a^(1/6) como √[a](√[b](x)) sin que los índices a y b sean naturales pequeños y claros).",
+      "Evitar igualdades que solo son ciertas bajo condiciones especiales (por ejemplo, x ≥ 0) sin que esas condiciones estén garantizadas por el contexto del ítem.",
+      "No escribir raíces cuadradas sin el radical cubriendo visualmente todo el radicando, para que no quede duda de qué parte está bajo la raíz.",
+      "Evitar combinaciones donde raíz de raíz y potencias negativas aparezcan simultáneamente, ya que esto introduce confusiones de nivel más avanzado que el foco del átomo."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_de_indices_en_lugar_de_producto",
+        "description": "El estudiante identifica correctamente ambos índices de las raíces anidadas, pero los suma en lugar de multiplicarlos, obteniendo √[n+m](a) en vez de √[n·m](a).",
+        "how_to_address": "Reforzar la conexión con exponentes racionales: √[n](√[m](a)) = (a^(1/m))^(1/n) = a^(1/(m·n)). Trabajar con ejemplos numéricos simples donde la suma de índices produzca resultados claramente incorrectos para que el alumno vea el error."
+      },
+      {
+        "name": "Olvido_del_indice_2_en_raiz_cuadrada",
+        "description": "El estudiante no considera el índice 2 implícito en la raíz cuadrada, tratándola como si el índice fuera 1 o dejándola fuera del producto de índices.",
+        "how_to_address": "Hacer explícito el índice en la escritura (por ejemplo, √x = √[2](x)) en ejercicios guiados. Practicar varios ejemplos donde una de las raíces tenga índice 2 y las otras no, insistiendo en que siempre se multiplica 2 por el otro índice."
+      },
+      {
+        "name": "Alteracion_del_radicando",
+        "description": "El estudiante modifica incorrectamente el radicando al combinar las raíces, ya sea multiplicando radicandos entre sí o multiplicando el radicando por uno de los índices.",
+        "how_to_address": "Separar visualmente el rol del índice (afuera, pequeño) y del radicando (adentro, grande). Proponer ejercicios donde solo cambian los índices manteniendo el mismo radicando, para que el foco esté en qué se transforma y qué permanece igual."
+      },
+      {
+        "name": "Confusion_con_propiedades_de_producto_o_potencia",
+        "description": "Se mezcla la propiedad de raíz de una raíz con propiedades como √[n](a·b) = √[n](a)·√[n](b) o (√[n](a))^k = √[n](a^k), aplicando pasos que no corresponden.",
+        "how_to_address": "Trabajar cuadros comparativos de propiedades, identificando en qué situación se aplica cada una y usando colores o marcas distintas. Proponer contraejemplos donde aplicar la propiedad equivocada lleve a resultados evidentemente falsos."
+      },
+      {
+        "name": "Manejo_inseguro_de_variables_bajo_raices",
+        "description": "Con variables bajo la raíz, el estudiante duda si puede aplicar la propiedad o teme que el resultado sea incorrecto por temas de signos, y termina no simplificando o simplificando a una forma más complicada.",
+        "how_to_address": "Aclarar que en el nivel PAES se trabaja usualmente con variables representando números reales que hacen válida la expresión (radicando no negativo en raíces pares). Empezar con ejemplos puramente numéricos y luego reemplazar el número por una variable, mostrando que la regla se mantiene formalmente igual."
+      }
+    ],
+    "future_targets": [
+      "Simplificación de expresiones radicales más complejas con varios radicales en una misma expresión.",
+      "Uso sistemático de exponentes racionales para transformar raíces anidadas en potencias y viceversa.",
+      "Resolución de ecuaciones que incluyen radicales, donde simplificar raíz de una raíz reduce el grado de complejidad.",
+      "Estudio de funciones radicales (por ejemplo, f(x) = √[n](x)) y su composición, donde la idea de aplicar exponentes fraccionarios sucesivos es clave.",
+      "Racionalización de denominadores que contengan raíces compuestas, donde conviene primero combinar los índices.",
+      "Manipulación algebraica en contextos de logaritmos y potencias, donde la equivalencia a^(1/(mn)) se usa para descomponer o recomponer exponentes."
+    ],
+    "representation_variants": [
+      "Notación radical clásica: √[n](√[m](a)) con índices explícitos.",
+      "Notación con exponente fraccionario: (a^(1/m))^(1/n) y su reducción a a^(1/(m·n)).",
+      "Comparación de expresiones equivalentes presentadas en diferentes formas (por ejemplo, √[6](x), √[2](√[3](x)), √[3](√[2](x))).",
+      "Expresiones mixtas donde una parte está en notación radical y otra en notación de potencia, requiriendo traducción para identificar equivalencia.",
+      "Uso de paréntesis para expresar claramente el alcance de cada exponente cuando se trabaja con la forma de potencias."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "perfect_powers",
+      "fractions",
+      "simple_algebraic_expressions"
+    ],
+    "required_image_types": []
+  }
+}

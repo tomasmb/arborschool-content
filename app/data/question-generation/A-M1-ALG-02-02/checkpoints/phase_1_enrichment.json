@@ -1,0 +1,116 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de la constante de proporcionalidad directa k como cociente y/x a partir de pares ordenados o tablas de valores.",
+        "Verificación de que una relación es de proporcionalidad directa comprobando que y/x es constante para distintos pares de datos.",
+        "Interpretación contextual de k como razón unitaria (precio por unidad, litros por minuto, kilómetros por hora, etc.).",
+        "Uso de k para describir verbalmente la relación entre dos magnitudes directamente proporcionales (\"por cada\", \"cada uno cuesta\", \"en promedio recorre\")."
+      ],
+      "out_of_scope": [
+        "Determinación de k en relaciones de proporcionalidad inversa u otras relaciones no lineales.",
+        "Uso de la ecuación y = kx para resolver ecuaciones más complejas (por ejemplo, sistemas de ecuaciones).",
+        "Trabajo con funciones lineales generales del tipo y = mx + b con término independiente distinto de cero.",
+        "Uso de representaciones gráficas avanzadas (pendiente en gráficos continuos, interpretación de intersecciones, asíntotas).",
+        "Porcentajes, aumentos o descuentos que no se presenten explícitamente como relación de proporcionalidad directa entre dos variables.",
+        "Razones y proporciones que involucren más de dos magnitudes al mismo tiempo (tres o más variables)."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Manejo de operaciones básicas con números naturales y enteros (especialmente división).",
+        "A-M1-ARI-01-02: Comprensión de razón y cociente como comparación entre dos cantidades.",
+        "A-M1-ALG-01-01: Lectura e interpretación básica de tablas de dos columnas (correspondencia entre variables)."
+      ],
+      "common_traps": [
+        "Interpretar k como x/y en lugar de y/x, invirtiendo el significado contextual (por ejemplo, calcular unidades por peso en vez de precio por unidad).",
+        "Calcular k usando un solo par de valores sin verificar que el cociente se mantiene constante con otros pares dados.",
+        "Suponer proporcionalidad directa solo porque las magnitudes aumentan juntas, sin revisar la constancia del cociente.",
+        "Incluir relaciones donde una de las variables es cero de manera confusa (por ejemplo, 0/0 o dividir por 0).",
+        "Usar contextos donde la relación cambia en distintos tramos (tarifas con cobro fijo más monto por unidad), que no corresponden a proporcionalidad directa pura.",
+        "Confundir k con el valor total de una magnitud en un caso particular (por ejemplo, tomar el costo total de 5 unidades como si fuera el precio unitario)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Tablas o descripciones donde se entregan explícitamente un par de valores (x, y) de una relación claramente directa y solo se pide calcular k = y/x con números naturales pequeños.",
+        "Contextos muy cotidianos y lineales (precio por unidad, cantidad fija por paquete) donde la interpretación de k es casi inmediata y se refuerza con la redacción del enunciado.",
+        "Verificaciones de proporcionalidad directa con dos pares de datos sencillos donde los cocientes son enteros pequeños y se puede detectar rápidamente que son iguales."
+      ],
+      "medium": [
+        "Tablas con varios pares (3 o más) donde el estudiante debe calcular varios cocientes y decidir si corresponde a una proporcionalidad directa, identificando k cuando procede.",
+        "Contextos donde la unidad de k no es tan evidente a primera vista (por ejemplo, litros por hora a partir de una tabla de horas y litros consumidos).",
+        "Uso de números decimales simples o fracciones poco complejas en y y x, que requieren cuidar el cálculo de la división para hallar k.",
+        "Ítems donde se debe comparar dos situaciones con distintos valores de k e interpretar qué significa que una sea mayor que la otra (por ejemplo, comparar velocidades constantes)."
+      ],
+      "hard": [
+        "Situaciones donde algunos pares de datos no siguen la proporcionalidad directa (datos ruidosos o un valor intencionalmente incorrecto) y el estudiante debe detectar la inconsistencia al revisar la constancia del cociente.",
+        "Contextos donde k tiene un significado menos directo y requiere un paso de interpretación adicional (por ejemplo, k como \"número de estudiantes por curso\" y decidir cuál curso es más numeroso a partir de diferentes combinaciones).",
+        "Uso de fracciones y decimales más complejos, incluyendo razones no enteras (por ejemplo, 1,5; 2,75; 3/5), donde el cálculo de y/x y la comparación de cocientes demanda mayor precisión.",
+        "Ítems donde se da k implícitamente en el texto y el estudiante debe inferirlo desde la descripción verbal antes de utilizarlo para verificar o completar una tabla de valores proporcional.",
+        "Preguntas que exigen discriminar entre proporcionalidad directa y otras relaciones aditivas (por ejemplo, costo fijo más costo por unidad) analizando la variación de y/x."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar contextos mixtos donde coexistan tramos con costo fijo y tramos proporcionales sin explicitar claramente cuál parte corresponde a proporcionalidad directa.",
+      "No usar ejemplos donde una de las cantidades pueda interpretarse razonablemente como variable independiente o dependiente indistintamente, a menos que se indique explícitamente qué representa x y qué representa y.",
+      "Evitar tablas donde aparezca el par (0, 0) sin aclarar que este dato no sirve para calcular k, para no inducir divisiones por cero o confusión con la definición de k.",
+      "No utilizar términos vagos como \"aumenta de forma parecida\" o \"relación estable\"; en cambio, mencionar explícitamente que se trata de \"proporcionalidad directa\" cuando sea relevante.",
+      "Evitar unidades poco realistas o mezcladas (por ejemplo, mezclar minutos y horas en la misma columna sin especificar la conversión) que puedan confundir el significado de k.",
+      "No formular ítems donde la misma letra k represente cosas distintas dentro del mismo problema (por ejemplo, constante de proporcionalidad y otra constante cualquiera)."
+    ],
+    "error_families": [
+      {
+        "name": "Inversión_de_la_razón",
+        "description": "El estudiante calcula k como x/y en lugar de y/x, obteniendo una razón unitaria invertida (por ejemplo, unidades por peso en vez de precio por unidad), lo que lleva a interpretaciones erróneas.",
+        "how_to_address": "Introducir preguntas que contrasten explícitamente \"precio por unidad\" con \"unidades por peso\", pidiendo identificar cuál razón corresponde al contexto. Incluir tablas etiquetando claramente columnas como variable independiente (x) y dependiente (y) y enfatizar que k se calcula como y/x."
+      },
+      {
+        "name": "Uso_de_un_solo_par_sin_verificación",
+        "description": "El estudiante asume que la relación es directa y calcula k usando un solo par de valores, sin revisar si el cociente se mantiene constante con otros pares proporcionados.",
+        "how_to_address": "Proponer ítems donde un par de datos sea inconsistente, de modo que solo revisando todos los cocientes se detecte el error. Pedir explícitamente comparar los cocientes entre varios pares para decidir si hay proporcionalidad directa antes de aceptar un valor de k."
+      },
+      {
+        "name": "Confusión_con_relaciones_aditivas",
+        "description": "Se confunde proporcionalidad directa con situaciones que tienen un costo fijo más un costo por unidad u otras relaciones lineales no proporcionales, interpretando erróneamente el costo por unidad como k en todo el rango.",
+        "how_to_address": "Diseñar contextos que contrasten claramente una relación proporcional (pasa por el origen) con una relación con término fijo, pidiendo identificar en cuál caso existe una única constante de proporcionalidad k. Destacar ejemplos donde y/x cambia al considerar distintos pares, mostrando que entonces no hay k constante."
+      },
+      {
+        "name": "Manejo_deficiente_de_fracciones_y_decimales",
+        "description": "Errores en el cálculo de y/x cuando involucra fracciones o decimales, lo que lleva a valores de k numéricamente incorrectos aunque el razonamiento sobre proporcionalidad sea adecuado.",
+        "how_to_address": "Incluir ítems graduados que usen primero razones enteras y luego incorporen fracciones y decimales sencillos, reforzando estrategias de cálculo (simplificar antes de dividir, convertir fracciones a decimales cuando convenga) y comparaciones de cocientes equivalentes (por ejemplo, 1/2 = 2/4)."
+      },
+      {
+        "name": "Interpretación_contextual_inadecuada",
+        "description": "El estudiante puede calcular k numéricamente pero no interpreta correctamente su significado en el contexto (por ejemplo, no identifica unidades, o confunde \"por unidad de tiempo\" con \"por unidad de distancia\").",
+        "how_to_address": "Plantear preguntas que pidan seleccionar la interpretación verbal correcta de un valor de k dado (por ejemplo, \"significa que recorre 80 km por cada hora\"), y exigir en los ítems la distinción explícita de las unidades asociadas a x e y (\"km por hora\", \"litros por minuto\")."
+      },
+      {
+        "name": "Uso_inadecuado_de_ceros",
+        "description": "Problemas al trabajar con x = 0 o y = 0: intentos de calcular k con división por cero, o asumir que cualquier relación que incluya el par (0, 0) es automáticamente proporcional sin verificar otros pares.",
+        "how_to_address": "Diseñar ítems donde se muestre explícitamente que no se puede calcular k cuando x = 0 y que se requiere otro par con x distinto de cero. Incluir preguntas que muestren que pasar por el origen es condición necesaria pero no suficiente para asegurar proporcionalidad si hay otros datos inconsistentes."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-02-03: Modelación de situaciones de proporcionalidad directa mediante ecuaciones del tipo y = kx.",
+      "A-M1-ALG-02-04: Interpretación de la pendiente de la recta en el plano cartesiano como constante de proporcionalidad en funciones lineales que pasan por el origen.",
+      "A-M1-ALG-03-01: Resolución de problemas mediante funciones lineales, comparando diferentes pendientes (k) entre situaciones.",
+      "A-M1-EST-01-02: Cálculo e interpretación de tasas y razones en contextos estadísticos (tasa de crecimiento, densidades).",
+      "A-M1-MOD-01-01: Construcción y análisis de modelos matemáticos simples que emplean constantes de proporcionalidad para hacer predicciones."
+    ],
+    "representation_variants": [
+      "Tablas de valores discretos con dos columnas claramente rotuladas (x e y) para calcular y/x y verificar que es constante.",
+      "Pares ordenados presentados en forma de lista, en contexto verbal (por ejemplo, (tiempo, distancia), (cantidad, costo)).",
+      "Descripciones puramente verbales de la relación, donde se indique cómo cambia y al variar x (\"por cada 3 kilos se pagan 6000 pesos\").",
+      "Expresiones simbólicas simples del tipo y = kx donde se pida identificar k a partir de una situación dada o al completar valores faltantes en la ecuación.",
+      "Contextos mixtos donde se da una tabla incompleta y se espera que el estudiante halle k y luego complete los valores faltantes usando la relación y = kx."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "unit_rates",
+      "simple_decimals",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

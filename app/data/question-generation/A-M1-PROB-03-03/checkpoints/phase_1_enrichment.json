@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de Q1, Q2 y Q3 en listas de datos no agrupados, con cantidad de datos pequeña o moderada (aprox. hasta 25–30 datos).",
+        "Ordenar los datos de menor a mayor como paso explícito antes de calcular cuartiles.",
+        "Uso de fórmulas o reglas básicas de posición para cuartiles en datos discretos (por ejemplo, posiciones tipo (n+1)/4, (n+1)/2, 3(n+1)/4 u otras equivalentes aceptadas escolarmente).",
+        "Determinación del valor del cuartil ya sea tomando directamente el dato en la posición o promediando dos datos consecutivos cuando corresponde según la convención.",
+        "Casos con número de datos par e impar, explicitando el tratamiento de la mediana y los cuartiles.",
+        "Contextualización sencilla (por ejemplo, puntajes, edades, tiempos) siempre que el foco sea el procedimiento de cálculo de cuartiles."
+      ],
+      "out_of_scope": [
+        "Cálculo de cuartiles a partir de tablas de frecuencias o datos agrupados en intervalos.",
+        "Interpretación o construcción de diagramas de caja y bigotes (boxplot).",
+        "Uso de programas o calculadoras estadísticas especializadas para obtener cuartiles.",
+        "Cuartiles en distribuciones continuas modeladas (por ejemplo, distribución normal).",
+        "Cálculo de otros percentiles o cuartiles mediante interpolaciones avanzadas no usadas en el currículo escolar.",
+        "Análisis profundo de la dispersión o comparación de distribuciones usando cuartiles (eso pertenece a interpretación, no al procedimiento puro)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Ordenar números enteros y racionales de menor a mayor.",
+        "A-M1-PROB-03-01: Identificar y calcular la mediana en datos no agrupados.",
+        "A-M1-PROB-03-02: Comprender la idea de particionar un conjunto de datos en partes iguales (mitades, cuartos) de acuerdo con la posición.",
+        "A-M1-ALG-01-01: Operar con fracciones y promediar dos números racionales."
+      ],
+      "common_traps": [
+        "Olvidar ordenar los datos antes de buscar los cuartiles y trabajar directamente con el orden dado.",
+        "Confundir posición con valor: tomar el número de la posición calculada como si fuera el cuartil, sin ir a buscar el dato en esa posición.",
+        "Aplicar fórmulas de posición sin considerar si el resultado es entero o no, y no decidir correctamente entre tomar un dato o promediar dos datos contiguos.",
+        "Tratar Q1 y Q3 como “promedio del 25% menor” o “promedio del 25% mayor” en vez de como puntos de corte basados en orden y posición.",
+        "Inconsistencia en el manejo de los datos al calcular Q1 y Q3: incluir o excluir el dato de la mediana de forma diferente para cada cuartil sin que el enunciado autorice alguna convención específica.",
+        "Usar fórmulas de cuartiles de datos agrupados (por ejemplo, con frecuencias acumuladas o intervalos) en listas simples de datos.",
+        "Errores de conteo en la numeración de posiciones, especialmente cuando se trabaja con muchos datos o con índices fraccionarios."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Listas de datos pequeñas (entre 5 y 9 datos) con todos los valores enteros positivos de una o dos cifras.",
+        "Situaciones donde solo se pide un cuartil específico, típicamente la mediana (Q2) o Q1, y la posición resulta entera sin necesidad de promediar.",
+        "Procedimiento guiado o parcialmente sugerido en el enunciado (por ejemplo, ya indica que los datos deben ordenarse o que la mediana divide el conjunto en dos mitades).",
+        "Sin necesidad de resolver ambigüedades de convención: el método de cálculo se deduce claramente del ejemplo o del propio enunciado."
+      ],
+      "medium": [
+        "Listas de tamaño moderado (entre 10 y 20 datos), con mezcla de enteros y posiblemente algunos decimales sencillos o fracciones simples.",
+        "Cálculo de los tres cuartiles Q1, Q2 y Q3 en una misma lista, obligando a el o la estudiante a manejar correctamente posiciones para n par e impar.",
+        "Casos en que al menos uno de los cuartiles requiere promediar dos datos contiguos por posición no entera.",
+        "Contextos verbales donde el estudiante debe extraer correctamente la lista de datos del enunciado (por ejemplo, puntajes de un grupo reducido) antes de calcular.",
+        "Requiere tomar una decisión coherente sobre si incluir o no la mediana en los subconjuntos para Q1 y Q3 cuando n es impar, pero el método está sugerido (por ejemplo, con ejemplo previo)."
+      ],
+      "hard": [
+        "Listas relativamente largas para la PAES (alrededor de 20 a 30 datos), que exigen cuidado en el conteo y en el ordenamiento.",
+        "Datos con mayor variedad numérica: combinación de enteros, decimales, y/o fracciones simples que pueden exigir promedios no triviales al obtener cuartiles.",
+        "Ítems que comparan cuartiles de dos listas distintas o piden razonar sobre el efecto en un cuartil al agregar o quitar datos específicos (siempre en listas no agrupadas).",
+        "Situaciones donde el enunciado no explicita la convención de cálculo y el estudiante debe aplicar un método escolar estándar de forma consistente, sin inducir ambigüedad en la corrección.",
+        "Problemas en que se da parcial información sobre la lista y un cuartil, y se pide determinar un dato desconocido sabiendo que Q1, Q2 o Q3 tiene cierto valor, requiriendo trabajo inverso con posiciones.",
+        "Requiere distinguir explícitamente entre distintas fórmulas de posición posibles y seleccionar la que mantiene coherencia interna en el ejercicio."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar distintas definiciones escolares de posición de cuartiles en el mismo ítem; si se requiere una fórmula específica, enunciarla claramente.",
+      "Evitar contextos donde se puedan interpretar los datos como agrupados (por ejemplo, rangos de edades) cuando el átomo es solo de datos no agrupados.",
+      "No usar la palabra “promedio” para referirse a cuartiles; especificar que el cuartil es el dato en cierta posición o el promedio de dos datos contiguos si corresponde.",
+      "Evitar listas muy largas donde un error mínimo de conteo haga irreconocible cuál alternativa es correcta; mantener tamaños manejables para la precisión esperada.",
+      "No dejar ambiguo si se incluye o excluye la mediana al formar los subconjuntos inferiores y superiores cuando se trabaja con un número impar de datos; si la tarea depende de esa decisión, explicitar la convención.",
+      "No presentar datos resumidos en tablas de frecuencia ni en gráficos (por ejemplo, histogramas o diagramas de caja) cuando la habilidad a evaluar es el cálculo directo desde una lista.",
+      "Evitar notaciones de posición confusas (por ejemplo, usar `Q1 = 1/4(n+1)` sin paréntesis claros) que puedan interpretarse de más de una manera.",
+      "No mezclar el cálculo de cuartiles con inferencias estadísticas complejas (por ejemplo, conclusiones sobre población o probabilidad) que desplacen el foco de la habilidad procedimental."
+    ],
+    "error_families": [
+      {
+        "name": "No_ordenar_datos",
+        "description": "El o la estudiante calcula las posiciones de los cuartiles, pero las aplica sobre la lista original sin ordenar, obteniendo valores incorrectos aunque la aritmética de conteo sea correcta.",
+        "how_to_address": "Incluir en los ítems pasos intermedios que permitan detectar si el estudiante ordenó los datos (por ejemplo, alternativas con valores que coinciden con posiciones de la lista sin ordenar) y diseñar retroalimentación que enfatice que ordenar es un paso obligatorio antes de cualquier cálculo de cuartiles."
+      },
+      {
+        "name": "Confundir_posicion_y_valor",
+        "description": "Se interpreta erróneamente el resultado de la fórmula de posición como el cuartil mismo (por ejemplo, decir que Q1 = 3 porque la posición es 3, independientemente del valor del tercer dato).",
+        "how_to_address": "Formular preguntas que distingan explícitamente entre ‘número de orden’ y ‘dato en esa posición’, y usar ejemplos en la retroalimentación donde la posición y el valor del dato sean claramente diferentes."
+      },
+      {
+        "name": "Manejo_incorrecto_de_posiciones_no_enteras",
+        "description": "Cuando el cálculo de la posición de un cuartil da un número fraccionario, el estudiante redondea sin criterio o toma directamente la parte entera, en vez de promediar los datos vecinos según la convención.",
+        "how_to_address": "Diseñar ítems donde al menos un cuartil requiera explícitamente el promedio de dos datos contiguos, y en la retroalimentación explicar con un ejemplo sencillo cómo se identifican esas dos posiciones y por qué se promedian."
+      },
+      {
+        "name": "Tratamiento_inconsistente_de_la_mediana",
+        "description": "Para n impar, el o la estudiante incluye la mediana en el grupo inferior o superior al calcular Q1 y Q3, o la trata de manera distinta para cada cuartil, generando resultados incoherentes.",
+        "how_to_address": "Proponer ejercicios donde se pida mostrar explícitamente los subconjuntos ‘inferior’ y ‘superior’ a partir de la mediana, reforzando (en retroalimentación o materiales de apoyo) una convención clara y consistente, y evitando ítems donde diferentes convenciones lleven a alternativas válidas distintas."
+      },
+      {
+        "name": "Errores_de_conteo",
+        "description": "Al contar las posiciones desde el dato más pequeño hasta el más grande, el estudiante se ‘salta’ un dato o cuenta dos veces, desplazando las posiciones de cuartiles.",
+        "how_to_address": "Usar listas de tamaño moderado y bien espaciadas visualmente en el enunciado; en la retroalimentación se pueden mostrar las posiciones numeradas sobre la lista ordenada para modelar el conteo correcto."
+      },
+      {
+        "name": "Promedio_aritmetico_mal_calculado",
+        "description": "Cuando el cuartil exige promediar dos datos contiguos, el estudiante comete errores al sumar o dividir por 2, especialmente con fracciones o decimales.",
+        "how_to_address": "En ítems de práctica, incluir alternativas que evidencien errores de suma o división típicos y reforzar, en comentarios, el cálculo correcto del promedio de dos números, con especial atención a fracciones y decimales simples."
+      },
+      {
+        "name": "Aplicar_metodos_de_datos_agrupados",
+        "description": "Uso indebido de fórmulas o razonamientos propios de datos agrupados (frecuencias acumuladas, límites de clase) en listas simples.",
+        "how_to_address": "Mantener en los enunciados el formato de ‘lista de datos’ sin tablas de frecuencia y, en retroalimentaciones, diferenciar claramente entre ‘datos listados uno a uno’ y ‘datos agrupados en intervalos’ y cuándo se usa cada método."
+      }
+    ],
+    "future_targets": [
+      "A-M1-PROB-03-04: Interpretar y construir diagramas de caja y bigotes (boxplot) a partir de cuartiles y datos no agrupados.",
+      "A-M1-PROB-03-05: Comparar distribuciones usando medidas de posición (cuartiles, mediana) y de dispersión (rango intercuartílico).",
+      "A-M1-PROB-03-06: Analizar la presencia de valores atípicos usando cuartiles y rango intercuartílico.",
+      "A-M1-PROB-03-07: Calcular cuartiles y percentiles en datos agrupados (tablas de frecuencia).",
+      "A-M1-PROB-03-08: Tomar decisiones o formular conclusiones simples basadas en cuartiles y otras medidas de resumen en contextos de datos reales.",
+      "A-M1-PROB-03-09: Uso integrado de cuartiles junto a media y desviación estándar para caracterizar distribuciones."
+    ],
+    "representation_variants": [
+      "Lista explícita de datos entre llaves o paréntesis, por ejemplo {2, 5, 8, 10, 12}.",
+      "Datos presentados en una oración o párrafo, desde donde el o la estudiante debe extraer la lista (por ejemplo, una secuencia de puntajes mencionados en el texto).",
+      "Datos ordenados desde el inicio en el enunciado, lo que permite enfocarse en el cálculo de posiciones y valores de cuartiles.",
+      "Datos desordenados, obligando explícitamente a que el estudiante los ordene antes de proceder al cálculo.",
+      "Listas con datos repetidos (valores iguales) para que el estudiante vea que la presencia de repeticiones no altera el procedimiento de cálculo de cuartiles.",
+      "Listas que mezclan enteros y decimales o fracciones simples, reforzando la aplicación del procedimiento de cuartiles más el manejo numérico básico."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "simple_decimals",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de P(A ∩ B) cuando B es condicional a A, usando explícitamente la expresión P(A ∩ B) = P(A) · P(B|A).",
+        "Problemas de extracciones SIN reposición (urnas, barajas, selección de personas/objetos) donde la segunda probabilidad depende del primer resultado.",
+        "Situaciones secuenciales de dos pasos donde el resultado del primer evento modifica el espacio muestral del segundo.",
+        "Cálculo de probabilidades en contextos cotidianos donde se entrega directamente P(B|A) y P(A), y se pide la probabilidad conjunta.",
+        "Uso de árboles de probabilidad o tablas SOLO como apoyo conceptual, pero con foco en la fórmula multiplicativa para eventos dependientes."
+      ],
+      "out_of_scope": [
+        "Cálculo de P(A ∩ B) asumiendo independencia (P(A ∩ B) = P(A) · P(B)) sin trabajar con B condicional a A.",
+        "Secuencias de tres o más eventos dependientes (eso pasa a átomos de extensión de la regla multiplicativa).",
+        "Problemas centrados en el cálculo de P(B|A) a partir de P(A ∩ B) y P(A) (eso corresponde al átomo de probabilidad condicional).",
+        "Aplicaciones del teorema de Bayes o probabilidad total, aunque usen eventos dependientes.",
+        "Uso intensivo de conteo combinatorio avanzado (permutaciones/combinaciones) como foco principal del ítem.",
+        "Modelación de procesos estocásticos complejos (cadenas largas, procesos de Markov, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-02-01: Comprensión de experiencia aleatoria, espacio muestral y evento.",
+        "A-M1-PROB-03-01: Cálculo de probabilidad simple en experimentos equiprobables.",
+        "A-M1-PROB-04-09: Interpretación y cálculo de probabilidad condicional P(B|A) en contextos sencillos.",
+        "A-M1-PROB-04-10: Uso de la fórmula P(B|A) = P(A ∩ B) / P(A) en ejemplos numéricos simples.",
+        "A-M1-NUM-01-01: Manejo de fracciones, porcentajes y proporciones en cálculos básicos."
+      ],
+      "common_traps": [
+        "Tratar eventos claramente dependientes como si fueran independientes y aplicar erróneamente P(A ∩ B) = P(A) · P(B).",
+        "No dejar explícito si hay o no reposición en problemas de extracciones, generando ambigüedad en la dependencia.",
+        "Confundir P(A ∩ B) con P(A ∪ B) y sumar en vez de multiplicar.",
+        "Interpretar mal P(B|A) como P(A|B) o intercambiar el orden de los eventos en la lectura del enunciado.",
+        "Ignorar que el tamaño del espacio muestral cambia tras el primer evento en extracciones sin reposición.",
+        "Plantear contextos de dependencia demasiado sutiles o discutibles (por ejemplo, relaciones causales poco claras entre fenómenos).",
+        "Incluir datos irrelevantes o inconsistente redundancia de probabilidades que permiten múltiples interpretaciones."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados con dos eventos claramente identificados A y B, donde se entregan explícitamente P(A) y P(B|A), y se pide P(A ∩ B) en un solo paso de cálculo.",
+        "Contextos muy familiares (baraja, urna con bolas de dos colores, selección de estudiantes) con números pequeños y proporciones sencillas.",
+        "Preguntas donde se indica de forma directa que la situación es \"sin reposición\" y el cambio en el número total es evidente.",
+        "Cálculos que solo requieren multiplicar dos fracciones o porcentajes simples, sin necesidad de simplificación compleja.",
+        "Unidades de respuesta que evitan conversiones adicionales (por ejemplo, pedir la respuesta como fracción ya dada en el enunciado)."
+      ],
+      "medium": [
+        "Situaciones de extracciones sin reposición donde el estudiante debe construir mentalmente P(B|A) a partir de cantidades iniciales y remanentes.",
+        "Problemas en los que se dan las cantidades de objetos y se debe traducir al lenguaje de probabilidad (por ejemplo, convertir conteos a fracciones).",
+        "Contextos menos habituales (producción con fallas, selección de piezas, fenómenos climáticos) donde se entrega P(A) y P(B|A) de forma verbal.",
+        "Ítems donde es necesario elegir correctamente qué evento considerar como A y cuál como B para usar P(A ∩ B) = P(A) · P(B|A).",
+        "Requieren uno o dos pasos intermedios de cálculo (por ejemplo, primero encontrar P(B|A) desde números, luego aplicar la regla multiplicativa)."
+      ],
+      "hard": [
+        "Problemas donde se debe discernir entre varios eventos posibles y seleccionar correctamente cuáles conforman A y B en la intersección pedida.",
+        "Situaciones en las que se proporciona información parcial (por ejemplo, algunas probabilidades en porcentaje, otras en fracción) y el estudiante debe armonizar representaciones y completar datos faltantes simples antes de aplicar la regla.",
+        "Contextos en que la dependencia no está explícita y el estudiante debe inferir que el segundo evento está condicionado por el primero (por ejemplo, reducción de población, cambios en proporciones tras un primer filtro).",
+        "Ítems donde se requiere comparar dos probabilidades conjuntas calculadas con la regla multiplicativa y tomar una decisión (por ejemplo, elegir el escenario más probable).",
+        "Preguntas que incorporan lenguaje más abstracto (por ejemplo, notación de eventos A, B en lugar de solo descripciones verbales) y exigen traducir entre notación simbólica y contexto."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar no especificar si las extracciones son con o sin reposición cuando se trabaja con urnas, barajas u objetos físicos.",
+      "No usar expresiones vagas como \"dos eventos seguidos\" sin aclarar el orden o qué se considera éxito en cada evento.",
+      "No mezclar en el mismo enunciado probabilidades referidas a distintos universos sin aclarar el cambio de contexto.",
+      "Evitar frases que puedan confundir P(B|A) con P(A|B); siempre explicitar el condicionamiento con formulaciones claras del tipo \"la probabilidad de B dado que ocurrió A\".",
+      "No utilizar datos redundantes o inconsistentes que permitan más de una forma de interpretar qué es A y qué es B.",
+      "Evitar contextos de dependencia discutible o subjetiva (por ejemplo, suposiciones sociológicas sin respaldo numérico claro).",
+      "No plantear preguntas donde sea razonable suponer independencia si el ítem exige explícitamente dependencia, sin justificarla claramente en el contexto.",
+      "Evitar omitir qué pasa con los elementos que no fueron seleccionados en el primer evento cuando eso afecta al segundo (por ejemplo, si se redistribuyen, se reemplazan, se descartan)."
+    ],
+    "error_families": [
+      {
+        "name": "Asumir independencia por defecto",
+        "description": "El estudiante aplica P(A ∩ B) = P(A) · P(B) sin considerar que el enunciado describe una situación de dependencia (por ejemplo, extracciones sin reposición).",
+        "how_to_address": "Incluir distracciones que reflejen ese cálculo incorrecto y contrastarlas con la opción correcta, acompañando ítems formativos con preguntas intermedias que hagan explicitar el cambio en el número total de casos tras el primer evento."
+      },
+      {
+        "name": "Confundir probabilidad conjunta con unión",
+        "description": "El estudiante interpreta P(A ∩ B) como si fuera P(A ∪ B), sumando probabilidades en lugar de multiplicar y ajustando mal por el traslape.",
+        "how_to_address": "Diseñar parejas de alternativas que incluyan tanto el producto como la suma de probabilidades, reforzando la lectura de expresiones como \"que ocurra A y B\" versus \"que ocurra A o B\"."
+      },
+      {
+        "name": "Errores en la construcción de P(B|A)",
+        "description": "El estudiante identifica bien P(A), pero calcula mal P(B|A), por ejemplo usando aún el número total inicial en lugar del número restante tras el primer evento.",
+        "how_to_address": "Proponer ítems donde se pregunte explícitamente cuántos casos favorables y totales hay en el segundo evento antes de pedir la probabilidad final, destacando el cambio del espacio muestral."
+      },
+      {
+        "name": "Intercambiar P(B|A) con P(A|B)",
+        "description": "El estudiante lee o utiliza P(B|A) como si fuera P(A|B), especialmente cuando el contexto se formula en lenguaje natural y con porcentajes.",
+        "how_to_address": "Usar notación clara y ejemplos en los enunciados donde se nombre explícitamente qué evento ya ocurrió, y contrastar alternativas basadas en P(B|A) versus P(A|B) para evidenciar el error."
+      },
+      {
+        "name": "Orden de eventos mal identificado",
+        "description": "El estudiante calcula correctamente una probabilidad conjunta, pero corresponde a un orden distinto al solicitado (por ejemplo, B y luego A en vez de A y luego B).",
+        "how_to_address": "Incluir ítems donde el orden sea relevante y señalar explícitamente en el enunciado la secuencia; en alternativas incorrectas, incluir resultados del orden invertido para diagnosticar el error."
+      },
+      {
+        "name": "Manejo deficiente de fracciones y porcentajes",
+        "description": "El error no es conceptual en probabilidad, sino numérico: multiplicación incorrecta de fracciones/porcentajes o conversión mal hecha.",
+        "how_to_address": "Preferir números amigables y, en ítems más complejos, aislar el cálculo probabilístico de la aritmética pesada, o bien usar opciones que permitan identificar claramente un mal manejo numérico."
+      }
+    ],
+    "future_targets": [
+      "A-M1-PROB-04-13: Regla multiplicativa para secuencias de tres o más eventos dependientes.",
+      "A-M1-PROB-04-14: Aplicación de diagramas de árbol para representar procesos con eventos dependientes.",
+      "A-M1-PROB-04-15: Teorema de Bayes en contextos discretos con eventos dependientes.",
+      "A-M1-PROB-04-16: Probabilidad total mediante particiones del espacio muestral y eventos condicionados.",
+      "A-M1-PROB-05-01: Modelación de situaciones reales más complejas que involucren cadenas de decisiones y filtros sucesivos.",
+      "A-M1-PROB-05-02: Análisis crítico de afirmaciones probabilísticas en medios de comunicación donde se usan probabilidades conjuntas y condicionales."
+    ],
+    "representation_variants": [
+      "Enunciados completamente en lenguaje natural, describiendo dos eventos secuenciales y pidiendo la probabilidad de que ambos ocurran.",
+      "Uso de notación simbólica de eventos (A, B) junto con sus probabilidades P(A), P(B|A), enfatizando la traducción entre descripción y símbolo.",
+      "Tablas de frecuencias o de contingencia simples donde se pueda leer P(A) y P(B|A) y luego calcular P(A ∩ B).",
+      "Situaciones con datos dados como cantidades absolutas (número de elementos) que el estudiante debe transformar en probabilidades.",
+      "Contextos mezclados donde se entrega una probabilidad como fracción y otra como porcentaje, exigiendo conversiones coherentes antes de multiplicar."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "simple_decimals",
+      "percentages"
+    ],
+    "required_image_types": []
+  }
+}

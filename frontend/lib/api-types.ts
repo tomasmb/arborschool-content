@@ -50,6 +50,12 @@ export interface AtomBrief {
   has_lesson: boolean;
   /** Highest pipeline phase completed (null = never ran). */
   last_completed_phase: number | null;
+  /** Image handling: not_enriched | no_images | images_supported | images_unsupported */
+  image_status: string;
+  required_image_types: string[];
+  /** PAES question coverage: direct | transitive | none */
+  question_coverage: string;
+  direct_question_count: number;
 }
 
 export interface TestBrief {
@@ -82,10 +88,6 @@ export interface SubjectDetail {
   atoms_count: number;
   tests: TestBrief[];
 }
-
-// -----------------------------------------------------------------------------
-// Question Types
-// -----------------------------------------------------------------------------
 
 export interface QuestionBrief {
   id: string;
@@ -152,15 +154,7 @@ export interface QuestionDetail {
   validation_result: ValidationResultDetail | null;
 }
 
-// -----------------------------------------------------------------------------
-// Question Sync Status (for individual questions)
-// -----------------------------------------------------------------------------
-
 export type QuestionSyncStatus = "not_in_db" | "in_sync" | "local_changed" | "not_validated";
-
-// -----------------------------------------------------------------------------
-// Detailed Validation Types (for display in ValidationTab)
-// -----------------------------------------------------------------------------
 
 export type CheckStatus = "pass" | "fail" | "not_applicable";
 
@@ -428,6 +422,12 @@ export interface CostEstimate {
   estimated_cost_min: number;
   estimated_cost_max: number;
   breakdown: Record<string, unknown>;
+  stale_artifacts?: {
+    checkpoint_files: string[];
+    item_count: number;
+    has_report: boolean;
+    has_stale_data: boolean;
+  };
 }
 
 export interface FailedItem {

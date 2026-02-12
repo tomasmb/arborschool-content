@@ -1,0 +1,141 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Simplificar raíces cuadradas, cúbicas y enésimas con índice pequeño (2, 3, 4, 5) mediante descomposición del radicando en factores primos o potencias",
+        "Identificar y extraer del radical factores que son potencias exactas del índice de la raíz",
+        "Escribir una misma raíz en formas equivalentes y escoger la que tenga el radicando entero más pequeño posible",
+        "Aplicar propiedades de raíces del tipo √[n](a·b) = √[n](a)·√[n](b) y su uso inverso para reagrupar factores",
+        "Trabajar principalmente con números reales positivos (radicandos y coeficientes positivos)",
+        "Verificar si una raíz ya está en su forma irreducible (ningún factor n-ésimo perfecto dentro del radicando)"
+      ],
+      "out_of_scope": [
+        "Operar con sumas y restas de radicales (no se centra en combinar términos semejantes, sino solo en simplificar cada raíz)",
+        "Racionalización de denominadores que contengan radicales",
+        "Ecuaciones con radicales o inecuaciones con radicales",
+        "Raíces de expresiones algebraicas con varias letras y coeficientes simbólicos generales (este átomo se centra en radicandos numéricos o con una literal simple)",
+        "Uso de propiedades de potencias y raíces con exponentes racionales en notación a^(p/q) de manera abstracta",
+        "Contextualización verbal compleja o problemas de aplicación; el foco está en el procedimiento de simplificación"
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de números naturales y enteros, operaciones básicas",
+        "A-M1-NUM-02-02: Factorización prima de números compuestos",
+        "A-M1-NUM-03-10: Reconocimiento y cálculo de potencias de números naturales",
+        "A-M1-NUM-03-11: Identificación de cuadrados perfectos, cubos perfectos y en general potencias n-ésimas perfectas",
+        "A-M1-NUM-03-12: Interpretación básica de raíces como operación inversa de la potencia",
+        "A-M1-NUM-03-13: Uso elemental de propiedades de raíces (producto y cociente) sin requerir todavía máxima simplificación"
+      ],
+      "common_traps": [
+        "Olvidar revisar todos los factores del radicando y extraer solo una parte de las potencias n-ésimas posibles, dejando la raíz sin simplificar completamente",
+        "Confundir el índice de la raíz con el exponente de la potencia (por ejemplo, tratar √[3](a^2) como a·√[3](a) en lugar de reconocer que no hay potencia cúbica completa)",
+        "Aplicar indebidamente la propiedad √[n](a + b) = √[n](a) + √[n](b), que es falsa",
+        "Sacar solo una parte del factor n-ésimo perfecto (por ejemplo, de √(36) extraer 3√(4) en vez de 6, por no completar la simplificación)",
+        "Perder el coeficiente que se extrae de la raíz o mezclarlo con el radicando restante (errores de orden y notación, p. ej. escribir √(12) = √(3) en vez de 2√(3))",
+        "No reconocer cuadrados o cubos perfectos mayores (36, 72, 48, 81, 125, 243, etc.) y limitarse a descomponer solo en factores muy pequeños, haciendo el proceso más largo y propenso a errores",
+        "Confundir el criterio de simplificación mínima: creer que √(12) y 2√(3) son formas igualmente válidas sin enfatizar que se busca el radicando entero más pequeño posible"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Radicandos con factores pequeños y evidentes, donde el número contiene claramente una potencia perfecta del índice (por ejemplo, múltiplos de 4, 9, 16 para raíz cuadrada; múltiplos de 8, 27 para raíz cúbica)",
+        "Índices 2 o 3, sin combinaciones de varios tipos de factores; a lo más un factor n-ésimo perfecto y uno no perfecto",
+        "Sin fracciones ni decimales: solo radicandos enteros positivos menores a 200 aproximadamente",
+        "Ejercicios directos de simplificación de una sola raíz por ítem, sin cadenas de operaciones adicionales",
+        "Sin presencia de coeficientes multiplicando al radical (o coeficiente 1), evitando pasos adicionales de multiplicar o combinar coeficientes"
+      ],
+      "medium": [
+        "Radicandos con varios factores donde hay más de una potencia n-ésima perfecta posible (por ejemplo 72, 108, 160), que exigen decidir la descomposición más conveniente",
+        "Índices 2, 3 o 4, pudiendo requerir identificar cuadrados, cubos o cuartas potencias perfectas en un mismo ejercicio (en ítems distintos, no mezcladas en la misma raíz)",
+        "Presencia de coeficientes fuera de la raíz que se combinan con los factores extraídos del radical",
+        "Radicandos que incluyen una literal con exponente (por ejemplo √(18x^2), √[3](54x^4)) que requieren distinguir entre qué parte se puede extraer y cuál permanece dentro",
+        "Uso de fracciones con radical en el numerador o denominador, donde la consigna solo pide simplificar el radical (sin racionalizar), exigiendo atención al radicando y al índice",
+        "Necesidad de aplicar en forma inversa la propiedad del producto de radicales, por ejemplo reagrupar √(a)·√(b) en una sola raíz para luego simplificar"
+      ],
+      "hard": [
+        "Radicandos con varios factores grandes o factorización menos evidente (por ejemplo 2500, 432, 5000, 1458), donde es ventajoso usar potencias conocidas (25, 125, 16, 81, etc.) en lugar de factorización prima completa",
+        "Índices mayores que 3 o 4 (por ejemplo raíz quinta, séptima) que exigen razonar sobre la multiplicidad de los factores en la factorización prima (contar exponentes y dividir por el índice)",
+        "Radicandos expresados como productos de potencias, por ejemplo √[3](2^7·3^4), que requieren operar con exponentes (división entera y resto) para separar la parte extraíble de la que queda dentro",
+        "Combinación de un paso de simplificación de la raíz con otra operación numérica o algebraica encadenada (por ejemplo, comparar dos expresiones radicales ya simplificadas o seleccionar la forma más simple entre varias alternativas)",
+        "Incluir raíces encadenadas o multiplicadas, donde es conveniente primero simplificar cada radical y luego comparar, sin que el enunciado señale explícitamente el orden de los pasos",
+        "Situaciones que requieren decidir entre distintas descomposiciones posibles del radicando y reconocer cuál genera el radicando resultante más pequeño (distinguir entre una simplificación parcial y una completamente reducida)"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar ítems donde más de una forma equivalente de la raíz pueda considerarse 'simplificada' si no se especifica que se busca el radicando entero más pequeño posible; explicitar en el enunciado 'en su forma más simple' o 'con el radicando entero más pequeño posible'.",
+      "No proponer alternativas de respuesta que incluyan la misma expresión escrita solo en distinto orden de factores (por ejemplo 2√(3) y √(3)·2) como opciones distintas, ya que son equivalentes y no aportan al objetivo del ítem.",
+      "No mezclar en una misma alternativa simplificaciones correctas con redondeos aproximados a decimales cuando el resto de las alternativas son exactas; dejar claro si se trabaja solo con resultados exactos.",
+      "Evitar radicandos negativos con índice par para no abrir la discusión sobre números complejos; en este átomo se trabaja solo con raíces reales de radicandos no negativos.",
+      "No usar notaciones poco estándar o ambiguas como √a^2 sin paréntesis claros cuando pueda interpretarse como (√a)^2 o √(a^2); utilizar siempre paréntesis para indicar el alcance de la raíz.",
+      "Evitar contextos verbales en que 'raíz cuadrada' pueda confundirse con dimensión lineal o lado de una figura sin que se explicite la relación numérica; este átomo enfatiza el procedimiento numérico.",
+      "No exigir en el mismo ítem decisiones de simplificación y, al mismo tiempo, comparaciones de tamaño entre raíces muy cercanas en valor, que puedan generar respuestas correctas por razonamiento numérico aproximado y no por la simplificación pedida.",
+      "Evitar expresiones con literales donde el dominio de la variable afecte la extracción de signos (por ejemplo √(x^2)); si se incluyen, delimitar que x > 0 o trabajar solo con exponentes múltiplos del índice donde no aparezca valor absoluto."
+    ],
+    "error_families": [
+      {
+        "name": "Extracción_incompleta_de_factores",
+        "description": "El estudiante identifica parcialmente los factores n-ésimos perfectos dentro del radicando, pero deja factores que aún se pueden extraer. Por ejemplo, de √(72) obtiene 2√(18) o 3√(8) y no continúa a 6√(2).",
+        "how_to_address": "Diseñar ítems donde se comparen dos o más formas equivalentes y se pregunte explícitamente cuál corresponde a la forma más simplificada, obligando a revisar el radicando resultante. Incluir entrenamiento en reconocimiento de cuadrados y cubos perfectos más allá de los más obvios (4, 9, 16, 25)."
+      },
+      {
+        "name": "Confusion_con_propiedad_de_la_suma",
+        "description": "Aplicar erróneamente √[n](a + b) = √[n](a) + √[n](b), lo que lleva a 'descomponer' el radicando en suma en lugar de producto. Este error aparece cuando el radicando está dado como suma o resta.",
+        "how_to_address": "Incluir ítems de selección de afirmaciones verdaderas/falsas donde esta 'propiedad' aparezca como distractor. Proponer contraejemplos simples numéricos dentro de las alternativas que muestren que la igualdad no se cumple."
+      },
+      {
+        "name": "Manejo_incorrecto_del_indice",
+        "description": "El estudiante trata cualquier raíz como si fuera cuadrada o no considera el índice al decidir qué factores extraer. Por ejemplo, frente a √[3](16) intenta usar 4 como 'cuadrado perfecto' en lugar de 8 como 'cubo perfecto'.",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente la simplificación de una misma base bajo diferentes índices (por ejemplo raíz cuadrada y cúbica de potencias de 2), para reforzar que la potencia a extraer depende del índice. Usar notación clara del índice para reducir errores de lectura."
+      },
+      {
+        "name": "Perdida_o_creacion_de_coeficientes",
+        "description": "Al extraer factores de la raíz, el estudiante omite el coeficiente que sale o lo combina mal con el que ya estaba fuera. Por ejemplo, 3√(12) → 3√(4·3) → √(3) en vez de 6√(3).",
+        "how_to_address": "Proponer ejercicios donde se compare el valor numérico aproximado de la expresión antes y después de simplificar, para evidenciar si el coeficiente se perdió. Incluir pasos intermedios explícitos en las alternativas, de modo que reconocer el error de coeficiente sea clave para descartarlas."
+      },
+      {
+        "name": "Factorizacion_prima_incorrecta",
+        "description": "Errores en la descomposición en factores primos del radicando (por ejemplo 18 = 2·3·3 se registra mal como 2·9 o 3·6 sin continuar), que producen simplificaciones erróneas.",
+        "how_to_address": "En ítems de dificultad media, usar radicandos que requieran un paso de factorización prima pero con números manejables. Incluir alternativas que reflejen errores típicos de factorización para forzar al estudiante a revisar cuidadosamente dicha etapa."
+      },
+      {
+        "name": "Mal_manejo_de_exponentes_en_potencias",
+        "description": "Cuando el radicando se da como producto de potencias, el estudiante no separa bien la parte que se puede extraer. Por ejemplo, √[3](2^7) → 2^7√[3](1) o 2^2√[3](2) en lugar de 2^2√[3](2).",
+        "how_to_address": "Plantear ítems que pidan explícitamente identificar cuántas veces cabe el índice en el exponente (división entera y resto) y vincular ese procedimiento con la parte que sale y la que queda en la raíz. Usar exponentes pequeños para que el foco esté en la idea, no en el cálculo complejo."
+      },
+      {
+        "name": "No_verificacion_de_forma_final",
+        "description": "El estudiante realiza varios pasos y considera que ha terminado sin verificar si el radicando final sigue teniendo factores n-ésimos perfectos, o si se puede simplificar aún más.",
+        "how_to_address": "Incluir alternativas donde aparezcan tanto la solución completamente simplificada como una versión parcialmente simplificada; la consigna debe resaltar 'forma más simple'. Trabajar con radicandos donde la simplificación ocurra en dos etapas claras para que el estudiante deba revisar el resultado intermedio."
+      }
+    ],
+    "future_targets": [
+      "Simplificación y combinación de radicales semejantes en sumas y restas (por ejemplo, 2√(3) + 3√(3))",
+      "Racionalización de denominadores que incluyen raíces cuadradas y enésimas",
+      "Resolución de ecuaciones e inecuaciones con radicales, donde simplificar es un paso previo clave",
+      "Manejo de exponentes racionales a^(p/q) y conversión entre notación de potencias y raíces",
+      "Simplificación de expresiones algebraicas con radicales que incluyan literales y parámetros",
+      "Análisis de crecimiento y comparación de números irracionales usando formas radicales simples",
+      "Aplicaciones geométricas que implican raíces (por ejemplo, uso del teorema de Pitágoras y distancia entre puntos en el plano)",
+      "Transición hacia contenidos de Educación Media Superior donde se manejan funciones radicales y sus gráficos"
+    ],
+    "representation_variants": [
+      "Radicales con radicando entero positivo simple, como √(12), √[3](16), √(50)",
+      "Radicales con radicando expresado como producto de factores, como √(4·27), √[3](8·2), enfatizando la aplicación de la propiedad inversa de la distribución",
+      "Radicales con radicando expresado mediante potencias, como √(2^4·3), √[3](3^4·5^2), para reforzar la relación entre exponentes e índice",
+      "Radicales con coeficiente numérico fuera de la raíz, como 3√(20), 2√[3](54), que requieren combinar el coeficiente salido con el ya existente",
+      "Expresiones con radicales y literales sencillas, como √(18x^2), √[3](16x^3), donde se deba decidir qué parte de la variable se extrae",
+      "Comparaciones entre distintas formas equivalentes de una misma raíz (por ejemplo, descomponer de diferentes maneras el radicando) para elegir la que tiene radicando mínimo",
+      "Radicales en fracciones simples, como √(18/2), √(50)/5, donde la simplificación puede ocurrir antes o después de reducir la fracción"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "integer_powers",
+      "square_cubes_and_higher_perfect_powers",
+      "simple_multiples_of_perfect_powers",
+      "integer_coefficients_with_radicals",
+      "simple_literal_factors_with_small_exponents"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Plantear ecuaciones lineales de una incógnita a partir de enunciados verbales que describen igualdades entre cantidades.",
+        "Identificar correctamente la magnitud desconocida y representarla mediante una variable.",
+        "Traducir expresiones como 'doble', 'triple', 'mitad', 'tercera parte', 'aumentado en', 'disminuido en', 'más que', 'menos que', 'es igual a', 'equivale a' a operaciones algebraicas.",
+        "Modelar situaciones numéricas simples y cotidianas con una sola ecuación lineal de primer grado.",
+        "Plantear ecuaciones con números enteros o fracciones simples, sin necesidad de resolverlas."
+      ],
+      "out_of_scope": [
+        "Resolver la ecuación planteada (hallar el valor de la incógnita).",
+        "Plantear sistemas de ecuaciones (dos o más ecuaciones) o ecuaciones no lineales.",
+        "Situaciones que requieren funciones (dependencia explícita x → y) o análisis gráfico.",
+        "Problemas puramente aritméticos que no exigen introducir una variable.",
+        "Traducción de desigualdades o inecuaciones (mayor que, menor que, al menos, a lo más, etc.).",
+        "Ecuaciones con valor absoluto, potencias no lineales o raíces.",
+        "Contextos probabilísticos o estadísticos donde la ecuación no es el foco principal."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión de la noción de variable e incógnita en expresiones y ecuaciones simples.",
+        "A-M1-ALG-02-01: Manejo básico de operaciones con números enteros y fracciones en contexto verbal.",
+        "A-M1-ALG-03-01: Reconocimiento de la estructura general de una ecuación lineal de una incógnita."
+      ],
+      "common_traps": [
+        "Confundir 'el doble de un número aumentado en 4' con 'el doble de (un número aumentado en 4)', es decir, escribir 2x + 4 cuando el contexto exige 2(x + 4), o viceversa.",
+        "Interpretar '4 menos un número' como x - 4 en lugar de 4 - x.",
+        "Confundir 'aumentado en' (suma) con 'multiplicado por' (producto).",
+        "Perder la estructura de igualdad y escribir solo una expresión (por ejemplo 2x + 5) sin ' = ' ni el valor correspondiente.",
+        "Usar más de una variable innecesariamente cuando el enunciado se refiere a una sola cantidad desconocida.",
+        "Traducir literalmente expresiones como 'la mitad de la suma de' sin agrupar correctamente con paréntesis.",
+        "Malinterpretar expresiones de consecutividad (números consecutivos, pares consecutivos) que no se piden explícitamente en este átomo si llevan a ecuaciones con más de una variable."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados breves y directos con una sola frase y una única operación principal antes de igualar (por ejemplo, 'el doble de un número es 10').",
+        "Uso exclusivo de números enteros pequeños y positivos.",
+        "Palabras clave muy estándar y poco cargadas de contexto ('doble', 'mitad', 'aumentado en', 'disminuido en', 'es igual a').",
+        "La posición de la incógnita en el texto coincide casi exactamente con la estructura algebraica, con bajo riesgo de confundir el orden de las operaciones.",
+        "No se requiere uso de paréntesis; la expresión se traduce linealmente."
+      ],
+      "medium": [
+        "Enunciados de dos frases cortas o una frase con varias partes conectadas ('… primero … luego … y eso es igual a …').",
+        "Combinación de dos o tres operaciones (por ejemplo multiplicar y luego sumar, o sumar y luego restar) antes de la igualdad.",
+        "Incorporación de expresiones comparativas como '5 más que un número', '8 menos que el doble de un número'.",
+        "Necesidad de agrupar con paréntesis para respetar el orden indicado en el texto ('la mitad de la suma de…', 'el triple de la diferencia entre…').",
+        "Uso de números enteros positivos y negativos o alguna fracción simple."
+      ],
+      "hard": [
+        "Enunciados más extensos, con contexto cotidiano moderado, donde la información relevante no está toda en una sola oración (por ejemplo, descripción de una compra o de edades que llevan a una sola ecuación).",
+        "Uso de estructuras lingüísticas potencialmente confusas: 'cuatro menos la mitad de un número', 'la tercera parte de un número disminuida en 7 es igual a…'.",
+        "Necesidad clara de paréntesis para diferenciar expresiones como 'el doble de la suma de' versus 'la suma del doble de'.",
+        "Presencia de fracciones o decimales (por ejemplo 1/3, 0,5) asociadas a la variable.",
+        "Contextos donde hay varias cantidades pero solo una es realmente desconocida, exigiendo identificar correctamente cuál se representa con la variable.",
+        "Formulaciones donde la magnitud conocida está al inicio de la expresión: '15 es el resultado de restar 5 a un número'."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar frases donde no quede claro qué parte de la expresión se ve afectada por 'doble', 'mitad', 'tercera parte'; explicitar con 'la suma de …' o 'la diferencia entre …' para marcar el agrupamiento.",
+      "No usar estructuras simétricas ambiguas como 'el doble de un número más 3 y 5' sin clarificar si 3 y 5 están sumando juntos o por separado.",
+      "Evitar expresiones comparativas sin referencia clara, por ejemplo '5 más que el doble' sin decir 'el doble de un número'.",
+      "No mezclar tiempos verbales o sujetos que puedan hacer dudar de qué cantidades se relacionan en la igualdad.",
+      "Evitar expresiones con 'al menos', 'a lo más', 'como máximo', 'como mínimo' que corresponden a inecuaciones y no a ecuaciones en este átomo.",
+      "No introducir más de una posible cantidad desconocida si solo se permite una variable (por ejemplo, dos personas con edades distintas) sin aclarar explícitamente cuál será la referida por la variable.",
+      "No usar contextos con datos redundantes o contradictorios que permitan más de una ecuación razonable.",
+      "Evitar que la igualdad pueda interpretarse en ambos sentidos con diferente traducción (por ejemplo, 'un número es 5 menos que otro' en un contexto con dos incógnitas); usar en cambio una sola cantidad desconocida principal."
+    ],
+    "error_families": [
+      {
+        "name": "Orden_invertido_en_restas_y_comparaciones",
+        "description": "Errores al traducir expresiones como '4 menos un número', '5 menos que un número', 'un número es 3 menos que 10', escribiendo la resta en el orden contrario (x - 4 en vez de 4 - x, o 5 - x en vez de x - 5, etc.).",
+        "how_to_address": "Trabajar con ejemplos contrastivos mostrando la diferencia entre '4 menos un número' (4 - x) y 'un número menos 4' (x - 4). Hacer que el estudiante reescriba el enunciado en forma de 'primero… luego…' para fijar el orden de la operación antes de pasar al símbolo."
+      },
+      {
+        "name": "Agrupacion_incorrecta_y_falta_de_parentesis",
+        "description": "No se usan paréntesis cuando son necesarios o se colocan en lugar equivocado; por ejemplo, modelar 'la mitad de la suma de un número y 8' como 1/2x + 8 en vez de (x + 8)/2.",
+        "how_to_address": "Enfatizar que palabras como 'suma de', 'diferencia entre' usualmente indican un bloque que debe tratarse como una unidad. Proponer que el estudiante primero escriba la expresión en lenguaje natural con corchetes o subrayados que indiquen bloques antes de traducir a símbolos."
+      },
+      {
+        "name": "Confusion_entre_operaciones_suma_y_producto",
+        "description": "Interpretar 'aumentado en', 'disminuido en' como multiplicar, o interpretar 'el doble' como sumar el número consigo mismo en forma errónea al escribir la ecuación.",
+        "how_to_address": "Relacionar sistemáticamente cada palabra clave con su operación: 'doble', 'triple', etc. → multiplicación; 'aumentado en', 'disminuido en', 'más que', 'menos que' → suma o resta. Hacer tablas de correspondencia y pedir que las usen para revisar la ecuación antes de finalizar."
+      },
+      {
+        "name": "Perdida_de_la_igualdad",
+        "description": "El estudiante solo escribe una expresión algebraica sin el signo igual ni el valor o expresión al que debe igualarse.",
+        "how_to_address": "Insistir en que toda ecuación tiene dos lados y que en el texto siempre aparece una idea de 'resultado' o 'es igual a'. Hacer ejercicios donde el foco sea destacar explícitamente en el enunciado qué parte corresponde al lado izquierdo y cuál al derecho de la ecuación."
+      },
+      {
+        "name": "Variable_mal_identificada_o_multiple",
+        "description": "Elegir una variable que no corresponde a la cantidad central pedida en el problema, o introducir más de una variable donde el átomo requiere solo una incógnita.",
+        "how_to_address": "Antes de escribir la ecuación, pedir al estudiante que escriba en una frase 'Sea x = …'. Reforzar que deben elegir una sola cantidad desconocida que permita expresar todas las demás si fuese necesario, y chequear coherencia de unidades y de contexto."
+      },
+      {
+        "name": "Tratamiento_incorrecto_de_fracciones_y_decimales",
+        "description": "Errores al representar 'mitad', 'tercera parte', '0,5 de un número', ya sea omitiendo la fracción (escribiendo solo x) o escribiendo x/2 + algo cuando corresponde (x + algo)/2.",
+        "how_to_address": "Recordar que 'la mitad de un número' es 1/2 · x y que 'la mitad de la suma de…' requiere primero sumar y luego dividir. Trabajar con representaciones intermedias tipo 'mitad de ( … )' antes de reemplazar con 1/2( … )."
+      }
+    ],
+    "future_targets": [
+      "Planteamiento y resolución de ecuaciones lineales de una incógnita en contextos de problemas.",
+      "Modelación de situaciones más complejas con sistemas de ecuaciones lineales.",
+      "Traducción bidireccional entre lenguaje algebraico y lenguaje natural (explicar con palabras una ecuación dada).",
+      "Comprensión y uso de funciones lineales como modelos de relaciones entre dos variables.",
+      "Formulación de inecuaciones a partir de enunciados con restricciones tipo 'al menos', 'a lo más'.",
+      "Resolución de problemas de proporcionalidad y porcentajes a través de ecuaciones lineales."
+    ],
+    "representation_variants": [
+      "Ecuación con variable representando directamente la cantidad pedida en el problema.",
+      "Ecuación donde la variable representa una cantidad intermedia (por ejemplo, una edad base, un precio unitario) y otras cantidades se expresan en función de ella.",
+      "Uso de paréntesis para agrupar sumas o diferencias antes de aplicar mitades, dobles u otras fracciones.",
+      "Traducciones que incluyen fracciones o coeficientes decimales multiplicando la variable (por ejemplo, (1/3)x, 0,5x).",
+      "Formulación de la ecuación con el término constante al lado izquierdo o derecho indistintamente, siempre que respete la relación descrita.",
+      "Versiones donde la igualdad se explícita con diferentes expresiones verbales ('es igual a', 'equivale a', 'da como resultado')."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "positive_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

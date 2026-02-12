@@ -1,0 +1,146 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de probabilidad clásica en experimentos finitos y equiprobables usando P(E) = casos favorables / casos totales.",
+        "Identificación explícita del espacio muestral y conteo de resultados posibles cuando todos son igualmente probables.",
+        "Reconocimiento e identificación de casos favorables a partir de una descripción verbal o tabular de una situación aleatoria simple.",
+        "Expresión de probabilidades como fracción, razón, número decimal o porcentaje, manteniendo la idea de razón casos favorables / casos totales.",
+        "Contextos habituales: dados honestos, monedas honestas, extracciones de urnas sin sesgo, ruletas con secciones iguales, tarjetas numeradas iguales en tamaño.",
+        "Comparaciones simples de probabilidades entre dos eventos de un mismo experimento solo vía comparación de fracciones (sin operaciones complejas de probabilidad)."
+      ],
+      "out_of_scope": [
+        "Probabilidad de sucesos en espacios muestrales infinitos o continuos (probabilidades geométricas, longitudes, áreas, tiempos continuos).",
+        "Probabilidad condicional, independencia de eventos, regla del producto o del complemento como objetivo central.",
+        "Cálculo combinatorio avanzado para contar casos (permutaciones y combinaciones formales); solo se permiten conteos directos simples.",
+        "Procesos aleatorios no equiprobables (monedas cargadas, dados trucados) salvo que se entregue ya la probabilidad.",
+        "Uso de distribuciones de probabilidad (binomial, normal u otras).",
+        "Simulación computacional o frecuencias relativas experimentales como aproximación de probabilidad (eso corresponde a probabilidad frecuencial, no clásica).",
+        "Eventos compuestos que requieren operaciones de unión/intersección más allá de identificar casos favorables de manera directa.",
+        "Modelación de fenómenos reales complejos donde la suposición de equiprobabilidad no sea razonable o explícita."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de fracciones como parte-todo y comparación de fracciones sencillas.",
+        "A-M1-NUM-01-02: Conversión básica entre fracciones, decimales y porcentajes.",
+        "A-M1-CONJ-01-01: Comprensión intuitiva de conjuntos finitos y conteo de elementos.",
+        "A-M1-PROB-01-01: Comprender la noción intuitiva de experimento aleatorio, resultado y evento.",
+        "A-M1-PROB-02-01: Identificar el espacio muestral en experimentos simples (moneda, dado, urna pequeña)."
+      ],
+      "common_traps": [
+        "Interpretar la probabilidad como casos favorables / casos desfavorables en vez de usar casos totales.",
+        "Olvidar la condición de equiprobabilidad y aplicar la fórmula de Laplace en contextos donde los resultados no tienen la misma probabilidad.",
+        "Confundir el número de elementos del evento con la probabilidad (por ejemplo, escribir P(E) = 3 en vez de 3/10).",
+        "No considerar todos los resultados posibles del espacio muestral (por ejemplo, omitir algún color o número en una urna o ruleta).",
+        "Contar como distintos resultados que son en realidad el mismo resultado del experimento definido (por ejemplo, en el lanzamiento de un dado, tratar 'sacar 3 puntos' de distintas formas).",
+        "Invertir numerador y denominador (usar casos totales / casos favorables).",
+        "Simplificar mal la fracción y cambiar la probabilidad (error aritmético que altera el valor).",
+        "Usar frecuencias absolutas dadas en un cuadro como si fueran directamente probabilidades sin dividir por el total.",
+        "Interpretar que una probabilidad mayor que 1 o menor que 0 puede ser válida, por errores de cálculo en la razón."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Experimentos muy familiares y explícitos (un dado honesto, una moneda honesta, una urna con hasta 5 o 6 elementos totales) donde el espacio muestral es evidente.",
+        "Los casos favorables se pueden contar directamente sin necesidad de desglosar combinaciones ni hacer listados extensos.",
+        "Se pide la probabilidad de un único evento simple claramente enunciado (por ejemplo, un color, un número, cara o sello).",
+        "Los números involucrados son pequeños y dan fracciones simples (como 1/2, 1/3, 1/4, 2/5), idealmente ya irreducibles.",
+        "El enunciado indica explícitamente que todos los resultados son igual de probables (por ejemplo, se usa 'moneda honesta', 'dado equilibrado', 'todas las bolas son indistinguibles salvo por el color').",
+        "No se requiere comparar probabilidades ni transformar la fracción a porcentaje o decimal; puede aceptarse cualquier forma."
+      ],
+      "medium": [
+        "Situaciones con un espacio muestral un poco más grande (entre 8 y 20 resultados posibles) donde el estudiante debe identificar correctamente el total de casos.",
+        "Eventos formulados con condiciones simples pero no inmediatas (por ejemplo, 'número par', 'número mayor que 3', 'color no rojo').",
+        "Requiere construir o al menos visualizar un listado parcial de resultados para identificar casos favorables sin usar técnicas combinatorias formales.",
+        "Incluye la necesidad de simplificar la fracción o expresar la probabilidad en un formato distinto al inicial (por ejemplo, del conteo a porcentaje).",
+        "Comparación de dos probabilidades del mismo experimento mediante la comparación de fracciones o decimales, sin operaciones avanzadas de probabilidad.",
+        "Contextos menos escolares (juegos simples, sorteos, ruletas divididas en sectores iguales) donde se debe inferir el número de casos favorables y totales desde una descripción."
+      ],
+      "hard": [
+        "Espacios muestrales compuestos pero aún finitos y equiprobables, donde el experimento involucra dos acciones simples (por ejemplo, lanzar dos dados, o sacar una bola de una urna y luego tirar una moneda), siempre que el conteo se pueda hacer listando sin combinatoria formal.",
+        "Eventos definidos con condiciones combinadas en lenguaje natural ('número par mayor que 2', 'no obtener rojo ni azul', 'obtener al menos un 6 en dos lanzamientos') exigiendo separar cuidadosamente los casos favorables.",
+        "El estudiante debe deducir el total de casos a partir de una descripción indirecta (por ejemplo, a partir de una tabla de frecuencias de resultados equiprobables o de la composición de varios conjuntos de objetos).",
+        "Requiere comparar probabilidades de eventos distintos o decidir cuál es más probable analizando tamaños relativos de fracciones no triviales.",
+        "Se exige manejo cuidadoso de fracciones con denominadores más grandes (hasta alrededor de 36 u otro número producto de dos dados) o con necesidad de simplificación no inmediata.",
+        "Contextos en que no se menciona explícitamente 'equiprobables', pero se dan indicios suficientes (objetos idénticos en tamaño y forma, selección al azar sin sesgo), y el estudiante debe reconocer que procede aplicar la regla de Laplace."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar contextos donde la equiprobabilidad no sea realista si no se declara explícitamente (por ejemplo, 'elegir al azar una persona de una foto con personas de distinto tamaño').",
+      "No usar expresiones vagas como 'al azar' cuando no todos los resultados tienen la misma probabilidad; si se pretende aplicar Laplace, aclarar que todos los resultados posibles son igualmente probables.",
+      "No mezclar en el mismo ítem la interpretación de probabilidad clásica con frecuencias relativas de un experimento ya realizado, a menos que se pida claramente solo el cálculo casos favorables / casos totales en el modelo teórico.",
+      "Evitar descripciones ambiguas del experimento, por ejemplo, no aclarar si se saca con o sin reemplazo cuando eso cambia el número de casos totales; para este átomo, preferir una sola extracción o aclarar explícitamente.",
+      "No usar términos cotidianos confusos como 'más o menos probable' sin especificar a qué evento se refiere cuando hay varios; siempre nombrar claramente el evento.",
+      "Evitar que 'resultado' del experimento sea distinto de lo que se percibe intuitivamente (por ejemplo, si el experimento es 'sacar una carta', dejar claro si interesa el palo, el número o ambos).",
+      "No plantear eventos que dependan de conocimiento externo no matemático (por ejemplo, preferencias personales, habilidades) para determinar las probabilidades.",
+      "Evitar tablas o descripciones donde no quede claro si todas las categorías representan resultados elementales del mismo experimento (por ejemplo, mezclar tipos de objetos con cantidades sin especificar la población total)."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir total con desfavorables",
+        "description": "El estudiante calcula la probabilidad como casos favorables / casos desfavorables en lugar de usar casos totales en el denominador.",
+        "how_to_address": "Reforzar la lectura de 'casos totales' como todos los resultados posibles del experimento, incluidos favorables y desfavorables. Trabajar con tablas que expliciten favorable, desfavorable y total, y hacer que el estudiante identifique qué va en cada parte de la fracción P(E) = favorables / totales."
+      },
+      {
+        "name": "Omisión de resultados en el espacio muestral",
+        "description": "No se consideran todos los resultados posibles al contar el denominador, por ejemplo, se olvida un color, número o categoría descrita en el enunciado.",
+        "how_to_address": "Practicar la enumeración sistemática del espacio muestral en casos pequeños (listas, tablas) y revisar con preguntas de chequeo como '¿aparecen todas las opciones mencionadas en el problema?'. Destacar la importancia de revisar la descripción completa antes de contar."
+      },
+      {
+        "name": "Contar mal los casos favorables",
+        "description": "Se incluyen resultados que no cumplen la condición del evento o se excluyen algunos que sí la cumplen, por mala interpretación del enunciado ('par', 'mayor que', 'no rojo', etc.).",
+        "how_to_address": "Trabajar con resaltado textual de la condición del evento y ejercicios de clasificación de resultados posibles en 'favorece' / 'no favorece'. Reforzar el significado de expresiones como 'no', 'al menos', 'mayor que', 'menor o igual que'."
+      },
+      {
+        "name": "Fracción fuera de rango [0,1]",
+        "description": "Por errores de conteo o inversión de numerador y denominador, el estudiante obtiene probabilidades mayores que 1 o menores que 0.",
+        "how_to_address": "Insistir en la interpretación de la probabilidad como número entre 0 y 1 (o entre 0% y 100%) y usar ese criterio como auto-chequeo. Proponer que, antes de dar la respuesta, siempre se pregunte si el número tiene sentido como probabilidad."
+      },
+      {
+        "name": "Asumir equiprobabilidad sin justificación",
+        "description": "El estudiante aplica directamente la razón casos favorables / casos totales en contextos donde no todos los resultados son igual de probables.",
+        "how_to_address": "Discutir ejemplos concretos donde los resultados no son equiprobables y mostrar que la fórmula de Laplace no aplica. Hacer que el estudiante identifique en el enunciado qué garantiza la equiprobabilidad (objetos iguales, dados honestos, etc.)."
+      },
+      {
+        "name": "Mala simplificación de fracciones",
+        "description": "La fracción de probabilidad está bien planteada pero se simplifica de forma incorrecta, cambiando el valor de la probabilidad.",
+        "how_to_address": "Revisar procedimientos de simplificación y enfatizar que se debe dividir numerador y denominador por el mismo número. Proponer que se compruebe la equivalencia usando decimales o comparando proporciones en problemas concretos."
+      },
+      {
+        "name": "Confusión entre frecuencia y probabilidad",
+        "description": "Cuando se dan datos de una muestra o tabla de frecuencias, el estudiante toma directamente la frecuencia absoluta como si fuera probabilidad sin dividir por el total.",
+        "how_to_address": "Presentar explícitamente el vínculo: probabilidad clásica en un modelo equiprobable se calcula igual que la frecuencia relativa. Hacer ejercicios donde el estudiante debe encontrar la probabilidad dividiendo la frecuencia por el total y escribirla como fracción."
+      },
+      {
+        "name": "No identificar correctamente el experimento",
+        "description": "El estudiante interpreta mal qué constituye un 'resultado' del experimento (por ejemplo, confunde la extracción de una bola con la extracción de dos), lo que altera el conteo de casos totales.",
+        "how_to_address": "Focalizar en que primero se debe describir con palabras el experimento ('¿qué ocurre una vez?') y luego definir qué resultados son posibles. Practicar reescritura del experimento antes de hacer el conteo."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de probabilidades de eventos compuestos mediante operaciones con conjuntos (unión, intersección, complemento) en contextos equiprobables.",
+      "Probabilidad condicional en espacios muestrales finitos y equiprobables, entendiendo P(A|B) como razón de casos favorables dentro de un subconjunto.",
+      "Uso de diagramas de árbol y tablas de doble entrada para calcular probabilidades de experimentos compuestos.",
+      "Modelación de situaciones aleatorias simples con distribuciones discretas (por ejemplo, distribución binomial) a partir de conteo de casos favorables.",
+      "Interpretación y comparación de distintas nociones de probabilidad (clásica, frecuencial, subjetiva) en contextos de datos reales.",
+      "Análisis de juegos de azar sencillos, incluyendo el cálculo de probabilidades de ganar y expectativas básicas.",
+      "Trabajo con probabilidades en contextos estadísticos, como el muestreo aleatorio y la inferencia básica."
+    ],
+    "representation_variants": [
+      "Descripción verbal de la situación aleatoria (texto narrativo de urnas, dados, ruletas, sorteos).",
+      "Tablas que enumeran resultados posibles o categorías con sus cantidades asociadas, desde las cuales se debe inferir casos favorables y totales.",
+      "Listados explícitos del espacio muestral en notación de conjuntos, por ejemplo S = {1, 2, 3, 4, 5, 6}.",
+      "Uso simbólico básico de eventos, por ejemplo E: 'sacar un número par', junto con la notación P(E) para expresar la probabilidad.",
+      "Expresión de la probabilidad como fracción, decimal o porcentaje, pidiendo eventualmente una conversión entre estas formas.",
+      "Situaciones con urnas o cajas descritas por texto más una pequeña tabla de composición (colores y cantidades) sin requerir gráficos.",
+      "Descripciones de ruletas divididas en sectores iguales, definidas por texto indicando la cantidad de sectores de cada tipo (sin necesidad de dibujo)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "fractions",
+      "decimals",
+      "percentages"
+    ],
+    "required_image_types": []
+  }
+}

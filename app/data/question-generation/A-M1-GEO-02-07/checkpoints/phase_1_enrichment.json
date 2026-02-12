@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del volumen de un cubo a partir de la arista usando V = a^3",
+        "Determinación de la medida de la arista de un cubo a partir de su volumen aplicando raíz cúbica en casos con resultado exacto",
+        "Uso correcto de unidades lineales y cúbicas coherentes (cm con cm³, m con m³, etc.)",
+        "Cálculos con números racionales sencillos: enteros pequeños, fracciones simples y decimales de una o dos cifras en la arista o en el volumen, siempre con raíces cúbicas exactas",
+        "Problemas de contexto cotidiano donde el objeto relevante pueda modelarse explícitamente como un cubo (caja cúbica, dado, bloque cúbico, contenedor cúbico, etc.)"
+      ],
+      "out_of_scope": [
+        "Volumen de prismas rectos, paralelepípedos, cilindros, pirámides u otros cuerpos que no sean específicamente cubos",
+        "Cálculo o comparación de áreas de superficie de cubos",
+        "Raíces cúbicas no exactas o que requieran aproximaciones numéricas o uso de calculadora",
+        "Conversión compleja de unidades de volumen entre sistemas diferentes (por ejemplo, de m³ a litros) más allá de una simple mención contextual",
+        "Figuras 3D compuestas por varios cuerpos distintos (ej. suma de volumen de un cubo y un cilindro)",
+        "Problemas que requieran teoremas de geometría espacial más avanzados (secciones, diagonales espaciales, etc.)"
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-xx: Manejo de potencias con exponente natural, incluyendo el cubo de un número racional",
+        "A-M1-NUM-02-xx: Cálculo de raíces cúbicas exactas de números racionales sencillos",
+        "A-M1-GEO-01-xx: Reconocimiento de un cubo como cuerpo geométrico y de su arista como medida lineal",
+        "A-M1-MAG-01-xx: Uso básico y coherente de unidades de longitud y volumen en el SI"
+      ],
+      "common_traps": [
+        "Confundir volumen con área y usar a^2 en lugar de a^3",
+        "Olvidar elevar la unidad de medida al cubo al calcular el volumen (escribir cm en lugar de cm³)",
+        "Incoherencia de unidades: mezclar cm con m en el mismo cálculo sin conversión explícita o correcta",
+        "Aplicar raíz cuadrada en vez de raíz cúbica al despejar la arista a partir del volumen",
+        "Interpretar el dato entregado como volumen cuando en realidad corresponde a una longitud (o viceversa) por un enunciado poco claro",
+        "Usar números que no tienen raíz cúbica exacta, forzando aproximaciones no esperadas para este átomo",
+        "Plantear contextos donde el objeto no es razonablemente cúbico, generando dudas sobre el modelo geométrico a usar"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Aristas dadas como enteros pequeños positivos (entre 1 y 10) y volumen solicitado en las mismas unidades, sin cambio de unidades",
+        "Volúmenes dados como cubos perfectos pequeños (entre 1 y 10³) donde la raíz cúbica es evidente (1, 8, 27, 64, 125, 216, 343, 512, 729, 1000)",
+        "Enunciados directos, sin contexto verbal extenso ni información irrelevante",
+        "Un solo paso de cálculo: aplicar V = a^3 o a = raíz cúbica(V) y entregar el resultado",
+        "Unidades ya expresadas correctamente en el enunciado y pedidas explícitamente en la respuesta (ej. “¿cuántos centímetros mide…?”)"
+      ],
+      "medium": [
+        "Aristas como enteros mayores o con una pequeña complejidad (ej. 12 cm, 15 cm) manteniendo el volumen como cubo perfecto dentro del rango de cálculo manual razonable",
+        "Uso de fracciones o decimales sencillos en la arista o en el volumen cuando la potencia o raíz cúbica sigue siendo exacta (ej. 0,5 m; 1/2 m; 1,5 m con volumen exacto)",
+        "Problemas en contexto (capacidad de un contenedor cúbico, número de cubitos que caben en una caja cúbica) que exigen identificar primero la arista antes de calcular el volumen o viceversa",
+        "Necesidad de un pequeño razonamiento previo: por ejemplo, deducir la arista a partir de otra magnitud equivalente dada en palabras antes de aplicar V = a^3",
+        "Incluir un cambio de unidad simple pero explícito (por ejemplo, pasar de cm a m antes o después de calcular el volumen, manteniendo relaciones sencillas como 100 cm = 1 m)"
+      ],
+      "hard": [
+        "Combinaciones de aristas o volúmenes que involucren fracciones o decimales donde sea necesario razonar sobre la potencia o raíz cúbica de un número racional (manteniendo exactitud, por ejemplo (1/2 m)^3)",
+        "Problemas de varios pasos en los que el estudiante deba comparar volúmenes de dos cubos con aristas diferentes, o decidir cuál de dos cubos tiene mayor volumen sin calcular ambos completamente de forma inmediata",
+        "Ítems que requieren interpretar una descripción indirecta de la arista o del volumen (por ejemplo, el doble de la arista de otro cubo, o el volumen es ocho veces el de un cubo dado) y usar propiedades de potencias para concluir",
+        "Contextos donde se deba deducir una arista a partir de una razón entre volúmenes de cubos (ej. un cubo tiene un volumen cuatro veces mayor que otro, encontrar relación entre aristas)",
+        "Incorporar un cambio de unidades encadenado (por ejemplo, de cm a m, y luego a m³) que obligue a un manejo cuidadoso de factores de conversión y potencias"
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar describir sólidos que no sean claramente cúbicos (por ejemplo, “caja” o “bloque” sin aclarar que es un cubo); siempre especificar “cubo”",
+      "No mezclar en el mismo ítem datos de largo, ancho y alto distintos; si se mencionan, deben indicarse iguales explícitamente para que se trate inequívocamente de un cubo",
+      "No usar expresiones como “tamaño” o “medida” sin aclarar si se refiere a la arista o al volumen; siempre nombrar explícitamente “arista” o “volumen”",
+      "Evitar contextos donde la unidad de volumen habitual sea distinta (litros) sin aclarar la equivalencia si es relevante para la tarea",
+      "No entregar datos numéricos que sugieran interpretación alternativa (por ejemplo, dar 6 cm como “medida de un lado” de una cara, pero luego hablar de “altura” sin precisar que es un cubo)",
+      "Evitar problemas donde sea necesario suponer una aproximación de raíz cúbica; en este átomo los resultados deben ser exactos",
+      "No combinar en el mismo ítem el cálculo de volumen de cubos con el de otros cuerpos si eso hace dudar sobre qué fórmula usar",
+      "Especificar siempre las unidades cuando se pregunta por arista o volumen, o indicar expresamente que la respuesta debe darse en ciertas unidades"
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_volumen_area",
+        "description": "El estudiante usa a^2 en lugar de a^3, calculando el área de una cara del cubo en vez del volumen.",
+        "how_to_address": "Plantear ítems donde se diferencie explícitamente entre área de una cara y volumen, obligando a elegir la expresión correcta y destacando que el volumen implica tres dimensiones (largo, ancho y alto)."
+      },
+      {
+        "name": "Unidades_no_cubicas",
+        "description": "Calcula correctamente a^3 numéricamente pero expresa el resultado en unidades lineales (cm, m) en lugar de cm³ o m³.",
+        "how_to_address": "Incluir alternativas distractoras con el valor numérico correcto pero con unidades incorrectas, y explicitar en el enunciado la necesidad de ‘unidades cúbicas’. Reforzar en la retroalimentación que volumen siempre requiere unidades al cubo."
+      },
+      {
+        "name": "Raiz_cuadrada_en_vez_de_cubica",
+        "description": "Al despejar la arista desde el volumen, el estudiante extrae raíz cuadrada del volumen o confunde el procedimiento.",
+        "how_to_address": "Diseñar ítems inversos claros (dado V, encontrar a) con volúmenes que sean tanto cuadrados perfectos como cubos perfectos para evidenciar el error en distractores. Resaltar en el enunciado la relación V = a^3 para guiar al estudiante hacia la raíz cúbica."
+      },
+      {
+        "name": "Desconocimiento_cubos_perfectos",
+        "description": "Dificultad para reconocer números que son cubos perfectos, llevando a cálculos erróneos o a la idea de que no hay solución exacta.",
+        "how_to_address": "Usar volúmenes con cubos perfectos muy reconocibles en ítems iniciales y ofrecer distractores que correspondan a raíces cuadradas u otros valores cercanos para forzar la discriminación. En ítems más complejos, combinar datos que permitan deducir la arista sin cálculo directo (por ejemplo, relación de múltiplos)."
+      },
+      {
+        "name": "Manejo_incorrecto_de_fracciones_y_decimales",
+        "description": "Errores al elevar al cubo cuando la arista se da como fracción o decimal, ya sea olvidando elevar el numerador y el denominador, o manejando mal las potencias de 10.",
+        "how_to_address": "Proponer ítems con fracciones sencillas (1/2, 1/3) o decimales como 0,5 donde el cálculo se pueda hacer de forma relativamente directa, y usar distractores que reflejen errores típicos (ej. elevar solo el numerador o solo el valor sin considerar la unidad)."
+      },
+      {
+        "name": "Incoherencia_de_unidades",
+        "description": "Se mezclan cm y m sin conversión adecuada o se interpreta mal el cambio de unidades, produciendo volúmenes desproporcionados.",
+        "how_to_address": "Incluir enunciados donde se explicita un cambio de unidades como parte de la tarea, con distractores que representen la conversión lineal (ej. multiplicar por 100) en vez de cúbica (ej. 100^3). La retroalimentación debe enfatizar que al cambiar la unidad lineal, el factor se eleva al cubo en el volumen."
+      }
+    ],
+    "future_targets": [
+      "Cálculo del volumen y área de superficie de prismas rectos y paralelepípedos rectangulares",
+      "Comparación y razón de volúmenes entre cuerpos geométricos similares",
+      "Modelación de situaciones de capacidad y densidad usando cuerpos geométricos más complejos",
+      "Uso de potencias y raíces en contextos geométricos más avanzados (por ejemplo, escalas de homotecia en 3D)",
+      "Resolución de problemas que involucren cuerpos compuestos y descomposición en cubos y prismas",
+      "Aplicación de conversiones de unidades de volumen en contextos de física y química (densidad, caudal, etc.)"
+    ],
+    "representation_variants": [
+      "Descripción verbal directa del cubo con la arista o el volumen indicados en el texto",
+      "Tabla que relacione diferentes valores de arista con sus volúmenes correspondientes, pidiendo completar o interpretar valores faltantes",
+      "Expresión algebraica simple de la relación V = a^3, solicitando evaluar para un valor dado de a o despejar a para un volumen dado",
+      "Contextos cotidianos (caja cúbica, dado, bloque cúbico de material, depósito cúbico) que requieran identificar la arista implícita",
+      "Comparación entre dos cubos descritos con distinta información (uno por arista, otro por volumen) para concluir cuál tiene mayor volumen o arista",
+      "Situaciones donde se dé la relación entre volúmenes de cubos y se pida deducir la relación entre sus aristas"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "perfect_cubes_small",
+      "perfect_cubes_medium",
+      "simple_fractions",
+      "simple_decimals",
+      "unit_conversions_simple"
+    ],
+    "required_image_types": []
+  }
+}

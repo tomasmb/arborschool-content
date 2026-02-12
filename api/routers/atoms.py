@@ -1,22 +1,24 @@
-"""Atoms pipeline router - structural checks, LLM validation, fix, coverage.
+"""Atoms pipeline router.
 
 Endpoints:
-    GET  /api/subjects/{subject_id}/atoms/pipeline-summary
-    GET  /api/subjects/{subject_id}/atoms/structural-checks
-    GET  /api/subjects/{subject_id}/atoms/structural-checks/saved
-    POST /api/subjects/{subject_id}/atoms/validate
-    GET  /api/subjects/{subject_id}/atoms/validate/status/{job_id}
-    GET  /api/subjects/{subject_id}/atoms/validation-results
-    POST /api/subjects/{subject_id}/atoms/fix
-    GET  /api/subjects/{subject_id}/atoms/fix/status/{job_id}
-    GET  /api/subjects/{subject_id}/atoms/coverage
+    GET  /{subject_id}/atoms/pipeline-summary
+    GET  /{subject_id}/atoms/structural-checks
+    GET  /{subject_id}/atoms/structural-checks/saved
+    POST /{subject_id}/atoms/validate
+    GET  /{subject_id}/atoms/validate/status/{job_id}
+    GET  /{subject_id}/atoms/validation-results
+    POST /{subject_id}/atoms/fix
+    GET  /{subject_id}/atoms/fix/status/{job_id}
+    GET  /{subject_id}/atoms/coverage
+    POST /{subject_id}/atoms/batch-enrich
+    GET  /{subject_id}/atoms/batch-enrich/{job_id}
 """
 
 from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from api.config import SUBJECTS_CONFIG
 from api.schemas.atom_fix_models import (
@@ -38,7 +40,12 @@ from api.schemas.atom_models import (
     StandardValidationResult,
     StructuralChecksResult,
 )
-from api.services import atom_coverage_service, atom_fix_service, atom_validation_service
+from api.services import (
+    atom_coverage_service,
+    atom_fix_service,
+    atom_validation_service,
+    batch_atom_enrichment_service,
+)
 from api.services.atom_structural_checks import (
     load_saved_results as load_saved_structural,
 )
@@ -62,9 +69,8 @@ def _validate_subject(subject_id: str) -> None:
 
 
 # -----------------------------------------------------------------
-# Pipeline summary (for tab status derivation)
+# Pipeline summary
 # -----------------------------------------------------------------
-
 
 @router.get(
     "/{subject_id}/atoms/pipeline-summary",
@@ -87,35 +93,22 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
         atom_count = len(data.get("atoms", []))
         last_gen_date = data.get("metadata", {}).get("version")
 
-    # Count standards
     standards_count = 0
     if has_standards:
-        with open(
-            get_standards_file("paes_m1_2026"), encoding="utf-8"
-        ) as f:
+        with open(get_standards_file("paes_m1_2026"), encoding="utf-8") as f:
             std_data = json.load(f)
-        std_list = (
-            std_data if isinstance(std_data, list)
-            else std_data.get("standards", [])
-        )
+        std_list = std_data if isinstance(std_data, list) else std_data.get("standards", [])
         standards_count = len(std_list)
 
-    # Check validation results
     saved = atom_validation_service.get_saved_validation_results()
     standards_validated = len(saved)
     standards_with_issues = sum(
         1 for r in saved
-        if r.get("overall_quality") == "needs_improvement"
-        or r.get("atoms_with_issues", 0) > 0
+        if r.get("overall_quality") == "needs_improvement" or r.get("atoms_with_issues", 0) > 0
     )
-
-    # Structural checks status: read from saved results on disk
     saved_structural = load_saved_structural()
-    structural_passed: bool | None = (
-        saved_structural.passed if saved_structural else None
-    )
+    structural_passed: bool | None = saved_structural.passed if saved_structural else None
 
-    # Check whether saved fix results exist on disk.
     from app.atoms.fixing.results_store import load_latest_results
     has_saved_fix = load_latest_results() is not None
 
@@ -132,9 +125,8 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
 
 
 # -----------------------------------------------------------------
-# Structural checks (synchronous, deterministic)
+# Structural checks
 # -----------------------------------------------------------------
-
 
 @router.get(
     "/{subject_id}/atoms/structural-checks",
@@ -143,10 +135,7 @@ def get_pipeline_summary(subject_id: str) -> AtomPipelineSummary:
 def get_structural_checks(
     subject_id: str,
 ) -> StructuralChecksResult:
-    """Run all deterministic structural checks on atoms.
-
-    Runs checks, persists results to disk, and returns them.
-    """
+    """Run structural checks, persist, and return results."""
     _validate_subject(subject_id)
     return run_structural_checks(subject_id)
 
@@ -158,18 +147,14 @@ def get_structural_checks(
 def get_saved_structural_checks(
     subject_id: str,
 ) -> StructuralChecksResult | None:
-    """Return previously saved structural check results.
-
-    Returns null if checks have never been run.
-    """
+    """Return previously saved structural check results."""
     _validate_subject(subject_id)
     return load_saved_structural()
 
 
 # -----------------------------------------------------------------
-# LLM validation (async job)
+# LLM validation
 # -----------------------------------------------------------------
-
 
 @router.post(
     "/{subject_id}/atoms/validate",
@@ -179,11 +164,7 @@ async def start_validation(
     subject_id: str,
     request: AtomValidationRequest,
 ) -> AtomValidationJobResponse:
-    """Start LLM validation job for atoms.
-
-    Requires structural checks to have passed first (errors = 0,
-    granularity warnings are allowed).
-    """
+    """Start LLM validation (requires structural checks passed)."""
     _validate_subject(subject_id)
 
     # Gate: structural checks must have passed
@@ -267,9 +248,8 @@ def get_validation_status(
 
 
 # -----------------------------------------------------------------
-# Saved validation results (from disk)
+# Saved validation results
 # -----------------------------------------------------------------
-
 
 @router.get(
     "/{subject_id}/atoms/validation-results",
@@ -297,9 +277,8 @@ def get_validation_results(
 
 
 # -----------------------------------------------------------------
-# LLM fix (async job)
+# LLM fix
 # -----------------------------------------------------------------
-
 
 @router.post(
     "/{subject_id}/atoms/fix",
@@ -309,10 +288,7 @@ async def start_fix(
     subject_id: str,
     request: AtomFixRequest,
 ) -> AtomFixJobResponse:
-    """Start LLM fix job for atoms with validation issues.
-
-    Requires validation to have been run and issues to exist.
-    """
+    """Start LLM fix job for atoms with validation issues."""
     _validate_subject(subject_id)
 
     # Gate: validation must have found issues
@@ -349,10 +325,7 @@ async def start_fix(
 async def apply_saved_fix(
     subject_id: str,
 ) -> AtomFixJobResponse:
-    """Apply the most recently saved dry-run fix results.
-
-    No LLM calls — just writes the already-computed changes to files.
-    """
+    """Apply saved dry-run fix results (no LLM calls)."""
     _validate_subject(subject_id)
     try:
         job_id, count = await atom_fix_service.start_apply_saved_job()
@@ -379,26 +352,16 @@ async def retry_failed_fix(
     """Retry only the actions that failed in the most recent run."""
     _validate_subject(subject_id)
     try:
-        job_id, count, cost = (
-            await atom_fix_service.start_retry_failed_job(
-                dry_run=request.dry_run,
-            )
+        job_id, count, cost = await atom_fix_service.start_retry_failed_job(
+            dry_run=request.dry_run,
         )
     except FileNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
-
     if count == 0:
-        raise HTTPException(
-            status_code=400,
-            detail="No failed actions to retry.",
-        )
-
+        raise HTTPException(status_code=400, detail="No failed actions to retry.")
     return AtomFixJobResponse(
-        job_id=job_id,
-        status="started",
-        actions_to_fix=count,
-        estimated_cost_usd=cost,
-        dry_run=request.dry_run,
+        job_id=job_id, status="started", actions_to_fix=count,
+        estimated_cost_usd=cost, dry_run=request.dry_run,
     )
 
 
@@ -447,9 +410,8 @@ def get_fix_status(
 
 
 # -----------------------------------------------------------------
-# Coverage analysis (synchronous, computed)
+# Coverage analysis
 # -----------------------------------------------------------------
-
 
 @router.get(
     "/{subject_id}/atoms/coverage",
@@ -459,3 +421,76 @@ def get_coverage(subject_id: str) -> CoverageAnalysisResult:
     """Compute coverage analysis for atoms."""
     _validate_subject(subject_id)
     return atom_coverage_service.compute_coverage(subject_id)
+
+
+# -----------------------------------------------------------------
+# Batch atom enrichment
+# -----------------------------------------------------------------
+
+@router.get("/{subject_id}/atoms/batch-enrich/estimate")
+def get_batch_enrich_estimate(
+    subject_id: str,
+    mode: str = Query("unenriched_only"),
+) -> dict:
+    """Preview atom counts and cost before starting enrichment."""
+    _validate_subject(subject_id)
+    return batch_atom_enrichment_service.get_batch_enrich_estimate(mode)
+
+
+@router.post("/{subject_id}/atoms/batch-enrich")
+async def start_batch_enrich(
+    subject_id: str,
+    body: dict | None = None,
+) -> dict:
+    """Start batch enrichment for covered atoms."""
+    _validate_subject(subject_id)
+    mode = (body or {}).get("mode", "unenriched_only")
+    if mode not in ("unenriched_only", "all"):
+        raise HTTPException(
+            status_code=400,
+            detail="mode must be 'unenriched_only' or 'all'",
+        )
+
+    job_id, count, skipped = (
+        await batch_atom_enrichment_service
+        .start_batch_enrichment(mode=mode)
+    )
+    est = batch_atom_enrichment_service.get_batch_enrich_estimate(mode)
+    return {
+        "job_id": job_id,
+        "status": "started",
+        "atoms_to_process": count,
+        "skipped": skipped,
+        "estimated_cost_usd": est["estimated_cost_usd"],
+    }
+
+
+@router.get("/{subject_id}/atoms/batch-enrich/{job_id}")
+def get_batch_enrich_status(
+    subject_id: str,
+    job_id: str,
+) -> dict:
+    """Get status of a batch enrichment job."""
+    _validate_subject(subject_id)
+    job = batch_atom_enrichment_service.get_job_status(job_id)
+    if job is None:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Job '{job_id}' not found",
+        )
+    return {
+        "job_id": job.job_id,
+        "status": job.status,
+        "total": job.total,
+        "completed": job.completed,
+        "succeeded": job.succeeded,
+        "failed": job.failed,
+        "skipped": job.skipped,
+        "current_atom": job.current_atom,
+        "results": job.results,
+        "started_at": job.started_at.isoformat(),
+        "completed_at": (
+            job.completed_at.isoformat()
+            if job.completed_at else None
+        ),
+    }

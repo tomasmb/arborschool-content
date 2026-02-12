@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de un único aumento porcentual sobre una cantidad inicial para obtener la cantidad final.",
+        "Situaciones de recargos, IVA u otros impuestos agregados a un precio base.",
+        "Subidas de sueldo, tarifas o precios expresadas como porcentaje de la cantidad inicial.",
+        "Uso explícito de ambos métodos: sumar la parte porcentual calculada al valor inicial, o multiplicar por el factor de aumento (1 + porcentaje expresado como número decimal).",
+        "Identificación del porcentaje de aumento cuando está expresado en lenguaje natural (por ejemplo, 'sube un 5%', 'se aplica un recargo de 12%')."
+      ],
+      "out_of_scope": [
+        "Aplicación de descuentos o rebajas porcentuales (esto corresponde a átomos de disminuciones porcentuales).",
+        "Aplicación de dos o más aumentos sucesivos sobre la misma cantidad.",
+        "Cálculo del porcentaje de aumento a partir de valor inicial y valor final (eso es cálculo de porcentaje, no aplicación).",
+        "Problemas que requieran interés compuesto o capitalización periódica.",
+        "Situaciones que involucren simultáneamente aumento y descuento en el mismo ítem.",
+        "Cálculos de porcentajes sobre cantidades variables o expresiones algebraicas complejas (más allá de un uso directo del factor 1 + r)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de las cuatro operaciones con números naturales y decimales.",
+        "A-M1-NUM-01-03: Transformación entre fracciones, decimales y porcentajes sencillos.",
+        "A-M1-NUM-02-01: Comprensión básica de porcentaje como 'parte de 100'.",
+        "A-M1-NUM-02-05: Cálculo de un porcentaje dado de una cantidad (sin interpretar contexto)."
+      ],
+      "common_traps": [
+        "Confundir el porcentaje de aumento con una cantidad fija y sumar directamente el número del porcentaje (por ejemplo, sumar 19 en vez de 19% de la cantidad inicial).",
+        "Olvidar que el aumento se calcula sobre la cantidad inicial indicada en el problema y no sobre otra referencia implícita.",
+        "Usar mal la conversión a decimal (por ejemplo, usar 0,19 como 19 en el factor de aumento, o escribir 1,19% en vez de 119%).",
+        "Aplicar solo el porcentaje calculado como respuesta y no el valor final (entregar el monto del aumento en vez del precio con aumento incluido).",
+        "Interpretar 'aumento de X%' como 'el nuevo valor es X% del original' en lugar de 'el nuevo valor es (100% + X%) del original'.",
+        "Aplicar un razonamiento de proporcionalidad incorrecto, por ejemplo, sumar porcentajes cuando en realidad se está comparando montos absolutos."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Porcentajes con números enteros simples (5%, 10%, 20%, 25%, 50%) aplicados a montos redondos y pequeños (por ejemplo, 1000, 2000, 5000).",
+        "Contextos directos y cotidianos con un solo dato porcentual explícito y claramente asociado al valor inicial (por ejemplo, 'IVA de 19% sobre un producto de $1000').",
+        "Enunciados donde se guía al estudiante hacia un procedimiento concreto, como 'calcula el 19% de 1000 y súmalo al precio original'.",
+        "Sin necesidad de interpretar tablas ni múltiples ítems: un solo objeto, un solo porcentaje, un solo cálculo.",
+        "Opciones de respuesta suficientemente separadas numéricamente para que los errores de redondeo o confusiones menores no generen distractores muy cercanos."
+      ],
+      "medium": [
+        "Porcentajes menos frecuentes (12%, 18%, 22%, 35%, 19%) aplicados a montos no tan redondos (por ejemplo, 1350, 27990, 8450).",
+        "Uso del factor de aumento (1 + r) de manera implícita o explícita sin guiar el procedimiento paso a paso.",
+        "Contextos con más de un dato numérico donde solo uno es relevante para el cálculo del aumento (por ejemplo, precio por unidad y número de unidades, pero el IVA se pide para el valor total).",
+        "Incorporar unidades y formatos más realistas (sueldo mensual, cuenta de restaurante, boleta con porcentaje de servicio o impuesto) que requieran una mínima interpretación del contexto.",
+        "Opciones de respuesta que incluyan como distractores el monto del aumento aislado, la suma incorrecta del porcentaje como número entero o el valor sin aumento."
+      ],
+      "hard": [
+        "Situaciones donde el porcentaje de aumento no está dado explícitamente y debe inferirse desde el lenguaje o combinando datos (por ejemplo, 'la cuenta al pagar es 19% mayor que el consumo', sin mencionar la palabra 'impuesto').",
+        "Problemas donde primero se debe calcular un subtotal y recién después aplicar el aumento porcentual (por ejemplo, sumar varios productos antes de aplicar IVA o recargo).",
+        "Montos y porcentajes que generan números decimales no exactos, obligando a manejar adecuadamente redondeos o interpretación de centavos/pesos.",
+        "Enunciados que contrastan dos posibles aumentos o tarifas, exigiendo comparar valores finales luego de aplicar distintos porcentajes de aumento a distintos montos iniciales (pero siempre con un solo aumento por cada monto).",
+        "Uso combinado de estrategias, por ejemplo, decidir si conviene aplicar el aumento por partes (10% + 5%) o usando un único factor (1,15), sin convertirlo en un problema de aumentos sucesivos.",
+        "Distractores construidos a partir de errores conceptuales finos (por ejemplo, aplicar el porcentaje al valor ya aumentado, confundir 1,19 con 0,19, interpretar el porcentaje como parte del valor final)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro sobre qué cantidad se aplica el porcentaje (por ejemplo, si se menciona un precio por unidad y un total, especificar siempre 'sobre el total' o 'sobre el precio de cada producto').",
+      "No usar frases ambiguas como 'aumentó al 20%' sin contexto; preferir 'aumentó en un 20%' para indicar claramente un aumento porcentual respecto del valor inicial.",
+      "Evitar expresiones confusas como 'se cobra un 20% más al precio final'; siempre referirse al 'precio inicial' o 'precio antes del impuesto'.",
+      "No mezclar en el mismo ítem aumentos y descuentos sin detallar claramente qué porcentaje corresponde a cuál operación (este átomo solo trata aumentos).",
+      "Evitar problemas donde el mismo porcentaje pueda interpretarse como aplicado a dos cantidades distintas si no se especifica de manera inequívoca.",
+      "No incluir formatos de boleta o factura estilizados sin etiquetas claras, que puedan generar dudas sobre qué valor es neto, bruto o con impuesto.",
+      "No usar rangos de porcentaje o expresiones vagas como 'alrededor de un 20%' en preguntas de cálculo numérico con alternativa única correcta."
+    ],
+    "error_families": [
+      {
+        "name": "Sumar_el_porcentaje_como_numero_entero",
+        "description": "El estudiante interpreta el '19%' como 19 unidades monetarias y las suma al precio original en lugar de calcular el 19% del valor inicial.",
+        "how_to_address": "Diseñar ítems donde el distractor sea precisamente el precio original más el número del porcentaje, y en la retroalimentación enfatizar que el porcentaje siempre se aplica como fracción de la cantidad inicial (por ejemplo, 19% de 1000 es 190, no 19)."
+      },
+      {
+        "name": "Confusion_en_conversión_a_decimal",
+        "description": "El estudiante usa mal la conversión del porcentaje a decimal, por ejemplo tomando 19% como 19 o usando 1,19% en lugar de 1,19 como factor de aumento.",
+        "how_to_address": "Plantear ítems que comparen diferentes factores de aumento propuestos (0,19; 1,19; 19) y pedir elegir cuál corresponde al aumento correcto, reforzando que r% = r/100 y el factor de aumento es 1 + r/100."
+      },
+      {
+        "name": "Entregar_el_monto_del_aumento_en_vez_del_valor_final",
+        "description": "El estudiante calcula correctamente el porcentaje de la cantidad inicial pero se queda con ese resultado como respuesta, sin sumarlo al valor original.",
+        "how_to_address": "Incluir opciones de respuesta que contengan tanto el monto del aumento como el valor final, y en la retroalimentación recordar que la pregunta pide el valor 'con aumento incluido' o 'precio final'."
+      },
+      {
+        "name": "Aplicar_el_porcentaje_a_la_cantidad_equivocada",
+        "description": "El estudiante aplica el aumento porcentual a un subtotal intermedio o a una cantidad parcial, no a la cantidad inicial relevante del contexto.",
+        "how_to_address": "Diseñar problemas con varios datos numéricos, destacando en la explicación qué cantidad es la base del aumento. En la retroalimentación se puede mostrar explícitamente la cadena de cálculos correcta (primero subtotal, luego aumento sobre ese subtotal definido como 'cantidad inicial' en ese paso)."
+      },
+      {
+        "name": "Interpretar_aumento_como_valor_final_igual_al_porcentaje",
+        "description": "Se confunde 'aumento de X%' con 'el nuevo valor es X% del original', usando factor X/100 en vez de (1 + X/100).",
+        "how_to_address": "Proponer ítems contrastivos donde una alternativa corresponda a aplicar factor X/100 y otra a (1 + X/100), y reforzar con ejemplos que un aumento de 20% implica 120% del valor inicial, es decir, factor 1,20."
+      },
+      {
+        "name": "Errores_de_redondeo_o_manejo_de_centavos",
+        "description": "El estudiante redondea de manera prematura o inadecuada montos con decimales, obteniendo resultados que difieren levemente del correcto.",
+        "how_to_address": "Plantear ítems donde se indique explícitamente el criterio de redondeo (por ejemplo, 'redondee al peso más cercano'), y ofrecer alternativas cercanas para que el estudiante deba aplicar correctamente el criterio al final del cálculo, no en pasos intermedios innecesarios."
+      }
+    ],
+    "future_targets": [
+      "Resolución de problemas con descuentos porcentuales y comparación entre aumentos y descuentos.",
+      "Aplicación de aumentos y disminuciones porcentuales sucesivas en contextos de precios, sueldos o tarifas.",
+      "Cálculo del porcentaje de variación a partir de valores inicial y final (porcentaje de aumento o disminución).",
+      "Manejo de interés simple y, posteriormente, interés compuesto en contextos financieros.",
+      "Análisis de promociones y ofertas combinadas (por ejemplo, 'IVA incluido', 'descuento sobre precio con impuesto').",
+      "Interpretación de variaciones porcentuales en gráficos y tablas estadísticas (porcentaje de crecimiento de una población, variación de ventas, etc.)."
+    ],
+    "representation_variants": [
+      "Enunciado verbal simple describiendo un aumento porcentual directo sobre un valor monetario (precio de un producto, sueldo, cuenta).",
+      "Tabla de precios o de sueldos antes y después del aumento, en la que falte uno de los valores a completar mediante el cálculo del aumento porcentual.",
+      "Formato de 'boleta' o 'detalle de cuenta' presentado en texto/tablas (sin imagen), donde se muestra un subtotal y un porcentaje de recargo o impuesto a aplicar para obtener el total.",
+      "Expresión algebraica o simbólica que explicite la relación entre valor inicial y final, por ejemplo P_final = P_inicial × (1 + r), solicitando calcular el valor final para un r dado.",
+      "Contextos comparativos entre dos productos o dos servicios con distintos porcentajes de recargo, requiriendo aplicar el aumento en forma separada y luego comparar los resultados.",
+      "Problemas donde se describa el aumento mediante lenguaje natural menos directo (por ejemplo, 'el valor total es un 15% mayor que el original') que deba traducirse al uso del factor 1,15."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "large_integers",
+      "decimals_two_places",
+      "simple_percentages",
+      "non_round_percentages"
+    ],
+    "required_image_types": []
+  }
+}

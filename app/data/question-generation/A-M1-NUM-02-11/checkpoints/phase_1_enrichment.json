@@ -1,0 +1,140 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas verbales donde se debe identificar qué representa la incógnita: porcentaje, parte, total, aumento o disminución porcentual.",
+        "Situaciones que requieren distinguir entre porcentaje directo (hallar la parte), porcentaje inverso (hallar el total o el porcentaje desconocido) y variación porcentual (aumentos o descuentos).",
+        "Problemas de comparación de ofertas o precios que incluyen uno o más descuentos o recargos porcentuales secuenciales, siempre que no sea necesario formalizar interés compuesto.",
+        "Contextos cotidianos o de ciencias (por ejemplo, asistencia, población, concentración de una sustancia, rendimiento, error relativo) donde se combinan lectura de datos y cálculo de porcentajes.",
+        "Interpretación de la respuesta numérica en el contexto (por ejemplo, justificar qué tienda conviene, decidir si un cambio es significativo, explicar qué representa el número obtenido)."
+      ],
+      "out_of_scope": [
+        "Cálculo formal de interés compuesto, rentas o anualidades financieras.",
+        "Problemas que exigen manejo de fórmulas financieras específicas (por ejemplo, VAN, TIR, cuotas de créditos).",
+        "Porcentajes aplicados a expresiones algebraicas complejas o con varias incógnitas simultáneas.",
+        "Problemas centrados en estadísticas avanzadas (medidas de tendencia central o dispersión) más allá del uso básico del porcentaje.",
+        "Probabilidad expresada en porcentaje cuando el foco conceptual es probabilístico y no el manejo del porcentaje en sí.",
+        "Modelamiento funcional explícito de crecimiento/decadencia exponencial (eso pertenece a funciones, no a este átomo)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de números naturales y enteros en las cuatro operaciones básicas.",
+        "A-M1-NUM-01-02: Lectura, escritura y comparación de números decimales.",
+        "A-M1-NUM-01-03: Relación entre fracciones, decimales y porcentajes (equivalencias básicas).",
+        "A-M1-NUM-02-04: Cálculo de porcentajes directos sobre una cantidad dada (porcentaje de un número).",
+        "A-M1-NUM-02-05: Cálculo inverso con porcentajes simples (encontrar el 100% conociendo un porcentaje o una parte).",
+        "A-M1-NUM-02-06: Cálculo de aumentos y disminuciones porcentuales simples en un solo paso.",
+        "A-M1-DAT-01-01: Lectura básica de tablas de datos numéricos."
+      ],
+      "common_traps": [
+        "No especificar con claridad cuál es la base del porcentaje (por ejemplo, si el descuento es sobre el precio inicial o sobre un precio ya rebajado).",
+        "Plantear porcentajes sucesivos sin dejar claro si se aplican de forma independiente o uno después del otro sobre el nuevo valor.",
+        "Usar datos irrelevantes o excesivos que resten foco a la identificación del tipo de cálculo porcentual requerido.",
+        "Formular alternativas de respuesta muy cercanas numéricamente sin indicar criterios de redondeo, generando ambigüedad.",
+        "Diseñar enunciados donde pueda interpretarse más de una magnitud como la 'cantidad total' (por ejemplo, curso vs. subgrupo) sin aclarar.",
+        "Contextos muy alejados de la experiencia típica del estudiantado o con jerga técnica que oculte el foco en el razonamiento con porcentajes."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Problemas de un solo paso donde se indica explícitamente qué se busca (por ejemplo, '¿qué porcentaje representa...?','¿cuánto es el 20% de...?','¿cuál fue el precio final?').",
+        "Datos numéricos sencillos: números enteros pequeños o múltiplos de 10, 25 o 50, que produzcan resultados exactos o decimales de una cifra.",
+        "Situaciones en las que el tipo de cálculo es evidente (por ejemplo, se enuncia explícitamente que un valor 'aumentó en un 15%' o 'disminuyó en un 30%').",
+        "Tablas o descripciones con pocos datos, sin información distractora ni necesidad de inferir la base del porcentaje.",
+        "Sin necesidad de deshacer un porcentaje (no se pide recuperar un valor original a partir de un precio ya rebajado o una cantidad final)."
+      ],
+      "medium": [
+        "Problemas de dos pasos, por ejemplo, calcular primero una parte y luego una variación porcentual, o comparar dos porcentajes aplicados a diferentes bases.",
+        "Contextos donde hay que decidir si el porcentaje se interpreta como parte de un total, como cambio relativo o como proporción respecto de otra cantidad.",
+        "Cálculos con porcentajes no triviales (por ejemplo, 17%, 22%, 12,5%) que llevan a decimales de dos cifras o fracciones simples.",
+        "Comparación de dos estrategias (por ejemplo, dos tiendas, dos planes, dos escenarios de aumento/disminución) que obliga a organizar y relacionar datos antes de calcular.",
+        "Problemas en que se debe reconstruir el total original o el porcentaje aplicado a partir de una cantidad final y de un porcentaje o variación conocidos, sin demasiados distractores."
+      ],
+      "hard": [
+        "Problemas con varios pasos encadenados donde se combinan diferentes tipos de cálculo porcentual (directo, variación y cálculo inverso) dentro de un mismo contexto.",
+        "Contextos donde el porcentaje relevante no está explícito y debe inferirse a partir de información verbal o relacional (por ejemplo, 'la asistencia fue el doble que el día anterior', 'se perdió un tercio de lo que se había ganado').",
+        "Comparación de efectos de porcentajes sucesivos o compuestos (por ejemplo, un aumento seguido de un descuento, o dos descuentos sucesivos en distinto orden) requiriendo justificar cuál escenario conviene más.",
+        "Datos numéricos menos amigables (por ejemplo, totales de tres cifras, porcentajes con decimales no obvios) que exigen estimar, organizar y redondear con criterio.",
+        "Problemas donde el distractor principal surge de razonamientos porcentuales errados pero verosímiles (como comparar solo el valor del porcentaje sin considerar la base, o confundir porcentaje de aumento con porcentaje final)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no se indica con claridad sobre qué valor se aplica el porcentaje (precio inicial, precio rebajado, cantidad total, subgrupo, etc.).",
+      "No usar expresiones vagas como 'se aplica un descuento sobre el precio anterior' si hubo varios 'precios anteriores'; precisar siempre el orden de aplicación.",
+      "No mezclar porcentajes referidos a diferentes bases en una misma frase sin especificar claramente cada base.",
+      "Evitar contextos donde 'porcentaje de aumento' pueda interpretarse como porcentaje respecto del valor inicial o respecto del valor final sin distinguirlo.",
+      "Indicar siempre la regla de redondeo cuando las alternativas difieren por la cifra decimal final o por unidad cercana.",
+      "No incluir datos superfluos que puedan ser interpretados como posibles bases del porcentaje si no son necesarios para la resolución.",
+      "Evitar unidades o contextos confusos (por ejemplo, cambiar entre porcentaje y partes por ciento sin aclarar, o mezclar porcentaje y proporción sin especificar).",
+      "No usar la misma letra o símbolo para dos cantidades distintas relacionadas con porcentajes (por ejemplo, usar 'P' para precio y también para porcentaje).",
+      "Evitar que más de una alternativa sea correcta bajo criterios distintos de redondeo o interpretación de 'aproximadamente'.",
+      "No plantear situaciones donde el dato entregado pueda confundirse con una frecuencia relativa y un porcentaje simultáneamente sin aclaración."
+    ],
+    "error_families": [
+      {
+        "name": "Base_de_porcentaje_incorrecta",
+        "description": "El estudiante aplica el porcentaje sobre la cantidad equivocada (por ejemplo, calcula el descuento sobre un precio ya rebajado en vez del precio inicial, o usa el total del curso cuando el porcentaje se refería solo a un subgrupo).",
+        "how_to_address": "Explicitar en el enunciado cuál es la base y usar distractores que muestren claramente el error de base. En la retroalimentación, enfatizar preguntarse siempre '¿de qué cantidad es este porcentaje?' y proponer representaciones en tablas que separen 'base', 'porcentaje' y 'resultado'."
+      },
+      {
+        "name": "Confusion_directo_vs_inverso",
+        "description": "Frente a un problema donde se debe recuperar el total o el porcentaje a partir de una parte, el estudiante procede como si se tratara de calcular 'el porcentaje de un número', aplicando de nuevo el porcentaje dado en lugar de deshacerlo.",
+        "how_to_address": "Incluir ítems que obliguen a decidir el tipo de cálculo antes de operar. En la retroalimentación, destacar la diferencia entre 'me dan el 100% y busco la parte' versus 'me dan la parte y busco el 100%' y usar esquemas de proporciones o “barra total-parte” para visualizarlo."
+      },
+      {
+        "name": "Variacion_en_valor_absoluto_vs_porcentual",
+        "description": "Se confunden cambios absolutos (en unidades) con cambios relativos (en porcentaje), por ejemplo, creer que un aumento del 10% de 200 y uno del 10% de 400 implican el mismo aumento real, o comparar solo la diferencia absoluta cuando la pregunta pide comparar porcentajes.",
+        "how_to_address": "En problemas de comparación, pedir expresamente justificar con porcentajes o tasa de cambio relativa. Retroalimentar mostrando tablas dobles (valor inicial, valor final, diferencia en unidades, diferencia en porcentaje) y enfatizar la lectura 'por cada 100 unidades'."
+      },
+      {
+        "name": "Porcentajes_sucesivos_mal_manejados",
+        "description": "El estudiante suma o resta porcentajes sucesivos directamente (por ejemplo, 20% de descuento y luego 10% adicional se interpretan como 30% de descuento total) sin considerar que las bases cambian.",
+        "how_to_address": "Incluir ítems donde esa estrategia lleve a un distractor típico. En la retroalimentación, mostrar el cálculo paso a paso y/o representar el proceso con una línea de tiempo de precios o una tabla con 'precio inicial', 'precio después del primer porcentaje' y 'precio final'."
+      },
+      {
+        "name": "Manejo_incorrecto_de_notacion_en_porcentajes",
+        "description": "Errores al pasar de porcentaje a número decimal o fracción (por ejemplo, tratar 20% como 0,20 pero aplicarlo como 20, o interpretar 0,2% como 0,2 en vez de 0,002).",
+        "how_to_address": "Diseñar ítems donde el cambio de representación sea necesario (de % a decimal o fracción). En la retroalimentación, reforzar la idea 'por ciento = por cada 100' y practicar la escritura 15% = 15/100 = 0,15, así como porcentajes menores que 1%."
+      },
+      {
+        "name": "Resultados_no_interpretados_en_el_contexto",
+        "description": "El estudiante obtiene un valor numérico correcto pero lo interpreta mal (por ejemplo, interpreta 0,35 como 35 estudiantes en vez de 35%, o no verifica si la respuesta es razonable respecto del contexto).",
+        "how_to_address": "Incluir alternativas que correspondan a números correctos pero mal interpretados. En la retroalimentación, promover chequeos de plausibilidad ('¿tiene sentido este número en el contexto?') y pedir que se explicite con palabras lo que representa el resultado (por ejemplo, 'esto significa que...')."
+      },
+      {
+        "name": "Desconocimiento_de_incidencia_de_redondeo",
+        "description": "Errores por redondear en pasos intermedios o por no aplicar el criterio de redondeo indicado, lo que lleva a resultados finales fuera del rango esperado.",
+        "how_to_address": "Señalar de forma explícita cómo redondear (número de decimales, aproximación al entero más cercano). En la retroalimentación, mostrar la diferencia entre redondear al final y redondear en cada paso, usando un ejemplo numérico concreto."
+      }
+    ],
+    "future_targets": [
+      "Uso de porcentajes en análisis de datos estadísticos más complejos (frecuencias relativas, tasas, proporciones en gráficos).",
+      "Comprensión de tasas de cambio en contextos funcionales (crecimientos y decrecimientos, aunque no necesariamente exponenciales).",
+      "Resolución de problemas de probabilidad con porcentajes como representación de la probabilidad o de la frecuencia relativa.",
+      "Modelamiento de situaciones financieras básicas (ahorros, descuentos sucesivos, reajustes anuales) previo al estudio formal de interés compuesto.",
+      "Análisis crítico de información numérica en medios de comunicación (encuestas, variaciones de indicadores, porcentajes de error o de participación).",
+      "Justificación y argumentación cuantitativa en contextos ciudadanos (impuestos, porcentajes de votación, distribución de recursos)."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales que describen situaciones cotidianas (compras, asistencia, encuestas, población) donde el porcentaje aparece explícitamente o debe inferirse.",
+      "Tablas de datos con totales y subgrupos (por ejemplo, curso por sexo, nivel socioeconómico, categoría de respuesta) y preguntas que exigen calcular o comparar porcentajes entre filas o columnas.",
+      "Mixtura de representaciones numéricas: porcentajes, fracciones y decimales dentro del mismo problema, obligando a traducir entre ellas para resolver.",
+      "Descripciones de antes y después (por ejemplo, 'al inicio del mes', 'luego del descuento', 'al final del año') que modelan variaciones porcentuales sucesivas.",
+      "Pequeños esquemas textuales tipo 'diagrama de barras' representados mediante texto/tablas, donde se distinguen con claridad base, porcentaje y resultado.",
+      "Enunciados con pequeñas fórmulas o expresiones simbólicas simples (por ejemplo, 'p% del precio', '0,15 del total') que requieran interpretar el símbolo de porcentaje en términos numéricos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "two_digit_integers",
+      "three_digit_integers",
+      "decimals_one_decimal_place",
+      "decimals_two_decimal_places",
+      "simple_fractions",
+      "percentages_whole",
+      "percentages_with_decimals",
+      "realistic_money",
+      "simple_ratios"
+    ],
+    "required_image_types": []
+  }
+}

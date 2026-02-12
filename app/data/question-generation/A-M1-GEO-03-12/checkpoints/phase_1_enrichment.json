@@ -1,0 +1,125 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Reconocer visualmente si la imagen de una figura se obtuvo por traslación, rotación o reflexión.",
+        "Justificar la transformación isométrica identificada usando orientación (sentido de la figura) y posición relativa.",
+        "Usar la correspondencia entre vértices homólogos para determinar el tipo de transformación.",
+        "Distinguir entre mismas figuras trasladadas, giradas o reflejadas en el plano cartesiano o en una cuadrícula sin coordenadas numéricas.",
+        "Descartar transformaciones incompatibles con la relación visual entre la figura original y su imagen."
+      ],
+      "out_of_scope": [
+        "Cálculo de matrices de transformación o uso de notación matricial.",
+        "Composición de varias transformaciones (por ejemplo, rotación seguida de traslación).",
+        "Cálculo de medidas exactas de ángulos de giro (p.ej., 37°) que requieran trigonometría.",
+        "Transformaciones no isométricas (homotecias, escalamientos, deformaciones).",
+        "Demostraciones formales de que una transformación conserva distancias o ángulos.",
+        "Uso de construcciones con compás y regla para obtener la imagen."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-03-01: Reconocimiento de figuras congruentes en el plano.",
+        "A-M1-GEO-03-02: Identificación básica de traslación como desplazamiento sin cambio de forma ni tamaño.",
+        "A-M1-GEO-03-03: Identificación básica de reflexión como inversión de orientación (efecto espejo).",
+        "A-M1-GEO-03-04: Identificación básica de rotación como giro en torno a un punto.",
+        "A-M1-GEO-01-01: Lectura e interpretación simple del plano cartesiano o de una cuadrícula."
+      ],
+      "common_traps": [
+        "Confundir una reflexión con una rotación de 180° cuando la figura es simétrica.",
+        "Asumir que cualquier cambio de posición es una traslación, ignorando cambios de orientación.",
+        "No fijarse en el orden de los vértices (sentido horario/antihorario) para diferenciar traslación de rotación.",
+        "Confundir traslación diagonal con composición de otras transformaciones más complejas.",
+        "Interpretar cambios de tamaño aparentes por perspectiva del dibujo como homotecias (no trabajar con perspectiva).",
+        "Usar ejemplos con figuras demasiado simétricas (círculos, cuadrados centrados) que no permiten distinguir claramente el tipo de transformación."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figuras sencillas y poco simétricas (por ejemplo, letras en forma de 'L', 'F', 'Γ') que hacen evidente el cambio o conservación de orientación.",
+        "Transformaciones puras y aisladas: solo una traslación clara, o un giro de 90° o 180° alrededor de un punto marcado, o una reflexión respecto de un eje claramente dibujado.",
+        "Pares de figuras ubicadas en una cuadrícula donde la correspondencia vértice a vértice es evidente.",
+        "Opciones de respuesta que solo diferencian entre tipos de isometría (traslación, rotación o reflexión) sin especificar ejes ni centros.",
+        "Enunciados que no requieren describir el procedimiento, solo seleccionar el tipo de transformación correcto."
+      ],
+      "medium": [
+        "Figuras polígonales con 4–6 vértices donde se debe analizar la orientación (sentido horario/antihorario) y la posición de varios puntos homólogos.",
+        "Rotaciones cuyo centro no está explícito pero es razonablemente inferible por la posición relativa de las figuras.",
+        "Reflexiones respecto de ejes no verticales u horizontales, pero claramente trazados en el dibujo.",
+        "Ítems que piden justificar la elección a partir de una afirmación dada (por ejemplo, escoger la explicación correcta entre alternativas).",
+        "Distractores que proponen un tipo de transformación plausible pero incompatible con la orientación observada, exigiendo análisis más fino."
+      ],
+      "hard": [
+        "Figuras con cierto grado de simetría que pueden confundirse entre reflexión y rotación si no se examina cuidadosamente la correspondencia de vértices.",
+        "Situaciones donde las figuras no están dibujadas sobre cuadrícula, obligando a inferir la transformación solo por forma, orientación relativa y alineaciones visuales.",
+        "Rotaciones con ángulos distintos de 90° o 180° (por ejemplo, 60°, 120°) cuando el giro puede deducirse por la posición de vértices alineados o por regularidad del polígono.",
+        "Ítems que requieren descartar explícitamente más de un tipo de transformación (por ejemplo, justificar por qué no puede ser ni traslación ni reflexión).",
+        "Contextos más abstractos o menos cotidianos (símbolos, figuras combinadas) donde no hay una pista semántica evidente sobre el movimiento realizado."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar figuras excesivamente simétricas (círculos, cuadrados perfectos, rectángulos centrados) cuando el tipo de transformación no quede determinado de manera única.",
+      "No usar letras o símbolos que se parezcan mucho a su reflexión (por ejemplo, 'H', 'O', 'X') sin elementos adicionales que revelen la orientación.",
+      "No mezclar en el mismo ítem composiciones de transformaciones si el ítem solo evalúa identificar una isometría simple.",
+      "Evitar ejes de reflexión o centros de rotación mal indicados o fuera del campo visible que hagan múltiples interpretaciones posibles.",
+      "No ubicar figuras demasiado cerca unas de otras cuando se puedan confundir con superposiciones parciales más que con un movimiento rígido completo.",
+      "Cuidar que la escala de las dos figuras sea exactamente la misma en el dibujo para no sugerir homotecias o deformaciones.",
+      "No usar cuadrículas deformadas o con perspectiva que puedan interpretarse como cambio de tamaño o de forma.",
+      "Evitar alternativas de respuesta que mezclen varios tipos de transformación dentro de una misma opción si el átomo solo apunta a identificar un tipo predominante."
+    ],
+    "error_families": [
+      {
+        "name": "Traslación_por_defecto",
+        "description": "El estudiante clasifica como traslación cualquier cambio de posición de la figura, sin revisar si hubo o no cambio de orientación.",
+        "how_to_address": "Diseñar ítems donde la figura cambia de orientación de forma clara y pedir que comparen el sentido de recorrido de los vértices (horario/antihorario) entre original e imagen."
+      },
+      {
+        "name": "Reflexion_vs_Rotacion_180",
+        "description": "Confusión frecuente entre una reflexión y una rotación de 180° en figuras con algún tipo de simetría (por ejemplo, rectángulos, letras casi simétricas).",
+        "how_to_address": "Incluir vértices o marcas asimétricas (puntos, flechas) y pedir que el estudiante analice la posición relativa de estas marcas para diferenciar giro de inversión especular."
+      },
+      {
+        "name": "Ignorar_correspondencia_de_vertices",
+        "description": "El estudiante mira solo la silueta general de la figura y no verifica sistemáticamente qué vértice de la imagen corresponde a cuál vértice de la original.",
+        "how_to_address": "Proponer ítems que nombren explícitamente vértices (A, B, C, ...) y preguntar por la posición de un vértice homólogo específico, insistiendo en el seguimiento punto a punto."
+      },
+      {
+        "name": "Confusion_eje_de_reflexion",
+        "description": "El estudiante identifica correctamente que hay reflexión, pero se equivoca respecto del eje (por ejemplo, cree que es sobre el eje vertical cuando es sobre una diagonal).",
+        "how_to_address": "Usar figuras con ejes de reflexión claramente dibujados y pedir escoger cuál eje funciona como espejo, reforzando la idea de igual distancia al eje y alineación perpendicular."
+      },
+      {
+        "name": "Centro_de_rotacion_mal_inferido",
+        "description": "Al enfrentar una rotación, el estudiante no logra ubicar razonablemente el centro de giro y, por eso, clasifica erróneamente la transformación.",
+        "how_to_address": "Proponer actividades donde el centro de rotación esté marcado o pueda inferirse por intersección de segmentos que unen puntos homólogos, y pedir que lo identifiquen antes de nombrar la transformación."
+      },
+      {
+        "name": "Desatencion_a_la_orientacion_global",
+        "description": "El estudiante observa la ubicación de uno o dos puntos, pero no revisa la orientación global de la figura (por ejemplo, hacia dónde 'apunta' una flecha o una letra).",
+        "how_to_address": "Usar figuras con elementos direccionales (flechas, manos de reloj, flechas en polígonos) y solicitar explícitamente comparar hacia dónde apuntan antes y después de la transformación."
+      }
+    ],
+    "future_targets": [
+      "Identificación y descripción de composiciones de isometrías (por ejemplo, reflexión seguida de traslación).",
+      "Uso de lenguaje algebraico o matricial para representar transformaciones isométricas en el plano cartesiano.",
+      "Demostraciones de congruencia de figuras mediante secuencias de transformaciones rígidas.",
+      "Resolución de problemas de simetrías en mosaicos, teselaciones y patrones mediante rotaciones y reflexiones.",
+      "Análisis de transformaciones en contextos de funciones (por ejemplo, traslación y reflexión de gráficos de funciones).",
+      "Estudio de isometrías como movimientos del plano en geometría más avanzada (grupos de simetría)."
+    ],
+    "representation_variants": [
+      "Figuras sobre cuadrícula regular donde se puedan contar desplazamientos entre vértices homólogos.",
+      "Figuras en plano cartesiano con coordenadas de algunos puntos indicadas para apoyar la identificación de la transformación.",
+      "Silhuetas de letras o símbolos asimétricos (L, F, G, figuras con flechas) para hacer evidente la orientación.",
+      "Polígonos irregulares con vértices rotulados (A, B, C, ...) para facilitar el seguimiento de correspondencias.",
+      "Escenarios cotidianos esquematizados (ascensor, portón que se abre, espejo, manecilla de reloj) que representen movimientos isométricos simples.",
+      "Figuras con ejes de reflexión o centros de rotación dibujados explícitamente cuando el foco es justificar por qué esa es la transformación correcta."
+    ],
+    "numbers_profiles": [
+      "no_numbers",
+      "small_integers"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

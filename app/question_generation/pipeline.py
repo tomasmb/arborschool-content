@@ -1,8 +1,4 @@
-"""Atom question generation pipeline orchestrator.
-
-Sequences phases 0-10 from the v3.1 spec with prerequisite
-enforcement, checkpoint persistence, and image generatability gates.
-"""
+"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-10)."""
 
 from __future__ import annotations
 
@@ -11,6 +7,7 @@ from pathlib import Path
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.question_feedback.pipeline import QuestionPipeline
+from app.question_generation.artifacts import clean_stale_artifacts
 from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
@@ -19,6 +16,7 @@ from app.question_generation.helpers import (
     check_prerequisites,
     find_resume_phase_group,
     load_atom,
+    load_existing_fingerprints,
     load_phase_state,
     print_pipeline_header,
     print_pipeline_summary,
@@ -116,6 +114,9 @@ class AtomQuestionPipeline:
 
         print_pipeline_header(atom_id)
 
+        # Clean stale downstream artifacts before running
+        clean_stale_artifacts(atom_id, self._config.phase)
+
         # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)
         if ctx is None:
@@ -210,7 +211,10 @@ class AtomQuestionPipeline:
 
         # Phases 5-6 — Dedupe + Base Validation
         items = base_items or []
-        deduped = self._phase_5_dedupe(items, result)
+        existing_fps = load_existing_fingerprints(atom_id)
+        deduped = self._phase_5_dedupe(
+            items, result, existing_fingerprints=existing_fps,
+        )
         if deduped is None:
             return result
         result.total_passed_dedupe = len(deduped)
@@ -265,10 +269,6 @@ class AtomQuestionPipeline:
             p.success for p in result.phase_results
         )
         return result
-
-    # ------------------------------------------------------------------
-    # Phase implementations
-    # ------------------------------------------------------------------
 
     def _phase_0_inputs(
         self, atom_id: str, result: PipelineResult,
@@ -333,9 +333,11 @@ class AtomQuestionPipeline:
         result: PipelineResult,
     ) -> list[PlanSlot] | None:
         """Phases 2-3: Plan generation + validation."""
+        dist = self._config.planned_distribution
+
         # Phase 2: Generate plan
         gen_phase = self._planner.generate_plan(
-            ctx, enrichment, self._config.pool_size,
+            ctx, enrichment, dist,
         )
         result.phase_results.append(gen_phase)
         if not gen_phase.success:
@@ -344,9 +346,7 @@ class AtomQuestionPipeline:
         plan_slots: list[PlanSlot] = gen_phase.data
 
         # Phase 3: Validate plan
-        val_phase = validate_plan(
-            plan_slots, ctx, self._config.pool_size,
-        )
+        val_phase = validate_plan(plan_slots, ctx, dist)
         result.phase_results.append(val_phase)
         if not val_phase.success:
             return None
@@ -400,9 +400,14 @@ class AtomQuestionPipeline:
         self,
         items: list[GeneratedItem],
         result: PipelineResult,
+        existing_fingerprints: set[str] | None = None,
     ) -> list[GeneratedItem] | None:
         """Phase 5: Deterministic duplicate gate."""
-        phase = self._dedupe_gate.run(items)
+        phase = self._dedupe_gate.run(
+            items,
+            existing_fingerprints=existing_fingerprints,
+            pool_total=result.total_planned or len(items),
+        )
         result.phase_results.append(phase)
 
         if not phase.success:
@@ -487,10 +492,6 @@ class AtomQuestionPipeline:
 
         if phase.success:
             result.total_synced = len(items)
-
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
 
     def _get_output_dir(self, atom_id: str) -> Path:
         """Get the output directory for this atom's generation run."""

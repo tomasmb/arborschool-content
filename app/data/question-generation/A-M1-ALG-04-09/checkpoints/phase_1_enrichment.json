@@ -1,0 +1,141 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas verbales de contexto cotidiano, financiero sencillo, geométrico básico o de ciencias escolares que se modelan con EXACTAMENTE un sistema de dos ecuaciones lineales con dos incógnitas.",
+        "Situaciones donde las dos incógnitas representan cantidades reales concretas (número de objetos, montos de dinero, tiempos, longitudes, edades, etc.).",
+        "Formulación explícita del sistema 2x2 a partir del texto: elección de variables, escritura de las dos ecuaciones lineales y asociación clara con las condiciones del problema.",
+        "Resolución algebraica completa del sistema 2x2 mediante sustitución, igualación o reducción, sin preferencia por un método específico salvo que el ítem lo indique.",
+        "Interpretación contextual de la solución numérica obtenida: identificación de qué representa cada valor en el contexto planteado.",
+        "Validación de la solución considerando restricciones del contexto (no negatividad, integridad cuando se habla de objetos contables, coherencia con totales, unidades correctas).",
+        "Problemas en que se deba descartar soluciones algebraicamente posibles pero contextualmente inválidas (por ejemplo, valores negativos de cantidad de productos o longitudes).",
+        "Contextos donde los datos relevantes estén explícitos en el enunciado, posiblemente mezclados con información irrelevante que el estudiante deba filtrar."
+      ],
+      "out_of_scope": [
+        "Sistemas con más de dos incógnitas o más de dos ecuaciones (3x3 o superiores).",
+        "Sistemas no lineales (con términos cuadráticos, productos de incógnitas, raíces o funciones no lineales).",
+        "Problemas que se resuelven de manera natural con una sola ecuación o una sola incógnita, sin necesidad auténtica de un sistema 2x2.",
+        "Uso de métodos exclusivamente gráficos o numéricos (tablas, calculadora) como vía principal de resolución del sistema.",
+        "Análisis teórico de sistemas (clasificación general de sistemas compatibles, incompatibles, dependientes) sin anclaje en un contexto específico.",
+        "Aplicación de matrices, determinantes o métodos propios de álgebra lineal universitario para resolver el sistema.",
+        "Modelación de fenómenos que requieran ecuaciones diferenciales, funciones no lineales avanzadas u optimización formal.",
+        "Preguntas puramente de traducción simbólica (por ejemplo, solo pedir escribir las ecuaciones sin llegar a resolver el sistema o sin interpretar la solución)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-04-05",
+        "A-M1-ALG-04-06",
+        "A-M1-ALG-04-07"
+      ],
+      "common_traps": [
+        "Redactar el contexto de forma que más de un sistema 2x2 razonable parezca válido, generando múltiples interpretaciones del modelamiento.",
+        "Incluir relaciones verbales ambiguas como \"el doble de uno es mayor que el otro\" sin precisar si se trata de igualdad, diferencia fija u otra relación cuantitativa.",
+        "Usar datos numéricos que conducen a soluciones fraccionarias cuando el contexto sugiere fuertemente que las cantidades deberían ser enteras, sin aclarar que pueden aceptarse valores no enteros.",
+        "Diseñar problemas donde la verificación contextual de la solución no cambie nada (por ejemplo, todas las soluciones posibles son automáticamente válidas) y, por tanto, no se evalúa realmente la etapa de validación.",
+        "Mezclar unidades de medida sin claridad (por ejemplo, metros y centímetros en la misma ecuación) generando errores de modelamiento por conversión implícita.",
+        "Plantear totales o relaciones que dependan de interpretaciones temporales confusas (por ejemplo, edades \"hace algunos años\" sin indicar claramente el desfase temporal).",
+        "Construir enunciados demasiado extensos y narrativos en los que la información relevante para el sistema quede oculta o resulte difícil de aislar para un estudiante de nivel M1."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Contexto muy familiar y directo (compra y venta simple, distribución de objetos, mezclas básicas) con un objetivo claramente explicitado en la última oración.",
+        "Variables sugeridas de forma casi explícita en el enunciado (por ejemplo, \"la cantidad de entradas de adulto y de niño\"), con solo dos cantidades desconocidas relevantes.",
+        "Datos numéricos pequeños y fáciles de operar (enteros positivos menores o iguales a 20) que generan una solución entera y no negativa para ambas incógnitas.",
+        "Relaciones lineales directas y transparentes (sumas, restas, proporciones sencillas) sin necesidad de reorganizar información ni hacer inferencias adicionales.",
+        "Sistema con solución única donde NO es necesario descartar soluciones ni aplicar restricciones adicionales aparte de la no negatividad evidente.",
+        "Ningún dato irrelevante o distractor: cada número dado participa directamente en alguna de las ecuaciones del sistema."
+      ],
+      "medium": [
+        "Contextos cotidianos algo más elaborados (promociones, tarifas combinadas, situaciones con dos tipos de precios o dos momentos en el tiempo).",
+        "Necesidad de identificar variables sin que estén nombradas explícitamente, pero con pistas claras en el texto (por ejemplo, distinguir entre cantidad y precio unitario).",
+        "Presencia de información irrelevante o de un dato que solo sirve para verificación, lo que obliga a seleccionar qué números usar en el sistema.",
+        "Coeficientes y términos independientes que pueden incluir decimales simples (tenths o hundredths típicos de dinero) o resultar en soluciones fraccionarias razonables en contexto (por ejemplo, metros, litros).",
+        "Requerimiento explícito de verificar si la solución tiene sentido en el contexto, incluyendo la posibilidad de descartar una solución negativa o incompatible con una condición (por ejemplo, mínimo o máximo dado).",
+        "Posible exigencia de reexpresar una ecuación a partir de una descripción menos directa (por ejemplo, compromiso entre dos totales o uso de una relación tipo \"el largo es 3 más que el ancho\")."
+      ],
+      "hard": [
+        "Enunciados con mayor densidad de información, donde las dos ecuaciones se obtienen de condiciones repartidas en distintos párrafos o momentos del problema.",
+        "Contextos donde alguna relación no es inmediatamente evidente y requiere una pequeña cadena de razonamientos previos (por ejemplo, trabajar con perímetros o tiempos que dependen de velocidades dadas).",
+        "Datos numéricos que llevan a soluciones fraccionarias menos intuitivas o con signos de menos durante el proceso algebraico, manteniendo una solución final coherente con el contexto.",
+        "Presencia de más de una solución algebraicamente posible que debe ser evaluada y filtrada de acuerdo con restricciones contextuales (por ejemplo, rangos admitidos, enteridad requerida, límites máximos).",
+        "Uso de combinaciones de información tipo \"antes y después\" o \"escenario A y escenario B\" donde el estudiante debe reconocer que esas dos situaciones generan las dos ecuaciones del sistema.",
+        "Necesidad de interpretar la solución no solo como valores de las variables, sino también de derivar a partir de ellos otra cantidad pedida en la pregunta (por ejemplo, una diferencia, un promedio o un nuevo total).",
+        "Problemas en que un pequeño error de modelamiento (confundir qué variable corresponde a qué cantidad, permutar coeficientes asociados a precio y cantidad) produce resultados numéricos plausibles pero incorrectos, exigiendo una verificación consciente."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar descripciones verbales que puedan generar más de una ecuación plausible para la misma condición, por ejemplo, frases como \"entre ambas cantidades hay 10 de diferencia\" sin especificar claramente qué cantidad es mayor.",
+      "No usar expresiones cotidianas vagas como \"varias veces más\" o \"mucho más que\"; usar en su lugar multiplicadores numéricos exactos (\"3 veces más\", \"el doble\").",
+      "Precisar siempre la unidad de medida asociada a cada dato numérico (pesos, metros, litros, horas, años, etc.) para evitar confusiones en la modelación.",
+      "Evitar contextos donde existan más de dos cantidades desconocidas razonables para el estudiante, a menos que el texto delimite explícitamente que solo dos deben modelarse.",
+      "No mezclar en la redacción de las ecuaciones términos como \"precio total\" y \"precio de cada uno\" sin nombrarlos claramente o sin indicar a cuál se refiere cada número.",
+      "Evitar situaciones límite donde una cantidad podría ser cero o negativa sin aclarar si eso tiene o no sentido en el contexto (por ejemplo, \"número de entradas\" nunca debería aceptar cero como opción correcta si el texto sugiere que hubo una compra efectiva).",
+      "No introducir supuestos culturales o conocimientos extramatemáticos (sobre salarios, tarifas reales, datos físicos específicos) que puedan no ser compartidos por todos los estudiantes y afecten la interpretación del contexto.",
+      "Evitar que el texto permita asumir otra estructura de resolución (por ejemplo, cálculo directo con una sola ecuación) que no requiera realmente el uso de un sistema 2x2."
+    ],
+    "error_families": [
+      {
+        "name": "Modelamiento_invertido_de_variables",
+        "description": "El estudiante define las variables de forma poco clara o las confunde, asignando un significado a x e y que luego no coincide con la forma en que construye las ecuaciones, lo que produce un sistema incoherente o una interpretación invertida de la solución.",
+        "how_to_address": "Indicar explícitamente en los enunciados qué representa cada variable cuando el ítem ya provee el sistema, o pedir al estudiante que elija variables con nombres sugerentes (por ejemplo, a de adulto, n de niño). Incluir en alternativas de respuesta opciones que correspondan a confundir el orden de las variables para poder diagnosticar el error."
+      },
+      {
+        "name": "Confusion_entre_totales_y_precios_unitarios",
+        "description": "El estudiante suma o multiplica de manera incorrecta precios unitarios y cantidades, o trata montos totales como si fueran precios unitarios en la ecuación.",
+        "how_to_address": "Diseñar enunciados que distingan nítidamente \"cantidad\" y \"precio por unidad\" mediante vocabulario consistente y ejemplos en el texto. En el análisis de alternativas, incluir opciones que muestren exactamente este error de mezcla entre totales y unitarios para hacer visible la confusión."
+      },
+      {
+        "name": "Ecuacion_de_condicion_mal_planteada",
+        "description": "Una de las dos ecuaciones del sistema refleja de forma incorrecta una relación textual (por ejemplo, se utiliza suma en lugar de resta al traducir una diferencia, o se invierte el orden de la diferencia).",
+        "how_to_address": "Proponer problemas donde cada condición sea corta y se pueda relacionar claramente con la ecuación asociada. En ítems de opción múltiple, considerar alternativas que representen ecuaciones típicamente mal planteadas, de manera que el feedback posterior pueda enfatizar la correcta traducción de \"diferencia\", \"más que\", \"menos que\"."
+      },
+      {
+        "name": "Errores_de_algebra_en_el_metodo",
+        "description": "El estudiante elige un método de resolución correcto (sustitución, igualación, reducción), pero comete errores mecánicos de signo, distribución, transposición de términos o operaciones con coeficientes y términos independientes.",
+        "how_to_address": "Asegurarse de que los números no sean innecesariamente complejos en ítems que pretendan centrarse en el modelamiento. En la construcción de distractores, incluir resultados que se obtienen de errores de signo o de operaciones mal efectuadas para poder discriminar entre dificultades de modelamiento y de cálculo algebraico."
+      },
+      {
+        "name": "No_validar_restricciones_del_contexto",
+        "description": "El estudiante acepta cualquier solución algebraicamente correcta, incluso si incluye valores negativos para cantidades físicas, números no enteros donde deben ser enteros, o resultados que contradicen datos implícitos del contexto (por ejemplo, menor que un mínimo indicado).",
+        "how_to_address": "Incorporar ítems en los que la solución algebraica brinde al menos un valor que deba ser descartado por el contexto, y que la pregunta explícitamente solicite la respuesta válida en la situación real. Incluir distractores que contengan la solución algebraica sin filtrar para detectar a quienes omiten la validación contextual."
+      },
+      {
+        "name": "Interpretacion_incompleta_de_la_solucion",
+        "description": "El estudiante resuelve el sistema correctamente pero responde con los valores de las variables en lugar de contestar lo que la pregunta realmente pide (por ejemplo, da x e y, pero el ítem pregunta por una suma, una diferencia o un valor derivado).",
+        "how_to_address": "Formular claramente la pregunta final destacando la magnitud requerida. En ítems de alternativa múltiple, incluir como distractores las parejas (x, y) correctas pero sin aplicar el último paso de interpretación, para visibilizar el salto pendiente entre solución algebraica y respuesta contextual."
+      },
+      {
+        "name": "Uso_innecesario_de_un_solo_enfoque",
+        "description": "El estudiante intenta forzar un único método de resolución (por ejemplo, sustitución) incluso en situaciones donde conduce a fracciones incómodas, aumentando las probabilidades de error y la carga de cálculo.",
+        "how_to_address": "Variar los enunciados para que algunos favorezcan claramente un método por sobre otro (por ejemplo, ecuaciones ya despejadas para sustitución, o coeficientes fácilmente cancelables para reducción) y enfatizar en las orientaciones docentes la elección estratégica de métodos."
+      }
+    ],
+    "future_targets": [
+      "Modelamiento y resolución de sistemas de ecuaciones lineales con más de dos incógnitas en contextos más complejos.",
+      "Aplicación de sistemas de ecuaciones en problemas de funciones lineales y cuadráticas, incluyendo intersección de gráficos y análisis de puntos de corte.",
+      "Formulación de modelos algebraicos para problemas de optimización elemental (maximizar o minimizar cantidades sujetas a restricciones lineales).",
+      "Uso de representaciones matriciales y métodos de álgebra lineal elemental para resolver sistemas de ecuaciones en niveles posteriores.",
+      "Resolución de problemas contextualizados que combinen ecuaciones, inecuaciones y sistemas en un mismo escenario.",
+      "Análisis crítico de modelos matemáticos: comparación entre diferentes formas de modelar una misma situación y evaluación de sus alcances y limitaciones.",
+      "Trabajo con modelos lineales en física y ciencias (por ejemplo, mezclas, balance de masas, relaciones entre magnitudes físicas) que requieran más formalización."
+    ],
+    "representation_variants": [
+      "Enunciado puramente verbal donde todas las condiciones aparecen integradas en un texto continuo.",
+      "Problemas donde parte de la información se presenta en forma de tabla (por ejemplo, tipos de entradas y precios) y debe ser traducida a ecuaciones.",
+      "Situaciones con dos escenarios comparativos (por ejemplo, compra en dos días, dos combinaciones de productos) donde cada escenario corresponde a una ecuación del sistema.",
+      "Enunciados que ya proporcionan el sistema de ecuaciones y piden interpretar la solución en el contexto dado.",
+      "Problemas donde se da una ecuación ya establecida y el estudiante debe deducir la segunda ecuación a partir de un nuevo dato contextual.",
+      "Contextos geométricos verbales (rectángulos, perímetros, relaciones entre lados) sin necesidad de figura, donde las longitudes se modelan como variables en el sistema.",
+      "Situaciones relacionadas con el tiempo (velocidad, tiempo, distancia) expresadas en palabras que se transforman en dos ecuaciones lineales."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "non_negative_integers",
+      "contextual_decimals_dinero",
+      "simple_decimals_medidas",
+      "simple_fractions_contextuales"
+    ],
+    "required_image_types": []
+  }
+}

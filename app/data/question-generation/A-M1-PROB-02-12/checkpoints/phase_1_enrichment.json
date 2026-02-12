@@ -1,0 +1,142 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas contextualizados (cotidianos, sociales, científicos simples) que requieran calcular media aritmética, mediana, moda y/o rango.",
+        "Situaciones donde se debe decidir entre dos o más alternativas usando comparaciones de medidas de tendencia central y rango.",
+        "Problemas en que se deba actualizar una medida (por ejemplo, media o rango) al agregar o quitar un dato del conjunto.",
+        "Interpretación de qué significa el valor obtenido de media, mediana, moda o rango dentro del contexto dado (decisiones, juicios, conclusiones).",
+        "Selección justificada de la medida más adecuada para responder la pregunta del contexto (por ejemplo, preferir la mediana por presencia de valores extremos)."
+      ],
+      "out_of_scope": [
+        "Cálculo o interpretación de varianza, desviación estándar u otras medidas de dispersión más allá del rango.",
+        "Lectura o interpretación directa de gráficos estadísticos (barras, histograma, torta, boxplot, dispersión); eso pertenece a átomos de representación gráfica de datos.",
+        "Problemas de probabilidad (experimentos aleatorios, combinatoria, leyes de probabilidad).",
+        "Inferencia estadística, muestreo, error muestral, intervalos de confianza o contrastes de hipótesis.",
+        "Tareas puramente procedimentales sin contexto (por ejemplo: 'calcula la media de estos números' sin una situación de la vida diaria o ciencias).",
+        "Problemas que involucren ecuaciones complejas o modelos funcionales que no se centren en medidas de tendencia central y rango.",
+        "Uso de promedios ponderados con pesos muy elaborados o múltiples etapas de ponderación ajenas al nivel M1."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-02-01: Comprensión de conjuntos de datos discretos y lectura de tablas de frecuencia simples.",
+        "A-M1-PROB-02-02: Cálculo de media aritmética para un conjunto de datos sin agrupar.",
+        "A-M1-PROB-02-03: Cálculo de mediana para un conjunto de datos pequeño, ordenado o desordenado.",
+        "A-M1-PROB-02-04: Identificación y cálculo de la moda en conjuntos con una o más categorías numéricas.",
+        "A-M1-PROB-02-05: Cálculo de rango como diferencia entre valor máximo y mínimo.",
+        "A-M1-NUM-01-xx: Operaciones básicas con números enteros y decimales (suma, resta, multiplicación y división).",
+        "A-M1-NUM-02-xx: Interpretación de porcentajes y fracciones simples en contextos cotidianos."
+      ],
+      "common_traps": [
+        "Plantear problemas donde la información entregada no coincide con la medida que se pide (por ejemplo, pedir mediana pero solo entregar una media ya calculada, sin acceso a los datos originales).",
+        "Enunciados que no indican claramente si los datos son todos los existentes o solo una muestra, cuando eso afecta la interpretación de la media o del rango.",
+        "Contextos donde los datos son incompatibles con la realidad (por ejemplo, promedios de notas fuera de la escala chilena, edades imposibles, tiempos negativos) sin que eso sea parte intencional del problema.",
+        "Confundir promedio simple con promedio ponderado sin explicitarlo; por ejemplo, usar notas con diferente importancia sin mencionar los pesos.",
+        "Plantear situaciones en que más de una alternativa es razonable según distintas medidas, sin especificar qué criterio estadístico se debe priorizar, generando respuestas múltiples.",
+        "Usar el término 'promedio' cuando en realidad se requiere mediana o moda, creando ambigüedad sobre qué medida calcular.",
+        "Problemas donde el rango no cambia aunque se modifiquen datos intermedios, pero el ítem sugiera que sí debería cambiar, induciendo a razonamiento incorrecto."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Conjuntos de datos pequeños (entre 4 y 8 valores) dados explícitamente en forma de lista o tabla simple, sin necesidad de reorganizarlos de manera compleja.",
+        "Cálculo de una sola medida de tendencia central o del rango, claramente indicada en el enunciado, con operaciones aritméticas directas.",
+        "Contextos cotidianos muy familiares (notas escolares, cantidad de hermanos, número de libros, puntajes de un juego) donde la interpretación es inmediata.",
+        "Decisiones simples que se reducen a comparar un valor calculado con un umbral explícito (por ejemplo, comparar un promedio con una nota mínima de aprobación).",
+        "Datos sin valores extremos ni casos límite (no hay empates particulares en la mediana, ni múltiples modas, ni datos repetidos ambiguos)."
+      ],
+      "medium": [
+        "Conjuntos de datos de tamaño moderado (entre 8 y 15 valores) donde sea necesario ordenar o clasificar antes de calcular la mediana o identificar la moda.",
+        "Situaciones donde se deben calcular y/o comparar dos medidas (por ejemplo, media y rango, o media y mediana) para tomar una decisión entre dos opciones.",
+        "Contextos menos inmediatos (por ejemplo, tiempos de atención en servicios, rendimientos de plantas, temperaturas diarias) que requieren interpretar qué representa cada medida.",
+        "Problemas en que se agrega o elimina uno o dos datos simples, y se pide determinar el efecto en la media o en el rango sin rehacer todos los cálculos desde cero.",
+        "Casos donde surgen particularidades básicas: conjuntos bimodales, mediana entre dos valores, rango que no cambia pese a modificaciones intermedias, y el estudiante debe notarlo."
+      ],
+      "hard": [
+        "Problemas donde parte de la información se presenta de forma resumida (por ejemplo, se entrega la cantidad de datos y una media preexistente) y se debe incorporar un nuevo dato para determinar una media actualizada o reconstruir parcial o totalmente el conjunto.",
+        "Situaciones en las que se deben comparar varias alternativas considerando más de una medida simultáneamente (por ejemplo, elegir el servicio 'más conveniente' analizando media y rango de tiempos de espera para tres servicios).",
+        "Contextos con presencia explícita de valores atípicos, donde se requiere argumentar cuál medida de tendencia central es más adecuada para describir el conjunto.",
+        "Problemas que exigen razonar sobre el efecto cualitativo de cambios en los datos (por ejemplo, agregar un valor alto, disminuir el máximo, duplicar todos los datos) sobre media, mediana, moda y rango, sin pedir solo un cálculo directo.",
+        "Ítems donde la información está distribuida en varios párrafos o tablas, y el estudiante debe seleccionar qué datos son relevantes para el cálculo e interpretación de las medidas."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar la palabra 'promedio' sin especificar que se refiere a la media aritmética, especialmente en contextos donde la mediana podría ser interpretada como 'valor promedio'.",
+      "Indicar siempre con claridad si el cálculo de la media debe ser simple (todos los datos con el mismo peso) o si hay ponderaciones; en este último caso, explicitar los pesos.",
+      "En situaciones con posibles múltiples modas, aclarar si se busca 'una moda' cualquiera, 'todas las modas' o si se aceptará una respuesta que mencione que el conjunto es multimodal.",
+      "Especificar la unidad de medida (minutos, horas, pesos, grados Celsius, etc.) y usarla de forma consistente en todo el ítem, incluyendo alternativas de respuesta.",
+      "Cuando se trabaja con notas u otros rangos acotados, explicitar el mínimo y máximo posibles si es relevante (por ejemplo, escala de notas chilena de 1,0 a 7,0).",
+      "Evitar contextos en que más de una decisión pueda considerarse razonable según diferentes criterios (por ejemplo, una opción con menor media pero también menor rango) sin indicar con qué criterio se debe tomar la decisión.",
+      "No mezclar datos de distintos grupos sin etiquetarlos claramente (por ejemplo, 'grupo A' y 'grupo B') para que la asociación dato-grupo siempre sea inequívoca.",
+      "Si se modifica el conjunto de datos (agregar/quitar valores), describir explícitamente en qué momento se realiza el cambio y para qué cálculo debe considerarse la nueva versión del conjunto."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir medidas de tendencia central",
+        "description": "El estudiante calcula o interpreta una medida distinta a la solicitada, por ejemplo, calcula la media cuando se pide la mediana, o toma la moda como si fuera el promedio.",
+        "how_to_address": "Redactar con precisión el nombre de la medida y reforzar en los distractores los errores típicos (por ejemplo, incluir como alternativa la media cuando se pidió mediana) para poder diagnosticarlos; usar contextos donde la diferencia entre las medidas sea significativa para la interpretación."
+      },
+      {
+        "name": "Procedimiento incorrecto de la media",
+        "description": "Errores al calcular la media: no sumar todos los datos, dividir por un número incorrecto de datos, o confundir suma con promedio de subgrupos.",
+        "how_to_address": "Incluir datos en cantidad moderada y con valores que permitan distinguir si se dividió por la cantidad correcta; ofrecer alternativas que reflejen divisiones por n-1, n+1 o por subconjuntos para identificar la fuente del error."
+      },
+      {
+        "name": "Mediana mal determinada",
+        "description": "No ordenar los datos, o manejar incorrectamente el caso de cantidad par de datos (elige uno de los dos centrales en vez de promediar, o promedia datos incorrectos).",
+        "how_to_address": "Diseñar ítems donde el orden original de los datos no sea ascendente, de modo que se requiera ordenar; incluir conjuntos con cantidad par de elementos y distractores construidos a partir de elegir solo uno de los dos valores centrales."
+      },
+      {
+        "name": "Identificación errónea de la moda",
+        "description": "Confundir la moda con el dato máximo o mínimo, o no identificar correctamente el dato más frecuente, especialmente cuando las frecuencias son cercanas o hay bimodalidad.",
+        "how_to_address": "Usar tablas o listas donde el dato máximo no es el más frecuente y donde haya datos repetidos; incluir distractores con el máximo y el mínimo para evidenciar el error conceptual."
+      },
+      {
+        "name": "Cálculo incorrecto del rango",
+        "description": "Calcular la suma entre máximo y mínimo, o usar datos intermedios en vez de extremo mayor y menor.",
+        "how_to_address": "Construir conjuntos donde la suma máximo+mínimo dé un número notablemente diferente del verdadero rango; usar distractores que incluyan esa suma para identificar el error; en el enunciado, recordar que el rango se define como 'diferencia entre el valor mayor y el menor'."
+      },
+      {
+        "name": "Desconexión entre cálculo y contexto",
+        "description": "El estudiante realiza correctamente los cálculos pero elige una alternativa que no responde a la pregunta contextual (por ejemplo, calcula la media pero no la compara con el criterio de aprobación).",
+        "how_to_address": "Asegurar que las alternativas reflejen tanto errores de cálculo como de interpretación; incluir al menos una alternativa con el valor correcto pero con interpretación incorrecta, y otra con valor aproximado pero con buena justificación contextual."
+      },
+      {
+        "name": "No considerar el efecto de nuevos datos",
+        "description": "Ignorar cómo cambia la media, mediana, moda o rango cuando se agrega o quita un dato, asumiendo que se mantiene igual o que siempre aumenta/disminuye.",
+        "how_to_address": "Plantear situaciones de actualización de datos e incluir distractores que supongan invariancia de la medida; pedir comparaciones cualitativas ('mayor, menor o igual') para destacar el razonamiento sobre el efecto del cambio."
+      },
+      {
+        "name": "Selección inadecuada de la medida para decidir",
+        "description": "Elegir una alternativa basada en una medida poco representativa del conjunto (por ejemplo, usar la media en presencia de un valor extremo muy alto o muy bajo).",
+        "how_to_address": "Diseñar ítems donde el uso de una medida inadecuada lleve a una conclusión claramente menos razonable; en las alternativas, incluir opciones que correspondan a usar la medida 'equivocada' para que se pueda diagnosticar y retroalimentar este error."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y uso de medidas de dispersión más avanzadas, como varianza y desviación estándar, para analizar la variabilidad de datos.",
+      "Lectura e interpretación de gráficos estadísticos (barras, histogramas, boxplots, diagramas de dispersión) que presentan media, mediana y rangos de manera visual.",
+      "Toma de decisiones informadas en contextos de incertidumbre que integren probabilidad y estadística descriptiva básica.",
+      "Análisis crítico de información estadística en medios de comunicación (promedios, 'valores típicos', datos extremos) y detección de posibles sesgos.",
+      "Introducción a la inferencia estadística básica (muestreo, estimación de parámetros, comparación de grupos) apoyada en la comprensión de medidas de tendencia central.",
+      "Modelación de fenómenos cotidianos a partir de datos recogidos, resumen estadístico e interpretación de esos resúmenes para formular conclusiones y predicciones simples."
+    ],
+    "representation_variants": [
+      "Situaciones descritas solo en lenguaje verbal donde los datos aparecen incrustados en el texto (por ejemplo, una lista de notas o tiempos mencionados en un relato).",
+      "Tablas de datos con individuos en filas y una sola variable numérica en columnas (por ejemplo, tiempos, puntajes, temperaturas).",
+      "Listas ordenadas o desordenadas de valores numéricos, donde el orden no necesariamente coincida con el requerido para calcular la mediana.",
+      "Resúmenes estadísticos parciales que entregan alguna medida ya calculada (por ejemplo, se da la media y el rango) y se pide completar o actualizar otra medida.",
+      "Comparaciones entre dos conjuntos de datos presentados en tablas separadas, donde se deben calcular e interpretar medidas para cada conjunto.",
+      "Contextos con categorización básica (por ejemplo, grupo A y grupo B, curso mañana y curso tarde) que permitan comparar medidas de tendencia central y rango entre grupos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "decimal_numbers_1dp",
+      "decimal_numbers_2dp",
+      "simple_fractions",
+      "percentages",
+      "realistic_data_values"
+    ],
+    "required_image_types": []
+  }
+}

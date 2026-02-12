@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación en un diagrama de cajón de los cinco números resumen: mínimo, Q1, mediana (Q2), Q3 y máximo.",
+        "Reconocer visualmente qué segmento del gráfico corresponde a la caja (entre Q1 y Q3) y que representa el 50% central de los datos.",
+        "Lectura de valores aproximados de los cinco números resumen a partir de la escala numérica del gráfico.",
+        "Interpretar la ubicación relativa de la mediana dentro de la caja (centrada, más cercana a Q1 o a Q3) en términos cualitativos de simetría/asimetría.",
+        "Reconocer las partes básicas del diagrama: bigotes, caja, línea de la mediana."
+      ],
+      "out_of_scope": [
+        "Construcción de diagramas de cajón a partir de datos o tablas de frecuencias.",
+        "Cálculo de cuartiles, mediana o mínimos/máximos desde datos crudos.",
+        "Comparación detallada de dos o más diagramas de cajón (por ejemplo, concluir sobre cuál grupo es más variable o cuál tiene mayor mediana).",
+        "Identificación y tratamiento de valores atípicos (outliers) con criterios formales (1,5·RIQ, etc.).",
+        "Cálculo numérico del rango, rango intercuartil o varianza/desviación estándar a partir del gráfico.",
+        "Interpretaciones probabilísticas avanzadas (por ejemplo, probabilidades exactas usando el diagrama).",
+        "Contextualizaciones complejas que exijan modelar una situación con un diagrama de cajón (solo se lee/identifica)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-01-01: Lectura de la recta numérica y ubicación aproximada de valores.",
+        "A-M1-PROB-02-01: Comprensión básica de mediana como medida de posición central en un conjunto de datos.",
+        "A-M1-PROB-02-02: Idea intuitiva de cuartil (división de los datos en cuatro partes con igual cantidad de observaciones).",
+        "A-M1-NUM-01-02: Interpretación de números enteros y decimales en contextos cotidianos."
+      ],
+      "common_traps": [
+        "Confundir el valor mínimo y máximo con los bordes de la caja, en vez de con las puntas de los bigotes.",
+        "Interpretar la longitud de los bigotes como si representaran frecuencias absolutas en lugar de rangos de valores.",
+        "Pensar que todos los datos están dentro de la caja y no comprender que hay datos también entre el mínimo y Q1, y entre Q3 y el máximo.",
+        "Creer que la mediana siempre está justo al centro geométrico de la caja; asumir simetría donde no necesariamente la hay.",
+        "Leer la escala equivocadamente (por ejemplo, confundir unidades cuando el eje avanza de 2 en 2, 5 en 5, etc.).",
+        "Interpretar la caja como un intervalo cerrado continuo de valores posibles en vez del rango que contiene el 50% central de las observaciones.",
+        "Tomar el rango intercuartil como Q3 − mínimo o máximo − Q1, en vez de Q3 − Q1."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "El diagrama tiene escala claramente marcada con números enteros consecutivos o saltos simples (por ejemplo, de 1 o 2 unidades).",
+        "Solo se pide identificar un elemento aislado del diagrama (por ejemplo, señalar el valor de la mediana o del mínimo).",
+        "Los cinco números resumen son enteros pequeños y coinciden exactamente con marcas de la escala.",
+        "Las opciones de respuesta difieren claramente (evitando distractores demasiado cercanos en la escala).",
+        "No se exige interpretar la posición relativa de la mediana, solo leer valores."
+      ],
+      "medium": [
+        "Se pide identificar o comparar dos o tres de los cinco números resumen a la vez (por ejemplo, mínimo y Q3).",
+        "La escala puede tener saltos regulares mayores (por ejemplo, de 5 en 5 o de 10 en 10) y se requiere interpolar de forma sencilla (valores que caen en marcas intermedias claras).",
+        "Se requiere reconocer que la caja representa el 50% central de los datos e identificar el intervalo correspondiente en la escala.",
+        "Se pide una interpretación cualitativa de la posición de la mediana dentro de la caja (por ejemplo, afirmar si está más cerca de Q1 o de Q3).",
+        "Las opciones incluyen distractores que mezclan bigotes con bordes de la caja o que intercambian cuartiles."
+      ],
+      "hard": [
+        "El diagrama presenta escala con marcaciones no unitarias y valores que no coinciden exactamente con las marcas, obligando a estimar posición (por ejemplo, un valor aproximadamente entre 22 y 24).",
+        "Se deben identificar todos los cinco números resumen o deducir uno a partir de información parcial descrita en el enunciado.",
+        "Se exige interpretar simultáneamente la caja y los bigotes para responder (por ejemplo, escoger el rango donde se ubica el 50% central y luego compararlo con el rango total).",
+        "Se pide un juicio cualitativo más sutil sobre la distribución a partir de la posición de la mediana (por ejemplo, concluir si la parte superior de los datos es más dispersa que la inferior).",
+        "Las opciones de respuesta incluyen valores numéricamente cercanos y confusiones típicas entre cuartiles, obligando a una lectura muy precisa del gráfico."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar diagramas de cajón sin escala numérica visible o con marcas ilegibles; siempre debe ser posible leer o estimar los valores pedidos.",
+      "Evitar gráficos donde el mínimo o máximo coinciden visualmente con los bordes de la caja sin una separación clara, para no confundir bigotes con extremos de la caja.",
+      "No mezclar en la misma pregunta convenciones distintas sobre cómo se representan los bigotes (por ejemplo, a veces hasta valores atípicos, otras solo hasta mínimo/máximo) sin explicitarlo.",
+      "Evitar contextos donde la palabra 'caja' pueda interpretarse de manera literal (ejemplo, cajas físicas) sin aclarar que se habla del diagrama de cajón.",
+      "No usar escalas no uniformes o mal proporcionadas que hagan que distancias iguales en el dibujo representen saltos distintos en la variable.",
+      "No ubicar la mediana en un lugar tan cercano a Q1 o Q3 que resulte indistinguible cuál está más próximo, especialmente si la resolución gráfica es baja.",
+      "Evitar opciones de respuesta que usen términos vagos como 'cerca de' o 'más o menos' sin un rango numérico explícito cuando se espera un valor concreto.",
+      "No mezclar en la misma figura símbolos de outliers (puntos aislados) si el ítem no va a trabajar con ellos; si aparecen, deben explicarse claramente o eliminarse."
+    ],
+    "error_families": [
+      {
+        "name": "confusion_bigotes_caja",
+        "description": "El estudiantado identifica erróneamente los extremos de la caja (Q1 y Q3) como mínimo y máximo, ignorando el rol de los bigotes.",
+        "how_to_address": "Incluir ítems que pidan explícitamente señalar mínimo y Q1 en el mismo gráfico, forzando a diferenciar visualmente bigotes y bordes de la caja, y acompañar de descripciones textuales como 'hasta dónde se extienden los bigotes' en el enunciado."
+      },
+      {
+        "name": "mediana_mal_ubicada",
+        "description": "Se interpreta la mediana como el centro geométrico de la caja o se confunde con el promedio, sin considerar su posición real en el diagrama.",
+        "how_to_address": "Diseñar preguntas que comparen la posición de la mediana dentro de la caja (por ejemplo, 'más cerca de Q1 que de Q3') sin requerir cálculo, reforzando la idea de que la línea de la mediana puede estar desplazada."
+      },
+      {
+        "name": "escala_mal_leida",
+        "description": "Lectura incorrecta de valores por no considerar el tamaño del salto entre marcas del eje (confundir de 2 en 2 con de 5 en 5, por ejemplo).",
+        "how_to_address": "Usar ítems que destaquen la escala en el eje (por ejemplo, preguntando primero cuál es el salto entre marcas) y luego pedir un valor de un cuartil o de la mediana, obligando a usar conscientemente la escala."
+      },
+      {
+        "name": "caja_no_es_50_por_ciento",
+        "description": "Creencia de que la caja contiene todos los datos o que representa la mayoría sin asociarla específicamente al 50% central.",
+        "how_to_address": "Plantear preguntas conceptuales donde se deba elegir una afirmación sobre qué porcentaje de datos está dentro de la caja, con distractores como 'todos los datos' o 'la mayoría de los datos', para enfatizar el 50% central."
+      },
+      {
+        "name": "riq_mal_interpretado",
+        "description": "Confusión sobre qué intervalo representa el rango intercuartil, tomándolo como desde el mínimo a Q3 o desde Q1 al máximo.",
+        "how_to_address": "Incluir ítems donde se muestren varios intervalos marcados en la escala y se pida seleccionar cuál corresponde al 50% central de los datos (Q1 a Q3), para fijar visualmente el concepto."
+      },
+      {
+        "name": "simetria_asumida",
+        "description": "El estudiantado asume que la distribución es simétrica solo porque la caja parece visualmente equilibrada, sin fijarse en la posición exacta de la mediana y la longitud de los bigotes.",
+        "how_to_address": "Proponer diagramas donde la simetría visual no sea perfecta y pedir juicios cualitativos sobre si hay más dispersión hacia valores altos o bajos, obligando a observar bigotes y posición de la mediana."
+      }
+    ],
+    "future_targets": [
+      "Interpretación y comparación de distribuciones mediante dos o más diagramas de cajón (por ejemplo, comparar grupos o cursos).",
+      "Análisis de dispersión utilizando rango y rango intercuartil como medidas gráficas de variabilidad.",
+      "Identificación e interpretación de valores atípicos a partir de diagramas de cajón enriquecidos.",
+      "Toma de decisiones informadas en contextos de datos (por ejemplo, evaluar cuál grupo presenta resultados más homogéneos) usando representaciones gráficas.",
+      "Conexión entre representaciones tabulares de datos (frecuencias) y su representación como diagrama de cajón.",
+      "Lectura crítica de gráficos estadísticos en medios de comunicación, reconociendo posibles manipulaciones de escala o de representación.",
+      "Comprensión más avanzada de distribuciones (asimetría, colas largas) usando la posición relativa de cuartiles y bigotes."
+    ],
+    "representation_variants": [
+      "Diagrama de cajón horizontal con eje numérico en la parte inferior.",
+      "Diagrama de cajón vertical con eje numérico a la izquierda o derecha.",
+      "Diagrama de cajón con todos los cinco números resumen alineados claramente con marcas de la escala.",
+      "Diagrama de cajón donde algunos valores están entre marcas de la escala, requiriendo estimación visual simple.",
+      "Diagramas de cajón múltiples en el mismo eje (dos cajas una al lado de la otra) solo para lectura de los elementos de UNA de ellas, sin pedir comparación detallada.",
+      "Diagramas de cajón con o sin indicación de valores atípicos, siempre que estos últimos no sean el foco del ítem.",
+      "Situaciones contextualizadas (por ejemplo, puntajes de pruebas, alturas, tiempos) donde el diagrama de cajón representa una variable concreta, pero la tarea sigue siendo solo de lectura/identificación."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "large_integers",
+      "simple_decimals",
+      "rounded_values"
+    ],
+    "required_image_types": [
+      "statistical_chart"
+    ]
+  }
+}

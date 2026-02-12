@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
+import tempfile
 import threading
 import uuid
 from datetime import datetime, timezone
@@ -17,6 +19,11 @@ from typing import Any
 from api.schemas.api_models import JobStatus, PipelineDefinition, PipelineParam
 from api.services.pipeline_definitions import PIPELINE_PARAMS, PIPELINES
 from app.utils.paths import JOBS_DIR, REPO_ROOT
+
+# Use the same Python interpreter that's running this server (the venv one).
+# This avoids "python not found" on systems where only python3 exists,
+# and ensures subprocesses have access to venv packages.
+_PYTHON = sys.executable
 
 # -----------------------------------------------------------------------------
 # Job management
@@ -34,21 +41,45 @@ def _job_file(job_id: str) -> Path:
 
 
 def _load_job(job_id: str) -> JobStatus | None:
-    """Load a job from disk."""
+    """Load a job from disk.
+
+    Handles transient empty files caused by concurrent writes
+    by returning None instead of raising JSONDecodeError.
+    """
     path = _job_file(job_id)
     if not path.exists():
         return None
-    with open(path, encoding="utf-8") as f:
-        data = json.load(f)
+    try:
+        text = path.read_text(encoding="utf-8").strip()
+        if not text:
+            return None
+        data = json.loads(text)
+    except (json.JSONDecodeError, OSError):
+        return None
     return JobStatus(**data)
 
 
 def _save_job(job: JobStatus) -> None:
-    """Save job state to disk."""
+    """Save job state to disk atomically.
+
+    Writes to a temp file in the same directory, then renames.
+    Rename is atomic on POSIX, preventing readers from seeing
+    a truncated/empty file.
+    """
     _ensure_jobs_dir()
     path = _job_file(job.job_id)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(job.model_dump(), f, indent=2, default=str)
+    # Write to temp file in same dir so rename is same-filesystem
+    fd, tmp_path = tempfile.mkstemp(
+        dir=str(JOBS_DIR), suffix=".tmp",
+    )
+    try:
+        with open(fd, "w", encoding="utf-8") as f:
+            json.dump(job.model_dump(), f, indent=2, default=str)
+        Path(tmp_path).replace(path)
+    except BaseException:
+        # Clean up temp file on any error
+        Path(tmp_path).unlink(missing_ok=True)
+        raise
 
 
 class PipelineRunner:
@@ -151,14 +182,14 @@ class PipelineRunner:
 
     def _cmd_standards_gen(self, params: dict[str, Any]) -> list[str]:
         """Build command for standards generation."""
-        cmd = ["python", "-m", "app.standards.run_single_eje"]
+        cmd = [_PYTHON, "-m", "app.standards.run_single_eje"]
         if params.get("eje"):
             cmd.extend(["--eje", params["eje"]])
         return cmd
 
     def _cmd_atoms_gen(self, params: dict[str, Any]) -> list[str]:
         """Build command for atoms generation."""
-        cmd = ["python", "-m", "app.atoms.scripts.generate_all_atoms"]
+        cmd = [_PYTHON, "-m", "app.atoms.scripts.generate_all_atoms"]
         if params.get("eje"):
             cmd.extend(["--eje", params["eje"]])
         if params.get("standard_ids"):
@@ -173,7 +204,7 @@ class PipelineRunner:
 
     def _cmd_pdf_split(self, params: dict[str, Any]) -> list[str]:
         """Build command for PDF splitting."""
-        cmd = ["python", "-m", "app.pruebas.pdf-splitter.main"]
+        cmd = [_PYTHON, "-m", "app.pruebas.pdf-splitter.main"]
         if params.get("pdf_path"):
             cmd.append(params["pdf_path"])
         if params.get("output_dir"):
@@ -182,7 +213,7 @@ class PipelineRunner:
 
     def _cmd_pdf_to_qti(self, params: dict[str, Any]) -> list[str]:
         """Build command for PDF to QTI conversion."""
-        cmd = ["python", "-m", "app.pruebas.pdf-to-qti.scripts.process_test"]
+        cmd = [_PYTHON, "-m", "app.pruebas.pdf-to-qti.scripts.process_test"]
         if params.get("test_id"):
             cmd.extend(["--test", params["test_id"]])
         if params.get("question_ids"):
@@ -201,7 +232,7 @@ class PipelineRunner:
 
     def _cmd_tagging(self, params: dict[str, Any]) -> list[str]:
         """Build command for tagging."""
-        cmd = ["python", "-m", "app.tagging.batch_runner"]
+        cmd = [_PYTHON, "-m", "app.tagging.batch_runner"]
         if params.get("test_id"):
             cmd.extend(["--test", params["test_id"]])
         if params.get("question_ids"):
@@ -211,7 +242,7 @@ class PipelineRunner:
     def _cmd_variant_gen(self, params: dict[str, Any]) -> list[str]:
         """Build command for variant generation."""
         cmd = [
-            "python", "-m", "app.question_variants.run_variant_generation",
+            _PYTHON, "-m", "app.question_variants.run_variant_generation",
             "--source-test", params.get("test_id", ""),
         ]
         if params.get("question_ids"):
@@ -223,15 +254,13 @@ class PipelineRunner:
     def _cmd_question_gen(self, params: dict[str, Any]) -> list[str]:
         """Build command for question generation."""
         cmd = [
-            "python", "-m",
+            _PYTHON, "-m",
             "app.question_generation.scripts.run_generation",
             "--atom-id", params.get("atom_id", ""),
         ]
         phase = params.get("phase", "all")
         if phase and phase != "all":
             cmd.extend(["--phase", phase])
-        if params.get("pool_size"):
-            cmd.extend(["--pool-size", str(params["pool_size"])])
         if params.get("dry_run") == "true":
             cmd.append("--dry-run")
         return cmd

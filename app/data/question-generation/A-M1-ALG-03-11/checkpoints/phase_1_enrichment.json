@@ -1,0 +1,147 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de inecuaciones lineales de una variable usando suma y resta de términos en ambos lados, manteniendo el mismo símbolo de desigualdad.",
+        "Uso de inversos aditivos para aislar la incógnita (por ejemplo, sumar o restar el mismo número en ambos lados).",
+        "Multiplicación y división de ambos lados de la inecuación por números reales POSITIVOS, manteniendo el sentido de la desigualdad.",
+        "Inecuaciones con coeficiente positivo de la incógnita (incluye fracciones o decimales positivos).",
+        "Inecuaciones con términos constantes negativos siempre que las operaciones clave de despeje multiplicativo/divisivo sean por números positivos.",
+        "Inecuaciones con la incógnita presente en uno o en ambos lados de la desigualdad, siempre lineales.",
+        "Expresión de la solución en forma simbólica básica: x > a, x ≥ a, x < a, x ≤ a.",
+        "Verificación simple de soluciones sustituyendo un valor en la inecuación."
+      ],
+      "out_of_scope": [
+        "Multiplicar o dividir la inecuación por números NEGATIVOS o por expresiones de signo desconocido (lo que implicaría invertir el sentido).",
+        "Inecuaciones que requieran despeje que obligatoriamente pase por multiplicar o dividir por un número negativo como paso central.",
+        "Inecuaciones cuadráticas, racionales, con valor absoluto u otras no lineales.",
+        "Sistemas de inecuaciones (conjunción de dos o más inecuaciones) y su representación conjunta.",
+        "Representaciones gráficas de la solución en la recta numérica o en el plano cartesiano.",
+        "Problemas que exijan notación avanzada de intervalos o solución en forma de intervalo semiabierto/cerrado como foco principal.",
+        "Uso de técnicas gráficas (como analizar intersección de rectas) para resolver la inecuación.",
+        "Modelamiento complejo de situaciones en contexto donde lo principal sea traducir el lenguaje verbal a inecuaciones más que el procedimiento de resolución."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01: Dominio de operaciones básicas con números enteros y decimales (suma, resta, multiplicación, división).",
+        "A-M1-ARIT-01-02: Manejo de números negativos e inversos aditivos.",
+        "A-M1-ALG-01-01: Uso de propiedades de igualdad y desigualdad al sumar o restar el mismo número en ambos lados.",
+        "A-M1-ALG-02-01: Resolución de ecuaciones lineales simples de una variable usando suma, resta, multiplicación y división por positivos.",
+        "A-M1-ALG-03-10: Comprensión básica del significado de los símbolos <, >, ≤, ≥ en inecuaciones simples."
+      ],
+      "common_traps": [
+        "Interpretar la inecuación como si fuera una ecuación, pensando que tiene una única solución puntual y no un conjunto infinito de valores.",
+        "Aplicar de manera incorrecta las operaciones con números negativos en las constantes, generando errores aritméticos que cambian el valor límite.",
+        "Confundir el rol del símbolo de desigualdad (<, >, ≤, ≥), llegando a conclusiones opuestas (por ejemplo, confundir x > 5 con x < 5).",
+        "Olvidar escribir el símbolo correcto de desigualdad en la respuesta final, cambiándolo inadvertidamente durante el procedimiento.",
+        "Perder la variable al transponerla de un lado a otro (por ejemplo, al restar x en ambos lados) y terminar con una frase numérica sin incógnita.",
+        "Confundir la solución algebraica requerida (por ejemplo, x > 3) con la sustitución de un valor ejemplo (como x = 4).",
+        "Error al manipular coeficientes fraccionarios o decimales positivos, especialmente al dividir por una fracción.",
+        "En contextos verbales, interpretar erróneamente expresiones como 'al menos', 'a lo más', 'más de', 'menos que', lo que lleva a escoger el símbolo equivocado."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones lineales de un solo paso con la incógnita en un solo lado y coeficiente 1, por ejemplo x + a < b o x - a > b con a y b enteros pequeños positivos.",
+        "Inecuaciones que se resuelven aplicando solo una operación aditiva (suma o resta) sin necesidad de multiplicar o dividir.",
+        "Inecuaciones que requieren como máximo dos pasos, con multiplicación o división por un número entero positivo sencillo (2, 3, 4, 5, 10).",
+        "Números pequeños, preferentemente enteros positivos, sin fracciones ni decimales.",
+        "Formulaciones simbólicas directas, sin contexto verbal ni interpretación adicional."
+      ],
+      "medium": [
+        "Inecuaciones lineales que requieren al menos dos o tres pasos, combinando suma/resta y luego multiplicación/división por un número positivo.",
+        "Presencia de la incógnita en ambos lados de la desigualdad, exigiendo trasladar términos con la variable y constantes de un lado a otro.",
+        "Coeficientes positivos de la incógnita diferentes de 1 (por ejemplo, 2x, 5x, 0,5x) que requieren dividir por un número positivo para aislar x.",
+        "Uso de fracciones o decimales POSITIVOS relativamente simples (por ejemplo, 1/2, 1/3, 0,2, 0,25) en coeficientes o constantes.",
+        "Inecuaciones con paréntesis que exigen aplicar distributiva con factor positivo antes de resolver.",
+        "Problemas verbales breves donde la traducción a la inecuación es directa (una sola inecuación, lineal, sin matices lingüísticos complejos) y luego se resuelve algebraicamente."
+      ],
+      "hard": [
+        "Inecuaciones lineales con varios pasos donde la incógnita aparece en ambos lados, existen paréntesis y requiere aplicar distributiva con coeficientes positivos y luego combinar términos semejantes.",
+        "Coeficientes positivos fraccionarios o decimales menos amigables (por ejemplo, 3/4, 2/5, 1,6) que obligan a multiplicar o dividir por dichas cantidades para aislar la variable, siempre manteniendo coeficientes positivos.",
+        "Constantes negativas mezcladas con positivas que provocan varias etapas de simplificación sin que la clave esté en el cambio de sentido (que no aplica en este átomo), sino en cuidar la aritmética.",
+        "Inecuaciones dadas en una forma menos habitual, por ejemplo con el término en x al lado derecho (a < 2x + b), que exigen reorganizar mentalmente sin perder el sentido.",
+        "Situaciones de contexto donde hay que interpretar correctamente expresiones como 'al menos', 'no supera', 'más de', etc., para construir UNA inecuación lineal sencilla y luego resolverla con el procedimiento del átomo.",
+        "Ítems que pidan comparar soluciones de dos inecuaciones resueltas (por ejemplo, decidir cuál conjunto de soluciones es mayor) exigiendo un manejo fluido del procedimiento y del significado del símbolo de desigualdad, siempre sin uso de operaciones por negativos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar contextos verbales donde expresiones del lenguaje cotidiano puedan interpretarse con más de un símbolo de desigualdad plausible sin más aclaración (por ejemplo, 'aproximadamente', 'como máximo' sin datos claros).",
+      "No usar preguntas donde no quede explícito si el extremo debe incluirse o no, cuando se pida expresar la solución solo como desigualdad (usar formulaciones verbales claras: 'al menos', 'estrictamente mayor que', 'no menos que').",
+      "No combinar en el mismo ítem varias inecuaciones encadenadas (por ejemplo, a < x < b) si el foco del átomo es la resolución de una sola inecuación lineal; esto puede confundir el criterio de corrección.",
+      "Evitar números excesivamente grandes o poco habituales que hagan dudar si hay error tipográfico, ya que aquí el foco es el procedimiento y no la magnitud.",
+      "No usar un contexto que sugiera que la respuesta debe ser un número específico cuando en realidad se espera un conjunto infinito de soluciones expresado como desigualdad.",
+      "Evitar notaciones de intervalo o representación gráfica en la recta numérica como respuesta obligatoria, ya que pertenecen a otros átomos.",
+      "No plantear inecuaciones donde, al simplificar correctamente sin error, se requiera multiplicar o dividir por un número NEGATIVO o por una expresión de signo desconocido, pues esto sale del alcance de este átomo.",
+      "Evitar símbolos parecidos o mezclas (por ejemplo, '=<', '=>') que puedan generar confusión en estudiantes y en la corrección automática; usar siempre <, >, ≤, ≥."
+    ],
+    "error_families": [
+      {
+        "name": "Tratar la inecuación como ecuación con una sola solución",
+        "description": "El estudiante resuelve como si buscara un único valor que hace verdadera la desigualdad, o verifica solo un valor y lo da como respuesta.",
+        "how_to_address": "Explicitar en el ítem que se requiere 'todos los valores de x que cumplen...' y en retroalimentación resaltar que una inecuación lineal describe un rango continuo de soluciones, no un valor aislado."
+      },
+      {
+        "name": "Cambio indebido del símbolo de desigualdad",
+        "description": "El estudiante cambia < por > o viceversa durante el procedimiento sin haber efectuado ninguna operación que lo justifique (por ejemplo, al sumar en ambos lados).",
+        "how_to_address": "Incluir en explicaciones intermedias que sumar o restar el mismo número en ambos lados y multiplicar o dividir por números positivos NO cambia el sentido; pedir que revisen cada paso verificando que el símbolo se conserve."
+      },
+      {
+        "name": "Mala interpretación del símbolo final",
+        "description": "El estudiante obtiene correctamente una expresión como x > 5 pero interpreta que x puede ser menor que 5, o elige alternativas contradictorias.",
+        "how_to_address": "Incorporar ítems que pidan interpretar verbalmente la solución (por ejemplo, 'números mayores que 5') y reforzar la lectura correcta de los símbolos de desigualdad en la retroalimentación."
+      },
+      {
+        "name": "Errores aritméticos con enteros y negativos",
+        "description": "Fallas al sumar o restar números negativos o al simplificar constantes (por ejemplo, -3 + 7 mal calculado), lo que altera el valor límite de la solución.",
+        "how_to_address": "Separar en la explicación el paso algebraico del cálculo numérico, mostrando claramente la operación con enteros y recordando reglas de signos; proponer sustitución de un valor para comprobar si la solución mantiene la desigualdad."
+      },
+      {
+        "name": "Manipulación incorrecta de fracciones y decimales positivos",
+        "description": "Errores al dividir por fracciones positivas (por ejemplo, dividir por 1/2) o al convertir entre fracción y decimal, lo que produce un límite equivocado.",
+        "how_to_address": "Recordar que dividir por 1/2 equivale a multiplicar por 2, usar ejemplos concretos en la explicación y, cuando sea posible, mantener fracciones sin convertir a decimal para reducir errores intermedios."
+      },
+      {
+        "name": "Pérdida de la incógnita al trasladar términos",
+        "description": "Al restar o sumar términos con x en ambos lados, el estudiante elimina la variable en un lado sin mantenerla correctamente en el otro, llegando a una afirmación numérica que no sabe interpretar.",
+        "how_to_address": "Mostrar paso a paso la operación con la variable en ambos lados, enfatizar la conservación de la x y, si queda una afirmación solo numérica (como 3 < 5), explicar cómo se interpreta (soluciones infinitas o ninguna) aunque este no sea el caso típico esperado."
+      },
+      {
+        "name": "Selección incorrecta del símbolo al modelar desde lenguaje verbal",
+        "description": "Al traducir expresiones como 'al menos', 'a lo más', 'más de', el estudiante elige el símbolo incorrecto, aunque luego resuelva bien la inecuación planteada.",
+        "how_to_address": "En retroalimentación, mapear explícitamente cada expresión verbal a su símbolo correspondiente y dar contraejemplos que muestren por qué la elección equivocada cambia el conjunto de soluciones."
+      },
+      {
+        "name": "No simplificar completamente la expresión",
+        "description": "El estudiante se queda en una forma intermedia (por ejemplo, 2x > 10) y no realiza el último paso para dejar x aislada, o entrega una expresión equivalente pero poco estándar.",
+        "how_to_address": "Recordar en el enunciado o en ejemplos que la meta es aislar x, y en la retroalimentación mostrar la forma final esperable (x > 5) explicando que expresiones con x sin aislar dificultan la interpretación de las soluciones."
+      }
+    ],
+    "future_targets": [
+      "Resolución de inecuaciones lineales que implican multiplicar o dividir por números negativos, invirtiendo el sentido de la desigualdad.",
+      "Resolución de sistemas de inecuaciones lineales y representación de sus soluciones en la recta numérica.",
+      "Representación gráfica de soluciones de inecuaciones y sistemas de inecuaciones en el plano.",
+      "Modelación de situaciones más complejas del mundo real mediante inecuaciones y sistemas de inecuaciones.",
+      "Resolución de inecuaciones cuadráticas y racionales por métodos algebraicos y gráficos.",
+      "Trabajo con valor absoluto en inecuaciones, que requiere desdoblar en casos y analizar rangos de soluciones.",
+      "Análisis de funciones lineales mediante desigualdades (por ejemplo, comparar f(x) y g(x) usando inecuaciones)."
+    ],
+    "representation_variants": [
+      "Inecuación simbólica directa en lenguaje algebraico, del tipo ax + b > c o ax + b ≥ cx + d con a > 0.",
+      "Enunciados verbales cortos que describen una condición tipo 'al menos', 'más de', 'no supera', que el estudiante debe traducir a una inecuación lineal simple y luego resolver.",
+      "Comparación verbal de dos expresiones lineales (por ejemplo, costo A mayor que costo B) que se traduce a una inecuación algebraica lineal con coeficientes positivos.",
+      "Tabla o resumen numérico donde se observa que una variable debe ser mayor o menor que cierto valor, y se pide escribir y resolver la inecuación asociada (aunque sin necesidad de gráficos).",
+      "Equivalencia entre distintas formas simbólicas de la misma solución (por ejemplo, 2x > 10 y x > 5) para reforzar la idea de despejar completamente la incógnita."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers_in_constants",
+      "simple_positive_decimals",
+      "simple_positive_fractions",
+      "unit_fractions",
+      "positive_rational_coefficients"
+    ],
+    "required_image_types": []
+  }
+}

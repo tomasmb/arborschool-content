@@ -1,0 +1,118 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar el coeficiente de posición n en ecuaciones de rectas de la forma y = mx + n.",
+        "Interpretar n como el valor inicial de la función o valor de la variable dependiente cuando x = 0.",
+        "Relacionar n con el punto de intersección (0, n) en el eje Y en el plano cartesiano.",
+        "Reconocer en un gráfico de una función lineal el valor de n a partir del corte con el eje Y.",
+        "Interpretar n en contextos de modelación sencilla (por ejemplo, costo fijo, saldo inicial, valor de partida)."
+      ],
+      "out_of_scope": [
+        "Rectas que NO están en la forma y = mx + n (por ejemplo, x = a, formas generales Ax + By + C = 0 sin despejar y).",
+        "Análisis de la pendiente m (creciente/decreciente, rapidez de cambio) más allá de identificar que existe.",
+        "Intersecciones con el eje X o cálculo de ceros de la función.",
+        "Ajuste de rectas por regresión o determinación de modelos lineales a partir de datos.",
+        "Funciones no lineales (cuadráticas, exponenciales, valor absoluto, por tramos, etc.).",
+        "Cálculo de n a partir de sistemas de ecuaciones o problemas que requieran álgebra extensa."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión básica de la noción de función como relación entre variables.",
+        "A-M1-ALG-05-01: Reconocer la forma general de una función lineal en una variable.",
+        "A-M1-REP-01-01: Manejo básico del plano cartesiano y coordenadas de puntos (x, y).",
+        "A-M1-ARI-01-02: Operaciones con enteros positivos y negativos sencillos."
+      ],
+      "common_traps": [
+        "Confundir el coeficiente de posición n con la pendiente m por estar ambos en la misma expresión.",
+        "Creer que n siempre es positivo porque se le asocia a una 'cantidad inicial'.",
+        "Pensar que el punto de intersección con el eje Y es (n, 0) en vez de (0, n).",
+        "Olvidar que el valor inicial corresponde a x = 0 y evaluar para otro valor de x.",
+        "Interpretar n como 'costo por unidad' en vez de 'costo fijo' en contextos de proporcionalidad.",
+        "Leer mal el gráfico y tomar un punto cualquiera de la recta como n, en vez del corte específico con el eje Y."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuación explícita de la forma y = mx + n con m y n claramente identificables y valores enteros pequeños.",
+        "Preguntas directas del tipo: '¿Cuál es el coeficiente de posición?' o '¿Cuál es el valor de la función cuando x = 0?'.",
+        "Ítems sin contexto verbal complejo, únicamente algebraico.",
+        "Gráficos donde el corte con el eje Y está en un número entero marcado claramente en el eje."
+      ],
+      "medium": [
+        "Ecuaciones donde n es un entero negativo o un número racional sencillo (como 1/2 o 1,5).",
+        "Problemas contextualizados donde se describe verbalmente un valor inicial y se pide identificarlo como n.",
+        "Ítems que piden vincular varias representaciones: dada la ecuación, identificar el punto (0, n), o viceversa.",
+        "Gráficos donde el corte con el eje Y debe ser inferido contando cuadrículas, sin estar señalado con un punto destacado.",
+        "Situaciones en las que el estudiante debe decidir entre interpretar m o n para responder, sin cálculos extensos."
+      ],
+      "hard": [
+        "Ítems que presentan dos funciones lineales y se compara o interpreta el rol de sus diferentes valores de n.",
+        "Problemas donde el valor de n debe inferirse a partir de un contexto con lenguaje más denso (por ejemplo, varios tipos de costos, distinguiendo correctamente el fijo del variable).",
+        "Gráficos donde el corte con el eje Y no es un número entero y debe estimarse o leerse como fracción o decimal simple.",
+        "Situaciones en que se entrega información sobre el valor de la función en x = 0 de forma indirecta (por ejemplo, a través de una tabla de valores) y se debe reconocer que ese valor corresponde a n.",
+        "Ítems donde coexisten varias rectas en un mismo gráfico y se debe identificar para cada una el coeficiente de posición, evitando confusiones entre ellas."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar expresiones ambiguas como 'término independiente' sin explicitar que se trata del valor de y cuando x = 0, ya que en otros contextos ese término puede usarse en polinomios más generales.",
+      "No mezclar en el mismo ítem preguntas sobre intersección con el eje X y con el eje Y si el foco es n, para no desviar la atención del estudiante.",
+      "No presentar ecuaciones en formas equivalentes donde no se vea claramente la estructura y = mx + n, a menos que se pida explícitamente identificar n tras despejar.",
+      "Evitar contextos donde haya más de un 'valor inicial' posible (por ejemplo, varios cargos fijos distintos) sin precisar claramente cuál corresponde a la función dada.",
+      "No usar gráficos con ejes sin escala clara o sin marcar el origen, para que la lectura de (0, n) sea inequívoca.",
+      "Evitar rectas casi verticales que puedan confundirse con x = a (que no tienen coeficiente de posición en la forma y = mx + n)."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir_pendiente_con_coeficiente_de_posicion",
+        "description": "El estudiante identifica m como valor inicial o como punto de corte con el eje Y, especialmente cuando la recta pasa por el origen o cuando m y n tienen valores similares.",
+        "how_to_address": "Diseñar ítems que pidan explícitamente ambos parámetros en la misma ecuación, reforzando que m multiplica a x (variación) y n se suma o resta (valor cuando x = 0). Usar contextos donde el rol de 'fijo' (n) y 'por unidad' (m) se pueda contrastar claramente."
+      },
+      {
+        "name": "Intercambiar_coordenadas_del_punto_de_corte",
+        "description": "El estudiante piensa que el punto de intersección con el eje Y es (n, 0) en lugar de (0, n).",
+        "how_to_address": "Incluir preguntas que contrasten explícitamente puntos en el eje X y en el eje Y, recordando que en el eje Y todas las coordenadas tienen x = 0. Usar tablas de valores donde se destaque el caso x = 0 → y = n."
+      },
+      {
+        "name": "Ignorar_que_el_valor_inicial_es_en_x_cero",
+        "description": "El estudiante calcula el valor de la función en cualquier x dada en el enunciado, en lugar de entender que el 'valor inicial' corresponde a x = 0.",
+        "how_to_address": "Plantear ítems con tablas o contextos en los que se muestre claramente el valor asociado a x = 0 y compararlo con otros valores. Explicitar en soluciones guiadas que 'inicial' se vincula al instante 0, día 0, cantidad 0, etc."
+      },
+      {
+        "name": "Sobreinterpretar_n_como_costo_por_unidad",
+        "description": "En contextos de costos o tarifas, el estudiante interpreta n como el costo por unidad en lugar de reconocerlo como costo fijo o cargo base.",
+        "how_to_address": "Usar enunciados donde se destaquen en lenguaje natural las expresiones 'paga aunque no use el servicio' o 'cobro base', y hacer que el estudiante compare dos planes con distintos n y m para clarificar ambos roles."
+      },
+      {
+        "name": "Lectura_imprecisa_del_grafico_en_el_eje_Y",
+        "description": "Al trabajar con gráficos, el estudiante toma un punto incorrecto de la recta o lee mal la escala del eje Y para determinar n.",
+        "how_to_address": "Proporcionar gráficos con escala clara y pedir explícitamente el valor de la función cuando x = 0, señalando o preguntando por el punto correspondiente al origen en el eje X. Trabajar con ejemplos donde la recta corta el eje Y entre marcas para practicar estimación y lectura cuidadosa."
+      }
+    ],
+    "future_targets": [
+      "Interpretar completamente la forma y = mx + n, incluyendo la pendiente m como razón de cambio.",
+      "Determinar intersecciones con el eje X (ceros de la función) a partir de la ecuación y del gráfico.",
+      "Construir el gráfico de una función lineal a partir de su ecuación, usando n como punto de partida.",
+      "Modelar situaciones de proporcionalidad no directa mediante funciones lineales con término independiente.",
+      "Comparar y elegir modelos lineales a partir de su ecuación y su interpretación contextual (comparar costos fijos y variables).",
+      "Trabajar con sistemas de ecuaciones lineales donde n influye en la posición relativa de las rectas (paralelas, secantes, coincidentes)."
+    ],
+    "representation_variants": [
+      "Ecuación explícita y = mx + n con diferentes valores de m y n.",
+      "Gráfico de la función lineal en el plano cartesiano, destacando o no el punto (0, n).",
+      "Tablas de valores donde se incluya explícitamente la fila para x = 0.",
+      "Descripción verbal de una situación (por ejemplo, tarifas, saldo inicial, temperatura inicial) que permita inferir n.",
+      "Comparación entre dos rectas dadas por ecuación o por gráfico, centrándose en la diferencia de sus coeficientes de posición."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_zero",
+      "simple_negatives",
+      "simple_decimals",
+      "simple_fractions"
+    ],
+    "required_image_types": [
+      "function_graph"
+    ]
+  }
+}

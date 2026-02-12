@@ -1,0 +1,117 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación de que el eje horizontal en un gráfico de línea suele representar tiempo u otra variable ordinal (días, meses, cursos, etapas).",
+        "Reconocimiento de que cada punto en el gráfico de línea es el valor de una variable cuantitativa en un momento o categoría ordenada específica.",
+        "Comprensión de que los segmentos de línea unen puntos consecutivos para mostrar la evolución o tendencia de la variable.",
+        "Decidir si un gráfico de línea es una representación adecuada para describir cambios o tendencias de una variable en el tiempo.",
+        "Lectura básica de información en un gráfico de línea: ubicar un punto, identificar un aumento/disminución, localizar máximos o mínimos simples.",
+        "Comparación cualitativa de tramos del gráfico de línea (sube, baja, se mantiene aproximadamente constante)."
+      ],
+      "out_of_scope": [
+        "Cálculo de pendientes numéricas exactas o tasas de variación a partir del gráfico de línea.",
+        "Ajuste de funciones (rectas, curvas) o regresión sobre datos presentados en gráfico de línea.",
+        "Cálculo de medidas de tendencia central o dispersión a partir de los datos del gráfico.",
+        "Interpretación de gráficos estadísticos de otros tipos (barras, histogramas, gráficos de sectores, boxplots, dispersión).",
+        "Comparación detallada entre diferentes gráficos de línea en términos estadísticos avanzados (variabilidad, ruido, estacionalidad).",
+        "Trabajo con series de tiempo complejas (descomposición, proyecciones, modelación)."
+      ],
+      "prerequisites": [
+        "A-M1-DATOS-01-01",
+        "A-M1-DATOS-01-02",
+        "A-M1-PROB-01-01"
+      ],
+      "common_traps": [
+        "Confundir un gráfico de línea con un gráfico de barras y responder como si el área bajo la curva o la longitud de los segmentos tuviera significado adicional.",
+        "Interpretar el eje horizontal como numérico continuo cuando las categorías son ordinales no numéricas (por ejemplo, cursos: 1°A, 1°B, 1°C).",
+        "Suponer siempre que el eje horizontal es tiempo, sin atender a la rotulación específica.",
+        "Leer solo los puntos extremos del gráfico y no considerar lo que ocurre entre ellos (tramos intermedios).",
+        "Concluir causalidad a partir de la simple observación de una tendencia en el gráfico.",
+        "Interpretar los segmentos de línea como trayectorias físicas o movimientos espaciales, en lugar de como representación de la evolución de un valor numérico."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Gráfico de línea con pocos puntos (3 a 5) y eje horizontal claramente rotulado con una escala temporal simple (por ejemplo, días de la semana, meses consecutivos).",
+        "Preguntas que pidan identificar qué representa el eje horizontal o el eje vertical, sin necesidad de cálculos.",
+        "Ítems donde se debe señalar cuál punto del gráfico corresponde a una descripción verbal sencilla (por ejemplo, el valor más alto, el valor más bajo).",
+        "Tareas de selección del tipo de gráfico más adecuado para mostrar la evolución de una variable en el tiempo, con alternativas claramente diferenciadas (línea vs barras vs torta)."
+      ],
+      "medium": [
+        "Gráficos de línea con más puntos (6 a 10) y una escala temporal o ordinal que no comience necesariamente en 0, pero con intervalos regulares.",
+        "Ítems que requieran relacionar tramos del gráfico con descripciones de tendencia (aumenta, disminuye, se mantiene), incluyendo comparación entre tramos.",
+        "Preguntas que exijan deducir información no textual pero evidente del gráfico, como identificar periodos donde la variable cambia más rápido o más lento en términos cualitativos (sin cálculo numérico formal de pendiente).",
+        "Elección del tipo de gráfico adecuado en situaciones donde aparece una variable temporal u ordinal poco frecuente (por ejemplo, etapas de un proceso, niveles de un curso), diferenciándolo de situaciones de comparación puntual entre categorías."
+      ],
+      "hard": [
+        "Gráficos de línea con varios puntos (hasta 12–15), incluyendo pequeños cambios locales (subidas y bajadas cortas) que puedan llevar a lecturas confusas si no se observa con atención.",
+        "Ítems que combinen una descripción verbal compleja de cambios sucesivos (sube, luego baja, se mantiene, vuelve a subir) con la identificación o comparación de uno o más gráficos de línea.",
+        "Preguntas donde se deba decidir si un gráfico de línea es o no apropiado en contextos límite (por ejemplo, pocos datos, datos no ordenables, cambios muy abruptos) justificando la elección frente a gráficos de barras u otras representaciones.",
+        "Interpretación de gráficos de línea con escala temporal no uniforme o con marcas de tiempo menos habituales (por ejemplo, años no consecutivos, etapas numeradas pero no correlativas), siempre dentro de un marco cualitativo y no de cálculo preciso."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No rotular ejes de manera vaga o incompleta; siempre indicar claramente qué representa el eje horizontal y qué representa el eje vertical, incluyendo unidades cuando corresponda.",
+      "Evitar gráficos donde el eje horizontal parezca tiempo, pero en realidad sean categorías nominales sin orden; si se usan categorías ordinales, dejar explícito el orden.",
+      "No usar escalas truncadas o poco usuales en el eje vertical sin indicarlo claramente, ya que puede inducir interpretaciones erróneas sobre la magnitud de los cambios.",
+      "No mezclar en el mismo gráfico de línea variables con unidades o significados diferentes, a menos que esté explícitamente aclarado y no sea el foco del ítem.",
+      "Evitar preguntas donde más de una alternativa pueda describir razonablemente la misma parte del gráfico (por ejemplo, dos descripciones verbales muy similares de una misma tendencia).",
+      "No incluir información textual en el enunciado que contradiga o matice de forma confusa lo que muestra el gráfico (por ejemplo, decir que la variable siempre aumenta cuando el gráfico muestra al menos un tramo de disminución).",
+      "Evitar gráficos con demasiados elementos decorativos, colores o líneas adicionales que puedan ser confundidas con datos relevantes.",
+      "No usar líneas curvas complejas o suavizadas que hagan dudar si se trata de un gráfico de línea simple entre puntos discretos o de una función continua avanzada."
+    ],
+    "error_families": [
+      {
+        "name": "confusion_ejes",
+        "description": "El estudiante intercambia el significado del eje horizontal y el eje vertical, leyendo el tiempo o la secuencia en el eje vertical y los valores en el eje horizontal.",
+        "how_to_address": "En los ítems, destacar mediante rotulación clara y ejemplos simples que el eje horizontal suele representar el tiempo o la secuencia ordenada, y el vertical el valor de la variable. Plantear alternativas distractoras que evidencien esta confusión y reforzar en las explicaciones que primero se ubica el momento (eje horizontal) y luego el valor (eje vertical)."
+      },
+      {
+        "name": "lectura_puntos_vs_lineas",
+        "description": "El estudiante interpreta que el significado principal está en las líneas (como si fueran trayectorias físicas) y no en los puntos discretos que representan los datos.",
+        "how_to_address": "Formular preguntas que pidan explícitamente identificar puntos concretos (por ejemplo, valor de la variable en una fecha específica) y diferenciar entre 'en tal día' (punto) y 'entre tales días' (segmento). En las retroalimentaciones, enfatizar que los datos se contienen en los puntos y que las líneas muestran la tendencia entre ellos."
+      },
+      {
+        "name": "uso_inadecuado_tipo_grafico",
+        "description": "El estudiante selecciona un gráfico de línea en situaciones donde no corresponde (por ejemplo, categorías sin orden), o descarta el gráfico de línea en contextos de series de tiempo.",
+        "how_to_address": "Incluir ítems de selección de tipo de gráfico donde se contraste una variable temporal o secuencial con variables categóricas puramente nominales. Explicar que los gráficos de línea son adecuados cuando importa el orden o el paso del tiempo y se quiere observar la evolución o tendencia."
+      },
+      {
+        "name": "interpretacion_cualitativa_incorrecta",
+        "description": "Errores al describir si la variable aumenta, disminuye o se mantiene, especialmente cuando hay cambios pequeños o tramos casi horizontales.",
+        "how_to_address": "Proponer preguntas que comparen distintos tramos del gráfico y obliguen a fijarse en la dirección general de los segmentos. En la retroalimentación, remarcar la lectura de izquierda a derecha y el significado de un segmento ascendente, descendente u horizontal en términos de la variable."
+      },
+      {
+        "name": "ignorancia_del_contexto",
+        "description": "El estudiante ignora el contexto y solo mira la forma del gráfico, sacando conclusiones incompatibles con la situación descrita (por ejemplo, interpretaciones imposibles para la variable en cuestión).",
+        "how_to_address": "Vincular siempre el gráfico con una breve situación contextual y pedir interpretaciones que requieran usar tanto el gráfico como el enunciado. En las explicaciones, insistir en que el gráfico representa una variable concreta con unidad y sentido, no solo una 'curva abstracta'."
+      }
+    ],
+    "future_targets": [
+      "Interpretar y comparar diferentes tipos de gráficos estadísticos (barras, histogramas, gráficos de sectores, diagramas de caja).",
+      "Calcular e interpretar medidas de tendencia central y dispersión a partir de datos presentados en tablas o gráficos.",
+      "Analizar y comparar la variabilidad y la consistencia de datos representados gráficamente.",
+      "Introducir tasas de cambio y nociones básicas de pendiente a partir de gráficos de línea.",
+      "Modelar situaciones de la vida real con funciones lineales simples apoyadas en gráficos de línea.",
+      "Trabajar con series de tiempo más complejas, identificando patrones como tendencias generales y cambios de comportamiento."
+    ],
+    "representation_variants": [
+      "Gráfico de línea con puntos marcados y líneas rectas entre puntos sobre ejes cartesianos con escala uniforme.",
+      "Gráfico de línea donde el eje horizontal muestra unidades de tiempo explícitas (días, meses, años) con etiquetas claras.",
+      "Gráfico de línea con eje horizontal ordinal (niveles, etapas, cursos) donde la variable no es estrictamente temporal pero sí secuencial.",
+      "Comparación verbal de situaciones donde se sugiere el uso de gráfico de línea sin mostrar el gráfico, pidiendo elegir la representación más adecuada.",
+      "Tablas de datos secuenciales (tiempo–valor) acompañadas del gráfico de línea correspondiente para vincular ambas representaciones.",
+      "Gráfico de línea con valores aproximados (sin rejilla densa), enfatizando lectura cualitativa de tendencias más que lectura numérica exacta."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "rounded_decimals"
+    ],
+    "required_image_types": [
+      "statistical_chart"
+    ]
+  }
+}

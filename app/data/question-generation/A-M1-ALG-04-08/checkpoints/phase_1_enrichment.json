@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Traducción de un enunciado verbal a un sistema de dos ecuaciones lineales con dos incógnitas.",
+        "Definición explícita de dos variables que representen cantidades desconocidas pertinentes al contexto.",
+        "Identificación y uso de datos y relaciones del enunciado para construir dos ecuaciones independientes.",
+        "Planteamiento de sistemas 2x2 de tipo suma-diferencia, mezcla, tarifas, precios-cantidades, tiempo-velocidad, etc.",
+        "Verificación conceptual de coherencia del modelo (unidades, sentido contextual de las ecuaciones)."
+      ],
+      "out_of_scope": [
+        "Resolución del sistema de ecuaciones (encontrar los valores numéricos de las incógnitas).",
+        "Análisis de número de soluciones del sistema (compatible, incompatible, etc.).",
+        "Sistemas con más de dos incógnitas o más de dos ecuaciones.",
+        "Sistemas no lineales (cuadráticos, proporcionales inversos, productos de variables).",
+        "Modelación con inecuaciones o sistemas de inecuaciones.",
+        "Análisis gráfico de las rectas asociadas al sistema.",
+        "Uso de notación matricial o métodos avanzados (determinantes, regla de Cramer, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión de expresiones algebraicas sencillas y uso de símbolos (+, −, ×, ÷, =).",
+        "A-M1-ALG-02-01: Manejo de ecuaciones lineales de una variable en lenguaje simbólico.",
+        "A-M1-ARI-01-01: Interpretación de datos numéricos en contextos cotidianos (precios, cantidades, porcentajes básicos).",
+        "A-M1-LECT-01-01: Comprensión lectora de enunciados breves, identificando datos y condiciones relevantes."
+      ],
+      "common_traps": [
+        "No declarar las variables o declararlas de forma ambigua (por ejemplo, solo escribir x e y sin indicar qué representan).",
+        "Elegir variables con significado opuesto o confuso (por ejemplo, x = número de adultos pero usarla luego como número de entradas totales).",
+        "Confundir unidades o magnitudes (mezclar personas con dinero en una misma ecuación sin un factor de conversión claro).",
+        "Tomar como ecuación relaciones que no son condiciones del problema (por ejemplo, repetir un dato numérico sin conectarlo con variables).",
+        "Reducir el problema a una sola ecuación cuando el contexto exige dos relaciones independientes.",
+        "Interpretar mal expresiones del lenguaje natural como 'en total', 'la diferencia entre', 'el doble de', 'más que', 'menos que'.",
+        "Plantear ecuaciones lineales pero dependientes (equivalentes entre sí), de modo que el sistema no modela completamente la situación.",
+        "Forzar estructuras típicas (por ejemplo, precio×cantidad) cuando el contexto describe otra relación (tiempo, distancia, mezcla, etc.)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados cortos, con dos tipos de objetos o personas y datos presentados de forma casi tabular o muy directa.",
+        "Relaciones del tipo precio×cantidad = total, o suma simple de cantidades (número de entradas, kilos, etc.).",
+        "Uso de vocabulario cotidiano directo ('en total', 'cuestan', 'tiene', 'son en total') sin giros idiomáticos ni información irrelevante.",
+        "Variables sugeridas o casi explícitas en el texto (por ejemplo, 'precio de entrada de adulto' y 'precio de entrada de niño').",
+        "Los dos escenarios que generan las ecuaciones están claramente separados (por ejemplo, 'en el primer día...' y 'en el segundo día...')."
+      ],
+      "medium": [
+        "Enunciados de longitud media con algo de información accesoria que debe ignorarse para modelar.",
+        "Relaciones que incluyen diferencias ('la diferencia entre', 'tiene 3 más que') o múltiplos ('el doble', 'la mitad') en al menos una ecuación.",
+        "Contextos menos prototípicos (descuentos, promociones, mezcla de productos, tiempo y velocidad constante).",
+        "La elección de variables no está sugerida explícitamente y el estudiante debe decidir qué magnitudes conviene representar.",
+        "Los datos que generan cada ecuación no están en el mismo párrafo, exigiendo integrar información de distintas partes del enunciado."
+      ],
+      "hard": [
+        "Enunciados más extensos donde se mezclan varios datos, algunos irrelevantes para el sistema a plantear.",
+        "Relaciones que requieren interpretar expresiones como 'si se agrega', 'si se resta', 'si se intercambian', 'si se cambian los precios', generando condiciones hipotéticas.",
+        "Problemas donde las variables más naturales no son las que aparecen explícitamente en el texto (por ejemplo, elegir 'precio actual' y 'precio anterior' frente a 'monto de rebaja').",
+        "Situaciones donde una misma frase describe simultáneamente dos relaciones (por ejemplo, total de elementos y diferencia entre dos grupos), obligando a descomponerla en dos ecuaciones diferentes.",
+        "Contextos con números fraccionarios o decimales no tan amigables (por ejemplo, 1,5; 2,75; 3/4) que dificultan la interpretación de las relaciones sin complicar el propósito de modelar.",
+        "Escenarios donde es fácil plantear dos ecuaciones dependientes y el estudiante debe captar la necesidad de usar la otra condición relevante para obtener independencia."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas para la definición de variables como 'x es una cosa' o 'y es lo otro'; exigir siempre referencia clara a la magnitud y su unidad cuando corresponda.",
+      "Evitar contextos donde la misma palabra pueda referirse tanto a cantidad de objetos como a su valor monetario sin distinguir (por ejemplo, 'las entradas valen' sin especificar 'precio por entrada' o 'monto total pagado').",
+      "No mezclar tiempo verbal pasado/hipotético de forma confusa ('si hubiera comprado', 'si compró') que haga incierto si es una situación real o una condición a modelar.",
+      "Evitar frases con cuantificadores ambiguos como 'varios', 'unos cuantos', 'algunos' si no se acompañan de datos numéricos precisos que entren en las ecuaciones.",
+      "No plantear situaciones donde no quede claro qué es constante y qué puede variar (por ejemplo, promociones que cambian en medio del relato sin indicarse si se mantienen o no).",
+      "Evitar que un mismo símbolo pueda representar dos cosas distintas a lo largo del ítem (por ejemplo, usar x primero como 'número de cuadernos' y después como 'precio de un cuaderno').",
+      "No usar datos innecesariamente complejos (como porcentajes encadenados y tasas de cambio simultáneas) si eso oscurece la identificación de las dos relaciones lineales pedidas.",
+      "Evitar enunciados donde el número de incógnitas razonables supere claramente dos, a menos que se especifique qué dos magnitudes se deben modelar."
+    ],
+    "error_families": [
+      {
+        "name": "Variables_no_definidas_o_mal_definidas",
+        "description": "El estudiante usa x e y sin indicar qué representan, o las define en forma contradictoria o incompleta respecto del contexto.",
+        "how_to_address": "Pedir explícitamente que se escriba una frase clara para cada variable, incluyendo qué mide y en qué unidades si procede. Proponer contraejemplos de definiciones vagas y revisarlos en conjunto."
+      },
+      {
+        "name": "Una_sola_ecuacion_en_lugar_de_sistema",
+        "description": "El estudiante solo modela una de las condiciones del problema, omitiendo la segunda relación necesaria para el sistema 2x2.",
+        "how_to_address": "Trabajar con organizadores (tablas o esquemas) donde se marque qué dato genera cada ecuación. Hacer preguntas guía del tipo: '¿De qué otra manera se relacionan estas cantidades en el problema?'."
+      },
+      {
+        "name": "Confusion_de_magnitudes_y_unidades",
+        "description": "Se mezclan en una misma ecuación diferentes magnitudes (personas y pesos, litros y pesos, etc.) sin un factor de conversión adecuado.",
+        "how_to_address": "Insistir en que cada término de una ecuación debe expresar la misma magnitud. Hacer ejercicios de clasificación de datos: identificar qué es 'cantidad de', qué es 'precio unitario' y qué es 'monto total'."
+      },
+      {
+        "name": "Operacion_incorrecta_en_la_traduccion",
+        "description": "Errores al interpretar expresiones del lenguaje natural, como confundir 'el doble de' con 'dos más', o 'tiene 3 menos que' con 'tiene 3 menos' sin la estructura de diferencia correcta.",
+        "how_to_address": "Practicar traducciones específicas de frases frecuentes ('el doble de', 'la mitad de', '3 más que', '3 menos que', 'la diferencia entre'). Usar ejemplos numéricos simples para mostrar el sentido antes de pasar a variables."
+      },
+      {
+        "name": "Ecuaciones_dependientes_o_redundantes",
+        "description": "Las dos ecuaciones planteadas representan en realidad la misma relación (por ejemplo, una es un múltiplo de la otra), por lo que el sistema no captura toda la información del problema.",
+        "how_to_address": "Enseñar a revisar si las ecuaciones realmente usan datos distintos del enunciado. Hacer ejercicios de detección de redundancia: mostrar pares de ecuaciones y preguntar si aportan información nueva o no."
+      },
+      {
+        "name": "Asignacion_inconveniente_de_variables",
+        "description": "Se eligen variables que vuelven muy engorrosa la expresión de las relaciones (por ejemplo, usar la rebaja en lugar del precio final cuando el enunciado da el final directamente).",
+        "how_to_address": "Comparar distintas elecciones de variables para el mismo problema y discutir cuál hace más simple la escritura del sistema. Promover que elijan magnitudes directamente mencionadas y relevantes."
+      },
+      {
+        "name": "Perdida_de_datos_en_el_modelo",
+        "description": "Al pasar del texto a las ecuaciones se omite parte de la información numérica o condicional del problema (como una condición sobre totales o diferencias).",
+        "how_to_address": "Trabajar lectura activa subrayando datos y condiciones antes de modelar. Usar listas de chequeo: '¿Dónde está usado este número en mis ecuaciones?'."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-04-09: Resolución de sistemas de dos ecuaciones lineales 2x2 planteados a partir de contextos reales.",
+      "A-M1-ALG-04-10: Interpretación de la solución de un sistema en el contexto original (sentido de cada variable, análisis de viabilidad).",
+      "A-M1-ALG-05-01: Modelación de situaciones con más de dos incógnitas y análisis de compatibilidad de sistemas.",
+      "A-M1-FUN-01-02: Interpretación gráfica de la intersección de dos rectas como solución de un sistema 2x2.",
+      "A-M1-MOD-01-01: Selección crítica de modelos lineales apropiados para describir fenómenos simples del entorno.",
+      "A-M1-EST-02-03: Uso de modelos lineales para ajustar y predecir datos en contextos estadísticos básicos."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales que describen situaciones cotidianas (compras, entradas, mezcla de productos, repartos).",
+      "Tablas de datos simples (por ejemplo, filas para diferentes combinaciones de cantidades y montos) que el estudiante debe traducir a ecuaciones.",
+      "Listas o viñetas con condiciones separadas ('se sabe que...', 'además...') que se transforman en cada ecuación.",
+      "Mini-historias con diálogo o descripciones secuenciales donde las relaciones a modelar están dispersas en el texto.",
+      "Esquemas textuales tipo 'cantidad × precio = total' dados parcialmente, que deben completarse y luego traducirse a lenguaje algebraico."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "friendly_decimals",
+      "friendly_fractions",
+      "money_context",
+      "rates_and_ratios"
+    ],
+    "required_image_types": []
+  }
+}

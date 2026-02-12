@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del área de trapecios usando exclusivamente la fórmula A = ((B + b) * h) / 2.",
+        "Identificación de las dos bases paralelas (mayor y menor) y de la altura como distancia perpendicular entre ellas, a partir de un enunciado o una figura.",
+        "Uso de datos numéricos entregados explícitamente o deducibles de la figura (por ejemplo, se indica qué segmentos son bases y cuál es la altura).",
+        "Problemas contextualizados donde la región relevante tenga claramente forma de trapecio (mesa, terreno, letrero, etc.).",
+        "Conversión sencilla de unidades lineales a unidades de área cuando sea directo (por ejemplo, de m a m², sin cambio de unidad)."
+      ],
+      "out_of_scope": [
+        "Demostración de la fórmula del área del trapecio.",
+        "Cálculo de perímetros de trapecios o de otras figuras compuestas.",
+        "Cálculo de áreas de figuras formadas por varios trapecios o combinación de trapecio con otras figuras (rectángulos, triángulos, etc.).",
+        "Trapecios isósceles, rectángulos u otros con propiedades especiales que se usen para resolver ángulos o lados no relacionados con el área.",
+        "Uso de trigonometría, teorema de Pitágoras o semejanza de triángulos para deducir la altura que no esté entregada de forma directa.",
+        "Cálculo de volúmenes de prismas o cuerpos con base trapezoidal.",
+        "Análisis en el plano cartesiano (coordenadas de vértices, pendiente de lados, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01",
+        "A-M1-GEO-01-02",
+        "A-M1-GEO-01-05"
+      ],
+      "common_traps": [
+        "Confundir la altura con uno de los lados no paralelos del trapecio, especialmente cuando el trapecio es oblicuo.",
+        "Usar por error solo una base en la fórmula (A = B*h/2 o A = b*h/2) en vez de la suma de ambas bases.",
+        "Identificar como bases lados que no son paralelos cuando la figura no está dibujada de forma \"horizontal\".",
+        "Usar la longitud de un lado inclinado como si fuera la altura, aunque no sea perpendicular a las bases.",
+        "Olvidar dividir entre 2 en la fórmula, obteniendo el doble del área.",
+        "Interpretar mal los datos del contexto (por ejemplo, usar el largo total en vez de la base menor o viceversa).",
+        "No atender a las unidades de medida del contexto (metros vs. centímetros) cuando se entregan mezcladas, aunque no se requiera conversión compleja."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figura de trapecio claramente dibujada, con bases paralelas rotuladas como B y b, y altura h indicada con un segmento perpendicular y valor numérico explícito.",
+        "Datos numéricos pequeños, enteros positivos y sin unidades o con una única unidad homogénea (por ejemplo, cm) sin necesidad de conversión.",
+        "Enunciado directo que pide solo calcular el área del trapecio aplicando la fórmula sin pasos intermedios (un solo cálculo).",
+        "Contextos mínimos o neutros, donde no haya que interpretar descripciones verbales para identificar bases y altura."
+      ],
+      "medium": [
+        "Figura de trapecio donde se requiera identificar qué lados son las bases (no necesariamente horizontales), aunque la paralelidad esté indicada con marcas.",
+        "Altura representada gráficamente (segmento perpendicular) pero no necesariamente rotulada como 'h'; el estudiante debe reconocerla como altura.",
+        "Datos que incluyen algunos números decimales sencillos o medidas con unidades, pero sin cambios de unidad (por ejemplo, 3,5 m).",
+        "Problemas contextualizados donde la descripción verbal indique qué medidas corresponden a cada base y cuál a la altura, requiriendo filtrar información irrelevante.",
+        "Necesidad de un pequeño paso previo antes de aplicar la fórmula, como identificar visualmente en el contexto qué lado corresponde a la base mayor y a la base menor."
+      ],
+      "hard": [
+        "Trapecio representado de forma oblicua o no estándar (no apoyado sobre una base horizontal), donde la paralelidad se indique solo por marcas, obligando a un reconocimiento más abstracto de las bases.",
+        "Altura no explícitamente rotulada, pero claramente indicada como segmento perpendicular trazado desde una base a la otra; el estudiante debe distinguirla de otros segmentos auxiliares presentes.",
+        "Enunciados con información redundante o distractora (por ejemplo, se entregan varios largos, no todos necesarios para el área) donde se debe seleccionar adecuadamente las dos bases y la altura.",
+        "Números con decimales menos amigables o fracciones simples en las bases o en la altura, manteniendo cálculos aritméticos aún manejables sin calculadora.",
+        "Contextos donde el trapecio está embebido en una situación más compleja, pero la tarea sigue siendo calcular el área de la parte trapezoidal indicada (por ejemplo, solo la zona sombreada que corresponde a un trapecio claramente delimitado)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No presentar figuras donde no se indiquen claramente cuáles lados son paralelos (marcas de paralelismo o descripción explícita en el texto).",
+      "Evitar dibujos donde varios segmentos podrían interpretarse como la altura porque parecen perpendiculares, sin aclarar cuál es la altura relevante para el cálculo del área.",
+      "No usar términos vagos como \"lado\" cuando se necesita distinguir específicamente entre base mayor, base menor y lados no paralelos; usar denominaciones claras (base mayor, base menor, altura).",
+      "Evitar contextos donde la región con forma de trapecio no esté perfectamente delimitada o donde se superpongan figuras, a menos que se marque inequívocamente el trapecio a considerar (por ejemplo, sombreado o contorno destacado).",
+      "No mezclar unidades de longitud distintas en las bases y en la altura si no se espera explícitamente conversión de unidades en este átomo.",
+      "Evitar dar datos numéricos que no son necesarios y que puedan confundirse con las medidas de las bases o de la altura si no son parte del trapecio.",
+      "No usar figuras fuera de escala que puedan inducir a que el estudiante dude sobre cuál base es mayor si la etiqueta numérica dice lo contrario; los valores dados deben primar sobre la apariencia visual."
+    ],
+    "error_families": [
+      {
+        "name": "Usar un solo lado como base",
+        "description": "El estudiante calcula el área como si el trapecio tuviera solo una base, aplicando A = B*h/2 o A = b*h/2 y omite sumar las dos bases.",
+        "how_to_address": "En el feedback, recordar que el trapecio tiene dos bases paralelas y que la fórmula considera el promedio de ambas: A = ((B + b) * h)/2. Mostrar un ejemplo gráfico destacando ambas bases y cómo su suma entra en la fórmula."
+      },
+      {
+        "name": "Confundir altura con lado oblicuo",
+        "description": "Se usa la longitud de uno de los lados no paralelos del trapecio como si fuera la altura, especialmente cuando no se ve un segmento perpendicular claramente.",
+        "how_to_address": "Reforzar que la altura es siempre la distancia perpendicular entre las bases, no necesariamente coincidente con un lado. Incluir en la retroalimentación una figura donde se marque la altura como un segmento interior diferente a los lados oblicuos."
+      },
+      {
+        "name": "Olvidar dividir por 2",
+        "description": "El estudiante calcula A = (B + b) * h y omite el factor 1/2, obteniendo un valor que duplica el área correcta.",
+        "how_to_address": "Recordar que la fórmula del trapecio se relaciona con el promedio de las bases: ((B + b)/2) * h. Explicar el sentido de \"promediar\" las bases antes de multiplicar por la altura, para dar significado al dividir por 2."
+      },
+      {
+        "name": "Intercambio de datos irrelevantes",
+        "description": "En contextos con múltiples medidas, el estudiante usa una medida ajena al trapecio (por ejemplo, largo total de un terreno o de una mesa que incluye partes no trapezoidales) como una de las bases o como altura.",
+        "how_to_address": "En el feedback, señalar explícitamente cuáles medidas pertenecen al trapecio (remarcando en la figura o en la descripción) y sugerir subrayar en el enunciado las medidas que corresponden a cada elemento: base mayor, base menor, altura."
+      },
+      {
+        "name": "Identificación errónea de bases paralelas",
+        "description": "El estudiante elige como bases dos lados que no son paralelos, generalmente guiándose solo por la posición en el dibujo (por ejemplo, dos lados horizontales en distinta figura) o por el largo similar.",
+        "how_to_address": "Insistir en que las bases del trapecio se definen por ser paralelas, no por su posición visual. En la retroalimentación, mostrar marcas de paralelismo y pedir que el estudiante siempre las busque o lea la descripción textual que indica cuáles son las bases."
+      },
+      {
+        "name": "Manejo deficiente de decimales o fracciones",
+        "description": "El cálculo con bases o altura decimales o fraccionarias lleva a errores aritméticos, aunque la identificación conceptual de bases y altura es correcta.",
+        "how_to_address": "Sugerir estrategias de cálculo ordenado (por ejemplo, primero sumar B + b, luego multiplicar por h, finalmente dividir por 2) y, si corresponde, recordar reglas básicas de suma y multiplicación de decimales o fracciones con un ejemplo sencillo."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de áreas de figuras compuestas que incluyan trapecios junto con triángulos y rectángulos.",
+      "Determinación de dimensiones desconocidas de un trapecio (base o altura) a partir del área dada.",
+      "Cálculo de volúmenes de prismas o sólidos con base trapezoidal.",
+      "Aplicación de semejanza de triángulos o trigonometría para deducir la altura de trapecios no rectos antes de calcular el área.",
+      "Modelación de situaciones geométricas en contextos reales donde se requiera estimar o calcular superficies con forma aproximadamente trapezoidal.",
+      "Uso coordinado de diferentes fórmulas de área (triángulos, rectángulos, trapecios) para descomponer figuras más complejas."
+    ],
+    "representation_variants": [
+      "Trapecios dibujados de manera clásica, con una base horizontal inferior y la otra superior, claramente paralelas.",
+      "Trapecios oblicuos donde las bases paralelas no están horizontales, requiriendo atención a las marcas de paralelismo más que a la orientación.",
+      "Trapecios con altura interior dibujada como segmento perpendicular desde una base a la otra, a veces no coincidente con un vértice.",
+      "Trapecios donde la altura se indica con un símbolo de ángulo recto en la intersección con una base, pero sin rótulo 'h', exigiendo inferencia a partir de la perpendicularidad.",
+      "Representaciones verbales sin figura, donde se describen dos bases paralelas con sus longitudes y la distancia entre ellas como altura.",
+      "Contextos diagramáticos (plano de un terreno, tablero, superficie de una mesa) donde la parte trapezoidal esté sombreada o contorneada para identificar la región de interés.",
+      "Trapecios rotulados con letras en los vértices (ABCD) y medidas asignadas a los lados y a la altura, para vincular el lenguaje geométrico con los datos numéricos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "two_digit_integers",
+      "simple_decimals_one_decimal_place",
+      "simple_decimals_two_decimal_places",
+      "simple_fractions",
+      "contextual_measurements"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas contextualizados donde una magnitud se modela explícitamente con una función cuadrática y se pide su valor máximo o mínimo.",
+        "Identificación, a partir del enunciado, de que la tarea principal es optimizar (maximizar o minimizar) una cantidad y que el modelo adecuado es cuadrático.",
+        "Cálculo del vértice de una función cuadrática dada en forma general o canónica, solo con métodos algebraico-aritméticos de nivel M1 (completar cuadrado o fórmula del vértice).",
+        "Determinación del tipo de extremo (máximo o mínimo) según el signo del coeficiente cuadrático a y uso de esa información en la interpretación del contexto.",
+        "Interpretación contextual de las coordenadas del vértice: significado de la abscisa (x) y de la ordenada (y) en relación con lo que se pide (tiempo, cantidad, ganancia, altura, etc.).",
+        "Problemas donde el vértice responde directamente a la pregunta (por ejemplo, ‘altura máxima’, ‘ganancia máxima’, ‘costo mínimo’) o donde se necesita una pequeña inferencia adicional basada en él (por ejemplo, comparación con otros valores)."
+      ],
+      "out_of_scope": [
+        "Uso de derivadas u otros métodos de cálculo diferencial para encontrar máximos y mínimos.",
+        "Optimización con restricciones múltiples o de más de una variable (programación lineal, regiones factibles en el plano, etc.).",
+        "Funciones no cuadráticas (lineales, cúbicas, racionales, exponenciales, con valor absoluto) aunque aparezcan en el contexto del problema.",
+        "Problemas que solo piden calcular el vértice de una parábola sin ningún contexto aplicado.",
+        "Problemas puramente gráficos donde se pide leer el máximo o mínimo solo mirando una gráfica dada, sin trabajar con una expresión cuadrática.",
+        "Optimización continua que requiera considerar dominios restringidos complejos (piezas a la venta debiendo ser enteras, cotas no explícitas en el enunciado, etc.).",
+        "Análisis de intervalos de crecimiento/decrecimiento más allá de identificar el punto de máximo o mínimo."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-04-01: Reconocer y usar la estructura de una función cuadrática f(x) = ax^2 + bx + c.",
+        "A-M1-ALG-05-02: Interpretar el coeficiente a y la concavidad de una parábola (a > 0 abre hacia arriba, a < 0 abre hacia abajo).",
+        "A-M1-ALG-05-03: Calcular el vértice de una función cuadrática dada en forma general usando x_v = -b/(2a) y f(x_v).",
+        "A-M1-ALG-02-01: Manejo de álgebra básica (sustitución, operaciones con números enteros y fraccionarios, evaluaciones numéricas).",
+        "A-M1-DAT-01-01: Lectura básica de información en contexto (comprensión de lo que se está pidiendo optimizar: ganancia, costo, altura, área, etc.)."
+      ],
+      "common_traps": [
+        "Confundir qué representa la coordenada x del vértice y qué representa la coordenada y en el contexto del problema.",
+        "Asumir que el valor máximo o mínimo siempre corresponde a uno de los coeficientes de la función (por ejemplo, el término independiente c) sin calcular el vértice.",
+        "No revisar el signo de a y creer que el vértice es siempre un máximo.",
+        "Responder con la abscisa del vértice cuando el problema pide la ordenada, o viceversa.",
+        "Olvidar o aplicar mal la fórmula x_v = -b/(2a), especialmente con signos negativos o fracciones.",
+        "No verificar si la pregunta del problema coincide exactamente con lo que entrega el vértice (por ejemplo, el problema pide ‘la máxima ganancia’ y el estudiante responde ‘la cantidad de productos para obtenerla’).",
+        "Interpretar erróneamente el dominio contextual (por ejemplo, cantidades negativas de productos o tiempos negativos que no tienen sentido en la situación)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "La función cuadrática está dada explícitamente en forma general con coeficientes pequeños y enteros, y el modelo ya está construido en el enunciado.",
+        "El contexto es directo y familiar (altura de un objeto, ganancia simple, área de un rectángulo con una dimensión fija), con una sola variable evidente.",
+        "Solo se necesita aplicar la fórmula del vértice x_v = -b/(2a) y luego evaluar f(x_v), sin pasos intermedios de modelación.",
+        "La pregunta del ítem pide exactamente una de las coordenadas del vértice (por ejemplo, ‘¿cuál es la máxima ganancia?’ o ‘¿a qué tiempo se alcanza la altura máxima?’), sin requerir comparaciones adicionales.",
+        "Las opciones distractoras se basan en errores aritméticos simples o en confundir máximo con mínimo, pero no exigen análisis fino del contexto."
+      ],
+      "medium": [
+        "El estudiante debe construir la función cuadrática a partir de una descripción verbal sencilla (por ejemplo, ‘la ganancia es la diferencia entre ingresos y costos, con ingresos y costos dados en función de x’).",
+        "Se requiere interpretar cuidadosamente qué representa cada coordenada del vértice en el contexto (por ejemplo, x: número de productos, y: ganancia) para decidir cuál usar como respuesta.",
+        "Pueden aparecer coeficientes fraccionarios o números algo mayores, aunque razonables para cálculo manual.",
+        "Se pide responder algo ligeramente distinto al vértice en forma directa, pero que se obtiene a partir de él sin múltiples pasos (por ejemplo, comparar la ganancia máxima con la ganancia obtenida con otra cantidad dada).",
+        "Las alternativas incluyen distractores que provienen de aplicar mal la fórmula del vértice, interpretar mal los significados de x e y o ignorar el signo de a."
+      ],
+      "hard": [
+        "La función cuadrática debe ser deducida a partir de varios datos contextuales combinados (por ejemplo, restricciones del tipo ‘al aumentar en 1 unidad, la ganancia cambia de tal forma’ o expresiones de ingresos y costos separadas y menos directas).",
+        "El dominio contextual juega un rol relevante y el estudiante debe descartar soluciones no pertinentes (por ejemplo, tiempos negativos o cantidades no enteras si el contexto lo exige).",
+        "Se requiere usar el vértice para justificar una afirmación o tomar una decisión entre varias opciones que no piden explícitamente el ‘máximo’ o ‘mínimo’, sino cuál estrategia es más conveniente.",
+        "Pueden aparecer parámetros simbólicos simples (por ejemplo, un costo fijo k) y la comparación de máximos/mínimos entre dos escenarios distintos pero ambos cuadráticos.",
+        "Las alternativas consideran distractores sofisticados, como elegir el vértice de la parábola incorrecta, usar puntos de intersección en vez del vértice o elegir extremos en los bordes del dominio contextual cuando estos no son óptimos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro qué variable es la independiente (x) y cuál es la dependiente (f(x)), especialmente en contextos con varias cantidades (precio, cantidad, ganancia).",
+      "No usar frases vagas como ‘el mejor resultado’ o ‘la solución más conveniente’ sin especificar claramente qué magnitud se está optimizando (ganancia, costo, área, etc.).",
+      "Evitar dominios implícitos dudosos: si hay restricciones naturales (tiempo ≥ 0, número de productos entero y no negativo), deben estar explícitamente señaladas si son relevantes para la respuesta.",
+      "No mezclar en la misma pregunta varios modelos posibles (por ejemplo, dos funciones distintas aplicables al mismo contexto) sin especificar claramente cuál se usa en cada parte.",
+      "Evitar pedir simultáneamente información sobre el máximo y el mínimo en casos en que solo uno de ellos exista en el contexto dado, a menos que se explicite por qué el otro no aplica.",
+      "No presentar funciones incompletas o con parámetros sin definir (letras que no se explican en el texto) que puedan llevar a distintas interpretaciones del modelo.",
+      "Evitar que las alternativas incluyan respuestas dimensionalmente ambiguas (por ejemplo, mezclar opciones que son tiempos con otras que son alturas sin aclarar en el enunciado exactamente qué se pregunta)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_entre_x_y_y_del_vértice",
+        "description": "El estudiante calcula correctamente el vértice, pero responde con la coordenada equivocada: entrega el tiempo/cantidad (x) cuando se pide el valor máximo/mínimo de la magnitud (y) o al revés.",
+        "how_to_address": "Formular preguntas que destaquen explícitamente el significado de cada coordenada (por ejemplo, subrayar ‘altura máxima’ versus ‘tiempo en que se alcanza la altura máxima’) y usar distractores que separen estos dos valores para evidenciar la confusión."
+      },
+      {
+        "name": "Ignorar_signo_de_a",
+        "description": "Se supone que el vértice representa siempre un máximo y no se revisa el signo de a; el estudiante responde con un máximo cuando la función tiene mínimo (a > 0) o viceversa.",
+        "how_to_address": "Incluir ítems donde el cambio de signo de a sea clave y preguntar explícitamente si la situación corresponde a un máximo o mínimo, con distractores que muestren el error de no revisar la concavidad."
+      },
+      {
+        "name": "Aplicación_incorrecta_de_la_fórmula_del_vértice",
+        "description": "Errores en x_v = -b/(2a), como olvidar el signo negativo de b, usar b/(2a) sin el menos, o dividir solo por 2 y no por 2a.",
+        "how_to_address": "Diseñar problemas con coeficientes que hagan visibles estos errores en las alternativas (por ejemplo, opciones que correspondan a b/(2a), -b/a, -b/2), reforzando la importancia de escribir claramente la fórmula antes de sustituir."
+      },
+      {
+        "name": "Sustitución_errónea_en_la_función",
+        "description": "Se encuentra correctamente x_v, pero al calcular f(x_v) hay errores de sustitución o de operaciones (especialmente con potencias y signos).",
+        "how_to_address": "Incluir ítems donde la mayor dificultad esté en el cálculo de f(x_v), con opciones que correspondan a errores típicos (no elevar al cuadrado, perder paréntesis, sumar en vez de restar), y explicitar en soluciones modelo la correcta organización de los cálculos."
+      },
+      {
+        "name": "Modelo_cuadrático_mal_construido",
+        "description": "Al leer el contexto, el estudiante arma una expresión cuadrática incorrecta (por ejemplo, confunde ingreso con ganancia, suma en lugar de restar costos, o asigna la variable al elemento equivocado).",
+        "how_to_address": "Proponer enunciados donde se deba construir primero la expresión de ingreso, costo y ganancia por separado y enfatizar en las alternativas errores de modelación típicos (ganancia = ingreso + costo, inversión en vez de beneficio, etc.)."
+      },
+      {
+        "name": "Desatención_al_contexto_y_al_dominio",
+        "description": "Se obtienen extremos matemáticos que no son coherentes con el contexto (tiempos negativos, cantidades no enteras cuando el contexto exige enteros, valores fuera del rango descrito).",
+        "how_to_address": "Incluir problemas que expliciten restricciones de dominio y distractores que correspondan a soluciones matemáticas válidas pero contextualmente imposibles, incentivando al estudiante a confrontar la respuesta con la realidad descrita."
+      },
+      {
+        "name": "Confusión_con_otros_elementos_de_la_parábola",
+        "description": "El estudiante usa el término independiente c o las intersecciones con los ejes como si fueran el máximo o mínimo, en lugar del vértice.",
+        "how_to_address": "Diseñar ítems donde c y los interceptos tengan valores cercanos pero distintos al extremo, incorporando estas cantidades entre las alternativas para hacer visible la necesidad de calcular específicamente el vértice."
+      }
+    ],
+    "future_targets": [
+      "Resolver problemas de optimización en funciones no cuadráticas usando herramientas de cálculo diferencial en cursos posteriores.",
+      "Analizar intervalos de crecimiento y decrecimiento y concavidad de funciones para determinar y justificar máximos y mínimos locales.",
+      "Aplicar optimización con restricciones múltiples y modelos multivariables (por ejemplo, programación lineal básica).",
+      "Modelar fenómenos más complejos con funciones cuadráticas y otras familias (modelos de oferta y demanda, trayectorias de movimiento, ajustes de datos).",
+      "Interpretar y comparar distintos modelos funcionales para seleccionar el más adecuado en un contexto de toma de decisiones.",
+      "Profundizar en el estudio de parábolas en geometría analítica (foco, directriz, distancia mínima) y su relación con el vértice."
+    ],
+    "representation_variants": [
+      "Función cuadrática dada en forma general f(x) = ax^2 + bx + c explícita en el enunciado.",
+      "Contexto verbal donde la relación cuadrática está implícita y el estudiante debe deducir la fórmula a partir de una descripción de ingresos, costos, áreas u otras magnitudes.",
+      "Uso de tablas numéricas simples (valores de x y f(x)) que sugieren la presencia de un máximo o mínimo y se completan con el modelo cuadrático dado o construido.",
+      "Expresión cuadrática en forma canónica f(x) = a(x - h)^2 + k, donde el vértice se identifica directamente como (h, k) y luego se interpreta en el contexto.",
+      "Comparación textual de dos modelos cuadráticos (por ejemplo, dos estrategias comerciales) en la que se decide cuál ofrece un máximo o mínimo más conveniente sin requerir graficar."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "simple_fractions",
+      "decimals_one_decimal_place",
+      "decimals_two_decimal_places"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas donde se conoce el promedio aritmético de un conjunto de datos y la cantidad de datos, y se debe calcular la suma total.",
+        "Problemas donde se conoce el promedio, la cantidad total de datos y algunos datos individuales, y se debe encontrar uno o varios datos faltantes.",
+        "Situaciones de notas o puntajes del tipo: ¿qué valor necesito obtener para alcanzar un promedio dado?",
+        "Uso directo de la relación: promedio = (suma de los datos) / N y su inversión: suma total = promedio × N.",
+        "Problemas con uno o dos datos faltantes, siempre que se mantenga una única solución claramente determinada."
+      ],
+      "out_of_scope": [
+        "Cálculo del promedio a partir de todos los datos conocidos (eso corresponde al cálculo directo de promedios, no al problema inverso).",
+        "Problemas donde se requiere calcular otras medidas de tendencia central (mediana, moda) u otras estadísticas (varianza, desviación estándar).",
+        "Problemas de promedio ponderado (diferentes pesos para cada dato) o con porcentajes de participación distintos, salvo que se explicite claramente y no sea el foco del ítem.",
+        "Situaciones que requieran álgebra avanzada (sistemas con más de una ecuación y varias incógnitas sin contexto de promedio).",
+        "Interpretación de gráficos estadísticos (barras, histogramas, tortas, boxplots); aquí el foco es el uso inverso de la fórmula del promedio, no la lectura gráfica."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-01-03",
+        "A-M1-PROB-01-15",
+        "A-M1-PROB-01-16"
+      ],
+      "common_traps": [
+        "Olvidar multiplicar el promedio por el número de datos y en cambio dividir, aplicando la fórmula en el sentido equivocado.",
+        "Confundir el número de datos N (cantidad de notas, personas, etc.) con la suma total o con otro número presente en el contexto.",
+        "No incluir el dato faltante dentro del conteo de N al plantear el problema (por ejemplo, considerar 3 notas conocidas cuando en realidad el promedio se calcula sobre 4).",
+        "Suponer que todos los datos son enteros y descartar soluciones decimales que son perfectamente válidas.",
+        "Interpretar mal enunciados del tipo: \"en el próximo certamen\" y usar N equivocado (antes vs después de agregar la nueva nota).",
+        "Restar al promedio en vez de restar a la suma total al buscar un dato faltante.",
+        "Confundir el promedio actual con el promedio deseado y usar el valor equivocado en la fórmula."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados breves, con contexto cotidiano simple (notas, puntajes, edades) y lenguaje directo.",
+        "Un solo paso inverso explícito: se conoce el promedio y N, se pide la suma total; o se conoce el promedio, N y todos los datos menos uno, y se pide ese dato faltante.",
+        "Valores numéricos pequeños, enteros positivos, que conducen a resultados enteros (ejemplo: promedios como 5, 6, 10; N entre 3 y 6).",
+        "No se exige interpretar cambios de promedio ni distinguir entre promedio actual y promedio deseado; se da un único promedio en el problema.",
+        "Formato de pregunta del tipo: \"¿cuánto suman…?\" o \"¿qué nota falta?\" sin información distractora."
+      ],
+      "medium": [
+        "Problemas donde el dato faltante es una de varias cantidades dentro del contexto (por ejemplo, una de las notas del semestre, uno de los sueldos del grupo).",
+        "Necesidad de realizar dos pasos encadenados: primero hallar la suma total a partir del promedio y N, luego restar la suma de los datos conocidos para obtener el dato faltante.",
+        "Presencia de decimales simples (con un decimal) ya sea en el promedio o en los datos, con resultados que pueden ser decimales.",
+        "Contextos algo más largos, con información no relevante que el estudiante debe filtrar (por ejemplo, descripciones del curso, fechas, etc.).",
+        "Situaciones de \"¿qué nota necesito para promediar X?\" donde se debe considerar correctamente si el N incluye o no la nota futura.",
+        "Uso de N algo mayor (entre 6 y 10 datos) pero manteniendo cuentas mental o manualmente manejables."
+      ],
+      "hard": [
+        "Problemas donde se debe distinguir entre promedio actual y promedio objetivo, involucrando el efecto de uno o dos datos futuros (por ejemplo, próximos controles o evaluaciones).",
+        "Situaciones donde el número de datos cambia (por ejemplo, añadir una nueva nota o eliminar un dato) y se pide el valor del nuevo dato a partir de un nuevo promedio deseado.",
+        "Presencia de fracciones o decimales menos amigables (por ejemplo, 6,3; 5,75; fracciones sencillas tipo 7/2) que requieren mayor manejo numérico.",
+        "Contextos extensos en los que parte de la información es irrelevante o está distribuida en varias oraciones, exigiendo buena comprensión lectora.",
+        "Problemas que implican razonar sobre dos grupos y sus promedios (por ejemplo, promedio de un curso antes y después de incorporar un nuevo estudiante) siempre que el foco siga siendo usar la relación suma = promedio × N para hallar un dato faltante.",
+        "Ítems donde el estudiante debe inferir N a partir del contexto (por ejemplo, cantidad de pruebas rendidas en el semestre) antes de aplicar la fórmula invertida."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas sobre la cantidad de datos; siempre indicar de forma explícita el número total de notas, personas u observaciones que intervienen en el promedio.",
+      "Evitar frases ambiguas como \"tiene 3 notas y le falta una por rendir\" sin aclarar cuál es el total de notas consideradas en el promedio final.",
+      "No mezclar distintos tipos de promedio (por ejemplo, promedio mensual y promedio anual) sin especificar claramente cuál se está utilizando en cada caso.",
+      "Evitar enunciados donde pueda interpretarse más de un conjunto de datos para el mismo promedio (por ejemplo, no aclarar si cierto dato pertenece o no al promedio dado).",
+      "No incluir datos que puedan confundirse con N (por ejemplo, números de curso, cantidad de estudiantes del colegio) sin dejar claro si se usan o no en el cálculo.",
+      "Evitar descripciones donde cambie N sin indicarlo explícitamente (por ejemplo, alumnos que se incorporan o se retiran) si eso no es parte intencional del desafío.",
+      "No plantear situaciones donde más de un valor del dato faltante sea posible con la información entregada.",
+      "Si se trabaja con notas chilenas, usar solo la escala 1,0 a 7,0 y dejar claro cuando se trate de promedios de notas parciales vs. promedio final."
+    ],
+    "error_families": [
+      {
+        "name": "Aplicar la fórmula en el sentido equivocado",
+        "description": "El estudiante, conociendo el promedio y la cantidad de datos, divide en vez de multiplicar, usando promedio / N en lugar de promedio × N para hallar la suma total.",
+        "how_to_address": "Reforzar la comprensión conceptual de la fórmula promedio = suma / N y su inversión: si se conoce el promedio y N, debe reconstruirse la suma multiplicando. Proponer ejercicios específicos donde se compare la operación directa e inversa."
+      },
+      {
+        "name": "Contar mal el número de datos N",
+        "description": "El estudiante no incluye el dato faltante en el recuento de N o confunde N con la cantidad de datos conocidos. Por ejemplo, usa N = 3 cuando el promedio se refiere a 4 notas (3 conocidas y 1 faltante).",
+        "how_to_address": "Trabajar con esquemas o tablas donde se enumeran explícitamente todos los datos del conjunto, marcando cuáles se conocen y cuál es el faltante. Hacer que el estudiante escriba primero N de forma explícita antes de aplicar la fórmula."
+      },
+      {
+        "name": "Confundir promedio actual con promedio deseado",
+        "description": "En problemas de \"¿qué nota necesito?\", el estudiante utiliza el promedio actual en lugar del promedio objetivo (o viceversa) al calcular la suma total.",
+        "how_to_address": "Separar claramente en la resolución los pasos: promedio actual (informativo) vs promedio que se quiere lograr (para el cálculo). Pedir que subrayen en el enunciado cuál es el promedio objetivo y que lo etiqueten claramente en sus anotaciones."
+      },
+      {
+        "name": "Restar al promedio en vez de a la suma total",
+        "description": "Tras calcular (o creer calcular) la suma de los datos, el estudiante descuenta los datos conocidos directamente del promedio o hace operaciones mixtas sin mantener la estructura suma = dato1 + dato2 + …",
+        "how_to_address": "Insistir en representar la situación con una ecuación que exprese la suma de todos los datos, por ejemplo: suma_total = nota1 + nota2 + x. Destacar que las restas se hacen sobre la suma total, no sobre el promedio."
+      },
+      {
+        "name": "Errores de manejo de decimales",
+        "description": "El estudiante comete errores al multiplicar o dividir números decimales (por ejemplo, 5,5 × 4) o al redondear sin justificación, afectando el valor del dato faltante.",
+        "how_to_address": "Proporcionar práctica focalizada con operaciones con decimales en el contexto de promedios. Recalcar cuándo es adecuado redondear y exigir, en contexto escolar, al menos un decimal coherente con el sistema de notas."
+      },
+      {
+        "name": "Interpretar que el dato faltante debe ser entero",
+        "description": "El estudiante descarta soluciones decimales o las redondea de forma arbitraria creyendo que solo se aceptan notas o valores enteros, incluso cuando el contexto admite decimales.",
+        "how_to_address": "Diseñar ítems donde la solución correcta necesariamente sea decimal. Conversar sobre el significado de promedios y notas con un decimal en el sistema chileno y enfatizar que pueden aparecer resultados no enteros."
+      },
+      {
+        "name": "Cambios en el número de datos mal manejados",
+        "description": "En situaciones donde se agrega o se quita un dato (por ejemplo, una nueva nota), el estudiante mantiene el N original al calcular el nuevo promedio o el dato faltante.",
+        "how_to_address": "Hacer que el estudiante escriba explícitamente N_antes y N_despues y los utilice en ecuaciones separadas. Practicar con tablas de resumen: antes (N, suma, promedio) y después (N', suma', promedio')."
+      }
+    ],
+    "future_targets": [
+      "Resolver problemas con promedio ponderado, donde distintos datos tienen pesos diferentes.",
+      "Analizar el efecto de agregar o quitar datos sobre el promedio y otras medidas de tendencia central.",
+      "Resolver problemas combinados que incluyen promedio y otras medidas estadísticas (mediana, rango, varianza).",
+      "Modelar situaciones de datos reales más complejas, como encuestas o series de tiempo simples, donde se usan promedios para tomar decisiones.",
+      "Resolver problemas de ecuaciones lineales simples donde la incógnita está dentro de una suma dividida por N (generalización algebraica de estos problemas inversos).",
+      "Interpretar y construir cuadros o tablas de datos a partir de promedios y cantidades parciales.",
+      "Comprender y usar promedios en contextos financieros y de tasas (promedios de crecimiento, promedios de consumo, etc.)."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales con contexto escolar (notas de pruebas, tareas, evaluaciones).",
+      "Tablas con columnas del tipo: prueba, nota, conocido/desconocido, para identificar el dato faltante.",
+      "Listas de datos parcialmente conocidos (por ejemplo: 5,0; 6,0; x; 5,5) acompañadas del promedio del conjunto.",
+      "Escritura explícita de la ecuación que representa el promedio (por ejemplo: (5,0 + 6,0 + x) / 3 = 6,0) como paso intermedio en el ítem.",
+      "Contextos no escolares: edades de personas, kilómetros recorridos en varios días, cantidades producidas, tiempos empleados en una tarea.",
+      "Planteamiento con resúmenes intermedios: se entrega el promedio de un grupo y se pide construir la suma total antes de hallar el dato faltante."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_up_to_100",
+      "decimals_one_decimal_place",
+      "decimals_two_decimal_places",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

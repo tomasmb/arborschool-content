@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Convertir porcentajes a fracción con denominador 100 (por ejemplo, 37% -> 37/100).",
+        "Simplificar la fracción obtenida hasta su mínima expresión cuando corresponda.",
+        "Trabajar con porcentajes mayores que 100% que se transforman en fracciones impropias (por ejemplo, 150% -> 150/100 -> 3/2).",
+        "Trabajar con porcentajes menores que 1% que se expresan como fracciones con numeradores pequeños (por ejemplo, 0,5% -> 0,5/100 = 1/200).",
+        "Reconocer que el símbolo % significa 'entre 100' y usar esa interpretación para formar la fracción."
+      ],
+      "out_of_scope": [
+        "Conversión de porcentajes directamente a números decimales (sin pasar por fracción).",
+        "Conversión de fracciones a porcentaje (dirección inversa del proceso).",
+        "Problemas de aplicación de porcentajes en contextos de aumento, descuento, interés, etc.",
+        "Cálculo de porcentajes de una cantidad (por ejemplo, 15% de 200).",
+        "Comparación de porcentajes mezclando otras representaciones (por ejemplo, comparar 30%, 3/10 y 0,3).",
+        "Uso de fracciones algebraicas que involucren variables (por ejemplo, x% -> x/100).",
+        "Operaciones aritméticas entre porcentajes (sumar, restar, multiplicar porcentajes entre sí)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión del significado de porcentaje como razón sobre 100.",
+        "A-M1-NUM-02-01: Lectura y escritura de fracciones con numerador y denominador enteros.",
+        "A-M1-NUM-02-03: Simplificación de fracciones mediante factores comunes.",
+        "A-M1-NUM-01-02: Manejo básico de números decimales (solo si se usan porcentajes con decimales, como 12,5%)."
+      ],
+      "common_traps": [
+        "Olvidar que el porcentaje siempre se transforma en una fracción con denominador 100, escribiendo por ejemplo 25% como 25/10 en lugar de 25/100.",
+        "No simplificar la fracción cuando es posible, quedando en una respuesta equivalente pero no irreductible (por ejemplo, 50/100 en vez de 1/2).",
+        "Simplificar de manera incorrecta, usando un factor común erróneo (por ejemplo, 25/100 -> 1/5, pero justificando mal o cometiendo errores intermedios).",
+        "Confundir 0,5% con 50% o con 5%, ignorando que el símbolo % se aplica a todo el número (0,5% = 0,5/100).",
+        "Olvidar convertir porcentajes con parte decimal a una fracción exacta antes de simplificar (por ejemplo, tratar 12,5% como 12,5/100 sin convertir 12,5 a fracción).",
+        "Manejar mal el signo en porcentajes negativos (si se incluyen), por ejemplo, escribir −30% como 30/100 en vez de −30/100.",
+        "Creer que un porcentaje mayor que 100% no puede representarse como fracción o forzar a que el numerador sea menor que el denominador."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Porcentajes enteros con uno o dos dígitos que producen fracciones con factores comunes evidentes (por ejemplo, 20%, 25%, 50%, 75%).",
+        "Numeradores y denominadores con factores comunes pequeños (2, 3, 5, 10) y simplificación en uno o dos pasos.",
+        "No incluir porcentajes con decimales ni mayores a 100%.",
+        "Opciones de respuesta que difieren claramente en el numerador y/o denominador, evitando distractores muy cercanos."
+      ],
+      "medium": [
+        "Porcentajes enteros de dos o tres dígitos donde los factores comunes no son tan obvios (por ejemplo, 28%, 44%, 60%, 125%).",
+        "Incluir algunos porcentajes mayores a 100% que resultan en fracciones impropias pero con simplificación razonable (por ejemplo, 120% -> 6/5).",
+        "Incluir porcentajes con una cifra decimal simple que se pueda convertir fácilmente a fracción (por ejemplo, 12,5% -> 1/8), pero con indicios suficientes para que el estudiante recuerde el manejo de decimales.",
+        "Distractores que reflejen errores típicos, como no dividir por 100, no simplificar, o simplificar mal."
+      ],
+      "hard": [
+        "Porcentajes con parte decimal no trivial cuya conversión a fracción requiere más de un paso (por ejemplo, 37,5%, 62,5%, 2,5%).",
+        "Porcentajes mayores a 100% que incluyen decimales (por ejemplo, 112,5% -> 9/8).",
+        "Porcentajes que generan fracciones con factores comunes relativamente grandes o poco evidentes (por ejemplo, 84% -> 21/25, 96% -> 24/25).",
+        "Incluir distractores sofisticados que operan con la fracción correcta pero con errores en el factor de simplificación, o que representan el mismo porcentaje en forma decimal para confundir al estudiante.",
+        "Situaciones donde el estudiante debe reconocer rápidamente el máximo común divisor o descomponer en factores primos para simplificar completamente."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en la misma pregunta la conversión de porcentaje a fracción y la conversión de fracción a porcentaje; mantener una sola dirección de conversión como foco.",
+      "No ofrecer como alternativas fracciones equivalentes entre sí (por ejemplo, 1/2 y 2/4) salvo que el objetivo explícito sea detectar si el estudiante llegó a la fracción irreductible; en ese caso debe especificarse claramente que se pide la fracción irreductible.",
+      "Evitar porcentajes con notación ambigua de decimales, por ejemplo usar siempre coma decimal (12,5%) de acuerdo a la convención local y no mezclar con punto (12.5%).",
+      "No incluir contextos verbales extensos donde el porcentaje represente otra cosa (por ejemplo, tasas, probabilidades) si eso no aporta al foco del átomo; puede distraer del procedimiento de conversión.",
+      "Evitar redactar enunciados donde no quede claro si se pide la fracción equivalente o la fracción irreductible; explicitar siempre 'en forma de fracción irreductible' cuando corresponda.",
+      "No usar simultáneamente símbolos % y /100 en el mismo número de manera confusa (por ejemplo, escribir 30/100%); el porcentaje debe aparecer solo con el símbolo % o solo como fracción, pero no mezclado.",
+      "Evitar porcentajes extremadamente pequeños con muchas cifras decimales (por ejemplo, 0,0375%) que exijan más habilidades de manejo de decimales que de conversión porcentual a fracción.",
+      "No combinar porcentajes negativos con contextos que puedan interpretarse como cantidades físicas necesariamente positivas sin aclaración, para no generar conflicto semántico."
+    ],
+    "error_families": [
+      {
+        "name": "Olvidar el denominador 100",
+        "description": "El estudiante escribe el porcentaje como fracción manteniendo el mismo número en el numerador, pero con un denominador incorrecto (10, 1000, 1, etc.), por ejemplo, 25% -> 25/10 o 25/1.",
+        "how_to_address": "Reforzar la idea de que el símbolo % significa 'de cada 100' o 'entre 100'. Usar ejemplos repetidos donde se relacione el porcentaje con 100 partes iguales y se escriba sistemáticamente n% = n/100."
+      },
+      {
+        "name": "No simplificar la fracción",
+        "description": "El estudiante transforma correctamente el porcentaje en n/100, pero no realiza la simplificación a fracción irreductible (por ejemplo, 75% -> 75/100).",
+        "how_to_address": "Recordar que la forma estándar de una fracción es irreductible. Practicar la búsqueda de factores comunes sencillos (2, 5, 10, 25) en denominadores 100, 50, 25, etc. Incluir ejercicios donde variadas alternativas muestren tanto la fracción sin simplificar como la irreductible, enfatizando cuál es la correcta."
+      },
+      {
+        "name": "Simplificación incorrecta",
+        "description": "El estudiante intenta simplificar pero divide numerador y denominador por distintos números o por un factor equivocado, generando una fracción no equivalente (por ejemplo, 40/100 -> 1/4 está bien, pero puede aparecer un error tipo 40/100 -> 2/4).",
+        "how_to_address": "Trabajar la noción de que simplificar es dividir numerador y denominador por el mismo número distinto de cero. Recomendar comprobar la equivalencia multiplicando cruzado o devolviendo la fracción al porcentaje para verificar el resultado."
+      },
+      {
+        "name": "Confusión con porcentajes con decimales",
+        "description": "En porcentajes como 12,5% o 0,5%, el estudiante trata solo la parte entera o confunde 0,5% con 5% o 50%, llevando a fracciones erróneas.",
+        "how_to_address": "Desglosar el proceso en dos pasos: primero convertir el número decimal a fracción (12,5 = 125/10), y luego aplicar la división por 100. Mostrar explícitamente la diferencia entre 0,5 y 0,5% usando representaciones en contexto (por ejemplo, diagramas de 100 partes)."
+      },
+      {
+        "name": "Manejo incorrecto de porcentajes mayores que 100%",
+        "description": "El estudiante intenta forzar una fracción propia (numerador menor que denominador) o interpreta que porcentajes sobre 100% son inválidos, equivocándose al representarlos como fracción.",
+        "how_to_address": "Mostrar ejemplos visuales y numéricos donde se ve claramente que 150% es una 'vez y media' la unidad, y que 150% = 150/100 = 3/2 es una fracción impropia. Trabajar con fracciones impropias y números mixtos para normalizar estas representaciones."
+      },
+      {
+        "name": "Ignorar el signo del porcentaje",
+        "description": "Si se presentan porcentajes negativos, el estudiante pierde el signo o lo sitúa mal (por ejemplo, −20% -> 20/100 en vez de −20/100).",
+        "how_to_address": "Reforzar que el signo afecta a todo el número, incluido el porcentaje. Practicar ejemplos con números negativos en otros contextos (−3 = −3/1) para luego transferir la idea a −n% = −n/100."
+      }
+    ],
+    "future_targets": [
+      "Conversión de fracciones a porcentajes y decimales.",
+      "Comparación y ordenamiento de porcentajes, fracciones y decimales en una misma recta numérica.",
+      "Cálculo de porcentajes de una cantidad (por ejemplo, hallar el 18% de un número).",
+      "Resolución de problemas de aumento y descuento porcentual.",
+      "Interpretación de datos en gráficos estadísticos que presentan información en porcentajes.",
+      "Cálculo de probabilidades simples expresadas como porcentajes y fracciones.",
+      "Manejo de tasas de crecimiento y decrecimiento en contextos de funciones y modelos (por ejemplo, crecimiento porcentual anual)."
+    ],
+    "representation_variants": [
+      "Porcentaje escrito solo con símbolo % (por ejemplo, 35%).",
+      "Porcentaje con parte decimal (por ejemplo, 12,5%; 0,5%).",
+      "Porcentaje mayor a 100% (por ejemplo, 150%; 225%).",
+      "Porcentaje menor a 1% (por ejemplo, 0,5%; 0,25%).",
+      "Resultado de la conversión en forma de fracción impropia (por ejemplo, 7/4).",
+      "Resultado de la conversión en forma de número mixto cuando sea pertinente (por ejemplo, 150% -> 3/2 = 1 1/2 si se solicita explícitamente)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "decimal_percents_simple",
+      "decimal_percents_non_trivial",
+      "improper_fractions",
+      "unit_intervals"
+    ],
+    "required_image_types": []
+  }
+}

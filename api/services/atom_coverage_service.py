@@ -31,7 +31,7 @@ from app.utils.paths import (
 logger = logging.getLogger(__name__)
 
 
-def _load_question_to_atom_map() -> dict[str, set[str]]:
+def load_question_to_atom_map() -> dict[str, set[str]]:
     """Scan metadata_tags.json files to build atom -> questions map.
 
     Returns:
@@ -70,7 +70,7 @@ def _load_question_to_atom_map() -> dict[str, set[str]]:
     return atom_questions
 
 
-def _build_prereq_dependents(
+def build_prereq_dependents(
     atoms_list: list[dict[str, Any]],
 ) -> dict[str, set[str]]:
     """Build reverse map: atom_id -> atoms that depend on it."""
@@ -80,6 +80,51 @@ def _build_prereq_dependents(
         for prereq_id in atom.get("prerrequisitos", []):
             dependents[prereq_id].add(atom_id)
     return dependents
+
+
+# ---------------------------------------------------------------------------
+# Public helpers for per-atom coverage (used by subjects router)
+# ---------------------------------------------------------------------------
+
+
+def load_atom_coverage_maps(
+    atoms_data: list[dict[str, Any]],
+) -> tuple[dict[str, set[str]], dict[str, set[str]]]:
+    """Load question-to-atom map and prerequisite dependents.
+
+    Convenience wrapper for callers that need both maps.
+
+    Returns:
+        Tuple of (atom_questions_map, dependents_map).
+    """
+    atom_qs = load_question_to_atom_map()
+    deps = build_prereq_dependents(atoms_data)
+    return atom_qs, deps
+
+
+def compute_atom_coverage_status(
+    atom_id: str,
+    direct_count: int,
+    deps: dict[str, set[str]],
+    atom_qs: dict[str, set[str]],
+) -> str:
+    """Compute coverage status for a single atom.
+
+    Args:
+        atom_id: Atom identifier.
+        direct_count: Number of direct PAES questions.
+        deps: Dependents map from build_prereq_dependents.
+        atom_qs: Questions map from load_question_to_atom_map.
+
+    Returns:
+        "direct", "transitive", or "none".
+    """
+    if direct_count > 0:
+        return "direct"
+    for dep_id in deps.get(atom_id, set()):
+        if dep_id in atom_qs and atom_qs[dep_id]:
+            return "transitive"
+    return "none"
 
 
 def _compute_standards_coverage(
@@ -227,8 +272,8 @@ def compute_coverage(subject_id: str) -> CoverageAnalysisResult:
             else sd.get("standards", [])
         )
 
-    atom_qs = _load_question_to_atom_map()
-    deps = _build_prereq_dependents(atoms_list)
+    atom_qs = load_question_to_atom_map()
+    deps = build_prereq_dependents(atoms_list)
 
     std_items, fully, partial, none_c = (
         _compute_standards_coverage(standards_list, atoms_list)

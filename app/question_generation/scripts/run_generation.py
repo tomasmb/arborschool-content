@@ -21,9 +21,19 @@ import sys
 from pathlib import Path
 
 from app.question_generation.models import (
+    DEFAULT_BUFFER_RATIO,
+    DEFAULT_TARGET_DISTRIBUTION,
     PHASE_GROUP_CHOICES,
+    DifficultyDistribution,
     PipelineConfig,
     PipelineResult,
+)
+
+# Default target string for CLI help text.
+_DEF_TARGET = (
+    f"{DEFAULT_TARGET_DISTRIBUTION.easy},"
+    f"{DEFAULT_TARGET_DISTRIBUTION.medium},"
+    f"{DEFAULT_TARGET_DISTRIBUTION.hard}"
 )
 from app.question_generation.pipeline import AtomQuestionPipeline
 from app.utils.logging_config import setup_logging
@@ -41,11 +51,15 @@ def main() -> None:
 
     print(f"Processing {len(atom_ids)} atom(s)...")
 
+    # Build target distribution from CLI or defaults
+    target_dist = _parse_target_distribution(args.target)
+
     results: list[PipelineResult] = []
     for atom_id in atom_ids:
         config = PipelineConfig(
             atom_id=atom_id,
-            pool_size=args.pool_size,
+            target_distribution=target_dist,
+            buffer_ratio=args.buffer_ratio,
             max_retries=args.max_retries,
             skip_sync=args.skip_sync,
             dry_run=args.dry_run,
@@ -78,8 +92,13 @@ def _parse_args() -> argparse.Namespace:
         help="File with one atom ID per line",
     )
     parser.add_argument(
-        "--pool-size", type=int, default=9,
-        help="Items per atom (default 9 = 3 per difficulty)",
+        "--target", type=str, default=_DEF_TARGET,
+        help=f"Target distribution as E,M,H (default: {_DEF_TARGET})",
+    )
+    parser.add_argument(
+        "--buffer-ratio", type=float,
+        default=DEFAULT_BUFFER_RATIO,
+        help=f"Buffer ratio for over-generation (default: {DEFAULT_BUFFER_RATIO})",
     )
     parser.add_argument(
         "--max-retries", type=int, default=2,
@@ -135,6 +154,29 @@ def _resolve_atom_ids(args: argparse.Namespace) -> list[str]:
         ]
 
     return []
+
+
+def _parse_target_distribution(raw: str) -> DifficultyDistribution:
+    """Parse a comma-separated E,M,H string into a distribution.
+
+    Args:
+        raw: String like "14,18,14".
+
+    Returns:
+        DifficultyDistribution with the parsed counts.
+    """
+    parts = [p.strip() for p in raw.split(",")]
+    if len(parts) != 3:
+        print(f"Invalid --target format: '{raw}'. Expected E,M,H.")
+        sys.exit(1)
+    try:
+        easy, medium, hard = int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        print(f"Invalid --target values: '{raw}'. Must be integers.")
+        sys.exit(1)
+    return DifficultyDistribution(
+        easy=easy, medium=medium, hard=hard,
+    )
 
 
 def _print_batch_summary(results: list[PipelineResult]) -> None:

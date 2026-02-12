@@ -1,0 +1,140 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Selección cualitativa entre media, mediana y moda como medida de tendencia central más representativa de un conjunto de datos dado el contexto.",
+        "Reconocimiento informal de valores atípicos como datos mucho mayores o mucho menores que la mayoría.",
+        "Argumentación verbal sencilla que justifique por qué una medida describe mejor el comportamiento típico del grupo.",
+        "Elección de la moda en contextos con datos cualitativos o cuando importa principalmente el valor más frecuente.",
+        "Elección de la mediana cuando hay uno o pocos valores extremos que distorsionan la media.",
+        "Elección de la media cuando los datos cuantitativos están relativamente equilibrados, sin valores muy extremos."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico explícito de media, mediana y moda (se puede asumir dado o irrelevante para la decisión).",
+        "Uso de fórmulas de asimetría, varianza, desviación estándar u otras medidas de dispersión.",
+        "Determinación formal de outliers mediante reglas numéricas (por ejemplo, 1,5·RIC, puntajes z).",
+        "Interpretación avanzada de gráficos estadísticos complejos (boxplot, ojiva, dispersión) más allá de identificar si existen valores muy extremos.",
+        "Problemas de probabilidad o inferencia estadística (estimaciones de parámetros poblacionales, intervalos de confianza, test de hipótesis).",
+        "Datos bivariados y correlación; aquí solo se trabaja con una variable a la vez.",
+        "Comparaciones puramente numéricas de cercanía entre media y mediana (no es un átomo de cálculo)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-02-01: Comprensión básica de lo que representa la media aritmética como 'promedio'.",
+        "A-M1-PROB-02-02: Comprensión básica de la mediana como valor central de los datos ordenados.",
+        "A-M1-PROB-02-03: Comprensión básica de la moda como valor o categoría más frecuente.",
+        "A-M1-PROB-02-04: Lectura e interpretación simple de tablas de datos y descripciones verbales de distribuciones.",
+        "A-M1-NUM-XX: Comprensión intuitiva de mayor que / menor que y de diferencias de magnitud entre números."
+      ],
+      "common_traps": [
+        "Plantear conjuntos de datos donde la media, la mediana y la moda entregan descripciones prácticamente equivalentes sin aportar un criterio claro de elección, generando respuestas discutibles.",
+        "Preguntar '¿qué medida es mejor?' sin aclarar el propósito del análisis (por ejemplo, describir el sueldo típico, decidir stock de un producto, etc.).",
+        "Incluir situaciones donde hay varios tipos de datos mezclados (por ejemplo, salarios y edades al mismo tiempo) sin distinguir a qué variable se refiere la medida de tendencia central.",
+        "Diseñar ítems en los que más de una alternativa pueda ser razonablemente defendible con buenos argumentos, sin que el enunciado entregue información suficiente para discriminar.",
+        "Usar contextos donde los supuestos de 'dato extremo' o 'datos equilibrados' no son claros (por ejemplo, diferencias pequeñas que se presentan como outliers).",
+        "Pedir identificación de outliers numéricamente exacta (por ejemplo, '¿cuál es el outlier según el criterio de 1,5·RIC?'), lo que sale del enfoque cualitativo del átomo.",
+        "Confundir moda como adecuada para cualquier conjunto de datos sólo porque 'aparece una vez un valor repetido', sin un interés real en la categoría más frecuente."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Conjuntos de datos pequeños (5 a 10 datos) donde existe un valor claramente muy distinto del resto (por ejemplo, un salario muchísimo mayor), y se pregunta qué medida representa mejor el valor típico.",
+        "Contextos muy familiares y explícitos (sueldos, edades, alturas) donde se detalla claramente la existencia de un dato muy extremo, sugiriendo la mediana como respuesta adecuada.",
+        "Situaciones con datos cualitativos simples (talla de ropa, sabor favorito, medio de transporte usado) donde es evidente que la moda es la medida de interés.",
+        "Opciones de respuesta directamente asociadas a la regla cualitativa (por ejemplo, 'mediana porque hay un valor extremadamente alto', 'media porque no hay valores muy extremos') sin requerir análisis fino de matices.",
+        "Enunciados que mencionan explícitamente la idea de 'típico' o 'más representativo' y entregan una pista clara sobre la conveniencia de una medida (por ejemplo, 'no queremos que uno o dos casos excepcionales influyan demasiado')."
+      ],
+      "medium": [
+        "Conjuntos de datos moderados (10 a 20 datos) en los que los valores extremos son menos obvios y el estudiante debe inferir su carácter atípico comparando con la mayoría.",
+        "Contextos en los que podrían parecer razonables dos medidas diferentes, pero el propósito del análisis inclina hacia una (por ejemplo, comparar media y moda para planificar stock en una tienda, o media y mediana para resumir tiempos de viaje).",
+        "Ítems donde se pide justificar la elección de una medida en lenguaje verbal, discriminando entre 'media' y 'mediana' en función de la distribución (equilibrada vs con uno o pocos extremos).",
+        "Situaciones con datos cuantitativos discretos donde la moda existe pero no es claramente la medida más relevante para la pregunta, obligando al estudiante a descartar la moda y preferir media o mediana.",
+        "Enunciados que contrastan dos posibles resúmenes (por ejemplo, 'el gerente usó la media y el sindicato usó la mediana para describir los sueldos') y se pide cuál es más adecuado según la distribución."
+      ],
+      "hard": [
+        "Problemas que presentan dos o más conjuntos de datos y piden elegir y justificar una medida de tendencia central diferente para cada caso, explicando por qué cambia la elección según la presencia de valores extremos o la concentración de datos.",
+        "Contextos donde los valores extremos no son extremadamente llamativos, pero hay clara concentración de datos en un rango y unos pocos alejados (necesidad de lectura fina del patrón, no solo un máximo aislado muy grande).",
+        "Ítems que proponen razonamientos incorrectos en las alternativas (por ejemplo, 'media porque así se consideran todos los datos, incluidos los muy extremos, que también son importantes') y exigen que el estudiante los descarte por comprensión conceptual.",
+        "Situaciones donde se comparan medidas en contextos cualitativos y cuantitativos a la vez, y el estudiante debe decidir cuándo la moda es adecuada y cuándo no, articulando un argumento claro.",
+        "Preguntas que obligan a anticipar el efecto de agregar o quitar un valor extremo sobre la representatividad de la media y/o la mediana, justificando qué medida se ve más afectada."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar conjuntos de datos en que media, mediana y moda entregan esencialmente la misma información y el contexto no favorece claramente una de ellas, ya que cualquier elección podría justificarse.",
+      "No formular preguntas abiertas del tipo '¿qué medida es mejor?' sin especificar el propósito (describir el caso típico, decidir stock, comparar grupos, etc.).",
+      "Evitar datos donde los 'valores atípicos' no están claramente alejados del resto; deben ser cualitativamente mucho mayores o menores que la mayoría para que la elección de mediana sea defendible.",
+      "No mezclar en un mismo ítem datos cualitativos y cuantitativos sin explicitar de cuál variable se habla al elegir la medida de tendencia central.",
+      "Evitar contextos en los que la información sobre la distribución sea insuficiente (por ejemplo, solo dar la media y la mediana sin describir la forma de los datos) y aun así exigir elección de medida.",
+      "No usar lenguaje técnico de outliers (reglas formales, cuartiles específicos) que pueda hacer creer al estudiante que debe aplicar criterios que no forman parte del átomo.",
+      "Evitar que las alternativas usen argumentos vagos o equivalentes (por ejemplo, 'media porque es lo más justo', 'media porque es lo más exacto') sin aludir a la presencia o ausencia de valores extremos o al tipo de dato.",
+      "No proponer más de una alternativa correcta en función de interpretaciones razonables del mismo contexto; si el propósito admite varias medidas, debe indicarse qué se prioriza (por ejemplo, valores típicos vs impacto total)."
+    ],
+    "error_families": [
+      {
+        "name": "Media_por_defecto",
+        "description": "Elegir siempre la media como medida 'más correcta' o 'más justa', sin considerar si existen uno o pocos valores muy extremos que la alejan del comportamiento típico.",
+        "how_to_address": "Plantear contraejemplos donde un valor extremo cambia fuertemente la media pero no la mediana, y pedir que el estudiante explique por qué la mediana describe mejor al grupo en esos casos."
+      },
+      {
+        "name": "Mediana_sobrevalorada_ante_cualquier_extremo",
+        "description": "Elegir la mediana cada vez que aparece algún valor un poco distinto, aun cuando no sea realmente muy extremo respecto del resto de los datos.",
+        "how_to_address": "Trabajar ejemplos donde la dispersión es relativamente homogénea y no hay valores muy lejanos, mostrando que en esos casos la media resume bien los datos y no se justifica cambiar a la mediana."
+      },
+      {
+        "name": "Moda_misaplicada_a_datos_cuantitativos_continuos",
+        "description": "Seleccionar la moda como medida principal en conjuntos de datos cuantitativos continuos o donde la categoría más frecuente no responde a la pregunta de interés (p.ej., alturas, sueldos).",
+        "how_to_address": "Contrastar contextos donde el objetivo es claramente identificar 'la categoría más común' (ej. tallas de ropa) con otros donde interesa un valor típico numérico (ej. sueldos), explicando en qué casos la moda es pertinente."
+      },
+      {
+        "name": "Confusion_tipo_de_dato",
+        "description": "No distinguir entre datos cualitativos y cuantitativos, lo que lleva a intentar usar media o mediana con datos categóricos (por ejemplo, colores, marcas, medios de transporte).",
+        "how_to_address": "Enfatizar que la media y la mediana requieren una noción de orden o magnitud, mientras que la moda puede usarse con cualquier tipo de categoría; diseñar ítems que obliguen a identificar el tipo de dato antes de elegir la medida."
+      },
+      {
+        "name": "No_reconoce_valores_atipicos",
+        "description": "No identificar correctamente que existe uno o pocos valores extremadamente grandes o pequeños en comparación con la mayoría del grupo.",
+        "how_to_address": "Presentar listas de datos y pedir explícitamente reconocer qué valores se alejan 'de manera notoria' del resto, comparando visualmente diferencias de magnitud, antes de preguntar por la medida adecuada."
+      },
+      {
+        "name": "Ignorar_el_proposito_del_analisis",
+        "description": "Elegir la medida sin atender a lo que se quiere comunicar (por ejemplo, promover la empresa mostrando sueldos altos vs describir la situación típica de los trabajadores).",
+        "how_to_address": "Diseñar preguntas donde se expliciten distintos actores e intereses (empresa, sindicato, vendedor, comprador) y discutir cómo cambia la medida elegida según el objetivo de la comunicación."
+      },
+      {
+        "name": "Sobreconfianza_en_la_moda_por_repeticion_minima",
+        "description": "Elegir la moda sólo porque hay un valor que se repite un poco más que el resto, aunque esa información sea irrelevante para el problema.",
+        "how_to_address": "Crear ejemplos en los que la moda existe pero no aporta a responder la pregunta; contrastar con situaciones donde efectivamente es crucial saber 'qué se repite más'."
+      },
+      {
+        "name": "Pensar_que_todas_las_medidas_son_igualmente_afectadas_por_extremos",
+        "description": "Asumir que la mediana se ve tan afectada como la media por la presencia de valores muy extremos.",
+        "how_to_address": "Construir situaciones donde solo se modifica uno o dos valores extremos y se razona cualitativamente cómo cambia la media (se desplaza) y cómo la mediana permanece igual o casi igual."
+      }
+    ],
+    "future_targets": [
+      "Interpretación y comparación de distribuciones a partir de gráficos (histogramas, boxplots) usando la ubicación de la mediana y la media.",
+      "Comprensión y uso de medidas de dispersión (rango, rango intercuartílico, desviación estándar) para complementar la descripción de la tendencia central.",
+      "Identificación más formal de valores atípicos utilizando cuartiles y criterios como 1,5·RIC.",
+      "Comparación de dos o más grupos utilizando medidas de tendencia central y dispersión para tomar decisiones informadas.",
+      "Introducción a la noción de variabilidad y consistencia de datos en contextos de inferencia estadística simple.",
+      "Lectura crítica de gráficos y resúmenes estadísticos en medios de comunicación, identificando posibles sesgos por el uso de una u otra medida de tendencia central.",
+      "Uso de software o herramientas tecnológicas para representar distribuciones de datos y visualizar el efecto de valores extremos sobre las medidas de tendencia central."
+    ],
+    "representation_variants": [
+      "Listas simples de datos numéricos (por ejemplo, sueldos, edades, tiempos, alturas).",
+      "Tablas de frecuencia para datos cuantitativos discretos o cualitativos (por ejemplo, talla de ropa vs número de personas).",
+      "Descripciones verbales de la distribución (por ejemplo, 'la mayoría de los estudiantes tiene entre 1,65 m y 1,75 m, pero hay uno que mide 1,95 m').",
+      "Escenarios narrativos que describen situaciones cotidianas (empresa con un jefe que gana mucho más, tienda que debe decidir tallas a almacenar, análisis de notas de un curso).",
+      "Resúmenes mixtos donde se entregan algunos valores puntuales y comentarios cualitativos sobre su distribución (por ejemplo, 'casi todos están alrededor de 70 puntos, salvo uno que obtuvo 30').",
+      "Tablas comparativas entre dos grupos en las que se insinúa la presencia de valores extremos en uno de ellos sin dar todos los datos crudos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "contextual_decimals",
+      "simple_percentages",
+      "categorical_labels"
+    ],
+    "required_image_types": []
+  }
+}

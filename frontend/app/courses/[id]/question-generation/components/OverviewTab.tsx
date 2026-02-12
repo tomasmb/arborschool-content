@@ -1,10 +1,13 @@
 "use client";
 
 import {
-  Database,
+  AlertTriangle,
+  BarChart3,
   CheckCircle2,
   Clock,
-  BarChart3,
+  Database,
+  Image,
+  Sparkles,
 } from "lucide-react";
 import type { AtomBrief } from "@/lib/api";
 
@@ -29,14 +32,11 @@ export function OverviewTab({
 
   const withQs = atoms.filter((a) => a.question_set_count > 0);
   const withoutQs = atoms.filter((a) => a.question_set_count === 0);
-  const totalQs = atoms.reduce(
-    (sum, a) => sum + a.question_set_count,
-    0,
-  );
-  const pct =
-    atoms.length > 0
-      ? Math.round((withQs.length / atoms.length) * 100)
-      : 0;
+  const totalQs = atoms.reduce((sum, a) => sum + a.question_set_count, 0);
+  const enriched = atoms.filter((a) => a.image_status !== "not_enriched");
+  const noCoverage = atoms.filter((a) => a.question_coverage === "none");
+  const pct = atoms.length > 0
+    ? Math.round((withQs.length / atoms.length) * 100) : 0;
 
   return (
     <div className="space-y-6">
@@ -45,6 +45,8 @@ export function OverviewTab({
         withQs={withQs.length}
         withoutQs={withoutQs.length}
         totalQs={totalQs}
+        enriched={enriched.length}
+        noCoverage={noCoverage.length}
       />
       <ProgressBar pct={pct} done={withQs.length} total={atoms.length} />
       <AtomStatusList
@@ -61,37 +63,41 @@ export function OverviewTab({
 // ---------------------------------------------------------------------------
 
 function SummaryCards({
-  total,
-  withQs,
-  withoutQs,
-  totalQs,
+  total, withQs, withoutQs, totalQs, enriched, noCoverage,
 }: {
   total: number;
   withQs: number;
   withoutQs: number;
   totalQs: number;
+  enriched: number;
+  noCoverage: number;
 }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
       <StatCard
         icon={<Database className="w-5 h-5 text-accent" />}
-        value={total}
-        label="Total Atoms"
+        value={total} label="Total Atoms"
+      />
+      <StatCard
+        icon={<Sparkles className="w-5 h-5 text-accent" />}
+        value={enriched} label="Enriched"
       />
       <StatCard
         icon={<CheckCircle2 className="w-5 h-5 text-success" />}
-        value={withQs}
-        label="With Questions"
+        value={withQs} label="With Questions"
       />
       <StatCard
         icon={<Clock className="w-5 h-5 text-warning" />}
-        value={withoutQs}
-        label="Pending"
+        value={withoutQs} label="Pending"
+      />
+      <StatCard
+        icon={<AlertTriangle className="w-5 h-5 text-error" />}
+        value={noCoverage} label="No Coverage"
+        highlight={noCoverage > 0}
       />
       <StatCard
         icon={<BarChart3 className="w-5 h-5 text-accent" />}
-        value={totalQs}
-        label="Total Questions"
+        value={totalQs} label="Total Questions"
       />
     </div>
   );
@@ -203,16 +209,17 @@ function AtomStatusList({
 // ---------------------------------------------------------------------------
 
 function StatCard({
-  icon,
-  value,
-  label,
+  icon, value, label, highlight,
 }: {
   icon: React.ReactNode;
   value: number;
   label: string;
+  highlight?: boolean;
 }) {
   return (
-    <div className="bg-surface border border-border rounded-lg p-4 text-center">
+    <div className={`bg-surface border rounded-lg p-4 text-center ${
+      highlight ? "border-error/40" : "border-border"
+    }`}>
       <div className="flex justify-center mb-2">{icon}</div>
       <div className="text-2xl font-bold">{value}</div>
       <div className="text-xs text-text-secondary mt-1">{label}</div>

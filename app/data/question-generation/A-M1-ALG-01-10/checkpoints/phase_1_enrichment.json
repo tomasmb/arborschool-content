@@ -1,0 +1,120 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar directamente la identidad notable (a + b)(a - b) = a^2 - b^2 en productos ya escritos como suma por diferencia.",
+        "Reconocer en expresiones del tipo (expresión + número)(expresión - número) la estructura adecuada para usar la fórmula de suma por diferencia.",
+        "Calcular correctamente los cuadrados de términos algebraicos simples y compuestos (por ejemplo, (3x)^2, (a^2)^2, (2x^3)^2).",
+        "Simplificar la expresión final obtenida como diferencia de cuadrados (por ejemplo, ordenar términos, combinar coeficientes sencillos)."
+      ],
+      "out_of_scope": [
+        "Factorizar diferencias de cuadrados (pasar de a^2 - b^2 a (a + b)(a - b)).",
+        "Usar otras identidades notables como (a + b)^2, (a - b)^2, (a + b)^3, etc.",
+        "Resolver ecuaciones o inecuaciones que surjan a partir de la expresión obtenida.",
+        "Aplicar suma por diferencia en contextos con radicales o expresiones muy complejas que excedan la aritmética/algebra básica de M1.",
+        "Problemas de contexto verbal donde lo esencial no sea el uso explícito de la identidad (a + b)(a - b)."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo de la suma y resta de monomios y binomios simples.",
+        "A-M1-ALG-01-03: Multiplicación de monomios y cálculo de potencias de monomios (incluyendo (kx^n)^2).",
+        "A-M1-ALG-01-05: Comprensión de la notación de potencias y propiedades básicas (especialmente (ab)^2 = a^2 b^2 y (x^m)^2 = x^{2m}).",
+        "A-M1-ALG-01-08: Conocimiento de la identidad de diferencia de cuadrados a^2 - b^2 y su forma factorizada.",
+        "A-M1-ALG-01-09: Reconocimiento de patrones de productos notables simples."
+      ],
+      "common_traps": [
+        "Confundir la identidad (a + b)(a - b) con (a + b)^2 o (a - b)^2 y agregar término 2ab erróneamente.",
+        "Olvidar elevar al cuadrado todo el término, incluyendo el coeficiente y la potencia de la variable (por ejemplo, tomar (3x)^2 como 3x^2).",
+        "Interpretar a y b como coeficientes aislados y no como expresiones completas, separando indebidamente partes del término.",
+        "Cambiar el signo de ambos términos en la diferencia de cuadrados final (escribir a^2 + b^2 o -a^2 + b^2).",
+        "No simplificar potencias compuestas correctamente, como (a^2)^2 = a^4, (x^3)^2 = x^6.",
+        "Aplicar la identidad cuando los factores no son exactamente conjugados (por ejemplo, (2x + 3)(2x - 5))."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos de binomios claramente conjugados con coeficientes enteros pequeños y estructura simple: (kx + c)(kx - c), (x + n)(x - n).",
+        "Términos con una sola variable y exponentes 1 en los binomios, de modo que al cuadrar se obtengan potencias de grado 2 directamente.",
+        "Cálculos numéricos sencillos en los cuadrados, sin fracciones ni coeficientes grandes (por ejemplo, 2, 3, 4, 5).",
+        "Ítemes donde se explicita o se recuerda la fórmula (a + b)(a - b) = a^2 - b^2 en el enunciado."
+      ],
+      "medium": [
+        "Productos donde a o b son expresiones con exponentes mayores a 1 (por ejemplo, (x^2 + 3)(x^2 - 3), (2x^3 + 1)(2x^3 - 1)).",
+        "Coeficientes enteros de valor absoluto mayor (por ejemplo, 6, 7, 8) que exigen más cuidado al calcular los cuadrados.",
+        "Expresiones con más de una letra pero donde cada término que actúa como a o b está claramente agrupado (por ejemplo, (3ab + 2)(3ab - 2)).",
+        "Necesidad de reordenar y simplificar la expresión final, pero sin requerir factorizar ni realizar pasos algebraicos adicionales complejos."
+      ],
+      "hard": [
+        "Casos donde a y/o b son expresiones algebraicas compuestas con potencias y/o múltiples factores (por ejemplo, ((x^2 + 1) + 3)((x^2 + 1) - 3)).",
+        "Inclusión de fracciones o coeficientes racionales en los términos de los binomios (por ejemplo, (x + 1/2)(x - 1/2), (3/2 x + 4)(3/2 x - 4)).",
+        "Situaciones donde el estudiante debe identificar primero cuál parte de la expresión cumple el rol de a y cuál el de b, sin que esté visualmente evidente.",
+        "Ítemes que combinan suma por diferencia con otra operación previa o posterior sencilla (por ejemplo, primero desarrollar (a + b)(a - b) y luego sumar o restar otro término), sin salir del foco en la aplicación de la fórmula.",
+        "Expresiones donde, tras aplicar la fórmula, se requiera manejar correctamente potencias altas (por ejemplo, obtener x^8 a partir de ((x^4) + 1)((x^4) - 1))."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar binomios que difieran en más de un término o coeficiente, de forma que no sean realmente conjugados, a menos que explícitamente se pregunte por qué NO se puede aplicar la identidad.",
+      "No usar letras distintas para el mismo rol de a o b dentro de un mismo producto (por ejemplo, mezclar (ax + b)(cx - b) sin aclarar si a = c).",
+      "No mezclar notaciones como (ab + c)(a b - c) cuando el espacio pueda interpretarse como producto implícito o separación de términos.",
+      "Evitar expresiones donde el orden de los sumandos cambie y pueda generar dudas sobre qué corresponde a a o a b (por ejemplo, (3x + 2y)(2y - 3x)) si no está claro el patrón.",
+      "No incluir binomios casi conjugados (por ejemplo, (2x + 5)(2x - 4)) en ítemes donde se espera aplicar directamente la fórmula, porque induce a error estructural.",
+      "Evitar enunciados verbales largos donde la parte algebraica aparezca poco clara o dispersa; el foco debe quedar visualmente en el producto (a + b)(a - b).",
+      "No mezclar simultáneamente varias identidades notables en una misma expresión sin delimitar cuál se debe usar, para no oscurecer que el objetivo es aplicar la suma por diferencia."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_con_cuadrado_de_un_binomio",
+        "description": "El estudiante usa la fórmula (a + b)^2 = a^2 + 2ab + b^2 en lugar de (a + b)(a - b) = a^2 - b^2, agregando un término 2ab que no corresponde.",
+        "how_to_address": "En ítems de retroalimentación, contrastar explícitamente ambos patrones y destacar que en la suma por diferencia los términos internos se cancelan. Proponer comparar el desarrollo directo por distributividad para que vean que el término 2ab desaparece."
+      },
+      {
+        "name": "Cuadrado_mal_aplicado_al_termino",
+        "description": "Error al elevar al cuadrado un término compuesto: se mantiene el coeficiente o el exponente sin cuadrar completamente (por ejemplo, (3x)^2 → 3x^2 o (x^2)^2 → x^4 mal calculado).",
+        "how_to_address": "Recordar y ejercitar que (kx^n)^2 = k^2 x^{2n}. Incluir pasos intermedios en la retroalimentación mostrando primero el cuadrado del coeficiente y luego el de la potencia de la variable."
+      },
+      {
+        "name": "Signo_equivocado_en_la_expresion_final",
+        "description": "El resultado se escribe como a^2 + b^2 o se cambian los signos de los términos (por ejemplo, -a^2 + b^2).",
+        "how_to_address": "Relacionar la identidad con la idea de 'diferencia de cuadrados' y enfatizar que el segundo término SIEMPRE es restado. Mostrar con un ejemplo numérico simple que (a + b)(a - b) = a^2 - b^2 y no a^2 + b^2."
+      },
+      {
+        "name": "Uso_indevido_de_la_identidad",
+        "description": "El estudiante aplica (a + b)(a - b) aun cuando los factores no son conjugados, generando resultados incorrectos (por ejemplo, en (2x + 1)(2x - 3)).",
+        "how_to_address": "Trabajar el reconocimiento estructural: destacar que los dos binomios deben ser idénticos salvo por el signo entre los términos. Sugerir verificar expandiendo por distributividad en un ejemplo para ver que los términos internos no se cancelan si no son conjugados."
+      },
+      {
+        "name": "No_reconocer_a_y_b_como_bloques_completos",
+        "description": "El alumno solo cuadra una parte de la expresión que hace de a o b, ignorando que pueden ser expresiones más largas (por ejemplo, tratar (x^2 + 1) como x^2 al cuadrar).",
+        "how_to_address": "Reforzar la idea de 'bloque' o 'paquete' algebraico: a y b pueden ser cualquier expresión. Sugerir encerrar entre paréntesis la parte que corresponde a a y a b antes de aplicar la identidad."
+      },
+      {
+        "name": "Errores_de_calculo_numerico_en_los_cuadrados",
+        "description": "Fallas en cuadrados de números enteros o fracciones (por ejemplo, 5^2 = 10, (3/2)^2 = 3/4).",
+        "how_to_address": "Incluir recordatorios puntuales: n^2 = n·n y (p/q)^2 = p^2/q^2. Proponer una comprobación mental rápida multiplicando el número por sí mismo antes de escribir el cuadrado."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-01-11: Factorización de diferencias de cuadrados usando la identidad inversa a^2 - b^2 = (a + b)(a - b).",
+      "A-M1-ALG-01-12: Resolución de ecuaciones cuadráticas simples mediante factorización por diferencia de cuadrados.",
+      "A-M1-ALG-01-13: Simplificación de expresiones algebraicas más complejas que combinan varios productos notables.",
+      "A-M1-ALG-02-02: Estudio de funciones cuadráticas donde aparezcan diferencias de cuadrados al manipular la forma algebraica.",
+      "A-M1-ALG-02-04: Resolución de problemas de aplicación que requieran modelar situaciones mediante expresiones que luego se simplifican con suma por diferencia.",
+      "A-M1-ALG-03-01: Trabajo con potencias y exponentes más avanzados, aprovechando el patrón de (x^n + y^n)(x^n - y^n) en contextos de identidades.",
+      "A-M1-ALG-01-14: Combinación de varias identidades notables en una misma expresión (por ejemplo, pasar de suma por diferencia a factorizar nuevamente)."
+    ],
+    "representation_variants": [
+      "Expresiones puramente simbólicas en forma de producto de dos binomios conjugados, como (ax + b)(ax - b).",
+      "Expresiones donde a y b son binomios o polinomios pequeños entre paréntesis, por ejemplo, ((x^2 + 1) + 3)((x^2 + 1) - 3).",
+      "Enunciados verbales breves que describen un producto de sumas y diferencias y piden escribir el resultado como diferencia de cuadrados.",
+      "Uso de letras distintas para representar constantes o parámetros (k, m, n) dentro de los binomios, manteniendo clara la estructura conjugada.",
+      "Expresiones mixtas con números y letras, como (3x + 5)(3x - 5), (2a^2 + 1)(2a^2 - 1)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "positive_fractions",
+      "simple_negative_integers"
+    ],
+    "required_image_types": []
+  }
+}

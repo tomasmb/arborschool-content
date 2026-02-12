@@ -1,0 +1,135 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de ecuaciones cuadráticas completas e incompletas de la forma ax^2 + bx + c = 0 utilizando exclusivamente la fórmula general.",
+        "Identificación correcta de los coeficientes a, b y c en ecuaciones cuadráticas equivalentes que no estén explícitamente igualadas a 0, siempre que el paso de reordenar sea directo.",
+        "Aplicación de la fórmula general para obtener soluciones reales, incluyendo casos con raíces irracionales que deben dejarse en forma radical simplificada o decimal aproximada según se solicite.",
+        "Resolución de ecuaciones cuadráticas con coeficientes enteros, fraccionarios o decimales que conduzcan a soluciones reales.",
+        "Casos con discriminante positivo o nulo, interpretando correctamente cuando hay dos soluciones reales distintas o una solución real doble."
+      ],
+      "out_of_scope": [
+        "Resolución de ecuaciones cuadráticas mediante factorización, completación de cuadrados o uso de gráficos (aunque lleven a la misma solución).",
+        "Estudio aislado del discriminante (clasificar según Δ>0, =0, <0) sin llegar a resolver la ecuación.",
+        "Ecuaciones que conduzcan a soluciones complejas o con números imaginarios.",
+        "Problemas de modelación donde lo central sea traducir el contexto a una ecuación cuadrática (eso corresponde a otro átomo); aquí sólo se asume la ecuación ya construida o dada claramente.",
+        "Análisis de funciones cuadráticas (vértice, eje de simetría, intersecciones) a partir de la expresión o del gráfico; sólo interesa resolver la ecuación ax^2+bx+c=0.",
+        "Sistemas de ecuaciones donde una de ellas sea cuadrática; la interacción con otras ecuaciones escapa a este átomo."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Manejo de operaciones con números enteros, fracciones y decimales (sumar, restar, multiplicar, dividir).",
+        "A-M1-ARI-02-01: Uso básico de potencias y raíces cuadradas, incluyendo simplificación de raíces sencillas.",
+        "A-M1-ALG-01-01: Identificación de términos y coeficientes en expresiones algebraicas.",
+        "A-M1-ALG-02-01: Transposición de términos y equivalencia de ecuaciones lineales simples (mover términos a uno u otro lado del igual).",
+        "A-M1-ALG-06-01: Reconocimiento de ecuaciones cuadráticas en su forma general y distinción entre ecuaciones completas e incompletas."
+      ],
+      "common_traps": [
+        "Confundir el término constante c con el término independiente cuando la ecuación no está igualada a 0 (por ejemplo, en ax^2+bx=c, olvidar pasar c al otro lado antes de identificar a, b y c).",
+        "Olvidar que a es el coeficiente de x^2 y no el de x; en ecuaciones como 3x - 5x^2 + 2 = 0, tomar a=3 en vez de a=-5 por no reordenar ni mirar el grado.",
+        "No considerar que si la ecuación tiene forma ax^2 + c = 0 o ax^2 + bx = 0, entonces b o c pueden ser 0, y equivocarse al identificarlos.",
+        "Omitir el signo negativo en la fórmula general, usando x = (b ± √(b^2 - 4ac)) / 2a en vez de x = (-b ± √(b^2 - 4ac)) / 2a.",
+        "Aplicar la raíz cuadrada sólo al discriminante pero no al numerador completo, o distribuir mal el ± (por ejemplo, calcular sólo una de las dos soluciones o mezclar signos).",
+        "Operar incorrectamente con fracciones cuando el denominador 2a es negativo o cuando el numerador queda fraccionario.",
+        "Calcular mal b^2 o -4ac, especialmente cuando hay signos negativos o coeficientes fraccionarios.",
+        "Redondear prematuramente resultados intermedios en casos irracionales, generando pequeñas variaciones que cambian la alternativa correcta."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuaciones cuadráticas ya presentadas en forma general estándar ax^2 + bx + c = 0 con coeficientes enteros pequeños (entre -5 y 5, sin 0 para a).",
+        "Discriminante cuadrado perfecto que produce soluciones racionales enteras o fraccionarias simples (por ejemplo, Δ = 1, 4, 9, 16, 25).",
+        "Casos donde al menos uno de los coeficientes b o c es 0, de manera que la sustitución en la fórmula sea sencilla y las operaciones aritméticas sean directas.",
+        "Ítems que piden explícitamente identificar a, b y c o que dan ya armada la expresión de la fórmula general y sólo requieren completar un paso de cálculo claro.",
+        "Enunciados sin contexto verbal extenso, centrados únicamente en la manipulación algebraica."
+      ],
+      "medium": [
+        "Ecuaciones cuadráticas que requieren un paso previo simple para llevarlas a la forma ax^2 + bx + c = 0, como mover un término al otro lado o agrupar términos semejantes.",
+        "Coeficientes enteros de mayor magnitud (por ejemplo entre -10 y 10) o combinación de un coeficiente fraccionario sencillo con enteros, manteniendo operaciones manejables.",
+        "Discriminante que no es cuadrado perfecto, generando soluciones irracionales que deben dejarse en forma con raíz simplificada (por ejemplo, √5, √13) o en aproximación decimal indicada en el ítem.",
+        "Problemas en contexto (palabras) donde la ecuación ya está dada o se presenta casi explícita, y el foco está en aplicar la fórmula para encontrar las soluciones numéricas.",
+        "Situaciones donde se pide elegir una de las soluciones (por ejemplo, la mayor, la menor o la positiva), obligando a interpretar ambas soluciones obtenidas."
+      ],
+      "hard": [
+        "Ecuaciones que exigen varios pasos previos de simplificación antes de identificar a, b y c, como expandir paréntesis, reagrupar términos, o dividir toda la ecuación por un número común distinto de 1.",
+        "Coeficientes fraccionarios o decimales no triviales, incluyendo signos negativos, que hacen más propensa la comisión de errores de cálculo al aplicar b^2 - 4ac y dividir por 2a.",
+        "Casos límite donde el discriminante es 0 o muy cercano, o donde se debe reconocer que existe una única solución real (raíz doble) y expresarla correctamente.",
+        "Ítems que comparan soluciones de dos ecuaciones cuadráticas dadas, requiriendo resolver ambas con fórmula general y luego tomar decisiones (por ejemplo, ordenar soluciones o verificar cuál cumple una condición adicional).",
+        "Problemas en contexto donde no se entrega la ecuación cuadrática explícita, pero el texto guía a una forma inmediata de ax^2 + bx + c = 0 y se espera que el estudiante la use con la fórmula general, combinando comprensión verbal con un procedimiento algebraico cuidadoso.",
+        "Ecuaciones donde los resultados son irracionales con radicales que requieren simplificación no trivial (por ejemplo, extraer factores cuadrados de la raíz) para comparar alternativas muy parecidas entre sí."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No presentar ecuaciones que no estén claramente igualadas a 0 si luego se pide identificar a, b y c; aclarar o mostrar el paso de reescritura o usar directamente la forma ax^2 + bx + c = 0.",
+      "Evitar enunciados donde los coeficientes puedan interpretarse de más de una manera, por ejemplo expresiones con términos en ambos lados del igual sin indicar que primero se debe llevar todo a un lado.",
+      "No mezclar en el mismo ítem distintos métodos de resolución (factorización, gráfica, fórmula general) si la habilidad evaluada es exclusivamente la aplicación de la fórmula general.",
+      "Evitar opciones de respuesta que sólo difieran en un redondeo no especificado; indicar claramente si se requiere resultado exacto (con raíces) o aproximación decimal y el nivel de precisión.",
+      "No usar notaciones poco estándar para raíces cuadradas o fracciones que puedan confundirse tipográficamente (por ejemplo, escribir (−b±√b^2−4ac)/2a con clara separación de numerador y denominador).",
+      "Evitar contextos verbales demasiado largos o poco claros donde la ecuación subyacente no sea inequívoca; si se incluye contexto, que la ecuación resultante esté claramente determinada.",
+      "No integrar en la misma ecuación términos que puedan inducir dudas sobre el grado (por ejemplo, usar x·x en lugar de x^2 o mezclas que parezcan cúbicas).",
+      "Asegurar que, cuando sólo una de las soluciones es válida por contexto, ese criterio esté explícito (por ejemplo, 'número de personas', 'longitud', 'tiempo transcurrido'), para que no haya interpretación doble."
+    ],
+    "error_families": [
+      {
+        "name": "Identificación_errónea_de_coeficientes",
+        "description": "El estudiante asigna incorrectamente los valores de a, b o c, por ejemplo al no reordenar la ecuación, al confundir el término constante con el que está del otro lado del igual, o al ignorar que b o c pueden ser 0.",
+        "how_to_address": "Incluir ítems que obliguen explícitamente a reescribir la ecuación en forma ax^2 + bx + c = 0 antes de aplicar la fórmula, y preguntas de selección múltiple centradas sólo en identificar correctamente a, b y c, incluyendo casos con b=0 o c=0."
+      },
+      {
+        "name": "Olvido_del_signo_en_la_fórmula",
+        "description": "Se usa una versión incorrecta de la fórmula general, por ejemplo x = (b ± √(b^2 - 4ac))/2a, o se cambia el signo de b al sustituir, produciendo soluciones incorrectas.",
+        "how_to_address": "Diseñar ítems donde las alternativas reflejen el error típico de signo para evidenciarlo, y reforzar el paso de escribir la fórmula general antes de sustituir números, enfatizando el -b completo y no sólo b."
+      },
+      {
+        "name": "Cálculo_incorrecto_del_discriminante",
+        "description": "Errores al calcular b^2 o -4ac, especialmente con números negativos o fracciones, que llevan a un discriminante erróneo y por tanto a soluciones equivocadas.",
+        "how_to_address": "Proponer ejercicios intermedios donde se pida explícitamente el valor de b^2 - 4ac antes de realizar la raíz y el resto de la fórmula, y usar distractores que representen discriminantes mal calculados para detectar este error."
+      },
+      {
+        "name": "Mala_gestión_del_±_y_las_dos_soluciones",
+        "description": "El estudiante obtiene sólo una solución porque no considera ambos signos ±, o combina mal los signos obteniendo resultados duplicados o mezclados.",
+        "how_to_address": "Plantear ítems que pregunten explícitamente por ambas soluciones x1 y x2, o por comparaciones entre ellas (por ejemplo, cuál es mayor), y ofrecer distractores que correspondan a tomar sólo una de las dos soluciones."
+      },
+      {
+        "name": "Errores_con_el_denominador_2a",
+        "description": "Se olvida multiplicar por 2 al coeficiente a, o se divide mal cuando a es negativo o fraccionario, generando resultados incorrectos en la última etapa.",
+        "how_to_address": "Incluir ecuaciones donde a≠1 y eventualmente a<0, de modo que el tratamiento de 2a sea relevante, y diseñar alternativas que evidencien el error típico de tomar sólo 2 como denominador o cambiar mal los signos."
+      },
+      {
+        "name": "Manejo_deficiente_de_raíces_irracionales",
+        "description": "Dificultad para simplificar o dejar adecuadamente en forma exacta expresiones con raíces, o para aproximar con el número de decimales requerido.",
+        "how_to_address": "Crear ítems que pidan explícitamente el resultado exacto y otros que pidan aproximación con un redondeo indicado, ofreciendo distractores que contengan errores de simplificación (por ejemplo, no extraer factores cuadrados)."
+      },
+      {
+        "name": "Pérdida_de_ecuivalencia_en_la_simplificación_previa",
+        "description": "Durante el proceso de llevar la ecuación a la forma ax^2 + bx + c = 0, el estudiante suma, resta o divide por cantidades de forma incorrecta (por ejemplo, dividir solo algunos términos), cambiando la ecuación original.",
+        "how_to_address": "Incluir ítems donde una parte del enunciado muestre varias formas reescritas de la misma ecuación y se pida elegir la equivalente correcta antes de aplicar la fórmula, reforzando la conservación de equivalencia."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-06-04: Resolución y análisis de ecuaciones cuadráticas a partir de su representación gráfica (interpretación de raíces como intersecciones con el eje x).",
+      "A-M1-ALG-06-05: Resolución de problemas de modelación que se traduzcan en ecuaciones cuadráticas, incluyendo selección de la solución que tenga sentido en el contexto.",
+      "A-M1-ALG-07-01: Estudio de la función cuadrática (vértice, eje de simetría, apertura) a partir de sus parámetros a, b y c.",
+      "A-M1-ALG-08-01: Resolución de sistemas que involucren ecuaciones cuadráticas y lineales de manera simultánea.",
+      "A-M1-ARI-03-02: Profundización en el cálculo con raíces y expresiones irracionales en contextos más complejos.",
+      "A-M1-MOD-01-01: Uso de ecuaciones cuadráticas en contextos de crecimiento, trayectorias, áreas y otras aplicaciones."
+    ],
+    "representation_variants": [
+      "Ecuación cuadrática dada directamente en forma ax^2 + bx + c = 0, con términos ya ordenados y coeficientes explícitos.",
+      "Ecuación cuadrática con términos distribuidos en ambos lados del igual, requiriendo reagrupación para obtener la forma estándar.",
+      "Ecuación cuadrática parcialmente factorizada o con paréntesis (por ejemplo, productos que llevan a un trinomio) que se pueda expandir para identificar a, b y c antes de usar la fórmula.",
+      "Contextos verbales breves donde la ecuación cuadrática aparece de manera explícita en el texto (por ejemplo, 'la relación entre x e y está dada por ...').",
+      "Notación con fracciones y decimales en los coeficientes (por ejemplo, (1/2)x^2 − 3x + 1, 0,5x^2 + 2x − 4).",
+      "Casos especiales de ecuaciones incompletas (ax^2 + c = 0, ax^2 + bx = 0) que, sin embargo, se resuelven intencionalmente con la fórmula general para consolidar el procedimiento."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals",
+      "irrational_results_with_simple_radicals"
+    ],
+    "required_image_types": []
+  }
+}

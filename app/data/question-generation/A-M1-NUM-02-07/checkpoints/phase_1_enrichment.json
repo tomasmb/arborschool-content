@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Determinar qué porcentaje representa una cantidad (parte) respecto de otra (total) mediante la razón parte/total y su conversión a porcentaje.",
+        "Problemas de contexto cotidiano donde se pregunte explícitamente '¿qué porcentaje es A de B?' o equivalentes ('¿A representa qué porcentaje de B?').",
+        "Cálculo de porcentajes en una sola etapa, sin combinarlos con aumentos/disminuciones sucesivas.",
+        "Uso de diferentes formulaciones lingüísticas equivalentes: 'A es el ___% de B', 'A corresponde al ___% de B', 'A representa ___% de B'."
+      ],
+      "out_of_scope": [
+        "Cálculo de la parte conociendo el porcentaje y el total (eso corresponde a otro átomo: aplicar un porcentaje a una cantidad).",
+        "Cálculo del total conociendo la parte y el porcentaje (regla de tres u otra estrategia inversa).",
+        "Situaciones de variación porcentual (aumentos o descuentos porcentuales, porcentajes sucesivos, interés, IVA, etc.).",
+        "Comparaciones relativas entre dos porcentajes (por ejemplo, '¿en cuántos puntos porcentuales aumentó?').",
+        "Interpretación de porcentajes sobre porcentajes (por ejemplo, 'el 30% del 40% de...').",
+        "Uso de porcentajes en contextos estadísticos avanzados (margen de error, intervalos de confianza, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de la razón parte/total y de la idea de fracción como parte de un todo.",
+        "A-M1-NUM-01-02: Lectura y escritura de fracciones y números decimales.",
+        "A-M1-NUM-02-01: Comprensión de porcentaje como 'por cada 100' y su representación con el símbolo %.",
+        "A-M1-NUM-02-03: Conversión simple entre fracción, decimal y porcentaje (especialmente para denominadores 2, 4, 5, 10, 20, 25, 50, 100).",
+        "A-M1-NUM-01-04: Manejo básico de la división con números naturales y decimales."
+      ],
+      "common_traps": [
+        "Invertir la razón y calcular total/parte en vez de parte/total, respondiendo '¿qué porcentaje es B de A?' en lugar de '¿qué porcentaje es A de B?'.",
+        "Usar la parte directamente como si fuera el porcentaje (por ejemplo, responder '20%' solo porque la parte es 20, sin considerar el total).",
+        "Confundir porcentaje con proporción decimal (responder 0,25 en vez de 25% cuando se pide porcentaje explícitamente).",
+        "Omitir la multiplicación por 100 y entregar solo el valor decimal (por ejemplo, 0,4 en vez de 40%).",
+        "No identificar correctamente cuál es la 'parte' y cuál es el 'total' en enunciados verbales con información contextual (por ejemplo, confundir número de mujeres con total de estudiantes).",
+        "Redondear de manera inapropiada (por ejemplo, redondear 33,3% a 30% o 35% sin instrucción de redondeo)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Números enteros pequeños, con relaciones parte/total que den porcentajes 'amistosos' (10%, 20%, 25%, 50%, 75%, 100%).",
+        "Cálculos donde parte y total permiten divisiones exactas que se reconocen fácilmente (por ejemplo, 1/2, 1/4, 1/5, 3/4).",
+        "Enunciados muy directos, con lenguaje casi literal: '¿Qué porcentaje es A de B?'.",
+        "Sin necesidad de redondeos; el resultado es un porcentaje entero.",
+        "Sin distractores numéricos adicionales ni contexto extenso."
+      ],
+      "medium": [
+        "Números enteros medianos (hasta 3 cifras) o mixtos (incluyendo alguna decena no 'redonda', por ejemplo 35 de 140, 18 de 60).",
+        "Razones que produzcan porcentajes con un decimal o fracciones decimales conocidas (16,7%, 33,3%, 12,5%) con indicación clara de cómo redondear si es necesario.",
+        "Enunciados en contexto (por ejemplo, cantidad de estudiantes, entradas vendidas, horas usadas) donde el estudiante debe identificar correctamente parte y total.",
+        "Posible presencia de datos irrelevantes que el estudiante debe descartar.",
+        "Requiere al menos dos pasos explícitos: formar la razón parte/total, transformarla a decimal y luego a porcentaje."
+      ],
+      "hard": [
+        "Números con fracciones o decimales en la parte y/o en el total (por ejemplo, 1,5 de 6; 2,4 de 3).",
+        "Relaciones que producen porcentajes con varios decimales, exigiendo redondeo según instrucciones específicas (al entero más cercano, a un decimal, etc.).",
+        "Contextos más cargados verbalmente o con tablas donde parte y total no están explícitamente nombrados, sino que se deducen (por ejemplo, 'del total de X, Y corresponde a...').",
+        "Comparación implícita donde primero se debe determinar el porcentaje y luego usarlo para tomar una decisión (por ejemplo, decidir cuál grupo representa mayor porcentaje del total).",
+        "Distractores construidos a partir de errores típicos (usar total/parte, no multiplicar por 100, confundir parte con total), que exigen comprensión conceptual para ser evitados."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde sea dudoso qué cantidad es 'parte' y cuál es 'total'; explicitar con expresiones como 'del total de...', 'de los X, Y corresponden a...'.",
+      "No usar simultáneamente varias cantidades potencialmente totales sin aclarar cuál se considera como referencia (por ejemplo, dos totales distintos en un mismo contexto).",
+      "Evitar frases como 'qué porcentaje mayor es A que B' o 'en qué porcentaje aumenta' ya que pertenecen a variación porcentual, no a relación parte-todo estática.",
+      "No mezclar en la misma pregunta 'porcentaje de A respecto de B' y 'porcentaje de B respecto de A' si no se explicita muy claramente, para no inducir confusiones de referencia.",
+      "Especificar siempre si se solicita el resultado 'en porcentaje' y, cuando no sea entero, indicar explícitamente el tipo de aproximación requerida (al entero, a un decimal).",
+      "No introducir términos técnicos adicionales como 'puntos porcentuales' o 'tasa de crecimiento', que cambian la naturaleza del problema.",
+      "Evitar contextos donde el 'total' pueda interpretarse de dos maneras razonables (por ejemplo, curso completo vs. solo asistentes), salvo que se especifique cuál se usa.",
+      "No usar porcentajes dentro del dato que a la vez debe convertirse en porcentaje de otro total en el mismo ítem, para no mezclar dos niveles de interpretación."
+    ],
+    "error_families": [
+      {
+        "name": "Inversión_parte_total",
+        "description": "El estudiante calcula total/parte en lugar de parte/total. Por ejemplo, ante '¿qué porcentaje es 20 de 80?' calcula 80/20 = 4 y responde 400%.",
+        "how_to_address": "Reforzar la lectura 'parte dividido por total' usando ejemplos concretos (porciones de un grupo). Practicar la identificación explícita del total en enunciados con expresiones como 'del total de...' y representar la relación con diagramas de barras o círculos que muestren claramente qué es el todo y qué es la parte."
+      },
+      {
+        "name": "Omitir_multiplicación_por_100",
+        "description": "El estudiante se queda en la proporción decimal y responde, por ejemplo, 0,25 en vez de 25% o 0,4 en vez de 40%.",
+        "how_to_address": "Enfatizar que el porcentaje es 'por cada 100' y por tanto siempre requiere la multiplicación por 100. Usar tablas que relacionen fracción, decimal y porcentaje, y pedir que siempre agreguen el símbolo % cuando corresponda para diferenciar formatos."
+      },
+      {
+        "name": "Confundir_valor_con_porcentaje",
+        "description": "El estudiante toma la parte en números absolutos como si ya fuera un porcentaje (por ejemplo, si son 20 estudiantes de 80, responde '20%').",
+        "how_to_address": "Trabajar con ejemplos donde la parte es mayor que 100 o el total no es 100, para romper la asociación 'número = porcentaje'. Hacer que expliciten verbalmente '20 de 80' y que comparen con '20 de 100' mediante representaciones gráficas o tablas."
+      },
+      {
+        "name": "Identificación_errónea_de_parte_y_total",
+        "description": "En contextos verbales, el estudiante toma como total otro subconjunto (por ejemplo, calcula porcentaje de mujeres respecto a hombres en vez de respecto al curso total).",
+        "how_to_address": "Practicar lectura cuidadosa de enunciados, subrayando quién es el conjunto completo. Usar preguntas de comprensión antes del cálculo: '¿cuál es el total en esta situación?', '¿de qué conjunto quieres saber el porcentaje?'. Proponer actividades de clasificación de ejemplos donde se identifique parte y total correctamente."
+      },
+      {
+        "name": "Manejo_inadecuado_de_redondeo",
+        "description": "El estudiante redondea de forma excesiva o inadecuada (por ejemplo, 33,3% a 30%) o mezcla decimales y fracciones sin criterio.",
+        "how_to_address": "Explicar reglas simples de redondeo y la razón de mantener una cantidad razonable de decimales. Proporcionar ejercicios donde se compare el porcentaje exacto y el aproximado, destacando la instrucción específica del tipo de redondeo pedido en la pregunta."
+      },
+      {
+        "name": "Errores_de_división_básica",
+        "description": "Dificultades en la división que llevan a porcentajes incorrectos, aun con buena comprensión de parte/total (por ejemplo, errores al dividir números de 2 o 3 cifras o al manejar decimales).",
+        "how_to_address": "Reforzar procedimientos de división y el uso de calculadora cuando la prueba lo permite, destacando la estimación previa (saber aproximadamente cuánto debería ser el porcentaje) para detectar resultados imposibles (por ejemplo, porcentajes mayores que 100% cuando no corresponde)."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de la parte conociendo el porcentaje y el total (aplicar un porcentaje a una cantidad).",
+      "Cálculo del total conociendo la parte y el porcentaje (uso de proporciones o regla de tres).",
+      "Resolución de problemas de aumentos y disminuciones porcentuales (descuentos, recargos, interés simple).",
+      "Comparación de porcentajes entre distintos grupos o categorías en contextos estadísticos básicos.",
+      "Interpretación y construcción de gráficos estadísticos circulares donde los datos se representan en porcentajes.",
+      "Análisis de tasas y razones en contextos de cambio (por ejemplo, variación porcentual entre dos años)."
+    ],
+    "representation_variants": [
+      "Enunciados puramente numéricos: '¿Qué porcentaje es a de b?'.",
+      "Contextos verbales simples (asistencia, votos, ventas, población) donde se deba identificar parte y total antes de calcular el porcentaje.",
+      "Tablas de frecuencia o conteo donde se deba determinar qué porcentaje representa una categoría respecto del total.",
+      "Situaciones con comparaciones simples entre dos grupos, donde al menos uno de los pasos implique encontrar 'qué porcentaje representa X del total'.",
+      "Representación intermedia mediante fracciones y decimales, antes de llegar al porcentaje (por ejemplo, mostrar 20/80 = 1/4 = 0,25 = 25%).",
+      "Uso de escenarios cotidianos con cantidades discretas (personas, objetos) y también continuas (litros, kilos, dinero) para reforzar que el procedimiento es el mismo."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "large_integers",
+      "decimal_numbers",
+      "simple_fractions",
+      "percents_friendly",
+      "percents_with_rounding"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de probabilidad de un evento simple usando la definición clásica: P(E) = casos favorables / casos posibles, con todos los casos igualmente probables.",
+        "Situaciones con espacio muestral pequeño o moderado donde los casos se pueden listar o contar con aritmética básica (sumas, productos sencillos).",
+        "Eventos simples en experimentos aleatorios básicos: dados, monedas, extracción de bolas de una urna, selección de cartas de una baraja estándar, elección aleatoria de personas u objetos de una lista.",
+        "Interpretación de enunciados cotidianos para identificar correctamente el evento de interés y los casos favorables.",
+        "Verificación e interpretación numérica de resultados de probabilidad entre 0 y 1 o en porcentaje."
+      ],
+      "out_of_scope": [
+        "Cálculo de probabilidades que requieren permutaciones, combinaciones u otras técnicas avanzadas de conteo.",
+        "Probabilidad de más de un evento (unión, intersección, complemento explícito si no es trivial).",
+        "Probabilidad condicional, teorema de Bayes y árboles de probabilidad.",
+        "Procesos con infinitos resultados posibles o distribuciones continuas.",
+        "Uso de frecuencias relativas a partir de datos observados (ahí se trabaja estimación empírica, no definición clásica).",
+        "Espacios muestrales con resultados no equiprobables que requieran ponderaciones."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de fracciones, decimales y porcentajes; conversión entre estas representaciones.",
+        "A-M1-NUM-01-02: Cálculo aritmético básico (sumar, restar, multiplicar y dividir enteros y fracciones simples).",
+        "A-M1-PROB-01-01: Comprensión básica de experimento aleatorio, resultado y evento.",
+        "A-M1-PROB-02-01: Enumeración simple del espacio muestral en situaciones discretas sencillas."
+      ],
+      "common_traps": [
+        "Olvidar dividir por el número total de casos posibles y quedarse solo con los casos favorables.",
+        "Confundir probabilidad con cantidad de casos favorables (por ejemplo, responder 6 en lugar de 6/10).",
+        "No incluir todos los casos posibles en el denominador (por ejemplo, contar solo los que interesan según el contexto narrativo).",
+        "Suponer que los casos son equiprobables cuando el contexto indica lo contrario (por ejemplo, objetos con distintas probabilidades de ser elegidos).",
+        "Interpretar mal el evento descrito (por ejemplo, confundir 'número mayor que 3' con 'mayor o igual que 3').",
+        "Olvidar que la probabilidad debe estar entre 0 y 1 (o entre 0% y 100%) y no detectar resultados imposibles (como 5/4).",
+        "Errores al simplificar fracciones o convertir a porcentaje que cambian el valor correcto.",
+        "Confundir eventos complementarios y calcular la probabilidad del evento opuesto al solicitado."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Experimentos muy familiares (monedas, dados estándar, selección directa de elementos) con espacio muestral explícito o fácilmente deducible (hasta 6 u 8 resultados).",
+        "Eventos simples descritos de manera directa (por ejemplo, 'sacar un 4', 'salir sello', 'elegir una bola roja').",
+        "Números pequeños y fracciones que no requieren simplificación compleja (como 1/2, 1/3, 1/4, 2/5).",
+        "No exige conversiones de unidad de probabilidad (la respuesta se pide claramente como fracción simple).",
+        "Sin necesidad de interpretar información adicional en tablas o descripciones extensas."
+      ],
+      "medium": [
+        "Contextos menos habituales pero comprensibles (urnas con varias clases de objetos, selección aleatoria desde grupos con diferentes categorías).",
+        "Espacio muestral moderado pero accesible mediante conteo sistemático o multiplicaciones simples (por ejemplo, pares ordenados de lanzar 2 dados).",
+        "Eventos que requieren leer con cuidado (por ejemplo, 'número par mayor que 2', 'elegir una persona que no sea mujer').",
+        "Necesidad de simplificar fracciones no triviales o convertir entre fracción, decimal y porcentaje para entregar la respuesta en el formato requerido.",
+        "Incorporar datos presentados en una tabla corta (no gráfica) para determinar los casos favorables y totales."
+      ],
+      "hard": [
+        "Situaciones en que el espacio muestral no se entrega explícito y requiere una enumeración sistemática cuidada (por ejemplo, códigos de 2 letras y 1 número con restricciones simples).",
+        "Eventos definidos con condiciones compuestas pero que siguen siendo un único evento (por ejemplo, 'obtener un número impar menor que 5', 'elegir una carta que sea figura pero no de corazones').",
+        "Problemas donde hay que distinguir claramente entre varios subconjuntos posibles y seleccionar el correcto como 'casos favorables', evitando distractores narrativos.",
+        "Requieren varios pasos de cálculo: primero determinar cantidades de cada tipo de elemento y luego aplicar P = favorables / totales, incluyendo simplificación de fracciones menos obvia.",
+        "Uso de datos contextuales que pueden llevar a malinterpretar el total de casos (por ejemplo, población dividida en subgrupos donde solo algunos forman realmente el espacio muestral del experimento)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas como 'al azar' sin aclarar que todos los resultados del espacio muestral tienen la misma probabilidad si eso no es evidente por el contexto.",
+      "Evitar contextos donde los resultados no sean claramente equiprobables (por ejemplo, ruletas desproporcionadas) si no se especifican las probabilidades o las longitudes de los sectores.",
+      "Precisar siempre si los objetos se extraen con o sin reemplazo cuando eso pueda afectar el número total de casos posibles.",
+      "No formular eventos con lenguaje ambiguo respecto a los operadores lógicos (distinguir claramente entre 'y', 'o', 'al menos', 'a lo más', 'mayor que', 'mayor o igual que').",
+      "No omitir la descripción necesaria del espacio de selección (por ejemplo, especificar si la selección es desde toda la lista, desde un curso específico, desde un subgrupo).",
+      "Evitar barajas o conjuntos especiales sin describirlos (si se usa baraja estándar, indicar 52 cartas, 4 pintas, 13 cartas por pinta y tipo de figuras si es relevante).",
+      "Especificar claramente el formato de la respuesta cuando se evalúan conversiones (fracción irreducible, decimal, porcentaje) para no generar dudas.",
+      "Evitar que el mismo símbolo o palabra represente cosas distintas en el enunciado (por ejemplo, usar 'casos favorables' y 'casos posibles' con claridad y no intercambiarlos)."
+    ],
+    "error_families": [
+      {
+        "name": "Solo_casos_favorables_sin_dividir",
+        "description": "El estudiante identifica correctamente cuántos casos favorecen al evento, pero olvida dividir por el total de casos posibles y responde con un número de casos en lugar de una probabilidad.",
+        "how_to_address": "Reforzar la definición clásica P(E) = casos favorables / casos posibles y usar ejemplos donde se comparen situaciones con distintos totales para evidenciar que la probabilidad depende del total y no solo de los favorables."
+      },
+      {
+        "name": "Denominador_incorrecto",
+        "description": "El total de casos posibles se calcula mal: se omiten algunos resultados, se confunden categorías o se consideren como posibles casos que el experimento no genera.",
+        "how_to_address": "Trabajar la enumeración completa del espacio muestral en casos simples; usar tablas o listados para mostrar todos los resultados posibles antes de contar y remarcar la importancia de que el denominador incluya todos los casos equiprobables."
+      },
+      {
+        "name": "Evento_malentendido",
+        "description": "El estudiante interpreta mal el evento pedido (por ejemplo, incluye 'mayor o igual' cuando se pedía 'mayor que', o toma el complemento del evento solicitado).",
+        "how_to_address": "Practicar la traducción cuidadosa del lenguaje cotidiano a descripciones de conjuntos (>, ≥, <, ≤, 'no', 'al menos', 'a lo más') y proponer ejercicios de identificación de casos favorables sin hacer aún el cálculo numérico."
+      },
+      {
+        "name": "Olvido_de_normalizar_a_probabilidad",
+        "description": "El estudiante entrega resultados mayores que 1 (como 5/4, 120%) o menores que 0 por errores de cálculo o interpretación y no los detecta como imposibles.",
+        "how_to_address": "Reforzar la idea de que toda probabilidad debe estar entre 0 y 1 (0% a 100%) y promover la verificación rápida del resultado final (por ejemplo, estimar si el evento es 'poco probable', 'más o menos probable', 'muy probable' antes de calcular)."
+      },
+      {
+        "name": "Simplificacion_erronea_de_fracciones",
+        "description": "Se calcula bien la fracción inicial de probabilidad, pero al simplificarla se cometen errores que cambian el valor (por ejemplo, 4/10 → 1/5 en lugar de 2/5).",
+        "how_to_address": "Practicar la simplificación de fracciones en contextos de probabilidad con foco en identificar divisores comunes correctos y revisar el resultado comparando con la fracción original (¿es razonable que la probabilidad aumente o disminuya?)."
+      },
+      {
+        "name": "Confusion_fraccion_decimal_porcentaje",
+        "description": "El estudiante no convierte adecuadamente entre fracciones, decimales y porcentajes, o confunde 0,2 con 2%, etc.",
+        "how_to_address": "Trabajar equivalencias con tablas (fracción–decimal–porcentaje) en ejemplos de probabilidad sencillos, enfatizando el rol del 100% y el factor 100 al pasar entre decimal y porcentaje."
+      },
+      {
+        "name": "Ignorar_restricciones_del_espacio_muestral",
+        "description": "Se calcula la probabilidad como si se eligiera de todo el conjunto inicial, ignorando restricciones dadas en el problema (por ejemplo, se selecciona solo de quienes aprobaron, solo de un curso, etc.).",
+        "how_to_address": "Subrayar en la lectura del enunciado desde qué grupo se hace la selección; hacer ejercicios que comparen explícitamente 'desde todo el curso' vs 'desde quienes aprobaron' para visibilizar el cambio en el denominador."
+      }
+    ],
+    "future_targets": [
+      "A-M1-PROB-04-03: Cálculo de probabilidad de eventos compuestos usando la regla de la suma y del producto en contextos discretos simples.",
+      "A-M1-PROB-05-01: Probabilidad condicional en situaciones discretas con tablas o diagramas de doble entrada.",
+      "A-M1-PROB-05-02: Uso de diagramas de árbol y tablas de contingencia para el cálculo de probabilidades en experimentos secuenciales.",
+      "A-M1-PROB-06-01: Modelamiento de fenómenos aleatorios simples mediante la comparación entre probabilidad teórica (clásica) y frecuencias relativas empíricas.",
+      "A-M1-EST-03-01: Interpretación de porcentajes y tasas en reportes estadísticos, donde la comprensión de probabilidades básicas apoya la lectura crítica.",
+      "A-M1-PROB-07-01: Resolución de problemas contextualizados que integran probabilidad simple con razonamiento proporcional y porcentajes."
+    ],
+    "representation_variants": [
+      "Enunciados verbales simples donde el experimento y el evento se describen en lenguaje cotidiano.",
+      "Listados explícitos del espacio muestral en forma de conjunto de resultados posibles, ya dado en el enunciado.",
+      "Tablas pequeñas que muestren categorías y cantidades de elementos, desde las cuales se debe determinar el número de casos favorables y totales.",
+      "Diagramas de casos posibles descritos textualmente (por ejemplo, combinaciones de color y talla), donde el estudiante deba inferir el conteo por aritmética básica.",
+      "Uso de notación de conjuntos solo cuando sea muy sencilla (por ejemplo, 'números del 1 al 6', 'letras A, B, C'), manteniendo el foco en el conteo de resultados."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "simple_fractions",
+      "decimal_probabilities",
+      "percentages"
+    ],
+    "required_image_types": []
+  }
+}

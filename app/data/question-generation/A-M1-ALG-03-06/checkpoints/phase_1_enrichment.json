@@ -1,0 +1,133 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas verbales que se modelan con UNA sola ecuación lineal de primer grado en una incógnita.",
+        "Contextos cotidianos o cercanos (edades, precios, recorridos, perímetros, mezclas simples, repartos, tarifas lineales) que se traduzcan a lenguaje algebraico y luego se resuelvan.",
+        "Traducción explícita del enunciado a una ecuación lineal, resolución algebraica paso a paso y posterior interpretación de la solución en el contexto (incluyendo descarte de soluciones no pertinentes).",
+        "Problemas donde se pide responder con frase completa y/o con unidades correctas (por ejemplo, metros, años, pesos chilenos).",
+        "Problemas que impliquen decidir si una solución negativa, fraccionaria o no entera es o no razonable para el contexto dado (por ejemplo, personas, objetos, longitudes)."
+      ],
+      "out_of_scope": [
+        "Sistemas de ecuaciones lineales (más de una ecuación o más de una incógnita).",
+        "Inecuaciones lineales y análisis de intervalos de solución.",
+        "Funciones lineales en lenguaje de dominio/rango o análisis de gráficos de funciones.",
+        "Ecuaciones de grado distinto de 1 (cuadráticas, racionales, con raíces, etc.).",
+        "Problemas de probabilidad, estadística o geometría que NO se modelan con una sola ecuación lineal.",
+        "Modelación que requiera más de una etapa algebraica encadenada (por ejemplo, resolver una ecuación y luego usar ese resultado para plantear otra ecuación).",
+        "Uso de herramientas de cálculo numérico avanzado o tecnología (calculadora gráfica, hoja de cálculo) como parte esencial del ítem."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión de expresiones algebraicas simples y uso de incógnitas.",
+        "A-M1-ALG-03-01: Resolución de ecuaciones lineales de primer grado en una incógnita sin contexto.",
+        "A-M1-NT-01-01: Operaciones con números enteros y fraccionarios sencillos.",
+        "A-M1-NT-02-01: Uso de porcentajes y razones simples en contextos numéricos.",
+        "A-M1-ALG-02-01: Traducción básica entre lenguaje natural y lenguaje algebraico (frases como 'el doble de', '5 más que', 'la mitad de')."
+      ],
+      "common_traps": [
+        "Enunciados donde más de una interpretación algebraica es razonable (por ejemplo, relaciones temporales ambiguas como 'dentro de 5 años' sin precisar momento actual).",
+        "Contextos en que una solución negativa podría tener también interpretación válida (por ejemplo, diferencias de temperaturas) sin aclarar la magnitud de interés.",
+        "Problemas donde el estudiante puede resolver correctamente la ecuación pero la respuesta pedida no es la incógnita directamente (por ejemplo, se pide la suma de cantidades o un valor futuro) y el enunciado no lo enfatiza con claridad.",
+        "Uso de datos superfluos sin señal clara de que son irrelevantes, lo que puede confundir sobre qué magnitud modelar.",
+        "Contextos de perímetro, área o volumen donde no se especifica claramente qué se conoce y qué se desconoce, generando ecuaciones distintas posibles.",
+        "Frases de proporcionalidad o tarifas (por ejemplo, 'cobran un fijo más tanto por cada...') escritas de manera coloquial que generan ambigüedad en qué corresponde al término independiente y qué al coeficiente de la incógnita."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Contextos muy familiares (edades, cantidad de objetos, compra de un solo producto con precio fijo) con datos explícitos y pocos números.",
+        "Relación directa y casi literal entre el enunciado y la ecuación (por ejemplo, 'el triple de un número menos 5 es 13') sin reformulaciones lingüísticas complejas.",
+        "Ecuaciones de la forma ax + b = c con coeficiente entero positivo pequeño (a entre 1 y 5) y soluciones enteras positivas.",
+        "Sin datos irrelevantes ni distractores contextuales.",
+        "Interpretación final sencilla: la solución de la ecuación coincide exactamente con lo que se pregunta y no requiere pasos adicionales (no hay que sumar/restar nada más al resultado)."
+      ],
+      "medium": [
+        "Contextos cotidianos un poco más elaborados (perímetros de figuras simples como rectángulos, tarifas lineales con pago fijo, mezcla de dos montos de dinero, recorridos ida y vuelta).",
+        "Uso de frases temporales o relacionales que requieran cierta traducción ('dentro de', 'hace 3 años', 'el doble que', '5 menos que el triple de').",
+        "Ecuaciones donde el coeficiente de la incógnita es mayor (hasta 10) o aparece en ambos lados de la ecuación, manteniendo soluciones enteras o fraccionarias simples.",
+        "Posible presencia de un dato irrelevante o de un paso adicional luego de hallar la incógnita (por ejemplo, calcular una suma, perímetro total o precio final).",
+        "Necesidad de decidir si una solución fraccionaria o negativa tiene sentido para la situación (por ejemplo, número de personas, cantidad de entradas, longitud)."
+      ],
+      "hard": [
+        "Contextos más ricos con varias etapas de comprensión (por ejemplo, combinaciones de precios y descuentos lineales, relaciones encadenadas de edades o de longitudes en una figura).",
+        "Enunciados con datos que no se usan o con información presentada en forma de pequeña tabla o descripción extensa que obliga a seleccionar qué magnitudes modelar.",
+        "Ecuaciones que implican fracciones o decimales en coeficientes y/o términos independientes, o que requieren simplificación previa (por ejemplo, paréntesis, distributiva).",
+        "Situaciones en las que la magnitud pedida NO es directamente la incógnita planteada, sino una expresión de ella (por ejemplo, '¿cuánto medirán en total...?').",
+        "Contextos donde la interpretación de la solución exige un juicio más fino sobre su pertinencia (casos con dos soluciones numéricas posibles de la ecuación, de las cuales solo una es razonable en el contexto).",
+        "Problemas donde el estudiante debe elegir de manera implícita una buena variable a definir y decidir qué cantidad conviene representar (por ejemplo, elegir representar una longitud en vez del perímetro total)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar expresiones temporales vagas como 'hace un tiempo', 'en unos años' sin especificar claramente los años o el momento de referencia.",
+      "No usar relaciones de edades o tiempos donde pueda plantearse la incógnita tanto como edad actual como edad futura/pasada y ambas ecuaciones parezcan razonables; especificar explícitamente 'sea x la edad actual de...' o 'considera la edad actual'.",
+      "En problemas de perímetro o longitudes, indicar con claridad qué se conoce (perímetro total, lado mayor, lado menor) y cuál es la relación entre los lados para no permitir modelos alternativos.",
+      "Precisar siempre las unidades (metros, años, pesos) cuando aparezcan cantidades semejantes para evitar confusiones entre número de objetos y precio, o entre distancia y tiempo.",
+      "Evitar enunciados donde la información esté redactada en orden muy distinto al del proceso lógico si eso permite más de una ecuación razonable; si se hace, dejar claro qué representa cada cantidad.",
+      "No mezclar en el mismo problema distintas magnitudes con el mismo número sin indicar a qué se refieren (por ejemplo, '5' como precio y '5' como cantidad de objetos) sin etiquetarlas claramente.",
+      "No proponer situaciones donde una solución no entera genere dudas sobre si debe redondearse si el enunciado no lo explicita; indicar si corresponde redondear o si se acepta valor fraccionario (por ejemplo, 'puede ser una medida no entera').",
+      "Evitar contextos estadísticos o geométricos donde el estudiante pueda legítimamente optar por otros métodos no lineales (teoremas geométricos, reglas de tres compuestas) generando múltiples enfoques correctos que no pasen por una ecuación lineal clara."
+    ],
+    "error_families": [
+      {
+        "name": "Traducción directa equivocada del enunciado",
+        "description": "El estudiante interpreta mal una relación verbal al lenguaje algebraico, por ejemplo confunde '5 menos que el doble de x' con '5(2x)' o invierte 'x + 5' y 'x − 5'.",
+        "how_to_address": "Incluir ítems donde se haga explícito el paso de traducción, resaltando palabras clave ('más que', 'menos que', 'el doble de', 'la mitad de'), y ofrecer distractores vinculados a estas interpretaciones incorrectas para evidenciar el error."
+      },
+      {
+        "name": "Manejo deficiente de referencias temporales",
+        "description": "El estudiante confunde edad actual con edad futura/pasada, o suma/resta los años en el sentido equivocado, produciendo una ecuación incorrecta.",
+        "how_to_address": "Diseñar problemas con líneas de tiempo conceptuales o descripciones claras (\"ahora\", \"en 5 años\", \"hace 3 años\") y alternativas que reflejen errores típicos de sumar en el sentido contrario."
+      },
+      {
+        "name": "Confusión de magnitud modelada",
+        "description": "Se plantea la incógnita para una cantidad distinta de la que se pide (por ejemplo, se define x como el perímetro en lugar del lado), o se mezclan dos magnitudes (precio y cantidad) en la misma variable.",
+        "how_to_address": "Explicitar en el enunciado qué se quiere calcular y proponer distractores que coincidan con resultados intermedios (perímetro en vez de lado, por ejemplo) para detectar este error. Fomentar la escritura de 'Sea x ...' en la instrucción o contexto."
+      },
+      {
+        "name": "Errores algebraicos al resolver la ecuación",
+        "description": "El estudiante plantea bien la ecuación pero comete errores en operaciones (trasladar términos con signo equivocado, dividir por el coeficiente incorrecto, simplificar mal fracciones).",
+        "how_to_address": "Incluir ítems donde la ecuación ya esté dada y la dificultad se centre en la resolución, con distractores construidos a partir de errores de signo o de operaciones, para aislar la habilidad algebraica."
+      },
+      {
+        "name": "No interpretar la pertinencia de la solución",
+        "description": "El estudiante acepta cualquier solución numérica sin evaluar si tiene sentido (por ejemplo, número negativo de personas o de entradas, longitud 0, edad no entera).",
+        "how_to_address": "Plantear problemas donde la ecuación produzca más de una solución, o una solución no razonable, y pedir explícitamente seleccionar la que tenga sentido o justificar por qué se descartan algunas. Usar distractores que correspondan a soluciones algebraicas pero contextualmente inválidas."
+      },
+      {
+        "name": "Responder con la incógnita equivocada o sin unidades",
+        "description": "Luego de resolver correctamente, el estudiante entrega como respuesta la variable intermedia en lugar de lo solicitado, o da un número sin unidades cuando el problema exige una magnitud contextual.",
+        "how_to_address": "Formular preguntas que requieran un paso adicional después de hallar x (por ejemplo, '¿cuánto medirá el perímetro?') y fabricar distractores con el valor de x y con el valor de la magnitud final, reforzando la importancia de leer qué se pregunta y de incluir unidades cuando corresponda."
+      },
+      {
+        "name": "Uso inadecuado de datos irrelevantes",
+        "description": "El estudiante intenta forzar todos los datos a la ecuación, incluyendo los irrelevantes, generando un modelo incorrecto.",
+        "how_to_address": "Diseñar problemas con uno o dos datos irrelevantes claramente contrastables y alternativas que correspondan a modelos que los usan indebidamente; esto permite evaluar la capacidad de filtrar información pertinente."
+      }
+    ],
+    "future_targets": [
+      "Modelación con sistemas de ecuaciones lineales en dos incógnitas para contextos con dos magnitudes desconocidas.",
+      "Estudio formal de funciones lineales: interpretación de pendiente e intercepto en contextos de tarifas, razón de cambio y relaciones proporcionales.",
+      "Resolución e interpretación de inecuaciones lineales en contextos de restricciones (presupuestos máximos, límites de capacidad, condiciones mínimas).",
+      "Análisis de modelos más complejos que combinan partes lineales con otras relaciones (por ejemplo, tramos de tarifas, impuestos escalonados).",
+      "Uso de herramientas gráficas para representar modelos lineales (gráfico de la ecuación hallada, análisis de corte con ejes y pendientes).",
+      "Modelación algebraica en geometría (relaciones entre medidas en figuras más complejas) y en estadística (ajuste lineal simple, tendencia)."
+    ],
+    "representation_variants": [
+      "Enunciados verbales puros que deben ser traducidos a ecuación y resueltos.",
+      "Enunciados con pequeñas tablas de datos numéricos que describen una situación lineal, a partir de los cuales se debe modelar con una ecuación.",
+      "Situaciones descritas con expresiones mixtas (texto más una igualdad parcial como 'se sabe que el perímetro es 40 cm') que el estudiante debe completar para formar la ecuación.",
+      "Problemas donde se entrega parte de la ecuación y se pide completarla según el contexto (por ejemplo, '2x + ____ = 50', donde se debe identificar el término independiente correcto).",
+      "Contextos que mezclan cantidades discretas (personas, objetos) y continuas (longitudes, dinero) para reforzar la interpretación de la solución."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "integers_with_zero_and_negatives",
+      "simple_fractions",
+      "simple_decimals",
+      "simple_percentages"
+    ],
+    "required_image_types": []
+  }
+}

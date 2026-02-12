@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Reconocer expresiones exactamente de la forma a^2 - b^2, donde a y b pueden ser monomios con coeficiente entero.",
+        "Identificar cuadrados perfectos en coeficientes y variables (por ejemplo, 9x^2, 16a^2, 25m^2n^2).",
+        "Factorizar a^2 - b^2 como (a + b)(a - b) en una sola etapa.",
+        "Aplicar el patrón de diferencia de cuadrados en binomios con factor común previamente extraído cuando esto se indica de forma explícita en el enunciado.",
+        "Trabajar con expresiones que incluyan letras distintas (por ejemplo, 4a^2 - 9b^2, x^2 - y^2)."
+      ],
+      "out_of_scope": [
+        "Suma de cuadrados (a^2 + b^2) o expresiones que no sean diferencia de cuadrados perfectos.",
+        "Factorización de trinomios cuadráticos que no se reduzcan directamente a una diferencia de cuadrados.",
+        "Factorización por agrupación o métodos generales distintos del patrón a^2 - b^2.",
+        "Uso de identidades complejas (por ejemplo, a^4 - b^4 más allá de verlo como (a^2)^2 - (b^2)^2).",
+        "Resolución completa de ecuaciones cuadráticas; aquí solo se evalúa la factorización de la expresión."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo de potencias con exponente natural en expresiones algebraicas.",
+        "A-M1-ALG-01-03: Reconocimiento y escritura de cuadrados perfectos numéricos (1, 4, 9, 16, 25, 36...).",
+        "A-M1-ALG-01-05: Operaciones básicas con monomios (producto de coeficientes y suma de exponentes de la misma base).",
+        "A-M1-ALG-01-10: Comprensión de productos notables, en particular (a + b)(a - b) = a^2 - b^2 en sentido directo."
+      ],
+      "common_traps": [
+        "Interpretar erróneamente una suma de cuadrados (a^2 + b^2) como factorizable con el mismo patrón.",
+        "No reconocer el cuadrado perfecto en el coeficiente (por ejemplo, ver 49x^2 solo como '49x^2' y no como (7x)^2).",
+        "Olvidar que la forma es diferencia, e intentar factorizar a^2 + b^2 de manera análoga.",
+        "Cambiar el orden de términos y equivocarse con el signo (por ejemplo, factorizar a^2 - b^2 como (b - a)(b + a) sin justificar el reordenamiento).",
+        "Confundir el patrón con el binomio al cuadrado, devolviendo (a - b)^2 en lugar de (a + b)(a - b).",
+        "Tratar expresiones que no son cuadrados perfectos (por ejemplo, 3x^2 - 5) como si lo fueran.",
+        "No simplificar previamente un factor común cuando el enunciado lo demande explícitamente, o hacerlo cuando no corresponde y salir del formato 'diferencia de cuadrados'."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Expresiones con una sola variable y coeficientes que son cuadrados perfectos pequeños, del tipo x^2 - 25, 4x^2 - 9.",
+        "a y b se reconocen de inmediato sin necesidad de reescritura intermedia: 9y^2 - 16, 49x^2 - 1.",
+        "Variables con exponente 2 solamente, sin productos de variables (no términos como a^2b^2).",
+        "Ítems que piden directamente 'factorizar' sin contexto verbal ni pasos adicionales."
+      ],
+      "medium": [
+        "Expresiones con cuadrados perfectos en coeficientes y más de una letra, por ejemplo 4a^2b^2 - 9c^2.",
+        "Requieren reconocer la estructura (a^2 - b^2) al reescribir términos como cuadrados: 36x^2 - 81y^2, 16m^2n^2 - 25p^2.",
+        "Incluyen extracción simple de un factor común explícito en el enunciado, para luego aplicar diferencia de cuadrados: por ejemplo, factorizar 3(4x^2 - 9).",
+        "Aparecen en un contexto verbal simple donde se entrega la expresión y se pide la factorización, sin pasos extra de modelación."
+      ],
+      "hard": [
+        "Expresiones que requieren más de una reescritura para ver la diferencia de cuadrados, por ejemplo (2x)^2 - (3y)^2 disfrazadas como 4x^2 - 9y^2z^0 con detalle notacional que puede distraer.",
+        "Casos encadenados donde se aplica más de una vez la diferencia de cuadrados, como a^4 - b^4 = (a^2 + b^2)(a^2 - b^2), siempre que la meta principal siga siendo identificar y aplicar el patrón a^2 - b^2.",
+        "Presencia de signos y orden de términos que puedan inducir a error, como -(9x^2 - 4) o 25 - x^2 que necesitan reordenamiento para reconocer la forma estándar.",
+        "Ítems donde se comparan varias factorizaciones posibles y el estudiante debe identificar cuál corresponde a la diferencia de cuadrados correcta entre alternativas muy similares.",
+        "Expresiones con parámetros literales además de la variable principal, por ejemplo k^2x^2 - 16, donde se debe ver (kx)^2 - 4^2."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones que admitan factorizaciones distintas relevantes al currículo del nivel (por ejemplo, a^4 - b^4) sin especificar claramente que solo se espera aplicar una vez el patrón de diferencia de cuadrados o sin diseñar alternativas que hagan inequívoca la respuesta correcta.",
+      "Evitar expresiones que no son diferencia de cuadrados pero son muy parecidas visualmente (por ejemplo, x^2 - 24 o 3x^2 - 9) si las alternativas incluyen factorizaciones que usan indebidamente el patrón; si se usan, debe ser deliberado para evaluar reconocimiento 'no aplica', no para factorizar.",
+      "No mezclar en la misma pregunta peticiones de diferentes técnicas de factorización sin explicitarlo (por ejemplo, pedir 'factorizar completamente' una expresión que requiere primero factor común y luego diferencia de cuadrados, si el enfoque del átomo es solo el paso de diferencia de cuadrados).",
+      "Evitar notaciones poco estándar o simplificaciones omitidas (por ejemplo, escribir 4(x^2) - (5)^2 sin necesidad) que puedan hacer dudar si se trata de una diferencia de cuadrados.",
+      "No plantear ítems donde más de una alternativa sea algebraicamente equivalente a la factorización correcta (por ejemplo, (b + a)(a - b) si el original es a^2 - b^2) salvo que se explicite que el orden de factores no altera la corrección y se controle cuidadosamente la unicidad de la opción correcta.",
+      "Evitar el uso de raíces no enteras o cuadrados no perfectos que puedan llevar a expresiones con coeficientes irracionales si el foco no es ese (por ejemplo, x^2 - 2, x^2 - 5), a menos que se especifique claramente que se acepta la forma con raíces en los factores."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión con suma de cuadrados",
+        "description": "El estudiante intenta aplicar (a + b)(a - b) a expresiones de la forma a^2 + b^2, lo que no corresponde en el contexto de números reales.",
+        "how_to_address": "Diseñar ítems de reconocimiento donde a^2 + b^2 aparezca como distractor no factorizable y enfatizar en correcciones que la identidad trabaja con diferencia, no con suma. Reforzar mediante contraejemplos: mostrar que (a + b)^2 = a^2 + 2ab + b^2, no a^2 + b^2."
+      },
+      {
+        "name": "Confusión con binomio al cuadrado",
+        "description": "El estudiante ve a^2 - b^2 y responde (a - b)^2, como si se tratara de la expansión inversa de un binomio al cuadrado.",
+        "how_to_address": "Incluir ítems que comparen (a - b)^2 con a^2 - b^2, resaltando el término cruzado -2ab que falta en la diferencia de cuadrados. En la retroalimentación, mostrar explícitamente el desarrollo de ambos productos notables."
+      },
+      {
+        "name": "No reconocimiento de cuadrados perfectos",
+        "description": "El estudiante no ve números como 4, 9, 16, 25, 36, 49, etc. como cuadrados, o no reconoce que (3x)^2 = 9x^2, lo que le impide identificar a y b.",
+        "how_to_address": "Proponer ejercicios específicos de reescritura de expresiones como cuadrados (por ejemplo, reescribir 36x^2y^2 como (6xy)^2). En los ítems PAES, usar progresión de coeficientes desde muy simples a más grandes, y en la retroalimentación explicitar cada reescritura."
+      },
+      {
+        "name": "Manejo incorrecto de signos",
+        "description": "Errores al distribuir signos o reordenar términos, como factorizar 25 - x^2 como (5 - x)(5 - x) o (x + 5)(x - 5) sin considerar el cambio de orden.",
+        "how_to_address": "Incluir casos donde el término con variable está segundo, y en las soluciones enfatizar que 25 - x^2 = (5 + x)(5 - x) o, si se prefiere, -(x^2 - 25). Trabajar ejemplos que muestren explícitamente la equivalencia entre formas reordenadas."
+      },
+      {
+        "name": "Aplicación mecánica del patrón sin verificar condiciones",
+        "description": "El estudiante aplica a^2 - b^2 incluso cuando los términos no son cuadrados perfectos (por ejemplo, factoriza x^2 - 5 como (x + 5)(x - 5)).",
+        "how_to_address": "Diseñar ítems de selección múltiple donde algunas expresiones NO son factorizables como diferencia de cuadrados, y preguntar cuál sí lo es. Explicitar en la retroalimentación la necesidad de verificar que ambos términos son cuadrados perfectos y que la operación es una resta."
+      },
+      {
+        "name": "Olvido del producto completo (solo un factor)",
+        "description": "El estudiante escribe solo (a + b) o solo (a - b), omitiendo el segundo factor.",
+        "how_to_address": "En la corrección, resaltar el patrón completo (a + b)(a - b) y sugerir comprobar multiplicando los dos factores para ver si se recupera la expresión original. En ítems de alternativa múltiple, incluir como distractores expresiones con un solo factor para evidenciar este error."
+      },
+      {
+        "name": "Manejo inadecuado de factores comunes",
+        "description": "En expresiones donde conviene o se pide extraer un factor común para luego aplicar la diferencia de cuadrados, el estudiante se salta ese paso o lo realiza mal, perdiendo la estructura a^2 - b^2.",
+        "how_to_address": "Proponer ejercicios guiados de dos pasos: primero factor común, luego diferencia de cuadrados. En retroalimentación PAES, mostrar cómo extraer y qué queda dentro del paréntesis, verificando que efectivamente es una diferencia de dos cuadrados perfectos."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-01-14: Factorización completa de polinomios cuadráticos combinando varios métodos (factor común, trinomio, diferencia de cuadrados).",
+      "A-M1-ALG-02-01: Resolución de ecuaciones cuadráticas sencillas mediante factorización usando el patrón a^2 - b^2.",
+      "A-M1-FUN-01-02: Análisis de funciones cuadráticas a partir de sus factorizaciones (interceptos con el eje x).",
+      "A-M1-ALG-02-03: Simplificación de fracciones algebraicas utilizando factorización por diferencia de cuadrados en numerador y denominador.",
+      "A-M1-ALG-02-05: Resolución de inecuaciones cuadráticas factorizando expresiones que son diferencias de cuadrados.",
+      "A-M1-ALG-03-01: Trabajo con identidades notables más complejas que utilizan diferencia de cuadrados de manera encadenada, como a^4 - b^4."
+    ],
+    "representation_variants": [
+      "Expresiones algebraicas puras presentadas de forma simbólica en una sola línea, por ejemplo 4x^2 - 9.",
+      "Expresiones dentro de enunciados verbales cortos, donde se describe una situación y luego se entrega explícitamente la expresión a factorizar.",
+      "Expresiones anidadas en otras operaciones, por ejemplo como parte de un numerador o denominador en una fracción algebraica, siempre que el foco evaluado sea la parte a^2 - b^2.",
+      "Uso de letras distintas para a y b (por ejemplo, 9m^2 - 16n^2), para reforzar que la identidad no exige que ambas partes usen la misma variable.",
+      "Reescrituras equivalentes donde el cuadrado no está visualmente evidente hasta reagrupar, como (2x)^2 - 25, para entrenar la identificación de a y b."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "perfect_square_integers",
+      "simple_fractions",
+      "simple_decimals",
+      "symbolic_parameters"
+    ],
+    "required_image_types": []
+  }
+}

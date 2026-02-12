@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Factorizar trinomios cuadráticos mónicos de la forma x^2 + bx + c con b y c enteros.",
+        "Buscar dos enteros p y q tales que p + q = b y p · q = c.",
+        "Escribir la factorización como (x + p)(x + q) o (x − |p|)(x + q) según corresponda a los signos.",
+        "Verificar la factorización multiplicando (x + p)(x + q) para recuperar x^2 + bx + c.",
+        "Casos donde p y/o q son negativos, incluyendo resultados como (x + 3)(x − 4), (x − 5)(x − 2).",
+        "Casos donde el trinomio NO es factorizable con enteros (reconocerlo a partir de que no existen p y q enteros con p + q = b y p · q = c).",
+        "Casos con término independiente igual a 0, interpretando x^2 + bx como x(x + b)."
+      ],
+      "out_of_scope": [
+        "Trinomios no mónicos, es decir, con coeficiente principal distinto de 1 (ax^2 + bx + c con a ≠ 1).",
+        "Coeficientes fraccionarios, decimales o irracionales en b o c.",
+        "Factorización por otros métodos (completación de cuadrados, fórmula general, agrupación) como procedimiento principal.",
+        "Resolución de ecuaciones cuadráticas completas a partir de la factorización (eso es otro átomo).",
+        "Relación entre la factorización y las raíces de la función cuadrática en el plano cartesiano.",
+        "Productos notables que no se ajustan a x^2 + bx + c, como a^2 − b^2 o (x ± a)^2.",
+        "Polinomios de grado mayor a 2 o de una variable distinta de x en contexto más complejo (por ejemplo, ax^2y + ...)."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01: Manejo fluido de suma y multiplicación de enteros, incluyendo positivos, negativos y cero.",
+        "A-M1-ALG-05: Multiplicación de binomios y reconocimiento de la estructura (x + p)(x + q) = x^2 + (p + q)x + pq.",
+        "A-M1-ALG-02: Ordenar y simplificar términos semejantes en expresiones polinómicas sencillas."
+      ],
+      "common_traps": [
+        "Confundir las condiciones p + q = b y p · q = c, usando solo una de ellas para escoger los números.",
+        "Errores de signo al determinar p y q cuando b o c son negativos.",
+        "Creer que todo trinomio x^2 + bx + c se puede factorizar con enteros, sin considerar la posibilidad de que no existan tales p y q.",
+        "Factorizar incorrectamente como (x + b)(x + c) por asociación directa con los coeficientes.",
+        "Perder el coeficiente 1 del término x^2 al reescribir, por ejemplo, transformar x^2 + 5x + 6 en x(x + 5) + 6.",
+        "Asumir que el orden de los términos (por ejemplo, c + x^2 + bx) cambia el procedimiento.",
+        "Confundir la factorización del trinomio con la búsqueda de soluciones de x^2 + bx + c = 0, cuando el ítem solo pide factorizar."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Trinomios con b y c enteros pequeños en valor absoluto (por ejemplo, entre −10 y 10) y con pocos pares de factores posibles para c.",
+        "Casos donde p y q son ambos positivos y distintos, con c positivo y b positivo (ejemplo estructural: x^2 + 7x + 10).",
+        "Casos donde c es positivo y b negativo, con p y q ambos negativos, pero de fácil identificación (pocos pares posibles).",
+        "Distractores que se diferencian claramente por no cumplir simultáneamente suma y producto (solo una de las dos condiciones falla).",
+        "Ítemes que indican explícitamente la estrategia de suma y producto o muestran un ejemplo guiado en el enunciado."
+      ],
+      "medium": [
+        "Trinomios con b y c de valor absoluto moderado (por ejemplo, hasta 20–30), que generan varios pares de factores posibles para c.",
+        "Casos con signos mixtos (c negativo) donde p y q tienen signos distintos y hay varias combinaciones que suman algo cercano a b.",
+        "Incluir uno o dos distractores cuya multiplicación sí da c, pero cuya suma no da b, y otros que suman b pero no dan c, obligando a revisar ambas condiciones.",
+        "Ítemes donde el estudiante debe identificar él mismo que la expresión dada es un trinomio de la forma x^2 + bx + c y que procede factorizarla.",
+        "Trinomios escritos con términos desordenados (por ejemplo, bx + c + x^2) que exigen reconocer la estructura antes de factorizar."
+      ],
+      "hard": [
+        "Trinomios con c compuesto y con muchos pares de factores enteros posibles, de manera que la búsqueda de p y q es menos inmediata.",
+        "Casos donde el trinomio NO es factorizable en enteros, y el estudiante debe concluirlo justificando que no existen p y q enteros que cumplan ambas condiciones.",
+        "Ítemes en contexto verbal o numérico donde el estudiante debe plantear primero el trinomio x^2 + bx + c a partir de la situación y luego factorizarlo.",
+        "Trinomios con b y c negativos o con valores relativamente grandes (por ejemplo, alrededor de ±40) que requieren un manejo seguro de factores y signos.",
+        "Ítemes donde se compara o se elige, entre varias expresiones factorizadas propuestas, cuál corresponde a un trinomio dado, obligando a razonar en ambos sentidos (de factorizada a desarrollada)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados que pidan simultáneamente factorizar y resolver la ecuación resultante sin dejar claro cuál es el objetivo principal, para no mezclar átomos.",
+      "No usar trinomios que al reordenarse parezcan no ser de la forma x^2 + bx + c sin aclarar que se trata de la misma expresión (por ejemplo, presentar siempre el polinomio en forma ordenada o indicar que se lo ordene).",
+      "No mezclar en la misma pregunta trinomios mónicos y no mónicos sin explicitar que solo se trabajará con los mónicos de la forma x^2 + bx + c.",
+      "Evitar coeficientes que sugieran fracciones o raíces en la factorización, ya que este átomo se restringe a coeficientes enteros y factores lineales con coeficientes enteros.",
+      "Si se incluyen casos con c = 0 (x^2 + bx), explicitar que se considera como caso particular de x^2 + bx + c y que la factorización resulta en x(x + b), para que el estudiante no dude si corresponde al procedimiento del átomo.",
+      "No formular alternativas de respuesta que difieran solo por el orden de los factores o de los sumandos en los binomios cuando esa diferencia no afecta la validez, para evitar distractores técnicamente equivalentes.",
+      "No proponer expresiones que ya están factorizadas como (x + p)(x + q) y pedir 'factorice', sin indicar claramente si se pretende verificar o desarrollar."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión entre suma y producto",
+        "description": "El estudiante escoge p y q que cumplen p · q = c pero no p + q = b, o al revés, solo verifica una de las dos condiciones.",
+        "how_to_address": "Diseñar ítemes que obliguen a chequear las dos condiciones, por ejemplo, con distractores que cumplan solo una de ellas, y explicitar en la retroalimentación que ambos requisitos deben cumplirse simultáneamente."
+      },
+      {
+        "name": "Errores de signo",
+        "description": "Al trabajar con coeficientes negativos, el estudiante determina p y q con signos incorrectos (por ejemplo, confunde cuando ambos deben ser negativos o de signos opuestos).",
+        "how_to_address": "Proponer ejercicios que contrasten sistemáticamente casos con c > 0 y c < 0, guiando a identificar patrones de signos (c > 0 implica p y q del mismo signo; c < 0 implica signos opuestos) y reforzando esta regla en comentarios o explicaciones."
+      },
+      {
+        "name": "Factorización por asociación directa a coeficientes",
+        "description": "El estudiante escribe (x + b)(x + c) creyendo que los términos lineales del producto coincidirán automáticamente con bx y c.",
+        "how_to_address": "Incluir ítemes diagnósticos donde esta estrategia produzca errores evidentes, acompañados de verificaciones por desarrollo (multiplicar (x + b)(x + c)) para mostrar la diferencia con x^2 + bx + c."
+      },
+      {
+        "name": "Omisión del coeficiente 1 de x^2",
+        "description": "En el proceso de búsqueda de p y q o al reescribir la expresión, el estudiante altera la estructura, por ejemplo, reagrupa x^2 + bx + c como x(x + b) + c sin fundamento.",
+        "how_to_address": "Enfatizar el vínculo directo entre la expresión desarrollada y el producto (x + p)(x + q), utilizando la expansión explícita para mostrar que el coeficiente de x^2 queda 1 y que no se puede 'separar' x de manera arbitraria."
+      },
+      {
+        "name": "Asumir factorizabilidad universal",
+        "description": "El estudiante cree que todo trinomio x^2 + bx + c debe poder escribirse como (x + p)(x + q) con p, q enteros, por lo que fuerza combinaciones incorrectas.",
+        "how_to_address": "Incluir ítemes donde la respuesta correcta es 'no es factorizable con enteros' y explicar el razonamiento: revisar todos los pares de factores de c y mostrar que no hay p y q enteros que sumen b."
+      },
+      {
+        "name": "Verificación incorrecta por desarrollo",
+        "description": "El estudiante intenta comprobar la factorización pero multiplica mal los binomios, concluyendo erróneamente que una factorización correcta es incorrecta o viceversa.",
+        "how_to_address": "Reforzar el procedimiento de multiplicación de binomios con ejemplos específicos ligados a la factorización, destacando la correspondencia entre p + q y b, y entre pq y c."
+      }
+    ],
+    "future_targets": [
+      "Resolución de ecuaciones cuadráticas mediante factorización cuando el trinomio es mónico con soluciones enteras o racionales simples.",
+      "Análisis de funciones cuadráticas, incluyendo la identificación de raíces a partir de la forma factorizada.",
+      "Factorización de trinomios no mónicos (ax^2 + bx + c con a ≠ 1) utilizando métodos por agrupación u otros.",
+      "Relación entre las formas factorizada, desarrollada y canónica (completación de cuadrados) de una función cuadrática.",
+      "Aplicación de la factorización en problemas de modelación algebraica, como áreas de rectángulos, optimización simple y problemas de movimiento.",
+      "Comprensión de la descomposición en factores como paso previo a simplificar fracciones algebraicas."
+    ],
+    "representation_variants": [
+      "Expresión algebraica explícita del trinomio x^2 + bx + c a factorizar.",
+      "Listados o tablas de pares de números enteros que son candidatos a p y q, donde el estudiante debe seleccionar los correctos.",
+      "Formas factorizadas propuestas (por ejemplo, varias opciones de (x + p)(x + q)) para que el estudiante elija cuál corresponde al trinomio dado.",
+      "Trinomios presentados en contexto verbal sencillo (por ejemplo, área de un rectángulo expresada como x^2 + bx + c) que deben factorizarse para interpretar dimensiones.",
+      "Expresiones con términos desordenados que requieran ser reconocidas y reordenadas antes de aplicar el procedimiento de factorización."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "moderate_integers",
+      "negative_integers",
+      "zero_edge_cases",
+      "composite_factors_rich",
+      "prime_constants"
+    ],
+    "required_image_types": []
+  }
+}

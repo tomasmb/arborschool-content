@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Interpretar el significado de la pendiente m a partir de una ecuación lineal dada en contexto (generalmente y = mx + n o variantes de notación).",
+        "Interpretar el significado del coeficiente de posición n (ordenada al origen, término independiente) en el contexto de la situación.",
+        "Reconocer si los valores de m y n son razonables en la situación (por ejemplo, si tiene sentido que un costo fijo sea negativo).",
+        "Distinguir entre cambio por unidad (tasa) y valor inicial en contextos de tiempo, distancia, costo, temperatura, etc.",
+        "Relacionar el signo de la pendiente (positiva/negativa/cero) con el comportamiento de la situación modelada (aumenta, disminuye, se mantiene constante).",
+        "Analizar restricciones de validez del modelo lineal en el contexto (por ejemplo, tramo de tiempo en que el modelo es aplicable, imposibilidad de valores negativos en cantidades físicas)."
+      ],
+      "out_of_scope": [
+        "Calcular la pendiente o el coeficiente de posición a partir de datos o pares ordenados (eso es construcción del modelo, no interpretación).",
+        "Ajustar modelos a datos por mínimos cuadrados u otros métodos estadísticos.",
+        "Trabajar con funciones no lineales (cuadráticas, exponenciales, por tramos, etc.) salvo que la parte relevante sea una aproximación lineal explícitamente dada.",
+        "Resolver sistemas de ecuaciones lineales o encontrar puntos de intersección entre rectas.",
+        "Interpretar parámetros en funciones lineales a partir de gráficos sin ecuación explícita (eso pertenece más a lectura de gráficos que a interpretación de parámetros numéricos en la ecuación).",
+        "Demostraciones formales sobre propiedades de funciones lineales o justificación algebraica extensa."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-05-01",
+        "A-M1-ALG-05-02",
+        "A-M1-ALG-05-03",
+        "A-M1-ALG-05-04"
+      ],
+      "common_traps": [
+        "Confundir el significado de m y n, interpretando el término independiente como cambio por unidad y la pendiente como valor inicial.",
+        "Ignorar las unidades de medida (por ejemplo, decir solo 'aumenta en 3' sin precisar '3 kilómetros por hora' o '3 mil pesos por entrada').",
+        "Interpretar mecánicamente m y n sin considerar si el signo o el tamaño del número tiene sentido en la situación (por ejemplo, aceptar una velocidad negativa en un contexto donde solo se habla de rapidez).",
+        "Suponer que el modelo es válido para todos los valores posibles de la variable independiente, incluso cuando el contexto sugiere un rango restringido (por ejemplo, tiempos negativos o cantidades no enteras en contextos discretos).",
+        "Tomar el valor de n como 'cuando x = 1' en vez de 'cuando x = 0'.",
+        "Olvidar que m representa cambio por cada 1 unidad de la variable independiente y no por otro intervalo de medida mencionado en el enunciado."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuación lineal explícita en forma y = mx + n con valores pequeños y enteros para m y n.",
+        "Contexto muy cotidiano y directo (por ejemplo, costo total de un servicio con valor fijo más un costo por unidad) donde se nombra explícitamente qué representa la variable independiente y la dependiente.",
+        "Preguntas que solo piden identificar cuál alternativa describe correctamente m o n por separado, no ambos a la vez.",
+        "Inciso que no exige analizar la razonabilidad del modelo, solo traducir número → significado contextual.",
+        "Sin necesidad de considerar restricciones de dominio ni casos de invalidación (no se parte de datos contradictorios)."
+      ],
+      "medium": [
+        "Ecuación lineal dada en una forma ligeramente distinta (por ejemplo, C = 2500 + 800x; h(t) = 1,6t + 5; o en lenguaje natural que luego se expresa simbólicamente).",
+        "Contextos donde la interpretación de unidades requiere un paso de lectura adicional (por ejemplo, m representa 'costo por cada 10 minutos' y el estudiante debe inferirlo).",
+        "Ítems que exigen interpretar simultáneamente m y n en el mismo contexto y discriminar entre varias descripciones plausibles.",
+        "Necesidad de juzgar si un parámetro tiene sentido o no (por ejemplo, detectar que un costo fijo negativo no es razonable).",
+        "Presencia de pendiente negativa o cero, exigiendo interpretar disminución o constancia de la magnitud en el contexto."
+      ],
+      "hard": [
+        "Contextos donde la situación no menciona explícitamente el instante o cantidad 'cero', y el estudiante debe inferir qué significa n en términos de la historia (por ejemplo, extrapolación a 'antes del inicio de la medición').",
+        "Parámetros con números decimales no tan sencillos, mezclados con distintas unidades (por ejemplo, 0,75 litros por cada 2 minutos) donde la tasa m debe interpretarse correctamente.",
+        "Ítems que exigen discutir la validez del modelo solo en cierto intervalo (por ejemplo, explicar por qué no tiene sentido aplicar la ecuación para tiempos negativos o muy grandes).",
+        "Situaciones donde la variable independiente no es tiempo y el significado de 'por unidad' es menos intuitivo (densidades, concentraciones, razón de cambio en producción, etc.).",
+        "Comparaciones entre dos modelos lineales distintos donde se debe inferir, a partir de los parámetros, cuál representa mejor la situación descrita o cuál parámetro es inconsistente con la realidad dada.",
+        "Enunciados con distractores que explotan interpretación errónea de m como valor total o de n como cambio por unidad, obligando a una lectura fina del contexto."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar contextos en que no esté claro qué variable depende de cuál; siempre explicitar qué representa x (o t, etc.) y qué representa y (o f(x)).",
+      "Evitar ecuaciones donde el orden de los términos pueda confundir el rol de m y n si no se indica claramente la forma general; si se usa Forma distinta a y = mx + n, explicitar en el texto qué número es la tasa de cambio y cuál el valor inicial.",
+      "No proponer contextos donde el 'cero' de la variable independiente no tenga interpretación razonable o sea ambiguo (por ejemplo, edad medida desde un origen mal definido) sin aclararlo en el enunciado.",
+      "Evitar situaciones con más de una magnitud que cambia linealmente con la misma variable si no se identifica claramente cuál está siendo modelada por la ecuación presentada.",
+      "No mezclar distintas unidades para la misma magnitud sin aclarar la conversión (por ejemplo, minutos y horas en el mismo ítem) si esa conversión no es el foco del problema.",
+      "Evitar frases vagas como 'aumenta en 5' sin indicar 'por qué' o 'cada cuánto'; especificar siempre la unidad de la variable independiente: 'aumenta en 5 pesos por cada cuaderno'.",
+      "No utilizar términos como 'velocidad' o 'razón de cambio' sin que el resto del enunciado permita entender claramente cuál es la magnitud que cambia y en función de qué.",
+      "Evitar contextos donde la pendiente deba interpretarse como promedio de varios tramos distintos si solo se entrega un único valor numérico sin aclarar que se trata de un promedio."
+    ],
+    "error_families": [
+      {
+        "name": "Intercambio_m_y_n",
+        "description": "El estudiante interpreta la pendiente como valor inicial y el término independiente como cambio por unidad, especialmente si la ecuación no está escrita explícitamente como y = mx + n.",
+        "how_to_address": "En el ítem, reforzar el vínculo entre 'cuando la variable independiente vale 0' y el valor inicial, y entre 'por cada 1 unidad que aumenta la variable independiente' y la pendiente. En la retroalimentación, mostrar un ejemplo numérico sencillo (por ejemplo, tabla con x=0,1,2) para evidenciar cuál número está asociado al cambio."
+      },
+      {
+        "name": "Ignorar_unidades",
+        "description": "El estudiante identifica correctamente qué parámetro es m y cuál es n, pero no considera las unidades (por ejemplo, interpreta 50 como 'personas' en vez de 'personas por hora').",
+        "how_to_address": "Plantear alternativas donde la diferencia esté en la unidad (total vs. por unidad) de modo que el distractor revele ese error. En la retroalimentación, subrayar las unidades en el enunciado y en la ecuación, y conectar explícitamente número → unidad → interpretación verbal completa."
+      },
+      {
+        "name": "Signo_invertido_o_ignorado",
+        "description": "El estudiante no considera el signo del parámetro: trata una pendiente negativa como si describiera un aumento o considera un costo fijo negativo como un costo positivo.",
+        "how_to_address": "Diseñar ítems donde el signo cambie el sentido de la situación (crece/disminuye). En la retroalimentación, enfatizar palabras clave como 'aumenta', 'disminuye', 'pierde', 'se reduce', y vincularlas con pendiente positiva o negativa, usando ejemplos concretos de variación por paso."
+      },
+      {
+        "name": "Modelo_fuera_de_rango",
+        "description": "El estudiante aplica el modelo lineal fuera de un rango donde tiene sentido, aceptando interpretaciones absurdas (por ejemplo, tiempos negativos, cantidades de personas no enteras si se mencionan personas individuales).",
+        "how_to_address": "Incluir opciones que obliguen a considerar si el valor propuesto es posible en la realidad. En la retroalimentación, destacar la idea de 'rango de validez del modelo' y mostrar un contraejemplo simple donde aplicar la ecuación produce un resultado imposible (como una longitud negativa)."
+      },
+      {
+        "name": "Confusion_variable_independiente",
+        "description": "El estudiante interpreta m como 'por cada unidad de la variable equivocada', por ejemplo, 'por cada kilómetro' en vez de 'por cada hora'.",
+        "how_to_address": "En la construcción del ítem, hacer muy explícito qué representa x (o t). Incluir distractores que reflejen esta confusión. En la retroalimentación, reescribir el modelo con nombres de variables en palabras (por ejemplo, Costo = 2000·número_de_horas + 5000) para forzar la asociación correcta."
+      },
+      {
+        "name": "Lectura_literal_sin_contexto",
+        "description": "El estudiante reconoce la forma y = mx + n pero responde en términos abstractos ('m es la pendiente', 'n es la ordenada al origen') sin conectar con la historia concreta del problema.",
+        "how_to_address": "Formular las preguntas de manera que la respuesta correcta deba mencionar explícitamente el contexto (por ejemplo, 'cantidad de litros', 'número de llamadas') y no acepte solo lenguaje abstracto. En la retroalimentación, mostrar cómo la definición general se 'traduce' al caso específico."
+      }
+    ],
+    "future_targets": [
+      "Interpretar y comparar modelos lineales distintos para tomar decisiones en contextos reales (por ejemplo, elegir entre planes de telefonía con distintos costos fijos y variables).",
+      "Analizar e interpretar parámetros en modelos no lineales (cuadráticos, exponenciales) donde también hay términos que se leen como 'valor inicial' o 'parámetro de crecimiento'.",
+      "Trabajar con gráficos de funciones, identificando visualmente pendiente y ordenada al origen y conectándolos con el contexto.",
+      "Comprender y usar la idea de tasa de cambio promedio e instantánea en preparación para el cálculo diferencial.",
+      "Modelar situaciones más complejas con sistemas de ecuaciones lineales y analizar el significado de sus soluciones en el contexto.",
+      "Evaluar la pertinencia de un modelo matemático frente a datos reales, detectando inconsistencias en los parámetros o en el rango de aplicación."
+    ],
+    "representation_variants": [
+      "Ecuación explícita en la forma y = mx + n con variables nombradas según el contexto (por ejemplo, C = 1500x + 2000).",
+      "Descripción verbal del modelo donde se menciona costo fijo y costo por unidad, para que el estudiante deduzca qué valores corresponden a m y n.",
+      "Tablas de valores acompañadas de la ecuación ya construida, donde se pide interpretar los parámetros en relación con la tabla y el contexto.",
+      "Ecuaciones reescritas con los términos en distinto orden (por ejemplo, y = n + mx) donde igualmente se deba identificar e interpretar m y n.",
+      "Situaciones con cambios por intervalos estándar (por ejemplo, 'por cada 10 minutos', 'por cada 100 km'), conectadas con una ecuación que usa x como cantidad de intervalos.",
+      "Texto mixto con unidades explícitas y una ecuación dada parcialmente, donde se identifica el significado de uno de los parámetros conocidos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "contextual_decimals",
+      "realistic_monetary_values",
+      "simple_unit_rates"
+    ],
+    "required_image_types": []
+  }
+}

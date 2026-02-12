@@ -1,0 +1,137 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "División de dos potencias de igual base racional (positiva o negativa, distinta de 0), usando la regla a^m : a^n = a^(m-n).",
+        "Uso de notación de división con dos puntos (:) y notación fraccionaria a^m / a^n, tratándolas como equivalentes en este contexto.",
+        "Exponentes enteros positivos, cero y negativos.",
+        "Exponentes racionales (fracciones) con igual denominador o que puedan llevarse a denominador común sencillo para efectuar la resta.",
+        "Reescritura del resultado manteniendo la base original y simplificando el exponente (por ejemplo, 4/2 a 2, 2/4 a 1/2).",
+        "Casos en que el exponente resultante es 0 y se interpreta la potencia como 1 (si la base es distinta de 0).",
+        "Casos en que el exponente resultante es negativo y se interpreta la potencia como una fracción (inverso multiplicativo)."
+      ],
+      "out_of_scope": [
+        "División de potencias con distinta base (por ejemplo, a^m : b^n, con a ≠ b), salvo que se pida explícitamente reconocer que no se puede aplicar la propiedad.",
+        "Introducción o uso de logaritmos para transformar potencias.",
+        "Operaciones combinadas complejas que requieran además multiplicación de potencias, potencias de potencias o radicales no triviales en la misma pregunta.",
+        "Aplicación de propiedades de potencias a expresiones con variables en base y exponente simultáneamente (por ejemplo, a^(x) / a^(2x)).",
+        "Contextos verbales de modelación donde la dificultad provenga principalmente de interpretar la situación y no de aplicar la propiedad de división de potencias de igual base.",
+        "Cálculo de raíces como operación principal; solo se permiten en tanto sean equivalentes a exponentes racionales simples (1/2, 3/2, etc.).",
+        "Potencias con base 0 en el denominador o situaciones que requieran discutir indeterminaciones (0^0, división por 0)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Comprender el concepto de potencia con exponente entero y racional, incluyendo notación y significado.",
+        "A-M1-NUM-03-02: Propiedad de multiplicación de potencias de igual base con exponentes enteros y racionales.",
+        "A-M1-NUM-01-01: Manejo de números racionales (incluyendo fracciones y decimales) y sus operaciones básicas.",
+        "A-M1-NUM-01-02: Resta de números enteros, incluyendo manejo de signos.",
+        "A-M1-NUM-01-03: Suma y resta de fracciones con igual denominador y con denominadores simples para hallar común denominador."
+      ],
+      "common_traps": [
+        "Confundir la división de potencias de igual base con la potencia de una potencia y multiplicar exponentes en lugar de restarlos.",
+        "Restar exponentes en el orden incorrecto (hacer n - m en vez de m - n) al dividir a^m / a^n.",
+        "Olvidar que un exponente negativo en el resultado implica el inverso de la base (por ejemplo, a^(-2) = 1/a^2).",
+        "Tratar incorrectamente la resta de exponentes negativos, por ejemplo, a^3 / a^(-2) → a^(3-(-2)) pero el estudiante hace 3-2 en lugar de 3+2.",
+        "Confundir la propiedad y restar bases en vez de exponentes (por ejemplo, a^5 / a^2 → (a- a)^(5-2) o errores similares).",
+        "Aplicar la propiedad a expresiones donde las bases son solo aparentemente iguales pero difieren en signo o en forma (por ejemplo, (-2)^3 / 2^1, 1/2 y 2).",
+        "No identificar que 0.5, 1/2 y 1/2 en distintas notaciones representan la misma base racional y, por tanto, no aplicar la propiedad cuando sí corresponde.",
+        "Manejar de forma errónea la resta de fracciones en el exponente, sobre todo cuando requiere denominador común."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Divisiones de potencias con la misma base numérica racional sencilla (enteros pequeños positivos) y exponentes enteros positivos, donde la resta de exponentes no introduce negativos.",
+        "Uso de notación directa con fracción o con dos puntos, pero no combinadas en la misma expresión.",
+        "Exponentes que dan lugar a resultados inmediatos y sin necesidad de simplificación adicional (por ejemplo, a^5 : a^2 = a^3).",
+        "Casos con una única aplicación de la propiedad, sin operaciones adicionales mezcladas (no hay suma, resta ni productos fuera de la división de potencias)."
+      ],
+      "medium": [
+        "Divisiones de potencias con exponentes enteros donde la resta produce exponentes negativos o cero y el estudiante debe interpretar el resultado (por ejemplo, a^3 / a^5 = a^(-2)).",
+        "Divisiones de potencias con exponentes enteros negativos desde el inicio (por ejemplo, a^(-3) / a^2), lo que obliga a manejar restas con números negativos.",
+        "Divisiones de potencias con exponentes racionales con igual denominador (por ejemplo, 3/4 y 1/4), donde se solicita simplificar el exponente resultante.",
+        "Uso de bases racionales no enteras simples (como 1/2, 3/5, 0.5, 1.5) donde el desafío está en reconocer que la base es la misma en notaciones equivalentes.",
+        "Ítems con dos pasos encadenados pero centrados en la misma propiedad (por ejemplo, primero simplificar la expresión de exponentes, luego elegir la opción equivalente más simple)."
+      ],
+      "hard": [
+        "Divisiones de potencias con exponentes racionales que requieren obtener denominador común (por ejemplo, 2/3 y 1/6) antes de efectuar la resta.",
+        "Expresiones donde los exponentes son enteros y racionales combinados (por ejemplo, 2 + 1/2, -3/2, etc.), que obligan a convertir enteros a fracciones para restar.",
+        "Ítems que mezclan signos en el exponente (positivos y negativos) y requieren restas de fracciones con distinto signo (por ejemplo, 1/2 - (-3/2)).",
+        "Situaciones en que la igualdad de bases no es visualmente obvia (por ejemplo, (1/2)^a / (0.5)^b, o reescrituras como (4)^(1/2) y (2)^(1)).",
+        "Preguntas donde se debe comparar varias expresiones de la forma a^m / a^n para decidir cuál es mayor o menor, obligando a aplicar la propiedad y razonar sobre el valor numérico del resultado.",
+        "Ítems que exigen decidir si es correcto aplicar la propiedad de división de potencias de igual base en expresiones dadas, identificando casos en que las bases no son exactamente iguales."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar bases que involucren 0 en el denominador ni situaciones donde la base pueda ser 0 sin aclararlo, para evitar ambigüedades con división por 0.",
+      "Evitar expresiones donde la igualdad de bases dependa de propiedades no abordadas en el átomo (por ejemplo, usar √4 y 2 como bases sin explicitar la equivalencia si eso no es foco del ítem).",
+      "No mezclar en la misma expresión distintas propiedades de potencias (multiplicación de potencias, potencia de una potencia, potencia de un producto) sin dejar claro cuál es la que se evalúa.",
+      "Evitar exponentes demasiado complejos (por ejemplo, fracciones con números grandes, fracciones compuestas) que hagan que la dificultad provenga del cálculo fraccionario y no de la propiedad de división.",
+      "No incluir contexto verbal largo o confuso donde la identificación de la división de potencias de igual base sea poco evidente o se preste a múltiples interpretaciones.",
+      "Evitar bases con notación distinta pero no obviamente equivalente (por ejemplo, 0.333... y 1/3) si se quiere focalizar en la propiedad de división y no en equivalencias numéricas sutiles.",
+      "No plantear opciones de respuesta que mezclen simultáneamente varias equivalencias de potencias (por ejemplo, mismo valor con distintas bases) cuando eso no es parte del objetivo del átomo.",
+      "Evitar el uso de variables en el exponente si eso implica conocimientos fuera del rango del átomo (como ecuaciones exponenciales)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión con potencia de una potencia",
+        "description": "El estudiante, frente a a^m / a^n, multiplica los exponentes (a^(m·n)) o los suma (a^(m+n)) en lugar de restarlos, confundiendo la propiedad de división con la de potencia de una potencia o de multiplicación.",
+        "how_to_address": "Incluir ítems que contrasten explícitamente expresiones del tipo a^m / a^n y (a^m)^n, pidiendo identificar cuál se resuelve restando exponentes. Reforzar en enunciados o retroalimentación la regla verbal: 'al dividir potencias de la misma base, se conserva la base y se restan los exponentes (dividendo menos divisor)'."
+      },
+      {
+        "name": "Orden incorrecto en la resta de exponentes",
+        "description": "Al dividir a^m / a^n, el estudiante calcula n - m en vez de m - n, lo que invierte el signo del exponente y cambia el valor del resultado.",
+        "how_to_address": "Proponer ítems donde el resultado correcto tenga exponente negativo, y alternativas incorrectas muestren el exponente con el signo cambiado. En la explicación, enfatizar la analogía con la división de factores (cuántas veces está el divisor en el dividendo) y usar ejemplos numéricos concretos (por ejemplo, 2^3 / 2^5)."
+      },
+      {
+        "name": "Manejo deficiente de exponentes negativos",
+        "description": "El estudiante obtiene correctamente un exponente negativo, pero no comprende su significado o intenta forzarlo a exponente positivo sin aplicar el inverso de la base.",
+        "how_to_address": "Incluir ítems que pidan comparar a^(-2) con 1/a^2 y seleccionar expresiones equivalentes. En la retroalimentación, recordar que un exponente negativo indica el inverso multiplicativo de la base elevada al exponente positivo correspondiente."
+      },
+      {
+        "name": "Error en la resta de fracciones en el exponente",
+        "description": "Cuando los exponentes son fracciones, el error proviene de no usar denominador común o de aplicar mal la regla de resta (por ejemplo, restar numeradores y denominadores a la vez).",
+        "how_to_address": "Diseñar ítems graduales donde primero solo se restan fracciones con igual denominador y luego con denominadores distintos, mostrando alternativas que representen los errores típicos (como (a-b)/(c-d)). Reforzar en la explicación que la operación está en el exponente y sigue la regla habitual de resta de fracciones."
+      },
+      {
+        "name": "No reconocimiento de bases equivalentes",
+        "description": "El estudiante no identifica que expresiones como (1/2)^m y (0.5)^n tienen la misma base, o se confunde entre bases positivas y negativas (2 y -2).",
+        "how_to_address": "Incluir ítems donde la misma base racional aparece en distintas notaciones (fracción y decimal) y pedir identificar si se puede o no aplicar la propiedad. Aclarar en la explicación que la 'misma base' implica el mismo número, con el mismo signo, independientemente de la notación usada."
+      },
+      {
+        "name": "Aplicar la propiedad cuando las bases no son iguales",
+        "description": "El estudiante aplica la regla a^m / a^n = a^(m-n) incluso cuando las bases son diferentes (por ejemplo, 2^3 / 4^2) o son opuestas (2 y -2).",
+        "how_to_address": "Proponer preguntas de selección múltiple donde algunas expresiones tienen igual base y otras no, pidiendo seleccionar solo aquellas donde se puede aplicar la propiedad. Explicar que la regla es exclusiva para bases exactamente iguales, sin cambios de signo ni equivalencias no explícitas."
+      }
+    ],
+    "future_targets": [
+      "Aplicación de propiedades de potencias en simplificación de expresiones algebraicas más complejas (con multiplicaciones y divisiones combinadas).",
+      "Trabajo con exponentes racionales en radicales y potencias de radicales (por ejemplo, reescribir raíces como potencias de exponente fraccionario).",
+      "Resolución de ecuaciones y desigualdades exponenciales sencillas, donde se requiere igualar bases y operar con exponentes.",
+      "Comprensión y manipulación de funciones exponenciales, incluyendo transformaciones que afectan al exponente.",
+      "Uso de leyes de exponentes en contextos de modelación (crecimiento y decrecimiento exponencial, escalas, porcentajes sucesivos).",
+      "Introducción a logaritmos como operaciones inversas de potencias, donde la solidez en propiedades de exponentes es requisito.",
+      "Factorización y simplificación de expresiones racionales que involucran potencias en numerador y denominador."
+    ],
+    "representation_variants": [
+      "Notación fraccionaria: (a^m)/(a^n).",
+      "Notación de división con dos puntos: a^m : a^n.",
+      "Bases racionales positivas en forma fraccionaria (por ejemplo, (1/2)^m, (3/5)^n).",
+      "Bases racionales positivas en forma decimal finita (por ejemplo, 0.5^m, 1.2^n).",
+      "Bases racionales negativas (por ejemplo, (-2)^m), sin profundizar en casos problemáticos de exponentes no enteros.",
+      "Exponentes enteros escritos de forma explícita (3, -2, 0) y de forma mixta (por ejemplo, -1 + 1/2 en etapas intermedias de cálculo).",
+      "Exponentes racionales simples (por ejemplo, 1/2, 3/2, 3/4, 5/4) que representen raíces y potencias de raíces.",
+      "Expresiones equivalentes que muestren el mismo resultado de distinta forma (por ejemplo, (1/2)^(-2) y 2^2) para fomentar el reconocimiento de equivalencias."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "simple_unit_fractions",
+      "simple_non_unit_fractions",
+      "simple_decimal_fractions",
+      "negative_fractions",
+      "simple_rational_exponents_common_denominator",
+      "simple_rational_exponents_different_denominator"
+    ],
+    "required_image_types": []
+  }
+}

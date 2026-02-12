@@ -1,0 +1,142 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Verificar si un valor numérico dado satisface una ecuación lineal de una variable mediante sustitución directa en la incógnita.",
+        "Calcular el valor numérico de cada miembro de la ecuación después de la sustitución usando aritmética básica (suma, resta, multiplicación, división) con enteros o racionales simples.",
+        "Comparar los valores numéricos obtenidos en ambos miembros para decidir si el valor propuesto es o no solución.",
+        "Trabajar con ecuaciones lineales que pueden incluir paréntesis y coeficientes enteros o racionales simples."
+      ],
+      "out_of_scope": [
+        "Resolver una ecuación lineal encontrando la incógnita sin que se entregue un valor candidato.",
+        "Verificar soluciones en ecuaciones no lineales (cuadráticas, con potencias mayores, raíces, valor absoluto no lineal, productos de incógnitas, etc.).",
+        "Verificar soluciones de sistemas de ecuaciones o inecuaciones.",
+        "Uso de métodos gráficos o tabulares para encontrar soluciones (por ejemplo, intersección de rectas en un plano).",
+        "Aritmética con números irracionales complejos o fracciones muy sofisticadas que desbordan el foco procedimental.",
+        "Justificaciones formales o demostraciones teóricas sobre la existencia o unicidad de soluciones."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprende el significado de la igualdad como comparación de dos cantidades.",
+        "A-M1-NUM-02-01: Maneja suma y resta de enteros positivos y negativos.",
+        "A-M1-NUM-02-02: Maneja multiplicación y división de enteros, incluyendo el signo del resultado.",
+        "A-M1-NUM-03-01: Opera con fracciones y decimales simples (especialmente multiplicar un racional por un entero).",
+        "A-M1-ALG-01-01: Interpreta la variable como número desconocido y comprende la notación algebraica básica.",
+        "A-M1-ALG-02-01: Aplica el orden de las operaciones y uso básico de paréntesis en expresiones numéricas."
+      ],
+      "common_traps": [
+        "Sustituir el valor solo en una de las apariciones de la variable en la ecuación y dejar otras con la letra.",
+        "Olvidar aplicar el coeficiente a la variable al sustituir (por ejemplo, interpretar 3x como 3 + x en vez de 3·x).",
+        "Ignorar el orden de las operaciones, en especial en presencia de paréntesis o multiplicaciones antes de sumas y restas.",
+        "Cometer errores con números negativos al multiplicar o restar (por ejemplo, cambiar indebidamente de signo).",
+        "Concluir que un valor es solución sin comparar explícitamente los resultados de ambos lados (por intuición o cálculo parcial).",
+        "Confundir el procedimiento de verificación con el de resolución de la ecuación, intentando despejar la incógnita en vez de evaluar.",
+        "No terminar de simplificar ambos lados, comparando expresiones en vez de números (por ejemplo, creer que 2x + 1 con x=3 es comparable directamente a 7 sin calcular 2·3 + 1).",
+        "Errores al trabajar con fracciones (mala multiplicación de numerador/denominador o simplificación incorrecta) que llevan a concluir erróneamente sobre la solución.",
+        "Interpretar ecuaciones presentadas en contexto verbal sin fijarse que ya viene dado el valor a verificar, creyendo que debe encontrarse desde cero."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuaciones lineales con una sola operación principal después de sustituir (por ejemplo, solo una multiplicación seguida de una suma o resta) y con números enteros pequeños positivos.",
+        "Valores propuestos de la incógnita que son enteros pequeños (entre −10 y 10) sin necesidad de manejar fracciones ni decimales.",
+        "Ausencia de paréntesis o de más de una aparición de la variable en un mismo miembro.",
+        "Enunciados directos, sin contexto verbal extenso, donde la ecuación y el valor a verificar están explícitos y visibles.",
+        "Comparación numérica evidente al final (por ejemplo, 7 = 7 o 5 ≠ 9) sin necesidad de cálculos adicionales."
+      ],
+      "medium": [
+        "Ecuaciones lineales con más de una aparición de la variable y/o que requieren realizar dos o tres operaciones combinadas (por ejemplo, multiplicar, luego sumar y restar).",
+        "Presencia de enteros negativos ya sea en los coeficientes, términos independientes o en el valor propuesto para la incógnita.",
+        "Uso de fracciones o decimales simples en los coeficientes (por ejemplo, 1/2, 3/4, 0,5) que exigen una aritmética un poco más cuidadosa.",
+        "Ecuaciones que incluyen paréntesis sencillos que deben ser evaluados correctamente al sustituir.",
+        "Ítems que piden determinar si uno de varios valores listados es solución, pero donde solo se necesita verificar uno o dos candidatos para responder.",
+        "Contextos verbales breves donde se debe reconocer la ecuación dada y luego verificar el valor indicado sin reconstruir la situación completa."
+      ],
+      "hard": [
+        "Ecuaciones lineales donde la sustitución genera fracciones o decimales menos inmediatos (por ejemplo, resultados como 7/3, 1,25) que deben ser comparados correctamente entre ambos lados.",
+        "Coeficientes fraccionarios o decimales combinados con enteros negativos, exigendo un manejo cuidadoso de signos y operaciones (por ejemplo, −3/2x − 4 = 1/2).",
+        "Ecuaciones con paréntesis y distribución implícita tras la sustitución (por ejemplo, valores donde se deba calcular algo como 2(3 − x) con x dado).",
+        "Ítems que requieren analizar varios valores candidatos, donde más de uno parece plausible o donde se pide identificar todos los que son solución, aunque la tarea central siga siendo la verificación puntual.",
+        "Contextos verbales más complejos donde la ecuación ya está dada, pero el estudiante debe identificar correctamente qué valor se está proponiendo como posible solución y luego verificarlo.",
+        "Distractores diseñados para explotar errores típicos (por ejemplo, resultados que coinciden si se omite un paréntesis o se maneja mal un signo), de modo que la verificación correcta exige un cuidado especial en cada paso del cálculo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No proponer ecuaciones que se simplifiquen a identidades verdaderas para todo x (por ejemplo, 2(x+1) = 2x + 2) cuando el foco es verificar un valor específico, salvo que se explicite claramente el propósito y las opciones estén bien diferenciadas.",
+      "Evitar ecuaciones mal escritas o con notación ambigua, como 2/3x sin aclarar si significa (2/3)x o 2/(3x); usar siempre paréntesis cuando sea necesario.",
+      "No mezclar en la misma pregunta la tarea de resolver la ecuación con la de verificar un valor sin dejar claro cuál es el objetivo principal.",
+      "Evitar contextos verbales donde no quede claro cuál es la ecuación exacta a usar o cuál es el valor que se quiere verificar como solución.",
+      "No usar valores extremadamente cercanos cuando se trabaje con decimales, para evitar confusión entre igualdad exacta y aproximada (por ejemplo, no usar 0,333… versus 1/3 sin aclaración).",
+      "Evitar ecuaciones con términos que puedan interpretarse como producto o resta indistintamente por falta de símbolos (por ejemplo, escribir explícitamente 3·x o 3x y no 3 x separado por espacio dudoso).",
+      "No incluir distractores que dependan de redondeos no mencionados en el enunciado; la comparación debe ser siempre con valores numéricos exactos.",
+      "Evitar que la igualdad numérica final dependa de una fracción o decimal no simplificado en un lado y simplificado en otro sin que el estudiante esté obligado a reconocer su equivalencia; se debe incentivar (o guiar hacia) la simplificación clara."
+    ],
+    "error_families": [
+      {
+        "name": "Sustitución parcial de la variable",
+        "description": "El estudiante reemplaza el valor propuesto solo en una de las apariciones de la variable o en forma inconsistente, dejando otras con la letra o usando distintos valores.",
+        "how_to_address": "Diseñar ítems que incluyan la variable más de una vez y revisar en la retroalimentación el paso de sustitución, destacando que TODAS las x deben reemplazarse por el mismo número antes de calcular."
+      },
+      {
+        "name": "Confusión entre multiplicación y adición",
+        "description": "El estudiante interpreta expresiones como 3x o −2x como 3 + x o −2 + x, alterando completamente el cálculo al sustituir.",
+        "how_to_address": "Incluir ítems simples donde la única dificultad potencial sea el manejo de coeficientes, y en la explicación remarcar que 3x significa 3 multiplicado por x, mostrando ejemplos numéricos claros."
+      },
+      {
+        "name": "Descuido del orden de las operaciones",
+        "description": "El estudiante realiza primero sumas o restas antes que multiplicaciones, o ignora el contenido de paréntesis, obteniendo resultados distintos en cada miembro.",
+        "how_to_address": "Proponer ejercicios donde cambiar el orden de las operaciones lleve exactamente a una de las alternativas incorrectas, y en la retroalimentación mostrar el cálculo paso a paso resaltando el orden correcto."
+      },
+      {
+        "name": "Manejo incorrecto de números negativos",
+        "description": "Errores al multiplicar o sumar números negativos (por ejemplo, −2·(−3) como −6, o 5 − (−2) como 3), que llevan a comparar mal los miembros.",
+        "how_to_address": "Diseñar ítems que aíslen el uso de negativos y explicar con detalle la regla de signos y el efecto de un signo menos delante de paréntesis, usando pocos pasos y ejemplos numéricos concretos."
+      },
+      {
+        "name": "Errores con fracciones y decimales",
+        "description": "El estudiante calcula mal productos o sumas de fracciones/decimales, o no reconoce fracciones equivalentes (por ejemplo, creer que 1/2 es distinto a 0,5).",
+        "how_to_address": "Usar fracciones simples en los ítems y en la retroalimentación mostrar la conversión entre fracción y decimal o la simplificación necesaria, destacando cómo se comparan los valores obtenidos en cada miembro."
+      },
+      {
+        "name": "No completar el cálculo en ambos miembros",
+        "description": "El estudiante se queda con expresiones parcialmente simplificadas en uno o ambos lados (por ejemplo, 2·3 + 1 frente a 7) y decide a ojo sin terminar de calcular.",
+        "how_to_address": "Plantear ítems donde la equivalencia no es evidente sin completar las operaciones, y enfatizar en la explicación la importancia de llevar cada lado a un número final antes de comparar."
+      },
+      {
+        "name": "Confusión entre verificar y resolver",
+        "description": "El estudiante intenta despejar la variable a partir de la ecuación, aunque ya se le entregó un valor específico a comprobar, gastando tiempo y aumentando la probabilidad de error.",
+        "how_to_address": "En las consignas, usar verbos explícitos como 'verificar si x = a es solución' y en la retroalimentación explicar que, dado el valor, basta con sustituir y comparar, sin necesidad de resolver la ecuación completa."
+      },
+      {
+        "name": "Aceptación de igualdades aproximadas como exactas",
+        "description": "En presencia de decimales, el estudiante considera que valores muy cercanos (por ejemplo, 4,99 y 5) son 'prácticamente iguales' y concluye que el número es solución.",
+        "how_to_address": "Evitar decimales demasiado cercanos y, cuando se usen, reforzar en la explicación que la ecuación exige igualdad EXACTA, mostrando ejemplos donde pequeñas diferencias hacen que un valor no sea solución."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-03-03: Resolución de ecuaciones lineales de una variable mediante operaciones inversas, usando el concepto de solución como valor que verifica la igualdad.",
+      "A-M1-ALG-04-01: Verificación de soluciones de sistemas de ecuaciones lineales al sustituir pares ordenados en cada ecuación del sistema.",
+      "A-M1-ALG-05-01: Interpretación de la solución de una ecuación lineal como punto de intersección de una recta con el eje correspondiente en su representación gráfica.",
+      "A-M1-FUN-01-02: Comprobación de si un par (x, y) pertenece o no al gráfico de una función lineal, verificando que satisfaga la expresión funcional.",
+      "A-M1-MOD-01-01: Validación de modelos algebraicos sencillos en contextos reales comprobando si ciertos valores de variables satisfacen o no las relaciones planteadas.",
+      "A-M1-ALG-06-01: Verificación de raíces propuestas en ecuaciones de mayor complejidad (por ejemplo, cuadráticas) aplicando el mismo procedimiento de sustitución y comparación numérica."
+    ],
+    "representation_variants": [
+      "Ecuaciones lineales presentadas de forma puramente simbólica (por ejemplo, ax + b = c), indicando explícitamente el valor numérico de la incógnita a verificar.",
+      "Ecuaciones en contexto verbal donde se entrega directamente la ecuación y se propone un valor específico para la variable (por ejemplo, 'Si el costo total se modela por C = 2x + 3, verifica si x = 5 cumple la ecuación dada').",
+      "Ecuaciones con paréntesis o términos agrupados (por ejemplo, a(x + b) − c = d) que requieren evaluar correctamente el contenido de los paréntesis después de la sustitución.",
+      "Tablas pequeñas donde se muestra un valor de x y el resultado de sustituirlo en uno de los miembros, y se pide decidir si dicho valor es solución comparando con el otro miembro mostrado.",
+      "Listas de valores propuestos para la variable, con la instrucción de identificar cuál(es) de ellos es(son) solución, obligando a repetir el procedimiento de verificación varias veces.",
+      "Ecuaciones donde la incógnita aparece en ambos miembros (por ejemplo, ax + b = cx + d) y el estudiante debe sustituir el mismo valor de x en ambos lados antes de comparar.",
+      "Presentación de la ecuación con algunos cálculos intermedios ya realizados en un lado, dejando al estudiante completar la verificación del otro lado y decidir si se cumple la igualdad."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "larger_integers",
+      "integer_negatives",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

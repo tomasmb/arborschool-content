@@ -1,0 +1,129 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de probabilidades condicionales P(A|B) exclusivamente mediante reducción del espacio muestral y conteo directo, sin usar fórmulas algebraicas.",
+        "Situaciones donde se entrega explícitamente una tabla de frecuencias, tabla de doble entrada, lista de casos o descripción clara de todos los casos posibles y sus categorías.",
+        "Identificación del subconjunto de casos que cumplen la condición B (espacio muestral reducido) y conteo de su tamaño.",
+        "Identificación y conteo de los casos que cumplen simultáneamente A y B dentro del espacio muestral reducido.",
+        "Cálculo de P(A|B) como razón entre (casos favorables a A dentro de B) y (total de casos de B), expresada como fracción, decimal o porcentaje.",
+        "Problemas con datos discretos, frecuencias enteras o recuentos de personas/objetos/eventos."
+      ],
+      "out_of_scope": [
+        "Uso explícito de la fórmula P(A|B) = P(A∩B) / P(B) con eventos dados solo como probabilidades y sin referencia a conteos.",
+        "Probabilidad condicional en contextos que requieren diagramas de árbol, combinatoria avanzada o conteos no triviales del espacio muestral.",
+        "Conceptos de independencia de eventos, verificación de P(A|B)=P(A) o cálculo de P(A∩B) a partir de P(A|B).",
+        "Teorema de Bayes, probabilidad total o cadenas largas de probabilidades condicionales.",
+        "Problemas donde la información se entrega solo como porcentajes/probabilidades sin poder interpretarse como cantidades de casos concretos.",
+        "Contextos continuos (intervalos en la recta real, densidades) donde no se puedan enumerar o tabular los casos."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-01-01: Comprensión intuitiva de espacio muestral y evento mediante ejemplos concretos.",
+        "A-M1-PROB-02-01: Cálculo de probabilidades simples por conteo de casos favorables y casos posibles.",
+        "A-M1-PROB-03-01: Lectura e interpretación de tablas de frecuencia y tablas de doble entrada.",
+        "A-M1-NUM-01-01: Manejo básico de fracciones, porcentajes y razones como cocientes."
+      ],
+      "common_traps": [
+        "Olvidar reducir el espacio muestral a B y calcular P(A|B) usando el total global de casos en lugar del total de B.",
+        "Confundir P(A|B) con P(B|A) al interpretar mal la frase «dado que».",
+        "Usar directamente la fórmula algebraica P(A|B)=P(A∩B)/P(B) con números de probabilidades en lugar de razonar mediante conteo de casos.",
+        "Incluir en el conteo de B casos que no cumplen exactamente la condición dada (lectura descuidada de filas/columnas en la tabla).",
+        "Contar dos veces o dejar fuera casos en tablas con categorías similares (p. ej., hombres/mujeres, zurdo/no zurdo).",
+        "Proponer contextos donde la condición B tenga frecuencia cero o no esté bien definida, lo que hace imposible el cálculo de P(A|B)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Tablas de doble entrada pequeñas (por ejemplo 2x2 o 2x3) con totales explícitos en filas y columnas.",
+        "Condición B indicada de manera directa y evidente (por ejemplo «dado que es mujer» se asocia a una fila o columna única y claramente etiquetada).",
+        "Se pide una sola probabilidad condicional, con eventos A y B definidos con categorías simples y sin negaciones.",
+        "Números pequeños (frecuencias menores o iguales a 50) y conteos que no requieren más de una suma sencilla.",
+        "Distractores basados en errores típicos simples, como usar el total general como denominador."
+      ],
+      "medium": [
+        "Tablas de contingencia algo más grandes (por ejemplo 3x3) sin totales explícitos, que obligan a calcular uno o más totales de filas o columnas.",
+        "Formulaciones verbales donde el estudiante debe identificar correctamente qué parte de la tabla corresponde a B antes de contar.",
+        "Eventos A definidos como combinación de categorías (por ejemplo, «es estudiante de 3.º medio o 4.º medio»).",
+        "Frecuencias de dos o tres cifras, con necesidad de realizar varios conteos/sumas antes de calcular la razón.",
+        "Distractores que incorporan confusiones entre P(A|B) y P(B|A), o entre casos de A y B por separado versus casos de A y B simultáneamente."
+      ],
+      "hard": [
+        "Contextos donde la tabla no está explícita y el estudiante debe reconstruir un cuadro de doble entrada a partir de un texto o de datos desordenados (listas, recuentos parciales).",
+        "Eventos A y/o B definidos mediante negaciones o descripciones compuestas (por ejemplo, «no es de la jornada de la tarde y no es de 2.º medio»), que obligan a identificar complementos dentro de la tabla.",
+        "Situaciones donde hay varias condiciones posibles y el estudiante debe distinguir cuál es la condición «dada» y cuál es el evento cuyo valor se pide.",
+        "Requieren varios pasos de conteo y organización de datos (por ejemplo, sumar subconjuntos intermedios antes de identificar el espacio muestral reducido).",
+        "Distractores diseñados para capturar razonamientos proporcionales erróneos, como usar la frecuencia de A sola o de B sola, o intercambiar sistemáticamente A y B sin que sea evidente."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde la frase condicional pueda leerse en ambos sentidos, como «probabilidad de que sea mujer dado que es zurda» y «probabilidad de que sea zurda dado que es mujer» sin marcar claramente cuál se pide.",
+      "No usar expresiones vagas como «personas de este grupo» si no se especifica si se refiere al total o a una fila/columna específica de la tabla.",
+      "Evitar condiciones B que no correspondan exactamente a una categoría o combinación clara en la tabla (por ejemplo, «jóvenes» si las edades están agrupadas de otra forma en la tabla).",
+      "No incluir categorías solapadas que puedan pertenecer a más de una fila o columna a la vez sin explicitarlo claramente.",
+      "Evitar tablas donde algunas celdas sean implícitas o deducidas de manera no evidente; todas las celdas relevantes para A, B y A∩B deben poder identificarse sin interpretaciones adicionales.",
+      "No usar redacciones con doble negación confusa (por ejemplo, «no es que no sea…») sin aclararlas, porque dificulta identificar correctamente A, B y sus complementos.",
+      "No mezclar en el mismo ítem frecuencias absolutas y relativas si no se especifica claramente qué representan cada fila/columna.",
+      "No presentar datos inconsistentes (totales de filas que no coinciden con totales de columnas) que puedan hacer dudar de qué números usar."
+    ],
+    "error_families": [
+      {
+        "name": "denominador_incorrecto_total_global",
+        "description": "El estudiante calcula P(A|B) dividiendo los casos favorables a A∩B por el total general de casos, sin reducir el espacio muestral a B.",
+        "how_to_address": "En los ítems, reforzar la idea de seleccionar explícitamente los casos que cumplen B antes de calcular la probabilidad, destacando visual o verbalmente la fila/columna de B. En las retroalimentaciones, enfatizar que la probabilidad condicional se calcula siempre sobre el subconjunto que cumple la condición, no sobre el total global."
+      },
+      {
+        "name": "confusion_entre_P_A_dado_B_y_P_B_dado_A",
+        "description": "Se intercambia A y B, calculando P(B|A) en lugar de P(A|B), especialmente cuando ambos eventos están presentes en la tabla.",
+        "how_to_address": "Formular preguntas que obliguen a interpretar la expresión «dado que» como restricción inicial. En las explicaciones, mostrar claramente quién es el grupo de referencia (B) y qué característica se está preguntando dentro de ese grupo (A)."
+      },
+      {
+        "name": "conteo_erroneo_de_casos_en_B",
+        "description": "Al identificar B en la tabla, se incluyen o excluyen categorías por error (por ejemplo, mezclar filas o columnas vecinas) o se olvida sumar todas las celdas relevantes.",
+        "how_to_address": "Usar tablas bien etiquetadas y, en la retroalimentación, mostrar explícitamente cómo se suman las celdas que corresponden a B y por qué las otras no se incluyen."
+      },
+      {
+        "name": "ignorar_interseccion_A_inter_B",
+        "description": "El estudiante cuenta todos los casos de A dentro del total general, en vez de contar solo los casos que cumplen A dentro del subconjunto B (A∩B).",
+        "how_to_address": "Proponer ítems donde sea claramente distinto el número de casos de A y el número de casos de A dentro de B, y explicar paso a paso el proceso: primero seleccionar B, luego buscar A dentro de B."
+      },
+      {
+        "name": "mal_interpretar_la_condicion",
+        "description": "Lectura deficiente del contexto: se interpreta que la condición es A cuando en realidad es B (o viceversa), o se confunde condición con población total.",
+        "how_to_address": "En las preguntas, usar frases condicionales claras («Si se sabe que…», «Entre quienes…») y destacar el grupo sobre el que se condiciona. En las correcciones, reescribir el enunciado subrayando la parte que define B."
+      },
+      {
+        "name": "operaciones_aritmeticas_incorrectas",
+        "description": "Errores en sumas o divisiones simples al calcular totales de filas/columnas o al simplificar fracciones.",
+        "how_to_address": "Mantener números manejables y, cuando se busque evaluar comprensión de la probabilidad condicional, evitar operaciones innecesariamente complejas. En la retroalimentación, separar el paso de conteo del paso de cálculo de la razón."
+      },
+      {
+        "name": "uso_inadecuado_de_porcentajes",
+        "description": "Cuando los datos se dan en porcentajes, el estudiante mezcla porcentajes de distintos totales o no entiende que puede considerar un total ficticio (por ejemplo, 100 personas) para contar casos.",
+        "how_to_address": "Aclarar siempre respecto de qué total se calcula cada porcentaje y sugerir, si es útil, pensar en una población de 100 unidades. En la retroalimentación, mostrar explícitamente la conversión de porcentajes a cantidades de casos dentro de B."
+      }
+    ],
+    "future_targets": [
+      "Aplicar la fórmula P(A|B) = P(A∩B) / P(B) con eventos descritos exclusivamente en términos de probabilidades.",
+      "Analizar independencia de eventos comparando P(A|B) con P(A).",
+      "Construir y usar diagramas de árbol para modelar situaciones con varias etapas o condiciones sucesivas.",
+      "Aplicar el teorema de Bayes en contextos discretos utilizando tablas de contingencia.",
+      "Resolver problemas combinatorios donde el conteo del espacio muestral y de los casos favorables no sea inmediato, integrando combinatoria con probabilidad condicional.",
+      "Interpretar e investigar fenómenos reales mediante tablas y gráficos de datos, incorporando la probabilidad condicional en análisis estadísticos más complejos."
+    ],
+    "representation_variants": [
+      "Tabla de doble entrada con categorías en filas y columnas, con o sin totales explícitos.",
+      "Listado de casos individuales (por ejemplo, una lista de estudiantes con varias características) donde el estudiante debe agrupar y contar para formar un espacio muestral reducido.",
+      "Descripción verbal de frecuencias por grupo (por ejemplo, «de 30 mujeres, 8 son zurdas; de 20 hombres, 2 son zurdos…») que se puede organizar mentalmente como tabla.",
+      "Contextos cotidianos (salud, deportes, encuestas, preferencias) donde se indique claramente la cantidad de personas/elementos en cada categoría.",
+      "Esquemas textuales tipo «grupo A/B» sin formato de tabla pero con la misma estructura lógica de una tabla de contingencia."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "two_digit_integers",
+      "simple_fractions",
+      "simple_percentages"
+    ],
+    "required_image_types": []
+  }
+}

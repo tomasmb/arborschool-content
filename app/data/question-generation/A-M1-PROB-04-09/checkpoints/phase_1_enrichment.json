@@ -1,0 +1,116 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Interpretación verbal de P(A|B) como probabilidad de que ocurra A sabiendo que B ya ocurrió.",
+        "Reconocer que la expresión 'dado que B ocurrió' restringe el espacio muestral al evento B.",
+        "Identificar, en un contexto, cuál es el evento condicionante (B) y cuál es el evento cuyo éxito se mide (A).",
+        "Entender que en P(A|B) el 'total de casos posibles' se reemplaza por 'total de casos en B'.",
+        "Seleccionar, en descripciones textuales, la opción que mejor representa la idea de probabilidad condicional.",
+        "Distinguir entre P(A), P(B) y P(A|B) en términos de su significado en el contexto."
+      ],
+      "out_of_scope": [
+        "Cálculo algebraico complejo de probabilidades condicionales con muchas etapas.",
+        "Uso formal de la fórmula P(A|B) = P(A ∩ B) / P(B) en contextos con fracciones complicadas o múltiples operaciones.",
+        "Teorema de Bayes, inversión de condición (P(A|B) vs P(B|A)).",
+        "Independencia estadística expresada formalmente como P(A|B) = P(A).",
+        "Problemas que requieran diagramas de árbol o de Venn complejos como foco principal.",
+        "Cálculo de probabilidades en distribuciones continuas (densidades, integrales, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-04-01",
+        "A-M1-PROB-04-02",
+        "A-M1-PROB-04-03",
+        "A-M1-PROB-04-05"
+      ],
+      "common_traps": [
+        "Confundir P(A|B) con P(A ∩ B), tratando la notación condicional como si significara intersección.",
+        "Interpretar P(A|B) como si todavía se considerara todo el espacio muestral original y no solo B.",
+        "Creer que P(A|B) es lo mismo que P(B|A) solo porque aparecen las mismas letras.",
+        "No identificar correctamente qué parte del enunciado corresponde al evento A y cuál al evento B.",
+        "Olvidar que, al condicionar en B, los casos donde B no ocurre ya no se consideran 'posibles'.",
+        "Tomar ejemplos con porcentajes o frecuencias y no reconocer que la condición cambia el denominador de referencia."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados cortos donde se explicita claramente 'sabemos que ocurrió B' y se pide seleccionar la descripción correcta de P(A|B).",
+        "Contextos simples y conocidos (cartas, dados, bolitas en una urna) donde la condición es evidente y única.",
+        "Ítems donde solo se debe identificar qué evento corresponde a A y cuál a B en la notación P(A|B).",
+        "Preguntas donde se contrasta P(A) con P(A|B) y la diferencia se ilustra de manera directa en el texto."
+      ],
+      "medium": [
+        "Situaciones en las que hay varias afirmaciones sobre probabilidades (P(A), P(B), P(A|B), P(B|A)) y el estudiante debe decidir cuál corresponde a la probabilidad condicional descrita.",
+        "Problemas donde la condición está formulada de manera verbal menos explícita (por ejemplo, 'entre quienes ya...').",
+        "Ítems con tablas simples de frecuencias (2×2 o similares) donde se debe reconocer que la condición determina qué fila o columna se toma como 'total'.",
+        "Comparaciones cualitativas del tipo 'es mayor, menor o igual' entre P(A) y P(A|B), apoyadas en una descripción contextual."
+      ],
+      "hard": [
+        "Enunciados donde aparecen simultáneamente P(A), P(B), P(A∩B), P(A|B) y P(B|A), y se pide identificar cuál expresión corresponde a una descripción verbal específica.",
+        "Situaciones donde la condición se expresa de forma implícita o contextual (por ejemplo, 'considerando solo a quienes...'), sin usar literalmente 'dado que'.",
+        "Problemas que requieren razonar sobre cómo cambia el espacio muestral al pasar de una situación sin condición a otra condicionada, con más de dos categorías posibles.",
+        "Ítems donde se debe inferir, a partir de frecuencias o porcentajes, qué cantidad está actuando como nuevo 'total' bajo la condición, sin realizar cálculo numérico pesado pero sí un razonamiento cuidadoso sobre subconjuntos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usar la misma letra para el evento y para su complemento o para distintos eventos (por ejemplo, A para 'aprobó' y también A para 'asistió').",
+      "No mezclar en el mismo ítem formulaciones de P(A|B) y P(B|A) sin dejar muy claros los roles de cada evento en el contexto.",
+      "No usar frases vagas como 'entre algunos de ellos' sin especificar con claridad cuál es el subconjunto que actúa como condición.",
+      "Evitar que la redacción sugiera simultáneamente que se está hablando de frecuencia relativa simple y también de probabilidad condicional sin distinguirlas.",
+      "No usar expresiones ambiguas tipo 'si pasa A y B' cuando se quiere hablar de 'A dado que B pasó'; dejar clara la temporalidad o el orden lógico.",
+      "Evitar datos innecesarios o porcentajes redundantes que puedan hacer dudar sobre qué conjunto constituye el nuevo total bajo la condición.",
+      "No presentar tablas o descripciones donde no se distinga claramente qué filas/columnas pertenecen a qué eventos.",
+      "Evitar contextos donde la condición pueda interpretarse de dos maneras distintas (por ejemplo, 'personas mayores' sin aclarar desde qué edad)."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir_condicional_con_interseccion",
+        "description": "El estudiante interpreta P(A|B) como P(A ∩ B), pensando que se trata de 'A y B' en lugar de 'A sabiendo que B'.",
+        "how_to_address": "Incluir ítems donde se comparen explícitamente P(A ∩ B) y P(A|B) en un mismo contexto, destacando que la condicional trabaja solo sobre los casos donde B ya ocurrió, mientras que la intersección cuenta los casos donde ocurren ambos."
+      },
+      {
+        "name": "Olvidar_reduccion_del_espacio_muestral",
+        "description": "El estudiante sigue considerando todo el espacio muestral original como 'total de casos', sin restringirlo al evento condicionante B.",
+        "how_to_address": "Proponer contextos donde se señale claramente que los casos fuera de B ya no se consideran posibles, por ejemplo hablando solo de un grupo filtrado ('entre quienes ya fueron seleccionados...'). Pedir que el estudiante identifique cuál es el nuevo conjunto de referencia."
+      },
+      {
+        "name": "Confundir_P_A_B_con_P_B_A",
+        "description": "El estudiante asume que P(A|B) = P(B|A) solo porque involucran los mismos eventos en distinto orden.",
+        "how_to_address": "Diseñar ítems donde P(A|B) y P(B|A) sean claramente diferentes en el contexto (por ejemplo, 'probabilidad de estar enfermo dado que el test salió positivo' versus 'probabilidad de que el test sea positivo dado que está enfermo') y pedir que asocien cada descripción con la notación correcta."
+      },
+      {
+        "name": "No_identificar_eventos_en_el_contexto",
+        "description": "El estudiante no logra asociar correctamente las descripciones verbales de los eventos con la notación A y B, lo que lleva a interpretar mal la condición.",
+        "how_to_address": "Incluir preguntas que pidan explícitamente definir qué suceso es A y cuál es B antes de razonar sobre P(A|B). Usar contextos simples y destacar frases como 'evento A:' y 'evento B:' para reforzar la identificación previa."
+      },
+      {
+        "name": "Tratar_condicional_como_cambio_de_valor_arbitrario",
+        "description": "El estudiante ve P(A|B) solo como 'otra probabilidad distinta', sin vincularla con la idea de que el denominador cambió de 'total de casos' a 'total de casos en B'.",
+        "how_to_address": "Plantear ejemplos con frecuencias o porcentajes en los que se muestre explícitamente el 'antes' y el 'después' de aplicar la condición, enfatizando cómo cambia el conjunto considerado como total (por ejemplo, mostrar un recuento general y luego el recuento restringido a B)."
+      }
+    ],
+    "future_targets": [
+      "Comprensión y aplicación formal de la fórmula P(A|B) = P(A ∩ B) / P(B).",
+      "Manejo de independencia de eventos mediante la relación P(A|B) = P(A).",
+      "Uso de probabilidad condicional en cadenas de sucesos (diagramas de árbol con varias etapas).",
+      "Aplicación del teorema de Bayes en contextos de diagnóstico, test y clasificación.",
+      "Interpretación y cálculo de probabilidades en tablas de contingencia más complejas.",
+      "Razonamiento sobre riesgo relativo y probabilidades en estudios estadísticos (por ejemplo, comparar P(A|B) con P(A|B^c))."
+    ],
+    "representation_variants": [
+      "Notación simbólica P(A|B) acompañada de una descripción verbal de A y B.",
+      "Contextos narrativos donde la condición se expresa con frases como 'entre quienes', 'considerando solo a', 'sabemos que ya ocurrió B'.",
+      "Tablas de frecuencias simples (2×2 o con pocas categorías) donde la condición se representa como elegir una fila o columna específica como nuevo total.",
+      "Porcentajes o proporciones descritos textualmente ('el 30% de los que...', 'entre los que cumplen B, un 40% cumple A').",
+      "Listas o recuentos de casos (por ejemplo, conteos en grupos) donde el subconjunto B se destaca explícitamente antes de hablar de A."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "percentages",
+      "simple_ratios",
+      "simple_fractions"
+    ],
+    "required_image_types": []
+  }
+}

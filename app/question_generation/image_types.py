@@ -255,6 +255,8 @@ NOT_IMAGES_DESCRIPTION: str = (
 
 def build_image_type_catalog(
     specs: tuple[ImageTypeSpec, ...] | None = None,
+    *,
+    group_by_generatability: bool = False,
 ) -> str:
     """Build a detailed catalog of image types for LLM prompts.
 
@@ -263,6 +265,9 @@ def build_image_type_catalog(
 
     Args:
         specs: Which specs to include. Defaults to generatable only.
+        group_by_generatability: If True, split into generatable
+            and non-generatable sections with labels. Useful for
+            enrichment where the LLM needs to see all types.
 
     Returns:
         Formatted catalog string in Spanish.
@@ -270,14 +275,55 @@ def build_image_type_catalog(
     if specs is None:
         specs = GENERATABLE_SPECS
 
+    if not group_by_generatability:
+        return _format_specs_list(specs)
+
+    gen = tuple(s for s in specs if s.generatable)
+    non_gen = tuple(s for s in specs if not s.generatable)
+
+    sections: list[str] = []
+    if gen:
+        sections.append(
+            "— GENERABLES (producción automática) —\n\n"
+            + _format_specs_list(gen)
+        )
+    if non_gen:
+        sections.append(
+            "— NO GENERABLES (requieren diseño manual) —\n\n"
+            + _format_specs_list(
+                non_gen, show_block_reason=True,
+            )
+        )
+    return "\n\n".join(sections)
+
+
+def _format_specs_list(
+    specs: tuple[ImageTypeSpec, ...],
+    *,
+    show_block_reason: bool = False,
+) -> str:
+    """Format image type specs as numbered entries.
+
+    Args:
+        specs: Specifications to format.
+        show_block_reason: Include why_not_generatable text.
+
+    Returns:
+        Formatted string with one entry per spec.
+    """
     lines: list[str] = []
     for i, spec in enumerate(specs, 1):
-        lines.append(
+        entry = (
             f"{i}. `{spec.key}` — {spec.name_es}\n"
             f"   Descripción: {spec.description}\n"
             f"   Ejemplos: {'; '.join(spec.examples[:3])}\n"
             f"   Usar cuando: {spec.when_to_use}"
         )
+        if show_block_reason and spec.why_not_generatable:
+            entry += (
+                f"\n   Nota: {spec.why_not_generatable}"
+            )
+        lines.append(entry)
     return "\n\n".join(lines)
 
 

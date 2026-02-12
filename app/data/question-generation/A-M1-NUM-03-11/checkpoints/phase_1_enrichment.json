@@ -1,0 +1,122 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar la propiedad √[n](a) · √[n](b) = √[n](ab) cuando las raíces tienen el mismo índice n.",
+        "Identificar explícitamente que todas las raíces involucradas comparten el mismo índice antes de multiplicar.",
+        "Multiplicar radicandos numéricos y/o algebraicos (con variables) bajo una sola raíz, manteniendo el índice.",
+        "Simplificar el resultado solo mediante multiplicación directa de radicandos y, si corresponde, extrayendo factores que formen potencias exactas del índice.",
+        "Operar con coeficientes externos a la raíz cuando la dificultad lo requiera (por ejemplo, 2√3 · √3)."
+      ],
+      "out_of_scope": [
+        "Suma o resta de raíces (como √a + √b).",
+        "Multiplicación de raíces con índices diferentes (por ejemplo, √a · ³√b).",
+        "Racionalización de denominadores que contengan raíces.",
+        "Descomposición compleja de radicandos en factores primos cuando esta es el foco principal del ítem.",
+        "Uso sistemático de notación de potencias racionales (a^(1/n)) como contenido principal.",
+        "Ecuaciones con radicales donde el foco no sea la aplicación directa de la propiedad de multiplicación de raíces de igual índice."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Comprensión de la notación de raíz: índice, radicando y símbolo radical.",
+        "A-M1-NUM-03-02: Reconocimiento de raíces de potencias exactas (por ejemplo, √9 = 3, ³√8 = 2).",
+        "A-M1-NUM-02-01: Multiplicación de números enteros y fraccionarios.",
+        "A-M1-ALG-01-01: Uso básico de letras para representar números (variables) y manejo de productos con variables."
+      ],
+      "common_traps": [
+        "Aplicar la propiedad de multiplicación de raíces cuando los índices son distintos, sin unificar índices.",
+        "Multiplicar los índices en lugar de mantener un índice común, por ejemplo, interpretar √2 · ³√2 como √[6](4).",
+        "Sumar radicandos en lugar de multiplicarlos, por ejemplo, √2 · √3 → √(2 + 3).",
+        "Olvidar multiplicar todos los radicandos involucrados cuando hay más de dos raíces.",
+        "No simplificar el resultado cuando el radicando resultante es una potencia exacta (por ejemplo, dejar √36 en lugar de 6).",
+        "Confundir el signo en raíces de índice par (olvidar que se usa la raíz principal no negativa en el contexto de PAES)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos de dos raíces cuadradas con índice implícito 2 y radicandos pequeños que dan lugar a un cuadrado perfecto (por ejemplo, √a · √b con ab ≤ 100 y sin variables).",
+        "Situaciones sin coeficientes externos al radical, solo multiplicación directa de radicandos.",
+        "Ítems donde el resultado no requiere una simplificación adicional compleja (o la simplificación es inmediata, como √(9·4)).",
+        "Contextos puramente simbólicos o numéricos sin lenguaje verbal complejo ni contexto aplicado."
+      ],
+      "medium": [
+        "Productos de más de dos raíces con el mismo índice (por ejemplo, √a · √b · √c).",
+        "Presencia de variables en los radicandos (por ejemplo, √(3x) · √(2x)).",
+        "Inclusión de coeficientes externos a la raíz que se mantienen o se combinan tras la simplificación (por ejemplo, 2√3 · √6).",
+        "Radicandos que al multiplicarse requieren una simplificación moderada (por ejemplo, extraer un factor cuadrado o cúbico evidente, como √(12) · √(3) = √(36)).",
+        "Ítems en los que el estudiante debe distinguir primero si las raíces tienen el mismo índice antes de aplicar la propiedad, pero sin índices mayores a 3."
+      ],
+      "hard": [
+        "Raíces con índice explícito distinto de 2 (por ejemplo, raíces cúbicas o cuartas) manteniendo siempre índices iguales entre sí.",
+        "Radicandos numéricos y algebraicos combinados que, al multiplicarse, requieren factorizar parcialmente para simplificar usando el índice (por ejemplo, ³√(6x²) · ³√(12x) donde se pueda extraer un factor cúbico).",
+        "Expresiones que mezclan productos de raíces con términos que no están bajo raíz, requiriendo distinguir qué se combina y qué no.",
+        "Distractores que incluyen la aplicación incorrecta de la propiedad a raíces de distinto índice, exigiendo al estudiante reconocer correctamente cuándo NO aplicar la regla.",
+        "Contextos verbales en que la expresión con raíces aparece como parte de un cálculo más amplio, pero donde el paso clave evaluado es la multiplicación de raíces de igual índice y la simplificación posterior."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones donde algunas raíces tengan índice implícito 2 y otras tengan índice explícito 2 si eso puede generar dudas; mantener una notación coherente por ítem.",
+      "Evitar casos límite con radicandos negativos en raíces de índice par; en PAES se trabaja con la raíz principal real, por lo que para este átomo usar solo radicandos no negativos cuando el índice es par.",
+      "No combinar en el mismo ítem multiplicación de raíces con igual índice y operaciones de racionalización o suma/resta de radicales si el criterio de logro no los incluye explícitamente.",
+      "No plantear productos de raíces con índices diferentes sin dejar claro que la propiedad de multiplicación de radicandos no aplica en ese caso, para no sugerir reglas no trabajadas.",
+      "No exigir simplificaciones profundas por descomposición en factores primos si el foco está en aplicar la propiedad básica; limitar la factorización a casos simples y evidentes.",
+      "Evitar enunciados con lenguaje contextual excesivamente complejo cuando la tarea matemática es corta, para que el foco evaluado sea la propiedad de multiplicación de raíces y no la comprensión lectora."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_en_lugar_de_producto_de_radicandos",
+        "description": "El estudiante interpreta erróneamente que √[n](a) · √[n](b) = √[n](a + b), sumando los radicandos en lugar de multiplicarlos.",
+        "how_to_address": "Enfatizar la diferencia entre operaciones dentro y fuera del radical, mostrando contraejemplos numéricos sencillos (por ejemplo, comparar √2 · √3 con √(2 + 3)) para que vean que los resultados no coinciden."
+      },
+      {
+        "name": "Producto_de_indices",
+        "description": "El estudiante multiplica los índices de las raíces al multiplicarlas, por ejemplo, √2 · ³√2 → √[6](4) o similar.",
+        "how_to_address": "Reforzar que el índice representa cuántos factores iguales se necesitan para formar el radicando y que, en la propiedad de producto, el índice se mantiene constante; practicar ítems donde todos los índices sean iguales y contrastar con casos donde no se puede aplicar la propiedad."
+      },
+      {
+        "name": "Aplicar_la_propiedad_con_indices_distintos",
+        "description": "El estudiante aplica la regla de multiplicar radicandos a raíces que no tienen el mismo índice (por ejemplo, √a · ³√b → √[?](ab)).",
+        "how_to_address": "Resaltar en la consigna y en la retroalimentación que la condición 'mismo índice' es indispensable; proponer ejercicios de clasificación donde deban decidir en qué casos se puede y en cuáles no se puede combinar las raíces en una sola."
+      },
+      {
+        "name": "Olvido_de_simplificar_el_radicando_resultante",
+        "description": "El estudiante combina correctamente las raíces, pero no simplifica el resultado cuando el radicando es una potencia exacta del índice (por ejemplo, dejar √36 en lugar de 6).",
+        "how_to_address": "Recordar la conexión entre raíces y potencias y practicar la identificación rápida de cuadrados, cubos u otras potencias perfectas; usar tablas o listas de potencias comunes como apoyo inicial."
+      },
+      {
+        "name": "Manejo_incorrecto_de_coeficientes_externos",
+        "description": "El estudiante multiplica solo los radicales y olvida los coeficientes externos, o bien mezcla inadecuadamente coeficientes con radicandos (por ejemplo, 2√3 · √3 → √18 en lugar de 6).",
+        "how_to_address": "Trabajar pasos intermedios explícitos: separar el producto de coeficientes del producto de raíces, realizar cada operación por separado y luego combinarlas; usar ejemplos escalonados que hagan visible la estructura (coeficiente)·(raíz)."
+      },
+      {
+        "name": "Confusion_con_signos_y_raiz_principal",
+        "description": "En raíces de índice par, el estudiante introduce signos ± o resultados negativos donde corresponde usar solo la raíz principal no negativa.",
+        "how_to_address": "Reafirmar que en el contexto escolar y de PAES, √a denota la raíz cuadrada principal (no negativa); proponer ejercicios donde comparen −√a con √a para distinguir claramente el signo externo de la raíz."
+      }
+    ],
+    "future_targets": [
+      "Multiplicación y división de radicales con el mismo índice, incluyendo simplificación completa de expresiones radicales.",
+      "Suma y resta de radicales, apoyándose en la capacidad de simplificar radicales para reconocer 'términos semejantes'.",
+      "Racionalización de denominadores que contienen radicales, donde es necesario multiplicar raíces de igual índice para eliminar el radical.",
+      "Uso de exponentes fraccionarios (a^(m/n)) y su equivalencia con raíces, extendiendo la propiedad de multiplicación a potencias racionales.",
+      "Resolución de ecuaciones radicales sencillas en las que se requiere combinar radicales y luego despejar.",
+      "Manipulación de expresiones algebraicas más complejas que incluyan radicales en numerador y denominador."
+    ],
+    "representation_variants": [
+      "Expresiones puramente numéricas con raíces de igual índice (por ejemplo, productos de raíces cuadradas o cúbicas con números enteros).",
+      "Expresiones algebraicas donde los radicandos incluyen variables y constantes (por ejemplo, √(3x) · √(2x)).",
+      "Expresiones mixtas con coeficientes externos a la raíz y varios factores radicales (por ejemplo, 2√5 · 3√5).",
+      "Planteamientos verbales breves que describen un cálculo con raíces y que se traducen a un producto de raíces de igual índice.",
+      "Uso de índice explícito distinto de 2 (³√, ⁴√, etc.) para reforzar que la propiedad es general al mismo índice, no solo a raíces cuadradas."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "larger_integers",
+      "simple_fractions",
+      "decimal_numbers",
+      "simple_irrationals",
+      "literal_coefficients"
+    ],
+    "required_image_types": []
+  }
+}
