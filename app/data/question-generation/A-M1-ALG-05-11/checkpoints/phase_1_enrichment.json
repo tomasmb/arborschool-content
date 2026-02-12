@@ -3,135 +3,145 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Modelar situaciones verbales usando funciones lineales o afines de la forma f(x) = mx + n.",
-        "Identificar en el contexto qué magnitud depende de la otra (variable dependiente e independiente).",
-        "Reconocer y expresar la tasa de cambio constante del contexto como la pendiente m.",
-        "Reconocer y expresar el valor inicial, costo fijo o posición inicial como el término independiente n.",
-        "Distinguir entre modelos de la forma f(x) = mx (sin término independiente) y f(x) = mx + n.",
-        "Trabajar con contextos típicos de proporcionalidad con término fijo: costos, tarifas, movimiento rectilíneo uniforme, conversión de unidades, evolución lineal de una cantidad en el tiempo.",
-        "Escribir la ecuación que modela la situación, usando notación funcional estándar (por ejemplo, C(x), d(t), T(x)).",
-        "Seleccionar, entre varias ecuaciones lineales/afines propuestas, la que corresponde al contexto dado."
+        "Traducción directa de una situación verbal sencilla a una función lineal o afín del tipo f(x) = mx + n.",
+        "Identificación explícita de la variable independiente (entrada) y dependiente (salida) en el contexto del problema.",
+        "Asociación de una tasa de cambio constante descrita en el enunciado con la pendiente m del modelo.",
+        "Asociación de un valor inicial, fijo o costo base descrito en el enunciado con el término independiente n.",
+        "Modelación de contextos típicos: costos fijos + costo por unidad, movimiento uniforme, conversiones lineales de unidades, remuneraciones con sueldo base + comisión.",
+        "Verificación cualitativa de si la fórmula obtenida tiene sentido con el contexto (por ejemplo, que el valor inicial coincida con lo que pasa cuando x = 0)."
       ],
       "out_of_scope": [
-        "Resolver ecuaciones lineales o sistemas a partir del modelo (por ejemplo, encontrar el tiempo a partir de un costo dado).",
-        "Ajustar modelos lineales a datos experimentales con error (regresión lineal, mínimos cuadrados).",
-        "Interpretar o analizar gráficas ya dibujadas de funciones lineales (eso corresponde a lectura de gráficos, no a formulación).",
-        "Modelar con funciones cuadráticas, exponenciales u otras no lineales.",
-        "Trabajar con funciones a trozos, valor absoluto o modelos por tramos.",
-        "Optimización o comparación de modelos más allá de identificarlos (por ejemplo, elegir el plan más conveniente resolviendo desigualdades).",
-        "Uso intensivo de fracciones o decimales complejos que compliquen el foco en la modelización.",
-        "Análisis de dominio y rango formal de la función, salvo restricciones contextuales simples (por ejemplo, x ≥ 0 minutos)."
+        "Ajuste de una recta a datos experimentales usando métodos estadísticos o de regresión.",
+        "Interpretación detallada de gráficos de funciones lineales (intersecciones, corte con ejes) más allá de lo necesario para formular el modelo.",
+        "Modelos no lineales (cuadráticos, exponenciales, proporcionales inversos, por tramos o a trozos).",
+        "Resolución de sistemas de ecuaciones que involucren varias rectas; este átomo se centra en construir una sola ecuación.",
+        "Optimización (encontrar máximos o mínimos) basada en el modelo construido.",
+        "Uso de funciones lineales en contextos puramente geométricos (rectas en el plano, pendientes entre puntos) sin un contexto verbal aplicado."
       ],
       "prerequisites": [
-        "A-M1-ALG-01-01: Comprender el significado de variable y constante en expresiones algebraicas simples.",
-        "A-M1-ALG-03-01: Manejar la forma general de una función lineal o afín f(x) = mx + n.",
-        "A-M1-ALG-03-02: Interpretar la pendiente como tasa de cambio constante en contextos sencillos.",
-        "A-M1-NUM-01-02: Operar con enteros y decimales positivos sencillos en contextos de medida y dinero.",
-        "A-M1-REP-01-01: Leer e interpretar información desde enunciados verbales y tablas simples."
+        "A-M1-ALG-01-01: Comprender el significado de variable e incógnita en expresiones algebraicas simples.",
+        "A-M1-ALG-02-01: Manejar notación funcional básica f(x) y evaluación de expresiones del tipo ax + b.",
+        "A-M1-ARI-01-02: Operar con números enteros y decimales en contextos de suma, resta y multiplicación.",
+        "A-M1-ARI-02-03: Interpretar razones y tasas (por unidad, por hora, por kilo, etc.)."
       ],
       "common_traps": [
-        "Invertir las variables: usar como independiente la magnitud que en el contexto es claramente dependiente (por ejemplo, modelo del tiempo en función de la distancia en un viaje a velocidad constante).",
-        "Confundir la pendiente con el valor inicial: asignar m al costo fijo y n a la tarifa por unidad.",
-        "Omitir el valor fijo cuando el contexto claramente lo tiene (por ejemplo, costo de inscripción + valor por clase, pero escribir solo C(x) = valor_por_clase · x).",
-        "Elegir símbolos de variable que no se conectan con el contexto, generando confusión (por ejemplo, usar x para minutos y también para costo en el mismo ítem).",
-        "Introducir operaciones adicionales innecesarias (por ejemplo, dividir o sumar otra cantidad que no aparece en el contexto).",
-        "Ignorar unidades y signos, generando modelos que no tienen sentido (por ejemplo, pendiente negativa en un contexto de aumento constante).",
-        "Usar lenguaje ambiguo en el enunciado como \"paga 5000 y además 100\" sin explicitar \"por minuto\", lo que dificulta identificar la tasa de cambio."
+        "Intercambiar el rol de las variables: modelar tiempo como función de distancia cuando el contexto indica lo contrario.",
+        "Confundir tasa de cambio con valor inicial, asignando la pendiente al término independiente y viceversa.",
+        "Omitir el término independiente cuando el contexto claramente tiene un valor fijo inicial.",
+        "Suponer que la relación es lineal solo porque aparecen números, sin que el enunciado garantice tasa constante.",
+        "Usar unidades inconsistentes (por ejemplo, mezclar minutos y horas sin convertir) y obtener parámetros m y n incoherentes.",
+        "Interpretar mal frases del tipo 'además', 'como mínimo', 'a partir de', incorporando inequaciones o condiciones que no corresponden a este átomo.",
+        "Elegir una variable dependiente que vuelve confuso o artificial el modelo (por ejemplo, modelar número de productos en función del costo total en contextos donde lo natural es al revés)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Contexto muy cotidiano y directo (tarifa de celular, entradas a un evento, arriendo de bicicleta) con una única tasa de cambio y un único valor fijo explícitamente mencionados.",
-        "Enunciados breves con frases claramente separadas para valor fijo y valor por unidad (por ejemplo, \"cobra un monto fijo de ... y además ... por cada ...\").",
-        "Variables explícitas y sugeridas en el enunciado (por ejemplo, \"sea x el número de minutos hablados\").",
-        "Números pequeños, enteros y positivos (tarifas como 100, 500, 1000; tiempos como 1, 2, 3 horas).",
-        "Pregunta acotada a escoger, entre 3 o 4 alternativas, la ecuación correcta ya escrita en la forma f(x) = mx + n.",
-        "No se requiere interpretar restricciones de dominio ni hacer inferencias adicionales al solo hecho de modelar."
+        "Contextos muy directos con estructura 'costo fijo + costo por unidad', mencionando explícitamente ambos componentes.",
+        "Variables claramente nombradas en el enunciado, o incluso sugeridas entre paréntesis (por ejemplo, 'según el número de minutos x').",
+        "Uso de números enteros pequeños y positivos (por ejemplo, $200, $5000, 3 km, 10 horas).",
+        "No requiere interpretar cambios de unidades ni reexpresar tiempo o distancia.",
+        "La pregunta guía explícitamente a escribir una expresión de la forma f(x) = mx + n identificando primero m y luego n."
       ],
       "medium": [
-        "Contextos algo más elaborados donde la información relevante está distribuida en 2 o 3 oraciones (por ejemplo, valor base + descuento fijo + cobro por unidad, donde una de esas magnitudes se combina antes de construir la ecuación).",
-        "Situaciones que exigen decidir claramente qué magnitud es independiente y cuál es dependiente sin que el enunciado lo diga explícitamente.",
-        "Números enteros que pueden incluir cifras de 2 o 3 dígitos, y decimales simples (por ejemplo, 1,5; 2,5) pero fáciles de manejar.",
-        "Modelos donde la pendiente es negativa en un contexto con sentido (por ejemplo, cantidad de agua en un estanque que se vacía a ritmo constante).",
-        "Necesidad de distinguir entre un modelo puramente proporcional (f(x) = mx) y uno afín (f(x) = mx + n), eligiendo uno u otro según el texto.",
-        "Posible presencia de información distractora que no se usa en el modelo, pero sin cálculos largos."
+        "Enunciados donde el valor fijo no aparece con la palabra 'fijo' o 'base', sino descrito en prosa (por ejemplo, 'paga $3000 y luego...').",
+        "Tasa de cambio expresada de forma menos directa, por ejemplo 'cada 2 horas recorre 150 km', que requiere convertir a una tasa por unidad.",
+        "Uso de números enteros medianos y algunos decimales sencillos (por ejemplo, 2,5; 0,75; $1490).",
+        "Contextos donde la elección de qué variable será independiente requiere un pequeño análisis (por ejemplo, en remuneraciones, decidir si modelar pago en función de número de ventas o de monto vendido).",
+        "Enunciados donde el valor inicial corresponde a una situación distinta de 'cuando x = 0' explícitamente, y el estudiante debe inferir que ese es el caso base.",
+        "Modelación en contextos distintos a los típicos de costo, por ejemplo, temperatura en función de la altura con una tasa constante, o nivel de agua en un estanque que se llena/vacía a tasa constante."
       ],
       "hard": [
-        "Contextos donde la tasa de cambio o el valor inicial no están dados directamente, sino que se deben inferir a partir de una descripción o de una pequeña tabla numérica (por ejemplo, se dan dos parejas de valores y se debe deducir m y n).",
-        "Enunciados que incluyen más de una relación lineal potencial, exigiendo escoger correctamente cuál se debe modelar (por ejemplo, comparar dos planes con distinta estructura, pero el ítem pide el modelo de uno en particular).",
-        "Presencia de cambios de unidades o equivalencias simples (por ejemplo, velocidad dada en km/h pero tiempo expresado en minutos, se sugiere pero no se entrega la conversión lista).",
-        "Uso de decimales con un decimal no tan triviales (por ejemplo, 4,7; 0,8) o fracciones simples, sin que el foco sea el cálculo numérico.",
-        "Necesidad de interpretar correctamente el sentido del tiempo inicial distinto de cero o de situaciones donde el valor fijo es un valor inicial de la magnitud dependiente (por ejemplo, ahorro que parte en un monto distinto de cero y cambia a razón constante).",
-        "Alternativas que incluyen modelos verosímiles pero con errores sutiles (por ejemplo, intercambiar m y n, usar x en lugar de (x - 1), o elegir el signo equivocado), que exigen una lectura muy fina del contexto."
+        "Enunciados con datos redundantes o distractores numéricos que no se usan en la ecuación final.",
+        "Tasa de cambio que surge de comparar dos situaciones descritas verbalmente, obligando a calcular m a partir de la variación: 'después de 3 horas ha recorrido 150 km y después de 5 horas, 250 km'.",
+        "Necesidad de coherencia de unidades (por ejemplo, mezcla de minutos y horas, o gramos y kilos) que obliga a hacer conversiones antes de formular m y n.",
+        "Contextos en que la variable independiente no es tiempo ni cantidad de objetos, sino otra magnitud menos habitual (por ejemplo, longitud del lado, nivel de concentración, número de pisos).",
+        "Formulación de modelos que contemplan cantidades que pueden ser cero o negativas en el contexto (por ejemplo, saldo en una cuenta que parte en deuda) sin explicitarlo demasiado.",
+        "Enunciados que exigen justificar o validar el modelo probándolo con un ejemplo del contexto, sin hacer cálculos extensos, para discriminar entre dos posibles fórmulas lineales candidatas."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no esté claro qué cantidad se quiere modelar: siempre explicitar la magnitud dependiente que será la salida de la función (por ejemplo, \"Sea C(x) el costo total, en pesos, de...\").",
-      "No usar la misma letra para dos magnitudes distintas en el mismo ítem; cada variable debe tener un solo significado.",
-      "Evitar frases como \"paga 5000 y 100 por minuto\" sin la conjunción \"además\" o expresiones equivalentes que marquen claramente suma y tasa de cambio.",
-      "No incluir expresiones coloquiales ambiguas (por ejemplo, \"le cobran 5000 por la pura inscripción\" si no se aclara que es un cargo fijo independiente del uso).",
-      "Precisar siempre la unidad asociada a la variable independiente (minutos, horas, kilómetros, días, etc.) para que se entienda qué representa m.",
-      "Evitar contextos en que el valor inicial pueda interpretarse de dos maneras distintas (por ejemplo, \"inicia con una deuda de 10000\" sin aclarar si el modelo describe deuda o saldo).",
-      "No mezclar más de dos magnitudes relevantes si no se aclara cuál par de magnitudes define la función pedida.",
-      "Evitar preguntas donde la respuesta correcta dependa de supuestos no explícitos (por ejemplo, si se cobra por cada fracción de hora, pero no se aclara si se redondea).",
-      "No usar lenguaje que sugiera proporcionalidad directa si en realidad hay un término fijo, y viceversa; el texto debe ser coherente con el tipo de modelo."
+      "Evitar enunciados donde no quede claro qué magnitud depende de cuál; siempre explicitar qué cambia 'según' o 'en función de' qué.",
+      "No usar expresiones vagas como 'aumenta un poco', 'baja lentamente' sin una tasa numérica concreta; este átomo requiere tasas definidas.",
+      "Evitar contextos donde la relación realista no es estrictamente lineal (tarifas con tramos, descuentos escalonados, promociones tipo 3x2) a menos que se especifique claramente la parte lineal que se quiere modelar.",
+      "No mezclar en un mismo enunciado varias relaciones lineales distintas sin indicar explícitamente cuál se debe modelar.",
+      "No usar frases con negaciones confusas tipo 'no cobra un pago inicial' cuando podría inducir a pensar erróneamente en un n distinto de 0; si se incluye, aclarar que el valor inicial es 0.",
+      "Evitar dar datos numéricos irrelevantes con el mismo tipo de magnitud que los relevantes si no hay una pista clara de qué se usa; en PAES deben poder discriminarse por el texto.",
+      "No plantear preguntas que puedan interpretarse tanto como función de x como de otra variable sin especificar el nombre de la función o de la variable independiente.",
+      "Evitar cambiar arbitrariamente el símbolo de la variable (x, t, n) dentro del mismo ítem; mantener consistencia o explicitar el cambio.",
+      "No usar lenguaje coloquial ambiguo para la tasa ('por cada', 'cada', 'de a') sin acompañarlo de la estructura 'por cada ___, se suma ___' o equivalente.",
+      "Evitar contextos con doble condición tipo 'paga $5000 si llama y $100 por minuto' si no se aclara que los $5000 se pagan igual independientemente de los minutos usados."
     ],
     "error_families": [
       {
-        "name": "Variables_invertidas",
-        "description": "El estudiante intercambia el rol de la variable independiente y dependiente, modelando, por ejemplo, el tiempo en función de la distancia en lugar de la distancia en función del tiempo.",
-        "how_to_address": "En la retroalimentación, enfatizar la pregunta \"¿qué cantidad depende de cuál en esta situación?\" y proponer que el estudiante describa verbalmente la relación usando la estructura \"cuando aumenta X en 1 unidad, Y cambia en ...\" para identificar la dependencia correcta."
+        "name": "intercambio_de_variables",
+        "description": "El estudiante identifica correctamente las magnitudes pero formula la función al revés, por ejemplo, tiempo en función de distancia cuando el contexto pide distancia en función de tiempo.",
+        "how_to_address": "En la redacción, subrayar qué variable es 'en función de' cuál, y pedir explícitamente que se modele una magnitud específica como dependiente. Incluir en alternativas distractores que representen el modelo invertido para diagnosticar este error, pero aclarar en las explicaciones que la variable de salida debe responder a la pregunta final del enunciado."
       },
       {
-        "name": "Confusion_m_vs_n",
-        "description": "El estudiante asigna el valor fijo al coeficiente de x y la tasa de cambio al término independiente, o los intercambia.",
-        "how_to_address": "Recordar que la pendiente m se interpreta como \"lo que cambia\" al aumentar una unidad la variable independiente, y que n es lo que vale la función cuando la variable independiente es cero. Proponer que siempre calculen f(0) para identificar n y comparen con el contexto (costo inicial, posición inicial, etc.)."
+        "name": "confusion_m_con_n",
+        "description": "Se invierte el rol de la pendiente y el término independiente, asignando el valor fijo como multiplicador de la variable o la tasa de cambio como valor inicial.",
+        "how_to_address": "Diseñar ítems donde el valor inicial esté claramente asociado a la situación 'cuando x = 0' y la tasa a 'por cada unidad adicional'. En la retroalimentación, enfatizar que m es 'lo que cambia cuando x aumenta en 1' y n es 'lo que hay al comienzo, antes de empezar a sumar por unidad'."
       },
       {
-        "name": "Omitir_termino_independiente",
-        "description": "En contextos con valor fijo más cobro por unidad, el estudiante escribe un modelo sin término independiente (f(x) = mx) como si fuera proporcionalidad directa.",
-        "how_to_address": "Hacer que el estudiante compare dos ejemplos paralelos: uno con valor fijo y otro sin valor fijo, destacando cómo se refleja en la ecuación y en la tabla (en el caso con valor fijo, al usar 0 unidades el valor no es 0). Reforzar la idea de \"costo aunque no uses nada\" como indicador de n ≠ 0."
+        "name": "omision_del_valor_inicial",
+        "description": "El estudiante construye un modelo proporcional del tipo f(x) = mx, dejando n = 0, en contextos donde existe un costo/base o valor inicial no nulo.",
+        "how_to_address": "Plantear ejemplos donde el valor inicial se mencione con palabras distintas (paga primero, de entrada, cobra solo por contratar) para obligar a detectarlo. En la corrección, mostrar explícitamente qué debería valer la función para x = 0 y comparar con el contexto para evidenciar el error."
       },
       {
-        "name": "Signos_incorrectos",
-        "description": "Uso de pendiente con signo opuesto al que indica el contexto (por ejemplo, disminución modelada como aumento) o de término independiente con signo incorrecto.",
-        "how_to_address": "Invitar al estudiante a pensar si la cantidad descrita aumenta o disminuye con el tiempo o la variable independiente. Proponer que pruebe la ecuación con un par de valores pequeños y verifique si el comportamiento coincide con la historia del problema."
+        "name": "mala_lectura_de_tasa",
+        "description": "Interpretar mal expresiones del tipo 'cada 2 unidades', 'por cada media hora', generando una pendiente incorrecta (por ejemplo, usar 2 en vez de 1/2, o no ajustar la unidad).",
+        "how_to_address": "Incluir ítems donde la tasa no se dé por unidad directa, sino 'por 2' o 'por 5', y guiar en el enunciado o solución a pensar en cuánto cambia por 1 unidad. Reforzar que la pendiente es variación de la salida dividida por variación de la entrada."
       },
       {
-        "name": "Lectura_superficial_del_contexto",
-        "description": "El estudiante se queda con números aislados del enunciado y arma la ecuación combinándolos mecánicamente (por ejemplo, siempre escribe \"el mayor número por x más el menor\"), sin atender al rol de cada dato.",
-        "how_to_address": "Sugerir que, antes de escribir símbolos, reescriba la situación con una frase estructurada del tipo \"El costo total es igual a...\" completando con palabras (valor fijo, más, veces el número de...). Luego traducir esa frase a símbolos. Trabajar con contraejemplos donde usar los números sin contexto lleva a un modelo absurdo."
+        "name": "inconsistencia_de_unidades",
+        "description": "Mezclar unidades incompatibles (minutos con horas, pesos con miles de pesos, metros con kilómetros) y construir una ecuación con m y n numéricamente mal escalados.",
+        "how_to_address": "Diseñar preguntas que obliguen a unificar unidades antes de modelar, indicando claramente las unidades deseadas en la respuesta (por ejemplo, 'tiempo en horas', 'distancia en kilómetros'). En la retroalimentación, subrayar siempre las unidades de m y n (por ejemplo, m en $/minuto, n en $)."
       },
       {
-        "name": "Unidades_incompatibles",
-        "description": "El estudiante ignora cambios de unidades (por ejemplo, mezcla horas y minutos) y construye un modelo formalmente correcto en apariencia pero incoherente con las unidades.",
-        "how_to_address": "Insistir en que siempre se indiquen las unidades al lado de los números clave y de las variables (por ejemplo, v = 60 km/h, t en horas). Proponer ejercicios donde un mismo contexto se modela primero sin conversión y luego corrigiendo las unidades, comparando los resultados numéricos para ver la incoherencia."
+        "name": "uso_incorrecto_de_datos_dados",
+        "description": "Tomar todos los números del enunciado como si debieran aparecer en la ecuación, incluso cuando algunos son distractores o describen otra situación.",
+        "how_to_address": "Incluir ítems con al menos un dato numérico que no se usa en la fórmula correcta. En la explicación posterior, mostrar cómo se seleccionan solo los datos que describen el valor inicial y la tasa constante, ignorando el resto."
       },
       {
-        "name": "Modelo_equivocado_entre_varias_relaciones",
-        "description": "Cuando el contexto ofrece más de una relación posible (por ejemplo, costo en función de tiempo y tiempo en función de distancia), el estudiante modela una relación distinta a la que pide el ítem.",
-        "how_to_address": "Reforzar la lectura atenta de la pregunta final. Trabajar con ejercicios donde se pida explícitamente más de un modelo del mismo contexto (por ejemplo, costo según tiempo y distancia según tiempo) para que el estudiante practique distinguir qué se está modelando en cada caso."
+        "name": "modelo_no_coherente_con_el_contexto",
+        "description": "La función construida podría ser algebraicamente correcta pero no tiene sentido contextual (por ejemplo, costos negativos para valores de x que el contexto permite).",
+        "how_to_address": "Agregar preguntas de chequeo del modelo como '¿tiene sentido el resultado para x = 1?' o pedir comparar dos modelos y elegir el que es coherente con ejemplos concretos. Destacar que un buen modelo debe producir resultados razonables para los valores relevantes de la variable."
+      },
+      {
+        "name": "confusion_funcion_vs_ecuacion",
+        "description": "El estudiante responde con una expresión igualada a un valor específico (por ejemplo, C(x) = 100x + 5000 = 25000) en lugar de proporcionar la fórmula general.",
+        "how_to_address": "Redactar preguntas que pidan explícitamente 'la expresión de la función' o 'la fórmula general', y en retroalimentación enfatizar la diferencia entre el modelo general y un cálculo puntual usando el modelo."
       }
     ],
     "future_targets": [
-      "Comparar y elegir entre distintos modelos lineales que describen tarifas o planes, resolviendo inequaciones o sistemas para determinar conveniencia.",
-      "Interpretar y analizar gráficos de funciones lineales y afines, incluyendo intersecciones con ejes y significado contextual de estos puntos.",
-      "Resolver problemas de ecuaciones lineales en uno o dos pasos a partir de modelos construidos (por ejemplo, encontrar el tiempo a partir de un costo dado).",
-      "Trabajar con sistemas de ecuaciones lineales que modelan la intersección de dos planes o situaciones (por ejemplo, cuándo dos planes cuestan lo mismo).",
-      "Extender la idea de modelación a funciones no lineales (cuadráticas, exponenciales) reconociendo cuándo una situación deja de ser lineal.",
-      "Análisis de variación y cambio promedio en contextos más complejos, usando la linealidad como caso base.",
-      "Comprender y utilizar modelos lineales en contextos de estadística y probabilidad básica (por ejemplo, tendencias lineales simplificadas)."
+      "Interpretación de la pendiente y del término independiente a partir de la gráfica de una recta en el plano cartesiano.",
+      "Resolución de problemas que requieren comparar dos modelos lineales para tomar decisiones (por ejemplo, elegir entre dos planes tarifarios).",
+      "Resolución de sistemas de ecuaciones lineales en contextos de modelación (puntos de equilibrio, intersecciones de costos e ingresos).",
+      "Trabajo con inecuaciones lineales en contexto (por ejemplo, condiciones de 'al menos', 'a lo más' sobre modelos de costos o tiempos).",
+      "Análisis de variación y crecimiento/decadencia constante en contextos más complejos, como análisis de gráficos de funciones en PAES.",
+      "Uso de modelos lineales como aproximación local de funciones no lineales en niveles superiores.",
+      "Integración de modelos lineales en contextos de estadística (ajuste aproximado a datos, tendencia lineal) en cursos posteriores.",
+      "Transición a la comprensión de familias de funciones y del efecto de los parámetros m y n en el gráfico de la recta."
     ],
     "representation_variants": [
-      "verbal",
-      "simbólica",
-      "tabular"
+      "Situaciones verbales puras donde la relación entre magnitudes se describe íntegramente en palabras.",
+      "Tablas de valores parciales (por ejemplo, costo para 1, 2 y 5 unidades) que permiten inferir la tasa de cambio y el valor inicial.",
+      "Descripciones mixtas que combinan texto con pequeñas tablas o resúmenes numéricos (por ejemplo, 'plan A' y 'plan B' con distintas estructuras de costos).",
+      "Uso explícito de notación funcional C(x), d(t), T(n), donde el nombre de la función ayuda a reforzar el significado contextual.",
+      "Enunciados que dan una fórmula incompleta del tipo f(x) = 100x + n o f(x) = mx + 5000 y requieren determinar el parámetro faltante a partir del contexto verbal.",
+      "Contextos de conversiones lineales entre unidades (por ejemplo, temperatura, moneda, longitud) donde la función representa la conversión.",
+      "Representación con frases que indican el valor para x = 0 y x = 1, permitiendo explicitar m y n sin decirlo directamente."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals_1dp",
-      "decimals_2dp",
-      "mixed"
+      "medium_integers",
+      "decimals_one_digit",
+      "decimals_two_digits",
+      "money_context",
+      "time_context_minutes_hours",
+      "distance_speed_context",
+      "measurement_units_conversion",
+      "simple_ratios"
     ],
     "required_image_types": []
   }

@@ -3,128 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Completar valores faltantes en tablas donde se indica (explícita o implícitamente) que la relación entre dos variables es de proporcionalidad directa",
-        "Calcular y usar la constante de proporcionalidad k en tablas, a partir de pares (x, y) dados",
-        "Verificar si una tabla representa proporcionalidad directa comprobando si el cociente y/x se mantiene constante en todos los pares válidos",
-        "Construir una tabla de valores que modele una relación de proporcionalidad directa dada verbalmente o simbólicamente (por ejemplo, y = 3x)",
-        "Identificar valores inconsistentes dentro de una tabla que supuestamente representa proporcionalidad directa",
-        "Trabajar exclusivamente con tablas numéricas (filas y columnas) sin necesidad de gráficos cartesianos"
+        "Completar valores faltantes en tablas numéricas cuando se indica explícitamente o se puede deducir que la relación entre dos variables es de proporcionalidad directa.",
+        "Verificar, a partir de una tabla de pares (x, y), si la relación es de proporcionalidad directa comprobando la constancia del cociente y/x.",
+        "Construir tablas de valores (con 3 a 6 filas) que representen una relación de proporcionalidad directa dada de forma verbal, simbólica (y = kx) o mediante un par de valores base.",
+        "Interpretar el significado de la constante de proporcionalidad en el contexto descrito (por ejemplo, precio por unidad, rendimiento por hora, cantidad por persona).",
+        "Trabajar con tablas numéricas puras o asociadas a contextos sencillos (recetas, tarifas, distancia-tiempo a velocidad constante, etc.), sin representaciones gráficas."
       ],
       "out_of_scope": [
-        "Interpretar o dibujar gráficos de funciones en el plano cartesiano (eso corresponde a representación gráfica, no tabular)",
-        "Trabajar con proporcionalidad inversa u otros tipos de relaciones no lineales",
-        "Resolver problemas extensos de aplicación verbal con varios pasos de modelación (más allá de construir o revisar la tabla)",
-        "Uso de porcentajes, escalas o razones en contextos complejos donde la tabla es solo un paso intermedio y no el foco principal",
-        "Cálculo de pendientes o intersecciones en lenguaje de funciones más avanzado",
-        "Trabajo con más de dos variables en la misma tabla (por ejemplo, tablas tridimensionales o con múltiples parámetros simultáneos)",
-        "Análisis de datos reales donde la relación solo es aproximadamente proporcional (no estrictamente constante)"
+        "Uso de gráficos cartesianos o interpretación de rectas en el plano (eso pertenece a átomos de representación gráfica de funciones).",
+        "Problemas de proporcionalidad inversa u otras relaciones no lineales (cuadrática, exponencial, etc.).",
+        "Cálculo de porcentajes complejos, interés, crecimiento compuesto o descuentos encadenados, incluso si se presentan en tablas.",
+        "Análisis de tablas estadísticas (frecuencias, distribuciones de datos muestrales) y medidas de tendencia central.",
+        "Ecuaciones lineales generales del tipo y = mx + b con término independiente distinto de cero (no pasan por el origen).",
+        "Situaciones donde la decisión sobre si es proporcional depende de redondeos o aproximaciones ambiguas en los datos."
       ],
       "prerequisites": [
-        "A-M1-ARIT-01-01: Manejo fluido de multiplicación y división con enteros positivos",
-        "A-M1-ARIT-01-02: Comprensión básica de razón y cociente (interpretar y/x como ‘cuántas veces cabe x en y’)",
-        "A-M1-ARIT-02-01: Uso de la propiedad conmutativa y asociativa de la multiplicación para cálculos simples",
-        "A-M1-NUM-02-01: Interpretación de tablas numéricas simples (leer filas y columnas correctamente)",
-        "A-M1-ALG-01-01: Reconocer una relación de proporcionalidad directa en forma simbólica simple (y = kx) aunque no se trabaje aún con lenguaje formal de funciones"
+        "A-M1-NUM-01-01: Manejo fluido de multiplicación y división con números naturales.",
+        "A-M1-NUM-01-02: Comprensión de la idea de razón y tasa (por ejemplo, 'por cada', 'por unidad').",
+        "A-M1-NUM-02-01: Uso básico de fracciones y decimales en contextos numéricos simples.",
+        "A-M1-ALG-01-01: Identificar y usar una constante de proporcionalidad a partir de un par de datos (regla de tres directa informal)."
       ],
       "common_traps": [
-        "Suponer que cualquier tabla que aumenta en ambas columnas es proporcional, sin verificar la constancia del cociente y/x",
-        "Comparar las diferencias entre valores (sumas) en lugar de comparar los cocientes (producto por un factor constante)",
-        "Olvidar que en proporcionalidad directa si x = 0, entonces y también debe ser 0, y no revisar ese par cuando aparece en la tabla",
-        "Calcular la constante de proporcionalidad k con un par (x, y) y luego no comprobarla con el resto de la tabla",
-        "Confundir el factor por el que se multiplica x para obtener y, con el factor de paso entre filas de la tabla (por ejemplo, confundir ‘se duplica x’ con ‘se aumenta en 2’)",
-        "Tratar de ‘adivinar’ el valor faltante usando solo patrones de suma entre filas, en vez de usar la idea de proporción directa o k constante",
-        "No considerar que en tablas con más de un valor faltante, puede ser necesario determinar k primero con los datos completos disponibles"
+        "Asumir que toda tabla que muestra 'más-más' (cuando x aumenta, y aumenta) es automáticamente de proporcionalidad directa, sin revisar el cociente y/x.",
+        "Invertir la razón y usar x/y en lugar de y/x, lo que lleva a constantes contradictorias e interpretaciones erróneas.",
+        "Usar suma o resta en vez de multiplicar por la constante (por ejemplo, creer que si al aumentar 2 en x, y aumenta 5, entonces siempre se suma 5).",
+        "Tomar solo dos filas cualesquiera con errores de lectura o cálculo y concluir que la tabla no es proporcional, sin revisar todas las filas.",
+        "Elegir constantes de proporcionalidad fraccionarias complicadas que induzcan a errores de cálculo más que evaluar la comprensión de la proporcionalidad.",
+        "Plantear tablas incompletas donde distintos completamientos serían posibles si no se indica explícitamente que la relación es de proporcionalidad directa."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Tablas con solo un valor faltante y al menos un par completo (x, y) claramente proporcional",
-        "Uso exclusivamente de enteros positivos pequeños (entre 1 y 20) y factores de proporcionalidad sencillos (2, 3, 4, 1/2, 5)",
-        "Estructuras de tabla con pocas filas (2 o 3) y columnas claramente etiquetadas (por ejemplo, ‘número de paquetes’ y ‘número de galletas’)",
-        "Ítems donde se indica explícitamente que la relación es de proporcionalidad directa, evitando que el estudiante deba validar la proporcionalidad",
-        "Construcción de tabla a partir de una relación dada en forma verbal muy directa (por ejemplo, ‘por cada cuaderno se pagan 2 mil pesos’) con valores de x entregados explícitamente",
-        "Verificación de proporcionalidad cuando todos los cocientes son exactos y fácilmente calculables sin fracciones ni decimales"
+        "Tablas con números naturales pequeños (por ejemplo, entre 1 y 20) y constante de proporcionalidad entera positiva (como 2, 3, 5, 10).",
+        "Un solo valor faltante en la tabla, cuando se entrega claramente un par (x, y) que permite identificar la constante k de forma directa.",
+        "Construcción de una tabla con pocas filas (3 o 4) a partir de una regla verbal muy explícita del tipo 'por cada x unidades, hay y unidades'.",
+        "Verificación de proporcionalidad donde todos los cocientes y/x resultan enteros sencillos y exactos, sin fracciones ni decimales.",
+        "Situaciones de contexto muy directo (precio por unidad fija, número de entradas vendidas a un precio fijo, etc.) sin distracciones adicionales."
       ],
       "medium": [
-        "Tablas con dos o más valores faltantes, que requieren identificar primero la constante de proporcionalidad y luego completar todos los huecos",
-        "Uso de enteros medianos (hasta 100 o 200) donde el estudiante debe manejar multiplicaciones y divisiones algo más complejas",
-        "Presencia de al menos un par de datos ‘ruidoso’ que rompe la proporcionalidad, y la tarea es detectarlo entre opciones dadas",
-        "Verificación de proporcionalidad sin que se declare explícitamente que la relación es directa: el estudiante debe concluir si la tabla es o no proporcional",
-        "Construcción de tabla a partir de una expresión simbólica simple (y = 3x, y = 0,5x) con valores de x no consecutivos (por ejemplo, 2, 5, 10)",
-        "Introducción de algún múltiplo intermedio (por ejemplo, pasar de 3 a 12, de 5 a 20) que implique pensar en factores escalares (×4, ×3, etc.) más que solo duplicar"
+        "Tablas con varios valores faltantes (2 o 3 casillas), obligando a encontrar y aplicar consistentemente la misma constante de proporcionalidad.",
+        "Constante de proporcionalidad fraccionaria o decimal sencilla (por ejemplo, 0,5; 1,5; 2,5; 3/2; 4/3) que exige multiplicar o dividir por fracciones/decimales.",
+        "Verificación de proporcionalidad donde algunos cocientes deben simplificarse (por ejemplo, 6/4 y 9/6) para apreciar que representan la misma fracción.",
+        "Construcción de una tabla a partir de un contexto verbal algo más elaborado (receta, planificación de tiempo, consumo de combustible) donde la tasa debe inferirse a partir de dos valores dados.",
+        "Ítems donde el distractor correcto se logra si el estudiante confunde suma con multiplicación (por ejemplo, usar diferencia en lugar de cociente), de modo de discriminar comprensión conceptual."
       ],
       "hard": [
-        "Tablas con varios valores faltantes distribuidos en diferentes filas, que exigen combinar razonamiento con la constante de proporcionalidad y factores escalares entre filas",
-        "Uso de fracciones y/o decimales positivos sencillos (por ejemplo, 1/2, 3/4, 1,5; 2,5) ya sea como valores de x, de y o como constante de proporcionalidad implícita",
-        "Situaciones en las que ningún par (x, y) viene dado explícitamente; el estudiante debe deducir k a partir de relaciones entre filas (por ejemplo, de x y 2x, de y y 3y)",
-        "Verificación de proporcionalidad cuando algunos cocientes exigen calcular con fracciones o números con un decimal, evitando resultados evidentes a simple vista",
-        "Ítems donde la tabla se construye o revisa a partir de un contexto verbal menos directo (por ejemplo, ‘por cada 3 entradas de adulto se pagan 18 mil pesos’ y luego valores de 1, 5, 10 entradas) implicando reescalar factores",
-        "Detección de un valor incorrecto entre muchos correctos, cuando la mayoría de los cocientes son cercanos y puede haber distractores que se obtienen de aplicar sumas en vez de multiplicaciones",
-        "Combinar en un mismo ítem: decidir si hay proporcionalidad y, según eso, identificar el valor correcto (o la tabla correcta) entre varias alternativas"
+        "Tablas donde la constante de proporcionalidad es una fracción no trivial (por ejemplo, 5/8, 7/4) o un decimal periódico simple, exigiendo manejar cálculos con algo más de carga cognitiva.",
+        "Verificación de proporcionalidad en tablas con más filas, donde uno o dos datos rompen la proporcionalidad (datos 'ruidosos'), requiriendo revisar sistemáticamente todos los cocientes y/x.",
+        "Ítems en los que se comparan dos tablas o dos contextos para decidir cuál representa una proporcionalidad directa o cuál tiene mayor/menor constante de proporcionalidad.",
+        "Problemas en que se debe completar estratégicamente una tabla usando tanto multiplicación directa por k como el uso de factores escalares entre filas (por ejemplo, de x a 3x) y no solo de una fila base.",
+        "Situaciones en las que, a partir de una condición implícita en el contexto (por ejemplo, 'misma velocidad', 'misma tarifa por hora'), el estudiante debe reconocer la proporcionalidad antes de construir o completar la tabla.",
+        "Uso combinado de fracciones y decimales en la misma tabla, conservando la misma constante de proporcionalidad, lo que fuerza a comparar y/x en distintos formatos numéricos."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar contextos donde la relación realista no sea estrictamente proporcional (por ejemplo, tarifas con cobro fijo más una parte variable), a menos que se explicite claramente que se está idealizando una proporcionalidad directa",
-      "No usar expresiones vagas como ‘parece que aumenta al mismo ritmo’ o ‘crece de forma similar’, sino hablar directamente de ‘misma razón’ o ‘mismo factor de multiplicación’",
-      "No mezclar en la misma tabla más de dos variables relevantes; mantener solo una columna de entrada (x) y una de salida (y) o, si se usan nombres de contexto, asegurar que sea claramente una pareja única de columnas",
-      "Evitar tablas mal alineadas o con encabezados confusos que no permitan distinguir con claridad qué columna corresponde a qué magnitud",
-      "No usar notación funcional avanzada (como f(x) en los encabezados) si no se explicita su significado, para no mezclar este átomo con el de funciones formales",
-      "Evitar parejas (x, y) con x = 0 en tablas donde y ≠ 0, salvo que el objetivo explícito sea que el estudiante detecte que NO hay proporcionalidad directa",
-      "No incluir datos con errores de tipeo que generen cocientes muy extraños sin que esto sea parte intencionada del razonamiento",
-      "Evitar escalas temporales o de unidades donde las conversiones reales no sean exactas (por ejemplo, aproximaciones de tasas, datos experimentales) si no se explicita que se trabaja con valores exactos",
-      "No usar términos cotidianos que se presten a doble interpretación (por ejemplo, ‘paquete’ o ‘porción’ cuando pueden tener tamaños variables) sin fijar con claridad la cantidad asociada"
+      "No proponer tablas donde los datos sean aproximados o redondeados de forma que el cociente y/x no parezca exactamente constante (por ejemplo, 3,3; 6,7; 10,1) a menos que el objetivo explícito sea mostrar que NO hay proporcionalidad.",
+      "Evitar contextos donde la tarifa o tasa cambie por tramos (descuentos progresivos, tarifas por bloques), ya que pueden confundirse con una sola constante de proporcionalidad.",
+      "No mezclar en la misma tabla datos de distintas unidades sin explicitar claramente las conversiones, para no generar dudas sobre qué par (x, y) comparar.",
+      "Evitar tablas en que no se indique si x o y es la variable dependiente, si ello pudiera cambiar la interpretación de la constante de proporcionalidad en el contexto dado.",
+      "No usar razones extremadamente complejas (por ejemplo, grandes números primos o fracciones con denominadores muy grandes) que hagan difícil percibir la constancia del cociente.",
+      "No diseñar ítems donde más de una opción pueda completar coherentemente la tabla si no se declara explícitamente que la relación debe ser de proporcionalidad directa.",
+      "Evitar tablas con combinación de números irracionales o constantes especiales (π, √2) que no son necesarias para evaluar proporcionalidad directa a nivel M1."
     ],
     "error_families": [
       {
-        "name": "Confundir suma con multiplicación",
-        "description": "El estudiante identifica que los valores aumentan, pero en vez de entender que en proporcionalidad directa se multiplica por un factor constante, busca un patrón de suma constante (por ejemplo, ‘se suma 3’ en cada fila) y decide a partir de eso si la tabla es proporcional o completa los valores faltantes con sumas.",
-        "how_to_address": "Insistir en la idea de ‘veces más’ y no de ‘más que antes’, haciendo que el estudiante compare cocientes y/x en distintas filas. Proponer ejemplos donde la suma constante no implique proporcionalidad (por ejemplo, 2→5, 4→7, 6→9) y contrastarlos con tablas donde el cociente sí es constante. Practicar descomponer cambios grandes como resultado de multiplicar por un factor, no de sumar repetidamente."
+        "name": "Usar suma en vez de multiplicación",
+        "description": "El estudiante identifica cómo crece y cuando aumenta x en una cantidad fija y extrapola sumando esa diferencia en lugar de usar un factor multiplicativo constante. Por ejemplo, si al aumentar x en 2, y aumenta en 5, asume que siempre 'se suma 5' en y, confundiéndolo con una relación lineal no proporcional.",
+        "how_to_address": "Incluir ítems donde el patrón aditivo produce resultados incorrectos frente al patrón multiplicativo, y destacar que en proporcionalidad directa la razón y/x debe ser constante, no la diferencia y2−y1 para incrementos arbitrarios en x."
       },
       {
-        "name": "Calcular mal la constante de proporcionalidad",
-        "description": "El estudiante comete errores al obtener k, ya sea invirtiendo el cociente (calculando x/y en vez de y/x), eligiendo pares incorrectos, o realizando mal la división, lo que luego contamina todo el completado de la tabla.",
-        "how_to_address": "Trabajar explícitamente el significado de k como ‘lo que multiplica a x para llegar a y’. Hacer que el estudiante compruebe su valor de k en más de un par de la tabla. Usar notación clara, por ejemplo ‘k = y ÷ x’, y promover autocorrección comprobando si el valor calculado tiene sentido en el contexto (por ejemplo, si k = 0,25 significa ‘un cuarto de…’)."
+        "name": "Invertir la razón",
+        "description": "El estudiante calcula x/y en lugar de y/x y, al compararlos, concluye erróneamente que la tabla no es proporcional o determina una constante equivocada.",
+        "how_to_address": "Diseñar tareas donde se pida interpretar verbalmente el cociente (por ejemplo, 'pesos por kilogramo', 'kilómetros por hora') aclarando cuál es el numerador y cuál el denominador, y contrastar explícitamente ambos cocientes mostrando que representan magnitudes distintas."
       },
       {
-        "name": "Uso incorrecto de factores escalares entre filas",
-        "description": "En vez de ir directamente a la constante k, el estudiante mira solo la relación entre filas (por ejemplo, de 2 a 6 multiplicó por 3) y asume que debe hacer lo mismo con la otra columna, incluso cuando no es consistente con una k global.",
-        "how_to_address": "Mostrar que la relación de proporcionalidad debe sostenerse entre cualquier par que se compare, no solo entre filas consecutivas. Enseñar a usar factores escalares correctamente: si x se multiplica por 3 entre dos filas, entonces y también debe multiplicarse por 3, pero esto solo es válido si la relación ya es proporcional. Fomentar que se calcule k con al menos un par antes de usar factores escalares entre filas."
+        "name": "Regla de tres mal planteada",
+        "description": "El estudiante aplica procedimientos memorizados de 'regla de tres' sin considerar la estructura de la tabla, ubicando mal los datos (cruces incorrectos) o confundiendo qué magnitudes son directamente proporcionales.",
+        "how_to_address": "Trabajar ítems donde se destaque la lectura por filas (par x–y) y el uso de un único factor de escala entre filas, reforzando la idea de factor multiplicativo común en lugar de esquemas mecánicos de regla de tres."
       },
       {
-        "name": "No verificar consistencia en toda la tabla",
-        "description": "El estudiante comprueba la relación solo con un par (x, y) o dos, y concluye que la tabla completa es proporcional sin revisar las demás filas, pasando por alto valores incorrectos o datos ‘ruidosos’.",
-        "how_to_address": "Insistir en que la proporcionalidad directa implica que todos los pares (x, y) deben cumplir la misma razón. Proponer ejercicios donde solo un dato está mal para que el estudiante deba encontrarlo usando la verificación de todos los cocientes. Introducir la idea de ‘prueba rápida’ con pares extremos (primera y última fila) para detectar errores evidentes."
+        "name": "Asumir proporcionalidad sin verificarla",
+        "description": "El estudiante da por hecho que toda tabla en un problema de contexto común (precios, tiempos, cantidades) es de proporcionalidad directa, sin comprobar si los cocientes son constantes.",
+        "how_to_address": "Incluir ítems en que algunas tablas se parezcan a una proporción pero no lo sean (por ejemplo, pequeños cambios en un dato) y exigir explícitamente que se fundamente la decisión en la constancia del cociente y/x."
       },
       {
-        "name": "Dificultad con fracciones y decimales en la razón",
-        "description": "Cuando los cocientes y/x no son enteros, el estudiante evita o confunde las divisiones, y recurre a comparaciones aproximadas o a cálculos erróneos. Esto lleva a concluir que una tabla no es proporcional o a completar valores incorrectos.",
-        "how_to_address": "Partir con ejemplos donde la constante de proporcionalidad es una fracción simple (1/2, 3/4) o un decimal con un solo decimal (0,5; 1,5). Relacionar fracciones y decimales con significados cotidianos (‘la mitad’, ‘uno y medio’). Practicar convertir tablas de tipo ‘duplica’ y luego progresar a ‘la mitad’ y ‘tres cuartos’, siempre enfatizando la constancia del factor multiplicativo."
+        "name": "Manejo deficiente de fracciones y decimales",
+        "description": "El estudiante reconoce la necesidad de comprobar la constancia de y/x, pero se equivoca al simplificar fracciones o al operar con decimales, llegando a conclusiones erróneas sobre la proporcionalidad.",
+        "how_to_address": "Usar fracciones y decimales simples en los ítems y, en las retroalimentaciones, modelar la simplificación paso a paso, mostrando distintas formas equivalentes de la misma constante de proporcionalidad (por ejemplo, 1,5 = 3/2 = 6/4)."
       },
       {
-        "name": "Interpretación errónea del cero",
-        "description": "El estudiante no toma en cuenta el par (0, 0) o no reconoce que, en proporcionalidad directa, si x = 0, entonces y debe ser 0. Puede aceptar tablas donde y ≠ 0 cuando x = 0 como si fueran proporcionales.",
-        "how_to_address": "Incorporar explícitamente casos con x = 0 en las tablas y discutir su significado en contextos reales (por ejemplo, ‘0 entradas cuestan 0 pesos’). Contrastar con contextos no proporcionales (tarifa fija más variable) solo para clarificar por qué ahí no se cumple (0, 0). Reforzar la idea de que la recta de una proporcionalidad directa pasa por el origen, conectando en forma intuitiva aunque aún no se use el gráfico."
+        "name": "Fijar un solo par como referencia incorrecta",
+        "description": "El estudiante compara el cociente solo entre dos filas, pero ignora que otra fila rompe la proporcionalidad, concluyendo que toda la tabla es proporcional cuando no lo es, o al revés.",
+        "how_to_address": "Proponer tablas con un dato 'fuera de patrón' y preguntas que obliguen a revisar todas las filas, enfatizando que la proporcionalidad debe cumplirse para todos los pares de la tabla."
+      },
+      {
+        "name": "Confundir contexto con estructura matemática",
+        "description": "El estudiante se deja llevar por el contexto (por ejemplo, 'si aumenta la cantidad de personas, obviamente aumenta la comida') y decide que es proporcional, aun cuando la tabla muestra que el cociente no es constante.",
+        "how_to_address": "Incluir ítems de contexto familiar donde la tabla NO es proporcional y pedir justificación numérica basada en el cociente, para separar la intuición del análisis matemático formal."
       }
     ],
     "future_targets": [
-      "Interpretación y construcción de funciones lineales en forma simbólica (y = kx) y gráfica",
-      "Modelación de situaciones de proporcionalidad directa en problemas de mayor complejidad con varios pasos",
-      "Manejo de escalas, mapas y conversiones de unidades basadas en factores constantes",
-      "Trabajo con porcentajes como casos particulares de proporcionalidad (por ejemplo, ‘x% de una cantidad’)",
-      "Análisis de gráficos lineales donde la pendiente corresponde a la constante de proporcionalidad",
-      "Comprensión de razones de cambio constantes en contextos físicos y económicos simples (velocidad constante, costo por unidad)"
+      "A-M1-ALG-02-04: Representación gráfica de relaciones de proporcionalidad directa en el plano cartesiano (rectas que pasan por el origen).",
+      "A-M1-ALG-02-05: Interpretación de la pendiente de una recta como constante de proporcionalidad en funciones lineales que pasan por el origen.",
+      "A-M1-ALG-03-01: Modelación de situaciones reales mediante funciones lineales simples y análisis comparativo de distintas tasas.",
+      "A-M1-EST-01-02: Uso de tablas de datos para construir e interpretar gráficos estadísticos básicos (barras, líneas) con especial atención a relaciones lineales.",
+      "A-M1-ALG-04-01: Resolución de problemas mediante ecuaciones lineales del tipo y = kx a partir de datos organizados en tablas.",
+      "A-M1-NUM-03-02: Manejo más avanzado de razones, tasas y escalas (por ejemplo, escalas de mapas, conversiones de unidades) apoyado en tablas proporcionales.",
+      "A-M1-ALG-02-06: Comparación de distintas funciones lineales (diferentes pendientes) a partir de tablas y gráficos."
     ],
     "representation_variants": [
-      "tabular",
-      "verbal",
-      "simbólica"
+      "Tablas de dos columnas simples etiquetadas x e y, donde se debe completar una o más casillas faltantes.",
+      "Tablas con encabezados contextualizados (por ejemplo, 'número de entradas' vs 'costo total'), manteniendo la estructura de pares (x, y).",
+      "Tablas parcialmente completadas donde se entrega solo una fila base completamente llena y otras filas solo con x o solo con y.",
+      "Tablas que presentan primero la variable dependiente en la columna izquierda (y) y luego la independiente (x), para verificar que el estudiante sabe identificar el cociente correcto en cualquier orden.",
+      "Tablas construidas a partir de un enunciado verbal, donde se entregan algunos valores sueltos y se pide organizarlos y completarlos en forma tabular.",
+      "Tablas con estructuras regulares en x (por ejemplo, múltiplos de 2, 5, 10) para facilitar el uso de factores escalares entre filas.",
+      "Tablas comparativas lado a lado (dos tablas de la misma situación con distintas constantes de proporcionalidad) donde se pide identificar cuál representa una tasa mayor o cuál es proporcional.",
+      "Tablas mixtas con fracciones y decimales en las entradas de y, manteniendo una misma constante de proporcionalidad, para trabajar equivalencias numéricas."
     ],
     "numbers_profiles": [
       "small_integers",
       "medium_integers",
-      "unit_fractions",
+      "integer_multiples_of_10",
       "simple_fractions",
-      "simple_decimals"
+      "simple_decimals",
+      "unit_rates",
+      "scaled_factors"
     ],
     "required_image_types": []
   }

@@ -3,137 +3,140 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Dividir una fracción por otra fracción usando el algoritmo de invertir y multiplicar.",
-        "Dividir un número entero por una fracción, expresando el entero como fracción con denominador 1.",
-        "Dividir una fracción por un número entero, expresando el entero como fracción con denominador 1.",
-        "Aplicar correctamente la regla de los signos en divisiones de fracciones con números positivos y negativos.",
-        "Simplificar la fracción resultante cuando sea posible, incluyendo simplificación previa (antes de multiplicar) o posterior (después de multiplicar).",
-        "Reconocer al menos una forma equivalente correcta del procedimiento aunque no se use explícitamente la expresión 'invertir y multiplicar', siempre que sea coherente con multiplicar por el inverso multiplicativo del divisor."
+        "División entre dos fracciones propias o impropias usando el algoritmo 'invertir y multiplicar'.",
+        "División entre un número entero y una fracción, expresando el entero como fracción con denominador 1.",
+        "División entre una fracción y un número entero, expresando el entero como fracción con denominador 1.",
+        "Aplicación correcta de la regla de los signos en divisiones de fracciones con números enteros positivos y negativos.",
+        "Simplificación de la fracción resultante cuando es posible (por factores comunes simples)."
       ],
       "out_of_scope": [
-        "División de fracciones algebraicas con variables.",
-        "División de potencias, raíces o expresiones con exponentes que involucren fracciones.",
-        "Problemas que requieren interpretar o construir modelos gráficos de fracciones (rectas numéricas, diagramas de pastel, etc.).",
-        "Resolución de problemas verbales extensos que prioricen la modelación por sobre el dominio del procedimiento de división de fracciones.",
-        "Operaciones combinadas largas que mezclen varias sumas, restas, multiplicaciones y divisiones de fracciones donde la dificultad principal no sea la división misma.",
-        "División de decimales que no se expresen ni trabajen como fracciones comunes.",
-        "Introducción formal al concepto de inverso multiplicativo o estructura de grupo; aquí se usa solo de manera operativa."
+        "División con números decimales que no se expresan como fracciones en el enunciado.",
+        "Problemas verbales extensos de proporcionalidad o razón que requieran modelar la situación; aquí el foco es el procedimiento de dividir fracciones ya dado.",
+        "Operaciones combinadas con varias sumas, restas o potencias además de la división de fracciones (por ejemplo, expresiones largas con varios pasos).",
+        "Uso de fracciones algebraicas con variables en numerador o denominador.",
+        "Cálculo de expresiones con raíces, potencias o logaritmos mezclados con fracciones más allá de escribirlas como fracciones simples.",
+        "Justificaciones teóricas del por qué funciona el algoritmo de invertir y multiplicar (demostraciones)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-05: Comprender la noción de fracción (parte de un entero, relación entre dos enteros, numerador y denominador).",
-        "A-M1-NUM-01-08: Comparar y ordenar fracciones simples, identificando fracciones equivalentes.",
-        "A-M1-NUM-01-12: Multiplicación de fracciones (incluye simplificación de productos de fracciones).",
-        "A-M1-NUM-01-14: Representar números enteros como fracciones con denominador 1.",
-        "A-M1-NUM-01-16: Regla de los signos para productos y cocientes de números enteros.",
-        "A-M1-NUM-01-18: Simplificación de fracciones (reducción a la mínima expresión)."
+        "A-M1-NUM-01-05: Comprender la noción de fracción, numerador, denominador y fracciones equivalentes.",
+        "A-M1-NUM-01-10: Sumar y restar fracciones con igual y distinto denominador (manejo básico de fracciones).",
+        "A-M1-NUM-01-15: Multiplicar fracciones y simplificar el resultado.",
+        "A-M1-NUM-01-18: Aplicar la regla de los signos en productos y cocientes de números enteros.",
+        "A-M1-NUM-01-19: Concepto de inverso multiplicativo de un número distinto de cero."
       ],
       "common_traps": [
-        "Realizar la división como si fuera multiplicación directa de fracciones (multiplicar numeradores y denominadores sin invertir el divisor).",
-        "Invertir la fracción equivocada: invertir el dividendo en lugar del divisor.",
-        "Invertir ambas fracciones en la operación sin darse cuenta del error.",
-        "Olvidar transformar el número entero en fracción con denominador 1 antes de aplicar el procedimiento.",
-        "Perder o cambiar signos al momento de aplicar la regla de los signos, especialmente cuando hay un solo número negativo.",
-        "No simplificar la fracción obtenida o simplificar de manera incorrecta (por ejemplo, simplificar cruzado cuando no hay factores comunes).",
-        "Confundir el símbolo ':' con otros usos (razones, escala) y no interpretarlo como división de fracciones.",
-        "Creer que 'multiplicación cruzada' es un paso obligatorio y confundirlo con el algoritmo de dividir fracciones."
+        "Invertir también la primera fracción en lugar de solo el divisor.",
+        "Olvidar transformar el entero en fracción con denominador 1 antes de invertir o multiplicar.",
+        "Conservar la división y multiplicar numerador por numerador y denominador por denominador, como si fuera multiplicación de fracciones sin invertir.",
+        "Aplicar mal la regla de los signos: tratar la división con signos como si fuera suma/resta en lugar de producto/cociente.",
+        "Olvidar simplificar la fracción final, o simplificar de forma incorrecta (dividir solo numerador o solo denominador).",
+        "Intentar simplificar cruzado sin respetar la equivalencia (por ejemplo, simplificar numerador con numerador o denominador con denominador).",
+        "Invertir una fracción cuyo numerador o denominador es 0 (casos no válidos para el cociente) sin advertir la imposibilidad de la división.",
+        "Confundir 'invertir y multiplicar' con 'multiplicar cruzado' usado en otros contextos."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Divisiones entre dos fracciones positivas con numeradores y denominadores pequeños (entre 1 y 9) sin necesidad de simplificar o con simplificación muy evidente.",
-        "Items donde solo una de las fracciones es propia y la otra es un entero expresado explícitamente como fracción con denominador 1.",
-        "Problemas donde todos los valores son positivos, de manera que la regla de los signos no sea un factor de dificultad.",
-        "Enunciados directos y simbólicos del tipo 'Calcula ...' sin contexto verbal ni pasos intermedios.",
-        "Casos en que la fracción ya está simplificada y el resultado final también queda inmediato, sin requerir identificar factores comunes no triviales."
+        "División de dos fracciones positivas con numeradores y denominadores pequeños (1 a 9) que no requieren simplificaciones complejas.",
+        "División de una fracción por un entero positivo simple, con resultado de fracción propia sencilla.",
+        "División de un entero positivo por una fracción con denominador pequeño que genera un resultado entero o una fracción de fácil simplificación.",
+        "Uso de un solo paso claro de 'invertir y multiplicar', con pocos factores y sin necesidad de simplificación cruzada.",
+        "Ausencia de números negativos y de mezcla de fracciones propias/impropias que puedan confundir."
       ],
       "medium": [
-        "Divisiones donde el divisor es una fracción propia o impropia con numeradores o denominadores de 2 dígitos bajos (por ejemplo, hasta 20), requiriendo mayor atención al invertir.",
-        "Items que incluyen números enteros que el estudiante debe reconocer y transformar en fracciones con denominador 1 (no dados ya como fracción).",
-        "Presencia de un signo negativo (ya sea en el dividendo o en el divisor) que obliga a aplicar la regla de los signos para determinar el signo del resultado.",
-        "Necesidad de simplificar la fracción resultante usando factores que no son obvios a primera vista, o que se prestan para simplificación cruzada antes de multiplicar.",
-        "Problemas verbales breves que describen la situación de dividir por una fracción, pero donde el foco principal sigue siendo el procedimiento 'invertir y multiplicar'."
+        "División entre fracciones donde al menos una es impropia, con numeradores y denominadores de 2 dígitos pequeños (hasta 20).",
+        "División con presencia de números negativos en una de las fracciones o en el entero, requiriendo aplicar la regla de los signos una vez.",
+        "Casos en que luego de invertir y multiplicar se pueden hacer simplificaciones cruzadas simples (por factores 2, 3, 5).",
+        "Ítems en los que se mezclan entero y fracción negativa, exigiendo escribir el entero como fracción y manejar correctamente el signo.",
+        "Situaciones donde el resultado no es obvio (no entero), y se debe llegar a una fracción irreducible mediante uno o dos pasos de simplificación."
       ],
       "hard": [
-        "Divisiones que involucran fracciones impropias y/o mixtas que el estudiante debe convertir correctamente antes o durante el procedimiento.",
-        "Presencia de dos signos negativos o varios signos distribuidos en numeradores y denominadores, requiriendo un manejo cuidadoso de la regla de los signos.",
-        "Items que favorecen el uso de simplificación cruzada no trivial (por ejemplo, factores comunes entre numerador del dividendo y denominador del divisor después de invertir), donde no hacerlo produce números grandes pero aún manejables.",
-        "Cálculos que generan productos intermedios con numeradores y denominadores de 2 o 3 dígitos, donde se evalúa precisión operativa y control de la simplificación.",
-        "Problemas verbales donde la operación de dividir por una fracción no es explícita y el estudiante debe reconocer que la situación se traduce en una división de fracciones, manteniéndose aún dentro del eje numérico.",
-        "Ítems que combinan la división de fracciones con un pequeño número adicional de pasos aritméticos (por ejemplo, sumar o restar un entero al resultado) sin que estas operaciones extra sean el foco principal."
+        "División entre fracciones donde ambas son negativas o con signo distribuido en numerador/denominador, exigiendo razonar cuidadosamente el signo final.",
+        "Fracciones con numeradores o denominadores de 2 dígitos (hasta 50 aprox.) que requieren identificar factores comunes no triviales (por ejemplo, 12, 15, 18, 20).",
+        "Ejercicios que invitan a la simplificación cruzada antes de multiplicar para evitar números grandes, y donde hacerlo o no hacerlo cambia significativamente la complejidad del cálculo.",
+        "Casos donde el resultado intermedio es una fracción impropia que luego debe simplificarse y, eventualmente, reconocerse como número entero.",
+        "Ítems donde aparece una combinación de entero y fracción con signo, por ejemplo entero negativo dividido por fracción negativa, que requiere aplicar la regla de los signos más de una vez.",
+        "Incluyen distractores construidos a partir de errores típicos (no invertir, invertir la fracción equivocada, error de signos, no simplificar) lo que demanda un dominio procedural más seguro."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra 'por' en contextos donde pueda confundirse si indica multiplicación o división; preferir símbolos claros (÷, :, /) o expresiones como 'dividido por'.",
-      "No usar el término 'multiplicación cruzada' en el enunciado, ya que se asocia a otros procedimientos (como comparación de fracciones) y puede confundir el algoritmo esperado.",
-      "Especificar claramente qué fracción divide a cuál, especialmente en contexto verbal, para evitar dudas sobre el orden de la división.",
-      "Evitar expresiones ambiguas como 'la fracción se da vuelta'; en su lugar, referirse a 'inverso multiplicativo' o 'invertir la segunda fracción (el divisor)'.",
-      "No mezclar en un mismo ítem diferentes notaciones para la división (por ejemplo, ':' y '/') sin aclarar; elegir una y mantenerla consistente.",
-      "En problemas verbales, evitar estructuras que puedan interpretarse tanto como división de fracciones como división de enteros; incluir datos claramente fraccionarios cuando se quiera evaluar este átomo.",
-      "No introducir fracciones mixtas en contextos donde el orden de las operaciones con la parte entera y la fraccionaria pueda generar interpretaciones diferentes; usar notación estándar clara (por ejemplo, 2 1/3) y no superponer tipográficamente."
+      "No usar expresiones como 'multiplicación cruzada' en el contexto de división de fracciones; mencionar explícitamente 'multiplicar por el inverso de la segunda fracción'.",
+      "Evitar fracciones con cero en el denominador; si aparece un cero en numerador, dejar claro que la operación es válida y qué se espera del resultado.",
+      "No mezclar en el mismo ítem procedimientos distintos (por ejemplo, simplificar antes o después) sin dejar claro que cualquiera es válido; el ítem debe centrarse en el resultado correcto, no en el camino específico.",
+      "Evitar enunciados que mezclen varias operaciones (suma, resta, producto, división de fracciones) si el foco evaluativo se vuelve difuso entre pasos.",
+      "No usar notaciones informales como 'voltear la fracción', 'dar vuelta el número', sin indicar con claridad qué fracción se invierte.",
+      "Precisar siempre qué fracción es el dividendo y cuál el divisor cuando la notación pueda prestarse a confusión (por ejemplo, en problemas verbales).",
+      "No redactar alternativas que dependan de distintos criterios de simplificación (por ejemplo, aceptar fracción no simplificada como opción correcta junto con la simplificada) salvo que el ítem lo explicite.",
+      "Evitar sobrecargar con contexto verbal irrelevante; el foco debe estar en la operación de división de fracciones y la correcta aplicación del algoritmo."
     ],
     "error_families": [
       {
         "name": "No invertir el divisor",
-        "description": "El estudiante realiza la operación como si fuese una multiplicación directa de fracciones (multiplica numeradores entre sí y denominadores entre sí) sin invertir la segunda fracción.",
-        "how_to_address": "Refuerza la idea de que dividir por una fracción equivale a multiplicar por su inverso multiplicativo, mostrando ejemplos concretos de cómo cambia el resultado al invertir solo el divisor."
-      },
-      {
-        "name": "Invertir la fracción equivocada",
-        "description": "El estudiante invierte el dividendo en lugar del divisor, alterando completamente el valor del resultado.",
-        "how_to_address": "Trabajar con notación clara a/b : c/d y remarcar que la 'segunda fracción' (el divisor) es la que se invierte; usar flechas o colores distintos en ejercicios guiados para destacar quién divide a quién."
+        "description": "El estudiante convierte la división de fracciones directamente en un producto numerador con numerador y denominador con denominador, sin invertir la segunda fracción.",
+        "how_to_address": "En los ítems, diferenciar claramente el rol del dividendo y del divisor, y reforzar en la retroalimentación que solo la segunda fracción (divisor) se invierte antes de multiplicar."
       },
       {
         "name": "Invertir ambas fracciones",
-        "description": "El estudiante invierte tanto el dividendo como el divisor y luego multiplica, obteniendo una fracción recíproca del resultado correcto.",
-        "how_to_address": "Hacer comparaciones numéricas simples (por ejemplo, con valores fáciles) para que el estudiante vea que su resultado es el inverso del correcto, y enfatizar la regla 'solo el divisor cambia a su inverso'."
+        "description": "El estudiante invierte tanto el dividendo como el divisor, generando un resultado recíproco al correcto.",
+        "how_to_address": "Proponer ejemplos sencillos donde se comparen ambos resultados para evidenciar que solo se invierte la segunda fracción; incluir distractores que correspondan a este error para poder identificarlo."
       },
       {
-        "name": "Manejo incorrecto de signos",
-        "description": "Errores al aplicar la regla de los signos en divisiones con números negativos, por ejemplo, concluyendo un resultado negativo cuando debería ser positivo o viceversa.",
-        "how_to_address": "Separar el tratamiento del signo del cálculo con fracciones: primero determinar el signo del resultado usando la regla de los signos, luego trabajar solo con valores absolutos; usar tablas de signos y ejemplos concretos."
+        "name": "Olvidar transformar enteros en fracción",
+        "description": "Ante una división que involucra un número entero, el estudiante intenta aplicar el algoritmo sin escribir el entero como fracción con denominador 1, lo que lleva a errores u operaciones poco claras.",
+        "how_to_address": "Enunciar explícitamente en la retroalimentación y en algunos ítems de ejemplo que cualquier entero puede y debe escribirse como n/1 para aplicar 'invertir y multiplicar'."
       },
       {
-        "name": "Olvidar transformar enteros a fracción",
-        "description": "El estudiante intenta dividir una fracción por un entero (o viceversa) sin escribir el entero como fracción con denominador 1, lo que lleva a operaciones incoherentes.",
-        "how_to_address": "Reforzar la idea de que cualquier entero n se puede escribir como n/1 y practicar conversiones rápidas antes de aplicar el algoritmo de división de fracciones."
+        "name": "Error en la regla de los signos",
+        "description": "El estudiante combina signos como si estuviera sumando o restando, o bien se equivoca al determinar si el resultado debe ser positivo o negativo.",
+        "how_to_address": "Recordar que la división de fracciones se reduce a un producto y, por tanto, se sigue la misma regla de signos de la multiplicación: mismo signo → positivo, distinto signo → negativo; usar ejemplos contrastivos (+)/(−) y (−)/(−)."
       },
       {
-        "name": "Simplificación ausente o incorrecta",
-        "description": "El estudiante no simplifica la fracción final aunque se pueda, o realiza simplificaciones erróneas (por ejemplo, cancelando términos que no son factores comunes).",
-        "how_to_address": "Practicar la identificación de factores comunes antes y después de la multiplicación, y enfatizar que solo se pueden simplificar factores, no sumas o restas; incluir chequeos de divisibilidad básicos (2, 3, 5, 10)."
+        "name": "Simplificación incorrecta",
+        "description": "El estudiante simplifica mal la fracción resultante: divide solo numerador o solo denominador, o simplifica con números que no son factores comunes.",
+        "how_to_address": "Incluir ítems donde sea necesario identificar factores comunes simples (2, 3, 5) y explicitar en la retroalimentación que se divide simultáneamente numerador y denominador por el mismo número distinto de cero."
       },
       {
-        "name": "Conversión incorrecta de fracciones mixtas",
-        "description": "Al trabajar con fracciones mixtas, el estudiante convierte mal a fracción impropia o manipula por separado parte entera y fraccionaria de forma incorrecta.",
-        "how_to_address": "Revisar paso a paso el procedimiento estándar para pasar de mixto a impropio y realizar ejercicios específicos solo de conversión antes de introducir la división de fracciones con mixtas."
+        "name": "No simplificar el resultado",
+        "description": "El estudiante llega a una fracción correcta pero no irreducible, perdiendo precisión en el resultado final.",
+        "how_to_address": "En los criterios de corrección y retroalimentación, enfatizar que se espera la fracción en su forma simplificada; diseñar alternativas donde la fracción no simplificada aparezca como distractor para resaltar la importancia de este paso."
       },
       {
-        "name": "Confusión con el orden de la división",
-        "description": "En problemas verbales o con notaciones menos familiares, el estudiante invierte el orden de dividendo y divisor, calculando el recíproco del resultado esperado.",
-        "how_to_address": "Trabajar con representaciones verbales y simbólicas en paralelo, subrayando quién se reparte y por cuánto se divide; usar frases como '¿cuántas veces cabe?' para fijar el sentido de la división."
+        "name": "Confundir división por fracción con dividir numerador y denominador",
+        "description": "El estudiante interpreta a/b : c/d como (a:c)/(b:d) en lugar de multiplicar por el inverso.",
+        "how_to_address": "Presentar comparaciones explícitas de ambos procedimientos mostrando que uno modifica el valor de la fracción y el otro no, reforzando la idea del inverso multiplicativo como operación única válida."
+      },
+      {
+        "name": "Manejo incorrecto de cero",
+        "description": "El estudiante intenta dividir por una fracción con numerador 0 o ignora que una fracción con denominador 0 no está definida.",
+        "how_to_address": "Incluir aclaraciones y, eventualmente, preguntas conceptuales cortas donde se explicite que no se puede dividir por cero y que el inverso multiplicativo solo existe para números distintos de cero."
       }
     ],
     "future_targets": [
-      "Resolución de problemas de proporcionalidad que implican dividir por fracciones (por ejemplo, cálculo de tarifas unitarias o repartos en partes fraccionarias).",
-      "Manejo fluido de expresiones algebraicas con fracciones racionales, incluyendo división de polinomios escritos en forma fraccionaria.",
-      "Resolución de ecuaciones lineales y racionales que requieren dividir ambos lados por fracciones.",
-      "Trabajo con razones, tasas y pendientes cuando se expresan como cociente de fracciones.",
-      "Comprensión de operaciones con números racionales en contextos más avanzados (por ejemplo, secuencias, series y expresiones mixtas con fracciones y decimales).",
-      "Aplicación del concepto de inverso multiplicativo en contextos algebraicos y en estructuras más abstractas.",
-      "Dominar operaciones combinadas con fracciones que integren suma, resta, multiplicación y división en un mismo ejercicio."
+      "Resolución de ecuaciones lineales y racionales que requieren multiplicar ambos lados por el inverso de una fracción.",
+      "Manejo de fracciones algebraicas (con variables) donde se aplica el mismo algoritmo de división de fracciones numéricas.",
+      "Cálculo de tasas y razones compuestas que se modelan como divisiones de fracciones (por ejemplo, velocidad, densidad).",
+      "Aplicación de la inversa de una pendiente en contexto geométrico o funcional (por ejemplo, problemas de proporcionalidad inversa).",
+      "Resolución de problemas de proporcionalidad directa e inversa que exigen dividir fracciones intermedias.",
+      "Manipulación de expresiones con exponentes racionales, al reescribir raíces y potencias como fracciones.",
+      "Cálculo de probabilidades condicionadas y de eventos compuestos donde intervienen razones expresadas como fracciones.",
+      "Trabajo con series, razones de cambio y otros contextos de Educación Media Superior donde la división de fracciones es un paso intermedio frecuente."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal_breve",
-      "contextual_breve",
-      "tabular_simple"
+      "Fracciones escritas en forma numérica estándar a/b con numeradores y denominadores enteros.",
+      "Enteros representados explícitamente como fracciones con denominador 1 (por ejemplo, 4/1, -3/1).",
+      "Uso de notación de división con dos puntos (a/b : c/d) y con barra de fracción grande indicando el cociente ( (a/b) / (c/d) ).",
+      "Contextos verbales breves donde las cantidades involucradas se expresan o pueden expresarse como fracciones (por ejemplo, partes de una receta, porciones de una unidad).",
+      "Representación lineal en una sola fracción compuesta (por ejemplo, (a/b) : (c/d) escrito como (a/b) ÷ (c/d)) para enfatizar el rol de dividendo y divisor.",
+      "Uso de fracciones propias, impropias y mixtas, siempre que se explicite o se deduzca claramente cómo convertir las mixtas a impropias antes de aplicar el algoritmo."
     ],
     "numbers_profiles": [
       "small_integers",
-      "fractions_proper",
-      "fractions_improper",
-      "mixed_numbers",
-      "negatives"
+      "signed_integers",
+      "simple_proper_fractions",
+      "simple_improper_fractions",
+      "signed_fractions",
+      "fractions_with_common_factors",
+      "integers_as_fractions_denominator_1"
     ],
     "required_image_types": []
   }

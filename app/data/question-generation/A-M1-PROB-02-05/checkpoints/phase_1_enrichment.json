@@ -3,139 +3,135 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de la mediana en conjuntos de datos NO agrupados con número PAR de datos.",
-        "Ordenar datos numéricos (ascendente o descendente) para identificar las posiciones centrales.",
-        "Identificar correctamente las DOS observaciones centrales cuando n es par.",
-        "Calcular el promedio aritmético de esos dos valores centrales (incluyendo casos donde ambos valores son iguales).",
-        "Situaciones contextualizadas (problemas de contexto real) siempre que el cálculo final sea la mediana de un conjunto par de datos sin agrupar."
+        "Cálculo de la mediana en conjuntos de datos NO agrupados con número PAR de elementos.",
+        "Ordenar explícitamente una lista finita de datos numéricos antes de identificar los valores centrales.",
+        "Identificación de las dos posiciones centrales en un conjunto de n datos cuando n es par.",
+        "Cálculo del promedio aritmético de exactamente DOS valores centrales para obtener la mediana.",
+        "Uso de datos enteros positivos o negativos, decimales o fracciones simples, siempre que se trate de datos individuales (no intervalos)."
       ],
       "out_of_scope": [
-        "Cálculo de la mediana con número IMPAR de datos (eso corresponde a otro átomo).",
-        "Cálculo de la mediana en datos agrupados en intervalos o tablas de frecuencias acumuladas.",
-        "Cálculo de otras medidas de tendencia central (media, moda) más allá de lo estrictamente necesario para promediar dos números.",
-        "Interpretación avanzada de la mediana (comparar distribuciones, robustez ante datos extremos, etc.).",
-        "Uso de representaciones gráficas complejas (boxplot, histogramas) para estimar o leer la mediana.",
-        "Manejo de fórmulas algebraicas generales para la posición de la mediana (solo se espera reconocimiento procedimental: ordenar, ubicar dos centrales y promediar)."
+        "Mediana en conjuntos con número IMPAR de datos (se aborda en otro átomo).",
+        "Cálculo de mediana en datos AGRUPADOS en clases o intervalos (tablas de frecuencias agrupadas).",
+        "Interpretación de mediana desde gráficos estadísticos (barras, histogramas, boxplots), sin estar explícitos los datos individuales.",
+        "Cálculo o interpretación de otras medidas de tendencia central (media, moda) más allá de lo mínimo necesario para la fórmula de promedio de dos números.",
+        "Análisis de posición relativa de la mediana en distribuciones simétricas o sesgadas.",
+        "Cálculo de cuartiles, percentiles u otras medidas de posición.",
+        "Uso de fórmulas generales de posición (por ejemplo, (n+1)/2) más allá de la identificación básica de las posiciones centrales en listas pequeñas o medianas."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comparar y ordenar números naturales y enteros.",
-        "A-M1-NUM-01-02: Comparar y ordenar números decimales positivos.",
-        "A-M1-NUM-03-01: Cálculo de promedio aritmético simple de dos números.",
-        "A-M1-PROB-02-01: Identificar un conjunto de datos y su tamaño n (contar correctamente la cantidad de datos)."
+        "A-M1-NUM-01-01: Comparar y ordenar números enteros y decimales en forma ascendente y descendente.",
+        "A-M1-NUM-01-02: Comparar y ordenar fracciones simples (mismo denominador o equivalentes).",
+        "A-M1-NUM-02-01: Calcular el promedio de dos números reales (suma y división por 2).",
+        "A-M1-PROB-02-01: Reconocer un conjunto de datos y su tamaño n en contextos simples.",
+        "A-M1-PROB-02-03: Calcular la mediana en un conjunto de datos no agrupados con n impar."
       ],
       "common_traps": [
-        "Tratar un conjunto con n par como si fuera impar y escoger uno solo de los valores centrales como mediana.",
-        "No ordenar los datos antes de buscar los valores centrales, especialmente cuando los datos están en contexto o presentados desordenados.",
-        "Contar mal la cantidad total de datos y, por lo tanto, elegir posiciones centrales equivocadas.",
-        "Promediar TODAS las observaciones en vez de solo las dos centrales (confundir mediana con media).",
-        "Olvidar dividir por 2 al promediar los dos valores centrales.",
-        "Cometer errores de cálculo al promediar dos decimales (por ejemplo, errores de alineación de decimales).",
-        "Confundirse cuando los dos valores centrales son iguales y creer que hay que seguir calculando algo más en vez de reconocer que la mediana es ese valor.",
-        "Interpretar la mediana como un dato que necesariamente aparece explícito en el conjunto, incluso cuando el promedio de los dos centrales no pertenece al conjunto."
+        "Olvidar ordenar los datos antes de buscar los valores centrales y tomar como 'centrales' los que aparecen en el orden dado.",
+        "Confundir mediana con media aritmética de TODOS los datos y no solo de los dos centrales.",
+        "Equivocarse al identificar las posiciones centrales cuando n es par (por ejemplo, tomar solo uno de ellos o tomar dos que no son exactamente los centrales).",
+        "Suponer que la mediana debe necesariamente ser uno de los datos originales y desconfiar de valores medios nuevos (por ejemplo, 22,5 cuando no aparece en la lista).",
+        "Errores de cálculo al promediar fracciones o decimales (especialmente al sumar y dividir entre 2).",
+        "No considerar que puede haber datos repetidos y confundir la repetición con la noción de 'dato central' o 'moda'.",
+        "Contar mal la cantidad total de datos n, especialmente cuando se dan en tablas o enunciados verbales extensos.",
+        "Interpretar 'central' como cercano al promedio numérico aproximado y no como posición en la lista ordenada."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Conjunto pequeño de datos (entre 4 y 8 datos) con n claramente par.",
-        "Datos ya ordenados explícitamente (por ejemplo, listados de menor a mayor).",
-        "Uso de números enteros pequeños y positivos (small_integers), sin negativos ni decimales.",
-        "Posiciones centrales fáciles de identificar sin necesidad de contar mucho (por ejemplo, 4 datos o 6 datos).",
-        "Cálculo de promedio de dos números que da un entero (por ejemplo, (8 + 10) / 2).",
-        "Enunciado directo, sin contexto extenso, que pide explícitamente la mediana y solo incluye un conjunto de datos."
+        "Conjuntos pequeños (entre 4 y 8 datos) explícitamente listados en el enunciado, ya desordenados pero fáciles de ordenar mentalmente.",
+        "Solo números enteros positivos, de uno o dos dígitos, sin repetición excesiva que genere confusión.",
+        "La tarea principal es aplicar la definición paso a paso: ordenar, identificar los dos centrales, promediar con operaciones aritméticas simples.",
+        "Contextos cotidianos muy directos donde el estudiante puede trabajar casi exclusivamente con la lista numérica y no necesita interpretar un relato complejo.",
+        "Sin necesidad de identificar n explícitamente en el enunciado (n se hace evidente por la cantidad de datos mostrados en una sola línea)."
       ],
       "medium": [
-        "Conjuntos de tamaño moderado (entre 8 y 14 datos) con n par.",
-        "Datos presentados desordenados, requiriendo que el estudiante los ordene antes de identificar los centrales.",
-        "Presencia de números decimales con una cifra decimal o combinación de enteros y decimales (mixed).",
-        "Necesidad de contar cuidadosamente la cantidad de datos para ubicar correctamente las dos posiciones centrales.",
-        "Cálculo de promedio que puede dar un número decimal (por ejemplo, (5 + 6) / 2 = 5,5).",
-        "Contexto verbal sencillo (por ejemplo, tiempos, puntajes, edades) pero con información irrelevante mínima que no afecta el conjunto de datos.",
-        "Casos donde los valores centrales no son consecutivos ni forman un promedio evidente a primera vista."
+        "Conjuntos de tamaño intermedio (10 a 20 datos) donde sea menos inmediato visualizar posiciones centrales sin alguna estrategia sistemática de conteo.",
+        "Presencia de números negativos, decimales simples (con un decimal) o fracciones con igual denominador, que exigen más cuidado al ordenar.",
+        "Datos presentados en forma de tabla simple (por ejemplo, nombre y valor) donde el estudiante deba extraer la columna de datos y luego ordenar.",
+        "Contextos verbales donde el conjunto de datos debe construirse a partir del texto (por ejemplo, edades de participantes descritas en el enunciado).",
+        "Casos en que los dos datos centrales son iguales y el estudiante deba reconocer que la mediana coincide con ese valor sin hacer un cálculo innecesario."
       ],
       "hard": [
-        "Conjuntos más largos (entre 14 y 24 datos) que obligan a un conteo riguroso para determinar n y las dos posiciones centrales.",
-        "Datos claramente desordenados en el enunciado, mezclados en tablas o listados no secuenciales que requieren reorganización mental u ordenamiento sistemático.",
-        "Mezcla de enteros y decimales con una o dos cifras decimales, o valores algo menos amigables para promediar (por ejemplo, 7,4 y 9,1).",
-        "Contextos verbales más elaborados donde los datos relevantes deben ser extraídos desde el texto (por ejemplo, se entregan más datos de los necesarios y el estudiante debe seleccionar cuáles conforman el conjunto).",
-        "Situaciones donde los dos valores centrales son iguales o repetidos varias veces, lo que puede inducir la falsa idea de que hay varios candidatos a mediana si no se sigue el proceso formal.",
-        "Promedio de dos números cuyo resultado no pertenece al conjunto original, para evaluar la comprensión de que la mediana puede no ser un dato observado.",
-        "Ítems que piden comparar dos listas distintas (ambas con n par) para decidir cuál tiene mayor mediana, obligando a calcular mediana en dos conjuntos y luego compararlas."
+        "Conjuntos más extensos (20 a 40 datos) que requieran una estrategia clara para identificar rápidamente las posiciones centrales sin desordenarse al contar.",
+        "Uso de decimales con dos cifras o fracciones con distintos denominadores, obligando a aplicar criterios de orden más elaborados antes de hallar la mediana.",
+        "Datos con mucha repetición o patrones (por ejemplo, varios valores iguales en torno al centro) que dificultan identificar con precisión cuáles son los dos centrales.",
+        "Presentación dispersa de los datos en el enunciado (por ejemplo, varios párrafos o categorías donde se debe reunir todos los valores antes de ordenarlos).",
+        "Situaciones donde se debe responder razonando sobre la posición de la mediana (por ejemplo, inferir el posible valor de la mediana con información parcial o condiciones sobre los datos, siempre manteniéndose en el caso n par).",
+        "Requerir que el estudiante determine cómo cambia la mediana si se agrega o elimina un dato adicional en un conjunto originalmente par, manteniéndose explícita la necesidad de recalcular la mediana con n par en al menos uno de los pasos."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar no especificar claramente TODOS los datos del conjunto; siempre listar explícitamente cada valor numérico que compone el conjunto.",
-      "No usar expresiones como \"alrededor de la mitad\" o \"datos intermedios\" sin precisar que se trata de la mediana.",
-      "Evitar contextos donde los datos parezcan intervalos de tiempo o rangos (por ejemplo, 10–20 minutos) en vez de valores puntuales, a menos que se clarifique que los números son datos individuales.",
-      "No mezclar en el mismo enunciado diferentes conjuntos de datos sin dejar claro cuál de ellos se usa para calcular la mediana.",
-      "Evitar tablas donde no quede nítido si los números son datos individuales o frecuencias; si se usa tabla, aclarar si cada número es un dato o cuántas veces se repite.",
-      "No pedir al mismo tiempo mediana y otras medidas (media, moda) a menos que el ítem sea muy claro respecto de qué se pregunta en la alternativa correcta.",
-      "Evitar expresiones ambiguas como \"elige el valor central\" en conjuntos con n par sin explicar que se debe promediar los dos valores centrales.",
-      "No usar datos con formatos mixtos confusos (por ejemplo, mezclar unidades distintas sin aclarar equivalencias) que puedan hacer dudar si son comparables.",
-      "Evitar enunciados en los que la cantidad de datos no quede clara (por ejemplo, \"algunos estudiantes\"), sin detallar todos los valores."
+      "Evitar enunciados donde no quede claro si la lista de datos está completa o es solo una muestra; siempre explicitar que son 'todos los datos'.",
+      "No mezclar en el mismo ítem la situación de n par e impar sin señalar claramente sobre cuál conjunto se debe calcular la mediana.",
+      "Evitar expresiones como 'los datos centrales' sin aclarar que se refiere a la lista ORDENADA de menor a mayor (o de mayor a menor).",
+      "No usar tablas de frecuencias agrupadas por intervalos, ya que podría confundirse con el átomo de mediana en datos agrupados.",
+      "Evitar gráficos estadísticos (barras, histogramas, boxplots) donde no sea evidente que se puede reconstruir cada dato individual, para no cambiar el foco del átomo.",
+      "No usar enunciados donde el promedio de todos los datos también se pida en la misma pregunta si eso puede llevar a confundir mediana con media.",
+      "Evitar dar fórmulas generales de posición (como (n+1)/2) sin contexto, para no mezclar con reglas pensadas para n impar.",
+      "No usar vocabulario técnico avanzado (como 'distribución', 'asimetría', 'cuartiles') que desplace el foco desde la operación concreta de hallar la mediana.",
+      "Evitar situaciones donde el orden cronológico o espacial pueda interpretarse como 'orden de los datos' sin explicitar que se deben ordenar numéricamente."
     ],
     "error_families": [
       {
+        "name": "No_ordenar_datos",
+        "description": "El estudiante calcula la mediana usando los datos en el orden en que aparecen, sin ordenarlos de menor a mayor ni de mayor a menor.",
+        "how_to_address": "Incluir ítems donde el orden de presentación esté claramente desordenado, enfatizando en el texto que primero se deben ordenar los datos, y reforzar en las alternativas los resultados que se obtienen al no ordenar, para poder diagnosticar y retroalimentar específicamente ese error."
+      },
+      {
         "name": "Confundir_mediana_con_media",
-        "description": "El estudiante suma TODOS los datos y divide por la cantidad total, entregando la media aritmética en lugar de la mediana.",
-        "how_to_address": "Incluir distractores que correspondan a la media para evidenciar esta confusión y reforzar en explicaciones posteriores la diferencia entre 'el valor central' de los datos ordenados (mediana) y 'el promedio de todos' (media)."
+        "description": "Se calcula el promedio de todos los datos en lugar de solo los dos valores centrales.",
+        "how_to_address": "Diseñar preguntas donde la media y la mediana sean claramente distintas y ofrecer distractores que correspondan a la media de todos los datos para evidenciar el error. En la retroalimentación, remarcar que la mediana se basa en la POSICIÓN en la lista ordenada, no en 'promediar todo'."
       },
       {
-        "name": "No_ordenar_los_datos",
-        "description": "El estudiante toma los datos tal como aparecen en el enunciado y elige los dos centrales según ese orden, sin reordenar de menor a mayor o de mayor a menor.",
-        "how_to_address": "Diseñar ítems donde el orden dado no coincida con el orden numérico y donde una alternativa distractora corresponda exactamente a la mediana mal calculada sin ordenar, para luego enfatizar en el feedback la necesidad de ordenar siempre antes de buscar la mediana."
+        "name": "Identificar_mal_las_posiciones_centrales",
+        "description": "Con n par, el estudiante toma un solo valor central, elige dos valores cercanos pero incorrectos, o cuenta mal al ubicar los dos centrales.",
+        "how_to_address": "Usar conjuntos con tamaño moderado donde sea necesario contar cuidadosamente las posiciones; dar énfasis en ejemplos y explicaciones al conteo simétrico desde ambos extremos y a la idea de que los centrales son el n/2 y el (n/2)+1 en la lista ordenada."
       },
       {
-        "name": "Tratamiento_de_n_par_como_impar",
-        "description": "El estudiante identifica solo un valor central, como si hubiera un número impar de datos, ignorando la necesidad de considerar dos datos centrales y promediarlos.",
-        "how_to_address": "Incluir conjuntos con n par donde el 'dato del medio' según una cuenta informal coincida con una alternativa, y contrastar con la alternativa correcta que proviene del promedio de dos valores centrales; explicitar en correcciones que con n par siempre se utilizan dos datos."
+        "name": "Error_en_promedio_de_los_centrales",
+        "description": "El estudiante identifica bien los dos valores centrales pero se equivoca al calcular su promedio (suma incorrecta o división errónea por 2).",
+        "how_to_address": "Incluir ítems donde los valores centrales sean decimales o fracciones fáciles pero no triviales, para forzar la aplicación cuidadosa del promedio de dos números. La retroalimentación debe recordar el procedimiento paso a paso: sumar y luego dividir por 2, mostrando errores típicos de suma o de división."
       },
       {
-        "name": "Error_en_identificar_posiciones_centrales",
-        "description": "El estudiante ordena los datos, pero cuenta mal las posiciones, elige las observaciones equivocadas como centrales o se confunde con índices (por ejemplo, toma la posición n/2 y n/2+2).",
-        "how_to_address": "Proponer ítems con cantidades de datos donde la posición central no sea tan obvia (por ejemplo, 12 datos) y usar distractores que correspondan a pares de datos mal ubicados; en la explicación, modelar el conteo sistemático desde ambos extremos hacia el centro."
+        "name": "Desconfiar_de_mediana_no_presente_en_los_datos",
+        "description": "El estudiante piensa que la mediana debe ser necesariamente uno de los datos originales y descarta resultados 'intermedios' como 2,5 o 22,5.",
+        "how_to_address": "Plantear casos donde los dos centrales sean distintos y su promedio no pertenezca a la lista original, explicando en soluciones y ejemplos que la mediana puede ser un número nuevo, ubicado entre ambos valores centrales en la recta numérica."
       },
       {
-        "name": "Olvidar_dividir_por_2_en_el_promedio",
-        "description": "El estudiante suma los dos valores centrales, pero no realiza el paso de dividir por 2, tomando la suma como si fuera la mediana.",
-        "how_to_address": "Incluir como distractor la suma de los dos valores centrales y en el análisis de resultados enfatizar que el promedio requiere siempre dividir por el número de datos que se están promediando (en este caso, 2)."
+        "name": "Contar_mal_la_cantidad_total_de_datos",
+        "description": "Se determina erróneamente el valor de n (por omisión o doble conteo de algunos datos), lo que conduce a escoger mal las posiciones centrales.",
+        "how_to_address": "Usar presentaciones donde los datos están en línea o en tabla pero con cierto volumen (10 o más) y reforzar la necesidad de marcar o numerar cada dato al contarlo. La retroalimentación debe insistir en verificar primero n, antes de ubicar los centrales."
       },
       {
-        "name": "Errores_de_calculo_con_decimales",
-        "description": "El estudiante reconoce bien los dos valores centrales, pero comete fallas al sumar o dividir decimales (alineación incorrecta, mal manejo de la coma).",
-        "how_to_address": "Crear ítems con decimales sencillos donde el procedimiento estadístico sea simple y el foco del distractor sea un error típico de operación; luego reforzar el algoritmo de suma y división con decimales en el feedback o en otros recursos."
-      },
-      {
-        "name": "Creer_que_la_mediana_debe_ser_un_dato_existente",
-        "description": "El estudiante rechaza como respuesta un valor que no aparece en el conjunto, aun cuando es el promedio correcto de los dos datos centrales, y elige otro valor presente en la lista.",
-        "how_to_address": "Plantear ítems donde el promedio de los dos centrales no está en el conjunto y usar como distractor un dato cercano; explicitar en las aclaraciones que la mediana puede ser un número que no se observa en los datos."
-      },
-      {
-        "name": "Manejo_incorrecto_de_datos_iguales",
-        "description": "Cuando los dos valores centrales son iguales, el estudiante piensa que la mediana no está bien definida o que debe hacer un paso adicional innecesario.",
-        "how_to_address": "Diseñar ejercicios donde los dos valores centrales sean el mismo número e incluir distractores que usen otros valores vecinos; en la retroalimentación, enfatizar que el promedio de dos números iguales es ese mismo número y que la mediana queda bien determinada."
+        "name": "Orden_incorrecto_con_negativos_y_decimales",
+        "description": "Dificultades para ordenar correctamente datos que incluyen números negativos, decimales o fracciones, lo que altera quiénes son los dos valores centrales.",
+        "how_to_address": "Proponer ítems donde el error de orden produce una mediana distinta y detectable. En la explicación, recordar criterios para comparar negativos y decimales, usando comparaciones en la recta numérica y equivalencias de fracciones."
       }
     ],
     "future_targets": [
-      "Cálculo de la mediana en conjuntos con número impar de datos.",
-      "Cálculo e interpretación de la mediana en datos agrupados en tablas de frecuencia.",
-      "Lectura e interpretación de la mediana en representaciones gráficas como diagramas de caja (boxplot).",
-      "Comparación de medidas de tendencia central (media, mediana y moda) para analizar distribuciones de datos.",
-      "Análisis de la influencia de datos extremos en media y mediana (robustez de la mediana).",
-      "Uso de la mediana y otros estadígrafos para describir y comparar conjuntos de datos en contextos más complejos (por ejemplo, toma de decisiones informadas)."
+      "Cálculo de la mediana en conjuntos de datos no agrupados con n impar de manera fluida y combinada con el caso n par.",
+      "Cálculo de la mediana en tablas de frecuencias no agrupadas (donde algunos datos se repiten con una frecuencia asociada).",
+      "Determinación de la mediana en distribuciones de datos agrupados en intervalos, usando frecuencias acumuladas.",
+      "Interpretación de la mediana en diagramas de caja (boxplots) y otros gráficos estadísticos.",
+      "Comparación de media, mediana y moda para describir la tendencia central de un conjunto de datos.",
+      "Análisis de cómo cambia la mediana cuando se agregan o eliminan datos en una muestra.",
+      "Uso de la mediana para describir y comparar distribuciones en contextos reales (ingresos, puntajes, tiempos, etc.)."
     ],
     "representation_variants": [
-      "listado_explícito_de_datos_en_una_línea",
-      "tabla_simple_de_datos_individuales",
-      "descripción_verbal_de_resultados_de_un_experimento_o_encuesta_con_todos_los_valores_mencionados",
-      "multiconjunto_con_datos_repetidos_representados_explícitamente",
-      "secuencia_de_datos_en_contexto_temporal_o_espacial_donde_igual_todos_los_valores_se_especifican"
+      "Lista simple de datos separados por comas o espacios en el enunciado.",
+      "Datos presentados en una tabla de dos columnas (por ejemplo, nombre y valor) donde solo una columna es relevante para calcular la mediana.",
+      "Datos descritos textualmente en un contexto (por ejemplo, un grupo de estudiantes con sus edades o puntajes, enunciados en una o dos frases).",
+      "Listas parcialmente ordenadas donde el estudiante debe completar el orden y luego identificar los valores centrales.",
+      "Conjuntos donde se explicita el valor de n y se listan los datos; el estudiante debe usar n para identificar qué posiciones son las centrales."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers_with_repetition",
-      "decimals_1dp",
-      "decimals_2dp",
-      "mixed"
+      "medium_integers",
+      "negative_integers",
+      "simple_decimals",
+      "two_decimal_decimals",
+      "like_denominator_fractions",
+      "simple_unlike_denominator_fractions"
     ],
     "required_image_types": []
   }

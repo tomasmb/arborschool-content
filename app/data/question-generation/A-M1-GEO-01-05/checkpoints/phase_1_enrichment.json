@@ -3,133 +3,138 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del perímetro de triángulos, cuadrados, rectángulos, rombos, paralelogramos y trapecios (incluyendo trapecios isósceles) sumando las longitudes de sus lados.",
-        "Uso de propiedades de igualdad de lados en polígonos especiales (por ejemplo, todos los lados del rombo iguales; lados opuestos de paralelogramos iguales; lados no paralelos iguales en trapecio isósceles) para completar datos faltantes antes de sumar.",
-        "Aplicación de fórmulas simplificadas de suma del tipo P = 4·a para el cuadrado, P = 2(l + a) para rectángulo/paralelogramo, P = suma de bases + 2·lado oblicuo en trapecio isósceles, siempre entendidas como sumas de lados.",
-        "Problemas de contexto simples donde se interprete el perímetro como contorno (rejas, bordes de terreno, marco, pista, etc.), siempre reducido a suma de longitudes de lados de los polígonos señalados.",
-        "Casos en que no todos los lados están numéricamente dados, pero pueden inferirse mediante igualdad de lados de las figuras consideradas."
+        "Cálculo de perímetros de triángulos, cuadrados, rectángulos, rombos, paralelogramos y trapecios (particularmente isósceles) sumando longitudes de lados.",
+        "Uso de propiedades de paralelogramos (lados opuestos paralelos e iguales) y trapecios isósceles (dos lados no paralelos iguales) para completar datos faltantes y luego calcular el perímetro.",
+        "Determinación del perímetro cuando se entrega solo una medida en figuras con lados iguales (por ejemplo, rombo o cuadrado).",
+        "Problemas en contexto donde se modela una situación lineal como perímetro (reja de un terreno, marco de una ventana, borde de una pista, etc.).",
+        "Perímetros expresados en una misma unidad de medida (sin cambio de unidades) o con cambios muy simples explícitos (por ejemplo, de cm a m usando números fáciles)."
       ],
       "out_of_scope": [
-        "Cálculo de áreas de las mismas figuras (cuadrado, rectángulo, triángulo, etc.).",
-        "Perímetro o longitud de circunferencia de círculos o figuras curvas.",
-        "Perímetros de figuras compuestas por varios polígonos unidos, especialmente si requieren descomposición compleja o razonamiento espacial avanzado.",
-        "Uso de teorema de Pitágoras u otros resultados geométricos avanzados para determinar longitudes faltantes.",
-        "Escalas de planos o mapas, ampliaciones/reducciones de figuras o perímetros en figuras semejantes.",
-        "Cálculos que involucren coordenadas en el plano cartesiano para obtener longitudes de lados.",
-        "Problemas que exijan conversión compleja de unidades (por ejemplo, combinar cm, m y km) o uso de unidades poco habituales.",
-        "Figuras irregulares o polígonos de más de cuatro lados que no sean triángulos o trapecios (por ejemplo, pentágonos generales)."
+        "Cálculo de áreas de figuras planas (solo perímetros en este átomo).",
+        "Perímetros de circunferencias o figuras que involucren π (eso corresponde a circunferencia y círculo, no a polígonos básicos de este átomo).",
+        "Perímetros de polígonos regulares de más de 4 lados no mencionados explícitamente (pentágonos, hexágonos, etc.).",
+        "Uso de teorema de Pitágoras u otros resultados de geometría para hallar lados faltantes (en este átomo los lados se obtienen por igualdad de lados, no por relaciones cuadráticas).",
+        "Coordenadas en el plano para calcular distancias entre puntos (distancia entre dos puntos no es parte de este átomo).",
+        "Figuras compuestas por varios polígonos donde haya que descomponer y recomponer para hallar el perímetro.",
+        "Cálculo de perímetros con números irracionales (por ejemplo, raíces no exactas)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Suma y resta de números naturales y enteros positivos.",
-        "A-M1-NUM-02-01: Comprensión y uso básico de decimales en contexto de medida.",
-        "A-M1-MED-01-01: Interpretación de medidas de longitud y sus unidades habituales (cm, m, km).",
-        "A-M1-GEO-01-01: Reconocimiento de polígonos básicos y sus elementos (lado, vértice).",
-        "A-M1-GEO-01-03: Identificación de propiedades básicas de cuadriláteros especiales (paralelogramos, rectángulos, cuadrados, rombos, trapecios isósceles) en términos de igualdad de lados."
+        "A-M1-NUM-01-01: Dominio de suma y multiplicación de números naturales y enteros positivos.",
+        "A-M1-NUM-01-02: Comprensión de la recta numérica y comparación de magnitudes (para razonabilidad del resultado).",
+        "A-M1-GEO-01-01: Reconocimiento de figuras básicas: triángulo, cuadrado, rectángulo, rombo, paralelogramo, trapecio.",
+        "A-M1-GEO-01-02: Comprensión de la idea de lado y vértice en polígonos.",
+        "A-M1-GEO-01-03: Identificación de lados iguales mediante marcas en la figura o a partir de la descripción verbal (por ejemplo, paralelogramo, trapecio isósceles, rombo)."
       ],
       "common_traps": [
-        "Confundir perímetro con área, especialmente en cuadrados y rectángulos presentados en contexto de terrenos o superficies.",
-        "Olvidar contar o sumar un lado repetido (por ejemplo, considerar sólo una base de trapecio o sólo un par de lados de un rectángulo).",
-        "Suponer igualdad de lados donde no corresponde (por ejemplo, tratar todo trapecio como isósceles o cualquier paralelogramo como rectángulo).",
-        "Interpretar la altura o una diagonal como si fuera un lado contribuyente al perímetro.",
-        "Ignorar que los lados opuestos de un paralelogramo son iguales y utilizar sólo un valor dado sin duplicarlo.",
-        "Cometer errores al sumar varios números (especialmente cuando hay mezcla de decimales o fracciones simples).",
-        "No notar que falta una medida numérica indispensable que debe inferirse usando igualdad de lados, y por ello dejar el cálculo incompleto o inventar un valor.",
-        "Mezclar o no homogeneizar unidades de medida cuando se entregan lados en cm y m en un mismo ejercicio."
+        "Confundir perímetro con área y multiplicar largo por ancho en rectángulos y cuadrados en vez de sumar todos los lados.",
+        "Olvidar alguno de los lados al sumar en figuras con más de 4 lados o con lados no consecutivos claramente etiquetados.",
+        "No duplicar la medida de lados iguales (por ejemplo, en rectángulos sumar solo largo + ancho y no 2*(largo + ancho)).",
+        "Asignar igual longitud a lados que solo parecen iguales en el dibujo pero que no están marcados ni mencionados como tales en el enunciado.",
+        "No usar la propiedad de paralelogramos o trapecios isósceles para completar información faltante y concluir que no se puede calcular el perímetro.",
+        "Manejar mal las unidades, por ejemplo, sumar cm con m sin conversión previa cuando ésta es necesaria.",
+        "Interpretar mal qué segmento corresponde a cada medida en la figura (etiquetas confusas de lados o vértices)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Figuras nombradas explícitamente (por ejemplo, 'un cuadrado', 'un rectángulo') con todos los lados numéricamente dados o con una relación directa muy evidente (por ejemplo, lado del cuadrado = 5 cm).",
-        "Números enteros pequeños (1 a 20 aprox.) sin mezcla de unidades ni decimales.",
-        "Uso directo de la suma de lados o de fórmulas simplificadas muy transparentes (por ejemplo, P = 4·lado en un cuadrado, P = suma de 3 lados de un triángulo dados).",
-        "Sin necesidad de inferir medidas faltantes; toda la información esencial se presenta explícitamente.",
-        "Contextos muy directos (longitud de un cerco, borde de una mesa, etc.) donde el estudiante sólo debe identificar que se pide perímetro y sumar las longitudes dadas."
+        "Figuras con todos sus lados explícitamente dados con números enteros positivos pequeños (entre 1 y 30) y sin necesidad de usar propiedades de paralelogramos o trapecios isósceles.",
+        "Cuadrados o rombos donde se da directamente la medida de un lado y solo se requiere multiplicar esa medida por 4.",
+        "Rectángulos o paralelogramos donde se dan las dos medidas distintas de lado y se sugiere explícitamente la fórmula simplificada (por ejemplo, 2(largo + ancho)).",
+        "Enunciados sin contexto o con contexto muy directo (por ejemplo, perímetro de una mesa rectangular) en que la única acción matemática es sumar o hacer 2× o 4× de forma evidente.",
+        "Figuras bien etiquetadas con pocas medidas, sin necesidad de inferir lados faltantes."
       ],
       "medium": [
-        "Figuras donde no todos los lados están numéricamente indicados, pero pueden completarse aplicando propiedades simples de igualdad de lados (por ejemplo, paralelogramo con un par de lados opuestos dados).",
-        "Uso de trapecios isósceles, donde el estudiante debe reconocer que los lados no paralelos son iguales y usar esto para determinar el perímetro.",
-        "Presencia de decimales simples (un decimal) o fracciones de uso frecuente (1/2, 1/4, 3/4), manteniendo el número de sumandos bajo (3 o 4).",
-        "Itemes que requieren identificar correctamente qué segmentos corresponden a los lados del polígono dentro de una figura esquemática horizontal o vertical simple.",
-        "Problemas de contexto que requieren un paso de interpretación adicional (por ejemplo, el contorno de un patio con lados opuestos iguales, aunque no se nombre como 'rectángulo')."
+        "Paralelogramos, rombos o trapecios isósceles en que no se entregan todas las longitudes, pero se indica claramente la propiedad de lados iguales (mediante marcas o en el texto) y el estudiante debe inferir la longitud de uno o dos lados antes de sumar.",
+        "Triángulos isósceles donde solo se entrega la longitud de la base y uno de los lados iguales, y se debe utilizar la igualdad de lados para completar el cálculo del perímetro.",
+        "Problemas en contexto donde hay que identificar primero qué lados corresponden al perímetro de interés (por ejemplo, solo los lados externos de un terreno con una división interna).",
+        "Números enteros positivos de 1 a 100, eventualmente combinados con un solo número decimal con 1 cifra decimal simple (por ejemplo, 2,5; 7,5) sin requerir cambio de unidades.",
+        "Necesidad de organizar datos dispersos del texto (por ejemplo, largo y ancho descritos verbalmente, no inmediatamente junto a la figura)."
       ],
       "hard": [
-        "Figuras donde se entrega sólo un subconjunto de medidas y el resto debe inferirse usando combinaciones de propiedades de igualdad de lados (por ejemplo, rombo donde sólo se da un lado y otra longitud que puede confundir, como una diagonal o una altura, que no se usa para el perímetro).",
-        "Trapecios isósceles o paralelogramos embebidos en contextos menos evidentes (bordes de una pista, forma de un terreno irregular pero descrito como trapecio isósceles) donde el estudiante debe primero reconocer el tipo de figura para usar las propiedades de sus lados.",
-        "Uso combinado de enteros, decimales y/o fracciones que exigen cierta atención en el cálculo, manteniendo la suma aún razonable pero con riesgo de error operativo.",
-        "Situaciones donde parte de la información se presenta verbalmente y parte en un esquema, obligando a integrar ambos registros para completar las longitudes antes de sumar.",
-        "Ítems donde se dan datos adicionales irrelevantes (por ejemplo, medidas de diagonales, alturas o ángulos) que pueden inducir al estudiante a confundir perímetro con otros cálculos geométricos.",
-        "Casos límite donde se debe reconocer que dos lados que aparentan ser distintos en la figura (por escala visual) en realidad son iguales porque la consigna lo indica (por ejemplo, 'paralelogramo' o 'rombo') y no basarse en la apariencia del dibujo."
+        "Situaciones con datos parciales en trapecios isósceles o paralelogramos donde hay que combinar varias propiedades (por ejemplo, lados opuestos iguales y marcas de igualdad en otros lados) para hallar tres o más lados antes de calcular el perímetro.",
+        "Figuras con más de un polígono básico donde se pide el perímetro de una parte específica y el estudiante debe discriminar qué lados contar y cuáles no (sin entrar en descomposición compleja, pero sí en selección cuidadosa).",
+        "Problemas en contexto donde se requiere traducir un relato relativamente extenso a una figura mental o boceto de polígono básico para identificar el perímetro (por ejemplo, un recorrido que bordea solo algunos lados de una figura).",
+        "Uso de números mixtos o fracciones simples (por ejemplo, 1/2, 1/4, 3/4) o decimales con hasta 2 cifras decimales, requiriendo 3 o más sumas o multiplicaciones en cadena.",
+        "Ítems donde varias alternativas corresponden a errores típicos (confundir área con perímetro, sumar solo dos lados en un rectángulo, no duplicar lados iguales), lo que exige al estudiante verificar con mayor cuidado la operación correcta.",
+        "Casos en que es necesario reconocer que la figura no está dibujada a escala y basarse solo en la información dada (textual y marcas), descartando inferencias visuales engañosas."
       ]
     },
     "ambiguity_avoid": [
-      "No depender del tamaño aparente de los lados en el dibujo para deducir igualdad de longitudes; cualquier igualdad de lados debe quedar explícita mediante texto o marcas de igualdad en la figura.",
-      "Evitar enunciados que no aclaren el tipo específico de cuadrilátero cuando esto afecta la igualdad de lados (por ejemplo, diferenciar claramente entre trapecio genérico y trapecio isósceles).",
-      "No mezclar distintas unidades de longitud sin indicar explícitamente si se deben convertir y a qué unidad se debe responder.",
-      "No usar expresiones vagas como 'figura parecida a un rectángulo' si se necesita usar propiedades exactas de un rectángulo o paralelogramo; especificar el tipo de figura con precisión.",
-      "Evitar que la altura, las diagonales u otros segmentos interiores puedan interpretarse como lados si no se etiquetan cuidadosamente.",
-      "No dejar lados sin etiqueta cuando su medida no es deducible a partir de la información textual; todo lado que intervenga en el perímetro debe ser directamente dado o claramente inferible por propiedades de igualdad.",
-      "Evitar contextos donde sea razonable interpretar que se pide área en lugar de perímetro (por ejemplo, hablar de 'superficie' de un terreno) sin aclarar que se requiere la longitud del contorno.",
-      "No usar formulaciones que mezclen perímetro con otros conceptos en la misma pregunta (por ejemplo, pedir área y perímetro a la vez dentro de este átomo), para no dispersar el foco conceptual.",
-      "Evitar gráficos extremadamente fuera de escala que sugieran relaciones falsas entre longitudes (por ejemplo, un cuadrado dibujado como un rectángulo muy alargado)."
+      "No usar figuras en las que la igualdad de lados sea solo visual; siempre marcar lados iguales con trazos o declararlo explícitamente en el texto.",
+      "Evitar dibujos desproporcionados que sugieran que un lado es claramente mayor o menor si esa relación no está respaldada por datos numéricos o texto.",
+      "No mezclar unidades de medida sin dejar explícito si se requiere o no la conversión; si se necesita conversión, indicar claramente las equivalencias.",
+      "Evitar etiquetas de lados confusas o superpuestas; cada longitud debe asociarse inequívocamente a un lado.",
+      "No usar la palabra \"tamaño\" de manera vaga; especificar siempre qué se refiere a longitud de lado, perímetro total, etc.",
+      "No pedir perímetros de partes de la figura sin delimitar con claridad qué bordes se consideran (usar sombreado o descripción textual precisa).",
+      "Evitar contextos donde el borde relevante pueda interpretarse de más de una forma (por ejemplo, si incluye o no divisiones internas) sin aclaración en el enunciado.",
+      "No introducir polígonos fuera del conjunto del átomo (pentágonos, etc.) salvo que su papel sea absolutamente irrelevante para la tarea.",
+      "Evitar que la alternativa correcta dependa de interpretar que el dibujo está a escala; debe depender solo de datos y propiedades dadas."
     ],
     "error_families": [
       {
-        "name": "Confusión_perímetro_Área",
-        "description": "El estudiante interpreta la consigna como si se pidiera área, multiplicando lados o aplicando fórmulas de área en lugar de sumar las longitudes. Es frecuente en cuadrados y rectángulos en problemas de terrenos o pisos.",
-        "how_to_address": "En la redacción del ítem enfatizar 'perímetro' o 'contorno' y evitar palabras asociadas a superficie. En retroalimentación, mostrar con un ejemplo visual la diferencia entre contar el borde (perímetro) y cubrir la superficie (área)."
+        "name": "Confundir_perimetro_con_area",
+        "description": "El estudiante usa fórmulas de área (por ejemplo, base×altura) en lugar de sumar los lados. Es común en rectángulos y cuadrados, donde calculan largo×ancho o lado×lado.",
+        "how_to_address": "Incluir ítems que contrasten explícitamente ambos conceptos (por ejemplo, mismas dimensiones pero se pregunta solo por el borde). En el feedback, destacar que el perímetro se relaciona con el borde externo y siempre se obtiene sumando longitudes lineales."
       },
       {
-        "name": "Omisión_de_lados",
-        "description": "Al sumar, el estudiante olvida incluir uno o más lados, en especial cuando hay lados iguales o repetidos (por ejemplo, suma sólo una base de un trapecio o considera sólo dos lados en un rectángulo).",
-        "how_to_address": "Explicitar la idea de 'recorrer toda la vuelta' al contorno. En retroalimentación, marcar sobre el dibujo el recorrido completo, señalando cada segmento que debe sumarse."
+        "name": "Olvidar_lados_en_la_suma",
+        "description": "El estudiante no incluye todos los lados al calcular el perímetro, especialmente en figuras con lados etiquetados en distintas posiciones o en contextos donde algunos lados se describen solo en el texto.",
+        "how_to_address": "Diseñar ítems donde convenga listar previamente los lados antes de sumar. En retroalimentación, sugerir escribir explícitamente cada lado que se suma (por ejemplo, P = lado1 + lado2 + ...), marcando en la figura los segmentos ya considerados."
       },
       {
-        "name": "No_usar_propiedades_de_igualdad",
-        "description": "El estudiante no utiliza que algunos lados son iguales (paralelogramos, rombos, trapecios isósceles) y asume que faltan datos o se inventa medidas.",
-        "how_to_address": "Recordar en la consigna el tipo de figura (por ejemplo, 'paralelogramo') e incluir marcas visuales de igualdad de lados cuando haya imagen. En la retroalimentación, mostrar explícitamente cómo se concluye que ciertos lados tienen la misma longitud a partir del tipo de figura."
+        "name": "No_duplicar_lados_iguales",
+        "description": "En rectángulos, paralelogramos, rombos o trapecios isósceles, el estudiante suma solo las medidas distintas (por ejemplo, largo + ancho) y olvida que hay dos lados de cada tipo.",
+        "how_to_address": "Usar ítems que inviten a escribir la expresión del perímetro usando multiplicación (por ejemplo, P = 2l + 2w, P = 4a), e incluir alternativas distractoras que correspondan a l + w para evidenciar el error en la revisión. El feedback debe insistir en que cada lado cuenta una vez en la suma total."
       },
       {
-        "name": "Igualdad_supuesta_incorrecta",
-        "description": "El estudiante asume que algunos lados son iguales sin que el enunciado lo garantice, por ejemplo creer que todo trapecio es isósceles o confundir cualquier cuadrilátero con un rectángulo.",
-        "how_to_address": "En ítems de evaluación, evitar figuras que sugieran simetrías no indicadas. En la retroalimentación, insistir en que sólo se puede usar la información declarada (nombre de la figura o marcas de igualdad), no lo que 'parece' en el dibujo."
+        "name": "Ignorar_propiedades_de_paralelogramos_y_trapecios_isosceles",
+        "description": "El estudiante no usa la información de que ciertos lados son iguales (paralelogramo, rombo, trapecio isósceles) y concluye que faltan datos o inventa longitudes sin justificación.",
+        "how_to_address": "Plantear ítems donde el único modo de obtener datos completos es usar esas propiedades. En la retroalimentación, recordar las definiciones: en un paralelogramo, lados opuestos son iguales; en un rombo, todos los lados iguales; en trapecio isósceles, los lados no paralelos son iguales."
       },
       {
-        "name": "Uso_incorrecto_de_segmentos_internos",
-        "description": "El estudiante incluye en la suma segmentos que no pertenecen al contorno, como diagonales, alturas o líneas auxiliares dibujadas dentro de la figura.",
-        "how_to_address": "Etiquetar claramente qué segmentos forman el perímetro. En la retroalimentación, remarcar con color el contorno y mostrar que las diagonales o alturas no bordean la figura."
+        "name": "Asignar_igualdades_por_apariencia",
+        "description": "El estudiante considera que ciertos lados son iguales solo porque en el dibujo se ven similares, aunque no hay marcas ni información textual que lo respalde.",
+        "how_to_address": "Utilizar figuras intencionalmente fuera de escala y enfatizar en las instrucciones que solo se puede usar la información dada (marcas, medidas, texto). Feedback: aclarar que los dibujos en pruebas no necesariamente están a escala, y que la igualdad de lados siempre debe estar indicada."
       },
       {
-        "name": "Errores_de_cálculo_aritmético",
-        "description": "Se cometen errores al sumar varios valores, en particular cuando hay decimales o fracciones sencillas.",
-        "how_to_address": "Mantener el número de sumandos razonable según la dificultad buscada. En retroalimentación, desglosar la suma en pasos más simples, sugiriendo ordenar los números o agrupar los que suman múltiplos de 10 o 1 entero."
+        "name": "Manejo_deficiente_de_unidades",
+        "description": "Se suman longitudes con unidades diferentes sin convertirlas, o bien se confunden unidades (por ejemplo, interpretan 3 m como 3 cm).",
+        "how_to_address": "Incluir algunos ítems con conversión simple de unidades o insistir en que todas las medidas del problema están en la misma unidad. En feedback, reforzar la necesidad de verificar que todas las longitudes estén expresadas en la misma unidad antes de sumar."
       },
       {
-        "name": "Manejo_inadecuado_de_unidades",
-        "description": "El estudiante combina unidades distintas (por ejemplo cm y m) sin convertirlas, o entrega la respuesta en una unidad diferente a la pedida.",
-        "how_to_address": "En construcción de ítems, usar una sola unidad o indicar explícitamente la unidad esperada en la respuesta. En retroalimentación, recordar la necesidad de homogeneizar unidades antes de sumar y dar un ejemplo breve de conversión simple."
+        "name": "Errores_de_calculo_aritmetico",
+        "description": "Sumas o multiplicaciones mal ejecutadas aun cuando la estrategia geométrica es correcta (por ejemplo, 2×7=15, 4+5+6=14).",
+        "how_to_address": "Preferir números que no generen cálculos excesivamente largos para que el foco sea la comprensión del perímetro. En retroalimentación, sugerir la verificación rápida de cálculos (por ejemplo, estimar el orden de magnitud del perímetro y comparar con el resultado obtenido)."
       }
     ],
     "future_targets": [
-      "Cálculo de perímetros de figuras compuestas formadas por la unión de polígonos básicos.",
-      "Cálculo de áreas de triángulos, cuadriláteros especiales y trapecios, diferenciando claramente entre área y perímetro.",
-      "Resolución de problemas de escala y semejanza de figuras, donde los factores de escala afectan el perímetro.",
-      "Estudio de circunferencias y longitud de arco, extendiendo la idea de perímetro a curvas.",
-      "Modelación geométrica de situaciones de la vida real con restricciones de contorno (cercos, marcos, bordes de caminos).",
-      "Uso de propiedades más avanzadas de cuadriláteros y triángulos en teoremas (Pitágoras, semejanza) cuando se requiera calcular longitudes para luego determinar perímetros.",
-      "Resolución de problemas de optimización simples relacionados con perímetro fijo o área fija (por ejemplo, máxima área con perímetro dado) en niveles posteriores."
+      "Cálculo de perímetros de polígonos más complejos y figuras compuestas a partir de polígonos básicos.",
+      "Cálculo de áreas de polígonos básicos, distinguiendo claramente entre magnitud lineal (perímetro) y superficial (área).",
+      "Resolución de problemas de optimización sencilla en contexto (por ejemplo, máximo perímetro con cierto material, o mínimo material para cercar un área dada).",
+      "Introducción a la longitud de circunferencia y perímetros de figuras mixtas (polígono + arco).",
+      "Uso de la distancia entre dos puntos en el plano cartesiano para hallar el perímetro de figuras definidas por coordenadas.",
+      "Modelación geométrica de situaciones más complejas donde se deba decidir qué partes de un contorno se incluyen en el perímetro relevante.",
+      "Cálculo de costos o recursos asociados a perímetros (cercos, marcos, ornamentos lineales) en problemas de proporcionalidad y funciones lineales."
     ],
     "representation_variants": [
-      "verbal",
-      "simbólica",
-      "gráfica",
-      "tabular"
+      "Figura geométrica explícita (triángulo, cuadrilátero) con todos o algunos lados etiquetados con longitudes numéricas.",
+      "Descripción verbal de un polígono básico sin dibujo, indicando medidas de lados y tipo de figura (por ejemplo, cuadrado de lado 5 cm, trapecio isósceles con base mayor de 10 cm, etc.).",
+      "Problemas en contexto cotidiano donde el objeto tiene forma de polígono básico (terrenos rectangulares, pistas trapezoidales, banderas, marcos, ventanas).",
+      "Figuras con marcas de igualdad de lados (una, dos o tres rayas) sin indicar todas las medidas explícitamente, obligando al estudiante a usar la información de igualdad.",
+      "Figuras parcialmente etiquetadas donde algunas longitudes se deducen porque corresponden a la misma medida indicada en otra parte (por ejemplo, lados opuestos de un rectángulo tienen la misma etiqueta).",
+      "Tablas o descripciones textuales que enumeran las longitudes de los lados, donde el estudiante debe reconocer que corresponden a un polígono específico y sumar todas las longitudes.",
+      "Situaciones donde el perímetro se asocia a un recorrido (por ejemplo, caminar alrededor de una figura, tender una cuerda siguiendo su borde), destacando la interpretación de perímetro como distancia total recorrida."
     ],
     "numbers_profiles": [
       "small_integers",
-      "mixed_integers",
-      "decimals",
-      "simple_fractions"
+      "medium_integers",
+      "decimals_one_decimal_place",
+      "decimals_two_decimal_places",
+      "simple_fractions",
+      "mixed_numbers_simple"
     ],
-    "required_image_types": []
+    "required_image_types": [
+      "geometric_figure"
+    ]
   }
 }

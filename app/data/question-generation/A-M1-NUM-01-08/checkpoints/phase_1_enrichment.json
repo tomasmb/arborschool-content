@@ -3,129 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Modelar enunciados cotidianos que involucren ganancias, pérdidas, temperaturas, niveles, pisos, altitudes, deudas y saldos con números enteros positivos y negativos.",
-        "Identificar correctamente los datos numéricos y asignarles signo de acuerdo con el contexto (ganancia/pérdida, subida/bajada, aumento/disminución, sobre/bajo cero).",
-        "Seleccionar la operación aritmética adecuada (suma, resta, multiplicación o división) para representar cambios, repeticiones o repartos de cantidades enteras.",
-        "Escribir una expresión numérica con enteros (por ejemplo, -3 + 5, -2 - 7, -5000 × 3) que modele la situación, sin necesidad de efectuar el cálculo.",
-        "Modelar cambios sucesivos mediante sumas y restas encadenadas de enteros (por ejemplo, temperatura que sube y luego baja).",
-        "Modelar repeticiones de una misma situación con multiplicación de un entero (por ejemplo, repetir varias veces una ganancia o una pérdida)."
+        "Traducción de enunciados en lenguaje cotidiano a expresiones numéricas que involucren únicamente números enteros.",
+        "Identificación del signo adecuado (positivo/negativo) asociado a cantidades que representen ganancias/pérdidas, subidas/bajadas, temperaturas sobre/bajo cero, pisos sobre/bajo el nivel de calle, créditos/deudas, etc.",
+        "Selección de la operación básica (suma, resta, multiplicación o división) que modela la relación entre cantidades enteras descritas en el enunciado.",
+        "Construcción de expresiones sin resolverlas, donde la tarea evaluada es el modelo matemático, no el resultado numérico.",
+        "Situaciones con una o dos etapas simples que combinen números enteros y una o dos operaciones aritméticas básicas."
       ],
       "out_of_scope": [
-        "Resolución numérica de la expresión construida (cálculo del resultado final).",
-        "Modelado con fracciones, decimales o porcentajes; solo se trabaja con números enteros.",
-        "Ecuaciones con incógnitas o despeje de variables; aquí solo se construyen expresiones numéricas puras.",
-        "Uso de potencias, raíces, valor absoluto u otras operaciones más allá de suma, resta, multiplicación y división.",
-        "Interpretación de gráficos de funciones, rectas numéricas u otros registros visuales complejos como requisito central del ítem.",
-        "Problemas que requieran comparar cantidades o decidir cuál es mayor o menor entre dos enteros (eso corresponde a orden o comparación, no a modelización)."
+        "Cálculo del valor numérico final de la expresión (esto pertenece a evaluación de cálculo, no de modelización).",
+        "Situaciones que requieran fracciones, decimales, porcentajes o potencias; este átomo se restringe a números enteros.",
+        "Modelación con expresiones algebraicas con incógnitas (por ejemplo, usar x para representar una cantidad desconocida).",
+        "Problemas que requieran ecuaciones, inecuaciones o sistemas; solo se pide la expresión numérica directa.",
+        "Uso de recta numérica o gráficos como representación principal (eso corresponde a otros átomos de representación).",
+        "Contextos probabilísticos o estadísticos que involucren conteo de casos, tablas de frecuencia u organización de datos.",
+        "Modelación que requiera más de dos operaciones encadenadas o estructuras complejas como paréntesis anidados."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01",
-        "A-M1-NUM-01-02",
-        "A-M1-NUM-01-03",
-        "A-M1-NUM-01-04"
+        "A-M1-NUM-01-01: Comprender el significado de números enteros positivos y negativos en contextos cotidianos (ganancia/pérdida, sobre/bajo cero, pisos, etc.).",
+        "A-M1-NUM-01-02: Reconocer y usar la recta numérica para ubicar enteros y entender la relación mayor/menor que cero.",
+        "A-M1-NUM-01-03: Manejar la suma y resta de números enteros a nivel conceptual (agregar/quitar, subir/bajar, aumentar/disminuir).",
+        "A-M1-NUM-01-04: Comprender la multiplicación como repetición de una cantidad entera (repetir una ganancia o una pérdida).",
+        "A-M1-NUM-01-05: Comprender la división de enteros en contextos de reparto o razón, al menos a nivel intuitivo.",
+        "A-M1-COM-01-01: Comprensión lectora básica de enunciados cortos, identificando datos numéricos y relaciones verbales (más que, menos que, el doble, el triple, etc.)."
       ],
       "common_traps": [
-        "Confundir el signo del número con la operación (interpretar una pérdida repetida como suma de positivos, o escribir 3 - -5 cuando el contexto indica -3 - 5).",
-        "Interpretar palabras como 'bajó', 'perdió', 'deuda', 'por debajo', 'subterráneo' solo como signo negativo, sin considerar el punto de partida (por ejemplo, bajar desde un valor ya negativo).",
-        "Ignorar el valor inicial y modelar solo el cambio (por ejemplo, escribir -3 en vez de -2 - 3 cuando la temperatura baja 3 grados desde -2).",
-        "Equivocarse en el orden de las operaciones en cambios sucesivos (primero subir, luego bajar) y escribir la expresión en el orden inverso al descrito.",
-        "Confundir la idea de repetición con suma en vez de multiplicación, cuando el enunciado sugiere claramente que es el mismo cambio varias veces.",
-        "No distinguir entre 'aumentó en 3' y 'aumentó a 3', que representan situaciones diferentes.",
-        "Usar innecesariamente paréntesis o cambiar el significado con paréntesis mal ubicados en expresiones con más de una operación."
+        "Plantear ítems donde el resultado numérico sea obvio mentalmente y la atención del estudiante se vaya al cálculo, no a la construcción de la expresión.",
+        "Usar contextos donde el signo de la cantidad pueda justificarse de más de una forma (por ejemplo, tomar la deuda como positiva y el pago como negativo), generando modelos equivalentes difíciles de distinguir en alternativas.",
+        "Enunciados excesivamente largos o narrativos que mezclan varios tiempos (antes/después) y generan ambigüedad en el momento de referencia para modelar.",
+        "Usar palabras coloquiales o ambiguas (por ejemplo, \"bajó 3 desde debajo de cero\") que no indiquen con claridad la operación a aplicar.",
+        "Mezclar simultáneamente más de dos ideas de cambio (subir, bajar, ganar, perder) que obliguen a usar tres o más operaciones sucesivas.",
+        "Pedir explícitamente que el estudiante 'calcule' o 'encuentre el resultado', lo que vulnera el foco en la construcción de la expresión.",
+        "Incluir números no enteros (por ejemplo, -2,5 o 3,7) que cambian el foco del átomo hacia manejo de decimales."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Enunciados breves (una o dos oraciones) con un solo cambio o situación, que se modelan con una sola operación entre dos números enteros.",
-        "Contextos muy familiares (dinero ganado/perdido, subida/bajada de pisos, aumento/disminución de temperatura) con vocabulario directo ('subió', 'bajó', 'ganó', 'perdió').",
-        "Valor inicial explícito y fácil de identificar, con un solo cambio descrito en forma lineal y sin comparaciones entre varias situaciones.",
-        "Uso de enteros pequeños en valor absoluto (entre -10 y 10) y sin combinación de más de un cambio sucesivo.",
-        "Relación operación-lenguaje casi literal (por ejemplo, formular 'bajó 3' como '- 3' sin ambigüedad sobre el signo del número)."
+        "Enunciados breves con un solo cambio respecto de una cantidad inicial claramente indicada, resultando en una única operación entre dos enteros (por ejemplo, una suma o resta directa).",
+        "Contextos muy familiares y unívocos para el signo: subir/bajar pisos, ganar/perder dinero, aumentar/disminuir temperatura, con referencia inicial dada como entero simple.",
+        "Expresiones sin necesidad de paréntesis y con operaciones del mismo tipo (solo suma o solo resta).",
+        "Datos numéricos pequeños (entre -10 y 10) y sin combinación de varias frases condicionales o temporales.",
+        "Uso de vocabulario estándar y directo (\"aumentó en\", \"disminuyó en\", \"subió\", \"bajó\", \"ganó\", \"perdió\") sin metáforas ni giros idiomáticos."
       ],
       "medium": [
-        "Enunciados con dos o más cambios sucesivos que deben modelarse en una sola expresión con dos o tres operaciones de suma y/o resta de enteros.",
-        "Contextos que combinan niveles o referencias distintas (por ejemplo, pisos sobre y bajo el nivel de calle) donde se debe distinguir punto de partida y dirección del cambio.",
-        "Uso de multiplicación o división para representar repeticiones o repartos de cantidades enteras negativas o positivas, pero con una sola idea central de repetición.",
-        "Necesidad de interpretar correctamente conectores temporales o secuenciales ('primero', 'después', 'luego', 'al final') para ordenar las operaciones en la expresión.",
-        "Enteros en valor absoluto moderado (hasta 100) y posible mezcla de números positivos y negativos en la misma expresión."
+        "Situaciones con dos etapas encadenadas que requieren dos operaciones, aunque del mismo tipo (por ejemplo, dos cambios sucesivos que se modelan como suma y resta en una única expresión).",
+        "Contextos donde se debe decidir correctamente el signo inicial y luego aplicar un cambio (por ejemplo, partir de una deuda, luego un aumento de la deuda o un pago parcial).",
+        "Uso de multiplicación o división en contextos repetitivos (el doble, el triple, \"se repite 4 veces la misma pérdida\") pero con una sola operación de este tipo.",
+        "Enunciados que obligan a distinguir entre \"desde\" y \"hasta\" un cierto valor, exigiendo atención a qué corresponde a la cantidad inicial y cuál es el cambio.",
+        "Requieren decidir el orden correcto de las cantidades en la operación (a − b vs b − a) a partir del lenguaje natural, pero sin paréntesis ni combinación de demasiadas preposiciones."
       ],
       "hard": [
-        "Enunciados más largos con información contextual adicional, donde parte de los datos es irrelevante y debe ser descartada para construir la expresión correcta.",
-        "Situaciones con cambios sucesivos que implican tres o más operaciones combinando suma, resta y multiplicación de enteros, posiblemente con necesidad de usar paréntesis.",
-        "Contextos que incluyen comparaciones relativas ('respecto del día anterior', 'más que', 'menos que lo que debía') que obligan a interpretar correctamente la referencia de cada cambio.",
-        "Casos donde la dirección del cambio no es explícita mediante palabras típicas, sino deducida por el contexto (por ejemplo, el efecto de 'perdonar parte de una deuda', 'anular un pago', 'recuperar un punto perdido').",
-        "Modelaciones que requieren distinguir cuidadosamente entre número con signo y operación (por ejemplo, diferenciar entre -2 - (-5) y -2 + (-5) según el enunciado).",
-        "Uso de multiplicación o división para modelar cambios repetidos sobre cantidades negativas en escenarios menos obvios (por ejemplo, varias multas o cargos periódicos)."
+        "Situaciones con dos etapas de naturaleza distinta (por ejemplo, una resta y luego una multiplicación, o una suma y luego una división) que deben modelarse en una sola expresión con paréntesis adecuados.",
+        "Contextos en los que el estudiante debe reconocer que la cantidad repetida es negativa (por ejemplo, multiplicar una deuda por un número entero mayor que 1) o que se reparte una cantidad negativa.",
+        "Enunciados que incluyen cambios en referencia temporal (antes de, después de, luego, finalmente) donde es necesario fijar un momento de referencia para decidir el signo de los cambios y su orden en la expresión.",
+        "Problemas donde se debe decidir conscientemente el uso o no de paréntesis para indicar qué operación se realiza primero (por ejemplo, 'se duplica la pérdida total') frente a aplicar la operación a solo una parte de la expresión.",
+        "Contextos menos frecuentes o menos transparentes (por ejemplo, cambios simultáneos en temperatura y altitud, o registros contables) siempre manteniendo solo números enteros, pero que exigen flexibilidad semántica para asignar el signo.",
+        "Distractores cercanos que representan modelos alternativos razonables pero incorrectos (cambio de orden en la resta, signo cambiado, falta de paréntesis), lo que obliga a una lectura muy fina del enunciado."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no quede claro cuál es el estado inicial y cuál es el cambio (por ejemplo, frases con 'quedó en' sin decir desde cuánto).",
-      "No usar expresiones vagas como 'más que antes', 'menos que lo anterior' sin indicar explícitamente el valor de referencia o sin que esté claramente definido en el texto.",
-      "Evitar usar en una misma situación signos lingüísticos contradictorios sin aclaración suficiente (por ejemplo, 'disminuyó la deuda' puede aumentar o disminuir el valor negativo si no se explicita).",
-      "No mezclar en un mismo ítem dos interpretaciones posibles del cero (por ejemplo, nivel del mar y saldo cero) sin especificar claramente a qué cero se refiere cada parte.",
-      "Evitar construcciones con doble negación en lenguaje natural que puedan mapearse a más de una expresión (por ejemplo, 'dejó de deber menos dinero').",
-      "No introducir palabras técnicas o financieras complejas ('abono', 'cargo', 'crédito', 'débitos') sin aclaración, si pueden confundirse con ganancia o pérdida.",
-      "Evitar que varias expresiones distintas representen razonablemente el mismo enunciado (por ejemplo, expresiones algebraicamente equivalentes, a menos que el ítem diferencie explícitamente la estructura deseada).",
-      "No cambiar el orden cronológico en el enunciado de manera confusa (mezclar 'después', 'antes', 'luego' en forma que pueda interpretarse en más de un orden)."
+      "Evitar enunciados donde varias interpretaciones del signo sean igualmente defendibles (por ejemplo, tratar la deuda como positiva y el pago como negativo vs al revés) sin que la pregunta explicite la convención.",
+      "No usar simultáneamente expresiones como \"por debajo de cero\" y \"bajó\" respecto del mismo valor, lo que puede confundir si el valor de referencia cambia o no.",
+      "Evitar el uso de pronombres sin referente claro ('después de eso', 'a partir de entonces') si hay más de un evento previo descrito.",
+      "No mezclar diferentes puntos de referencia en la misma situación sin aclararlos (por ejemplo, nivel del mar y altura de un edificio) cuando solo uno es relevante para el modelo pedido.",
+      "Evitar contextos que requieran interpretar ironías, metáforas o expresiones coloquiales poco literales (\"quedó en números rojos\", \"se fue a pique\") para decidir el signo.",
+      "No usar números innecesarios o datos irrelevantes que puedan ser confundidos con datos a modelar en la expresión.",
+      "Asegurarse de que quede explícito cuál es la cantidad inicial y cuál es el cambio; evitar frases donde ambas puedan intercambiarse sin afectar la naturalidad del texto.",
+      "Evitar introducir fracciones, porcentajes o decimales como datos si el foco del átomo es exclusivamente en enteros; eso cambia la naturaleza del modelo.",
+      "No mezclar la instrucción de modelar con la de calcular el resultado en el mismo ítem; debe pedirse solo la expresión.",
+      "Asegurarse de que la pregunta especifique claramente qué se debe representar (por ejemplo, la variación total, la cantidad final, la cantidad inicial), para que se sepa qué posición ocupa el dato en la operación."
     ],
     "error_families": [
       {
-        "name": "signo_contexto_invertido",
-        "description": "El estudiante asigna signo incorrecto a la cantidad porque interpreta mal el contexto (por ejemplo, modelar una deuda con un número positivo, o una ganancia como negativa).",
-        "how_to_address": "Trabajar con tablas que relacionen contexto-acción-signo (ganar/perder, subir/bajar, por sobre/por debajo de cero) y pedir que expliquen en palabras por qué cada cantidad es positiva o negativa antes de escribir la expresión."
+        "name": "signo_invertido_en_la_cantidad_inicial",
+        "description": "El estudiante asigna un signo incorrecto a la cantidad base (por ejemplo, representa una deuda como +5000 en vez de -5000, o un piso subterráneo como +2 en vez de -2).",
+        "how_to_address": "Diseñar ítems donde el contexto del signo inicial sea muy explícito (por ejemplo, 'debe', 'está bajo el nivel del mar', 'temperatura bajo cero') y contrastarlos con distractores que difieran solo en el signo, para promover que el estudiante justifique mentalmente por qué la cantidad es negativa o positiva."
       },
       {
-        "name": "confusion_operacion_vs_signo",
-        "description": "Se confunde el signo de los números con la operación, produciendo expresiones como 5 - -3 cuando el contexto indica 5 - 3, o reemplazando sumas por restas sin justificación.",
-        "how_to_address": "Diferenciar visualmente el símbolo de operación (+, -, ×, :) del signo del número (±) usando colores o posiciones, y practicar casos en que se separa 'lo que pasa' (operación) de 'qué tipo de cantidad es' (signo)."
+        "name": "confusion_en_la_direccion_de_la_operacion",
+        "description": "El estudiante invierte el orden en sumas o restas por interpretar al revés el cambio (por ejemplo, modelar 'bajó 3 desde -2' como 3 - (-2) en vez de -2 - 3).",
+        "how_to_address": "Incluir ítems que contrasten expresiones del tipo a − b y b − a en las alternativas, asociándolos a descripciones verbales muy similares pero con diferente referencia, de modo que el estudiante deba fijarse cuidadosamente en quién cambia y en qué sentido."
       },
       {
-        "name": "omision_estado_inicial",
-        "description": "El estudiante modela solo el cambio indicado (por ejemplo, '-3') e ignora el valor inicial descrito, o toma implícitamente el valor inicial como cero.",
-        "how_to_address": "Pedir siempre que antes de escribir la expresión se identifiquen explícitamente 'estado inicial' y 'cambio', y usar ejemplos comparativos donde se vea la diferencia entre cambiar desde cero y cambiar desde otro valor."
+        "name": "cambio_de_signo_en_el_cambio",
+        "description": "El estudiante interpreta de manera errónea el signo del cambio (por ejemplo, representar 'bajó 3 grados' como +3 o 'aumentó 4 pisos' como -4).",
+        "how_to_address": "Usar contextos con vocabulario claro de aumento/disminución y proponer alternativas que varíen solo el signo de la segunda cantidad, enfatizando así la necesidad de vincular 'subir, aumentar, ganar' con cambio positivo y 'bajar, disminuir, perder' con cambio negativo."
       },
       {
-        "name": "orden_temporal_invertido",
-        "description": "Se escriben las operaciones en orden distinto al descrito (por ejemplo, primero baja y luego sube, pero la expresión aparece como subida seguida de bajada).",
-        "how_to_address": "Representar la situación con una línea de tiempo o secuencia de flechas y solicitar que cada paso se vaya traduciendo de izquierda a derecha en la expresión, reforzando la lectura y escritura en el mismo orden temporal."
+        "name": "uso_inadecuado_de_operacion",
+        "description": "El estudiante elige una operación diferente de la requerida por el contexto (por ejemplo, multiplica cuando debería sumar, o resta cuando debería multiplicar).",
+        "how_to_address": "Plantear situaciones comparables donde el significado de duplicar, triplicar o repetir una acción se modele explícitamente como multiplicación, y contrastarlas con distractores que usen suma repetida para ver si el estudiante capta la estructura repetitiva del contexto."
       },
       {
-        "name": "suma_en_lugar_de_multiplicacion",
-        "description": "Cuando se indica una repetición de la misma acción, el estudiante usa varias sumas en vez de una multiplicación, o viceversa, sin reconocer el patrón de repetición.",
-        "how_to_address": "Hacer la conexión entre sumas repetidas y multiplicación en contextos de ganancias o pérdidas repetidas, explicitando ambas formas de escribir la expresión y discutiendo su equivalencia donde corresponda."
+        "name": "omision_o_uso_erroneo_de_parentesis",
+        "description": "Cuando hay más de una operación, el estudiante no agrupa correctamente con paréntesis, cambiando el orden de las operaciones (por ejemplo, interpretar 'se triplicó la deuda total de -5000 y -2000' como -5000 * 3 - 2000 en vez de (-5000 - 2000) * 3).",
+        "how_to_address": "Incluir ítems que hagan explícita la frase 'la cantidad total' o 'el resultado completo se duplica' y ofrecer como distractores expresiones sin paréntesis, de modo que el estudiante deba identificar si el factor multiplica toda la suma o solo una parte."
       },
       {
-        "name": "mal_uso_parentesis",
-        "description": "En expresiones con más de una operación, se agregan paréntesis que cambian el significado o se omiten cuando son necesarios para reflejar correctamente el enunciado.",
-        "how_to_address": "Presentar pares de enunciados casi iguales donde el uso o ausencia de paréntesis cambia el modelo, y hacer que el estudiante decida cuál corresponde a cada situación, justificando su elección."
+        "name": "modelar_demasiados_pasos_por_separado",
+        "description": "El estudiante representa por separado cada cambio (por ejemplo, -2 - 3 y luego otra expresión) en vez de escribir una sola expresión que modele toda la situación pedida.",
+        "how_to_address": "Redactar el enunciado y la instrucción de forma que quede claro que se pide 'una única expresión' o 'una expresión que reúna todas las operaciones necesarias', y ofrecer distractores que muestren expresiones incompletas para que el estudiante compare su alcance."
       },
       {
-        "name": "interpretacion_literal_incompleta",
-        "description": "El estudiante toma solo palabras clave ('bajó', 'subió') y numera sin considerar matices como 'desde', 'hasta', 'respecto de', produciendo expresiones que no consideran bien la referencia.",
-        "how_to_address": "Entrenar la subrayado guiado de expresiones clave ('desde', 'hasta', 'quedó en', 'respecto de') y discutir cómo cada una afecta la forma de la expresión, usando ejemplos y contraejemplos."
+        "name": "confusion_entre_cantidad_inicial_y_final",
+        "description": "El estudiante modela la cantidad equivocada: representa la variación en vez del valor final, o viceversa.",
+        "how_to_address": "Ser explícito en la consigna respecto de si se pide 'la cantidad final', 'la variación total' o 'la cantidad inicial', y proponer distractores que correspondan a interpretaciones alternativas (solo el cambio, solo la inicial) para obligar a leer con precisión."
       }
     ],
     "future_targets": [
-      "Resolución de problemas con enteros donde se requiere primero modelar y luego calcular el resultado.",
-      "Planteamiento y resolución de ecuaciones lineales simples a partir de situaciones cotidianas.",
-      "Interpretación y representación de movimientos en la recta numérica usando enteros con signo.",
-      "Modelación de variaciones de magnitudes físicas (temperatura, altura, nivel de agua, velocidad) mediante expresiones algebraicas más generales.",
-      "Comprensión de la estructura de expresiones algebraicas con signos positivos y negativos.",
-      "Trabajo con secuencias de cambios (progresiones sencillas) y análisis de patrones numéricos.",
-      "Transición hacia el modelado con ecuaciones en contextos financieros simples (saldos, deudas, pagos periódicos)."
+      "Modelación de situaciones con números racionales (fracciones, decimales, porcentajes) a partir de enunciados en lenguaje natural.",
+      "Formulación de expresiones algebraicas con variables que representen cantidades desconocidas en contextos cotidianos.",
+      "Planteamiento de ecuaciones e inecuaciones lineales a partir de problemas verbales más complejos.",
+      "Análisis de variaciones en funciones lineales mediante la interpretación de pendientes y ordenadas al origen en contextos reales.",
+      "Resolución de problemas multietapa que integren varias operaciones y tipos de números (enteros, racionales).",
+      "Modelación en contextos financieros más elaborados (interés simple, saldo de cuentas, flujos de caja).",
+      "Trabajo con recta numérica y representación gráfica de cambios como desplazamientos hacia la derecha o izquierda (vinculando lenguaje, modelo numérico y representación visual)."
     ],
     "representation_variants": [
-      "verbal_a_simbolica",
-      "simbólica_desde_tabla_de_cambios",
-      "simbólica_desde_descripcion_paso_a_paso",
-      "texto_breve_con_contexto_cotidiano",
-      "listado_de_eventos_consecutivos_a_una_sola_expresion"
+      "Enunciados puramente textuales donde el estudiante debe identificar datos y relaciones y proponer una expresión numérica.",
+      "Tablas simples con columnas que describen estados (inicial, cambio, final) y el estudiante debe completar o elegir la expresión que relaciona las columnas.",
+      "Listas de acciones sucesivas sobre una cantidad (por ejemplo, 'primero..., luego...') que el estudiante debe condensar en una sola expresión.",
+      "Comparación de dos posibles modelos de una misma situación, donde se pide seleccionar cuál expresión representa correctamente el enunciado.",
+      "Uso de notación de paréntesis para agrupar cambios totales o subtotales (por ejemplo, cambios en dos etapas resumidos en paréntesis multiplicados por un entero)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers_mixed_sign",
-      "integers_with_zero_as_reference",
-      "integers_moderate_magnitude"
+      "negative_integers",
+      "two_digit_integers"
     ],
     "required_image_types": []
   }

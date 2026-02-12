@@ -422,6 +422,12 @@ export interface CostEstimate {
   estimated_cost_min: number;
   estimated_cost_max: number;
   breakdown: Record<string, unknown>;
+  stale_artifacts?: {
+    checkpoint_files: string[];
+    item_count: number;
+    has_report: boolean;
+    has_stale_data: boolean;
+  };
 }
 
 export interface FailedItem {

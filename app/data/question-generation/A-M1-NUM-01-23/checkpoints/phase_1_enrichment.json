@@ -3,127 +3,133 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Dividir números decimales positivos y negativos transformando el divisor en entero mediante multiplicación por potencias de 10",
-        "Desplazar correctamente la coma decimal en dividendo y divisor para eliminar la coma del divisor",
-        "Realizar la división resultante con números enteros (algoritmo de la división larga o cálculo mental escrito) y ubicar correctamente la coma en el cociente",
-        "Aplicar correctamente la regla de los signos en divisiones con números decimales positivos y negativos",
-        "Reconocer la equivalencia entre una división de decimales y una fracción decimal simplificada cuando la técnica usada es eliminar la coma del divisor"
+        "Dividir números decimales positivos y negativos transformando el divisor en entero mediante multiplicación por potencias de 10.",
+        "Desplazar la coma en dividendo y divisor la misma cantidad de posiciones para eliminar la coma del divisor.",
+        "Realizar la división resultante como división de números enteros o decimales con divisor entero.",
+        "Ubicar correctamente la coma en el cociente según el desplazamiento aplicado.",
+        "Aplicar la regla de los signos en la división de números decimales."
       ],
       "out_of_scope": [
-        "División de fracciones no decimales (p. ej. 3/5 : 7/2) o uso de la regla producto cruzado entre fracciones",
-        "Aproximaciones avanzadas con decimales periódicos o infinitos no periódicos como resultado de la división",
-        "Aplicación de divisiones decimales en contextos de porcentajes, proporciones o razones compuestas (eso pertenece a otros átomos)",
-        "Cálculo de resto en contextos algebraicos (división polinomial) o uso de notación científica",
-        "Problemas que requieran interpretación de gráficos, tablas estadísticas o recta numérica más allá de usar el número decimal en el cálculo",
-        "Operaciones combinadas extensas que mezclan varias sumas, restas, multiplicaciones y potencias además de la división de decimales"
+        "División con fracciones explícitas (a menos que se representen como decimales).",
+        "Algoritmos avanzados de división larga con más de dos niveles de anidación (por ejemplo, dividir polinomios).",
+        "Operaciones con notación científica, salvo que el foco sea claramente la división decimal sin uso explícito de potencias de 10 en notación científica.",
+        "Problemas centrados en estimación, redondeo o aproximación de resultados, más allá de chequear razonabilidad.",
+        "Uso de calculadora o métodos aproximados (reglas de tres, proporciones) en lugar del procedimiento de desplazar la coma.",
+        "Aplicaciones estadísticas o de porcentajes donde la dificultad principal no sea la técnica de dividir decimales."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01  (lectura y escritura de números decimales, valor posicional)",
-        "A-M1-NUM-01-05  (multiplicación y división por potencias de 10, desplazamiento de la coma decimal)",
-        "A-M1-NUM-01-08  (división de números naturales, algoritmo de la división)",
-        "A-M1-NUM-01-15  (suma, resta y multiplicación de números decimales)",
-        "A-M1-NUM-01-20  (regla de los signos en operaciones con enteros)"
+        "A-M1-NUM-01-01: Comprensión del valor posicional en números decimales (décimas, centésimas, milésimas).",
+        "A-M1-NUM-01-02: Lectura, escritura y comparación de números decimales.",
+        "A-M1-NUM-01-10: Multiplicación de números por potencias de 10 (efecto de mover la coma).",
+        "A-M1-NUM-01-15: División de números naturales con algoritmo estándar (división larga).",
+        "A-M1-NUM-01-20: Regla de los signos para multiplicación y división de enteros."
       ],
       "common_traps": [
-        "Desplazar la coma solo en el divisor y olvidar hacerlo en el dividendo al multiplicar por la misma potencia de 10",
-        "Desplazar la coma en sentido contrario al necesario (p. ej. correrla hacia la izquierda cuando se multiplica por 10, 100, etc.)",
-        "Confundir cuántos lugares se desplazó la coma, sobre todo cuando el divisor tiene más de una cifra decimal",
-        "Ubicar mal la coma en el cociente, colocándola según la posición original del dividendo y no según el número de desplazamientos efectuados",
-        "Olvidar aplicar la regla de los signos y dar solo el valor absoluto del cociente",
-        "Tratar 0,2 como si fuera 0,02 (o viceversa) al transformarlo en entero, lo que lleva a multiplicar por la potencia de 10 incorrecta",
-        "Concluir que toda división de dos decimales debe dar un decimal, sin considerar que puede dar un entero exacto",
-        "Interpretar erróneamente los ceros agregados al dividendo (creer que cambiar 3 por 3,0 o 3,00 cambia el valor original)"
+        "Mover la coma solo en el divisor y olvidar hacerlo en el dividendo.",
+        "Calcular mal la cantidad de posiciones que se desplaza la coma al multiplicar por una potencia de 10.",
+        "Colocar la coma del cociente en el lugar incorrecto respecto del resultado entero obtenido.",
+        "Confundir 0,2 con 2/10 y aplicar mal la equivalencia al transformar en entero (por ejemplo, 3 : 0,2 tratado como 3 : 2).",
+        "Asumir que al correr la coma siempre se obtiene un número entero aunque el divisor aún conserve decimales.",
+        "Aplicar incorrectamente la regla de los signos (especialmente con doble negativo o con cero).",
+        "Olvidar que dividir por un número menor que 1 da como resultado un número mayor.",
+        "Tratar la división como si fuera una resta repetida sin respetar el algoritmo posicional de la división larga."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Divisiones con divisor decimal con una sola cifra decimal que se transforma en entero multiplicando por 10 (p. ej. 4,5 : 0,5; 3 : 0,2)",
-        "Números con pocas cifras significativas y sin necesidad de agregar ceros al dividendo luego del desplazamiento de la coma",
-        "Contextos directos o formulación puramente numérica sin texto verbal extenso ni interpretación de contexto",
-        "Casos donde el resultado es un número entero positivo y exacto, sin necesidad de redondeo",
-        "Uso de signos solo positivos o con indicación explícita y simple del signo final (p. ej. ambos positivos)"
+        "Divisiones donde solo uno de los números es decimal y la transformación a divisor entero requiere mover la coma a lo más una posición.",
+        "Divisor decimal con una sola cifra decimal que se vuelve entero al multiplicar por 10 (por ejemplo, 4,5 : 0,5).",
+        "Divisiones sin contexto verbal, presentadas de forma directa y simbólica.",
+        "Solo signos positivos o un único número negativo donde el estudiante solo debe decidir el signo final sin ambigüedad.",
+        "Resultados con pocas cifras decimales y sin necesidad de extender la división más allá de lo que aparece explícito en el enunciado (no se pide redondeo)."
       ],
       "medium": [
-        "Divisiones donde el divisor tiene dos cifras decimales y se requiere multiplicar por 100 para volverlo entero",
-        "Situaciones en las que es necesario agregar uno o dos ceros al dividendo para completar la división después de eliminar la coma del divisor",
-        "Presencia de signos negativos en uno de los términos, requiriendo aplicar conscientemente la regla de los signos",
-        "Ítems en contexto verbal sencillo donde hay que identificar la operación de división de decimales antes de calcular",
-        "Divisiones cuyo resultado es un decimal finito que exige ubicar con cuidado la coma en el cociente"
+        "Divisiones donde tanto dividendo como divisor son decimales con una o dos cifras decimales, requiriendo mover la coma una o dos posiciones.",
+        "Problemas en contexto (por ejemplo, reparto, razón, precio unitario) donde el estudiante debe traducir el enunciado a una división de decimales.",
+        "Ejercicios donde, luego de eliminar la coma del divisor, el dividendo sigue siendo decimal y es necesario ubicar correctamente la coma en el cociente.",
+        "Presencia de números negativos donde se requiere identificar el signo del resultado a partir de dos o más factores/divisores.",
+        "Resultados que no son enteros exactos, pero el número de cifras del resultado se deduce naturalmente del algoritmo sin requerir redondeos sofisticados."
       ],
       "hard": [
-        "Divisiones con divisor decimal con tres cifras decimales o más, obligando a multiplicar por 1000 o potencias superiores de 10",
-        "Números con varias cifras significativas donde el algoritmo de la división es largo y se presta a errores de cálculo intermedio",
-        "Casos que requieren agregar varios ceros al dividendo y continuar la división más allá de la parte entera, manejando correctamente los ceros en el cociente",
-        "Ítems que combinan signo negativo en dividendo y divisor o que requieren razonar el signo a partir de un contexto (p. ej. deudas, direcciones opuestas)",
-        "Problemas en contexto donde la división de decimales es un paso intermedio para responder una pregunta más global (p. ej. comparar dos razones dadas en forma decimal)",
-        "Situaciones donde el resultado se solicita con cierta precisión (p. ej. a la centésima), exigiendo decidir hasta dónde continuar la división y manejar redondeo básico"
+        "Divisiones con divisor decimal que requiere mover la coma dos o más posiciones (por ejemplo, 0,036) y donde el dividendo también es decimal con varias cifras.",
+        "Situaciones encadenadas donde la división de decimales es un paso intermedio clave para resolver el problema completo (por ejemplo, calcular primero una razón unitaria y luego una nueva cantidad).",
+        "Ítems que exigen distinguir entre resultados razonables e irrazonables, aprovechando el hecho de que dividir por un número menor que 1 aumenta el resultado.",
+        "Problemas con varios números negativos involucrados en operaciones previas a la división final, donde el estudiante debe controlar cuidadosamente la regla de signos.",
+        "Divisiones donde el resultado requiere continuar la división agregando ceros al dividendo (por ejemplo, cocientes periódicos cortados a cierta cifra decimal explícita).",
+        "Contextos donde se pide comparar dos cocientes decimales obtenidos por división, sin realizar completamente las divisiones, apoyándose en el análisis del desplazamiento de la coma y del valor posicional."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no quede explícito qué número es el dividendo y cuál el divisor, especialmente en contextos verbales; usar formulaciones claras o notación a : b o a ÷ b explícita",
-      "No mezclar comma y punto decimal en el mismo ítem; usar sistemáticamente la coma decimal según norma chilena",
-      "Evitar expresiones textuales vagas como 'acerca la coma' o 'mueve el punto' sin aclarar el sentido del desplazamiento; el procedimiento debe quedar implícito en los números, no en la redacción",
-      "No usar ejemplos donde el desplazamiento de la coma genere números que puedan confundirse visualmente (p. ej. 0,020 y 0,2) sin separar bien las cifras",
-      "Evitar pedir al mismo tiempo el procedimiento detallado y solo el resultado en alternativas; las alternativas deben ser solo resultados numéricos o afirmaciones claras",
-      "No combinar en una misma pregunta múltiples divisiones encadenadas con diferentes potencias de 10 si eso impide identificar cuál parte evalúa realmente la técnica de eliminar la coma del divisor",
-      "Evitar contextos verbales demasiado largos o con información irrelevante que oculte qué operación se debe realizar, para que el foco se mantenga en la división de decimales",
-      "No usar redondeos implícitos; si el resultado se debe aproximar, indicar con claridad el criterio (p. ej. 'redondea a la décima más cercana')"
+      "No mezclar punto y coma decimal en el mismo ítem. Usar siempre coma como separador decimal, coherente con la notación chilena.",
+      "Evitar expresiones verbales vagas del tipo 'mueva la coma dos lugares' sin indicar claramente en qué número y en qué dirección se realiza el desplazamiento.",
+      "No usar ejemplos donde, después de multiplicar por potencias de 10, el divisor siga teniendo decimales a menos que eso sea intencionalmente parte de la dificultad y quede muy claro en el enunciado.",
+      "Evitar contextos donde la unidad de medida pueda interpretarse como parte del número (por ejemplo, escribir 1,2kg pegado sin espacio podría confundirse).",
+      "No pedir simultáneamente redondear y aplicar el algoritmo de división si eso no es el foco del ítem; aclarar si se requiere aproximar y a cuántas cifras.",
+      "No usar formulaciones en las alternativas que sugieran reglas erróneas como 'siempre dividir es hacer el número más chico', que podrían confundir el foco procedimental.",
+      "Evitar enunciados con varios pasos donde no esté claro cuál es la división principal que se debe efectuar; la relación entre datos y operación debe ser explícita o claramente deducible.",
+      "No incluir divisiones entre cero ni situaciones límite cercanas que puedan hacer dudar al estudiante sobre la validez de la operación."
     ],
     "error_families": [
       {
-        "name": "Desplazamiento_asimetrico_de_la_coma",
-        "description": "El estudiante multiplica solo el divisor por la potencia de 10 para eliminar la coma y deja el dividendo sin modificar, rompiendo la equivalencia de la división.",
-        "how_to_address": "Insistir en la idea de que se está multiplicando 'la fracción completa' (dividendo y divisor) por la misma potencia de 10, mostrando ambos números transformados en paralelo y verificando que la razón entre ellos no cambia."
+        "name": "Mover_solo_la_coma_en_el_divisor",
+        "description": "El estudiante multiplica tácitamente el divisor por 10, 100, etc. para hacerlo entero, pero olvida aplicar la misma transformación al dividendo, alterando el valor real del cociente.",
+        "how_to_address": "En el feedback, enfatizar la idea de que se está multiplicando una fracción dividendo/divisor por 10/10, 100/100, etc., lo que no cambia el valor. Mostrar con un ejemplo sencillo (por ejemplo, 3 : 0,3) cómo cambian ambos números y el cociente se mantiene."
       },
       {
-        "name": "Potencia_de_10_incorrecta",
-        "description": "El estudiante elige mal la potencia de 10 con la que debe multiplicar, por confundir la cantidad de cifras decimales del divisor (p. ej. ve 0,25 y multiplica por 10 en lugar de 100).",
-        "how_to_address": "Entrenar el conteo explícito de cifras decimales del divisor y asociar cada cifra a un cero de la potencia de 10 (una cifra → 10; dos → 100; tres → 1000), usando ejemplos variados y comparando antes/después."
+        "name": "Cuenta_incorrecta_de_posiciones_de_coma",
+        "description": "El estudiante decide mal cuántos lugares debe correr la coma para hacer entero el divisor, o corre menos/más posiciones en uno de los números, generando un divisor aún decimal o un cambio desproporcionado.",
+        "how_to_address": "Reforzar la lectura del número decimal en palabras (por ejemplo, 'tres centésimas') y relacionarlo con la potencia de 10 adecuada. Practicar pares (número, potencia de 10 que lo hace entero) para automatizar el conteo de posiciones."
       },
       {
-        "name": "Direccion_erronea_del_desplazamiento",
-        "description": "El estudiante desplaza la coma hacia la izquierda cuando multiplica por 10, 100, etc., como si estuviera dividiendo, invirtiendo el efecto esperado.",
-        "how_to_address": "Reforzar el vínculo entre multiplicar por 10 y 'hacer el número más grande', usando la recta numérica mental y ejercicios de solo desplazamiento de coma (sin divisiones) antes de aplicarlo en este algoritmo."
+        "name": "Coma_mal_ubicada_en_el_cociente",
+        "description": "Después de transformar la división a una con divisor entero, el estudiante hace correctamente la división de enteros, pero coloca la coma del resultado en el lugar equivocado, perdiendo la equivalencia con la operación original.",
+        "how_to_address": "Hacer explícito el vínculo entre la cantidad de lugares que se movió la coma inicialmente y la posición final de la coma en el cociente. Utilizar esquemas donde se marque el corrimiento en ambos números y luego se señale el impacto en el resultado."
       },
       {
-        "name": "Mala_colocacion_de_la_coma_en_el_cociente",
-        "description": "Tras transformar la división en una de enteros, el estudiante ubica la coma en el resultado según la posición original del dividendo, ignorando el número de lugares que corrió la coma.",
-        "how_to_address": "Hacer explícito el paso final: 'la coma en el cociente se corre tantos lugares como se corrió en el dividendo al inicio', y practicar con ejemplos donde se verifique la respuesta convirtiendo de vuelta a la división original."
+        "name": "Regla_de_signos_mal_aplicada",
+        "description": "El estudiante olvida o aplica mal la regla de los signos al dividir números decimales negativos, especialmente cuando ambos términos son negativos o cuando el signo negativo aparece en notación menos habitual (por ejemplo, -0,4 : -0,2).",
+        "how_to_address": "Separar en la explicación el cálculo del valor absoluto del cociente del análisis de signos. Trabajar ejemplos numéricamente simples donde solo varíen los signos para fijar el patrón (+ ÷ +, + ÷ -, - ÷ +, - ÷ -)."
       },
       {
-        "name": "Ignorar_regla_de_los_signos",
-        "description": "El estudiante realiza correctamente los cálculos con valores absolutos pero da siempre respuesta positiva, sin analizar si el cociente debe ser negativo.",
-        "how_to_address": "Separar el problema en dos pasos: primero calcular el valor absoluto, luego determinar el signo usando un esquema visual (+/−) o una tabla simple de signos, practicando con casos solo de enteros antes de incluir decimales."
+        "name": "Modelo_erróneo_de_tamaño_del_resultado",
+        "description": "El estudiante asume que toda división 'hace más pequeño' al número, y se sorprende cuando al dividir por un número menor que 1 el resultado aumenta. Esto provoca elección incorrecta de alternativas de respuesta.",
+        "how_to_address": "Incluir en la retroalimentación comparaciones simples (por ejemplo, 6 : 2 frente a 6 : 0,2) y apoyarse en representaciones de reparto o medida para mostrar que usar 'porciones' menores que 1 aumenta el número de porciones, y por tanto el cociente."
       },
       {
-        "name": "Manejo_deficiente_de_ceros_en_el_dividendo",
-        "description": "Al agregar ceros al dividendo para continuar la división, el estudiante se confunde sobre si está cambiando el valor original o sobre cuántos ceros corresponden en el cociente.",
-        "how_to_address": "Trabajar la idea de que agregar ceros después de la coma no cambia el valor (3 = 3,0 = 3,00) y hacer ejercicios focalizados donde solo se practique extender el dividendo y leer correctamente el cociente resultante."
+        "name": "Confusion_decimal_entero_en_la_transformacion",
+        "description": "Tras multiplicar por potencias de 10, el estudiante trata el nuevo número como si fuera el original (por ejemplo, confundir 0,2 con 2 después de multiplicar por 10, y luego olvidar que esta transformación fue solo un paso auxiliar).",
+        "how_to_address": "Recalcar la igualdad de fracciones y mantener la notación de la operación original junto a la transformada (mostrar 3 : 0,2 = 30 : 2) para que visualice que no se 'cambió' el número de verdad, sino la forma de escribirlo para facilitar el cálculo."
       },
       {
-        "name": "Errores_de_calculo_entero_en_la_division_larga",
-        "description": "Aunque entiende la técnica para eliminar la coma, se equivoca en la división de enteros (restas parciales, productos intermedios, colocación de cifras en el cociente).",
-        "how_to_address": "Reforzar el algoritmo de la división de enteros de forma aislada, con énfasis en estimación y verificación (multiplicar divisor por cociente para chequear), y luego retomar los decimales con números más sencillos."
+        "name": "Detencion_prematura_de_la_division",
+        "description": "El estudiante deja de dividir cuando aparece un resto distinto de cero, sin agregar ceros al dividendo, o asume que el proceso termina ahí aunque el problema pide un resultado decimal con cierta precisión.",
+        "how_to_address": "Recordar que siempre se pueden agregar ceros a la derecha de la parte decimal del dividendo sin cambiar su valor. Practicar uno o dos ejemplos donde se extienda la división hasta lograr el número de decimales solicitados explícitamente."
       }
     ],
     "future_targets": [
-      "Resolución de problemas de proporcionalidad directa e inversa con datos decimales",
-      "Cálculo de porcentajes, descuentos y aumentos que involucren divisiones de decimales",
-      "Cálculo de razones, tasas y promedios que requieren dividir cantidades decimales (p. ej. velocidad promedio, precio por unidad)",
-      "Operaciones con números racionales en forma decimal y fraccionaria, incluyendo cambio de representación",
-      "Aplicación de divisiones decimales en contextos de estadística descriptiva (p. ej. media aritmética, varianzas aproximadas)",
-      "Trabajo con funciones lineales y pendientes expresadas como cociente de números decimales",
-      "Desarrollo de habilidades para manejar errores de redondeo y estimación en contextos de cálculo aproximado"
+      "A-M1-NUM-01-30: Operar con porcentajes que requieren división de decimales (por ejemplo, cálculo de tasas y razones).",
+      "A-M1-NUM-01-35: Cálculo de promedios, razones y variaciones porcentuales usando datos decimales.",
+      "A-M1-NUM-02-05: Uso de potencias de 10 y notación científica en cálculos que incluyen divisiones.",
+      "A-M1-ALG-01-10: Resolución de ecuaciones lineales con coeficientes decimales donde se despeja dividiendo por un decimal.",
+      "A-M1-DAT-01-05: Interpretación de datos estadísticos que involucran tasas, densidades y promedios expresados en decimales.",
+      "A-M1-GEO-01-15: Cálculo de perímetros, áreas y volúmenes donde intervienen medidas decimales y se requiere dividir para hallar valores unitarios."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal",
-      "tabular"
+      "Expresión simbólica directa de la división, del tipo a,b : c,d.",
+      "Expresiones equivalentes como fracciones con decimales en numerador o denominador, enfatizando la transformación a divisor entero.",
+      "Contextos verbales de reparto o razón (precio por unidad, velocidad, densidad) que conducen a dividir decimales.",
+      "Tablas numéricas simples donde una columna representa cantidades totales decimales y otra cantidades unitarias obtenidas por división.",
+      "Secuencias de pasos del algoritmo de división larga donde se muestra explícitamente el corrimiento de la coma en dividendo y divisor.",
+      "Comparación de dos divisiones de decimales donde se razona sobre la posición de la coma y el tamaño relativo de los cocientes sin hacer todo el cálculo."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals",
-      "mixed"
+      "small_decimals_1dp",
+      "small_decimals_2dp",
+      "terminating_decimals",
+      "non_terminating_decimals_truncated",
+      "negative_decimals",
+      "powers_of_10_multipliers"
     ],
     "required_image_types": []
   }

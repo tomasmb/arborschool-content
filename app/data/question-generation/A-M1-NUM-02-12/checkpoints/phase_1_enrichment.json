@@ -3,124 +3,126 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Juzgar si una afirmación que usa porcentajes (en contexto cotidiano o de datos) es verdadera o falsa, explicando la decisión.",
-        "Analizar cambios sucesivos expresados en porcentajes (aumentos y disminuciones) y decidir si la conclusión presentada es válida.",
-        "Detectar razonamientos que suman o restan porcentajes sin considerar la base sobre la que se calculan.",
-        "Evaluar argumentos que confunden porcentaje con cantidad absoluta (por ejemplo, tratar 20% como ‘20 puntos’ en cualquier contexto).",
-        "Usar contraejemplos sencillos para mostrar que una afirmación con porcentajes es errónea.",
-        "Analizar conclusiones extraídas de datos porcentuales de encuestas, descuentos, impuestos, variación de precios o población."
+        "Evaluar si afirmaciones sobre aumentos y disminuciones porcentuales sucesivas son verdaderas o falsas, explicando el razonamiento.",
+        "Analizar argumentos que suman o restan porcentajes como si fueran cantidades absolutas cuando las bases cambian.",
+        "Cuestionar conclusiones obtenidas a partir de datos porcentuales de encuestas, descuentos, rebajas sucesivas, impuestos o intereses simples elementales.",
+        "Usar contraejemplos numéricos simples para mostrar que una afirmación porcentual es incorrecta.",
+        "Distinguir entre porcentaje de una cantidad y cambio porcentual respecto de una cantidad inicial.",
+        "Identificar posibles solapamientos en porcentajes de grupos (por ejemplo, preferencias o pertenencias a categorías) y cómo esto afecta la interpretación."
       ],
       "out_of_scope": [
-        "Cálculo complejo de porcentajes compuestos en muchos pasos numéricos; el foco es el razonamiento, no el cómputo pesado.",
-        "Intereses compuestos formales a largo plazo, tablas de amortización, o fórmulas financieras específicas.",
-        "Probabilidades formales o teorema de Bayes expresados en porcentaje; aquí solo se usan como contexto si es necesario, no como contenido central.",
-        "Demostraciones algebraicas formales de propiedades de porcentajes (por ejemplo, demostraciones simbólicas generales con variables).",
-        "Interpretación de gráficos estadísticos complejos (torta, barras, boxplot); esos pertenecen a ejes de datos y azar.",
-        "Uso de porcentajes en contextos geométricos avanzados (por ejemplo, escalas de planos o mapas) que requieran otras competencias."
+        "Cálculo técnico de porcentajes complejos con muchas operaciones numéricas que no aportan al razonamiento (por ejemplo, tres o más cambios sucesivos solo para que el cálculo sea largo).",
+        "Porcentaje compuesto en contexto de interés compuesto formal o fórmulas financieras avanzadas.",
+        "Problemas de probabilidad que usan porcentajes como probabilidades, donde el foco es la probabilidad y no el razonamiento porcentual.",
+        "Estadística descriptiva avanzada (promedios ponderados, varianza, desviación estándar) aunque se expresen en porcentaje.",
+        "Uso de ecuaciones algebraicas sofisticadas para modelar porcentajes; el foco debe estar en la lógica, no en la destreza algebraica.",
+        "Diagramas de Venn o conteo combinatorio detallado; solo se permite razonamiento verbal sobre posibles intersecciones."
       ],
       "prerequisites": [
-        "A-M1-NUM-02-01  (significado de porcentaje como ‘de cada 100’ y relación con fracciones/decimales)",
-        "A-M1-NUM-02-02  (cálculo de porcentajes simples de una cantidad, mental o escrito)",
-        "A-M1-NUM-02-05  (cálculo de aumentos y descuentos porcentuales básicos en un solo paso)",
-        "A-M1-ARG-01-01  (comprender qué es una afirmación, contraejemplo y justificación básica)",
-        "A-M1-DAT-01-01  (interpretar enunciados con datos porcentuales sencillos de encuestas o frecuencias relativas)"
+        "A-M1-NUM-02-01",
+        "A-M1-NUM-02-02",
+        "A-M1-NUM-02-03",
+        "A-M1-NUM-02-05"
       ],
       "common_traps": [
-        "Sumar o restar porcentajes de bases distintas como si fueran directamente comparables (por ejemplo, ‘sube 20% y baja 20% → queda igual’).",
-        "Asumir automáticamente que la suma de porcentajes de dos grupos da el porcentaje total sin considerar solapamientos (intersección).",
-        "Confundir ‘porcentaje de variación’ con ‘puntos porcentuales’ (por ejemplo, pasar de 10% a 20% es aumento del 10% versus 10 puntos porcentuales).",
-        "Pensar que un mismo porcentaje siempre corresponde a la misma cantidad absoluta, sin fijarse en la nueva base (por ejemplo, 10% de 100 es lo mismo que 10% de 200).",
-        "No distinguir entre porcentaje de la población total y porcentaje dentro de un subgrupo (por ejemplo, 30% de mujeres versus 30% del curso).",
-        "Interpretar cambios sucesivos como si fueran lineales (por ejemplo, dos aumentos de 10% como aumento total de 20% en vez de un factor multiplicativo)."
+        "Plantear ítems donde sumar porcentajes de grupos implícitamente disjuntos sin aclarar si pueden solaparse, generando ambigüedad sobre la intersección.",
+        "Usar contextos en que el estudiante podría resolver solo con cálculo mecánico de porcentajes, sin necesidad de evaluar la validez del argumento.",
+        "Proponer afirmaciones tan obviamente falsas (o verdaderas) que no requieran analizar el razonamiento, solo sentido común superficial.",
+        "Incluir datos numéricos innecesarios que distraen del núcleo de razonamiento (por ejemplo, muchos porcentajes y cantidades que no se ocupan).",
+        "Confundir porcentaje de cambio con porcentaje de una cantidad, sin dejar claro en el enunciado cuál de los dos se está utilizando.",
+        "Usar términos coloquiales ambiguos como 'casi todos', 'la mayoría', mezclados con porcentajes precisos, sin precisar qué se evalúa."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Afirmaciones directas sobre un único porcentaje de una sola base, donde el error o acierto se puede ver casi de forma intuitiva.",
-        "Contextos cotidianos simples (descuento en una tienda, porcentaje de estudiantes que prefieren una opción) con solo una o dos cantidades pequeñas.",
-        "Errores típicos muy explícitos, como decir que 50% de 50% es 100%, donde basta comparar verbalmente las partes involucradas.",
-        "Necesidad de justificación mínima: basta identificar el error con una frase corta o una comparación numérica elemental.",
-        "Uso casi exclusivo de enteros pequeños y porcentajes ‘redondos’ (10%, 20%, 25%, 50%)."
+        "Afirmaciones sobre uno o dos cambios porcentuales en una sola cantidad, con porcentajes simples (10%, 20%, 50%) y bases claramente explícitas.",
+        "Errores de razonamiento evidentes, como asumir que subir x% y luego bajar el mismo x% vuelve al valor inicial, con números muy manejables.",
+        "Contextos cotidianos directos (precio de un producto, asistencia a una actividad) donde el estudiante puede rápidamente construir un contraejemplo con números sencillos.",
+        "La pregunta puede resolverse verificando la afirmación con un ejemplo numérico concreto, sin necesidad de generalizar."
       ],
       "medium": [
-        "Afirmaciones que involucran dos cambios porcentuales sucesivos (por ejemplo, sube y luego baja) donde el estudiante debe razonar sobre la base en cada etapa.",
-        "Contextos donde se combinan dos o más porcentajes que pueden solaparse (por ejemplo, preferencias por dos alternativas en un grupo) y se debe decidir si se pueden sumar o no.",
-        "Situaciones en que es necesario considerar explícitamente la base (total del curso, total de un subgrupo) para mostrar que la afirmación es errónea.",
-        "Requiere justificar con un pequeño cálculo, esquema o contraejemplo numérico, no solo con una intuición verbal.",
-        "Uso de porcentajes menos obvios (15%, 30%, 40%) o cantidades de referencia mayores, pero con números que siguen siendo manejables mentalmente."
+        "Afirmaciones que involucran cambios porcentuales sucesivos distintos (por ejemplo, subir 20% y luego bajar 10%) donde se debe notar el cambio de base.",
+        "Situaciones de encuestas donde se dan dos o tres porcentajes de grupos y se debe evaluar si una conclusión sobre el total o el complemento es válida, considerando posible solapamiento.",
+        "Ítems donde coexisten porcentaje de una cantidad y porcentaje de cambio, y es necesario distinguirlos para decidir si el argumento es correcto.",
+        "Argumentos con un razonamiento parcialmente correcto pero con una falla sutil (por ejemplo, sumar porcentajes correctos, pero aplicados a bases distintas) que exige leer con atención."
       ],
       "hard": [
-        "Afirmaciones que mezclan porcentajes de distintos grupos o momentos (antes/después, hombres/mujeres, curso A/curso B) y exigen un análisis cuidadoso de qué base se usa en cada porcentaje.",
-        "Razonamientos donde el error no es inmediato, por ejemplo, conclusiones globales a partir de porcentajes parciales o condicionales (porcentaje dentro de un subgrupo).",
-        "Necesidad de construir un contraejemplo cuidadosamente elegido (por ejemplo, escoger números concretos para mostrar que una regla general con porcentajes falla).",
-        "Ítems que requieren distinguir entre cambio relativo y cambio absoluto en porcentaje (por ejemplo, comparar ‘aumentar en 5 puntos porcentuales’ con ‘aumentar en 5%’).",
-        "Uso de combinaciones de porcentajes con decimales o fracciones que impiden confiar solo en la intuición (por ejemplo, 12,5%, 37,5%) pero sin hacer el cálculo técnico el foco principal.",
-        "Afirmaciones redactadas de manera verosímil o ‘tramposa’, donde el estudiante debe desarmar paso a paso el argumento para detectar la falacia."
+        "Afirmaciones generales sobre el comportamiento de cambios porcentuales (por ejemplo, simetrías aparentes, composición de cambios) que deben refutarse o validarse conceptualmente, más allá de un solo ejemplo.",
+        "Situaciones con varios grupos y porcentajes (tres o más categorías) donde hay que evaluar si cierta conclusión sobre el máximo o mínimo posible de un grupo es válida, usando razonamiento sobre intersecciones posibles.",
+        "Ítems donde se ofrecen varios argumentos alternativos (por qué una afirmación sería verdadera o falsa) y se debe identificar cuál razonamiento es correcto, no solo el resultado.",
+        "Contextos donde el dato porcentual se presenta de forma indirecta (por ejemplo, combinando frases como 'la tercera parte', 'la mitad' y porcentajes) y se debe homogenizar mentalmente para revisar la validez del argumento.",
+        "Problemas en que el error no está en un cálculo sí/no posible, sino en una interpretación sutil de la base de cálculo (por ejemplo, confundir porcentaje sobre el total con porcentaje sobre un subgrupo)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no quede claro a qué ‘total’ se refiere cada porcentaje (especificar si es del curso, del grupo, de la muestra, etc.).",
-      "No usar la palabra ‘porcentaje’ cuando en realidad se habla de ‘puntos porcentuales’; explicitar siempre ‘puntos porcentuales’ cuando corresponda.",
-      "Evitar frases como ‘subió/bajó el doble en porcentaje’ sin indicar claramente qué se está comparando (porcentaje inicial versus porcentaje final).",
-      "No plantear ítems donde se pueda interpretar que los grupos comparados son disjuntos o solapados de manera ambigua; explicitar si pueden pertenecer a ambos grupos o no.",
-      "Evitar contextos con demasiadas categorías o subgrupos sin una tabla o descripción clara, que haga difícil seguir qué porcentaje corresponde a qué.",
-      "No mezclar porcentajes y fracciones sin indicar si ambos se refieren a la misma base; aclarar explícitamente la referencia.",
-      "Evitar números excesivamente incómodos (porcentajes con muchos decimales) que trasladen la dificultad al cálculo y no al razonamiento.",
-      "No usar términos coloquiales ambiguos como ‘casi todos’, ‘la mayoría’, si el análisis exige porcentajes exactos.",
-      "Evitar preguntas donde varias interpretaciones de ‘aumento de x%’ sean posibles (siempre implicar claramente que el porcentaje se calcula sobre el valor inicial)."
+      "Evitar enunciados donde no se especifica claramente la base del porcentaje (por ejemplo, 'aumenta un 20%' sin indicar respecto de qué, cuando hay más de una cantidad posible).",
+      "No usar expresiones vagas como 'la mayoría', 'poca gente', junto con porcentajes exactos, a menos que se haga explícito qué se evalúa.",
+      "No presentar porcentajes sobre poblaciones distintas sin decirlo, si eso es clave para evaluar la afirmación.",
+      "Evitar contextos de encuestas con frases como 'el 40% prefiere A y el 30% prefiere B' sin mencionar si una persona puede preferir ambos, cuando la tarea depende de esa información.",
+      "No mezclar porcentajes de cambio (aumentó un 10%) con porcentajes de composición (el 10% del total) sin especificar con claridad de cuál tipo se trata.",
+      "Evitar números redondos que hagan verdadera una afirmación que conceptualmente es falsa (por ejemplo, elegir cantidades para que subir 50% y bajar 50% dé casualmente el mismo valor).",
+      "No usar formulaciones donde más de una interpretación razonable de la pregunta sea posible (por ejemplo, si se evalúa solo la conclusión numérica o también el procedimiento descrito).",
+      "Evitar introducir porcentajes aproximados ('cerca de 30%') si la validez del argumento depende de valores exactos."
     ],
     "error_families": [
       {
-        "name": "Suma ingenua de porcentajes",
-        "description": "El estudiante asume que los porcentajes se pueden sumar directamente sin revisar si la base es la misma o si hay intersección entre grupos (por ejemplo, 40% prefiere A y 30% prefiere B → 70% prefiere A o B).",
-        "how_to_address": "Proponer contraejemplos con números concretos y pequeños (por ejemplo, 10 personas) y mostrar casos donde la suma excede 100% o es incompatible con los datos. Destacar siempre ‘¿de cuál total estás hablando?’ y ‘¿puede alguien estar en ambos grupos?’. "
+        "name": "Suma ingenua de porcentajes de cambio",
+        "description": "Creer que dos cambios sucesivos de x% y y% equivalen siempre a un cambio de (x + y)%, ignorando que el segundo cambio se aplica sobre una base diferente.",
+        "how_to_address": "Diseñar ítems donde el estudiante compare explícitamente el resultado numérico de aplicar dos cambios sucesivos con la suma directa de porcentajes, promoviendo el uso de un valor inicial simple (por ejemplo, 100) para mostrar la diferencia."
       },
       {
-        "name": "Confusión entre porcentaje y cantidad absoluta",
-        "description": "Tratar un porcentaje como si fuera una cantidad fija independiente de la base (por ejemplo, pensar que 20% es siempre la misma cantidad de unidades).",
-        "how_to_address": "Hacer que el estudiante compare el mismo porcentaje sobre bases diferentes (20% de 50 vs 20% de 200) y razonar en lenguaje cotidiano (‘20% de un curso pequeño no es la misma cantidad que 20% de un curso grande’)."
+        "name": "Simetría falsa del porcentaje",
+        "description": "Pensar que un aumento de x% y luego una disminución de x% devuelve al valor original (y viceversa).",
+        "how_to_address": "Plantear contextos concretos (precios, sueldos, cantidades de personas) en que se aplique un aumento y una disminución iguales, pidiendo comparar el valor final con el inicial y explicar por qué no coinciden."
       },
       {
-        "name": "Cambios sucesivos mal interpretados",
-        "description": "Suponer que aumentos y disminuciones porcentuales se compensan simétricamente o que se pueden sumar linealmente (por ejemplo, subir 50% y bajar 50% devuelve al valor original).",
-        "how_to_address": "Hacer que el estudiante use un número inicial concreto (por ejemplo, 100) y aplique los cambios paso a paso, comparando el resultado con el valor inicial. Resaltar la idea de que el segundo porcentaje se calcula sobre una base distinta a la original."
+        "name": "Tratamiento aditivo de porcentajes de grupos",
+        "description": "Sumar porcentajes de distintos grupos asumiendo que no se superponen (por ejemplo, preferencias por productos, personas que realizan distintas actividades), sin considerar posibles intersecciones.",
+        "how_to_address": "Incluir ítems que muestren explícitamente la posibilidad de que una persona pertenezca a más de un grupo, pidiendo evaluar conclusiones sobre el 'total que hace A o B' y razonando sobre casos extremos (máximo y mínimo posible)."
       },
       {
-        "name": "Base de referencia confusa",
-        "description": "No identificar correctamente a qué población o cantidad se refiere cada porcentaje (total del grupo, subgrupo, otro momento en el tiempo).",
-        "how_to_address": "Usar representaciones tabulares simples donde cada porcentaje esté claramente asociado a un total. Insistir en preguntar ‘¿porcentaje de qué?’ antes de aceptar una conclusión, y practicar el cambio entre expresiones como ‘30% del curso’ y ‘30% de las mujeres del curso’."
+        "name": "Confusión entre porcentaje de una cantidad y porcentaje de cambio",
+        "description": "Interpretar 'un 20% de aumento' como 'equivale al 20% del total final' o viceversa, o confundir '20% del total' con 'aumentó en 20%'.",
+        "how_to_address": "Proponer afirmaciones que comparen expresiones como 'el 20% de 150' y 'aumentar 150 en un 20%' y pedir decidir si son equivalentes, obligando a identificar la base y el significado en cada caso."
       },
       {
-        "name": "Generalización indebida a partir de un caso",
-        "description": "Aceptar reglas generales erróneas del tipo ‘dos descuentos de x% equivalen a un descuento de 2x%’ o ‘siempre se pueden sumar porcentajes para obtener el total’.",
-        "how_to_address": "Plantear casos simples que contradigan la regla (uno donde sí funciona y otro donde no) para mostrar que no se trata de una ley general. Guiar al estudiante a formular condiciones para cuando la suma de porcentajes es válida (misma base, sin intersección, etc.)."
+        "name": "Uso de base incorrecta para el porcentaje",
+        "description": "Calcular o interpretar un porcentaje usando la base equivocada (por ejemplo, tomar como referencia el valor final en vez del inicial, o un subgrupo en vez del total).",
+        "how_to_address": "Diseñar argumentos donde se mencione explícitamente a qué se refiere el porcentaje (por ejemplo, 'del total de estudiantes', 'de las mujeres', 'de los que asisten'), y pedir detectar si la base usada en la conclusión coincide con la que se indica en los datos."
       },
       {
-        "name": "Mezcla de cambio relativo y puntos porcentuales",
-        "description": "Confundir el cambio relativo (porcentaje de variación) con el cambio en puntos porcentuales (diferencia entre dos porcentajes).",
-        "how_to_address": "Pedir que expresen los cambios de ambas formas en un mismo problema (por ejemplo, de 10% a 15%: +5 puntos porcentuales y +50% relativo) y discutir por qué las dos descripciones son distintas y se usan en contextos diferentes."
+        "name": "Absolutización de porcentajes",
+        "description": "Pensar que un porcentaje alto implica necesariamente una cantidad absoluta alta, sin considerar el tamaño de la base.",
+        "how_to_address": "Plantear comparaciones entre grupos de tamaños distintos (por ejemplo, 80% de un grupo pequeño versus 40% de uno grande) y pedir evaluar si conclusiones del tipo 'es más gente' son válidas con los datos disponibles."
+      },
+      {
+        "name": "Ignorar la imposibilidad o inconsistencia de porcentajes",
+        "description": "Aceptar afirmaciones con porcentajes que suman más de 100% en contextos donde los grupos deberían ser disjuntos, sin cuestionar su coherencia.",
+        "how_to_address": "Usar situaciones en que la suma de porcentajes de categorías mutuamente excluyentes supera 100% y pedir evaluar si los datos podrían ser correctos, promoviendo la reflexión sobre la estructura de los conjuntos."
       }
     ],
     "future_targets": [
-      "Razonamiento crítico sobre gráficos y tablas estadísticas que muestran porcentajes y frecuencias relativas.",
-      "Interpretación correcta de encuestas, sondeos de opinión y resultados electorales que se reportan en porcentajes.",
-      "Comprensión de tasas de variación porcentual en contextos económicos (inflación, variación de precios, impuestos, variación de salarios).",
-      "Manejo de porcentajes compuestos e interés compuesto, entendiendo que los aumentos sucesivos multiplican en lugar de simplemente sumarse.",
-      "Análisis de riesgos y probabilidades expresados en porcentajes en contextos de salud, seguridad y medios de comunicación.",
-      "Lectura crítica de afirmaciones mediáticas o publicitarias que usan porcentajes de manera engañosa o incompleta.",
-      "Comparación de datos entre grupos de distinto tamaño usando porcentajes y tasas en lugar de solo números absolutos."
+      "Evaluación crítica de gráficos estadísticos que presentan porcentajes, identificando conclusiones inválidas.",
+      "Razonamiento proporcional más avanzado, incluyendo comparaciones entre tasas y porcentajes en contextos de crecimiento o decrecimiento.",
+      "Comprensión de porcentajes compuestos en contextos financieros básicos (como interés compuesto e inflación acumulada).",
+      "Argumentación en problemas de probabilidad que usan porcentajes o frecuencias relativas, diferenciando entre datos y conclusiones.",
+      "Análisis de encuestas y estudios de opinión donde se presentan múltiples porcentajes, discutiendo márgenes de error e interpretaciones posibles.",
+      "Modelación de situaciones reales con porcentajes variables, comprobando la consistencia de los modelos con los datos."
     ],
     "representation_variants": [
-      "verbal",
-      "tabular",
-      "simbólica",
-      "contextual_cotidiana"
+      "Enunciados verbales puros que describen cambios porcentuales sucesivos en una misma cantidad (precios, población, sueldos).",
+      "Tablas de dos columnas con valores iniciales y finales y sus correspondientes porcentajes de cambio, donde se cuestiona una interpretación.",
+      "Listas de afirmaciones o argumentos alternativos sobre los mismos datos porcentuales, pidiendo identificar cuál es válido.",
+      "Situaciones de encuestas presentadas como resumen textual con porcentajes para distintos grupos o categorías.",
+      "Pequeñas tablas de distribución de preferencias o pertenencias a categorías, expresadas en porcentajes, donde se evalúa una conclusión sobre el total.",
+      "Comparación de dos métodos de cálculo de un mismo problema de porcentajes (por ejemplo, aplicar primero un porcentaje u otro) para decidir si son equivalentes."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals",
-      "percentages_only",
-      "mixed"
+      "percentages_simple",
+      "percentages_with_decimals",
+      "fractions_simple",
+      "reference_100_base"
     ],
     "required_image_types": []
   }

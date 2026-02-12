@@ -11,6 +11,7 @@ from pathlib import Path
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.question_feedback.pipeline import QuestionPipeline
+from app.question_generation.artifacts import clean_stale_artifacts
 from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
@@ -115,6 +116,9 @@ class AtomQuestionPipeline:
                 )
 
         print_pipeline_header(atom_id)
+
+        # Clean stale downstream artifacts before running
+        clean_stale_artifacts(atom_id, self._config.phase)
 
         # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)
@@ -333,9 +337,11 @@ class AtomQuestionPipeline:
         result: PipelineResult,
     ) -> list[PlanSlot] | None:
         """Phases 2-3: Plan generation + validation."""
+        dist = self._config.planned_distribution
+
         # Phase 2: Generate plan
         gen_phase = self._planner.generate_plan(
-            ctx, enrichment, self._config.pool_size,
+            ctx, enrichment, dist,
         )
         result.phase_results.append(gen_phase)
         if not gen_phase.success:
@@ -344,9 +350,7 @@ class AtomQuestionPipeline:
         plan_slots: list[PlanSlot] = gen_phase.data
 
         # Phase 3: Validate plan
-        val_phase = validate_plan(
-            plan_slots, ctx, self._config.pool_size,
-        )
+        val_phase = validate_plan(plan_slots, ctx, dist)
         result.phase_results.append(val_phase)
         if not val_phase.success:
             return None
@@ -487,10 +491,6 @@ class AtomQuestionPipeline:
 
         if phase.success:
             result.total_synced = len(items)
-
-    # ------------------------------------------------------------------
-    # Helpers
-    # ------------------------------------------------------------------
 
     def _get_output_dir(self, atom_id: str) -> Path:
         """Get the output directory for this atom's generation run."""

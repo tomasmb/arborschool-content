@@ -3,127 +3,134 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Multiplicación de dos o más potencias con LA MISMA base racional explícita (numérica o algebraica).",
-        "Aplicación directa de la propiedad a^m · a^n = a^(m+n) con exponentes enteros (positivos y negativos) y racionales (fracciones).",
-        "Casos en que la base es una fracción racional (por ejemplo (1/2)^3 · (1/2)^(-1)).",
-        "Casos en que la base es una letra o expresión simple tratada como base única (por ejemplo x^(1/3) · x^(2/3)).",
-        "Suma de exponentes fraccionarios con igual denominador y/o que requieran reducción a común denominador simple.",
-        "Expresar el resultado como una sola potencia, sin desarrollar la potencia resultante (por ejemplo dejar (1/2)^5 en vez de 1/32, salvo que se pida explícitamente simplificar numéricamente).",
-        "Uso de exponentes cero o negativos dentro de la propiedad, siempre que la base esté claramente definida y no sea 0."
+        "Multiplicar dos o más potencias de igual base racional (positiva, negativa o fraccionaria) aplicando a^m · a^n = a^(m+n).",
+        "Trabajar con exponentes enteros positivos, cero y negativos en productos de potencias de igual base.",
+        "Trabajar con exponentes racionales (fracciones) en productos de potencias de igual base, sumando fracciones con igual o distinto denominador.",
+        "Expresar el resultado final como una sola potencia con la misma base racional.",
+        "Reconocer la igualdad de bases cuando están escritas de forma equivalente (por ejemplo, (1/2)^3 y (1/2)^-1).",
+        "Simplificar la expresión del exponente resultante (por ejemplo, 2 + (-5) = -3, 1/3 + 2/3 = 1)."
       ],
       "out_of_scope": [
-        "Multiplicación de potencias con bases distintas, aunque los exponentes sean iguales (por ejemplo 2^3 · 3^3).",
-        "Cambio de base o reescritura previa de las bases para hacerlas iguales (por ejemplo transformar 4 como 2^2 para aplicar luego propiedad); eso pertenece a átomos de reescritura de potencias.",
-        "Potencias de potencias (por ejemplo (a^m)^n), incluso si aparecen en el contexto del ejercicio.",
-        "División de potencias de igual base (a^m / a^n) o leyes con resta de exponentes.",
-        "Exponentes irracionales (raíz cuadrada de 2, π, etc.).",
-        "Uso de logaritmos, exponentiales o funciones más avanzadas.",
-        "Contextos geométricos, estadísticos o de funciones donde la propiedad no sea el foco principal a evaluar."
+        "Potencias de bases diferentes, aunque el resultado numérico sea el mismo (por ejemplo, 2^3 · 4^2).",
+        "Operaciones que incluyan división de potencias (propiedad a^m / a^n = a^(m-n)).",
+        "Potencias con exponente irracional (por ejemplo, raíz cuadrada de 2 como exponente).",
+        "Cambio de base para reescribir números (por ejemplo, expresar 4 como 2^2 para aplicar otras propiedades).",
+        "Simplificación de raíces utilizando notación radical en lugar de exponentes racionales, salvo que ya esté dada en forma de potencia.",
+        "Contextos aplicados extensos (problemas verbales) donde el foco principal no sea la operación con potencias de igual base."
       ],
       "prerequisites": [
-        "A-M1-NUM-02-01: Comprensión de número racional (enteros, fracciones, decimales) y sus representaciones equivalentes básicas.",
-        "A-M1-NUM-03-01: Significado de potencia con exponente entero (incluyendo exponente cero y negativo).",
-        "A-M1-NUM-03-02: Significado de potencia con exponente racional (fraccionario positivo y negativo).",
-        "A-M1-NUM-01-02: Suma y resta de números enteros y racionales (incluyendo fracciones con distinto denominador)."
+        "A-M1-NUM-01-01: Comprensión de números racionales y sus representaciones (fracciones, decimales).",
+        "A-M1-NUM-02-01: Dominio de suma y resta de números enteros (incluyendo negativos).",
+        "A-M1-NUM-02-02: Dominio de suma de fracciones con igual y distinto denominador.",
+        "A-M1-NUM-03-01: Comprensión de la notación de potencias con exponentes enteros.",
+        "A-M1-NUM-03-02: Comprensión de la notación de potencias con exponentes racionales (fraccionarios)."
       ],
       "common_traps": [
-        "Aplicar la propiedad de multiplicación de potencias de igual base cuando las bases NO son exactamente iguales (por ejemplo en 2^3 · 4^2, o en (1/2)^3 · 2^4).",
-        "Multiplicar los exponentes en lugar de sumarlos (por ejemplo 2^3 · 2^4 → 2^(3·4) en vez de 2^(3+4)).",
-        "Con bases fraccionarias, confundir la operación en la base (multiplicar o dividir fracciones) en vez de mantener la base fija y trabajar solo con los exponentes.",
-        "Errores al sumar fracciones en los exponentes: sumar numeradores y denominadores directamente o no usar denominador común.",
-        "Perder el signo de exponentes negativos al sumarlos (por ejemplo -2 + 5 → -7 en vez de 3).",
-        "Confundir producto de potencias con potencia de un producto (por ejemplo (ab)^n) y mezclar propiedades que no corresponden al átomo.",
-        "Simplificar de más: desarrollar completamente la potencia resultante cuando no es necesario ni conveniente y generar errores de cálculo adicionales.",
-        "Tratar una misma base escrita de forma distinta como si fuera distinta (por ejemplo 0,5 y 1/2) cuando el ítem espera reconocer que representan la misma base racional."
+        "Aplicar la propiedad de multiplicación de potencias de igual base cuando las bases no son exactamente iguales (por ejemplo, confundir 2 y 1/2, o x y x^2).",
+        "Multiplicar o promediar exponentes en lugar de sumarlos (por ejemplo, a^2 · a^3 = a^6 o a^2 · a^3 = a^(2+3)/2).",
+        "Sumar bases y exponentes simultáneamente (por ejemplo, 2^3 · 2^4 = 4^7).",
+        "Olvidar que un exponente negativo en el resultado es válido y no requiere invertir la base en este átomo (mantener foco en la propiedad, no en reescrituras).",
+        "Tratar exponentes fraccionarios como si solo se sumaran numeradores manteniendo siempre el denominador (por ejemplo, 1/2 + 1/3 = (1+1)/2).",
+        "No simplificar el exponente fraccionario resultante cuando corresponde (por ejemplo, 2/4 no reducible a 1/2).",
+        "Confundir el producto de potencias con la potencia de un producto ((ab)^n) o con la potencia de una potencia ((a^m)^n)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Multiplicación de dos potencias de igual base numérica sencilla (base entera pequeña positiva, por ejemplo 2, 3, 5).",
-        "Exponentes enteros pequeños, positivos o con un solo exponente negativo pero con suma directa (por ejemplo 3 y 2; 4 y -1).",
-        "No requiere manejo de fracciones en los exponentes; a lo más, suma de enteros con resultado también entero pequeño.",
-        "Consigna pide explícitamente la aplicación de la propiedad y la base es claramente idéntica y está ya factorizada (no hay que reconocer equivalencias como 0,5 = 1/2).",
-        "Se trabaja con solo dos factores potenciados y no se introduce contexto verbal complejo."
+        "Productos con dos factores de potencias de igual base numérica racional sencilla, sin contexto verbal.",
+        "Exponentes enteros pequeños (entre -3 y 5), preferentemente positivos o uno de ellos negativo pero que resulte en exponente entero sencillo.",
+        "En el caso de fracciones, exponentes con igual denominador pequeño (2, 3 o 4) que al sumarse dan un entero o fracción simple.",
+        "Expresiones con una sola operación de suma de exponentes, sin necesidad de simplificaciones adicionales complejas.",
+        "Items donde la igualdad de bases es evidente visualmente (misma escritura, sin equivalencias implícitas)."
       ],
       "medium": [
-        "Multiplicación de dos o tres potencias de igual base, pudiendo incluir mezcla de exponentes positivos y negativos.",
-        "Presencia de exponentes racionales fraccionarios con denominador pequeño (2, 3, 4) y necesidad de sumar fracciones con el mismo denominador o con denominadores fácilmente compatibles.",
-        "Casos donde el resultado del exponente es 0 o negativo, requiriendo interpretación de a^0 o a^(-n).",
-        "Contextos verbales simples donde se debe identificar la expresión de potencias antes de aplicar la propiedad, pero sin que el contexto o el lenguaje sea el foco de la dificultad.",
-        "La igualdad de bases es directa pero puede requerir leer notación fraccionaria (por ejemplo (1/2) o (3/4), no mezclada con decimales)."
+        "Productos con tres factores de potencias de igual base racional, que involucren más de una suma de exponentes.",
+        "Exponentes enteros que incluyan positivos y negativos, donde el resultado pueda ser un exponente negativo o cero.",
+        "Exponentes fraccionarios con igual denominador, pero cuya suma exija simplificar la fracción (por ejemplo, 1/4 + 3/4 + 1/4).",
+        "Combinaciones de exponentes enteros y fraccionarios sobre la misma base racional, requiriendo conversión a fracciones y suma.",
+        "Contextos verbales breves donde el estudiante deba traducir a producto de potencias de igual base y luego aplicar la propiedad."
       ],
       "hard": [
-        "Multiplicación de tres o más potencias con la misma base, que exige agrupar y sumar varios exponentes (por ejemplo a^(1/2) · a^(-3/2) · a^(5/2)).",
-        "Exponentes racionales con denominadores distintos que obligan a buscar común denominador no trivial (por ejemplo 1/3 y 1/6, 2/5 y -3/10).",
-        "Combinación de exponentes enteros y fraccionarios, positivos y negativos, en la misma base (por ejemplo x^2 · x^(-1/2) · x^(3/4)).",
-        "Contextos donde la base aparece escrita en formas racionalmente equivalentes (por ejemplo 0,5 y 1/2, o (-2/3) y -0,666..., pero el ítem aclara o guía esta equivalencia) y el estudiante debe reconocer que son la misma base para aplicar la propiedad.",
-        "Ítems en que la respuesta correcta requiere identificar primero términos con la misma base dentro de una expresión mayor y luego aplicar selectivamente la propiedad (por ejemplo producto con mezcla de bases distintas donde solo algunas se pueden combinar).",
-        "Necesidad de mantener la respuesta en forma de potencia con exponente racional simplificado (por ejemplo simplificar 6/8 a 3/4 en el exponente) como parte del criterio de corrección."
+        "Productos de cuatro o más potencias de igual base con mezcla de exponentes enteros y racionales, incluyendo negativos.",
+        "Exponentes fraccionarios con distinto denominador que requieran cálculo del mínimo común múltiplo y suma de fracciones no triviales.",
+        "Situaciones donde el estudiante deba reconocer la igualdad de base a través de reescrituras simples dadas explícitamente (por ejemplo, expresión donde se indique que dos formas representan la misma base racional) antes de aplicar la propiedad.",
+        "Ítems que combinen esta propiedad con una o dos operaciones adicionales posteriores o previas en el exponente (por ejemplo, sumar o restar un número entero al exponente resultante).",
+        "Distractores diseñados para capturar errores finos con exponentes fraccionarios y negativos, donde la respuesta correcta no es un entero y el exponente final queda como fracción propia o impropia simplificada."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar expresiones donde la igualdad de base no quede clara por signos de agrupación omitidos, por ejemplo escribir 1/2^3 en lugar de (1/2)^3.",
-      "No mezclar notaciones diferentes para la misma base sin explicitarlo cuando pueda generar dudas (por ejemplo usar simultáneamente 0,5 y 1/2 como si fueran dos bases distintas).",
-      "No usar letras o símbolos como base si en el mismo ítem se usan también como otra cosa (por ejemplo usar x como base y como variable de contexto textual simultáneamente).",
-      "Evitar contextos verbales donde pueda interpretarse que hay multiplicación de números en vez de multiplicación de potencias (mencionar explícitamente potencias o cantidades elevadas a cierta potencia).",
-      "No incluir operaciones adicionales (como división o raíz) que puedan hacer dudar si corresponde otra propiedad de potencias y no la de multiplicación de potencias de igual base.",
-      "Especificar siempre si se espera la respuesta en forma de potencia o como número simplificado para evitar interpretaciones distintas del formato final.",
-      "Evitar que la misma letra represente simultáneamente la base de una potencia y un exponente en otra parte de la expresión.",
-      "Cuidar la disposición tipográfica para que no se confundan sumas de exponentes con sumas externas a la potencia (usar paréntesis claros en los exponentes si son expresiones)."
+      "No usar bases que puedan confundirse visualmente (por ejemplo, 1/2 y 1/2x sin un uso muy claro de paréntesis).",
+      "Evitar expresiones donde la igualdad de base dependa de una transformación no enseñada en este átomo (por ejemplo, reescribir 4 como 2^2 sin indicarlo).",
+      "No mezclar en el mismo ítem propiedades de potencias de igual base con divisiones de potencias o potencias de potencias, si no está muy claro qué se espera aplicar.",
+      "Evitar bases que sean expresiones demasiado complejas (por ejemplo, (x+1)/(x-1)) cuando el foco del ítem es el manejo de exponentes.",
+      "Especificar siempre con paréntesis las bases fraccionarias (usar (1/2)^3 en vez de 1/2^3) para evitar interpretaciones erróneas.",
+      "No usar lenguaje ambiguo como 'simplificar completamente' si el nivel de simplificación del exponente puede ser discutible; indicar claramente si se espera exponente reducido o solo la aplicación de la propiedad.",
+      "No incluir en las alternativas resultados equivalentes escritos de formas diferentes si no es explícito que todas las formas son aceptables, para evitar que el estudiante piense que hay más de una correcta."
     ],
     "error_families": [
       {
         "name": "Multiplicar_exponentes_en_vez_de_sumarlos",
-        "description": "El estudiante interpreta erróneamente la regla y aplica a^m · a^n = a^(m·n) en lugar de a^(m+n). Esto suele aparecer incluso cuando la base es sencilla y los exponentes son pequeños.",
-        "how_to_address": "Explicitar la regla con ejemplos contrastivos, mostrando casos donde a^(m+n) y a^(m·n) dan resultados muy diferentes. Relacionar la propiedad con el conteo del número total de factores repetidos para justificar la suma de exponentes."
+        "description": "El estudiante aplica incorrectamente la regla a^m · a^n = a^(m·n) en lugar de a^(m+n), llevando a exponentes demasiado grandes o pequeños.",
+        "how_to_address": "Incluir distractores que correspondan a la multiplicación de exponentes y explicitar en la retroalimentación que la propiedad de potencias de igual base implica sumar, no multiplicar, los exponentes."
       },
       {
-        "name": "Confundir_bases_distintas_como_si_fueran_iguales",
-        "description": "Se intenta aplicar la propiedad de multiplicación de potencias de igual base cuando las bases no son exactamente las mismas (por ejemplo 2^3 · 4^2 o (1/2)^2 · 2^3).",
-        "how_to_address": "Reforzar que la condición necesaria es que la base sea idéntica. Proponer ejercicios de clasificación donde el estudiante solo indique en qué pares de potencias se puede o no se puede aplicar la propiedad, sin calcular."
-      },
-      {
-        "name": "Errores_en_suma_de_fracciones_en_los_exponentes",
-        "description": "Al sumar exponentes racionales, el estudiante suma numeradores y denominadores directamente (por ejemplo 1/2 + 1/3 = 2/5) o no usa común denominador cuando se requiere.",
-        "how_to_address": "Volver sobre la suma de fracciones en un contexto más sencillo antes de ligar la técnica al trabajo con exponentes. Mostrar explícitamente la línea: a^(1/2) · a^(1/3) = a^(1/2 + 1/3) y resolver la suma de fracciones paso a paso."
+        "name": "Sumar_bases_en_vez_de_conservarlas",
+        "description": "El estudiante realiza (a^m)·(a^n) como (a+a)^(m+n) o combina ambas operaciones, cambiando la base en lugar de dejarla igual.",
+        "how_to_address": "Diseñar ítems donde el cambio de base lleve a resultados numéricamente muy distintos y explicitar que en potencias de igual base, la base se mantiene inalterada y solo se operan los exponentes."
       },
       {
         "name": "Manejo_incorrecto_de_exponentes_negativos",
-        "description": "Se ignora el signo de los exponentes al sumarlos o se interpreta mal el resultado negativo (por ejemplo -2 + 3 = -5). También se cree que exponente negativo implica que el resultado final debe ser necesariamente número negativo.",
-        "how_to_address": "Trabajar con la recta numérica para visualizar la suma de enteros positivos y negativos en los exponentes. Reforzar el significado de exponente negativo como recíproco, mostrando ejemplos numéricos concretos (por ejemplo 2^(-1) = 1/2, 2^(-3) = 1/8)."
+        "description": "El estudiante trata los exponentes negativos como si debiera cambiar inmediatamente la base al inverso, o bien suma mal enteros negativos (por ejemplo, 3 + (-5) = 8).",
+        "how_to_address": "Proponer ítems con combinaciones simples de exponentes negativos y positivos, y en la retroalimentación recordar la suma de enteros con signos y que en este átomo basta con obtener el exponente resultante, sin reescribir la base."
       },
       {
-        "name": "Alterar_la_base_en_lugar_del_exponente",
-        "description": "Con bases fraccionarias, el estudiante multiplica las fracciones de las bases y deja los exponentes iguales, en lugar de mantener la base y sumar los exponentes (por ejemplo (1/2)^3 · (1/2)^2 → (1/4)^3).",
-        "how_to_address": "Destacar visualmente la base común y trabajar con códigos de color o subrayados para indicar que lo que se combina son los exponentes, no las bases. Plantear tareas de \"solo modifica los exponentes\" para afianzar la idea."
+        "name": "Suma_errónea_de_fracciones_en_exponentes",
+        "description": "Al sumar exponentes fraccionarios, el estudiante suma solo numeradores o solo denominadores, o no aplica un denominador común correcto.",
+        "how_to_address": "Incluir alternativas que reflejen estos errores de fracciones y reforzar que la operación esencial en la propiedad de potencias es correcta, pero requiere aplicar correctamente la suma de fracciones con igual o distinto denominador."
       },
       {
-        "name": "No_expresar_resultado_como_única_potencia",
-        "description": "El estudiante deja la expresión con varios factores potenciados sin combinarlos, o desarrolla parcialmente algunos y otros no, quedando una mezcla inconsistente.",
-        "how_to_address": "Insistir en la forma objetivo del resultado (una única potencia con esa base) y utilizar ejemplos de corrección guiada donde se muestre el paso de varios factores a una sola potencia, enfatizando la simplificación estructural más que el cálculo numérico."
+        "name": "No_simplificar_fracciones_en_el_exponente",
+        "description": "El estudiante deja el exponente como una fracción equivalente pero no simplificada (por ejemplo, 4/6 en lugar de 2/3), o no reconoce cuando la suma de exponentes da un número entero.",
+        "how_to_address": "Pedir explícitamente en algunos ítems que se exprese el resultado en la forma más simple posible e incluir distractores con fracciones no simplificadas para contrastar con la respuesta correcta reducida."
+      },
+      {
+        "name": "Confundir_productos_de_potencias_con_potencias_de_un_producto",
+        "description": "El estudiante interpreta (a^m)·(a^n) como (a·a)^(m+n) o como (ab)^n y aplica propiedades de potencia de un producto en lugar de multiplicación de potencias de igual base.",
+        "how_to_address": "Diseñar ejercicios donde la notación esté muy claramente parentizada y donde se pida explícitamente 'multiplicar potencias de igual base', resaltando la estructura (a^m)·(a^n)."
+      },
+      {
+        "name": "Ignorar_un_factor_de_potencia_en_productos_con_varios_factores",
+        "description": "En productos con tres o más potencias de igual base, el estudiante omite uno de los exponentes al sumarlos, especialmente si alguno es 0 o negativo.",
+        "how_to_address": "Construir ítems con tres o más factores donde el error de omisión produzca un exponente característico, y en la retroalimentación mostrar el proceso sumando paso a paso todos los exponentes."
       }
     ],
     "future_targets": [
-      "Aplicar combinadamente varias leyes de exponentes (producto, cociente, potencia de una potencia).",
-      "Simplificación de expresiones algebraicas con potencias, incluido el trabajo con polinomios elevados a fracciones simples.",
-      "Manejo fluido de exponentes racionales en contextos de raíces y radicales.",
-      "Estudio de funciones potencias y funciones exponenciales, incluyendo su análisis algebraico.",
-      "Resolución de ecuaciones exponenciales simples, donde se requiere igualar bases y operar con los exponentes.",
-      "Modelación de crecimiento y decrecimiento usando potencias y exponentes racionales en contextos de ciencias y economía.",
-      "Trabajo con logaritmos, dado que muchas de sus propiedades se basan en las leyes de exponentes.",
-      "Simplificación de expresiones que aparecen en progresiones geométricas y en sumas de series con términos potenciados."
+      "Aplicación de la división de potencias de igual base a^m / a^n = a^(m-n).",
+      "Manejo integrado de todas las propiedades de potencias (producto, cociente, potencia de una potencia, potencia de un producto).",
+      "Simplificación de expresiones algebraicas más complejas con potencias en contextos de ecuaciones y funciones.",
+      "Trabajo con funciones exponenciales y logarítmicas, donde la comprensión de exponentes racionales y negativos es clave.",
+      "Paso fluido entre notación de raíces y exponentes racionales para simplificar expresiones.",
+      "Resolución de problemas de crecimiento y decrecimiento exponencial en contextos aplicados.",
+      "Manipulación de expresiones con potencias en el estudio de polinomios y factorización avanzada."
     ],
     "representation_variants": [
-      "simbólica_pura",
-      "verbal_contextualizada",
-      "mixta_verbal_simbólica",
-      "tabla_de_valores_que_incluye_potencias_como_entradas_o_resultados"
+      "Notación simbólica pura con bases numéricas racionales, por ejemplo, (1/3)^2 · (1/3)^4.",
+      "Notación con bases algebraicas, por ejemplo, x^(1/2) · x^(3/2).",
+      "Combinación de bases numéricas fraccionarias y exponentes fraccionarios, con énfasis en el uso correcto de paréntesis.",
+      "Expresiones lineales de izquierda a derecha con varios factores, por ejemplo, a^2 · a^-1 · a^(3/2).",
+      "Expresiones presentadas como partes de una igualdad a completar (por ejemplo, rellenar el exponente que falta para que se cumpla una igualdad de potencias).",
+      "Representaciones en contexto verbal breve donde la situación se traduce a producto de potencias de igual base (por ejemplo, repeticiones de un mismo factor expresadas con potencias)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "fractions",
-      "mixed",
-      "decimals"
+      "negative_integers",
+      "unit_fractions",
+      "simple_non_unit_fractions",
+      "fractions_with_common_denominator",
+      "fractions_with_different_denominators",
+      "mixed_numbers_avoided_in_exponent",
+      "simple_rational_bases_between_0_and_1",
+      "simple_negative_rational_bases"
     ],
     "required_image_types": []
   }

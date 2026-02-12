@@ -3,124 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Simplificar fracciones positivas, negativas y mixtas obteniendo una fracción irreductible equivalente",
-        "Identificar factores comunes entre numerador y denominador (incluyendo el uso de máximo común divisor de manera implícita o explícita)",
-        "Aplicar divisiones sucesivas por factores primos comunes al numerador y al denominador",
-        "Reconocer cuándo una fracción ya está en forma irreductible (solo divisor común ±1)",
-        "Trabajar con fracciones propias e impropias, incluyendo su paso a forma mixta solo si es auxiliar a la simplificación",
-        "Simplificar resultados de operaciones con racionales, siempre que la dificultad principal sea la reducción de la fracción",
-        "Simplificar fracciones con signo, gestionando correctamente el signo en el numerador, denominador o delante de la fracción"
+        "Simplificar fracciones numéricas racionales dividiendo numerador y denominador por un divisor común distinto de 0.",
+        "Identificar factores comunes entre numerador y denominador usando divisibilidad básica (2, 3, 5, 9, 10, etc.).",
+        "Aplicar el máximo común divisor (aunque no se nombre explícitamente) para llegar en uno o más pasos a una fracción irreductible.",
+        "Reconocer cuándo una fracción ya es irreductible (no hay divisores enteros comunes mayores que 1).",
+        "Manejar correctamente el signo de la fracción al simplificar (incluyendo fracciones negativas).",
+        "Simplificar fracciones propias, impropias y números mixtos expresados como fracción impropia."
       ],
       "out_of_scope": [
-        "Cálculo de operaciones entre fracciones (suma, resta, multiplicación, división) cuando la demanda principal no es la simplificación del resultado",
-        "Transformación entre fracciones, decimales y porcentajes más allá de simplificar la fracción resultante",
-        "Problemas de proporcionalidad, razones y tasas donde la clave no sea la reducción de la razón a forma irreductible",
-        "Uso formal de algoritmos de máximo común divisor avanzados (por ejemplo, algoritmo de Euclides) como foco principal",
-        "Representación de fracciones en la recta numérica o comparación de fracciones como objetivo principal",
-        "Simplificación de expresiones algebraicas racionales (fracciones algebraicas con variables)",
-        "Contextos geométricos o de medidas donde se pide interpretar el significado de la fracción, más que simplificarla"
+        "Operaciones entre fracciones (suma, resta, multiplicación, división) salvo que ya estén hechas y solo se pida la simplificación del resultado dado.",
+        "Cálculo formal del máximo común divisor mediante algoritmos específicos (p. ej., algoritmo de Euclides).",
+        "Fracciones algebraicas con variables en numerador o denominador.",
+        "Conversión entre fracción y porcentaje, decimal o razón si no se vincula explícitamente a la simplificación de la fracción.",
+        "Representación gráfica de fracciones en la recta numérica o en diagramas de área.",
+        "Simplificación de expresiones con potencias, raíces o logaritmos en el numerador o denominador más allá de aplicar divisores enteros comunes evidentes."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprensión de números naturales y enteros, y su orden",
-        "A-M1-NUM-01-03: Conocimiento de divisibilidad y factores de un número natural",
-        "A-M1-NUM-01-06: Comprender la definición de fracción como parte de un todo o razón",
-        "A-M1-NUM-01-09: Reconocer fracciones equivalentes",
-        "A-M1-NUM-01-10: Uso básico de signos con números enteros y fraccionarios"
+        "A-M1-NUM-01-01: Comprensión de números naturales y enteros, incluyendo el concepto de divisor y múltiplo.",
+        "A-M1-NUM-01-03: Reconocimiento y lectura de fracciones propias, impropias y números mixtos.",
+        "A-M1-NUM-01-05: Manejo de signos en números enteros y comprensión del cero como elemento neutro en la multiplicación.",
+        "A-M1-NUM-01-07: Uso de pruebas simples de divisibilidad (2, 3, 5, 9, 10, etc.)."
       ],
       "common_traps": [
-        "Creer que basta con dividir una sola vez por un factor pequeño (por ejemplo 2) y detenerse antes de llegar a la forma irreductible",
-        "Confundir múltiplos con divisores, intentando dividir por números que no son factores de ambos términos",
-        "Olvidar que el signo puede estar en el numerador, en el denominador o delante de la fracción, pero no duplicado (evitar dos signos negativos)",
-        "Suponer que toda fracción con números grandes es reductible, sin verificar divisores comunes",
-        "Dividir numerador y denominador por números distintos, perdiendo la equivalencia de la fracción",
-        "Simplificar “cruzado” como si se estuviera multiplicando fracciones, lo que no aplica en una sola fracción aislada",
-        "Pensar que una fracción impropia (mayor que 1) debe convertirse obligatoriamente en mixta para estar “simplificada”"
+        "Confundir divisores comunes con múltiplos comunes, intentando simplificar multiplicando numerador y denominador por un mismo número en lugar de dividir.",
+        "Olvidar que el divisor debe ser el mismo para numerador y denominador, dividiendo solo uno de los dos o usando divisores distintos.",
+        "Detenerse en una simplificación parcial y no continuar hasta obtener la fracción irreductible.",
+        "Manejar mal el signo, dejando el signo negativo tanto en numerador como en denominador o cambiando indebidamente el signo de la fracción.",
+        "Pretender simplificar cuando numerador y denominador son primos relativos, forzando divisiones incorrectas (por ejemplo, dividir 3/7 por 2).",
+        "Confundir fracción irreductible con fracción propia, pensando que toda fracción impropia debe seguir simplificándose aunque ya esté en términos mínimos.",
+        "Simplificar cancelando cifras en lugar de factores (por ejemplo, cancelar el 0 de 30/50 para dejar 3/5 sin justificarlo como división por 10)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Numerador y denominador con factores comunes evidentes y pequeños (2, 3, 5) y uno o dos pasos de división para llegar a la fracción irreductible",
-        "Fracciones con números de 1 a 30 aproximadamente y sin signos negativos",
-        "Situaciones donde se indica explícitamente por qué número dividir, y el estudiante solo debe ejecutar la división en ambos términos",
-        "Ítems que solo requieren reconocer que una fracción ya está simplificada entre opciones, con divisores comunes claramente inexistentes",
-        "Un solo nivel de simplificación (por ejemplo, dividir por 2 y llegar inmediatamente a números coprimos)"
+        "Fracciones con numeradores y denominadores pequeños (entre 1 y 30) con factores comunes evidentes (2, 3, 5, 10).",
+        "Un solo paso de simplificación o, a lo más, dos pasos muy evidentes.",
+        "Fracciones positivas, generalmente propias, presentadas en formato estándar a/b sin contexto verbal complejo.",
+        "Preguntas directas del tipo: '¿Cuál es la fracción irreductible equivalente a ...?' con distractores que reflejen errores simples (dividir solo numerador, solo denominador o no simplificar).",
+        "Casos en que el máximo común divisor se reconoce visualmente por conocimiento de tablas de multiplicar básicas."
       ],
       "medium": [
-        "Fracciones con numerador y denominador de 2 a 3 dígitos donde el máximo común divisor no es evidente (ejemplo: 84/126, 75/120) implicando 2 o 3 pasos de división",
-        "Presencia de signos negativos en uno de los términos o delante de la fracción, exigiendo gestionar correctamente el signo al simplificar",
-        "Ítems donde no se indica el factor común y el estudiante debe identificarlo a partir de conocimientos de divisibilidad",
-        "Fracciones que requieren combinar simplificación por distintos factores primos (por ejemplo 2 y luego 3, o 3 y luego 5)",
-        "Preguntas en contexto verbal sencillo donde el foco matemático relevante es decidir cuál de varias fracciones equivalentes representa la situación en forma más simple"
+        "Fracciones con números de 2 a 3 cifras (entre 10 y 300) donde los factores comunes no son tan inmediatos (por ejemplo, 6, 8, 9, 12, 15).",
+        "Necesidad de más de un paso de simplificación o de identificar un máximo común divisor no trivial.",
+        "Presencia de fracciones negativas donde se debe gestionar correctamente la ubicación del signo.",
+        "Ítems insertos en un breve contexto (por ejemplo, una situación de reparto) donde el estudiante debe identificar primero la fracción a simplificar y luego simplificarla.",
+        "Incluye distractores que muestran simplificaciones parciales (no irreductibles) y respuestas que reflejan divisiones por un número que no es divisor de ambos."
       ],
       "hard": [
-        "Fracciones con números de 3 dígitos o con varios factores primos (por ejemplo, 168/252, 210/315), que requieren razonar con el máximo común divisor o con factorización sistemática",
-        "Ítems en que se presentan varias fracciones y se pide identificar cuál está en forma irreductible, o cuál es la forma más simple entre varias equivalentes",
-        "Preguntas donde solo una parte del trabajo está hecha (por ejemplo, ya se dividió por un factor pequeño) y el estudiante debe detectar que aún no es irreductible",
-        "Fracciones negativas dentro de un resultado de operación, donde se debe simplificar y además decidir la ubicación correcta del signo en la fracción irreductible",
-        "Ítems que incorporan distractores diseñados a partir de errores típicos (dividir por números distintos, confundir múltiplos con divisores, detenerse antes de la irreductibilidad)",
-        "Situaciones en las que el alumno debe comparar la ‘simplicidad’ de distintas expresiones equivalentes (por ejemplo, preferir 2/3 frente a 4/6 o 10/15) usando criterio de irreductibilidad, no solo intuición"
+        "Fracciones con numeradores y denominadores más grandes (hasta 3 cifras altas, por ejemplo hasta 900) o formadas por productos de varios factores (como 84/126) que requieran descomposición en factores o uso sistemático de divisibilidad.",
+        "Necesidad de determinar explícitamente si una fracción es o no irreductible, incluyendo casos con números relativamente grandes o con denominadores primos.",
+        "Problemas encadenados donde primero se obtiene una fracción a partir de un procedimiento (por ejemplo, de una proporción, o una operación sencilla ya resuelta en el enunciado) y luego se debe simplificar el resultado.",
+        "Incorporación de números mixtos que se deben convertir a fracción impropia antes de simplificar, o comparación de fracciones en términos irreductibles.",
+        "Distractores diseñados para capturar errores más sofisticados, como simplificación por un factor que no es divisor común, mala aplicación del criterio de divisibilidad, o elección de una fracción equivalente pero no irreductible cuando la consigna exige irreductible."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar consignas del tipo “escribe la fracción en su forma más simple” en ítems de opción múltiple sin precisar si ‘más simple’ significa irreductible; usar expresiones como “forma irreductible” o “que no se pueda simplificar más”",
-      "No mezclar en la misma pregunta la instrucción de simplificar y la de convertir a número mixto si el objetivo es solo la irreductibilidad; separar claramente si se requiere una u otra cosa",
-      "No usar fracciones donde varias alternativas representan la misma fracción ya irreductible pero con distintos formatos de signo (−a/b, a/−b, −(a/b)) sin aclarar que todas son aceptables; si el foco es el signo, declararlo explícitamente",
-      "Evitar distractores que contengan errores aritméticos ajenos al contenido (por ejemplo, 3×4 = 11) cuando el foco es la simplificación de fracciones",
-      "No incluir contextos verbales en los que más de una fracción equivalga razonablemente a la descripción cualitativa sin dejar claro que se pide la fracción irreductible",
-      "Evitar enunciados excesivamente largos o contextos irrelevantes que oculten que la tarea central es solo simplificar una fracción dada",
-      "No usar fracciones con ceros en numerador y denominador simultáneamente (0/0) ni con denominador cero, ya que no se pueden simplificar ni son números racionales válidos"
+      "Especificar siempre que la respuesta debe estar en 'fracción irreductible' o 'en términos mínimos' cuando corresponda, para evitar dudas sobre si se acepta una fracción equivalente no simplificada.",
+      "No incluir en las alternativas dos fracciones distintas pero equivalentes e irreductibles (por ejemplo, -1/2 y 1/(-2)), a menos que la pregunta trate explícitamente sobre la posición del signo.",
+      "Evitar fracciones con denominador 0 en las alternativas, a menos que el foco del ítem sea justamente reconocer una expresión no definida, lo cual en general escapa al alcance de este átomo.",
+      "Cuidar que los distractores incorrectos no resulten ser equivalentes a la fracción original sin que el enunciado exija irreductibilidad; si se exige irreductible, dejar claro que las alternativas que no lo son deben considerarse incorrectas.",
+      "No mezclar en un mismo ítem varios formatos de respuesta posibles (fracción impropia, número mixto, decimal) sin indicar claramente el formato exigido.",
+      "Evitar contextos verbales donde la interpretación de la fracción pueda ser ambigua (por ejemplo, no dejar dudas sobre si la parte considerada es numerador/denominador o viceversa).",
+      "No usar fracciones con escritura poco convencional (como 1 : 2 en vez de 1/2) sin aclarar que se trata de una fracción y no de una razón distinta."
     ],
     "error_families": [
       {
-        "name": "Dividir por números distintos",
-        "description": "El estudiante divide el numerador y el denominador por números diferentes (por ejemplo, numerador por 2 y denominador por 4), generando una fracción que no es equivalente.",
-        "how_to_address": "En los distractores, incluir resultados que parecen más simples pero no son equivalentes a la fracción original, y en la retroalimentación recalcar que para mantener la equivalencia se debe dividir ambos términos exactamente por el mismo número."
+        "name": "Dividir solo numerador o solo denominador",
+        "description": "El estudiante divide solo el numerador o solo el denominador por un número común, generando una fracción no equivalente.",
+        "how_to_address": "Incluir ítems donde algunas alternativas reflejen este error y subrayar en la retroalimentación que para mantener la equivalencia se debe dividir numerador y denominador por el mismo número distinto de cero."
       },
       {
-        "name": "Simplificación incompleta",
-        "description": "El estudiante realiza solo una parte de la simplificación (por ejemplo, 24/36 → 12/18) y no continúa hasta la fracción irreductible.",
-        "how_to_address": "Diseñar ítems donde una o más alternativas muestren simplificaciones intermedias plausibles. En la retroalimentación, enfatizar la necesidad de revisar si aún quedan factores comunes, sugiriendo chequear divisibilidad por 2, 3, 5, etc."
+        "name": "Simplificación parcial insuficiente",
+        "description": "El estudiante realiza una simplificación inicial correcta pero se detiene antes de llegar a la fracción irreductible.",
+        "how_to_address": "Proponer ejercicios donde exista más de un divisor común posible y reforzar la idea de revisar si aún quedan divisores comunes mayores que 1 entre numerador y denominador."
       },
       {
-        "name": "Confundir múltiplos con divisores",
-        "description": "El estudiante cree que puede dividir por cualquier número asociado (por ejemplo, intenta dividir 6/8 por 4 cuando 4 no divide al numerador o se confunde al elegir el factor).",
-        "how_to_address": "Usar casos donde uno de los términos sea múltiplo y el otro no, para que distractores reflejen divisiones inválidas. En la explicación, reforzar el criterio de que el divisor debe dividir exactamente a ambos términos sin dejar resto."
+        "name": "Uso incorrecto de criterios de divisibilidad",
+        "description": "Se aplican mal las reglas de divisibilidad (por ejemplo, se supone que un número es divisible por 3 solo por ser par, o se confunden los criterios de 3 y 9).",
+        "how_to_address": "Diseñar preguntas que requieran elegir correctamente un divisor común usando criterios simples, y en la explicación destacar cómo se verifica la divisibilidad de forma sistemática."
+      },
+      {
+        "name": "Confusión entre factor y cifra",
+        "description": "El estudiante cancela cifras en lugar de factores, por ejemplo simplificando 24/48 directamente a 2/4 porque 'borra' el dígito 4.",
+        "how_to_address": "Incorporar ítems con números que compartan dígitos pero no factores evidentes para obligar a pensar en divisores, y enfatizar que la simplificación corresponde a dividir por un número entero, no a eliminar cifras."
       },
       {
         "name": "Manejo incorrecto del signo",
-        "description": "El estudiante cambia o pierde el signo al simplificar, o deja dos signos negativos (por ejemplo, −6/−8 y lo simplifica a −3/−4 en lugar de 3/4).",
-        "how_to_address": "Incluir alternativas con errores de signo muy cercanos a la correcta para diagnosticar esta dificultad. En la retroalimentación, recordar que si ambos términos tienen el mismo signo, la fracción es positiva, y que el signo se puede ubicar en numerador, denominador o delante de la fracción, pero solo una vez."
+        "description": "El signo negativo se aplica de manera inadecuada: se deja en ambas partes, se cambia el signo al simplificar o se pierde el signo.",
+        "how_to_address": "Incluir fracciones negativas en los ejercicios, mostrando en la retroalimentación que el signo puede asociarse al numerador, al denominador o a toda la fracción, pero nunca a ambos a la vez, y que la fracción irreductible debe conservar el mismo signo global."
       },
       {
-        "name": "Creer que fracción impropia no está simplificada",
-        "description": "El estudiante transforma automáticamente fracciones impropias en números mixtos y piensa que esa forma es ‘más simple’ aunque la parte fraccionaria siga siendo reducible, o descarta una fracción impropia irreductible por no verse ‘ordenada’.",
-        "how_to_address": "Incluir tanto fracciones propias como impropias en forma irreductible entre las alternativas correctas. Explicar que ‘irreductible’ se refiere a no tener factores comunes, no a ser menor que 1 ni a estar en forma mixta."
+        "name": "Forzar simplificación cuando no corresponde",
+        "description": "El estudiante intenta simplificar fracciones ya irreductibles, inventando divisores que no existen o realizando divisiones incorrectas.",
+        "how_to_address": "Plantear ítems donde algunas fracciones ya están en términos mínimos y se exija reconocerlo, reforzando la revisión sistemática de posibles divisores y el concepto de primos relativos."
       },
       {
-        "name": "No reconocer irreductibilidad",
-        "description": "El estudiante intenta seguir dividiendo una fracción que ya está en forma irreductible, o cree que cualquier fracción con números grandes puede reducirse.",
-        "how_to_address": "Proponer ítems que pidan identificar fracciones ya irreductibles entre varias opciones. En la retroalimentación, reforzar que si el único divisor común es 1 (o −1), la fracción ya está irreductible y no requiere más cambios."
+        "name": "Confundir fracción irreductible con fracción propia",
+        "description": "Se piensa que toda fracción impropia debe simplificarse o transformarse en número mixto, incluso cuando ya está irreductible.",
+        "how_to_address": "Presentar ejemplos de fracciones impropias irreductibles y explicitar que la irreductibilidad solo depende de los divisores comunes, no de si el numerador es mayor o menor que el denominador."
       }
     ],
     "future_targets": [
-      "Cálculo y simplificación de resultados en operaciones con números racionales (suma, resta, multiplicación, división)",
-      "Trabajo fluido con razones y proporciones, incluyendo la reducción de razones a su forma más simple",
-      "Manejo eficiente de porcentajes complejos al expresarlos como fracciones simplificadas y viceversa",
-      "Cálculo de probabilidades exactas expresadas como fracciones en su forma irreductible",
-      "Resolución de ecuaciones y desigualdades que involucran números racionales, simplificando coeficientes y soluciones",
-      "Comprensión y manipulación de expresiones con fracciones algebraicas (racionales con variables) en niveles posteriores",
-      "Lectura e interpretación de pendientes de rectas y otros coeficientes racionales en contextos de funciones",
-      "Manejo de operaciones con raíces y potencias cuando sus resultados se expresan como fracciones racionales simplificadas"
+      "A-M1-NUM-01-12: Operaciones con fracciones (suma, resta, multiplicación y división) con simplificación del resultado.",
+      "A-M1-NUM-01-13: Comparación y orden de fracciones usando representaciones equivalentes e irreductibles.",
+      "A-M1-NUM-01-14: Conversión entre fracciones, decimales y porcentajes manteniendo equivalencias.",
+      "A-M1-NUM-02-02: Resolución de problemas de proporciones y razones que implican fracciones equivalentes.",
+      "A-M1-ALG-01-05: Manejo de fracciones en expresiones algebraicas simples (coeficientes fraccionarios).",
+      "A-M1-EST-01-03: Cálculo de frecuencias relativas y probabilidades simples expresadas como fracción simplificada."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal",
-      "tabular",
-      "contextual"
+      "Fracciones en formato a/b con barra horizontal.",
+      "Fracciones escritas con slash (a/b) en textos lineales.",
+      "Números mixtos que se convierten a fracción impropia para luego simplificar.",
+      "Fracciones negativas con el signo en el numerador, en el denominador o delante de toda la fracción, enfatizando la equivalencia de estas formas.",
+      "Contextos verbales donde la fracción aparece como parte de una situación de reparto, proporción o parte de un todo y se solicita la forma simplificada.",
+      "Tablas o listas en las que se presenta una fracción y varias formas equivalentes para elegir la irreductible."
     ],
     "numbers_profiles": [
       "small_integers",
-      "fractions"
+      "medium_integers",
+      "large_integers",
+      "simple_fractions",
+      "negative_fractions",
+      "improper_fractions",
+      "mixed_numbers",
+      "prime_denominators",
+      "composite_denominators"
     ],
     "required_image_types": []
   }

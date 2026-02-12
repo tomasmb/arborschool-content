@@ -3,127 +3,123 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Suma y resta de polinomios escritos en forma simbólica, con una o más variables (por ejemplo x, x y, a b).",
-        "Eliminación de paréntesis aplicando correctamente la regla de los signos en sumas y restas de polinomios.",
-        "Reducción de términos semejantes para obtener un único polinomio simplificado como resultado.",
-        "Expresiones con coeficientes enteros positivos y negativos, y eventualmente fraccionarios o decimales simples.",
-        "Expresiones con distintos grados de la variable (por ejemplo términos de grado 0, 1, 2, 3 en la misma expresión).",
-        "Reescritura de la expresión resultante en orden estándar (por ejemplo, descendente en el grado de una variable principal) solo si es explícitamente solicitada.",
-        "Suma y resta de polinomios con términos faltantes (por ejemplo, sin término lineal o constante) para evaluar comprensión de términos semejantes."
+        "Suma de polinomios con una o más variables, combinando términos semejantes.",
+        "Resta de polinomios aplicando correctamente la regla de signos al eliminar paréntesis.",
+        "Operaciones entre polinomios donde se requiere reordenar y reducir términos semejantes.",
+        "Uso de letras distintas (a, b, x, y, m, n, etc.) manteniendo el criterio de semejanza (misma parte literal y mismo exponente).",
+        "Polinomios escritos en una o varias líneas (en forma desarrollada, no factorizada)."
       ],
       "out_of_scope": [
-        "Multiplicación de polinomios (productos notables, distributiva entre monomios y polinomios).",
-        "Factorización de polinomios o resolución de ecuaciones polinómicas.",
-        "Evaluación numérica de polinomios en un valor dado de la variable.",
-        "Operaciones con polinomios que involucren potencias no enteras, radicales o expresiones no polinomiales.",
-        "Operaciones con más de dos niveles de anidación de paréntesis (por ejemplo, paréntesis dentro de paréntesis que requieran estrategias avanzadas).",
-        "Contextos funcionales avanzados (por ejemplo, composición de funciones polinomiales) o análisis de gráficos de polinomios.",
-        "Uso de identidades trigonométricas, logarítmicas u otras que no correspondan a polinomios."
+        "Multiplicación o división de polinomios.",
+        "Factorización de polinomios o uso de productos notables.",
+        "Resolución de ecuaciones o inecuaciones que involucren polinomios.",
+        "Análisis de grado, raíces o comportamiento gráfico de polinomios.",
+        "Operaciones con expresiones que no sean polinómicas (fracciones algebraicas, radicales, potencias con exponentes negativos o fraccionarios en la parte literal).",
+        "Suma o resta de más de dos polinomios a la vez con procedimientos avanzados (por ejemplo, organización matricial)."
       ],
       "prerequisites": [
-        "A-M1-ALG-01-01: Comprender la estructura de un monomio (coeficiente, parte literal, exponente entero no negativo).",
-        "A-M1-ALG-01-02: Identificar y clasificar términos semejantes en expresiones algebraicas simples.",
-        "A-M1-ALG-01-03: Aplicar la regla de los signos en sumas y restas de números enteros y racionales.",
-        "A-M1-ALG-00-01: Uso básico de propiedades de adición y sustracción (conmutativa y asociativa) en números reales."
+        "A-M1-ALG-01-01: Manejo de números enteros y regla de signos en suma y resta.",
+        "A-M1-ALG-01-02: Identificación de términos algebraicos y parte literal (coeficiente, variable, exponente).",
+        "A-M1-ALG-01-03: Reconocimiento de términos semejantes en expresiones polinómicas simples."
       ],
       "common_traps": [
-        "Cambiar solo el signo del primer término dentro del paréntesis afectado por un signo menos y dejar los demás términos sin cambiar.",
-        "No reconocer términos semejantes cuando el polinomio tiene más de una variable (por ejemplo, confundir xy con x² o con y²).",
-        "Omitir términos al reducir, especialmente cuando el coeficiente resultante es cero, lo que puede generar confusión al comparar con alternativas de respuesta.",
-        "Ordenar erróneamente el polinomio resultante o pensar que el orden incorrecto implica que la respuesta es distinta, aun siendo algebraicamente equivalente.",
-        "Confundir suma con resta cuando el enunciado mezcla varias operaciones (por ejemplo, suma de polinomios donde uno de ellos ya contiene signos negativos internos).",
-        "Manejar mal los coeficientes negativos y fraccionarios, generando errores de signo aunque se identifiquen bien los términos semejantes.",
-        "Pensar que deben «multiplicar» al eliminar paréntesis, confundiendo la presencia de un signo con la de un factor numérico."
+        "Aplicar incorrectamente la regla de signos al eliminar paréntesis precedidos por un signo menos, cambiando solo algunos signos u olvidando cambiar todos.",
+        "Considerar como semejantes términos que comparten solo la variable pero no el exponente (por ejemplo, x y x²).",
+        "Desordenar la expresión resultante de modo que parezca que se han sumado términos no semejantes (presentación poco clara).",
+        "Confundir el signo del coeficiente con la operación (por ejemplo, interpretar −3x y 'restar 3x' como cosas distintas).",
+        "Perder términos al copiar o transcribir los polinomios, especialmente cuando se colocan en columnas o hay muchos sumandos.",
+        "Tratar el signo que está dentro del paréntesis como si no se viera afectado por el signo externo (por ejemplo, −(x − 2) → −x − 2)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Polinomios de una sola variable con grado máximo 2 (a lo más cuadráticos) y pocos términos (2 o 3 por polinomio).",
-        "Coeficientes enteros pequeños (entre -5 y 5) sin fracciones ni decimales.",
-        "Operaciones con un solo conjunto de paréntesis y, a lo más, un signo menos delante de uno de ellos.",
-        "Reducción de términos semejantes donde cada grado aparece a lo más en dos términos, evitando varias sumas encadenadas.",
-        "Ítems donde la respuesta correcta se distingue claramente por el manejo del signo (una o dos operaciones de signos).",
-        "Formato directo simbólico: «Calcular la suma/resta de…» sin contexto verbal extensivo."
+        "Polinomios de una sola variable con a lo más 3 términos cada uno.",
+        "Coeficientes enteros pequeños (entre −5 y 5) sin fracciones ni decimales.",
+        "Suma o resta donde los polinomios ya están ordenados por grado y los términos semejantes se ven alineados o fácilmente identificables.",
+        "Un solo par de paréntesis y, si hay resta, con estructura simple (por ejemplo, (ax + b) − (cx + d)).",
+        "Ítems que piden solo el resultado final sin requerir reordenar grados ni interpretar contexto verbal."
       ],
       "medium": [
-        "Polinomios de una o dos variables, con grados hasta 3 y 3–4 términos por polinomio.",
-        "Combinación de coeficientes enteros positivos y negativos, pudiendo incluir uno o dos coeficientes fraccionarios sencillos (denominadores 2, 3, 4).",
-        "Presencia de más de un paréntesis afectado por distintos signos (por ejemplo, suma de un polinomio y resta de otro).",
-        "Necesidad de reorganizar los términos para identificar correctamente términos semejantes cuando están desordenados.",
-        "Enunciados verbales breves que describen la combinación de polinomios antes de presentarlos simbólicamente.",
-        "Distractores construidos a partir de errores típicos (no cambiar signos, no reducir todos los términos semejantes) que obligan a revisar con cuidado."
+        "Polinomios de una variable con 3 a 5 términos cada uno, incluyendo algún término con coeficiente 0 implícito (término ausente).",
+        "Presencia de coeficientes enteros con valor absoluto hasta 10, incluyendo algunos negativos.",
+        "Uso de uno o dos paréntesis con signos menos delante, requiriendo cambiar signos dentro de más de un término.",
+        "Se requiere identificar que algunos términos no tienen semejante y deben copiarse tal cual.",
+        "Puede incluir polinomios de dos variables, pero con estructura simple y emparejamiento evidente de términos semejantes.",
+        "Formulación que exige reordenar el resultado por grado descendente o una pequeña interpretación desde un enunciado verbal sencillo."
       ],
       "hard": [
-        "Expresiones con varias variables (por ejemplo, x, y, z) donde solo algunos términos son semejantes, requiriendo discriminar con precisión.",
-        "Polinomios con 4–6 términos cada uno, con grados mezclados y sin orden, lo que exige reorganizar mentalmente antes de sumar o restar.",
-        "Uso sistemático de coeficientes fraccionarios o decimales (especialmente negativos), que deben ser sumados o restados correctamente.",
-        "Presencia de diferentes signos delante de varios paréntesis y mezcla de suma y resta en la misma expresión (por ejemplo, suma de tres polinomios donde uno se resta).",
-        "Ítems donde el polinomio resultante tiene algún coeficiente nulo, lo que puede enmascarar términos que desaparecen y generar distractores sutiles.",
-        "Contextos verbales más elaborados donde se construye el polinomio a partir de una situación y luego se pide sumar o restar expresiones resultantes.",
-        "Alternativas que son algebraicamente muy parecidas entre sí (difieren en el signo o en un solo coeficiente), exigiendo un alto control de errores de cálculo."
+        "Polinomios con dos variables (por ejemplo, x e y o a y b) y combinación de términos semejantes en ambas variables simultáneamente.",
+        "3 o más polinomios en la misma suma/resta, con paréntesis anidados o sucesivos que requieren aplicar varias veces la regla de signos.",
+        "Coeficientes enteros más grandes (hasta ±20) y/o presencia moderada de fracciones o decimales sencillos (por ejemplo, 1/2, −3/4, 0,5).",
+        "Polinomios presentados desordenados respecto del grado o de la variable, de modo que el estudiante deba identificar y reagrupar términos semejantes con mayor esfuerzo.",
+        "Contextos verbales en los que primero hay que traducir la situación a una expresión polinómica y luego efectuar suma y/o resta.",
+        "Ítems donde varias alternativas comparten muchos términos y solo difieren en el signo o coeficiente de algunos, exigiendo control cuidadoso de errores de signo."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar expresiones donde no quede claro qué términos están dentro o fuera de un paréntesis; usar siempre paréntesis bien balanceados y legibles.",
-      "No mezclar varios tipos de símbolos de agrupación (paréntesis, corchetes, llaves) si no es estrictamente necesario; privilegiar solo paréntesis.",
-      "Evitar notación ambigua en contextos verbales, por ejemplo frases como «se le resta el polinomio A al polinomio B»; especificar siempre B − A o A − B simbólicamente.",
-      "No usar letras iguales para diferentes fines (por ejemplo, usar x tanto como variable del polinomio y como parámetro independiente en el enunciado).",
-      "Evitar polinomios excesivamente largos donde las alternativas difieran en múltiples términos a la vez, dificultando la revisión y promoviendo errores por lectura más que por contenido.",
-      "No mezclar en el mismo ítem términos de igual grado con distinta variable principal si no se explicita qué se entiende por términos semejantes (por ejemplo, x² y y²).",
-      "Evitar preguntas donde más de una alternativa sea algebraicamente equivalente a la correcta pero escrita en distinto orden, salvo que se especifique un formato estándar único.",
-      "No utilizar notación no convencional para polinomios (por ejemplo, indicar multiplicación implícita con puntos intermedios innecesarios) que pueda confundirse con otros signos."
+      "Evitar disponer términos de manera que no quede claro qué signo corresponde a cada uno; siempre asociar el signo inmediatamente al coeficiente del término.",
+      "No usar puntos suspensivos en polinomios ('…') que impidan saber exactamente qué términos se están sumando o restando.",
+      "Evitar notación ambigua con paréntesis, como escribir −x+2y−(3x−y+4) sin espacios o con signos que puedan leerse de más de una forma; cuidar la claridad tipográfica.",
+      "No mezclar en un mismo ítem varios sistemas de letras que puedan confundirse entre sí (por ejemplo, usar tanto x como χ o letras muy similares visualmente).",
+      "Evitar expresiones donde no se distinga bien entre el signo menos de un término y la barra de fracción; preferir paréntesis claros en fracciones algebraicas si se incluyen.",
+      "No formular alternativas que solo difieran en el orden de los términos si el criterio de corrección no exige un orden específico; si se evalúa orden, enunciarlo explícitamente.",
+      "Evitar contextos verbales en que no quede claro qué se está sumando o restando (por ejemplo, ganancias y pérdidas descritas de forma confusa respecto al sujeto u objeto)."
     ],
     "error_families": [
       {
-        "name": "Signo_menos_mal_aplicado",
-        "description": "El estudiante no cambia correctamente el signo de todos los términos dentro de un paréntesis precedido por signo menos, o solo lo aplica al primer término.",
-        "how_to_address": "Incluir ítems donde el error típico conduzca a una alternativa distractora clara; reforzar la idea de que el signo menos multiplica por -1 a todo el polinomio entre paréntesis."
+        "name": "Signos_mal_aplicados_en_resta_con_paréntesis",
+        "description": "Error al eliminar paréntesis cuando hay un signo menos delante: el estudiante no cambia todos los signos dentro del paréntesis o cambia signos que no corresponden.",
+        "how_to_address": "Incluir ítems que obliguen a aplicar explícitamente la distribución del signo menos, destacando los cambios de signo en cada término. Razonar paso a paso, mostrando primero la eliminación correcta del paréntesis y luego la reducción de términos semejantes."
       },
       {
-        "name": "Términos_no_semejantes_confundidos",
-        "description": "Se agrupan términos que no son semejantes (por ejemplo, x² con x, o xy con x²), produciendo resultados con combinaciones incorrectas.",
-        "how_to_address": "Diseñar ítems con términos de varios tipos donde solo algunos son semejantes y usar distractores que reflejen agrupar indebidamente; enfatizar en el enunciado la necesidad de identificar términos semejantes antes de sumar o restar."
+        "name": "Confusion_sobre_terminos_semejantes",
+        "description": "El estudiante agrupa como semejantes términos con la misma variable pero distinto exponente o con variables distintas; por ejemplo, suma x con x² o 2a con 3b.",
+        "how_to_address": "Diseñar distractores que muestren justamente esas sumas incorrectas y trabajar ejercicios que obliguen a justificar por qué ciertos términos sí se pueden sumar y otros no, enfatizando la igualdad de la parte literal completa (variables y exponentes)."
       },
       {
-        "name": "Coeficientes_mal_sumados",
-        "description": "Aunque se identifican bien los términos semejantes, se cometen errores en la suma o resta de los coeficientes, especialmente con negativos o fracciones.",
-        "how_to_address": "Incluir polinomios con coeficientes negativos y fraccionarios y alternativas que reflejen errores aritméticos habituales; vincular con el refuerzo de sumas y restas de números enteros y racionales."
+        "name": "Perdida_de_terminos_en_la_reduccion",
+        "description": "Al copiar y reagrupar, el estudiante omite términos (especialmente los que no tienen semejante) o los repite.",
+        "how_to_address": "Proponer ítems donde el conteo de términos sea fácil de verificar (por ejemplo, '¿cuántos términos tiene el polinomio resultante?') y fomentar estrategias de marcado, como tachar o subrayar los términos ya utilizados en la suma o resta."
       },
       {
-        "name": "Términos_omitidos",
-        "description": "Uno o más términos no se copian al resultado, en especial cuando no tienen término semejante en el otro polinomio o aparecen en una posición poco visible.",
-        "how_to_address": "Usar ítems donde algunos términos aparezcan solo en uno de los polinomios, y distractores que omitan sistemáticamente estos términos; insistir en revisar todos los términos tras eliminar paréntesis."
+        "name": "Manejo_incorrecto_de_coeficientes_negativos",
+        "description": "Dificultad para sumar y restar coeficientes negativos al combinar términos semejantes, incluso cuando la identificación de los términos es correcta.",
+        "how_to_address": "Incluir ejercicios que destaquen el cálculo numérico de los coeficientes por separado, con alternativas que representen errores típicos de suma y resta de enteros. Refrescar la regla de signos antes de centrarse en la parte algebraica."
       },
       {
-        "name": "Orden_del_polinomio_confundente",
-        "description": "El estudiante cree que el orden de los términos modifica el resultado y descarta alternativas equivalentes simplemente por estar escritas en orden distinto.",
-        "how_to_address": "Proponer ítems donde las alternativas incluyan el mismo polinomio escrito en órdenes distintos para enfatizar la equivalencia; aclarar que el orden es una convención, no cambia el polinomio."
+        "name": "Ordenamiento_confuso_del_resultado",
+        "description": "El estudiante obtiene los coeficientes correctos pero presenta el polinomio sin un orden claro, lo que aumenta la probabilidad de errores y dificulta la comparación con las alternativas.",
+        "how_to_address": "Incluir enunciados que pidan explícitamente el polinomio ordenado por grado o por una variable específica. Mostrar ejemplos donde el reordenamiento facilita la revisión de la operación realizada."
       },
       {
-        "name": "Anulación_invisible_de_términos",
-        "description": "Cuando dos términos semejantes tienen coeficientes opuestos (por ejemplo, 3x² y -3x²), el estudiante no reconoce que se anulan y espera verlos en el resultado.",
-        "how_to_address": "Plantear ítems donde la simplificación produce desaparición de algún grado o de la constante, con distractores que conservan dichos términos; explicar explícitamente que suma de opuestos da cero."
+        "name": "Interpretacion_equivocada_de_contextos_verbales",
+        "description": "En problemas de contexto, el estudiante arma mal el polinomio inicial (por ejemplo, confunde qué se suma y qué se resta entre cantidades representadas por expresiones algebraicas).",
+        "how_to_address": "Proponer ítems en dos etapas: primero identificar la expresión polinómica correcta desde el contexto, luego hacer la suma o resta. Usar verbos y expresiones verbales claras (aumentar, disminuir, diferencia entre, total) y revisarlos en la retroalimentación."
       }
     ],
     "future_targets": [
-      "Suma y resta de polinomios en el contexto de operaciones con funciones polinomiales (por ejemplo, (f+g)(x), (f−g)(x)).",
-      "Multiplicación de polinomios y uso de productos notables, que requieren manejar con soltura la reducción de términos semejantes.",
-      "Factorización de polinomios, donde la verificación del resultado implica volver a expandir y simplificar polinomios.",
-      "Resolución de ecuaciones polinómicas simples que demandan agrupar términos semejantes en un mismo lado de la ecuación.",
-      "Análisis de expresiones algebraicas en problemas de modelación, donde se combinan varios polinomios que representan diferentes magnitudes.",
-      "Simplificación de expresiones algebraicas más complejas que mezclan fracciones algebraicas, donde se requiere sumar y restar polinomios en numeradores y denominadores.",
-      "Comprensión y manipulación de series polinomiales simples, donde cada término se maneja como parte de un polinomio mayor."
+      "Suma y resta de expresiones algebraicas más generales (incluyendo racionales y radicales).",
+      "Multiplicación de polinomios y productos notables, donde se parte de una expresión ya reducida.",
+      "Factorización de polinomios, que requiere reconocer estructuras en expresiones polinómicas ordenadas y simplificadas.",
+      "Resolución de ecuaciones e inecuaciones polinómicas donde se trasladan términos de un lado a otro (suma y resta de polinomios en ambos miembros).",
+      "Análisis de funciones polinómicas (grado, interceptos, comportamiento gráfico) a partir de expresiones simplificadas.",
+      "Operaciones con polinomios en contextos de modelación algebraica (por ejemplo, perímetros, áreas, costos)."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal"
+      "Polinomios escritos en una sola línea, separados por signos de suma o resta.",
+      "Polinomios organizados en columnas según potencias de una variable para facilitar la suma y resta término a término.",
+      "Expresiones polinómicas en contexto verbal, donde cada parte del polinomio representa una magnitud específica (por ejemplo, costos fijos y variables).",
+      "Polinomios escritos desordenados en cuanto al grado o mezclando variables, que requieren ser reagrupados para identificar términos semejantes.",
+      "Uso de letras diferentes a x (por ejemplo, a, b, p, q) para evitar mecanización, manteniendo el mismo procedimiento.",
+      "Expresiones con paréntesis múltiples y signos distintos delante (por ejemplo, suma de un polinomio y la resta de otro en la misma línea)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers",
+      "integers_with_negatives",
       "simple_fractions",
-      "mixed",
-      "simple_decimals"
+      "simple_decimals",
+      "zero_coefficients_implicit",
+      "literal_parameters"
     ],
     "required_image_types": []
   }

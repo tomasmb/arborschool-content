@@ -336,6 +336,10 @@ class CostEstimate(BaseModel):
     estimated_cost_min: float = Field(description="Lower bound estimate in USD")
     estimated_cost_max: float = Field(description="Upper bound estimate in USD")
     breakdown: dict = Field(default_factory=dict, description="Per-item breakdown")
+    stale_artifacts: dict | None = Field(
+        None,
+        description="Downstream artifacts that will be deleted on run",
+    )
 
 
 class FailedItem(BaseModel):

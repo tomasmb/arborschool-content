@@ -16,6 +16,7 @@ from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
     AtomContext,
     AtomEnrichment,
+    DifficultyDistribution,
     DifficultyLevel,
     PhaseResult,
     PlanSlot,
@@ -32,8 +33,17 @@ from app.question_generation.prompts.planning import (
 
 logger = logging.getLogger(__name__)
 
-# Maximum times the same operation_skeleton_ast can appear (spec 6.2)
-MAX_SKELETON_REPETITIONS = 2
+# Baseline skeleton cap for small pools (spec 6.2).
+# For larger pools, the cap scales: max(2, total // 10).
+_BASE_SKELETON_CAP = 2
+
+
+def skeleton_repetition_cap(pool_total: int) -> int:
+    """Compute the skeleton repetition cap for a given pool size.
+
+    Keeps diversity proportional: pool=46 -> cap=4, pool=62 -> cap=6.
+    """
+    return max(_BASE_SKELETON_CAP, pool_total // 10)
 
 
 _PLANNING_REASONING = "medium"
@@ -60,24 +70,27 @@ class PlanGenerator:
         self,
         atom_context: AtomContext,
         enrichment: AtomEnrichment | None,
-        pool_size: int,
+        distribution: DifficultyDistribution,
     ) -> PhaseResult:
         """Generate a plan of item slots (Phase 2).
 
         Args:
             atom_context: Atom data from Phase 0.
             enrichment: Enrichment from Phase 1 (may be None).
-            pool_size: Number of items to plan.
+            distribution: Planned difficulty distribution.
 
         Returns:
             PhaseResult with list[PlanSlot] data on success.
         """
+        pool_size = distribution.total
         logger.info(
             "Phase 2: Generating plan for atom %s (%d slots)",
             atom_context.atom_id, pool_size,
         )
 
-        prompt = self._build_prompt(atom_context, enrichment, pool_size)
+        prompt = self._build_prompt(
+            atom_context, enrichment, distribution,
+        )
 
         for attempt in range(self._max_retries + 1):
             try:
@@ -122,7 +135,7 @@ class PlanGenerator:
         self,
         ctx: AtomContext,
         enrichment: AtomEnrichment | None,
-        pool_size: int,
+        distribution: DifficultyDistribution,
     ) -> str:
         """Build the plan generation prompt."""
         image_types = (
@@ -141,9 +154,9 @@ class PlanGenerator:
             enrichment_section=build_enrichment_section(enrichment),
             exemplars_section=build_exemplars_section(ctx.exemplars),
             existing_count=ctx.existing_item_count,
-            pool_size=pool_size,
+            pool_size=distribution.total,
             difficulty_distribution=build_difficulty_distribution(
-                pool_size,
+                distribution,
             ),
             image_instruction=image_instruction,
             image_rules=image_rules,
@@ -180,7 +193,7 @@ class PlanGenerator:
 def validate_plan(
     plan_slots: list[PlanSlot],
     atom_context: AtomContext,
-    pool_size: int,
+    distribution: DifficultyDistribution,
 ) -> PhaseResult:
     """Validate a generated plan against hard constraints (Phase 3).
 
@@ -189,13 +202,13 @@ def validate_plan(
     - Scope compliance (atom-only)
     - Difficulty distribution adherence
     - Exemplar anchoring rule (if exemplars exist)
-    - Skeleton repetition cap (max 2 per AST)
-    - Slot count matches pool_size
+    - Skeleton repetition cap (scales with pool size)
+    - Slot count matches distribution total
 
     Args:
         plan_slots: Generated plan from Phase 2.
         atom_context: Atom data for scope checking.
-        pool_size: Expected number of slots.
+        distribution: Expected difficulty distribution.
 
     Returns:
         PhaseResult with validation report.
@@ -205,9 +218,9 @@ def validate_plan(
     errors: list[str] = []
     warnings: list[str] = []
 
-    _check_slot_count(plan_slots, pool_size, errors)
-    _check_difficulty_distribution(plan_slots, pool_size, warnings)
-    _check_skeleton_repetition(plan_slots, errors)
+    _check_slot_count(plan_slots, distribution.total, errors)
+    _check_difficulty_distribution(plan_slots, distribution, errors)
+    _check_skeleton_repetition(plan_slots, distribution.total, errors)
     _check_exemplar_anchoring(plan_slots, atom_context, errors)
     _check_required_fields(plan_slots, errors)
 
@@ -246,34 +259,43 @@ def _check_slot_count(
 
 def _check_difficulty_distribution(
     slots: list[PlanSlot],
-    pool_size: int,
-    warnings: list[str],
+    distribution: DifficultyDistribution,
+    errors: list[str],
 ) -> None:
-    """Check that difficulty levels are reasonably distributed."""
+    """Check that difficulty counts match the planned distribution."""
     counts = Counter(slot.difficulty_level for slot in slots)
-    per_level = pool_size // 3
-
-    for level in DifficultyLevel:
+    expected = {
+        DifficultyLevel.EASY: distribution.easy,
+        DifficultyLevel.MEDIUM: distribution.medium,
+        DifficultyLevel.HARD: distribution.hard,
+    }
+    for level, exp in expected.items():
         actual = counts.get(level, 0)
-        if actual == 0:
-            warnings.append(
-                f"No slots at difficulty '{level.value}' "
-                f"(expected ~{per_level})",
+        if actual != exp:
+            errors.append(
+                f"Expected {exp} '{level.value}' slots, "
+                f"got {actual}",
             )
 
 
 def _check_skeleton_repetition(
     slots: list[PlanSlot],
+    pool_total: int,
     errors: list[str],
 ) -> None:
-    """Enforce skeleton repetition cap (spec section 6.2)."""
+    """Enforce skeleton repetition cap (spec section 6.2).
+
+    The cap scales with pool size to keep diversity proportional:
+    pool=46 -> cap=4, pool=62 -> cap=6.
+    """
+    cap = skeleton_repetition_cap(pool_total)
     counts = Counter(slot.operation_skeleton_ast for slot in slots)
 
     for skeleton, count in counts.items():
-        if count > MAX_SKELETON_REPETITIONS:
+        if count > cap:
             errors.append(
                 f"Skeleton '{skeleton}' appears {count} times "
-                f"(max {MAX_SKELETON_REPETITIONS})",
+                f"(max {cap} for pool of {pool_total})",
             )
 
 

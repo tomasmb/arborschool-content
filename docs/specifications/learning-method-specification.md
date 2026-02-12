@@ -17,7 +17,7 @@ Each atom = 1 lesson + 1 PP100 question set. Mastery is binary. Failed atoms tri
 | Component | Description |
 |-----------|-------------|
 | Lesson | 1-3 worked examples; covers every step required by atom's E/M/H items |
-| Question Set | PP100 questions at 3 difficulty levels (minimum 3 per level) |
+| Question Set | PP100 questions at 3 difficulty levels (minimum 14E/18M/14H = 46 total) |
 | Prerequisites | Links to atoms whose steps are required but taught elsewhere |
 
 Lesson is generated AFTER question set to ensure alignment.
@@ -26,49 +26,61 @@ Lesson is generated AFTER question set to ensure alignment.
 
 ## PP100 Algorithm
 
-### State
+### Core Mastery Rule
 
-```
-level: Easy | Medium | Hard (start at Easy)
-streak[level]: consecutive correct at each level
-total_correct: sum across all levels
-```
+The student must answer **3 questions in a row correctly**, with **at least 2 of those at HARD difficulty**.
+
+### Failure Rule
+
+The student **fails** and is redirected to prerequisite review if:
+- 3 incorrect answers in a row, OR
+- 10 total questions attempted with <70% accuracy
+
+### Question Limit
+
+- After 10 questions with no mastery or failure: continue up to **20 questions total**
+- If mastery occurs at any point: mastered
+- If by question 20 there is still no 3-in-a-row with 2 hard: **fail**
+- No "provisional mastery" — mastery requires clear streak-based evidence
+
+### Difficulty Progression
+
+| Current Level | After 2 Correct | After 2 Wrong |
+|---------------|-----------------|---------------|
+| Easy          | Medium          | Stay at Easy  |
+| Medium        | Hard            | Easy          |
+| Hard          | Stay at Hard    | Medium        |
+
+- Students always **start at Easy**
+- Progression and regression are **streak-based** (not one-off answers)
 
 ### Question Selection
 
-1. Select from current level for this atom
+1. Select from current difficulty level for this atom
 2. Prefer never-seen questions
 3. Else use least-recently-seen
 
-### On Correct
+### Question Pool Per Atom
 
-```
-streak[level] += 1
-total_correct += 1
+Derived from worst-case mastery path:
+- Max **20 questions per attempt**
+- Students can attempt each atom up to **2 times** with unique questions
+- No repeat questions across attempts
 
-if level != Hard and streak[level] >= 2:
-    level = next_level_up
-```
+| Difficulty | Max per Attempt | Needed (x2) | Recommended |
+|------------|-----------------|-------------|-------------|
+| Easy       | 6               | 12          | **14**      |
+| Medium     | 8               | 16          | **18**      |
+| Hard       | 6               | 12          | **14**      |
+| **Total**  | —               | —           | **46**      |
 
-### On Wrong
+### Research Basis
 
-```
-streak[level] = 0
-
-if level != Easy:
-    level = next_level_down
-```
-
-### Mastery Criteria
-
-All must be true:
-- `total_correct >= 11`
-- `correct_at_hard >= 3`
-- `last_2_questions_at_hard == correct`
-
-### Failure
-
-If accuracy < 50%: status = `frozen`, trigger prerequisite diagnosis.
+- **3-in-a-row (3CCR)**: Widely used (ASSISTments, Mathia), reduces guess-based false positives
+- **Requiring HARD items**: Avoids shallow mastery, promotes transfer and generalization
+- **Failure rule**: Wheel-spinning literature shows 3 consecutive errors or <70% accuracy over 10+ attempts reliably predicts prerequisite gaps
+- **Streak-based transitions**: Reduce noise vs. one-off correct/incorrect; used in ALEKS and Direct Instruction
+- **No provisional pass**: Mastery = clarity. If they can't hit the bar in 20 questions, they need support
 
 ---
 
@@ -111,7 +123,7 @@ Advance      Complete gap-fill
 
 ## Prerequisite Diagnosis
 
-Triggered when PP100 fails (<50% accuracy).
+Triggered when PP100 fails (3 wrong in a row or <70% accuracy over 10+ questions).
 
 ```
 Failed Atom
@@ -153,7 +165,7 @@ Plan updates after every PP100 outcome.
 |---------|--------|
 | High accuracy, ≤13 items | Advance; SR in 7+ days |
 | Modest accuracy, 14-20 items | Advance; SR in 3-5 days |
-| <50% or >20 items | Freeze; diagnose; gap-fill; reteach |
+| <70% over 10+ items or 3 wrong in a row | Freeze; diagnose; gap-fill; reteach |
 
 ---
 
@@ -226,5 +238,5 @@ not_started → in_progress → mastered
 |------|----------|
 | `prerequisite_ids` | Diagnosis, gap-fill, blocking |
 | `question_atoms` | Priority scoring, PP100 selection |
-| `question_set` | PP100 (3+ per difficulty) |
+| `question_set` | PP100 (14E/18M/14H = 46 per atom) |
 | `lesson` | Teaching (1-3 worked examples) |

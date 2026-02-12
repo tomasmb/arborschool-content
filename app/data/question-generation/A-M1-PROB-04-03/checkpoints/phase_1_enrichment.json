@@ -3,117 +3,118 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Traducción directa de enunciados verbales simples que usan 'o' y 'y' a notación de conjuntos usando unión (∪) e intersección (∩).",
-        "Representar probabilidades de eventos compuestos del tipo P(A ∪ B), P(A ∩ B) a partir de frases en lenguaje natural.",
-        "Distinguir correctamente el uso de 'o' inclusivo (al menos uno de los eventos ocurre) frente a la idea de unión de conjuntos.",
-        "Interpretar frases que combinan uno o dos conectores simples ('y', 'o') en contexto de situaciones aleatorias cotidianas (clima, dados, cartas, encuesta, etc.).",
-        "Reconocer, dada una expresión simbólica como P(A ∩ B), el enunciado verbal correspondiente utilizando 'y'.",
-        "Elegir, entre varias expresiones simbólicas, cuál corresponde a un enunciado verbal dado que involucra eventos compuestos."
+        "Traducción directa de enunciados verbales con conectores 'o' y 'y' a notación de conjuntos usando unión (∪) e intersección (∩).",
+        "Representar probabilidades de eventos compuestos en forma P(A ∪ B) y P(A ∩ B).",
+        "Comprender el significado de 'al menos uno de', 'ocurre A o B' como unión de eventos.",
+        "Comprender el significado de 'ocurren ambos', 'A y B a la vez' como intersección de eventos.",
+        "Uso de ejemplos simples con uno o dos conectores lógicos sin anidación compleja.",
+        "Asociar frases de contexto cotidiano (clima, resultados de dados, características de personas u objetos) con eventos A, B y su composición."
       ],
       "out_of_scope": [
-        "Cálculo numérico de probabilidades (valores de P(A), P(B), P(A ∪ B), etc.).",
-        "Uso de la fórmula de inclusión-exclusión o cálculos con probabilidades condicionadas.",
-        "Eventos complementarios y notación de complemento (Aᶜ, A').",
-        "Más de dos eventos compuestos simultáneamente (A, B, C, ...).",
-        "Uso de conectores lógicos como 'si..., entonces...', 'si y sólo si', negaciones explícitas o inecuaciones lógicas.",
-        "Representación mediante diagramas de Venn (pueden aparecer en contexto, pero no se evalúa lectura fina de áreas ni cálculo).",
-        "Situaciones con lenguaje probabilístico avanzado (independencia, mutuamente excluyentes, distribución, etc.)."
+        "Cálculo numérico de probabilidades de eventos compuestos (por ejemplo, aplicar fórmulas de inclusión-exclusión).",
+        "Probabilidad condicional (P(A|B)) y notación asociada.",
+        "Eventos complementarios (A^c) y su combinación con unión o intersección.",
+        "Combinaciones con más de dos eventos (A, B, C) y conectores múltiples encadenados.",
+        "Uso de tablas de contingencia, diagramas de árbol o de Venn como foco principal.",
+        "Razonamiento formal con tablas de verdad o lógica proposicional fuera del contexto de probabilidad.",
+        "Problemas que requieran demostrar propiedades algebraicas de unión e intersección de conjuntos."
       ],
       "prerequisites": [
-        "A-M1-PROB-01-01",
-        "A-M1-CONJ-01-01",
-        "A-M1-LECT-01-01"
+        "A-M1-PROB-04-01",
+        "A-M1-PROB-04-02",
+        "A-M1-SET-01-01"
       ],
       "common_traps": [
-        "Interpretar la palabra 'o' como excluyente (solo uno de los eventos) y no como unión inclusiva.",
-        "Confundir el conector 'y' con unión en lugar de intersección, especialmente cuando el contexto sugiere 'ambos casos posibles'.",
-        "Perder el foco en el conector principal cuando el enunciado es largo y tiene información irrelevante o adjetivos que distraen.",
-        "No identificar claramente qué parte del texto describe cada evento individual (A, B), mezclando condiciones dentro de un mismo evento.",
-        "Asociar la escritura P(A ∩ B) solo con 'al mismo tiempo' y no con 'que se cumplan ambas condiciones', lo que genera errores en contextos no temporales.",
-        "Confundir nombre de evento con resultado numérico (por ejemplo, interpretar 'par' como número 2 y no como el conjunto de todos los resultados pares)."
+        "Interpretar el conector 'o' siempre como 'excluyente' en lenguaje cotidiano y no como 'al menos uno' en probabilidad.",
+        "Confundir unión con intersección por asociar 'y' con 'sumar' e 'o' con 'multiplicar'.",
+        "Perder la referencia de qué representa cada evento (por ejemplo, A: 'sale par', B: 'sale múltiplo de 3') al traducir a notación simbólica.",
+        "No explicitar los eventos simples antes de escribir la probabilidad compuesta (escribir P(Par ∪ 3) en vez de definir B como 'múltiplo de 3').",
+        "Traducir parcialmente el enunciado, omitiendo palabras como 'no' o 'al menos', que alteran el evento (aunque en este átomo no se profundiza en complementos, se debe evitar mezclarlos sin claridad).",
+        "Mezclar símbolos de conjuntos con conectores de proposiciones (escribir P(A o B) en vez de P(A ∪ B)).",
+        "Confundir 'A y no B' o 'no A y B' con A ∩ B, lo que requiere cuidar enunciados con negaciones implícitas."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Enunciados breves con solo dos eventos claramente separados y un único conector ('o' o 'y'), sin negaciones ni matices.",
-        "Vocabulario cotidiano y directo para describir los eventos (par, múltiplo de 3, llueve, hace frío, cara, sello).",
-        "Correspondencia casi literal entre el conector verbal y el símbolo a usar (ej., 'o' → ∪, 'y' → ∩) sin información extra.",
-        "Ítems donde solo se pide decidir entre P(A ∪ B) y P(A ∩ B), sin otras expresiones distractoras con más símbolos.",
-        "Eventos ya nombrados explícitamente con letras (por ejemplo, 'Sea A el evento \"llueve\" y B el evento \"hace frío\"...')."
+        "Enunciados breves con un solo conector lógico ('o' o 'y') y dos eventos claramente definidos.",
+        "Contextos muy familiares (clima, dado, moneda, colores, cursos) donde las categorías de eventos son evidentes.",
+        "Solicitar solo la traducción a notación de conjuntos, sin mezclar con cálculo de probabilidades.",
+        "Usar literal simple para eventos (A: 'sale número par', B: 'sale múltiplo de 3') antes de pedir la representación P(A ∪ B) o P(A ∩ B).",
+        "Evitar negaciones, cuantificadores ('al menos', 'a lo más') o frases coloquiales complejas."
       ],
       "medium": [
-        "Enunciados con dos conectores, pero donde solo uno de ellos define la relación entre A y B y el otro aparece dentro de la descripción de un evento (por ejemplo, 'llueve y hace viento' como un solo evento).",
-        "Necesidad de identificar primero los eventos simples A y B a partir del texto antes de elegir la expresión simbólica adecuada.",
-        "Presencia de información contextual irrelevante (descripciones adicionales, lugar, tiempo) que no entra en la traducción simbólica.",
-        "Opciones de respuesta con varias expresiones simbólicas similares (por ejemplo, P(A ∩ B), P(A ∪ B), P(A), P(B)), que exigen discriminar con precisión el conector.",
-        "Frases en las que el orden de los eventos en el texto no coincide con el orden en las alternativas, obligando a centrarse en el contenido y no solo en la posición."
+        "Enunciados que incluyen expresiones como 'al menos una de las siguientes condiciones', 'ocurre A o B (o ambas)', 'se cumple A y también B'.",
+        "Situaciones donde el estudiante debe identificar primero qué frases corresponden a A y B y luego construir el evento compuesto.",
+        "Combinaciones de dos conectores del mismo tipo en secuencia (por ejemplo, 'A o B y C', pero restringiendo la tarea a representar solo la parte A o B o solo la parte con 'y').",
+        "Ítems que ofrecen varias representaciones simbólicas posibles y piden elegir cuál corresponde a una descripción verbal dada (reconocimiento, no solo producción).",
+        "Uso moderado de contexto con más de una característica por individuo (por ejemplo, estudiantes con distintas asignaturas aprobadas) sin tablas de doble entrada formales."
       ],
       "hard": [
-        "Enunciados más largos donde aparecen tres o más condiciones en el lenguaje natural, pero se debe reconocer que solo dos de ellas constituyen los eventos A y B a combinar, y las otras son detalles contextuales.",
-        "Uso de estructuras lingüísticas que disfrazan los conectores directos, por ejemplo: 'al menos una de las siguientes situaciones ocurre', 'se cumplen ambas condiciones', 'se da simultáneamente que...'.",
-        "Presencia simultánea de 'y' y 'o' en el enunciado, donde el estudiante debe decidir cuál es el conector que define el evento preguntado (por ejemplo, se describen varios casos pero se pregunta por uno específico).",
-        "Distractores que usan la combinación incorrecta de conectores, como P(A) + P(B) en vez de P(A ∪ B), o P(A ∩ B) cuando el texto corresponde a 'A o B'.",
-        "Traducción inversa más sutil: se entrega P(A ∩ B) o P(A ∪ B) y se ofrecen varios enunciados verbales muy parecidos, donde solo uno refleja correctamente el tipo de combinación de eventos."
+        "Enunciados con estructura más larga donde la posición del 'o' y 'y' puede inducir ambigüedad si no se analiza con cuidado (por ejemplo, 'estudiantes que aprobaron Matemática y Física, o Física y Química', solicitando una parte específica como símbolo).",
+        "Uso de frases equivalentes a los conectores lógicos ('además', 'asimismo', 'ya sea que... o que...', 'si ocurre A, o en su defecto, B') que requieran interpretar correctamente el tipo de conector.",
+        "Ítems que piden discriminar entre varias traducciones cercanas, donde algunas representaciones cambian solo el tipo de conector (∪ versus ∩) o el orden de presentación de eventos.",
+        "Escenarios donde los eventos tienen solapamientos lógicos no obvios en el contexto (por ejemplo, características de personas: 'usa lentes', 'practica deporte') y se pregunta por 'las personas que cumplen ambas condiciones' o 'al menos una'.",
+        "Problemas en que la identificación de a qué subconjunto corresponde una frase compuesta específica es clave para un paso posterior (aunque no se exija el cálculo)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar frases donde 'o' sea claramente excluyente en el uso cotidiano (por ejemplo, 'elige té o café') a menos que se explicite que se considera cualquier opción posible, incluyendo ambas.",
-      "No mezclar en la misma pregunta 'o' inclusivo y 'o' excluyente; en este átomo debe trabajarse solo el sentido de unión inclusiva.",
-      "Evitar negaciones compuestas como 'no llueve y no hace frío' o 'no ocurre ni A ni B', que involucran complementos fuera del alcance del átomo.",
-      "No usar frases con más de dos eventos nombrados por letras (A, B, C) si solo se evalúa la relación entre dos, para no generar dudas sobre qué se debe representar.",
-      "Evitar descripciones en que un mismo conector pueda entenderse como parte del nombre del evento (por ejemplo, 'evento \"caras y sellos\"') y también como conector lógico.",
-      "No utilizar simultáneamente diferentes formas simbólicas para los mismos eventos en la misma pregunta (por ejemplo, A y 'par' como si fueran cosas distintas) sin explicitar qué es cada uno.",
-      "Evitar lenguaje coloquial ambiguo como 'o bien', 'ya sea que', si no se aclara explícitamente su equivalencia con 'o' inclusivo.",
-      "No introducir cuantificadores como 'al menos uno', 'a lo más uno' combinados con 'o' y 'y' si la intención es solamente asociar a unión o intersección."
+      "Evitar enunciados donde no quede claro si 'o' es inclusivo o exclusivo; en probabilidad debe entenderse como inclusivo ('A, B o ambos'). Si se usa un contexto que parezca exclusivo (por ejemplo, 'gana uno u otro premio'), explicitarlo o no usarlo en este átomo.",
+      "No mezclar en la misma pregunta conectores 'o' y 'y' sin paréntesis o aclaración verbal que indique la agrupación lógica, para no requerir análisis sintáctico complejo.",
+      "Evitar frases con doble negación ('no es que no ocurra A y B') o negaciones implícitas muy coloquiales.",
+      "No usar simultáneamente símbolos de conjuntos y palabras 'o', 'y' en la misma expresión matemática (por ejemplo, 'P(A o B)' junto a 'P(A ∪ B)'), para que el estudiante tenga un objetivo único de representación.",
+      "Evitar contextos donde un mismo suceso pueda interpretarse de dos maneras distintas como evento (por ejemplo, 'día lluvioso' referido a distintas ciudades sin especificar).",
+      "No utilizar diagramas de Venn mal descritos textualmente (sin imagen) que impliquen interpretar regiones específicas complejas; este átomo se centra en la notación simbólica, no en la localización gráfica.",
+      "Evitar en la misma pregunta introducir complementos (A^c) sin pedirlos explícitamente, para no expandir el foco del átomo más allá de 'o' y 'y'."
     ],
     "error_families": [
       {
-        "name": "O_exclusivo_vs_union",
-        "description": "El estudiante interpreta 'o' como una elección excluyente, pensando que A ∪ B incluye solo los casos en que ocurre uno de los dos eventos pero no ambos.",
-        "how_to_address": "Trabajar con ejemplos donde ambos eventos pueden ocurrir simultáneamente (por ejemplo, número par y múltiplo de 3) y resaltar que en la unión también se consideran los casos en que se dan ambos eventos; contrastar explícitamente con la idea de 'solo uno de los dos'."
+        "name": "Confundir unión con intersección",
+        "description": "El estudiante representa un enunciado con 'o' usando intersección (A ∩ B) o un enunciado con 'y' usando unión (A ∪ B), muchas veces guiado por asociaciones erróneas con sumar/multiplicar.",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente parejas de enunciados similares, uno con 'o' y otro con 'y', pidiendo identificar cuál corresponde a cada símbolo. Reforzar la idea de 'al menos una condición' (∪) versus 'todas las condiciones a la vez' (∩) con ejemplos de contexto muy claros."
       },
       {
-        "name": "Y_como_union",
-        "description": "Asociar el conector 'y' con la idea de 'más posibilidades' y, por costumbre del lenguaje cotidiano, representarlo como unión en lugar de intersección.",
-        "how_to_address": "Usar situaciones en que 'y' hace que el evento sea más restrictivo (por ejemplo, 'ser mujer y ser mayor de 18') y mostrar en diagramas o ejemplos concretos que esto corresponde a la intersección: casos que cumplen ambas condiciones a la vez."
+        "name": "Interpretar 'o' como exclusivo",
+        "description": "El estudiante entiende 'A o B' como 'A o B, pero no ambos', lo que en probabilidad estándar no corresponde a la unión simple.",
+        "how_to_address": "Proponer situaciones donde explicitamente pueda ocurrir A y B simultáneamente (por ejemplo, un número par y múltiplo de 3) y discutir que la expresión 'A o B' incluye esa intersección en la unión. Incluir alternativas de respuesta que representen la diferencia entre unión simple y 'solo uno de los dos' para visibilizar el error."
       },
       {
-        "name": "Evento_mal_definido",
-        "description": "El estudiante no separa correctamente cuáles son los eventos simples A y B en el enunciado, mezclando varias condiciones en un mismo evento o repartiendo una misma condición entre dos eventos.",
-        "how_to_address": "Practicar la identificación previa de eventos: subrayar en el texto qué describe cada evento, reescribir 'Sea A: ..., Sea B: ...' antes de traducir a P(A ∪ B) o P(A ∩ B)."
+        "name": "No definir claramente los eventos",
+        "description": "El estudiante escribe expresiones como P(par ∪ múltiplo de 3) sin usar símbolos para eventos, o mezcla valores y propiedades dentro del paréntesis.",
+        "how_to_address": "Incluir pasos intermedios o subpreguntas que pidan primero definir A y B de manera simbólica antes de escribir la probabilidad compuesta. Modelar la estructura 'Sea A: ..., B: ... Entonces, el evento pedido es P(A ∪ B)'."
       },
       {
-        "name": "Simbolo_probabilidad_omitido",
-        "description": "El estudiante escribe solo la relación de conjuntos (A ∪ B, A ∩ B) y omite la notación P( ), desconectando la expresión del contexto de probabilidad.",
-        "how_to_address": "Insistir en que se trabaja con probabilidades de eventos, no solo con conjuntos; incluir sistemáticamente la P( ) en ejemplos y pedir lectura en voz alta de expresiones como 'la probabilidad de que ocurra A y B'."
+        "name": "Pérdida de información del enunciado",
+        "description": "Al traducir, el estudiante omite partes de la condición (por ejemplo, ignora 'y también' o 'además de') y termina representando solo uno de los eventos o un evento simple en vez de uno compuesto.",
+        "how_to_address": "Crear ítems donde la alternativa incorrecta corresponda precisamente al evento simple en vez del compuesto, y retroalimentar explicitando qué parte del texto representa cada símbolo. Favorecer ejercicios donde se subrayen las frases equivalentes a A, B y al conector."
       },
       {
-        "name": "Lectura_inversa_incorrecta",
-        "description": "Dada una expresión como P(A ∩ B), el estudiante la interpreta verbalmente usando 'o', o viceversa, porque asocia de forma mecánica sin entender el significado.",
-        "how_to_address": "Alternar ejercicios de traducción en ambos sentidos (verbal → simbólico y simbólico → verbal), pidiendo justificar con palabras qué significa 'A ∩ B' y 'A ∪ B' en contextos concretos."
-      },
-      {
-        "name": "Ignorar_contexto",
-        "description": "El estudiante se queda solo con la presencia de las palabras 'o' y 'y' sin atender al contexto, eligiendo siempre ∪ para 'o' y ∩ para 'y', incluso cuando el texto señala explícitamente que se quiere 'al menos una de las siguientes' o 'ambas condiciones a la vez'.",
-        "how_to_address": "Diseñar ítems donde el contexto refuerce el significado de unión o intersección (por ejemplo, 'al menos una de estas condiciones se cumple' para unión y 'se cumplen simultáneamente' para intersección), y pedir que subrayen palabras clave del contexto antes de responder."
+        "name": "Uso incorrecto de símbolos de probabilidad",
+        "description": "Errores como escribir A ∪ B = P(A ∪ B) o confundir el evento con su probabilidad, mezclando notación de conjuntos y notación P(…).",
+        "how_to_address": "Incluir ítems que obliguen a distinguir entre 'evento' y 'probabilidad del evento', pidiendo específicamente 'el evento en notación de conjuntos' o 'la probabilidad en notación P(...)'. Modelar ejemplos donde se escriba primero A ∪ B y luego P(A ∪ B)."
       }
     ],
     "future_targets": [
-      "Interpretación y uso de fórmulas de probabilidad para unión e intersección de eventos.",
-      "Comprensión de eventos mutuamente excluyentes a partir de la noción de intersección vacía.",
-      "Probabilidad condicionada y uso de expresiones como P(A ∩ B) = P(A)·P(B|A).",
-      "Análisis de independencia de eventos, donde P(A ∩ B) se relaciona con P(A) y P(B).",
-      "Lectura y construcción de diagramas de Venn para representar relaciones entre eventos.",
-      "Modelación de situaciones aleatorias más complejas donde se combinan varios eventos con operadores lógicos.",
-      "Resolución de problemas que combinan conteo (combinatoria) con eventos compuestos."
+      "Cálculo de la probabilidad de la unión de dos eventos usando la fórmula P(A ∪ B) = P(A) + P(B) − P(A ∩ B).",
+      "Comprensión y cálculo de probabilidad condicional P(A|B) y su relación con intersecciones.",
+      "Análisis de independencia de eventos mediante P(A ∩ B) = P(A)P(B).",
+      "Uso de diagramas de Venn para representar y calcular probabilidades de eventos compuestos.",
+      "Modelación de situaciones más complejas con tres o más eventos y combinaciones de conectores lógicos.",
+      "Interpretación de tablas de contingencia y relación con unión e intersección de eventos.",
+      "Aplicación de reglas de probabilidad en contextos de toma de decisiones y riesgo."
     ],
     "representation_variants": [
-      "verbal",
-      "simbólica",
-      "conjuntos_etiquetados"
+      "Notación con letras mayúsculas para eventos: A, B, C.",
+      "Notación de unión e intersección: A ∪ B, A ∩ B.",
+      "Notación de probabilidad de eventos compuestos: P(A ∪ B), P(A ∩ B).",
+      "Descripción verbal de eventos: 'ocurre A o B', 'ocurren A y B simultáneamente'.",
+      "Formulación de eventos a partir de propiedades (por ejemplo, A: 'el número obtenido es par', B: 'el número obtenido es mayor que 3').",
+      "Listados simples o tablas verbales de casos posibles, donde se identifica qué casos pertenecen a A, B, A ∪ B, A ∩ B (sin cálculo numérico)."
     ],
     "numbers_profiles": [
-      "small_integers"
+      "small_integers",
+      "natural_numbers_1_6",
+      "natural_numbers_1_10",
+      "descriptive_categories"
     ],
     "required_image_types": []
   }

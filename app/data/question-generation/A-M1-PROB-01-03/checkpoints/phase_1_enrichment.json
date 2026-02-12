@@ -3,130 +3,134 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de frecuencia relativa a partir de frecuencia absoluta y total de datos N, usando la relación f/N.",
-        "Expresar la frecuencia relativa como fracción simplificada cuando se solicite explícitamente o el contexto lo sugiera.",
-        "Expresar la frecuencia relativa como número decimal, con un nivel razonable de redondeo (por ejemplo, a uno o dos decimales, según se indique).",
-        "Verificar que la suma de las frecuencias relativas de todos los valores de la variable sea 1 (o muy cercana, considerando el redondeo).",
-        "Completar una columna de frecuencia relativa en una tabla de distribución de frecuencias donde ya se tiene la frecuencia absoluta y el total de datos.",
-        "Interpretar que la frecuencia relativa representa la proporción del total de datos que corresponde a un valor o categoría."
+        "Cálculo de frecuencia relativa de una categoría o valor a partir de su frecuencia absoluta y del total de datos N, usando f/N.",
+        "Expresar la frecuencia relativa como fracción simplificada o no, o como número decimal, según se solicite en el enunciado.",
+        "Verificar que la suma de todas las frecuencias relativas de una distribución sea 1, o muy cercana a 1 cuando hay redondeos.",
+        "Completar columnas de frecuencia relativa en tablas de distribución de frecuencias, a partir de frecuencias absolutas y del total.",
+        "Traducir entre representaciones equivalentes de frecuencia relativa: fracción ↔ decimal ↔ porcentaje, cuando el contexto lo permita.",
+        "Identificar la frecuencia relativa correcta de una categoría a partir de datos contados o resumidos verbalmente (por ejemplo, '10 estudiantes de un curso de 25')."
       ],
       "out_of_scope": [
-        "Cálculo o interpretación de frecuencias acumuladas (absolutas o relativas).",
-        "Construcción o interpretación de gráficos estadísticos a partir de las frecuencias relativas (esto es de otros átomos).",
-        "Cálculo de probabilidades teóricas o combinatorias no directamente ligadas a un conteo de datos observados.",
-        "Cálculo de porcentajes en contextos de interés simple o compuesto que no se vinculan a una tabla de frecuencias.",
-        "Medidas de tendencia central (media, mediana, moda) o de dispersión (rango, desviación estándar).",
-        "Análisis de distribuciones agrupadas en intervalos que requieran trabajo con amplitudes de clase o densidades de frecuencia.",
-        "Inferencias estadísticas, muestreo o estimación de parámetros a partir de frecuencias relativas."
+        "Cálculo o interpretación de medidas de tendencia central (media, mediana, moda) o de dispersión (rango, desviación estándar).",
+        "Construcción o interpretación de gráficos estadísticos (barras, histogramas, sectores, boxplot) más allá de usar la información necesaria para calcular f/N.",
+        "Probabilidad teórica o combinatoria (espacios muestrales, conteo de casos posibles, permutaciones, combinaciones).",
+        "Probabilidad condicional o independencia de eventos.",
+        "Distribuciones de frecuencia agrupadas en intervalos que requieran estimaciones continuas más complejas (p. ej., densidades o clases de distinta amplitud).",
+        "Cálculos con muestras múltiples o comparación formal de dos distribuciones usando estadígrafos (no corresponde a este átomo)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Manejo básico de fracciones (interpretación f/N como parte de un todo y simplificación simple).",
-        "A-M1-NUM-01-02: Manejo básico de números decimales (lectura, escritura, comparación y redondeo simple).",
-        "A-M1-NUM-01-03: Paso de fracción a decimal cuando el denominador es un divisor usual de 10, 100, etc.",
-        "A-M1-PROB-01-01: Identificación de variable estadística y sus valores o categorías.",
-        "A-M1-PROB-01-02: Cálculo e interpretación de frecuencia absoluta y total de datos N a partir de una lista o tabla."
+        "A-M1-PROB-01-01: Comprender y determinar la frecuencia absoluta de un valor de la variable.",
+        "A-M1-NUM-01-02: Manejar fracciones sencillas y su interpretación como parte de un todo.",
+        "A-M1-NUM-01-03: Conversión entre fracción y número decimal, al menos para denominadores habituales (2, 4, 5, 10, 20, 25, 50, 100).",
+        "A-M1-NUM-01-04: Manejo básico de porcentajes como proporciones de 100 (opcional pero conveniente).",
+        "A-M1-NUM-01-01: Sumar y restar números enteros y decimales simples, y contar el total de datos N a partir de una lista o tabla."
       ],
       "common_traps": [
-        "Confundir frecuencia absoluta con frecuencia relativa y responder con el conteo f en lugar de la razón f/N.",
-        "Olvidar dividir por el total N y, en cambio, dividir por otro número presente en el enunciado (por ejemplo, la suma parcial de una fila o columna).",
-        "Tratar la frecuencia relativa como porcentaje sin hacer la conversión adecuada (por ejemplo, escribir 0,25% en lugar de 25% o 0,25).",
-        "Errores de redondeo que hacen que la suma de las frecuencias relativas se aleje significativamente de 1.",
-        "Usar el total de categorías en vez del total de datos como denominador al calcular la frecuencia relativa.",
-        "No identificar correctamente el total de datos N cuando está implícito en una tabla (por ejemplo, no sumar todas las frecuencias absolutas).",
-        "Asumir que la suma de frecuencias relativas debe ser exactamente 1, aun cuando el ítem explicita que hay redondeo necesario (no aceptar ligeras diferencias por redondeo)."
+        "Confundir frecuencia relativa con frecuencia absoluta y responder con f en vez de f/N.",
+        "Usar un total N incorrecto (por ejemplo, no sumar bien las frecuencias de la tabla, o incluir una categoría que no corresponde).",
+        "No respetar el formato solicitado (fracción o decimal) o pensar que el porcentaje NO es una forma de frecuencia relativa cuando el contexto indica que sí lo es.",
+        "Errores de redondeo que hacen que la suma de frecuencias relativas se aleje demasiado de 1, o creer que debe ser exactamente 1 cuando se usan decimales redondeados.",
+        "Confundir 'porcentaje de estudiantes que...' con 'número de estudiantes que...' en contextos verbales.",
+        "Interpretar la frecuencia relativa como diferencia o razón absoluta entre categorías (por ejemplo, f1 − f2) en lugar de proporción respecto al total."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Tablas con pocas categorías (3 a 5) y frecuencias absolutas pequeñas (por ejemplo, menores o iguales a 20) donde se da explícitamente el total N.",
-        "Cálculo de la frecuencia relativa para un solo valor o categoría, con números que conducen a fracciones y decimales sencillos (por ejemplo, 1/2, 1/4, 3/10).",
-        "Enunciados directos del tipo: 'La frecuencia absoluta de X es f y el total de datos es N. ¿Cuál es la frecuencia relativa de X?'.",
-        "Indicaciones claras sobre el formato de respuesta (solo fracción o solo decimal) y sin necesidad de redondeo.",
-        "Suma de frecuencias relativas trivial o no requerida explícitamente (no es necesario comprobar que suman 1 en el ítem)."
+        "Total de datos N pequeño (por ejemplo, N ≤ 20) y dado explícitamente en la tabla o en la redacción.",
+        "Cálculo de la frecuencia relativa de UNA sola categoría, con frecuencia absoluta dada directamente.",
+        "Fracciones que se convierten a decimal de forma exacta y sencilla (por ejemplo, 1/2, 1/4, 3/4, 2/5, 1/5, 3/5, 1/10, 3/10).",
+        "Sin necesidad de verificar la suma de las frecuencias relativas; basta con aplicar f/N una vez.",
+        "Formato de respuesta claramente indicado y coincidente con la forma en que es más natural expresar el resultado (por ejemplo, se pide fracción cuando f y N son números pequeños)."
       ],
       "medium": [
-        "Tablas con un número moderado de categorías (5 a 8) donde el total N se debe obtener sumando las frecuencias absolutas.",
-        "Cálculo de frecuencias relativas para varias categorías en la misma pregunta, pudiendo requerir identificar cuál alternativa presenta correctamente todas las frecuencias relativas.",
-        "Números que exigen un cálculo de fracción/decimal un poco menos inmediato (por ejemplo, 3/20, 7/25, 4/16), con posible simplificación de fracción.",
-        "Necesidad de redondear a uno o dos decimales, con una instrucción explícita sobre el nivel de redondeo.",
-        "Verificación indirecta de que las frecuencias relativas suman aproximadamente 1, al elegir la tabla o alternativa que cumple mejor esa condición."
+        "N moderado (entre 20 y 50) o implícito, requiriendo sumar frecuencias absolutas para encontrar el total.",
+        "Cálculo de frecuencias relativas para varias categorías en una tabla, no solo una, con necesidad implícita o explícita de ver que suman 1.",
+        "Presencia de redondeos a uno o dos decimales (por ejemplo, 7/23, 5/36) donde la respuesta se debe aproximar según se indica.",
+        "Necesidad de cambiar de representación (por ejemplo, calcular f/N y luego expresarla como porcentaje o viceversa).",
+        "Distractores que incluyen valores típicos de errores comunes (por ejemplo, usar N−1 como total o tomar solo f como respuesta) y el estudiante debe discriminar la definición correcta de frecuencia relativa."
       ],
       "hard": [
-        "Tablas con varias categorías (8 o más), donde algunas tienen frecuencia baja y otras alta, requiriendo un manejo cuidadoso del total N.",
-        "Cálculos de frecuencia relativa que llevan a fracciones no triviales (por ejemplo, 7/40, 11/50, 13/80) y su conversión a decimal con redondeo apropiado.",
-        "Ítems que piden identificar errores en una tabla de frecuencias relativas (por ejemplo, tabla casi correcta con una categoría mal calculada o suma distinta a 1).",
-        "Situaciones donde se combinan formatos (algunas frecuencias relativas dadas en fracción, otras en decimal o porcentaje) y se debe determinar la consistencia respecto de las frecuencias absolutas.",
-        "Contextos verbales más largos donde el estudiante debe extraer las frecuencias absolutas desde una descripción textual, calcular N y luego hallar una o varias frecuencias relativas, cuidando el redondeo y la suma total cercana a 1."
+        "N más grande (mayor a 50) o que no aparece explícito, teniendo que reconstruirlo a partir de información parcial (por ejemplo, tabla incompleta donde se deduce un dato faltante para luego hallar N).",
+        "Combinación de varias tareas: completar tabla de frecuencias relativas, verificar que suman aproximadamente 1, y responder sobre una categoría específica o sobre la corrección global de la tabla.",
+        "Uso de fracciones que generan decimales no terminantes (por ejemplo, 7/30, 11/40, 13/50) y se especifica un criterio de redondeo, obligando a considerar el efecto de los redondeos en la suma total.",
+        "Interpretación de información verbal más compleja (por ejemplo, conteos separados por subgrupos que deben agregarse para determinar N o f) antes de calcular la frecuencia relativa.",
+        "Comparación de dos posibles tablas o descripciones de frecuencias relativas, donde el estudiante debe identificar cuál es coherente con un conjunto de frecuencias absolutas dado, usando críticamente la condición de que la suma debe ser 1."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar indistintamente los términos 'proporción', 'probabilidad' y 'frecuencia relativa' sin aclarar que en el contexto del ítem se está trabajando específicamente con datos observados y la razón f/N.",
-      "No pedir 'frecuencia relativa' y mostrar en las alternativas solo porcentajes sin aclarar que se aceptan como forma equivalente de frecuencia relativa.",
-      "Evitar tablas donde no quede claro cuál columna es la frecuencia absoluta y cuál es la frecuencia relativa; las columnas deben estar rotuladas de forma explícita.",
-      "No mezclar formatos de número (coma y punto decimal) en el mismo ítem; usar siempre coma decimal según normativa local.",
-      "Evitar enunciados donde el total N pueda interpretarse de dos maneras distintas (por ejemplo, población total versus muestra considerada).",
-      "No usar ejemplos donde la misma letra represente a la vez el total N y la frecuencia de una categoría, lo que podría confundir el numerador y el denominador de f/N.",
-      "Especificar siempre el nivel de redondeo requerido (por ejemplo, 'redondee a dos decimales') cuando se espera una frecuencia relativa decimal aproximada.",
-      "Evitar que la respuesta correcta y distractores solo se diferencien por un redondeo irrelevante (por ejemplo, 0,33 vs 0,333) si el enunciado no define el criterio de redondeo.",
-      "No proponer alternativas donde unas estén en fracción y otras en decimal sin que el enunciado deje claro que cualquiera de las dos representaciones es válida si es equivalente."
+      "No usar el término 'frecuencia' sin especificar si se refiere a absoluta o relativa; indicar explícitamente 'frecuencia absoluta' o 'frecuencia relativa'.",
+      "Evitar contextos donde el total N pueda interpretarse de más de una manera (por ejemplo, mezclar subgrupos donde no queda claro si el total incluye o excluye ciertos casos).",
+      "Indicar siempre el formato requerido de la respuesta (fracción, decimal, porcentaje) para que no haya dudas sobre qué representación se considera correcta.",
+      "Si se permiten respuestas aproximadas, explicitar el criterio de aproximación (por ejemplo, 'redondeado a dos decimales') y diseñar opciones que no generen ambigüedad por redondeos frontera.",
+      "No usar porcentajes ambiguos como 'la mitad', 'el doble', 'más de la mitad' si se pide un valor numérico de frecuencia relativa; en esos casos, pedir explícitamente el valor numérico.",
+      "Evitar tablas donde falte información clave para determinar el total N o alguna frecuencia absoluta, salvo que el propósito del ítem sea precisamente deducir ese valor de manera unívoca.",
+      "No mezclar en la misma tabla frecuencias absolutas y relativas sin etiquetarlas clara y visiblemente, para que no se confundan las columnas.",
+      "Evitar situaciones donde la suma de frecuencias relativas no pueda razonablemente aproximarse a 1 debido a redondeos excesivos (por ejemplo, redondear a un decimal cuando hay muchas categorías pequeñas)."
     ],
     "error_families": [
       {
-        "name": "Confusión_frecuencia_absoluta_vs_relativa",
-        "description": "El estudiante responde con el número de casos (frecuencia absoluta f) en vez de calcular la razón f/N, o cree que ambas son lo mismo.",
-        "how_to_address": "Incluir ítems que requieran comparar explícitamente frecuencia absoluta y relativa de una misma categoría, y usar el lenguaje 'de cada N datos, f pertenecen a esta categoría', reforzando la idea de proporción."
+        "name": "Confundir_frecuencia_absoluta_con_relativa",
+        "description": "El estudiante responde con la frecuencia absoluta f (o con otra cantidad entera relacionada) en vez de dividir por el total N. Por ejemplo, ante la categoría con 8 casos de un total de 32, responde '8' en vez de '8/32' o '0,25'.",
+        "how_to_address": "Insistir en la idea de frecuencia relativa como proporción del total, usando esquemas visuales de 'parte de un todo' y ejemplos donde el mismo valor absoluto puede tener distinta importancia dependiendo del tamaño del total. Proponer actividades de comparación de la misma frecuencia absoluta en distintos totales para reforzar la noción de proporción."
       },
       {
-        "name": "Denominador_incorrecto",
-        "description": "El estudiante utiliza como denominador un valor distinto al total de datos N, por ejemplo el número de categorías, la suma parcial de una fila o columna, o el total de otra submuestra.",
-        "how_to_address": "Diseñar ítems donde aparezcan varios totales posibles (por ejemplo, subtotales por grupo) y preguntar de forma dirigida 'respecto del total de datos considerados en la tabla', subrayando que el denominador correcto es la suma de todas las frecuencias absolutas."
+        "name": "Elegir_total_equivocado",
+        "description": "Se usa un valor de N incorrecto al calcular f/N, ya sea por no sumar correctamente las frecuencias de la tabla, ignorar alguna categoría o usar solo una parte de los datos (por ejemplo, solo hombres o solo mujeres cuando se pide el total del curso).",
+        "how_to_address": "Practicar explícitamente la determinación del total N desde tablas y descripciones verbales antes de calcular f/N. Reforzar el hábito de escribir el total junto a la tabla y de verificar que la suma de todas las frecuencias absolutas coincide con N."
       },
       {
-        "name": "Tratamiento_erróneo_de_porcentajes",
-        "description": "El estudiante escribe la frecuencia relativa como porcentaje pero con notación incorrecta (por ejemplo, 0,25% en vez de 25%) o interpreta un porcentaje dado como si fuera un decimal ya dividido por 100.",
-        "how_to_address": "Incluir algunos ítems que pidan relacionar 1/4, 0,25 y 25% explícitamente, y evitar notaciones que mezclen símbolo % con decimales sin una consigna clara; reforzar que porcentaje = proporción × 100%."
+        "name": "Olvidar_dividir_por_N",
+        "description": "El estudiante calcula diferencias, restas o razones entre frecuencias absolutas de categorías, pero no las relaciona con el total, por ejemplo responde f1−f2 o f1/f2 pensando que eso es frecuencia relativa.",
+        "how_to_address": "Enfatizar la fórmula explícita f/N y trabajar ejercicios donde se comparen distintas expresiones (f, f/N, f1/f2, etc.) pidiendo identificar cuál corresponde a una frecuencia relativa. Usar contraejemplos para mostrar por qué expresiones como f1−f2 no representan proporciones del total."
       },
       {
-        "name": "Suma_distinta_de_unidad",
-        "description": "Al completar varias frecuencias relativas, la suma se aleja significativamente de 1 (por errores de cálculo o de redondeo excesivo).",
-        "how_to_address": "Proponer tareas donde se detecte la tabla con error observando si las frecuencias relativas suman aproximadamente 1, enfatizando el uso de esta suma como mecanismo de autocontrol."
+        "name": "Manejo_deficiente_de_fracciones_y_decimales",
+        "description": "Errores en transformar la fracción f/N a decimal o porcentaje (por ejemplo, 3/5 → 0,35 en vez de 0,6) o en simplificar fracciones (por ejemplo, 6/20 → 3/20 en vez de 3/10).",
+        "how_to_address": "Refrescar procedimientos básicos de fracciones y porcentajes en contextos simples antes de complejizarlos. Priorizar al inicio fracciones con denominadores manejables (2, 4, 5, 10, 20, 25, 50, 100) y hacer explícita la relación con porcentajes (por ejemplo, 1/4 ↔ 25%)."
       },
       {
-        "name": "Redondeo_inadecuado",
-        "description": "El estudiante redondea demasiado pronto o a un número insuficiente de decimales, generando discrepancias importantes o respuestas que no coinciden con las alternativas.",
-        "how_to_address": "Plantear ítems con instrucciones precisas de redondeo (por ejemplo, dos decimales) y alternativas que permitan discriminar entre redondeo correcto e incorrecto; fomentar hacer la división completa antes de redondear al final."
+        "name": "Problemas_con_redondeo_y_suma_total",
+        "description": "El estudiante redondea las frecuencias relativas de forma inconsistente o excesiva, generando sumas muy distintas de 1, o considera incorrecta una tabla válida porque la suma de los decimales redondeados da algo como 0,99 o 1,01.",
+        "how_to_address": "Trabajar ejemplos donde se muestre paso a paso el efecto del redondeo y se compare la suma con 1. Explicar explícitamente que pequeñas diferencias (0,99; 1,01) pueden deberse al redondeo. Enseñar a respetar el criterio de redondeo indicado y distinguir entre errores por redondeo y errores conceptuales."
       },
       {
-        "name": "No_identificar_el_total_N",
-        "description": "El estudiante no suma las frecuencias absolutas para hallar N y usa un número cualquiera del enunciado como total, o bien olvida considerar todas las categorías.",
-        "how_to_address": "Incluir preguntas donde el total N no esté dado explícitamente, obligando a sumarlo, y preguntar en un primer paso (explícito o implícito) por el total de datos antes de calcular la frecuencia relativa."
+        "name": "Confundir_porcentaje_con_numero_de_casos",
+        "description": "Ante un contexto con porcentajes, el estudiante confunde '30%' con '30 personas' o asume que el porcentaje es la frecuencia absoluta. También puede olvidar que un porcentaje es una forma de frecuencia relativa.",
+        "how_to_address": "Practicar la traducción bidireccional entre porcentaje y frecuencia relativa, y vincular siempre el porcentaje a 'de cada 100'. Resolver problemas donde se pide encontrar el número de casos a partir de un porcentaje y viceversa, enfatizando cuándo se está trabajando con proporciones y cuándo con recuentos."
       },
       {
-        "name": "Inversión_de_razón",
-        "description": "El estudiante calcula N/f en lugar de f/N, obteniendo valores mayores que 1 y a veces no los cuestiona.",
-        "how_to_address": "Elaborar ítems donde esta inversión genere resultados obviamente incompatibles (por ejemplo, una 'frecuencia relativa' mayor que 1) y pedir identificar la alternativa que tiene sentido como proporción, reforzando que la frecuencia relativa está entre 0 y 1."
+        "name": "Interpretar_erroneamente_el_formato_requerido",
+        "description": "El estudiante entrega la respuesta en un formato distinto al solicitado (por ejemplo, porcentaje cuando se pedía fracción), o descarta respuestas correctas porque están en otra representación equivalente.",
+        "how_to_address": "Habituar al estudiante a leer cuidadosamente las instrucciones de formato. Hacer actividades donde se muestren varias formas equivalentes de la misma frecuencia relativa, reforzando que todas son correctas matemáticamente aunque en una prueba pueda pedirse específicamente una de ellas."
       }
     ],
     "future_targets": [
-      "Interpretación y comparación de frecuencias relativas entre distintas categorías para describir tendencias en una distribución de datos.",
-      "Cálculo e interpretación de probabilidades empíricas a partir de datos observados, usando la relación entre frecuencia relativa y probabilidad.",
-      "Construcción e interpretación de gráficos estadísticos (barras, sectores circulares) a partir de frecuencias relativas o porcentajes.",
-      "Análisis de distribuciones de datos agrupados y cálculo de frecuencias relativas por intervalo de clase.",
-      "Uso de frecuencias relativas para tomar decisiones o realizar inferencias simples en contextos cotidianos y científicos.",
-      "Transición hacia el uso de proporciones y razones en otros contextos matemáticos (por ejemplo, escalas, modelos de probabilidad, porcentajes)."
+      "Cálculo e interpretación de probabilidades empíricas como frecuencia relativa de ocurrencia de un evento en experimentos aleatorios.",
+      "Construcción e interpretación de tablas de distribución de frecuencias completas (absoluta, relativa y acumulada).",
+      "Lectura e interpretación de gráficos estadísticos (barras, histogramas, gráficos circulares) donde las alturas o sectores representan frecuencias relativas.",
+      "Cálculo de medidas de tendencia central y dispersión a partir de distribuciones de frecuencia (por ejemplo, media ponderada usando frecuencias absolutas o relativas).",
+      "Comparación de distribuciones de datos de distintos tamaños usando frecuencias relativas en lugar de absolutas, para hacer comparaciones justas.",
+      "Introducción a la probabilidad condicional y a la independencia usando tablas de doble entrada en términos de frecuencias relativas.",
+      "Comprensión de conceptos de probabilidad en contextos más avanzados (ley de los grandes números, aproximación de la probabilidad teórica por frecuencia relativa)."
     ],
     "representation_variants": [
-      "tabular",
-      "simbólica",
-      "verbal_contextual",
-      "mixta_tabular_simbólica"
+      "Tablas de distribución de frecuencias con columnas de 'Categoría', 'Frecuencia absoluta' y 'Frecuencia relativa', donde se debe completar la columna de frecuencia relativa.",
+      "Listas de datos crudos (por ejemplo, resultados de lanzamientos, notas, edades) donde el estudiante primero debe contar la frecuencia absoluta de un valor y luego calcular su frecuencia relativa.",
+      "Descripciones verbales de conteos (por ejemplo, 'En una encuesta a 40 personas, 12 prefirieron la opción A, 18 la B y 10 la C') de las que se infiere f y N para luego calcular f/N.",
+      "Situaciones con porcentajes dados para algunas categorías y frecuencias absolutas para otras, que obligan a usar la relación entre frecuencia relativa y porcentaje.",
+      "Tablas incompletas donde se entrega parte de las frecuencias relativas y se debe deducir una frecuencia relativa faltante usando la condición de que suman 1.",
+      "Problemas donde se pide identificar, entre varias tablas o descripciones, cuál representa correctamente las frecuencias relativas de un conjunto de datos dado.",
+      "Contextos cotidianos (encuestas, resultados deportivos, preferencias, colores de autos, etc.) que permitan interpretar la frecuencia relativa como parte de un total y darle sentido a la proporción obtenida."
     ],
     "numbers_profiles": [
       "small_integers",
-      "fractions_simple",
-      "fractions_with_denominators_10_20_25_50_100",
-      "decimals_one_or_two_places",
-      "mixed_fractions_decimals"
+      "medium_integers",
+      "simple_fractions",
+      "non_terminating_fractions",
+      "finite_decimals_one_or_two_places",
+      "percentages_multiples_of_5_or_10",
+      "totals_up_to_50",
+      "totals_between_50_and_200"
     ],
     "required_image_types": []
   }

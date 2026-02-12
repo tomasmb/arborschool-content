@@ -3,123 +3,120 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de la probabilidad de la unión de DOS eventos mutuamente excluyentes usando la regla aditiva: P(A ∪ B) = P(A) + P(B).",
-        "Identificación, a partir del enunciado, de que los eventos NO pueden ocurrir simultáneamente (disjuntos).",
-        "Problemas donde la información ya entrega P(A) y P(B), o frecuencias que permiten obtenerlas directamente y luego sumarlas.",
-        "Situaciones simples de experimento aleatorio (dado, moneda, urnas, selección de personas/objetos) donde se pregunta por la probabilidad de que ocurra uno u otro evento, sin solapamiento.",
-        "Uso de probabilidades dadas en forma fraccionaria, decimal o porcentual, siempre con suma directa entre dos eventos disjuntos."
+        "Cálculo de P(A ∪ B) cuando A y B son eventos mutuamente excluyentes, usando directamente P(A ∪ B) = P(A) + P(B).",
+        "Problemas donde se pide la probabilidad de que ocurra uno u otro de dos resultados elementales que no pueden ocurrir simultáneamente (por ejemplo, en un solo lanzamiento o en una sola selección).",
+        "Situaciones de juegos de azar simples (dados, monedas, ruletas simples, urnas sencillas) donde se explicita o es evidente que los eventos no se solapan.",
+        "Uso de frecuencias absolutas o relativas de dos categorías que no se pueden presentar a la vez en un mismo caso (por ejemplo, sexo en una persona, tipo de producto elegido en una compra única) y cálculo de la probabilidad de una u otra categoría.",
+        "Extensión directa a más de dos eventos todos mutuamente excluyentes, manteniendo la misma lógica aditiva (por ejemplo, P(A ∪ B ∪ C) cuando A, B y C son disjuntos)."
       ],
       "out_of_scope": [
-        "Cálculo de P(A ∪ B) cuando los eventos NO son mutuamente excluyentes (es decir, cuando P(A ∩ B) ≠ 0).",
-        "Regla de la probabilidad total con más de dos eventos exhaustivos o particiones del espacio muestral.",
-        "Uso de la regla general de la unión: P(A ∪ B) = P(A) + P(B) − P(A ∩ B).",
-        "Probabilidades condicionadas (P(A|B)) o regla del producto de probabilidades.",
-        "Combinatoria explícita compleja para contar resultados (permutaciones, combinaciones avanzadas).",
-        "Procesos con más de un paso donde se mezclan sumas y productos de probabilidades en una misma situación.",
-        "Uniones de más de dos eventos (P(A ∪ B ∪ C)).",
-        "Eventos complementarios y uso de P(Aᶜ) = 1 − P(A) como foco principal."
+        "Casos donde los eventos NO son mutuamente excluyentes y se requiere la fórmula general P(A ∪ B) = P(A) + P(B) − P(A ∩ B).",
+        "Cálculo explícito de probabilidades de intersección o probabilidad condicional.",
+        "Problemas que exijan construcción o interpretación de diagramas de Venn como parte central del ítem.",
+        "Combinatoria avanzada (permutaciones, combinaciones) para determinar P(A) o P(B).",
+        "Situaciones en las que se requiere distinguir independencia de eventos o aplicar P(A ∩ B) = P(A)·P(B).",
+        "Contextos donde la intersección pueda no ser vacía o sea ambigua y no se explicite claramente que los eventos son excluyentes."
       ],
       "prerequisites": [
-        "A-M1-PROB-01-01",
-        "A-M1-PROB-02-01",
-        "A-M1-PROB-03-01",
-        "A-M1-PROB-04-01"
+        "A-M1-PROB-01-01: Comprender la definición básica de probabilidad como razón entre casos favorables y posibles.",
+        "A-M1-PROB-02-01: Identificar el espacio muestral y eventos simples en experimentos aleatorios sencillos.",
+        "A-M1-PROB-03-01: Reconocer e interpretar eventos mutuamente excluyentes (disjuntos) y su relación con la imposibilidad de ocurrir simultáneamente.",
+        "A-M1-NUM-01-01: Manejar operaciones básicas con fracciones, decimales y porcentajes relevantes para el cálculo de probabilidades."
       ],
       "common_traps": [
-        "Aplicar la fórmula P(A ∪ B) = P(A) + P(B) en contextos donde los eventos sí pueden ocurrir juntos, es decir, cuando NO son mutuamente excluyentes.",
-        "Suponer que si en el enunciado aparece la palabra “o”, automáticamente los eventos son disjuntos, sin analizar el contexto.",
-        "Confundir la probabilidad de la unión con la probabilidad de la intersección (creer que P(A ∪ B) = P(A) · P(B) o parecido).",
-        "Olvidar transformar porcentajes a la misma forma numérica (por ejemplo, sumar 0,3 con 40% sin convertir).",
-        "Suma incorrecta de fracciones por no usar denominador común (error aritmético, no probabilístico, pero frecuente).",
-        "Interpretar mal la condición de exclusión: creer que “si en la urna hay varios colores” entonces automáticamente los eventos dejan de ser excluyentes.",
-        "Confundir la unión con el complemento (responder 1 − P(A ∪ B) cuando se pide directamente P(A ∪ B))."
+        "Aplicar la fórmula P(A ∪ B) = P(A) + P(B) en contextos donde los eventos sí se pueden dar a la vez, porque el enunciado usa el conector \"o\" sin aclarar la exclusión.",
+        "Interpretar el \"o\" del enunciado como exclusivo en contextos donde en la realidad los eventos no son excluyentes (por ejemplo, \"ser mujer o ser estudiante de cuarto medio\").",
+        "Incluir otros resultados posibles en el cálculo aunque el problema esté restringido solo a dos categorías mutuamente excluyentes.",
+        "No detectar que la suma de probabilidades no puede superar 1, aceptando resultados mayores que 1 sin cuestionarlos.",
+        "Confundir la unión con la intersección de eventos (tratar P(A ∪ B) como si fuera P(A ∩ B))."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Experimentos muy conocidos y simples (un solo dado, una sola moneda, una urna con pocos elementos claramente descritos).",
-        "Eventos explícitamente indicados como mutuamente excluyentes o que se reconocen de forma inmediata (por ejemplo, obtener 2 o 5 en un lanzamiento de dado).",
-        "Probabilidades entregadas directamente como fracciones de denominador pequeño o porcentajes simples (por ejemplo, 1/6, 1/4, 20%, 50%).",
-        "La tarea principal es realizar una única suma de dos probabilidades dadas, sin necesidad de calcular previamente P(A) ni P(B) desde frecuencias.",
-        "Sin información irrelevante ni distractores conceptuales, y con lenguaje cotidiano directo y breve."
+        "Contextos de juegos de azar clásicos (un dado, una moneda, una urna con pocas bolas) donde se pide la probabilidad de obtener uno u otro resultado simple claramente excluyente.",
+        "Probabilidades dadas explícitamente en forma numérica (fracciones simples como 1/6, 1/4; decimales con una cifra; porcentajes redondos como 20%, 30%).",
+        "Cálculos directos con solo dos eventos mutuamente excluyentes y una única operación de suma de probabilidades.",
+        "Ítems donde el enunciado declara explícitamente que los eventos son \"mutuamente excluyentes\" o \"no pueden ocurrir al mismo tiempo\".",
+        "Sin necesidad de extraer probabilidades desde tablas de frecuencias ni realizar conversiones entre fracciones, decimales y porcentajes."
       ],
       "medium": [
-        "Contextos más elaborados (encuestas, juegos, selección de objetos) donde es necesario inferir, a partir de la descripción, que los eventos no pueden ocurrir simultáneamente.",
-        "Probabilidades que deben obtenerse a partir de frecuencias o conteos simples en tablas o descripciones (por ejemplo, 8 estudiantes prefieren X y 12 prefieren Y, y se pide la probabilidad de preferir X o Y).",
-        "Uso de fracciones no triviales o mezcla de formatos (fracciones y porcentajes, que exigen homogeneizar antes de sumar).",
-        "Enunciados con algo de información no necesaria que puede distraer, pero donde la aplicación de P(A ∪ B) = P(A) + P(B) sigue siendo directa una vez identificados los eventos.",
-        "Posible presencia de distractores que reflejan errores típicos (por ejemplo, opciones con P(A) + P(B) − 1 o P(A) · P(B))."
+        "Situaciones de contexto cotidiano (preferencias, encuestas, elección de productos) donde se mencionan dos categorías excluyentes y se requiere identificar que no se pueden dar simultáneamente.",
+        "Probabilidades que se obtienen a partir de frecuencias absolutas o relativas (por ejemplo, datos en una tabla) antes de aplicar la suma.",
+        "Uso de fracciones no triviales con distintos denominadores, o combinación de formas numéricas (por ejemplo, una probabilidad en porcentaje y otra en fracción) que exige conversión previa.",
+        "Problemas con más de dos eventos mutuamente excluyentes donde se pide la probabilidad de la unión de algunos de ellos (por ejemplo, \"probabilidad de sacar una carta roja o negra\" a partir de subcategorías dadas).",
+        "Enunciados donde no se menciona explícitamente \"mutuamente excluyentes\", pero se deduce de la situación (por ejemplo, \"ser zurdo\" o \"ser diestro\" en una mano determinada)."
       ],
       "hard": [
-        "Contextos donde NO se declara explícitamente que los eventos son mutuamente excluyentes y el estudiante debe analizar cuidadosamente el significado de los eventos para concluir que son disjuntos.",
-        "Situaciones de decisión en las que se definen los eventos mediante condiciones verbales algo más complejas (por ejemplo, rangos de resultados que no se solapan, categorías que se excluyen por definición).",
-        "Cálculo previo de P(A) y P(B) a partir de datos combinados (por ejemplo, tabla de distribución donde hay que identificar qué filas/columnas corresponden a cada evento, asegurando que no hay intersección).",
-        "Uso de números que exigen más cuidado en el cálculo (fracciones con diferentes denominadores no triviales, decimales no exactos simples, porcentajes como 17%, 23%, etc.), manteniendo la suma como operación central.",
-        "Presencia de distractores conceptuales que mezclan explícitamente la idea de intersección o complemento, obligando al estudiante a justificar internamente por qué aquí SÓLO se suma P(A) y P(B)."
+        "Problemas con texto más denso donde se describen varias categorías, de las cuales solo dos o tres son relevantes y mutuamente excluyentes, exigiendo seleccionar y filtrar la información adecuada.",
+        "Situaciones mixtas donde se comparan varias expresiones de probabilidad y el estudiante debe identificar en cuáles pares de eventos se puede aplicar correctamente la regla aditiva por exclusión mutua.",
+        "Ítems que requieren combinar la regla aditiva de eventos disjuntos con el uso del complemento (por ejemplo, calcular primero la probabilidad de un evento compuesto mediante suma y luego usar 1 − p).",
+        "Uso de números menos amigables (por ejemplo, fracciones con denominadores 8, 12, 20 o porcentajes como 17%, 23%) manteniendo cálculos razonables para el nivel PAES.",
+        "Contextos donde la exclusión mutua no es inmediata y se debe razonar explícitamente por qué ciertos eventos son incompatibles en un único experimento (pero sin exigir la fórmula general con intersección)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra “o” de manera ambigua; cuando se refiere a unión de eventos, dejar claro que es “la probabilidad de que ocurra A o B (al menos uno de los dos)”.",
-      "No mezclar en el mismo ítem situaciones donde a veces A y B son excluyentes y otras no, sin explicitar claramente qué caso se está considerando.",
-      "Evitar enunciados en los que parezca posible que un mismo resultado pertenezca a ambos eventos, a menos que se deje totalmente explícito que eso no puede ocurrir.",
-      "No usar descripciones vagas de categorías (por ejemplo, “alto” y “rápido”) sin especificar que son grupos distintos y sin superposición, si se quiere trabajar exclusión mutua.",
-      "Evitar tablas o descripciones de datos donde haya celdas o casos que podrían interpretarse como intersección de A y B cuando lo que se quiere evaluar es la suma para eventos disjuntos.",
-      "No usar términos como “uno u otro pero no ambos” si el contexto del experimento permite que ambos ocurran; en este átomo se considera que los eventos ya son disjuntos, por lo tanto “ambos” no es posible.",
-      "Evitar formular ítems donde se pueda responder correctamente tanto aplicando la regla de eventos disjuntos como la regla general de la unión; el contexto debe hacer inequívoco que P(A ∩ B) = 0.",
-      "No introducir simultáneamente más de dos eventos en la pregunta cuando el foco es la aplicación directa de P(A ∪ B) = P(A) + P(B) para exactamente dos eventos."
+      "Evitar contextos donde, en la realidad, los eventos podrían presentarse simultáneamente (por ejemplo, \"ser mujer\" y \"ser estudiante de cuarto medio\") si se va a usar la regla aditiva para eventos excluyentes, a menos que se aclare explícitamente la exclusión.",
+      "No usar ejemplos de atributos que no son incompatibles de manera natural (por ejemplo, colores y tallas al mismo tiempo) si el ítem sugiere que se debe aplicar P(A ∪ B) = P(A) + P(B).",
+      "Precisar que el experimento se realiza una sola vez cuando eso es necesario para garantizar que las opciones sean mutuamente excluyentes (por ejemplo, \"en un solo lanzamiento del dado\").",
+      "Evitar enunciados donde la palabra \"o\" pueda interpretarse como exclusiva o inclusiva de forma distinta a lo que requiere la situación; usar formulaciones como \"uno u otro\" y aclarar que no pueden ocurrir simultáneamente cuando sea necesario.",
+      "No mezclar en el mismo ítem eventos excluyentes y no excluyentes sin dejar muy claro para qué par de eventos se pide calcular la probabilidad de la unión.",
+      "Evitar distribuciones de categorías donde parezca posible pertenecer a más de una simultáneamente, a menos que se explicite que son categorías únicas y excluyentes para cada caso.",
+      "No introducir datos innecesarios de otras categorías o resultados que puedan hacer pensar que forman parte de la unión pedida si no son relevantes para A o B."
     ],
     "error_families": [
       {
-        "name": "Suma_inadecuada_en_eventos_no_excluyentes",
-        "description": "El estudiante aplica P(A ∪ B) = P(A) + P(B) en situaciones donde los eventos pueden ocurrir al mismo tiempo, ignorando que hay intersección.",
-        "how_to_address": "Diseñar ítems que exijan justificar por qué los eventos no pueden ocurrir simultáneamente (por ejemplo, clases mutuamente excluyentes de resultados) y contrastar con ejemplos donde sí hay solapamiento, enfatizando la condición P(A ∩ B) = 0."
+        "name": "Suma indebida en eventos no excluyentes",
+        "description": "El estudiante aplica P(A ∪ B) = P(A) + P(B) aunque los eventos sí puedan ocurrir simultáneamente, porque asocia la palabra \"o\" automáticamente con la suma de probabilidades.",
+        "how_to_address": "Plantear contraejemplos donde la suma supera 1 o no coincide con el total de casos posibles, y enfatizar que solo se puede sumar directamente cuando es imposible que ambos eventos ocurran a la vez en un mismo experimento. Trabajar la identificación de eventos mutuamente excluyentes a partir del contexto."
       },
       {
-        "name": "Confusion_union_interseccion",
-        "description": "El estudiante confunde la probabilidad de la unión con la de la intersección y considera que P(A ∪ B) se calcula multiplicando P(A) y P(B), o elige opciones asociadas a la intersección.",
-        "how_to_address": "Incluir distractores que utilizan el producto P(A) · P(B) y luego retroalimentar explicitando la diferencia entre “A y B” (intersección) y “A o B” (unión) en lenguaje cotidiano y simbólico, trabajando ejemplos donde la diferencia sea evidente."
+        "name": "Confusión unión–intersección",
+        "description": "Confunde la unión P(A ∪ B) con la intersección P(A ∩ B), ya sea no sumando las probabilidades cuando corresponde o creyendo que la probabilidad de \"A o B\" es el producto P(A)·P(B).",
+        "how_to_address": "Utilizar representaciones de espacio muestral (listados de resultados) para mostrar qué significa \"A o B\" (uno, otro o ambos, según el contexto) versus \"A y B\". Reforzar la notación y el lenguaje: \"al menos uno\" vs \"ambos\"."
       },
       {
-        "name": "Mala_identificacion_de_eventos_disjuntos",
-        "description": "El estudiante no reconoce que los eventos son mutuamente excluyentes o, al revés, cree que lo son cuando no corresponde, basándose solo en palabras clave y no en la lógica del experimento.",
-        "how_to_address": "Proponer ejercicios centrados en decidir si dos eventos son o no disjuntos antes de calcular probabilidades, obligando a analizar los posibles resultados y si algún resultado puede pertenecer a ambos eventos."
+        "name": "Ignorar la restricción de un solo experimento",
+        "description": "Piensa que en un problema se pueden obtener dos resultados de un mismo experimento, por ejemplo, dos caras distintas en un solo lanzamiento de dado, debilitando la noción de mutual exclusión.",
+        "how_to_address": "Reforzar la comprensión del experimento aleatorio: qué es un ensayo, cuántos resultados produce, y usar ejemplos sencillos (un lanzamiento, una extracción) para insistir en que solo ocurre un resultado en cada ensayo."
       },
       {
-        "name": "Errores_aritmeticos_en_la_suma",
-        "description": "Aunque el razonamiento probabilístico es correcto, el estudiante comete errores al sumar fracciones, decimales o porcentajes (por ejemplo, no usar denominador común o sumar porcentajes como si fueran números absolutos).",
-        "how_to_address": "Usar ítems con números muy simples al inicio y luego incorporar fracciones o porcentajes ligeramente más complejos, reforzando el paso de conversión a una misma representación antes de la suma y proporcionando retroalimentación sobre el cálculo numérico básico."
+        "name": "No revisar que la probabilidad total sea coherente",
+        "description": "Acepta resultados de probabilidad de unión mayores que 1 o claramente incompatibles con el espacio muestral.",
+        "how_to_address": "Trabajar estimaciones y verificaciones rápidas: recordar que toda probabilidad debe estar entre 0 y 1; pedir al estudiante que interprete el resultado en palabras (\"¿más del 100% de posibilidades?\") para detectar errores de coherencia."
       },
       {
-        "name": "Sobreuso_del_complemento",
-        "description": "El estudiante intenta usar 1 − P(A) o 1 − P(A ∪ B) en problemas donde basta con sumar P(A) y P(B), complicando innecesariamente el procedimiento o llegando a resultados erróneos.",
-        "how_to_address": "Incluir comparaciones entre resolver con suma directa y con complementos en contextos simples, mostrando que cuando se pregunta por exactamente los eventos A o B disjuntos, la vía más directa y menos propensa a error es P(A ∪ B) = P(A) + P(B)."
+        "name": "Manejo deficiente de fracciones y porcentajes",
+        "description": "Comete errores al convertir o sumar fracciones y porcentajes (por ejemplo, sumar denominadores, no homogeneizar, o sumar porcentajes sin convertir a la misma representación).",
+        "how_to_address": "Integrar ejercicios centrados en cálculo de probabilidades con números simples, enfatizando la correcta suma de fracciones y la conversión entre fracciones, decimales y porcentajes antes de introducir contextos más complejos."
       },
       {
-        "name": "Interpretacion_erronea_de_los_datos",
-        "description": "El estudiante confunde frecuencias con probabilidades o no identifica correctamente qué categorías corresponden al evento A y al B en tablas o descripciones verbales.",
-        "how_to_address": "Presentar tablas y descripciones claras donde se pida primero identificar qué conteos corresponden a cada evento y luego calcular P(A) y P(B), insistiendo en la relación probabilidad = (casos favorables) / (total de casos)."
+        "name": "Incluir resultados no pertenecientes a A ni B",
+        "description": "Cuenta casos favorables que no corresponden a ninguno de los eventos A o B al calcular la probabilidad de A ∪ B, normalmente por leer de forma descuidada una tabla o descripción de categorías.",
+        "how_to_address": "Trabajar la lectura detenida del enunciado, subrayando explícitamente cuáles son los eventos A y B. Usar tablas sencillas donde se diferencien claramente las categorías seleccionadas de las que no participan en la unión."
       }
     ],
     "future_targets": [
-      "Aplicación de la regla general de la unión cuando los eventos no son mutuamente excluyentes: P(A ∪ B) = P(A) + P(B) − P(A ∩ B).",
-      "Cálculo y uso de probabilidades condicionadas P(A|B) y regla del producto de probabilidades.",
-      "Probabilidad total y partición del espacio muestral en varios eventos mutuamente excluyentes y exhaustivos.",
-      "Análisis de diagramas de Venn con intersecciones y uniones más complejas.",
-      "Modelamiento de situaciones reales con múltiples eventos y mezcla de sumas y productos de probabilidades.",
-      "Trabajo con distribuciones de probabilidad más avanzadas (por ejemplo, binomial) donde se suman probabilidades de resultados disjuntos.",
-      "Resolución de problemas de decisión e incertidumbre más complejos, que combinan eventos excluyentes y no excluyentes."
+      "Aplicar la fórmula general de la unión de dos eventos: P(A ∪ B) = P(A) + P(B) − P(A ∩ B).",
+      "Interpretar y utilizar diagramas de Venn para representar la unión e intersección de eventos.",
+      "Calcular probabilidades de unión de más de dos eventos, considerando posibles solapamientos.",
+      "Trabajar probabilidad condicional y su relación con intersecciones de eventos.",
+      "Analizar independencia de eventos y relacionarla con P(A ∩ B) = P(A)·P(B).",
+      "Modelar situaciones de probabilidad mediante tablas de doble entrada y diagramas de árbol.",
+      "Resolver problemas de probabilidad compuesta en secuencias de experimentos (varios lanzamientos, varias extracciones) donde intervienen reglas aditivas y multiplicativas."
     ],
     "representation_variants": [
-      "verbal",
-      "simbolica",
-      "tabular",
-      "diagrama_simple_de_casos"
+      "Descripción verbal de eventos en lenguaje cotidiano (por ejemplo, tipos de productos, resultados de encuestas) explicitando que son categorías excluyentes.",
+      "Notación de conjuntos y de probabilidad formal: A, B, A ∪ B, P(A), P(B), P(A ∪ B).",
+      "Listados de espacio muestral para experimentos simples (por ejemplo, {1,2,3,4,5,6} en un dado) con A y B destacados como subconjuntos disjuntos.",
+      "Tablas de frecuencias absolutas o relativas con dos o más categorías mutuamente excluyentes, desde las cuales se obtienen P(A) y P(B).",
+      "Contextos de juegos de azar estándar (dado, moneda, extracción de una bola de una urna) donde se identifiquen visual o textualmente los resultados que corresponden a cada evento.",
+      "Representaciones simbólicas mixtas donde se den expresiones tipo P(A) = 0,3 y P(B) = 0,25, y se pida determinar P(A ∪ B) asumiendo disjunción."
     ],
     "numbers_profiles": [
       "small_integers",
-      "fractions",
+      "simple_fractions",
       "simple_decimals",
-      "simple_percentages"
+      "percentages"
     ],
     "required_image_types": []
   }

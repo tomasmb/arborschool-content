@@ -84,7 +84,20 @@ async def estimate_pipeline_cost(
         raise HTTPException(status_code=404, detail=f"Pipeline '{pipeline_id}' not found")
 
     estimator = CostEstimatorService()
-    estimate = estimator.estimate_pipeline_cost(pipeline_id, params or {})
+    safe_params = params or {}
+    estimate = estimator.estimate_pipeline_cost(pipeline_id, safe_params)
+
+    # Attach stale artifact info for question_gen pipelines
+    if pipeline_id == "question_gen":
+        atom_id = safe_params.get("atom_id", "")
+        phase = safe_params.get("phase", "all")
+        if atom_id:
+            from app.question_generation.artifacts import (
+                get_stale_artifacts,
+            )
+            estimate.stale_artifacts = get_stale_artifacts(
+                atom_id, phase,
+            )
 
     return estimate
 

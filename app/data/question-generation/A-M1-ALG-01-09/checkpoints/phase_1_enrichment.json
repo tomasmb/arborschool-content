@@ -3,113 +3,115 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Reconocer expresiones del tipo (a + b)(a - b) en forma simbólica, incluyendo cuando a y b son monomios simples o binomios muy simples.",
-        "Distinguir visualmente el patrón suma por diferencia frente a otros productos notables como (a + b)^2 o (a - b)^2.",
-        "Asociar (a + b)(a - b) con el patrón de desarrollo a^2 - b^2, sin necesidad de efectuar todo el desarrollo paso a paso.",
-        "Determinar, a partir de la forma (a + b)(a - b), que el resultado es un binomio (diferencia de cuadrados) y no un trinomio.",
-        "Comparar expresiones dadas y seleccionar cuál tiene la estructura suma por diferencia.",
-        "Reconocer la estructura suma por diferencia aun cuando el orden de los sumandos esté cambiado, por ejemplo (b + a)(a - b) o (x - 3)(x + 3)."
+        "Reconocer visualmente expresiones algebraicas de la forma (a + b)(a - b) o equivalentes con cambio de orden en sumandos y factores.",
+        "Identificar que el desarrollo de (a + b)(a - b) corresponde al patrón de diferencia de cuadrados a^2 - b^2.",
+        "Distinguir que el resultado de una suma por diferencia es un binomio, no un trinomio.",
+        "Reconocer la estructura de suma por diferencia aun cuando a y b sean expresiones algebraicas simples (por ejemplo x^2, 3y, 2x+1).",
+        "Relacionar el patrón (a + b)(a - b) ↔ a^2 - b^2 sin necesidad de efectuar el desarrollo completo término a término."
       ],
       "out_of_scope": [
-        "Desarrollar o factorizar completamente expresiones que no sean estrictamente una suma por su diferencia, como trinomios generales o productos de binomios no conjugados.",
-        "Demostrar algebraicamente la fórmula general de la diferencia de cuadrados.",
-        "Aplicar la diferencia de cuadrados para resolver ecuaciones o inecuaciones (eso corresponde a otros átomos centrados en resolución).",
-        "Trabajar con productos notables de orden superior, como cubos de binomios o suma y diferencia de cubos.",
-        "Contextualizar la diferencia de cuadrados en problemas geométricos o de área (eso se considera transferencia a contexto y excede el enfoque puramente conceptual de este átomo).",
-        "Manipulación con coeficientes reales complejos (irracionales complicados, parámetros múltiples) cuyo foco sea cálculo y no reconocimiento estructural."
+        "Cálculo numérico de (a + b)(a - b) con sustitución de valores específicos para a y b (foco aquí es estructural, no aritmético).",
+        "Uso de (a + b)(a - b) dentro de procesos de factorización de expresiones dadas inicialmente como a^2 - b^2.",
+        "Productos notables distintos: cuadrado de binomio, cubo de binomio u otros patrones de factorización.",
+        "Ecuaciones que requieren varios pasos de manipulación algebraica donde la suma por diferencia es solo una parte del procedimiento.",
+        "Aplicaciones geométricas o de áreas que usen a^2 - b^2 como modelo; el foco no es modelar, sino reconocer el patrón algebraico.",
+        "Simplificación de expresiones que incluyan más de dos factores, como (a + b)(a - b)(a + c)."
       ],
       "prerequisites": [
-        "A-M1-ALG-01-01: Comprensión de monomios y binomios (identificar términos y signos).",
-        "A-M1-ALG-01-02: Manejo básico de la propiedad distributiva en productos de binomios sencillos.",
-        "A-M1-ALG-01-05: Comprender y calcular cuadrados de números y monomios (a^2 como a·a)."
+        "A-M1-ALG-01-01: Uso del lenguaje algebraico básico (variables, coeficientes, términos).",
+        "A-M1-ALG-01-03: Suma y resta de monomios y binomios semejantes.",
+        "A-M1-ALG-01-05: Producto de monomios y binomios sin identificar aún productos notables.",
+        "A-M1-ALG-01-08: Reconocimiento general de productos notables (idea de que ciertos patrones tienen desarrollos rápidos), sin centrarse en suma por diferencia."
       ],
       "common_traps": [
-        "Confundir (a + b)(a - b) con (a + b)^2 y esperar un trinomio en lugar de un binomio.",
-        "Pensar que cualquier producto de dos binomios es una suma por diferencia aunque solo cambie un coeficiente o no sean exactamente opuestos los términos centrales.",
-        "No advertir que a y b pueden ser expresiones compuestas (por ejemplo, a = 2x, b = 3), y creer que el patrón solo se aplica cuando son letras simples.",
-        "Ignorar el orden de los sumandos y descartar estructuras equivalentes como (b + a)(b - a) que también responden al patrón diferencia de cuadrados.",
-        "Asumir que si una expresión contiene cuadrados, necesariamente proviene de una suma por diferencia, sin verificar la estructura original.",
-        "Creer que el patrón siempre genera a^2 + b^2 en vez de a^2 - b^2, por asociación errónea con otros productos notables."
+        "Confundir (a + b)(a - b) con el cuadrado de un binomio y esperar un trinomio como resultado.",
+        "No reconocer que (b + a)(a - b), (a - b)(b + a) o (x + 2)(-x + 2) pueden corresponder al mismo patrón por conmutatividad y signos.",
+        "Pensar que cualquier producto de dos binomios es una suma por diferencia, sin verificar que los términos solo difieren en el signo del segundo sumando.",
+        "Asumir erróneamente que el patrón es siempre a^2 + b^2 (sumar los cuadrados) en vez de a^2 - b^2.",
+        "Creer que el resultado siempre tiene términos cruzados (2ab) y por tanto no ver la cancelación en este patrón.",
+        "Desconocer que a y b pueden ser expresiones más complejas que solo una letra o un número, y dejar de reconocer el patrón cuando hay coeficientes o exponentes."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Expresiones donde a y b son números enteros pequeños o letras simples (por ejemplo, x, y, 2, 3) y la estructura (a + b)(a - b) está escrita en el orden estándar.",
-        "Ítems que piden solo identificar visualmente cuál de varias opciones tiene la forma (a + b)(a - b), sin necesidad de desarrollar el producto.",
-        "Situaciones donde los binomios comparten exactamente el primer término y el segundo término cambia solo por el signo (por ejemplo, (x + 4)(x - 4)).",
-        "Preguntas que se enfocan en decidir si el resultado esperado es un binomio o un trinomio a partir de la forma (a + b)(a - b)."
+        "Ítems donde a y b son monomios muy simples con coeficiente 1 y exponente 1, como x y 2, y la estructura está escrita exactamente como (a + b)(a - b).",
+        "Preguntas que solo piden identificar, entre varias opciones, cuál expresión TIENE forma de suma por diferencia, con diferencias de signo evidentes y sin reordenamientos.",
+        "Ítems donde se muestra (x + 3)(x - 3) y se consulta por la forma general del resultado (por ejemplo, si es binomio o trinomio) sin desarrollar completamente.",
+        "Opciones de respuesta poco distractoras, que no incluyen otros productos notables competidores (como (x + 3)^2) o casos límite."
       ],
       "medium": [
-        "Expresiones donde a y/o b son monomios con coeficientes distintos de 1 o con exponentes simples (por ejemplo, 2x, 3y, x^2), pero la estructura sigue siendo identificable.",
-        "Ítems que requieren asociar explícitamente (a + b)(a - b) con a^2 - b^2, eligiendo entre desarrollos posibles cuál corresponde a la diferencia de cuadrados.",
-        "Casos donde el orden de los binomios o de los términos está permutado, por ejemplo (3 - x)(3 + x), y el estudiante debe reconocer que igualmente es suma por diferencia.",
-        "Distractores que incluyen otros productos notables (como (a + b)^2 o (a - b)^2), exigiendo discriminar por el número de términos en el desarrollo o por los signos."
+        "Ítems donde a y/o b son monomios con coeficientes distintos de 1 o exponentes mayores que 1 (por ejemplo (2x^2 + 3)(2x^2 - 3)).",
+        "Preguntas que requieren reconocer la correspondencia bidireccional: dado (a + b)(a - b) identificar a^2 - b^2, o dado a^2 - b^2 identificar la expresión que representa su suma por diferencia, pero sin distractores muy cercanos.",
+        "Casos donde el orden de los sumandos está permutado, por ejemplo (3 + x)(3 - x) o (x - 5)(5 + x), exigiendo usar la conmutatividad para ver el patrón.",
+        "Ítems que mezclan en las alternativas distintos productos notables (suma por diferencia versus cuadrado de binomio) y exigen distinguir por el tipo de resultado (binomio vs trinomio)."
       ],
       "hard": [
-        "Expresiones donde a y/o b son binomios o expresiones más compuestas, como (2x - 1 + y)(2x - 1 - y), requiriendo identificar a y b como bloques.",
-        "Ítems que mezclan varios tipos de productos notables y piden reconocer cuál(es) se pueden describir como suma por diferencia sin desarrollar completamente todos.",
-        "Situaciones en las que una expresión ya desarrollada (por ejemplo, x^2 - 9) debe ser asociada inversamente a una posible factorización tipo (a + b)(a - b), evaluando si la correspondencia es correcta, pero manteniendo el foco en reconocimiento de patrón y no en técnica de factorización general.",
-        "Distractores diseñados con cambios mínimos (como (a + b)(a + b), (a - b)(b - a), (a + 2b)(a - b)) que obligan a revisar con cuidado igualdad de términos y oposición de signos para confirmar la estructura suma por diferencia."
+        "Ítems donde a o b son expresiones binomiales o más complejas (por ejemplo ((x + 1) + 2)((x + 1) - 2)), exigiendo reconocer la estructura a nivel de bloques.",
+        "Preguntas que presentan el producto desarrollado parcialmente o con términos reordenados, y el estudiante debe inferir si proviene de una suma por diferencia (por ejemplo, reconocer a^2 - b^2 entre varias expresiones equivalentes).",
+        "Distractores muy cercanos que incluyen: suma de cuadrados a^2 + b^2, expresiones que parecen suma por diferencia pero tienen coeficientes distintos o signos cambiados solo en un término.",
+        "Ítems donde se pide identificar simultáneamente: (i) qué expresiones son suma por diferencia y (ii) a qué patrón de diferencia de cuadrados corresponden, implicando comparar varias formas algebraicas en paralelo.",
+        "Casos que exigen reconocer el patrón a partir de expresiones con factores multiplicados por -1, como (b - a)(a + b) o -(a - b)(b - a), donde se requiere manejar la idea de equivalencia algebraica sin desarrollar todo."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar letras repetidas con roles distintos dentro de la misma expresión (por ejemplo, usar a como coeficiente y como variable a la vez).",
-      "No mezclar notación de suma por diferencia con otros productos notables en el enunciado sin dejar claro cuál es el foco de la pregunta.",
-      "Evitar expresiones donde la oposición de signos no sea evidente, por ejemplo con dobles negativos mal parentetizados que puedan confundir la lectura.",
-      "No usar ejemplos con múltiples posibilidades de interpretación de a y b (por ejemplo, (x + 2y)(x - 2y - 1)), donde no sea claro qué parte corresponde a b.",
-      "Evitar lenguaje coloquial poco preciso como 'casi igual' o 'parecida a una suma por diferencia'; preferir descripciones formales de la estructura.",
-      "No presentar como opciones desarrollos incompletos del producto, que puedan llevar a dudar si corresponden o no al patrón de diferencia de cuadrados.",
-      "Evitar usar el símbolo '±' en lugar de escribir explícitamente (a + b)(a - b), ya que puede generar interpretaciones distintas según el estudiante."
+      "No usar ejemplos donde a o b ya contengan signos ambiguos que hagan dudoso qué parte corresponde a cada término, por ejemplo (x - (-2))(x + (-2)) sin un contexto claro.",
+      "Evitar factores que no sean exactamente conjugados, como (a + 2b)(a - b), a menos que el objetivo del ítem sea que el estudiante descarte ESA opción; si se usa, que otra alternativa sí sea un patrón limpio de suma por diferencia.",
+      "No mezclar en un mismo ítem expresiones muy largas con varias variables sin paréntesis claros, lo que dificulta identificar qué es a y qué es b.",
+      "Evitar escribir (a - b)(b - a) como ejemplo de suma por diferencia sin aclarar que es equivalente a -(a + b)(a - b), pues puede generar confusión sobre el patrón principal.",
+      "No utilizar expresiones donde el resultado correcto pueda simplificarse a más de una forma visualmente muy distinta, si el criterio de corrección depende de la forma y no de la equivalencia algebraica.",
+      "Evitar que la consigna dependa de convenciones de orden (por ejemplo, \"a\" siempre el primer término) cuando en las alternativas el orden de los sumandos cambia; aclarar que se busca la estructura, no el orden literal.",
+      "No incluir contextos verbales (problemas de aplicación) donde el estudiante pueda interpretar otras operaciones distintas a un producto algebraico, ya que este átomo es de reconocimiento estructural, no de modelación."
     ],
     "error_families": [
       {
         "name": "Confusión_con_cuadrado_de_binomio",
-        "description": "El estudiante identifica (a + b)(a - b) como si fuera (a + b)^2 o (a - b)^2, esperando un desarrollo con tres términos y un término central 2ab.",
-        "how_to_address": "Contrastar explícitamente los patrones (a + b)^2 = a^2 + 2ab + b^2 y (a + b)(a - b) = a^2 - b^2, enfatizando el número de términos y la ausencia de término medio en la suma por diferencia."
+        "description": "El estudiante asume que (a + b)(a - b) se desarrolla igual que (a + b)^2 y espera tres términos, incluyendo uno de la forma ±2ab.",
+        "how_to_address": "Reforzar visualmente el patrón: mostrar lado a lado (a + b)(a - b) y (a + b)(a + b), destacando que en el primer caso los términos cruzados se cancelan porque uno es +ab y el otro -ab. Usar ejemplos sencillos como (x + 2)(x - 2) versus (x + 2)^2."
       },
       {
-        "name": "No_reconocer_términos_opuestos",
-        "description": "El estudiante no reconoce que los segundos términos son opuestos (b y -b) y por lo tanto no identifica la estructura suma por diferencia.",
-        "how_to_address": "Trabajar con ejemplos donde se colorean o agrupan visualmente los términos que son opuestos, y practicar reescrituras como (x - 3) = x + (-3) para visualizar la oposición."
+        "name": "Suma_en_lugar_de_diferencia_de_cuadrados",
+        "description": "El estudiante asocia incorrectamente el patrón (a + b)(a - b) con a^2 + b^2, ignorando el signo menos en el resultado.",
+        "how_to_address": "Trabajar ejemplos en que a y b sean números para evidenciar que el resultado no coincide con la suma de cuadrados. Enfatizar la palabra clave \"diferencia de cuadrados\" y ejercitar la traducción directa: suma por diferencia → diferencia de cuadrados."
       },
       {
-        "name": "Aplicación_errónea_del_patron",
-        "description": "El estudiante aplica la fórmula a^2 - b^2 a productos que no tienen estructura de suma por diferencia, como (a + 2b)(a - b) o (2a + b)(a - b).",
-        "how_to_address": "Enfatizar la necesidad de que ambos binomios compartan exactamente el mismo primer término y segundos términos opuestos, revisando ejemplos donde falla alguna de estas condiciones."
+        "name": "No_reconocer_estructura_con_coeficientes_o_exponentes",
+        "description": "Cuando a y b no son letras simples, el estudiante deja de ver el patrón, por ejemplo en (2x^2 + 3)(2x^2 - 3) no identifica que a = 2x^2 y b = 3.",
+        "how_to_address": "Introducir la idea de \"bloques\": tratar expresiones más complejas como una sola unidad. Usar ejemplos progresivos: primero sin coeficientes ni exponentes, luego agregarlos paso a paso, subrayando qué se toma como a y qué como b."
       },
       {
-        "name": "Signos_invertidos_en_el_resultado",
-        "description": "El estudiante reconoce la estructura, pero asocia incorrectamente (a + b)(a - b) con a^2 + b^2 u otra combinación de signos.",
-        "how_to_address": "Usar ejemplos numéricos concretos (por ejemplo, (3 + 1)(3 - 1)) para mostrar que el resultado es 3^2 - 1^2 y no 3^2 + 1^2, reforzando la idea de 'diferencia de cuadrados'."
+        "name": "Cualquier_producto_de_binomios_es_suma_por_diferencia",
+        "description": "El estudiante identifica erróneamente cualquier producto de dos binomios como suma por diferencia, sin verificar que solo se cambie el signo del segundo término.",
+        "how_to_address": "Proponer parejas de binomios similares pero no conjugados, como (x + 3)(x - 2), y pedir justificar por qué NO son suma por diferencia. Enfatizar el criterio: mismos primeros términos, segundos términos iguales en valor absoluto y con signo opuesto."
       },
       {
-        "name": "Ignorar_complejidad_de_a_y_b",
-        "description": "El estudiante cree que el patrón solo se aplica cuando a y b son letras simples, y no cuando son expresiones como 2x o x + 1.",
-        "how_to_address": "Presentar a y b como 'bloques' o 'cajas' que pueden contener expresiones más largas, y practicar con ejemplos donde a y b son monomios y binomios sencillos, sin exigir desarrollo algebraico extenso."
-      },
-      {
-        "name": "Sobreuso_del_patron",
-        "description": "Ante cualquier diferencia de cuadrados ya desarrollada (por ejemplo, x^2 - 16), el estudiante asume automáticamente que proviene de una suma por diferencia sin verificar condiciones contextuales del ejercicio.",
-        "how_to_address": "Plantear situaciones donde la diferencia de cuadrados aparezca en contextos distintos, discutiendo cuándo es útil pensar en suma por diferencia y cuándo no es el foco del problema."
+        "name": "Dificultad_con_el_signo_y_el_orden_de_los_términos",
+        "description": "El estudiante se confunde cuando el orden de los términos cambia, por ejemplo (3 + x)(x - 3), y no reconoce que es el mismo patrón debido a la conmutatividad.",
+        "how_to_address": "Trabajar explícitamente el reordenamiento de sumandos: mostrar que x + 3 = 3 + x y que lo importante en la suma por diferencia es identificar parejas conjugadas, no la posición estricta. Resolver ítems donde se deba reordenar antes de reconocer el patrón."
       }
     ],
     "future_targets": [
-      "Factorización de diferencias de cuadrados generales, reconociendo x^2 - y^2 como (x + y)(x - y).",
-      "Resolución de ecuaciones cuadráticas simples que se transforman en diferencias de cuadrados.",
-      "Simplificación de expresiones algebraicas que involucran productos notables y factorizaciones mixtas.",
-      "Comprensión de identidades algebraicas más complejas donde la diferencia de cuadrados aparece como paso intermedio.",
-      "Análisis de funciones cuadráticas y sus raíces utilizando la estructura de diferencia de cuadrados cuando es factorizable fácilmente.",
-      "Transición a problemas aplicados donde se utiliza la diferencia de cuadrados para modelar variaciones de áreas, longitudes o magnitudes físicas."
+      "Uso del patrón de diferencia de cuadrados para factorizar expresiones del tipo a^2 - b^2.",
+      "Resolución de ecuaciones cuadráticas simples mediante factorización que involucra a^2 - b^2.",
+      "Reconocimiento y comparación de distintos productos notables (suma por diferencia, cuadrado de binomio, etc.) en polinomios más complejos.",
+      "Simplificación algebraica en contextos de funciones cuadráticas, donde a^2 - b^2 aparece como parte de la expresión.",
+      "Aplicación de la diferencia de cuadrados en contextos numéricos para cálculo mental o simplificación de expresiones numéricas.",
+      "Extensión del reconocimiento de patrones algebraicos a otros tipos de identidades notables (por ejemplo, suma y diferencia de cubos)."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal"
+      "Expresiones puramente simbólicas con letras como variables (por ejemplo, (a + b)(a - b)).",
+      "Expresiones con variables específicas y números enteros (por ejemplo, (x + 5)(x - 5)).",
+      "Expresiones donde a y b son monomios con coeficientes y exponentes, como (2x^2 + 3)(2x^2 - 3).",
+      "Expresiones donde a y/o b son binomios u otras expresiones agrupadas, usando paréntesis para marcar los bloques, como ((x + 1) + 2)((x + 1) - 2).",
+      "Comparación de varias expresiones factorizadas para decidir cuáles corresponden a suma por diferencia, presentadas en lista o tabla.",
+      "Correspondencia entre forma factorizada (a + b)(a - b) y forma desarrollada a^2 - b^2 en elecciones múltiples.",
+      "Uso de notación mixta donde una misma expresión se muestra en dos formas equivalentes y se pide reconocer si representan una suma por diferencia."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers",
-      "simple_fractions",
-      "simple_decimals"
+      "medium_integers",
+      "zero_and_negatives",
+      "simple_coefficients",
+      "simple_powers"
     ],
     "required_image_types": []
   }

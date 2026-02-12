@@ -4,135 +4,122 @@
     "scope_guardrails": {
       "in_scope": [
         "Construir un diagrama de cajón (boxplot) a partir de los cinco números resumen: mínimo, Q1, mediana (Q2), Q3 y máximo.",
-        "Construir un diagrama de cajón a partir de datos crudos cuando YA se han calculado previamente los cuartiles y el mínimo/máximo (o se entregan explícitamente).",
-        "Elegir y dibujar una escala numérica adecuada y uniforme en una recta horizontal para representar todos los valores desde el mínimo hasta el máximo.",
-        "Ubicar correctamente los puntos correspondientes a mínimo, Q1, Q2, Q3 y máximo sobre la escala y construir la caja entre Q1 y Q3 con la línea de la mediana.",
-        "Dibujar los bigotes que se extienden desde la caja hasta el valor mínimo y máximo de los datos.",
-        "Transferir fielmente la información numérica (los valores de las medidas de posición) a una representación gráfica tipo diagrama de cajón.",
-        "Reconocer, entre varias alternativas de diagramas de cajón, cuál corresponde a un conjunto de cinco números resumen dado o a un conjunto de datos simple."
+        "Construir un diagrama de cajón a partir de un conjunto de datos crudos CUANDO ya se entregan o se han calculado previamente los cuartiles y extremos.",
+        "Elegir y dibujar una escala numérica adecuada en la recta para que todos los valores resumen queden representados de manera clara y proporcional.",
+        "Representar correctamente la caja entre Q1 y Q3 y la línea de la mediana dentro de la caja.",
+        "Dibujar los bigotes que se extienden hasta el valor mínimo y máximo (sin tratamiento de outliers).",
+        "Transferir información numérica (min, Q1, Q2, Q3, max) a la representación gráfica correspondiente."
       ],
       "out_of_scope": [
-        "Cálculo de cuartiles, mediana, mínimo y máximo a partir de datos (eso pertenece a A-M1-PROB-03-03 u otros átomos).",
-        "Identificación, tratamiento o representación específica de datos atípicos (outliers) con símbolos especiales o reglas de 1,5*RIQ, etc.",
-        "Interpretación profunda del diagrama de cajón (comparar distribuciones, comentar dispersión o sesgo); aquí el foco es construir/representar, no analizar.",
-        "Construcción o interpretación de otros tipos de gráficos estadísticos (barras, histogramas, gráficos circulares, diagramas de dispersión, ojivas).",
-        "Uso de software estadístico o calculadoras gráficas para generar automáticamente diagramas de cajón.",
-        "Transformaciones avanzadas sobre datos (estandarización, cambios de escala no lineales, logaritmos) y su efecto en el diagrama de cajón.",
-        "Trabajo con diagramas de cajón agrupados (side-by-side) para comparar formalmente dos o más grupos; solo se puede usar más de un diagrama como distractores o para elegir el correcto, no para comparación estadística detallada."
+        "Cálculo de cuartiles o de la mediana a partir de datos crudos (eso pertenece a A-M1-PROB-03-03).",
+        "Tratamiento avanzado de valores atípicos (definición de outliers mediante 1,5·RIC u otros criterios) y su representación diferenciada.",
+        "Comparación profunda de dos o más diagramas de cajón para inferir sobre la distribución (eso va más hacia interpretación, no construcción).",
+        "Uso de software estadístico o instrucciones detalladas de botones de calculadora o planilla de cálculo.",
+        "Análisis probabilístico de la distribución en base al diagrama de cajón (por ejemplo, probabilidades aproximadas en intervalos).",
+        "Construcciones en escalas logarítmicas u otras escalas no lineales."
       ],
       "prerequisites": [
         "A-M1-PROB-03-01",
-        "A-M1-PROB-03-03",
-        "A-M1-NUME-01-02",
-        "A-M1-NUME-01-03"
+        "A-M1-PROB-03-02",
+        "A-M1-PROB-03-03"
       ],
       "common_traps": [
-        "Elegir una escala que no incluye todos los valores desde el mínimo hasta el máximo, haciendo imposible ubicar correctamente alguno de los cinco números resumen.",
-        "Usar una escala no uniforme (distancias distintas entre marcas numéricas) que distorsiona la posición relativa de Q1, Q2, Q3, mínimo o máximo.",
-        "Construir la caja usando mínimo y máximo en vez de Q1 y Q3 (confundir el rol de los cuartiles con los extremos).",
-        "Dibujar la mediana en el centro geométrico de la caja, asumiendo que siempre está a la mitad del rango intercuartílico, aunque el valor numérico de Q2 no corresponda a esa posición.",
-        "Invertir los roles de Q1 y Q3, ubicando Q1 a la derecha de Q3 o trazando una caja que decrece al avanzar en la recta numérica.",
-        "Extender los bigotes hasta Q1 y Q3 en lugar de hasta el mínimo y el máximo.",
-        "No respetar las unidades del contexto o mezclar escalas (por ejemplo, poner Q1=5, Q2=7, Q3=9 pero marcar 0,5; 0,7; 0,9 en la escala).",
-        "Proponer alternativas de respuesta con diagramas de cajón que no están dibujados a escala pero se espera que el/la estudiante distinga pequeñas diferencias de posición, generando ambigüedad.",
-        "Mezclar en el mismo ítem la presencia o ausencia de outliers marcados sin explicitar la convención usada, produciendo más de una interpretación válida."
+        "Elegir una escala en la recta numérica que no cubre a todos los valores (por ejemplo, dejar fuera al mínimo o máximo).",
+        "Usar marcas en la recta numérica no equiespaciadas, produciendo una caja visualmente distorsionada respecto de los valores.",
+        "Confundir la posición de la mediana con el centro geométrico de la caja en lugar de ubicarla en el valor Q2 entregado.",
+        "Intercambiar Q1 con Q3 al dibujar la caja.",
+        "Dibujar bigotes que llegan hasta Q1 y Q3 en vez del mínimo y máximo.",
+        "Suponer que la caja siempre debe ser simétrica y ajustar gráficamente aunque los datos entregados indiquen otra cosa.",
+        "Interpretar erróneamente los cinco números resumen por estar en unidades diferentes a las esperadas (por ejemplo, mezclar porcentajes con valores absolutos)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Se entregan explícitamente los cinco números resumen (mínimo, Q1, mediana, Q3, máximo) ya ordenados y con valores enteros pequeños.",
-        "La escala sugerida en el enunciado es directa, con marcas consecutivas de 1 en 1 o 2 en 2, y cubre exactamente el rango desde el mínimo hasta el máximo.",
-        "Las alternativas gráficas presentan diferencias grandes y evidentes (por ejemplo, cambio claro de posición de la mediana o intercambio evidente de mínimo y máximo).",
-        "No se requiere interpretar datos en contexto; solo trasladar los valores numéricos a la representación gráfica.",
-        "No intervienen decimales ni fracciones; los cinco números resumen tienen todos valores enteros fáciles de ubicar en la escala.",
-        "El ítem puede centrarse en identificar, entre 3–4 diagramas bien diferenciados, cuál coincide con los valores entregados, sin necesidad de ajustar la escala."
+        "Se entregan explícitamente mínimo, Q1, Q2, Q3 y máximo como números enteros pequeños y cercanos entre sí.",
+        "La escala sugerida es directa y evidente (por ejemplo, de 0 a 20 para notas, con marcas de 1 en 1 o 0,5 en 0,5).",
+        "Se pide identificar entre 3–4 diagramas cuál representa correctamente un conjunto de cinco números resumen dados, con diferencias notorias.",
+        "No se exige ajustar ni decidir la escala; esta ya viene dibujada y solo se completan posiciones relativas simples."
       ],
       "medium": [
-        "Se entregan los cinco números resumen, pero no necesariamente ordenados; el/la estudiante debe reconocer el orden mínimo < Q1 < Q2 < Q3 < máximo antes de graficar.",
-        "Los números resumen incluyen al menos uno o dos valores con un decimal (por ejemplo, 5,5 o 7,2), pero ubicables en una escala con marcas de 0,5 o 1 en 1.",
-        "La escala no está dada explícitamente; el/la estudiante debe elegir un rango y paso adecuado (por ejemplo, decidir si marca de 1 en 1 o de 2 en 2).",
-        "Las alternativas de diagramas incluyen distractores que muestran errores típicos (mediana en el centro geométrico, bigotes cortos en Q1 y Q3, intercambio de Q1 y Q3).",
-        "Se parte de un conjunto de datos crudos pequeño (por ejemplo, 8–12 datos) donde ya se indica cuáles son mínimo, Q1, Q2, Q3 y máximo, o se dan parcialmente y se completa algún valor sencillo.",
-        "Puede involucrar contexto sencillo (notas, edades, tiempos) siempre que no añada interpretación estadística más allá de la construcción del gráfico."
+        "Se entregan mínimo, Q1, Q2, Q3 y máximo con algunos decimales simples (por ejemplo, una casa decimal) o con un rango un poco más amplio.",
+        "El estudiantado debe decidir una escala apropiada y coherente (por ejemplo, elegir paso de 2 en 2, 5 en 5), aunque se dan pistas como el contexto o el rango.",
+        "Se compara un conjunto de cinco números resumen con un único boceto de diagrama incompleto que se debe completar (ubicar la mediana, ajustar bigotes, etc.).",
+        "Puede involucrar identificar un error puntual en un diagrama casi correcto (por ejemplo, bigote mal ubicado) y elegir la corrección adecuada."
       ],
       "hard": [
-        "Se parte de datos crudos moderadamente numerosos (por ejemplo, 12–20 datos) y se entregan explícitamente algunos resúmenes, pero el/la estudiante debe identificar otros valores simples necesarios para el diagrama, manteniéndose el foco en la construcción.",
-        "Los cinco números resumen incluyen varios decimales o escalas menos cómodas (por ejemplo, valores entre 23,4 y 47,9) que obligan a escoger adecuadamente la escala para que el diagrama sea legible.",
-        "La escala más natural no coincide con números enteros exactos de los cinco números resumen, por lo que el/la estudiante debe aproximar la ubicación en la recta sin ambigüedad.",
-        "Se presentan varias representaciones gráficas que difieren sutilmente (por ejemplo, todas respetan la escala, pero una tiene mediana mal ubicada, otra intercambia Q1 y Q3, etc.), exigiendo un control cuidadoso de la relación numérica–gráfica.",
-        "Puede involucrar comparar dos o más diagramas de cajón simples y decidir cuál corresponde a un conjunto de cinco números resumen dado, sin análisis profundo de dispersión pero sí con atención a escalas distintas entre diagramas.",
-        "Se pueden incorporar contextos donde las unidades de medida no son las habituales (por ejemplo, milímetros vs. centímetros) y el/la estudiante debe mantener la coherencia de la escala y los valores."
+        "Se parte de una breve tabla de datos ya resumidos (por ejemplo, mínimos y cuartiles de distintas variables) y se debe construir o seleccionar el diagrama correcto para una de ellas, con diferencias sutiles en la escala.",
+        "Los valores resumen incluyen decimales no tan triviales o números con distinto orden de magnitud, lo que obliga a elegir cuidadosamente la escala (por ejemplo, datos en cientos con paso de 25 o 50).",
+        "Se pide comparar dos posibles escalas o dos posibles diagramas de cajón, donde ambos parecen razonables, y seleccionar el que respeta rigurosamente la proporcionalidad de las distancias entre Q1, Q2, Q3 y extremos.",
+        "El ítem exige interpretar una breve descripción del contexto (por ejemplo, salarios, tiempos, longitudes) para escoger una escala coherente con las unidades y luego construir/identificar el diagrama correcto."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no se especifique claramente si los valores entregados corresponden a mínimo, Q1, Q2, Q3 y máximo, especialmente si no están en orden; siempre indicar explícitamente el rol de cada valor o dejar claro que están ordenados de menor a mayor.",
-      "No mezclar en el mismo ítem diferentes convenciones sobre outliers sin declararlas; si se usan solo mínimo y máximo, NO mostrar puntos especiales para valores atípicos.",
-      "No usar diagramas de cajón en las alternativas que visiblemente no están a escala si se espera que el/la estudiante distinga posiciones relativas precisas de Q1, Q2 y Q3; todas las alternativas deben respetar una misma escala uniforme.",
-      "Evitar escalas numéricas incompletas u opacas (por ejemplo, poner solo 0 y 100 sin marcas intermedias visibles) cuando se requiere ubicar valores específicos; debe haber suficientes marcas reconocibles.",
-      "No usar marcas en la recta numérica sin etiquetar o con pocas etiquetas si la lectura de la posición exacta es relevante; siempre mostrar al menos algunas etiquetas numéricas de referencia.",
-      "Evitar contextos donde las unidades de medida puedan confundirse (por ejemplo, mezclar minutos y segundos) sin aclaración; si hay cambio de unidad, debe explicitarse claramente.",
-      "No plantear ítems en que más de una alternativa de diagrama pueda ser considerada correcta según interpretaciones razonables de la escala (por ejemplo, cuando Q2 se ve casi en el centro de la caja y podría aceptarse como tal en más de una alternativa).",
-      "Evitar fórmulas de texto ambiguas como 'dibuja el gráfico correctamente' sin precisar que se trata de un diagrama de cajón; usar siempre la denominación clara de este tipo de gráfico.",
-      "No combinar, sin aclarar, un 'diagrama de cajón modificado' (con atípicos aislados) con un 'diagrama de cajón clásico' (bigotes hasta mínimo y máximo) en el mismo set de alternativas."
+      "No usar la palabra 'caja' sin aclarar que corresponde al intervalo entre Q1 y Q3 en la recta numérica.",
+      "Evitar consignas vagas como 'dibuje el gráfico correspondiente' sin mencionar explícitamente que se trata de un diagrama de cajón.",
+      "No mezclar en el mismo ítem dos convenciones diferentes de representación de bigotes (por ejemplo, una con outliers y otra sin ellos) sin explicitar claramente cuál se usa.",
+      "Evitar escalas en la recta numérica que no muestren con claridad los valores de referencia (marcas sin etiqueta o intervalos irregulares).",
+      "No presentar diagramas de cajón desalineados respecto a la recta numérica o sin recta numérica explícita, lo que dificulta ubicar los valores.",
+      "Evitar ítems donde falten algunos de los cinco números resumen necesarios para construir el diagrama, salvo que se indique claramente que se asuma o no se requiere ese elemento.",
+      "No usar la misma letra o símbolo para denotar tanto un cuartil como un dato individual en otra parte del enunciado.",
+      "Evitar superponer varios diagramas en la misma recta si esto hace ilegibles las posiciones de los cuartiles; en comparaciones, mantener separación visual clara."
     ],
     "error_families": [
       {
-        "name": "Caja construida con mínimo y máximo",
-        "description": "El/la estudiante dibuja la caja usando el mínimo y el máximo como bordes, ubicando la mediana en el centro de esa caja, en lugar de usar Q1 y Q3 como límites de la caja.",
-        "how_to_address": "En los enunciados y alternativas, destacar visualmente la diferencia entre bordes de la caja y extremos de los bigotes. Construir distractores donde se vea este error, para evidenciar si el/la estudiante distingue cuartiles de extremos. Reforzar en las explicaciones que la caja representa el rango intercuartílico entre Q1 y Q3."
+        "name": "Escala_inadecuada",
+        "description": "El estudiante selecciona una escala que no cubre todo el rango de datos o que tiene marcas no equiespaciadas, distorsionando las relaciones entre Q1, Q2, Q3, mínimo y máximo.",
+        "how_to_address": "Incluir ítems que pidan justificar la elección de escala o detectar qué escala es incorrecta, destacando que las marcas deben ser equidistantes y abarcar desde el mínimo hasta el máximo. Incorporar contextos familiares con rangos conocidos (por ejemplo, notas, edades) para reforzar criterios realistas de escala."
       },
       {
-        "name": "Intercambio de Q1 y Q3",
-        "description": "Los cuartiles Q1 y Q3 se ubican invertidos en la recta numérica (Q1 más a la derecha que Q3), dando lugar a una caja 'decreciente'.",
-        "how_to_address": "Usar ítems donde se entregan los cinco números resumen no ordenados, enfatizando que deben respetar el orden creciente: mínimo < Q1 < Q2 < Q3 < máximo. En retroalimentaciones, recalcar que Q1 siempre es menor que la mediana y que Q3 siempre es mayor, y mostrar cómo se ve un diagrama inválido con esos valores."
+        "name": "Confusion_cuartiles",
+        "description": "Intercambia Q1 con Q3 o ubica la mediana en el centro geométrico de la caja en lugar de en el valor Q2 dado.",
+        "how_to_address": "Diseñar ítems donde las distancias entre Q1-Q2-Q3 sean claramente distintas, obligando a colocar la mediana desplazada y no centrada. Refrescar verbalmente la definición de cuartiles y su orden en la recta numérica antes de la tarea de construcción."
       },
       {
-        "name": "Mediana al centro geométrico",
-        "description": "Se traza la mediana exactamente en la mitad visual de la caja, sin considerar su valor numérico respecto de Q1 y Q3, asumiendo que la distribución siempre es simétrica.",
-        "how_to_address": "Proponer conjuntos de valores donde la mediana no está en la mitad del rango intercuartílico y mostrar sus diagramas correctos, comparándolos con alternativas erróneas donde la mediana se ubica en el centro. Explicar que la mediana puede quedar más cerca de Q1 o de Q3 dependiendo de la distribución de los datos."
+        "name": "Bigotes_mal_definidos",
+        "description": "Dibuja los bigotes hasta Q1 y Q3 o los limita arbitrariamente sin llegar al mínimo y máximo.",
+        "how_to_address": "Proponer preguntas de selección múltiple donde se muestre el mismo conjunto de cinco números resumen y varios diagramas posibles, algunos con bigotes incorrectos. Hacer explicitar que, en esta versión simple del boxplot, los bigotes se extienden desde Q1 al mínimo y desde Q3 al máximo."
       },
       {
-        "name": "Bigotes hasta los cuartiles",
-        "description": "Los bigotes se dibujan desde la mediana o desde los bordes de la caja hasta Q1 y Q3, en lugar de extenderse desde Q1 hasta el mínimo y desde Q3 hasta el máximo.",
-        "how_to_address": "Incluir alternativas de elección múltiple donde este error esté presente y contrastarlo con la construcción correcta. En las explicaciones, insistir en que los bigotes representan el tramo desde el interior de la caja hacia los extremos de los datos (mínimo y máximo)."
+        "name": "Desalineacion_con_recta",
+        "description": "La caja, la mediana o los bigotes no se corresponden exactamente con las marcas de la recta numérica, generando un diagrama impreciso.",
+        "how_to_address": "Incluir actividades donde se pida revisar si un diagrama es coherente con los valores entregados, enfatizando la necesidad de que cada segmento o punto coincida con una posición específica de la escala. Trabajar con rectas con marcas claramente etiquetadas y pedir que elijan el punto exacto para Q1, Q2, Q3, etc."
       },
       {
-        "name": "Escala no uniforme o mal elegida",
-        "description": "Se elige una escala con saltos irregulares o demasiado grandes/pequeños, lo que hace que la posición de los valores no corresponda a sus relaciones numéricas reales, o que el diagrama sea ilegible.",
-        "how_to_address": "Diseñar ítems en que el/la estudiante deba elegir la escala apropiada entre varias opciones, o identificar cuál diagrama usa una escala incorrecta. Reforzar que la escala debe ser uniforme (mismo tamaño para el mismo incremento numérico) y cubrir cómodamente el rango de datos."
+        "name": "Lectura_erronea_de_valores",
+        "description": "Interpreta mal los valores numéricos entregados (por ejemplo, confunde 5,2 con 5,02 o con 5,20) o no los asocia correctamente con las unidades del contexto.",
+        "how_to_address": "Usar ítems con decimales sencillos pero distintos y enfatizar la lectura cuidadosa de las etiquetas de unidades (minutos, kilos, puntos, etc.). Sugerir que antes de dibujar el diagrama el estudiante ordene mentalmente los cinco números resumen y verifique su consistencia."
       },
       {
-        "name": "Desalineación entre valores y marcas en la recta",
-        "description": "Los puntos, bordes de la caja o la mediana no se ubican sobre las marcas correctas de la recta numérica, especialmente cuando se usan decimales o pasos de escala de más de 1 unidad.",
-        "how_to_address": "Usar ejemplos con decimales sencillos y escalas claras (por ejemplo, marcas cada 0,5) para que el/la estudiante practique la ubicación aproximada pero consistente. En las alternativas, ofrecer diagramas casi correctos con ligeras desalineaciones para reforzar la atención a la correspondencia numérica–gráfica."
-      },
-      {
-        "name": "Confusión de unidades o contexto",
-        "description": "Se interpretan mal las unidades (metros vs. centímetros, minutos vs. horas) o el rango de interés del contexto, y se construye un diagrama con una escala incompatible con los datos o su significado.",
-        "how_to_address": "En contextos con unidades, explicitar claramente la unidad y, si hay cambios, guiarlos con ejemplos. Usar preguntas donde una alternativa falle solo por las unidades en la escala, para subrayar la importancia de mantener consistencia."
+        "name": "Ignorar_contexto_en_la_escala",
+        "description": "Selecciona una escala incompatible con el contexto (por ejemplo, usar paso de 10 en 10 para notas de 1 a 7, o mostrar edades con paso de 0,1 años).",
+        "how_to_address": "Integrar ítems contextualizados donde se pregunte explícitamente por la escala más razonable, relacionando el tipo de dato con rangos y precisiones habituales. Comparar dos propuestas de escalas y justificar cuál se ajusta mejor al contexto."
       }
     ],
     "future_targets": [
-      "Comparar distribuciones de dos o más grupos a partir de sus diagramas de cajón (por ejemplo, comparar dispersión, mediana y rango intercuartílico).",
-      "Analizar la forma de una distribución (asimetrías, concentración de datos, presencia de colas largas) utilizando el diagrama de cajón como herramienta visual.",
-      "Identificar e interpretar datos atípicos (outliers) usando versiones modificadas del diagrama de cajón y criterios basados en el rango intercuartílico.",
-      "Conectar las medidas de resumen (mediana, cuartiles, rango intercuartílico) con otras medidas de dispersión (desviación estándar, varianza) y con otras representaciones gráficas (histogramas, gráficos de barra).",
-      "Utilizar diagramas de cajón para tomar decisiones informadas en contextos reales (por ejemplo, comparar rendimientos académicos, tiempos de respuesta, resultados experimentales).",
-      "Integrar el uso de diagramas de cajón en análisis más amplios de datos, combinando tablas, gráficos e indicadores numéricos para justificar conclusiones.",
-      "Comprender el efecto de transformaciones lineales simples en los datos (sumar o restar una constante, multiplicar por un escalar) sobre el diagrama de cajón."
+      "Interpretación y comparación de diagramas de cajón de una o varias muestras.",
+      "Análisis de dispersión y simetría de distribuciones a partir del diagrama de cajón.",
+      "Identificación y tratamiento de valores atípicos usando criterios basados en el rango intercuartílico.",
+      "Comparación de diferentes representaciones gráficas de la misma distribución (histograma, diagrama de caja, gráfico de barras).",
+      "Toma de decisiones basada en la interpretación conjunta de medidas de tendencia central, dispersión y diagramas de cajón.",
+      "Comprensión de la variabilidad muestral y comparación de distribuciones de distintas muestras de una misma población."
     ],
     "representation_variants": [
-      "gráfica",
-      "tabular",
-      "numérica",
-      "verbal"
+      "Diagrama de cajón horizontal sobre una recta numérica, con todos los valores resumen dados numéricamente.",
+      "Diagrama de cajón horizontal parcialmente construido (por ejemplo, solo la caja) que el estudiante debe completar con mediana o bigotes.",
+      "Recta numérica ya dibujada con escala sugerida donde el estudiante debe ubicar los cinco números resumen y a partir de eso construir o elegir el diagrama de cajón.",
+      "Conjunto de varios diagramas de cajón alternativos (todos sobre la misma escala) entre los cuales se debe seleccionar el que corresponde a un juego de cinco números resumen entregados.",
+      "Tabla con los cinco números resumen de dos variables distintas y una colección de diagramas de cajón, donde se debe emparejar cada tabla con su diagrama correcto (sin entrar en comparación estadística profunda)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals"
+      "medium_integers",
+      "one_decimal",
+      "contextual_percentages",
+      "ordered_data_values"
     ],
     "required_image_types": [
-      "statistical_chart"
+      "statistical_chart",
+      "number_line"
     ]
   }
 }

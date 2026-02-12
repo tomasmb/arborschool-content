@@ -3,121 +3,133 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Conteo directo de cuántas veces aparece cada dato individual en un listado de datos brutos no agrupados.",
-        "Cálculo e inscripción de la frecuencia absoluta de cada valor/categoría en una tabla de frecuencias.",
-        "Verificación de que la suma de todas las frecuencias absolutas coincide con el número total de datos observados.",
-        "Uso de listados de datos en forma numérica o categórica (por ejemplo, respuestas tipo A, B, C, D).",
-        "Completación de una tabla de frecuencias a partir de un listado de datos entregado explícitamente."
+        "Conteo directo de ocurrencias de cada dato en una lista de datos no agrupados.",
+        "Determinación de la frecuencia absoluta de cada valor distinto de la variable.",
+        "Organización de los valores y sus frecuencias absolutas en una tabla de distribución de frecuencias simple (sin intervalos).",
+        "Verificación de que la suma de las frecuencias absolutas coincide con el número total de datos.",
+        "Casos en que algunos valores posibles de la variable no aparecen en los datos (frecuencia 0) y cómo representarlos en la tabla (incluirlos o no, según se indique)."
       ],
       "out_of_scope": [
-        "Cálculo de frecuencias relativas, porcentuales, acumuladas u otras derivadas de la frecuencia absoluta.",
-        "Datos agrupados en intervalos (por ejemplo, tablas con rangos como 0–10, 10–20, etc.).",
-        "Construcción o interpretación de gráficos estadísticos (barras, histogramas, diagramas de caja, etc.).",
-        "Cálculo de medidas de tendencia central o dispersión (media, mediana, moda, varianza, desviación estándar).",
-        "Inferencias probabilísticas o conclusiones estadísticas a partir de las frecuencias obtenidas.",
-        "Transformación de tablas a gráficos o viceversa (se trabaja solo con datos brutos y/o tabla)."
+        "Cálculo de frecuencias relativas, porcentuales o acumuladas.",
+        "Tablas de frecuencia con intervalos de clase (datos agrupados).",
+        "Cálculo de medidas de tendencia central o dispersión (media, mediana, moda, varianza, etc.).",
+        "Interpretación de gráficos estadísticos (barras, histogramas, sectores, boxplot).",
+        "Probabilidades derivadas de frecuencias (modelación probabilística).",
+        "Manejo de bases de datos grandes o uso de software/planilla de cálculo.",
+        "Variables con respuestas abiertas difíciles de categorizar (p.ej. textos largos)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprensión de números naturales y conteo básico.",
-        "A-M1-PROB-01-01: Identificación de una variable y de los valores que puede tomar en un conjunto de datos simples.",
-        "A-M1-PROB-01-03: Reconocimiento de lo que representa la frecuencia absoluta de un valor (nivel conceptual básico)."
+        "A-M1-NUM-01-01: Conteo exacto de elementos en un conjunto finito.",
+        "A-M1-PROB-01-01: Reconocimiento de variable estadística y sus posibles valores.",
+        "A-M1-ALG-01-01: Lectura e interpretación básica de tablas de doble entrada sencillas."
       ],
       "common_traps": [
-        "Confundir frecuencia absoluta con frecuencia relativa o porcentaje, anotando razones o porcentajes en lugar de cantidades enteras.",
-        "Olvidar algunos datos del listado al contarlos, especialmente cuando un valor se repite varias veces disperso en la lista.",
-        "Sumar mal las frecuencias absolutas y no verificar que coincidan con el total de datos entregados.",
-        "Contar valores que no pertenecen a la categoría especificada (por ejemplo, incluir ausentes o datos fuera del listado dado).",
-        "Interpretar cada dato como una categoría distinta cuando hay valores que debieran agruparse como la misma categoría (p. ej. mismo texto con distinta capitalización o tildes).",
-        "Copiar mal algún dato del listado original al construir la tabla (error de transcripción).",
-        "Confundir categorías numéricas cercanas (por ejemplo, 5 con 5,0 o 6 con 6,0 si no se explicita que son equivalentes)."
+        "Confundir frecuencia absoluta con el valor de la variable (anotar el dato en lugar de cuántas veces aparece).",
+        "Omitir algunos datos al contar, especialmente cuando un mismo valor aparece muchas veces disperso en la lista.",
+        "Contar dos veces el mismo dato al ir marcando manualmente (no llevar un registro ordenado del conteo).",
+        "Olvidar considerar todos los valores distintos de la variable presentes en los datos (p. ej., no registrar un valor que aparece solo una vez).",
+        "No ordenar los valores distintos de la variable en la tabla, lo que genera dificultad para verificar el total y comparar.",
+        "No verificar que la suma de las frecuencias absolutas coincide con el total de datos entregado en el enunciado.",
+        "Interpretar que todos los valores posibles de la variable deben aparecer en la tabla, aunque no estén en la lista de datos, sin que el contexto lo justifique.",
+        "Confundir número de categorías con número total de datos (sumar mal o quedarse solo con cuántas categorías hay).",
+        "En contextos con etiquetas no numéricas (colores, gustos, etc.), creer que la variable debe ser numérica para tener frecuencia."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Listados de datos brutos cortos (hasta 10–12 datos) con muy pocas categorías distintas (2 a 4 valores diferentes).",
-        "Valores de la variable claros y fácilmente distinguibles (por ejemplo, números enteros pequeños o letras A, B, C, D).",
-        "Preguntas centradas en la frecuencia absoluta de solo uno o dos valores específicos, sin requerir completar una tabla entera.",
-        "Formato visual ordenado: los datos aparecen listados en una sola línea o en columnas claras, sin ruido contextual innecesario.",
-        "No se requiere verificar explícitamente la suma de las frecuencias, o esta verificación es inmediata."
+        "Listas de datos cortas (aprox. 5 a 10 datos) con pocos valores distintos (2 o 3 categorías).",
+        "Datos ya parcialmente organizados (p. ej., todos los iguales juntos o lista ordenada).",
+        "Pregunta centrada en la frecuencia absoluta de un único valor específico, claramente señalado en el enunciado.",
+        "Tablas casi completas donde falta solo una o dos frecuencias directas que se obtienen contando, sin necesidad de verificar suma total.",
+        "Contextos simples y cotidianos (p. ej., notas de una prueba, cantidad de hermanos) con lenguaje directo y sin distractores."
       ],
       "medium": [
-        "Listados de datos de tamaño moderado (entre 15 y 25 datos) con varias categorías distintas (3 a 6 valores diferentes).",
-        "Necesidad de completar total o parcialmente una tabla de frecuencias absolutas para todas las categorías.",
-        "Incorporación de un pequeño contexto verbal (por ejemplo, resultados de una encuesta o notas de una prueba) que exige identificar primero qué se considera un mismo valor.",
-        "Necesidad de verificar que la suma de las frecuencias absolutas coincide con el número total de datos para elegir la alternativa correcta.",
-        "Algunas categorías tienen frecuencias similares, lo que exige mayor cuidado en el conteo."
+        "Listas de datos de tamaño moderado (entre 10 y 20 datos) con 3 a 5 valores distintos.",
+        "Datos presentados sin ordenar, dispersos, o mezclados entre sí, requiriendo una estrategia de conteo sistemático.",
+        "Completar una tabla de frecuencia absoluta para todos los valores distintos de los datos entregados.",
+        "Exigir explícitamente la verificación de que la suma de las frecuencias coincide con el total de datos, o usar esta verificación de manera implícita en la resolución.",
+        "Ítems donde el estudiante deba identificar primero los valores distintos de la variable y luego contar sus ocurrencias.",
+        "Enunciados con contexto levemente más cargado de información (p. ej., diferentes cursos, diferentes días), pero donde el conteo se realiza dentro de un solo grupo bien definido."
       ],
       "hard": [
-        "Listados más largos (25–40 datos) donde las repeticiones de un mismo valor están dispersas y no agrupadas visualmente.",
-        "Más categorías distintas (hasta 8–10 valores diferentes) con frecuencias variadas, incluyendo algunas con frecuencia 0 que igualmente deben figurar en la tabla.",
-        "Necesidad de detectar y corregir una inconsistencia entre la suma de las frecuencias propuestas en las alternativas y el total de datos entregado.",
-        "Presencia de datos repetidos que solo se diferencian por un detalle menor (mayúsculas/minúsculas, acentos, o formato numérico equivalente) que el estudiante debe interpretar como la misma categoría, según el enunciado.",
-        "Ítems donde se ofrece una tabla casi completa y el estudiante debe identificar cuál fila está mal contada, usando el total de datos como criterio de verificación.",
-        "Contextos donde se pide simultáneamente determinar varias frecuencias absolutas y comprobar la coherencia global de la tabla (por ejemplo, para elegir la tabla correcta entre varias opciones)."
+        "Listas de datos más extensas (entre 20 y 40 datos) o con mayor cantidad de valores distintos (5 a 8 categorías), manteniendo aún un tamaño abordable manualmente.",
+        "Datos presentados en formatos menos directos, como una mezcla de dos conjuntos de datos que deben unirse antes de contar, o donde se debe filtrar primero (p. ej., considerar solo un curso, un día o un grupo).",
+        "Tablas con algunas entradas dadas indirectamente (p. ej., se da el total y todas las frecuencias menos una, exigiendo calcular la frecuencia faltante usando la condición de suma total).",
+        "Contextos donde algunos valores posibles de la variable se incluyen con frecuencia 0 y el estudiante debe reconocer que no aparecen en la lista original.",
+        "Ítems donde se presentan alternativas de tablas completas y se debe elegir la correcta, lo que obliga a revisar varios conteos y la consistencia con el total de datos.",
+        "Presencia de distractores numéricos cercanos (p. ej., totales que no coinciden por 1 o 2 unidades) para evaluar el uso de la verificación de suma de frecuencias."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar el término \"frecuencia\" a secas cuando se requiere específicamente frecuencia absoluta; siempre decir \"frecuencia absoluta\".",
-      "No mezclar en el mismo ítem el pedido de frecuencia absoluta y relativa sin aclarar explícitamente cuál se debe calcular.",
-      "Evitar tablas donde no quede claro si se muestran datos brutos o una tabla de frecuencias (rotular claramente columnas como \"Dato\" y \"Frecuencia absoluta\").",
-      "No usar categorías que puedan interpretarse de dos maneras distintas si no se aclara previamente (por ejemplo, agrupar o no respuestas similares como \"Sí\" y \"Si\").",
-      "Evitar listados visualmente desordenados sin separadores claros (usar comas, saltos de línea o formato tabular) que dificulten distinguir cada dato individual.",
-      "No incluir datos que parezcan parte del listado pero en realidad correspondan a otra información contextual (por ejemplo, fechas o números de pregunta) sin diferenciarlos tipográficamente.",
-      "Evitar enunciados que sugieran que todos los valores posibles deben aparecer en la tabla si en realidad solo se consideran los observados, o viceversa; explicitar el criterio.",
-      "No utilizar simultáneamente notaciones numéricas equivalentes (5 y 5,0) sin indicar si se consideran la misma categoría o categorías distintas."
+      "Evitar enunciados donde no quede claro si se debe considerar todos los datos entregados o solo un subconjunto (especificar explícitamente el grupo de interés).",
+      "No usar variables con categorías difusas o solapadas (p. ej., 'jóvenes', 'adultos') que requieran interpretación subjetiva; preferir categorías claramente distinguibles.",
+      "Evitar frases como '¿cuántas personas tienen esta nota o parecida?' que no definen con precisión qué valores se cuentan.",
+      "No mezclar en la misma tabla frecuencias absolutas con relativas sin etiquetar claramente qué es cada columna.",
+      "Evitar contextos donde se entregan totales inconsistentes con los datos de la lista o tabla (revisar que la suma de datos coincida con el total indicado).",
+      "No usar intervalos de valores (p. ej., 'entre 5 y 6') como categorías en este átomo, para no confundir con datos agrupados.",
+      "Especificar siempre si se debe considerar solo los valores presentes en los datos, o también valores posibles de la variable que no aparecen (p. ej., todas las notas del 1 al 7).",
+      "Evitar tablas mal rotuladas (sin título de columnas como 'Valor' y 'Frecuencia absoluta') que puedan confundir sobre qué cifras se deben completar.",
+      "No combinar, en el mismo ítem, tareas de conteo de frecuencia absoluta con preguntas sobre probabilidad o porcentajes si eso no se señala de forma nítida."
     ],
     "error_families": [
       {
-        "name": "Conteo_incompleto_o_doble_conteo",
-        "description": "El estudiante omite algunos datos o cuenta dos veces el mismo valor, especialmente en listados largos o poco estructurados. Esto lleva a frecuencias absolutas menores o mayores que las correctas.",
-        "how_to_address": "Proponer estrategias de conteo sistemático (marcar datos ya contados, ordenar primero los datos por valor, hacer conteos parciales) y enfatizar la verificación de que la suma de frecuencias coincide con el número total de datos."
+        "name": "conteo_incompleto",
+        "description": "El estudiante no recorre toda la lista de datos o pierde algunos valores iguales que están separados, subestimando la frecuencia absoluta.",
+        "how_to_address": "Incluir ítems que incentiven el uso de estrategias de registro (marcar datos ya contados, agrupar por valor) y que impliquen verificar la suma de frecuencias con el total de datos."
       },
       {
-        "name": "Confusion_con_frecuencia_relativa_o_porcentaje",
-        "description": "El estudiante interpreta que debe calcular proporciones o porcentajes y anota resultados no enteros, o elige alternativas con valores relativos en lugar de la cantidad de casos.",
-        "how_to_address": "Reforzar la idea de que la frecuencia absoluta es un número natural que indica cuántas veces aparece un valor. Contrastar intencionalmente ejemplos de frecuencia absoluta vs relativa para que identifique la diferencia en el tipo de número y en la unidad."
+        "name": "frecuencia_valor_confundidos",
+        "description": "El estudiante confunde el valor de la variable con la frecuencia y anota el dato en la columna de frecuencia (p. ej., escribe '5' en frecuencia en lugar de '3' porque la nota es 5).",
+        "how_to_address": "Diseñar tablas con encabezados claros ('Valor', 'Frecuencia absoluta') y alternativas distractoras que evidencien esta confusión, reforzando la interpretación de las columnas en la retroalimentación."
       },
       {
-        "name": "Desalineacion_tabla_valores_frecuencias",
-        "description": "El estudiante asigna una frecuencia correcta pero a la categoría equivocada, por mala lectura de la tabla (confunde filas o columnas).",
-        "how_to_address": "Trabajar lectura cuidadosa de tablas: seguir filas completas, marcar la categoría antes de escribir la frecuencia, usar el encabezado de columnas. Incluir ejercicios donde se verifique visualmente la correcta correspondencia valor–frecuencia."
+        "name": "omitir_valores_unicos",
+        "description": "Valores que aparecen solo una vez en los datos no se registran en la tabla de frecuencias, ya sea porque el estudiante no los identifica como categoría distinta.",
+        "how_to_address": "Proponer listas donde existan valores únicos y pedir explícitamente 'todos los valores distintos y su frecuencia', incluyendo alternativas que omitan esos valores para evidenciar el error."
       },
       {
-        "name": "Ignorar_verificacion_con_el_total_de_datos",
-        "description": "El estudiante no revisa si la suma de todas las frecuencias absolutas coincide con el número de datos, por lo que no detecta errores de conteo previos.",
-        "how_to_address": "Enseñar explícitamente la suma de frecuencias como paso obligatorio de cierre. Plantear tareas donde la única forma de descartar alternativas incorrectas sea revisar la coherencia con el total de datos."
+        "name": "confundir_total_datos_con_numero_categorias",
+        "description": "El estudiante toma el número de categorías distintas como si fuera el total de datos, o suma mal las frecuencias absolutas.",
+        "how_to_address": "Incluir preguntas donde se pida específicamente el total de datos a partir de la tabla de frecuencias, y distractores que correspondan al número de categorías, para reforzar la distinción."
       },
       {
-        "name": "Mala_interpretacion_de_categorias",
-        "description": "El estudiante separa en varias categorías lo que debiera considerarse una sola (p. ej., 'M' y 'm' o '5' y '5,0') o, al revés, agrupa categorías que el enunciado trata como distintas.",
-        "how_to_address": "Modelar la lectura del enunciado para identificar claramente qué se considera un mismo valor o categoría. Incluir ejemplos donde se explicita que ciertos formatos equivalen al mismo valor y otros no."
+        "name": "no_verificar_suma_frecuencias",
+        "description": "El estudiante no utiliza la verificación de que la suma de las frecuencias debe coincidir con el total de datos, aceptando tablas inconsistentes.",
+        "how_to_address": "Plantear ítems donde una frecuencia se obtenga restando al total la suma de las otras, o donde una o más alternativas tengan sumas que no coinciden con el total declarado."
       },
       {
-        "name": "Error_de_transcripcion_de_datos",
-        "description": "Al pasar datos del listado original a una tabla o a un esquema intermedio, el estudiante cambia, omite o repite valores.",
-        "how_to_address": "Reforzar el trabajo directo sobre el listado original (tachar, subrayar, marcar) en vez de copiarlo completo. Sugerir revisar que cada dato del listado esté representado una sola vez en el conteo de alguna categoría."
+        "name": "incluir_valores_no_presentes",
+        "description": "Se agregan categorías en la tabla para valores que no aparecen en los datos, asignándoles frecuencias incorrectas.",
+        "how_to_address": "Diseñar contextos en que solo se deba considerar los valores que aparecen, y otros en que se deba incluir un rango fijo (p. ej., notas de 1 a 7), aclarando explícitamente la consigna para contrastar ambos casos."
+      },
+      {
+        "name": "lectura_confusa_de_tablas_parciales",
+        "description": "Al completar tablas parcialmente llenas, el estudiante lee mal las filas o columnas, asignando frecuencias al valor equivocado.",
+        "how_to_address": "Usar tablas con formato claro, evitar cambios de orden injustificados de las filas y proponer distractores que evidencien desalineación entre valor y frecuencia."
       }
     ],
     "future_targets": [
-      "Cálculo de frecuencia relativa y porcentual a partir de frecuencias absolutas.",
-      "Construcción e interpretación de tablas de frecuencia completas (absoluta, relativa, acumulada).",
-      "Construcción e interpretación de gráficos estadísticos (diagramas de barras, histogramas, gráficos circulares) basados en tablas de frecuencia.",
-      "Cálculo de medidas de tendencia central (media, mediana, moda) a partir de tablas de frecuencia.",
-      "Cálculo de medidas de dispersión (rango, varianza, desviación estándar) usando frecuencias absolutas.",
-      "Análisis e interpretación de distribuciones de datos para tomar decisiones informadas en contextos reales.",
-      "Aplicación de conceptos de probabilidad empírica basada en frecuencias absolutas observadas."
+      "Cálculo de frecuencia relativa y porcentual a partir de la frecuencia absoluta.",
+      "Construcción e interpretación de tablas de distribución de frecuencias completas (absoluta, relativa, acumulada).",
+      "Construcción e interpretación de gráficos de barras y diagramas circulares a partir de tablas de frecuencias.",
+      "Cálculo de medidas de tendencia central (moda, media, mediana) usando tablas de frecuencia.",
+      "Cálculo de medidas de dispersión (rango, varianza, desviación estándar) a partir de datos con frecuencia.",
+      "Modelación de probabilidades empíricas usando frecuencias absolutas y relativas.",
+      "Trabajo con datos agrupados en intervalos y construcción de histogramas.",
+      "Comparación de distribuciones utilizando tablas y gráficos basados en frecuencias."
     ],
     "representation_variants": [
-      "listado_explícito_de_datos_brutos_en_linea",
-      "listado_de_datos_en_columnas",
-      "tabla_incompleta_de_frecuencias_a_completar",
-      "descripcion_verbal_de_resultados_de_una_encuesta_con_listado_de_respuestas",
-      "conjuntos_de_datos_representados_como_multiconjunto_{...}_(en_notacion_informal)"
+      "Lista simple de datos numéricos en una sola fila o columna.",
+      "Listado de datos categóricos no numéricos (colores, marcas, respuestas sí/no) para construir la tabla de frecuencias.",
+      "Tabla de doble entrada reducida donde se extrae una sola variable para contar sus frecuencias.",
+      "Tabla de frecuencia con columna de 'Valor' vacía y columna de 'Frecuencia absoluta' por completar, o viceversa.",
+      "Texto descriptivo que menciona cuántas veces ocurre cada valor, desde el cual el estudiante debe reconstruir la tabla de frecuencia absoluta.",
+      "Escenarios verbales donde los datos están implícitos en un relato (por ejemplo, secuencia de resultados de un juego) y deben ser extraídos antes de contarlos."
     ],
     "numbers_profiles": [
       "small_integers",
-      "simple_decimals",
-      "categorical_labels"
+      "medium_integers",
+      "simple_categorical_labels"
     ],
     "required_image_types": []
   }

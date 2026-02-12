@@ -372,7 +372,8 @@ class CostEstimatorService:
           finalize → no LLM (file ops only)
         """
         phase = params.get("phase", "all")
-        pool_size = int(params.get("pool_size", 9))
+        # Default planned pool: 14E+18M+14H = 46 target * 1.3 buffer ≈ 62
+        planned_items = 62
         r = GPT51_REASONING_OVERHEAD
 
         # Per-phase: (input, visible_output, reasoning_effort, num_calls)
@@ -384,17 +385,17 @@ class CostEstimatorService:
             "plan": (1_800, 1_200 + r["medium"]),
             # 1 call, reasoning_effort="medium"
             "generate": (2_000, 6_000 + r["medium"]),
-            # pool_size calls, reasoning_effort="high"
+            # planned_items calls, reasoning_effort="high"
             "validate": (
-                1_000 * pool_size,
-                (200 + r["high"]) * pool_size,
+                1_000 * planned_items,
+                (200 + r["high"]) * planned_items,
             ),
             # Per item: enhance (low) + review (none)
             # + final_validation (medium)
             "feedback": (
-                5_000 * pool_size,
+                5_000 * planned_items,
                 (3_000 + r["low"] + 600 + r["none"]
-                 + 200 + r["medium"]) * pool_size,
+                 + 200 + r["medium"]) * planned_items,
             ),
             "finalize": (0, 0),
         }
@@ -414,7 +415,7 @@ class CostEstimatorService:
 
         breakdown: dict[str, Any] = {
             "phase": phase,
-            "pool_size": pool_size,
+            "planned_items": planned_items,
             "active_phases": active,
             "note": "Output includes reasoning token overhead",
         }

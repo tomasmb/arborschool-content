@@ -3,137 +3,151 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Evaluar expresiones algebraicas sustituyendo variables por números racionales dados (enteros, fracciones y decimales simples).",
-        "Aplicar jerarquía de operaciones: paréntesis, potencias y raíces simples, multiplicación y división, suma y resta.",
-        "Manejo de reglas de signos al operar con enteros y racionales (producto y cociente de positivos/negativos).",
-        "Evaluar expresiones polinómicas simples (lineales, cuadráticas, con 2 o 3 variables, con pocos términos).",
-        "Evaluar expresiones racionales simples donde el denominador no se anula con los valores dados.",
-        "Interpretar expresiones verbales breves que se traducen directamente a una expresión y luego se evalúan.",
-        "Uso de fracciones propias e impropias, y decimales con 1 o 2 cifras significativas en el contexto de sustitución."
+        "Evaluar expresiones algebraicas sustituyendo variables por números racionales (enteros, fracciones y decimales simples).",
+        "Respetar la jerarquía de operaciones: paréntesis, potencias/raíces, multiplicación y división, suma y resta.",
+        "Aplicar correctamente las reglas de signos al operar con números racionales.",
+        "Evaluar expresiones polinómicas simples (ej.: lineales, cuadráticas, con 2 o 3 términos) dadas las asignaciones numéricas.",
+        "Evaluar expresiones racionales simples donde el valor numérico no genera denominador cero.",
+        "Trabajar con hasta 2 o 3 variables distintas en la misma expresión.",
+        "Incluir potencias con exponente natural pequeño (por ejemplo 2 o 3) sobre números racionales."
       ],
       "out_of_scope": [
-        "Resolución de ecuaciones o inecuaciones (en este átomo solo se evalúa, no se despeja ni se resuelve).",
-        "Simplificación algebraica avanzada antes de evaluar (factorización, productos notables complejos, racionalización).",
-        "Expresiones con funciones avanzadas: logaritmos, trigonometría, exponenciales, valor absoluto no contextualizado.",
-        "Expresiones con muchas capas de anidación de paréntesis que apunten más a sobrecarga de memoria que a comprensión.",
-        "Manejo de números irracionales complejos (como raíces no exactas o π) más allá de sustitución directa sin operar.",
-        "Cálculo con fracciones o decimales de gran complejidad (muchas cifras, operaciones en cadena extensas).",
-        "Modelación de situaciones reales complejas; aquí no se pide formular el modelo, solo evaluar una expresión ya dada."
+        "Resolver ecuaciones o inecuaciones (encontrar valores de la variable que satisfacen una igualdad o desigualdad).",
+        "Simplificar expresiones simbólicamente (factorizar, reducir términos semejantes, operar algebraicamente sin valores numéricos dados).",
+        "Trabajar con exponentes fraccionarios, negativos o notación científica avanzada.",
+        "Uso de funciones avanzadas (trigonométricas, logarítmicas, exponenciales no vistas en M1).",
+        "Evaluar expresiones con raíces anidadas o muy complejas.",
+        "Contextos que requieran modelar una situación real con una expresión; en este átomo solo se evalúa la expresión ya dada.",
+        "Cálculos que requieran aproximaciones numéricas de irracionales no básicos (ej. π aproximado, √2 aproximado) más allá de instrucciones explícitas."
       ],
       "prerequisites": [
-        "A-M1-ARIT-01-01: Manejo de las cuatro operaciones básicas con enteros.",
-        "A-M1-ARIT-01-02: Operaciones con fracciones (suma, resta, producto y cociente simples).",
-        "A-M1-ARIT-01-03: Operaciones con decimales (suma, resta, producto y cociente simples).",
-        "A-M1-ARIT-01-04: Jerarquía de operaciones en el conjunto de los números racionales.",
-        "A-M1-ALG-01-01: Comprender el concepto de variable y expresión algebraica simbólica.",
-        "A-M1-ALG-01-03: Reglas de signos en productos y cocientes de números racionales."
+        "A-M1-NUM-01-01: Operaciones con números enteros y reglas de signos.",
+        "A-M1-NUM-01-02: Operaciones con fracciones (suma, resta, multiplicación, división).",
+        "A-M1-NUM-01-03: Operaciones con decimales (incluyendo conversión fracción-decimal simple).",
+        "A-M1-ALG-01-01: Interpretación de expresiones algebraicas y uso de notación (términos, variables, coeficientes).",
+        "A-M1-NUM-02-01: Jerarquía de operaciones en el conjunto de los números racionales."
       ],
       "common_traps": [
-        "Ignorar la jerarquía de operaciones y realizar las operaciones en el orden en que aparecen de izquierda a derecha.",
-        "Sustituir solo algunas variables y olvidar otras (por ejemplo, reemplazar x pero no y).",
-        "Olvidar que un número negativo al cuadrado requiere paréntesis: confundir (-3)^2 con -3^2.",
-        "No aplicar correctamente las reglas de signos en multiplicaciones y divisiones de números negativos.",
-        "Tratar una fracción algebraica como si solo el numerador o solo el denominador recibiera la sustitución.",
-        "No respetar los paréntesis dados en la expresión original al hacer la sustitución (por ejemplo, reemplazar x por un número negativo sin usar paréntesis).",
-        "Convertir decimales a fracciones (o viceversa) de manera innecesaria aumentando la carga de cálculo y el riesgo de error.",
-        "No verificar si el valor sustituido hace cero el denominador en expresiones racionales simples (aunque en la PAES típicamente se evita esa situación, es una trampa conceptual)."
+        "Ignorar la jerarquía de operaciones, por ejemplo sumar antes de multiplicar o no resolver potencias antes que productos.",
+        "Sustituir solo una parte de las variables y dejar otras sin reemplazar, especialmente cuando se repiten varias veces en la expresión.",
+        "No usar paréntesis al sustituir valores negativos, lo que lleva a errores en potencias y multiplicaciones (ej.: interpretar x² con x = -3 como -3² en vez de (-3)²).",
+        "Confundir el signo de la expresión al multiplicar o dividir números racionales con signos distintos.",
+        "Error al operar fracciones (sumar solo numeradores, olvidar mínimo común múltiplo, invertir mal la fracción al dividir).",
+        "Olvidar que el denominador no puede ser cero al evaluar expresiones racionales.",
+        "Manejar mal los decimales (mal ubicación de la coma, cortar o redondear sin que el problema lo pida).",
+        "Perder orden y claridad en el cálculo, generando errores de copia o de transcripción intermedia.",
+        "Confundir la notación de producto implícito (3x, 2(a+b)) interpretándola erróneamente como suma."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Expresiones con una o dos operaciones básicas (por ejemplo, suma y multiplicación) y a lo más un paréntesis simple.",
-        "Uso de uno o dos valores enteros pequeños (entre -5 y 5) y a lo más una fracción o decimal sencillo.",
-        "Una sola variable o dos variables, cada una usada una única vez en la expresión.",
-        "Sin potencias, o solo potencias de exponente 2 con base entera pequeña.",
-        "Jerarquía de operaciones casi lineal, con poca o nula anidación de paréntesis.",
-        "Las cuentas intermedias se pueden hacer mentalmente o con cálculo muy simple escrito."
+        "Expresiones con una o dos operaciones básicas (suma, resta, multiplicación o división) sin paréntesis anidados, con a lo más dos variables y con valores enteros pequeños (entre -10 y 10).",
+        "Potencias con exponente 2 aplicadas a enteros pequeños, sin presencia de fracciones ni decimales.",
+        "Substitución directa donde cada variable aparece una sola vez en la expresión.",
+        "Cálculos que no requieren uso de fracciones de distinto denominador (por ejemplo solo enteros o fracciones con el mismo denominador).",
+        "Ausencia de números negativos en posiciones que generen confusión de signos (por ejemplo todos los valores positivos o un único negativo claramente separado)."
       ],
       "medium": [
-        "Expresiones con 3 a 5 operaciones combinadas, incluyendo paréntesis y/o potencias sencillas (exponentes 2 o 3).",
-        "Uso de dos o tres variables, algunas repitiéndose más de una vez en la expresión.",
-        "Presencia de números racionales: fracciones con denominadores pequeños (2, 3, 4, 5, 10) y/o decimales con 1 cifra decimal.",
-        "Expresiones racionales simples (una fracción donde numerador y denominador son expresiones lineales o cuadráticas simples).",
-        "Necesidad de aplicar la jerarquía de operaciones de forma consciente (potencias antes de multiplicar, etc.).",
-        "Requiere al menos 3 pasos de cálculo claramente diferenciados, pero sin aritmética pesada ni números demasiado grandes."
+        "Expresiones con 3 o 4 operaciones combinadas, incluyendo paréntesis simples y/o una potencia con exponente 2 o 3.",
+        "Presencia de números negativos en la sustitución y en la expresión original, requiriendo manejar correctamente la multiplicación y suma de enteros con signo.",
+        "Uso de fracciones con diferentes denominadores o mezcla de fracciones y enteros, requiriendo encontrar denominador común o convertir a fracción impropia.",
+        "Uso de decimales simples (uno o dos decimales) combinados con enteros o fracciones, donde se espera mantener exactitud (sin redondeo).",
+        "Variables que se repiten 2 o 3 veces dentro de la expresión, exigiendo orden y consistencia en la sustitución.",
+        "Expresiones racionales simples del tipo (ax + b) / c o a / (bx + c) donde el valor asignado no hace cero el denominador, pero el estudiante debe evaluar correctamente numerador y denominador."
       ],
       "hard": [
-        "Expresiones con varias capas de operaciones: combinación de potencias, productos, sumas/restas y división, con paréntesis anidados (2 niveles) pero aún legibles.",
-        "Uso de 3 o más variables, con algunas apareciendo en más de un lugar y en distintos roles (por ejemplo, dentro y fuera de un paréntesis).",
-        "Números racionales menos amigables: fracciones impropias o mixtas, denominadores distintos que obligan a sumar/restar fracciones, decimales con 2 cifras.",
-        "Expresiones racionales donde, tras la sustitución, deban simplificarse fracciones o realizarse productos de fracciones.",
-        "Situaciones donde el error de jerarquía de operaciones o de signos conduce a distractores plausibles.",
-        "Cadenas de cálculo de más pasos, que exigen buena organización escrita y control de errores aritméticos, sin requerir técnicas más allá del currículo de M1."
+        "Expresiones con varias operaciones anidadas y paréntesis dentro de otros paréntesis, que requieren aplicar jerarquía de operaciones en varios pasos.",
+        "Combinación de fracciones con distintos denominadores, decimales y enteros, incluyendo multiplicaciones y divisiones entre fracciones.",
+        "Valores asignados que son fracciones negativas o decimales negativos, especialmente cuando aparecen elevados al cuadrado o multiplicados entre sí.",
+        "Expresiones racionales algo más complejas, como cocientes de binomios o trinomios evaluados numéricamente, donde la simplificación intermedia puede ser conveniente pero no obligatoria.",
+        "Necesidad de mantener resultados en forma de fracción simplificada (no obvia), exigiendo simplificar por factores comunes relativamente grandes.",
+        "Ítems donde se presentan resultados intermedios tentadores como alternativas, de modo que el estudiante debe completar todos los pasos con precisión para llegar al valor final.",
+        "Evaluación de una misma expresión para dos asignaciones distintas de las variables (por ejemplo comparar valores), requiriendo repetir el procedimiento de evaluación con cuidado."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar expresiones donde la notación de potencia pueda interpretarse de dos maneras (por ejemplo, escribir claramente (-3)^2 y no -3^2 si el cuadrado incluye al signo).",
-      "No usar expresiones con barras de fracción ambiguas; usar suficientes paréntesis para dejar claro qué está en el numerador y qué en el denominador.",
-      "No mezclar texto largo con la expresión algebraica de forma que se dude qué parte es la expresión exacta a evaluar; siempre destacar explícitamente la expresión final a evaluar.",
-      "Evitar enunciados donde el estudiante deba inferir los valores de las variables a partir de un contexto demasiado verbal; los valores deben indicarse clara y directamente.",
-      "No usar la misma letra con significados distintos en el mismo ítem (por ejemplo, x como variable y x como otra magnitud).",
-      "Evitar notaciones no estándar (como usar punto para multiplicar junto a un punto decimal en el mismo ítem, si puede confundir).",
-      "Especificar siempre si se requiere el resultado en fracción simplificada o en decimal cuando ambas representaciones podrían aparecer como alternativas.",
-      "No combinar fracciones verticales y de tipo a/b en la misma expresión si puede producir doble interpretación; mantener consistencia en la notación.",
-      "Evitar expresiones excesivamente largas en una sola línea que dificulten la lectura; usar paréntesis y espaciamiento claro.",
-      "No incluir valores que anulen el denominador, a menos que el objetivo explícito sea reconocer la imposibilidad de evaluar; en este átomo se busca evaluar, no discutir dominio."
+      "No usar letras que puedan confundirse con números (por ejemplo l con 1, O con 0) en las variables.",
+      "Especificar siempre claramente los valores de las variables y el formato (ej.: x = 1/2, y = -3, z = 0,75) evitando abreviaturas o notaciones poco estándar.",
+      "Evitar expresiones donde falten paréntesis para desambiguar el orden de operaciones (por ejemplo escribir siempre (a+b)/2 en vez de a+b/2 si se desea el promedio).",
+      "No mezclar coma y punto decimal en el mismo ítem; utilizar solo coma para decimales según convención chilena.",
+      "Indicar explícitamente si se espera que el resultado sea fracción, decimal o cualquiera de ambos cuando pueda haber más de una forma equivalente.",
+      "Evitar usar notaciones no escolares como barra inclinada sin paréntesis en expresiones complejas (ej.: a+b/c+d) que puedan interpretarse de más de una manera.",
+      "No incluir denominadores que puedan volverse cero con los valores dados; revisar consistencia antes de proponer el ítem.",
+      "En caso de que el resultado deba aproximarse, indicar con claridad el nivel de aproximación (ej.: \"redondee a dos decimales\") y asegurarse que las alternativas correspondan a ese criterio.",
+      "Evitar expresiones demasiado largas en una sola línea que dificulten la lectura; usar paréntesis y ordenamiento claro.",
+      "No usar simultáneamente fracciones en línea y fracciones en forma de número mixto; preferir fracciones impropias o decimales equivalentes."
     ],
     "error_families": [
       {
-        "name": "SinJerarquia",
-        "description": "El estudiante realiza las operaciones en el orden en que aparecen, ignorando la jerarquía (por ejemplo, suma antes que multiplicación o potencia).",
-        "how_to_address": "Diseñar ítems donde aplicar la jerarquía cambie significativamente el resultado, y usar distractores que correspondan a hacer las operaciones en orden lineal. En la retroalimentación, explicitar el orden correcto usando ejemplos paso a paso y enfatizar el uso de paréntesis como guía visual."
+        "name": "Ignorar_jerarquia_operaciones",
+        "description": "El estudiante realiza las operaciones en el orden que aparecen, sin respetar paréntesis, potencias ni prioridad de multiplicación y división sobre suma y resta.",
+        "how_to_address": "Incluir ítems que hagan evidente el impacto del orden (por ejemplo comparar dos órdenes de cálculo), y reforzar en el feedback la secuencia correcta: primero paréntesis y potencias, luego productos y divisiones, finalmente sumas y restas."
       },
       {
-        "name": "SignosErroneos",
-        "description": "Errores al manejar signos en productos y cocientes, especialmente con números negativos y potencias (confundir (-a)^2 con -a^2, o producto de dos negativos).",
-        "how_to_address": "Incluir ítems centrados en la presencia de negativos y potencias, donde distractores representen las combinaciones de signos típicamente equivocadas. En la retroalimentación, mostrar tablas de signos y comparar casos con y sin paréntesis alrededor de números negativos."
+        "name": "Manejo_incorrecto_de_signos",
+        "description": "Errores al sumar, restar, multiplicar o dividir números negativos, o al evaluar potencias de números negativos (confundir (-3)² con -3²).",
+        "how_to_address": "Proponer ejercicios focalizados con valores negativos en distintas posiciones y en el feedback explicitar reglas de signos y el rol de los paréntesis al reemplazar números negativos."
       },
       {
-        "name": "SustitucionParcial",
-        "description": "Olvidar reemplazar una o más apariciones de una variable, o sustituir en un lugar pero no en otro dentro de la misma expresión.",
-        "how_to_address": "Proponer expresiones donde cada variable aparece al menos dos veces y generar distractores que correspondan a reemplazar solo una de las apariciones. Resaltar en el apoyo visual la misma letra en todos sus lugares, y recomendar subrayar cada variable reemplazada al trabajar en papel."
+        "name": "Sustitucion_parcial_o_inconsistente",
+        "description": "El estudiante olvida reemplazar alguna aparición de la variable, o usa valores distintos para la misma variable en la misma expresión.",
+        "how_to_address": "Diseñar ítems donde cada variable aparezca varias veces, destacando en el feedback que todas las apariciones de la misma letra deben recibir el mismo valor y que conviene reescribir la expresión con todos los reemplazos antes de calcular."
       },
       {
-        "name": "SinParentesisEnSustitucion",
-        "description": "Reemplazar variables por valores negativos sin agruparlos en paréntesis, lo que cambia el alcance de operaciones como la potencia o la multiplicación.",
-        "how_to_address": "Crear ítems donde se deba sustituir valores negativos en lugares sensibles (por ejemplo, bases de potencias o factores de un producto) y usar distractores que reflejen la falta de paréntesis. En la retroalimentación, insistir en la regla: \"Cada vez que reemplazo una variable por un número, lo escribo entre paréntesis\"."
+        "name": "Omisión_de_parentesis_en_valores_negativos",
+        "description": "Al sustituir un valor negativo, el estudiante no encierra el número entre paréntesis, lo que altera el resultado de multiplicaciones o potencias.",
+        "how_to_address": "En las explicaciones modelo, mostrar sistemáticamente el uso de paréntesis al sustituir, especialmente en productos y potencias, y contrastar con el cálculo incorrecto sin paréntesis."
       },
       {
-        "name": "AritmeticaDeficiente",
-        "description": "Errores puramente aritméticos al operar con fracciones o decimales (sumar numeradores y denominadores, alinear mal decimales, simplificar incorrectamente).",
-        "how_to_address": "Mantener la complejidad aritmética controlada y, al mismo tiempo, incluir distractores que resulten de errores habituales (por ejemplo, sumar fracciones con mismo numerador y denominador). En la retroalimentación, recordar procedimientos básicos de suma/resta de fracciones y manejo de decimales, no solo del álgebra."
+        "name": "Errores_en_operaciones_con_fracciones",
+        "description": "Sumar o restar fracciones sumando solo numeradores, multiplicar o dividir mal las fracciones, o no simplificar cuando es necesario para distinguir alternativas.",
+        "how_to_address": "Incluir ítems donde comparar alternativas obligue a usar el procedimiento correcto; en el feedback recordar el uso de denominador común para suma/resta y la multiplicación cruzada solo para división (invertir la segunda fracción)."
       },
       {
-        "name": "ConfusionRacional",
-        "description": "Tratar expresiones racionales como si solo parte de la fracción estuviera afectada por el denominador, o olvidar que todo el numerador se divide por el denominador.",
-        "how_to_address": "Usar escritura clara de fracciones con numerador y denominador entre paréntesis, y distractores que correspondan a dividir solo un término. Explicar gráficamente que la barra de fracción equivale a paréntesis alrededor de numerador y denominador completos."
+        "name": "Mala_gestion_de_decimales",
+        "description": "Errores al alinear la coma en sumas y restas, o al multiplicar y dividir decimales; confusión entre décimas, centésimas, etc.",
+        "how_to_address": "Proponer ítems donde el error de coma genere alternativas distractoras plausibles; en la retroalimentación detallar el conteo de cifras decimales y la alineación correcta de la coma."
       },
       {
-        "name": "RedondeoInnecesario",
-        "description": "Redondear resultados intermedios de fracciones o decimales cuando no se pide, generando acumulación de error.",
-        "how_to_address": "Proponer ítems donde el resultado exacto sea sencillo si no se redondea, pero se vuelva inexacto si se aproxima demasiado pronto. En retroalimentación, indicar explícitamente que se debe redondear solo si el problema lo solicita y al final del cálculo."
+        "name": "Resultado_intermedio_tomado_como_final",
+        "description": "El estudiante se queda con un cálculo incompleto (por ejemplo evalúa el numerador pero no divide por el denominador, o detiene el procedimiento en un paso intermedio).",
+        "how_to_address": "Ofrecer alternativas que representen esos resultados intermedios y en el feedback mostrar la secuencia completa, enfatizando la importancia de llegar al valor final pedido en el enunciado."
+      },
+      {
+        "name": "Confusion_en_expresiones_racionales",
+        "description": "El estudiante evalúa solo numerador o solo denominador, o mezcla términos fuera y dentro de la fracción de manera incorrecta.",
+        "how_to_address": "Usar diagramas de fracción en la explicación (por ejemplo escribir claramente numerador y denominador) y recomendar separar el cálculo en 'primero calculo el numerador, luego el denominador, finalmente hago la división'."
       }
     ],
     "future_targets": [
-      "Resolución de ecuaciones e inecuaciones lineales y cuadráticas mediante sustitución de soluciones propuestas.",
-      "Análisis de funciones (lineales, cuadráticas y racionales simples) evaluando valores específicos para construir tablas y reconocer comportamientos.",
-      "Modelación algebraica de situaciones reales donde, una vez formulado el modelo, se requieren sustituciones numéricas para obtener predicciones.",
-      "Estudio de sistemas de ecuaciones evaluando expresiones resultantes de despejes y sustituciones entre ecuaciones.",
-      "Trabajo con funciones definidas por tramos, donde es necesario evaluar expresiones distintas según el intervalo del valor ingresado.",
-      "Aplicación de fórmulas en geometría (áreas, perímetros, volumen) y estadística (media ponderada, varianza) que requieren sustituir datos en expresiones algebraicas.",
-      "Manejo de identidades y productos notables, donde la verificación se hace comparando valores de ambas expresiones para distintos números.",
-      "Estudio de progresiones y series, donde se evalúan términos generales al reemplazar n por un valor concreto."
+      "A-M1-ALG-01-03: Sustitución de valores en fórmulas geométricas y físicas simples.",
+      "A-M1-ALG-01-04: Análisis de tablas de valores de funciones lineales y cuadráticas a partir de una regla algebraica.",
+      "A-M1-ALG-02-01: Resolución de ecuaciones lineales y cuadráticas mediante procedimientos algebraicos.",
+      "A-M1-ALG-02-02: Modelación de situaciones reales mediante expresiones algebraicas y funciones.",
+      "A-M1-ALG-03-01: Estudio de variaciones de una función (crecimiento, decrecimiento) a partir de su expresión.",
+      "A-M1-GEO-01-02: Cálculo de perímetros, áreas y volúmenes usando expresiones algebraicas que involucran sustitución numérica.",
+      "A-M1-STAT-01-02: Cálculo de medidas de tendencia central y dispersión cuando se expresan mediante fórmulas algebraicas.",
+      "A-M1-FUN-01-01: Comprensión del concepto de función evaluando f(x) para distintos valores de x."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal",
-      "tabular"
+      "Expresiones algebraicas dadas simbólicamente, sin contexto verbal (forma puramente matemática).",
+      "Expresiones inseridas en un enunciado contextualizado (por ejemplo fórmulas de promedio, descuentos, velocidad), donde se entrega explícitamente la expresión y los valores.",
+      "Tablas donde se muestran valores de las variables y se pide completar el valor de la expresión para cada fila.",
+      "Uso de notación de función simple (por ejemplo f(x, y) = 3x - 2y) y solicitud de evaluar la función en un par ordenado dado.",
+      "Expresiones racionales presentadas en forma de fracción vertical, para clarificar el numerador y denominador.",
+      "Expresiones con producto implícito (3x, 2(a+b), -0,5y) contrastadas con otras donde el producto es explícito (3·x, 2·(a+b))."
     ],
     "numbers_profiles": [
       "small_integers",
-      "mixed",
-      "fractions",
-      "simple_decimals"
+      "medium_integers",
+      "negative_integers",
+      "simple_unit_fractions",
+      "non_unit_fractions",
+      "mixed_numbers_simple",
+      "finite_decimals_simple",
+      "finite_decimals_two_places",
+      "simple_rational_negative",
+      "zero_in_numerator_only"
     ],
     "required_image_types": []
   }

@@ -3,137 +3,127 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del volumen de prismas rectos con base triangular o poligonal cualquiera usando la fórmula general V = A_base · h.",
-        "Cálculo del área de la base cuando no está dada explícitamente, incluyendo triángulos y polígonos regulares simples.",
-        "Determinación de la altura del prisma conociendo volumen y área de la base (despeje de h = V / A_base).",
-        "Determinación del área de la base conociendo volumen y altura del prisma (despeje de A_base = V / h).",
-        "Distinción entre altura de la figura plana de la base (por ejemplo, altura de un triángulo) y altura del prisma (distancia entre las dos bases paralelas).",
-        "Problemas de contexto (geométricos o de la vida cotidiana) donde se requiera interpretar volumen como capacidad u ocupación de espacio en un prisma recto general."
+        "Cálculo del volumen de prismas rectos con base triangular o poligonal usando la fórmula general V = A_base · h.",
+        "Cálculo del área de la base cuando esta es un triángulo o un polígono regular o irregular simple, a partir de datos entregados en el enunciado o la figura.",
+        "Determinación de la altura del prisma cuando se conocen el volumen y el área de la base.",
+        "Interpretación correcta de \"altura del prisma\" como la distancia perpendicular entre las bases.",
+        "Distinción entre dimensiones de la base (como altura de un triángulo de la base) y la altura del prisma."
       ],
       "out_of_scope": [
-        "Cálculo de volumen de prismas oblicuos o figuras no prismáticas (pirámides, cilindros, conos, esferas).",
-        "Uso de fórmulas específicas de paralelepípedos o cubos (largo · ancho · alto) en vez de la fórmula general V = A_base · h.",
-        "Cálculo de áreas de figuras planas que no sean las bases del prisma en cuestión (por ejemplo, desarrollo completo del prisma o área lateral/total).",
-        "Cálculo de áreas de círculos o volumen de cilindros (eso corresponde a otros átomos).",
-        "Problemas que requieran trigonometría para obtener dimensiones (ángulos, senos, cosenos, etc.).",
-        "Uso de coordenadas en el plano o en el espacio para deducir el volumen.",
-        "Conversión de unidades de volumen complejas o cambio entre sistemas de unidades que no sea directo (por ejemplo, entre m³ y litros con varios pasos intermedios)."
+        "Uso de fórmulas específicas de paralelepípedos o cubos (V = largo · ancho · alto) sin pasar por el concepto de área de base.",
+        "Volúmenes de cuerpos que no sean prismas rectos (pirámides, cilindros, conos, esferas, prismas oblicuos).",
+        "Problemas que requieran cálculo de áreas laterales o totales; este átomo se centra solo en volumen.",
+        "Aplicación de trigonometría para encontrar medidas de la base (eso pertenece a otros átomos).",
+        "Prismas con bases curvas (cilindros) o mezclas de cuerpos (sólidos compuestos) más allá de dos prismas simples.",
+        "Cambio de unidades cúbicas con conversiones no triviales (por ejemplo, entre m³ y cm³ con varios pasos)."
       ],
       "prerequisites": [
-        "A-M1-GEO-02-01",
-        "A-M1-GEO-02-02",
-        "A-M1-GEO-02-03",
-        "A-M1-GEO-02-04"
+        "A-M1-GEO-01-03  (Cálculo de área de triángulos)",
+        "A-M1-GEO-01-04  (Cálculo de área de polígonos, al menos rectángulos, paralelogramos y polígonos regulares simples)",
+        "A-M1-GEO-02-01  (Identificación de prismas rectos y sus elementos: bases, aristas, altura)",
+        "A-M1-NUM-01-02  (Manejo de multiplicación y división con números enteros y decimales)",
+        "A-M1-NUM-01-04  (Comprensión básica de unidades de medida de longitud, área y volumen)"
       ],
       "common_traps": [
-        "Confundir la altura de la base triangular con la altura del prisma, usando una en lugar de la otra en la fórmula de volumen.",
-        "Tratar el prisma como si fuera siempre un paralelepípedo o cubo y no calcular el área real de la base cuando es triangular o poligonal.",
-        "Olvidar dividir por 2 al calcular el área de un triángulo (usar b · h en vez de (b · h) / 2).",
-        "Despejar mal la fórmula V = A_base · h al buscar h o A_base (por ejemplo, multiplicar en lugar de dividir).",
-        "Usar una arista lateral que no es perpendicular a la base como si fuera la altura del prisma.",
-        "Confundir perímetro de la base con área de la base al no leer atentamente los datos entregados.",
-        "No identificar correctamente qué medida corresponde a la base del triángulo (tomar una altura como lado de base o viceversa).",
-        "Realizar cálculos intermedios con demasiados decimales o redondear demasiado pronto, generando diferencias con las alternativas."
+        "Confundir la altura del triángulo de la base con la altura del prisma y usar una en lugar de la otra en la fórmula de volumen.",
+        "Interpretar erróneamente qué cara es la base del prisma cuando se dibuja acostado o girado.",
+        "Usar directamente el producto de tres medidas cualesquiera del prisma como si fuera siempre un prisma rectangular.",
+        "Olvidar calcular primero el área de la base y tratar de usar lados de la base directamente en V = A_base · h.",
+        "Confundir unidades de área y volumen, por ejemplo, entregar la respuesta en unidades cuadradas en vez de cúbicas.",
+        "No reconocer que, si se da el volumen y el área de la base, la altura se obtiene dividiendo (h = V / A_base) y no multiplicando."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "El área de la base está dada explícitamente o es inmediata (por ejemplo, base triangular con números pequeños y fórmula recordable directamente).",
-        "Todos los datos necesarios están claramente identificados y etiquetados como 'área de la base', 'altura del prisma' o 'volumen'.",
-        "Se requiere solo un paso principal de cálculo: sustituir en V = A_base · h y operar con enteros pequeños.",
-        "Cuando se debe calcular el área de la base, esta es una figura plana simple (triángulo rectángulo, polígono regular sencillo) con dimensiones enteras pequeñas.",
-        "No se necesita despejar: la incógnita es el volumen y se conoce directamente A_base y h.",
-        "El enunciado es breve, sin contexto complejo, y la unidad de medida es consistente en todos los datos."
+        "Prismas rectos con base triangular o rectangular donde el área de la base está dada explícitamente o es inmediata (por ejemplo, rectángulo con lados dados).",
+        "Todos los datos numéricos son enteros pequeños (menores que 20) y resultan en un volumen entero sin necesidad de fracciones ni decimales.",
+        "Pregunta directa: calcular el volumen dado el área de la base y la altura, o completar un dato faltante cuando el resto es muy explícito.",
+        "Figuras simples con pocas medidas, sin necesidad de distinguir más de una \"altura\" en la base."
       ],
       "medium": [
-        "Es necesario calcular primero el área de la base a partir de dimensiones dadas, antes de aplicar la fórmula de volumen.",
-        "Se requiere distinguir entre altura de la base y altura del prisma, aunque ambas aparecen en el enunciado o en la figura.",
-        "Se debe despejar una variable (h o A_base) a partir de la ecuación V = A_base · h, con un paso algebraico simple.",
-        "Incluye números mixtos entre enteros y fracciones o decimales simples, pero con operaciones manejables.",
-        "El contexto puede ser cotidiano (capacidad de contenedores prismáticos, cajas, depósitos) y exige traducir la situación a la estructura V = A_base · h.",
-        "Los datos pueden estar repartidos en un pequeño texto o en una tabla, pero sin información irrelevante extensa."
+        "El área de la base no está dada y debe ser calculada a partir de las dimensiones de un triángulo o polígono sencillo (triángulo, paralelogramo, trapecio, polígono regular básico).",
+        "Incluye la distinción explícita entre altura del triángulo (en la base) y altura del prisma, requiriendo elegir correctamente cuál usar en cada etapa.",
+        "Uso de números de dos cifras o algún decimal sencillo (una cifra decimal) en las dimensiones, con resultados que pueden ser decimales.",
+        "Determinación de la altura del prisma a partir de un volumen dado y un área de base calculada a partir de la figura.",
+        "Contextos verbales sencillos (ej. tanque de agua con forma de prisma) donde se debe traducir la situación al modelo de prisma recto."
       ],
       "hard": [
-        "La base es un polígono que obliga a varios pasos para obtener el área (por ejemplo, descomponer en triángulos o usar fórmulas de área de polígonos regulares).",
-        "Es necesario combinar varias relaciones: por ejemplo, calcular primero una dimensión de la base usando otras longitudes dadas, para luego hallar A_base y después el volumen o la altura.",
-        "Se deben interpretar correctamente varias alturas distintas (de triángulo, de prisma, de otros elementos del dibujo) donde solo una es la correcta para el volumen.",
-        "La incógnita está implícita o aparece en contexto menos directo (por ejemplo, determinar la altura de llenado de un contenedor con cierto volumen de líquido).",
-        "Incluye fracciones no triviales o decimales con más de una cifra, que requieren mayor cuidado en los cálculos.",
-        "El enunciado puede incluir información redundante o distractora que el estudiante debe filtrar para identificar solo las dimensiones relevantes para el volumen del prisma.",
-        "Puede requerir comparar dos prismas (por ejemplo, mismo volumen con distintas bases o alturas) obligando a aplicar la fórmula en más de un objeto y razonar sobre la relación entre A_base y h."
+        "Bases poligonales más complejas (por ejemplo, polígonos formados por composición/descomposición de figuras simples) donde el área no es inmediata y requiere varios pasos.",
+        "Problemas inversos que requieren despejar y usar h = V / A_base o A_base = V / h en varios pasos, posiblemente integrados en un contexto aplicado.",
+        "Datos que involucran fracciones o decimales no triviales, con necesidad de mantener precisión en los cálculos.",
+        "Situaciones donde hay varias longitudes y alturas en la figura y se debe identificar cuál corresponde a la altura del prisma, sin indicación directa en el texto.",
+        "Ítems que comparan volúmenes de dos prismas con diferentes tipos de base, requiriendo calcular ambos volúmenes para tomar una decisión (por ejemplo, cuál tiene mayor capacidad).",
+        "Problemas que exigen interpretar la figura 3D (vista en perspectiva) para identificar correctamente la base y la altura, sin que estén etiquetadas de manera obvia."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra 'altura' sin especificar claramente si se refiere a la altura del prisma o a la altura de la figura de la base; preferir 'altura del prisma' y 'altura del triángulo de la base'.",
-      "No mezclar términos como 'largo', 'ancho', 'profundidad' y 'altura' sin indicar qué corresponde a la base y qué a la altura del prisma.",
-      "No presentar un prisma oblicuo en el dibujo si el problema trata de prismas rectos, para no confundir la altura con una arista inclinada.",
-      "Evitar figuras con demasiadas medidas no utilizadas que impidan identificar visualmente cuál es la dimensión relevante para el volumen.",
-      "No dar solo el 'tamaño' o 'medidas' de la base sin aclarar si es área o lado; especificar siempre 'área de la base' cuando se trate de A_base.",
-      "Evitar unidades inconsistentes o implícitas; siempre indicar unidades de largo y volumen cuando sean relevantes, y no mezclar distintas unidades sin mencionarlo explícitamente.",
-      "No usar escalas en los dibujos que contradigan o aparenten contradecir los valores numéricos entregados; la figura debe ser coherente aunque no esté a escala perfecta.",
-      "Evitar enunciados donde la base del prisma no esté claramente identificada (por ejemplo, decir solo 'prisma' sin indicar qué cara es la base cuando eso es relevante para entender A_base)."
+      "Evitar dibujos de prismas donde no quede claro cuál es la base; siempre indicar o rotular cuál cara se considera base o explicitar que cualquier par de caras paralelas puede ser base, pero usar una sola en el ítem.",
+      "No usar la palabra \"altura\" sin aclarar a qué se refiere cuando puede significar tanto la altura de la figura plana (triángulo de la base) como la altura del prisma; usar expresiones como \"altura del triángulo de la base\" y \"altura del prisma\".",
+      "Evitar perspectivas 3D donde las medidas parecen asociadas a una arista pero en realidad corresponden a otra; las líneas de cota deben estar claramente relacionadas con sus aristas.",
+      "No mezclar en un mismo ítem unidades distintas de longitud sin explicitar si es necesario convertir; si se requiere conversión, dejarlo claro en el enunciado.",
+      "Evitar bases poligonales excesivamente irregulares sin marcas claras que permitan deducir su área (por ejemplo, sin ángulos rectos marcados o sin descomposición evidente).",
+      "No formular preguntas donde podría interpretarse que hay más de un volumen posible (por ejemplo, cuando no se indica si una dimensión corresponde a la base o a la altura del prisma).",
+      "Evitar contextos donde el cuerpo podría no interpretarse inequívocamente como prisma recto (por ejemplo, cajas con tapa inclinada o depósitos con base no paralela a la superficie)."
     ],
     "error_families": [
       {
         "name": "Confusión_de_alturas",
-        "description": "El estudiante usa la altura del triángulo de la base como si fuese la altura del prisma o viceversa, lo que lleva a un valor equivocado de volumen o a una altura de prisma incorrecta.",
-        "how_to_address": "Diseñar ítems que obliguen a identificar explícitamente ambas alturas y a razonar cuál interviene en el área de la base y cuál en el volumen; enfatizar en el enunciado o en retroalimentación la diferencia entre 'altura del triángulo' y 'altura del prisma'."
+        "description": "El estudiante confunde la altura del triángulo de la base con la altura del prisma, usando una en lugar de la otra en la fórmula del volumen o en el cálculo del área de la base.",
+        "how_to_address": "Incluir ítems que exijan nombrar explícitamente ambas alturas en el razonamiento (primero calcular A_base con la altura del triángulo, luego usar la altura del prisma en V = A_base · h) y preguntas de selección que pidan identificar qué medida es la altura del prisma en un dibujo etiquetado."
       },
       {
-        "name": "Área_de_triángulo_mal_aplicada",
-        "description": "Al calcular el área de la base triangular, el estudiante olvida dividir por 2, toma una medida que no es base ni altura, o multiplica tres lados en vez de usar la fórmula correcta.",
-        "how_to_address": "Proponer problemas donde la única dificultad sea obtener correctamente el área de la base triangular, destacando en explicaciones que A_triángulo = (b · h)/2 y guiando la identificación de base y altura perpendiculares."
+        "name": "Producto_de_tres_dimensiones_sin_concepto_de_base",
+        "description": "El estudiante multiplica tres longitudes cualesquiera del prisma asumiendo que siempre es suficiente para el volumen, como si todo prisma fuera rectangular.",
+        "how_to_address": "Diseñar ítems donde la base no es rectangular (por ejemplo, triangular o trapecial) y donde solo es correcto primero calcular su área con la fórmula correspondiente y luego multiplicar por la altura del prisma; ofrecer alternativas de respuesta que incluyan productos de tres lados para evidenciar este error."
       },
       {
-        "name": "Uso_incorrecto_de_perímetro_en_vez_de_área",
-        "description": "El estudiante confunde perímetro con área de la base y usa la suma de los lados o una expresión lineal en lugar de una expresión de área.",
-        "how_to_address": "Incluir ítems que presenten explícitamente tanto perímetro como área y requieran elegir cuál usar; reforzar en las explicaciones la diferencia conceptual entre cantidad de borde (perímetro) y superficie (área)."
+        "name": "Uso_incorrecto_de_la_fórmula_inversa",
+        "description": "Al despejar la altura o el área de la base desde V = A_base · h, el estudiante multiplica en vez de dividir, o divide por el valor equivocado.",
+        "how_to_address": "Incluir ejercicios donde se pregunta explícitamente por la altura del prisma o el área de la base con el volumen dado, y opciones distractoras que reflejen multiplicar en lugar de dividir; favorecer explicitar el paso algebraico V = A_base · h ⇒ h = V / A_base dentro del enunciado o solución comentada."
       },
       {
-        "name": "Despeje_erróneo_en_V=A_base·h",
-        "description": "Al resolver para h o A_base, el estudiante realiza operaciones inversas incorrectas, como multiplicar en lugar de dividir o dividir por la variable equivocada.",
-        "how_to_address": "Diseñar ítems que pidan explícitamente hallar h o A_base desde V, con números simples, para focalizar en el despeje; acompañar con explicaciones paso a paso del paso algebraico V = A_base · h ⇒ h = V / A_base o A_base = V / h."
+        "name": "Olvido_de_calcular_el_área_de_la_base",
+        "description": "El estudiante usa solo una medida lineal de la base en la fórmula de volumen, sin pasar por el cálculo de área (por ejemplo, V = base · h_prisma en vez de V = A_base · h_prisma para un triángulo).",
+        "how_to_address": "Proponer problemas donde el área de la base no esté dada y sea imposible calcular el volumen sin ese paso; en las alternativas, incluir resultados que coincidan con usar solo una dimensión de la base para que el patrón de error sea visible."
       },
       {
-        "name": "Selección_errónea_de_medidas",
-        "description": "Ante varias medidas dadas (lados, diagonales, alturas), el estudiante elige una longitud que no corresponde a la base o a la altura del prisma para calcular el área de la base o el volumen.",
-        "how_to_address": "Plantear ítems con varias longitudes donde solo algunas sean útiles, y luego en la retroalimentación destacar criterios para identificar base y altura (perpendicularidad, pertenencia a la base, etc.)."
+        "name": "Manejo_deficiente_de_unidades",
+        "description": "El estudiante entrega el volumen en unidades de longitud al cuadrado o no considera el cambio de unidades cuando una medida está en cm y otra en m.",
+        "how_to_address": "Plantear ítems donde el distractor incorpore unidades erróneas o falta de conversión; enfatizar en el enunciado o explicación que el volumen se expresa en unidades cúbicas y que las longitudes deben estar en la misma unidad antes de calcular."
       },
       {
-        "name": "Manejo_numérico_deficiente",
-        "description": "Errores al multiplicar o dividir fracciones o decimales al aplicar V = A_base · h, pese a haber planteado bien la fórmula y elegido bien las dimensiones.",
-        "how_to_address": "Usar ítems con carga conceptual baja pero con cálculo fraccional o decimal simple, enfatizando procedimientos numéricos (por ejemplo, simplificar antes de multiplicar) y verificaciones rápidas de orden de magnitud."
-      },
-      {
-        "name": "Confusión_de_unidades",
-        "description": "Se emplean unidades de longitud y volumen de manera inconsistente, o el estudiante no reconoce que el volumen queda en unidades cúbicas y responde con unidades de longitud.",
-        "how_to_address": "Incluir ítems donde la identificación correcta de la unidad de volumen sea parte del criterio de corrección, y reforzar la relación entre longitud (u), área (u²) y volumen (u³) en las explicaciones."
+        "name": "Lectura_errónea_de_la_figura_3D",
+        "description": "El estudiante interpreta mal qué aristas son paralelas o iguales, o asocia una etiqueta numérica a la arista equivocada en dibujos en perspectiva.",
+        "how_to_address": "Usar figuras 3D simples, con aristas relevantes destacadas y rotuladas claramente, y complementar con vistas laterales o plantas cuando sea necesario; incluir preguntas de identificación del tipo \"¿cuál es la medida de la altura del prisma?\" antes de pedir cálculos más complejos."
       }
     ],
     "future_targets": [
-      "Cálculo de volumen de sólidos más complejos (pirámides, cilindros, prismas combinados).",
-      "Resolución de problemas de capacidad y llenado de recipientes con distintas alturas y bases.",
-      "Modelación geométrica de situaciones reales en 3D, como diseño de envases y empaques.",
-      "Optimización de dimensiones de prismas sujetas a restricciones de volumen o área.",
-      "Comprensión de relaciones entre escalas lineales y cambios en volumen (relación cúbica en homotecias).",
-      "Cálculo y comparación de áreas laterales y totales de prismas, a partir de comprender su estructura básica.",
-      "Aplicación de técnicas de descomposición en figuras más complejas para obtener volúmenes por suma o diferencia de prismas."
+      "Cálculo de volumen de cuerpos compuestos formados por varios prismas rectos.",
+      "Cálculo de superficie lateral y total de prismas rectos y otros cuerpos geométricos.",
+      "Aplicación del volumen de prismas en contextos de densidad, caudal y capacidad (problemas de aplicación física o cotidiana).",
+      "Extensión a otros sólidos de revolución o poliedros (cilindros, pirámides, conos) mediante fórmulas específicas y comparaciones de volumen.",
+      "Uso de técnicas más avanzadas de modelación geométrica en problemas de optimización (por ejemplo, cajas de máximo volumen).",
+      "Comprensión de relaciones de proporcionalidad entre dimensiones lineales y volumen (escalas, ampliaciones y reducciones)."
     ],
     "representation_variants": [
-      "verbal",
-      "simbólica",
-      "numérica",
-      "gráfica_2D_sin_escala",
-      "tabular",
-      "mixta_verbal-gráfica"
+      "Prisma recto representado en perspectiva isométrica con base visible y aristas paralelas, donde se rotulan las longitudes de la base y la altura.",
+      "Prismas mostrados mediante una vista desplegada de la base (figura plana de la base por separado) y al lado la altura señalada como una medida única.",
+      "Descripción puramente verbal del prisma, indicando tipo de base, área de la base y altura, sin figura.",
+      "Base dibujada como figura plana (triángulo, trapecio, polígono regular) en 2D, acompañada del dato de la altura del prisma en forma textual.",
+      "Contextos de objetos cotidianos modelados como prismas rectos (cajas, estanques, piscinas) donde se explicita que la forma es aproximadamente la de un prisma.",
+      "Comparación de dos prismas con bases distintas mostradas en 2D, pero con sus alturas del prisma dadas en texto para decidir cuál tiene mayor volumen."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers",
+      "two_digit_integers",
+      "decimal_with_one_decimal_place",
+      "decimal_with_two_decimal_places",
       "simple_fractions",
-      "simple_decimals",
-      "mixed"
+      "mixed_numbers_for_context_only"
     ],
-    "required_image_types": []
+    "required_image_types": [
+      "complex_3d",
+      "geometric_figure"
+    ]
   }
 }

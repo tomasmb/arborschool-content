@@ -3,137 +3,145 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de la media aritmética de un conjunto FINITO de datos numéricos no agrupados presentados explícitamente.",
-        "Aplicar el procedimiento: sumar todos los datos y dividir por la cantidad de datos.",
-        "Verificar que la media obtenida esté entre el valor mínimo y máximo del conjunto dado.",
-        "Cálculo de medias en contextos cotidianos (promedio de notas, temperaturas diarias, goles por partido, etc.) siempre que se entreguen todos los datos individuales.",
-        "Cálculo de la media cuando los datos se presentan en formato de lista, texto continuo o tabla simple sin frecuencias explícitas."
+        "Cálculo explícito de la media aritmética de datos NO agrupados presentados como lista, tabla simple o contexto verbal.",
+        "Aplicar el algoritmo: sumar todos los datos y dividir por la cantidad de datos.",
+        "Verificar si un valor propuesto como media está dentro del rango entre el valor mínimo y máximo del conjunto.",
+        "Ítems donde se pide identificar cuál de varias alternativas corresponde a la media correcta de un conjunto dado.",
+        "Contextos cotidianos de promedio (notas, puntajes, temperaturas, goles, tiempos, cantidades medidas) siempre que los datos numéricos estén explícitos."
       ],
       "out_of_scope": [
-        "Cálculo de media a partir de datos agrupados en intervalos o con frecuencias (tabla de frecuencias).",
-        "Cálculo de otras medidas de tendencia central (mediana, moda) o de dispersión (rango, varianza, desviación estándar).",
-        "Promedios ponderados (por ejemplo, notas con diferentes porcentajes) o medias con pesos distintos.",
-        "Medias geométricas, armónicas u otras medias especiales.",
-        "Interpretación de gráficos estadísticos (barras, histogramas, boxplot, etc.) como fuente principal de información.",
-        "Uso de fórmulas simbólicas avanzadas con sumatoria (∑) como objetivo central del ítem.",
-        "Cálculo de media de variables no numéricas o cualitativas (colores, categorías, etc.)."
+        "Cálculo de media a partir de tablas de frecuencias (datos agrupados) o intervalos de clase.",
+        "Interpretar o calcular medias a partir de gráficos estadísticos (barras, histograma, torta, boxplot, dispersión).",
+        "Medias ponderadas o promedios con distintos pesos para los datos.",
+        "Uso de fórmulas o notación estadística avanzada (por ejemplo, x̄ = Σx_i / n explicitada simbólicamente como objetivo principal).",
+        "Medidas de posición distintas de la media (mediana, moda, cuartiles).",
+        "Comparación de distintas medidas de tendencia central en un mismo ítem como foco principal.",
+        "Estimaciones intuitivas de media sin cálculo aritmético (solo ‘a ojo’).",
+        "Situaciones donde hay datos faltantes o censurados que exigen técnicas de inferencia o probabilidad."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01 (lectura y comprensión de números enteros y decimales)",
-        "A-M1-NUM-01-02 (suma y resta de números enteros y decimales positivos)",
-        "A-M1-NUM-01-03 (multiplicación como suma reiterada y uso básico de paréntesis)",
-        "A-M1-NUM-01-04 (división de números naturales y decimales positivos, interpretación de cociente)",
-        "A-M1-NUM-02-01 (comparación y orden de números: identificar mínimo y máximo en un conjunto)",
-        "A-M1-PROB-02-01 (identificación de datos y tamaño de un conjunto de datos simples)"
+        "A-M1-NUM-01-01: Suma de números naturales y enteros.",
+        "A-M1-NUM-01-02: Suma y resta con decimales.",
+        "A-M1-NUM-02-01: División de números naturales (cociente exacto y con resto).",
+        "A-M1-NUM-02-02: División con decimales (divisor natural).",
+        "A-M1-PROB-01-01: Identificación de datos en listas y tablas simples.",
+        "A-M1-NUM-03-01: Comparación de números (identificar mínimo y máximo)."
       ],
       "common_traps": [
-        "Olvidar dividir por la cantidad total de datos luego de sumar (confundir suma con media).",
-        "Dividir por un número incorrecto de datos, especialmente cuando aparecen datos repetidos o información irrelevante en el enunciado.",
-        "Incluir datos que no corresponden al conjunto indicado (leer mal el contexto o el rango temporal).",
-        "Confundir media con mediana o moda cuando el contexto habla de “promedio” pero también entrega datos ya ordenados.",
-        "Errores de cálculo en sumas de varios términos, sobre todo con decimales o números negativos (si se incluyen).",
-        "No verificar que el resultado de la media esté dentro del rango de los datos y aceptar respuestas que quedan fuera.",
-        "Redondear de manera incorrecta o innecesaria cuando el ítem pide un resultado exacto.",
-        "Tratar datos faltantes o desconocidos como si fueran 0 para completar la suma."
+        "Confundir media con mediana o moda cuando aparecen datos ‘repetidos’ o ya ordenados.",
+        "Olvidar dividir por la CANTIDAD de datos y no por otro número presente en el contexto (por ejemplo, número de días del mes, número de personas del curso, etc.).",
+        "Dividir por n−1 en lugar de n, por transferencia incorrecta desde fórmulas de estadística vista en otros contextos.",
+        "Incluir en la suma valores que no pertenecen al conjunto de datos (por ejemplo, totales, metas, o valores de referencia mencionados en el texto).",
+        "Errores al trabajar con decimales (alineación incorrecta en la suma o división, redondeos prematuros).",
+        "No verificar que la media calculada quede dentro del rango mínimo–máximo y aceptar resultados claramente fuera de rango.",
+        "Malinterpretar si cierto valor se incluye o no en el conjunto (por ejemplo, ‘alumnos que rindieron prueba’ vs ‘total del curso’).",
+        "Confundir ‘promedio de cambios’ o ‘promedio de variaciones’ con la media de los valores originales cuando el contexto es temporal."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Conjunto de pocos datos (3 a 5) con números enteros pequeños y positivos.",
-        "Datos explícitos en formato de lista directa, sin información distractora.",
-        "Operaciones de suma y división que se resuelven mentalmente o con cálculo escrito sencillo (suma menor a 100, divisor pequeño).",
-        "Preguntas que NO involucran decimales ni fracciones.",
-        "Verificación implícita del rango (no se exige comparar explícitamente con mínimo y máximo).",
-        "Sin necesidad de interpretar un contexto complejo; el estudiante solo debe aplicar el algoritmo suma/división."
+        "Conjuntos pequeños (3 a 5 datos) con números naturales o enteros pequeños, sin negativos.",
+        "Datos con resultados de media exactos y ‘bonitos’ (por ejemplo, enteros o un decimal simple).",
+        "Enunciado directo: se entrega la lista explícita de datos sin información irrelevante.",
+        "Operaciones de suma que no requieren acarreo complejo y divisiones exactas.",
+        "Distractores que reflejan errores básicos de suma o división, sin mezclar otras medidas estadísticas."
       ],
       "medium": [
-        "Conjunto de tamaño moderado (5 a 8 datos) incluyendo decimales con una cifra decimal o enteros algo mayores.",
-        "Datos presentados en una tabla simple o en un párrafo donde el estudiante debe identificar qué valores usar.",
-        "Presencia de uno o dos datos distractores que no deben considerarse en el cálculo.",
-        "Cálculos que requieren manejar suma de varios términos con decimales o mezcla de enteros y decimales.",
-        "Ítems que exigen, de forma explícita, comprobar que la media se ubica entre el mínimo y el máximo del conjunto para tomar una decisión (por ejemplo, determinar si un valor puede ser media o no).",
-        "Puede incluir una etapa intermedia verbal, por ejemplo, “¿cuántos datos hay?” antes de calcular la media."
+        "Conjuntos de tamaño moderado (6 a 10 datos).",
+        "Presencia de decimales con una o dos cifras, o mezcla de enteros y decimales.",
+        "Contextos verbales donde el estudiante debe identificar correctamente qué valores se promedian (por ejemplo, solo los días con registro, solo los partidos jugados, etc.).",
+        "Resultados de media que pueden no ser enteros, pero con decimal sencillo (como 6,5; 3,2; 4,75).",
+        "Distractores que incluyan: suma correcta sin dividir, división por un número equivocado de datos, o una mediana común como distractor verosímil.",
+        "Ítems donde se pide elegir, entre varias medias propuestas, la que es posible según el rango de datos dado."
       ],
       "hard": [
-        "Conjuntos con mayor cantidad de datos (8 a 12) o con estructura menos evidente (datos repartidos en una descripción extensa, varios días, personas, etc.).",
-        "Mezcla de decimales (una o dos cifras decimales) y eventualmente fracciones sencillas equivalentes a decimales comunes (1/2, 1/4, 3/4), obligando a homogeneizar representaciones.",
-        "Contextos donde hay que seleccionar cuáles datos sí se incluyen en el promedio y cuáles no (por ejemplo, excluir el valor de un ensayo, un partido que se canceló, etc.).",
-        "Cálculos con sumas más largas o división con resultado decimal no inmediato, exigiendo manejo cuidadoso de la aritmética y/o redondeo según instrucciones.",
-        "Ítems que plantean opciones de respuesta como posibles medias y el estudiante debe descartar alternativas imposibles usando el criterio de rango y/o comprobando hacia atrás (multiplicar la media propuesta por el número de datos para verificar la suma total).",
-        "Situaciones donde se debe comparar dos medias (por ejemplo, de dos grupos) calculando al menos una de ellas a partir de los datos dados para interpretar el contexto."
+        "Conjuntos más extensos (10 a 20 datos) que exigen mayor cuidado en la suma.",
+        "Datos mixtos: enteros positivos y negativos, o decimales de distinta cantidad de cifras, eventualmente con fracciones simples equivalentes a decimales (1/2, 1/4, 3/4) integradas al contexto.",
+        "Contextos donde hay que filtrar datos que SÍ se promedian y datos que NO (por ejemplo, excluir valores nulos o casos específicos claramente descritos en el texto).",
+        "Ítems donde se entrega el valor de la media y parte de los datos, y se pide determinar qué dato falta para que se cumpla dicha media (reorganizar la fórmula de la media).",
+        "Se exige verificar la coherencia de la media con el rango, descartando alternativas imposibles por estar fuera de este.",
+        "Distractores diseñados para capturar errores más sutiles: uso de n−1, redondeos intermedios incorrectos, considerar un dato dos veces o dejar uno fuera.",
+        "Cálculo de la media en dos grupos diferentes y comparación de cuál tiene mayor media, siempre desde datos no agrupados."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar el término “promedio” cuando el ítem no se refiera específicamente a la media aritmética; si se usa, aclarar que se trata de la media aritmética.",
-      "No mezclar en el mismo ítem preguntas sobre media, mediana y moda, a menos que se especifique con claridad cuál medida se pide calcular.",
-      "Evitar contextos donde no quede claro si ciertos datos deben incluirse o excluirse del promedio (por ejemplo, días sin datos, partidos suspendidos) sin explicitar la decisión en el enunciado.",
-      "No presentar tablas con columnas de “total” o “frecuencia” si la intención es evaluar solo media de datos no agrupados; esto puede hacer pensar al estudiante en datos agrupados.",
-      "Evitar expresiones vagas como “en varios días” o “en algunos partidos” sin precisar cuántos datos hay o sin listar explícitamente los valores.",
-      "No dejar ambiguo el formato de la respuesta: indicar si se espera un número exacto o un valor redondeado y a cuántas cifras decimales, cuando corresponda.",
-      "Evitar opciones de respuesta muy cercanas numéricamente sin diferir claramente en el procedimiento (por ejemplo, 6 y 6,01) si el foco no es la precisión numérica fina sino el algoritmo de la media.",
-      "No usar notación de sumatoria (∑) o expresiones simbólicas avanzadas que desplacen el foco desde el procedimiento elemental de sumar y dividir."
+      "Evitar contextos donde no quede claro cuáles valores forman el conjunto a promediar (por ejemplo, ‘alumnos del curso’ vs ‘alumnos que rindieron la prueba’) si eso no es el foco del ítem.",
+      "No mezclar en el mismo ítem instrucciones vagas como ‘promedio de resultados’ sin especificar explícitamente qué resultados se deben considerar.",
+      "Evitar tablas o listas donde algunos valores estén tachados, marcados con símbolos o notas al pie sin aclaración precisa sobre si se incluyen o no en el promedio.",
+      "No utilizar la palabra ‘promedio’ cuando se esté trabajando en realidad con otra medida (como ‘el puntaje más frecuente’, ‘la nota central’). Siempre asociar ‘promedio’ explícitamente a ‘media aritmética’.",
+      "Evitar que el número total de datos se pueda interpretar de dos maneras (por ejemplo, incluir o no un caso límite) salvo que esa distinción sea el objetivo explícito del ítem y esté claramente redactada.",
+      "No presentar simultáneamente gráficos estadísticos y tablas si el cálculo debe hacerse solo con una de estas representaciones, a menos que se indique de forma muy explícita cuál usar.",
+      "Evitar redondeos no especificados: si la media no es exacta y se requiere aproximar, indicar con claridad el criterio de redondeo (por ejemplo, ‘redondee al décimo más cercano’).",
+      "Evitar expresiones como ‘en promedio, cada alumno obtuvo…’ si el estudiante no dispone de los datos individuales necesarios para aplicar el algoritmo de suma y división."
     ],
     "error_families": [
       {
-        "name": "Olvida_dividir",
-        "description": "El estudiante suma correctamente los datos pero entrega la suma total como respuesta, sin dividir por la cantidad de datos.",
-        "how_to_address": "Incluir distractores que correspondan a la suma total para evidenciar el error y diseñar retroalimentación que recuerde el segundo paso del algoritmo: siempre dividir la suma por el número de datos."
+        "name": "Confundir media con mediana o moda",
+        "description": "El estudiante selecciona como respuesta un valor central (mediana) o el valor más repetido (moda) del conjunto, creyendo que eso es el ‘promedio’. Esto se observa sobre todo cuando los datos están ordenados o hay un valor muy frecuente.",
+        "how_to_address": "Diseñar distractores que incluyan mediana y moda para diagnosticar este error, y en la retroalimentación recalcar que la media se obtiene SÓLO sumando todos los valores y dividiendo por la cantidad de datos, independientemente del orden o de cuántas veces se repita cada dato."
       },
       {
-        "name": "Divisor_incorrecto",
-        "description": "El estudiante divide por una cantidad diferente al número real de datos (por ejemplo, confunde número de días con número de personas, o considera datos repetidos como uno solo).",
-        "how_to_address": "Proponer ítems donde se destaque explícitamente el conteo de datos (por ejemplo, subpreguntas o consignas claras) y usar alternativas de respuesta que evidencien el efecto de dividir por un número mayor o menor."
+        "name": "Olvidar la división",
+        "description": "El estudiante realiza correctamente la suma de todos los datos pero no divide por la cantidad de valores, o interpreta la suma total como si fuera el promedio.",
+        "how_to_address": "Incluir alternativas que coincidan con la suma total para detectar este error, y enfatizar en la explicación del algoritmo que el promedio siempre debe representar ‘por cada dato’, lo que implica dividir por la cantidad de elementos."
       },
       {
-        "name": "Datos_mal_seleccionados",
-        "description": "Incluye en el cálculo valores que el contexto indica que no deben considerarse (ensayos, datos atípicos explícitamente excluidos, días sin registro) o deja fuera datos que sí corresponden.",
-        "how_to_address": "Diseñar enunciados que distingan claramente entre datos válidos y no válidos, e incluir preguntas intermedias del tipo “¿qué valores se deben considerar para el promedio?” en materiales de apoyo o ejemplos explicativos."
+        "name": "División por número incorrecto de datos",
+        "description": "Se calcula la suma correctamente, pero se divide por un número que no corresponde al tamaño real del conjunto (por ejemplo, total de personas del curso en lugar de quienes participaron, número de días del mes en vez de días medidos).",
+        "how_to_address": "Proponer ítems donde en el contexto aparezcan varios números posibles para dividir y en la retroalimentación destacar la necesidad de contar con precisión cuántos datos se están promediando."
       },
       {
-        "name": "Confusion_con_mediana_o_moda",
-        "description": "Ordena los datos y elige el del medio (mediana) o el más frecuente (moda) en lugar de calcular la suma y dividir.",
-        "how_to_address": "Usar contextos donde la media no coincide con ningún dato del conjunto y reforzar en la formulación palabras como “sumar todos los resultados y dividir por la cantidad” en explicaciones y guías, diferenciando explícitamente media de mediana y moda."
+        "name": "Uso de n−1 en lugar de n",
+        "description": "Por influencia de fórmulas estadísticas más avanzadas, el estudiante divide por un valor menor en uno la cantidad real de datos (n−1). Suele aparecer en estudiantes con exposición previa a varianza/muestra.",
+        "how_to_address": "Incluir, en algún ítem más complejo, distractores construidos con división por n−1 para identificar este error y aclarar que, para media aritmética simple de datos observados, siempre se divide por la cantidad total de datos n."
       },
       {
-        "name": "Errores_aritmeticos",
-        "description": "Fallas en las sumas o divisiones, sobre todo con varios términos, decimales o mezcla de representaciones (por ejemplo, 2,5 + 1,75). El procedimiento conceptual está bien pero la ejecución numérica falla.",
-        "how_to_address": "Utilizar números con estructura clara (decimales con igual cantidad de cifras, sumas que faciliten agrupaciones a 10 o 1 entero) en ítems iniciales, y proponer en la retroalimentación estrategias de cálculo paso a paso y estimaciones para verificar resultados."
+        "name": "Errores aritméticos en suma y división",
+        "description": "Fallos de cálculo (acarreo, suma de decimales, división larga) que llevan a una media numéricamente incorrecta, aun cuando el procedimiento conceptual es correcto.",
+        "how_to_address": "Diseñar algunos ítems con operaciones aritméticas exigentes y distractores que reflejen errores típicos de cálculo. En feedback, sugerir comprobaciones rápidas: reordenar la suma, estimar la media antes de calcular para ver si el resultado es razonable, o usar el criterio de rango."
       },
       {
-        "name": "Media_fuera_de_rango",
-        "description": "Acepta como resultado una media menor que el mínimo o mayor que el máximo del conjunto, sin usar el criterio de verificación del rango.",
-        "how_to_address": "Incluir alternativas de respuesta imposibles (fuera del rango) y explicitar en las soluciones comentadas que toda media debe estar entre el mínimo y el máximo, promoviendo la verificación cualitativa del resultado."
+        "name": "Resultado de media fuera de rango",
+        "description": "Aceptar como correcto un resultado de media que queda por debajo del mínimo o por encima del máximo del conjunto, sin aplicar el criterio de verificación de rango.",
+        "how_to_address": "Proponer ítems donde una o más alternativas entreguen medias fuera de rango. En la retroalimentación, reforzar que la media de un conjunto siempre debe ubicarse entre el valor mínimo y el máximo."
       },
       {
-        "name": "Manejo_inadecuado_de_decimales_y_redondeo",
-        "description": "Coloca mal la coma decimal en la división o redondea sin seguir las instrucciones, cambiando el valor de la media de forma significativa.",
-        "how_to_address": "Diseñar ítems donde la posición de la coma sea relevante pero controlada, y señalar claramente en el enunciado si se espera redondeo. Incluir ejemplos modelo en materiales de apoyo que muestren el procedimiento completo de división con decimales."
+        "name": "Inclusión o exclusión errónea de datos",
+        "description": "Se incluyen en el promedio datos que no corresponden (por ejemplo, la meta, el máximo posible, un valor inicial) o se excluyen datos válidos por mala interpretación del contexto.",
+        "how_to_address": "Usar contextos donde se mencione información adicional no promediable y construir distractores con esa información mal usada. Explicar explícitamente cómo identificar qué valores son parte del conjunto de datos a promediar."
+      },
+      {
+        "name": "Manejo inadecuado de decimales y fracciones",
+        "description": "Errores al sumar o dividir números decimales (mala alineación, pérdida de cifras decimales) o al combinar fracciones y decimales.",
+        "how_to_address": "Incluir ítems con decimales de 1–2 cifras y eventualmente fracciones simples, con distractores que representen redondeos o alineaciones incorrectas. En feedback, recordar la alineación de la coma decimal y proponer convertir fracciones simples a decimales antes de operar."
       }
     ],
     "future_targets": [
-      "Cálculo e interpretación de medidas de tendencia central en datos agrupados (media, mediana, moda).",
-      "Análisis y comparación de distribuciones mediante gráficos estadísticos (barras, histogramas, boxplots) que requieren estimar o calcular medias.",
-      "Cálculo de promedios ponderados y aplicación en contextos de notas, índices y tasas.",
-      "Estudio de medidas de dispersión (rango, varianza, desviación estándar) que se basan en la media aritmética.",
-      "Interpretación de información estadística en contextos reales (informes, noticias, estudios) donde se mencionan promedios.",
-      "Resolución de problemas que involucran encontrar un dato faltante conociendo la media y el resto de los datos.",
-      "Comparación de medias de dos o más grupos para tomar decisiones o conclusiones en situaciones de probabilidad y estadística."
+      "Cálculo de la media aritmética en tablas de frecuencias con datos agrupados.",
+      "Comparación e interpretación conjunta de media, mediana y moda para describir un conjunto de datos.",
+      "Análisis de la sensibilidad de la media frente a valores atípicos (outliers).",
+      "Cálculo de medias en distintos subgrupos y comparación entre ellos (análisis de segmentos).",
+      "Cálculo de medidas de dispersión básicas (rango, varianza simple, desviación estándar informal).",
+      "Interpretación de medidas de tendencia central y dispersión en gráficos estadísticos.",
+      "Aplicación de la media en contextos de probabilidad (valor esperado simple)."
     ],
     "representation_variants": [
-      "verbal_contextual",
-      "lista_explicita_de_datos",
-      "tabular_simple_sin_frecuencias",
-      "simbolica_elemental_con_operaciones_aritmeticas",
-      "mixta_texto_y_tabla",
-      "descripciones_temporales_o_de_secuencia_de_eventos"
+      "Lista explícita de números separados por comas o espacios.",
+      "Tabla simple con una columna de datos numéricos (por ejemplo, ‘Día’ y ‘Temperatura’).",
+      "Contextos verbales donde se enumeran explícitamente los datos a promediar dentro del texto.",
+      "Secuencias temporales (valores por día, por partido, por intento) donde los datos se entregan en orden cronológico.",
+      "Conjuntos presentados parcialmente ordenados o desordenados, mostrando que el orden no afecta la media.",
+      "Comparación de dos conjuntos donde se dan los datos de cada uno para calcular y comparar sus medias."
     ],
     "numbers_profiles": [
       "small_integers",
-      "medium_integers",
+      "moderate_integers",
+      "integers_with_negatives",
       "decimals_1dp",
       "decimals_2dp",
       "simple_fractions",
-      "mixed_integers_and_decimals"
+      "mixed_decimals_and_integers",
+      "contextual_numbers_like_scores_times_temperatures"
     ],
     "required_image_types": []
   }

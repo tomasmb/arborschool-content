@@ -286,15 +286,16 @@ users ──N:N──▶ atoms (via atom_mastery)
 
 ### Mastery
 - Binary: `is_mastered` is TRUE or FALSE
-- PP100 pass: 11 correct, 3+ at Hard, last 2 at Hard correct
-- PP100 fail: <50% accuracy → status = `frozen`
+- PP100 pass: 3 correct in a row, at least 2 at Hard
+- PP100 fail: 3 wrong in a row OR <70% accuracy over 10+ questions → status = `frozen`
+- Max 20 questions per attempt; no provisional mastery
 - Auto-unfreeze: when all prerequisites become mastered, frozen → in_progress
 - `mastery_source`: records how mastery was achieved (diagnostic, practice_test, pp100)
 - `last_demonstrated_at`: used for spaced repetition scheduling
 
 ### Question Generation
 - Generate question_sets BEFORE lessons
-- Minimum 3 questions per difficulty level (9+ total per atom)
+- Minimum 14 easy, 18 medium, 14 hard (46 total per atom)
 - Lessons only created after question_set status = `reviewed`
 
 ### Prerequisites

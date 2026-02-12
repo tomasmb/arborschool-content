@@ -3,132 +3,134 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del rango en datos numéricos no agrupados a partir de un conjunto explícito de valores.",
-        "Identificación directa del valor máximo y mínimo en una lista, tabla o descripción numérica simple.",
-        "Cálculo de la diferencia máxima − mínima usando resta aritmética básica.",
-        "Interpretación de rango en contextos sencillos (por ejemplo, rango de edades, alturas, temperaturas) siempre que se pueda extraer explícitamente el máximo y el mínimo.",
-        "Rango expresado como un único número no negativo, en las mismas unidades de los datos (años, kg, puntos, etc.)."
+        "Cálculo del rango en conjuntos de datos numéricos no agrupados presentados explícitamente (lista o tabla).",
+        "Identificación del valor máximo y mínimo dentro de un conjunto dado de datos.",
+        "Cálculo del rango como diferencia numérica no negativa entre máximo y mínimo.",
+        "Uso de datos en contextos simples (edades, temperaturas, puntajes, tiempos) siempre que los valores numéricos estén claramente determinados."
       ],
       "out_of_scope": [
-        "Cálculo de rango en datos agrupados en intervalos de clase (tablas de frecuencia con rangos).",
-        "Cálculo de otras medidas de dispersión (varianza, desviación estándar, rango intercuartílico, coeficiente de variación).",
-        "Lectura o interpretación de gráficos estadísticos complejos (barras, histogramas, boxplot) más allá de identificar visualmente un máximo y un mínimo ya dados en forma numérica.",
-        "Problemas que requieren ordenar los datos por procedimientos complejos (por ejemplo, grandes bases de datos, uso de algoritmos de ordenamiento).",
-        "Trabajo con datos cualitativos puros (colores, nombres, categorías sin codificación numérica).",
-        "Comparación de rangos entre dos o más conjuntos como objetivo principal (eso corresponde a otro átomo de comparación/interpretación).",
-        "Cálculo de rango cuando solo se entregan intervalos de tiempo o espaciales sin especificar claramente los valores extremos (por ejemplo, «de lunes a viernes» sin convertir a números)."
+        "Cálculo del rango a partir de datos agrupados en intervalos (tablas de frecuencias con clases).",
+        "Interpretación de rango en gráficos estadísticos (barras, histogramas, diagramas de caja, etc.).",
+        "Cálculo o comparación de otras medidas de dispersión (varianza, desviación estándar, recorridos intercuartílicos).",
+        "Situaciones que requieran estimar el rango a partir de información incompleta o intervalos abiertos/cerrados.",
+        "Problemas que exijan ordenar o clasificar datos como objetivo principal (eso es prerrequisito, no foco del átomo)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprende y utiliza números enteros positivos en contextos cotidianos.",
-        "A-M1-NUM-01-02: Compara y ordena números enteros (mayor, menor que).",
-        "A-M1-NUM-02-01: Realiza sumas y restas de números naturales y enteros sencillos.",
-        "A-M1-PROB-02-01: Identifica datos numéricos relevantes en enunciados verbales simples."
+        "A-M1-NUM-01-01: Lectura e interpretación de números en contexto (enteros y decimales).",
+        "A-M1-NUM-02-01: Comparación y orden de números (mayor, menor).",
+        "A-M1-NUM-03-01: Cálculo de restas con números naturales y enteros.",
+        "A-M1-NUM-03-02: Cálculo de restas con números decimales simples.",
+        "A-M1-PROB-02-01: Identificación de datos en listas o tablas simples."
       ],
       "common_traps": [
-        "Confundir el rango con la cantidad de datos (número de observaciones) en lugar de la diferencia entre el valor máximo y el mínimo.",
-        "Olvidar usar el valor mínimo y restar en el orden correcto (máximo − mínimo), generando un resultado negativo.",
-        "Escoger como máximo o mínimo un dato intermedio porque aparece primero o último en la lista sin compararlos todos.",
-        "Confundir la expresión verbal «entre X y Y» con una cuenta de valores intermedios en vez de calcular la amplitud del intervalo.",
-        "Incluir valores que explícitamente están fuera del conjunto (datos de ejemplo, valores descartados, o límites que no son parte de los datos).",
-        "Confundir rango con promedio o mediana al trabajar con contextos de edades, notas o puntajes.",
-        "No considerar correctamente números negativos, por ejemplo calcular rango entre −3 y 5 como 5 − 3 = 2 en lugar de 5 − (−3) = 8.",
-        "No homogeneizar unidades cuando el contexto mezcla formas de decir lo mismo (por ejemplo, 1,5 h y 90 minutos)."
+        "Confundir rango con promedio o mediana, calculando una suma y dividiendo.",
+        "Restar en el orden equivocado obteniendo un resultado negativo y no interpretarlo como valor absoluto.",
+        "Tomar valores que no están en el conjunto de datos (por ejemplo, límites de un intervalo verbal que no son datos reales).",
+        "Confundir rango con el número de datos (cantidad de elementos).",
+        "Al trabajar con números negativos, escoger como máximo el número de mayor valor absoluto en lugar del mayor numérico.",
+        "Ignorar datos extremos repetidos, creyendo que la repetición afecta el valor del rango.",
+        "En contextos verbales (por ejemplo, “entre 15 y 18 años”), interpretar mal si los extremos son datos reales o solo cotas de un intervalo."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Conjuntos de datos pequeños (3 a 6 valores) con números enteros positivos de una o dos cifras.",
-        "Valores presentados explícitamente en una lista o en una tabla simple, sin necesidad de interpretar texto largo.",
-        "Máximo y mínimo visualmente evidentes (por ejemplo, datos ya ordenados o casi ordenados).",
-        "Sin presencia de números negativos ni decimales.",
-        "Sin datos irrelevantes ni condiciones adicionales; todo lo que se presenta pertenece al conjunto.",
-        "Contextos cotidianos muy directos o sin contexto (por ejemplo, solo la lista de números)."
+        "Conjunto de 3 a 6 datos numéricos, todos enteros positivos pequeños (entre 0 y 50).",
+        "Lista explícita en formato simple, sin contexto verbal complejo, por ejemplo: {5, 8, 12, 3}.",
+        "Máximo y mínimo claramente distinguibles sin necesidad de ordenar mentalmente (valores muy distintos entre sí).",
+        "Ítem donde se entregan directamente el valor máximo y mínimo y solo se pide calcular la diferencia.",
+        "Ausencia de números negativos, decimales o fracciones.",
+        "Distractores que reflejen errores directos simples (por ejemplo, suma en vez de resta, cantidad de datos)."
       ],
       "medium": [
-        "Conjuntos de datos de tamaño moderado (6 a 10 valores) donde los datos no están ordenados.",
-        "Incluye números decimales sencillos (un decimal) o mezcla de enteros y decimales fáciles de comparar.",
-        "Puede incluir números enteros negativos, pero con extremos fáciles de identificar (por ejemplo, uno claramente el menor y otro el mayor).",
-        "Enunciados verbales donde los datos numéricos se extraen de una tabla o de una breve descripción (por ejemplo, edades de estudiantes, temperaturas diarias).",
-        "Puede incluir algunos datos irrelevantes o una pequeña distracción (por ejemplo, un valor que corresponde a otra categoría que se debe excluir explícitamente).",
-        "Requiere al menos un paso de interpretación antes de identificar el máximo y el mínimo, pero la operación aritmética sigue siendo directa."
+        "Conjunto de 7 a 15 datos, presentados en desorden, que requieren comparar varios valores para detectar máximo y mínimo.",
+        "Presencia de decimales con 1 o 2 cifras o mezcla de enteros y decimales, todos positivos.",
+        "Datos presentados en una tabla simple (por ejemplo, tabla de temperaturas por día o puntajes por estudiante).",
+        "Contexto breve que obliga a identificar qué números son los datos relevantes antes de calcular el rango.",
+        "Distractores que incluyan: diferencia entre datos incorrectos (no extremo-extremo), resultado negativo o número de datos.",
+        "Posibles datos repetidos, pero los valores extremos siguen siendo evidentes tras una revisión cuidadosa."
       ],
       "hard": [
-        "Conjuntos de datos más extensos (10 a 15 valores) que requieren una lectura atenta para identificar todos los datos pertinentes.",
-        "Presencia simultánea de números negativos y positivos, o decimales y enteros, que obliga a comparaciones más cuidadosas.",
-        "Datos presentados en un contexto verbal más complejo, donde el máximo y el mínimo deben inferirse desde descripciones (por ejemplo, «la persona mayor tiene X años más que…»).",
-        "Inclusión de datos que no deben considerarse para el rango (por ejemplo, valores atípicos explícitamente descartados, registros fuera de un período dado) y se exige seleccionar el subconjunto correcto antes de calcular.",
-        "Ítems donde se dan el máximo o el mínimo indirectamente (por ejemplo, se sabe la diferencia entre ciertos datos y uno de ellos es el máximo).",
-        "Alternativas de respuesta diseñadas con errores típicos (cantidad de datos, promedio, uso de valores erróneos como extremos, no considerar el signo negativo) para discriminar comprensión fina del procedimiento."
+        "Conjunto de datos que incluye números negativos y positivos, requiriendo identificar correctamente el mayor y el menor en la recta numérica.",
+        "Datos con valores muy cercanos entre sí donde los extremos no son visualmente obvios y se debe revisar cuidadosamente toda la lista.",
+        "Contextos donde se comparan rangos de dos o más conjuntos de datos, requiriendo calcular o inferir el rango de cada uno y luego compararlos.",
+        "Preguntas sobre cómo cambia el rango al agregar, eliminar o modificar un dato específico del conjunto.",
+        "Uso de decimales y/o fracciones simples mezcladas, que obliga a comparar distintos tipos de números racionales.",
+        "Distractores basados en interpretaciones conceptuales erróneas del rango (por ejemplo, tomar el intervalo cerrado [min, max] como respuesta, o usar max-min+1)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra «entre» sin aclarar si se refiere a la diferencia (amplitud) o al conteo de valores intermedios; especificar claramente que se pide el rango como diferencia entre el dato mayor y el menor.",
-      "No utilizar términos estadísticos adicionales como «amplitud», «variabilidad» o «dispersión» sin definirlos si no son necesarios para el ítem.",
-      "Evitar contextos donde se mezclen datos que no se sabe con certeza si pertenecen o no al conjunto; siempre indicar explícitamente qué datos se consideran para el rango.",
-      "No presentar intervalos de tiempo o de medida solamente con palabras (por ejemplo, «de lunes a viernes», «de 8:00 a 12:00») sin traducirlos a valores numéricos claros si se pide el rango en unidades numéricas.",
-      "Evitar conjuntos donde no esté claro si los límites están incluidos (por ejemplo, «mayores que 10 y menores que 20»). Para este átomo se deben dar valores concretos, no solo condiciones.",
-      "No mezclar en la misma tabla magnitudes con distintas unidades sin aclaración (por ejemplo, algunos datos en metros y otros en centímetros) salvo que el ítem incluya la conversión explícita como parte del contexto.",
-      "Evitar redactar opciones que puedan interpretarse como rangos expresados en forma de intervalo (por ejemplo, «[2, 10]») cuando la respuesta correcta debe ser un único número (por ejemplo, 8).",
-      "No usar datos en formato de clase (por ejemplo, «[10; 20)», «20–30») que puedan hacer pensar en datos agrupados; este átomo trabaja solo con datos no agrupados."
+      "Evitar usar indistintamente términos como \"amplitud\" o \"recorrido\" sin definir que se refiere específicamente a rango estadístico (max-min).",
+      "No usar expresiones vagas como \"valores entre 10 y 20\" sin aclarar si esos extremos son datos reales o solo límites de un intervalo.",
+      "No mezclar en el mismo ítem el concepto de rango estadístico con rangos de funciones o intervalos de la recta numérica.",
+      "Evitar contextos donde el lector pueda inferir valores no dados (por ejemplo, \"las edades van de 10 a 15 años\" cuando no se listan las edades concretas, a menos que se explicite que corresponde a valores mínimo y máximo observados).",
+      "Asegurar que el conjunto de datos esté completamente especificado (lista, tabla), sin dejar dudas de si faltan valores.",
+      "No proponer alternativas que sean conjuntos de números cuando la consigna pide expresamente el rango como un solo número.",
+      "Cuidar que los datos no agrupados no parezcan intervalos de clases (no usar notación de intervalos con paréntesis o corchetes en este átomo).",
+      "Evitar tablas donde algunos datos parezcan más relevantes que otros si todos deben considerarse para el rango; debe quedar claro qué valores forman parte del conjunto."
     ],
     "error_families": [
       {
+        "name": "Confundir_rango_con_promedio",
+        "description": "El estudiante suma todos los datos y divide por la cantidad de datos, entregando la media aritmética en lugar del rango.",
+        "how_to_address": "Diseñar ítems con distractores que correspondan explícitamente a la media y explicitar en retroalimentación que el rango solo depende de los valores máximo y mínimo, sin usar todos los datos en una operación de suma."
+      },
+      {
+        "name": "Rango_negativo",
+        "description": "El estudiante calcula min - max en lugar de max - min y reporta un número negativo como respuesta.",
+        "how_to_address": "Incluir ítems donde el orden de presentación no sugiera qué valor restar primero, reforzando en la explicación que el rango es una medida de dispersión y se expresa como número no negativo (puede pensarse como diferencia absoluta entre extremos)."
+      },
+      {
+        "name": "Elegir_mal_los_extremos",
+        "description": "El estudiante no identifica correctamente el máximo o el mínimo y usa un valor intermedio para calcular la diferencia.",
+        "how_to_address": "Usar conjuntos donde un valor extremo se repite o está rodeado de valores cercanos, y en la retroalimentación destacar la necesidad de revisar todos los datos, no solo los primeros o los que parecen más \"llamativos\"."
+      },
+      {
         "name": "Confundir_rango_con_cantidad_de_datos",
-        "description": "El estudiante responde con el número de datos del conjunto (o con la diferencia entre posición del primero y del último) en vez de con la diferencia entre máximo y mínimo.",
-        "how_to_address": "En el enunciado y retroalimentación, enfatizar que el rango mide qué tan separados están el valor mayor y el menor, no cuántos datos hay. Mostrar ejemplos donde dos conjuntos con la misma cantidad de datos tienen rangos distintos."
+        "description": "El estudiante entrega como respuesta el número de datos del conjunto o max - min + 1, como si el rango fuera un conteo de valores posibles.",
+        "how_to_address": "Incluir distractores que correspondan al número de datos y explicar que el rango no cuenta cuántos datos hay, sino cuán separados están el mayor y el menor valor."
       },
       {
-        "name": "Resta_en_orden_incorrecto",
-        "description": "El estudiante realiza mínimo − máximo y obtiene un número negativo, o bien cree que el rango puede ser negativo.",
-        "how_to_address": "Reforzar que se define rango = máximo − mínimo y que representa una distancia en la recta numérica, por lo que siempre es no negativa. Usar rectas numéricas como apoyo conceptual en la explicación, aunque no en todos los ítems."
+        "name": "Manejo_incorrecto_de_numeros_negativos",
+        "description": "Al trabajar con datos que incluyen negativos y positivos, el estudiante identifica mal el máximo o el mínimo (por ejemplo, considera que -10 es mayor que -2 por su valor absoluto).",
+        "how_to_address": "Proponer ejemplos donde el máximo y el mínimo están ambos en los negativos y otros donde cruzan el 0, reforzando la interpretación de la recta numérica y el significado de \"mayor\" y \"menor\" en enteros negativos."
       },
       {
-        "name": "Maximo_minimo_mal_identificados",
-        "description": "El estudiante toma como máximo o mínimo un dato intermedio, suele elegir el primero o el último valor de la lista sin comparar todos.",
-        "how_to_address": "Promover estrategias como revisar sistemáticamente todos los datos o reordenarlos mentalmente o en un borrador. En la retroalimentación, mostrar el conjunto ordenado y señalar los verdaderos extremos."
+        "name": "Confundir_valores_limite_con_datos_reales",
+        "description": "En contextos verbales (por ejemplo, edades entre 15 y 18 años), el estudiante asume que todos los valores del intervalo son datos observados aunque no se indiquen, o que los límites no pertenecen al conjunto real de datos.",
+        "how_to_address": "Diseñar ítems donde se especifique claramente \"el menor valor observado fue...\" y \"el mayor valor observado fue...\" y contrastarlos con otros en que se entrega la lista explícita de datos, destacando la diferencia entre intervalos teóricos y datos efectivamente registrados."
       },
       {
-        "name": "Ignorar_datos_negativos_o_signos",
-        "description": "En presencia de números negativos, el estudiante confunde cuál es el menor o ignora el signo negativo al calcular la diferencia.",
-        "how_to_address": "Recordar que en la recta numérica, los números más a la izquierda son menores. Ejercitar ejemplos donde el mínimo es negativo y explicitar el cálculo máximo − (mínimo negativo)."
-      },
-      {
-        "name": "Confundir_con_promedio_o_mediana",
-        "description": "El estudiante calcula la media aritmética o identifica el valor central creyendo que eso es el rango.",
-        "how_to_address": "Contrastar explícitamente promedio, mediana y rango usando el mismo conjunto de datos. En la corrección, explicar el rol del rango como medida de dispersión y no de centro."
-      },
-      {
-        "name": "Incluir_datos_irrelevantes",
-        "description": "El estudiante incorpora valores que el enunciado señala como fuera del período o de la categoría pedida, o datos de ejemplo que no pertenecen al conjunto a usar.",
-        "how_to_address": "Hacer notar en el análisis de la situación qué datos pertenecen al conjunto y cuáles no, subrayando palabras clave como «solo», «durante esos días», «en esa sección». Diseñar ítems con distractores basados en este error para diagnosticarlo."
-      },
-      {
-        "name": "Respuesta_como_intervalo_en_vez_de_numero",
-        "description": "El estudiante responde con los valores extremos (por ejemplo, «2 y 10») o con un intervalo («de 2 a 10») en vez de con la diferencia numérica.",
-        "how_to_address": "Clarificar en el enunciado que se pide un solo número que exprese el rango. En la retroalimentación, mostrar la transición: identificar extremos → calcular diferencia → resultado único."
+        "name": "Ignorar_datos_repetidos_o_irrelevantes",
+        "description": "El estudiante piensa que la frecuencia de aparición del valor extremo modifica el rango, o descarta datos que aparentan ser \"errores\" sin justificación.",
+        "how_to_address": "Incluir conjuntos con valores extremos repetidos varias veces y otros con datos atípicos; enfatizar que, para el rango, solo importa el valor de los extremos, no cuántas veces aparecen ni si parecen alejados del resto."
       }
     ],
     "future_targets": [
-      "Comprensión y comparación de la dispersión entre distintos conjuntos de datos utilizando varias medidas (rango, rango intercuartílico, desviación estándar).",
-      "Interpretación de diagramas de caja y bigotes, en particular la relación entre rango y rango intercuartílico.",
-      "Lectura e interpretación de gráficos estadísticos (barras, histogramas, boxplot) donde se requiere determinar o estimar el rango.",
-      "Análisis de variabilidad en contextos de probabilidad y estadística básica (por ejemplo, comparar consistencia de resultados o puntajes).",
-      "Trabajo con distribución de frecuencias y datos agrupados, pasando de rangos simples en datos crudos a amplitudes de clase.",
-      "Aplicación de medidas de dispersión en la toma de decisiones informadas (por ejemplo, elegir la opción más estable entre dos alternativas con promedios similares)."
+      "Cálculo e interpretación del rango en tablas de frecuencias agrupadas.",
+      "Comparación de la dispersión entre distintos conjuntos de datos usando el rango.",
+      "Interpretación del rango en gráficos estadísticos (histogramas, diagramas de caja).",
+      "Comprensión progresiva de medidas de dispersión más complejas (recorrido intercuartílico, varianza, desviación estándar).",
+      "Análisis de variabilidad de datos en contextos reales (por ejemplo, estabilidad de resultados, consistencia de rendimientos).",
+      "Toma de decisiones informada al comparar conjuntos de datos en función de su dispersión, no solo de la media."
     ],
     "representation_variants": [
-      "Lista explícita de números separados por comas o espacios.",
-      "Tabla simple de una columna (por ejemplo, días y temperatura asociada) donde se deben identificar los valores numéricos.",
-      "Tabla de doble entrada sencilla donde una de las columnas contiene los datos a usar para el rango.",
-      "Descripción verbal breve donde se enumeran explícitamente los valores (por ejemplo, edades, puntajes, tiempos).",
-      "Descripción verbal donde se indica el valor mayor y el menor directamente, exigiendo solo la operación de resta.",
-      "Contextos cotidianos que involucran medidas (tiempo, longitud, edad, temperatura) pero que se convierten fácilmente a una lista de números."
+      "Lista explícita de datos entre llaves o separados por comas (por ejemplo, 3, 7, 5, 9).",
+      "Datos presentados en tablas simples (filas y columnas) con etiquetas claras, por ejemplo, día vs. temperatura.",
+      "Contextos verbales breves donde se enuncien explícitamente mínimo y máximo observados (por ejemplo, \"la menor nota fue 3,0 y la mayor nota fue 6,5\").",
+      "Contextos donde se describen varias mediciones numéricas de una misma magnitud (tiempos, distancias, puntajes) y el estudiante debe extraer de ahí el conjunto de datos.",
+      "Conjuntos de datos donde algunos valores se repiten, representados tanto en listas como en tablas, para mostrar que la repetición no afecta el rango.",
+      "Comparación textual de dos conjuntos de datos, donde se entregan sus valores o solo sus mínimos y máximos para comparar rangos."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers_with_negatives",
-      "simple_decimals",
-      "mixed_integers_and_decimals"
+      "medium_integers",
+      "large_integers_contextualizados",
+      "decimals_1dp",
+      "decimals_2dp",
+      "simple_fractions",
+      "mixed_sign_integers",
+      "mixed_sign_decimals",
+      "context_quantities"
     ],
     "required_image_types": []
   }

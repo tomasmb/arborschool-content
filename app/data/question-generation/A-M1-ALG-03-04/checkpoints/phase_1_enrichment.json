@@ -3,121 +3,128 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Ecuaciones lineales de una incógnita que requieren aplicar propiedad distributiva para eliminar paréntesis antes de despejar.",
-        "Ecuaciones lineales con la incógnita presente en ambos lados de la igualdad, que se resuelven trasladando términos y reduciendo a la forma ax = b.",
-        "Uso explícito de la propiedad distributiva con coeficientes enteros y racionales (positivos y negativos).",
-        "Agrupación y reducción de términos semejantes (con y sin incógnita) en una sola expresión en cada lado de la igualdad.",
-        "Despeje final de la incógnita dividiendo por el coeficiente, considerando signos y fracciones simples.",
-        "Ecuaciones que pueden involucrar hasta dos pasos combinados: distribución + reducción de términos + traslado de términos con incógnita."
+        "Ecuaciones lineales de una sola incógnita con la incógnita presente en ambos lados de la igualdad.",
+        "Ecuaciones lineales con paréntesis que requieren uso de la propiedad distributiva antes de agrupar términos.",
+        "Ecuaciones con coeficientes y términos independientes enteros o racionales (fracciones positivas o negativas).",
+        "Procedimiento completo: desarrollar paréntesis, reducir términos semejantes, aislar la incógnita y verificar mentalmente la solución."
       ],
       "out_of_scope": [
-        "Ecuaciones cuadráticas, con x^2 u otras potencias de la incógnita.",
-        "Ecuaciones con valor absoluto, raíces o potencias no lineales de la incógnita.",
-        "Sistemas de ecuaciones (más de una ecuación simultánea).",
-        "Ecuaciones que conduzcan intencionalmente a identidades (infinitas soluciones) o contradicciones (sin solución), a menos que otro átomo lo especifique.",
-        "Problemas verbales complejos de modelación; aquí el foco es el procedimiento algebraico una vez planteada la ecuación.",
-        "Ecuaciones con parámetros literales múltiples (a, b, k) pensadas para resolver simbólicamente en forma general.",
-        "Ecuaciones que requieran manejar números irracionales no triviales (como raíces no simplificables) más allá de una aritmética básica."
+        "Ecuaciones cuadráticas, de mayor grado o con productos de incógnitas (por ejemplo, xy, x²).",
+        "Ecuaciones con valor absoluto, raíces, potencias no lineales o logaritmos.",
+        "Sistemas de ecuaciones (más de una ecuación o más de una incógnita).",
+        "Ecuaciones que llevan intencionalmente a identidades (infinitas soluciones) o contradicciones (sin solución), salvo que eso se trate en otro átomo.",
+        "Modelación verbal compleja donde lo central sea traducir un contexto a ecuación (pertenece a interpretación/modelación, no a procedimiento puro)."
       ],
       "prerequisites": [
-        "A-M1-ALG-01-01: Manejo de operaciones básicas con números enteros y racionales (suma, resta, multiplicación, división).",
-        "A-M1-ALG-02-01: Identificación y reducción de términos semejantes en expresiones algebraicas sencillas.",
-        "A-M1-ALG-02-02: Aplicación de la propiedad distributiva en expresiones sin resolver ecuaciones.",
-        "A-M1-ALG-03-02: Resolución de ecuaciones lineales simples de la forma ax + b = c sin paréntesis ni incógnita en ambos lados."
+        "A-M1-ARI-01-01: Manejo de operaciones básicas con enteros (suma, resta, producto) y prioridad de operaciones.",
+        "A-M1-ARI-02-01: Manejo de fracciones y números racionales (suma, resta, producto, simplificación).",
+        "A-M1-ALG-01-01: Identificación y reducción de términos semejantes en expresiones algebraicas simples.",
+        "A-M1-ALG-02-01: Uso de la propiedad distributiva a(b + c) y a(b − c) con números y expresiones sencillas.",
+        "A-M1-ALG-03-02: Resolución de ecuaciones lineales simples de la forma ax + b = c sin paréntesis ni incógnita a ambos lados."
       ],
       "common_traps": [
-        "Aplicar mal la propiedad distributiva, omitiendo la multiplicación por uno de los términos dentro del paréntesis.",
-        "Confundir la operación al trasladar términos de un lado a otro (cambiar de lado pero no cambiar el signo).",
-        "Perder términos constantes o con incógnita al combinar expresiones de ambos lados.",
-        "Dividir por el número incorrecto al despejar (por ejemplo, no considerar el coeficiente completo o ignorar el signo).",
-        "Errores en el manejo de fracciones al sumar, restar o dividir, especialmente cuando aparecen en ambos lados.",
-        "Considerar resuelta la ecuación sin haber dejado aislada la incógnita (respuesta no en la forma x = número).",
-        "No verificar mentalmente si el resultado es razonable, lo que hace que errores de signo o de cálculo pasen desapercibidos."
+        "Aplicar mal la propiedad distributiva, especialmente con signos negativos (por ejemplo, −3(x − 2) = −3x − 2 en vez de −3x + 6).",
+        "Mover términos de un lado a otro cambiando de signo de forma incorrecta (por ejemplo, pasar 3x al otro lado sin cambiar el signo).",
+        "Operar sólo en un lado de la ecuación (sumar o restar algo en un lado y olvidar hacerlo en el otro).",
+        "Perder términos al eliminar paréntesis complejos (por ejemplo, copiar una parte del término y omitir otra).",
+        "Equivocarse al operar fracciones (suma de fracciones con distinto denominador, manejo de signos).",
+        "Dar como respuesta una expresión intermedia (por ejemplo, 2x = 6) y no el valor final de la incógnita.",
+        "Confundir el orden de pasos: intentar “despejar” antes de reducir términos semejantes o de eliminar los paréntesis, generando expresiones más enredadas."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Ecuaciones lineales con un solo paréntesis sencillo del tipo a(x + b) o a(x - b), con a, b enteros pequeños y positivos.",
-        "Ecuaciones donde la incógnita está solo en un lado después de aplicar la distributiva, requiriendo como máximo tres pasos claros (distribuir, reducir, despejar).",
-        "Coeficientes y términos constantes enteros pequeños (entre -10 y 10), sin fracciones ni decimales.",
-        "Estructuras simétricas y poco cargadas visualmente: pocas operaciones en cada lado, sin anidación de paréntesis.",
-        "Distractores construidos a partir de errores básicos de cálculo o de signo evidentes."
+        "Ecuaciones con coeficientes enteros pequeños, mayormente positivos, y a lo más un paréntesis sencillo en un lado (por ejemplo, a(b + c)).",
+        "La incógnita aparece en ambos lados, pero con coeficientes simples (1, 2, 3) y sin fracciones.",
+        "Número reducido de pasos (2 o 3 transformaciones claras desde la ecuación original hasta ax = b).",
+        "Ningún requerimiento de operar fracciones ni de manejar signos dobles (− delante de paréntesis con signos mezclados).",
+        "Reducción de términos semejantes muy directa (por ejemplo, 5x − 2x o 7 − 3)."
       ],
       "medium": [
-        "Ecuaciones con la incógnita en ambos lados, que requieren trasladar términos con x y constantes para llegar a la forma ax = b.",
-        "Presencia de dos paréntesis (uno en cada lado o dos en el mismo lado), con necesidad de aplicar la propiedad distributiva más de una vez.",
-        "Uso de enteros positivos y negativos de tamaño moderado (entre -20 y 20) y/o fracciones simples con denominadores pequeños (2, 3, 4, 5).",
-        "Ecuaciones que requieren al menos cuatro pasos: distribución, reducción de términos en cada lado, traslado de términos, despeje final.",
-        "Distractores que recogen errores típicos de traslado de términos, signos o manejo de fracciones, no triviales a simple vista."
+        "Ecuaciones con paréntesis en ambos lados de la igualdad o más de un paréntesis en el mismo lado.",
+        "Presencia de coeficientes negativos o de la forma −(x + a), que exigen cuidado adicional con la propiedad distributiva.",
+        "Aparición de fracciones sencillas (denominadores pequeños como 2, 3, 4) ya sea como coeficientes de x o términos independientes.",
+        "Necesidad de 3 a 5 pasos de transformación algebraica desde la ecuación inicial hasta el despeje final.",
+        "Configuraciones donde conviene decidir estratégicamente si sumar/restar primero términos constantes o de x para simplificar el procedimiento."
       ],
       "hard": [
-        "Ecuaciones con la incógnita en ambos lados y múltiples paréntesis, incluyendo coeficientes fraccionarios en algún paréntesis o como factor común.",
-        "Presencia combinada de números enteros negativos y fracciones (o decimales finitos) en ambos lados, que exigen un manejo cuidadoso de la aritmética.",
-        "Ecuaciones donde después de distribuir y reducir términos se obtiene un coeficiente de x fraccionario o negativo que obliga a dividir por una fracción.",
-        "Ecuaciones que requieren planificar el orden de las operaciones (por ejemplo, simplificar factores comunes antes de distribuir para evitar fracciones complejas).",
-        "Distractores construidos a partir de cadenas de errores plausibles (por ejemplo, distribución correcta pero traslado de términos incorrecto, o división por el coeficiente sin considerar el signo), que dan resultados numéricamente razonables.",
-        "Ecuaciones con resultados fraccionarios no evidentes (por ejemplo, x = 7/3 o x = -11/4) que no se simplifican a enteros."
+        "Ecuaciones con varios paréntesis anidados o encadenados (por ejemplo, un factor común multiplicando una suma que a su vez contiene otra suma/resta).",
+        "Coeficientes racionales menos amigables (fracciones con denominadores distintos y signos negativos) que exigen calcular un común denominador.",
+        "Presencia de enteros y fracciones mezclados en ambos lados, de modo que sea necesario transformar todo a fracción o manejar operaciones mixtas.",
+        "Número de pasos alto (5 o más transformaciones relevantes) donde una mala decisión intermedia puede complicar innecesariamente la ecuación.",
+        "Ecuaciones que, sin llegar a ser identidades o contradicciones, tienen coeficientes no enteros en la solución (por ejemplo, x = 7/5 o x = −11/6), requiriendo simplificación de fracciones no evidentes.",
+        "Planteamiento en contexto verbal breve donde el estudiante debe identificar correctamente la ecuación lineal y luego resolverla, siendo lo central la resolución algebraica con paréntesis y x en ambos lados."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar enunciados donde no quede claro si un número frente a un paréntesis es coeficiente o parte de la expresión, usar siempre notación estándar como 2(x + 3) y no 2x+3 sin paréntesis.",
-      "No mezclar en una misma alternativa expresiones equivalentes y valores numéricos sin dejar claro si se pide el valor de la incógnita o la forma transformada de la ecuación.",
-      "Evitar texto contextual excesivo cuando el foco es puramente procedimental; si se usa contexto, la ecuación debe estar explícitamente escrita.",
-      "No usar notación poco habitual (como puntos en lugar de signos de multiplicación) que pueda confundirse con decimales.",
-      "Asegurar que los paréntesis estén bien balanceados y claramente visibles en todos los distractores.",
-      "Evitar ecuaciones que, por error de diseño, produzcan identidad o contradicción, ya que este átomo excluye esos casos.",
-      "No plantear ítems donde haya más de una interpretación razonable del procedimiento pedido (por ejemplo, \"simplificar\" versus \"resolver\" sin indicar claramente que se busca el valor de la incógnita)."
+      "Evitar el uso de letras distintas para la misma incógnita dentro de un mismo ítem (no mezclar x y t si ambas representan lo mismo).",
+      "No usar expresiones que puedan interpretarse de más de una forma por falta de paréntesis; siempre escribir explícitamente los paréntesis necesarios (por ejemplo, 2(x + 3) y no 2x + 3 si se quiere distribución).",
+      "No combinar en la misma pregunta varias ecuaciones diferentes sin dejar claro cuál es la que se debe resolver.",
+      "Evitar enunciados verbales que puedan dar lugar a más de una ecuación plausible; si se usa contexto, que la traducción a ecuación lineal sea única y evidente.",
+      "No incluir ecuaciones que, sin decirlo, sean identidades o contradicciones, ya que eso corresponde a otro aprendizaje (si se incluyen, explicitar que se busca el número de soluciones o el tipo de solución).",
+      "Evitar notaciones poco estándar como usar el punto · muy cercano a la incógnita que pueda confundirse con un punto decimal (por ejemplo, escribir 3·x en forma clara o preferir 3x).",
+      "Especificar claramente si se busca el valor numérico de la incógnita o la ecuación equivalente más simple, para que el estudiante sepa hasta dónde simplificar."
     ],
     "error_families": [
       {
-        "name": "Distribución_incompleta",
-        "description": "El estudiante aplica la propiedad distributiva solo a uno de los términos dentro del paréntesis, por ejemplo transforma 3(x + 4) en 3x + 4.",
-        "how_to_address": "Reforzar la idea de que el factor externo multiplica a todos los términos dentro del paréntesis, usando ejemplos con más de dos términos y representaciones con flechas que indiquen cada multiplicación."
+        "name": "Distributiva_incorrecta",
+        "description": "El estudiante aplica mal la propiedad distributiva, especialmente cuando hay signos negativos: no multiplica todos los términos dentro del paréntesis o cambia incorrectamente los signos.",
+        "how_to_address": "Incluir ítems donde el paso clave sea desarrollar paréntesis con signos distintos (por ejemplo, −2(x − 5)), de modo que las alternativas incorrectas reflejen errores típicos de signo. En la retroalimentación, enfatizar que el factor externo multiplica a cada término dentro del paréntesis y mostrar un ejemplo paso a paso."
       },
       {
-        "name": "Signos_al_trasladar",
-        "description": "Al pasar un término de un lado al otro de la igualdad, el estudiante mantiene el mismo signo en lugar de cambiarlo, alterando la estructura de la ecuación.",
-        "how_to_address": "Trabajar con ejemplos secuenciales destacando que restar en ambos lados es equivalente a 'cambiar de lado y de signo', y usar contraejemplos donde se vea el efecto de no cambiar el signo en la veracidad de la igualdad."
+        "name": "Manejo_deficiente_de_signos",
+        "description": "Errores al sumar o restar términos con signo, tanto en constantes como en coeficientes de x (por ejemplo, 3x − 5x = 2x en vez de −2x).",
+        "how_to_address": "Diseñar preguntas que requieran combinar varios términos negativos y positivos. En la explicación, destacar reglas de suma de enteros con signos y mostrar que agrupar x y números por separado ayuda a evitar confusiones."
       },
       {
-        "name": "Pérdida_de_términos",
-        "description": "Durante la reducción de términos semejantes, el estudiante omite alguno (tanto constantes como con incógnita), generando coeficientes incorrectos.",
-        "how_to_address": "Proponer estrategias de subrayado o marcado de términos semejantes antes de sumarlos o restarlos, y usar verificación rápida sustituyendo el resultado en la ecuación original para detectar inconsistencias grandes."
+        "name": "Operar_solo_un_lado",
+        "description": "El estudiante realiza una operación solo en un lado de la igualdad, rompiendo el equilibrio de la ecuación (por ejemplo, suma 4 al lado izquierdo pero no al derecho).",
+        "how_to_address": "Proponer pasos intermedios explícitos en ejemplos y en retroalimentación, remarcando que cualquier operación debe realizarse en ambos lados. Incluir alternativas que muestren resultados de aplicar la operación a un solo lado para evidenciar el error."
       },
       {
-        "name": "Manejo_deficiente_de_fracciones",
-        "description": "Errores al sumar, restar o dividir fracciones (por ejemplo, usar denominador incorrecto o no invertir al dividir).",
-        "how_to_address": "Separar el trabajo: primero resolver correctamente la parte numérica de las fracciones en ejercicios sin incógnitas, luego integrar las fracciones en ecuaciones simples antes de combinarlas con paréntesis y términos en ambos lados."
+        "name": "Traslado_de_terminos_sin_cambio_de_signo",
+        "description": "Al “pasar” un término de un lado a otro, el estudiante olvida cambiar el signo, modificando indebidamente el valor del término.",
+        "how_to_address": "Usar ítems donde sea inevitable mover varios términos. En la retroalimentación, reformular el procedimiento en términos de sumar/restar el mismo término en ambos lados (en vez de “pasar cambiando de signo”) para reducir la mecanización sin comprensión."
       },
       {
-        "name": "División_por_coeficiente_errónea",
-        "description": "Al llegar a la forma ax = b, el estudiante divide solo una parte de b por a o ignora el signo de a, obteniendo un valor de x incorrecto.",
-        "how_to_address": "Insistir en escribir explícitamente el paso de dividir ambos lados por el mismo número, mostrando la fracción completa b/a, y trabajar ejemplos donde el coeficiente de x es negativo para enfatizar el cambio de signo en el resultado."
+        "name": "Pérdida_de_terminos",
+        "description": "Durante la eliminación de paréntesis o la reducción de términos semejantes, el estudiante omite sin darse cuenta uno de los términos (por ejemplo, copia 4x + 3 y olvida el −2).",
+        "how_to_address": "Incluir ecuaciones con 3 o más términos en cada lado y alternativas que reflejen resultados con un término faltante. Sugerir en la retroalimentación subrayar o marcar cada término que ya se ha copiado para promover un trabajo más ordenado."
       },
       {
-        "name": "Resolución_incompleta",
-        "description": "El estudiante detiene el procedimiento antes de aislar completamente la incógnita, dejando una expresión como 3x = 12 como 'respuesta final'.",
-        "how_to_address": "Incorporar en la retroalimentación la idea de 'chequeo de formato': la respuesta correcta debe ser una igualdad donde x esté sola en un lado y el otro lado sea un único número simplificado."
+        "name": "Errores_con_fracciones",
+        "description": "Dificultad para sumar, restar o multiplicar fracciones al resolver la ecuación, especialmente al encontrar un común denominador o al simplificar la solución.",
+        "how_to_address": "Proponer ítems graduales con fracciones simples y mostrar soluciones indicando el paso de obtener denominador común y simplificar. Reforzar ejemplos donde se multiplica toda la ecuación por el mínimo común múltiplo de los denominadores para eliminar fracciones."
+      },
+      {
+        "name": "No_llevar_a_forma_ax_igual_b",
+        "description": "El estudiante se queda en una ecuación donde x aún aparece en ambos lados o no está completamente aislada, creyendo haber terminado.",
+        "how_to_address": "Diseñar ítems que pidan explícitamente el valor numérico de x y donde algunas alternativas sean ecuaciones equivalentes no resueltas. En las explicaciones, remarcar que el objetivo es dejar x sola en un lado e identificar claramente el último paso de división por el coeficiente de x."
       }
     ],
     "future_targets": [
-      "Resolución de sistemas de ecuaciones lineales por métodos algebraicos (sustitución, igualación, reducción).",
-      "Modelación de problemas verbales con ecuaciones lineales (traducción de situaciones a ecuaciones y resolución).",
-      "Trabajo con funciones lineales, en particular el paso entre formas y = mx + b y ax + by = c.",
-      "Resolución de inecuaciones lineales y representación de sus soluciones.",
-      "Manejo de ecuaciones con valor absoluto y ecuaciones a trozos que requieren resolver varias ecuaciones lineales asociadas.",
-      "Álgebra más avanzada que requiere manipulación de expresiones lineales como paso intermedio (por ejemplo, en desigualdades compuestas o ecuaciones racionales lineales)."
+      "A-M1-ALG-03-05: Resolución de ecuaciones lineales que incluyen identidades, contradicciones y análisis del número de soluciones.",
+      "A-M1-ALG-04-01: Resolución de sistemas de ecuaciones lineales de dos incógnitas, donde cada ecuación requiere manejo de paréntesis y términos en ambos lados.",
+      "A-M1-FUN-01-01: Comprensión de la forma general de una función lineal y su relación con ecuaciones de la forma y = mx + b.",
+      "A-M1-MOD-01-01: Modelación de situaciones reales mediante ecuaciones lineales con incógnita en ambos miembros (por ejemplo, igualar dos costos).",
+      "A-M1-ALG-05-01: Resolución de inecuaciones lineales y sistemas de inecuaciones, que exigen procedimientos análogos pero con especial cuidado en cambios de sentido al multiplicar o dividir por negativos.",
+      "A-M1-FUN-02-01: Trabajo con transformaciones de funciones lineales (traslaciones y cambios de pendiente) que se apoyan en manipulación fluida de expresiones lineales."
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal"
+      "Ecuaciones presentadas simbólicamente en forma directa, con paréntesis y términos en ambos lados (representación algebraica pura).",
+      "Enunciados verbales breves que describen relaciones lineales simples y que se traducen directamente a una ecuación con paréntesis o incógnita en ambos lados.",
+      "Secuencias de pasos de resolución donde se pide completar una etapa intermedia correcta (por ejemplo, elegir la ecuación equivalente correcta después de aplicar la distributiva).",
+      "Formatos en los que se presenta una ecuación ya parcialmente simplificada y se pide identificar el siguiente paso correcto para llegar a ax = b.",
+      "Comparación de dos procedimientos de resolución para la misma ecuación, pidiendo determinar cuál mantiene la equivalencia y por qué."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers",
-      "fractions",
-      "mixed",
-      "simple_decimals"
+      "moderate_integers",
+      "negative_integers",
+      "simple_fractions",
+      "mixed_fractions",
+      "integer_coefficients_with_rational_solutions",
+      "rational_coefficients_with_rational_solutions"
     ],
     "required_image_types": []
   }

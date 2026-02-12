@@ -7,6 +7,7 @@ Matches the spec in docs/research/arbor_paes_question_generation_pipeline_v3_1_l
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any
@@ -53,13 +54,72 @@ PHASE_GROUPS: dict[str, tuple[int, int]] = {
 PHASE_GROUP_CHOICES = list(PHASE_GROUPS.keys())
 
 
+# ---------------------------------------------------------------------------
+# Difficulty distribution (mastery-driven pool sizing)
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class DifficultyDistribution:
+    """Per-difficulty item counts for the question pool.
+
+    Derived from the mastery spec: max 20 questions per attempt,
+    2 full attempts of unique questions, plus a per-level buffer.
+    See docs/specifications/learning-method-specification.md.
+    """
+
+    easy: int
+    medium: int
+    hard: int
+
+    @property
+    def total(self) -> int:
+        """Total items across all difficulty levels."""
+        return self.easy + self.medium + self.hard
+
+
+def compute_planned_distribution(
+    target: DifficultyDistribution,
+    buffer_ratio: float,
+) -> DifficultyDistribution:
+    """Apply buffer ratio to a target distribution.
+
+    Ceiling is used so every level gets at least the buffer.
+
+    Args:
+        target: Mastery-driven target counts per difficulty.
+        buffer_ratio: Multiplier for over-generation (e.g. 1.3).
+
+    Returns:
+        New distribution with buffered counts.
+    """
+    return DifficultyDistribution(
+        easy=math.ceil(target.easy * buffer_ratio),
+        medium=math.ceil(target.medium * buffer_ratio),
+        hard=math.ceil(target.hard * buffer_ratio),
+    )
+
+
+# Mastery spec: 14 easy + 18 medium + 14 hard = 46 target items.
+# See docs/specifications/learning-method-specification.md §Question Pool.
+DEFAULT_TARGET_DISTRIBUTION = DifficultyDistribution(
+    easy=14, medium=18, hard=14,
+)
+
+# 30% over-generation to absorb pipeline attrition
+# (dedupe, validation, feedback gates).
+DEFAULT_BUFFER_RATIO: float = 1.3
+
+
 @dataclass
 class PipelineConfig:
     """Configuration for a single atom question generation run.
 
     Attributes:
         atom_id: Target atom identifier (e.g. "A-M1-ALG-01-02").
-        pool_size: Total items to plan (default 9 = 3 per difficulty).
+        target_distribution: Mastery-driven target counts per
+            difficulty (default 14E/18M/14H = 46).
+        buffer_ratio: Over-generation multiplier (default 1.3).
         max_retries: Max LLM retries per phase.
         output_dir: Override for output directory.
         skip_enrichment: Skip Phase 1 enrichment.
@@ -70,7 +130,10 @@ class PipelineConfig:
     """
 
     atom_id: str
-    pool_size: int = 9
+    target_distribution: DifficultyDistribution = field(
+        default_factory=lambda: DEFAULT_TARGET_DISTRIBUTION,
+    )
+    buffer_ratio: float = DEFAULT_BUFFER_RATIO
     max_retries: int = 2
     output_dir: str | None = None
     skip_enrichment: bool = False
@@ -78,6 +141,13 @@ class PipelineConfig:
     dry_run: bool = False
     resume: bool = False
     phase: str = "all"
+
+    @property
+    def planned_distribution(self) -> DifficultyDistribution:
+        """Distribution sent to the planner (target + buffer)."""
+        return compute_planned_distribution(
+            self.target_distribution, self.buffer_ratio,
+        )
 
 
 # ---------------------------------------------------------------------------

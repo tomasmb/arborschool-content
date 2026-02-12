@@ -4,126 +4,120 @@
     "scope_guardrails": {
       "in_scope": [
         "Divisiones exactas entre números enteros (incluyendo negativos y cero como dividendo).",
-        "Aplicación explícita de la regla de los signos en la división de dos enteros.",
-        "Cálculo del cociente utilizando valores absolutos del dividendo y del divisor.",
-        "Reconocimiento de que la división por cero no está definida.",
-        "Reconocimiento de que 0 dividido por cualquier entero distinto de 0 es 0.",
-        "Uso de la notación de división con dos puntos (:) o con barra (/) siempre con el mismo significado aritmético."
+        "Aplicación explícita de la regla de los signos en la división de enteros: (+):(+) = (+), (+):(-) = (-), (-):(+) = (-), (-):(-) = (+).",
+        "Cálculo del valor absoluto del cociente como paso intermedio para luego asignar el signo correcto.",
+        "Reconocimiento de que la división por cero no está definida, tanto con cero como divisor positivo, negativo o nulo.",
+        "Situaciones simples de contexto donde el cálculo central sea una división exacta de enteros (por ejemplo, reparto con números negativos interpretados como deudas o temperaturas)."
       ],
       "out_of_scope": [
-        "Divisiones que produzcan cocientes racionales no enteros (fracciones o decimales).",
-        "Cálculo de restos o uso formal de la división euclidiana (no trabajar con residuo).",
-        "División de números racionales no enteros (fracciones o decimales).",
-        "Operaciones combinadas con más de una operación (sumas, restas, multiplicaciones, potencias) en la misma expresión.",
-        "Problemas que requieran varias etapas de razonamiento algebraico (ecuaciones, proporcionalidad, etc.).",
-        "Uso de representaciones en recta numérica o gráficas como requisito central del ítem.",
-        "Justificaciones teóricas profundas sobre por qué no se puede dividir por cero (solo se espera reconocimiento)."
+        "División con resto (no exigir manejo formal de cociente y residuo, ni división euclidiana).",
+        "División con números racionales no enteros (fracciones, decimales, porcentajes).",
+        "Cálculo de expresiones algebraicas con variables (por ejemplo, a : (-3)).",
+        "Problemas que requieran simplificación de fracciones o razón entre enteros vista como fracción.",
+        "Uso de reglas avanzadas como propiedades de potencias o logaritmos combinadas con división.",
+        "División de números complejos o en otros conjuntos numéricos distintos de Z.",
+        "Justificaciones formales de por qué no se puede dividir por cero (límite, infinito, etc.)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprensión de los números enteros y su representación (incluyendo negativos y cero).",
-        "A-M1-NUM-01-03: Comparación y orden de números enteros (mayor, menor, igual).",
-        "A-M1-NUM-01-04: Suma y resta de números enteros.",
-        "A-M1-NUM-01-05: Multiplicación de números enteros y regla de los signos en la multiplicación.",
-        "A-M1-NUM-01-06: Cálculo de valor absoluto de un número entero."
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-01-02",
+        "A-M1-NUM-01-03",
+        "A-M1-NUM-01-04",
+        "A-M1-NUM-01-05",
+        "A-M1-NUM-01-06"
       ],
       "common_traps": [
-        "Confundir la regla de signos de la multiplicación/división con la de la suma y resta de enteros.",
-        "Olvidar que el cociente de dos números con signos iguales es positivo.",
-        "Concluir incorrectamente que 0 : a es indefinido para a distinto de 0.",
-        "No reconocer que a : 0 no está definido, intentando dar un resultado numérico.",
-        "Intercambiar dividendo y divisor al interpretar un contexto verbal (quién se reparte y cuántas partes).",
-        "Perder el signo del resultado al concentrarse solo en el cálculo con valores absolutos.",
-        "Interpretar la exigencia de ‘división exacta’ como una restricción sobre el tipo de número del resultado (racional) y no específicamente al conjunto de los enteros.",
-        "Confundir el símbolo de fracción a/b con una operación más compleja que la división simple, generando rechazo o bloqueo."
+        "Olvidar aplicar la regla de los signos y calcular solo con valores absolutos, obteniendo siempre cociente positivo.",
+        "Intercambiar el orden de los signos en la regla (por ejemplo, creer que (+):(-) da + en lugar de -).",
+        "Confundir 0 : a (con a ≠ 0) con a : 0, asignando un valor numérico a una división por cero.",
+        "Asumir que cualquier operación que incluya cero entrega siempre resultado cero, incluso cuando el cero está en el divisor.",
+        "Equivocarse en el cálculo del valor absoluto del cociente, sobre todo cuando los números son mayores o con tablas de multiplicar menos automatizadas (por ejemplo, dividir 96 por 12).",
+        "Interpretar mal el contexto verbal y colocar el dividendo y divisor invertidos, alterando el resultado.",
+        "Considerar que toda división de enteros debe dar siempre un entero, aun cuando el enunciado pueda implicar un resultado no entero (en este átomo, evitar tales casos en la construcción del ítem)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Divisiones con números enteros pequeños (valores absolutos entre 1 y 20) que entregan cociente entero sin resto.",
-        "Al menos uno de los factores con signo positivo explícito o implícito; patrones de signo directos, por ejemplo (+) : (+) o (-) : (+).",
-        "Contexto puramente simbólico, sin redacciones verbales extensas.",
-        "Solo se pide calcular el resultado, sin pasos intermedios ni interpretaciones adicionales.",
-        "Evitar el uso de 0 en divisor y limitando su aparición como dividendo en situaciones simples (0 : a).",
-        "Distractores que provienen de errores de cómputo sencillos o de una aplicación directa equivocada de la regla de signos (por ejemplo, ofrecer tanto +4 como -4)."
+        "Divisiones directas entre enteros con resultados de una cifra y tablas de multiplicar muy habituales (por ejemplo, divisores 2, 3, 4, 5, 10).",
+        "Un solo paso de cálculo: se presenta explícitamente la división y se pide el resultado sin contexto adicional.",
+        "Casos con cero donde la situación es 0 dividido por un entero distinto de cero o enteros pequeños.",
+        "Enunciar de forma clara el orden dividendo : divisor, sin ambigüedad en el contexto."
       ],
       "medium": [
-        "Números enteros de valor absoluto moderado (entre 2 y 100), manteniendo cociente entero.",
-        "Combinaciones de signos que requieran pensar explícitamente la regla (por ejemplo: (+) : (-), (-) : (-)), incluso en contextos verbales.",
-        "Presencia de cero como dividendo (0 : a) en algunos ítems para contrastar con la restricción de divisor cero.",
-        "Enunciados verbales breves que requieran traducir una situación a una división de enteros.",
-        "Posibles distractores que mezclan errores de signo con errores en el cálculo del valor absoluto.",
-        "Introducción controlada de expresiones equivalentes a la división (por ejemplo, reescribir como producto con el inverso entero), sin añadir más de una operación distinta de la división."
+        "Divisiones con números de dos o tres cifras que requieren aplicar estrategias de división más allá de las tablas más básicas.",
+        "Combinación de más de una división o de una multiplicación y una división de enteros en una misma expresión, privilegiando el foco en la regla de los signos.",
+        "Problemas en contexto donde se debe identificar correctamente qué número divide a cuál antes de aplicar la operación.",
+        "Ítems donde el distractor principal se basa en errores de signo o en confundir 0 : a con a : 0."
       ],
       "hard": [
-        "Uso simultáneo de varios elementos potencialmente confusos: números con valor absoluto mayor (hasta 3 cifras), signos distintos, presencia de cero en el dividendo en alternativas de respuesta.",
-        "Ítems que exigen distinguir explícitamente entre 0 : a y a : 0, incorporando la idea de ‘no está definido’.",
-        "Contextos verbales donde el estudiante debe identificar correctamente quién es el dividendo y quién es el divisor antes de operar.",
-        "Situaciones en que el estudiante debe comparar o seleccionar entre varias divisiones de enteros cuál(es) tiene(n) resultado entero, aplicando la regla de los signos y nociones de múltiplos.",
-        "Ítems que incluyan distractores sofisticados derivados de aplicar la regla de los signos de la suma en lugar de la de división (por ejemplo, confundir -20 : -5 con -4 porque “son dos negativos”).",
-        "Preguntas que impliquen razonar sobre propiedades de la división con enteros (por ejemplo, analizar afirmaciones del tipo: ‘si a y b son enteros negativos, entonces a : b siempre es negativo’)."
+        "Expresiones con varias operaciones encadenadas entre enteros (por ejemplo, dos o tres multiplicaciones y divisiones sucesivas) donde la consistencia en la regla de los signos es clave.",
+        "Situaciones en que se pide determinar un número faltante (dividendo, divisor o cociente entero) a partir de la igualdad de una división entre enteros con signos, obligando a razonar inversamente.",
+        "Uso de números relativamente grandes o que no se manejan de memoria en tablas, obligando a aplicar un procedimiento de división más sistemático manteniendo a la vez el control de los signos.",
+        "Ítems que confrontan explícitamente la imposibilidad de dividir por cero en un contexto algo más sutil (por ejemplo, elegir entre varias expresiones la que NO está definida)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar contextos de reparto o medida donde pueda interpretarse la presencia de un resto; en el átomo solo se evalúan divisiones exactas en Z.",
-      "No mezclar en el mismo ítem operaciones de división con enteros y operaciones con fracciones o decimales.",
-      "Precisar siempre el orden de la división cuando se usa lenguaje natural, evitando frases como ‘divide -20 y 5’ y prefiriendo ‘divide -20 por 5’.",
-      "No utilizar expresiones coloquiales ambiguas como ‘entre’ sin señalar claramente quién es el dividendo y quién el divisor cuando ambos son números (por ejemplo, preferir ‘-20 dividido por 5’ a ‘-20 entre 5’ si el contexto pudiera interpretarse al revés).",
-      "Evitar problemas demasiado narrativos donde el foco pase a ser la comprensión lectora más que la operación de división de enteros.",
-      "No presentar simultáneamente notaciones poco familiares (por ejemplo, dos puntos y barra de fracción y símbolo ÷) en el mismo ítem, para no desviar la atención a la notación.",
-      "Cuando se mencione la imposibilidad de dividir por cero, explicitar si se refiere al divisor, evitando redacciones genéricas como ‘no se puede dividir por cero’ en situaciones donde también aparece cero en el dividendo.",
-      "No sugerir mediante el contexto que la respuesta debe ser un número natural si el resultado correcto es un entero negativo."
+      "Evitar contextos verbales donde no quede claro qué cantidad corresponde al dividendo y cuál al divisor; especificar explícitamente 'dividir X por Y'.",
+      "No mezclar notaciones de división sin aclaración (por ejemplo, usar solo ':' o solo '/' en un mismo ítem para evitar confusión).",
+      "Evitar enunciados donde el resultado real de la división no sea entero; en este átomo, asegurarse siempre que el cociente es un entero exacto.",
+      "No usar expresiones como 'aproximadamente', 'cerca de' o redondeos, ya que el foco está en divisiones exactas.",
+      "Evitar doble negación semántica en el texto (por ejemplo, 'no dejar de deber') que complique innecesariamente la interpretación de signos.",
+      "No formular ítems donde 0 esté al mismo tiempo en numerador y denominador (0 : 0) sin explicitar claramente que es una expresión indefinida.",
+      "No mezclar en un mismo ítem división de enteros con fracciones o decimales si eso desvía el foco desde la regla de los signos de los enteros."
     ],
     "error_families": [
       {
-        "name": "Regla_de_signos_errónea",
-        "description": "El estudiante aplica mal la regla de los signos en la división de enteros, por ejemplo, concluye que (-20) : 5 es +4 o que (-15) : (-3) es -5.",
-        "how_to_address": "Reforzar la analogía explícita entre la multiplicación y la división de enteros (producto y cociente de signos) mediante tablas de signos y ejercicios pareados de multiplicación y división. Trabajar con ejemplos contrastivos (mismos valores absolutos, distintos signos) para que el estudiante observe el patrón."
+        "name": "Signo_ignoradо",
+        "description": "El estudiante calcula la división usando solo valores absolutos y asigna siempre un signo positivo al resultado, sin considerar la combinación de signos del dividendo y del divisor.",
+        "how_to_address": "Incluir ítems que pidan explícitamente comparar casos como (+a):(-b) y (-a):(-b), destacando que la regla de signos es análoga a la multiplicación. Refuerza tablas mentales: 'signos iguales dan positivo, signos distintos dan negativo'."
       },
       {
-        "name": "Confusión_con_regla_de_signos_de_suma_y_resta",
-        "description": "El estudiante mezcla la regla de los signos de la suma/resta con la de la multiplicación/división, por ejemplo, cree que ‘dos negativos dan negativo’ porque lo asocia a -5 + -3.",
-        "how_to_address": "Diferenciar explícitamente las reglas de signos para suma/resta y para producto/división, destacando que son procesos distintos. Utilizar tablas separadas y comparar casos concretos donde el resultado cambia (por ejemplo: -5 + -3 = -8, pero (-5)·(-3) = 15)."
+        "name": "Regla_signos_invertida",
+        "description": "El estudiante aplica incorrectamente la regla de los signos, por ejemplo, creyendo que (+):(-) da positivo o que (-):(-) da negativo.",
+        "how_to_address": "Diseñar opciones de respuesta donde el distractor principal tenga el valor numérico correcto pero el signo equivocado. En retroalimentación, contraponer ejemplos concretos y pedir que se relacione con la multiplicación de enteros."
       },
       {
-        "name": "Pérdida_del_signo_en_el_resultado",
-        "description": "El estudiante calcula correctamente el valor absoluto del cociente, pero omite o se equivoca en el signo final.",
-        "how_to_address": "Enseñar un procedimiento sistemático en dos pasos: primero determinar el signo del resultado con la regla de signos, luego operar con valores absolutos. Hacer que el estudiante anote explícitamente el signo antes de realizar la operación numérica."
+        "name": "Division_por_cero_permitida",
+        "description": "El estudiante asigna un valor numérico a divisiones como a : 0 o incluso a 0 : 0, a veces respondiendo 0 o 'infinito'.",
+        "how_to_address": "Plantear ítems de reconocimiento donde se deba identificar qué expresiones NO están definidas. En la retroalimentación, enfatizar que 'nunca se puede dividir por cero', independiente del signo o valor del numerador."
       },
       {
-        "name": "División_por_cero_mal_interpretada",
-        "description": "El estudiante no reconoce que a : 0 no está definido y le asigna un valor (0, a o infinito), o declara que 0 : a tampoco se puede calcular.",
-        "how_to_address": "Trabajar ejemplos específicos diferenciando 0 : a (a ≠ 0) y a : 0, discutiendo por qué una tiene sentido (repartir nada) y la otra no (no se puede repartir en 0 grupos). Utilizar contraejemplos sencillos para mostrar la inconsistencia de asumir un valor para a : 0."
+        "name": "Cero_mal_ubicado",
+        "description": "Confusión entre 0 : a (que sí está definida y vale 0) y a : 0 (que no está definida).",
+        "how_to_address": "Proponer pares de operaciones similares que solo difieran en la posición del cero y pedir comparar sus resultados (definida / no definida). Reforzar la lectura 'X dividido por Y' asociando cada número a su posición en la operación."
       },
       {
-        "name": "Inversión_dividendo_divisor",
-        "description": "El estudiante invierte el orden de los números al pasar del enunciado verbal a la operación simbólica (por ejemplo, traduce ‘repartir -20 en 5 grupos’ como 5 : -20).",
-        "how_to_address": "Practicar la traducción desde lenguaje natural a expresión numérica enfatizando quién es el total (dividendo) y quién el número de partes (divisor). Usar esquemas de flechas o diagramas de reparto que muestren la dirección de la operación."
+        "name": "Error_magnitud_cociente",
+        "description": "El estudiante se equivoca al calcular el valor absoluto del cociente (por ejemplo, al dividir números de dos o tres cifras), incluso si maneja bien la regla de los signos.",
+        "how_to_address": "Separar el trabajo en dos pasos en algunos ítems: primero pedir el valor absoluto del cociente y luego el signo, o viceversa. Esto permite focalizar la atención en cada parte del procedimiento por separado."
       },
       {
-        "name": "Bloqueo_por_notación_de_fracción",
-        "description": "El estudiante sabe dividir enteros escritos con dos puntos o símbolo ÷, pero se confunde o bloquea cuando la división se representa como fracción a/b.",
-        "how_to_address": "Mostrar sistemáticamente la equivalencia entre a : b, a ÷ b y a/b con ejemplos concretos usando solo enteros. Ejercitar conversiones entre notaciones antes de exigir cálculo, para que la fracción se perciba como otra forma de escribir la misma operación."
+        "name": "Orden_invertido",
+        "description": "En contextos verbales, el estudiante invierte dividendo y divisor, cambiando el resultado o perdiendo la exactitud de la división.",
+        "how_to_address": "Incluir problemas donde una opción incorrecta corresponda justamente a la división invertida. En la explicación, insistir en la traducción verbal 'cantidad total ÷ cantidad por grupo' o 'dividir X por Y' como guía para el orden."
       }
     ],
     "future_targets": [
-      "Dominio fluido de la multiplicación y división de números enteros en operaciones combinadas.",
-      "Resolución de ecuaciones lineales con coeficientes enteros que implican dividir por un entero distinto de cero.",
-      "Trabajo con potencias de enteros y potencias de base negativa, donde la regla de signos es esencial.",
-      "Manipulación de expresiones algebraicas con coeficientes enteros (simplificación, resolución de fórmulas) que requieren dividir enteros.",
-      "Comprensión y cálculo de razones y tasas de cambio con enteros en contextos elementales.",
-      "Extensión natural a la división de números racionales (fracciones) apoyada en la experiencia previa con signos en enteros.",
-      "Interpretación de variaciones positivas y negativas en contextos de datos (estadística descriptiva básica con ganancias/pérdidas, temperaturas, etc.)."
+      "A-M1-NUM-01-08",
+      "A-M1-NUM-01-09",
+      "A-M1-NUM-02-01",
+      "A-M1-ALG-01-01",
+      "A-M1-ALG-01-02"
     ],
     "representation_variants": [
-      "simbólica",
-      "verbal_breve",
-      "verbal_contextual_simple",
-      "tabla_de_valores_sencilla"
+      "Divisiones escritas en forma simbólica con signo ':' entre enteros.",
+      "Expresiones con el símbolo '/' usado en contextos aritméticos simples (por ejemplo, en calculadora o texto).",
+      "Uso del signo '÷' cuando sea coherente con el formato de la evaluación, siempre manteniendo consistencia dentro del ítem.",
+      "Contextos verbales que describen reparto, deudas o cambios de temperatura que se modelan con divisiones de enteros con signos.",
+      "Tablas pequeñas donde se muestren parejas de números (dividendo, divisor) y se pida determinar o comparar los signos de los cocientes.",
+      "Secuencias de operaciones presentadas linealmente donde la división de enteros es la operación central a resolver."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers_with_zero",
-      "medium_integers"
+      "medium_integers",
+      "large_integers",
+      "negative_integers",
+      "zero_involved"
     ],
     "required_image_types": []
   }

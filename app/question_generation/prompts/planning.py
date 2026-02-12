@@ -8,6 +8,7 @@ from app.question_generation.image_types import (
     ALL_SPECS,
     NOT_IMAGES_DESCRIPTION,
 )
+from app.question_generation.models import DifficultyDistribution
 
 # Temperature: 0.0 (deterministic structured output)
 # Response format: application/json
@@ -192,20 +193,19 @@ def build_enrichment_section(enrichment: object | None) -> str:
     return "\n".join(lines) if lines else "Enriquecimiento vacío."
 
 
-def build_difficulty_distribution(pool_size: int) -> str:
-    """Build the expected difficulty distribution string.
-
-    Default: equal split across easy/medium/hard.
+def build_difficulty_distribution(
+    distribution: DifficultyDistribution,
+) -> str:
+    """Format a difficulty distribution for the planning prompt.
 
     Args:
-        pool_size: Total number of plan slots.
+        distribution: Per-difficulty planned counts.
 
     Returns:
-        Human-readable distribution string.
+        Human-readable distribution string for the LLM.
     """
-    per_level = pool_size // 3
-    remainder = pool_size % 3
-    easy = per_level + (1 if remainder > 0 else 0)
-    medium = per_level + (1 if remainder > 1 else 0)
-    hard = per_level
-    return f"{easy} easy, {medium} medium, {hard} hard"
+    return (
+        f"{distribution.easy} easy, "
+        f"{distribution.medium} medium, "
+        f"{distribution.hard} hard"
+    )

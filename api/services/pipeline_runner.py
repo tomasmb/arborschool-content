@@ -261,8 +261,6 @@ class PipelineRunner:
         phase = params.get("phase", "all")
         if phase and phase != "all":
             cmd.extend(["--phase", phase])
-        if params.get("pool_size"):
-            cmd.extend(["--pool-size", str(params["pool_size"])])
         if params.get("dry_run") == "true":
             cmd.append("--dry-run")
         return cmd

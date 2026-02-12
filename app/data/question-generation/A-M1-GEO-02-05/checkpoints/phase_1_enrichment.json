@@ -3,139 +3,138 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de área lateral de prismas rectos generales (no solo rectangulares) usando la fórmula AL = P_base · h_prisma.",
-        "Cálculo de área total de prismas rectos como AT = AL + 2·A_base.",
-        "Prismas rectos con bases triangulares y poligonales (regulares o no) cuando las dimensiones necesarias están dadas explícitamente.",
-        "Problemas contextualizados donde se pida solo el área lateral (por ejemplo, pintar solo las caras laterales) o el área total (por ejemplo, forrar completamente un prisma).",
-        "Tareas que exigen decidir, a partir del contexto, si corresponde usar área lateral, total o solo área de base.",
-        "Uso de redes (desarrollos planos) descritas verbalmente para identificar qué rectángulos corresponden al área lateral y cuáles a las bases.",
-        "Identificación correcta de la altura del prisma como la distancia entre las dos bases paralelas."
+        "Cálculo de área lateral de prismas rectos generales usando la expresión P_base · h, donde P_base es el perímetro de la base y h la altura del prisma.",
+        "Cálculo de área total de prismas rectos generales como A_T = A_L + 2·A_B, donde A_L es el área lateral y A_B el área de la base.",
+        "Prismas rectos con bases triangulares, cuadriláteras no rectangulares (por ejemplo rombos, trapecios) y polígonos regulares o irregulares (cuando se entregan las dimensiones necesarias para el área).",
+        "Problemas en contexto que requieran decidir si corresponde usar solo área lateral o el área total (por ejemplo, pintar solo caras laterales, forrar todo el prisma, etc.).",
+        "Situaciones donde se debe determinar primero áreas de las bases a partir de dimensiones lineales simples (sin trigonometría) y luego calcular el área superficial.",
+        "Identificación y uso coherente de unidades de medida de área (cm², m², etc.) ligadas a problemas de superficie de cuerpos 3D."
       ],
       "out_of_scope": [
-        "Cálculo de volúmenes de prismas (incluye esto en otro átomo).",
-        "Uso de fórmulas específicas de cubos o paralelepípedos como atajos (AT = 2(ab + bc + ac), etc.).",
-        "Prismas oblicuos o figuras no prismáticas (pirámides, cilindros, conos, cuerpos compuestos).",
-        "Cálculo de áreas de las bases cuando requieren trigonometría (por ejemplo, usar seno, coseno o tangente).",
-        "Determinación de dimensiones faltantes mediante teorema de Pitágoras u otros teoremas antes de aplicar las fórmulas de área de superficie.",
-        "Problemas que mezclen área lateral de prismas con áreas de otros sólidos en una misma pregunta.",
-        "Interpretación de redes complejas donde no sea evidente qué caras corresponden a la base (eso va en visualización espacial más avanzada)."
+        "Uso de fórmulas específicas de cubos y paralelepípedos tipo 2(lw + lh + wh) o 6a², sin pasar explícitamente por la idea P_base · h y A_L + 2A_B.",
+        "Prismas oblicuos o no rectos (aristas laterales inclinadas respecto al plano de la base).",
+        "Cuerpos que no son prismas (pirámides, cilindros, conos, esferas, troncos de pirámide o cono).",
+        "Cálculo de volúmenes de prismas (eso corresponde a otro átomo).",
+        "Uso de trigonometría para determinar lados o alturas de la base (sen, cos, tan, teorema del coseno, etc.).",
+        "Prismas con bases curvas (cilindros) o mixtas.",
+        "Problemas que solo exigen reconocer el nombre del cuerpo (identificación de prisma triangular, pentagonal, etc.) sin cálculo de área.",
+        "Cálculo de áreas de redes (desarrollos planos) que no se identifican claramente como el área superficial del prisma."
       ],
       "prerequisites": [
-        "A-M1-GEO-01-01: Cálculo de perímetros de polígonos (triángulos y polígonos en general).",
-        "A-M1-GEO-01-02: Cálculo de áreas de triángulos (base·altura/2).",
-        "A-M1-GEO-01-03: Cálculo de áreas de polígonos, especialmente polígonos regulares (por ejemplo, usando apotema o descomposición en triángulos).",
-        "A-M1-GEO-02-01: Reconocimiento de prismas rectos, sus elementos (base, caras laterales, altura del prisma).",
-        "A-M1-NUM-01-01: Manejo de operaciones básicas con números enteros y decimales (suma, multiplicación)."
+        "A-M1-GEO-01-01: Cálculo de perímetros de polígonos (triángulos, cuadriláteros y polígonos regulares).",
+        "A-M1-GEO-01-02: Cálculo de área de triángulos (por ejemplo, base·altura/2) a partir de medidas lineales dadas.",
+        "A-M1-GEO-01-03: Cálculo de área de cuadriláteros y otros polígonos (rectángulos, paralelogramos, rombos, trapecios, polígonos regulares simples).",
+        "A-M1-GEO-02-01: Identificación de prismas rectos y sus elementos (caras laterales, bases, aristas laterales, altura).",
+        "A-M1-NUM-01-01: Manejo básico de operaciones con números racionales y uso de unidades de longitud y área."
       ],
       "common_traps": [
-        "Confundir altura del prisma con la altura de un triángulo de la base (especialmente cuando se entregan ambas medidas).",
-        "Olvidar multiplicar por 2 el área de la base al calcular el área total.",
-        "Usar la fórmula AL = área de base · altura en vez de AL = perímetro de base · altura.",
-        "Confundir perímetro con área de la base al sustituir en la fórmula del área lateral.",
-        "Asumir que todas las caras laterales son iguales aunque la base sea un polígono irregular.",
-        "Aplicar fórmulas de cubos o paralelepípedos a prismas con bases que no son rectángulos.",
-        "Usar unidades incorrectas para el área (por ejemplo, no elevar al cuadrado o mezclar cm y m sin convertir).",
-        "No leer con atención si el problema pide área lateral o área total y calcular la que no corresponde.",
-        "Interpretar mal datos verbales como \"solo la parte de los lados\" o \"toda la superficie\" generando confusiones entre área lateral y total."
+        "Confundir la altura del prisma (distancia entre las bases) con una altura interna de la base (por ejemplo, la altura de un triángulo de la base).",
+        "Sumar solo una vez el área de la base al calcular el área total (A_T = A_L + A_B en lugar de A_L + 2A_B).",
+        "Olvidar algún lado en el cálculo del perímetro de bases poligonales, especialmente en polígonos con lados no todos etiquetados explícitamente.",
+        "Usar longitudes de aristas inclinadas o diagonales como si fueran la altura del prisma.",
+        "Confundir área lateral con área total en contextos verbales (por ejemplo, considerar también las bases cuando el contexto indica pintar solo las paredes laterales).",
+        "Asignar la misma medida a todas las aristas de la base aunque no se indique que el polígono es regular.",
+        "Cambiar unidades de longitud y área sin convertir adecuadamente (por ejemplo, usar cm para algunas medidas y m para otras sin unificar).",
+        "Tratar cada cara lateral como si fuera un cuadrado aunque sean rectángulos con distintas dimensiones."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Prismas rectos con bases simples (triangular o cuadrangular) donde todas las dimensiones necesarias están dadas de forma directa y con números enteros pequeños.",
-        "La base del prisma es un polígono cuya área es inmediata o ya está entregada en el enunciado, de modo que el foco esté en aplicar AL = P_base · h y AT = AL + 2A_base.",
-        "El perímetro de la base se puede obtener mediante una suma directa de pocos lados, todos con la misma unidad y sin fracciones.",
-        "Se pide explícitamente área lateral o área total, sin ambigüedad de contexto.",
-        "No se requiere distinguir entre varias alturas posibles; solo se da una medida de altura claramente identificada como altura del prisma.",
-        "No hay que interpretar redes ni descripciones complejas del sólido: el tipo de prisma y sus medidas se indican textualmente de forma directa."
+        "Prismas rectos con bases simples (triángulo rectángulo, rectángulo, cuadrado) donde todas las dimensiones necesarias se entregan explícitamente y en la misma unidad.",
+        "Cálculos que involucran números enteros pequeños y sin fracciones (por ejemplo, lados y alturas enteras menores o iguales a 20).",
+        "Ítems donde se indica explícitamente si se pide área lateral o área total, con fórmulas sugeridas o implícitas directamente (por ejemplo, se explicita P_base y A_B).",
+        "Figuras en las que no es necesario deducir medidas faltantes; solo se reemplaza en P_base · h y luego se aplica A_L + 2A_B.",
+        "Contextos directos, sin textos extensos: cuerpo aislado, sin historia o aplicación compleja."
       ],
       "medium": [
-        "Prismas rectos con bases poligonales de 5 o más lados, donde se debe calcular primero el perímetro y luego usarlo en AL = P_base · h.",
-        "Cálculo del área de la base a partir de dimensiones dadas (por ejemplo, base triangular con base y altura; polígono regular con lado y apotema ya dados) antes de aplicar AT.",
-        "Problemas donde se debe decidir, a partir del contexto (por ejemplo, pintar, forrar, construir), si se requiere área lateral o total.",
-        "Uso de números mixtos: combinación de enteros y decimales simples, siempre con operaciones directas (suma y multiplicación) sin redondeos complejos.",
-        "Presencia simultánea de la altura del prisma y de alturas internas de la base, donde el estudiante debe seleccionar correctamente la altura del prisma.",
-        "Descripciones verbales del sólido que requieren organizar la información (por ejemplo, lados de la base descritos en texto en vez de listados en una tabla)."
+        "Prismas rectos con bases poligonales de más de cuatro lados o cuadriláteros no rectangulares, donde el estudiante debe calcular primero el perímetro de la base a partir de varias medidas.",
+        "Necesidad de calcular el área de la base usando una fórmula conocida (por ejemplo, área de triángulo no recto con base y altura dadas, área de trapecio, área de rombo) antes de hallar el área lateral y total.",
+        "Problemas de contexto donde hay que decidir si corresponde usar área lateral o total (por ejemplo, forrar una caja sin tapa, pintar solo caras laterales, etc.).",
+        "Presencia de números mixtos o fracciones simples en alguna dimensión, o combinaciones de medidas que requieren dos o más pasos de cálculo antes de llegar a la fórmula de superficie.",
+        "Ítems con figuras 3D donde no todas las medidas están directamente sobre las caras necesarias y hay que identificar visualmente qué lado de la base o altura corresponde a cada dimensión indicada."
       ],
       "hard": [
-        "Prismas rectos con bases poligonales irregulares donde se entregan las longitudes de todos los lados y eventualmente algunas áreas parciales o descomposiciones para hallar el área de la base.",
-        "Problemas que mezclan varias etapas encadenadas: calcular un lado faltante de la base por una relación geométrica sencilla (sin trigonometría), luego perímetro, luego área de base y finalmente AL o AT.",
-        "Contextos donde solo parte de la superficie debe considerarse (por ejemplo, un prisma apoyado sobre una base que no se pinta ni se forra), obligando a excluir una o ambas bases del cálculo.",
-        "Uso de fracciones simples combinadas con decimales o diferentes unidades de longitud que requieren conversión previa antes de calcular áreas.",
-        "Enunciados extensos con datos redundantes o irrelevantes que el estudiante debe filtrar para identificar solo las dimensiones necesarias para calcular área lateral o total.",
-        "Tareas que implican comparar dos prismas (por ejemplo, decidir cuál requiere más material para forrarlo) usando el concepto de área de superficie, sin que se pida explícitamente el cálculo numérico de cada área."
+        "Prismas rectos con bases poligonales irregulares donde el estudiante debe reconstruir el perímetro y el área de la base combinando varias fórmulas o descomponiendo la base en figuras más simples (por ejemplo, triángulos y rectángulos).",
+        "Problemas de aplicación que mezclan varias superficies (por ejemplo, comparar materiales necesarios para distintos prismas, o determinar cuál opción usa menos material) implicando comparar áreas totales o laterales.",
+        "Situaciones en las que se debe inferir dimensiones faltantes usando relaciones aritméticas simples (por ejemplo, lados opuestos iguales en un paralelogramo, diferencias de longitudes en trapecios) antes de poder calcular el perímetro o área de la base.",
+        "Ítems donde hay información irrelevante o datos redundantes y el estudiante debe seleccionar qué dimensiones son necesarias para el área de superficie.",
+        "Uso de números decimales no triviales o fracciones no simples en varias dimensiones, que generan resultados con decimales o fracciones que deben mantenerse sin redondeo intermedio.",
+        "Comparación de dos estrategias distintas para calcular la misma área de superficie (por red de desarrollo plano versus uso directo de fórmulas) y elección/justificación de la correcta."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra \"altura\" sin especificar si es altura del prisma o altura de una figura en la base; usar formulaciones como \"altura del prisma\" y \"altura del triángulo de la base\".",
-      "No mezclar términos como \"largo, ancho y alto\" en prismas no rectangulares; preferir \"lados de la base\" y \"altura del prisma\".",
-      "No suponer que el estudiante deduce qué caras se incluyen: explicitar si se deben considerar ambas bases, solo una, o ninguna, especialmente en contextos como pintar, forrar o apoyar el prisma sobre una superficie.",
-      "Evitar descripciones verbales ambiguas de las dimensiones de la base; indicar con claridad qué medidas corresponden a lados, diagonales u otras longitudes.",
-      "No usar expresiones vagas como \"toda la parte de arriba\" o \"todo el contorno\"; en su lugar, especificar \"todas las caras laterales\" o \"todas las caras del prisma\".",
-      "Evitar redes o descripciones de desarrollos planos en que no quede claro cuáles polígonos corresponden a las bases; si se usa una red, nombrar explícitamente las bases en el texto.",
-      "No usar abreviaturas no estándar para las fórmulas; escribir en el enunciado, si es necesario, \"área lateral\" y \"área total\" en palabras en vez de solo AL, AT.",
-      "No mezclar unidades de longitud sin aclarar que deben convertirse; si se usan distintas unidades, indicarlo explícitamente o mantener todas las medidas en la misma unidad.",
-      "Evitar preguntas donde el mismo símbolo (por ejemplo, h) represente cosas distintas en la base y en el prisma en la misma situación."
+      "Evitar no dejar claro qué se entiende por 'altura del prisma'; siempre especificar o mostrar gráficamente que es la distancia perpendicular entre las bases, no una arista cualquiera.",
+      "No presentar figuras donde no se distinga con claridad cuáles caras son bases y cuáles son caras laterales; etiquetar o describir las bases explícitamente.",
+      "Evitar problemi as donde no quede claro si se consideran las bases en el cálculo (por ejemplo, en contextos de pintar, forrar, etc. explicitar si se incluyen o no las bases).",
+      "No mezclar dimensiones en distintas unidades sin especificar que deben convertirse o sin dar unidades consistentes en toda la figura.",
+      "Evitar polígonos de base con lados no etiquetados si su longitud es necesaria para el cálculo y no se puede deducir inequívocamente a partir del texto.",
+      "No usar el término 'altura' para referirse simultáneamente a la altura del prisma y a la altura interna de la base sin diferenciar (por ejemplo, usar 'altura del prisma' y 'altura del triángulo de la base').",
+      "Evitar perspectivas 3D confusas donde se superpongan aristas y no quede claro qué longitud corresponde a qué segmento; en cada dimensión relevante, etiquetar la arista sobre la que aplica.",
+      "No exigir aproximaciones numéricas sin indicar claramente el grado de aproximación cuando aparezcan raíces o resultados no enteros (por ejemplo, 'dé su respuesta con un decimal').",
+      "Evitar contextos en que se pueda interpretar el cuerpo como otro sólido (por ejemplo, un prisma rectangular que parezca cubo) si el tipo de base es relevante; aclarar el tipo de polígono base o sus medidas."
     ],
     "error_families": [
       {
-        "name": "Confusión entre perímetro y área de la base",
-        "description": "El estudiante usa el área de la base donde corresponde el perímetro en la fórmula del área lateral, o viceversa, lo que lleva a resultados numéricamente incoherentes.",
-        "how_to_address": "Diseñar ítems que pidan explícitamente perímetro de la base como paso intermedio, reforzando la asociación AL = P_base · h. Incluir alternativas distractoras construidas con A_base · h y discutir por qué son incorrectas en retroalimentaciones."
+        "name": "Confusion_altura_prisma_vs_altura_base",
+        "description": "El estudiante usa como altura del prisma una medida que corresponde a una altura o lado interno del polígono base, o una arista inclinada, en lugar de la distancia entre las bases.",
+        "how_to_address": "Incluir enunciados y figuras donde se compare explícitamente la altura del prisma con la altura de la base y se repase la definición de prisma recto, destacando que la altura del prisma es la longitud de las aristas laterales perpendiculares al plano de la base."
       },
       {
-        "name": "Olvido de las dos bases en el área total",
-        "description": "Al calcular el área total, el estudiante suma el área lateral con solo una base (AL + A_base) y no con 2A_base.",
-        "how_to_address": "Proponer situaciones donde se compare pintar solo las caras laterales, una sola base y ambas bases, enfatizando que el prisma tiene dos bases congruentes. Destacar explícitamente el término 2A_base en las soluciones comentadas."
+        "name": "Olvido_segunda_base_en_area_total",
+        "description": "Al calcular el área total solo se suma una vez el área de la base (A_T = A_L + A_B), ignorando que hay dos bases congruentes.",
+        "how_to_address": "Proponer ejercicios donde se pida escribir la expresión A_T = A_L + 2·A_B y construir tablas con A_L, A_B y 2·A_B para reforzar que siempre hay dos bases en un prisma. Usar desarrollos planos donde se vean claramente las dos bases repetidas."
       },
       {
-        "name": "Altura del prisma mal identificada",
-        "description": "El estudiante toma como altura del prisma una medida que corresponde a una altura del polígono de la base u otra dimensión no perpendicular a las bases.",
-        "how_to_address": "Plantear problemas donde aparezcan varias longitudes y pedir primero identificar qué medida es la altura del prisma (eventualmente en un ítem conceptual previo) antes de calcular el área. Utilizar vocabulario preciso en los enunciados."
+        "name": "Error_en_perimetro_de_la_base",
+        "description": "Cálculo incorrecto del perímetro de la base por omitir lados, sumar mal o asumir regularidad donde no la hay (dar a todos los lados la misma longitud sin justificación).",
+        "how_to_address": "Trabajar de forma aislada el cálculo de perímetros en las mismas bases que luego se usarán en prismas, enfatizando el conteo cuidadoso de lados y revisando la información dada (por ejemplo, 'solo los lados marcados son iguales')."
       },
       {
-        "name": "Asumir caras laterales congruentes sin justificación",
-        "description": "En prismas con bases poligonales irregulares, el estudiante supone que todas las caras laterales tienen la misma área o el mismo ancho, lo que lleva a errores al calcular el área lateral.",
-        "how_to_address": "Incluir ítems donde se entreguen claramente longitudes laterales diferentes y se requiera usar la fórmula general AL = P_base · h, enfatizando que la igualdad de caras laterales solo ocurre en casos particulares (por ejemplo, bases regulares)."
+        "name": "Confusion_area_lateral_vs_area_total",
+        "description": "El estudiante calcula el área total cuando se pide el área lateral, o al revés, especialmente en problemas de contexto (pintar, forrar, construir, etc.).",
+        "how_to_address": "Diseñar ítems que obliguen a interpretar el contexto (por ejemplo, 'techar', 'poner piso', 'pintar paredes') y relacionarlos explícitamente con caras específicas del prisma; usar esquemas que sombren solo las superficies a considerar y pedir que se describa verbalmente qué se está calculando."
       },
       {
-        "name": "Uso indebido de fórmulas de cubos o paralelepípedos",
-        "description": "Ante cualquier prisma, el estudiante utiliza fórmulas memorizadas para cubos o paralelepípedos (como 6a² o 2(ab + bc + ac)), aunque la base no sea rectangular.",
-        "how_to_address": "Proponer ítems que expliciten que la base no es un rectángulo o que el prisma no es un paralelepípedo, obligando a descomponer el cálculo en AL y 2A_base. Comparar numéricamente qué pasa si se usan las fórmulas simplificadas fuera de contexto."
+        "name": "Uso_de_largo_incorrecto_en_caras_laterales",
+        "description": "Al calcular el área lateral como suma de áreas de rectángulos, se usa la medida equivocada para una de las dimensiones (por ejemplo, usar un lado de la base que no corresponde a esa cara).",
+        "how_to_address": "Reforzar visualmente la correspondencia entre cada lado de la base y la cara lateral asociada, usando colores o letras para emparejar lados con caras. Ejercitar primero con el enfoque A_L = suma de áreas de caras y luego vincularlo con P_base · h."
       },
       {
-        "name": "Manejo deficiente de unidades",
-        "description": "Olvidar elevar al cuadrado las unidades al calcular el área, o combinar medidas en distintas unidades (cm y m) sin convertirlas, generando resultados con unidades incorrectas.",
-        "how_to_address": "Diseñar algunos ítems que incluyan conversión simple de unidades como parte explícita de la tarea e incluir alternativas distractoras con unidades mal expresadas para que el estudiante deba atender a este aspecto."
+        "name": "Manejo_deficiente_de_unidades",
+        "description": "Errores por mezclar cm, m, mm sin conversión adecuada o por dar la respuesta en unidades de longitud en vez de área.",
+        "how_to_address": "Incluir ítems donde se enfatice la conversión de unidades antes del cálculo y pedir explícitamente que la respuesta indique la unidad de área. Hacer comparar respuestas con distintas unidades para notar inconsistencias (por ejemplo, verificar órdenes de magnitud)."
       },
       {
-        "name": "Seleccionar el tipo de área incorrecto según el contexto",
-        "description": "El estudiante calcula el área total cuando el problema pide solo área lateral o, al revés, calcula solo el área lateral cuando se requiere la total, debido a una lectura superficial del enunciado.",
-        "how_to_address": "Plantear contextos contrastados (forrar completamente vs. solo pintar los costados vs. cubrir la tapa) y preguntar explícitamente qué superficies intervienen antes de hacer el cálculo numérico. Destacar palabras clave en las explicaciones de solución."
+        "name": "Omitir_alguna_cara_en_desarrollos",
+        "description": "Al trabajar con redes (desarrollos planos) de prismas, el estudiante omite una cara lateral o cuenta dos veces la misma, alterando el área lateral o total.",
+        "how_to_address": "Utilizar actividades donde se numeran las caras en la figura 3D y en el desarrollo, pidiendo verificar que todas las caras están representadas una sola vez; relacionar ese conteo con el número de lados de la base y las dos bases."
       }
     ],
     "future_targets": [
-      "Cálculo de área de superficie y volumen de prismas, pirámides y otros cuerpos geométricos más complejos.",
-      "Resolución de problemas de optimización geométrica simples (minimizar material para construir un envase con volumen dado).",
-      "Modelación de situaciones físicas y tecnológicas que involucren uso de material (pintura, aislante, envases) en función del área de superficie.",
-      "Comprensión y trabajo con redes (desarrollos planos) de cuerpos sólidos en contextos de diseño y construcción.",
-      "Geometría 3D más avanzada: comparación de sólidos distintos con igual volumen pero diferentes áreas de superficie.",
-      "Aplicaciones en contextos técnicos y vocacionales (construcción, diseño industrial, embalaje) donde se requieren cálculos de superficies de sólidos.",
-      "Articulación con trigonometría para encontrar dimensiones de bases cuando la información se da mediante ángulos y lados."
+      "A-M1-GEO-02-06: Cálculo de área de superficie de pirámides y conos, donde la idea de superficie lateral y total se extiende a otros cuerpos.",
+      "A-M1-GEO-02-07: Cálculo de área de superficie de cilindros y otros cuerpos redondos, reutilizando la noción de perímetro de base por altura para el área lateral.",
+      "A-M1-GEO-02-08: Cálculo de superficies en problemas de diseño y construcción (por ejemplo, materiales necesarios para pintar, recubrir, embalar), que combinan varios cuerpos.",
+      "A-M1-GEO-03-01: Cálculo de volumen de prismas rectos (V = A_B · h), que se basa en el manejo previo del área de la base.",
+      "A-M1-MOD-01-02: Modelación de situaciones geométricas en contextos reales donde se elige el tipo de cuerpo adecuado y se calculan costos asociados a área superficial.",
+      "A-M1-GEO-01-04: Profundización en descomposición de figuras planas complejas en triángulos y polígonos simples para cálculo de áreas, útil para bases poligonales irregulares.",
+      "A-M1-DAT-01-02: Análisis de datos en contextos geométricos (por ejemplo, comparar eficiencia en uso de material según forma del envase) donde se requiere comparar áreas de superficie."
     ],
     "representation_variants": [
-      "verbal_contextual: enunciados con situaciones cotidianas (cajas, envases, estanques prismáticos) que describen las medidas en palabras.",
-      "simbólica: uso explícito de fórmulas AL = P_base · h y AT = AL + 2A_base con sustitución de valores numéricos.",
-      "tabular: tablas que entregan largo de cada lado de la base, altura del prisma y eventualmente áreas parciales para apoyar el cálculo.",
-      "descriptiva_estructurada: descripción ordenada de los elementos del prisma (tipo de base, dimensiones de lados, altura) sin figura, que obliga a reconstruir mentalmente el sólido.",
-      "mixta_verbal-simbólica: problemas donde parte de la información se da en texto y parte en forma de expresiones algebraicas o fórmulas."
+      "Prisma representado en perspectiva 3D clásica con todas sus aristas visibles, bases identificadas y dimensiones etiquetadas en algunas aristas.",
+      "Desarrollo plano (red) del prisma, mostrando claramente las caras laterales como rectángulos y las dos bases como polígonos congruentes, con medidas indicadas en los lados relevantes.",
+      "Esquema mixto donde se muestra el prisma 3D junto con un dibujo separado de la base en planta (2D) para focalizar el cálculo del perímetro y área de la base.",
+      "Solo descripción verbal del prisma (por ejemplo, 'un prisma recto de base triangular con lados de 3 cm, 4 cm y 5 cm y altura 10 cm'), sin figura, para enfatizar el trabajo algebraico con las fórmulas.",
+      "Tabla de dimensiones que liste para uno o varios prismas: tipo de base, medidas de los lados de la base, perímetro de la base, altura del prisma, área de la base, que el estudiante debe usar para calcular áreas laterales y totales.",
+      "Comparación de dos prismas mediante diagramas esquemáticos (no a escala), destacando qué medidas cambian (base, altura del prisma) y pidiendo comparar sus áreas de superficie."
     ],
     "numbers_profiles": [
       "small_integers",
       "medium_integers",
-      "decimals_one_decimal_place",
-      "decimals_two_decimal_places",
+      "simple_decimals",
       "simple_fractions"
     ],
-    "required_image_types": []
+    "required_image_types": [
+      "complex_3d"
+    ]
   }
 }

@@ -3,137 +3,134 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Evaluar si una afirmación es verdadera o falsa contrastándola directamente con la información explícita de un gráfico estadístico (barras, histograma, circular, dispersión, boxplot, etc.) o tabla de datos.",
-        "Identificar afirmaciones que no se pueden justificar con la información disponible (por falta de datos, porque requieren extrapolar, o porque asumen causalidad donde sólo hay correlación).",
-        "Detectar errores típicos de lectura de gráficos: confundir frecuencia con valor de la variable, ignorar la escala de los ejes, no considerar las unidades, interpretar mal porcentajes.",
-        "Analizar si frases como 'aumentó', 'disminuyó', 'se duplicó', 'es el más frecuente', 'la mayoría', etc., se sostienen con los datos entregados.",
-        "Distinguir entre comparación correcta de categorías o grupos y comparaciones que no están respaldadas por el gráfico o tabla.",
-        "Reconocer cuando una conclusión generaliza más allá del conjunto de datos observado (extrapolación injustificada) en el contexto del gráfico o tabla."
+        "Evaluar si afirmaciones textuales son verdaderas, falsas o no se pueden decidir, usando exclusivamente la información contenida en tablas y gráficos estadísticos sencillos.",
+        "Contrastar valores, tendencias y comparaciones explícitas (mayor/menor, aumenta/disminuye, se mantiene) con los datos del gráfico o tabla.",
+        "Detectar conclusiones que extrapolan más allá del periodo, muestra o variables representadas.",
+        "Identificar interpretaciones erróneas típicas, como confundir frecuencia con valor de la variable, porcentaje con cantidad absoluta o correlación con causalidad.",
+        "Analizar si frases como 'se duplicó', 'se triplicó', 'casi la mitad', 'la mayoría' son coherentes con los datos visuales o numéricos."
       ],
       "out_of_scope": [
-        "Cálculo de medidas de tendencia central o dispersión (media, mediana, moda, rango, desviación estándar) que no sean necesarias para validar o refutar la afirmación.",
-        "Construcción de gráficos o tablas a partir de datos crudos; aquí sólo se interpretan representaciones ya dadas.",
-        "Probabilidad teórica o cálculo de probabilidades a partir de reglas combinatorias o experimentos aleatorios sin representación gráfica o tabular explícita.",
-        "Demostraciones formales de independencia o causalidad; sólo se evalúa la identificación de conclusiones causales injustificadas.",
-        "Interpretación de gráficos de funciones en contexto puramente algebraico (ejes cartesianos con funciones continuas) sin foco estadístico.",
-        "Lectura de información que depende de detalles gráficos no matemáticos (color exacto, estilo de línea) cuando no estén claramente definidos en la leyenda."
+        "Cálculo detallado de medidas de tendencia central o dispersión que no sean estrictamente necesarias para validar la afirmación (se evalúa lectura/argumentación, no cálculo).",
+        "Construcción de gráficos o tablas a partir de datos en bruto (eso pertenece a otro átomo).",
+        "Inferencias estadísticas avanzadas (intervalos de confianza, contrastes de hipótesis, significancia estadística).",
+        "Problemas de probabilidad teórica o combinatoria que no usen tablas o gráficos de datos observados.",
+        "Análisis de funciones puramente algebraicas o gráficas funcionales continuas que no representen datos (eje de funciones, no de probabilidad y estadística).",
+        "Interpretaciones que exigen conocimiento de contexto externo (económico, científico, etc.) que no esté explícito en el enunciado o el gráfico."
       ],
       "prerequisites": [
-        "A-M1-PROB-01-01  (lectura básica de tablas de frecuencia y porcentajes)",
-        "A-M1-PROB-01-02  (lectura e interpretación de gráficos de barras e histogramas)",
-        "A-M1-PROB-01-03  (lectura e interpretación de gráficos circulares)",
-        "A-M1-PROB-01-04  (lectura de gráficos de línea simples en contexto de datos)",
-        "A-M1-PROB-01-05  (comprensión de conceptos de frecuencia absoluta, relativa y porcentaje)",
-        "A-M1-NUM-01-01   (manejo básico de enteros y porcentajes en contexto de comparación)",
-        "A-M1-NUM-01-02   (lectura de decimales simples y comparación de magnitudes)"
+        "A-M1-PROB-01-01: Lectura de frecuencias absolutas y relativas en tablas simples.",
+        "A-M1-PROB-01-02: Interpretación de gráficos de barras y de sectores (identificar categorías, valores y comparaciones directas).",
+        "A-M1-PROB-01-03: Interpretación básica de gráficos de líneas en el tiempo (tendencias generales, máximos y mínimos).",
+        "A-M1-PROB-01-04: Comprensión de términos como frecuencia, porcentaje, proporción, total y promedio en contextos sencillos.",
+        "A-M1-NUM-01-01: Manejo básico de comparaciones numéricas (mayor, menor, igual, aproximadamente)."
       ],
       "common_traps": [
-        "Usar afirmaciones que dependen de detalles visuales muy finos (diferencias mínimas de altura de barras) que no se distinguen claramente, generando respuestas ambiguas.",
-        "Plantear afirmaciones que mezclan varias ideas a la vez (p.ej., comparación entre categorías y tendencia temporal) donde una parte es verdadera y otra falsa, sin aclararlo.",
-        "Incluir datos que no están representados en el gráfico o tabla pero que podrían parecer razonables, induciendo a los estudiantes a responder desde conocimientos previos y no desde la evidencia.",
-        "Formular afirmaciones vagas del tipo 'la mayoría' o 'la gran parte' sin especificar un umbral razonable o sin que el gráfico permita distinguir claramente si corresponde a más del 50%.",
-        "Usar gráficos con escalas poco usuales o truncadas sin explicitarlo claramente, lo que puede llevar a que estudiantes correctos sean penalizados por interpretar la escala estándar.",
-        "Construir ítems donde más de una alternativa parece 'no se puede concluir' por falta de información, por datos inconsistentes o por redacción imprecisa.",
-        "Combinar en la misma pregunta una tabla y un gráfico con datos que no coinciden exactamente, generando contradicciones no intencionales."
+        "Afirmaciones que comparan porcentajes con cantidades absolutas (por ejemplo, un porcentaje mayor en un grupo más pequeño no implica necesariamente más casos).",
+        "Conclusiones causales a partir de gráficos que solo muestran asociación o evolución temporal.",
+        "Lecturas basadas solo en la longitud visual de las barras o sectores sin revisar las escalas o los valores del eje.",
+        "Ignorar que el gráfico puede partir de un valor distinto de cero en el eje vertical, lo que exagera o atenúa cambios.",
+        "Afirmaciones que usan lenguaje vago ('casi todos', 'pocos', 'la mayoría') cuando los datos muestran una situación diferente.",
+        "Suponer comportamientos entre puntos de un gráfico de líneas que no están representados (interpolaciones o extrapolaciones sin respaldo).",
+        "Tomar un ejemplo puntual del gráfico como si fuera representativo de todo el conjunto de datos.",
+        "Confundir categoría y etiqueta numérica, por ejemplo, tratar los intervalos de un histograma como puntos únicos."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Gráfico o tabla con pocas categorías o grupos (idealmente 3 a 5) y sin desagregaciones adicionales.",
-        "Escalas simples y directas (números pequeños, intervalos regulares, sin ejes truncados ni dobles escalas).",
-        "Afirmaciones centradas en una sola lectura directa: identificar el mayor/menor valor, verificar un cambio evidente (aumentó/disminuyó), reconocer la categoría más frecuente.",
-        "Conclusiones a evaluar que no requieren cálculos adicionales, o a lo sumo comparaciones visuales evidentes (p.ej., una barra claramente más alta que otra).",
-        "Opciones incorrectas basadas en errores muy básicos de lectura (confundir dos categorías, no fijarse en la leyenda) y fácilmente distinguibles del comportamiento correcto.",
-        "Sin necesidad de distinguir entre 'falso' y 'no se puede concluir'; las afirmaciones serán claramente verdaderas o claramente falsas por contraste directo con el gráfico o tabla."
+        "Tablas o gráficos de una sola variable categórica o temporal, con pocas categorías (hasta 5) y valores enteros pequeños o porcentajes redondos.",
+        "Afirmaciones cortas y directas que se refieren a un solo dato o comparación evidente (mayor/menor/igual) sin matices lingüísticos.",
+        "No se requieren cálculos, basta con leer o comparar visualmente alturas de barras o porcentajes indicados.",
+        "Sin cambios de unidad, sin escalas no estándar y sin necesidad de interpretar tendencias finas (solo máximos, mínimos, categoría más frecuente).",
+        "Distractores basados en leer mal un número o confundir una categoría, sin mezclas complejas de conceptos."
       ],
       "medium": [
-        "Gráfico o tabla con un número moderado de categorías (5 a 8) y posiblemente una variable adicional (por ejemplo, dos barras por categoría para comparar dos grupos).",
-        "Incorporación de porcentajes, frecuencias relativas o proporciones que exigen una lectura un poco más atenta, aunque sin cálculos complejos.",
-        "Afirmaciones que requieren combinar dos o más datos del gráfico o tabla (por ejemplo, comparar sumas de categorías, comparar un grupo con el total, verificar si una afirmación como 'se duplicó' es razonable).",
-        "Necesidad de distinguir entre afirmaciones falsas y afirmaciones que no se pueden deducir con la información disponible.",
-        "Errores distractores basados en confundir frecuencia con porcentaje, olvidar considerar el total, o asumir tendencias que el gráfico no muestra explícitamente.",
-        "Gráficos con escalas no comenzando en cero pero claramente señaladas, que obligan al estudiante a fijarse en los valores y no sólo en la impresión visual."
+        "Gráficos o tablas con 2 variables relacionadas (por ejemplo, dos años, dos grupos o dos tipos de producto) que requieren comparar entre ellas.",
+        "Afirmaciones que involucran proporciones (por ejemplo, 'cerca de la mitad', 'uno de cada cuatro') o variaciones relativas sencillas ('aumentó alrededor de un 50%').",
+        "Necesidad de hacer uno o dos pasos de cálculo básico (restar valores para variación absoluta, estimar un porcentaje aproximado, leer totales).",
+        "Presencia de más de una afirmación donde el estudiante debe distinguir entre 'falso' y 'no se puede concluir'.",
+        "Distractores que incorporan errores típicos (confundir frecuencia con valor de la variable, usar solo una parte del gráfico para generalizar)."
       ],
       "hard": [
-        "Gráficos o tablas más complejas: múltiples series de datos (por ejemplo, barras agrupadas o apiladas, gráfico de líneas con dos conjuntos de datos, boxplots comparativos, diagrama de dispersión con tendencia).",
-        "Necesidad de interpretar correctamente leyendas, escalas diferentes en cada eje, intervalos de clase o categorías no uniformes.",
-        "Afirmaciones que combinan varias relaciones: comparar grupos, identificar variaciones relativas (porcentuales), reconocer tendencias y, además, evaluar si se está extrapolando o asumiendo causalidad sin respaldo.",
-        "Ítems donde la opción correcta implica concluir explícitamente que 'no se puede determinar' o 'la información no es suficiente', discriminando frente a distractores que parecen plausibles pero no están respaldados por los datos.",
-        "Uso de contextos donde la tentación de usar conocimiento de mundo o prejuicios es alta (por ejemplo, temas de salud, economía, educación), forzando al estudiante a ceñirse estrictamente al gráfico o tabla.",
-        "Distractores construidos a partir de errores sutiles: interpretar mal un intervalo de clase, confundir la variable en el eje X con la del eje Y, interpretar correlación como causalidad, o ignorar el tamaño muestral al comparar porcentajes."
+        "Gráficos combinados o comparativos (por ejemplo, barras dobles, dos gráficos en el mismo ítem, gráfico y tabla) que exigen integrar información de varias fuentes.",
+        "Afirmaciones que distinguen explícitamente entre correlación y causalidad, o entre descripción de datos y predicción futura.",
+        "Uso de lenguaje estadístico y cotidiano con matices ('la mayoría', 'casi todos', 'tiende a', 'en promedio'), que requiere interpretar cuantitativamente qué tan justificado está el término.",
+        "Necesidad de evaluar varias afirmaciones simultáneamente, identificando cuáles son verdaderas, falsas o no deducibles, donde algunas son sutilmente incorrectas.",
+        "Situaciones con escalas no uniformes o ejes que no parten en cero, o donde se debe considerar porcentajes sobre totales distintos para comparar grupos.",
+        "Distractores que mezclan varias fuentes de error (lectura equivocada de escala, extrapolación indebida, confusión entre porcentaje y cantidad absoluta) de manera verosímil."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar términos vagos sin umbral claro como 'mucho más', 'un poco menos', 'casi todos', 'la gran mayoría', salvo que el gráfico muestre diferencias muy notorias o se especifique explícitamente qué se entiende por esos términos.",
-      "No usar gráficos con diferencias de altura o longitud mínimas entre barras o segmentos que puedan ser indistinguibles en la impresión, a menos que se indiquen valores numéricos exactos en las etiquetas.",
-      "Evitar ejes sin unidades o sin contexto cuando la interpretación dependa de ellas (por ejemplo, confundir personas con porcentajes).",
-      "No usar escalas truncadas o no uniformes sin señalarlo claramente; si se usan, explicitar en el enunciado que la escala es especial y mostrar marcas numéricas visibles.",
-      "Evitar afirmaciones que combinen varias proposiciones sin conectores claros (y, pero, aunque), lo que puede generar confusión sobre qué parte debe evaluarse.",
-      "No formular opciones donde la diferencia entre 'falso' y 'no se puede concluir' dependa de matices lingüísticos y no de la información cuantitativa disponible.",
-      "Evitar que el contexto sugiera una respuesta apoyada en creencias o conocimientos externos (p.ej., 'es obvio que fumar causa cáncer'), si el gráfico no entrega evidencia suficiente para esa conclusión.",
-      "No incluir tablas o gráficos con datos inconsistentes o internamente contradictorios, salvo que el objetivo explícito del ítem sea detectar la inconsistencia.",
-      "Evitar paréntesis o notas aclaratorias ambiguas, especialmente en leyendas o títulos de gráficos (por ejemplo, 'porcentaje relativo', 'índice ajustado') sin definirlos cuando sean relevantes para responder.",
-      "No usar códigos de color como único medio para distinguir series de datos sin acompañarlos de etiquetas o tramas, para no generar ambigüedad al imprimir en blanco y negro."
+      "Evitar afirmaciones que dependan de juicios subjetivos sin umbrales cuantitativos (por ejemplo, 'casi todos' sin que en datos haya una proporción claramente alta como >80%).",
+      "No usar términos de tendencia ('rápidamente', 'ligeramente') si el gráfico no permite cuantificar la diferencia de manera clara.",
+      "Excluir contextos donde el conocimiento externo pueda cambiar la interpretación (por ejemplo, salud, economía) si la conclusión correcta depende de esa información extra y no solo de los datos.",
+      "Evitar gráficos donde no se pueda leer con claridad las etiquetas de ejes, categorías o unidades; todo debe estar explícito en el enunciado o la figura.",
+      "No usar tablas o gráficos con datos inconsistentes o incompletos que puedan generar más de una lectura razonable.",
+      "Evitar afirmaciones que mezclen varias ideas a la vez (por ejemplo, cambiar de grupo, periodo y unidad en la misma frase) si eso hace difícil aislar qué parte es correcta o incorrecta.",
+      "No plantear afirmaciones que dependan de aproximaciones excesivas (por ejemplo, redondear dos veces) que puedan dar lugar a dos respuestas razonables.",
+      "Evitar que el ítem requiera interpretar el grosor de líneas, colores o elementos puramente estéticos que no estén descritos textualmente."
     ],
     "error_families": [
       {
-        "name": "Confusión frecuencia vs. valor de la variable",
-        "description": "El estudiante interpreta la altura de una barra, o el tamaño de un sector, como si representara el 'valor' de la variable medida y no la cantidad de casos (frecuencia). Por ejemplo, pensar que una categoría con barra más alta tiene valores más grandes en vez de más personas.",
-        "how_to_address": "Diseñar ítems donde la alternativa correcta exija distinguir explícitamente entre 'cantidad de casos' y 'valor medido', usando enunciados que contrasten ambas interpretaciones. Incluir en el contexto frases claras sobre qué representa cada eje o sector ('número de estudiantes', 'puntaje en la prueba', etc.)."
+        "name": "Lectura literal incorrecta del dato",
+        "description": "El estudiante lee mal un número o categoría del gráfico o tabla (confunde barra, fila, columna o etiqueta) y a partir de eso juzga una afirmación como verdadera o falsa.",
+        "how_to_address": "Usar distractores que exijan diferenciar categorías cercanas y enfatizar en el enunciado la importancia de leer etiquetas y unidades. Incluir ítems donde un pequeño cambio de categoría haga pasar la afirmación de verdadera a falsa."
       },
       {
-        "name": "Lectura descuidada de ejes y escalas",
-        "description": "Se ignoran los valores numéricos de ejes o etiquetas y se responde sólo por impresión visual, lo que genera errores especialmente cuando la escala no parte en cero o cuando los intervalos son irregulares.",
-        "how_to_address": "Incorporar preguntas donde la opción distractora coincide con la impresión visual pero contradice los valores numéricos. En las explicaciones (o retroalimentación prevista) enfatizar la necesidad de leer los números y no sólo 'mirar el dibujo'."
+        "name": "Confusión frecuencia–valor de la variable",
+        "description": "El estudiante interpreta la altura de la barra, o la frecuencia en una tabla, como si fuera el valor de la variable medida (por ejemplo, creer que la barra más alta indica el mayor puntaje, no la categoría más frecuente).",
+        "how_to_address": "Diseñar ítems donde el valor de la variable y la frecuencia estén claramente diferenciados y hacer que la afirmación correcta dependa de usar la magnitud adecuada. Incluir distractores que reflejen explícitamente esta confusión."
       },
       {
-        "name": "Asumir causalidad desde correlación o comparación",
-        "description": "El estudiante interpreta una relación mostrada (aumento conjunto, diferencia entre grupos) como evidencia de causa-efecto, aun cuando el gráfico sólo muestra asociación o diferencia descriptiva.",
-        "how_to_address": "Proponer afirmaciones con verbos causales ('produce', 'genera', 'hace que') frente a otras neutrales ('se asocia con', 'presenta valores mayores'), seleccionando como correcta la opción que rechaza la causalidad no fundamentada. Destacar en la redacción de los ítems que los datos son observacionales o descriptivos."
+        "name": "Porcentaje vs cantidad absoluta",
+        "description": "El estudiante compara porcentajes sin considerar que los totales de los grupos son distintos, o asume que un porcentaje mayor implica necesariamente una cantidad absoluta mayor.",
+        "how_to_address": "Proponer contextos con dos grupos de distinto tamaño y afirmaciones que obliguen a distinguir cantidad absoluta de porcentaje. Añadir al menos un distractor que sea correcto solo si se confunde porcentaje con número de casos."
       },
       {
-        "name": "Extrapolación injustificada",
-        "description": "El estudiante extiende tendencias o relaciones más allá del rango de datos del gráfico o tabla (en el tiempo, en otros grupos, en la población total), creyendo que lo observado se mantendrá igual.",
-        "how_to_address": "Incluir afirmaciones que generalicen a futuro o a poblaciones distintas ('seguro que el próximo año seguirá aumentando', 'en todo el país debe pasar lo mismo') y marcar como correctas las alternativas que señalan que esa conclusión no se puede deducir. Reforzar la idea de que sólo se puede concluir dentro del ámbito de los datos mostrados."
+        "name": "Causalidad asumida desde correlación",
+        "description": "El estudiante concluye que una variable causa el cambio de otra solo porque aumentan o disminuyen juntas, o porque se representan en el mismo gráfico temporal.",
+        "how_to_address": "Incluir afirmaciones que usen lenguaje causal ('gracias a', 'por culpa de') y que deban marcarse como incorrectas o no deducibles. Introducir distractores que propongan relaciones causales verosímiles pero no respaldadas por los datos."
       },
       {
-        "name": "Confusión entre porcentaje, proporción y cantidad absoluta",
-        "description": "El estudiante compara grupos por porcentajes cuando las cantidades absolutas son distintas, o al revés, llegando a conclusiones erróneas (por ejemplo, creer que mayor porcentaje implica necesariamente más personas).",
-        "how_to_address": "Proponer situaciones donde porcentajes altos se dan en grupos pequeños y al revés, y donde la afirmación correcta requiera considerar tanto el porcentaje como el tamaño del grupo. En la retroalimentación, explicitar el contraste entre 'parte del grupo' y 'número total de personas'."
+        "name": "Extrapolación o generalización indebida",
+        "description": "Se extienden conclusiones más allá de los datos observados: otros años, otras poblaciones, otros rangos de valores no representados.",
+        "how_to_address": "Plantear ítems donde el gráfico o tabla cubre un intervalo acotado, y las afirmaciones se refieren a periodos fuera del rango o a poblaciones distintas. Destacar en la redacción los límites de la información disponible."
       },
       {
-        "name": "Ignorar la categoría o unidad correcta",
-        "description": "Se leen bien los números, pero se confunde qué representan (por ejemplo, interpretar 'por familia' como 'por persona', o intercambiar filas y columnas en una tabla).",
-        "how_to_address": "Usar tablas y gráficos con títulos y encabezados claros, y construir distractores que intercambien intencionalmente filas/columnas o unidades. Resaltar en el trabajo en aula la importancia de leer encabezados y leyendas antes de responder."
+        "name": "Confusión entre verdadero, falso y no deducible",
+        "description": "El estudiante marca como falso lo que en realidad es 'no se puede concluir' (o viceversa), al no distinguir entre contradicción con los datos y simple falta de evidencia.",
+        "how_to_address": "Crear ítems con al menos una afirmación explícitamente contradicha por los datos y otra que no pueda confirmarse ni negarse. En la retroalimentación, subrayar la diferencia entre 'contradecir' y 'no estar respaldado'."
       },
       {
-        "name": "Seleccionar 'no se puede concluir' por inseguridad",
-        "description": "Ante la duda, algunos estudiantes eligen sistemáticamente opciones del tipo 'no se puede saber' incluso cuando la información sí permite una conclusión firme.",
-        "how_to_address": "Diseñar ítems en los que la información es claramente suficiente para una conclusión, incluyendo 'no se puede concluir' como distractor. En la retroalimentación, mostrar paso a paso cómo los datos disponibles sí permiten decidir y diferenciar estos casos de aquellos donde realmente falta información."
+        "name": "Ignorar la escala y el origen del eje",
+        "description": "Se evalúan cambios o comparaciones sin considerar que el eje vertical no parte de cero o tiene una escala no uniforme, lo que lleva a sobreestimar o minimizar variaciones.",
+        "how_to_address": "Usar algunos gráficos con eje truncado o escalas marcadas claramente, y diseñar afirmaciones que requieran observar esa característica para juzgar correctamente la magnitud del cambio."
       }
     ],
     "future_targets": [
-      "Interpretación crítica de estudios estadísticos y encuestas en medios de comunicación, identificando conclusiones no respaldadas por los datos presentados.",
-      "Comprensión y análisis de gráficos más avanzados (boxplots múltiples, diagramas de dispersión con rectas de tendencia) evaluando la validez de las conclusiones extraídas.",
-      "Razonamiento estadístico en contextos de probabilidad inferencial básica, donde se debe decidir si los datos son suficientes para apoyar una hipótesis.",
-      "Evaluación de argumentos basados en datos en áreas como economía, ciencias sociales y ciencias naturales, distinguiendo claramente entre descripción, asociación y causalidad.",
-      "Diseño y crítica de investigaciones escolares o proyectos donde se recolectan datos, se representan gráficamente y se extraen conclusiones fundadas.",
-      "Lectura y comprensión de informes técnicos o académicos que usan tablas y gráficos para sustentar conclusiones, identificando posibles sesgos o interpretaciones forzadas.",
-      "Desarrollo de pensamiento crítico cuantitativo aplicable a la toma de decisiones informadas en contextos cotidianos (salud, consumo, política pública)."
+      "Evaluar argumentos estadísticos más complejos que involucren medidas de tendencia central y dispersión al mismo tiempo.",
+      "Analizar críticamente gráficos en medios de comunicación, identificando manipulación visual o conclusiones engañosas.",
+      "Formular conclusiones propias basadas en datos y justificar su validez frente a posibles objeciones.",
+      "Distinguir entre resultados muestrales y conclusiones sobre una población, incluyendo la noción cualitativa de error muestral.",
+      "Interpretar y cuestionar estudios y encuestas sencillas, evaluando si las conclusiones declaradas están respaldadas por los datos.",
+      "Transitar hacia el análisis de regresión y correlación simple, manteniendo la cautela frente a afirmaciones de causalidad.",
+      "Desarrollar habilidades de argumentación matemática escrita, articulando datos, inferencias y límites de la información disponible."
     ],
     "representation_variants": [
-      "tabular",
-      "statistical_graphical",
-      "verbal_contextual",
-      "mixta_tabla_mas_grafico",
-      "mixta_grafico_mas_texto_resumen"
+      "Tablas de frecuencia simples y de doble entrada con totales parciales y generales.",
+      "Gráficos de barras simples y múltiples (agrupadas o apiladas) para comparar categorías y grupos.",
+      "Gráficos de líneas que muestren evolución temporal de una o dos series de datos.",
+      "Gráficos de sectores (torta) que representen distribuciones porcentuales.",
+      "Histogramas sencillos con intervalos claramente etiquetados cuando la variable es continua o agrupada.",
+      "Diagramas de caja y bigotes (boxplot) básicos para evaluar afirmaciones sobre mediana, cuartiles y valores extremos.",
+      "Combinación de tabla y gráfico del mismo conjunto de datos para contrastar lecturas desde ambas representaciones."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals_1_decimal_place",
-      "decimals_2_decimal_places",
-      "percentages",
-      "mixed"
+      "two_digit_integers",
+      "rounded_percentages",
+      "simple_fractions",
+      "proportions_with_small_totals",
+      "data_intervals_simple"
     ],
     "required_image_types": [
       "statistical_chart"

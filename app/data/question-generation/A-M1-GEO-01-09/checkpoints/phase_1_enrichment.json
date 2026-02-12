@@ -3,122 +3,133 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del área de un rombo usando exclusivamente la fórmula con diagonales A = (D · d) / 2.",
-        "Identificación de cuál medida corresponde a la diagonal mayor (D) y cuál a la menor (d) cuando se entregan explícitamente ambas.",
-        "Uso de unidades de longitud y área coherentes (por ejemplo, diagonales en cm → área en cm²).",
-        "Problemas de contexto donde el objeto tiene forma de rombo (cometas, baldosas, letreros, rombos en señalética) siempre que se den directamente las diagonales.",
-        "Ítems donde se debe elegir entre varias expresiones algebraicas cuál corresponde al área en función de D y d."
+        "Cálculo del área de un rombo usando exclusivamente la fórmula A = (D · d) / 2, donde D es la diagonal mayor y d la diagonal menor.",
+        "Identificación de las diagonales de un rombo en un dibujo, a partir de sus vértices o de la intersección de diagonales.",
+        "Problemas verbales donde se describen objetos con forma de rombo (baldosas, cometas, logos, terrenos ideales) y se entregan las longitudes de ambas diagonales para hallar el área.",
+        "Uso de unidades de medida básicas de longitud y área (cm, m, mm, km y sus cuadrados), sin conversión complicada de unidades.",
+        "Interpretación de datos donde una diagonal se da explícitamente y la otra se deduce de una relación numérica simple (por ejemplo, el doble, la mitad, diferencia o suma simple)."
       ],
       "out_of_scope": [
-        "Cálculo de área de rombos usando base y altura (pertenece al átomo de paralelogramos).",
-        "Cálculo o deducción de la longitud de las diagonales usando Pitágoras u otros teoremas; aquí las diagonales deben ser entregadas, no deducidas.",
-        "Cálculo de perímetros de rombos o uso de la longitud de sus lados.",
-        "Clasificación de cuadriláteros o demostraciones de que una figura es rombo.",
-        "Transformaciones geométricas (rotaciones, traslaciones, simetrías) de rombos.",
-        "Cálculo de áreas de otras figuras (triángulos, trapecios, círculos) aunque aparezcan dentro o fuera del rombo.",
-        "Problemas que exigen conversión de unidades no triviales (por ejemplo, cm a m² con varios pasos intermedios)."
+        "Cálculo del área de un rombo usando base y altura en lugar de diagonales (corresponde al átomo de área de paralelogramos).",
+        "Cálculo de perímetro del rombo o longitud de lados a partir de diagonales (teorema de Pitágoras en rombo).",
+        "Demostraciones formales de la fórmula del área del rombo a partir de descomposición de figuras o congruencias.",
+        "Rombos en coordenadas cartesianas donde haya que hallar primero la longitud de las diagonales usando distancia entre puntos.",
+        "Cálculo de áreas compuestas o diferencias de áreas que involucren varias figuras distintas además del rombo (p. ej., rombo inscrito en un círculo, rombo dentro de rectángulo complejo).",
+        "Uso de trigonometría (senos, cosenos) u otras herramientas avanzadas para hallar diagonales o área.",
+        "Contextos de optimización (máximo o mínimo de área) que requieran modelación algebraica adicional."
       ],
       "prerequisites": [
-        "A-M1-GEO-01-01: Reconocimiento de cuadriláteros básicos, incluyendo el rombo de forma visual y verbal.",
-        "A-M1-GEO-01-02: Uso de unidades de longitud y área (cm, m, cm², m²) y conversión simple dentro del mismo tipo (por ejemplo, cm a m, sin cambio de dimensión).",
-        "A-M1-GEO-01-05: Comprensión de la noción de área como medida de superficie.",
-        "A-M1-ARI-01-01: Multiplicación y división con números naturales y decimales sencillos.",
-        "A-M1-ARI-01-03: Manejo de fracciones simples, particularmente la fracción 1/2."
+        "A-M1-NUM-01-01",
+        "A-M1-NUM-02-01",
+        "A-M1-GEO-01-01",
+        "A-M1-GEO-01-02"
       ],
       "common_traps": [
-        "Confundir las diagonales con los lados del rombo y usar uno de los lados como si fuera diagonal.",
-        "Olvidar dividir por 2 en la fórmula A = (D · d) / 2, quedándose solo con D · d.",
-        "Intercambiar D y d creyendo que es un error, cuando en realidad es irrelevante para el resultado numérico; el problema real es identificar cuáles datos entregados son diagonales y cuáles no.",
-        "Usar una sola diagonal entregada y un lado como si ambos fueran diagonales.",
-        "Confundir el rombo con el cuadrado y asumir que las diagonales miden lo mismo sin que el enunciado lo indique.",
-        "Olvidar colocar las unidades de área (cm², m²) o escribir incorrectamente unidades al cuadrado.",
-        "Asumir que todas las medidas entregadas en el contexto son diagonales (por ejemplo, incluir el largo del hilo o el borde de una baldosa)."
+        "Confundir diagonal con lado del rombo cuando en el enunciado solo se dan números sin aclarar qué es cada medida.",
+        "Intercambiar la idea de 'mayor' y 'menor' con 'vertical' y 'horizontal', sobre todo cuando el rombo está rotado; creer que la diagonal vertical siempre es la mayor.",
+        "Olvidar dividir por 2 en la fórmula A = (D · d) / 2 o, al revés, dividir por 2 una sola de las diagonales antes de multiplicar sin justificación.",
+        "Tratar el rombo como un cuadrado automáticamente y suponer que las diagonales son iguales sin que el enunciado lo indique.",
+        "Usar mal las unidades al pasar de longitud a área (p. ej., escribir cm en lugar de cm² en la respuesta, o confundir m² con cm² en comparaciones).",
+        "Suponer que no es necesario identificar qué diagonal es la mayor y cuál la menor; aunque la fórmula sea simétrica, esto puede llevar a usar un dato incorrecto si el problema mezcla lados y diagonales.",
+        "No reconocer que un 'cometa' o 'baldosa en forma de rombo' corresponde geométricamente a un rombo para efectos de área."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Se entregan explícitamente las dos diagonales del rombo en forma directa, sin datos irrelevantes.",
-        "Las diagonales son números enteros pequeños (por ejemplo, entre 2 y 20).",
-        "No hay cambio de unidades ni necesidad de interpretar un contexto complejo; el enunciado puede ser casi directo: ‘Un rombo tiene diagonales de …’.",
-        "Las alternativas evidencian diferencias claras (por ejemplo, algunas no dividen por 2, otras usan suma en vez de producto).",
-        "No se requiere identificar cuál es la diagonal mayor o menor; basta usar ambos valores en la fórmula."
+        "Enunciados con un dibujo simple de un rombo claramente rotulado con D y d, con valores numéricos enteros pequeños (entre 2 y 20) entregados explícitamente.",
+        "Situaciones directas donde solo se pide calcular el área aplicando A = (D · d)/2, sin pasos intermedios ni interpretación adicional.",
+        "Problemas donde las unidades ya están en la misma escala y no se requiere ningún cambio de unidades.",
+        "Rombos mostrados con orientación estándar (uno de los diámetros casi horizontal y el otro casi vertical), sin distracciones ni información irrelevante."
       ],
       "medium": [
-        "Las diagonales aparecen en un contexto verbal (baldosas, cometas, rombos decorativos) y el estudiante debe seleccionar qué medidas corresponden a las diagonales dentro de varios datos.",
-        "Pueden aparecer números decimales sencillos o fracciones simples (por ejemplo, 5,5 cm; 3 1/2 cm).",
-        "El enunciado puede mencionar ‘diagonal mayor’ y ‘diagonal menor’ y el estudiante debe asociarlas correctamente con los valores dados, aunque numéricamente no afecte el área.",
-        "Pueden incluirse uno o dos datos irrelevantes (por ejemplo, el peso del objeto, el grosor del material) que el estudiante debe descartar.",
-        "Puede exigirse expresión del resultado en unidades de área distintas de las diagonales pero con conversión simple (por ejemplo, diagonales en m, respuesta en m² sin cambios de escala)."
+        "Problemas donde una de las diagonales se debe inferir a partir de una relación verbal sencilla (por ejemplo, 'la diagonal menor mide la mitad de la diagonal mayor' o 'las diagonales difieren en 4 cm').",
+        "Contextos aplicados (baldosas, terrenos, cometas) donde hay que identificar que la figura es un rombo y qué datos corresponden a las diagonales.",
+        "Enunciados con números enteros algo mayores (hasta 50–60) o productos que generan dos cifras para el área, manteniendo operaciones aritméticas simples.",
+        "Figuras en las que las diagonales no están rotuladas con D y d, pero sí con letras de vértices (por ejemplo, diagonal AC y diagonal BD) y el estudiante debe reconocerlas como diagonales de un rombo.",
+        "Problemas donde se entrega el área y una diagonal, y se pide calcular la otra diagonal despejando la fórmula A = (D · d)/2."
       ],
       "hard": [
-        "Las diagonales no se entregan aisladas, sino que deben ser identificadas a partir de una descripción más compleja (por ejemplo, ‘la distancia entre vértices opuestos’ en dos direcciones diferentes).",
-        "Los valores de las diagonales pueden ser decimales no tan simples o fracciones menos habituales (0,75 m; 7/4 m) que exigen más manejo numérico.",
-        "El contexto puede ser más denso, con varios datos que se parecen a diagonales (por ejemplo, bordes, diagonales de otras figuras, distancias no relevantes).",
-        "Se puede pedir comparar áreas de dos rombos dados por sus diagonales (mayor, menor, igual) en lugar de solo calcular un valor numérico.",
-        "Ítems donde se pide seleccionar o completar la expresión algebraica correcta para el área en función de letras (por ejemplo, D, d, x, y), discriminando errores típicos de fórmula."
+        "Ítems donde hay información redundante o distractora (por ejemplo, también se entrega el lado del rombo o un ángulo que no se necesita) y el estudiante debe seleccionar los datos útiles.",
+        "Situaciones de tipo inverso o mixto: se entrega el área, una relación no inmediata entre diagonales (por ejemplo, D = d + 6), y se debe plantear y resolver una ecuación sencilla para hallar ambas diagonales antes de calcular o verificar el área.",
+        "Problemas donde las diagonales se dan en unidades que requieren conversión previa para que el área quede en la unidad pedida (por ejemplo, una diagonal en cm y otra en m).",
+        "Contextos en que el rombo aparece como parte de una descripción más amplia (piso con baldosas, cometa armado con varillas) y las diagonales no están dibujadas explícitamente: el estudiante debe imaginar las diagonales a partir de la descripción y asignar correctamente su medida.",
+        "Rombos dibujados en posición poco usual (por ejemplo, muy inclinados o con diagonales no alineadas con la horizontal y vertical) para que el estudiante identifique las diagonales sin apoyarse en la orientación estándar."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar la palabra ‘diagonal’ para otras figuras en el mismo enunciado si no son parte del rombo evaluado, salvo que se explicite claramente a qué figura pertenece cada diagonal.",
-      "No mezclar lados y diagonales sin etiquetarlos o describirlos con claridad; siempre indicar explícitamente qué medidas son diagonales.",
-      "No usar expresiones vagas como ‘la distancia entre dos puntos del rombo’ sin especificar que son vértices opuestos.",
-      "Evitar que la figura o descripción sugiera un cuadrado salvo que sea explícito; si es un rombo que podría ser cuadrado, aclarar que es un rombo cualquiera o un rombo que no es cuadrado si la igualdad de diagonales pudiera confundir.",
-      "No incluir cambios de unidad de manera implícita (por ejemplo, unas diagonales en cm y otras en m) sin indicarlo explícitamente; en este átomo el foco no es la conversión de unidades.",
-      "Evitar formular preguntas donde no quede claro si se debe calcular área o perímetro; usar enunciados directos como ‘¿Cuál es el área del rombo…?’",
-      "En las alternativas, evitar opciones que solo cambian notación (D·d / 2 versus (D·d)/2) y no representan errores conceptuales distintos.",
-      "No plantear ítems donde la figura no sea claramente un rombo si se usa imagen; la igualdad de todos los lados debe estar marcada o mencionada."
+      "No usar la palabra 'lado' para referirse a una diagonal ni mezclar ambos términos sin especificar claramente qué mide cada número.",
+      "Evitar dibujos donde no quede claro cuáles segmentos son las diagonales y cuáles son otras líneas (ejes, líneas de decoración, etc.). Las diagonales deben estar trazadas y destacadas explícitamente.",
+      "No entregar dos medidas diferentes para el mismo segmento (por ejemplo, una medida en el texto y otra en la figura) a menos que se trate explícitamente de un distractor bien marcado; en general, texto y figura deben ser coherentes.",
+      "Evitar figuras que no sean rombos puros (p. ej., cuadriláteros generales) si no se señala explícitamente que 'es un rombo'; la condición de rombo debe estar clara en el enunciado o la figura (lados marcados iguales).",
+      "No usar notación de diagonales D y d en la figura sin indicar en el texto qué representa cada una, especialmente si también se usan letras para vértices (A, B, C, D) que pueden confundirse con la notación D.",
+      "Evitar frases vagas como 'la línea que cruza el rombo' si no se especifica que es una diagonal; mencionar siempre 'diagonal mayor' o 'diagonal menor' o nombrar los vértices extremos.",
+      "No mezclar diferentes unidades de medida sin pedir explícitamente la unidad final deseada; si se requiere conversión, dejar las unidades claramente visibles y consistentes.",
+      "Evitar ejemplos donde las diagonales sean numéricamente iguales si no se quiere inducir la idea de que todo rombo es un cuadrado; solo usar diagonales iguales cuando eso sea deliberado y esté indicado."
     ],
     "error_families": [
       {
         "name": "Olvido_de_dividir_por_2",
-        "description": "El o la estudiante usa A = D · d en lugar de A = (D · d) / 2, lo que produce un área exactamente el doble de la correcta.",
-        "how_to_address": "Incluir alternativas distractoras que correspondan a D · d para hacer visible el error y reforzar en ítems explicativos la interpretación de la fórmula como ‘medio producto de las diagonales’."
+        "description": "El estudiante aplica A = D · d en vez de A = (D · d) / 2, obteniendo un área exactamente el doble de la correcta.",
+        "how_to_address": "En los ítems, incluir opciones distractoras que correspondan a D · d para diagnosticar este error, y en la retroalimentación enfatizar el origen de la fórmula (producto de diagonales dividido por 2) y pedir que verifiquen siempre el paso de la división por 2."
       },
       {
-        "name": "Confusion_diagonales_vs_lados",
-        "description": "Se utilizan los lados del rombo en lugar de las diagonales, especialmente cuando el contexto menciona varias longitudes distintas.",
-        "how_to_address": "Diseñar ítems donde se indiquen claramente lados y diagonales, obligando a elegir las medidas correctas, y usar distractores que surgen de usar los lados en la fórmula."
+        "name": "Uso_de_lado_en_lugar_de_diagonal",
+        "description": "Se confunde la longitud del lado del rombo con la diagonal mayor o menor, especialmente cuando el enunciado incluye ambos datos o cuando la figura no está bien interpretada.",
+        "how_to_address": "Diseñar ítems donde el lado y las diagonales sean visiblemente distintos en la figura y rotulados con claridad, reforzando en la explicación la diferencia conceptual entre lado y diagonal y su rol en la fórmula del área."
       },
       {
-        "name": "Eleccion_incorrecta_de_datos",
-        "description": "Se eligen medidas irrelevantes del contexto (por ejemplo, ancho del marco, grosor, longitud de un soporte) como si fueran diagonales.",
-        "how_to_address": "Plantear problemas con uno o dos datos extra y construir distractores que reflejen el uso de esos datos, promoviendo la lectura cuidadosa de qué es una diagonal de un rombo."
+        "name": "Intercambio_de_diagonales_o_identificacion_erronea",
+        "description": "El estudiante confunde cuál es la diagonal mayor y cuál la menor, o elige un segmento que no es diagonal (por ejemplo, un eje de simetría o una línea interior). Aunque la fórmula es simétrica, esto puede llevar a usar medidas equivocadas.",
+        "how_to_address": "Incluir figuras donde solo dos segmentos se cruzan en el centro del rombo y destacar que las diagonales unen vértices opuestos. En la retroalimentación, pedir que siempre verifiquen que la diagonal une vértices y pasa por el centro de la figura."
       },
       {
-        "name": "Manejo_numerico_deficiente",
-        "description": "Errores al multiplicar o dividir por 2, especialmente con decimales o fracciones, aun cuando se aplica correctamente la fórmula.",
-        "how_to_address": "Incluir versiones con números simples y otras con decimales o fracciones fáciles, destacando la importancia de realizar los cálculos paso a paso y revisando operaciones básicas."
+        "name": "Manejo_incorrecto_de_unidades",
+        "description": "Errores al pasar de longitud a área (olvidar el cuadrado en las unidades) o al combinar diagonales con distintas unidades sin hacer conversión, generando áreas con unidades incoherentes.",
+        "how_to_address": "Incluir enunciados que resalten las unidades en negrita o con énfasis textual y, en la retroalimentación, mostrar explícitamente cómo las unidades de longitud se convierten en unidades cuadradas al calcular áreas."
       },
       {
-        "name": "Unidad_de_medida_incorrecta",
-        "description": "El resultado se expresa con unidades de longitud (cm, m) en vez de unidades de área (cm², m²), o se omiten las unidades.",
-        "how_to_address": "Agregar alternativas con mismas cifras pero unidades incorrectas y dirigir retroalimentación a la relación entre dimensión lineal (diagonales) y dimensión de área (unidad al cuadrado)."
+        "name": "Error_en_operaciones_aritmeticas_basicas",
+        "description": "Fallas en multiplicaciones simples o en la división por 2 (por ejemplo, 18 × 6 = 96, o (30 × 5)/2 = 75 mal calculado).",
+        "how_to_address": "En los ítems, proponer alternativas distractoras que correspondan a errores de cálculo plausibles para detectar esta dificultad. En la retroalimentación, sugerir estimar mentalmente la magnitud aproximada del área para revisar si el resultado final tiene sentido."
       },
       {
-        "name": "Formula_equivocada_por_asociacion_a_paralelogramo",
-        "description": "Se usa fórmula de paralelogramo (base·altura) o de rectángulo (lado·lado) por asociación de que el rombo ‘se parece’ a esas figuras.",
-        "how_to_address": "Proponer ítems que contrasten explícitamente distintas fórmulas posibles para el rombo y refuercen cuándo se usa diagonales y cuándo base y altura, remitiendo al átomo correspondiente si se usa base-altura."
+        "name": "Suposicion_de_rombo_es_cuadrado",
+        "description": "El estudiante asume que las diagonales son iguales (como en un cuadrado) sin que eso esté dicho, lo que puede llevar a igualar datos incorrectamente o a inferir una diagonal no dada.",
+        "how_to_address": "Presentar rombos no cuadrados (bien dibujados, con clara diferencia de diagonales) y explicitar en la retroalimentación que en un rombo solo se asegura igualdad de lados, no de diagonales."
+      },
+      {
+        "name": "No_reconocer_el_rombo_en_contextos_aplicados",
+        "description": "Dificultad para identificar que una baldosa, cometa u objeto descrito tiene forma de rombo y, por tanto, se puede aplicar la fórmula de las diagonales.",
+        "how_to_address": "Usar vocabulario claro en el enunciado ('baldosa en forma de rombo') y, en retroalimentación, insistir en asociar estas formas cotidianas con el rombo matemático, mostrando esquemas simplificados."
       }
     ],
     "future_targets": [
-      "Cálculo y comparación de áreas de otros cuadriláteros compuestos que incluyan rombos como parte de la figura.",
-      "Resolución de problemas geométricos aplicados en contextos de diseño, pavimentación y construcción donde se usan piezas rómbicas.",
-      "Comprensión más profunda de las propiedades de los cuadriláteros y del uso de diagonales en distintos polígonos.",
-      "Aplicación combinada de teorema de Pitágoras y fórmula del área de rombo cuando las diagonales no se entregan directamente.",
-      "Transición al trabajo algebraico con fórmulas de área en función de variables simbólicas (generalización y modelación).",
-      "Optimización geométrica simple (por ejemplo, comparar áreas en función de diagonales fijas o variables)."
+      "Cálculo del área de paralelogramos usando base y altura, conectando el rombo como caso particular de paralelogramo.",
+      "Problemas de áreas compuestas donde un rombo se combine con otras figuras (triángulos, rectángulos, círculos).",
+      "Uso de teorema de Pitágoras para relacionar diagonales y lado del rombo en problemas más avanzados.",
+      "Geometría analítica de cuadriláteros, donde se calculan diagonales con distancia entre puntos y luego se usa la fórmula de área.",
+      "Aplicaciones en contextos de escala o agrandamientos, donde el factor de escala afecta las diagonales y, por ende, el área.",
+      "Resolución de problemas de optimización sencilla en geometría (por ejemplo, maximizar área de un rombo con restricciones sobre sus diagonales)."
     ],
     "representation_variants": [
-      "verbal",
-      "simbólica",
-      "contextual"
+      "Rombo dibujado con sus cuatro vértices rotulados (A, B, C, D) y diagonales indicadas como segmentos AC y BD, con las longitudes numéricas en cada diagonal.",
+      "Rombo representado solo por texto, indicando explícitamente que se trata de un rombo y entregando las medidas de la diagonal mayor y menor en la descripción.",
+      "Rombo dentro de un contexto cotidiano (baldosa, cometa, logo) con un esquema geométrico al lado que muestra las diagonales y sus longitudes.",
+      "Rombo en posición inclinada, con diagonales no alineadas al eje horizontal/vertical, para reforzar la identificación conceptual de las diagonales más allá de la orientación.",
+      "Tabla de datos donde se listan diferentes rombos con las longitudes de sus diagonales y se pregunta por el área de uno o varios de ellos.",
+      "Situaciones inversas donde se presenta el área y una de las diagonales en texto o figura, pidiendo hallar la otra diagonal, posiblemente acompañado de un bosquejo del rombo."
     ],
     "numbers_profiles": [
       "small_integers",
-      "decimals",
-      "fractions",
-      "mixed"
+      "medium_integers",
+      "even_numbers",
+      "multiples_of_5",
+      "area_in_two_digits",
+      "area_in_three_digits",
+      "unit_conversions_simple"
     ],
-    "required_image_types": []
+    "required_image_types": [
+      "geometric_figure"
+    ]
   }
 }
