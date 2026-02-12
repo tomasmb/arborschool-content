@@ -125,9 +125,10 @@ def _scan_stale(
         phase_group in _CLEARS_ITEMS and report_path.exists()
     )
 
-    has_stale = bool(
-        checkpoint_files or item_count > 0 or has_report,
-    )
+    # The report is always overwritten at the end of a run, so
+    # it alone doesn't warrant a warning — only flag when there
+    # are also stale checkpoints or items to delete.
+    has_stale = bool(checkpoint_files or item_count > 0)
 
     return {
         "checkpoint_files": checkpoint_files,
