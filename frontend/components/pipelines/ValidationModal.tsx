@@ -63,8 +63,10 @@ export function ValidationModal({
       ? stats.enriched_count - stats.validated_count
       : stats.enriched_count;
 
-  // Estimated cost: ~$0.015 per item (GPT 5.1 high reasoning)
-  const estimatedCost = itemsToValidate * 0.015;
+  // Per question (GPT-5.1, $1.25/1M in, $10/1M out):
+  //   1 call (medium reasoning): ~3,000 in + 2,500 out (1.5K visible + 1K reasoning)
+  // Total: ~$0.029/item
+  const estimatedCost = itemsToValidate * 0.029;
 
   // Reset state when modal opens
   useEffect(() => {
@@ -285,7 +287,7 @@ export function ValidationModal({
                     <p className="font-mono text-warning">~${estimatedCost.toFixed(2)}</p>
                   </div>
                 </div>
-                <p className="text-xs text-text-secondary mt-2">Model: GPT 5.1 (high reasoning)</p>
+                <p className="text-xs text-text-secondary mt-2">Model: GPT-5.1 ($1.25/1M in, $10/1M out)</p>
               </div>
 
               {itemsToValidate === 0 && (
