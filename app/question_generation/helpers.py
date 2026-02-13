@@ -353,7 +353,7 @@ def load_phase_state(
             "generation", "base_validation", "feedback",
         ):
             raw_items = ckpt.get("items", [])
-            state["items"] = _deserialize_items(raw_items)
+            state["items"] = deserialize_items(raw_items)
 
     return state
 
@@ -381,7 +381,7 @@ def serialize_items(items: list[GeneratedItem]) -> list[dict]:
     return result
 
 
-def _deserialize_items(data: list[dict]) -> list[GeneratedItem]:
+def deserialize_items(data: list[dict]) -> list[GeneratedItem]:
     """Deserialize GeneratedItem list from checkpoint data.
 
     Args:

@@ -17,6 +17,7 @@ import logging
 import re
 import sys
 import threading
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
@@ -82,22 +83,39 @@ class BaseQtiGenerator:
         plan_slots: list[PlanSlot],
         atom_context: AtomContext,
         enrichment: AtomEnrichment | None = None,
+        *,
+        progress_offset: int = 0,
+        total_override: int | None = None,
+        on_item_complete: Callable[[GeneratedItem], None] | None = None,
     ) -> PhaseResult:
         """Generate base QTI XML items from plan slots in parallel.
 
         Args:
-            plan_slots: Validated plan from Phase 3.
+            plan_slots: Validated plan from Phase 3 (may be a
+                subset when resuming a partial run).
             atom_context: Atom data for context.
             enrichment: Optional enrichment from Phase 1.
+            progress_offset: Items already completed in a prior run.
+                Progress reports start from this value so the
+                runner sees e.g. ``[PROGRESS] 26/62``.
+            total_override: Original total slot count. When set,
+                progress denominator uses this instead of
+                ``len(plan_slots)`` (useful on resume).
+            on_item_complete: Optional callback invoked (under lock)
+                after each successful item. Used by the pipeline to
+                save incremental checkpoints so progress survives
+                interruptions.
 
         Returns:
             PhaseResult with list[GeneratedItem] data.
         """
-        total = len(plan_slots)
+        batch_size = len(plan_slots)
+        report_total = total_override or batch_size
         logger.info(
             "Phase 4: Generating %d base QTI items for atom %s "
-            "(parallel=%d)",
-            total, atom_context.atom_id, _MAX_PARALLEL,
+            "(parallel=%d, offset=%d, total=%d)",
+            batch_size, atom_context.atom_id, _MAX_PARALLEL,
+            progress_offset, report_total,
         )
 
         # Build shared context once (reused by every slot call)
@@ -126,9 +144,13 @@ class BaseQtiGenerator:
                 try:
                     item = future.result()
                     items.append(item)
+                    if on_item_complete:
+                        on_item_complete(item)
                     logger.info(
                         "Slot %d OK (%d/%d)",
-                        slot.slot_index, completed, total,
+                        slot.slot_index,
+                        progress_offset + completed,
+                        report_total,
                     )
                 except Exception as exc:
                     errors.append(
@@ -136,9 +158,13 @@ class BaseQtiGenerator:
                     )
                     logger.warning(
                         "Slot %d FAILED (%d/%d): %s",
-                        slot.slot_index, completed, total, exc,
+                        slot.slot_index,
+                        progress_offset + completed,
+                        report_total, exc,
                     )
-                _report_progress(completed, total)
+                _report_progress(
+                    progress_offset + completed, report_total,
+                )
 
         logger.info(
             "Generation complete: %d succeeded, %d failed",

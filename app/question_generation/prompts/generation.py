@@ -28,9 +28,10 @@ _QTI_RULES = """\
 - El ítem DEBE tener identifier: "{atom_id}_Q{slot_index}"
 - Opción múltiple (MCQ) con EXACTAMENTE 4 opciones (A-D), 1 correcta
 - En español de Chile, notación PAES (separadores decimales chilenos)
-- Usa MathML nativo para TODA expresión matemática:
-  <math>, <mrow>, <mfrac>, <msup>, <mtable>, <mtr>, <mtd>, etc.
-  NUNCA uses LaTeX
+- Usa MathML nativo para TODA expresión matemática. NUNCA uses LaTeX.
+  Cada <math> DEBE llevar xmlns explícito:
+  <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>...</mrow></math>
+  Sin este atributo, el XSD rechaza el elemento.
 - xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
 - Estructura: qti-assessment-item > qti-response-declaration +
   qti-outcome-declaration + qti-item-body > (prompt +
@@ -42,7 +43,9 @@ _QTI_RULES = """\
 - Contexto real (real_world_*): intégralo naturalmente en el enunciado
 - Respeta el numbers_profile del slot para los valores numéricos
 - Dificultad: sigue la rúbrica del ENRIQUECIMIENTO en el contexto
-- El XML DEBE ser well-formed y parseable"""
+- El XML DEBE ser well-formed y parseable
+- NO uses caracteres de control (Unicode < 0x20 excepto tab/newline).
+  Solo texto imprimible estándar en contenido y atributos."""
 
 # ------------------------------------------------------------------
 # JSON output spec — shared by both prompts

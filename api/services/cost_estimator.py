@@ -358,33 +358,33 @@ class CostEstimatorService:
     ) -> TokenEstimate:
         """Question generation (PP100) — GPT-5.1.
 
-        Phase-aware: only charges for the phases being run.
-        Each phase uses a specific reasoning_effort level that
-        generates hidden reasoning tokens billed as output.
-
-        Phase groups and their reasoning effort:
-          enrich   → P1: enrichment (1 call, low)
-          plan     → P2-3: planning + validation (1 call, medium)
-          generate → P4: QTI generation (1 call, medium)
-          validate → P5-6: dedupe + solvability (N calls, high)
-          feedback → P7-9: enhance (low) + review (none)
-                     + final validation (medium), per item
-          finalize → no LLM (file ops only)
+        Phase-aware: only charges for phases being run.  Each phase
+        uses a reasoning_effort level that generates hidden tokens
+        billed as output.  Generate phase: 1 LLM call per slot
+        (~62 parallel) with ~1.3x XSD retry multiplier.
         """
         phase = params.get("phase", "all")
         # Default planned pool: 14E+18M+14H = 46 target * 1.3 buffer ≈ 62
         planned_items = 62
         r = GPT51_REASONING_OVERHEAD
 
-        # Per-phase: (input, visible_output, reasoning_effort, num_calls)
+        # Generate phase: 1 call per slot with ~30% XSD retry overhead
+        gen_calls = int(planned_items * 1.3)
+
+        # Per-phase: (total_input, total_output)
         # Output includes visible + reasoning token overhead.
         phase_tokens: dict[str, tuple[int, int]] = {
             # 1 call, reasoning_effort="low"
             "enrich": (1_500, 800 + r["low"]),
             # 1 call, reasoning_effort="medium"
             "plan": (1_800, 1_200 + r["medium"]),
-            # 1 call, reasoning_effort="medium"
-            "generate": (2_000, 6_000 + r["medium"]),
+            # gen_calls calls, reasoning_effort="medium"
+            # Per call: ~4K input (prompt+context+reference+rules),
+            # ~2.5K visible output (QTI XML in JSON wrapper)
+            "generate": (
+                4_000 * gen_calls,
+                (2_500 + r["medium"]) * gen_calls,
+            ),
             # planned_items calls, reasoning_effort="high"
             "validate": (
                 1_000 * planned_items,

@@ -257,12 +257,19 @@ class PipelineRunner:
         return cmd
 
     def _cmd_question_gen(self, params: dict[str, Any]) -> list[str]:
-        """Build command for question generation."""
+        """Build command for question generation.
+
+        Passes ``--resume`` when the frontend requests it so the
+        pipeline loads checkpoints and skips completed phases/slots.
+        Without it, a fresh run regenerates everything.
+        """
         cmd = [
             _PYTHON, "-m",
             "app.question_generation.scripts.run_generation",
             "--atom-id", params.get("atom_id", ""),
         ]
+        if params.get("resume"):
+            cmd.append("--resume")
         phase = params.get("phase", "all")
         if phase and phase != "all":
             cmd.extend(["--phase", phase])
