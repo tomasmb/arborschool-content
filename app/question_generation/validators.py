@@ -300,6 +300,8 @@ class BaseValidator:
         # Check 2: PAES structural compliance
         paes_errors = check_paes_structure(item.qti_xml)
         errors.extend(f"{item.item_id}: {e}" for e in paes_errors)
+        if reports:
+            reports.paes = "pass" if not paes_errors else "fail"
 
         # Check 3: Solvability (LLM-based independent solve)
         # Skipped in Phase 9: stem/answer unchanged since Phase 6,

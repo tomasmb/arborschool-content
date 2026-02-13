@@ -254,6 +254,7 @@ class ValidatorReports(BaseModel):
     """Validation status for each check (spec section 10.3)."""
 
     xsd: str = "pending"
+    paes: str = "pending"
     solve_check: str = "pending"
     scope: str = "pending"
     exemplar_copy_check: str = "pending"

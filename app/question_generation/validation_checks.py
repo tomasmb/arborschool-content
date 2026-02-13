@@ -60,7 +60,7 @@ else:
         """Fail-safe stub: rejects items when validator is missing."""
         return {
             "valid": False,
-            "message": "XSD validator unavailable",
+            "validation_errors": "XSD validator unavailable",
         }
 
 
