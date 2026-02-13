@@ -134,7 +134,7 @@ class PipelineConfig:
         default_factory=lambda: DEFAULT_TARGET_DISTRIBUTION,
     )
     buffer_ratio: float = DEFAULT_BUFFER_RATIO
-    max_retries: int = 2
+    max_retries: int = 1
     output_dir: str | None = None
     skip_enrichment: bool = False
     skip_sync: bool = False
@@ -254,6 +254,7 @@ class ValidatorReports(BaseModel):
     """Validation status for each check (spec section 10.3)."""
 
     xsd: str = "pending"
+    paes: str = "pending"
     solve_check: str = "pending"
     scope: str = "pending"
     exemplar_copy_check: str = "pending"

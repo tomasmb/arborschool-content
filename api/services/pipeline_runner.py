@@ -7,6 +7,7 @@ This allows resuming jobs after server restarts and provides progress tracking.
 from __future__ import annotations
 
 import json
+import re
 import subprocess
 import sys
 import tempfile
@@ -24,6 +25,10 @@ from app.utils.paths import JOBS_DIR, REPO_ROOT
 # This avoids "python not found" on systems where only python3 exists,
 # and ensures subprocesses have access to venv packages.
 _PYTHON = sys.executable
+
+# Pattern emitted by pipeline phases (e.g. generator.py) to report
+# per-item progress.  Format: ``[PROGRESS] completed/total``
+_PROGRESS_RE = re.compile(r"\[PROGRESS\]\s+(\d+)/(\d+)")
 
 # -----------------------------------------------------------------------------
 # Job management
@@ -252,12 +257,19 @@ class PipelineRunner:
         return cmd
 
     def _cmd_question_gen(self, params: dict[str, Any]) -> list[str]:
-        """Build command for question generation."""
+        """Build command for question generation.
+
+        Passes ``--resume`` when the frontend requests it so the
+        pipeline loads checkpoints and skips completed phases/slots.
+        Without it, a fresh run regenerates everything.
+        """
         cmd = [
             _PYTHON, "-m",
             "app.question_generation.scripts.run_generation",
             "--atom-id", params.get("atom_id", ""),
         ]
+        if params.get("resume"):
+            cmd.append("--resume")
         phase = params.get("phase", "all")
         if phase and phase != "all":
             cmd.extend(["--phase", phase])
@@ -285,10 +297,19 @@ class PipelineRunner:
             logs: list[str] = []
             if process.stdout:
                 for line in process.stdout:
-                    logs.append(line.rstrip())
-                    # Update job logs periodically (every 10 lines)
-                    if len(logs) % 10 == 0:
-                        job.logs = logs[-100:]  # Keep last 100 lines
+                    stripped = line.rstrip()
+                    logs.append(stripped)
+
+                    # Parse progress markers (immediate save)
+                    match = _PROGRESS_RE.search(stripped)
+                    if match:
+                        job.completed_items = int(match.group(1))
+                        job.total_items = int(match.group(2))
+                        job.logs = logs[-100:]
+                        _save_job(job)
+                    elif len(logs) % 10 == 0:
+                        # Periodic log save for non-progress lines
+                        job.logs = logs[-100:]
                         _save_job(job)
 
             process.wait()

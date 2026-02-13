@@ -44,7 +44,7 @@ un ítem a generar. El plan DEBE cumplir:
 
 1. **Distribución de dificultad**: {difficulty_distribution}
 2. **Diversidad de skeleton**: Cada `operation_skeleton_ast` puede aparecer
-   MÁXIMO 2 veces en el plan total.
+   MÁXIMO {skeleton_cap} veces en el plan total.
 3. **Diversidad de contexto**: Varía `surface_context` entre los slots.
 4. **Diversidad numérica**: Varía `numbers_profile` cuando sea posible.
 5. **Anclaje a ejemplares**: Si hay ejemplares, cada slot DEBE tener

@@ -155,6 +155,7 @@ class PlanGenerator:
             exemplars_section=build_exemplars_section(ctx.exemplars),
             existing_count=ctx.existing_item_count,
             pool_size=distribution.total,
+            skeleton_cap=skeleton_repetition_cap(distribution.total),
             difficulty_distribution=build_difficulty_distribution(
                 distribution,
             ),

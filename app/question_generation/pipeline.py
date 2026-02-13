@@ -12,7 +12,6 @@ from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
-    build_pipeline_meta,
     check_prerequisites,
     find_resume_phase_group,
     load_atom,
@@ -40,6 +39,7 @@ from app.question_generation.models import (
     PipelineResult,
     PlanSlot,
 )
+from app.question_generation.phase4_runner import run_phase_4
 from app.question_generation.planner import PlanGenerator, validate_plan
 from app.question_generation.syncer import (
     QuestionSyncer,
@@ -114,8 +114,8 @@ class AtomQuestionPipeline:
 
         print_pipeline_header(atom_id)
 
-        # Clean stale downstream artifacts before running
-        clean_stale_artifacts(atom_id, self._config.phase)
+        # Clean stale artifacts downstream of eff_phase (not config.phase).
+        clean_stale_artifacts(atom_id, eff_phase)
 
         # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)
@@ -186,25 +186,20 @@ class AtomQuestionPipeline:
             return self._finalize(result, output_dir)
 
         # Phase 4 + 4b — Base QTI Generation + Images
-        if start <= 4 and base_items is None:
-            base_items = self._phase_4_generation(
-                plan_slots, ctx, enrichment, result,
+        if start <= 4:
+            base_items = run_phase_4(
+                plan_slots=plan_slots,
+                ctx=ctx,
+                enrichment=enrichment,
+                result=result,
+                generator=self._generator,
+                image_generator=self._image_generator,
+                output_dir=output_dir,
+                resume=self._config.resume,
+                base_items=base_items,
             )
             if base_items is None:
                 return result
-
-            if any(s.image_required for s in (plan_slots or [])):
-                base_items = self._phase_4b_image_generation(
-                    base_items, plan_slots or [], ctx, result,
-                )
-                if base_items is None:
-                    return result
-
-            result.total_generated = len(base_items)
-            save_checkpoint(output_dir, 4, "generation", {
-                "item_count": len(base_items),
-                "items": serialize_items(base_items),
-            })
 
         if end <= 4:
             return self._finalize(result, output_dir)
@@ -352,49 +347,6 @@ class AtomQuestionPipeline:
             return None
 
         return plan_slots
-
-    def _phase_4_generation(
-        self,
-        slots: list[PlanSlot],
-        ctx: AtomContext,
-        enrichment: AtomEnrichment | None,
-        result: PipelineResult,
-    ) -> list[GeneratedItem] | None:
-        """Phase 4: Base QTI generation."""
-        phase = self._generator.generate(slots, ctx, enrichment)
-        result.phase_results.append(phase)
-
-        if not phase.success:
-            return None
-
-        items: list[GeneratedItem] = phase.data
-        # Attach pipeline metadata from plan slots
-        slot_map = {s.slot_index: s for s in slots}
-        for item in items:
-            slot = slot_map.get(item.slot_index)
-            if slot:
-                item.pipeline_meta = build_pipeline_meta(ctx.atom_id, slot)
-
-        return items
-
-    def _phase_4b_image_generation(
-        self,
-        items: list[GeneratedItem],
-        slots: list[PlanSlot],
-        ctx: AtomContext,
-        result: PipelineResult,
-    ) -> list[GeneratedItem] | None:
-        """Phase 4b: Generate and embed images via Gemini + S3."""
-        logger.info("Phase 4b: Image generation for %s", ctx.atom_id)
-        slot_map = {s.slot_index: s for s in slots}
-        phase = self._image_generator.generate_images(
-            items, slot_map, ctx.atom_id,
-        )
-        result.phase_results.append(phase)
-        if not phase.success:
-            return None
-        enriched: list[GeneratedItem] = phase.data["items"]
-        return enriched if enriched else None
 
     def _phase_5_dedupe(
         self,

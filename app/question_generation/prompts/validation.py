@@ -8,28 +8,32 @@ declared correct option.
 from __future__ import annotations
 
 SOLVABILITY_PROMPT = """\
-You are a mathematics expert. Solve the following PAES-style \
-multiple-choice question step by step.
+<role>
+Experto en matemáticas PAES M1 (Chile).
+</role>
 
-## QTI Question XML
-
+<context>
 {qti_xml}
+</context>
 
-## Instructions
+<chilean_number_format>
+Formato numérico chileno: punto (.) = miles, coma (,) = decimal.
+Ejemplo: "1.250,5" = mil doscientos cincuenta coma cinco.
+</chilean_number_format>
 
-1. Read the question stem and all four options (A-D).
-2. Solve the problem independently, showing your reasoning.
-3. Determine which option is correct.
+<task>
+1. Lee el enunciado y las 4 opciones (A-D).
+2. Resuelve el problema paso a paso.
+3. Determina cuál opción es correcta.
+</task>
 
-## Output Format (strict JSON)
-
-Return ONLY a JSON object:
-```json
+<output_format>
+JSON puro:
 {{
-  "answer": "<letter A, B, C, or D>",
-  "steps": "<brief step-by-step reasoning>"
+  "answer": "letra A, B, C o D",
+  "steps": "razonamiento paso a paso breve"
 }}
-```
+</output_format>
 """
 
 
