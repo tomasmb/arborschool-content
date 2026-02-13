@@ -15,6 +15,9 @@ from __future__ import annotations
 from app.question_generation.prompts.planning import (
     build_enrichment_section,
 )
+from app.question_generation.prompts.reference_examples import (
+    BASE_QTI_REFERENCE,
+)
 
 # ------------------------------------------------------------------
 # QTI structural rules — shared by both generation and retry prompts.
@@ -38,8 +41,7 @@ _QTI_RULES = """\
 - NO incluyas <modalFeedback> ni <feedbackInline>
 - Contexto real (real_world_*): intégralo naturalmente en el enunciado
 - Respeta el numbers_profile del slot para los valores numéricos
-- Dificultad: easy = procedimiento directo, medium = 2-3 pasos,
-  hard = razonamiento compuesto o representaciones múltiples
+- Dificultad: sigue la rúbrica del ENRIQUECIMIENTO en el contexto
 - El XML DEBE ser well-formed y parseable"""
 
 # ------------------------------------------------------------------
@@ -70,6 +72,13 @@ Tu tarea es materializar UNA especificación de ítem en XML válido.
 <slot>
 {slot_section}
 </slot>
+
+<reference_example>
+El siguiente es un ejemplo de QTI 3.0 válido. Tu output DEBE seguir
+esta misma estructura XML (namespaces, elementos, atributos).
+El contenido será distinto.
+{reference_example}
+</reference_example>
 
 <rules>
 {rules}
@@ -110,6 +119,12 @@ Tu tarea es corregir los errores y generar XML válido.
 <xsd_errors>
 {xsd_errors}
 </xsd_errors>
+
+<reference_example>
+El siguiente es un ejemplo de QTI 3.0 válido. Compáralo con tu XML
+fallido para identificar diferencias estructurales.
+{reference_example}
+</reference_example>
 
 <rules>
 {rules}
@@ -223,6 +238,7 @@ def build_single_generation_prompt(
     return SINGLE_QTI_GENERATION_PROMPT.format(
         context_section=context_section,
         slot_section=build_single_slot_section(slot),
+        reference_example=BASE_QTI_REFERENCE,
         rules=rules,
         json_output=json_output,
     )
@@ -255,6 +271,7 @@ def build_xsd_retry_prompt(
         slot_section=build_single_slot_section(slot),
         failed_xml=failed_xml,
         xsd_errors=xsd_errors,
+        reference_example=BASE_QTI_REFERENCE,
         rules=rules,
         json_output=json_output,
     )

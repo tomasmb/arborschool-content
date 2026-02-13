@@ -47,12 +47,21 @@ _xml_validator_mod = _import_xsd_validator()
 if _xml_validator_mod:
     validate_qti_xml = _xml_validator_mod.validate_qti_xml
 else:
+    import logging as _stub_logging
+    _stub_logging.getLogger(__name__).warning(
+        "XSD validator unavailable (import failed) — "
+        "all XSD checks will REJECT items as a safety measure",
+    )
+
     def validate_qti_xml(
         qti_xml: str,
         validation_endpoint: str | None = None,
     ) -> dict[str, Any]:
-        """Stub when real validator is unavailable."""
-        return {"success": True, "valid": True, "message": "Skipped"}
+        """Fail-safe stub: rejects items when validator is missing."""
+        return {
+            "valid": False,
+            "message": "XSD validator unavailable",
+        }
 
 
 # ---------------------------------------------------------------------------
@@ -332,7 +341,9 @@ def check_exemplar_distance(
 def check_feedback_completeness(qti_xml: str) -> list[str]:
     """Check that enriched QTI contains required feedback elements.
 
-    Required by spec section 7.1: per-option feedback.
+    Expected structure (from feedback enhancement prompt):
+    - 4 x qti-feedback-inline (one per option A-D)
+    - 1 x qti-feedback-block  (step-by-step solution)
 
     Args:
         qti_xml: Enriched QTI XML.
@@ -341,14 +352,22 @@ def check_feedback_completeness(qti_xml: str) -> list[str]:
         List of error messages (empty = complete).
     """
     errors: list[str] = []
+    xml_lower = qti_xml.lower()
 
-    has_feedback = (
-        "<qti-modal-feedback" in qti_xml.lower()
-        or "<modalfeedback" in qti_xml.lower()
-        or "feedbackinline" in qti_xml.lower()
-        or "<qti-feedback-inline" in qti_xml.lower()
-    )
-    if not has_feedback:
-        errors.append("Missing per-option feedback in enriched QTI")
+    # Check per-option inline feedback (expect 4, one per A-D)
+    inline_count = len(re.findall(
+        r"<qti-feedback-inline\b", xml_lower,
+    ))
+    if inline_count < 4:
+        errors.append(
+            f"Expected 4 qti-feedback-inline elements "
+            f"(one per option), found {inline_count}",
+        )
+
+    # Check step-by-step solution block
+    if "<qti-feedback-block" not in xml_lower:
+        errors.append(
+            "Missing qti-feedback-block (step-by-step solution)",
+        )
 
     return errors

@@ -114,8 +114,8 @@ class AtomQuestionPipeline:
 
         print_pipeline_header(atom_id)
 
-        # Clean stale downstream artifacts before running
-        clean_stale_artifacts(atom_id, self._config.phase)
+        # Clean stale artifacts downstream of eff_phase (not config.phase).
+        clean_stale_artifacts(atom_id, eff_phase)
 
         # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)

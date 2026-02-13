@@ -266,8 +266,17 @@ class BaseValidator:
         self,
         item: GeneratedItem,
         exemplars: list[Exemplar] | None,
+        *,
+        skip_solvability: bool = False,
     ) -> list[str]:
         """Run all checks on a single item.
+
+        Args:
+            item: Generated item to validate.
+            exemplars: Exemplars for non-copy checking.
+            skip_solvability: If True, skip the LLM solvability
+                check. Used by FinalValidator (Phase 9) because
+                the stem/answer are unchanged since Phase 6.
 
         Returns:
             List of error messages (empty = passed).
@@ -293,13 +302,16 @@ class BaseValidator:
         errors.extend(f"{item.item_id}: {e}" for e in paes_errors)
 
         # Check 3: Solvability (LLM-based independent solve)
-        solve_err = self._check_solvability(item)
-        if solve_err:
-            errors.append(f"{item.item_id}: {solve_err}")
-            if reports:
-                reports.solve_check = "fail"
-        elif reports:
-            reports.solve_check = "pass"
+        # Skipped in Phase 9: stem/answer unchanged since Phase 6,
+        # and the result is already in pipeline_meta.validators.
+        if not skip_solvability:
+            solve_err = self._check_solvability(item)
+            if solve_err:
+                errors.append(f"{item.item_id}: {solve_err}")
+                if reports:
+                    reports.solve_check = "fail"
+            elif reports:
+                reports.solve_check = "pass"
 
         # Check 4: Exemplar distance check
         if exemplars:
@@ -381,8 +393,14 @@ class FinalValidator:
         item: GeneratedItem,
         exemplars: list[Exemplar] | None,
     ) -> list[str]:
-        """Validate a single enriched item (base + feedback)."""
-        errors = self._base_validator._validate_single(item, exemplars)
+        """Validate a single enriched item (base + feedback).
+
+        Skips solvability: the stem and correct answer are unchanged
+        since Phase 6, so re-solving is redundant and expensive.
+        """
+        errors = self._base_validator._validate_single(
+            item, exemplars, skip_solvability=True,
+        )
 
         feedback_errors = check_feedback_completeness(item.qti_xml)
         errors.extend(f"{item.item_id}: {e}" for e in feedback_errors)

@@ -17,6 +17,9 @@ from app.question_feedback.utils.image_utils import (
     build_images_section,
     load_images_from_urls,
 )
+from app.question_generation.prompts.reference_examples import (
+    FEEDBACK_QTI_REFERENCE,
+)
 
 
 def _import_xml_validator() -> Any:
@@ -53,14 +56,19 @@ _xml_validator_module = _import_xml_validator()
 if _xml_validator_module:
     validate_qti_xml = _xml_validator_module.validate_qti_xml
 else:
-    # Stub if import fails
+    import logging as _stub_logging
+    _stub_logging.getLogger(__name__).warning(
+        "XSD validator unavailable (import failed) — "
+        "all XSD checks will REJECT items as a safety measure",
+    )
+
     def validate_qti_xml(
         qti_xml: str, validation_endpoint: str | None = None,
     ) -> dict[str, Any]:
-        """Stub validator when real one is not available."""
+        """Fail-safe stub: rejects items when validator is missing."""
         return {
-            "success": True, "valid": True,
-            "message": "Validation skipped",
+            "valid": False,
+            "message": "XSD validator unavailable",
         }
 
 logger = logging.getLogger(__name__)
@@ -137,6 +145,7 @@ class FeedbackEnhancer:
             prompt = FEEDBACK_ENHANCEMENT_PROMPT.format(
                 original_qti_xml=qti_xml,
                 images_section=images_section,
+                feedback_reference_example=FEEDBACK_QTI_REFERENCE,
             )
 
             if attempt > 0 and self._last_xsd_errors:

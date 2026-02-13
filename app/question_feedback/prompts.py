@@ -53,6 +53,12 @@ QTI XML ORIGINAL (sin retroalimentación):
 {images_section}
 </context>
 
+<reference_example>
+Este es un ejemplo completo de QTI con retroalimentación correctamente
+integrada. Tu output DEBE seguir esta misma estructura.
+{feedback_reference_example}
+</reference_example>
+
 <task>
 Agregar retroalimentación educativa al QTI XML. Devolver el XML completo con feedback.
 </task>
