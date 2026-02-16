@@ -28,11 +28,12 @@ Ejemplo: "1.250,5" = mil doscientos cincuenta coma cinco.
 </task>
 
 <output_format>
-JSON puro:
+JSON puro (sin markdown):
 {{
-  "answer": "letra A, B, C o D",
+  "answer": "A",
   "steps": "razonamiento paso a paso breve"
 }}
+El campo "answer" debe contener SOLO una letra: A, B, C o D.
 </output_format>
 """
 

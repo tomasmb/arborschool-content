@@ -11,8 +11,12 @@ from __future__ import annotations
 
 import json
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.llm_clients import OpenAIClient
+from app.question_feedback.validator import (
+    FinalValidator as LlmFinalValidator,
+)
 from app.question_generation.models import (
     Exemplar,
     GeneratedItem,
@@ -30,6 +34,7 @@ from app.question_generation.validation_checks import (
     extract_correct_option,
     extract_qti_skeleton,
     is_skeleton_near_duplicate,
+    normalize_option_letter,
     validate_qti_xml,
 )
 
@@ -42,12 +47,7 @@ logger = logging.getLogger(__name__)
 
 
 class DuplicateGate:
-    """Detects duplicate and near-duplicate items (Phase 5).
-
-    Uses SHA-256 fingerprinting on normalized QTI content to
-    identify duplicates within a batch and against existing inventory.
-    Also detects structural near-duplicates via skeleton comparison.
-    """
+    """Detects duplicate and near-duplicate items (Phase 5)."""
 
     def run(
         self,
@@ -55,17 +55,7 @@ class DuplicateGate:
         existing_fingerprints: set[str] | None = None,
         pool_total: int | None = None,
     ) -> PhaseResult:
-        """Run the duplicate gate on a batch of items.
-
-        Args:
-            items: Generated items to check.
-            existing_fingerprints: Fingerprints of existing inventory.
-            pool_total: Total pool size for skeleton cap scaling.
-                If None, defaults to len(items).
-
-        Returns:
-            PhaseResult with filtered items and dedupe report.
-        """
+        """Run dedupe on items against existing inventory + batch."""
         logger.info("Phase 5: Running duplicate gate on %d items", len(items))
 
         effective_pool = pool_total or len(items)
@@ -159,26 +149,22 @@ class DuplicateGate:
 # ---------------------------------------------------------------------------
 
 
-_SOLVABILITY_REASONING = "high"
+# LLM reasoning depth for solvability check (medium = sufficient
+# for solving high-school level multiple-choice math)
+_SOLVABILITY_REASONING = "medium"
+
+# Max parallel LLM calls for solvability checks
+_MAX_PARALLEL_VALIDATION = 5
 
 
 class BaseValidator:
     """Validates base QTI items before feedback enrichment (Phase 6).
 
-    Checks:
-    - QTI 3.0 XSD validity
-    - Solvability (LLM-based independent solve)
-    - PAES compliance (4 options, 1 correct)
-    - Scope compliance (atom-only)
-    - Exemplar non-copy / distance rule
+    Checks: XSD, solvability (LLM), PAES structure, scope,
+    exemplar distance.
     """
 
     def __init__(self, client: OpenAIClient) -> None:
-        """Initialize the validator.
-
-        Args:
-            client: OpenAI client for solvability checks.
-        """
         self._client = client
 
     def validate(
@@ -186,30 +172,36 @@ class BaseValidator:
         items: list[GeneratedItem],
         exemplars: list[Exemplar] | None = None,
     ) -> PhaseResult:
-        """Validate all base items.
-
-        Args:
-            items: Items to validate.
-            exemplars: Exemplars for non-copy checking.
-
-        Returns:
-            PhaseResult with valid items and validation report.
-        """
-        logger.info("Phase 6: Validating %d base items", len(items))
+        """Validate all items in parallel (solvability is LLM)."""
+        logger.info(
+            "Phase 6: Validating %d base items (parallel=%d)",
+            len(items), _MAX_PARALLEL_VALIDATION,
+        )
 
         passed: list[GeneratedItem] = []
         errors: list[str] = []
 
-        for item in items:
-            item_errors = self._validate_single(item, exemplars)
-            if item_errors:
-                errors.extend(item_errors)
-                logger.warning(
-                    "Item %s failed validation: %s",
-                    item.item_id, item_errors,
-                )
-            else:
-                passed.append(item)
+        with ThreadPoolExecutor(
+            max_workers=_MAX_PARALLEL_VALIDATION,
+        ) as pool:
+            futures = {
+                pool.submit(
+                    self._validate_single, item, exemplars,
+                ): item
+                for item in items
+            }
+
+            for future in as_completed(futures):
+                item = futures[future]
+                item_errors = future.result()
+                if item_errors:
+                    errors.extend(item_errors)
+                    logger.warning(
+                        "Item %s failed validation: %s",
+                        item.item_id, item_errors,
+                    )
+                else:
+                    passed.append(item)
 
         logger.info(
             "Base validation: %d passed, %d failed",
@@ -224,17 +216,7 @@ class BaseValidator:
         )
 
     def _check_solvability(self, item: GeneratedItem) -> str | None:
-        """Independently solve the question and verify the answer.
-
-        Sends the QTI XML to GPT-5.1 with high reasoning effort.
-        Compares the model's answer to the declared correct option.
-
-        Args:
-            item: Generated item with QTI XML.
-
-        Returns:
-            Error message if solve fails, None if it matches.
-        """
+        """LLM-solve the question, compare normalized answer to declared."""
         prompt = build_solvability_prompt(item.qti_xml)
         try:
             raw = self._client.generate_text(
@@ -243,7 +225,7 @@ class BaseValidator:
                 reasoning_effort=_SOLVABILITY_REASONING,
             )
             result = json.loads(raw)
-            model_answer = result.get("answer", "").strip().upper()
+            raw_answer = result.get("answer", "").strip()
         except Exception as exc:
             logger.warning(
                 "Solvability LLM call failed for %s: %s",
@@ -251,15 +233,30 @@ class BaseValidator:
             )
             return f"Solvability check LLM error: {exc}"
 
+        model_letter = normalize_option_letter(raw_answer)
+        if not model_letter:
+            return (
+                f"Solvability check: could not parse model "
+                f"answer '{raw_answer}' into A-D"
+            )
+
         declared = extract_correct_option(item.qti_xml)
         if not declared:
-            return "Could not extract declared correct option from XML"
-        if model_answer != declared.upper():
+            return (
+                "Could not extract declared correct option "
+                "from QTI XML (missing qti-correct-response?)"
+            )
+
+        if model_letter != declared:
             steps = result.get("steps", "no steps provided")
             return (
-                f"Solvability mismatch: model={model_answer}, "
+                f"Solvability mismatch: model={model_letter}, "
                 f"declared={declared} — {steps}"
             )
+
+        logger.debug(
+            "Solvability OK: %s → %s", item.item_id, model_letter,
+        )
         return None
 
     def _validate_single(
@@ -269,18 +266,7 @@ class BaseValidator:
         *,
         skip_solvability: bool = False,
     ) -> list[str]:
-        """Run all checks on a single item.
-
-        Args:
-            item: Generated item to validate.
-            exemplars: Exemplars for non-copy checking.
-            skip_solvability: If True, skip the LLM solvability
-                check. Used by FinalValidator (Phase 9) because
-                the stem/answer are unchanged since Phase 6.
-
-        Returns:
-            List of error messages (empty = passed).
-        """
+        """Run all checks on a single item. Returns errors (empty=pass)."""
         errors: list[str] = []
         reports = (
             item.pipeline_meta.validators if item.pipeline_meta else None
@@ -338,45 +324,82 @@ class BaseValidator:
 # Phase 9 — Final Validation
 # ---------------------------------------------------------------------------
 
+# Max parallel LLM calls for final comprehensive validation
+_MAX_PARALLEL_FINAL = 5
+
 
 class FinalValidator:
-    """Re-runs full validation on enriched items (Phase 9).
+    """Final validation on enriched items (Phase 9).
 
-    Checks all Phase 6 validations plus feedback completeness.
-    Only items passing final validation are eligible for DB sync.
+    Stage 1: fast deterministic checks (XSD, PAES, feedback).
+    Stage 2: parallel LLM validation (re-solve + quality).
     """
 
     def __init__(self, client: OpenAIClient) -> None:
         self._client = client
         self._base_validator = BaseValidator(client)
+        self._llm_validator = LlmFinalValidator(client=client)
 
     def validate(
         self,
         items: list[GeneratedItem],
         exemplars: list[Exemplar] | None = None,
     ) -> PhaseResult:
-        """Run final validation on enriched items.
-
-        Args:
-            items: Enriched items from Phase 7-8.
-            exemplars: Exemplars for non-copy checking.
-
-        Returns:
-            PhaseResult with final validated items.
-        """
+        """Run deterministic + LLM validation on enriched items."""
         logger.info("Phase 9: Final validation on %d items", len(items))
 
-        passed: list[GeneratedItem] = []
+        # Stage 1: Deterministic checks (fast, sequential)
+        deterministic_passed: list[GeneratedItem] = []
         errors: list[str] = []
 
         for item in items:
-            item_errors = self._validate_enriched(item, exemplars)
+            item_errors = self._validate_deterministic(
+                item, exemplars,
+            )
             if item_errors:
                 errors.extend(item_errors)
             else:
                 if item.pipeline_meta:
                     item.pipeline_meta.validators.feedback = "pass"
-                passed.append(item)
+                deterministic_passed.append(item)
+
+        logger.info(
+            "Final validation deterministic: %d/%d passed",
+            len(deterministic_passed), len(items),
+        )
+
+        if not deterministic_passed:
+            return PhaseResult(
+                phase_name="final_validation",
+                success=False,
+                data={"final_items": []},
+                errors=errors,
+            )
+
+        # Stage 2: Comprehensive LLM validation (parallel)
+        passed: list[GeneratedItem] = []
+
+        with ThreadPoolExecutor(
+            max_workers=_MAX_PARALLEL_FINAL,
+        ) as pool:
+            futures = {
+                pool.submit(
+                    self._llm_validate_item, item,
+                ): item
+                for item in deterministic_passed
+            }
+
+            for future in as_completed(futures):
+                item = futures[future]
+                llm_error = future.result()
+                if llm_error:
+                    errors.append(llm_error)
+                    logger.warning(
+                        "Item %s failed LLM validation: %s",
+                        item.item_id, llm_error,
+                    )
+                else:
+                    passed.append(item)
 
         logger.info(
             "Final validation: %d passed, %d failed",
@@ -390,15 +413,16 @@ class FinalValidator:
             errors=errors,
         )
 
-    def _validate_enriched(
+    def _validate_deterministic(
         self,
         item: GeneratedItem,
         exemplars: list[Exemplar] | None,
     ) -> list[str]:
-        """Validate a single enriched item (base + feedback).
+        """Run fast deterministic checks on a single enriched item.
 
         Skips solvability: the stem and correct answer are unchanged
-        since Phase 6, so re-solving is redundant and expensive.
+        since Phase 6, so re-solving is redundant (the LLM stage
+        below re-checks anyway).
         """
         errors = self._base_validator._validate_single(
             item, exemplars, skip_solvability=True,
@@ -408,3 +432,38 @@ class FinalValidator:
         errors.extend(f"{item.item_id}: {e}" for e in feedback_errors)
 
         return errors
+
+    def _llm_validate_item(
+        self, item: GeneratedItem,
+    ) -> str | None:
+        """LLM re-solve + quality check. Returns error or None."""
+        reports = (
+            item.pipeline_meta.validators
+            if item.pipeline_meta else None
+        )
+
+        try:
+            result = self._llm_validator.validate(item.qti_xml)
+        except Exception as exc:
+            logger.warning(
+                "LLM final validation error for %s: %s",
+                item.item_id, exc,
+            )
+            if reports:
+                reports.final_llm_check = "fail"
+            return (
+                f"{item.item_id}: LLM final validation error "
+                f"— {exc}"
+            )
+
+        if result.validation_result == "pass":
+            if reports:
+                reports.final_llm_check = "pass"
+            return None
+
+        if reports:
+            reports.final_llm_check = "fail"
+        return (
+            f"{item.item_id}: LLM final validation failed "
+            f"— {result.overall_reasoning}"
+        )

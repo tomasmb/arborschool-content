@@ -260,6 +260,7 @@ class ValidatorReports(BaseModel):
     exemplar_copy_check: str = "pending"
     feedback: str = "pending"
     dedupe: str = "pending"
+    final_llm_check: str = "pending"
 
 
 class PipelineMeta(BaseModel):
