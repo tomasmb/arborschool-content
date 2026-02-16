@@ -14,24 +14,26 @@ import type {
   PhaseReport,
 } from "@/lib/api-types-question-gen";
 
-// Phase groups matching the backend pipeline structure
+// Phase groups matching the actual checkpoint file numbers.
+// Each group is "complete" when ALL listed phases have a checkpoint.
+// Only list phases that actually produce checkpoint files.
 const PHASE_GROUPS = [
-  { id: "enrich", label: "Enrich", phases: [0, 1], statKey: null },
-  { id: "plan", label: "Plan", phases: [2, 3], statKey: null },
+  { id: "enrich", label: "Enrich", phases: [1], statKey: null },
+  { id: "plan", label: "Plan", phases: [3], statKey: null },
   {
     id: "generate", label: "Generate", phases: [4],
     statKey: "total_generated" as const,
   },
   {
-    id: "validate", label: "Validate", phases: [5, 6],
+    id: "validate", label: "Validate", phases: [6],
     statKey: "total_passed_base_validation" as const,
   },
   {
-    id: "feedback", label: "Feedback", phases: [7, 8],
+    id: "feedback", label: "Feedback", phases: [8],
     statKey: "total_passed_feedback" as const,
   },
   {
-    id: "finalize", label: "Finalize", phases: [9, 10],
+    id: "finalize", label: "Finalize", phases: [10],
     statKey: "total_synced" as const,
   },
 ] as const;
