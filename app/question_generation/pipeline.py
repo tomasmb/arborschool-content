@@ -292,12 +292,12 @@ class AtomQuestionPipeline:
         result: PipelineResult,
         output_dir: Path,
     ) -> PipelineResult:
-        """Save results and print summary."""
-        save_pipeline_results(output_dir, result)
-        print_pipeline_summary(result)
+        """Compute success, save results and print summary."""
         result.success = result.total_final > 0 or any(
             p.success for p in result.phase_results
         )
+        save_pipeline_results(output_dir, result)
+        print_pipeline_summary(result)
         return result
 
     def _phase_0_inputs(

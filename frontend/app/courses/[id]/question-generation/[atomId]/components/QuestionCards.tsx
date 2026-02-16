@@ -22,9 +22,14 @@ const PAGE_SIZE = 10;
 interface QuestionCardsProps {
   items: GeneratedItem[];
   planSlots: PlanSlot[] | null;
+  sectionTitle?: string;
 }
 
-export function QuestionCards({ items, planSlots }: QuestionCardsProps) {
+export function QuestionCards({
+  items,
+  planSlots,
+  sectionTitle = "Generated Questions",
+}: QuestionCardsProps) {
   const [page, setPage] = useState(0);
   const [diffFilter, setDiffFilter] = useState<string>("all");
   const [contextFilter, setContextFilter] = useState<string>("all");
@@ -83,7 +88,7 @@ export function QuestionCards({ items, planSlots }: QuestionCardsProps) {
         <div className="flex items-center gap-2">
           <FileText className="w-4 h-4 text-accent" />
           <h2 className="text-sm font-semibold">
-            Generated Questions
+            {sectionTitle}
           </h2>
           <span className="text-xs text-text-secondary">
             {filtered.length} of {items.length}

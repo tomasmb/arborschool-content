@@ -15,7 +15,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import sys
 import threading
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -29,6 +28,7 @@ from app.question_generation.models import (
     PhaseResult,
     PlanSlot,
 )
+from app.question_generation.progress import report_progress
 from app.question_generation.prompts.generation import (
     build_context_section,
     build_single_generation_prompt,
@@ -43,9 +43,6 @@ _GENERATION_REASONING = "medium"
 
 # Max parallel LLM calls (bounded to avoid rate-limit pressure)
 _MAX_PARALLEL = 5
-
-# Stdout progress prefix parsed by pipeline_runner.py
-_PROGRESS_PREFIX = "[PROGRESS]"
 
 # Thread lock for atomic stdout writes and counter updates
 _progress_lock = threading.Lock()
@@ -331,18 +328,5 @@ def _extract_qti_xml(text: str) -> str:
 
 
 def _report_progress(completed: int, total: int) -> None:
-    """Print a progress marker to stdout for the pipeline runner.
-
-    Thread-safe: uses a lock so concurrent workers don't
-    interleave progress lines.
-
-    Args:
-        completed: Number of slots finished so far.
-        total: Total number of slots.
-    """
-    with _progress_lock:
-        print(
-            f"{_PROGRESS_PREFIX} {completed}/{total}",
-            flush=True,
-            file=sys.stdout,
-        )
+    """Thin wrapper around shared report_progress (keeps local API)."""
+    report_progress(completed, total)

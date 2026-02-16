@@ -23,6 +23,7 @@ from app.question_generation.models import (
     PhaseResult,
 )
 from app.question_generation.planner import skeleton_repetition_cap
+from app.question_generation.progress import report_progress
 from app.question_generation.prompts.validation import (
     build_solvability_prompt,
 )
@@ -176,13 +177,16 @@ class BaseValidator:
         exemplars: list[Exemplar] | None = None,
     ) -> PhaseResult:
         """Validate all items in parallel (solvability is LLM)."""
+        total = len(items)
         logger.info(
             "Phase 6: Validating %d base items (parallel=%d)",
-            len(items), _MAX_PARALLEL_VALIDATION,
+            total, _MAX_PARALLEL_VALIDATION,
         )
 
         passed: list[GeneratedItem] = []
         errors: list[str] = []
+        completed = 0
+        report_progress(0, total)
 
         with ThreadPoolExecutor(
             max_workers=_MAX_PARALLEL_VALIDATION,
@@ -197,6 +201,7 @@ class BaseValidator:
             for future in as_completed(futures):
                 item = futures[future]
                 item_errors = future.result()
+                completed += 1
                 if item_errors:
                     errors.extend(item_errors)
                     logger.warning(
@@ -205,6 +210,7 @@ class BaseValidator:
                     )
                 else:
                     passed.append(item)
+                report_progress(completed, total)
 
         logger.info(
             "Base validation: %d passed, %d failed",
@@ -349,22 +355,27 @@ class FinalValidator:
         exemplars: list[Exemplar] | None = None,
     ) -> PhaseResult:
         """Run deterministic + LLM validation on enriched items."""
-        logger.info("Phase 9: Final validation on %d items", len(items))
+        total = len(items)
+        logger.info("Phase 9: Final validation on %d items", total)
 
         # Stage 1: Deterministic checks (fast, sequential)
         deterministic_passed: list[GeneratedItem] = []
         errors: list[str] = []
+        completed = 0
+        report_progress(0, total)
 
         for item in items:
             item_errors = self._validate_deterministic(
                 item, exemplars,
             )
+            completed += 1
             if item_errors:
                 errors.extend(item_errors)
             else:
                 if item.pipeline_meta:
                     item.pipeline_meta.validators.feedback = "pass"
                 deterministic_passed.append(item)
+            report_progress(completed, total)
 
         logger.info(
             "Final validation deterministic: %d/%d passed",
@@ -380,7 +391,11 @@ class FinalValidator:
             )
 
         # Stage 2: Comprehensive LLM validation (parallel)
+        # Reset progress for LLM stage with new total
+        llm_total = len(deterministic_passed)
+        llm_completed = 0
         passed: list[GeneratedItem] = []
+        report_progress(0, llm_total)
 
         with ThreadPoolExecutor(
             max_workers=_MAX_PARALLEL_FINAL,
@@ -395,6 +410,7 @@ class FinalValidator:
             for future in as_completed(futures):
                 item = futures[future]
                 llm_error = future.result()
+                llm_completed += 1
                 if llm_error:
                     errors.append(llm_error)
                     logger.warning(
@@ -403,6 +419,7 @@ class FinalValidator:
                     )
                 else:
                     passed.append(item)
+                report_progress(llm_completed, llm_total)
 
         logger.info(
             "Final validation: %d passed, %d failed",

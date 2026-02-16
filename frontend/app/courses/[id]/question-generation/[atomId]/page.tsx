@@ -10,6 +10,7 @@ import { PipelineProgress } from "./components/PipelineProgress";
 import { EnrichmentSection } from "./components/EnrichmentSection";
 import { PlanTable } from "./components/PlanTable";
 import { QuestionCards } from "./components/QuestionCards";
+import { ValidationSummary } from "./components/ValidationSummary";
 
 export default function AtomDetailPage() {
   const params = useParams();
@@ -75,6 +76,12 @@ export default function AtomDetailPage() {
 
   if (!data) return null;
 
+  const hasValidation = data.validation_results && data.validation_results.length > 0;
+  // Prefer validated items (richer validator statuses) over raw generated
+  const displayItems = hasValidation
+    ? data.validation_results
+    : data.generated_items;
+  const displayCount = displayItems?.length ?? 0;
   const genCount = data.generated_items?.length ?? 0;
   const planCount = data.plan_slots?.length ?? 0;
   const report = data.pipeline_report;
@@ -88,7 +95,18 @@ export default function AtomDetailPage() {
           <h1 className="text-2xl font-semibold">{atomId}</h1>
           <p className="text-text-secondary mt-1">
             Pipeline results &middot;{" "}
-            <span className="font-medium">{genCount}</span> generated
+            {hasValidation ? (
+              <>
+                <span className="font-medium">{displayCount}</span> validated
+                {genCount > displayCount && (
+                  <> of <span className="font-medium">{genCount}</span> generated</>
+                )}
+              </>
+            ) : (
+              <>
+                <span className="font-medium">{genCount}</span> generated
+              </>
+            )}
             {planCount > 0 && (
               <> of <span className="font-medium">{planCount}</span> planned</>
             )}
@@ -116,10 +134,19 @@ export default function AtomDetailPage() {
           />
         )}
 
-        {data.generated_items && data.generated_items.length > 0 && (
+        {hasValidation && (
+          <ValidationSummary
+            validatedItems={data.validation_results!}
+            generatedItems={data.generated_items}
+            report={report}
+          />
+        )}
+
+        {displayItems && displayItems.length > 0 && (
           <QuestionCards
-            items={data.generated_items}
+            items={displayItems}
             planSlots={data.plan_slots}
+            sectionTitle={hasValidation ? "Validated Questions" : "Generated Questions"}
           />
         )}
       </div>
