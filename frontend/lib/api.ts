@@ -4,27 +4,29 @@
 
 // Re-export types that are used by components
 export type {
-  AtomBrief, AtomFixJobResponse, AtomFixStatusResponse,
-  AtomPipelineSummary, AtomQuestionCoverage, AtomTag,
-  AtomValidationJobResponse, AtomValidationStatusResponse,
+  AtomBrief, AtomCheckpointData, AtomFixJobResponse,
+  AtomFixStatusResponse, AtomPipelineSummary, AtomQuestionCoverage,
+  AtomTag, AtomValidationJobResponse, AtomValidationStatusResponse,
   CheckResult, CheckStatus, ContentQualityCheck, CorrectAnswerCheck,
   CostEstimate, CourseSyncDiff, CourseSyncEntityDiff,
   CourseSyncPreview, CourseSyncResult, CourseSyncTableSummary,
-  CoverageAnalysisResult, EnrichmentJobResponse, EnrichmentProgress,
-  EnrichmentResult, FailedItem, GraphData, GraphEdge, GraphNode,
+  CoverageAnalysisResult, EnrichmentJobResponse,
+  EnrichmentProgress, EnrichmentResult, FailedItem,
+  GraphData, GraphEdge, GraphNode,
   JobLogsResponse, JobStatus, OverviewResponse,
-  QuestionBrief, QuestionDetail, QuestionOption,
-  SavedValidationSummary, StandardBrief, StandardCoverageItem,
-  StandardValidationResult, StructuralChecksResult,
-  SubjectBrief, SubjectDetail, SubjectStats, SyncDetailEntry,
-  TestBrief, TestDetail, TestSyncDiff, TestSyncDiffEntity,
-  TestSyncPreview, TestSyncResult, TestsSyncStatusResponse,
+  QuestionBrief, QuestionDetail,
+  QuestionOption, SavedValidationSummary,
+  StandardBrief, StandardCoverageItem, StandardValidationResult,
+  StructuralChecksResult, SubjectBrief, SubjectDetail, SubjectStats,
+  SyncDetailEntry, TestBrief, TestDetail, TestSyncDiff,
+  TestSyncDiffEntity, TestSyncPreview, TestSyncResult,
+  TestsSyncStatusResponse,
   ValidationJobResponse, ValidationProgress,
   ValidationResult, ValidationResultDetail, VariantBrief,
 } from "./api-types";
 
 import type {
-  AtomBrief, CostEstimate, CourseSyncDiff,
+  AtomBrief, AtomCheckpointData, CostEstimate, CourseSyncDiff,
   CourseSyncPreview, CourseSyncResult,
   EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
   OverviewResponse, QuestionDetail,
@@ -208,6 +210,16 @@ export async function clearPipelineOutputs(
   return fetchAPI<ClearPipelineResponse>(
     `/pipelines/${pipelineId}/clear${query ? `?${query}` : ""}`,
     { method: "DELETE" }
+  );
+}
+
+// --- Question Generation Checkpoint API ---
+
+export async function getAtomCheckpoints(
+  atomId: string,
+): Promise<AtomCheckpointData> {
+  return fetchAPI<AtomCheckpointData>(
+    `/pipelines/question_gen/${encodeURIComponent(atomId)}/checkpoints`,
   );
 }
 

@@ -9,6 +9,7 @@ Endpoints:
     GET  /api/pipelines/jobs/{job_id} - Get job status
     POST /api/pipelines/jobs/{job_id}/cancel - Cancel a running job
     DELETE /api/pipelines/jobs/{job_id} - Delete a job record
+    GET  /api/pipelines/question_gen/{atom_id}/checkpoints - Read checkpoint data
 """
 
 from __future__ import annotations
@@ -436,3 +437,31 @@ async def clear_pipeline_outputs(
         "deleted_paths": deleted_paths[:10],  # Limit paths in response
         "message": f"Cleared {deleted_count} items for {pipeline_id}",
     }
+
+
+# -----------------------------------------------------------------------------
+# Question generation checkpoint inspection
+# -----------------------------------------------------------------------------
+
+
+@router.get("/question_gen/{atom_id}/checkpoints")
+async def get_atom_checkpoints(atom_id: str) -> dict[str, Any]:
+    """Read all available checkpoint data for a question generation atom.
+
+    Returns structured data from each completed pipeline phase,
+    plus the pipeline report if available. Used by the frontend
+    results inspector to render plan slots and QTI previews.
+    """
+    from app.question_generation.checkpoint_reader import (
+        read_atom_checkpoints,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    output_dir = QUESTION_GENERATION_DIR / atom_id
+    if not output_dir.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"No generation data for atom '{atom_id}'",
+        )
+
+    return read_atom_checkpoints(output_dir, atom_id)

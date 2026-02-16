@@ -157,6 +157,7 @@ export default function QuestionGenerationPage() {
 
         {activeTab === "results" && (
           <ResultsTab
+            courseId={courseId}
             atoms={atoms}
             onRegenerate={(atomId) =>
               handleRunPhase(atomId, "all")
