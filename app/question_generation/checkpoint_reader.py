@@ -153,8 +153,10 @@ def revalidate_single_item(
     if target.pipeline_meta:
         validators = target.pipeline_meta.validators.model_dump()
 
-    # Persist updated validators to checkpoint files
-    _persist_revalidation(output_dir, all_items, target, passed)
+    # Persist updated validators to checkpoint files and report
+    _persist_revalidation(
+        output_dir, all_items, target, passed, errors,
+    )
 
     return {
         "item_id": item_id,
@@ -169,12 +171,14 @@ def _persist_revalidation(
     gen_items: list,
     revalidated_item: object,
     passed: bool,
+    new_errors: list[str],
 ) -> None:
     """Persist single-item revalidation result to checkpoints.
 
     Updates the generation checkpoint (phase 4) with new validator
-    statuses and adds/removes the item from the validation
-    checkpoint (phase 6) based on the result.
+    statuses, adds/removes the item from the validation checkpoint
+    (phase 6), and updates the pipeline report to reflect the
+    current validation state.
     """
     from app.question_generation.helpers import (
         deserialize_items,
@@ -202,10 +206,58 @@ def _persist_revalidation(
     if passed:
         val_items.append(revalidated_item)
 
+    valid_count = len(val_items)
     save_checkpoint(output_dir, 6, "base_validation", {
-        "valid_count": len(val_items),
+        "valid_count": valid_count,
         "items": serialize_items(val_items),
     })
+
+    # 3. Update pipeline report so the UI stays in sync
+    _update_pipeline_report(
+        output_dir, revalidated_item.item_id,
+        new_errors, valid_count,
+    )
+
+
+def _update_pipeline_report(
+    output_dir: Path,
+    item_id: str,
+    new_errors: list[str],
+    valid_count: int,
+) -> None:
+    """Update pipeline report after single-item revalidation.
+
+    Removes stale errors for the revalidated item, adds any
+    new errors, and updates the passed count.
+    """
+    report_path = output_dir / "pipeline_report.json"
+    if not report_path.exists():
+        return
+
+    try:
+        report = json.loads(
+            report_path.read_text(encoding="utf-8"),
+        )
+    except (json.JSONDecodeError, OSError):
+        return
+
+    prefix = f"{item_id}:"
+    for phase in report.get("phases", []):
+        if phase.get("name") != "base_validation":
+            continue
+        # Remove old errors for this item
+        phase["errors"] = [
+            e for e in phase.get("errors", [])
+            if not e.startswith(prefix)
+        ]
+        # Add new errors (already prefixed with item_id)
+        phase["errors"].extend(new_errors)
+        break
+
+    report["total_passed_base_validation"] = valid_count
+
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
 
 
 def _read_items(
