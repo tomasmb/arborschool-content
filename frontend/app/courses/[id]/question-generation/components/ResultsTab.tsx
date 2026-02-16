@@ -52,23 +52,28 @@ interface ResultsTabProps {
   onRegenerate: (atomId: string) => void;
 }
 
-export function ResultsTab({ courseId, atoms, onRegenerate }: ResultsTabProps) {
-  const withQuestions = atoms.filter(
-    (a) => a.question_set_count > 0,
-  );
+/** An atom has results if it has synced questions OR generated checkpoints. */
+function hasResults(a: AtomBrief): boolean {
+  return a.question_set_count > 0
+    || (a.last_completed_phase !== null && a.last_completed_phase >= 4);
+}
 
-  if (withQuestions.length === 0) {
+export function ResultsTab({ courseId, atoms, onRegenerate }: ResultsTabProps) {
+  const withResults = atoms.filter(hasResults);
+
+  if (withResults.length === 0) {
     return <EmptyState />;
   }
 
   const byEje: Record<string, AtomBrief[]> = {};
-  for (const atom of withQuestions) {
+  for (const atom of withResults) {
     const eje = atom.eje || "unknown";
     if (!byEje[eje]) byEje[eje] = [];
     byEje[eje].push(atom);
   }
 
-  const totalQs = withQuestions.reduce(
+  const syncedCount = withResults.filter((a) => a.question_set_count > 0).length;
+  const totalQs = withResults.reduce(
     (sum, a) => sum + a.question_set_count,
     0,
   );
@@ -76,7 +81,8 @@ export function ResultsTab({ courseId, atoms, onRegenerate }: ResultsTabProps) {
   return (
     <div className="space-y-6">
       <ResultsSummary
-        atomCount={withQuestions.length}
+        atomCount={withResults.length}
+        syncedCount={syncedCount}
         totalQs={totalQs}
       />
       {Object.entries(byEje).map(([eje, ejeAtoms]) => (
@@ -117,31 +123,31 @@ function EmptyState() {
 
 function ResultsSummary({
   atomCount,
+  syncedCount,
   totalQs,
 }: {
   atomCount: number;
+  syncedCount: number;
   totalQs: number;
 }) {
-  const avg = atomCount > 0 ? (totalQs / atomCount).toFixed(1) : "0";
-
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="bg-surface border border-border rounded-lg p-4 text-center">
         <div className="text-2xl font-bold">{atomCount}</div>
         <div className="text-xs text-text-secondary mt-1">
-          Atoms with Questions
+          Atoms with Results
+        </div>
+      </div>
+      <div className="bg-surface border border-border rounded-lg p-4 text-center">
+        <div className="text-2xl font-bold">{syncedCount}</div>
+        <div className="text-xs text-text-secondary mt-1">
+          Synced to DB
         </div>
       </div>
       <div className="bg-surface border border-border rounded-lg p-4 text-center">
         <div className="text-2xl font-bold">{totalQs}</div>
         <div className="text-xs text-text-secondary mt-1">
-          Total Questions
-        </div>
-      </div>
-      <div className="bg-surface border border-border rounded-lg p-4 text-center">
-        <div className="text-2xl font-bold">{avg}</div>
-        <div className="text-xs text-text-secondary mt-1">
-          Avg per Atom
+          Synced Questions
         </div>
       </div>
     </div>
@@ -204,12 +210,18 @@ function EjeGroup({
               </div>
             </div>
             <div className="ml-4 flex items-center gap-3">
-              <span className="inline-flex items-center gap-1 text-sm">
-                <CheckCircle2 className="w-3.5 h-3.5 text-success" />
-                <span className="font-medium">
-                  {atom.question_set_count}
+              {atom.question_set_count > 0 ? (
+                <span className="inline-flex items-center gap-1 text-sm">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-success" />
+                  <span className="font-medium">
+                    {atom.question_set_count}
+                  </span>
                 </span>
-              </span>
+              ) : (
+                <span className="text-xs text-text-secondary">
+                  not synced
+                </span>
+              )}
               <button
                 onClick={(e) => {
                   e.preventDefault();
