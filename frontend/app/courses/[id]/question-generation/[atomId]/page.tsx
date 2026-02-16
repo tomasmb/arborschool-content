@@ -128,7 +128,29 @@ function AtomDetailContent({
 
   const genCount = data.generated_items?.length ?? 0;
   const planCount = data.plan_slots?.length ?? 0;
-  const report = data.pipeline_report;
+
+  // Build an "active" report that strips stale errors for items
+  // that have since passed validation (e.g. via single-item reval).
+  const report = useMemo(() => {
+    const raw = data.pipeline_report;
+    if (!raw || passedIds.size === 0) return raw;
+    return {
+      ...raw,
+      total_passed_base_validation: Math.max(
+        raw.total_passed_base_validation,
+        passedIds.size,
+      ),
+      phases: raw.phases.map((phase) => ({
+        ...phase,
+        errors: phase.errors.filter((err) => {
+          const colonIdx = err.indexOf(":");
+          if (colonIdx <= 0) return true;
+          const itemId = err.slice(0, colonIdx).trim();
+          return !passedIds.has(itemId);
+        }),
+      })),
+    };
+  }, [data.pipeline_report, passedIds]);
 
   // Trigger to programmatically set "fail" filter in QuestionCards
   const [failTrigger, setFailTrigger] = useState(0);
