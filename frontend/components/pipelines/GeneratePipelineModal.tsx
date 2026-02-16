@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   X,
   Loader2,
@@ -67,20 +67,27 @@ export function GeneratePipelineModal({
   const [estimate, setEstimate] = useState<CostEstimate | null>(null);
   const [job, setJob] = useState<JobStatus | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [forceAll, setForceAll] = useState(false);
 
-  // Fetch cost estimate on mount
+  // Merge force_all into params for API calls (only when toggled)
+  const apiParams = useMemo(
+    () => (forceAll ? { ...params, force_all: true } : params),
+    [params, forceAll],
+  );
+
+  // Fetch cost estimate on mount and when forceAll toggles
   const fetchEstimate = useCallback(async () => {
     setState("estimating");
     setError(null);
     try {
-      const est = await estimatePipelineCost(pipelineId, params);
+      const est = await estimatePipelineCost(pipelineId, apiParams);
       setEstimate(est);
       setState("confirm");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to estimate cost");
       setState("error");
     }
-  }, [pipelineId, params]);
+  }, [pipelineId, apiParams]);
 
   useEffect(() => {
     if (isOpen) {
@@ -133,14 +140,10 @@ export function GeneratePipelineModal({
     setState("running");
     setError(null);
     try {
-      // Get confirmation token
       const { confirmation_token } = await getConfirmationToken(
-        pipelineId,
-        params
+        pipelineId, apiParams,
       );
-
-      // Start the pipeline
-      const result = await runPipeline(pipelineId, params, confirmation_token);
+      const result = await runPipeline(pipelineId, apiParams, confirmation_token);
       const jobStatus = await getJob(result.job_id);
       setJob(jobStatus);
     } catch (err) {
@@ -157,6 +160,7 @@ export function GeneratePipelineModal({
     setEstimate(null);
     setJob(null);
     setError(null);
+    setForceAll(false);
 
     if (state === "completed") {
       onSuccess();
@@ -212,13 +216,22 @@ export function GeneratePipelineModal({
           {/* Confirm state - show params + cost estimate */}
           {state === "confirm" && estimate && (
             <div className="space-y-4">
-              {/* Parameters summary */}
-              <ParamsSummary
-                params={params}
-                paramLabels={paramLabels}
-              />
+              <ParamsSummary params={params} paramLabels={paramLabels} />
 
-              {/* Stale artifact cleanup warning */}
+              {/* Force full rerun toggle (resume is the default) */}
+              {pipelineId === "question_gen" && (
+                <label className="flex items-center gap-2 text-sm cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={forceAll}
+                    onChange={() => setForceAll((v) => !v)}
+                    className="rounded border-border accent-accent"
+                  />
+                  <span className="text-text-secondary">
+                    Force full rerun (ignore previous progress)
+                  </span>
+                </label>
+              )}
               {estimate.stale_artifacts?.has_stale_data && (
                 <StaleArtifactsWarning
                   artifacts={estimate.stale_artifacts}
@@ -394,10 +407,7 @@ export function GeneratePipelineModal({
 }
 
 
-// ---------------------------------------------------------------------------
-// Parameters summary (shows what the user is about to run)
-// ---------------------------------------------------------------------------
-
+// Parameters summary
 function ParamsSummary({
   params,
   paramLabels,
@@ -443,16 +453,9 @@ function ParamsSummary({
 }
 
 
-// ---------------------------------------------------------------------------
-// Stale artifacts cleanup warning
-// ---------------------------------------------------------------------------
-
-/** Human-readable labels for checkpoint filenames. */
-function formatCheckpoint(filename: string): string {
-  return filename
-    .replace("phase_", "")
-    .replace(".json", "")
-    .replace(/_/g, " ");
+// Stale artifacts warning
+function formatCheckpoint(f: string): string {
+  return f.replace("phase_", "").replace(".json", "").replace(/_/g, " ");
 }
 
 function StaleArtifactsWarning({
@@ -463,12 +466,8 @@ function StaleArtifactsWarning({
   const lines: string[] = [];
 
   if (artifacts.checkpoint_files.length > 0) {
-    const names = artifacts.checkpoint_files
-      .map(formatCheckpoint)
-      .join(", ");
-    lines.push(
-      `${artifacts.checkpoint_files.length} checkpoint(s): ${names}`,
-    );
+    const names = artifacts.checkpoint_files.map(formatCheckpoint).join(", ");
+    lines.push(`${artifacts.checkpoint_files.length} checkpoint(s): ${names}`);
   }
   if (artifacts.item_count > 0) {
     lines.push(

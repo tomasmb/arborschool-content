@@ -88,8 +88,9 @@ async def estimate_pipeline_cost(
     safe_params = params or {}
     estimate = estimator.estimate_pipeline_cost(pipeline_id, safe_params)
 
-    # Attach stale artifact info for question_gen pipelines
-    if pipeline_id == "question_gen":
+    # Stale artifact warning only when force_all (full rerun).
+    # In resume mode (default), downstream checkpoints are preserved.
+    if pipeline_id == "question_gen" and safe_params.get("force_all"):
         atom_id = safe_params.get("atom_id", "")
         phase = safe_params.get("phase", "all")
         if atom_id:

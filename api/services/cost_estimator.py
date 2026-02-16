@@ -323,6 +323,7 @@ class CostEstimatorService:
         """
         phase = params.get("phase", "all")
         atom_id = params.get("atom_id", "")
+        force_all = params.get("force_all", False)
         r = GPT51_REASONING_OVERHEAD
 
         counts = _load_question_gen_counts(atom_id)
@@ -332,15 +333,18 @@ class CostEstimatorService:
         generated = counts["generated"]
         validated = counts["validated"]
 
-        # Generate: only remaining slots (resume-aware)
-        remaining_gen = max(planned - generated, 0)
-        # +30% retry overhead on remaining
-        gen_calls = int(remaining_gen * 1.3) if remaining_gen else 0
-
-        # Validate: re-validates ALL generated items
-        validate_items = generated or planned
-        # Feedback: re-enriches ALL validated items
-        feedback_items = validated or planned
+        if force_all:
+            # Full rerun — regenerate & revalidate everything
+            gen_calls = int(planned * 1.3)
+            validate_items = generated or planned
+            feedback_items = validated or planned
+        else:
+            # Resume (default) — only remaining work
+            remaining_gen = max(planned - generated, 0)
+            gen_calls = int(remaining_gen * 1.3) if remaining_gen else 0
+            all_gen = generated or planned
+            validate_items = max(all_gen - validated, 0)
+            feedback_items = validated or planned
 
         phase_tokens: dict[str, tuple[int, int]] = {
             # 1 call, reasoning_effort="low"
@@ -384,16 +388,17 @@ class CostEstimatorService:
             "phase": phase,
             "planned_items": planned,
             "active_phases": active,
+            "mode": "force_all" if force_all else "resume",
             "note": "Output includes reasoning token overhead",
         }
 
-        if phase == "generate" and generated > 0:
+        if not force_all and generated > 0:
             breakdown["already_generated"] = generated
-            breakdown["remaining_slots"] = remaining_gen
-        if phase == "validate":
-            breakdown["items_to_validate"] = validate_items
-        if phase == "feedback":
-            breakdown["items_to_enrich"] = feedback_items
+            breakdown["remaining_gen_slots"] = max(planned - generated, 0)
+        if not force_all and validated > 0:
+            breakdown["already_validated"] = validated
+        breakdown["items_to_validate"] = validate_items
+        breakdown["items_to_enrich"] = feedback_items
 
         for p in active:
             inp, out = phase_tokens.get(p, (0, 0))
@@ -406,9 +411,7 @@ class CostEstimatorService:
             breakdown=breakdown,
         )
 
-    def _estimate_lessons(
-        self, params: dict[str, Any],
-    ) -> TokenEstimate:
+    def _estimate_lessons(self, params: dict[str, Any]) -> TokenEstimate:
         """Lesson generation — GPT-5.1, 1 call per atom."""
         atom_ids = params.get("atom_ids", [])
         if isinstance(atom_ids, str) and atom_ids:
