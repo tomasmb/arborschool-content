@@ -466,3 +466,31 @@ async def get_atom_checkpoints(atom_id: str) -> dict[str, Any]:
         )
 
     return read_atom_checkpoints(output_dir, atom_id)
+
+
+@router.post("/question_gen/{atom_id}/revalidate/{item_id}")
+async def revalidate_item(
+    atom_id: str,
+    item_id: str,
+) -> dict[str, Any]:
+    """Re-run base validation on a single generated item.
+
+    Runs XSD, PAES, solvability-LLM, and exemplar distance checks.
+    Does NOT persist results — use the full pipeline for that.
+    """
+    from app.question_generation.checkpoint_reader import (
+        revalidate_single_item,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    output_dir = QUESTION_GENERATION_DIR / atom_id
+    if not output_dir.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"No generation data for atom '{atom_id}'",
+        )
+
+    try:
+        return revalidate_single_item(output_dir, item_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))

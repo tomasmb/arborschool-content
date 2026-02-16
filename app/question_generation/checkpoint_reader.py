@@ -98,6 +98,116 @@ def _read_plan_slots(output_dir: Path) -> list[dict] | None:
     return None
 
 
+def revalidate_single_item(
+    output_dir: Path,
+    item_id: str,
+) -> dict[str, Any]:
+    """Re-run base validation on one generated item.
+
+    Loads the item from the generation checkpoint, resets its validator
+    statuses, runs all base checks (XSD, PAES, solvability-LLM,
+    exemplar distance), and persists the result to checkpoint files.
+
+    Args:
+        output_dir: Root directory for this atom's pipeline output.
+        item_id: ID of the item to revalidate.
+
+    Returns:
+        Dict with keys: item_id, passed, errors, validators.
+
+    Raises:
+        ValueError: If no generation checkpoint or item not found.
+    """
+    from app.llm_clients import load_default_openai_client
+    from app.question_generation.helpers import deserialize_items
+    from app.question_generation.validators import BaseValidator
+
+    ckpt = load_checkpoint(output_dir, 4, "generation")
+    if not ckpt or not ckpt.get("items"):
+        raise ValueError("No generated items checkpoint found")
+
+    all_items = deserialize_items(ckpt["items"])
+    target = next(
+        (i for i in all_items if i.item_id == item_id), None,
+    )
+    if not target:
+        raise ValueError(
+            f"Item '{item_id}' not found in generation checkpoint",
+        )
+
+    # Reset validator statuses so they get freshly populated
+    if target.pipeline_meta:
+        v = target.pipeline_meta.validators
+        v.xsd = "pending"
+        v.paes = "pending"
+        v.solve_check = "pending"
+        v.scope = "pending"
+        v.exemplar_copy_check = "pending"
+
+    client = load_default_openai_client()
+    validator = BaseValidator(client)
+    errors = validator._validate_single(target, exemplars=None)
+
+    passed = len(errors) == 0
+    validators: dict[str, str] = {}
+    if target.pipeline_meta:
+        validators = target.pipeline_meta.validators.model_dump()
+
+    # Persist updated validators to checkpoint files
+    _persist_revalidation(output_dir, all_items, target, passed)
+
+    return {
+        "item_id": item_id,
+        "passed": passed,
+        "errors": errors,
+        "validators": validators,
+    }
+
+
+def _persist_revalidation(
+    output_dir: Path,
+    gen_items: list,
+    revalidated_item: object,
+    passed: bool,
+) -> None:
+    """Persist single-item revalidation result to checkpoints.
+
+    Updates the generation checkpoint (phase 4) with new validator
+    statuses and adds/removes the item from the validation
+    checkpoint (phase 6) based on the result.
+    """
+    from app.question_generation.helpers import (
+        deserialize_items,
+        save_checkpoint,
+        serialize_items,
+    )
+
+    # 1. Update generation checkpoint with refreshed validators
+    save_checkpoint(output_dir, 4, "generation", {
+        "item_count": len(gen_items),
+        "items": serialize_items(gen_items),
+    })
+
+    # 2. Update validation checkpoint (phase 6)
+    val_ckpt = load_checkpoint(output_dir, 6, "base_validation")
+    if val_ckpt is None:
+        val_ckpt = {"valid_count": 0, "items": []}
+
+    val_items = deserialize_items(val_ckpt.get("items", []))
+    # Remove existing entry for this item
+    val_items = [
+        i for i in val_items
+        if i.item_id != revalidated_item.item_id
+    ]
+    if passed:
+        val_items.append(revalidated_item)
+
+    save_checkpoint(output_dir, 6, "base_validation", {
+        "valid_count": len(val_items),
+        "items": serialize_items(val_items),
+    })
+
+
 def _read_items(
     output_dir: Path,
     phase_num: int,

@@ -481,4 +481,6 @@ export type {
 } from "./api-types-atoms";
 
 // Question Generation Checkpoint Types (re-exported from split file)
-export type { AtomCheckpointData } from "./api-types-question-gen";
+export type {
+  AtomCheckpointData, RevalidateItemResult,
+} from "./api-types-question-gen";

@@ -110,6 +110,17 @@ export interface GeneratedItem {
 }
 
 // -----------------------------------------------------------------------------
+// Single-item revalidation result
+// -----------------------------------------------------------------------------
+
+export interface RevalidateItemResult {
+  item_id: string;
+  passed: boolean;
+  errors: string[];
+  validators: Record<string, string>;
+}
+
+// -----------------------------------------------------------------------------
 // Full Checkpoint Response
 // -----------------------------------------------------------------------------
 

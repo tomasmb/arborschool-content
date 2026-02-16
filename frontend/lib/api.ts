@@ -14,8 +14,8 @@ export type {
   EnrichmentProgress, EnrichmentResult, FailedItem,
   GraphData, GraphEdge, GraphNode,
   JobLogsResponse, JobStatus, OverviewResponse,
-  QuestionBrief, QuestionDetail,
-  QuestionOption, SavedValidationSummary,
+  QuestionBrief, QuestionDetail, QuestionOption,
+  RevalidateItemResult, SavedValidationSummary,
   StandardBrief, StandardCoverageItem, StandardValidationResult,
   StructuralChecksResult, SubjectBrief, SubjectDetail, SubjectStats,
   SyncDetailEntry, TestBrief, TestDetail, TestSyncDiff,
@@ -29,7 +29,7 @@ import type {
   AtomBrief, AtomCheckpointData, CostEstimate, CourseSyncDiff,
   CourseSyncPreview, CourseSyncResult,
   EnrichmentJobResponse, GraphData, JobLogsResponse, JobStatus,
-  OverviewResponse, QuestionDetail,
+  OverviewResponse, QuestionDetail, RevalidateItemResult,
   StandardBrief, SubjectDetail, TestBrief,
   TestDetail, TestSyncDiff, TestSyncPreview, TestSyncResult,
   TestsSyncStatusResponse, ValidationJobResponse,
@@ -73,13 +73,11 @@ export async function fetchAPI<T>(
 }
 
 // --- Overview API ---
-
 export async function getOverview(): Promise<OverviewResponse> {
   return fetchAPI<OverviewResponse>("/overview");
 }
 
 // --- Subject API ---
-
 export async function getSubject(subjectId: string): Promise<SubjectDetail> {
   return fetchAPI<SubjectDetail>(`/subjects/${subjectId}`);
 }
@@ -104,7 +102,6 @@ export async function getAtomsGraph(subjectId: string): Promise<GraphData> {
 }
 
 // --- Tests & Questions API ---
-
 export async function getTests(subjectId: string): Promise<TestBrief[]> {
   return fetchAPI<TestBrief[]>(`/subjects/${subjectId}/tests`);
 }
@@ -143,7 +140,6 @@ export function getTestRawPdfUrl(subjectId: string, testId: string): string {
 }
 
 // --- Pipeline API ---
-
 export async function estimatePipelineCost(
   pipelineId: string,
   params: Record<string, unknown>
@@ -214,7 +210,6 @@ export async function clearPipelineOutputs(
 }
 
 // --- Question Generation Checkpoint API ---
-
 export async function getAtomCheckpoints(
   atomId: string,
 ): Promise<AtomCheckpointData> {
@@ -223,8 +218,18 @@ export async function getAtomCheckpoints(
   );
 }
 
-// --- Enrichment API ---
+export async function revalidateSingleItem(
+  atomId: string,
+  itemId: string,
+): Promise<RevalidateItemResult> {
+  return fetchAPI<RevalidateItemResult>(
+    `/pipelines/question_gen/${encodeURIComponent(atomId)}`
+    + `/revalidate/${encodeURIComponent(itemId)}`,
+    { method: "POST" },
+  );
+}
 
+// --- Enrichment API ---
 export interface StartEnrichmentParams {
   question_ids?: string[];
   all_tagged?: boolean;

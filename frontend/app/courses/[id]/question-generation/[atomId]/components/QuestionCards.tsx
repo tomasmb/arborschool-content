@@ -1,40 +1,77 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
-  ChevronLeft,
-  ChevronRight,
-  Filter,
   FileText,
+  Filter,
+  CheckCircle2,
+  XCircle,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { QTIRenderer } from "@/components/qti/QTIRenderer";
 import type {
   GeneratedItem,
   PlanSlot,
-  ValidatorStatuses,
 } from "@/lib/api-types-question-gen";
-import { DifficultyBadge } from "./EnrichmentSection";
-import { formatTag, formatContext } from "./shared";
+import {
+  ProPagination,
+  getOverallStatus,
+  formatContext,
+  type OverallStatus,
+} from "./shared";
+import { QuestionCardDetail } from "./QuestionCardDetail";
 
-const PAGE_SIZE = 10;
+// ---------------------------------------------------------------------------
+// Types & constants
+// ---------------------------------------------------------------------------
+
+const DEFAULT_PAGE_SIZE = 10;
+
+type StatusFilter = "all" | "pass" | "fail" | "pending";
 
 interface QuestionCardsProps {
   items: GeneratedItem[];
   planSlots: PlanSlot[] | null;
   sectionTitle?: string;
+  hasValidation: boolean;
+  passedIds: Set<string>;
+  /** Increment to programmatically switch filter to "fail". */
+  filterFailedTrigger?: number;
+  /** Atom ID — passed to cards for per-item revalidation. */
+  atomId?: string;
+  /** Called after a card finishes revalidation (silent refresh). */
+  onItemRevalidated?: () => void;
 }
+
+// ---------------------------------------------------------------------------
+// Main component
+// ---------------------------------------------------------------------------
 
 export function QuestionCards({
   items,
   planSlots,
-  sectionTitle = "Generated Questions",
+  sectionTitle = "Questions",
+  hasValidation,
+  passedIds,
+  filterFailedTrigger = 0,
+  atomId,
+  onItemRevalidated,
 }: QuestionCardsProps) {
   const [page, setPage] = useState(0);
-  const [diffFilter, setDiffFilter] = useState<string>("all");
-  const [contextFilter, setContextFilter] = useState<string>("all");
+  const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [diffFilter, setDiffFilter] = useState("all");
+  const [contextFilter, setContextFilter] = useState("all");
 
-  // Build plan slot lookup by index
+  // React to external "show failed" trigger
+  useEffect(() => {
+    if (filterFailedTrigger > 0) {
+      setStatusFilter("fail");
+      setPage(0);
+    }
+  }, [filterFailedTrigger]);
+
+  // Build plan slot lookup by slot_index
   const slotMap = useMemo(() => {
     const map = new Map<number, PlanSlot>();
     if (planSlots) {
@@ -43,68 +80,116 @@ export function QuestionCards({
     return map;
   }, [planSlots]);
 
-  // Collect unique filter values
+  // Compute status for each item
+  const itemsWithStatus = useMemo(
+    () =>
+      items.map((item) => ({
+        item,
+        status: computeStatus(item, hasValidation, passedIds),
+      })),
+    [items, hasValidation, passedIds],
+  );
+
+  // Unique filter values
   const difficulties = useMemo(
-    () => Array.from(new Set(items.map((i) => i.pipeline_meta.difficulty_level))).sort(),
+    () =>
+      Array.from(new Set(items.map((i) => i.pipeline_meta.difficulty_level)))
+        .sort(),
     [items],
   );
   const contexts = useMemo(
-    () => Array.from(new Set(items.map((i) => i.pipeline_meta.surface_context))).sort(),
+    () =>
+      Array.from(new Set(items.map((i) => i.pipeline_meta.surface_context)))
+        .sort(),
     [items],
   );
 
-  // Apply filters
+  // Status counts for chips
+  const statusCounts = useMemo(() => {
+    const c = { all: items.length, pass: 0, fail: 0, pending: 0 };
+    for (const { status } of itemsWithStatus) c[status]++;
+    return c;
+  }, [itemsWithStatus, items.length]);
+
+  // Apply all filters
   const filtered = useMemo(() => {
-    let result = items;
+    let result = itemsWithStatus;
+    if (statusFilter !== "all") {
+      result = result.filter((r) => r.status === statusFilter);
+    }
     if (diffFilter !== "all") {
       result = result.filter(
-        (i) => i.pipeline_meta.difficulty_level === diffFilter,
+        (r) => r.item.pipeline_meta.difficulty_level === diffFilter,
       );
     }
     if (contextFilter !== "all") {
       result = result.filter(
-        (i) => i.pipeline_meta.surface_context === contextFilter,
+        (r) => r.item.pipeline_meta.surface_context === contextFilter,
       );
     }
     return result;
-  }, [items, diffFilter, contextFilter]);
+  }, [itemsWithStatus, statusFilter, diffFilter, contextFilter]);
 
   // Paginate
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / pageSize),
+  );
   const safePage = Math.min(page, totalPages - 1);
   const pageItems = filtered.slice(
-    safePage * PAGE_SIZE,
-    (safePage + 1) * PAGE_SIZE,
+    safePage * pageSize,
+    (safePage + 1) * pageSize,
   );
 
-  // Reset page when filters change
-  const handleDiffChange = (v: string) => { setDiffFilter(v); setPage(0); };
-  const handleCtxChange = (v: string) => { setContextFilter(v); setPage(0); };
+  const resetPage = () => setPage(0);
 
   return (
     <div className="space-y-4">
-      {/* Header + filters */}
-      <div className="flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-2">
-          <FileText className="w-4 h-4 text-accent" />
-          <h2 className="text-sm font-semibold">
-            {sectionTitle}
-          </h2>
-          <span className="text-xs text-text-secondary">
-            {filtered.length} of {items.length}
-          </span>
+      {/* Section header */}
+      <div className="flex items-center gap-2">
+        <FileText className="w-4 h-4 text-accent" />
+        <h2 className="text-sm font-semibold">{sectionTitle}</h2>
+        <span className="text-xs text-text-secondary">
+          {filtered.length} of {items.length}
+        </span>
+      </div>
+
+      {/* Filter bar */}
+      <div
+        className={cn(
+          "flex items-center justify-between flex-wrap gap-3",
+        )}
+      >
+        {/* Status chips */}
+        <div className="flex items-center gap-1.5">
+          {(
+            ["all", "pass", "fail", "pending"] as StatusFilter[]
+          ).map((s) => (
+            <StatusChip
+              key={s}
+              status={s}
+              count={statusCounts[s]}
+              active={statusFilter === s}
+              onClick={() => {
+                setStatusFilter(s);
+                resetPage();
+              }}
+            />
+          ))}
         </div>
+
+        {/* Dropdown filters */}
         <div className="flex items-center gap-2">
           <Filter className="w-3.5 h-3.5 text-text-secondary" />
           <FilterSelect
             value={diffFilter}
-            onChange={handleDiffChange}
+            onChange={(v) => { setDiffFilter(v); resetPage(); }}
             options={difficulties}
             allLabel="All difficulties"
           />
           <FilterSelect
             value={contextFilter}
-            onChange={handleCtxChange}
+            onChange={(v) => { setContextFilter(v); resetPage(); }}
             options={contexts}
             allLabel="All contexts"
           />
@@ -112,179 +197,131 @@ export function QuestionCards({
       </div>
 
       {/* Question cards */}
-      <div className="space-y-4">
-        {pageItems.map((item) => (
-          <QuestionCard
-            key={item.item_id}
-            item={item}
-            planSlot={slotMap.get(item.slot_index) ?? null}
-          />
-        ))}
+      <div className="space-y-3">
+        {pageItems.length === 0 ? (
+          <EmptyState filter={statusFilter} />
+        ) : (
+          pageItems.map(({ item, status }) => (
+            <QuestionCardDetail
+              key={item.item_id}
+              item={item}
+              status={status}
+              planSlot={slotMap.get(item.slot_index) ?? null}
+              atomId={atomId}
+              onRevalidated={onItemRevalidated}
+            />
+          ))
+        )}
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination
+      {/* Pro pagination */}
+      {filtered.length > pageSize && (
+        <ProPagination
           page={safePage}
           totalPages={totalPages}
+          totalItems={filtered.length}
+          pageSize={pageSize}
           onPageChange={setPage}
+          onPageSizeChange={(size) => {
+            setPageSize(size);
+            setPage(0);
+          }}
         />
       )}
     </div>
   );
 }
 
+// ---------------------------------------------------------------------------
+// Status computation
+// ---------------------------------------------------------------------------
+
+function computeStatus(
+  item: GeneratedItem,
+  hasValidation: boolean,
+  passedIds: Set<string>,
+): OverallStatus {
+  if (hasValidation) {
+    return passedIds.has(item.item_id) ? "pass" : "fail";
+  }
+  return getOverallStatus(item.pipeline_meta.validators);
+}
 
 // ---------------------------------------------------------------------------
-// Single question card
+// Status filter chip
 // ---------------------------------------------------------------------------
 
-function QuestionCard({
-  item,
-  planSlot,
+const CHIP_CONFIG: Record<
+  StatusFilter,
+  {
+    label: string;
+    color: string;
+    activeColor: string;
+    Icon: typeof CheckCircle2 | null;
+  }
+> = {
+  all: {
+    label: "All",
+    color: "text-text-secondary",
+    activeColor: "bg-white/10 text-text-primary",
+    Icon: null,
+  },
+  pass: {
+    label: "Passed",
+    color: "text-success/70",
+    activeColor: "bg-success/10 text-success",
+    Icon: CheckCircle2,
+  },
+  fail: {
+    label: "Failed",
+    color: "text-error/70",
+    activeColor: "bg-error/10 text-error",
+    Icon: XCircle,
+  },
+  pending: {
+    label: "Pending",
+    color: "text-text-secondary",
+    activeColor: "bg-white/10 text-text-primary",
+    Icon: Clock,
+  },
+};
+
+function StatusChip({
+  status,
+  count,
+  active,
+  onClick,
 }: {
-  item: GeneratedItem;
-  planSlot: PlanSlot | null;
+  status: StatusFilter;
+  count: number;
+  active: boolean;
+  onClick: () => void;
 }) {
-  const meta = item.pipeline_meta;
+  const c = CHIP_CONFIG[status];
 
   return (
-    <div
-      id={`question-${item.slot_index}`}
+    <button
+      onClick={onClick}
       className={cn(
-        "bg-surface border border-border rounded-lg",
-        "transition-all duration-300",
+        "inline-flex items-center gap-1.5",
+        "px-2.5 py-1 rounded-full text-xs font-medium",
+        "transition-all duration-150",
+        active ? c.activeColor : cn("hover:bg-white/[0.04]", c.color),
       )}
     >
-      {/* Card header */}
-      <div className="px-4 py-2 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-mono text-text-secondary">
-            {item.item_id}
-          </span>
-          <DifficultyBadge level={meta.difficulty_level} />
-          <span className="text-[10px] text-text-secondary">
-            slot {item.slot_index}
-          </span>
-        </div>
-        <ValidatorPills validators={meta.validators} />
-      </div>
-
-      {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0">
-        {/* Left: Plan metadata */}
-        <div className="p-4 border-b lg:border-b-0 lg:border-r border-border space-y-2">
-          <h3 className="text-[11px] font-semibold uppercase tracking-wide text-text-secondary mb-2">
-            Plan Spec
-          </h3>
-          <MetaRow label="Component" value={formatTag(meta.component_tag)} />
-          <MetaRow label="Skeleton" value={meta.operation_skeleton_ast} mono />
-          <MetaRow label="Context" value={formatContext(meta.surface_context)} />
-          <MetaRow label="Numbers" value={formatContext(meta.numbers_profile)} />
-          {meta.target_exemplar_id && (
-            <MetaRow label="Exemplar" value={meta.target_exemplar_id} />
-          )}
-          {meta.distance_level && (
-            <MetaRow label="Distance" value={meta.distance_level} />
-          )}
-          {planSlot?.image_required && (
-            <MetaRow
-              label="Image"
-              value={planSlot.image_type ?? "required"}
-            />
-          )}
-        </div>
-
-        {/* Right: QTI preview */}
-        <div className="lg:col-span-2 p-4">
-          <QTIRenderer
-            qtiXml={item.qti_xml}
-            showCorrectAnswer={true}
-            showFeedback={false}
-            showWorkedSolution={false}
-            size="sm"
-          />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-
-// ---------------------------------------------------------------------------
-// Validator status pills
-// ---------------------------------------------------------------------------
-
-function ValidatorPills({
-  validators,
-}: {
-  validators: ValidatorStatuses;
-}) {
-  const entries = (
-    Object.entries(validators) as [string, string][]
-  ).filter(([, v]) => v !== "pending");
-
-  // If all pending, show a single "all pending" indicator
-  if (entries.length === 0) {
-    return (
-      <span className="text-[10px] text-text-secondary">
-        validators pending
-      </span>
-    );
-  }
-
-  return (
-    <div className="flex items-center gap-1">
-      {entries.map(([key, value]) => (
-        <span
-          key={key}
-          className={cn(
-            "px-1.5 py-0.5 rounded text-[10px] font-medium",
-            value === "pass"
-              ? "bg-success/10 text-success"
-              : value === "fail"
-                ? "bg-error/10 text-error"
-                : "bg-white/10 text-text-secondary",
-          )}
-        >
-          {key}
-        </span>
-      ))}
-    </div>
-  );
-}
-
-
-// ---------------------------------------------------------------------------
-// Metadata row
-// ---------------------------------------------------------------------------
-
-function MetaRow({
-  label,
-  value,
-  mono = false,
-}: {
-  label: string;
-  value: string;
-  mono?: boolean;
-}) {
-  return (
-    <div className="flex items-baseline gap-2">
-      <span className="text-[11px] text-text-secondary min-w-[70px]">
-        {label}
-      </span>
+      {c.Icon && <c.Icon className="w-3 h-3" />}
+      {c.label}
       <span
         className={cn(
-          "text-xs",
-          mono && "font-mono",
+          "ml-0.5 text-[10px]",
+          active ? "opacity-80" : "opacity-50",
         )}
       >
-        {value}
+        {count}
       </span>
-    </div>
+    </button>
   );
 }
-
 
 // ---------------------------------------------------------------------------
 // Filter dropdown
@@ -321,51 +358,24 @@ function FilterSelect({
   );
 }
 
-
 // ---------------------------------------------------------------------------
-// Pagination
+// Empty state
 // ---------------------------------------------------------------------------
 
-function Pagination({
-  page,
-  totalPages,
-  onPageChange,
-}: {
-  page: number;
-  totalPages: number;
-  onPageChange: (p: number) => void;
-}) {
+function EmptyState({ filter }: { filter: StatusFilter }) {
   return (
-    <div className="flex items-center justify-center gap-3 py-2">
-      <button
-        onClick={() => onPageChange(Math.max(0, page - 1))}
-        disabled={page === 0}
-        className={cn(
-          "p-1.5 rounded border border-border transition-colors",
-          page === 0
-            ? "opacity-40 cursor-not-allowed"
-            : "hover:bg-white/5",
-        )}
-      >
-        <ChevronLeft className="w-4 h-4" />
-      </button>
-      <span className="text-xs text-text-secondary">
-        Page {page + 1} of {totalPages}
-      </span>
-      <button
-        onClick={() => onPageChange(Math.min(totalPages - 1, page + 1))}
-        disabled={page >= totalPages - 1}
-        className={cn(
-          "p-1.5 rounded border border-border transition-colors",
-          page >= totalPages - 1
-            ? "opacity-40 cursor-not-allowed"
-            : "hover:bg-white/5",
-        )}
-      >
-        <ChevronRight className="w-4 h-4" />
-      </button>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center",
+        "py-12 text-text-secondary",
+      )}
+    >
+      <FileText className="w-8 h-8 mb-2 opacity-30" />
+      <p className="text-sm">
+        {filter === "all"
+          ? "No questions generated yet"
+          : `No ${filter} questions`}
+      </p>
     </div>
   );
 }
-
-

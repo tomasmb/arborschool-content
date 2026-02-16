@@ -24,6 +24,8 @@ interface ValidationSummaryProps {
   generatedItems: GeneratedItem[] | null;
   /** Pipeline report with phase-level errors. */
   report: PipelineReport | null;
+  /** Callback to scroll to questions and filter to failed. */
+  onFilterFailed?: () => void;
 }
 
 // ---------------------------------------------------------------------------
@@ -34,24 +36,25 @@ export function ValidationSummary({
   validatedItems,
   generatedItems,
   report,
+  onFilterFailed,
 }: ValidationSummaryProps) {
   const passCount = validatedItems.length;
   const totalCount = generatedItems?.length ?? passCount;
   const failCount = totalCount - passCount;
-
-  // Extract validation-phase errors from the pipeline report
   const validationErrors = extractValidationErrors(report);
 
   return (
     <CollapsibleSection
       icon={ShieldCheck}
       title="Validation Results"
-      subtitle={`${passCount} passed, ${failCount} failed of ${totalCount}`}
+      subtitle={
+        `${passCount} passed, ${failCount} failed of ${totalCount}`
+      }
       defaultExpanded={failCount > 0}
     >
-      <div className="px-4 pb-4 space-y-3">
-        {/* Pass / fail counters */}
-        <div className="flex gap-4">
+      <div className="px-4 pb-4 space-y-4">
+        {/* Stats row */}
+        <div className="flex items-center gap-4 flex-wrap">
           <StatBadge
             icon={CheckCircle2}
             label="Passed"
@@ -64,15 +67,37 @@ export function ValidationSummary({
             value={failCount}
             variant={failCount > 0 ? "error" : "muted"}
           />
+          {failCount > 0 && onFilterFailed && (
+            <button
+              onClick={onFilterFailed}
+              className={cn(
+                "ml-auto inline-flex items-center gap-1.5",
+                "px-3 py-1.5 rounded-md text-xs font-medium",
+                "bg-error/10 text-error hover:bg-error/20",
+                "transition-colors",
+              )}
+            >
+              <XCircle className="w-3.5 h-3.5" />
+              Show failed questions
+            </button>
+          )}
         </div>
+
+        {/* Pass/fail progress bar */}
+        <PassRateBar pass={passCount} total={totalCount} />
 
         {/* Validation errors list */}
         {validationErrors.length > 0 && (
-          <div className="space-y-1.5">
-            <h3 className="text-[11px] font-semibold uppercase tracking-wide text-text-secondary">
-              Failed Items
+          <div className="space-y-2">
+            <h3
+              className={cn(
+                "text-[11px] font-semibold uppercase tracking-wide",
+                "text-text-secondary",
+              )}
+            >
+              Errors ({validationErrors.length})
             </h3>
-            <div className="space-y-1">
+            <div className="space-y-1 max-h-[200px] overflow-y-auto">
               {validationErrors.map((err, idx) => (
                 <ErrorRow key={idx} message={err} />
               ))}
@@ -92,7 +117,6 @@ export function ValidationSummary({
   );
 }
 
-
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -107,10 +131,37 @@ function extractValidationErrors(
   return phase?.errors ?? [];
 }
 
-
 // ---------------------------------------------------------------------------
 // Sub-components
 // ---------------------------------------------------------------------------
+
+function PassRateBar({
+  pass,
+  total,
+}: {
+  pass: number;
+  total: number;
+}) {
+  if (total === 0) return null;
+  const pct = Math.round((pass / total) * 100);
+
+  return (
+    <div className="space-y-1">
+      <div className="h-2 rounded-full bg-white/5 overflow-hidden">
+        <div
+          className={cn(
+            "h-full rounded-full transition-all duration-500",
+            "bg-gradient-to-r from-success to-success/80",
+          )}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <div className="text-[10px] text-text-secondary text-right">
+        {pct}% pass rate
+      </div>
+    </div>
+  );
+}
 
 function StatBadge({
   icon: Icon,
@@ -143,27 +194,30 @@ function StatBadge({
   );
 }
 
-
 function ErrorRow({ message }: { message: string }) {
-  // Error format: "A-M1-ALG-01-01_Q33: Some error reason"
   const colonIdx = message.indexOf(":");
-  const itemId = colonIdx > 0
-    ? message.slice(0, colonIdx).trim()
-    : null;
-  const reason = colonIdx > 0
-    ? message.slice(colonIdx + 1).trim()
-    : message;
+  const itemId =
+    colonIdx > 0 ? message.slice(0, colonIdx).trim() : null;
+  const reason =
+    colonIdx > 0 ? message.slice(colonIdx + 1).trim() : message;
 
   return (
-    <div className="flex items-start gap-2 text-xs">
-      <AlertTriangle className="w-3.5 h-3.5 text-warning mt-0.5 shrink-0" />
+    <div
+      className={cn(
+        "flex items-start gap-2 text-xs",
+        "py-1 px-2 rounded hover:bg-white/[0.03]",
+      )}
+    >
+      <AlertTriangle
+        className="w-3.5 h-3.5 text-warning mt-0.5 shrink-0"
+      />
       <span>
         {itemId && (
           <span className="font-mono text-text-secondary">
             {itemId}:
           </span>
         )}{" "}
-        {reason}
+        <span className="text-text-secondary">{reason}</span>
       </span>
     </div>
   );

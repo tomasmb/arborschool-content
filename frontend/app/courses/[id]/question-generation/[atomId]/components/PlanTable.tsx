@@ -41,7 +41,7 @@ export function PlanTable({
       icon={ListChecks}
       title="Generation Plan"
       subtitle={subtitle}
-      defaultExpanded
+      defaultExpanded={false}
     >
       <div className="overflow-x-auto">
           <table className="w-full min-w-[700px]">
