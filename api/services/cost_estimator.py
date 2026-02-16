@@ -362,13 +362,17 @@ class CostEstimatorService:
                 (200 + r["medium"]) * validate_items,
             ),
             # Per item: enhance (low) + review (none)
-            # + final_validation (medium)
+            # Includes ~30% buffer for correction retries
             "feedback": (
-                5_000 * feedback_items,
-                (3_000 + r["low"] + 600 + r["none"]
-                 + 200 + r["medium"]) * feedback_items,
+                6_500 * feedback_items,
+                (5_000 + r["low"]) * feedback_items,
             ),
-            "finalize": (0, 0),
+            # Phase 9: 1 LLM final validation per item (medium)
+            # Phase 10: DB sync (no LLM cost)
+            "finalize": (
+                2_500 * feedback_items,
+                (500 + r["medium"]) * feedback_items,
+            ),
         }
 
         # Determine which phases are included
