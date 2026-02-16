@@ -228,12 +228,12 @@ class BaseValidator:
         """LLM-solve the question, compare normalized answer to declared."""
         prompt = build_solvability_prompt(item.qti_xml)
         try:
-            raw = self._client.generate_text(
+            llm_resp = self._client.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 reasoning_effort=_SOLVABILITY_REASONING,
             )
-            result = json.loads(raw)
+            result = json.loads(llm_resp.text)
             raw_answer = result.get("answer", "").strip()
         except Exception as exc:
             logger.warning(

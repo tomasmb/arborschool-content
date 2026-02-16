@@ -79,7 +79,7 @@ def execute_fix(
     )
 
     try:
-        raw = client.generate_text(
+        llm_resp = client.generate_text(
             prompt,
             reasoning_effort=action.reasoning_effort,
             response_mime_type="application/json",
@@ -88,7 +88,7 @@ def execute_fix(
         logger.error("LLM call failed for %s: %s", action, exc)
         return FixResult(action=action, success=False, error=str(exc))
 
-    return _parse_and_validate(action, raw)
+    return _parse_and_validate(action, llm_resp.text)
 
 
 # -----------------------------------------------------------------------------

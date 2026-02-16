@@ -71,13 +71,13 @@ class FeedbackReviewer:
         logger.info(f"Running feedback review with {self.model}")
 
         try:
-            response_text = self._client.generate_text(
+            llm_resp = self._client.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 temperature=0.0,
             )
 
-            result = json.loads(response_text)
+            result = json.loads(llm_resp.text)
             logger.info(f"Feedback review result: {result.get('review_result')}")
 
             return self._parse_result(result)

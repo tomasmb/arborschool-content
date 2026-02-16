@@ -104,7 +104,6 @@ class FeedbackEnhancer:
         """
         self.model = model or self.DEFAULT_MODEL
         self.max_retries = max_retries
-        self._last_xsd_errors: str | None = None
         self._client = client or load_default_openai_client(
             model=self.model,
         )
@@ -131,6 +130,10 @@ class FeedbackEnhancer:
         if image_urls:
             images = load_images_from_urls(image_urls)
 
+        # Local variable — NOT instance state — so concurrent threads
+        # don't leak XSD errors between items (thread safety).
+        last_xsd_errors: str | None = None
+
         for attempt in range(self.max_retries + 1):
             logger.info(
                 "Enhancement attempt %d/%d (%d images)",
@@ -148,20 +151,20 @@ class FeedbackEnhancer:
                 feedback_reference_example=FEEDBACK_QTI_REFERENCE,
             )
 
-            if attempt > 0 and self._last_xsd_errors:
+            if attempt > 0 and last_xsd_errors:
                 prompt += (
                     f"\n\nERRORES XSD DEL INTENTO ANTERIOR:\n"
-                    f"{self._last_xsd_errors}\n"
+                    f"{last_xsd_errors}\n"
                     "Por favor corrige estos errores en tu respuesta."
                 )
 
             try:
-                response_text = self._client.call_with_images(
+                llm_resp = self._client.call_with_images(
                     prompt,
                     images,
                     reasoning_effort=_ENHANCE_REASONING,
                 )
-                enhanced_xml = self._extract_xml(response_text)
+                enhanced_xml = self._extract_xml(llm_resp.text)
 
                 xsd_result = validate_qti_xml(enhanced_xml)
                 if xsd_result.get("valid"):
@@ -172,11 +175,11 @@ class FeedbackEnhancer:
                         attempts=attempt + 1,
                     )
 
-                self._last_xsd_errors = str(
+                last_xsd_errors = str(
                     xsd_result.get("validation_errors", "Unknown error"),
                 )
                 logger.warning(
-                    "XSD validation failed: %s", self._last_xsd_errors,
+                    "XSD validation failed: %s", last_xsd_errors,
                 )
 
             except Exception as e:
@@ -193,7 +196,7 @@ class FeedbackEnhancer:
                 return EnhancementResult(
                     success=False,
                     error=f"XSD validation failed after {attempt + 1} attempts",
-                    xsd_errors=self._last_xsd_errors,
+                    xsd_errors=last_xsd_errors,
                     attempts=attempt + 1,
                 )
 
@@ -233,12 +236,12 @@ class FeedbackEnhancer:
         )
 
         try:
-            response_text = self._client.call_with_images(
+            llm_resp = self._client.call_with_images(
                 prompt,
                 images,
                 reasoning_effort=_ENHANCE_REASONING,
             )
-            corrected_xml = self._extract_xml(response_text)
+            corrected_xml = self._extract_xml(llm_resp.text)
 
             xsd_result = validate_qti_xml(corrected_xml)
             if xsd_result.get("valid"):

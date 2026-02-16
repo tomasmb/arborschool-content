@@ -2,6 +2,7 @@ import glob
 import os
 import time
 
+from app.question_generation.progress import report_progress
 from app.tagging.tagger import AtomTagger
 
 
@@ -31,6 +32,8 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
     fail_count = 0
     skipped_count = 0
 
+    report_progress(0, total_files)
+
     for i, xml_path in enumerate(sorted_files):
         dir_name = os.path.dirname(xml_path)
         file_name = os.path.basename(xml_path)
@@ -39,7 +42,9 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
             output_path = os.path.join(dir_name, "metadata_tags.json")
         else:
             base_name = os.path.splitext(file_name)[0]
-            output_path = os.path.join(dir_name, f"{base_name}_metadata_tags.json")
+            output_path = os.path.join(
+                dir_name, f"{base_name}_metadata_tags.json",
+            )
 
         print(f"[{i + 1}/{total_files}] Processing {xml_path}...")
 
@@ -47,18 +52,20 @@ def run_batch(base_dir: str = "app/data/pruebas/finalizadas"):
         if os.path.exists(output_path):
             print("  Skipping (already tagged)")
             skipped_count += 1
+            report_progress(i + 1, total_files)
             continue
 
         result = tagger.tag_xml_file(xml_path, output_path)
 
         if result:
             success_count += 1
-            # Check validation status
             val = result.get("validation", {}).get("status", "UNKNOWN")
             print(f"  Result: SUCCESS (Validation: {val})")
         else:
             fail_count += 1
             print("  Result: FAILED")
+
+        report_progress(i + 1, total_files)
 
         # Rate limiting sleep
         time.sleep(2)

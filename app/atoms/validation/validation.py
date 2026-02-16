@@ -11,7 +11,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from app.llm_clients import GeminiService, OpenAIClient
+from app.llm_clients import GeminiService, LLMResponse, OpenAIClient
 from app.standards.helpers import parse_json_response
 
 logger = logging.getLogger(__name__)
@@ -216,7 +216,11 @@ def validate_atoms_with_llm(
     if isinstance(client, OpenAIClient):
         generate_kwargs["reasoning_effort"] = _ATOM_VALIDATION_REASONING
 
-    raw_response = client.generate_text(prompt, **generate_kwargs)
+    resp = client.generate_text(prompt, **generate_kwargs)
+    # OpenAIClient returns LLMResponse; GeminiService returns str
+    raw_response = (
+        resp.text if isinstance(resp, LLMResponse) else str(resp)
+    )
 
     # Guard against empty responses (e.g. model returned nothing)
     if not raw_response or not raw_response.strip():

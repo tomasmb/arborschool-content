@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 from app.question_feedback.pipeline import QuestionPipeline
+from app.question_generation.progress import report_progress
 from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_variants.models import (
     GenerationReport,
@@ -76,10 +77,13 @@ class VariantPipeline:
         print(f"📋 Cargadas {len(sources)} preguntas fuente\n")
 
         reports = []
+        total = len(sources)
+        report_progress(0, total)
 
-        for source in sources:
+        for i, source in enumerate(sources):
             report = self._process_question(source, num_variants)
             reports.append(report)
+            report_progress(i + 1, total)
 
         # Print summary
         self._print_summary(reports)

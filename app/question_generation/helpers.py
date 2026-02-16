@@ -269,11 +269,12 @@ def classify_image_status(image_types: list[str] | None) -> str:
     return "images_unsupported"
 
 
-# Checkpoint phase → next phase group for --resume support
+# Checkpoint phase → next phase group for --resume.
+# Phase 4→"generate" so partial gen re-enters slot-level resume.
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
     8: "finalize",
     6: "feedback",
-    4: "validate",
+    4: "generate",
     3: "generate",
     1: "plan",
 }

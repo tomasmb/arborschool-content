@@ -15,7 +15,6 @@ from __future__ import annotations
 import json
 import logging
 import re
-import threading
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
@@ -43,9 +42,6 @@ _GENERATION_REASONING = "medium"
 
 # Max parallel LLM calls (bounded to avoid rate-limit pressure)
 _MAX_PARALLEL = 5
-
-# Thread lock for atomic stdout writes and counter updates
-_progress_lock = threading.Lock()
 
 
 class BaseQtiGenerator:
@@ -203,12 +199,14 @@ class BaseQtiGenerator:
         )
 
         for attempt in range(self._max_retries + 1):
-            response = self._client.generate_text(
+            llm_resp = self._client.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 reasoning_effort=_GENERATION_REASONING,
             )
-            item = _parse_single_response(response, atom_id, slot)
+            item = _parse_single_response(
+                llm_resp.text, atom_id, slot,
+            )
 
             # Immediate XSD validation
             xsd_result = validate_qti_xml(item.qti_xml)

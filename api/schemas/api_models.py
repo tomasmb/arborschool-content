@@ -359,12 +359,12 @@ class JobStatus(BaseModel):
     params: dict = Field(default_factory=dict)
     started_at: str | None = None
     completed_at: str | None = None
-    # Progress tracking
+    # Progress tracking (updated via [PROGRESS] stdout markers)
     total_items: int = 0
     completed_items: int = 0
+    # TODO: fields below are not yet populated (frontend compat only)
     failed_items: int = 0
-    current_item: str | None = Field(None, description="Currently processing item")
-    # Detailed item tracking for resume
+    current_item: str | None = None
     completed_item_ids: list[str] = Field(default_factory=list)
     failed_item_details: list[FailedItem] = Field(default_factory=list)
     remaining_items: int = 0

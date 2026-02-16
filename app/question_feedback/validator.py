@@ -90,14 +90,14 @@ class FinalValidator:
         )
 
         try:
-            response_text = self._client.call_with_images(
+            llm_resp = self._client.call_with_images(
                 prompt,
                 images,
                 reasoning_effort=_VALIDATION_REASONING,
                 response_mime_type="application/json",
             )
 
-            result = json.loads(response_text)
+            result = json.loads(llm_resp.text)
             logger.info("Validation result: %s", result.get("validation_result"))
             return self._parse_result(result)
 
