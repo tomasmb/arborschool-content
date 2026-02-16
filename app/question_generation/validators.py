@@ -47,7 +47,10 @@ logger = logging.getLogger(__name__)
 
 
 class DuplicateGate:
-    """Detects duplicate and near-duplicate items (Phase 5)."""
+    """Detects duplicate and near-duplicate items (Phase 5).
+
+    SHA-256 fingerprinting + structural skeleton comparison.
+    """
 
     def run(
         self,
@@ -55,7 +58,7 @@ class DuplicateGate:
         existing_fingerprints: set[str] | None = None,
         pool_total: int | None = None,
     ) -> PhaseResult:
-        """Run dedupe on items against existing inventory + batch."""
+        """Run dedupe on *items* against existing inventory + batch."""
         logger.info("Phase 5: Running duplicate gate on %d items", len(items))
 
         effective_pool = pool_total or len(items)

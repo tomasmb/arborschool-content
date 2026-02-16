@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
+from app.question_feedback.models import (
+    PipelineResult as FeedbackResult,
+)
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_generation.artifacts import clean_stale_artifacts
 from app.question_generation.enricher import AtomEnricher
@@ -53,6 +57,9 @@ from app.question_generation.validators import (
 from app.utils.paths import QUESTION_GENERATION_DIR
 
 logger = logging.getLogger(__name__)
+
+# Max parallel feedback enrichment calls (Phase 7-8)
+_MAX_PARALLEL_FEEDBACK = 5
 
 
 class AtomQuestionPipeline:
@@ -385,20 +392,40 @@ class AtomQuestionPipeline:
         items: list[GeneratedItem],
         result: PipelineResult,
     ) -> list[GeneratedItem] | None:
-        """Phases 7-8: Feedback enrichment via QuestionPipeline."""
-        logger.info("Phases 7-8: Feedback for %d items", len(items))
+        """Phases 7-8: Feedback enrichment via QuestionPipeline.
+
+        Runs up to _MAX_PARALLEL_FEEDBACK concurrent enrichments.
+        Each item is independent (own QTI XML mutation on success).
+        """
+        logger.info(
+            "Phases 7-8: Feedback for %d items (parallel=%d)",
+            len(items), _MAX_PARALLEL_FEEDBACK,
+        )
         enriched: list[GeneratedItem] = []
         errors: list[str] = []
-        for item in items:
-            fb = self._feedback_pipeline.process(
-                question_id=item.item_id,
-                qti_xml=item.qti_xml, output_dir=None,
-            )
-            if fb.success and fb.qti_xml_final:
-                item.qti_xml = fb.qti_xml_final
-                enriched.append(item)
-            else:
-                errors.append(f"{item.item_id}: {fb.stage_failed}: {fb.error}")
+
+        with ThreadPoolExecutor(
+            max_workers=_MAX_PARALLEL_FEEDBACK,
+        ) as pool:
+            futures = {
+                pool.submit(
+                    self._enrich_single_item, item,
+                ): item
+                for item in items
+            }
+
+            for future in as_completed(futures):
+                item = futures[future]
+                fb = future.result()
+                if fb.success and fb.qti_xml_final:
+                    item.qti_xml = fb.qti_xml_final
+                    enriched.append(item)
+                else:
+                    errors.append(
+                        f"{item.item_id}: "
+                        f"{fb.stage_failed}: {fb.error}",
+                    )
+
         phase = PhaseResult(
             phase_name="feedback_enrichment",
             success=len(enriched) > 0,
@@ -406,6 +433,23 @@ class AtomQuestionPipeline:
         )
         result.phase_results.append(phase)
         return enriched if enriched else None
+
+    def _enrich_single_item(
+        self, item: GeneratedItem,
+    ) -> FeedbackResult:
+        """Run feedback enrichment on a single item.
+
+        Args:
+            item: Generated item with base QTI XML.
+
+        Returns:
+            FeedbackResult from the feedback pipeline.
+        """
+        return self._feedback_pipeline.process(
+            question_id=item.item_id,
+            qti_xml=item.qti_xml,
+            output_dir=None,
+        )
 
     def _phase_9_final_validation(
         self,
