@@ -263,22 +263,63 @@ def check_paes_structure(qti_xml: str) -> list[str]:
     return errors
 
 
-def extract_correct_option(qti_xml: str) -> str | None:
-    """Extract the declared correct option identifier from QTI XML.
+def normalize_option_letter(raw: str) -> str | None:
+    """Normalize a raw option value to a single letter A-D.
 
-    Looks for <qti-value> inside <qti-correct-response>.
+    Handles common formats from QTI identifiers (e.g. "ChoiceA",
+    "Choice_B") and LLM responses (e.g. "LETRA C", "Letra D",
+    "opción A", just "B").
+
+    Args:
+        raw: Raw string to normalize.
+
+    Returns:
+        Uppercase letter ("A"-"D") or None if no valid letter found.
+    """
+    cleaned = raw.strip().upper()
+
+    # Try to find pattern like "CHOICE_?A" or "CHOICEA"
+    choice_match = re.search(r"CHOICE[_\-\s]?([A-D])\b", cleaned)
+    if choice_match:
+        return choice_match.group(1)
+
+    # Try to find pattern like "LETRA A", "OPCION B", etc.
+    # (common in Spanish LLM responses)
+    prefix_match = re.search(
+        r"(?:LETRA|OPCI[OÓ]N|ALTERNATIVA|RESPUESTA)\s+([A-D])\b",
+        cleaned,
+    )
+    if prefix_match:
+        return prefix_match.group(1)
+
+    # Bare single letter at the end (e.g. "A", "B")
+    bare_match = re.search(r"\b([A-D])\s*$", cleaned)
+    if bare_match:
+        return bare_match.group(1)
+
+    return None
+
+
+def extract_correct_option(qti_xml: str) -> str | None:
+    """Extract the declared correct option letter from QTI XML.
+
+    Looks for <qti-value> inside <qti-correct-response> and
+    normalizes identifiers like "ChoiceA", "Choice_B", or plain "C"
+    down to a single uppercase letter (A-D).
 
     Args:
         qti_xml: QTI XML string.
 
     Returns:
-        The correct option identifier (e.g. "A") or None.
+        Normalized letter ("A"-"D") or None if not found.
     """
     match = re.search(
         r"<qti-correct-response>\s*<qti-value>([^<]+)</qti-value>",
         qti_xml,
     )
-    return match.group(1).strip() if match else None
+    if not match:
+        return None
+    return normalize_option_letter(match.group(1).strip())
 
 
 def check_exemplar_distance(

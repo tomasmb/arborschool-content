@@ -9,6 +9,7 @@ Endpoints:
     GET  /api/pipelines/jobs/{job_id} - Get job status
     POST /api/pipelines/jobs/{job_id}/cancel - Cancel a running job
     DELETE /api/pipelines/jobs/{job_id} - Delete a job record
+    GET  /api/pipelines/question_gen/{atom_id}/checkpoints - Read checkpoint data
 """
 
 from __future__ import annotations
@@ -87,8 +88,9 @@ async def estimate_pipeline_cost(
     safe_params = params or {}
     estimate = estimator.estimate_pipeline_cost(pipeline_id, safe_params)
 
-    # Attach stale artifact info for question_gen pipelines
-    if pipeline_id == "question_gen":
+    # Stale artifact warning only when force_all (full rerun).
+    # In resume mode (default), downstream checkpoints are preserved.
+    if pipeline_id == "question_gen" and safe_params.get("force_all"):
         atom_id = safe_params.get("atom_id", "")
         phase = safe_params.get("phase", "all")
         if atom_id:
@@ -436,3 +438,59 @@ async def clear_pipeline_outputs(
         "deleted_paths": deleted_paths[:10],  # Limit paths in response
         "message": f"Cleared {deleted_count} items for {pipeline_id}",
     }
+
+
+# -----------------------------------------------------------------------------
+# Question generation checkpoint inspection
+# -----------------------------------------------------------------------------
+
+
+@router.get("/question_gen/{atom_id}/checkpoints")
+async def get_atom_checkpoints(atom_id: str) -> dict[str, Any]:
+    """Read all available checkpoint data for a question generation atom.
+
+    Returns structured data from each completed pipeline phase,
+    plus the pipeline report if available. Used by the frontend
+    results inspector to render plan slots and QTI previews.
+    """
+    from app.question_generation.checkpoint_reader import (
+        read_atom_checkpoints,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    output_dir = QUESTION_GENERATION_DIR / atom_id
+    if not output_dir.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"No generation data for atom '{atom_id}'",
+        )
+
+    return read_atom_checkpoints(output_dir, atom_id)
+
+
+@router.post("/question_gen/{atom_id}/revalidate/{item_id}")
+async def revalidate_item(
+    atom_id: str,
+    item_id: str,
+) -> dict[str, Any]:
+    """Re-run base validation on a single generated item.
+
+    Runs XSD, PAES, solvability-LLM, and exemplar distance checks.
+    Does NOT persist results — use the full pipeline for that.
+    """
+    from app.question_generation.checkpoint_reader import (
+        revalidate_single_item,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    output_dir = QUESTION_GENERATION_DIR / atom_id
+    if not output_dir.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"No generation data for atom '{atom_id}'",
+        )
+
+    try:
+        return revalidate_single_item(output_dir, item_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))

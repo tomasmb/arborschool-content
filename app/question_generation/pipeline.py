@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
+from app.question_feedback.models import (
+    PipelineResult as FeedbackResult,
+)
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_generation.artifacts import clean_stale_artifacts
 from app.question_generation.enricher import AtomEnricher
@@ -15,6 +19,7 @@ from app.question_generation.helpers import (
     check_prerequisites,
     find_resume_phase_group,
     load_atom,
+    load_checkpoint,
     load_existing_fingerprints,
     load_phase_state,
     print_pipeline_header,
@@ -53,6 +58,9 @@ from app.question_generation.validators import (
 from app.utils.paths import QUESTION_GENERATION_DIR
 
 logger = logging.getLogger(__name__)
+
+# Max parallel feedback enrichment calls (Phase 7-8)
+_MAX_PARALLEL_FEEDBACK = 5
 
 
 class AtomQuestionPipeline:
@@ -114,8 +122,11 @@ class AtomQuestionPipeline:
 
         print_pipeline_header(atom_id)
 
-        # Clean stale artifacts downstream of eff_phase (not config.phase).
-        clean_stale_artifacts(atom_id, eff_phase)
+        # Clean downstream artifacts only for full reruns (not resume).
+        # In resume mode, downstream checkpoints are preserved so
+        # phases like validation can carry over already-passed items.
+        if not self._config.resume:
+            clean_stale_artifacts(atom_id, eff_phase)
 
         # Phase 0 — Inputs (always runs, no LLM)
         ctx = self._phase_0_inputs(atom_id, result)
@@ -149,24 +160,19 @@ class AtomQuestionPipeline:
                 persist_enrichment(atom_id, enrichment)
             save_checkpoint(output_dir, 1, "enrichment", {
                 "has_enrichment": enrichment is not None,
-                "enrichment_data": (
-                    enrichment.model_dump() if enrichment else None
-                ),
+                "enrichment_data": enrichment.model_dump() if enrichment else None,
             })
 
         if end <= 1:
             return self._finalize(result, output_dir)
 
-        # Generatability gate — block if unsupported image types
+        # Generatability gate — block on unsupported image types
         if enrichment and enrichment.required_image_types:
             if not can_generate_all(enrichment.required_image_types):
-                unsupported = get_unsupported_types(
-                    enrichment.required_image_types,
-                )
-                err = f"Unsupported image types: {unsupported}"
+                unsup = get_unsupported_types(enrichment.required_image_types)
                 result.phase_results.append(PhaseResult(
                     phase_name="image_generatability_gate",
-                    success=False, errors=[err],
+                    success=False, errors=[f"Unsupported: {unsup}"],
                 ))
                 return self._finalize(result, output_dir)
 
@@ -213,10 +219,39 @@ class AtomQuestionPipeline:
         if deduped is None:
             return result
         result.total_passed_dedupe = len(deduped)
-        validated = self._phase_6_base_validation(
-            deduped, ctx, result,
-        )
-        if validated is None:
+
+        # Resume: carry over items already in phase 6 checkpoint
+        carried: list[GeneratedItem] = []
+        to_validate = deduped
+        if self._config.resume:
+            ckpt = load_checkpoint(output_dir, 6, "base_validation")
+            if ckpt and ckpt.get("items"):
+                prev = {it["item_id"] for it in ckpt["items"]
+                        if isinstance(it, dict) and it.get("item_id")}
+                carried = [it for it in deduped if it.item_id in prev]
+                to_validate = [
+                    it for it in deduped if it.item_id not in prev
+                ]
+                if carried:
+                    logger.info("Phase 6 resume: %d carried, %d new",
+                                len(carried), len(to_validate))
+        if to_validate:
+            newly_valid = self._phase_6_base_validation(
+                to_validate, ctx, result,
+            )
+            validated = carried + (newly_valid or [])
+        elif carried:
+            logger.info("Phase 6: all %d items already validated",
+                        len(carried))
+            result.phase_results.append(PhaseResult(
+                phase_name="base_validation", success=True,
+                data={"valid_items": carried},
+            ))
+            validated = carried
+        else:
+            validated = None
+
+        if not validated:
             return result
         result.total_passed_base_validation = len(validated)
         save_checkpoint(output_dir, 6, "base_validation", {
@@ -257,12 +292,12 @@ class AtomQuestionPipeline:
         result: PipelineResult,
         output_dir: Path,
     ) -> PipelineResult:
-        """Save results and print summary."""
-        save_pipeline_results(output_dir, result)
-        print_pipeline_summary(result)
+        """Compute success, save results and print summary."""
         result.success = result.total_final > 0 or any(
             p.success for p in result.phase_results
         )
+        save_pipeline_results(output_dir, result)
+        print_pipeline_summary(result)
         return result
 
     def _phase_0_inputs(
@@ -381,24 +416,28 @@ class AtomQuestionPipeline:
         return phase.data["valid_items"]
 
     def _phase_7_8_feedback(
-        self,
-        items: list[GeneratedItem],
-        result: PipelineResult,
+        self, items: list[GeneratedItem], result: PipelineResult,
     ) -> list[GeneratedItem] | None:
-        """Phases 7-8: Feedback enrichment via QuestionPipeline."""
-        logger.info("Phases 7-8: Feedback for %d items", len(items))
+        """Phases 7-8: Feedback enrichment (parallel)."""
+        logger.info("Phases 7-8: Feedback for %d items (parallel=%d)",
+                     len(items), _MAX_PARALLEL_FEEDBACK)
         enriched: list[GeneratedItem] = []
         errors: list[str] = []
-        for item in items:
-            fb = self._feedback_pipeline.process(
-                question_id=item.item_id,
-                qti_xml=item.qti_xml, output_dir=None,
-            )
-            if fb.success and fb.qti_xml_final:
-                item.qti_xml = fb.qti_xml_final
-                enriched.append(item)
-            else:
-                errors.append(f"{item.item_id}: {fb.stage_failed}: {fb.error}")
+        with ThreadPoolExecutor(max_workers=_MAX_PARALLEL_FEEDBACK) as pool:
+            futures = {
+                pool.submit(self._enrich_single_item, item): item
+                for item in items
+            }
+            for future in as_completed(futures):
+                item = futures[future]
+                fb = future.result()
+                if fb.success and fb.qti_xml_final:
+                    item.qti_xml = fb.qti_xml_final
+                    enriched.append(item)
+                else:
+                    errors.append(
+                        f"{item.item_id}: {fb.stage_failed}: {fb.error}",
+                    )
         phase = PhaseResult(
             phase_name="feedback_enrichment",
             success=len(enriched) > 0,
@@ -406,6 +445,14 @@ class AtomQuestionPipeline:
         )
         result.phase_results.append(phase)
         return enriched if enriched else None
+
+    def _enrich_single_item(self, item: GeneratedItem) -> FeedbackResult:
+        """Run feedback enrichment on a single item."""
+        return self._feedback_pipeline.process(
+            question_id=item.item_id,
+            qti_xml=item.qti_xml,
+            output_dir=None,
+        )
 
     def _phase_9_final_validation(
         self,

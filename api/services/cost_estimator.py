@@ -7,11 +7,14 @@ Prices verified February 2026 — update when models change.
 from __future__ import annotations
 
 import hashlib
+import logging
 import secrets
 from dataclasses import dataclass
 from typing import Any
 
 from api.schemas.api_models import CostEstimate
+
+logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
 # Model pricing (per 1M tokens) — verified 2026-02-12
@@ -35,14 +38,7 @@ MODEL_PRICING: dict[str, dict[str, float]] = {
 # Default model — only used when pipeline has no explicit mapping
 DEFAULT_MODEL = "gpt-5.1"
 
-# ---------------------------------------------------------------------------
-# GPT-5.1 reasoning token overhead (per call)
-# ---------------------------------------------------------------------------
-# GPT-5.1's reasoning_effort parameter controls internal chain-of-thought.
-# Reasoning tokens are HIDDEN but billed as output tokens at the output
-# rate ($10/1M). Higher effort = more reasoning tokens = higher cost.
-# These are approximate overheads based on observed usage.
-
+# GPT-5.1 reasoning token overhead per call (hidden, billed as output).
 GPT51_REASONING_OVERHEAD: dict[str, int] = {
     "none": 0,       # No internal reasoning
     "low": 200,      # Light reasoning (~200 extra output tokens)
@@ -146,14 +142,7 @@ class CostEstimatorService:
     def _estimate_standards_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Standards generation — Gemini 3 Pro.
-
-        Per eje (~8 unidades):
-          - 8 generation calls: ~2,500 input, ~1,200 visible output
-          - 8 validation calls: ~3,000 input, ~800 visible output
-          - 1 cross-eje validation: ~6,000 input, ~1,500 visible output
-        Gemini thinking_level=high adds ~3x on top of visible output.
-        """
+        """Standards generation — Gemini 3 Pro, ~4x thinking."""
         num_ejes = 1 if params.get("eje") else 4
         unidades_per_eje = 8  # Approximate average
 
@@ -185,13 +174,7 @@ class CostEstimatorService:
     def _estimate_atoms_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Atoms generation — Gemini 3 Pro.
-
-        Per standard:
-          - 1 call: ~5,000 input (prompt+rules+guidelines+standard)
-          - ~3,000 visible output (3-6 atoms JSON)
-        Gemini thinking_level=high adds ~3x on visible output.
-        """
+        """Atoms generation — Gemini 3 Pro, ~4x thinking."""
         standard_ids = params.get("standard_ids")
         if isinstance(standard_ids, str) and standard_ids:
             num_standards = len(standard_ids.split(","))
@@ -219,14 +202,7 @@ class CostEstimatorService:
     def _estimate_pdf_split(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """PDF split — o4-mini (reasoning model).
-
-        Single call: uploads entire PDF as file.
-        Highly variable based on PDF length.
-          - Input: ~20,000-40,000 document tokens
-          - Output: ~10,000-25,000 tokens (segment JSON + reasoning)
-        o4-mini reasoning tokens are billed as output.
-        """
+        """PDF split — o4-mini, single call per PDF."""
         num_pages = params.get("num_pages", 30)
         # Document tokens: ~800-1,200 per page
         input_tokens = num_pages * 1_000
@@ -245,13 +221,7 @@ class CostEstimatorService:
     def _estimate_pdf_to_qti(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """PDF to QTI — Gemini 3 Pro (primary).
-
-        Per question:
-          - 1 call: ~4,000 input (prompt + vision tokens for PDF image)
-          - ~3,000 visible output (QTI XML JSON)
-        Gemini thinking_level=high adds ~3x on visible output.
-        """
+        """PDF to QTI — Gemini 3 Pro, ~4x thinking per question."""
         question_ids = params.get("question_ids", [])
         if isinstance(question_ids, str) and question_ids:
             num_questions = len(question_ids.split(","))
@@ -278,13 +248,7 @@ class CostEstimatorService:
     def _estimate_tagging(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Question tagging — Gemini 3 Pro.
-
-        Per question (3 calls: atom match + analysis + validation):
-          - Total input: ~6,300 tokens (atom catalog is the big cost)
-          - Total visible output: ~1,000 tokens
-        No thinking tokens (temp=0.0, no thinking_level set).
-        """
+        """Tagging — Gemini 3 Pro, 3 calls/question, no thinking."""
         question_ids = params.get("question_ids", [])
         if isinstance(question_ids, str) and question_ids:
             num_questions = len(question_ids.split(","))
@@ -311,13 +275,7 @@ class CostEstimatorService:
     def _estimate_variant_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Variant generation — Gemini 3 Pro.
-
-        Per source question:
-          - 1 generation call: ~2,000 input, ~6,000 output
-          - N validation calls: ~1,500 input, ~500 output each
-        Default thinking (not high), so ~2x multiplier on output.
-        """
+        """Variant generation — Gemini 3 Pro, ~2x thinking."""
         question_ids = params.get("question_ids", [])
         if isinstance(question_ids, str) and question_ids:
             num_questions = len(question_ids.split(","))
@@ -358,44 +316,57 @@ class CostEstimatorService:
     ) -> TokenEstimate:
         """Question generation (PP100) — GPT-5.1.
 
-        Phase-aware: only charges for phases being run.  Each phase
-        uses a reasoning_effort level that generates hidden tokens
-        billed as output.  Generate phase: 1 LLM call per slot
-        (~62 parallel) with ~1.3x XSD retry multiplier.
+        Checkpoint-aware: reads actual item counts from disk so
+        re-runs reflect the real remaining work.  Each phase uses
+        a reasoning_effort level that generates hidden reasoning
+        tokens billed as output.
         """
         phase = params.get("phase", "all")
-        # Default planned pool: 14E+18M+14H = 46 target * 1.3 buffer ≈ 62
-        planned_items = 62
+        atom_id = params.get("atom_id", "")
+        force_all = params.get("force_all", False)
         r = GPT51_REASONING_OVERHEAD
 
-        # Generate phase: 1 call per slot with ~30% XSD retry overhead
-        gen_calls = int(planned_items * 1.3)
+        counts = _load_question_gen_counts(atom_id)
 
-        # Per-phase: (total_input, total_output)
-        # Output includes visible + reasoning token overhead.
+        # How many items each phase will actually process
+        planned = counts["planned"] or 62
+        generated = counts["generated"]
+        validated = counts["validated"]
+
+        if force_all:
+            # Full rerun — regenerate & revalidate everything
+            gen_calls = int(planned * 1.3)
+            validate_items = generated or planned
+            feedback_items = validated or planned
+        else:
+            # Resume (default) — only remaining work
+            remaining_gen = max(planned - generated, 0)
+            gen_calls = int(remaining_gen * 1.3) if remaining_gen else 0
+            all_gen = generated or planned
+            validate_items = max(all_gen - validated, 0)
+            feedback_items = validated or planned
+
         phase_tokens: dict[str, tuple[int, int]] = {
             # 1 call, reasoning_effort="low"
             "enrich": (1_500, 800 + r["low"]),
             # 1 call, reasoning_effort="medium"
             "plan": (1_800, 1_200 + r["medium"]),
-            # gen_calls calls, reasoning_effort="medium"
-            # Per call: ~4K input (prompt+context+reference+rules),
-            # ~2.5K visible output (QTI XML in JSON wrapper)
+            # Per call: ~4K input, ~2.5K visible output
             "generate": (
                 4_000 * gen_calls,
                 (2_500 + r["medium"]) * gen_calls,
             ),
-            # planned_items calls, reasoning_effort="high"
+            # 1 solvability call per item, reasoning="medium"
             "validate": (
-                1_000 * planned_items,
-                (200 + r["high"]) * planned_items,
+                1_000 * validate_items,
+                (200 + r["medium"]) * validate_items,
             ),
             # Per item: enhance (low) + review (none)
             # + final_validation (medium)
             "feedback": (
-                5_000 * planned_items,
+                5_000 * feedback_items,
                 (3_000 + r["low"] + 600 + r["none"]
-                 + 200 + r["medium"]) * planned_items,
+                 + 200 + r["medium"]) * feedback_items,
             ),
             "finalize": (0, 0),
         }
@@ -415,10 +386,20 @@ class CostEstimatorService:
 
         breakdown: dict[str, Any] = {
             "phase": phase,
-            "planned_items": planned_items,
+            "planned_items": planned,
             "active_phases": active,
+            "mode": "force_all" if force_all else "resume",
             "note": "Output includes reasoning token overhead",
         }
+
+        if not force_all and generated > 0:
+            breakdown["already_generated"] = generated
+            breakdown["remaining_gen_slots"] = max(planned - generated, 0)
+        if not force_all and validated > 0:
+            breakdown["already_validated"] = validated
+        breakdown["items_to_validate"] = validate_items
+        breakdown["items_to_enrich"] = feedback_items
+
         for p in active:
             inp, out = phase_tokens.get(p, (0, 0))
             breakdown[f"{p}_input"] = inp
@@ -430,15 +411,8 @@ class CostEstimatorService:
             breakdown=breakdown,
         )
 
-    def _estimate_lessons(
-        self, params: dict[str, Any],
-    ) -> TokenEstimate:
-        """Lesson generation — GPT-5.1.
-
-        Per atom:
-          - 1 call: ~10,000 input (atom + questions + prompt)
-          - ~3,000 output (lesson content)
-        """
+    def _estimate_lessons(self, params: dict[str, Any]) -> TokenEstimate:
+        """Lesson generation — GPT-5.1, 1 call per atom."""
         atom_ids = params.get("atom_ids", [])
         if isinstance(atom_ids, str) and atom_ids:
             num_atoms = len(atom_ids.split(","))
@@ -459,6 +433,39 @@ class CostEstimatorService:
                 "output_per_atom": output_per_atom,
             },
         )
+
+
+def _load_question_gen_counts(atom_id: str) -> dict[str, int]:
+    """Read checkpoint files for actual item counts per phase.
+
+    Returns dict with keys planned/generated/validated/feedback
+    (0 when checkpoint is absent).
+    """
+    counts = {"planned": 0, "generated": 0, "validated": 0, "feedback": 0}
+    if not atom_id:
+        return counts
+
+    try:
+        from app.question_generation.helpers import load_checkpoint
+        from app.utils.paths import QUESTION_GENERATION_DIR
+
+        d = QUESTION_GENERATION_DIR / atom_id
+        # Each checkpoint stores items/slots as a list
+        for phase_num, name, key, list_key in [
+            (3, "plan", "planned", "slots"),
+            (4, "generation", "generated", "items"),
+            (6, "base_validation", "validated", "items"),
+            (8, "feedback", "feedback", "items"),
+        ]:
+            ckpt = load_checkpoint(d, phase_num, name)
+            if ckpt:
+                counts[key] = len(ckpt.get(list_key, []))
+    except Exception as exc:
+        logger.warning(
+            "Could not load checkpoints for %s: %s",
+            atom_id, exc,
+        )
+    return counts
 
 
 # ---------------------------------------------------------------------------
