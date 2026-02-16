@@ -86,12 +86,12 @@ class AtomEnricher:
             )
 
             try:
-                response = self._client.generate_text(
+                llm_resp = self._client.generate_text(
                     prompt,
                     response_mime_type="application/json",
                     reasoning_effort=_ENRICHMENT_REASONING,
                 )
-                enrichment = self._parse_response(response)
+                enrichment = self._parse_response(llm_resp.text)
 
                 logger.info(
                     "Enrichment succeeded for atom %s",

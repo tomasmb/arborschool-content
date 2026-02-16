@@ -1,12 +1,64 @@
 import base64
 import io
+import logging
 import os
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, List, Optional, Union
 
 import requests
 from dotenv import load_dotenv
 from PIL import Image
+
+_logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# Token / cost tracking dataclasses
+# ---------------------------------------------------------------------------
+
+
+@dataclass
+class LLMUsage:
+    """Token usage from a single LLM call."""
+
+    input_tokens: int = 0
+    output_tokens: int = 0
+    model: str = ""
+
+
+@dataclass
+class LLMResponse:
+    """LLM response bundled with token usage.
+
+    Callers that only need the text can use ``resp.text``.
+    Cost-aware callers can inspect ``resp.usage``.
+    """
+
+    text: str
+    usage: LLMUsage = field(default_factory=LLMUsage)
+
+
+# ---------------------------------------------------------------------------
+# Global cost accumulator hook (set by pipeline orchestrators)
+# ---------------------------------------------------------------------------
+
+# When set, every OpenAIClient.generate_text call automatically feeds
+# usage into this accumulator.  Pipeline code sets it before a run
+# and calls .report() at the end.
+_global_cost_accumulator: Any = None
+
+
+def set_cost_accumulator(acc: Any) -> None:
+    """Install a CostAccumulator for automatic usage tracking."""
+    global _global_cost_accumulator
+    _global_cost_accumulator = acc
+
+
+def clear_cost_accumulator() -> None:
+    """Remove the global cost accumulator."""
+    global _global_cost_accumulator
+    _global_cost_accumulator = None
+
 
 # Lazy import for google-generativeai - only loaded when GeminiClient is used
 # This allows OpenAIClient to be imported without requiring google-generativeai
@@ -79,25 +131,42 @@ class GeminiClient:
         except ValueError as e:
             # If text accessor fails, try to get text from parts
             if response.candidates and response.candidates[0].content.parts:
-                text = "".join(part.text for part in response.candidates[0].content.parts if hasattr(part, "text"))
+                text = "".join(
+                    part.text
+                    for part in response.candidates[0].content.parts
+                    if hasattr(part, "text")
+                )
             else:
-                finish_reason = response.candidates[0].finish_reason if response.candidates else "unknown"
-                raise ValueError(f"Gemini response has no text content. Finish reason: {finish_reason}. Original error: {e}") from e
+                finish_reason = (
+                    response.candidates[0].finish_reason
+                    if response.candidates else "unknown"
+                )
+                raise ValueError(
+                    f"Gemini response has no text content. "
+                    f"Finish reason: {finish_reason}. "
+                    f"Original error: {e}"
+                ) from e
 
-        return type("Response", (), {"text": text})()
+        # Extract token usage from response metadata
+        usage = LLMUsage(model=self._model._model_name)
+        try:
+            meta = response.usage_metadata
+            if meta:
+                usage.input_tokens = getattr(
+                    meta, "prompt_token_count", 0,
+                ) or 0
+                usage.output_tokens = getattr(
+                    meta, "candidates_token_count", 0,
+                ) or 0
+        except Exception:
+            pass  # Usage tracking is best-effort
+
+        return LLMResponse(text=text, usage=usage)
 
 
 class OpenAIClient:
-    """Lightweight client for OpenAI Chat Completions API.
+    """Client for OpenAI Chat Completions with reasoning-effort support."""
 
-    Supports GPT-5.1 reasoning effort: when ``reasoning_effort`` is set to
-    anything other than ``"none"``, the ``temperature`` parameter is
-    automatically omitted (the API rejects it for reasoning requests).
-
-    See https://platform.openai.com/docs/api-reference/chat/create
-    """
-
-    # Valid reasoning effort values for GPT-5.1
     _VALID_EFFORTS = {"none", "low", "medium", "high"}
 
     def __init__(self, api_key: str, model: str = "gpt-5.1") -> None:
@@ -125,33 +194,25 @@ class OpenAIClient:
         response_mime_type: Optional[str] = None,
         temperature: float = 0.0,
         **kwargs: Any,
-    ) -> str:
-        """Call the Chat Completions API and return the response text.
-
-        Parameters
-        ----------
-        prompt:
-            A string or list of parts (strings / PIL images).
-        reasoning_effort:
-            GPT-5.1 reasoning depth.  ``"none"`` (default behaviour when
-            ``None``) allows ``temperature``; any other value (``"low"``,
-            ``"medium"``, ``"high"``) disables ``temperature``.
-        response_mime_type:
-            Pass ``"application/json"`` for JSON-mode output.
-        temperature:
-            Sampling temperature. Ignored when reasoning is active.
-        """
+    ) -> LLMResponse:
+        """Call Chat Completions API, return ``LLMResponse(text, usage)``."""
         headers = {
             "Authorization": f"Bearer {self._api_key}",
             "Content-Type": "application/json",
         }
 
-        messages = [{"role": "user", "content": self._build_content(prompt)}]
+        messages = [
+            {"role": "user", "content": self._build_content(prompt)},
+        ]
 
-        data: dict[str, Any] = {"model": self._model, "messages": messages}
+        data: dict[str, Any] = {
+            "model": self._model, "messages": messages,
+        }
 
         # --- reasoning vs temperature (mutually exclusive) ---
-        is_reasoning_model = "gpt-5" in self._model or "o1" in self._model
+        is_reasoning_model = (
+            "gpt-5" in self._model or "o1" in self._model
+        )
         uses_reasoning = (
             reasoning_effort is not None
             and reasoning_effort != "none"
@@ -159,7 +220,6 @@ class OpenAIClient:
 
         if is_reasoning_model and uses_reasoning:
             data["reasoning_effort"] = reasoning_effort
-            # temperature is NOT allowed with reasoning > none
         else:
             data["temperature"] = temperature
 
@@ -171,7 +231,26 @@ class OpenAIClient:
             self._url, headers=headers, json=data, timeout=300,
         )
         resp.raise_for_status()
-        return resp.json()["choices"][0]["message"]["content"]
+        body = resp.json()
+
+        text = body["choices"][0]["message"]["content"]
+
+        # Extract token usage
+        usage = LLMUsage(model=self._model)
+        raw_usage = body.get("usage")
+        if raw_usage:
+            usage.input_tokens = raw_usage.get(
+                "prompt_tokens", 0,
+            )
+            usage.output_tokens = raw_usage.get(
+                "completion_tokens", 0,
+            )
+
+        # Auto-feed global cost accumulator when installed
+        if _global_cost_accumulator is not None:
+            _global_cost_accumulator.add(usage)
+
+        return LLMResponse(text=text, usage=usage)
 
     # ------------------------------------------------------------------
     # Multimodal helper  (DRY -- used by enhancer / validator)
@@ -184,7 +263,7 @@ class OpenAIClient:
         *,
         reasoning_effort: Optional[str] = None,
         response_mime_type: Optional[str] = None,
-    ) -> str:
+    ) -> LLMResponse:
         """Send *prompt* to the LLM, attaching *images* when present.
 
         Eliminates the duplicated ``if images … else …`` dispatch
@@ -284,11 +363,7 @@ ENV_API_KEY = "GEMINI_API_KEY"
 
 @dataclass
 class GeminiConfig:
-    """Runtime configuration for the Gemini client.
-
-    The default model and behaviour follow our Gemini best practices documented in
-    `docs/specifications/gemini-prompt-engineering-best-practices.md`.
-    """
+    """Runtime config for Gemini (see gemini best-practices doc)."""
 
     api_key: str
     model: str = "gemini-3-pro-preview"
@@ -296,21 +371,17 @@ class GeminiConfig:
 
 
 class GeminiService:
-    """Small, reusable wrapper around the Gemini client.
-
-    This centralises how we talk to Gemini so that:
-    - API keys are always read from the app-level `.env` file.
-    - We consistently apply our prompt-engineering best practices.
-    - Callers can opt into different response formats.
-    """
+    """Reusable Gemini wrapper with OpenAI quota-fallback."""
 
     def __init__(self, config: GeminiConfig) -> None:
         self._config = config
-        self._client = GeminiClient(api_key=config.api_key, model=config.model)
-
-        # Initialize OpenAI fallback client
+        self._client = GeminiClient(
+            api_key=config.api_key, model=config.model,
+        )
         openai_key = os.getenv("OPENAI_API_KEY")
-        self._openai = OpenAIClient(api_key=openai_key) if openai_key else None
+        self._openai = (
+            OpenAIClient(api_key=openai_key) if openai_key else None
+        )
 
     @property
     def config(self) -> GeminiConfig:
@@ -325,117 +396,57 @@ class GeminiService:
         temperature: float | None = None,
         **kwargs: Any,
     ) -> str:
-        """Generate a single text response from Gemini.
-
-        Currently using `gemini-3-pro-preview`.
-
-        Callers are responsible for constructing prompts that follow the
-        guidelines in `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
-
-        Parameters:
-        - `thinking_level`: Controls reasoning depth (default: "high").
-        - `response_mime_type`: e.g. "application/json" for structured output.
-        - `temperature`: use `0.0` for deterministic structured output.
-        - `prompt`: Can be a string or a list of parts (including images).
-        """
-
-        # Note: thinking_level may not be directly supported in google-generativeai SDK
-        # Keeping it in the API for compatibility
+        """Generate text via Gemini, falling back to OpenAI on 429."""
         _ = thinking_level or self._config.thinking_level
-
-        request_kwargs: dict[str, Any] = {
-            # thinking_level may not be supported by current SDK adapter
-            **kwargs,
-        }
+        request_kwargs: dict[str, Any] = {**kwargs}
         if response_mime_type is not None:
             request_kwargs["response_mime_type"] = response_mime_type
         if temperature is not None:
             request_kwargs["temperature"] = temperature
 
         try:
-            response = self._client.generate_text(prompt, **request_kwargs)
-            return getattr(response, "text", str(response))
+            resp = self._client.generate_text(
+                prompt, **request_kwargs,
+            )
+            return resp.text if isinstance(resp, LLMResponse) else str(resp)
         except google_exceptions.ResourceExhausted as e:
             if self._openai:
-                print(
-                    f"\n⚠️ Gemini Quota Exhausted (429). "
-                    f"Falling back to OpenAI ({self._openai._model})..."
+                _logger.warning("Gemini 429 — falling back to OpenAI")
+                fb = self._openai.generate_text(
+                    prompt,
+                    reasoning_effort="low",
+                    response_mime_type=response_mime_type,
                 )
-                try:
-                    fallback_kwargs: dict[str, Any] = {
-                        "reasoning_effort": "low",
-                        "response_mime_type": response_mime_type,
-                    }
-                    return self._openai.generate_text(
-                        prompt, **fallback_kwargs,
-                    )
-                except Exception as oa_err:
-                    print(f"❌ OpenAI Fallback also failed: {oa_err}")
-                    raise oa_err
-            else:
-                print("❌ Gemini Quota Exhausted and no OpenAI key found.")
-                raise e
-        except Exception as e:
+                return fb.text
             raise e
 
 
 def load_default_gemini_service() -> GeminiService:
-    """Construct a `GeminiService` using configuration from the app `.env`.
-
-    Expects `GEMINI_API_KEY` to be defined at the project root level. This
-    keeps all Gemini credentials out of the codebase and aligns with our
-    project rules around configuration.
-    """
-
+    """Construct a ``GeminiService`` from ``GEMINI_API_KEY`` env var."""
     load_dotenv()
     api_key = os.getenv(ENV_API_KEY)
     if not api_key:
-        msg = f"Environment variable {ENV_API_KEY} is required for Gemini access."
-        raise RuntimeError(msg)
-
-    config = GeminiConfig(api_key=api_key)
-    return GeminiService(config)
+        raise RuntimeError(f"{ENV_API_KEY} is required.")
+    return GeminiService(GeminiConfig(api_key=api_key))
 
 
 def load_default_openai_client(
     model: str = "gpt-5.1",
 ) -> OpenAIClient:
-    """Construct an `OpenAIClient` from the app `.env`.
-
-    Expects ``OPENAI_API_KEY`` to be defined.
-
-    Parameters
-    ----------
-    model:
-        Model string passed to the client (default ``gpt-5.1``).
-    """
+    """Construct an ``OpenAIClient`` from ``OPENAI_API_KEY`` env var."""
     load_dotenv()
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        raise RuntimeError(
-            "Environment variable OPENAI_API_KEY is required."
-        )
+        raise RuntimeError("OPENAI_API_KEY is required.")
     return OpenAIClient(api_key=api_key, model=model)
 
 
 def load_default_gemini_image_client(
     model: str = _IMAGE_MODEL,
 ) -> GeminiImageClient:
-    """Construct a `GeminiImageClient` from the app `.env`.
-
-    Expects ``GEMINI_API_KEY`` to be defined.
-
-    Parameters
-    ----------
-    model:
-        Gemini image model (default ``gemini-2.5-flash-image``).
-    """
+    """Construct a ``GeminiImageClient`` from ``GEMINI_API_KEY`` env var."""
     load_dotenv()
     api_key = os.getenv(ENV_API_KEY)
     if not api_key:
-        msg = (
-            f"Environment variable {ENV_API_KEY} is required "
-            f"for Gemini image generation."
-        )
-        raise RuntimeError(msg)
+        raise RuntimeError(f"{ENV_API_KEY} is required.")
     return GeminiImageClient(api_key=api_key, model=model)

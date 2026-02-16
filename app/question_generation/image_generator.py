@@ -202,12 +202,12 @@ class ImageGenerator:
         )
 
         try:
-            response = self._openai.generate_text(
+            llm_resp = self._openai.generate_text(
                 prompt,
                 response_mime_type="application/json",
                 reasoning_effort=_DESCRIPTION_REASONING,
             )
-            data: dict[str, Any] = json.loads(response)
+            data: dict[str, Any] = json.loads(llm_resp.text)
 
             gen_prompt = data.get("generation_prompt", "")
             alt_text = data.get("alt_text", "Imagen educativa")

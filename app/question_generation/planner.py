@@ -94,12 +94,12 @@ class PlanGenerator:
 
         for attempt in range(self._max_retries + 1):
             try:
-                response = self._client.generate_text(
+                llm_resp = self._client.generate_text(
                     prompt,
                     response_mime_type="application/json",
                     reasoning_effort=_PLANNING_REASONING,
                 )
-                plan_slots = self._parse_response(response)
+                plan_slots = self._parse_response(llm_resp.text)
 
                 logger.info(
                     "Plan generated: %d slots", len(plan_slots),
