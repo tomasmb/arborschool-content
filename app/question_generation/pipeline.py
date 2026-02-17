@@ -1,4 +1,7 @@
-"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-10)."""
+"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-9).
+
+Sync to DB is a separate step via the sync API (environment-aware).
+"""
 
 from __future__ import annotations
 
@@ -37,7 +40,7 @@ from app.question_generation.models import (
 from app.question_generation.phase4_runner import run_phase_4
 from app.question_generation.planner import PlanGenerator, validate_plan
 from app.question_generation.progress import CostAccumulator, report_progress
-from app.question_generation.syncer import QuestionSyncer, persist_enrichment
+from app.question_generation.syncer import persist_enrichment
 from app.question_generation.validators import (
     BaseValidator, DuplicateGate, FinalValidator,
 )
@@ -50,7 +53,10 @@ _MAX_PARALLEL_FEEDBACK = 5
 
 
 class AtomQuestionPipeline:
-    """Orchestrates phases 0-10 of the per-atom question pipeline."""
+    """Orchestrates phases 0-9 of the per-atom question pipeline.
+
+    DB sync is handled separately via the sync API, not inline.
+    """
 
     def __init__(
         self,
@@ -68,7 +74,6 @@ class AtomQuestionPipeline:
         self._base_validator = BaseValidator(self._client)
         self._final_validator = FinalValidator(self._client)
         self._feedback_pipeline = QuestionPipeline()
-        self._syncer = QuestionSyncer()
 
     def run(self, atom_id: str) -> PipelineResult:
         """Run the pipeline for a single atom.
@@ -82,7 +87,7 @@ class AtomQuestionPipeline:
         self._cost_acc = CostAccumulator()
         set_cost_accumulator(self._cost_acc)
         output_dir = self._get_output_dir(atom_id)
-        start, end = PHASE_GROUPS.get(self._config.phase, (0, 10))
+        start, end = PHASE_GROUPS.get(self._config.phase, (0, 9))
 
         # Resume: detect completed phases and skip ahead
         eff_phase = self._config.phase
@@ -266,7 +271,7 @@ class AtomQuestionPipeline:
         if end <= 8:
             return self._finalize(result, output_dir)
 
-        # Phases 9-10 — Final Validation + Sync
+        # Phase 9 — Final Validation
         if not enriched:
             return result
         final = self._phase_9_final_validation(
@@ -276,7 +281,10 @@ class AtomQuestionPipeline:
             return result
         result.total_final = len(final)
         result.final_items = final
-        self._phase_10_sync(final, atom_id, result)
+        save_checkpoint(output_dir, 9, "final_validation", {
+            "final_count": len(final),
+            "items": serialize_items(final),
+        })
 
         return self._finalize(result, output_dir)
 
@@ -462,23 +470,6 @@ class AtomQuestionPipeline:
         phase = self._final_validator.validate(items, ctx.exemplars)
         result.phase_results.append(phase)
         return phase.data["final_items"] if phase.success else None
-
-    def _phase_10_sync(
-        self, items: list[GeneratedItem],
-        atom_id: str, result: PipelineResult,
-    ) -> None:
-        """Phase 10: DB sync."""
-        if self._config.skip_sync or self._config.dry_run:
-            result.phase_results.append(PhaseResult(
-                phase_name="db_sync", success=True,
-                data={"skipped": True},
-                warnings=["DB sync skipped by config"],
-            ))
-            return
-        phase = self._syncer.sync(items, atom_id, dry_run=False)
-        result.phase_results.append(phase)
-        if phase.success:
-            result.total_synced = len(items)
 
     def _get_output_dir(self, atom_id: str) -> Path:
         """Get output directory for this atom's generation run."""

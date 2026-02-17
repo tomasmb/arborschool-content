@@ -195,7 +195,7 @@ async def get_atoms(
             standard_ids=atom.get("standard_ids", []),
             tipo_atomico=atom["tipo_atomico"],
             titulo=atom["titulo"],
-            question_set_count=0,  # TODO: implement
+            generated_question_count=0,  # TODO: implement
             has_lesson=False,  # TODO: implement
             last_completed_phase=get_last_completed_phase(aid),
             image_status=img_status,
@@ -313,7 +313,7 @@ async def get_atom_detail(subject_id: str, atom_id: str) -> AtomDetail:
         notas_alcance=atom.get("notas_alcance", []),
         dependent_atoms=dependent_atoms,
         linked_questions=linked_questions,
-        question_set_count=0,  # TODO: implement
+        generated_question_count=0,  # TODO: implement
         has_lesson=False,  # TODO: implement
     )
 

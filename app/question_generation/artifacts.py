@@ -35,11 +35,11 @@ _DOWNSTREAM_CHECKPOINTS: dict[str, list[tuple[int, str]]] = {
     "generate": [(6, "base_validation"), (8, "feedback")],
     "validate": [(8, "feedback")],
     "feedback": [],
-    "finalize": [],
+    "final_validate": [],
 }
 
 # Phase groups that always clear items/ and pipeline_report.json.
-# Only "finalize" leaves them untouched.
+# Only "final_validate" leaves them untouched.
 _CLEARS_ITEMS = frozenset(
     {"all", "enrich", "plan", "generate", "validate", "feedback"},
 )

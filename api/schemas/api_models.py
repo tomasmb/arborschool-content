@@ -65,8 +65,8 @@ class AtomBrief(BaseModel):
     standard_ids: list[str]
     tipo_atomico: str
     titulo: str
-    question_set_count: int = Field(
-        0, description="Number of questions in question set",
+    generated_question_count: int = Field(
+        0, description="Number of pipeline-generated questions",
     )
     has_lesson: bool = Field(
         False, description="Whether lesson exists",
@@ -127,7 +127,7 @@ class AtomDetail(BaseModel):
         default_factory=list,
         description="Question IDs tagged with this atom"
     )
-    question_set_count: int = 0
+    generated_question_count: int = 0
     has_lesson: bool = False
 
 
@@ -409,10 +409,10 @@ class RunPipelineResponse(BaseModel):
     message: str
 
 
-# Valid sync entity types ("question_atoms" syncs tagging without question content)
+# Valid sync entity types (question_atoms = tagging only, generated_questions = pipeline output)
 VALID_SYNC_ENTITIES = [
     "standards", "atoms", "tests", "questions", "variants",
-    "question_atoms",
+    "question_atoms", "generated_questions",
 ]
 
 # Valid sync environments

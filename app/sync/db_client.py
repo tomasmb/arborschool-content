@@ -18,9 +18,9 @@ from psycopg.rows import dict_row
 from .config import DBConfig, SyncEnvironment
 from .models import (
     AtomRow,
+    GeneratedQuestionRow,
     QuestionAtomRow,
     QuestionRow,
-    QuestionSetRow,
     StandardRow,
     SyncPayload,
     TestQuestionRow,
@@ -81,13 +81,8 @@ class DBClient:
     # -------------------------------------------------------------------------
 
     def ensure_schema(self, conn: psycopg.Connection) -> None:
-        """Ensure all required columns exist on synced tables.
-
-        Safe to call repeatedly (ADD COLUMN IF NOT EXISTS).
-        """
+        """Ensure all required columns exist (ADD COLUMN IF NOT EXISTS)."""
         with conn.cursor() as cur:
-            # Columns added after the initial questions table was created.
-            # All nullable since they are populated by enrichment pipeline.
             for col, col_type in (
                 ("title", "VARCHAR(255)"),
                 ("correct_answer", "VARCHAR(50)"),
@@ -226,29 +221,40 @@ class DBClient:
 
         return affected
 
-    def upsert_question_sets(
-        self, cur: psycopg.Cursor, question_sets: list[QuestionSetRow],
+    def upsert_generated_questions(
+        self, cur: psycopg.Cursor, rows: list[GeneratedQuestionRow],
     ) -> int:
-        """Upsert question sets to the database."""
-        if not question_sets:
+        """Upsert pipeline-generated questions (separate table from official)."""
+        if not rows:
             return 0
         affected = 0
-        for qs in question_sets:
-            data = self._row_to_dict(qs)
+        for row in rows:
+            data = self._row_to_dict(row)
             cur.execute(
                 """
-                INSERT INTO question_sets (
-                    id, atom_id, status, low_count,
-                    medium_count, high_count, generated_at)
+                INSERT INTO generated_questions (
+                    id, atom_id, qti_xml, difficulty_level,
+                    component_tag, operation_skeleton_ast,
+                    surface_context, numbers_profile, fingerprint,
+                    validators, target_exemplar_id, distance_level)
                 VALUES (
-                    %(id)s, %(atom_id)s, %(status)s, %(low_count)s,
-                    %(medium_count)s, %(high_count)s, %(generated_at)s)
+                    %(id)s, %(atom_id)s, %(qti_xml)s, %(difficulty_level)s,
+                    %(component_tag)s, %(operation_skeleton_ast)s,
+                    %(surface_context)s, %(numbers_profile)s, %(fingerprint)s,
+                    %(validators)s::jsonb, %(target_exemplar_id)s,
+                    %(distance_level)s)
                 ON CONFLICT (id) DO UPDATE SET
-                    status = EXCLUDED.status,
-                    low_count = EXCLUDED.low_count,
-                    medium_count = EXCLUDED.medium_count,
-                    high_count = EXCLUDED.high_count,
-                    generated_at = EXCLUDED.generated_at
+                    qti_xml = EXCLUDED.qti_xml,
+                    difficulty_level = EXCLUDED.difficulty_level,
+                    component_tag = EXCLUDED.component_tag,
+                    operation_skeleton_ast = EXCLUDED.operation_skeleton_ast,
+                    surface_context = EXCLUDED.surface_context,
+                    numbers_profile = EXCLUDED.numbers_profile,
+                    fingerprint = EXCLUDED.fingerprint,
+                    validators = EXCLUDED.validators,
+                    target_exemplar_id = EXCLUDED.target_exemplar_id,
+                    distance_level = EXCLUDED.distance_level,
+                    updated_at = now()
                 """,
                 data,
             )
@@ -278,13 +284,13 @@ class DBClient:
             cur.execute(
                 """
                 INSERT INTO questions (
-                    id, source, parent_question_id, question_set_id, qti_xml, title,
+                    id, source, parent_question_id, qti_xml, title,
                     correct_answer, difficulty_level, difficulty_score, difficulty_analysis,
                     general_analysis, feedback_general, feedback_per_option,
                     source_test_id, source_question_number
                 )
                 VALUES (
-                    %(id)s, %(source)s, %(parent_question_id)s, %(question_set_id)s, %(qti_xml)s, %(title)s,
+                    %(id)s, %(source)s, %(parent_question_id)s, %(qti_xml)s, %(title)s,
                     %(correct_answer)s, %(difficulty_level)s, %(difficulty_score)s, %(difficulty_analysis)s,
                     %(general_analysis)s, %(feedback_general)s, %(feedback_per_option)s::jsonb,
                     %(source_test_id)s, %(source_question_number)s
@@ -292,7 +298,6 @@ class DBClient:
                 ON CONFLICT (id) DO UPDATE SET
                     source = EXCLUDED.source,
                     parent_question_id = EXCLUDED.parent_question_id,
-                    question_set_id = EXCLUDED.question_set_id,
                     qti_xml = EXCLUDED.qti_xml,
                     title = EXCLUDED.title,
                     correct_answer = EXCLUDED.correct_answer,
@@ -426,7 +431,8 @@ class DBClient:
             return 0
         # Delete from all tables that reference atoms via FK
         for fk_table in (
-            "question_atoms", "atom_mastery", "lessons", "question_sets",
+            "question_atoms", "atom_mastery", "lessons",
+            "generated_questions",
         ):
             cur.execute(
                 f"DELETE FROM {fk_table} WHERE atom_id = ANY(%s)",  # noqa: S608
@@ -456,19 +462,10 @@ class DBClient:
     # Sync operations
     # -------------------------------------------------------------------------
     def sync_all(
-        self,
-        payload: SyncPayload,
-        dry_run: bool = False,
+        self, payload: SyncPayload, dry_run: bool = False,
         deletions: dict[str, list[str]] | None = None,
     ) -> dict[str, int]:
-        """Sync all data: upserts in dependency order, then deletes stale rows.
-
-        Args:
-            payload: Data to upsert
-            dry_run: If True, rollback instead of committing
-            deletions: Table name → list of IDs to delete
-                (supports 'atoms', 'question_atoms')
-        """
+        """Sync all data: upserts in dependency order, then deletes stale rows."""
         results: dict[str, int] = {}
         deletions = deletions or {}
 
@@ -478,12 +475,12 @@ class DBClient:
                 with self.transaction(conn) as cur:
                     results["standards"] = self.upsert_standards(cur, payload.standards)
                     results["atoms"] = self.upsert_atoms(cur, payload.atoms)
-                    results["question_sets"] = self.upsert_question_sets(
-                        cur, payload.question_sets,
-                    )
                     results["tests"] = self.upsert_tests(cur, payload.tests)
                     results["questions"] = self.upsert_questions(cur, payload.questions)
                     results["question_atoms"] = self.upsert_question_atoms(cur, payload.question_atoms)
+                    results["generated_questions"] = self.upsert_generated_questions(
+                        cur, payload.generated_questions,
+                    )
                     results["test_questions"] = self.upsert_test_questions(cur, payload.test_questions)
                     # Delete stale rows (reverse dependency order)
                     results["deleted_question_atoms"] = self.delete_question_atoms(
