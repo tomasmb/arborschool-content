@@ -251,7 +251,7 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             required=False,
             options=[
                 "all", "enrich", "plan", "generate",
-                "validate", "feedback", "finalize",
+                "validate", "feedback", "final_validate",
             ],
             description="Phase group to run (default: all)",
         ),

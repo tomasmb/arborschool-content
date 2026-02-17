@@ -40,15 +40,16 @@ class EnrichmentStatus(str, Enum):
 # ---------------------------------------------------------------------------
 
 # Phase groups that can be run individually.
-# Each maps to one or more pipeline phases (0-10).
+# Each maps to one or more pipeline phases (0-9).
+# DB sync is a separate step via the sync API.
 PHASE_GROUPS: dict[str, tuple[int, int]] = {
-    "all": (0, 10),
-    "enrich": (0, 1),        # Phases 0-1: inputs + enrichment
-    "plan": (2, 3),           # Phases 2-3: plan generation + validation
-    "generate": (4, 4),       # Phase 4: base QTI generation
-    "validate": (5, 6),       # Phases 5-6: dedupe + base validation
-    "feedback": (7, 8),       # Phases 7-8: feedback enrichment
-    "finalize": (9, 10),      # Phases 9-10: final validation + sync
+    "all": (0, 9),
+    "enrich": (0, 1),           # Phases 0-1: inputs + enrichment
+    "plan": (2, 3),             # Phases 2-3: plan generation + validation
+    "generate": (4, 4),         # Phase 4: base QTI generation
+    "validate": (5, 6),         # Phases 5-6: dedupe + base validation
+    "feedback": (7, 8),         # Phases 7-8: feedback enrichment
+    "final_validate": (9, 9),   # Phase 9: final LLM validation
 }
 
 PHASE_GROUP_CHOICES = list(PHASE_GROUPS.keys())
@@ -361,7 +362,6 @@ class PipelineResult:
         total_passed_base_validation: Items passing base checks (Phase 6).
         total_passed_feedback: Items passing feedback enrichment (Phase 7-8).
         total_final: Items passing final validation (Phase 9).
-        total_synced: Items synced to DB (Phase 10).
     """
 
     atom_id: str
@@ -374,4 +374,3 @@ class PipelineResult:
     total_passed_base_validation: int = 0
     total_passed_feedback: int = 0
     total_final: int = 0
-    total_synced: int = 0

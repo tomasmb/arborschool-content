@@ -31,7 +31,7 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
     "generate": [(1, "enrichment"), (3, "plan")],
     "validate": [(4, "generation")],
     "feedback": [(6, "base_validation")],
-    "finalize": [(8, "feedback")],
+    "final_validate": [(8, "feedback")],
 }
 
 
@@ -132,7 +132,6 @@ def _build_report_dict(result: PipelineResult) -> dict:
             result.total_passed_base_validation,
         "total_passed_feedback": result.total_passed_feedback,
         "total_final": result.total_final,
-        "total_synced": result.total_synced,
         "phases": [
             {
                 "name": p.phase_name,
@@ -272,7 +271,7 @@ def classify_image_status(image_types: list[str] | None) -> str:
 # Checkpoint phase → next phase group for --resume.
 # Phase 4→"generate" so partial gen re-enters slot-level resume.
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
-    8: "finalize",
+    8: "final_validate",
     6: "feedback",
     4: "generate",
     3: "generate",
@@ -484,7 +483,6 @@ def print_pipeline_summary(result: PipelineResult) -> None:
     print(f"Pasaron validación: {result.total_passed_base_validation}")
     print(f"Pasaron feedback:   {result.total_passed_feedback}")
     print(f"Finales:            {result.total_final}")
-    print(f"Sincronizados:      {result.total_synced}")
 
     # Print phase errors/warnings
     for phase in result.phase_results:

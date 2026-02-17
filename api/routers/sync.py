@@ -91,6 +91,7 @@ def _extract_data(
         "tests": [],
         "questions": [],
         "variants": [],
+        "generated_questions": [],
     }
 
     standards_file, atoms_file = None, None
@@ -102,6 +103,7 @@ def _extract_data(
     sync_tests = "tests" in entities
     sync_questions = "questions" in entities
     sync_variants = "variants" in entities
+    sync_generated = "generated_questions" in entities
     # "question_atoms" needs question metadata for atom-link extraction
     need_question_metadata = "question_atoms" in entities
 
@@ -120,6 +122,14 @@ def _extract_data(
 
     if sync_variants:
         result["variants"] = extract_all_variants()
+
+    if sync_generated:
+        from app.sync.generated_question_extractor import (
+            extract_generated_questions,
+        )
+        result["generated_questions"] = (
+            extract_generated_questions()
+        )
 
     return result
 
@@ -194,11 +204,54 @@ def _build_payload(
         subject_id=db_subject_id,
     )
 
+    # Inject generated questions (extracted separately, not via
+    # build_sync_payload since they come from pipeline checkpoints)
+    if extracted_data.get("generated_questions"):
+        payload.generated_questions = (
+            extracted_data["generated_questions"]
+        )
+
     # Filter payload to only the requested entity types
     if entities:
         payload.filter_for_entities(entities)
 
     return payload
+
+
+def _build_table_summaries(
+    summary: dict[str, int], extracted: dict,
+) -> list[SyncTableSummary]:
+    """Build per-table summary objects from payload summary counts.
+
+    Args:
+        summary: Dict of table_name → row count from SyncPayload.summary().
+        extracted: Raw extracted data (for question breakdown).
+
+    Returns:
+        List of non-empty SyncTableSummary objects.
+    """
+    tables: list[SyncTableSummary] = []
+    # Simple 1:1 tables
+    for key in (
+        "subjects", "standards", "atoms", "tests",
+        "question_atoms", "generated_questions", "test_questions",
+    ):
+        if summary.get(key, 0) > 0:
+            tables.append(SyncTableSummary(
+                table=key, total=summary[key],
+            ))
+
+    # Questions table has an official/variant breakdown
+    if summary.get("questions", 0) > 0:
+        tables.append(SyncTableSummary(
+            table="questions",
+            total=summary["questions"],
+            breakdown={
+                "official": len(extracted.get("questions", [])),
+                "variants": len(extracted.get("variants", [])),
+            },
+        ))
+    return tables
 
 
 @router.post("/preview", response_model=SyncPreviewResponse)
@@ -222,58 +275,7 @@ def preview_sync(request: SyncPreviewRequest) -> SyncPreviewResponse:
         # Build the payload to get accurate counts
         payload = _build_payload(extracted, entities=request.entities)
         summary = payload.summary()
-
-        # Build table summaries
-        tables = []
-
-        if "subjects" in summary and summary["subjects"] > 0:
-            tables.append(SyncTableSummary(
-                table="subjects",
-                total=summary["subjects"],
-            ))
-
-        if "standards" in summary and summary["standards"] > 0:
-            tables.append(SyncTableSummary(
-                table="standards",
-                total=summary["standards"],
-            ))
-
-        if "atoms" in summary and summary["atoms"] > 0:
-            tables.append(SyncTableSummary(
-                table="atoms",
-                total=summary["atoms"],
-            ))
-
-        if "tests" in summary and summary["tests"] > 0:
-            tables.append(SyncTableSummary(
-                table="tests",
-                total=summary["tests"],
-            ))
-
-        if "questions" in summary and summary["questions"] > 0:
-            # Count official vs variants
-            official_count = len(extracted["questions"])
-            variant_count = len(extracted["variants"])
-            tables.append(SyncTableSummary(
-                table="questions",
-                total=summary["questions"],
-                breakdown={
-                    "official": official_count,
-                    "variants": variant_count,
-                },
-            ))
-
-        if "question_atoms" in summary and summary["question_atoms"] > 0:
-            tables.append(SyncTableSummary(
-                table="question_atoms",
-                total=summary["question_atoms"],
-            ))
-
-        if "test_questions" in summary and summary["test_questions"] > 0:
-            tables.append(SyncTableSummary(
-                table="test_questions",
-                total=summary["test_questions"],
-            ))
+        tables = _build_table_summaries(summary, extracted)
 
         # Check for warnings
         warnings = []
@@ -450,5 +452,8 @@ def sync_status() -> dict:
     return {
         "environments": environments,
         "s3_configured": has_s3_config,
-        "available_entities": ["standards", "atoms", "tests", "questions", "variants"],
+        "available_entities": [
+            "standards", "atoms", "tests", "questions",
+            "variants", "generated_questions",
+        ],
     }

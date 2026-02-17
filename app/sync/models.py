@@ -39,7 +39,6 @@ class QuestionSource(str, Enum):
 
     OFFICIAL = "official"
     ALTERNATE = "alternate"
-    QUESTION_SET = "question_set"
 
 
 class DifficultyLevel(str, Enum):
@@ -116,7 +115,6 @@ class QuestionRow:
     qti_xml: str
     difficulty_level: DifficultyLevel
     parent_question_id: str | None = None
-    question_set_id: str | None = None
     difficulty_score: float | None = None
     source_test_id: str | None = None
     source_question_number: int | None = None
@@ -139,29 +137,27 @@ class QuestionAtomRow:
     reasoning: str | None = None
 
 
-class QuestionSetStatus(str, Enum):
-    """Matches question_set_status enum in DB."""
-
-    PENDING = "pending"
-    GENERATED = "generated"
-    REVIEWED = "reviewed"
-
-
 @dataclass
-class QuestionSetRow:
-    """Represents a row in the question_sets table.
+class GeneratedQuestionRow:
+    """Represents a row in the generated_questions table.
 
-    Links an atom to its generated question pool with difficulty counts.
-    ID format: "qs-{atom_id}" (per data-model-specification.md).
+    Pipeline-generated questions live in a separate table from
+    official/alternate questions. Linked to atoms directly via
+    atom_id (no junction table needed).
     """
 
     id: str
     atom_id: str
-    status: QuestionSetStatus = QuestionSetStatus.GENERATED
-    low_count: int = 0
-    medium_count: int = 0
-    high_count: int = 0
-    generated_at: str | None = None
+    qti_xml: str
+    difficulty_level: str  # "low", "medium", "high"
+    component_tag: str
+    operation_skeleton_ast: str
+    surface_context: str = "pure_math"
+    numbers_profile: str = "small_integers"
+    fingerprint: str = ""
+    validators: str = "{}"  # JSON string of validator reports
+    target_exemplar_id: str | None = None
+    distance_level: str | None = None
 
 
 @dataclass
@@ -206,9 +202,11 @@ class SyncPayload:
 
     standards: list[StandardRow] = field(default_factory=list)
     atoms: list[AtomRow] = field(default_factory=list)
-    question_sets: list[QuestionSetRow] = field(default_factory=list)
     questions: list[QuestionRow] = field(default_factory=list)
     question_atoms: list[QuestionAtomRow] = field(default_factory=list)
+    generated_questions: list[GeneratedQuestionRow] = field(
+        default_factory=list,
+    )
     tests: list[TestRow] = field(default_factory=list)
     test_questions: list[TestQuestionRow] = field(default_factory=list)
 
@@ -217,9 +215,9 @@ class SyncPayload:
         return {
             "standards": len(self.standards),
             "atoms": len(self.atoms),
-            "question_sets": len(self.question_sets),
             "questions": len(self.questions),
             "question_atoms": len(self.question_atoms),
+            "generated_questions": len(self.generated_questions),
             "tests": len(self.tests),
             "test_questions": len(self.test_questions),
         }
@@ -231,12 +229,13 @@ class SyncPayload:
         question_atoms) but only syncing the requested tables.
 
         Mapping from entity request → tables kept:
-          "standards"      → standards
-          "atoms"          → atoms
-          "questions"      → questions (content)
-          "question_atoms" → question_atoms (links only)
-          "tests"          → tests, test_questions
-          "variants"       → (already in questions list)
+          "standards"             → standards
+          "atoms"                 → atoms
+          "questions"             → questions (content)
+          "question_atoms"        → question_atoms (links only)
+          "generated_questions"   → generated_questions
+          "tests"                 → tests, test_questions
+          "variants"              → (already in questions list)
         """
         if "standards" not in entities:
             self.standards = []
@@ -246,6 +245,8 @@ class SyncPayload:
             self.questions = []
         if "question_atoms" not in entities and "questions" not in entities:
             self.question_atoms = []
+        if "generated_questions" not in entities:
+            self.generated_questions = []
         if "tests" not in entities:
             self.tests = []
             self.test_questions = []

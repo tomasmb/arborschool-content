@@ -368,8 +368,7 @@ class CostEstimatorService:
                 (5_000 + r["low"]) * feedback_items,
             ),
             # Phase 9: 1 LLM final validation per item (medium)
-            # Phase 10: DB sync (no LLM cost)
-            "finalize": (
+            "final_validate": (
                 2_500 * feedback_items,
                 (500 + r["medium"]) * feedback_items,
             ),

@@ -33,8 +33,8 @@ const PHASE_GROUPS = [
     statKey: "total_passed_feedback" as const,
   },
   {
-    id: "finalize", label: "Finalize", phases: [10],
-    statKey: "total_synced" as const,
+    id: "final_validate", label: "Final Validate", phases: [9],
+    statKey: "total_final" as const,
   },
 ] as const;
 
@@ -340,7 +340,6 @@ function StatsRow({ report }: { report: PipelineReport }) {
     { label: "Validated", value: report.total_passed_base_validation },
     { label: "Feedback", value: report.total_passed_feedback },
     { label: "Final", value: report.total_final },
-    { label: "Synced", value: report.total_synced },
   ].filter((s) => s.value > 0);
 
   if (stats.length === 0) return null;
