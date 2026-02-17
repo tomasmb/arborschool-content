@@ -494,3 +494,34 @@ async def revalidate_item(
         return revalidate_single_item(output_dir, item_id)
     except ValueError as exc:
         raise HTTPException(status_code=404, detail=str(exc))
+
+
+@router.post(
+    "/question_gen/{atom_id}/revalidate-final/{item_id}",
+)
+async def revalidate_item_final(
+    atom_id: str,
+    item_id: str,
+) -> dict[str, Any]:
+    """Re-run final validation on a single feedback-enriched item.
+
+    Runs deterministic checks (XSD, PAES, feedback completeness)
+    plus LLM final validation (re-solve + quality). Persists the
+    result to the phase 9 checkpoint and pipeline report.
+    """
+    from app.question_generation.checkpoint_reader import (
+        revalidate_single_item_final,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    output_dir = QUESTION_GENERATION_DIR / atom_id
+    if not output_dir.exists():
+        raise HTTPException(
+            status_code=404,
+            detail=f"No generation data for atom '{atom_id}'",
+        )
+
+    try:
+        return revalidate_single_item_final(output_dir, item_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))

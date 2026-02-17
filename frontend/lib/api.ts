@@ -229,6 +229,17 @@ export async function revalidateSingleItem(
   );
 }
 
+export async function revalidateFinalItem(
+  atomId: string,
+  itemId: string,
+): Promise<RevalidateItemResult> {
+  return fetchAPI<RevalidateItemResult>(
+    `/pipelines/question_gen/${encodeURIComponent(atomId)}`
+    + `/revalidate-final/${encodeURIComponent(itemId)}`,
+    { method: "POST" },
+  );
+}
+
 // --- Enrichment API ---
 export interface StartEnrichmentParams {
   question_ids?: string[];

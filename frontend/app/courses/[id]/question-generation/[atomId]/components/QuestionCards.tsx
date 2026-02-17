@@ -29,12 +29,19 @@ const DEFAULT_PAGE_SIZE = 10;
 
 type StatusFilter = "all" | "pass" | "fail" | "pending";
 
+/** Which validation gate an item failed at (null = passed all). */
+export type FailedGate = "base" | "final" | null;
+
 interface QuestionCardsProps {
   items: GeneratedItem[];
   planSlots: PlanSlot[] | null;
   sectionTitle?: string;
   hasValidation: boolean;
   passedIds: Set<string>;
+  /** IDs that passed final validation (phase 9). */
+  finalPassedIds?: Set<string>;
+  /** Whether final validation has been run. */
+  hasFinalValidation?: boolean;
   /** Increment to programmatically switch filter to "fail". */
   filterFailedTrigger?: number;
   /** Atom ID — passed to cards for per-item revalidation. */
@@ -53,6 +60,8 @@ export function QuestionCards({
   sectionTitle = "Questions",
   hasValidation,
   passedIds,
+  finalPassedIds,
+  hasFinalValidation = false,
   filterFailedTrigger = 0,
   atomId,
   onItemRevalidated,
@@ -80,14 +89,20 @@ export function QuestionCards({
     return map;
   }, [planSlots]);
 
-  // Compute status for each item
+  // Compute status and failed gate for each item
   const itemsWithStatus = useMemo(
     () =>
-      items.map((item) => ({
-        item,
-        status: computeStatus(item, hasValidation, passedIds),
-      })),
-    [items, hasValidation, passedIds],
+      items.map((item) => {
+        const { status, failedGate } = computeStatus(
+          item, hasValidation, passedIds,
+          hasFinalValidation, finalPassedIds,
+        );
+        return { item, status, failedGate };
+      }),
+    [
+      items, hasValidation, passedIds,
+      hasFinalValidation, finalPassedIds,
+    ],
   );
 
   // Unique filter values
@@ -201,11 +216,12 @@ export function QuestionCards({
         {pageItems.length === 0 ? (
           <EmptyState filter={statusFilter} />
         ) : (
-          pageItems.map(({ item, status }) => (
+          pageItems.map(({ item, status, failedGate }) => (
             <QuestionCardDetail
               key={item.item_id}
               item={item}
               status={status}
+              failedGate={failedGate}
               planSlot={slotMap.get(item.slot_index) ?? null}
               atomId={atomId}
               onRevalidated={onItemRevalidated}
@@ -240,11 +256,26 @@ function computeStatus(
   item: GeneratedItem,
   hasValidation: boolean,
   passedIds: Set<string>,
-): OverallStatus {
-  if (hasValidation) {
-    return passedIds.has(item.item_id) ? "pass" : "fail";
+  hasFinalValidation: boolean,
+  finalPassedIds?: Set<string>,
+): { status: OverallStatus; failedGate: FailedGate } {
+  if (!hasValidation) {
+    return {
+      status: getOverallStatus(item.pipeline_meta.validators),
+      failedGate: null,
+    };
   }
-  return getOverallStatus(item.pipeline_meta.validators);
+  const passedBase = passedIds.has(item.item_id);
+  if (!passedBase) {
+    return { status: "fail", failedGate: "base" };
+  }
+  if (hasFinalValidation && finalPassedIds) {
+    const passedFinal = finalPassedIds.has(item.item_id);
+    return passedFinal
+      ? { status: "pass", failedGate: null }
+      : { status: "fail", failedGate: "final" };
+  }
+  return { status: "pass", failedGate: null };
 }
 
 // ---------------------------------------------------------------------------

@@ -86,6 +86,7 @@ export interface ValidatorStatuses {
   exemplar_copy_check: string;
   feedback: string;
   dedupe: string;
+  final_llm_check: string;
 }
 
 export interface GeneratedItemMeta {
@@ -132,4 +133,5 @@ export interface AtomCheckpointData {
   generated_items: GeneratedItem[] | null;
   validation_results: GeneratedItem[] | null;
   feedback_items: GeneratedItem[] | null;
+  final_items: GeneratedItem[] | null;
 }

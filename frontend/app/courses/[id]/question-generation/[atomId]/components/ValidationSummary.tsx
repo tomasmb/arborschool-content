@@ -26,6 +26,10 @@ interface ValidationSummaryProps {
   report: PipelineReport | null;
   /** Callback to scroll to questions and filter to failed. */
   onFilterFailed?: () => void;
+  /** Items that passed final validation (phase 9). Null = not run. */
+  finalItems?: GeneratedItem[] | null;
+  /** Items that entered final validation (phase 8 feedback). */
+  feedbackItems?: GeneratedItem[] | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -37,79 +41,78 @@ export function ValidationSummary({
   generatedItems,
   report,
   onFilterFailed,
+  finalItems,
+  feedbackItems,
 }: ValidationSummaryProps) {
   const passCount = validatedItems.length;
   const totalCount = generatedItems?.length ?? passCount;
   const failCount = totalCount - passCount;
-  const validationErrors = extractValidationErrors(report);
+  const baseErrors = extractPhaseErrors(report, "base_validation");
+
+  const hasFinal = finalItems !== null && finalItems !== undefined;
+  const finalPassCount = finalItems?.length ?? 0;
+  const finalTotalCount = feedbackItems?.length ?? 0;
+  const finalFailCount = hasFinal
+    ? finalTotalCount - finalPassCount
+    : 0;
+  const finalErrors = extractPhaseErrors(
+    report, "final_validation",
+  );
+
+  const totalFails = failCount + finalFailCount;
+  const subtitle = hasFinal
+    ? `Base: ${passCount}/${totalCount}, `
+      + `Final: ${finalPassCount}/${finalTotalCount}`
+    : `${passCount} passed, ${failCount} failed of ${totalCount}`;
 
   return (
     <CollapsibleSection
       icon={ShieldCheck}
       title="Validation Results"
-      subtitle={
-        `${passCount} passed, ${failCount} failed of ${totalCount}`
-      }
-      defaultExpanded={failCount > 0}
+      subtitle={subtitle}
+      defaultExpanded={totalFails > 0}
     >
-      <div className="px-4 pb-4 space-y-4">
-        {/* Stats row */}
-        <div className="flex items-center gap-4 flex-wrap">
-          <StatBadge
-            icon={CheckCircle2}
-            label="Passed"
-            value={passCount}
-            variant="success"
-          />
-          <StatBadge
-            icon={XCircle}
-            label="Failed"
-            value={failCount}
-            variant={failCount > 0 ? "error" : "muted"}
-          />
-          {failCount > 0 && onFilterFailed && (
-            <button
-              onClick={onFilterFailed}
-              className={cn(
-                "ml-auto inline-flex items-center gap-1.5",
-                "px-3 py-1.5 rounded-md text-xs font-medium",
-                "bg-error/10 text-error hover:bg-error/20",
-                "transition-colors",
-              )}
-            >
-              <XCircle className="w-3.5 h-3.5" />
-              Show failed questions
-            </button>
-          )}
-        </div>
+      <div className="px-4 pb-4 space-y-5">
+        {/* Base Validation */}
+        <GateSection
+          title="Base Validation"
+          passCount={passCount}
+          failCount={failCount}
+          totalCount={totalCount}
+          errors={baseErrors}
+          onFilterFailed={
+            failCount > 0 ? onFilterFailed : undefined
+          }
+        />
 
-        {/* Pass/fail progress bar */}
-        <PassRateBar pass={passCount} total={totalCount} />
-
-        {/* Validation errors list */}
-        {validationErrors.length > 0 && (
-          <div className="space-y-2">
-            <h3
-              className={cn(
-                "text-[11px] font-semibold uppercase tracking-wide",
-                "text-text-secondary",
-              )}
-            >
-              Errors ({validationErrors.length})
-            </h3>
-            <div className="space-y-1 max-h-[200px] overflow-y-auto">
-              {validationErrors.map((err, idx) => (
-                <ErrorRow key={idx} message={err} />
-              ))}
-            </div>
-          </div>
+        {/* Final Validation */}
+        {hasFinal && (
+          <>
+            <div className="border-t border-border" />
+            <GateSection
+              title="Final Validation"
+              passCount={finalPassCount}
+              failCount={finalFailCount}
+              totalCount={finalTotalCount}
+              errors={finalErrors}
+              onFilterFailed={
+                finalFailCount > 0 ? onFilterFailed : undefined
+              }
+            />
+          </>
         )}
 
         {/* All-pass message */}
-        {failCount === 0 && (
-          <p className="text-xs text-success flex items-center gap-1.5">
+        {totalFails === 0 && (
+          <p
+            className={cn(
+              "text-xs text-success",
+              "flex items-center gap-1.5",
+            )}
+          >
             <CheckCircle2 className="w-3.5 h-3.5" />
-            All items passed validation
+            All items passed
+            {hasFinal ? " all validation gates" : " validation"}
           </p>
         )}
       </div>
@@ -118,15 +121,88 @@ export function ValidationSummary({
 }
 
 // ---------------------------------------------------------------------------
+// Gate sub-section (reused for base + final)
+// ---------------------------------------------------------------------------
+
+function GateSection({
+  title,
+  passCount,
+  failCount,
+  totalCount,
+  errors,
+  onFilterFailed,
+}: {
+  title: string;
+  passCount: number;
+  failCount: number;
+  totalCount: number;
+  errors: string[];
+  onFilterFailed?: () => void;
+}) {
+  return (
+    <div className="space-y-3">
+      <h3
+        className={cn(
+          "text-[11px] font-semibold uppercase tracking-wide",
+          "text-text-secondary",
+        )}
+      >
+        {title}
+      </h3>
+
+      <div className="flex items-center gap-4 flex-wrap">
+        <StatBadge
+          icon={CheckCircle2}
+          label="Passed"
+          value={passCount}
+          variant="success"
+        />
+        <StatBadge
+          icon={XCircle}
+          label="Failed"
+          value={failCount}
+          variant={failCount > 0 ? "error" : "muted"}
+        />
+        {failCount > 0 && onFilterFailed && (
+          <button
+            onClick={onFilterFailed}
+            className={cn(
+              "ml-auto inline-flex items-center gap-1.5",
+              "px-3 py-1.5 rounded-md text-xs font-medium",
+              "bg-error/10 text-error hover:bg-error/20",
+              "transition-colors",
+            )}
+          >
+            <XCircle className="w-3.5 h-3.5" />
+            Show failed
+          </button>
+        )}
+      </div>
+
+      <PassRateBar pass={passCount} total={totalCount} />
+
+      {errors.length > 0 && (
+        <div className="space-y-1 max-h-[200px] overflow-y-auto">
+          {errors.map((err, idx) => (
+            <ErrorRow key={idx} message={err} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
-function extractValidationErrors(
+function extractPhaseErrors(
   report: PipelineReport | null,
+  phaseName: string,
 ): string[] {
   if (!report) return [];
   const phase = report.phases.find(
-    (p) => p.name === "base_validation",
+    (p) => p.name === phaseName,
   );
   return phase?.errors ?? [];
 }

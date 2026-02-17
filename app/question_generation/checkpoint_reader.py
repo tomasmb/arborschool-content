@@ -29,8 +29,8 @@ def read_atom_checkpoints(
     Returns:
         Dict with keys: atom_id, available_phases, pipeline_report,
         enrichment, plan_slots, generated_items, validation_results,
-        feedback_items. Each section is None if the corresponding
-        checkpoint file doesn't exist.
+        feedback_items, final_items. Each section is None if the
+        corresponding checkpoint file doesn't exist.
     """
     available_phases = _scan_available_phases(output_dir)
     pipeline_report = _read_pipeline_report(output_dir)
@@ -40,6 +40,7 @@ def read_atom_checkpoints(
     generated_items = _read_items(output_dir, 4, "generation")
     validation_results = _read_items(output_dir, 6, "base_validation")
     feedback_items = _read_items(output_dir, 8, "feedback")
+    final_items = _read_items(output_dir, 9, "final_validation")
 
     return {
         "atom_id": atom_id,
@@ -50,6 +51,7 @@ def read_atom_checkpoints(
         "generated_items": generated_items,
         "validation_results": validation_results,
         "feedback_items": feedback_items,
+        "final_items": final_items,
     }
 
 
@@ -255,6 +257,160 @@ def _update_pipeline_report(
         break
 
     report["total_passed_base_validation"] = valid_count
+
+    with open(report_path, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2, ensure_ascii=False)
+
+
+def revalidate_single_item_final(
+    output_dir: Path,
+    item_id: str,
+) -> dict[str, Any]:
+    """Re-run final validation on one feedback-enriched item.
+
+    Loads the item from the feedback checkpoint (phase 8), runs
+    deterministic checks + LLM final validation, and persists
+    the result to the phase 9 checkpoint and pipeline report.
+
+    Args:
+        output_dir: Root directory for this atom's pipeline output.
+        item_id: ID of the item to revalidate.
+
+    Returns:
+        Dict with keys: item_id, passed, errors, validators.
+
+    Raises:
+        ValueError: If no feedback checkpoint or item not found.
+    """
+    from app.llm_clients import load_default_openai_client
+    from app.question_generation.helpers import deserialize_items
+    from app.question_generation.validators import FinalValidator
+
+    ckpt = load_checkpoint(output_dir, 8, "feedback")
+    if not ckpt or not ckpt.get("items"):
+        raise ValueError("No feedback checkpoint found")
+
+    all_items = deserialize_items(ckpt["items"])
+    target = next(
+        (i for i in all_items if i.item_id == item_id), None,
+    )
+    if not target:
+        raise ValueError(
+            f"Item '{item_id}' not found in feedback checkpoint",
+        )
+
+    client = load_default_openai_client()
+    validator = FinalValidator(client)
+
+    # Stage 1: deterministic checks
+    det_errors = validator._validate_deterministic(
+        target, exemplars=None,
+    )
+
+    # Stage 2: LLM validation (only if deterministic passed)
+    llm_error: str | None = None
+    if not det_errors:
+        llm_error = validator._llm_validate_item(target)
+
+    errors = det_errors if det_errors else []
+    if llm_error:
+        errors.append(llm_error)
+
+    passed = len(errors) == 0
+    validators: dict[str, str] = {}
+    if target.pipeline_meta:
+        validators = target.pipeline_meta.validators.model_dump()
+
+    _persist_final_revalidation(
+        output_dir, target, passed, errors,
+    )
+
+    return {
+        "item_id": item_id,
+        "passed": passed,
+        "errors": errors,
+        "validators": validators,
+    }
+
+
+def _persist_final_revalidation(
+    output_dir: Path,
+    revalidated_item: object,
+    passed: bool,
+    new_errors: list[str],
+) -> None:
+    """Persist single-item final revalidation to phase 9 checkpoint.
+
+    Adds or removes the item from the final validation checkpoint
+    and updates the pipeline report accordingly.
+    """
+    from app.question_generation.helpers import (
+        deserialize_items,
+        save_checkpoint,
+        serialize_items,
+    )
+
+    # Update phase 9 checkpoint
+    final_ckpt = load_checkpoint(output_dir, 9, "final_validation")
+    if final_ckpt is None:
+        final_ckpt = {"final_count": 0, "items": []}
+
+    final_items = deserialize_items(final_ckpt.get("items", []))
+    # Remove existing entry for this item
+    final_items = [
+        i for i in final_items
+        if i.item_id != revalidated_item.item_id
+    ]
+    if passed:
+        final_items.append(revalidated_item)
+
+    final_count = len(final_items)
+    save_checkpoint(output_dir, 9, "final_validation", {
+        "final_count": final_count,
+        "items": serialize_items(final_items),
+    })
+
+    # Update pipeline report
+    _update_pipeline_report_final(
+        output_dir, revalidated_item.item_id,
+        new_errors, final_count,
+    )
+
+
+def _update_pipeline_report_final(
+    output_dir: Path,
+    item_id: str,
+    new_errors: list[str],
+    final_count: int,
+) -> None:
+    """Update pipeline report after single-item final revalidation.
+
+    Removes stale final_validation errors for the item, adds any
+    new errors, and updates the total_final count.
+    """
+    report_path = output_dir / "pipeline_report.json"
+    if not report_path.exists():
+        return
+
+    try:
+        report = json.loads(
+            report_path.read_text(encoding="utf-8"),
+        )
+    except (json.JSONDecodeError, OSError):
+        return
+
+    prefix = f"{item_id}:"
+    for phase in report.get("phases", []):
+        if phase.get("name") != "final_validation":
+            continue
+        phase["errors"] = [
+            e for e in phase.get("errors", [])
+            if not e.startswith(prefix)
+        ]
+        phase["errors"].extend(new_errors)
+        break
+
+    report["total_final"] = final_count
 
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)

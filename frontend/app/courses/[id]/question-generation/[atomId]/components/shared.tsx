@@ -196,54 +196,34 @@ export function ProPagination({
 }
 
 function PageBtn({
-  children,
-  onClick,
-  disabled,
-  active,
-  ...rest
+  children, onClick, disabled, active, ...rest
 }: {
-  children: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  active?: boolean;
+  children: ReactNode; onClick?: () => void;
+  disabled?: boolean; active?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      onClick={onClick}
-      disabled={disabled}
+      onClick={onClick} disabled={disabled}
       className={cn(
-        "min-w-[28px] h-7 px-1.5 rounded text-xs font-medium",
-        "transition-all duration-150",
+        "min-w-[28px] h-7 px-1.5 rounded text-xs font-medium transition-all duration-150",
         active
           ? "bg-accent text-white shadow-sm shadow-accent/20"
           : disabled
             ? "text-text-secondary/30 cursor-not-allowed"
-            : "text-text-secondary hover:bg-white/[0.06]" +
-              " hover:text-text-primary",
+            : "text-text-secondary hover:bg-white/[0.06] hover:text-text-primary",
       )}
       {...rest}
-    >
-      {children}
-    </button>
+    >{children}</button>
   );
 }
 
-/** Compute page range with ellipsis for large ranges. */
-function getPageRange(
-  current: number,
-  total: number,
-): (number | "ellipsis")[] {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i);
-  }
+function getPageRange(cur: number, total: number): (number | "ellipsis")[] {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i);
   const pages: (number | "ellipsis")[] = [0];
-  if (current > 2) pages.push("ellipsis");
-
-  const lo = Math.max(1, current - 1);
-  const hi = Math.min(total - 2, current + 1);
-  for (let i = lo; i <= hi; i++) pages.push(i);
-
-  if (current < total - 3) pages.push("ellipsis");
+  if (cur > 2) pages.push("ellipsis");
+  for (let i = Math.max(1, cur - 1); i <= Math.min(total - 2, cur + 1); i++)
+    pages.push(i);
+  if (cur < total - 3) pages.push("ellipsis");
   pages.push(total - 1);
   return pages;
 }
@@ -403,6 +383,11 @@ export function PlanSpec({
   );
 }
 
+const VALIDATOR_ICON_MAP = {
+  pass: { Icon: CheckCircle2, cls: "text-success" },
+  fail: { Icon: XCircle, cls: "text-error" },
+} as const;
+
 export function ValidatorBreakdown({
   validators,
 }: {
@@ -414,18 +399,9 @@ export function ValidatorBreakdown({
       <div className="space-y-1.5">
         {(Object.entries(validators) as [string, string][]).map(
           ([key, value]) => {
-            const Icon =
-              value === "pass"
-                ? CheckCircle2
-                : value === "fail"
-                  ? XCircle
-                  : Clock;
-            const color =
-              value === "pass"
-                ? "text-success"
-                : value === "fail"
-                  ? "text-error"
-                  : "text-text-secondary/40";
+            const v = VALIDATOR_ICON_MAP[
+              value as keyof typeof VALIDATOR_ICON_MAP
+            ] ?? { Icon: Clock, cls: "text-text-secondary/40" };
             return (
               <div
                 key={key}
@@ -435,13 +411,8 @@ export function ValidatorBreakdown({
                   {key.replace(/_/g, " ")}
                 </span>
                 <div className="flex items-center gap-1.5">
-                  <Icon className={cn("w-3 h-3", color)} />
-                  <span
-                    className={cn(
-                      "text-[10px] font-medium",
-                      color,
-                    )}
-                  >
+                  <v.Icon className={cn("w-3 h-3", v.cls)} />
+                  <span className={cn("text-[10px] font-medium", v.cls)}>
                     {value}
                   </span>
                 </div>
@@ -453,6 +424,50 @@ export function ValidatorBreakdown({
     </div>
   );
 }
+
+// ---------------------------------------------------------------------------
+// Validator pills (compact status pills for card headers)
+// ---------------------------------------------------------------------------
+
+export function ValidatorPills({
+  validators,
+}: {
+  validators: ValidatorStatuses;
+}) {
+  const entries = (
+    Object.entries(validators) as [string, string][]
+  ).filter(([, v]) => v !== "pending");
+
+  if (entries.length === 0) {
+    return (
+      <span className="text-[10px] text-text-secondary/50">
+        validators pending
+      </span>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1 flex-wrap justify-end">
+      {entries.map(([key, value]) => (
+        <span
+          key={key}
+          className={cn(
+            "px-1.5 py-0.5 rounded text-[10px] font-medium",
+            value === "pass"
+              ? "bg-success/10 text-success"
+              : "bg-error/10 text-error",
+          )}
+        >
+          {key.replace(/_/g, " ")}
+        </span>
+      ))}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// XML viewer
+// ---------------------------------------------------------------------------
 
 export function XmlViewer({ xml }: { xml: string }) {
   return (
