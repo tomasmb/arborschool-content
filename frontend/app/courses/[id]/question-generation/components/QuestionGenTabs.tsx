@@ -3,7 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type QGenTab = "overview" | "generation" | "results";
+export type QGenTab = "overview" | "generation" | "results" | "sync";
 
 export interface QuestionGenTabsProps {
   activeTab: QGenTab;
@@ -22,6 +22,7 @@ const tabConfigs: TabConfig[] = [
   { id: "overview", step: 1, label: "Overview" },
   { id: "generation", step: 2, label: "Generate" },
   { id: "results", step: 3, label: "Results" },
+  { id: "sync", step: 4, label: "Sync" },
 ];
 
 export function QuestionGenTabs({

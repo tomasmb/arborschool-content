@@ -13,6 +13,7 @@ import {
 import { OverviewTab } from "./components/OverviewTab";
 import { GenerationTab } from "./components/GenerationTab";
 import { ResultsTab } from "./components/ResultsTab";
+import { GenQuestionSyncTab } from "./components/GenQuestionSyncTab";
 import { BatchEnrichModal } from "./components/BatchEnrichModal";
 
 const PIPELINE_INFO = {
@@ -162,6 +163,13 @@ export default function QuestionGenerationPage() {
             onRegenerate={(atomId) =>
               handleRunPhase(atomId, "all")
             }
+          />
+        )}
+
+        {activeTab === "sync" && (
+          <GenQuestionSyncTab
+            subjectId={courseId}
+            atoms={atoms}
           />
         )}
       </div>
