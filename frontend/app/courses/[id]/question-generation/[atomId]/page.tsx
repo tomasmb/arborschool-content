@@ -104,9 +104,10 @@ function AtomDetailContent({
   const hasValidation =
     !!data.validation_results &&
     data.validation_results.length > 0;
+  const hasFinalValidation = data.final_items !== null;
 
   // Merge all item phases into one list (latest phase wins)
-  const { mergedItems, passedIds } = useMemo(() => {
+  const { mergedItems, passedIds, finalPassedIds } = useMemo(() => {
     const map = new Map<string, GeneratedItem>();
     for (const item of data.generated_items ?? []) {
       map.set(item.item_id, item);
@@ -117,13 +118,21 @@ function AtomDetailContent({
     for (const item of data.feedback_items ?? []) {
       map.set(item.item_id, item);
     }
+    for (const item of data.final_items ?? []) {
+      map.set(item.item_id, item);
+    }
     const merged = Array.from(map.values()).sort(
       (a, b) => a.slot_index - b.slot_index,
     );
     const passed = new Set(
       data.validation_results?.map((i) => i.item_id) ?? [],
     );
-    return { mergedItems: merged, passedIds: passed };
+    const finalPassed = new Set(
+      data.final_items?.map((i) => i.item_id) ?? [],
+    );
+    return {
+      mergedItems: merged, passedIds: passed, finalPassedIds: finalPassed,
+    };
   }, [data]);
 
   const genCount = data.generated_items?.length ?? 0;
@@ -255,6 +264,8 @@ function AtomDetailContent({
           generatedItems={data.generated_items}
           report={report}
           onFilterFailed={handleFilterFailed}
+          finalItems={data.final_items}
+          feedbackItems={data.feedback_items}
         />
       )}
 
@@ -265,12 +276,14 @@ function AtomDetailContent({
             items={mergedItems}
             planSlots={data.plan_slots}
             sectionTitle={
-              hasValidation
+              hasValidation || hasFinalValidation
                 ? "All Questions"
                 : "Generated Questions"
             }
             hasValidation={hasValidation}
             passedIds={passedIds}
+            finalPassedIds={finalPassedIds}
+            hasFinalValidation={hasFinalValidation}
             filterFailedTrigger={failTrigger}
             atomId={atomId}
             onItemRevalidated={onSilentRefresh}

@@ -13,28 +13,39 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { QTIRenderer } from "@/components/qti/QTIRenderer";
-import { revalidateSingleItem } from "@/lib/api";
+import { revalidateSingleItem, revalidateFinalItem } from "@/lib/api";
 import type {
   GeneratedItem,
   PlanSlot,
   ValidatorStatuses,
 } from "@/lib/api-types-question-gen";
+import type { FailedGate } from "./QuestionCards";
 import { DifficultyBadge } from "./EnrichmentSection";
 import {
   CopyButton,
   PlanSpec,
   ValidatorBreakdown,
+  ValidatorPills,
   XmlViewer,
   type OverallStatus,
 } from "./shared";
 
 // ---------------------------------------------------------------------------
-// Props
+// Types
 // ---------------------------------------------------------------------------
+
+/** Revalidation result shape (shared by base + final). */
+interface RevalResult {
+  passed: boolean;
+  errors: string[];
+  validators: Record<string, string>;
+}
 
 interface QuestionCardDetailProps {
   item: GeneratedItem;
   status: OverallStatus;
+  /** Which validation gate the item failed at (null = passed). */
+  failedGate?: FailedGate;
   planSlot: PlanSlot | null;
   /** Atom ID for per-item revalidation API call. */
   atomId?: string;
@@ -71,6 +82,7 @@ const STATUS_CONFIG = {
 export function QuestionCardDetail({
   item,
   status,
+  failedGate,
   planSlot,
   atomId,
   onRevalidated,
@@ -78,23 +90,22 @@ export function QuestionCardDetail({
   const [expanded, setExpanded] = useState(false);
   const [showXml, setShowXml] = useState(false);
 
-  // Revalidation state
   const [revalLoading, setRevalLoading] = useState(false);
-  const [revalResult, setRevalResult] = useState<{
-    passed: boolean;
-    errors: string[];
-    validators: Record<string, string>;
-  } | null>(null);
+  const [revalResult, setRevalResult] = useState<RevalResult | null>(null);
+  const [finalRevalLoading, setFinalRevalLoading] = useState(false);
+  const [finalRevalResult, setFinalRevalResult] =
+    useState<RevalResult | null>(null);
 
   const meta = item.pipeline_meta;
 
   // Use revalidation result if available, otherwise original
-  const displayValidators: ValidatorStatuses = revalResult
-    ? (revalResult.validators as unknown as ValidatorStatuses)
+  const latestResult = finalRevalResult ?? revalResult;
+  const displayValidators: ValidatorStatuses = latestResult
+    ? (latestResult.validators as unknown as ValidatorStatuses)
     : meta.validators;
 
-  const displayStatus: OverallStatus = revalResult
-    ? (revalResult.passed ? "pass" : "fail")
+  const displayStatus: OverallStatus = latestResult
+    ? (latestResult.passed ? "pass" : "fail")
     : status;
 
   const cfg = STATUS_CONFIG[displayStatus];
@@ -108,7 +119,6 @@ export function QuestionCardDetail({
         atomId, item.item_id,
       );
       setRevalResult(result);
-      // Refresh parent data so filter counts match persisted state
       onRevalidated?.();
     } catch (err) {
       setRevalResult({
@@ -122,6 +132,36 @@ export function QuestionCardDetail({
       setRevalLoading(false);
     }
   }, [atomId, item.item_id, meta.validators, revalLoading, onRevalidated]);
+
+  const handleRevalidateFinal = useCallback(async () => {
+    if (!atomId || finalRevalLoading) return;
+    setFinalRevalLoading(true);
+    setFinalRevalResult(null);
+    try {
+      const result = await revalidateFinalItem(
+        atomId, item.item_id,
+      );
+      setFinalRevalResult(result);
+      onRevalidated?.();
+    } catch (err) {
+      setFinalRevalResult({
+        passed: false,
+        errors: [
+          err instanceof Error
+            ? err.message
+            : "Final revalidation failed",
+        ],
+        validators: meta.validators as unknown as Record<string, string>,
+      });
+    } finally {
+      setFinalRevalLoading(false);
+    }
+  }, [
+    atomId, item.item_id, meta.validators,
+    finalRevalLoading, onRevalidated,
+  ]);
+
+  const anyLoading = revalLoading || finalRevalLoading;
 
   return (
     <div
@@ -158,15 +198,24 @@ export function QuestionCardDetail({
           #{item.slot_index}
         </span>
 
+        {/* Failed-gate badge */}
+        {failedGate && !latestResult && (
+          <FailedGateBadge gate={failedGate} />
+        )}
+
         {/* Validator pills pushed right */}
         <div className="flex-1 flex justify-end">
           <ValidatorPills validators={displayValidators} />
         </div>
 
         {expanded ? (
-          <ChevronDown className="w-4 h-4 text-text-secondary shrink-0" />
+          <ChevronDown
+            className="w-4 h-4 text-text-secondary shrink-0"
+          />
         ) : (
-          <ChevronRight className="w-4 h-4 text-text-secondary shrink-0" />
+          <ChevronRight
+            className="w-4 h-4 text-text-secondary shrink-0"
+          />
         )}
       </button>
 
@@ -181,6 +230,13 @@ export function QuestionCardDetail({
           revalLoading={revalLoading}
           revalResult={revalResult}
           onRevalidate={atomId ? handleRevalidate : undefined}
+          finalRevalLoading={finalRevalLoading}
+          finalRevalResult={finalRevalResult}
+          onRevalidateFinal={
+            atomId ? handleRevalidateFinal : undefined
+          }
+          failedGate={failedGate}
+          anyLoading={anyLoading}
         />
       )}
     </div>
@@ -191,25 +247,33 @@ export function QuestionCardDetail({
 // Expanded content (split out to keep main component readable)
 // ---------------------------------------------------------------------------
 
-function ExpandedContent({
-  item,
-  planSlot,
-  showXml,
-  onToggleXml,
-  displayValidators,
-  revalLoading,
-  revalResult,
-  onRevalidate,
-}: {
+interface ExpandedContentProps {
   item: GeneratedItem;
   planSlot: PlanSlot | null;
   showXml: boolean;
   onToggleXml: () => void;
   displayValidators: ValidatorStatuses;
   revalLoading: boolean;
-  revalResult: { passed: boolean; errors: string[] } | null;
+  revalResult: RevalResult | null;
   onRevalidate?: () => void;
-}) {
+  finalRevalLoading: boolean;
+  finalRevalResult: RevalResult | null;
+  onRevalidateFinal?: () => void;
+  failedGate?: FailedGate;
+  anyLoading: boolean;
+}
+
+function ExpandedContent(props: ExpandedContentProps) {
+  const {
+    item, planSlot, showXml, onToggleXml,
+    displayValidators, revalLoading, revalResult,
+    onRevalidate, finalRevalLoading, finalRevalResult,
+    onRevalidateFinal, failedGate, anyLoading,
+  } = props;
+
+  const activeResult = finalRevalResult ?? revalResult;
+  const activeLoading = finalRevalLoading || revalLoading;
+
   return (
     <div className="border-t border-border">
       {/* Action bar */}
@@ -228,49 +292,46 @@ function ExpandedContent({
             "transition-all duration-150",
             showXml
               ? "bg-accent/10 text-accent border-accent/30"
-              : "border-border text-text-secondary" +
-                " hover:text-text-primary hover:bg-white/[0.06]",
+              : "border-border text-text-secondary"
+                + " hover:text-text-primary hover:bg-white/[0.06]",
           )}
         >
           <Code2 className="w-3 h-3" />
           {showXml ? "Hide XML" : "View XML"}
         </button>
-        <button
+
+        {/* Base revalidation button */}
+        <RevalidateButton
+          label="Revalidate (Base)"
+          title="Re-run base validation checks"
+          loading={revalLoading}
+          disabled={anyLoading}
           onClick={onRevalidate}
-          disabled={!onRevalidate || revalLoading}
-          className={cn(
-            "inline-flex items-center gap-1.5",
-            "px-2.5 py-1 rounded-md border border-border text-xs",
-            "transition-all duration-150",
-            revalLoading
-              ? "text-accent cursor-wait"
-              : onRevalidate
-                ? "text-text-secondary hover:text-text-primary" +
-                  " hover:bg-white/[0.06]"
-                : "text-text-secondary/30 cursor-not-allowed",
-          )}
-          title="Re-run validation checks for this question"
-        >
-          {revalLoading ? (
-            <Loader2 className="w-3 h-3 animate-spin" />
-          ) : (
-            <RotateCcw className="w-3 h-3" />
-          )}
-          {revalLoading ? "Validating..." : "Revalidate"}
-        </button>
+        />
+
+        {/* Final revalidation button */}
+        {(failedGate === "final" || failedGate === null) && (
+          <RevalidateButton
+            label="Revalidate (Final)"
+            title="Re-run final LLM validation"
+            loading={finalRevalLoading}
+            disabled={anyLoading}
+            onClick={onRevalidateFinal}
+          />
+        )}
 
         {/* Inline revalidation result badge */}
-        {revalResult && !revalLoading && (
+        {activeResult && !activeLoading && (
           <RevalResultBadge
-            passed={revalResult.passed}
-            errorCount={revalResult.errors.length}
+            passed={activeResult.passed}
+            errorCount={activeResult.errors.length}
           />
         )}
       </div>
 
       {/* Revalidation errors (if any) */}
-      {revalResult && revalResult.errors.length > 0 && (
-        <RevalErrors errors={revalResult.errors} />
+      {activeResult && activeResult.errors.length > 0 && (
+        <RevalErrors errors={activeResult.errors} />
       )}
 
       {/* Two-column: metadata + QTI preview */}
@@ -300,6 +361,72 @@ function ExpandedContent({
 
       {showXml && <XmlViewer xml={item.qti_xml} />}
     </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Failed gate badge (shown in card header)
+// ---------------------------------------------------------------------------
+
+function FailedGateBadge({ gate }: { gate: "base" | "final" }) {
+  const label = gate === "base"
+    ? "Failed: Base"
+    : "Failed: Final";
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 px-2 py-0.5",
+        "rounded-full text-[10px] font-medium",
+        "bg-error/10 text-error",
+      )}
+    >
+      <XCircle className="w-3 h-3" />
+      {label}
+    </span>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Revalidation button (reused for base + final)
+// ---------------------------------------------------------------------------
+
+function RevalidateButton({
+  label,
+  title,
+  loading,
+  disabled,
+  onClick,
+}: {
+  label: string;
+  title: string;
+  loading: boolean;
+  disabled: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={!onClick || disabled}
+      className={cn(
+        "inline-flex items-center gap-1.5",
+        "px-2.5 py-1 rounded-md border border-border text-xs",
+        "transition-all duration-150",
+        loading
+          ? "text-accent cursor-wait"
+          : onClick && !disabled
+            ? "text-text-secondary hover:text-text-primary"
+              + " hover:bg-white/[0.06]"
+            : "text-text-secondary/30 cursor-not-allowed",
+      )}
+      title={title}
+    >
+      {loading ? (
+        <Loader2 className="w-3 h-3 animate-spin" />
+      ) : (
+        <RotateCcw className="w-3 h-3" />
+      )}
+      {loading ? "Validating..." : label}
+    </button>
   );
 }
 
@@ -370,43 +497,4 @@ function RevalErrors({ errors }: { errors: string[] }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Validator pills (compact, for card header)
-// ---------------------------------------------------------------------------
-
-function ValidatorPills({
-  validators,
-}: {
-  validators: ValidatorStatuses;
-}) {
-  const entries = (
-    Object.entries(validators) as [string, string][]
-  ).filter(([, v]) => v !== "pending");
-
-  if (entries.length === 0) {
-    return (
-      <span className="text-[10px] text-text-secondary/50">
-        validators pending
-      </span>
-    );
-  }
-
-  return (
-    <div className="flex items-center gap-1 flex-wrap justify-end">
-      {entries.map(([key, value]) => (
-        <span
-          key={key}
-          className={cn(
-            "px-1.5 py-0.5 rounded text-[10px] font-medium",
-            value === "pass"
-              ? "bg-success/10 text-success"
-              : "bg-error/10 text-error",
-          )}
-        >
-          {key.replace(/_/g, " ")}
-        </span>
-      ))}
-    </div>
-  );
-}
 
