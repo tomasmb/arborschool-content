@@ -83,7 +83,7 @@ export default function QuestionGenerationPage() {
   }, []);
 
   const atomsWithQuestions = atoms.filter(
-    (a) => a.question_set_count > 0,
+    (a) => a.generated_question_count > 0,
   ).length;
 
   if (error) {

@@ -31,8 +31,8 @@ const PHASES = [
     description: "Dedup, XSD, solvability, PAES checks", requiredPhase: 4 },
   { id: "feedback", label: "Feedback", phases: "7-8",
     description: "Per-option feedback + worked solutions", requiredPhase: 6 },
-  { id: "finalize", label: "Finalize & Sync", phases: "9-10",
-    description: "Final validation + DB sync", requiredPhase: 8 },
+  { id: "final_validate", label: "Final Validate", phases: "9",
+    description: "Final LLM validation", requiredPhase: 8 },
 ] as const;
 
 type AtomFilter =
@@ -51,14 +51,14 @@ export function GenerationTab({
   const [filter, setFilter] = useState<AtomFilter>("all");
   const [expandedAtom, setExpandedAtom] = useState<string | null>(null);
 
-  const generated = atoms.filter((a) => a.question_set_count > 0);
-  const pending = atoms.filter((a) => a.question_set_count === 0);
+  const generated = atoms.filter((a) => a.generated_question_count > 0);
+  const pending = atoms.filter((a) => a.generated_question_count === 0);
   const covered = atoms.filter((a) => a.question_coverage !== "none");
   const noCoverage = atoms.filter((a) => a.question_coverage === "none");
   const needsEnrichment = atoms.filter(
     (a) => a.image_status === "not_enriched" && a.question_coverage !== "none",
   );
-  const totalQs = atoms.reduce((s, a) => s + a.question_set_count, 0);
+  const totalQs = atoms.reduce((s, a) => s + a.generated_question_count, 0);
 
   const filtered = (() => {
     switch (filter) {
@@ -273,7 +273,7 @@ interface AtomRowProps {
 function AtomRow({
   atom, isExpanded, onToggle, onRunPhase,
 }: AtomRowProps) {
-  const hasQuestions = atom.question_set_count > 0;
+  const hasQuestions = atom.generated_question_count > 0;
   const blocked = atom.question_coverage === "none";
 
   return (
@@ -313,7 +313,7 @@ function AtomRow({
           />
         </td>
         <td className="px-3 py-3 text-center">
-          <QuestionBadge count={atom.question_set_count} />
+          <QuestionBadge count={atom.generated_question_count} />
         </td>
         <td className="px-3 py-3 text-right">
           {blocked ? (

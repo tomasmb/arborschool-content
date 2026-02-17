@@ -23,7 +23,6 @@ export interface PipelineReport {
   total_passed_base_validation: number;
   total_passed_feedback: number;
   total_final: number;
-  total_synced: number;
   phases: PhaseReport[];
 }
 

@@ -30,9 +30,9 @@ export function OverviewTab({
     );
   }
 
-  const withQs = atoms.filter((a) => a.question_set_count > 0);
-  const withoutQs = atoms.filter((a) => a.question_set_count === 0);
-  const totalQs = atoms.reduce((sum, a) => sum + a.question_set_count, 0);
+  const withQs = atoms.filter((a) => a.generated_question_count > 0);
+  const withoutQs = atoms.filter((a) => a.generated_question_count === 0);
+  const totalQs = atoms.reduce((sum, a) => sum + a.generated_question_count, 0);
   const enriched = atoms.filter((a) => a.image_status !== "not_enriched");
   const noCoverage = atoms.filter((a) => a.question_coverage === "none");
   const pct = atoms.length > 0
@@ -179,10 +179,10 @@ function AtomStatusList({
               </div>
             </div>
             <div className="ml-4 flex-shrink-0">
-              {atom.question_set_count > 0 ? (
+              {atom.generated_question_count > 0 ? (
                 <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-success/10 text-success">
                   <CheckCircle2 className="w-3 h-3" />
-                  {atom.question_set_count} questions
+                  {atom.generated_question_count} questions
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded bg-text-secondary/10 text-text-secondary">

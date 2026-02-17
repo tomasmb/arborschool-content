@@ -18,7 +18,7 @@ const PHASE_LABELS: Record<number, string> = {
   4: "Generated",
   6: "Validated",
   8: "Feedback",
-  10: "Finalized",
+  9: "Final Validated",
 };
 
 function PhaseBadge({ phase }: { phase: number | null }) {
@@ -34,7 +34,7 @@ function PhaseBadge({ phase }: { phase: number | null }) {
       className={cn(
         "inline-flex items-center px-1.5 py-0.5 rounded",
         "text-[10px] font-medium",
-        phase >= 10
+        phase >= 9
           ? "bg-success/10 text-success"
           : phase >= 4
             ? "bg-accent/10 text-accent"
@@ -54,7 +54,7 @@ interface ResultsTabProps {
 
 /** An atom has results if it has synced questions OR generated checkpoints. */
 function hasResults(a: AtomBrief): boolean {
-  return a.question_set_count > 0
+  return a.generated_question_count > 0
     || (a.last_completed_phase !== null && a.last_completed_phase >= 4);
 }
 
@@ -72,9 +72,9 @@ export function ResultsTab({ courseId, atoms, onRegenerate }: ResultsTabProps) {
     byEje[eje].push(atom);
   }
 
-  const syncedCount = withResults.filter((a) => a.question_set_count > 0).length;
+  const syncedCount = withResults.filter((a) => a.generated_question_count > 0).length;
   const totalQs = withResults.reduce(
-    (sum, a) => sum + a.question_set_count,
+    (sum, a) => sum + a.generated_question_count,
     0,
   );
 
@@ -171,7 +171,7 @@ function EjeGroup({
   onRegenerate: (atomId: string) => void;
 }) {
   const qCount = atoms.reduce(
-    (s, a) => s + a.question_set_count,
+    (s, a) => s + a.generated_question_count,
     0,
   );
 
@@ -210,11 +210,11 @@ function EjeGroup({
               </div>
             </div>
             <div className="ml-4 flex items-center gap-3">
-              {atom.question_set_count > 0 ? (
+              {atom.generated_question_count > 0 ? (
                 <span className="inline-flex items-center gap-1 text-sm">
                   <CheckCircle2 className="w-3.5 h-3.5 text-success" />
                   <span className="font-medium">
-                    {atom.question_set_count}
+                    {atom.generated_question_count}
                   </span>
                 </span>
               ) : (
