@@ -269,9 +269,12 @@ def classify_image_status(image_types: list[str] | None) -> str:
 
 
 # Checkpoint phase → next phase group for --resume.
-# Phase 4→"generate" so partial gen re-enters slot-level resume.
+# Phase 9/4→"generate" so completed or partial gen re-enters
+# slot-level resume.  Phase 8→"final_validate" to skip straight
+# to phase 9 after feedback completes.
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
-    8: "validate",
+    9: "generate",
+    8: "final_validate",
     6: "feedback",
     4: "generate",
     3: "generate",
