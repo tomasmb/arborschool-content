@@ -365,6 +365,7 @@ class GeneratedItem:
     slot_index: int = 0
     image_description: str = ""
     image_failed: bool = False
+    feedback_failed: bool = False
 
 
 @dataclass

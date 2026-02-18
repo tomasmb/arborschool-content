@@ -29,7 +29,7 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
     "enrich": [],
     "plan": [(1, "enrichment")],
     "generate": [(1, "enrichment"), (3, "plan")],
-    "validate": [(4, "generation")],
+    "validate": [(3, "plan"), (4, "generation")],
     "feedback": [(6, "base_validation")],
     "final_validate": [(8, "feedback")],
 }
@@ -271,7 +271,7 @@ def classify_image_status(image_types: list[str] | None) -> str:
 # Checkpoint phase → next phase group for --resume.
 # Phase 4→"generate" so partial gen re-enters slot-level resume.
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
-    8: "final_validate",
+    8: "validate",
     6: "feedback",
     4: "generate",
     3: "generate",
@@ -374,6 +374,8 @@ def serialize_items(items: list[GeneratedItem]) -> list[dict]:
             d["image_description"] = item.image_description
         if item.image_failed:
             d["image_failed"] = True
+        if item.feedback_failed:
+            d["feedback_failed"] = True
         result.append(d)
     return result
 
@@ -394,6 +396,7 @@ def deserialize_items(data: list[dict]) -> list[GeneratedItem]:
             pipeline_meta=meta,
             image_description=d.get("image_description", ""),
             image_failed=d.get("image_failed", False),
+            feedback_failed=d.get("feedback_failed", False),
         ))
     return items
 

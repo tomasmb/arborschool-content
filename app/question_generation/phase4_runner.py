@@ -191,7 +191,18 @@ def _save_and_filter_active(
     output_dir: Path,
     result: PipelineResult,
 ) -> list[GeneratedItem] | None:
-    """Persist all items and return only non-image-failed ones."""
+    """Persist all items and return only image-complete ones.
+
+    Items that still contain IMAGE_PLACEHOLDER are marked as
+    image_failed so they can be retried on resume.
+    """
+    for it in items:
+        if "IMAGE_PLACEHOLDER" in it.qti_xml and not it.image_failed:
+            it.image_failed = True
+            logger.warning(
+                "%s: placeholder still present — marking failed",
+                it.item_id,
+            )
     save_checkpoint(output_dir, 4, "generation", {
         "item_count": len(items),
         "items": serialize_items(items),

@@ -316,19 +316,43 @@ class OpenAIClient:
 _IMAGE_MODEL = "gemini-3-pro-image-preview"
 
 
+_IMAGE_TIMEOUT_MS = 180_000
+
+
 class GeminiImageClient:
     """Client for Gemini image generation using the google-genai SDK.
 
     Uses the newer google.genai SDK which supports native image
     generation via response_modalities=['TEXT', 'IMAGE'].
+
+    Forces IPv4 via httpx transport to avoid IPv6 SYN_SENT hangs
+    common on some ISPs. The SDK always overrides client-default
+    timeouts per-request, so we set http_options.timeout (180s)
+    which the SDK converts and applies to every call.
     """
 
     def __init__(
-        self, api_key: str, model: str = _IMAGE_MODEL,
+        self,
+        api_key: str,
+        model: str = _IMAGE_MODEL,
     ) -> None:
         from google import genai as google_genai
+        from google.genai import types as genai_types
 
-        self._client = google_genai.Client(api_key=api_key)
+        import httpx
+
+        transport = httpx.HTTPTransport(
+            local_address="0.0.0.0",
+        )
+        self._client = google_genai.Client(
+            api_key=api_key,
+            http_options=genai_types.HttpOptions(
+                timeout=_IMAGE_TIMEOUT_MS,
+                httpx_client=httpx.Client(
+                    transport=transport,
+                ),
+            ),
+        )
         self._model = model
 
     def generate_image(self, prompt: str) -> bytes | None:

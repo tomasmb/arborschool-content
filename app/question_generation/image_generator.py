@@ -51,18 +51,11 @@ logger = logging.getLogger(__name__)
 _VALIDATION_REASONING = "low"
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 _MAX_PARALLEL_IMAGES = 3
+_MAX_IMAGE_RETRIES = 2
 
 
 class ImageGenerator:
-    """Generates and validates images for QTI items (Phase 4b).
-
-    Flow per item:
-    1. Generate image with Gemini from item.image_description
-    2. Validate image with GPT-5.1 vision
-    3. Upload to S3
-    4. Replace placeholder with S3 URL
-    5. Re-validate XSD
-    """
+    """Generates and validates images for QTI items (Phase 4b)."""
 
     def __init__(
         self,
@@ -97,20 +90,7 @@ class ImageGenerator:
         """Generate images concurrently for items that need them.
 
         Runs up to _MAX_PARALLEL_IMAGES items in parallel.
-        Items without image_required pass through unchanged.
-        Items that fail get image_failed=True but are still
-        included so checkpoints preserve their XML.
-
-        Args:
-            items: Generated QTI items from Phase 4.
-            slot_map: Map of slot_index to PlanSlot.
-            atom_id: Atom ID for S3 path organization.
-            on_image_complete: Optional callback after each image
-                item finishes (pass or fail), for incremental
-                checkpoint saves.
-
-        Returns:
-            PhaseResult with all items (failed ones flagged).
+        Failed items get image_failed=True but keep their XML.
         """
         self._ensure_gemini()
         image_items = _select_image_items(items, slot_map)
@@ -180,37 +160,27 @@ class ImageGenerator:
         item: GeneratedItem,
         atom_id: str,
     ) -> str | None:
-        """Run the full image pipeline for a single item.
+        """Run the full image pipeline for one item (thread-safe).
 
-        On failure at any step, sets item.image_failed=True and
-        returns an error message. The XML is NOT modified on
-        failure so it can be preserved in checkpoints.
-
-        Each item is independent, so this method is safe to call
-        from multiple threads concurrently.
-
-        Args:
-            item: QTI item with IMAGE_PLACEHOLDER in its XML.
-            atom_id: Atom ID for S3 path.
-
-        Returns:
-            Error message on failure, None on success.
+        Returns error message on failure, None on success.
         """
+        item.image_failed = False
         desc = item.image_description
         if not desc:
             item.image_failed = True
             return f"{item.item_id}: no image_description"
 
-        image_bytes = self._generate_image(desc)
+        stem = _extract_stem_text(item.qti_xml)
+        max_attempts = _MAX_IMAGE_RETRIES + 1
+        image_bytes = self._generate_and_validate_with_retries(
+            item.item_id, desc, stem, max_attempts,
+        )
         if image_bytes is None:
             item.image_failed = True
-            return f"{item.item_id}: Gemini image generation failed"
-
-        stem = _extract_stem_text(item.qti_xml)
-        valid = self._validate_image(image_bytes, desc, stem)
-        if not valid:
-            item.image_failed = True
-            return f"{item.item_id}: image validation failed"
+            return (
+                f"{item.item_id}: image gen/validation failed"
+                f" after {max_attempts} attempts"
+            )
 
         s3_url = self._upload_to_s3(
             image_bytes, item.item_id, atom_id,
@@ -237,6 +207,42 @@ class ImageGenerator:
         )
         return None
 
+    def _generate_and_validate_with_retries(
+        self,
+        item_id: str,
+        description: str,
+        stem: str,
+        max_attempts: int,
+    ) -> bytes | None:
+        """Try generate+validate up to *max_attempts* times.
+
+        Returns validated image bytes, or None if all attempts
+        fail.  Generation and validation are the two steps most
+        susceptible to transient failures (network, borderline
+        quality).
+        """
+        for attempt in range(max_attempts):
+            image_bytes = self._generate_image(description)
+            if image_bytes is None:
+                logger.warning(
+                    "%s: generation failed (attempt %d/%d)",
+                    item_id, attempt + 1, max_attempts,
+                )
+                continue
+
+            valid = self._validate_image(
+                image_bytes, description, stem,
+            )
+            if not valid:
+                logger.warning(
+                    "%s: validation failed (attempt %d/%d)",
+                    item_id, attempt + 1, max_attempts,
+                )
+                continue
+
+            return image_bytes
+        return None
+
     # ------------------------------------------------------------------
     # Step 1: Gemini image generation
     # ------------------------------------------------------------------
@@ -259,6 +265,11 @@ class ImageGenerator:
         )
         try:
             return gemini.generate_image(prompt)
+        except (TimeoutError, OSError) as exc:
+            logger.error(
+                "Gemini image generation timed out: %s", exc,
+            )
+            return None
         except Exception as exc:
             logger.error("Gemini image generation failed: %s", exc)
             return None

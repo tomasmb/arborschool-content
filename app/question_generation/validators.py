@@ -281,6 +281,14 @@ class BaseValidator:
             item.pipeline_meta.validators if item.pipeline_meta else None
         )
 
+        # Check 0: Reject unresolved image placeholders
+        if "IMAGE_PLACEHOLDER" in item.qti_xml:
+            errors.append(
+                f"{item.item_id}: contains IMAGE_PLACEHOLDER"
+                " — image generation incomplete",
+            )
+            return errors
+
         # Check 1: XSD validity
         xsd_result = validate_qti_xml(item.qti_xml)
         xsd_ok = xsd_result.get("valid", False)
