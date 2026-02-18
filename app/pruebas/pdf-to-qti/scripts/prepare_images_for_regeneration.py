@@ -35,13 +35,13 @@ if env_file.exists():
 else:
     print(f"⚠️  .env file not found at {env_file}")
 
-# Verificar que las credenciales se cargaron
-aws_access = os.getenv("AWS_ACCESS_KEY_ID")
-aws_secret = os.getenv("AWS_SECRET_ACCESS_KEY")
+# Verificar que las credenciales se cargaron (support both naming conventions)
+aws_access = os.getenv("AWS_S3_KEY") or os.getenv("AWS_ACCESS_KEY_ID")
+aws_secret = os.getenv("AWS_S3_SECRET") or os.getenv("AWS_SECRET_ACCESS_KEY")
 aws_bucket = os.getenv("AWS_S3_BUCKET")
 
-print(f"🔑 AWS_ACCESS_KEY_ID: {'SET (' + aws_access[:10] + '...)' if aws_access else 'NOT SET'}")
-print(f"🔑 AWS_SECRET_ACCESS_KEY: {'SET' if aws_secret else 'NOT SET'}")
+print(f"🔑 AWS_S3_KEY: {'SET (' + aws_access[:10] + '...)' if aws_access else 'NOT SET'}")
+print(f"🔑 AWS_S3_SECRET: {'SET' if aws_secret else 'NOT SET'}")
 print(f"🪣 AWS_S3_BUCKET: {aws_bucket}")
 
 if not aws_access or not aws_secret:
@@ -79,8 +79,8 @@ def upload_image_to_s3_direct(
     if not bucket_name:
         bucket_name = os.getenv("AWS_S3_BUCKET", "paes-question-images")
 
-    aws_access_key = os.getenv("AWS_ACCESS_KEY_ID")
-    aws_secret_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+    aws_access_key = os.getenv("AWS_S3_KEY") or os.getenv("AWS_ACCESS_KEY_ID")
+    aws_secret_key = os.getenv("AWS_S3_SECRET") or os.getenv("AWS_SECRET_ACCESS_KEY")
     aws_region = os.getenv("AWS_REGION", "us-east-1")
 
     if not aws_access_key or not aws_secret_key:

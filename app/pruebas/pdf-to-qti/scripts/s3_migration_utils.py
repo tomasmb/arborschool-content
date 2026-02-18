@@ -33,12 +33,12 @@ def get_s3_client() -> tuple[Any, str]:
     Raises:
         ValueError: If AWS credentials not found
     """
-    aws_access_key = os.environ.get("AWS_ACCESS_KEY_ID")
-    aws_secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    aws_access_key = os.environ.get("AWS_S3_KEY") or os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_key = os.environ.get("AWS_S3_SECRET") or os.environ.get("AWS_SECRET_ACCESS_KEY")
     aws_region = os.environ.get("AWS_REGION", "us-east-1")
 
     if not aws_access_key or not aws_secret_key:
-        raise ValueError("AWS credentials not found in environment. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY")
+        raise ValueError("AWS credentials not found. Set AWS_S3_KEY and AWS_S3_SECRET (or AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)")
 
     session = boto3.Session(
         aws_access_key_id=aws_access_key,

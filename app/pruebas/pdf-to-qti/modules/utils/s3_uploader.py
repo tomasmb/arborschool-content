@@ -62,9 +62,9 @@ def upload_image_to_s3(
     if not bucket_name:
         bucket_name = os.environ.get("AWS_S3_BUCKET", "paes-question-images")
 
-    # Get AWS credentials from env
-    aws_access_key = os.environ.get("AWS_ACCESS_KEY_ID")
-    aws_secret_key = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    # Support both naming conventions (AWS_S3_KEY is in .env)
+    aws_access_key = os.environ.get("AWS_S3_KEY") or os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_key = os.environ.get("AWS_S3_SECRET") or os.environ.get("AWS_SECRET_ACCESS_KEY")
     aws_region = os.environ.get("AWS_REGION", "us-east-1")
 
     if not aws_access_key or not aws_secret_key:
