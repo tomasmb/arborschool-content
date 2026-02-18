@@ -1,0 +1,200 @@
+<qti-assessment-item
+    xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0
+      https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd"
+    identifier="A-M1-GEO-02-02_Q17"
+    title="Red de construcción de caja de cartón"
+    adaptive="false"
+    time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE"
+      cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>C</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK"
+      cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION"
+      cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE"
+      cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La siguiente figura muestra un aviso de fabricación de cajas de cartón rectangulares para enviar productos, junto con cuatro posibles planos (A, B, C y D) para armar cada caja.</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/question-generation/a-m1-geo-02-02/A-M1-GEO-02-02_Q17.png" alt="Aviso de fabricación de una caja rectangular con medidas en centímetros y cuatro posibles redes etiquetadas A, B, C y D con rectángulos acotados" style="max-width:100%;height:auto;" /></p>
+    <p>Cada plano está formado por las dos bases rectangulares de la caja y por sus caras laterales rectangulares. Según las medidas indicadas en la figura, ¿cuál de estos planos corresponde a una red correcta para fabricar exactamente la caja descrita en el aviso?</p>
+    <qti-choice-interaction max-choices="1"
+        response-identifier="RESPONSE">
+      <qti-simple-choice identifier="A">
+        El plano A.
+        <qti-feedback-inline identifier="FB_A"
+            outcome-identifier="FEEDBACK">
+          Incorrecto. En la red de una caja rectangular deben aparecer exactamente dos rectángulos que sean las bases, con medidas largo × ancho, y cuatro rectángulos que sean las caras laterales, con medidas largo × alto y ancho × alto, dispuestos de manera que alrededor de cada base se puedan ubicar las cuatro caras cuyos lados coincidan con los de la base. En el plano A, aunque aparecen rectángulos con medidas iguales a las indicadas en el aviso, la forma en que se ubican hace que junto a una de las bases no queden exactamente dos rectángulos de largo × alto y dos de ancho × alto, por lo que al doblar, algunos lados no coinciden en longitud y la caja no se puede cerrar correctamente.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="B">
+        El plano B.
+        <qti-feedback-inline identifier="FB_B"
+            outcome-identifier="FEEDBACK">
+          Incorrecto. Para que la red sea correcta, el contorno que forman las cuatro caras laterales debe corresponder al perímetro de la base: largo + ancho + largo + ancho, en ese orden, de modo que cada lado de la base coincida con una cara lateral. En el plano B, las caras laterales no siguen este orden de longitudes, ya que aparecen dos caras consecutivas que tienen la misma medida de base (por ejemplo, dos veces el largo de la caja seguidas), lo que impide que al envolver la base se formen dos lados de largo y dos de ancho; por esto, la caja que se arma con este plano no coincide con las medidas del aviso.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="C">
+        El plano C.
+        <qti-feedback-inline identifier="FB_C"
+            outcome-identifier="FEEDBACK">
+          ¡Correcto! En el plano C aparecen exactamente dos rectángulos que corresponden a las bases de la caja, ambos con las mismas medidas largo × ancho indicadas en el aviso, y cuatro rectángulos que corresponden a las caras laterales: dos de ellos tienen medidas largo × alto y los otros dos, ancho × alto. Además, los cuatro rectángulos laterales están ordenados de manera que sus lados que se unen a la base siguen la secuencia largo, ancho, largo, ancho, que coincide con el perímetro del rectángulo base. De este modo, al doblar la red, cada lado de la base se une con una cara de la medida correcta y se obtiene exactamente la caja descrita.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="D">
+        El plano D.
+        <qti-feedback-inline identifier="FB_D"
+            outcome-identifier="FEEDBACK">
+          Incorrecto. Una red correcta debe incluir dos bases congruentes (mismas medidas largo × ancho) y cuatro caras laterales, de las cuales dos son largo × alto y dos son ancho × alto, y deben estar colocadas de modo que puedan pegarse a la base y cerrarse. En el plano D, aunque aparecen rectángulos con medidas iguales a las del aviso, una de las caras laterales está unida por un lado cuya longitud no coincide con el lado correspondiente de la base (por ejemplo, un rectángulo de ancho × alto pegado en el lado donde debería ir uno de largo × alto), lo que provoca que, al doblar, sobren o falten longitud en algunos bordes y no se logre la caja con las dimensiones indicadas.
+        </qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show"
+        outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Cómo determinar la red correcta de la caja</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las dimensiones de la caja</strong></p>
+            <p>Del aviso se obtiene que la caja es un prisma rectangular (una caja de base rectangular) con tres medidas: largo, ancho y alto (todas expresadas en centímetros en la figura).</p>
+          </li>
+          <li>
+            <p><strong>Paso 2: Determinar qué rectángulos debe tener la red</strong></p>
+            <p>La red de una caja rectangular debe contener:</p>
+            <ul>
+              <li>2 rectángulos que sean las bases, cada uno de medidas largo × ancho.</li>
+              <li>2 rectángulos laterales de medidas largo × alto.</li>
+              <li>2 rectángulos laterales de medidas ancho × alto.</li>
+            </ul>
+            <p>En total, la red tiene 6 rectángulos: 2 bases y 4 caras laterales.</p>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar cómo se conectan las caras laterales con la base</strong></p>
+            <p>Alrededor de una base (de largo × ancho), se tienen cuatro lados: largo, ancho, largo, ancho. Para que la red se pueda doblar correctamente:</p>
+            <ul>
+              <li>En cada lado de la base debe estar pegada una cara lateral.</li>
+              <li>Los lados de las caras laterales que se pegan a la base deben tener exactamente la misma longitud que el lado de la base: en los lados de largo, se pegan rectángulos de largo × alto; en los lados de ancho, se pegan rectángulos de ancho × alto.</li>
+              <li>El contorno formado por las caras laterales debe seguir el orden: largo, ancho, largo, ancho.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 4: Revisar cada uno de los planos A, B, C y D</strong></p>
+            <p><em>Plano A:</em> al observar qué rectángulos rodean a una de las bases, se ve que no hay exactamente dos rectángulos de largo × alto y dos de ancho × alto en el orden correcto; por lo tanto, no se pueden emparejar bien todos los lados de la base al doblar.</p>
+            <p><em>Plano B:</em> las cuatro caras laterales no están dispuestas alternando largo y ancho alrededor de la base (aparecen dos caras seguidas con la misma longitud de base), de manera que el perímetro de la base no queda cubierto en el orden largo, ancho, largo, ancho. Esto impide formar la caja con las medidas correctas.</p>
+            <p><em>Plano C:</em> se identifican claramente:</p>
+            <ul>
+              <li>Dos rectángulos congruentes para las bases, ambos con medidas largo × ancho.</li>
+              <li>Dos rectángulos de largo × alto y dos de ancho × alto.</li>
+            </ul>
+            <p>Además, alrededor de una base aparecen pegadas las cuatro caras laterales en el orden largo, ancho, largo, ancho. Así, cada lado de la base coincide con el lado de una cara lateral de la misma longitud, por lo que al doblar, la caja se cierra sin que sobren ni falten longitudes.</p>
+            <p><em>Plano D:</em> alguna de las caras laterales está pegada a un lado de la base cuya longitud no coincide (por ejemplo, una cara de ancho × alto unida a un lado de largo), lo que significa que, al intentar cerrar la caja, los bordes no calzan y no se obtiene la caja con las dimensiones del aviso.</p>
+          </li>
+          <li>
+            <p><strong>Paso 5: Conclusión</strong></p>
+            <p>El único plano que tiene exactamente dos bases congruentes de largo × ancho, cuatro caras laterales (dos de largo × alto y dos de ancho × alto) y, además, las dispone de forma que sus lados coincidan correctamente con el contorno de la base en el orden largo, ancho, largo, ancho, es el plano C. Por lo tanto, la red correcta para fabricar la caja descrita es el plano C.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">
+            C
+          </qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">
+            FB_C
+          </qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">
+            show
+          </qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">
+            A
+          </qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">
+            FB_A
+          </qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">
+            show
+          </qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">
+            B
+          </qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">
+            FB_B
+          </qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">
+            show
+          </qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">
+            D
+          </qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">
+            FB_D
+          </qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">
+            show
+          </qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">
+            FB_A
+          </qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">
+            show
+          </qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>

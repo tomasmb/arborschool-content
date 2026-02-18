@@ -113,13 +113,23 @@ def _reconcile_report_with_checkpoints(
         if active > report.get("total_generated", 0):
             report["total_generated"] = active
 
-    # Phases 6/8/9: all checkpoint items are "passed" items
-    later_phases: list[tuple[int, str, str]] = [
+    # Phase 8: count only non-feedback-failed items
+    # (checkpoint stores both passed and failed items)
+    p8 = load_checkpoint(output_dir, 8, "feedback")
+    if p8 is not None:
+        passed_fb = sum(
+            1 for it in p8.get("items", [])
+            if not it.get("feedback_failed")
+        )
+        if passed_fb > report.get("total_passed_feedback", 0):
+            report["total_passed_feedback"] = passed_fb
+
+    # Phases 6/9: all checkpoint items are "passed" items
+    pass_only_phases: list[tuple[int, str, str]] = [
         (6, "base_validation", "total_passed_base_validation"),
-        (8, "feedback", "total_passed_feedback"),
         (9, "final_validation", "total_final"),
     ]
-    for phase_num, phase_name, report_key in later_phases:
+    for phase_num, phase_name, report_key in pass_only_phases:
         ckpt = load_checkpoint(output_dir, phase_num, phase_name)
         if ckpt is None:
             continue
