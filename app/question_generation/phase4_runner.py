@@ -70,68 +70,132 @@ def run_phase_4(
     Returns:
         List of generated items, or None on total failure.
     """
-    # Slot-level resume: load partial checkpoint if available
-    if resume and base_items is None:
-        ckpt = load_checkpoint(output_dir, 4, "generation")
-        if ckpt and ckpt.get("items"):
-            base_items = deserialize_items(ckpt["items"])
-            logger.info(
-                "Phase 4: loaded %d items from partial "
-                "checkpoint", len(base_items),
-            )
+    existing_items = _load_resume_items(
+        output_dir=output_dir,
+        resume=resume,
+        base_items=base_items,
+    )
+    items = _generate_missing_items(
+        plan_slots=plan_slots or [],
+        existing_items=existing_items,
+        ctx=ctx,
+        enrichment=enrichment,
+        result=result,
+        generator=generator,
+        output_dir=output_dir,
+    )
+    if items is None:
+        return None
 
-    existing_items = base_items or []
-    done_indices = {it.slot_index for it in existing_items}
-    remaining = [
-        s for s in (plan_slots or [])
-        if s.slot_index not in done_indices
-    ]
-
-    if remaining:
-        total_planned = len(plan_slots or [])
-        new_items = _generate_with_checkpoints(
-            slots=remaining,
-            ctx=ctx,
-            enrichment=enrichment,
-            result=result,
-            generator=generator,
-            existing_items=existing_items,
-            output_dir=output_dir,
-            progress_offset=len(existing_items),
-            total_override=total_planned,
-        )
-        if new_items is None and not existing_items:
-            return None
-        items = existing_items + (new_items or [])
-    else:
-        items = existing_items
-        logger.info(
-            "Phase 4: all %d slots already generated",
-            len(items),
-        )
-
-    # Phase 4b — Images (skipped when skip_images is set)
-    if (
-        not skip_images
-        and any(s.image_required for s in (plan_slots or []))
-    ):
-        items = _run_image_gen(
-            items, plan_slots or [], ctx, result, image_generator,
-        )
-        if items is None:
-            return None
-
-    result.total_generated = len(items)
-    save_checkpoint(output_dir, 4, "generation", {
-        "item_count": len(items),
-        "items": serialize_items(items),
-    })
-    return items
+    with_images = _maybe_run_image_phase(
+        items=items,
+        plan_slots=plan_slots or [],
+        ctx=ctx,
+        result=result,
+        image_generator=image_generator,
+        skip_images=skip_images,
+    )
+    if with_images is None:
+        return None
+    return _save_and_filter_active(with_images, output_dir, result)
 
 
 # ------------------------------------------------------------------
 # Internal helpers
 # ------------------------------------------------------------------
+
+
+def _load_resume_items(
+    *,
+    output_dir: Path,
+    resume: bool,
+    base_items: list[GeneratedItem] | None,
+) -> list[GeneratedItem]:
+    """Load phase 4 checkpoint items when resuming."""
+    if not (resume and base_items is None):
+        return base_items or []
+
+    ckpt = load_checkpoint(output_dir, 4, "generation")
+    if ckpt and ckpt.get("items"):
+        loaded = deserialize_items(ckpt["items"])
+        logger.info(
+            "Phase 4: loaded %d items from partial checkpoint",
+            len(loaded),
+        )
+        return loaded
+    return []
+
+
+def _generate_missing_items(
+    *,
+    plan_slots: list[PlanSlot],
+    existing_items: list[GeneratedItem],
+    ctx: AtomContext,
+    enrichment: AtomEnrichment | None,
+    result: PipelineResult,
+    generator: BaseQtiGenerator,
+    output_dir: Path,
+) -> list[GeneratedItem] | None:
+    """Generate only slots that are not already checkpointed."""
+    done_indices = {it.slot_index for it in existing_items}
+    remaining = [
+        s for s in plan_slots if s.slot_index not in done_indices
+    ]
+    if not remaining:
+        logger.info(
+            "Phase 4: all %d slots already generated",
+            len(existing_items),
+        )
+        return existing_items
+
+    total_planned = len(plan_slots)
+    new_items = _generate_with_checkpoints(
+        slots=remaining,
+        ctx=ctx,
+        enrichment=enrichment,
+        result=result,
+        generator=generator,
+        existing_items=existing_items,
+        output_dir=output_dir,
+        progress_offset=len(existing_items),
+        total_override=total_planned,
+    )
+    if new_items is None and not existing_items:
+        return None
+    return existing_items + (new_items or [])
+
+
+def _maybe_run_image_phase(
+    *,
+    items: list[GeneratedItem],
+    plan_slots: list[PlanSlot],
+    ctx: AtomContext,
+    result: PipelineResult,
+    image_generator: ImageGenerator,
+    skip_images: bool,
+) -> list[GeneratedItem] | None:
+    """Run phase 4b only when image generation is needed."""
+    needs_images = any(slot.image_required for slot in plan_slots)
+    if skip_images or not needs_images:
+        return items
+    return _run_image_gen(
+        items, plan_slots, ctx, result, image_generator,
+    )
+
+
+def _save_and_filter_active(
+    items: list[GeneratedItem],
+    output_dir: Path,
+    result: PipelineResult,
+) -> list[GeneratedItem] | None:
+    """Persist all items and return only non-image-failed ones."""
+    save_checkpoint(output_dir, 4, "generation", {
+        "item_count": len(items),
+        "items": serialize_items(items),
+    })
+    active = [it for it in items if not it.image_failed]
+    result.total_generated = len(active)
+    return active if active else None
 
 
 def _generate_with_checkpoints(
@@ -186,14 +250,27 @@ def _run_image_gen(
     result: PipelineResult,
     image_generator: ImageGenerator,
 ) -> list[GeneratedItem] | None:
-    """Phase 4b: Generate and embed images via Gemini + S3."""
+    """Phase 4b: Generate, validate, and embed images.
+
+    Returns ALL items (including image_failed ones) so the caller
+    can save them in the checkpoint. The caller filters out failed
+    items before passing them downstream.
+    """
     logger.info("Phase 4b: Image generation for %s", ctx.atom_id)
     slot_map = {s.slot_index: s for s in slots}
     phase = image_generator.generate_images(
         items, slot_map, ctx.atom_id,
     )
     result.phase_results.append(phase)
+
+    all_items: list[GeneratedItem] = phase.data.get("items", [])
+    failed = sum(1 for it in all_items if it.image_failed)
+    if failed:
+        logger.warning(
+            "Phase 4b: %d/%d items failed image generation",
+            failed, len(all_items),
+        )
+
     if not phase.success:
         return None
-    enriched: list[GeneratedItem] = phase.data["items"]
-    return enriched if enriched else None
+    return all_items if all_items else None

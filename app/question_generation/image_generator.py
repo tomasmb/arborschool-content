@@ -1,19 +1,31 @@
-"""Phase 4b — Image Generation.
+"""Phase 4b — Image Generation & Validation.
 
-Generates images for QTI items that need them, uploads to S3,
-and embeds the image URL in the QTI XML. Uses GPT-5.1 for
-description generation and Gemini for image generation.
+Generates images for QTI items that have IMAGE_PLACEHOLDER in their
+XML, validates them with GPT-5.1 vision, uploads to S3, and replaces
+the placeholder with the S3 URL.
 
-No fallback: items that fail image generation are excluded.
+Flow per item:
+1. Extract image_description from GeneratedItem (set by Phase 4).
+2. Generate image with Gemini (nano banana pro).
+3. Validate image with GPT-5.1 (vision).
+4. Upload to S3.
+5. Replace IMAGE_PLACEHOLDER with S3 URL in QTI XML.
+6. Re-validate XSD on the final XML.
+
+Items that fail any step get image_failed=True but keep their XML
+so checkpoints preserve the work done in Phase 4.
 """
 
 from __future__ import annotations
 
 import base64
+import io
 import json
 import logging
 import re
 from typing import Any
+
+from PIL import Image
 
 from app.llm_clients import (
     GeminiImageClient,
@@ -27,22 +39,25 @@ from app.question_generation.models import (
 )
 from app.question_generation.prompts.image_generation import (
     GEMINI_IMAGE_GENERATION_PROMPT,
-    IMAGE_DESCRIPTION_PROMPT,
+    IMAGE_VALIDATION_PROMPT,
 )
+from app.question_generation.validation_checks import validate_qti_xml
 
 logger = logging.getLogger(__name__)
 
-_DESCRIPTION_REASONING = "low"
+_VALIDATION_REASONING = "low"
+_PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 
 
 class ImageGenerator:
-    """Generates images for QTI items that need them (Phase 4b).
+    """Generates and validates images for QTI items (Phase 4b).
 
     Flow per item:
-    1. Generate detailed image description (GPT-5.1)
-    2. Generate image with Gemini
+    1. Generate image with Gemini from item.image_description
+    2. Validate image with GPT-5.1 vision
     3. Upload to S3
-    4. Embed <img> URL in QTI XML
+    4. Replace placeholder with S3 URL
+    5. Re-validate XSD
     """
 
     def __init__(
@@ -53,7 +68,7 @@ class ImageGenerator:
         """Initialize the image generator.
 
         Args:
-            openai_client: GPT-5.1 client for description generation.
+            openai_client: GPT-5.1 client for image validation.
             gemini_image_client: Gemini client for image generation.
                 Loaded from env if None.
         """
@@ -61,11 +76,7 @@ class ImageGenerator:
         self._gemini: GeminiImageClient | None = gemini_image_client
 
     def _ensure_gemini(self) -> GeminiImageClient:
-        """Lazily load the Gemini image client.
-
-        Returns:
-            Initialized GeminiImageClient.
-        """
+        """Lazily load the Gemini image client."""
         if self._gemini is None:
             self._gemini = load_default_gemini_image_client()
         return self._gemini
@@ -78,8 +89,9 @@ class ImageGenerator:
     ) -> PhaseResult:
         """Generate images for items whose slots need them.
 
-        Items without image_required=True pass through unchanged.
-        Items that fail image generation are excluded (no fallback).
+        Items without image_required pass through unchanged.
+        Items that fail get image_failed=True but are still
+        included in the result so checkpoints preserve their XML.
 
         Args:
             items: Generated QTI items from Phase 4.
@@ -87,167 +99,184 @@ class ImageGenerator:
             atom_id: Atom ID for S3 path organization.
 
         Returns:
-            PhaseResult with list of items (images embedded in XML).
+            PhaseResult with all items (failed ones flagged).
         """
-        result_items: list[GeneratedItem] = []
         errors: list[str] = []
 
         for item in items:
             slot = slot_map.get(item.slot_index)
-            if not slot or not slot.image_required:
-                result_items.append(item)
+            needs_image = (
+                slot is not None
+                and slot.image_required
+                and _has_placeholder(item.qti_xml)
+            )
+            if not needs_image:
                 continue
 
             logger.info(
                 "Generating image for %s (type: %s)",
-                item.item_id, slot.image_type,
+                item.item_id,
+                slot.image_type if slot else "unknown",
             )
+            self._process_image_for_item(item, atom_id, errors)
 
-            enriched = self._generate_for_item(
-                item, slot, atom_id, errors,
-            )
-            if enriched is not None:
-                result_items.append(enriched)
-
-        success = len(result_items) > 0
+        active = [it for it in items if not it.image_failed]
+        success = len(active) > 0
         return PhaseResult(
             phase_name="image_generation",
             success=success,
-            data={"items": result_items},
+            data={"items": items},
             errors=errors,
         )
 
     # ------------------------------------------------------------------
-    # Per-item generation flow
+    # Per-item pipeline
     # ------------------------------------------------------------------
 
-    def _generate_for_item(
+    def _process_image_for_item(
         self,
         item: GeneratedItem,
-        slot: PlanSlot,
         atom_id: str,
         errors: list[str],
-    ) -> GeneratedItem | None:
+    ) -> None:
         """Run the full image pipeline for a single item.
 
+        On failure at any step, sets item.image_failed=True and
+        appends a message to errors. The XML is NOT modified on
+        failure so it can be preserved in checkpoints.
+
         Args:
-            item: The QTI item to enrich with an image.
-            slot: PlanSlot with image_type and image_description.
+            item: QTI item with IMAGE_PLACEHOLDER in its XML.
             atom_id: Atom ID for S3 path.
             errors: List to append error messages to.
-
-        Returns:
-            Item with image embedded in QTI XML, or None on failure.
         """
-        # Step 1: Generate detailed image description (GPT-5.1)
-        desc = self._generate_description(item, slot)
-        if desc is None:
-            errors.append(
-                f"{item.item_id}: image description generation failed",
-            )
-            return None
+        desc = item.image_description
+        if not desc:
+            item.image_failed = True
+            errors.append(f"{item.item_id}: no image_description")
+            return
 
-        # Step 2: Generate image with Gemini
-        image_bytes = self._generate_image(desc["generation_prompt"])
+        # Step 1: Generate image with Gemini
+        image_bytes = self._generate_image(desc)
         if image_bytes is None:
+            item.image_failed = True
             errors.append(
                 f"{item.item_id}: Gemini image generation failed",
             )
-            return None
+            return
+
+        # Step 2: Validate image with GPT-5.1 vision
+        stem = _extract_stem_text(item.qti_xml)
+        valid = self._validate_image(image_bytes, desc, stem)
+        if not valid:
+            item.image_failed = True
+            errors.append(
+                f"{item.item_id}: image validation failed",
+            )
+            return
 
         # Step 3: Upload to S3
         s3_url = self._upload_to_s3(
             image_bytes, item.item_id, atom_id,
         )
         if s3_url is None:
-            errors.append(
-                f"{item.item_id}: S3 upload failed",
-            )
-            return None
+            item.image_failed = True
+            errors.append(f"{item.item_id}: S3 upload failed")
+            return
 
-        # Step 4: Embed image URL in QTI XML
-        item.qti_xml = self._embed_image_in_qti(
-            item.qti_xml, s3_url, desc["alt_text"],
-        )
+        # Step 4: Replace placeholder with S3 URL
+        item.qti_xml = _replace_placeholder(item.qti_xml, s3_url)
+
+        # Step 5: Re-validate XSD after embedding
+        xsd_result = validate_qti_xml(item.qti_xml)
+        if not xsd_result.get("valid"):
+            item.image_failed = True
+            xsd_err = xsd_result.get(
+                "validation_errors", "unknown",
+            )
+            errors.append(
+                f"{item.item_id}: XSD invalid after image embed "
+                f"— {xsd_err}",
+            )
+            return
 
         logger.info(
-            "Image generated and embedded for %s: %s",
-            item.item_id, s3_url,
-        )
-        return item
-
-    # ------------------------------------------------------------------
-    # Step 1: Description generation
-    # ------------------------------------------------------------------
-
-    def _generate_description(
-        self,
-        item: GeneratedItem,
-        slot: PlanSlot,
-    ) -> dict[str, str] | None:
-        """Generate a detailed image description using GPT-5.1.
-
-        Args:
-            item: The QTI item (for stem context).
-            slot: PlanSlot with image metadata.
-
-        Returns:
-            Dict with 'generation_prompt' and 'alt_text', or None.
-        """
-        stem = _extract_stem_text(item.qti_xml)
-        prompt = IMAGE_DESCRIPTION_PROMPT.format(
-            image_type=slot.image_type or "general",
-            plan_description=slot.image_description or "",
-            stem_context=stem[:500],
+            "Image OK for %s: %s", item.item_id, s3_url,
         )
 
-        try:
-            llm_resp = self._openai.generate_text(
-                prompt,
-                response_mime_type="application/json",
-                reasoning_effort=_DESCRIPTION_REASONING,
-            )
-            data: dict[str, Any] = json.loads(llm_resp.text)
-
-            gen_prompt = data.get("generation_prompt", "")
-            alt_text = data.get("alt_text", "Imagen educativa")
-
-            if not gen_prompt:
-                logger.warning("Empty generation_prompt from LLM")
-                return None
-
-            return {
-                "generation_prompt": gen_prompt,
-                "alt_text": alt_text,
-            }
-
-        except Exception as exc:
-            logger.error("Image description generation failed: %s", exc)
-            return None
-
     # ------------------------------------------------------------------
-    # Step 2: Gemini image generation
+    # Step 1: Gemini image generation
     # ------------------------------------------------------------------
 
-    def _generate_image(self, generation_prompt: str) -> bytes | None:
+    def _generate_image(
+        self, image_description: str,
+    ) -> bytes | None:
         """Generate an image using Gemini.
 
         Args:
-            generation_prompt: Detailed description from Step 1.
+            image_description: Detailed content description
+                from Phase 4 (item.image_description).
 
         Returns:
             Raw PNG bytes, or None on failure.
         """
         gemini = self._ensure_gemini()
         prompt = GEMINI_IMAGE_GENERATION_PROMPT.format(
-            generation_prompt=generation_prompt,
+            generation_prompt=image_description,
         )
-
         try:
             return gemini.generate_image(prompt)
         except Exception as exc:
             logger.error("Gemini image generation failed: %s", exc)
             return None
+
+    # ------------------------------------------------------------------
+    # Step 2: GPT-5.1 image validation (vision)
+    # ------------------------------------------------------------------
+
+    def _validate_image(
+        self,
+        image_bytes: bytes,
+        image_description: str,
+        stem_context: str,
+    ) -> bool:
+        """Validate generated image using GPT-5.1 with vision.
+
+        Args:
+            image_bytes: Raw PNG data from Gemini.
+            image_description: Expected content description.
+            stem_context: Question stem text for context.
+
+        Returns:
+            True if image passes validation.
+        """
+        prompt = IMAGE_VALIDATION_PROMPT.format(
+            image_description=image_description,
+            stem_context=stem_context[:500],
+        )
+        pil_img = Image.open(io.BytesIO(image_bytes))
+
+        try:
+            resp = self._openai.call_with_images(
+                prompt,
+                [pil_img],
+                reasoning_effort=_VALIDATION_REASONING,
+                response_mime_type="application/json",
+            )
+            data: dict[str, Any] = json.loads(resp.text)
+            result = data.get("result", "fail")
+            reason = data.get("reason", "no reason")
+
+            if result == "pass":
+                logger.info("Image validation passed: %s", reason)
+                return True
+
+            logger.warning("Image validation failed: %s", reason)
+            return False
+
+        except Exception as exc:
+            logger.error("Image validation error: %s", exc)
+            return False
 
     # ------------------------------------------------------------------
     # Step 3: S3 upload
@@ -260,9 +289,6 @@ class ImageGenerator:
         atom_id: str,
     ) -> str | None:
         """Upload image bytes to S3.
-
-        Uses importlib to load the S3 uploader from the pdf-to-qti
-        module (which has dashes in its directory name).
 
         Args:
             image_bytes: Raw PNG data.
@@ -285,45 +311,11 @@ class ImageGenerator:
             test_name=atom_id,
         )
 
-    # ------------------------------------------------------------------
-    # Step 4: QTI XML embedding
-    # ------------------------------------------------------------------
-
-    def _embed_image_in_qti(
-        self,
-        qti_xml: str,
-        s3_url: str,
-        alt_text: str,
-    ) -> str:
-        """Embed an image URL in the QTI XML stem.
-
-        Inserts an <img> tag right after the opening <qti-item-body>
-        tag, before any existing content.
-
-        Args:
-            qti_xml: Original QTI XML string.
-            s3_url: Public S3 URL for the image.
-            alt_text: Accessibility alt text.
-
-        Returns:
-            Updated QTI XML with embedded image.
-        """
-        img_tag = (
-            f'<img src="{s3_url}" alt="{alt_text}" '
-            f'style="max-width:100%;height:auto;" />'
-        )
-
-        # Insert after <qti-item-body> opening tag
-        pattern = r"(<qti-item-body[^>]*>)"
-        replacement = rf"\1\n        {img_tag}"
-        return re.sub(pattern, replacement, qti_xml, count=1)
-
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-# Cached reference to the S3 upload function
 _s3_upload_fn: Any = None
 
 
@@ -365,6 +357,28 @@ def _load_s3_upload_fn() -> Any:
         return None
 
 
+def _has_placeholder(qti_xml: str) -> bool:
+    """Check if QTI XML contains the image placeholder."""
+    return _PLACEHOLDER_SRC in qti_xml
+
+
+def _replace_placeholder(qti_xml: str, s3_url: str) -> str:
+    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL.
+
+    Args:
+        qti_xml: QTI XML with IMAGE_PLACEHOLDER in an <img> tag.
+        s3_url: Public S3 URL to substitute.
+
+    Returns:
+        Updated QTI XML with the real image URL.
+    """
+    return qti_xml.replace(
+        f'src="{_PLACEHOLDER_SRC}"',
+        f'src="{s3_url}"',
+        1,
+    )
+
+
 def _extract_stem_text(qti_xml: str) -> str:
     """Extract plain text from the QTI XML stem for context.
 
@@ -375,10 +389,8 @@ def _extract_stem_text(qti_xml: str) -> str:
         qti_xml: Full QTI XML string.
 
     Returns:
-        Plain text content of the stem (truncated).
+        Plain text content of the stem.
     """
-    # Extract content between <qti-item-body> and first
-    # <qti-choice-interaction>
     match = re.search(
         r"<qti-item-body[^>]*>(.*?)<qti-choice-interaction",
         qti_xml,
@@ -388,7 +400,5 @@ def _extract_stem_text(qti_xml: str) -> str:
         return ""
 
     body = match.group(1)
-    # Strip XML/HTML tags
     text = re.sub(r"<[^>]+>", " ", body)
-    # Collapse whitespace
     return re.sub(r"\s+", " ", text).strip()

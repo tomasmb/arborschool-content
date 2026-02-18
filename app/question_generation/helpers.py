@@ -360,14 +360,7 @@ def load_phase_state(
 
 
 def serialize_items(items: list[GeneratedItem]) -> list[dict]:
-    """Serialize GeneratedItem list for checkpoint storage.
-
-    Args:
-        items: Items to serialize.
-
-    Returns:
-        List of JSON-serializable dicts.
-    """
+    """Serialize GeneratedItem list for checkpoint storage."""
     result = []
     for item in items:
         d: dict = {
@@ -377,19 +370,16 @@ def serialize_items(items: list[GeneratedItem]) -> list[dict]:
         }
         if item.pipeline_meta:
             d["pipeline_meta"] = item.pipeline_meta.model_dump()
+        if item.image_description:
+            d["image_description"] = item.image_description
+        if item.image_failed:
+            d["image_failed"] = True
         result.append(d)
     return result
 
 
 def deserialize_items(data: list[dict]) -> list[GeneratedItem]:
-    """Deserialize GeneratedItem list from checkpoint data.
-
-    Args:
-        data: Raw dicts from checkpoint JSON.
-
-    Returns:
-        List of reconstructed GeneratedItem objects.
-    """
+    """Deserialize GeneratedItem list from checkpoint data."""
     items = []
     for d in data:
         meta = None
@@ -402,9 +392,10 @@ def deserialize_items(data: list[dict]) -> list[GeneratedItem]:
             qti_xml=d["qti_xml"],
             slot_index=d.get("slot_index", 0),
             pipeline_meta=meta,
+            image_description=d.get("image_description", ""),
+            image_failed=d.get("image_failed", False),
         ))
     return items
-
 
 
 def load_existing_fingerprints(atom_id: str) -> set[str]:
@@ -460,7 +451,6 @@ def load_existing_fingerprints(atom_id: str) -> set[str]:
             atom_id, exc,
         )
         return set()
-
 
 
 def print_pipeline_header(atom_id: str) -> None:

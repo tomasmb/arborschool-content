@@ -248,7 +248,10 @@ def _parse_single_response(
 ) -> GeneratedItem:
     """Parse a single-item LLM JSON response into a GeneratedItem.
 
-    Expected format: {"slot_index": N, "qti_xml": "..."}
+    Expected format:
+      {"slot_index": N, "qti_xml": "..."}
+    For image slots also includes:
+      {"slot_index": N, "qti_xml": "...", "image_description": "..."}
 
     Args:
         response: Raw JSON string from LLM.
@@ -256,7 +259,8 @@ def _parse_single_response(
         slot: Original PlanSlot for fallback slot_index.
 
     Returns:
-        GeneratedItem with cleaned QTI XML.
+        GeneratedItem with cleaned QTI XML and optional
+        image_description.
 
     Raises:
         json.JSONDecodeError: If response is not valid JSON.
@@ -280,10 +284,13 @@ def _parse_single_response(
     slot_idx = data.get("slot_index", slot.slot_index)
     item_id = f"{atom_id}_Q{slot_idx}"
 
+    image_desc = data.get("image_description", "")
+
     return GeneratedItem(
         item_id=item_id,
         qti_xml=qti_xml,
         slot_index=slot_idx,
+        image_description=image_desc,
     )
 
 
