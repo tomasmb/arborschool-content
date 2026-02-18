@@ -12,6 +12,7 @@ Extracted from ``pipeline.py`` to keep the main orchestrator under
 from __future__ import annotations
 
 import logging
+import threading
 from pathlib import Path
 
 from app.question_generation.generator import BaseQtiGenerator
@@ -94,6 +95,7 @@ def run_phase_4(
         result=result,
         image_generator=image_generator,
         skip_images=skip_images,
+        output_dir=output_dir,
     )
     if with_images is None:
         return None
@@ -173,13 +175,14 @@ def _maybe_run_image_phase(
     result: PipelineResult,
     image_generator: ImageGenerator,
     skip_images: bool,
+    output_dir: Path,
 ) -> list[GeneratedItem] | None:
     """Run phase 4b only when image generation is needed."""
     needs_images = any(slot.image_required for slot in plan_slots)
     if skip_images or not needs_images:
         return items
     return _run_image_gen(
-        items, plan_slots, ctx, result, image_generator,
+        items, plan_slots, ctx, result, image_generator, output_dir,
     )
 
 
@@ -249,17 +252,33 @@ def _run_image_gen(
     ctx: AtomContext,
     result: PipelineResult,
     image_generator: ImageGenerator,
+    output_dir: Path,
 ) -> list[GeneratedItem] | None:
     """Phase 4b: Generate, validate, and embed images.
 
     Returns ALL items (including image_failed ones) so the caller
     can save them in the checkpoint. The caller filters out failed
     items before passing them downstream.
+
+    Saves an incremental checkpoint after each image completes so
+    progress survives crashes mid-4b.
     """
     logger.info("Phase 4b: Image generation for %s", ctx.atom_id)
     slot_map = {s.slot_index: s for s in slots}
+
+    ckpt_lock = threading.Lock()
+
+    def _on_image_done(_item: GeneratedItem) -> None:
+        """Save checkpoint after each image (thread-safe)."""
+        with ckpt_lock:
+            save_checkpoint(output_dir, 4, "generation", {
+                "item_count": len(items),
+                "items": serialize_items(items),
+            })
+
     phase = image_generator.generate_images(
         items, slot_map, ctx.atom_id,
+        on_image_complete=_on_image_done,
     )
     result.phase_results.append(phase)
 
