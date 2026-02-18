@@ -17,6 +17,8 @@ from pathlib import Path
 from app.question_feedback.models import PipelineResult as FeedbackResult
 from app.question_feedback.pipeline import QuestionPipeline
 from app.question_generation.helpers import (
+    deserialize_items,
+    load_checkpoint,
     save_checkpoint,
     serialize_items,
 )
@@ -47,7 +49,9 @@ def run_feedback(
     (enriched + failed) are saved in the checkpoint so failed
     ones can be retried on the next resume.
     """
-    carried, to_process = _split_for_resume(items, resume)
+    carried, to_process = _split_for_resume(
+        items, resume, output_dir,
+    )
     if not to_process:
         if carried:
             result.phase_results.append(PhaseResult(
@@ -129,11 +133,56 @@ def _enrich_single(
 
 
 def _split_for_resume(
-    items: list[GeneratedItem], resume: bool,
+    items: list[GeneratedItem],
+    resume: bool,
+    output_dir: Path | None = None,
 ) -> tuple[list[GeneratedItem], list[GeneratedItem]]:
-    """Split items into carried (feedback=pass) vs to-process."""
+    """Split items into carried (feedback=pass) vs to-process.
+
+    Loads the phase_8 checkpoint to identify already-enriched items,
+    mirroring the approach phase 6 uses.  Checkpoint versions are
+    returned for carried items because they contain the feedback-
+    enriched XML that the incoming (phase-4-origin) items lack.
+    """
     if not resume:
         return [], items
+
+    # Primary path: load checkpoint to find already-enriched items
+    if output_dir:
+        ckpt = load_checkpoint(output_dir, 8, "feedback")
+        if ckpt and ckpt.get("items"):
+            ckpt_items = deserialize_items(ckpt["items"])
+            passed_map = {
+                it.item_id: it
+                for it in ckpt_items
+                if (
+                    it.pipeline_meta
+                    and it.pipeline_meta.validators.feedback
+                    == "pass"
+                    and not it.feedback_failed
+                )
+            }
+            if passed_map:
+                incoming_ids = {it.item_id for it in items}
+                carried = [
+                    passed_map[iid]
+                    for iid in incoming_ids
+                    if iid in passed_map
+                ]
+                carried_ids = {it.item_id for it in carried}
+                to_process = [
+                    it for it in items
+                    if it.item_id not in carried_ids
+                ]
+                logger.info(
+                    "Phase 8 resume: %d carried from "
+                    "checkpoint, %d to process",
+                    len(carried), len(to_process),
+                )
+                return carried, to_process
+
+    # Fallback: check items themselves (backward compat /
+    # no checkpoint on disk)
     carried = [
         it for it in items
         if (
