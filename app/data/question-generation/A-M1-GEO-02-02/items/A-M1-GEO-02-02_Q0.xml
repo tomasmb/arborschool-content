@@ -1,0 +1,142 @@
+<qti-assessment-item xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_asiv3p0_v1p0.xsd" identifier="A-M1-GEO-02-02_Q0" title="Red de construccion de un prisma rectangular" adaptive="false" time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE" cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>A</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="FEEDBACK" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SOLUTION" cardinality="single" base-type="identifier"/>
+  <qti-outcome-declaration identifier="SCORE" cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La siguiente figura muestra un mueble de almacenaje con forma de prisma rectangular. Debajo se ilustran cuatro posibles redes de construccion, etiquetadas A, B, C y D. ¿Cual de estas redes podria usarse para construir la superficie de ese mueble con una sola pieza de carton, sin que sobren ni falten caras?</p>
+    <p><img src="https://paes-question-images.s3.us-east-1.amazonaws.com/images/question-generation/a-m1-geo-02-02/A-M1-GEO-02-02_Q0.png" alt="Prisma rectangular que representa un mueble y debajo cuatro posibles redes de construccion etiquetadas A, B, C y D" style="max-width:100%;height:auto;" /></p>
+    <qti-choice-interaction max-choices="1" response-identifier="RESPONSE">
+      <qti-simple-choice identifier="A">Red A
+        <qti-feedback-inline identifier="FB_A" outcome-identifier="FEEDBACK">¡Correcto! Un prisma rectangular como el mueble tiene 6 caras: 2 bases opuestas (superior e inferior) y 4 caras laterales que forman una banda cerrada alrededor del cuerpo del mueble. En la red A se observan exactamente 6 rectangulos. Si se sigue con la vista la fila de rectangulos unidos por lados completos, se obtienen 4 rectangulos consecutivos que pueden plegarse para formar las 4 caras laterales que rodean el prisma sin dejar huecos. Los otros 2 rectangulos estan unidos, cada uno, a una de estas caras laterales por un lado completo, de manera que al plegar quedan enfrentados como las 2 bases del mueble. Cada arista de una base queda alineada con una cara lateral distinta y no hay rectangulos que queden sin usar ni que deban superponerse al cerrar el solido. Por esto, la red A permite construir exactamente la superficie completa del prisma rectangular con una sola pieza de carton.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="B">Red B
+        <qti-feedback-inline identifier="FB_B" outcome-identifier="FEEDBACK">Incorrecto. Para analizar la red B, imagina elegir uno de los rectangulos como base y plegar sucesivamente los rectangulos que comparten un lado completo con el. Al hacerlo, se puede formar una banda de caras laterales alrededor de esa base, pero cuando se intenta cerrar el prisma, queda al menos un rectangulo adicional que, si se pliega, necesariamente se superpone con una cara ya ocupada o queda colgando sin una arista libre a la cual unirse. Es decir, al seguir todas las aristas, no se logra que cada rectangulo corresponda a una cara distinta del prisma sin solapamientos: sobra al menos una pieza que no puede ubicarse como cara diferente. Por esta razon, la red B no puede dar lugar a un prisma rectangular completo.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="C">Red C
+        <qti-feedback-inline identifier="FB_C" outcome-identifier="FEEDBACK">Incorrecto. En una red correcta, cada lado de cada base debe quedar en contacto con una cara lateral distinta al plegar. En la red C, al escoger una de las bases y tratar de rodearla con las caras laterales disponibles, se puede plegar parte de la red, pero al intentar cerrar la banda de 4 caras laterales aparece un problema: una de las aristas de la base queda sin una cara lateral que pueda unirse a ella, o bien la unica cara disponible para unirla ya esta comprometida con otra base o con otra cara lateral. Al imaginar cuidadosamente el plegado siguiendo las conexiones por lados completos, se ve que queda un “hueco” sin cubrir o se requiere que una misma cara lateral cubra dos aristas distintas, lo que es imposible sin deformar la figura. Por lo tanto, la red C no logra formar todas las 6 caras del prisma rectangular de manera consistente.</qti-feedback-inline>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="D">Red D
+        <qti-feedback-inline identifier="FB_D" outcome-identifier="FEEDBACK">Incorrecto. En la red D, si se intenta identificar 4 rectangulos que formen una tira continua para las caras laterales y se pliegan alrededor de una de las bases, al momento de cerrar la figura se produce un conflicto: o bien falta una cara para cubrir una de las aristas del prisma, dejando un espacio abierto, o bien, si se intenta usar todos los rectangulos, alguna de las piezas debe plegarse sobre otra cara ya ocupada, produciendo un solapamiento. Este problema se detecta siguiendo el recorrido de las aristas de la supuesta banda lateral y comprobando que las conexiones no permiten obtener exactamente 4 caras laterales distintas y 2 bases opuestas sin repeticion. Por eso, la red D no corresponde a la superficie completa de un prisma rectangular como el del mueble.</qti-feedback-inline>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+    <qti-feedback-block identifier="show" outcome-identifier="SOLUTION" show-hide="show">
+      <qti-content-body>
+        <p><strong>Como reconocer la red correcta de un prisma rectangular</strong></p>
+        <ol>
+          <li>
+            <p><strong>Paso 1: Identificar las caras del mueble</strong></p>
+            <p>El mueble tiene forma de prisma rectangular, por lo que su superficie esta formada por 6 caras:</p>
+            <ul>
+              <li>2 bases rectangulares opuestas (parte superior e inferior).</li>
+              <li>4 caras laterales rectangulares que unen las bases y rodean el mueble.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 2: Condiciones que debe cumplir la red</strong></p>
+            <p>Para que una red sea de un prisma rectangular, debe cumplir que:</p>
+            <ul>
+              <li>Aparezcan exactamente 6 rectangulos, uno por cada cara.</li>
+              <li>Sea posible identificar 4 rectangulos que formen una tira continua, unidos siempre por lados completos, que al plegarse formen las 4 caras laterales.</li>
+              <li>Las 2 bases esten unidas, cada una, a una cara lateral distinta, de modo que al plegar queden enfrentadas (una arriba y otra abajo).</li>
+              <li>Al imaginar el plegado, ninguna pieza quede sin uso y ninguna deba superponerse sobre otra.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 3: Analizar la red A</strong></p>
+            <p>En la red A se puede seguir claramente una secuencia de 4 rectangulos unidos por lados completos que forman una tira: esas 4 piezas pueden plegarse para rodear el prisma como caras laterales. Luego, se ve que los otros 2 rectangulos estan unidos, cada uno, a una de esas caras laterales por un lado completo. Al plegar:</p>
+            <ul>
+              <li>Cada lado de una base queda alineado con una cara lateral distinta.</li>
+              <li>Las 4 caras laterales cierran completamente el contorno del prisma.</li>
+              <li>No sobra ningun rectangulo ni es necesario que dos piezas se monten una sobre otra.</li>
+            </ul>
+            <p>Por esto, la red A genera exactamente las 6 caras del prisma rectangular del mueble.</p>
+          </li>
+          <li>
+            <p><strong>Paso 4: Analizar por que B, C y D fallan</strong></p>
+            <ul>
+              <li><strong>Red B:</strong> Al elegir una base y plegar las caras unidas a ella, se puede armar una parte del prisma, pero queda al menos un rectangulo adicional que, si se pliega, solo puede hacerlo sobre una cara ya ocupada o quedando sin arista libre donde apoyarse. Esto indica que la disposicion produce una pieza sobrante o solapada.</li>
+              <li><strong>Red C:</strong> Si se toma una de las bases y se intenta rodearla con 4 caras laterales distintas, al seguir las uniones por lados completos se observa que una de las aristas de la base no tiene una cara lateral disponible que pueda conectarse correctamente. Queda un “hueco” sin cubrir o se intentaria usar una misma cara para dos aristas diferentes, lo que no es posible al plegar un carton plano.</li>
+              <li><strong>Red D:</strong> Intentar formar una tira de 4 caras laterales y cerrar el prisma muestra que la secuencia de uniones no permite cubrir simultaneamente todas las aristas con 4 caras distintas: o falta una cara para cerrar el contorno, dejando una abertura, o bien, si se usan todas las piezas, alguna debe plegarse sobre otra, produciendo solapamiento. En ambos casos, no se obtiene un prisma rectangular completo.</li>
+            </ul>
+          </li>
+          <li>
+            <p><strong>Paso 5: Conclusion</strong></p>
+            <p>Solo la red A cumple simultaneamente con tener 6 rectangulos, formar una banda cerrada de 4 caras laterales y ubicar 2 bases opuestas sin que sobren piezas ni se produzcan solapamientos. Por ello, la unica red que permite construir correctamente la superficie del mueble es la <strong>red A</strong>.</p>
+          </li>
+        </ol>
+      </qti-content-body>
+    </qti-feedback-block>
+  </qti-item-body>
+  <qti-response-processing>
+    <qti-response-condition>
+      <qti-response-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">A</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="SCORE">
+          <qti-base-value base-type="float">1</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_A</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">B</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">C</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_C</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else-if>
+        <qti-match>
+          <qti-variable identifier="RESPONSE"/>
+          <qti-base-value base-type="identifier">D</qti-base-value>
+        </qti-match>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_D</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else-if>
+      <qti-response-else>
+        <qti-set-outcome-value identifier="FEEDBACK">
+          <qti-base-value base-type="identifier">FB_B</qti-base-value>
+        </qti-set-outcome-value>
+        <qti-set-outcome-value identifier="SOLUTION">
+          <qti-base-value base-type="identifier">show</qti-base-value>
+        </qti-set-outcome-value>
+      </qti-response-else>
+    </qti-response-condition>
+  </qti-response-processing>
+</qti-assessment-item>
