@@ -23,6 +23,9 @@ import io
 import json
 import logging
 import re
+import threading
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
 
 from PIL import Image
@@ -47,18 +50,12 @@ logger = logging.getLogger(__name__)
 
 _VALIDATION_REASONING = "low"
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
+_MAX_PARALLEL_IMAGES = 3
+_MAX_IMAGE_RETRIES = 2
 
 
 class ImageGenerator:
-    """Generates and validates images for QTI items (Phase 4b).
-
-    Flow per item:
-    1. Generate image with Gemini from item.image_description
-    2. Validate image with GPT-5.1 vision
-    3. Upload to S3
-    4. Replace placeholder with S3 URL
-    5. Re-validate XSD
-    """
+    """Generates and validates images for QTI items (Phase 4b)."""
 
     def __init__(
         self,
@@ -86,48 +83,73 @@ class ImageGenerator:
         items: list[GeneratedItem],
         slot_map: dict[int, PlanSlot],
         atom_id: str,
+        on_image_complete: (
+            Callable[[GeneratedItem], None] | None
+        ) = None,
     ) -> PhaseResult:
-        """Generate images for items whose slots need them.
+        """Generate images concurrently for items that need them.
 
-        Items without image_required pass through unchanged.
-        Items that fail get image_failed=True but are still
-        included in the result so checkpoints preserve their XML.
-
-        Args:
-            items: Generated QTI items from Phase 4.
-            slot_map: Map of slot_index to PlanSlot.
-            atom_id: Atom ID for S3 path organization.
-
-        Returns:
-            PhaseResult with all items (failed ones flagged).
+        Runs up to _MAX_PARALLEL_IMAGES items in parallel.
+        Failed items get image_failed=True but keep their XML.
         """
+        self._ensure_gemini()
+        image_items = _select_image_items(items, slot_map)
+        total = len(image_items)
+        if not total:
+            return _build_result(items, errors=[])
+
+        logger.info(
+            "Phase 4b: %d images to generate (%d workers)",
+            total, _MAX_PARALLEL_IMAGES,
+        )
         errors: list[str] = []
+        lock = threading.Lock()
+        done = [0]
 
-        for item in items:
+        def _worker(item: GeneratedItem) -> None:
             slot = slot_map.get(item.slot_index)
-            needs_image = (
-                slot is not None
-                and slot.image_required
-                and _has_placeholder(item.qti_xml)
-            )
-            if not needs_image:
-                continue
-
             logger.info(
                 "Generating image for %s (type: %s)",
                 item.item_id,
                 slot.image_type if slot else "unknown",
             )
-            self._process_image_for_item(item, atom_id, errors)
+            error = self._process_image_for_item(item, atom_id)
+            with lock:
+                if error:
+                    errors.append(error)
+                done[0] += 1
+                n = done[0]
+            logger.info(
+                "Phase 4b progress: %d/%d images done",
+                n, total,
+            )
+            if on_image_complete:
+                try:
+                    on_image_complete(item)
+                except Exception as cb_exc:
+                    logger.error(
+                        "Checkpoint callback error: %s", cb_exc,
+                    )
 
-        active = [it for it in items if not it.image_failed]
-        success = len(active) > 0
-        return PhaseResult(
-            phase_name="image_generation",
-            success=success,
-            data={"items": items},
-            errors=errors,
-        )
+        with ThreadPoolExecutor(
+            max_workers=_MAX_PARALLEL_IMAGES,
+        ) as pool:
+            futures = {
+                pool.submit(_worker, it): it
+                for it in image_items
+            }
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception as exc:
+                    item = futures[future]
+                    item.image_failed = True
+                    with lock:
+                        errors.append(
+                            f"{item.item_id}: unexpected — {exc}",
+                        )
+
+        return _build_result(items, errors)
 
     # ------------------------------------------------------------------
     # Per-item pipeline
@@ -137,72 +159,89 @@ class ImageGenerator:
         self,
         item: GeneratedItem,
         atom_id: str,
-        errors: list[str],
-    ) -> None:
-        """Run the full image pipeline for a single item.
+    ) -> str | None:
+        """Run the full image pipeline for one item (thread-safe).
 
-        On failure at any step, sets item.image_failed=True and
-        appends a message to errors. The XML is NOT modified on
-        failure so it can be preserved in checkpoints.
-
-        Args:
-            item: QTI item with IMAGE_PLACEHOLDER in its XML.
-            atom_id: Atom ID for S3 path.
-            errors: List to append error messages to.
+        Returns error message on failure, None on success.
         """
+        item.image_failed = False
         desc = item.image_description
         if not desc:
             item.image_failed = True
-            errors.append(f"{item.item_id}: no image_description")
-            return
+            return f"{item.item_id}: no image_description"
 
-        # Step 1: Generate image with Gemini
-        image_bytes = self._generate_image(desc)
+        stem = _extract_stem_text(item.qti_xml)
+        max_attempts = _MAX_IMAGE_RETRIES + 1
+        image_bytes = self._generate_and_validate_with_retries(
+            item.item_id, desc, stem, max_attempts,
+        )
         if image_bytes is None:
             item.image_failed = True
-            errors.append(
-                f"{item.item_id}: Gemini image generation failed",
+            return (
+                f"{item.item_id}: image gen/validation failed"
+                f" after {max_attempts} attempts"
             )
-            return
 
-        # Step 2: Validate image with GPT-5.1 vision
-        stem = _extract_stem_text(item.qti_xml)
-        valid = self._validate_image(image_bytes, desc, stem)
-        if not valid:
-            item.image_failed = True
-            errors.append(
-                f"{item.item_id}: image validation failed",
-            )
-            return
-
-        # Step 3: Upload to S3
         s3_url = self._upload_to_s3(
             image_bytes, item.item_id, atom_id,
         )
         if s3_url is None:
             item.image_failed = True
-            errors.append(f"{item.item_id}: S3 upload failed")
-            return
+            return f"{item.item_id}: S3 upload failed"
 
-        # Step 4: Replace placeholder with S3 URL
         item.qti_xml = _replace_placeholder(item.qti_xml, s3_url)
 
-        # Step 5: Re-validate XSD after embedding
         xsd_result = validate_qti_xml(item.qti_xml)
         if not xsd_result.get("valid"):
             item.image_failed = True
             xsd_err = xsd_result.get(
                 "validation_errors", "unknown",
             )
-            errors.append(
+            return (
                 f"{item.item_id}: XSD invalid after image embed "
-                f"— {xsd_err}",
+                f"— {xsd_err}"
             )
-            return
 
         logger.info(
             "Image OK for %s: %s", item.item_id, s3_url,
         )
+        return None
+
+    def _generate_and_validate_with_retries(
+        self,
+        item_id: str,
+        description: str,
+        stem: str,
+        max_attempts: int,
+    ) -> bytes | None:
+        """Try generate+validate up to *max_attempts* times.
+
+        Returns validated image bytes, or None if all attempts
+        fail.  Generation and validation are the two steps most
+        susceptible to transient failures (network, borderline
+        quality).
+        """
+        for attempt in range(max_attempts):
+            image_bytes = self._generate_image(description)
+            if image_bytes is None:
+                logger.warning(
+                    "%s: generation failed (attempt %d/%d)",
+                    item_id, attempt + 1, max_attempts,
+                )
+                continue
+
+            valid = self._validate_image(
+                image_bytes, description, stem,
+            )
+            if not valid:
+                logger.warning(
+                    "%s: validation failed (attempt %d/%d)",
+                    item_id, attempt + 1, max_attempts,
+                )
+                continue
+
+            return image_bytes
+        return None
 
     # ------------------------------------------------------------------
     # Step 1: Gemini image generation
@@ -226,6 +265,11 @@ class ImageGenerator:
         )
         try:
             return gemini.generate_image(prompt)
+        except (TimeoutError, OSError) as exc:
+            logger.error(
+                "Gemini image generation timed out: %s", exc,
+            )
+            return None
         except Exception as exc:
             logger.error("Gemini image generation failed: %s", exc)
             return None
@@ -355,6 +399,37 @@ def _load_s3_upload_fn() -> Any:
     except Exception as exc:
         logger.error("Failed to load S3 uploader: %s", exc)
         return None
+
+
+def _select_image_items(
+    items: list[GeneratedItem],
+    slot_map: dict[int, PlanSlot],
+) -> list[GeneratedItem]:
+    """Filter items that need image generation."""
+    result: list[GeneratedItem] = []
+    for item in items:
+        slot = slot_map.get(item.slot_index)
+        if (
+            slot is not None
+            and slot.image_required
+            and _has_placeholder(item.qti_xml)
+        ):
+            result.append(item)
+    return result
+
+
+def _build_result(
+    items: list[GeneratedItem],
+    errors: list[str],
+) -> PhaseResult:
+    """Build PhaseResult from all items after image generation."""
+    active = [it for it in items if not it.image_failed]
+    return PhaseResult(
+        phase_name="image_generation",
+        success=len(active) > 0,
+        data={"items": items},
+        errors=errors,
+    )
 
 
 def _has_placeholder(qti_xml: str) -> bool:
