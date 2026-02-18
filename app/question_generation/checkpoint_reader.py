@@ -72,16 +72,69 @@ def _scan_available_phases(output_dir: Path) -> list[int]:
 
 
 def _read_pipeline_report(output_dir: Path) -> dict | None:
-    """Read pipeline_report.json if it exists."""
+    """Read pipeline_report.json and reconcile with checkpoints.
+
+    The report can become stale when partial/resume runs overwrite
+    it without counts from earlier phases. We cross-check each
+    count against the actual checkpoint item lists and use the
+    higher value.
+    """
     report_path = output_dir / "pipeline_report.json"
     if not report_path.exists():
         return None
     try:
-        return json.loads(
+        report = json.loads(
             report_path.read_text(encoding="utf-8"),
         )
     except (json.JSONDecodeError, OSError):
         return None
+
+    return _reconcile_report_with_checkpoints(output_dir, report)
+
+
+def _reconcile_report_with_checkpoints(
+    output_dir: Path,
+    report: dict,
+) -> dict:
+    """Ensure report counts match actual checkpoint item counts.
+
+    For each phase that has a checkpoint file, compare the report
+    count with the checkpoint item list length and keep the higher.
+    Phase 4 is special: only non-image-failed items count as
+    "generated" (matching pipeline.py's active-item logic).
+    """
+    # Phase 4: count only active (non-image-failed) items
+    p4 = load_checkpoint(output_dir, 4, "generation")
+    if p4 is not None:
+        active = sum(
+            1 for it in p4.get("items", [])
+            if not it.get("image_failed")
+        )
+        if active > report.get("total_generated", 0):
+            report["total_generated"] = active
+
+    # Phases 6/8/9: all checkpoint items are "passed" items
+    later_phases: list[tuple[int, str, str]] = [
+        (6, "base_validation", "total_passed_base_validation"),
+        (8, "feedback", "total_passed_feedback"),
+        (9, "final_validation", "total_final"),
+    ]
+    for phase_num, phase_name, report_key in later_phases:
+        ckpt = load_checkpoint(output_dir, phase_num, phase_name)
+        if ckpt is None:
+            continue
+        ckpt_count = len(ckpt.get("items", []))
+        if ckpt_count > report.get(report_key, 0):
+            report[report_key] = ckpt_count
+
+    # Dedupe has no separate checkpoint; ensure it is at least
+    # as large as validated so the funnel stays monotonic.
+    validated = report.get("total_passed_base_validation", 0)
+    deduped = report.get("total_passed_dedupe", 0)
+    if validated > deduped:
+        report["total_passed_dedupe"] = validated
+
+    return report
 
 
 def _read_enrichment(output_dir: Path) -> dict | None:
@@ -106,38 +159,21 @@ def revalidate_single_item(
 ) -> dict[str, Any]:
     """Re-run base validation on one generated item.
 
-    Loads the item from the generation checkpoint, resets its validator
-    statuses, runs all base checks (XSD, PAES, solvability-LLM,
-    exemplar distance), and persists the result to checkpoint files.
-
-    Args:
-        output_dir: Root directory for this atom's pipeline output.
-        item_id: ID of the item to revalidate.
-
-    Returns:
-        Dict with keys: item_id, passed, errors, validators.
+    Prefers the phase 6 (validated) version of the item; falls
+    back to phase 4 (generated) for items that failed validation.
+    Blocks revalidation of image_failed items.
 
     Raises:
-        ValueError: If no generation checkpoint or item not found.
+        ValueError: If item not found or is image_failed.
     """
     from app.llm_clients import load_default_openai_client
     from app.question_generation.helpers import deserialize_items
     from app.question_generation.validators import BaseValidator
 
-    ckpt = load_checkpoint(output_dir, 4, "generation")
-    if not ckpt or not ckpt.get("items"):
-        raise ValueError("No generated items checkpoint found")
-
-    all_items = deserialize_items(ckpt["items"])
-    target = next(
-        (i for i in all_items if i.item_id == item_id), None,
+    target, all_gen_items = _find_revalidation_target(
+        output_dir, item_id,
     )
-    if not target:
-        raise ValueError(
-            f"Item '{item_id}' not found in generation checkpoint",
-        )
 
-    # Reset validator statuses so they get freshly populated
     if target.pipeline_meta:
         v = target.pipeline_meta.validators
         v.xsd = "pending"
@@ -155,9 +191,8 @@ def revalidate_single_item(
     if target.pipeline_meta:
         validators = target.pipeline_meta.validators.model_dump()
 
-    # Persist updated validators to checkpoint files and report
     _persist_revalidation(
-        output_dir, all_items, target, passed, errors,
+        output_dir, all_gen_items, target, passed, errors,
     )
 
     return {
@@ -168,6 +203,59 @@ def revalidate_single_item(
     }
 
 
+def _find_revalidation_target(
+    output_dir: Path,
+    item_id: str,
+) -> tuple:
+    """Find an item for single-item revalidation.
+
+    Checks phase 6 first (already validated), then phase 4 (generated).
+    Blocks image_failed items since they can't pass validation.
+
+    Returns:
+        (target_item, all_gen_items) tuple.
+    """
+    from app.question_generation.helpers import deserialize_items
+
+    # Prefer the phase 6 version (has post-validation statuses)
+    val_ckpt = load_checkpoint(output_dir, 6, "base_validation")
+    if val_ckpt and val_ckpt.get("items"):
+        val_items = deserialize_items(val_ckpt["items"])
+        target = next(
+            (i for i in val_items if i.item_id == item_id),
+            None,
+        )
+        if target:
+            gen_ckpt = load_checkpoint(
+                output_dir, 4, "generation",
+            )
+            gen_items = deserialize_items(
+                gen_ckpt["items"],
+            ) if gen_ckpt else []
+            return target, gen_items
+
+    # Fall back to phase 4 (failed validation, not deduped)
+    gen_ckpt = load_checkpoint(output_dir, 4, "generation")
+    if not gen_ckpt or not gen_ckpt.get("items"):
+        raise ValueError("No generated items checkpoint found")
+
+    gen_items = deserialize_items(gen_ckpt["items"])
+    target = next(
+        (i for i in gen_items if i.item_id == item_id),
+        None,
+    )
+    if not target:
+        raise ValueError(
+            f"Item '{item_id}' not found in checkpoints",
+        )
+    if target.image_failed:
+        raise ValueError(
+            f"Item '{item_id}' has image_failed — cannot "
+            f"revalidate until images are regenerated",
+        )
+    return target, gen_items
+
+
 def _persist_revalidation(
     output_dir: Path,
     gen_items: list,
@@ -175,13 +263,7 @@ def _persist_revalidation(
     passed: bool,
     new_errors: list[str],
 ) -> None:
-    """Persist single-item revalidation result to checkpoints.
-
-    Updates the generation checkpoint (phase 4) with new validator
-    statuses, adds/removes the item from the validation checkpoint
-    (phase 6), and updates the pipeline report to reflect the
-    current validation state.
-    """
+    """Update phase 4, phase 6 checkpoints and report after reval."""
     from app.question_generation.helpers import (
         deserialize_items,
         save_checkpoint,
@@ -227,11 +309,7 @@ def _update_pipeline_report(
     new_errors: list[str],
     valid_count: int,
 ) -> None:
-    """Update pipeline report after single-item revalidation.
-
-    Removes stale errors for the revalidated item, adds any
-    new errors, and updates the passed count.
-    """
+    """Update report errors and validation count after reval."""
     report_path = output_dir / "pipeline_report.json"
     if not report_path.exists():
         return
@@ -266,22 +344,7 @@ def revalidate_single_item_final(
     output_dir: Path,
     item_id: str,
 ) -> dict[str, Any]:
-    """Re-run final validation on one feedback-enriched item.
-
-    Loads the item from the feedback checkpoint (phase 8), runs
-    deterministic checks + LLM final validation, and persists
-    the result to the phase 9 checkpoint and pipeline report.
-
-    Args:
-        output_dir: Root directory for this atom's pipeline output.
-        item_id: ID of the item to revalidate.
-
-    Returns:
-        Dict with keys: item_id, passed, errors, validators.
-
-    Raises:
-        ValueError: If no feedback checkpoint or item not found.
-    """
+    """Re-run final validation on one feedback-enriched item."""
     from app.llm_clients import load_default_openai_client
     from app.question_generation.helpers import deserialize_items
     from app.question_generation.validators import FinalValidator
@@ -339,11 +402,7 @@ def _persist_final_revalidation(
     passed: bool,
     new_errors: list[str],
 ) -> None:
-    """Persist single-item final revalidation to phase 9 checkpoint.
-
-    Adds or removes the item from the final validation checkpoint
-    and updates the pipeline report accordingly.
-    """
+    """Update phase 9 checkpoint and report after final reval."""
     from app.question_generation.helpers import (
         deserialize_items,
         save_checkpoint,
@@ -383,11 +442,7 @@ def _update_pipeline_report_final(
     new_errors: list[str],
     final_count: int,
 ) -> None:
-    """Update pipeline report after single-item final revalidation.
-
-    Removes stale final_validation errors for the item, adds any
-    new errors, and updates the total_final count.
-    """
+    """Update report errors and final count after final reval."""
     report_path = output_dir / "pipeline_report.json"
     if not report_path.exists():
         return

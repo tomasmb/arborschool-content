@@ -18,6 +18,7 @@ from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
     check_prerequisites,
+    deserialize_items,
     find_resume_phase_group,
     load_atom,
     load_checkpoint,
@@ -58,6 +59,45 @@ from app.question_generation.validators import (
 from app.utils.paths import QUESTION_GENERATION_DIR
 
 logger = logging.getLogger(__name__)
+
+
+def _split_carried(
+    incoming: list[GeneratedItem],
+    output_dir: Path,
+    phase_num: int,
+    phase_name: str,
+    label: str,
+) -> tuple[list[GeneratedItem], list[GeneratedItem]]:
+    """Split items into carried (from checkpoint) vs to-process.
+
+    Uses the checkpoint version of carried items so that validator
+    statuses from the completed phase are preserved.
+    """
+    ckpt = load_checkpoint(output_dir, phase_num, phase_name)
+    if not ckpt or not ckpt.get("items"):
+        return [], incoming
+
+    prev_map = {
+        it.item_id: it
+        for it in deserialize_items(ckpt["items"])
+    }
+    incoming_ids = {it.item_id for it in incoming}
+    carried = [
+        prev_map[iid]
+        for iid in incoming_ids
+        if iid in prev_map
+    ]
+    carried_ids = {it.item_id for it in carried}
+    to_process = [
+        it for it in incoming
+        if it.item_id not in carried_ids
+    ]
+    if carried:
+        logger.info(
+            "%s resume: %d carried, %d new",
+            label, len(carried), len(to_process),
+        )
+    return carried, to_process
 
 
 class AtomQuestionPipeline:
@@ -203,28 +243,10 @@ class AtomQuestionPipeline:
             carried: list[GeneratedItem] = []
             to_validate = deduped
             if self._config.resume:
-                ckpt = load_checkpoint(
-                    output_dir, 6, "base_validation",
+                carried, to_validate = _split_carried(
+                    deduped, output_dir, 6,
+                    "base_validation", "Phase 6",
                 )
-                if ckpt and ckpt.get("items"):
-                    prev = {
-                        it["item_id"] for it in ckpt["items"]
-                        if isinstance(it, dict)
-                        and it.get("item_id")
-                    }
-                    carried = [
-                        it for it in deduped
-                        if it.item_id in prev
-                    ]
-                    to_validate = [
-                        it for it in deduped
-                        if it.item_id not in prev
-                    ]
-                    if carried:
-                        logger.info(
-                            "Phase 6 resume: %d carried, %d new",
-                            len(carried), len(to_validate),
-                        )
             if to_validate:
                 newly_valid = self._phase_6_base_validation(
                     to_validate, ctx, result,
@@ -274,9 +296,33 @@ class AtomQuestionPipeline:
 
         if not enriched:
             return result
-        final = self._phase_9_final_validation(
-            enriched, ctx, result,
-        )
+
+        carried_final: list[GeneratedItem] = []
+        to_final_validate = enriched
+        if self._config.resume:
+            carried_final, to_final_validate = _split_carried(
+                enriched, output_dir, 9,
+                "final_validation", "Phase 9",
+            )
+
+        if to_final_validate:
+            newly_final = self._phase_9_final_validation(
+                to_final_validate, ctx, result,
+            )
+            final = carried_final + (newly_final or [])
+        elif carried_final:
+            logger.info(
+                "Phase 9: all %d items already validated",
+                len(carried_final),
+            )
+            result.phase_results.append(PhaseResult(
+                phase_name="final_validation", success=True,
+                data={"final_items": carried_final},
+            ))
+            final = carried_final
+        else:
+            final = None
+
         if final is None:
             return result
         result.total_final = len(final)
@@ -377,12 +423,7 @@ class AtomQuestionPipeline:
         result: PipelineResult,
         output_dir: Path,
     ) -> list[GeneratedItem]:
-        """Re-run Phase 4b for items whose images failed previously.
-
-        Only runs when resuming and there are retryable items
-        (image_failed + IMAGE_PLACEHOLDER still in XML).
-        Returns all non-failed items for the next phase.
-        """
+        """Re-run Phase 4b for items with image_failed + placeholder."""
         retryable = [
             it for it in items
             if it.image_failed

@@ -93,23 +93,15 @@ def save_pipeline_results(
     output_dir: Path,
     result: PipelineResult,
 ) -> None:
-    """Save pipeline results to disk for traceability.
-
-    Writes a JSON report and individual QTI XML files for each
-    final item.
-
-    Args:
-        output_dir: Directory to write files into.
-        result: Pipeline result to save.
-    """
+    """Save pipeline report (merged with existing) and final QTI XMLs."""
     output_dir.mkdir(parents=True, exist_ok=True)
 
     report = _build_report_dict(result)
     report_path = output_dir / "pipeline_report.json"
+    report = _merge_with_existing_report(report_path, report)
     with open(report_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2, ensure_ascii=False)
 
-    # Save final QTI XML items
     items_dir = output_dir / "items"
     items_dir.mkdir(exist_ok=True)
     for item in result.final_items:
@@ -118,6 +110,50 @@ def save_pipeline_results(
             f.write(item.qti_xml)
 
     logger.info("Results saved to %s", output_dir)
+
+
+_COUNT_KEYS = (
+    "total_planned",
+    "total_generated",
+    "total_passed_dedupe",
+    "total_passed_base_validation",
+    "total_passed_feedback",
+    "total_final",
+)
+
+
+def _merge_with_existing_report(
+    report_path: Path,
+    new_report: dict,
+) -> dict:
+    """Merge new report with existing one, keeping max counts.
+
+    On partial/resume runs the PipelineResult only has counts for
+    phases that executed. Without merging, earlier phase counts
+    would be zeroed out.
+    """
+    if not report_path.exists():
+        return new_report
+
+    try:
+        old = json.loads(report_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return new_report
+
+    for key in _COUNT_KEYS:
+        old_val = old.get(key, 0)
+        new_val = new_report.get(key, 0)
+        new_report[key] = max(old_val, new_val)
+
+    # Merge phase results: update existing by name, append new ones
+    old_phases = {
+        p["name"]: p for p in old.get("phases", [])
+    }
+    for phase in new_report.get("phases", []):
+        old_phases[phase["name"]] = phase
+    new_report["phases"] = list(old_phases.values())
+
+    return new_report
 
 
 def _build_report_dict(result: PipelineResult) -> dict:
@@ -151,14 +187,7 @@ def save_checkpoint(
     phase_name: str,
     data: dict,
 ) -> None:
-    """Save a phase checkpoint to disk.
-
-    Args:
-        output_dir: Pipeline output directory.
-        phase_num: Phase number (0-10).
-        phase_name: Human-readable phase name.
-        data: Serializable data to checkpoint.
-    """
+    """Save a phase checkpoint to disk."""
     ckpt_dir = output_dir / "checkpoints"
     ckpt_dir.mkdir(parents=True, exist_ok=True)
     path = ckpt_dir / f"phase_{phase_num}_{phase_name}.json"
@@ -172,16 +201,7 @@ def load_checkpoint(
     phase_num: int,
     phase_name: str,
 ) -> dict | None:
-    """Load a phase checkpoint from disk if it exists.
-
-    Args:
-        output_dir: Pipeline output directory.
-        phase_num: Phase number (0-10).
-        phase_name: Human-readable phase name.
-
-    Returns:
-        Checkpoint data dict, or None if not found.
-    """
+    """Load a phase checkpoint from disk, or None if not found."""
     path = output_dir / "checkpoints" / f"phase_{phase_num}_{phase_name}.json"
     if not path.exists():
         return None
@@ -315,22 +335,7 @@ def load_phase_state(
     phase_group: str,
     output_dir: Path,
 ) -> dict:
-    """Load prior phase state from checkpoints.
-
-    Returns whatever state the requested phase group needs from
-    earlier checkpoints (enrichment, plan slots, items, etc.).
-    Prerequisites must have been validated first.
-
-    Args:
-        phase_group: The phase group being started.
-        output_dir: Pipeline output directory with checkpoints.
-
-    Returns:
-        Dict with available loaded state. Keys:
-        - "enrichment": AtomEnrichment | None
-        - "plan_slots": list[PlanSlot] | None
-        - "items": list[GeneratedItem] | None
-    """
+    """Load prior phase state (enrichment, plan slots, items) from checkpoints."""
     state: dict = {}
     reqs = PHASE_PREREQUISITES.get(phase_group, [])
 
@@ -405,19 +410,7 @@ def deserialize_items(data: list[dict]) -> list[GeneratedItem]:
 
 
 def load_existing_fingerprints(atom_id: str) -> set[str]:
-    """Load fingerprints of existing DB questions for an atom.
-
-    Queries the question_atoms + questions tables for all items
-    already linked to this atom, computes SHA-256 fingerprints
-    of their QTI XML, and returns the set.
-
-    Args:
-        atom_id: Atom identifier (e.g. "A-M1-ALG-01-02").
-
-    Returns:
-        Set of hex-encoded SHA-256 fingerprints. Empty set if
-        the DB is unreachable or the atom has no questions.
-    """
+    """Load SHA-256 fingerprints of existing DB questions for an atom."""
     from app.question_generation.validation_checks import (
         compute_fingerprint,
     )

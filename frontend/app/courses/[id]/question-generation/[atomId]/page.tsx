@@ -138,17 +138,15 @@ function AtomDetailContent({
   const genCount = data.generated_items?.length ?? 0;
   const planCount = data.plan_slots?.length ?? 0;
 
-  // Build an "active" report that strips stale errors for items
-  // that have since passed validation (e.g. via single-item reval).
+  // Strip stale errors for items that have since passed
+  // validation (e.g. via single-item revalidation).
+  // Counts come directly from the backend which reconciles
+  // the report with actual checkpoint data.
   const report = useMemo(() => {
     const raw = data.pipeline_report;
     if (!raw || passedIds.size === 0) return raw;
     return {
       ...raw,
-      total_passed_base_validation: Math.max(
-        raw.total_passed_base_validation,
-        passedIds.size,
-      ),
       phases: raw.phases.map((phase) => ({
         ...phase,
         errors: phase.errors.filter((err) => {

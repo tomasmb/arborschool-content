@@ -23,18 +23,23 @@ _DOWNSTREAM_CHECKPOINTS: dict[str, list[tuple[int, str]]] = {
     "all": [
         (1, "enrichment"), (3, "plan"), (4, "generation"),
         (6, "base_validation"), (8, "feedback"),
+        (9, "final_validation"),
     ],
     "enrich": [
         (3, "plan"), (4, "generation"),
         (6, "base_validation"), (8, "feedback"),
+        (9, "final_validation"),
     ],
     "plan": [
         (4, "generation"), (6, "base_validation"),
-        (8, "feedback"),
+        (8, "feedback"), (9, "final_validation"),
     ],
-    "generate": [(6, "base_validation"), (8, "feedback")],
-    "validate": [(8, "feedback")],
-    "feedback": [],
+    "generate": [
+        (6, "base_validation"), (8, "feedback"),
+        (9, "final_validation"),
+    ],
+    "validate": [(8, "feedback"), (9, "final_validation")],
+    "feedback": [(9, "final_validation")],
     "final_validate": [],
 }
 
