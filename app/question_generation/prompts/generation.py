@@ -17,6 +17,7 @@ from app.question_generation.prompts.planning import (
 )
 from app.question_generation.prompts.reference_examples import (
     BASE_QTI_REFERENCE,
+    BASE_QTI_WITH_IMAGE_REFERENCE,
 )
 
 # ------------------------------------------------------------------
@@ -48,6 +49,27 @@ _QTI_RULES = """\
   Solo texto imprimible estándar en contenido y atributos."""
 
 # ------------------------------------------------------------------
+# Image placeholder rules — appended to _QTI_RULES when
+# the slot has image_required=True. Defined once (DRY).
+# ------------------------------------------------------------------
+
+_IMAGE_PLACEHOLDER_RULES = """\
+- Este slot REQUIERE una imagen. Incluye EXACTAMENTE un tag <img>
+  dentro de <qti-item-body>, envuelto en un <p>:
+  <p><img src="IMAGE_PLACEHOLDER" alt="BREVE DESCRIPCION"
+    style="max-width:100%;height:auto;" /></p>
+- El alt DEBE describir brevemente el contenido visual (accesibilidad).
+- El enunciado DEBE referenciar la imagen de forma natural:
+  "La siguiente figura muestra...", "A partir del grafico...", etc.
+- NO inventes datos que no sean visibles en la imagen.
+  La pregunta depende de lo que el estudiante VE en la imagen.
+- Ademas del QTI XML, responde con "image_description": una
+  descripcion DETALLADA del contenido visual que se debe generar.
+  Incluye: elementos matematicos, posiciones, etiquetas, valores
+  numericos, dominio/rango, puntos notables. Esta descripcion
+  sera usada para generar la imagen automaticamente."""
+
+# ------------------------------------------------------------------
 # JSON output spec — shared by both prompts
 # ------------------------------------------------------------------
 
@@ -56,6 +78,14 @@ Responde con JSON puro (sin bloques markdown):
 {{
   "slot_index": {slot_index},
   "qti_xml": "<qti-assessment-item ...>...</qti-assessment-item>"
+}}"""
+
+_JSON_OUTPUT_WITH_IMAGE = """\
+Responde con JSON puro (sin bloques markdown):
+{{
+  "slot_index": {slot_index},
+  "qti_xml": "<qti-assessment-item ...>...</qti-assessment-item>",
+  "image_description": "Descripcion detallada del contenido visual..."
 }}"""
 
 # ------------------------------------------------------------------
@@ -182,13 +212,16 @@ def build_context_section(
 def build_single_slot_section(slot: object) -> str:
     """Format a single PlanSlot for the generation prompt.
 
+    Conditionally appends image metadata when the slot
+    requires an image (Open/Closed via composition).
+
     Args:
         slot: PlanSlot object.
 
     Returns:
         Formatted string describing the slot specification.
     """
-    return (
+    base = (
         f"Slot {slot.slot_index}:\n"
         f"  - Dificultad: {slot.difficulty_level.value}\n"
         f"  - Componente: {slot.component_tag}\n"
@@ -196,6 +229,15 @@ def build_single_slot_section(slot: object) -> str:
         f"  - Contexto: {slot.surface_context}\n"
         f"  - Perfil numérico: {slot.numbers_profile}"
     )
+    if getattr(slot, "image_required", False):
+        img_type = getattr(slot, "image_type", None) or "general"
+        img_desc = getattr(slot, "image_description", None) or ""
+        base += (
+            f"\n  - Imagen requerida: Sí"
+            f"\n  - Tipo de imagen: {img_type}"
+            f"\n  - Descripción del plan: {img_desc}"
+        )
+    return base
 
 
 def _format_slot_rules_and_output(
@@ -205,6 +247,8 @@ def _format_slot_rules_and_output(
     """Build the rules and JSON output blocks for a slot.
 
     Shared by both generation and XSD-retry prompts (DRY).
+    Conditionally appends image placeholder rules when the
+    slot requires an image.
 
     Args:
         slot: PlanSlot with slot_index.
@@ -216,7 +260,11 @@ def _format_slot_rules_and_output(
     rules = _QTI_RULES.format(
         atom_id=atom_id, slot_index=slot.slot_index,
     )
-    json_output = _JSON_OUTPUT.format(slot_index=slot.slot_index)
+    needs_image = getattr(slot, "image_required", False)
+    if needs_image:
+        rules += "\n" + _IMAGE_PLACEHOLDER_RULES
+    json_tpl = _JSON_OUTPUT_WITH_IMAGE if needs_image else _JSON_OUTPUT
+    json_output = json_tpl.format(slot_index=slot.slot_index)
     return rules, json_output
 
 
@@ -226,6 +274,9 @@ def build_single_generation_prompt(
     atom_id: str,
 ) -> str:
     """Assemble the full single-slot generation prompt.
+
+    When the slot needs an image, injects the image reference
+    example alongside the base reference (Open/Closed).
 
     Args:
         context_section: Pre-built atom+enrichment text.
@@ -238,10 +289,16 @@ def build_single_generation_prompt(
     rules, json_output = _format_slot_rules_and_output(
         slot, atom_id,
     )
+    ref_example = BASE_QTI_REFERENCE
+    if getattr(slot, "image_required", False):
+        ref_example += (
+            "\n\n--- Ejemplo con imagen (placeholder) ---\n\n"
+            + BASE_QTI_WITH_IMAGE_REFERENCE
+        )
     return SINGLE_QTI_GENERATION_PROMPT.format(
         context_section=context_section,
         slot_section=build_single_slot_section(slot),
-        reference_example=BASE_QTI_REFERENCE,
+        reference_example=ref_example,
         rules=rules,
         json_output=json_output,
     )
@@ -269,12 +326,18 @@ def build_xsd_retry_prompt(
     rules, json_output = _format_slot_rules_and_output(
         slot, atom_id,
     )
+    ref_example = BASE_QTI_REFERENCE
+    if getattr(slot, "image_required", False):
+        ref_example += (
+            "\n\n--- Ejemplo con imagen (placeholder) ---\n\n"
+            + BASE_QTI_WITH_IMAGE_REFERENCE
+        )
     return XSD_RETRY_PROMPT.format(
         context_section=context_section,
         slot_section=build_single_slot_section(slot),
         failed_xml=failed_xml,
         xsd_errors=xsd_errors,
-        reference_example=BASE_QTI_REFERENCE,
+        reference_example=ref_example,
         rules=rules,
         json_output=json_output,
     )

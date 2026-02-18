@@ -1,14 +1,11 @@
-"""Cost estimation service for AI pipelines.
+"""Cost estimation for AI pipelines.
 
-Estimates token usage and cost before running pipelines.
 Prices verified February 2026 — update when models change.
 """
 
 from __future__ import annotations
 
-import hashlib
 import logging
-import secrets
 from dataclasses import dataclass
 from typing import Any
 
@@ -55,6 +52,7 @@ PIPELINE_MODELS: dict[str, str] = {
     "tagging": "gemini-3-pro-preview",
     "variant_gen": "gemini-3-pro-preview",
     "question_gen": "gpt-5.1",
+    "batch_question_gen": "gpt-5.1",
     "lessons": "gpt-5.1",
 }
 
@@ -69,12 +67,7 @@ class TokenEstimate:
 
 
 class CostEstimatorService:
-    """Service for estimating AI pipeline costs.
-
-    Each pipeline uses the model defined in PIPELINE_MODELS.
-    Token estimates are based on actual prompt sizes and output
-    formats measured from the codebase.
-    """
+    """Estimate AI pipeline costs using PIPELINE_MODELS pricing."""
 
     def estimate_pipeline_cost(
         self,
@@ -123,6 +116,7 @@ class CostEstimatorService:
             "tagging": self._estimate_tagging,
             "variant_gen": self._estimate_variant_gen,
             "question_gen": self._estimate_question_gen,
+            "batch_question_gen": self._estimate_batch_question_gen,
             "lessons": self._estimate_lessons,
         }
 
@@ -314,95 +308,59 @@ class CostEstimatorService:
     def _estimate_question_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Question generation (PP100) — GPT-5.1.
-
-        Checkpoint-aware: reads actual item counts from disk so
-        re-runs reflect the real remaining work.  Each phase uses
-        a reasoning_effort level that generates hidden reasoning
-        tokens billed as output.
-        """
+        """Question generation (PP100) — GPT-5.1, checkpoint-aware."""
         phase = params.get("phase", "all")
         atom_id = params.get("atom_id", "")
         force_all = params.get("force_all", False)
         r = GPT51_REASONING_OVERHEAD
-
         counts = _load_question_gen_counts(atom_id)
-
-        # How many items each phase will actually process
         planned = counts["planned"] or 62
-        generated = counts["generated"]
-        validated = counts["validated"]
+        generated, validated = counts["generated"], counts["validated"]
 
         if force_all:
-            # Full rerun — regenerate & revalidate everything
             gen_calls = int(planned * 1.3)
             validate_items = generated or planned
             feedback_items = validated or planned
         else:
-            # Resume (default) — only remaining work
             remaining_gen = max(planned - generated, 0)
             gen_calls = int(remaining_gen * 1.3) if remaining_gen else 0
-            all_gen = generated or planned
-            validate_items = max(all_gen - validated, 0)
+            validate_items = max((generated or planned) - validated, 0)
             feedback_items = validated or planned
 
         phase_tokens: dict[str, tuple[int, int]] = {
-            # 1 call, reasoning_effort="low"
             "enrich": (1_500, 800 + r["low"]),
-            # 1 call, reasoning_effort="medium"
             "plan": (1_800, 1_200 + r["medium"]),
-            # Per call: ~4K input, ~2.5K visible output
             "generate": (
                 4_000 * gen_calls,
                 (2_500 + r["medium"]) * gen_calls,
             ),
-            # 1 solvability call per item, reasoning="medium"
             "validate": (
                 1_000 * validate_items,
                 (200 + r["medium"]) * validate_items,
             ),
-            # Per item: enhance (low) + review (none)
-            # Includes ~30% buffer for correction retries
             "feedback": (
                 6_500 * feedback_items,
                 (5_000 + r["low"]) * feedback_items,
             ),
-            # Phase 9: 1 LLM final validation per item (medium)
             "final_validate": (
                 2_500 * feedback_items,
                 (500 + r["medium"]) * feedback_items,
             ),
         }
 
-        # Determine which phases are included
-        if phase == "all":
-            active = list(phase_tokens.keys())
-        else:
-            active = [phase]
-
-        total_input = sum(
-            phase_tokens.get(p, (0, 0))[0] for p in active
-        )
-        total_output = sum(
-            phase_tokens.get(p, (0, 0))[1] for p in active
-        )
+        active = list(phase_tokens.keys()) if phase == "all" else [phase]
+        total_input = sum(phase_tokens.get(p, (0, 0))[0] for p in active)
+        total_output = sum(phase_tokens.get(p, (0, 0))[1] for p in active)
 
         breakdown: dict[str, Any] = {
-            "phase": phase,
-            "planned_items": planned,
+            "phase": phase, "planned_items": planned,
             "active_phases": active,
             "mode": "force_all" if force_all else "resume",
-            "note": "Output includes reasoning token overhead",
         }
-
         if not force_all and generated > 0:
             breakdown["already_generated"] = generated
-            breakdown["remaining_gen_slots"] = max(planned - generated, 0)
         if not force_all and validated > 0:
             breakdown["already_validated"] = validated
-        breakdown["items_to_validate"] = validate_items
-        breakdown["items_to_enrich"] = feedback_items
-
         for p in active:
             inp, out = phase_tokens.get(p, (0, 0))
             breakdown[f"{p}_input"] = inp
@@ -412,6 +370,33 @@ class CostEstimatorService:
             input_tokens=total_input,
             output_tokens=total_output,
             breakdown=breakdown,
+        )
+
+    def _estimate_batch_question_gen(
+        self, params: dict[str, Any],
+    ) -> TokenEstimate:
+        """Batch question generation — per-atom estimate x atom count."""
+        mode = params.get("mode", "pending_only")
+        skip_images = params.get("skip_images") == "true"
+        num_atoms = _count_eligible_atoms(mode, skip_images=skip_images)
+
+        # Per-atom estimate: reuse question_gen estimator with
+        # empty atom_id (uses defaults: 62 planned items)
+        per_atom = self._estimate_question_gen({"phase": "all"})
+
+        return TokenEstimate(
+            input_tokens=per_atom.input_tokens * num_atoms,
+            output_tokens=per_atom.output_tokens * num_atoms,
+            breakdown={
+                "num_atoms": num_atoms,
+                "mode": mode,
+                "input_per_atom": per_atom.input_tokens,
+                "output_per_atom": per_atom.output_tokens,
+                "note": (
+                    "Aggregate estimate. Actual cost depends on "
+                    "how many phases each atom has already completed."
+                ),
+            },
         )
 
     def _estimate_lessons(self, params: dict[str, Any]) -> TokenEstimate:
@@ -438,12 +423,53 @@ class CostEstimatorService:
         )
 
 
-def _load_question_gen_counts(atom_id: str) -> dict[str, int]:
-    """Read checkpoint files for actual item counts per phase.
+def _count_eligible_atoms(
+    mode: str,
+    *,
+    skip_images: bool = False,
+) -> int:
+    """Count atoms eligible for batch generation.
 
-    Returns dict with keys planned/generated/validated/feedback
-    (0 when checkpoint is absent).
+    When *skip_images*, only counts atoms with empty required_image_types.
     """
+    try:
+        from api.services.atom_coverage_service import (
+            load_atom_coverage_maps,
+        )
+        from api.services.batch_atom_enrichment_service import (
+            _filter_covered_atoms,
+            _load_all_atoms,
+        )
+        from app.question_generation.helpers import (
+            get_enrichment_image_types,
+            get_last_completed_phase,
+        )
+
+        atoms = _load_all_atoms()
+        if not atoms:
+            return 0
+        atom_qs, deps = load_atom_coverage_maps(atoms)
+        covered = _filter_covered_atoms(atoms, atom_qs, deps)
+
+        if skip_images:
+            covered = [
+                a for a in covered
+                if get_enrichment_image_types(a["id"]) == []
+            ]
+
+        if mode == "all":
+            return len(covered)
+        return sum(
+            1 for a in covered
+            if (get_last_completed_phase(a["id"]) or 0) < 9
+        )
+    except Exception as exc:
+        logger.warning("Could not count eligible atoms: %s", exc)
+        return 200
+
+
+def _load_question_gen_counts(atom_id: str) -> dict[str, int]:
+    """Read checkpoint files for actual item counts per phase."""
     counts = {"planned": 0, "generated": 0, "validated": 0, "feedback": 0}
     if not atom_id:
         return counts
@@ -470,33 +496,3 @@ def _load_question_gen_counts(atom_id: str) -> dict[str, int]:
         )
     return counts
 
-
-# ---------------------------------------------------------------------------
-# Confirmation tokens
-# ---------------------------------------------------------------------------
-
-
-def generate_confirmation_token(
-    pipeline_id: str, params: dict[str, Any],
-) -> str:
-    """Generate a confirmation token for cost approval.
-
-    This token confirms the user has seen the cost estimate.
-    It's tied to the specific pipeline and params to prevent replay.
-    """
-    salt = secrets.token_hex(8)
-    content = f"{pipeline_id}:{sorted(params.items())}:{salt}"
-    token_hash = hashlib.sha256(content.encode()).hexdigest()[:16]
-    return f"{salt}:{token_hash}"
-
-
-def verify_confirmation_token(
-    token: str,
-    pipeline_id: str,
-    params: dict[str, Any],
-) -> bool:
-    """Verify a confirmation token is valid (simplified format check)."""
-    if not token or ":" not in token:
-        return False
-    parts = token.split(":")
-    return len(parts) == 2 and len(parts[0]) == 16 and len(parts[1]) == 16

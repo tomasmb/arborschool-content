@@ -176,12 +176,10 @@ COMPLEX_3D = ImageTypeSpec(
         "Cuando la pregunta requiere visualizar cuerpos 3D "
         "para calcular volumen o área superficial."
     ),
-    generatable=False,
-    why_not_generatable=(
-        "Gemini no produce perspectivas 3D precisas con "
-        "aristas ocultas diferenciadas ni proporciones "
-        "dimensionales confiables."
-    ),
+    generatable=True,
+    # Nano Banana Pro (gemini-3-pro-image-preview) handles 3D
+    # structures acceptably — dashed hidden edges, dimension
+    # labels. Proportions may be off; QA visual recommended.
 )
 
 TECHNICAL_SCHEMATIC = ImageTypeSpec(
@@ -217,11 +215,11 @@ GENERATABLE_SPECS: tuple[ImageTypeSpec, ...] = (
     GEOMETRIC_FIGURE,
     STATISTICAL_CHART,
     NUMBER_LINE,
+    COMPLEX_3D,
 )
 
 NOT_GENERATABLE_SPECS: tuple[ImageTypeSpec, ...] = (
     PRECISE_CONSTRUCTION,
-    COMPLEX_3D,
     TECHNICAL_SCHEMATIC,
 )
 

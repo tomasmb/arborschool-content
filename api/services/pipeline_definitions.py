@@ -77,6 +77,17 @@ PIPELINES: dict[str, PipelineDefinition] = {
         requires=["atoms", "all_tagged"],
         produces="question-generation/{atom_id}/*.json",
     ),
+    "batch_question_gen": PipelineDefinition(
+        id="batch_question_gen",
+        name="Batch Question Generation",
+        description=(
+            "Run the full question generation pipeline for all "
+            "covered atoms sequentially (resume-safe)"
+        ),
+        has_ai_cost=True,
+        requires=["atoms", "all_tagged"],
+        produces="question-generation/{atom_id}/*.json",
+    ),
     "lessons": PipelineDefinition(
         id="lessons",
         name="Lessons",
@@ -262,6 +273,32 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             required=False,
             options=["false", "true"],
             description="Skip DB sync if true",
+        ),
+    ],
+    "batch_question_gen": [
+        PipelineParam(
+            name="mode",
+            type="select",
+            label="Mode",
+            required=False,
+            options=["pending_only", "all"],
+            default="pending_only",
+            description=(
+                "pending_only: skip fully-generated atoms. "
+                "all: re-run every covered atom."
+            ),
+        ),
+        PipelineParam(
+            name="skip_images",
+            type="select",
+            label="No-image atoms only",
+            required=False,
+            options=["false", "true"],
+            default="false",
+            description=(
+                "Only process atoms that don't require images "
+                "(skips atoms with required_image_types)"
+            ),
         ),
     ],
     "lessons": [],

@@ -313,13 +313,13 @@ Examples:
     print(f"Modo: {'DRY RUN (sin cambios)' if args.dry_run else 'MIGRACIÓN REAL'}")
     print()
 
-    # Verificar credenciales AWS
-    aws_key = os.environ.get("AWS_ACCESS_KEY_ID")
-    aws_secret = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    # Verificar credenciales AWS (support both naming conventions)
+    aws_key = os.environ.get("AWS_S3_KEY") or os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret = os.environ.get("AWS_S3_SECRET") or os.environ.get("AWS_SECRET_ACCESS_KEY")
 
     if not args.dry_run and (not aws_key or not aws_secret):
         print("❌ Credenciales AWS no encontradas")
-        print("   Configura AWS_ACCESS_KEY_ID y AWS_SECRET_ACCESS_KEY en .env")
+        print("   Configura AWS_S3_KEY y AWS_S3_SECRET en .env")
         return 1
 
     if args.dry_run:

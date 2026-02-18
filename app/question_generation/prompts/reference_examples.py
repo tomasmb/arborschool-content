@@ -381,3 +381,86 @@ imsqti_asiv3p0_v1p0.xsd"
     </qti-response-condition>
   </qti-response-processing>
 </qti-assessment-item>"""
+
+# ------------------------------------------------------------------
+# Base QTI reference WITH IMAGE — used by Phase 4 generation
+# when the slot has image_required=True.
+# ------------------------------------------------------------------
+# Same structural rules as BASE_QTI_REFERENCE but includes an
+# <img> placeholder inside <qti-item-body>. The src is
+# "IMAGE_PLACEHOLDER" which gets replaced with an S3 URL after
+# image generation.
+#
+# The detailed image description is returned in a separate JSON
+# field ("image_description"), NOT embedded in the XML, so that
+# XSD validation passes on the raw XML.
+# ------------------------------------------------------------------
+
+BASE_QTI_WITH_IMAGE_REFERENCE = """\
+<qti-assessment-item
+    xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqtiasi_v3p0
+      https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/\
+imsqti_asiv3p0_v1p0.xsd"
+    identifier="atom-123_Q5"
+    title="Interpretar grafico de funcion cuadratica"
+    adaptive="false"
+    time-dependent="false">
+  <qti-response-declaration identifier="RESPONSE"
+      cardinality="single" base-type="identifier">
+    <qti-correct-response>
+      <qti-value>ChoiceB</qti-value>
+    </qti-correct-response>
+  </qti-response-declaration>
+  <qti-outcome-declaration identifier="SCORE"
+      cardinality="single" base-type="float">
+    <qti-default-value>
+      <qti-value>0</qti-value>
+    </qti-default-value>
+  </qti-outcome-declaration>
+  <qti-item-body>
+    <p>La siguiente figura muestra el grafico de una
+      funcion
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mi>f</mi>
+      </math>.</p>
+    <p>
+      <img src="IMAGE_PLACEHOLDER"
+        alt="Grafico de funcion cuadratica con vertice \
+en (1, -4) y raices en x=-1 y x=3"
+        style="max-width:100%;height:auto;" />
+    </p>
+    <p>A partir del grafico, ¿cual es el valor minimo
+      de
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mrow><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow>
+      </math>?</p>
+    <qti-choice-interaction max-choices="1"
+        response-identifier="RESPONSE">
+      <qti-simple-choice identifier="ChoiceA">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>-1</mn>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceB">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>-4</mn>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceC">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>1</mn>
+        </math>
+      </qti-simple-choice>
+      <qti-simple-choice identifier="ChoiceD">
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+          <mn>3</mn>
+        </math>
+      </qti-simple-choice>
+    </qti-choice-interaction>
+  </qti-item-body>
+  <qti-response-processing
+    template="https://purl.imsglobal.org/spec/qti/v3p0/\
+rptemplates/match_correct.xml"/>
+</qti-assessment-item>"""

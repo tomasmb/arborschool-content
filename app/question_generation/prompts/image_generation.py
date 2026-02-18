@@ -1,70 +1,19 @@
-"""Prompt templates for Phase 4b — Image Generation.
+"""Prompt templates for Phase 4b — Image Generation & Validation.
 
 Two prompts with separated concerns:
-1. IMAGE_DESCRIPTION_PROMPT — GPT-5.1 generates a detailed description
-   of WHAT to draw (elements, positions, labels, mathematical content).
-2. GEMINI_IMAGE_GENERATION_PROMPT — wraps the description with HOW to
-   draw it (visual style, background, contrast).
+1. GEMINI_IMAGE_GENERATION_PROMPT — wraps a content description with
+   HOW to draw it (visual style, background, contrast). The content
+   description itself comes from Phase 4 (image_description field).
+2. IMAGE_VALIDATION_PROMPT — GPT-5.1 (vision) judges whether the
+   generated image matches the expected description and question.
 
-This separation avoids redundancy and potential contradictions.
+The description-generation step that previously lived here was removed:
+Phase 4 now produces the image_description as part of the QTI JSON
+response, so the question and image are designed together.
 """
 
 # ---------------------------------------------------------------------------
-# Step 1: Content description (GPT-5.1, reasoning_effort="low")
-# Concern: WHAT to draw — elements, layout, labels, data
-# ---------------------------------------------------------------------------
-
-IMAGE_DESCRIPTION_PROMPT = """\
-<role>
-Eres un diseñador de contenido visual para preguntas PAES M1 (Chile).
-Tu tarea es describir QUÉ debe contener una imagen educativa.
-</role>
-
-<context>
-TIPO DE IMAGEN: {image_type}
-DESCRIPCIÓN DEL PLAN: {plan_description}
-CONTEXTO DE LA PREGUNTA (enunciado QTI):
-{stem_context}
-</context>
-
-<task>
-Describe el CONTENIDO de la imagen. La descripción DEBE incluir:
-1. Qué elementos matemáticos deben aparecer (ejes, curvas, figuras, puntos)
-2. Cómo deben estar posicionados entre sí
-3. Qué etiquetas textuales incluir (nombres de ejes, valores, ángulos)
-4. Valores numéricos específicos si los hay
-
-NO incluyas instrucciones de estilo visual (colores, fondo, contraste).
-Esas reglas se aplican por separado.
-</task>
-
-<rules>
-- Para gráficos de funciones: especifica dominio, rango, puntos notables,
-  intersecciones y ecuación visible si corresponde.
-- Para figuras geométricas: especifica medidas, ángulos, nombres de vértices.
-- Para gráficos estadísticos: especifica tipo (barra, histograma, etc.),
-  categorías, valores y etiquetas de ejes.
-- Para rectas numéricas: especifica rango, puntos marcados y sus valores.
-- Solo etiquetas esenciales. Sin texto explicativo ni títulos.
-</rules>
-
-<output_format>
-Responde con JSON puro:
-{{
-  "generation_prompt": "descripción detallada del contenido visual...",
-  "alt_text": "texto alternativo breve para accesibilidad"
-}}
-</output_format>
-
-<final_instruction>
-Basándote en el tipo de imagen y contexto, describe el contenido.
-Responde SOLO con el JSON.
-</final_instruction>
-"""
-
-
-# ---------------------------------------------------------------------------
-# Step 2: Gemini image generation (visual style wrapper)
+# Gemini image generation (visual style wrapper)
 # Concern: HOW to draw — style, background, contrast, quality
 # ---------------------------------------------------------------------------
 
@@ -82,4 +31,56 @@ STYLE (how to draw it):
 - No title, header text, or explanatory text
 - No watermarks or logos
 - Professional, exam-quality visual
+"""
+
+# ---------------------------------------------------------------------------
+# Image validation (GPT-5.1 with vision)
+# Concern: Does the generated image match the question?
+# ---------------------------------------------------------------------------
+
+IMAGE_VALIDATION_PROMPT = """\
+<role>
+Eres un validador de imagenes educativas para preguntas PAES M1 (Chile).
+Tu tarea es verificar que la imagen generada coincide con lo esperado.
+</role>
+
+<context>
+DESCRIPCION ESPERADA:
+{image_description}
+
+ENUNCIADO DE LA PREGUNTA (extracto del QTI):
+{stem_context}
+</context>
+
+<task>
+Analiza la imagen adjunta y determina si cumple con la descripcion
+esperada. Verifica:
+1. Los elementos matematicos correctos estan presentes (ejes, curvas,
+   figuras, puntos, etiquetas).
+2. Los valores numericos y etiquetas son correctos y legibles.
+3. La imagen es coherente con el enunciado de la pregunta.
+4. No hay errores matematicos visibles (intersecciones incorrectas,
+   escalas erroneas, ángulos mal dibujados).
+</task>
+
+<rules>
+- Tolera variaciones estilisticas menores (grosor de linea, sombreado).
+- NO toleres errores matematicos (valores incorrectos, elementos
+  faltantes, funciones mal graficadas).
+- Si la imagen es generica o no contiene los elementos especificos
+  descritos, marca como "fail".
+</rules>
+
+<output_format>
+Responde con JSON puro:
+{{
+  "result": "pass" o "fail",
+  "reason": "explicacion breve del veredicto"
+}}
+</output_format>
+
+<final_instruction>
+Basandote en la imagen adjunta y la descripcion esperada, emite
+tu veredicto. Responde SOLO con el JSON.
+</final_instruction>
 """

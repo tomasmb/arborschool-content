@@ -13,40 +13,28 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { AtomBrief } from "@/lib/api";
-import {
-  ImageStatusBadge,
-  CoverageBadge,
-  BlockedOverlay,
-} from "./StatusBadges";
-
-// Phase groups matching backend PHASE_GROUPS + PHASE_PREREQUISITES.
-const PHASES = [
-  { id: "enrich", label: "Enrich", phases: "0-1",
-    description: "Scope guardrails + difficulty rubric", requiredPhase: null },
-  { id: "plan", label: "Plan", phases: "2-3",
-    description: "Diverse item specs + plan validation", requiredPhase: 1 },
-  { id: "generate", label: "Generate QTI", phases: "4",
-    description: "Base QTI 3.0 XML items", requiredPhase: 3 },
-  { id: "validate", label: "Validate", phases: "5-6",
-    description: "Dedup, XSD, solvability, PAES checks", requiredPhase: 4 },
-  { id: "feedback", label: "Feedback", phases: "7-8",
-    description: "Per-option feedback + worked solutions", requiredPhase: 6 },
-  { id: "final_validate", label: "Final Validate", phases: "9",
-    description: "Final LLM validation", requiredPhase: 8 },
-] as const;
+import { ImageStatusBadge, CoverageBadge } from "./StatusBadges";
+import { BatchGenMenu } from "./BatchGenMenu";
+import { PhaseControls } from "./PhaseControls";
 
 type AtomFilter =
   | "all" | "pending" | "generated"
   | "covered" | "no_coverage" | "needs_enrichment";
 
+export interface BatchGenOptions {
+  mode: string;
+  skip_images: string;
+}
+
 interface GenerationTabProps {
   atoms: AtomBrief[];
   onRunPhase: (atomId: string, phase: string) => void;
   onBatchEnrich?: (mode: string) => void;
+  onBatchGenerate?: (options: BatchGenOptions) => void;
 }
 
 export function GenerationTab({
-  atoms, onRunPhase, onBatchEnrich,
+  atoms, onRunPhase, onBatchEnrich, onBatchGenerate,
 }: GenerationTabProps) {
   const [filter, setFilter] = useState<AtomFilter>("all");
   const [expandedAtom, setExpandedAtom] = useState<string | null>(null);
@@ -87,6 +75,7 @@ export function GenerationTab({
         total={atoms.length}
         totalQs={totalQs}
         onBatchEnrich={onBatchEnrich}
+        onBatchGenerate={onBatchGenerate}
       />
       <FilterBar filters={filters} active={filter} onChange={setFilter} />
       <AtomTable
@@ -105,14 +94,16 @@ export function GenerationTab({
 // ---------------------------------------------------------------------------
 
 function HeaderStats({
-  generated, total, totalQs, onBatchEnrich,
+  generated, total, totalQs, onBatchEnrich, onBatchGenerate,
 }: {
   generated: number;
   total: number;
   totalQs: number;
   onBatchEnrich?: (mode: string) => void;
+  onBatchGenerate?: (options: BatchGenOptions) => void;
 }) {
   const [showEnrichMenu, setShowEnrichMenu] = useState(false);
+  const [showBatchGenMenu, setShowBatchGenMenu] = useState(false);
   return (
     <div className="flex items-start justify-between gap-4">
       <div className="space-y-1">
@@ -128,38 +119,65 @@ function HeaderStats({
           </div>
         </div>
       </div>
-      {onBatchEnrich && (
-        <div className="relative">
-          <button
-            onClick={() => setShowEnrichMenu((v) => !v)}
-            className={cn(
-              "flex items-center gap-1.5 px-4 py-2",
-              "bg-accent text-white rounded-lg text-sm",
-              "font-medium hover:bg-accent/90 transition-colors",
+      <div className="flex items-center gap-2">
+        {onBatchGenerate && (
+          <div className="relative">
+            <button
+              onClick={() => setShowBatchGenMenu((v) => !v)}
+              className={cn(
+                "flex items-center gap-1.5 px-4 py-2",
+                "bg-accent text-white rounded-lg text-sm",
+                "font-medium hover:bg-accent/90 transition-colors",
+              )}
+            >
+              <Play className="w-4 h-4" />
+              Batch Generate
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showBatchGenMenu && (
+              <BatchGenMenu
+                onSelect={(opts) => {
+                  onBatchGenerate(opts);
+                  setShowBatchGenMenu(false);
+                }}
+                onClose={() => setShowBatchGenMenu(false)}
+              />
             )}
-          >
-            <Sparkles className="w-4 h-4" />
-            Enrich All
-            <ChevronDown className="w-3 h-3" />
-          </button>
-          {showEnrichMenu && (
-            <div className="absolute right-0 mt-1 w-52 bg-surface border border-border rounded-lg shadow-lg z-10">
-              <button
-                onClick={() => { onBatchEnrich("unenriched_only"); setShowEnrichMenu(false); }}
-                className="w-full px-4 py-2 text-left text-sm hover:bg-white/5 rounded-t-lg"
-              >
-                Unenriched only
-              </button>
-              <button
-                onClick={() => { onBatchEnrich("all"); setShowEnrichMenu(false); }}
-                className="w-full px-4 py-2 text-left text-sm hover:bg-white/5 rounded-b-lg text-warning"
-              >
-                Re-enrich all
-              </button>
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+        {onBatchEnrich && (
+          <div className="relative">
+            <button
+              onClick={() => setShowEnrichMenu((v) => !v)}
+              className={cn(
+                "flex items-center gap-1.5 px-4 py-2",
+                "bg-surface border border-border rounded-lg text-sm",
+                "font-medium hover:bg-white/5 transition-colors",
+              )}
+            >
+              <Sparkles className="w-4 h-4" />
+              Enrich All
+              <ChevronDown className="w-3 h-3" />
+            </button>
+            {showEnrichMenu && (
+              <div className="absolute right-0 mt-1 w-52 bg-surface border border-border rounded-lg shadow-lg z-10">
+                <button
+                  onClick={() => { onBatchEnrich("unenriched_only"); setShowEnrichMenu(false); }}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-white/5 rounded-t-lg"
+                >
+                  Unenriched only
+                </button>
+                <button
+                  onClick={() => { onBatchEnrich("all"); setShowEnrichMenu(false); }}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-white/5 rounded-b-lg text-warning"
+                >
+                  Re-enrich all
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -396,100 +414,5 @@ function ActionBtn({
 }
 
 
-// ---------------------------------------------------------------------------
-// Phase controls (shown when atom row is expanded)
-// ---------------------------------------------------------------------------
 
-function PhaseControls({
-  atomId,
-  lastCompletedPhase,
-  onRunPhase,
-}: {
-  atomId: string;
-  lastCompletedPhase: number | null;
-  onRunPhase: (atomId: string, phase: string) => void;
-}) {
-  /** True when the phase's prerequisite has been completed. */
-  const isUnlocked = (
-    requiredPhase: number | null,
-  ): boolean => {
-    if (requiredPhase === null) return true;
-    if (lastCompletedPhase === null) return false;
-    return lastCompletedPhase >= requiredPhase;
-  };
 
-  return (
-    <div className="px-6 py-4 border-b border-border">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
-          Run Individual Phases
-        </span>
-        <button
-          onClick={() => onRunPhase(atomId, "all")}
-          className={cn(
-            "flex items-center gap-1.5 px-3 py-1.5",
-            "bg-accent text-white rounded-md text-xs",
-            "font-medium hover:bg-accent/90 transition-colors",
-          )}
-        >
-          <Sparkles className="w-3 h-3" />
-          Run All
-        </button>
-      </div>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-        {PHASES.map((phase, idx) => {
-          const unlocked = isUnlocked(phase.requiredPhase);
-          return (
-            <button
-              key={phase.id}
-              disabled={!unlocked}
-              onClick={() => onRunPhase(atomId, phase.id)}
-              title={
-                unlocked
-                  ? phase.description
-                  : "Complete the previous phase first"
-              }
-              className={cn(
-                "flex items-center gap-2 px-3 py-2 text-left",
-                "border rounded-md transition-colors",
-                unlocked
-                  ? "bg-surface border-border group hover:border-accent/30"
-                  : "bg-surface/50 border-border/50 opacity-50 cursor-not-allowed",
-              )}
-            >
-              <span
-                className={cn(
-                  "flex items-center justify-center w-5 h-5",
-                  "rounded-full text-xs font-semibold flex-shrink-0",
-                  unlocked
-                    ? "bg-accent/10 text-accent"
-                    : "bg-white/5 text-text-secondary",
-                )}
-              >
-                {idx + 1}
-              </span>
-              <div className="min-w-0 flex-1">
-                <div
-                  className={cn(
-                    "text-xs font-medium transition-colors",
-                    unlocked && "group-hover:text-accent",
-                  )}
-                >
-                  {phase.label}
-                </div>
-                <div className="text-[10px] text-text-secondary truncate">
-                  {phase.description}
-                </div>
-              </div>
-              {unlocked ? (
-                <Play className="w-3 h-3 text-text-secondary group-hover:text-accent transition-colors flex-shrink-0" />
-              ) : (
-                <Lock className="w-3 h-3 text-text-secondary flex-shrink-0" />
-              )}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}

@@ -124,6 +124,9 @@ class PipelineConfig:
         max_retries: Max LLM retries per phase.
         output_dir: Override for output directory.
         skip_enrichment: Skip Phase 1 enrichment.
+        skip_images: Skip Phase 4b image generation and bypass
+            the generatability gate so atoms with unsupported
+            image types are not blocked.
         skip_sync: Skip Phase 10 DB sync.
         dry_run: Run through Phase 9 but skip DB sync.
         resume: Resume from last checkpoint if available.
@@ -138,6 +141,7 @@ class PipelineConfig:
     max_retries: int = 1
     output_dir: str | None = None
     skip_enrichment: bool = False
+    skip_images: bool = False
     skip_sync: bool = False
     dry_run: bool = False
     resume: bool = False
@@ -339,12 +343,28 @@ class AtomContext:
 
 @dataclass
 class GeneratedItem:
-    """A single generated question with its QTI XML and metadata."""
+    """A single generated question with its QTI XML and metadata.
+
+    Attributes:
+        item_id: Unique identifier for this item.
+        qti_xml: QTI 3.0 XML string (authoritative content).
+        pipeline_meta: Non-QTI metadata for traceability.
+        slot_index: Plan slot that generated this item.
+        image_description: Detailed visual description for image
+            generation. Populated by Phase 4 for slots with
+            image_required=True. Used by Phase 4b to drive
+            Gemini image generation.
+        image_failed: True when image generation or validation
+            failed. The XML is preserved in checkpoints but the
+            item is excluded from the active pool.
+    """
 
     item_id: str
     qti_xml: str
     pipeline_meta: PipelineMeta | None = None
     slot_index: int = 0
+    image_description: str = ""
+    image_failed: bool = False
 
 
 @dataclass

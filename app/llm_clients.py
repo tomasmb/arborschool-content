@@ -309,8 +309,11 @@ class OpenAIClient:
 # Gemini Image Generation (uses google-genai SDK)
 # ---------------------------------------------------------------------------
 
-# Default model for image generation (fast and cost-effective)
-_IMAGE_MODEL = "gemini-2.5-flash-image"
+# Default model for image generation.
+# Nano Banana Pro (gemini-3-pro-image-preview) delivers significantly
+# higher mathematical accuracy than Gemini 2.5 Flash Image — critical
+# for function graphs, statistical charts, and number lines.
+_IMAGE_MODEL = "gemini-3-pro-image-preview"
 
 
 class GeminiImageClient:
