@@ -124,6 +124,9 @@ class PipelineConfig:
         max_retries: Max LLM retries per phase.
         output_dir: Override for output directory.
         skip_enrichment: Skip Phase 1 enrichment.
+        skip_images: Skip Phase 4b image generation and bypass
+            the generatability gate so atoms with unsupported
+            image types are not blocked.
         skip_sync: Skip Phase 10 DB sync.
         dry_run: Run through Phase 9 but skip DB sync.
         resume: Resume from last checkpoint if available.
@@ -138,6 +141,7 @@ class PipelineConfig:
     max_retries: int = 1
     output_dir: str | None = None
     skip_enrichment: bool = False
+    skip_images: bool = False
     skip_sync: bool = False
     dry_run: bool = False
     resume: bool = False

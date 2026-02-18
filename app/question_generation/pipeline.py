@@ -1,7 +1,4 @@
-"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-9).
-
-Sync to DB is a separate step via the sync API (environment-aware).
-"""
+"""Atom question generation pipeline orchestrator (v3.1 spec, phases 0-9)."""
 
 from __future__ import annotations
 
@@ -23,18 +20,32 @@ from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
-    check_prerequisites, find_resume_phase_group, load_atom,
-    load_checkpoint, load_existing_fingerprints, load_phase_state,
-    print_pipeline_header, print_pipeline_summary,
-    save_checkpoint, save_pipeline_results, serialize_items,
+    check_prerequisites,
+    find_resume_phase_group,
+    load_atom,
+    load_checkpoint,
+    load_existing_fingerprints,
+    load_phase_state,
+    print_pipeline_header,
+    print_pipeline_summary,
+    save_checkpoint,
+    save_pipeline_results,
+    serialize_items,
 )
 from app.question_generation.image_generator import ImageGenerator
 from app.question_generation.image_types import (
-    can_generate_all, get_unsupported_types,
+    can_generate_all,
+    get_unsupported_types,
 )
 from app.question_generation.models import (
-    PHASE_GROUPS, AtomContext, AtomEnrichment, EnrichmentStatus,
-    GeneratedItem, PhaseResult, PipelineConfig, PipelineResult,
+    PHASE_GROUPS,
+    AtomContext,
+    AtomEnrichment,
+    EnrichmentStatus,
+    GeneratedItem,
+    PhaseResult,
+    PipelineConfig,
+    PipelineResult,
     PlanSlot,
 )
 from app.question_generation.phase4_runner import run_phase_4
@@ -42,7 +53,9 @@ from app.question_generation.planner import PlanGenerator, validate_plan
 from app.question_generation.progress import CostAccumulator, report_progress
 from app.question_generation.syncer import persist_enrichment
 from app.question_generation.validators import (
-    BaseValidator, DuplicateGate, FinalValidator,
+    BaseValidator,
+    DuplicateGate,
+    FinalValidator,
 )
 from app.utils.paths import QUESTION_GENERATION_DIR
 
@@ -135,7 +148,12 @@ class AtomQuestionPipeline:
             return self._finalize(result, output_dir)
 
         # Generatability gate — block on unsupported image types
-        if enrichment and enrichment.required_image_types:
+        # Skipped when skip_images is set (batch runs without images).
+        if (
+            not self._config.skip_images
+            and enrichment
+            and enrichment.required_image_types
+        ):
             if not can_generate_all(enrichment.required_image_types):
                 unsup = get_unsupported_types(
                     enrichment.required_image_types,
@@ -173,6 +191,7 @@ class AtomQuestionPipeline:
                 output_dir=output_dir,
                 resume=self._config.resume,
                 base_items=base_items,
+                skip_images=self._config.skip_images,
             )
             if base_items is None:
                 return result

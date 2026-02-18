@@ -1,7 +1,6 @@
-"""Pipeline runner service - executes pipelines via subprocess and tracks job state.
+"""Pipeline runner — executes pipelines via subprocess and tracks job state.
 
-Jobs are tracked in JSON files at app/data/.jobs/{job_id}.json for persistence.
-This allows resuming jobs after server restarts and provides progress tracking.
+Jobs persist as JSON files at app/data/.jobs/{job_id}.json.
 """
 
 from __future__ import annotations
@@ -33,11 +32,6 @@ _PROGRESS_RE = re.compile(r"\[PROGRESS\]\s+(\d+)/(\d+)")
 # Pattern emitted at end of pipeline for actual cost tracking.
 # Format: ``[COST] $X.XXXX``
 _COST_RE = re.compile(r"\[COST\]\s+\$?([\d.]+)")
-
-# -----------------------------------------------------------------------------
-# Job management
-# -----------------------------------------------------------------------------
-
 
 def _ensure_jobs_dir() -> None:
     """Ensure the jobs directory exists."""
@@ -133,7 +127,10 @@ class PipelineRunner:
         """Get parameters for a pipeline."""
         return PIPELINE_PARAMS.get(pipeline_id, [])
 
-    _RESUMABLE = {"tagging", "variant_gen", "pdf_to_qti", "pdf_split", "question_gen"}
+    _RESUMABLE = {
+        "tagging", "variant_gen", "pdf_to_qti",
+        "pdf_split", "question_gen", "batch_question_gen",
+    }
 
     def create_job(
         self, pipeline_id: str, params: dict[str, Any],
@@ -158,7 +155,11 @@ class PipelineRunner:
             raise ValueError(
                 f"Job {job_id} cannot be started (status: {job.status})",
             )
-        cmd = self._build_command(job.pipeline_id, job.params)
+        build_params = dict(job.params)
+        # Batch pipelines need the job_id for state file naming
+        if job.pipeline_id == "batch_question_gen":
+            build_params["job_id"] = job.job_id
+        cmd = self._build_command(job.pipeline_id, build_params)
         if not cmd:
             job.status = "failed"
             job.error = f"Unknown pipeline: {job.pipeline_id}"
@@ -190,6 +191,7 @@ class PipelineRunner:
             "tagging": self._cmd_tagging,
             "variant_gen": self._cmd_variant_gen,
             "question_gen": self._cmd_question_gen,
+            "batch_question_gen": self._cmd_batch_question_gen,
         }
 
         builder = commands.get(pipeline_id)
@@ -268,6 +270,21 @@ class PipelineRunner:
             cmd.extend(["--phase", phase])
         if p.get("dry_run") == "true":
             cmd.append("--dry-run")
+        return cmd
+
+    def _cmd_batch_question_gen(
+        self, p: dict[str, Any],
+    ) -> list[str]:
+        """Batch generation for all eligible atoms."""
+        cmd = [
+            _PYTHON, "-m",
+            "app.question_generation.scripts.run_batch_generation",
+            "--mode", p.get("mode", "pending_only"),
+        ]
+        if p.get("skip_images") == "true":
+            cmd.append("--skip-images")
+        if p.get("job_id"):
+            cmd.extend(["--job-id", p["job_id"]])
         return cmd
 
     def _run_subprocess(self, job_id: str, cmd: list[str]) -> None:
@@ -403,40 +420,26 @@ class PipelineRunner:
             return True
         return False
 
+    _CHECKPOINT_RESUME = {"question_gen", "batch_question_gen"}
+
     def resume_job(
         self, job_id: str, mode: str = "remaining",
     ) -> JobStatus | None:
-        """Resume a failed or cancelled job.
+        """Resume a failed/cancelled job.
 
-        For ``question_gen`` pipelines, resume relies on the
-        checkpoint system (``--resume`` flag) rather than
-        per-item tracking.  A new job is created with the same
-        params and ``--resume`` is automatically added by
-        ``_cmd_question_gen``.
-
-        For other pipelines with per-item tracking (tagging,
-        variant_gen), the original item-list approach is used
-        when ``failed_item_details`` is populated.
-
-        Args:
-            job_id: The original job to resume from.
-            mode: 'remaining' or 'failed_only'.
-
-        Returns:
-            New JobStatus for the resume job, or None if not
-            possible.
+        Checkpoint-based pipelines (question_gen, batch_question_gen)
+        just re-create the job with the same params. Item-tracking
+        pipelines (tagging, variant_gen) filter to remaining items.
         """
         original_job = _load_job(job_id)
         if not original_job:
             return None
-
         if original_job.status not in ("failed", "cancelled"):
             return None
 
         new_params = dict(original_job.params)
 
-        # question_gen uses checkpoint-based resume (always works)
-        if original_job.pipeline_id == "question_gen":
+        if original_job.pipeline_id in self._CHECKPOINT_RESUME:
             new_job = self.create_job(
                 original_job.pipeline_id, new_params,
             )

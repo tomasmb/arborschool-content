@@ -11,7 +11,10 @@ import {
   type QGenTab,
 } from "./components/QuestionGenTabs";
 import { OverviewTab } from "./components/OverviewTab";
-import { GenerationTab } from "./components/GenerationTab";
+import {
+  GenerationTab,
+  type BatchGenOptions,
+} from "./components/GenerationTab";
 import { ResultsTab } from "./components/ResultsTab";
 import { GenQuestionSyncTab } from "./components/GenQuestionSyncTab";
 import { BatchEnrichModal } from "./components/BatchEnrichModal";
@@ -38,6 +41,11 @@ export default function QuestionGenerationPage() {
   const [selectedPhase, setSelectedPhase] = useState<string>("all");
   const [showBatchEnrich, setShowBatchEnrich] = useState(false);
   const [batchEnrichMode, setBatchEnrichMode] = useState("unenriched_only");
+  const [showBatchGen, setShowBatchGen] = useState(false);
+  const [batchGenOptions, setBatchGenOptions] = useState<BatchGenOptions>({
+    mode: "pending_only",
+    skip_images: "true",
+  });
 
   const fetchData = useCallback(async () => {
     try {
@@ -82,6 +90,17 @@ export default function QuestionGenerationPage() {
     setBatchEnrichMode(mode);
     setShowBatchEnrich(true);
   }, []);
+
+  /** Open batch generation modal with chosen options */
+  const handleBatchGenerate = useCallback((opts: BatchGenOptions) => {
+    setBatchGenOptions(opts);
+    setShowBatchGen(true);
+  }, []);
+
+  const handleBatchGenSuccess = useCallback(() => {
+    setShowBatchGen(false);
+    fetchData();
+  }, [fetchData]);
 
   const atomsWithQuestions = atoms.filter(
     (a) => a.generated_question_count > 0,
@@ -153,6 +172,7 @@ export default function QuestionGenerationPage() {
             atoms={atoms}
             onRunPhase={handleRunPhase}
             onBatchEnrich={handleBatchEnrich}
+            onBatchGenerate={handleBatchGenerate}
           />
         )}
 
@@ -188,6 +208,29 @@ export default function QuestionGenerationPage() {
             phase: selectedPhase,
           }}
           paramLabels={modalParamLabels}
+        />
+      )}
+
+      {/* Batch Generation Modal */}
+      {showBatchGen && (
+        <GeneratePipelineModal
+          isOpen={showBatchGen}
+          onClose={() => setShowBatchGen(false)}
+          onSuccess={handleBatchGenSuccess}
+          pipelineId="batch_question_gen"
+          pipelineName="Batch Question Generation"
+          pipelineDescription={
+            `Generate questions for all covered atoms`
+            + ` (${batchGenOptions.mode.replace("_", " ")},`
+            + ` images ${batchGenOptions.skip_images === "true" ? "off" : "on"})`
+          }
+          params={batchGenOptions}
+          paramLabels={{
+            mode: batchGenOptions.mode === "pending_only"
+              ? "Pending only" : "All atoms (re-run)",
+            skip_images: batchGenOptions.skip_images === "true"
+              ? "Yes — skip images" : "No — generate images",
+          }}
         />
       )}
 

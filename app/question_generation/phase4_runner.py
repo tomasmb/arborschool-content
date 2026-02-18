@@ -50,6 +50,7 @@ def run_phase_4(
     output_dir: Path,
     resume: bool,
     base_items: list[GeneratedItem] | None,
+    skip_images: bool = False,
 ) -> list[GeneratedItem] | None:
     """Run Phase 4 + 4b with slot-level resume and incremental saves.
 
@@ -64,6 +65,7 @@ def run_phase_4(
         resume: Whether to attempt loading a partial checkpoint.
         base_items: Items already loaded from a prior checkpoint
             (e.g. via prerequisite loading in ``run()``).
+        skip_images: When True, skip Phase 4b image generation.
 
     Returns:
         List of generated items, or None on total failure.
@@ -108,8 +110,11 @@ def run_phase_4(
             len(items),
         )
 
-    # Phase 4b — Images
-    if any(s.image_required for s in (plan_slots or [])):
+    # Phase 4b — Images (skipped when skip_images is set)
+    if (
+        not skip_images
+        and any(s.image_required for s in (plan_slots or []))
+    ):
         items = _run_image_gen(
             items, plan_slots or [], ctx, result, image_generator,
         )

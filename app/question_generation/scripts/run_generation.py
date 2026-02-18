@@ -64,6 +64,7 @@ def main() -> None:
             skip_sync=args.skip_sync,
             dry_run=args.dry_run,
             skip_enrichment=args.skip_enrichment,
+            skip_images=args.skip_images,
             resume=args.resume,
             phase=args.phase,
         )
@@ -111,6 +112,11 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--skip-enrichment", action="store_true",
         help="Skip Phase 1 atom enrichment",
+    )
+    parser.add_argument(
+        "--skip-images", action="store_true",
+        help="Skip Phase 4b image generation and bypass "
+             "the generatability gate",
     )
     parser.add_argument(
         "--dry-run", action="store_true",
