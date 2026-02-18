@@ -47,6 +47,8 @@ def main() -> None:
     setup_logging(verbose=args.verbose)
 
     atoms = _load_eligible_atoms(args.mode)
+    if args.skip_images:
+        atoms = _exclude_atoms_needing_images(atoms)
     if not atoms:
         print("No eligible atoms found.")
         sys.exit(0)
@@ -161,6 +163,36 @@ def _load_all_atoms() -> list[dict[str, Any]]:
     with open(path, encoding="utf-8") as f:
         data = json.load(f)
     return data.get("atoms", [])
+
+
+def _exclude_atoms_needing_images(
+    atoms: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Keep only atoms whose enrichment shows no image requirements.
+
+    Atoms without an enrichment checkpoint are excluded (we can't
+    confirm they don't need images).
+    """
+    from app.question_generation.helpers import (
+        get_enrichment_image_types,
+    )
+
+    kept: list[dict[str, Any]] = []
+    skipped = 0
+    for atom in atoms:
+        image_types = get_enrichment_image_types(atom["id"])
+        if image_types is None:
+            skipped += 1
+            continue
+        if image_types:
+            skipped += 1
+            continue
+        kept.append(atom)
+
+    if skipped:
+        print(f"  Excluded {skipped} atom(s) that require images "
+              f"or lack enrichment data")
+    return kept
 
 
 def _filter_already_done(

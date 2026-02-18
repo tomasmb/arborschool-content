@@ -24,27 +24,27 @@ export function BatchGenMenu({
         onClick={() => onSelect({ mode: "pending_only", skip_images: "true" })}
         className="w-full px-4 py-2.5 text-left text-sm hover:bg-white/5"
       >
-        <div className="font-medium">Pending only (no images)</div>
+        <div className="font-medium">Pending — no-image atoms only</div>
         <div className="text-xs text-text-secondary mt-0.5">
-          Skip already-generated atoms and image gen
+          Only atoms that don&apos;t require images, skip already-generated
         </div>
       </button>
       <button
         onClick={() => onSelect({ mode: "pending_only", skip_images: "false" })}
         className="w-full px-4 py-2.5 text-left text-sm hover:bg-white/5"
       >
-        <div className="font-medium">Pending only (with images)</div>
+        <div className="font-medium">Pending — all atoms</div>
         <div className="text-xs text-text-secondary mt-0.5">
-          Skip already-generated atoms, include images
+          All pending atoms including those with images
         </div>
       </button>
       <button
         onClick={() => onSelect({ mode: "all", skip_images: "true" })}
         className="w-full px-4 py-2.5 text-left text-sm hover:bg-white/5 text-warning rounded-b-lg"
       >
-        <div className="font-medium">Re-run all (no images)</div>
+        <div className="font-medium">Re-run all — no-image atoms only</div>
         <div className="text-xs text-text-secondary mt-0.5">
-          Regenerate every covered atom, skip images
+          Re-generate all atoms that don&apos;t require images
         </div>
       </button>
     </div>

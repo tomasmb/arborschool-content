@@ -67,12 +67,7 @@ class TokenEstimate:
 
 
 class CostEstimatorService:
-    """Service for estimating AI pipeline costs.
-
-    Each pipeline uses the model defined in PIPELINE_MODELS.
-    Token estimates are based on actual prompt sizes and output
-    formats measured from the codebase.
-    """
+    """Estimate AI pipeline costs using PIPELINE_MODELS pricing."""
 
     def estimate_pipeline_cost(
         self,
@@ -380,14 +375,10 @@ class CostEstimatorService:
     def _estimate_batch_question_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Batch question generation — per-atom estimate x atom count.
-
-        Counts eligible atoms using the same coverage filter as the
-        batch script, then multiplies by the per-atom question_gen
-        estimate (all phases, resume mode).
-        """
+        """Batch question generation — per-atom estimate x atom count."""
         mode = params.get("mode", "pending_only")
-        num_atoms = _count_eligible_atoms(mode)
+        skip_images = params.get("skip_images") == "true"
+        num_atoms = _count_eligible_atoms(mode, skip_images=skip_images)
 
         # Per-atom estimate: reuse question_gen estimator with
         # empty atom_id (uses defaults: 62 planned items)
@@ -432,10 +423,14 @@ class CostEstimatorService:
         )
 
 
-def _count_eligible_atoms(mode: str) -> int:
+def _count_eligible_atoms(
+    mode: str,
+    *,
+    skip_images: bool = False,
+) -> int:
     """Count atoms eligible for batch generation.
 
-    Reuses batch enrichment helpers for coverage filtering.
+    When *skip_images*, only counts atoms with empty required_image_types.
     """
     try:
         from api.services.atom_coverage_service import (
@@ -446,6 +441,7 @@ def _count_eligible_atoms(mode: str) -> int:
             _load_all_atoms,
         )
         from app.question_generation.helpers import (
+            get_enrichment_image_types,
             get_last_completed_phase,
         )
 
@@ -454,6 +450,13 @@ def _count_eligible_atoms(mode: str) -> int:
             return 0
         atom_qs, deps = load_atom_coverage_maps(atoms)
         covered = _filter_covered_atoms(atoms, atom_qs, deps)
+
+        if skip_images:
+            covered = [
+                a for a in covered
+                if get_enrichment_image_types(a["id"]) == []
+            ]
+
         if mode == "all":
             return len(covered)
         return sum(
@@ -466,11 +469,7 @@ def _count_eligible_atoms(mode: str) -> int:
 
 
 def _load_question_gen_counts(atom_id: str) -> dict[str, int]:
-    """Read checkpoint files for actual item counts per phase.
-
-    Returns dict with keys planned/generated/validated/feedback
-    (0 when checkpoint is absent).
-    """
+    """Read checkpoint files for actual item counts per phase."""
     counts = {"planned": 0, "generated": 0, "validated": 0, "feedback": 0}
     if not atom_id:
         return counts

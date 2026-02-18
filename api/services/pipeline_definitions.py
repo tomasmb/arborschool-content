@@ -291,13 +291,13 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
         PipelineParam(
             name="skip_images",
             type="select",
-            label="Skip Images",
+            label="No-image atoms only",
             required=False,
             options=["false", "true"],
             default="false",
             description=(
-                "Skip image generation (Phase 4b) and bypass "
-                "the generatability gate"
+                "Only process atoms that don't require images "
+                "(skips atoms with required_image_types)"
             ),
         ),
     ],
