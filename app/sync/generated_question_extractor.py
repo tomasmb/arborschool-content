@@ -115,16 +115,34 @@ def _extract_atom(
         return []
 
     rows: list[GeneratedQuestionRow] = []
+    skipped = 0
     for item in items:
+        if _is_validation_failed(item):
+            skipped += 1
+            continue
         row = _item_dict_to_row(item, atom_id)
         if row:
             rows.append(row)
+
+    if skipped:
+        logger.info(
+            "Skipped %d failed-validation items for atom %s",
+            skipped, atom_id,
+        )
 
     logger.info(
         "Extracted %d generated questions for atom %s",
         len(rows), atom_id,
     )
     return rows
+
+
+def _is_validation_failed(item: dict) -> bool:
+    """Return True if any validator on the item is marked 'fail'."""
+    validators = (
+        item.get("pipeline_meta") or {}
+    ).get("validators", {})
+    return any(v == "fail" for v in validators.values())
 
 
 def _item_dict_to_row(
