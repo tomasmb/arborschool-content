@@ -2,6 +2,8 @@ import base64
 import io
 import logging
 import os
+import random
+import time
 from dataclasses import dataclass, field
 from typing import Any, List, Optional, Union
 
@@ -10,6 +12,35 @@ from dotenv import load_dotenv
 from PIL import Image
 
 _logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# Transport-level retry configuration
+# ---------------------------------------------------------------------------
+
+_RETRY_MAX_ATTEMPTS = 3
+_RETRY_BASE_DELAY = 10.0  # seconds
+_RETRY_MAX_DELAY = 90.0   # seconds
+
+
+def _is_retryable_status(status_code: int) -> bool:
+    """HTTP 429 (rate-limit) and 5xx (server errors) are transient."""
+    return status_code == 429 or status_code >= 500
+
+
+def _retry_delay(
+    attempt: int,
+    resp: requests.Response | None = None,
+) -> float:
+    """Exponential backoff with jitter; respects Retry-After header."""
+    if resp is not None:
+        retry_after = resp.headers.get("Retry-After")
+        if retry_after:
+            try:
+                return float(retry_after)
+            except ValueError:
+                pass
+    delay = min(_RETRY_BASE_DELAY * (2 ** attempt), _RETRY_MAX_DELAY)
+    return delay + random.uniform(0, delay * 0.1)
 
 
 # ---------------------------------------------------------------------------
@@ -196,11 +227,6 @@ class OpenAIClient:
         **kwargs: Any,
     ) -> LLMResponse:
         """Call Chat Completions API, return ``LLMResponse(text, usage)``."""
-        headers = {
-            "Authorization": f"Bearer {self._api_key}",
-            "Content-Type": "application/json",
-        }
-
         messages = [
             {"role": "user", "content": self._build_content(prompt)},
         ]
@@ -227,11 +253,7 @@ class OpenAIClient:
         if response_mime_type == "application/json":
             data["response_format"] = {"type": "json_object"}
 
-        resp = requests.post(
-            self._url, headers=headers, json=data, timeout=300,
-        )
-        resp.raise_for_status()
-        body = resp.json()
+        body = self._post_with_retry(data)
 
         text = body["choices"][0]["message"]["content"]
 
@@ -251,6 +273,61 @@ class OpenAIClient:
             _global_cost_accumulator.add(usage)
 
         return LLMResponse(text=text, usage=usage)
+
+    # ------------------------------------------------------------------
+    # Transport with retry
+    # ------------------------------------------------------------------
+
+    def _post_with_retry(
+        self, data: dict[str, Any],
+    ) -> dict[str, Any]:
+        """POST to the completions API with exponential-backoff retry.
+
+        Retries on transient errors (timeouts, connection resets,
+        HTTP 429 / 5xx).  Non-retryable HTTP errors (4xx except 429)
+        are raised immediately.
+        """
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json",
+        }
+
+        for attempt in range(_RETRY_MAX_ATTEMPTS):
+            is_last = attempt == _RETRY_MAX_ATTEMPTS - 1
+            try:
+                resp = requests.post(
+                    self._url, headers=headers,
+                    json=data, timeout=300,
+                )
+                if not is_last and _is_retryable_status(resp.status_code):
+                    delay = _retry_delay(attempt, resp)
+                    _logger.warning(
+                        "HTTP %d (attempt %d/%d), "
+                        "retrying in %.1fs",
+                        resp.status_code,
+                        attempt + 1, _RETRY_MAX_ATTEMPTS,
+                        delay,
+                    )
+                    time.sleep(delay)
+                    continue
+                resp.raise_for_status()
+                return resp.json()
+            except (
+                requests.exceptions.Timeout,
+                requests.exceptions.ConnectionError,
+            ) as exc:
+                if is_last:
+                    raise
+                delay = _retry_delay(attempt)
+                _logger.warning(
+                    "%s (attempt %d/%d), retrying in %.1fs",
+                    type(exc).__name__,
+                    attempt + 1, _RETRY_MAX_ATTEMPTS,
+                    delay,
+                )
+                time.sleep(delay)
+
+        raise RuntimeError("Retry loop ended unexpectedly")
 
     # ------------------------------------------------------------------
     # Multimodal helper  (DRY -- used by enhancer / validator)
