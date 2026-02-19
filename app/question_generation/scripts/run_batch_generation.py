@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import sys
 import tempfile
 from datetime import datetime, timezone
@@ -36,6 +37,8 @@ from app.question_generation.pipeline import AtomQuestionPipeline
 from app.question_generation.progress import report_progress
 from app.utils.logging_config import setup_logging
 from app.utils.paths import QUESTION_GENERATION_DIR, get_atoms_file
+
+_logger = logging.getLogger(__name__)
 
 # Phase threshold: atoms with last_completed_phase >= this are "done"
 _FULLY_GENERATED_PHASE = 9
@@ -78,7 +81,15 @@ def main() -> None:
         print(f"[{seq}/{total}] Processing {atom_id}")
         print(f"{'=' * 60}")
 
-        result = _run_single_atom(atom_id, args)
+        try:
+            result = _run_single_atom(atom_id, args)
+        except Exception:
+            _logger.exception(
+                "Atom %s crashed unexpectedly", atom_id,
+            )
+            result = PipelineResult(
+                atom_id=atom_id, success=False,
+            )
 
         if result.success:
             succeeded += 1
