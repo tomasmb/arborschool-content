@@ -14,6 +14,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.llm_clients import OpenAIClient
+from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_feedback.validator import (
     FinalValidator as LlmFinalValidator,
 )
@@ -470,8 +471,12 @@ class FinalValidator:
             if item.pipeline_meta else None
         )
 
+        image_urls = extract_image_urls(item.qti_xml) or None
+
         try:
-            result = self._llm_validator.validate(item.qti_xml)
+            result = self._llm_validator.validate(
+                item.qti_xml, image_urls=image_urls,
+            )
         except Exception as exc:
             logger.warning(
                 "LLM final validation error for %s: %s",
