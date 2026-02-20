@@ -88,6 +88,17 @@ PIPELINES: dict[str, PipelineDefinition] = {
         requires=["atoms", "all_tagged"],
         produces="question-generation/{atom_id}/*.json",
     ),
+    "batch_question_gen_api": PipelineDefinition(
+        id="batch_question_gen_api",
+        name="Batch Question Generation (Batch API)",
+        description=(
+            "Run the full question generation pipeline via the "
+            "OpenAI Batch API (50% cost discount, slower)"
+        ),
+        has_ai_cost=True,
+        requires=["atoms", "all_tagged"],
+        produces="question-generation/{atom_id}/*.json",
+    ),
     "lessons": PipelineDefinition(
         id="lessons",
         name="Lessons",
@@ -298,6 +309,52 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             description=(
                 "Only process atoms that don't require images "
                 "(skips atoms with required_image_types)"
+            ),
+        ),
+        PipelineParam(
+            name="max_atoms",
+            type="number",
+            label="Max atoms (optional)",
+            required=False,
+            description=(
+                "Limit to first N atoms. "
+                "Leave empty for all."
+            ),
+        ),
+    ],
+    "batch_question_gen_api": [
+        PipelineParam(
+            name="mode",
+            type="select",
+            label="Mode",
+            required=False,
+            options=["pending_only", "all"],
+            default="pending_only",
+            description=(
+                "pending_only: skip fully-generated atoms. "
+                "all: re-run every covered atom."
+            ),
+        ),
+        PipelineParam(
+            name="skip_images",
+            type="select",
+            label="No-image atoms only",
+            required=False,
+            options=["false", "true"],
+            default="false",
+            description=(
+                "Only process atoms that don't require images "
+                "(skips atoms with required_image_types)"
+            ),
+        ),
+        PipelineParam(
+            name="max_atoms",
+            type="number",
+            label="Max atoms (optional)",
+            required=False,
+            description=(
+                "Limit to first N atoms. "
+                "Leave empty for all."
             ),
         ),
     ],

@@ -40,8 +40,8 @@ logger = logging.getLogger(__name__)
 # LLM reasoning depth for generation (medium = structured output)
 _GENERATION_REASONING = "medium"
 
-# Max parallel LLM calls (bounded to avoid rate-limit pressure)
-_MAX_PARALLEL = 5
+# Max parallel LLM calls (bounded by OpenAI TPM/RPM limits)
+_MAX_PARALLEL = 15
 
 
 class BaseQtiGenerator:

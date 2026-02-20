@@ -47,6 +47,10 @@ from app.question_generation.batch_pipeline_stages import (
     run_phase_78,
     run_phase_9,
 )
+from app.question_generation.progress import (
+    report_cost,
+    report_progress,
+)
 from app.question_generation.prompts.generation import (
     build_context_section,
 )
@@ -116,6 +120,8 @@ class BatchAtomPipeline:
         self._plans: dict[str, list[PlanSlot]] = {}
         self._context_sections: dict[str, str] = {}
         self._items: dict[str, list[GeneratedItem]] = {}
+        self._total_input_tokens = 0
+        self._total_output_tokens = 0
 
         existing = load_run_state(self._ckpt_path)
         if existing and existing.get("job_id") == job_id:
@@ -129,20 +135,32 @@ class BatchAtomPipeline:
             save_run_state(self._ckpt_path, self._state)
 
     def run(self) -> dict[str, Any]:
-        """Run the full batch pipeline.  Returns a summary dict."""
+        """Run the full batch pipeline.  Returns a summary dict.
+
+        Emits ``[PROGRESS]`` / ``[COST]`` markers for the frontend.
+        """
+        n = len(get_active_atoms(self._state))
         errs = validate_checkpoint_consistency(self._state)
         if errs:
             logger.error("Checkpoint inconsistency: %s", errs)
 
+        report_progress(0, n)
         self._run_phase_0()
         self._run_phase_1()
         self._run_phase_2_3()
+        report_progress(int(n * 0.2), n)
         self._run_phase_4()
+        report_progress(int(n * 0.4), n)
         fn = self._submit_and_wait
-        self._items = run_phase_5(self._state, self._ckpt_path, self._items)
-        self._items = run_phase_6(self._state, self._ckpt_path, self._items, self._model, fn)
-        self._items = run_phase_78(self._state, self._ckpt_path, self._items, self._model, fn)
-        self._items = run_phase_9(self._state, self._ckpt_path, self._items, self._model, fn)
+        st, cp, it, m = self._state, self._ckpt_path, self._items, self._model
+        self._items = run_phase_5(st, cp, it)
+        self._items = run_phase_6(st, cp, self._items, m, fn)
+        report_progress(int(n * 0.6), n)
+        self._items = run_phase_78(st, cp, self._items, m, fn)
+        report_progress(int(n * 0.8), n)
+        self._items = run_phase_9(st, cp, self._items, m, fn)
+        report_progress(n, n)
+        self._report_cost()
         return self._build_summary()
 
     # -- Phase 0: Inputs (local) ---
@@ -250,27 +268,18 @@ class BatchAtomPipeline:
             ctx = self._contexts.get(atom_id)
             if not ctx:
                 continue
-            result = validate_plan(
-                slots, ctx, self._distribution,
-            )
+            result = validate_plan(slots, ctx, self._distribution)
             if not result.success:
                 failed[atom_id] = "; ".join(result.errors)
             else:
-                out_dir = QUESTION_GENERATION_DIR / atom_id
-                save_checkpoint(out_dir, 3, "plan", {
+                save_checkpoint(QUESTION_GENERATION_DIR / atom_id, 3, "plan", {
                     "slots": [s.model_dump() for s in slots],
                 })
-
         if failed:
             for aid in failed:
                 self._plans.pop(aid, None)
-            mark_atoms_failed(
-                self._state, failed, self._ckpt_path,
-            )
-        update_phase(
-            self._state, "phase_3", self._ckpt_path,
-            status="completed",
-        )
+            mark_atoms_failed(self._state, failed, self._ckpt_path)
+        update_phase(self._state, "phase_3", self._ckpt_path, status="completed")
 
     def _reload_plans(self) -> None:
         for aid in get_active_atoms(self._state):
@@ -312,54 +321,34 @@ class BatchAtomPipeline:
                 ))
 
         if not requests:
-            update_phase(
-                self._state, "phase_4", self._ckpt_path,
-                status="completed", request_count=0,
-            )
+            update_phase(self._state, "phase_4", self._ckpt_path,
+                         status="completed", request_count=0)
             return
 
         responses = self._submit_and_wait("phase_4", requests)
-        succeeded, xsd_failed = process_generation_responses(
-            responses, slot_maps,
-        )
+        succeeded, xsd_failed = process_generation_responses(responses, slot_maps)
         self._items = succeeded
 
         for rnd in range(1, _MAX_XSD_RETRY_ROUNDS + 1):
-            total_retry = sum(
-                len(s) for s in xsd_failed.values()
-            )
+            total_retry = sum(len(s) for s in xsd_failed.values())
             if total_retry == 0:
                 break
-            logger.info(
-                "Phase 4 XSD retry round %d: %d slots",
-                rnd, total_retry,
-            )
+            logger.info("Phase 4 XSD retry round %d: %d slots", rnd, total_retry)
             retry_reqs = build_xsd_retry_requests(
-                xsd_failed, self._context_sections,
-                {}, rnd, self._model,
+                xsd_failed, self._context_sections, {}, rnd, self._model,
             )
             if not retry_reqs:
                 break
-            retry_resp = self._submit_and_wait(
-                f"phase_4_r{rnd}", retry_reqs,
-            )
-            new_ok, xsd_failed = process_generation_responses(
-                retry_resp, slot_maps,
-            )
+            retry_resp = self._submit_and_wait(f"phase_4_r{rnd}", retry_reqs)
+            new_ok, xsd_failed = process_generation_responses(retry_resp, slot_maps)
             for aid, items in new_ok.items():
                 self._items.setdefault(aid, []).extend(items)
 
         for atom_id, items in self._items.items():
-            out_dir = QUESTION_GENERATION_DIR / atom_id
-            save_checkpoint(out_dir, 4, "generation", {
-                "item_count": len(items),
-                "items": serialize_items(items),
+            save_checkpoint(QUESTION_GENERATION_DIR / atom_id, 4, "generation", {
+                "item_count": len(items), "items": serialize_items(items),
             })
-
-        update_phase(
-            self._state, "phase_4", self._ckpt_path,
-            status="completed",
-        )
+        update_phase(self._state, "phase_4", self._ckpt_path, status="completed")
 
     # -- Batch submission lifecycle (5-state checkpoint) ---
 
@@ -430,6 +419,9 @@ class BatchAtomPipeline:
             logger.warning(
                 "%s: %d/%d results", phase_key, len(resp), exp,
             )
+        for r in resp:
+            self._total_input_tokens += r.input_tokens
+            self._total_output_tokens += r.output_tokens
         return resp
 
     def _reload_items(
@@ -445,6 +437,14 @@ class BatchAtomPipeline:
                 self._items[atom_id] = deserialize_items(
                     ckpt["items"],
                 )
+
+    def _report_cost(self) -> None:
+        """Emit ``[COST]`` marker with Batch API pricing (50% of regular)."""
+        inp = self._total_input_tokens / 1_000_000
+        out = self._total_output_tokens / 1_000_000
+        # Batch API: 50% of regular gpt-5.1 pricing
+        cost = inp * (1.25 * 0.5) + out * (10.00 * 0.5)
+        report_cost(cost)
 
     def _build_summary(self) -> dict[str, Any]:
         total = sum(len(v) for v in self._items.values())

@@ -95,13 +95,7 @@ class PipelineRunner:
         self._cleanup_zombie_jobs()
 
     def _cleanup_zombie_jobs(self) -> None:
-        """Mark stale 'running' jobs as failed on startup.
-
-        After a server restart, no subprocess is tracked in
-        ``_running_jobs``, so any job file still showing
-        ``status=running`` is a zombie left from the previous
-        process.
-        """
+        """Mark stale 'running' jobs as failed on startup."""
         for path in JOBS_DIR.glob("*.json"):
             try:
                 job = _load_job(path.stem)
@@ -110,9 +104,7 @@ class PipelineRunner:
             if job and job.status == "running":
                 job.status = "failed"
                 job.error = "Server restarted during execution"
-                job.completed_at = datetime.now(
-                    timezone.utc,
-                ).isoformat()
+                job.completed_at = datetime.now(tz=timezone.utc).isoformat()
                 _save_job(job)
 
     def get_pipelines(self) -> list[PipelineDefinition]:
@@ -130,6 +122,7 @@ class PipelineRunner:
     _RESUMABLE = {
         "tagging", "variant_gen", "pdf_to_qti",
         "pdf_split", "question_gen", "batch_question_gen",
+        "batch_question_gen_api",
     }
 
     def create_job(
@@ -156,9 +149,18 @@ class PipelineRunner:
                 f"Job {job_id} cannot be started (status: {job.status})",
             )
         build_params = dict(job.params)
-        # Batch pipelines need the job_id for state file naming
+        # Real-time batch: pass runner job_id as state key
         if job.pipeline_id == "batch_question_gen":
             build_params["job_id"] = job.job_id
+        # Batch API: persist batch_job_id so resume finds checkpoints
+        if job.pipeline_id == "batch_question_gen_api":
+            batch_jid = (
+                build_params.get("batch_job_id") or job.job_id
+            )
+            build_params["job_id"] = batch_jid
+            if "batch_job_id" not in job.params:
+                job.params["batch_job_id"] = batch_jid
+                _save_job(job)
         cmd = self._build_command(job.pipeline_id, build_params)
         if not cmd:
             job.status = "failed"
@@ -192,6 +194,9 @@ class PipelineRunner:
             "variant_gen": self._cmd_variant_gen,
             "question_gen": self._cmd_question_gen,
             "batch_question_gen": self._cmd_batch_question_gen,
+            "batch_question_gen_api": (
+                self._cmd_batch_question_gen_api
+            ),
         }
 
         builder = commands.get(pipeline_id)
@@ -281,10 +286,31 @@ class PipelineRunner:
             "app.question_generation.scripts.run_batch_generation",
             "--mode", p.get("mode", "pending_only"),
         ]
+        return self._append_batch_flags(cmd, p)
+
+    def _cmd_batch_question_gen_api(
+        self, p: dict[str, Any],
+    ) -> list[str]:
+        """Batch API generation (50% cost discount)."""
+        cmd = [
+            _PYTHON, "-m",
+            "app.question_generation.scripts"
+            ".run_batch_api_generation",
+            "--mode", p.get("mode", "pending_only"),
+            "--no-caffeinate",
+        ]
+        return self._append_batch_flags(cmd, p)
+
+    @staticmethod
+    def _append_batch_flags(
+        cmd: list[str], p: dict[str, Any],
+    ) -> list[str]:
         if p.get("skip_images") == "true":
             cmd.append("--skip-images")
         if p.get("job_id"):
             cmd.extend(["--job-id", p["job_id"]])
+        if p.get("max_atoms"):
+            cmd.extend(["--max-atoms", str(p["max_atoms"])])
         return cmd
 
     def _run_subprocess(self, job_id: str, cmd: list[str]) -> None:
@@ -330,27 +356,17 @@ class PipelineRunner:
                         _save_job(job)
 
             process.wait()
-
-            # Final status update — reload to pick up cancellation
             job = _load_job(job_id) or job
             job.logs = logs[-100:]
-
-            # If the job was cancelled while running, keep that status
             if job.status == "cancelled":
                 pass
             elif process.returncode == 0:
                 job.status = "completed"
-                job.completed_at = datetime.now(
-                    timezone.utc,
-                ).isoformat()
+                job.completed_at = datetime.now(tz=timezone.utc).isoformat()
             else:
                 job.status = "failed"
-                job.completed_at = datetime.now(
-                    timezone.utc,
-                ).isoformat()
-                job.error = (
-                    f"Process exited with code {process.returncode}"
-                )
+                job.completed_at = datetime.now(tz=timezone.utc).isoformat()
+                job.error = f"Process exited with code {process.returncode}"
 
         except Exception as e:
             job.status = "failed"
@@ -400,7 +416,7 @@ class PipelineRunner:
             self._running_jobs.pop(job_id, None)
 
         job.status = "cancelled"
-        job.completed_at = datetime.now(timezone.utc).isoformat()
+        job.completed_at = datetime.now(tz=timezone.utc).isoformat()
         _save_job(job)
 
         return job
@@ -420,7 +436,10 @@ class PipelineRunner:
             return True
         return False
 
-    _CHECKPOINT_RESUME = {"question_gen", "batch_question_gen"}
+    _CHECKPOINT_RESUME = {
+        "question_gen", "batch_question_gen",
+        "batch_question_gen_api",
+    }
 
     def resume_job(
         self, job_id: str, mode: str = "remaining",
@@ -451,37 +470,21 @@ class PipelineRunner:
             return self.start_job(new_job.job_id)
 
         # Other pipelines: try item-level resume
-        items_to_process: list[str] = []
-        if mode == "failed_only":
-            items_to_process = [
-                item.id
-                for item in original_job.failed_item_details
-            ]
-        elif original_job.failed_item_details:
-            items_to_process = [
-                item.id
-                for item in original_job.failed_item_details
-            ]
-
-        if not items_to_process:
+        items = [
+            it.id for it in original_job.failed_item_details
+        ]
+        if not items:
             return None
-
         if original_job.pipeline_id in ("tagging", "variant_gen"):
-            new_params["question_ids"] = ",".join(
-                items_to_process,
-            )
+            new_params["question_ids"] = ",".join(items)
 
         new_job = self.create_job(
             original_job.pipeline_id, new_params,
         )
         new_job.logs.append(
-            f"Resumed from job {job_id} with mode '{mode}'",
-        )
-        new_job.logs.append(
-            f"Items to process: {items_to_process}",
+            f"Resumed from job {job_id} ({mode}): {items}",
         )
         _save_job(new_job)
-
         return self.start_job(new_job.job_id)
 
 

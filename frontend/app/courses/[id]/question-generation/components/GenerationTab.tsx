@@ -24,6 +24,8 @@ type AtomFilter =
 export interface BatchGenOptions {
   mode: string;
   skip_images: string;
+  use_batch_api?: boolean;
+  max_atoms?: string;
 }
 
 interface GenerationTabProps {

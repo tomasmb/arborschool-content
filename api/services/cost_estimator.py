@@ -53,6 +53,7 @@ PIPELINE_MODELS: dict[str, str] = {
     "variant_gen": "gemini-3-pro-preview",
     "question_gen": "gpt-5.1",
     "batch_question_gen": "gpt-5.1",
+    "batch_question_gen_api": "gpt-5.1",
     "lessons": "gpt-5.1",
 }
 
@@ -74,11 +75,7 @@ class CostEstimatorService:
         pipeline_id: str,
         params: dict[str, Any],
     ) -> CostEstimate:
-        """Estimate cost for running a pipeline.
-
-        Determines the correct model and pricing for each pipeline,
-        then estimates token usage and cost range.
-        """
+        """Estimate cost for a pipeline run."""
         model = PIPELINE_MODELS.get(pipeline_id, DEFAULT_MODEL)
         pricing = MODEL_PRICING.get(model, MODEL_PRICING[DEFAULT_MODEL])
         token_estimate = self._estimate_tokens(pipeline_id, params)
@@ -90,6 +87,10 @@ class CostEstimatorService:
             token_estimate.output_tokens / 1_000_000
         ) * pricing["output"]
         total = input_cost + output_cost
+        discount = token_estimate.breakdown.get(
+            "batch_api_discount", 1.0,
+        )
+        total *= discount
 
         # 20% buffer for upper bound (retries, validation rounds)
         return CostEstimate(
@@ -117,6 +118,7 @@ class CostEstimatorService:
             "variant_gen": self._estimate_variant_gen,
             "question_gen": self._estimate_question_gen,
             "batch_question_gen": self._estimate_batch_question_gen,
+            "batch_question_gen_api": self._estimate_batch_question_gen_api,
             "lessons": self._estimate_lessons,
         }
 
@@ -138,21 +140,14 @@ class CostEstimatorService:
     ) -> TokenEstimate:
         """Standards generation — Gemini 3 Pro, ~4x thinking."""
         num_ejes = 1 if params.get("eje") else 4
-        unidades_per_eje = 8  # Approximate average
-
-        # Generation: 1 call per unidad
+        unidades_per_eje = 8
         gen_input = 2_500 * unidades_per_eje
         gen_output_visible = 1_200 * unidades_per_eje
-        # Validation: 1 call per unidad + 1 cross-eje
         val_input = 3_000 * unidades_per_eje + 6_000
         val_output_visible = 800 * unidades_per_eje + 1_500
-
         total_input = (gen_input + val_input) * num_ejes
-        # Thinking tokens ~3x visible output for high thinking
-        visible_output = (
-            gen_output_visible + val_output_visible
-        ) * num_ejes
-        total_output = visible_output * 4  # visible + 3x thinking
+        visible_output = (gen_output_visible + val_output_visible) * num_ejes
+        total_output = visible_output * 4
 
         return TokenEstimate(
             input_tokens=total_input,
@@ -175,12 +170,9 @@ class CostEstimatorService:
         elif isinstance(standard_ids, list):
             num_standards = len(standard_ids) if standard_ids else 21
         else:
-            num_standards = 21  # All standards
-
+            num_standards = 21
         input_per_std = 5_000
-        visible_output_per_std = 3_000
-        # 4x multiplier for thinking_level=high
-        total_output_per_std = visible_output_per_std * 4
+        total_output_per_std = 3_000 * 4
 
         return TokenEstimate(
             input_tokens=input_per_std * num_standards,
@@ -198,10 +190,8 @@ class CostEstimatorService:
     ) -> TokenEstimate:
         """PDF split — o4-mini, single call per PDF."""
         num_pages = params.get("num_pages", 30)
-        # Document tokens: ~800-1,200 per page
         input_tokens = num_pages * 1_000
-        # Segment JSON + reasoning tokens
-        output_tokens = num_pages * 500 + 5_000  # Base reasoning overhead
+        output_tokens = num_pages * 500 + 5_000
 
         return TokenEstimate(
             input_tokens=input_tokens,
@@ -222,11 +212,9 @@ class CostEstimatorService:
         elif isinstance(question_ids, list):
             num_questions = len(question_ids) if question_ids else 65
         else:
-            num_questions = 65  # Full test
-
-        input_per_q = 4_000  # Prompt + vision tokens
-        visible_output_per_q = 3_000  # QTI XML
-        total_output_per_q = visible_output_per_q * 4  # thinking
+            num_questions = 65
+        input_per_q = 4_000
+        total_output_per_q = 3_000 * 4
 
         return TokenEstimate(
             input_tokens=input_per_q * num_questions,
@@ -376,12 +364,7 @@ class CostEstimatorService:
         self, params: dict[str, Any],
     ) -> TokenEstimate:
         """Batch question generation — per-atom estimate x atom count."""
-        mode = params.get("mode", "pending_only")
-        skip_images = params.get("skip_images") == "true"
-        num_atoms = _count_eligible_atoms(mode, skip_images=skip_images)
-
-        # Per-atom estimate: reuse question_gen estimator with
-        # empty atom_id (uses defaults: 62 planned items)
+        num_atoms = self._resolve_batch_atom_count(params)
         per_atom = self._estimate_question_gen({"phase": "all"})
 
         return TokenEstimate(
@@ -389,7 +372,7 @@ class CostEstimatorService:
             output_tokens=per_atom.output_tokens * num_atoms,
             breakdown={
                 "num_atoms": num_atoms,
-                "mode": mode,
+                "mode": params.get("mode", "pending_only"),
                 "input_per_atom": per_atom.input_tokens,
                 "output_per_atom": per_atom.output_tokens,
                 "note": (
@@ -398,6 +381,30 @@ class CostEstimatorService:
                 ),
             },
         )
+
+    def _estimate_batch_question_gen_api(
+        self, params: dict[str, Any],
+    ) -> TokenEstimate:
+        """Batch API — same tokens, 50% discount via breakdown flag."""
+        base = self._estimate_batch_question_gen(params)
+        base.breakdown["batch_api_discount"] = 0.5
+        base.breakdown["note"] = (
+            "Batch API: 50% cost discount. "
+            "Actual cost depends on per-atom phase progress."
+        )
+        return base
+
+    def _resolve_batch_atom_count(
+        self, params: dict[str, Any],
+    ) -> int:
+        """Resolve atom count, honoring max_atoms if set."""
+        mode = params.get("mode", "pending_only")
+        skip_images = params.get("skip_images") == "true"
+        eligible = _count_eligible_atoms(mode, skip_images=skip_images)
+        max_atoms = params.get("max_atoms")
+        if max_atoms:
+            return min(eligible, int(max_atoms))
+        return eligible
 
     def _estimate_lessons(self, params: dict[str, Any]) -> TokenEstimate:
         """Lesson generation — GPT-5.1, 1 call per atom."""
@@ -424,14 +431,9 @@ class CostEstimatorService:
 
 
 def _count_eligible_atoms(
-    mode: str,
-    *,
-    skip_images: bool = False,
+    mode: str, *, skip_images: bool = False,
 ) -> int:
-    """Count atoms eligible for batch generation.
-
-    When *skip_images*, only counts atoms with empty required_image_types.
-    """
+    """Count atoms eligible for batch generation."""
     try:
         from api.services.atom_coverage_service import (
             load_atom_coverage_maps,

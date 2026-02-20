@@ -53,6 +53,8 @@ def main() -> None:
     atoms = _load_eligible_atoms(args.mode)
     if args.skip_images:
         atoms = _exclude_atoms_needing_images(atoms)
+    if args.max_atoms:
+        atoms = atoms[:args.max_atoms]
     if not atoms:
         print("No eligible atoms found.")
         sys.exit(0)
@@ -265,6 +267,11 @@ def _parse_args() -> argparse.Namespace:
             "Max seconds to wait per batch before timeout "
             "(default: 86400 = 24h)"
         ),
+    )
+    parser.add_argument(
+        "--max-atoms",
+        type=int, default=None,
+        help="Limit to first N eligible atoms (default: all)",
     )
     parser.add_argument(
         "--no-caffeinate", action="store_true",

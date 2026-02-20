@@ -159,7 +159,7 @@ class DuplicateGate:
 _SOLVABILITY_REASONING = "medium"
 
 # Max parallel LLM calls for solvability checks
-_MAX_PARALLEL_VALIDATION = 5
+_MAX_PARALLEL_VALIDATION = 15
 
 
 class BaseValidator:
@@ -343,7 +343,7 @@ class BaseValidator:
 # ---------------------------------------------------------------------------
 
 # Max parallel LLM calls for final comprehensive validation
-_MAX_PARALLEL_FINAL = 5
+_MAX_PARALLEL_FINAL = 15
 
 
 class FinalValidator:
