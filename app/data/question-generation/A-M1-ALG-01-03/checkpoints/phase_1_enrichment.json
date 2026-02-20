@@ -3,122 +3,135 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Identificación de términos semejantes en expresiones algebraicas con uno o más factores literales (por ejemplo, 3x, -5x, 1/2x, 7x; 2ab, -3ab).",
-        "Reducción (suma o resta) de términos semejantes operando únicamente sus coeficientes numéricos, manteniendo el mismo factor literal.",
-        "Expresiones con una o varias letras, siempre que los términos a reducir tengan exactamente el mismo factor literal (incluyendo potencias y orden de los factores).",
-        "Uso de coeficientes enteros positivos y negativos, y fracciones o decimales simples.",
-        "Simplificación de una expresión dada, sin necesidad de contextualizarla ni de resolver ecuaciones asociadas."
+        "Identificar términos semejantes en expresiones algebraicas con una o varias letras, por ejemplo 3x, -5x, 2x; 4ab, -1/2ab.",
+        "Agrupar y reducir términos semejantes sumando o restando sus coeficientes numéricos.",
+        "Trabajar con coeficientes enteros positivos y negativos.",
+        "Trabajar con coeficientes racionales (fracciones y decimales simples) positivos y negativos.",
+        "Expresiones con hasta 2 o 3 variables distintas, por ejemplo términos en x, y, z y combinaciones como xy, x^2, y^2.",
+        "Uso de la propiedad conmutativa y asociativa de la suma para reordenar términos antes de reducir.",
+        "Sacar factor común numérico para facilitar la reducción solo si no cambia el foco en la identificación de términos semejantes."
       ],
       "out_of_scope": [
-        "Suma y resta de polinomios con estructura explícita de polinomio (eso se trabaja como átomo posterior aunque use la misma idea).",
-        "Multiplicación de monomios o polinomios, productos notables y factorización.",
-        "Resolución de ecuaciones o inecuaciones; puede aparecer una expresión dentro de una ecuación, pero la tarea evaluada aquí es solo simplificar el lado indicado.",
-        "Manejo de potencias y raíces más allá de reconocer que x², x³, a²b no son semejantes a x, ab, ab².",
-        "Expresiones con valor absoluto, radicales complejos o funciones (sen x, log x, etc.) como parte del factor literal.",
-        "Contextos geométricos, gráficos de funciones o lectura de tablas/diagramas estadísticos."
+        "Suma y resta de polinomios presentados ya en forma ordenada como polinomios independientes (eso corresponde a un átomo posterior que usa esta habilidad).",
+        "Productos notables o multiplicación de expresiones algebraicas.",
+        "Factorización de expresiones algebraicas (más allá de pasos muy simples usados solo como apoyo).",
+        "Resolución de ecuaciones o inecuaciones completas (solo se permite simplificar el lado algebraico sin resolver).",
+        "Operar con exponentes no naturales o con bases no literales (por ejemplo x^{-1}, raíces, potencias con fracciones en el exponente).",
+        "Reducción de expresiones con valor absoluto, radicales algebraicos complicados o funciones (sen x, log x, etc.).",
+        "Manipulación de expresiones con parámetros en contextos funcionales avanzados (por ejemplo familias de funciones)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Manejo de suma y resta con números enteros.",
-        "A-M1-NUM-01-02: Manejo básico de fracciones y decimales (suma y resta).",
-        "A-M1-ALG-01-01: Comprensión de la notación algebraica: coeficiente, parte literal, monomio.",
-        "A-M1-ALG-01-02: Diferenciar entre factor numérico y literal, y reconocer potencias simples (x, x², ab, a²b)."
+        "A-M1-NT-01-01: Manejo de suma y resta de números enteros.",
+        "A-M1-NT-01-02: Manejo de suma y resta de fracciones y decimales.",
+        "A-M1-ALG-01-01: Comprender el significado de coeficiente y parte literal de un término algebraico.",
+        "A-M1-ALG-01-02: Reconocer potencias con exponente natural y notación literal (por ejemplo x^2, y^3)."
       ],
       "common_traps": [
-        "Considerar semejantes términos que solo comparten la letra pero no la potencia (por ejemplo, x y x²) o no comparten exactamente los mismos factores literales (ab y a²b o ab y ac).",
-        "Alterar la parte literal al operar (por ejemplo, reducir 3x + 5x a 8x² o a 15x).",
-        "Ignorar signos al sumar o restar coeficientes (errores con coeficientes negativos).",
-        "Intentar sumar o restar términos no semejantes, produciendo una sola expresión cuando en realidad la forma reducida debe conservar más de un tipo de término.",
-        "Confundir reducción de términos semejantes con ordenamiento alfabético de los términos o con factorizar.",
-        "Perder términos al simplificar, especialmente cuando el coeficiente resultante es 0 y el término desaparece.",
-        "Errores al manejar fracciones o decimales en los coeficientes durante la reducción."
+        "Considerar semejantes términos que solo comparten una parte de la parte literal, por ejemplo x y x^2, o xy y x.",
+        "Ignorar el signo del coeficiente al reducir, sumando 3x + (-5x) como 8x en vez de -2x.",
+        "Tratar el número 1 como si fuera irrelevante y perder el término al simplificar, por ejemplo -x + x = x en vez de 0.",
+        "Confundir coeficiente 0 con ausencia de término, y no reconocer que la reducción puede dar exactamente 0.",
+        "Modificar indebidamente la parte literal al sumar, por ejemplo interpretar 2a + 3a como 5a^2.",
+        "Asociar erróneamente términos por su posición en la expresión en vez de por su parte literal (no reagrupar antes de reducir).",
+        "Olvidar que fracciones y decimales también son coeficientes que se pueden sumar y restar, y dejar la expresión sin simplificar completamente.",
+        "Errores al operar fracciones al reducir términos semejantes con coeficientes racionales."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Expresiones con un solo tipo de parte literal (por ejemplo, solo x o solo a) y todos los términos semejantes entre sí.",
-        "Coeficientes enteros pequeños (entre -9 y 9), preferentemente positivos o con un solo negativo explícito.",
-        "No incluye términos no semejantes que deban dejarse sin combinar.",
-        "No incluye paréntesis ni requiere reagrupación previa; la tarea es básicamente \"suma de coeficientes\" directa.",
-        "Número de términos acotado (3 o 4 términos como máximo)."
+        "Expresiones con una sola variable y un solo tipo de término literal (por ejemplo solo x), con 3 a 4 términos.",
+        "Coeficientes enteros pequeños (entre -9 y 9) y en su mayoría positivos.",
+        "Estructura lineal sin paréntesis ni necesidad de reordenar para identificar términos semejantes.",
+        "Reducción que lleva a un único término no nulo, por ejemplo 3x + 5x - x.",
+        "Distractores basados en errores simples de suma/resta de enteros, sin involucrar cambios en la parte literal."
       ],
       "medium": [
-        "Expresiones con dos o tres grupos de términos semejantes (por ejemplo, términos en x y términos en y, o términos en ab y a).",
-        "Presencia de términos no semejantes que deben reconocerse y mantenerse separados en el resultado.",
-        "Coeficientes enteros que incluyen positivos y negativos, con magnitud moderada (entre -20 y 20).",
-        "Incorporación de fracciones o decimales simples en algunos coeficientes (por ejemplo, 1/2, 3/4, 0,5, 1,2), pero no mezclando muchos tipos a la vez.",
-        "Puede incluir paréntesis sencillos donde solo se pide reducir después de eliminar un signo evidente (por ejemplo, usando la distributiva con + o −1, pero sin que esa distributiva sea el foco principal del ítem).",
-        "Resultado final con más de un término (por ejemplo, ax + by)."
+        "Expresiones con 2 o 3 tipos de términos literales distintos (por ejemplo x, y, x^2, xy), donde solo algunos son semejantes entre sí.",
+        "Presencia de coeficientes enteros negativos y positivos mezclados, incluyendo ceros aparentes al reducir.",
+        "Necesidad de reagrupar mentalmente términos semejantes que no están contiguos en la expresión.",
+        "Incorporar coeficientes racionales sencillos (fracciones con denominadores 2, 3, 4 o decimales con una cifra), exigiendo operaciones básicas con fracciones o decimales.",
+        "Resultado final con dos o más términos no semejantes, requiriendo dejar la expresión parcialmente reducida pero correctamente agrupada.",
+        "Distractores que recogen errores típicos de identificación de semejanza (por ejemplo sumar x con x^2) y de manejo de signos."
       ],
       "hard": [
-        "Expresiones con varios grupos de términos semejantes (tres o más tipos de parte literal: x, x², xy, y, etc.), donde la identificación correcta es clave.",
-        "Combinación de coeficientes enteros, fraccionarios y/o decimales en una misma expresión, requiriendo operaciones con distintos tipos de números.",
-        "Presencia de paréntesis con signos que obligan a tener cuidado en la asignación de signos a los coeficientes antes de reducir, sin que el foco sea exclusivamente la propiedad distributiva.",
-        "Casos donde algunos grupos de términos semejantes se anulan (coeficiente resultante 0), lo que exige decidir si el término desaparece totalmente y cómo queda expresado el resultado.",
-        "Expresiones donde la parte literal tiene varios factores y potencias (por ejemplo, a²b, ab², a²b²) y se requiere discriminar con precisión cuáles son semejantes y cuáles no.",
-        "Ítems en contexto verbal donde se presenta una expresión y se pide identificar o producir su versión simplificada, con distractores que capturan errores típicos en la reducción."
+        "Expresiones más largas (6 a 8 términos) con 3 o más tipos de partes literales (por ejemplo x, y, z, xy, x^2, y^2), donde solo algunos grupos son reducibles.",
+        "Uso simultáneo de coeficientes enteros y fraccionarios, con fracciones de distinto denominador que requieren encontrar común denominador para reducir correctamente.",
+        "Presencia de paréntesis con signos delante, que obligan a distribuir el signo antes de identificar términos semejantes.",
+        "Resultados que incluyen coeficientes cero para uno o más tipos de términos, exigiendo reconocer que ciertos términos desaparecen.",
+        "Distractores que requieren distinguir entre errores de signo, errores con fracciones y errores de mal reconocimiento de partes literales, evitando que se pueda responder solo por cálculo rápido superficial.",
+        "Contextos verbales breves donde primero se debe traducir una situación sencilla a una expresión algebraica y luego reducir términos semejantes, manteniendo como foco la reducción."
       ]
     },
     "ambiguity_avoid": [
-      "No usar letras que puedan confundirse con números o símbolos (por ejemplo, usar n en vez de una letra que parezca 0, o evitar l que se confunda con 1).",
-      "Especificar claramente la expresión a simplificar, usando paréntesis y signos de manera inequívoca; evitar cadenas largas sin separación que generen dudas sobre la agrupación.",
-      "Evitar el uso simultáneo de muchas letras distintas cuando solo una parte de ellas es relevante para la reducción; mantener el número de variables acotado y con roles claros.",
-      "No plantear enunciados donde se pueda interpretar si la instrucción es reducir toda la expresión o solo una parte de ella; explicitar \"simplificar la siguiente expresión\" o indicar qué parte se debe simplificar.",
-      "No mezclar en un mismo ítem tareas de reducción de términos semejantes con otras operaciones de igual peso (por ejemplo, resolver completamente una ecuación compleja), porque dificulta aislar qué se está evaluando.",
-      "Evitar expresiones donde el orden de factores en la parte literal pueda inducir dudas sobre si son semejantes (por ejemplo, preferir escribir sistemáticamente ab en vez de ba mezclados sin intención); si se usa orden distinto, dejar claro que el producto es conmutativo.",
-      "No usar notaciones poco estándar como puntos medios o barras horizontales poco claras que puedan confundirse con signos de resta o fracción."
+      "No mezclar en el mismo ítem conceptos que pertenecen a otros átomos (por ejemplo factorizar, resolver ecuaciones, calcular valores numéricos de la expresión) como parte esencial de la tarea.",
+      "Evitar expresiones donde la tipografía pueda hacer dudar entre variables distintas (por ejemplo confundir l con 1, o x con χ).",
+      "No usar notación abreviada ambigua, como omitir el signo de multiplicación en lugares que puedan confundirse con índices o exponentes.",
+      "No presentar términos donde el exponente no sea claramente un entero natural (por ejemplo x2 sin el símbolo ^ en formatos digitales poco claros).",
+      "Evitar contextos verbales tan cargados que la dificultad principal pase a ser de comprensión lectora y no de identificación/reducción de términos semejantes.",
+      "No pedir simultáneamente varios pasos intermedios (por ejemplo primero expandir un producto, luego reducir términos semejantes y después resolver una ecuación) si eso desplaza el foco desde la reducción.",
+      "Evitar expresiones en las que dos representaciones puedan considerarse válidas si no se especifica forma estándar (por ejemplo aceptando cambio de orden de los términos sin aclarar qué se está preguntando).",
+      "No usar letras que puedan confundirse con números en la tipografía PAES (por ejemplo O con 0)."
     ],
     "error_families": [
       {
-        "name": "Confundir literal con coeficiente",
-        "description": "El estudiante altera la parte literal al sumar o restar, por ejemplo, 3x + 5x → 8x², interpretando erróneamente que al sumar 'x' con 'x' se eleva al cuadrado.",
-        "how_to_address": "Reforzar la idea de que al sumar términos semejantes solo cambian los coeficientes numéricos y que la parte literal permanece idéntica; usar ejemplos donde se comparen 3x + 5x y 3x · 5x para contrastar suma y producto."
+        "name": "Confusión_de_parte_literal",
+        "description": "El estudiante considera semejantes términos que tienen partes literales diferentes, por ejemplo trata 2x y 3x^2 como términos semejantes.",
+        "how_to_address": "En las alternativas incorrectas, mostrar resultados donde se hayan sumado términos con exponentes distintos o con letras distintas. En la retroalimentación, enfatizar que los exponentes y las letras deben coincidir exactamente para que los términos sean semejantes."
       },
       {
-        "name": "Considerar semejantes términos que no lo son",
-        "description": "Se agrupan términos con distinta potencia o distinta combinación de letras (por ejemplo, x con x², ab con a²b o ab con ac).",
-        "how_to_address": "Trabajar con tablas o códigos de colores para resaltar que ser semejante implica tener exactamente la misma parte literal, incluyendo potencias; practicar clasificando términos en grupos antes de reducir."
+        "name": "Ignorar_signos_de_coeficientes",
+        "description": "El estudiante suma o resta coeficientes como si todos fueran positivos, por ejemplo 4x - 7x = 11x.",
+        "how_to_address": "Diseñar distractores que reflejen la suma de valores absolutos de los coeficientes. En la explicación, remarcar que el signo forma parte del coeficiente y conviene pensar en la recta numérica o en suma de positivos y negativos."
       },
       {
-        "name": "Ignorar signos en los coeficientes",
-        "description": "Al reducir términos semejantes, el estudiante suma valores absolutos y luego asigna un signo incorrecto, o simplemente olvida el signo negativo de algún término (por ejemplo, 3x − 5x → 8x).",
-        "how_to_address": "Vincular la reducción de términos semejantes con la recta numérica o con sumas de enteros aisladas (sin letras) antes de volver a incluir la parte literal; enfatizar escribir explícitamente el signo de cada coeficiente y hacer la operación numérica aparte."
+        "name": "Error_en_suma_de_fracciones",
+        "description": "Al reducir términos semejantes con coeficientes fraccionarios, se cometen errores al sumar o restar fracciones, como sumar numeradores y denominadores directamente.",
+        "how_to_address": "Incluir ítems donde la única dificultad adicional sea la fracción en los coeficientes. En la retroalimentación, recordar el procedimiento correcto para sumar fracciones: denominador común y suma de numeradores."
       },
       {
-        "name": "Perder términos o no simplificar completamente",
-        "description": "El resultado final omite algún grupo de términos semejantes o deja expresiones parcialmente reducidas (por ejemplo, combina algunos términos en x pero deja otros sin combinar, o se olvida de un término aislado).",
-        "how_to_address": "Promover estrategias de marcaje (subrayar, usar colores, o encerrar en círculos) para agrupar términos semejantes antes de operar; fomentar revisar si todos los términos originales quedaron representados en el resultado, salvo los que se anulan a 0."
+        "name": "Perdida_de_terminos",
+        "description": "El estudiante omite términos durante la reducción, especialmente cuando varios son negativos o cuando aparecen ceros como resultado intermedio.",
+        "how_to_address": "Proponer expresiones con varios términos semejantes, algunos que se anulan. En la explicación, sugerir reordenar o subrayar términos semejantes antes de operar, y revisar si todos los términos fueron considerados."
       },
       {
-        "name": "Operación incorrecta con fracciones y decimales",
-        "description": "El estudiante identifica correctamente los términos semejantes, pero comete errores al sumar o restar los coeficientes fraccionarios o decimales.",
-        "how_to_address": "Separar la dificultad numérica de la algebraica trabajando primero ejercicios puramente numéricos con fracciones/decimales; luego reincorporar la parte literal, insistiendo en que la operación es la misma que con números solos."
+        "name": "Confundir_reduccion_con_multiplicacion",
+        "description": "En vez de sumar coeficientes, el estudiante los multiplica o altera la parte literal, como obtener 6x^2 a partir de 2x + 3x.",
+        "how_to_address": "Generar distractores con resultados típicos de productos notables equivocadamente aplicados. En la retroalimentación, aclarar que reducir términos semejantes es una suma/resta, no un producto, y que la parte literal no cambia."
       },
       {
-        "name": "No reconocer la anulación de términos",
-        "description": "Cuando la suma de coeficientes da 0, el estudiante deja el término con un coeficiente 0 explícito o, peor, conserva el término con un coeficiente incorrecto (por ejemplo, 3x − 3x → x o 0x).",
-        "how_to_address": "Trabajar conscientemente ejemplos donde dos términos semejantes se cancelan; insistir en que 0 multiplicado por cualquier parte literal da 0 y por tanto ese término desaparece de la expresión simplificada."
+        "name": "No_reconocer_coeficiente_1_o_-1",
+        "description": "El estudiante no ve explícitamente el coeficiente 1 o -1 y comete errores, por ejemplo interpreta -x como x o 1x.",
+        "how_to_address": "Incluir términos como x, -x y -y junto a otros con coeficiente explícito. En la explicación, destacar que x equivale a 1x y -x equivale a -1x, lo que afecta la suma de coeficientes."
+      },
+      {
+        "name": "Desorden_en_la_expresion_final",
+        "description": "El estudiante reduce correctamente los coeficientes pero deja la expresión en un orden confuso o mezcla términos aún reducibles.",
+        "how_to_address": "Diseñar ítems donde una alternativa incorrecta tenga los mismos coeficientes correctos pero con términos semejantes aún separados. En la retroalimentación, enfatizar el agrupamiento completo de cada tipo de término y, opcionalmente, un orden convencional (por grado o alfabético)."
       }
     ],
     "future_targets": [
-      "A-M1-ALG-01-04: Suma y resta de polinomios.",
-      "A-M1-ALG-01-05: Multiplicación de monomios y polinomios, donde vuelve a ser clave reconocer y ordenar términos semejantes.",
-      "A-M1-ALG-01-06: Simplificación de expresiones algebraicas más complejas que combinan distributiva, reducción de términos semejantes y manejo de signos.",
-      "A-M1-ALG-02-01: Resolución de ecuaciones lineales y sistemas de ecuaciones, que requieren simplificar expresiones en cada lado de la igualdad.",
-      "A-M1-FUN-01-01: Trabajo con funciones polinomiales (evaluación, transformación de expresiones), donde se simplifican expresiones obtenidas al reemplazar valores.",
-      "A-M1-ALG-03-01: Factorización básica, que exige antes poder ordenar y agrupar términos semejantes para aplicar patrones."
+      "A-M1-ALG-01-04: Suma y resta de polinomios en una o más variables.",
+      "A-M1-ALG-01-05: Simplificación de expresiones algebraicas más complejas que combinan productos, potencias y sumas.",
+      "A-M1-ALG-02-01: Resolución de ecuaciones lineales donde se requiere primero simplificar ambos lados reduciendo términos semejantes.",
+      "A-M1-ALG-02-02: Resolución de inecuaciones lineales con simplificación previa de la expresión.",
+      "A-M1-FUN-01-01: Trabajo con funciones polinomiales simples, donde se necesita simplificar expresiones al evaluar f(x).",
+      "A-M1-ALG-03-01: Factorización básica de polinomios, donde la expresión previa suele requerir reducción de términos semejantes.",
+      "A-M1-MOD-01-01: Modelación algebraica de situaciones, que incluye agrupar y simplificar expresiones obtenidas desde enunciados verbales."
     ],
     "representation_variants": [
-      "Expresiones algebraicas lineales en notación estándar (por ejemplo, 3x + 5x − 2x).",
-      "Expresiones con varias letras y potencias simples (por ejemplo, 2a + 3b − a + 4b, 5ab − 2ab + ab).",
-      "Expresiones que surgen al describir verbalmente combinaciones (por ejemplo, \"la suma de 3 veces x y 5 veces x, menos 2 veces x\"), donde el estudiante debe traducir a expresión y luego reducir.",
-      "Expresiones con coeficientes fraccionarios o decimales escritos como 1/2, 3/4, 0,5, 1,2, etc.",
-      "Expresiones que incluyen paréntesis sencillos que obligan a reorganizar antes de reducir, siempre que el foco siga siendo identificar y combinar términos semejantes.",
-      "Formas ya parcialmente ordenadas (por ejemplo, todos los términos en x juntos) y formas desordenadas donde los términos semejantes están separados, para obligar a reconocer semejanza más allá de la posición."
+      "Expresiones puramente simbólicas, lineales, sin contexto verbal.",
+      "Expresiones con términos ordenados y desordenados respecto del grado o del tipo de parte literal.",
+      "Expresiones que surgen de una breve descripción verbal (por ejemplo suma de cantidades similares) antes de ser reducidas.",
+      "Uso explícito de paréntesis simples que requieran primero eliminar paréntesis para luego reducir términos semejantes.",
+      "Representaciones mixtas con coeficientes enteros y fraccionarios dentro de la misma expresión.",
+      "Tablas descriptivas muy simples que muestren varios términos y pidan seleccionar cuáles son semejantes antes de reducir (sin requerir gráficos)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integers_with_negatives",
-      "simple_fractions",
+      "medium_integers",
+      "negative_integers",
+      "unit_fractions",
+      "simple_common_fractions",
       "simple_decimals"
     ],
     "required_image_types": []
