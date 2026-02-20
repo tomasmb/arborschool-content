@@ -217,19 +217,40 @@ export default function QuestionGenerationPage() {
           isOpen={showBatchGen}
           onClose={() => setShowBatchGen(false)}
           onSuccess={handleBatchGenSuccess}
-          pipelineId="batch_question_gen"
-          pipelineName="Batch Question Generation"
+          pipelineId={
+            batchGenOptions.use_batch_api
+              ? "batch_question_gen_api"
+              : "batch_question_gen"
+          }
+          pipelineName={
+            "Batch Question Generation"
+            + (batchGenOptions.use_batch_api
+              ? " (Batch API)" : "")
+          }
           pipelineDescription={
             `Generate questions for all covered atoms`
             + ` (${batchGenOptions.mode.replace("_", " ")},`
-            + ` images ${batchGenOptions.skip_images === "true" ? "off" : "on"})`
+            + ` images ${batchGenOptions.skip_images === "true" ? "off" : "on"}`
+            + (batchGenOptions.use_batch_api
+              ? ", 50% cost discount" : "")
+            + ")"
           }
-          params={batchGenOptions}
+          params={{
+            mode: batchGenOptions.mode,
+            skip_images: batchGenOptions.skip_images,
+            ...(batchGenOptions.max_atoms
+              ? { max_atoms: batchGenOptions.max_atoms }
+              : {}),
+          }}
           paramLabels={{
             mode: batchGenOptions.mode === "pending_only"
               ? "Pending only" : "All atoms (re-run)",
             skip_images: batchGenOptions.skip_images === "true"
-              ? "Yes — skip images" : "No — generate images",
+              ? "Yes — skip images"
+              : "No — generate images",
+            ...(batchGenOptions.max_atoms
+              ? { max_atoms: `Limit: ${batchGenOptions.max_atoms} atoms` }
+              : {}),
           }}
         />
       )}

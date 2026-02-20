@@ -31,7 +31,7 @@ from app.question_generation.progress import report_progress
 
 logger = logging.getLogger(__name__)
 
-_MAX_PARALLEL_FEEDBACK = 5
+_MAX_PARALLEL_FEEDBACK = 15
 
 
 def run_feedback(
