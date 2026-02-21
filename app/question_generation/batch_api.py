@@ -198,7 +198,22 @@ class OpenAIBatchSubmitter:
             json=body,
             timeout=60,
         )
-        resp.raise_for_status()
+        if not resp.ok:
+            # Provide a clear error for common billing failures so the user
+            # knows exactly what to fix rather than seeing a generic 400/429.
+            try:
+                err_body = resp.json()
+                err_code = err_body.get("error", {}).get("code", "")
+                err_msg = err_body.get("error", {}).get("message", "")
+            except Exception:
+                err_code, err_msg = "", resp.text[:200]
+            if err_code in ("billing_hard_limit_reached", "insufficient_quota"):
+                raise RuntimeError(
+                    f"OpenAI billing limit reached — add credits at "
+                    f"platform.openai.com/settings/organization/billing "
+                    f"then re-run the pipeline. (API: {err_msg})"
+                )
+            resp.raise_for_status()
         batch_id = resp.json()["id"]
         logger.info("Created batch %s for file %s", batch_id, file_id)
         return batch_id

@@ -185,21 +185,44 @@ def build_xsd_retry_requests(
     attempt: int,
     model: str = "gpt-5.1",
 ) -> list[Any]:
-    """Build retry requests for slots that failed XSD validation."""
+    """Build retry requests for slots that failed XSD validation.
+
+    Two cases are handled:
+    - Slots with a previous failed XML → XSD retry prompt with error feedback.
+    - Slots with NO previous response (API quota/rate-limit errors, where
+      failed_xml is empty) → fresh generation prompt, same as Phase 4 initial.
+      These items never had a first attempt so the XSD-feedback prompt would
+      be misleading.
+    """
     from app.question_generation.batch_api import BatchRequest
 
     requests: list[BatchRequest] = []
+    fresh_count = 0
+    retry_count = 0
     for atom_id, slots in xsd_failed.items():
         ctx_section = context_sections.get(atom_id, "")
         errors_for_atom = xsd_errors_map.get(atom_id, {})
         for slot in slots:
             failed_xml, xsd_errs = errors_for_atom.get(
-                slot.slot_index, ("", "XSD validation failed"),
+                slot.slot_index, ("", ""),
             )
-            requests.append(build_xsd_retry_request(
-                slot, ctx_section, atom_id,
-                failed_xml, xsd_errs, attempt, model,
-            ))
+            if not failed_xml:
+                # No prior attempt — use fresh generation prompt
+                requests.append(build_generation_request(
+                    slot, ctx_section, atom_id, model,
+                ))
+                fresh_count += 1
+            else:
+                requests.append(build_xsd_retry_request(
+                    slot, ctx_section, atom_id,
+                    failed_xml, xsd_errs, attempt, model,
+                ))
+                retry_count += 1
+    import logging as _log
+    _log.getLogger(__name__).info(
+        "build_xsd_retry_requests: %d fresh (no prior attempt) + %d xsd-retry",
+        fresh_count, retry_count,
+    )
     return requests
 
 
@@ -453,6 +476,21 @@ def _parse_generation_response(
     )
 
 
+def _strip_control_chars(text: str) -> str:
+    """Strip invalid XML control characters from text.
+
+    GPT-5.1 occasionally emits raw control bytes (\\x00, \\x03, \\x1b, etc.)
+    where Spanish accented characters should be.  These make the XML
+    unparseable (HTTP 422 from the QTI validator).  We strip them here,
+    upstream of all validation, so the item can at least be evaluated;
+    garbled Spanish text will then fail other quality checks if needed.
+
+    Valid XML whitespace (\\t, \\n, \\r) is preserved.
+    """
+    import re
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
+
+
 def _extract_qti_xml(text: str) -> str:
     """Extract QTI XML from potentially wrapped text."""
     cleaned = text.strip()
@@ -467,4 +505,6 @@ def _extract_qti_xml(text: str) -> str:
         end_tag = "</qti-assessment-item>"
         end = cleaned.rindex(end_tag) + len(end_tag)
         cleaned = cleaned[start:end]
-    return cleaned.strip()
+    # Strip control chars AFTER extracting the XML block so we don't
+    # accidentally keep garbage outside the <qti-assessment-item> tag.
+    return _strip_control_chars(cleaned.strip())

@@ -294,6 +294,20 @@ def _parse_single_response(
     )
 
 
+def _strip_control_chars(text: str) -> str:
+    """Strip invalid XML control characters from text.
+
+    GPT-5.1 occasionally emits raw control bytes (\\x00, \\x03, \\x1b, etc.)
+    where Spanish accented characters should be.  These make the XML
+    unparseable (HTTP 422 from the QTI validator).  We strip them here,
+    upstream of all validation, so the item can at least be evaluated;
+    garbled Spanish text will then fail other quality checks if needed.
+
+    Valid XML whitespace (\\t, \\n, \\r) is preserved.
+    """
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
+
+
 def _extract_qti_xml(text: str) -> str:
     """Extract QTI XML from potentially wrapped text.
 
@@ -322,9 +336,10 @@ def _extract_qti_xml(text: str) -> str:
         re.DOTALL,
     )
     if match:
-        return match.group(1).strip()
+        cleaned = match.group(1)
 
-    return cleaned.strip()
+    # Strip control chars AFTER extracting the XML block.
+    return _strip_control_chars(cleaned.strip())
 
 
 # ------------------------------------------------------------------

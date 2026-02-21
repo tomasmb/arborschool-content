@@ -6,10 +6,21 @@ using the provided validation endpoint.
 """
 
 import json
+import re
 import time  # Added for retry delay
 from typing import Any, Dict, Optional
 
 import requests
+
+
+def _strip_control_chars(text: str) -> str:
+    """Strip invalid XML control characters (\\x00-\\x08, \\x0b-\\x0c, \\x0e-\\x1f, \\x7f).
+
+    GPT-5.1 occasionally injects control bytes into generated XML, causing
+    HTTP 422 from the QTI validator (unparseable XML).  Valid whitespace
+    (\\t=0x09, \\n=0x0A, \\r=0x0D) is preserved.
+    """
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
 
 
 def validate_qti_xml(qti_xml: str, validation_endpoint: Optional[str] = None) -> Dict[str, Any]:
@@ -35,6 +46,8 @@ def validate_qti_xml(qti_xml: str, validation_endpoint: Optional[str] = None) ->
             stripped_xml = qti_xml.strip()
             if stripped_xml.startswith("<?xml"):
                 stripped_xml = stripped_xml.split("?>", 1)[1].strip()
+            # Remove control chars that cause HTTP 422 (GPT-5.1 artifact)
+            stripped_xml = _strip_control_chars(stripped_xml)
 
             # Use production endpoint with schema parameter
             validation_url = f"{validation_endpoint}?schema=qti3"

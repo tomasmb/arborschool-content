@@ -40,6 +40,7 @@ from app.question_generation.batch_request_builders import (
     build_enrichment_request,
     build_generation_request,
     build_plan_request,
+    parse_custom_id,
 )
 from app.question_generation.batch_pipeline_stages import (
     run_phase_5,
@@ -329,6 +330,30 @@ class BatchAtomPipeline:
         succeeded, xsd_failed = process_generation_responses(responses, slot_maps)
         self._items = succeeded
 
+        # Detect slots that received NO API response at all (e.g. quota/rate-
+        # limit errors that put items in the batch error_file rather than the
+        # output_file).  These slots are silently absent from `responses` and
+        # would otherwise be lost forever.  Add them to xsd_failed so they get
+        # regenerated in the retry round.
+        responded_keys: set[tuple[str, int]] = set()
+        for resp in responses:
+            parsed = parse_custom_id(resp.custom_id)
+            responded_keys.add((parsed["atom_id"], int(parsed.get("slot_index", "0"))))
+
+        missing_total = 0
+        for atom_id, slot_map in slot_maps.items():
+            for slot_idx, slot in slot_map.items():
+                if (atom_id, slot_idx) not in responded_keys:
+                    xsd_failed.setdefault(atom_id, []).append(slot)
+                    missing_total += 1
+
+        if missing_total:
+            logger.warning(
+                "Phase 4: %d slots had no API response (quota/rate-limit "
+                "errors) — added to retry queue.",
+                missing_total,
+            )
+
         for rnd in range(1, _MAX_XSD_RETRY_ROUNDS + 1):
             total_retry = sum(len(s) for s in xsd_failed.values())
             if total_retry == 0:
@@ -407,6 +432,22 @@ class BatchAtomPipeline:
             ofid = obj.get("output_file_id", "")
             rp = self._batch_dir / f"{phase_key}_results.jsonl"
             self._submitter.download_file(ofid, rp)
+            # If batch completed but with partial failures (e.g. quota errors
+            # mid-batch), also download the error file for diagnostics and log
+            # a clear warning so the missing-slot recovery code can act.
+            counts = obj.get("request_counts", {})
+            failed_count = counts.get("failed", 0)
+            if failed_count:
+                efid = obj.get("error_file_id")
+                if efid:
+                    ep = self._batch_dir / f"{phase_key}_errors.jsonl"
+                    self._submitter.download_file(efid, ep)
+                    logger.warning(
+                        "%s: batch completed with %d/%d failures — "
+                        "error file saved to %s. "
+                        "These items will be added to the retry queue.",
+                        phase_key, failed_count, counts.get("total", 0), ep,
+                    )
             update_phase(
                 self._state, phase_key, self._ckpt_path,
                 status="results_downloaded", results_jsonl=str(rp),
