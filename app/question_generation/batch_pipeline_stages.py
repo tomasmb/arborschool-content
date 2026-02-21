@@ -22,6 +22,7 @@ from app.question_generation.batch_checkpoint import (
     update_phase,
 )
 from app.question_generation.batch_phase_processors import (
+    find_missing_items,
     process_enhancement_responses,
     process_final_validation_responses,
     process_review_responses,
@@ -124,6 +125,18 @@ def run_phase_6(
     if errors:
         logger.warning("Phase 6: %d validation errors", len(errors))
 
+    # Recover items that had no API response (quota/rate-limit errors).
+    # These items passed all prior phases — carry them forward rather
+    # than silently losing them.
+    missing = find_missing_items(responses, items_by_id)
+    if missing:
+        logger.warning(
+            "Phase 6: %d items had no API response (quota error) — "
+            "carrying forward as passed.",
+            len(missing),
+        )
+        passed.extend(missing)
+
     passed_by_atom = _group_items_by_atom(passed, items)
     for atom_id, atom_items in passed_by_atom.items():
         out_dir = QUESTION_GENERATION_DIR / atom_id
@@ -192,6 +205,18 @@ def _run_enhance(
         responses, items_by_id,
     )
 
+    # Recover items with no API response (quota errors) — keep them
+    # unmodified (no enhancement applied, but item is not lost).
+    missing = find_missing_items(responses, items_by_id)
+    if missing:
+        logger.warning(
+            "Phase 7: %d items had no API response (quota error) — "
+            "keeping unmodified (no enhancement applied).",
+            len(missing),
+        )
+        for item in missing:
+            succeeded[item.item_id] = item
+
     if failures:
         logger.warning(
             "Phase 7: %d enhancement failures", len(failures),
@@ -239,6 +264,18 @@ def _run_review(
 
     responses = submit_fn("phase_78_review", requests)
     passed, failed_issues = process_review_responses(responses)
+
+    # Items with no API response (quota errors) are in neither
+    # passed nor failed_issues.  They are NOT in _correction_cycle's
+    # still_failed set so they will NOT be removed — they carry
+    # forward in `items` unchanged.  Log a warning for visibility.
+    missing = find_missing_items(responses, items_by_id)
+    if missing:
+        logger.warning(
+            "Phase 8: %d items had no API response (quota error) — "
+            "carrying forward without review (no corrections applied).",
+            len(missing),
+        )
 
     if failed_issues:
         logger.info(
@@ -374,6 +411,17 @@ def run_phase_9(
     )
     if errors:
         logger.warning("Phase 9: %d validation failures", len(errors))
+
+    # Recover items with no API response (quota/rate-limit errors).
+    # These items passed all prior phases — carry them forward.
+    missing = find_missing_items(responses, items_by_id)
+    if missing:
+        logger.warning(
+            "Phase 9: %d items had no API response (quota error) — "
+            "carrying forward as passed.",
+            len(missing),
+        )
+        passed.extend(missing)
 
     final_by_atom = _group_items_by_atom(passed, items)
     for atom_id, atom_items in final_by_atom.items():

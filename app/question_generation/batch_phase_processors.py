@@ -227,6 +227,40 @@ def build_xsd_retry_requests(
 
 
 # ------------------------------------------------------------------
+# Quota-error recovery helper
+# ------------------------------------------------------------------
+
+
+def find_missing_items(
+    responses: list[BatchResponse],
+    items_by_id: dict[str, GeneratedItem],
+) -> list[GeneratedItem]:
+    """Return items that had NO API response (quota / rate-limit failures).
+
+    When OpenAI hits a billing limit mid-batch, some items land in the
+    batch error_file rather than the output_file, so they never appear
+    in ``responses``.  These items are valid (they passed all prior
+    phases) and must not be silently discarded.
+
+    Callers should log a WARNING and carry these items forward
+    (for validation phases: treat as passed; for enrichment phases:
+    keep unmodified).
+    """
+    responded_ids: set[str] = set()
+    for resp in responses:
+        parsed = parse_custom_id(resp.custom_id)
+        item_id = parsed.get("item_id", "")
+        if item_id:
+            responded_ids.add(item_id)
+
+    return [
+        item
+        for item_id, item in items_by_id.items()
+        if item_id not in responded_ids
+    ]
+
+
+# ------------------------------------------------------------------
 # Phase 6 — Solvability response processing
 # ------------------------------------------------------------------
 
