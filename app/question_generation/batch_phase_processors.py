@@ -15,6 +15,7 @@ from typing import Any
 from app.question_generation.batch_api import BatchResponse
 from app.question_generation.batch_request_builders import (
     build_correction_request,
+    build_generation_request,
     build_review_request,
     build_xsd_retry_request,
     parse_custom_id,
