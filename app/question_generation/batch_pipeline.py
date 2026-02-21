@@ -78,6 +78,7 @@ logger = logging.getLogger(__name__)
 _DEFAULT_MODEL = "gpt-5.1"
 _DEFAULT_BUFFER_RATIO = 1.3
 _MAX_XSD_RETRY_ROUNDS = 2
+_MAX_UPLOAD_BYTES = 195 * 1024 * 1024  # 195 MB — OpenAI hard limit for gpt-5.1
 
 
 class BatchAtomPipeline:
@@ -387,6 +388,29 @@ class BatchAtomPipeline:
         st = p.get("status", "pending")
         meta = {"job_id": self._job_id, "phase": phase_key}
 
+        # ── File-size recovery: if a prior submission failed because the input
+        #    file exceeded OpenAI's 200 MB limit, reset to pending so the
+        #    chunked path handles it on this call.
+        if st == "submitted":
+            jp_existing = Path(p.get("input_jsonl", ""))
+            if (
+                jp_existing.exists()
+                and jp_existing.stat().st_size > _MAX_UPLOAD_BYTES
+            ):
+                logger.warning(
+                    "%s: input file %.1f MB exceeds %d MB limit — "
+                    "resetting to pending for chunked re-submission.",
+                    phase_key,
+                    jp_existing.stat().st_size / 1024 / 1024,
+                    _MAX_UPLOAD_BYTES // (1024 * 1024),
+                )
+                update_phase(
+                    self._state, phase_key, self._ckpt_path,
+                    status="pending",
+                )
+                p = get_phase(self._state, phase_key)
+                st = "pending"
+
         if st == "pending":
             jp = self._batch_dir / f"{phase_key}_input.jsonl"
             jp, sha = self._submitter.write_jsonl(requests, jp)
@@ -395,6 +419,16 @@ class BatchAtomPipeline:
                 input_jsonl=str(jp), jsonl_sha256=sha,
                 request_count=len(requests),
             )
+            # ── Chunked submission if file exceeds OpenAI's upload limit.
+            if jp.stat().st_size > _MAX_UPLOAD_BYTES:
+                logger.info(
+                    "%s: file is %.1f MB > %d MB limit — splitting into chunks.",
+                    phase_key,
+                    jp.stat().st_size / 1024 / 1024,
+                    _MAX_UPLOAD_BYTES // (1024 * 1024),
+                )
+                return self._submit_chunked(phase_key, requests)
+
             fid = self._submitter.upload_file(jp)
             update_phase(
                 self._state, phase_key, self._ckpt_path,
@@ -464,6 +498,66 @@ class BatchAtomPipeline:
             self._total_input_tokens += r.input_tokens
             self._total_output_tokens += r.output_tokens
         return resp
+
+    def _submit_chunked(
+        self,
+        phase_key: str,
+        requests: list[BatchRequest],
+    ) -> list[BatchResponse]:
+        """Submit a batch that exceeds the upload size limit as sequential chunks.
+
+        Each chunk is tracked as ``{phase_key}_c{i}`` in batch_state.json with
+        its own full state-machine lifecycle, so any interruption is resumable.
+        After all chunks finish, raw results files are concatenated into a single
+        ``{phase_key}_results.jsonl`` and the parent phase is marked
+        ``results_downloaded`` for normal downstream processing.
+        """
+        chunk_size = 5_000
+        chunks = [
+            requests[i: i + chunk_size]
+            for i in range(0, len(requests), chunk_size)
+        ]
+        logger.info(
+            "%s: splitting %d requests into %d chunks of ≤%d each",
+            phase_key, len(requests), len(chunks), chunk_size,
+        )
+
+        all_responses: list[BatchResponse] = []
+        for idx, chunk in enumerate(chunks):
+            chunk_key = f"{phase_key}_c{idx}"
+            logger.info(
+                "%s: submitting chunk %d/%d (%d requests)",
+                phase_key, idx + 1, len(chunks), len(chunk),
+            )
+            responses = self._submit_and_wait(chunk_key, chunk)
+            all_responses.extend(responses)
+            logger.info(
+                "%s: chunk %d/%d done — %d responses accumulated",
+                phase_key, idx + 1, len(chunks), len(all_responses),
+            )
+
+        # Concatenate raw results JSONL files from each chunk into a single
+        # file so that the parent phase can be resumed cleanly.
+        merged_path = self._batch_dir / f"{phase_key}_results.jsonl"
+        with merged_path.open("wb") as out_fh:
+            for idx in range(len(chunks)):
+                chunk_key = f"{phase_key}_c{idx}"
+                chunk_phase = get_phase(self._state, chunk_key)
+                chunk_rp = Path(chunk_phase.get("results_jsonl", ""))
+                if chunk_rp.exists():
+                    out_fh.write(chunk_rp.read_bytes())
+
+        update_phase(
+            self._state, phase_key, self._ckpt_path,
+            status="results_downloaded",
+            results_jsonl=str(merged_path),
+            request_count=len(requests),
+        )
+        logger.info(
+            "%s: all %d chunks merged — %d total responses in %s",
+            phase_key, len(chunks), len(all_responses), merged_path,
+        )
+        return all_responses
 
     def _reload_items(
         self, phase_num: int, phase_name: str,
