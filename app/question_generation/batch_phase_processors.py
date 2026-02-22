@@ -337,11 +337,51 @@ def _check_solvability_result(
 # ------------------------------------------------------------------
 
 
+# HTML entities the LLM writes in feedback that are not valid in XML.
+# XML only allows 5 built-ins: &amp; &lt; &gt; &quot; &apos;
+_HTML_ENTITY_MAP: dict[str, str] = {
+    "nbsp": "\u00a0", "oacute": "ó", "aacute": "á", "eacute": "é",
+    "iacute": "í", "uacute": "ú", "ntilde": "ñ", "ordm": "º", "ordf": "ª",
+    "Aacute": "Á", "Eacute": "É", "Iacute": "Í", "Oacute": "Ó",
+    "Uacute": "Ú", "Ntilde": "Ñ", "Agrave": "À", "Egrave": "È",
+    "rarr": "→", "larr": "←", "uarr": "↑", "darr": "↓", "harr": "↔",
+    "minus": "−", "times": "×", "divide": "÷", "plusmn": "±",
+    "le": "≤", "ge": "≥", "ne": "≠", "approx": "≈", "infin": "∞",
+    "alpha": "α", "beta": "β", "pi": "π", "theta": "θ", "sigma": "σ",
+    "lambda": "λ", "delta": "δ", "epsilon": "ε", "phi": "φ", "omega": "ω",
+    "iexcl": "¡", "iquest": "¿", "ldquo": "\u201c", "rdquo": "\u201d",
+    "lsquo": "\u2018", "rsquo": "\u2019", "hellip": "…",
+    "mdash": "—", "ndash": "–", "bull": "•",
+    "deg": "°", "sup2": "²", "sup3": "³", "frac12": "½", "frac14": "¼",
+    "laquo": "«", "raquo": "»", "thinsp": "\u2009",
+    "div": "÷", "leq": "≤", "ctdot": "⋯",
+}
+
+_ENTITY_RE = __import__("re").compile(r"&([a-zA-Z][a-zA-Z0-9]*);")
+
+
+def _normalize_html_entities(xml: str) -> str:
+    """Replace HTML entities with their UTF-8 equivalents before XSD validation.
+
+    The enhancement LLM frequently writes HTML entities (&oacute;, &nbsp;,
+    &rarr;, &ne;, etc.) that are invalid in XML.  This accounts for ~21% of
+    phase-7 failures.  Replace them with the actual UTF-8 characters so the
+    XSD validator sees clean XML.  Unknown entities are left unchanged so the
+    validator can still report them.
+    """
+    return _ENTITY_RE.sub(
+        lambda m: _HTML_ENTITY_MAP.get(m.group(1), m.group(0)), xml,
+    )
+
+
 def process_enhancement_responses(
     responses: list[BatchResponse],
     items_by_id: dict[str, GeneratedItem],
 ) -> tuple[dict[str, GeneratedItem], dict[str, str]]:
     """Parse enhancement responses, XSD-validate each.
+
+    Applies HTML-entity normalization before XSD validation to recover items
+    where the LLM wrote &oacute;, &nbsp;, &rarr; etc. instead of UTF-8.
 
     Returns (item_id -> updated GeneratedItem, item_id -> error).
     """
@@ -362,7 +402,7 @@ def process_enhancement_responses(
             continue
 
         try:
-            xml = _extract_qti_xml(resp.text)
+            xml = _normalize_html_entities(_extract_qti_xml(resp.text))
             xsd_result = validate_qti_xml(xml)
             if xsd_result.get("valid"):
                 item.qti_xml = xml

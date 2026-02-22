@@ -119,6 +119,33 @@ SOLUCIÓN PASO A PASO:
    - Separador decimal: coma (,)
    - MathML: `<mn>160.934</mn>`, `<mn>3,21868</mn>`
    - Texto: `32.186.800.000 kilómetros`
+
+3. REGLAS XML CRÍTICAS — violaciones causan que el ítem sea ELIMINADO del pipeline:
+
+   a) USA UTF-8 DIRECTAMENTE, NUNCA entidades HTML:
+      - Escribe ó, á, é, í, ú, ñ (no &oacute;, &aacute;, &eacute;, &iacute;, &uacute;, &ntilde;)
+      - Escribe →, ≤, ≥, ×, ≠, −, ± (no &rarr;, &le;, &ge;, &times;, &ne;, &minus;, &plusmn;)
+      - Escribe ¡, ¿, °, ², ³ (no &iexcl;, &iquest;, &deg;, &sup2;, &sup3;)
+      - Solo están permitidas: &amp; &lt; &gt; &quot; &apos;
+      - NUNCA uses &nbsp; — usa espacio normal.
+
+   b) MODELO DE CONTENIDO MATHML (causa #1 de fallas — lee con atención):
+      - <math> y <mrow> NUNCA pueden contener texto plano directamente.
+        Solo aceptan elementos MathML hijos.
+        MAL:  <mrow>x + 2</mrow>
+        BIEN: <mrow><mi>x</mi><mo>+</mo><mn>2</mn></mrow>
+        MAL:  <math>ax + b = c</math>
+        BIEN: <math><mrow><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mo>=</mo><mi>c</mi></mrow></math>
+      - USA SOLO estos elementos MathML: mi, mn, mo, mrow, msup, msub, mfrac,
+        msqrt, mover, munder, mtext, mtable, mtr, mtd
+      - PROHIBIDO: underbrace, overleftarrow, overbrace, overrightarrow, mstyle,
+        mpadded, mphantom, menclose, mspace, mglyph. No están soportados.
+      - <msup> y <msub> requieren EXACTAMENTE 2 elementos hijo (base + exponente/subíndice):
+        MAL:  <msup><mi>x</mi></msup>
+        BIEN: <msup><mi>x</mi><mn>2</mn></msup>
+
+   c) BALANCE DE TAGS: cada tag abierto debe cerrarse en el orden correcto.
+      Verifica mentalmente el balance antes de generar el output.
 </formatting_rules>
 
 <verification_process>

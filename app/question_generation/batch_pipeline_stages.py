@@ -219,14 +219,36 @@ def _run_enhance(
 
     if failures:
         logger.warning(
-            "Phase 7: %d enhancement failures — keeping original QTI XML "
-            "(item is not dropped, enhancement simply not applied).",
+            "Phase 7: %d items quarantined — enhancement produced invalid "
+            "QTI XML (even after entity normalization). Inspect "
+            "phase_7_quarantine.json for root cause before re-run.",
             len(failures),
         )
-        # Do NOT drop items that failed post-enhancement QTI validation.
-        # Their qti_xml was never modified (only succeeded items are updated
-        # in-place), so they naturally retain their pre-enhancement XML and
-        # continue through the pipeline at full quality.
+        # Save quarantine details for investigation.
+        quarantine_path = ckpt_path.parent / "phase_7_quarantine.json"
+        import json as _json
+        with open(quarantine_path, "w", encoding="utf-8") as _f:
+            _json.dump(
+                {
+                    "quarantined_count": len(failures),
+                    "items": [
+                        {"item_id": iid, "error": err}
+                        for iid, err in failures.items()
+                    ],
+                },
+                _f,
+                indent=2,
+                ensure_ascii=False,
+            )
+        logger.info("Phase 7 quarantine saved → %s", quarantine_path)
+
+        # Remove quarantined items from the pipeline.
+        # Questions without valid feedback have no learning value in Arbor.
+        failure_ids = set(failures.keys())
+        items = {
+            atom_id: [it for it in atom_items if it.item_id not in failure_ids]
+            for atom_id, atom_items in items.items()
+        }
 
     update_phase(
         state, "phase_78_enhance", ckpt_path, status="completed",
