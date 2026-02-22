@@ -3,124 +3,128 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del volumen de un cilindro recto usando la fórmula V = π r^2 h.",
-        "Problemas donde se entrega explícitamente radio y altura, o diámetro y altura, para calcular volumen.",
-        "Situaciones donde se pide despejar la altura de un cilindro a partir del volumen y el radio o diámetro (despeje lineal sencillo).",
-        "Interpretación de radio y diámetro en contextos cotidianos (estanques, tubos, envases cilíndricos) sin requerir modelos físicos complejos.",
-        "Uso de aproximaciones habituales de π (3,14 o 22/7) o dejar resultados en términos de π, según se indique en el enunciado."
+        "Cálculo directo de volumen de cilindros rectos usando V = π r^2 h, con datos dados explícitamente en el enunciado.",
+        "Cálculo de volumen cuando se entrega el diámetro y la altura, incluyendo el paso intermedio de obtener el radio.",
+        "Cálculo de una dimensión faltante (altura o radio) despejando la fórmula de volumen de un cilindro recto, en contextos simples.",
+        "Problemas de contexto (estanques, latas, silos, tubos) en que solo se requiere la fórmula del cilindro y operatoria numérica básica.",
+        "Análisis cualitativo simple del efecto de cambiar radio o altura en el volumen (p.ej., si se duplica el radio, el volumen se cuadruplica)."
       ],
       "out_of_scope": [
-        "Cálculo de áreas totales o laterales de cilindros (superficies).",
-        "Cálculo de volúmenes de otros cuerpos (prismas, conos, esferas, pirámides o combinaciones de sólidos).",
-        "Cilindros oblicuos o deformados, o situaciones donde la fórmula V = π r^2 h no se aplica directamente.",
-        "Conversión entre unidades de capacidad (litros, mL) y unidades de volumen (cm³, m³) cuando requiere manejo de factores de conversión no trivial.",
-        "Problemas que requieran ecuaciones cuadráticas u otros despejes no lineales (por ejemplo, despejar el radio cuando el volumen y la altura son datos).",
-        "Optimización (máximo/minimización de volumen) o variación continua de parámetros más allá de comparaciones sencillas (duplicar radio, triplicar altura, etc.)."
+        "Cálculo de áreas laterales o totales de cilindros (eso corresponde a átomos de áreas de superficies).",
+        "Cilindros oblicuos o cualquier sólido en que la altura no sea perpendicular a la base.",
+        "Combinaciones de varios sólidos (cilindro más cono, prisma más cilindro, etc.).",
+        "Uso de integrales u otras herramientas de cálculo para obtener volúmenes.",
+        "Problemas que requieren conversión compleja de unidades de volumen (p.ej., de m³ a litros y luego a otra unidad compuesta) como foco principal.",
+        "Problemas que exigen comparar volumen de cilindros con otros cuerpos (esferas, conos, prismas) más allá de una mención contextual simple."
       ],
       "prerequisites": [
-        "A-M1-ARIT-01-01: Manejo de operaciones con números enteros y decimales positivos.",
-        "A-M1-ARIT-01-02: Uso y comprensión de potencias de exponente natural, en particular el cuadrado de un número real.",
-        "A-M1-GEO-01-05: Comprensión del concepto de círculo y de radio y diámetro.",
-        "A-M1-GEO-02-01: Uso de la constante π y cálculo del área de un círculo (A = π r^2)."
+        "A-M1-ARI-01-01: Manejo de operaciones con números reales positivos (sumar, restar, multiplicar, dividir).",
+        "A-M1-ARI-01-05: Potenciación de números reales positivos con exponente natural (en particular, cuadrar el radio).",
+        "A-M1-GEO-02-01: Reconocer y describir un cilindro recto y sus elementos (radio, diámetro, altura, base circular).",
+        "A-M1-MED-01-02: Manejo básico de unidades de longitud y volumen (cm, m, litros) y sus relaciones simples.",
+        "A-M1-ALG-01-02: Despeje simple de una incógnita en fórmulas lineales (resolver ecuaciones de la forma a·x = b)."
       ],
       "common_traps": [
-        "Confundir radio con diámetro, usando el diámetro en lugar del radio al aplicar π r^2.",
-        "Olvidar elevar al cuadrado el radio (usar π r h en lugar de π r^2 h).",
-        "Errores de orden de operaciones, por ejemplo multiplicar mal π r^2 h (no agrupar adecuadamente, errores de calculadora).",
-        "Confundir unidades lineales con cúbicas, sin notar que el volumen se expresa en unidades cúbicas.",
-        "En ítems con despeje de altura, olvidar dividir por π r^2 o dividir por r en vez de por r^2.",
-        "Errores al interpretar un dato dado como diámetro cuando el enunciado no lo enfatiza claramente (p. ej., 'el ancho del cilindro es de…').",
-        "Mala aproximación o uso inconsistente de π (cambiar el valor de π a mitad del cálculo o redondear prematuramente)."
+        "Usar el diámetro en lugar del radio directamente en la fórmula (V = π d^2 h en vez de convertir a radio).",
+        "Olvidar elevar al cuadrado el radio (usar r en vez de r^2).",
+        "Confundir altura con diámetro cuando se entregan varias medidas en el contexto.",
+        "Perder unidades de medida o mezclar unidades de longitud distintas sin conversión previa (cm con m, por ejemplo).",
+        "Redondear π de forma inconsistente dentro del mismo problema o entre pasos de cálculo.",
+        "Despejar incorrectamente la altura a partir de la fórmula de volumen (errores al dividir por π r^2).",
+        "Interpretar el volumen como superficie (contestar en unidades de área o hablar de 'superficie' en vez de 'capacidad')."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Datos explícitos de radio y altura como números enteros pequeños (≤ 20), ambas magnitudes ya en mismas unidades.",
-        "Solicitud directa del volumen, con indicación clara de la fórmula o contexto muy evidente de cilindro (por ejemplo, 'un depósito cilíndrico de radio r y altura h').",
-        "Permitir o sugerir dejar el resultado en términos de π, reduciendo la carga de cálculo numérico.",
-        "Sin necesidad de despejes: solo reemplazar en V = π r^2 h y calcular.",
-        "Sin cambios de unidades ni interpretación contextual compleja (la respuesta se pide en las mismas unidades que se dan)."
+        "Datos numéricos pequeños y enteros para radio y altura, con el radio dado explícitamente, sin cambios de unidades.",
+        "Enunciados breves, casi directos, del tipo: se dan r y h y se pide el volumen, sin contexto complejo ni información distractora.",
+        "Permitir usar π como 3 o 3,14 explícitamente indicado, o dejar la respuesta en términos de π sin exigir aproximación decimal.",
+        "Sin necesidad de despejar variables: solo aplicación directa V = π r^2 h.",
+        "Contextos cotidianos muy claros (por ejemplo, un estanque de agua o una lata) sin datos irrelevantes."
       ],
       "medium": [
-        "Datos que incluyen el diámetro en lugar del radio, requiriendo que el estudiante halle primero el radio (r = d/2).",
-        "Presencia de decimales sencillos o fracciones habituales (por ejemplo, 1,5 m; 2,5 cm; 3/2 cm).",
-        "Pedir el volumen en una unidad cúbica diferente pero con conversión directa (por ejemplo, pasar de cm a m con potencias de 10 sencillas, sin combinaciones mixtas).",
-        "Problemas contextualizados donde se debe identificar qué medida corresponde al radio y cuál a la altura a partir del texto.",
-        "Despeje simple de la altura a partir de V = π r^2 h, con números que dejen divisiones exactas o razonables (sin necesidad de cálculos muy largos)."
+        "Datos entregados usando diámetro en lugar de radio, requiriendo un paso explícito para hallar r a partir de d.",
+        "Necesidad de convertir unidades simples (por ejemplo, cm a m) antes de aplicar la fórmula o interpretar el resultado.",
+        "Problemas donde se debe despejar la altura a partir de un volumen y un radio dados, con números razonables.",
+        "Contextos un poco más elaborados, donde hay información irrelevante que debe ser filtrada para identificar r y h.",
+        "Pedir comparar volúmenes de dos cilindros cambiando una dimensión (por ejemplo, duplicar el radio o la altura) con foco en el cálculo numérico y/o en la justificación proporcional básica."
       ],
       "hard": [
-        "Problemas donde se debe interpretar una descripción verbal no literal para identificar radio o diámetro (por ejemplo, 'el envase tiene 10 cm de ancho' refiriéndose al diámetro).",
-        "Volúmenes o dimensiones que implican multiplicación de varios decimales o fracciones no triviales, o combinación de potencias de 10 no inmediatas.",
-        "Ítems donde se debe comparar volúmenes de dos cilindros modificando radio y/o altura (por ejemplo, analizar el efecto de duplicar el radio o triplicar la altura) sin necesidad de calcular numéricamente ambos volúmenes, sino razonando con factores de escala.",
-        "Despeje de altura con resultados no enteros, que obliga a manejar fracciones o decimales en el último paso, manteniendo π en el denominador o aproximándolo según se indique.",
-        "Contextos donde parte de la información relevante para el volumen no está dada explícitamente y hay que inferirla de un enunciado algo más elaborado (por ejemplo, a partir de capacidad total de varios cilindros iguales) sin salirse del uso básico de V = π r^2 h."
+        "Requerir despejar radio u altura a partir de un volumen considerando π como símbolo (sin reemplazar por aproximación numérica hasta el final), con fracciones o decimales no triviales.",
+        "Incluir cambios de unidades de volumen (por ejemplo, de m³ a litros o viceversa) integrados en la resolución, no solo como paso aislado.",
+        "Problemas donde el volumen del cilindro es un paso intermedio para resolver una situación más compleja (por ejemplo, determinar cuántos días alcanza el contenido, dado un consumo diario y la capacidad).",
+        "Uso de datos no enteros (fracciones o decimales con uno o dos decimales) para radio o altura, de modo que requiera mayor cuidado en el cálculo.",
+        "Preguntas que mezclan razonamiento proporcional con cálculo: por ejemplo, comparar volúmenes de cilindros con duplicación simultánea de radio y cambios en la altura, o trabajar inversamente a partir de una relación de volúmenes dada."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar indistintamente 'ancho', 'diámetro' y 'radio' sin especificar claramente qué magnitud se entrega; siempre nombrar explícitamente radio o diámetro si es relevante para el cálculo.",
-      "No mezclar altura con longitud u otras dimensiones lineales cercanas en el texto que no correspondan al cilindro, para no confundir qué medida entra en la fórmula.",
-      "Precisar siempre si se espera una aproximación numérica (indicando valor de π y número de decimales) o si se acepta el resultado en términos de π.",
-      "No plantear contextos donde la figura podría no ser claramente un cilindro (por ejemplo, envases con forma compleja) sin decir explícitamente que se modelan como cilindros.",
-      "Evitar dar medidas en distintas unidades sin indicar claramente cómo se deben expresar las respuestas, para no generar ambigüedad de conversión.",
-      "No incluir datos redundantes o irrelevantes que se parezcan a radio, diámetro o altura si no cumplen una función clara en el problema.",
-      "En problemas de comparación de volúmenes (cambios de radio o altura), explicitar si se debe calcular volúmenes numéricos o solo determinar si el volumen aumenta, disminuye o en qué factor cambia."
+      "Evitar describir el cilindro solo como 'estanque' o 'lata' sin aclarar que tiene forma de cilindro recto si esto es relevante para aplicar la fórmula.",
+      "No dar medidas que puedan interpretarse como radio o como diámetro sin especificar claramente cuál es cada una.",
+      "No incluir varias longitudes sin indicar qué corresponde a la altura y qué a la base cuando el contexto no es obvio.",
+      "Evitar contextos en los que pueda confundirse volumen con área (por ejemplo, hablar de 'pintar' o 'forrar' la superficie en un ítem que en realidad apunta a volumen).",
+      "No exigir interpretaciones implícitas de unidades (por ejemplo, asumir que 1 m³ = 1000 L sin que el nivel de la pregunta lo justifique claramente).",
+      "Evitar que aparezcan datos innecesarios casi iguales (por ejemplo, dos posibles radios muy similares) si no hay una clara razón y señalización de cuál corresponde al cilindro.",
+      "No mezclar en el mismo enunciado conceptos de otros cuerpos geométricos (cono, prisma) que puedan desviar el foco de que se trata de un cilindro."
     ],
     "error_families": [
       {
-        "name": "Confusión_radio_diametro",
-        "description": "El estudiante usa el diámetro directamente en la fórmula V = π r^2 h, obteniendo un volumen cuatro veces mayor al correcto. Suele ocurrir cuando el enunciado solo menciona 'ancho' o 'diámetro' sin que el estudiante realice la conversión a radio.",
-        "how_to_address": "En los ítems, forzar a distinguir entre diámetro y radio ya sea por una pregunta intermedia implícita (p. ej., 'el diámetro es 10 cm, ¿cuál es el radio?') o por alternativas distractoras construidas para evidenciar el error (valores 4 veces o 1/4 del correcto). En retroalimentación, enfatizar que el radio es la mitad del diámetro y que la fórmula siempre usa el radio."
+        "name": "Diametro_como_radio",
+        "description": "El o la estudiante reemplaza erróneamente el diámetro en la fórmula V = π r^2 h sin dividirlo por 2, lo que produce un volumen cuatro veces mayor al correcto.",
+        "how_to_address": "Incluir ítems que pidan explícitamente calcular primero el radio a partir del diámetro, reforzando la distinción entre ambas medidas y el efecto de esa conversión en la fórmula."
       },
       {
         "name": "Olvido_del_cuadrado_en_el_radio",
-        "description": "Se aplica erróneamente la expresión π r h en lugar de π r^2 h, subestimando el volumen. El estudiante recuerda que intervienen π, r y h, pero no que el radio está al cuadrado.",
-        "how_to_address": "Diseñar algunas alternativas que coincidan con calcular π r h para que el error sea diagnosticable. En explicaciones, resaltar la conexión con el área de la base (A = π r^2) y el hecho de que el volumen es 'área de base por altura'."
+        "description": "Se sustituye r en lugar de r^2 al aplicar la fórmula, generando un error sistemático por factor r.",
+        "how_to_address": "Diseñar preguntas de opción múltiple donde una de las alternativas incorrectas corresponda exactamente a usar r en vez de r^2, y reforzar en la retroalimentación la idea de que se trabaja con el área de la base (π r^2)."
       },
       {
-        "name": "Errores_de_orden_de_operaciones",
-        "description": "Cálculo correcto de r y h, pero errores al multiplicar π, r^2 y h (por ejemplo, cuadrar después de multiplicar, o errores de calculadora al no usar paréntesis).",
-        "how_to_address": "Usar números que permitan identificar si se elevó al cuadrado en la etapa correcta (por ejemplo, r = 3 o r = 5) y generar distractores que correspondan a elevar la cantidad equivocada al cuadrado. Sugerir en la retroalimentación un orden sistemático: primero r^2, luego multiplicar por π, luego por h."
+        "name": "Confusion_de_altura_y_otras_dimensiones",
+        "description": "El estudiante toma como altura una medida que corresponde al diámetro u otra longitud del contexto, especialmente en problemas verbales.",
+        "how_to_address": "Proponer enunciados donde las distintas longitudes estén claramente nominadas y pedir identificar primero radio y altura antes de calcular el volumen, enfatizando el vínculo entre la altura y la dirección de 'llenado' del cilindro."
       },
       {
-        "name": "Despeje_incompleto_de_altura",
-        "description": "En problemas donde se debe hallar h a partir de V, el estudiante divide solo por r^2 o solo por π, o sustituye valores incorrectamente, lo que lleva a una altura equivocada.",
-        "how_to_address": "Incluir ítems donde el despeje se explicite como h = V / (π r^2) o donde se pida elegir la expresión correcta para h antes de calcular. Reforzar la idea de 'deshacer' multiplicaciones sucesivas dividiendo por todo el producto π r^2."
+        "name": "Errores_en_el_despeje_de_la_formula",
+        "description": "Al determinar la altura a partir del volumen, se cometen errores de álgebra básica, como dividir solo por r o solo por π, o multiplicar en lugar de dividir.",
+        "how_to_address": "Incluir ítems que presenten explícitamente la fórmula despejada y pidan identificar si es correcta o incorrecta, así como ejercicios paso a paso que separen el despeje del cálculo numérico."
       },
       {
-        "name": "Manejo_deficiente_de_pi_y_redondeos",
-        "description": "El estudiante cambia arbitrariamente el valor de π, redondea demasiado pronto, o mezcla 3,14 y 22/7 en el mismo cálculo, generando resultados con errores de aproximación mayores a los esperados.",
-        "how_to_address": "Indicar explícitamente en el enunciado qué aproximación de π usar y cuántos decimales se esperan. Diseñar alternativas que permitan distinguir entre usar π correctamente o de manera incorrecta. En retroalimentación, insistir en mantener π simbólico hasta el final cuando sea posible."
+        "name": "Manejo_incorrecto_de_unidades",
+        "description": "Se mezclan unidades de longitud o de volumen (por ejemplo, usar cm en el radio y m en la altura sin conversión, o entregar el resultado en m³ cuando el contexto exige litros).",
+        "how_to_address": "Diseñar problemas donde la conversión de unidades sea un paso explícito y clave para llegar a la respuesta, enfatizando la coherencia de unidades antes de aplicar la fórmula y al presentar el resultado final."
       },
       {
-        "name": "Ignorar_unidades_y_dimensiones",
-        "description": "El estudiante no reconoce que el volumen debe expresarse en unidades cúbicas o mezcla unidades de radio y altura (por ejemplo, cm y m) sin convertir, obteniendo numéricamente un valor sin sentido físico.",
-        "how_to_address": "Proponer algunos ítems donde las unidades sean coherentes pero enfatizar en el texto la unidad de respuesta. Generar distractores con mismos dígitos pero distintos órdenes de magnitud para identificar errores de conversión. Destacar en explicaciones que, en el volumen, las unidades se elevan al cubo."
+        "name": "Confusion_entre_volumen_y_area",
+        "description": "El estudiante responde con unidades de área (m², cm²) o interpreta la pregunta como recubrir la superficie en lugar de llenar el cilindro.",
+        "how_to_address": "Proponer ítems comparativos (una pregunta sobre volumen y otra sobre superficie del mismo cilindro) diferenciando claramente palabras clave como 'capacidad' o 'cantidad de líquido' versus 'recubrir' o 'pintar'."
+      },
+      {
+        "name": "Aproximacion_incoherente_de_pi",
+        "description": "Uso inconsistente o inadecuado de π (por ejemplo, cambiar entre 3,14 y 3,1416 dentro del mismo cálculo, o redondear muy pronto).",
+        "how_to_address": "Especificar en el enunciado cómo aproximar π y diseñar ítems donde se valore dejar respuestas en términos de π, mostrando la conveniencia de no redondear prematuramente."
       }
     ],
     "future_targets": [
-      "A-M1-GEO-02-14: Cálculo de volumen de otros cuerpos de revolución (conos, esferas) usando fórmulas análogas.",
-      "A-M1-GEO-02-15: Cálculo de áreas de superficie de cilindros (lateral y total).",
-      "A-M1-GEO-02-20: Resolución de problemas con sólidos compuestos que incluyen cilindros junto a prismas y conos.",
-      "A-M1-FUNC-03-05: Modelación de situaciones de llenado y vaciado de estanques cilíndricos mediante funciones lineales del tiempo.",
-      "A-M1-DATOS-01-10: Interpretación de contextos físicos (capacidad, caudales, densidad) donde el volumen de un cilindro es un parámetro relevante.",
-      "A-M1-GEO-03-01: Razonamiento sobre cambios en volumen ante escalamiento de dimensiones (semejanza en 3D y factores de escala)."
+      "Cálculo y comparación de volúmenes de otros sólidos de revolución (conos, esferas).",
+      "Resolución de problemas de optimización geométrica simple (por ejemplo, seleccionar el envase más eficiente en términos de volumen).",
+      "Cálculo de área lateral y total de cilindros como paso previo a problemas de diseño y costos de materiales.",
+      "Modelación de situaciones físicas con volúmenes (flujo de líquidos, capacidad de recipientes, almacenamiento).",
+      "Problemas de proporcionalidad en 3D, incluyendo el efecto de escalar dimensiones en el volumen de sólidos.",
+      "Aplicación de relaciones entre volúmenes de diferentes cuerpos (por ejemplo, cono y cilindro con misma base y altura)."
     ],
     "representation_variants": [
-      "Enunciados puramente numéricos donde se entregan radio y altura como datos abstractos (r, h) con valores concretos.",
-      "Contextos verbales cotidianos (estanques, latas, tubos, silos, vasos cilíndricos) donde el estudiante debe identificar qué dimensión corresponde a radio/diámetro y altura.",
-      "Uso simbólico parcial, como expresar el resultado en términos de π (por ejemplo, 100π cm³) sin aproximación decimal.",
-      "Tablas o listados que comparan varias combinaciones de radio y altura para analizar el efecto en el volumen sin necesidad de desarrollar todos los cálculos.",
-      "Situaciones comparativas donde se describe verbalmente la modificación de radio y/o altura (se duplica el radio, se reduce a la mitad la altura) y se pregunta por el cambio en el volumen."
+      "Enunciados puramente verbales describiendo el cilindro y sus dimensiones.",
+      "Tablas con distintas combinaciones de radio, altura y volumen donde se pida completar el valor faltante.",
+      "Comparaciones cualitativas entre cilindros (mismo radio, distinta altura; o mismo volumen, distintas dimensiones) sin necesidad de dibujo.",
+      "Uso de valores simbólicos parciales (por ejemplo, dejar respuestas en términos de π) para enfatizar la estructura de la fórmula.",
+      "Contextos aplicados como estanques, tubos, silos, latas de bebida o frascos de laboratorio, donde el cilindro se identifica por la descripción.",
+      "Situaciones en que se discute el efecto de modificar radio o altura en el volumen, apoyándose en razonamiento proporcional más que en un dibujo."
     ],
     "numbers_profiles": [
       "small_integers",
-      "moderate_integers",
-      "decimals_one_decimal",
-      "decimals_two_decimals",
+      "powers_of_10",
+      "simple_decimals",
       "simple_fractions",
-      "powers_of_ten",
-      "pi_symbolic",
-      "pi_approx_3_14"
+      "pi_symbolic"
     ],
     "required_image_types": []
   }

@@ -3,126 +3,131 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Problemas donde se conoce una cantidad parcial y el porcentaje exacto que esta representa del total, y se pide hallar el total (100%).",
-        "Situaciones del tipo: 'x es el y% de una cantidad. ¿Cuál es la cantidad?'.",
-        "Cálculo del total usando división por el porcentaje expresado como decimal o fracción (total = parte / (porcentaje/100)).",
-        "Contextos cotidianos simples (precios, cantidades de personas, votos, producción, etc.) donde el porcentaje dado se refiere directamente al total buscado.",
-        "Uso equivalente de la relación proporcional parte : total = porcentaje : 100 para despejar el total."
+        "Cálculo del total (100 %) a partir de un valor parcial y el porcentaje que este representa, usando la relación parte = porcentaje · total.",
+        "Situaciones directas del tipo: 'Si x es el y % de una cantidad, encontrar la cantidad original'.",
+        "Casos donde el porcentaje está expresado en notación porcentual (por ejemplo, 25 %, 12,5 %, 7,2 %) y debe convertirse a decimal o fracción para el cálculo.",
+        "Casos donde el porcentaje se expresa simbólicamente (por ejemplo, p es el 30 % de k, hallar k en función de p).",
+        "Problemas donde se conoce un valor luego de un aumento o descuento porcentual y se requiere hallar el valor inicial (por ejemplo, 'aumentado en su 40 % es 150').",
+        "Contextos verbales simples: precios, cantidades de personas, cantidades físicas (peso, distancia, producción, etc.) donde se da un porcentaje de un total y se pide el total."
       ],
       "out_of_scope": [
-        "Problemas donde el porcentaje corresponde a un aumento o disminución respecto de un valor original (cambios porcentuales).",
-        "Porcentajes sucesivos (por ejemplo, aumentar un 10% y luego disminuir un 20%).",
-        "Situaciones donde la parte dada no corresponde directamente al porcentaje indicado del total, sino a combinaciones de porcentajes (por ejemplo, suma de dos grupos con distintos porcentajes).",
-        "Cálculo de interés simple o compuesto, impuestos u otros donde se requieren varios pasos de porcentaje encadenados.",
-        "Interpretación de gráficos estadísticos con porcentajes (gráficos de torta, barras, etc.) como insumo central del ítem.",
-        "Problemas que exigen resolver ecuaciones generales con porcentajes en contexto puramente algebraico avanzado (con varias incógnitas simultáneas)."
+        "Cálculo de porcentajes a partir del total (por ejemplo, hallar el 15 % de 200).",
+        "Porcentajes compuestos o sucesivos (por ejemplo, aumentar 10 % y luego descontar 20 %).",
+        "Interés simple o compuesto, tasas porcentuales por período de tiempo.",
+        "Problemas que requieren ecuaciones de grado mayor al 1 o sistemas de ecuaciones para determinar el total.",
+        "Análisis de gráficos estadísticos complejos donde el foco principal es la interpretación visual y no el cálculo del total.",
+        "Porcentajes sobre cantidades variables en funciones (por ejemplo, derivar expresiones de crecimiento porcentual continuo).",
+        "Cálculo de probabilidades expresadas en porcentaje, cuando el foco es probabilidad y no el cálculo del total a partir de un porcentaje."
       ],
       "prerequisites": [
-        "A-M1-NUM-02-06: Manejo de la relación porcentaje–fracción–decimal.",
-        "A-M1-NUM-02-07: Cálculo de un porcentaje de una cantidad dada (hallar la parte conociendo el total).",
-        "A-M1-NUM-01-02: Operaciones con números decimales (especialmente la división por decimales).",
-        "A-M1-NUM-01-03: Manejo de proporciones simples (regla de tres directa)."
+        "A-M1-NUM-01-01: Comprensión de la relación parte–todo y uso de razones simples.",
+        "A-M1-NUM-02-01: Interpretación de porcentajes como fracción de 100.",
+        "A-M1-NUM-02-02: Conversión entre porcentaje, fracción y número decimal.",
+        "A-M1-NUM-01-04: Manejo de división con números decimales positivos.",
+        "A-M1-NUM-01-05: Resolución de ecuaciones lineales simples del tipo ax = b."
       ],
       "common_traps": [
-        "Confundir el procedimiento correcto (dividir por el porcentaje en forma decimal) con multiplicar la parte por el porcentaje o por 100.",
-        "Olvidar transformar el porcentaje a forma decimal o fracción antes de operar (ejemplo: usar 25 en vez de 0,25 o 25/100).",
-        "Interpretar mal el enunciado cuando el porcentaje se da con frases como 'corresponde al', 'representa el', 'equivale al', creyendo que se trata de aumento o descuento.",
-        "Confundir porcentaje de un total con proporción del resto (porcentaje complementario), intentando usar 100% − p% sin justificación.",
-        "Errores de redondeo innecesarios cuando los números permiten resultado exacto.",
-        "Perder la referencia de qué es 'parte' y qué es 'total' en contextos verbales con varias cantidades mencionadas."
+        "Confundir el cálculo directo del porcentaje (parte = total · porcentaje) con el cálculo inverso (total = parte / porcentaje), utilizando multiplicación en vez de división.",
+        "Tratar el porcentaje como número entero sin convertir (por ejemplo, usar 20 en vez de 0,20 o 20/100).",
+        "Interpretar mal expresiones verbales como 'aumentado en su 40 %' o 'disminuido en un 30 %', no entendiendo que el valor dado incluye el cambio porcentual.",
+        "Olvidar que un aumento del y % implica multiplicar por (1 + y/100) y un descuento implica (1 - y/100) al plantear la ecuación inversa.",
+        "Errores al manipular letras en contextos simbólicos (por ejemplo, 'p es el 25 % de k') y despejar la incógnita equivocada.",
+        "Realizar la división al revés (por ejemplo, calcular parte/100 en vez de parte/(porcentaje/100)).",
+        "Usar reglas de tres mal planteadas, intercambiando la posición de parte, porcentaje y total."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Porcentaje entero y 'amigable' (10%, 20%, 25%, 50%) que conduce a cocientes simples.",
-        "Números pequeños (parte y total menores a 1 000) con resultados enteros.",
-        "Enunciado directo y corto, sin contexto o con contexto muy simple y una sola cantidad relevante.",
-        "Relación numérica evidente que incluso puede resolverse mentalmente (por ejemplo, 50% o 25%).",
-        "Sin necesidad de interpretar tablas ni varias frases; la información clave se da en una sola oración."
+        "Enunciados directos del tipo 'x es el y % de una cantidad, hallar la cantidad', con números enteros pequeños (porcentaje que divide exacto, como 10 %, 20 %, 25 %, 50 %).",
+        "Cálculos que conducen a resultados enteros positivos, sin necesidad de trabajar con fracciones o decimales en la respuesta.",
+        "Porcentajes 'amigables' y comunes: 10 %, 20 %, 25 %, 50 %, 75 %, evitando combinaciones que generen fracciones no simplificables.",
+        "Problemas sin lenguaje contextual complejo, casi textuales y de una sola oración, sin aumentos ni descuentos porcentuales previos."
       ],
       "medium": [
-        "Porcentajes menos inmediatos pero aún frecuentes (15%, 30%, 40%, 75%).",
-        "Números de dos o tres cifras que pueden dar resultados decimales simples.",
-        "Contexto cotidiano con una o dos frases donde hay que identificar claramente qué dato es la parte y qué porcentaje se refiere a esa parte.",
-        "Posible presencia de una información irrelevante pero fácil de descartar.",
-        "Requiere operar con decimales básicos (por ejemplo, dividir por 0,3 o 0,75) o usar proporciones de manera explícita."
+        "Problemas con contexto (precios, población, producción, encuestas) donde se requiere identificar correctamente qué dato es la parte, cuál es el porcentaje y qué se pide.",
+        "Uso de porcentajes con un decimal (por ejemplo, 12,5 %, 7,5 %, 2,5 %) que llevan a divisiones con decimales, manteniendo respuestas razonables (enteras o con uno o dos decimales).",
+        "Situaciones donde se entrega el valor después de un aumento o descuento porcentual y se debe plantear y resolver la ecuación para encontrar el valor original.",
+        "Uso de notación algebraica sencilla (por ejemplo, 'p es el 25 % de k') en que se debe despejar la variable correcta, con alternativas que incluyen distractores que reflejen errores típicos."
       ],
       "hard": [
-        "Porcentajes no 'redondos' (12,5%, 17%, 22%, 37%) o con decimales (7,5%, 12,3%).",
-        "Números grandes (miles o decenas de mil) o que producen resultados decimales no inmediatos.",
-        "Enunciados con más de una etapa ligera, por ejemplo: primero identificar una parte intermedia y luego hallar el total a partir de su porcentaje (siempre manteniendo una única aplicación central de este átomo).",
-        "Contextos con varios datos numéricos donde solo uno corresponde a la parte referida por el porcentaje, lo que exige lectura cuidadosa.",
-        "Uso de representaciones simbólicas del tipo p% · T = P en las que el estudiante debe despejar T a partir de una ecuación sencilla.",
-        "Presencia de distractores construidos a partir de errores típicos (como multiplicar en vez de dividir, usar el porcentaje complementario o confundir parte y total)."
+        "Enunciados donde la información está dispersa o implícita (por ejemplo, datos dados en forma de proporción y luego un porcentaje referido a esa proporción).",
+        "Casos encadenados con dos pasos porcentuales en que uno de ellos requiere el cálculo inverso (por ejemplo, recuperar un valor inicial sabiendo un valor posterior y un porcentaje aplicado en un paso intermedio).",
+        "Uso intenso de simbolismo algebraico (parámetros y letras múltiples) que exige traducir una frase con porcentaje a una expresión algebraica y despejar correctamente.",
+        "Porcentajes menos 'amigables' (por ejemplo, 17 %, 23 %, 37,5 %) que producen fracciones o decimales no triviales tanto en el proceso de cálculo como en las alternativas.",
+        "Problemas donde el total buscado no aparece explícitamente como incógnita única, sino que forma parte de una relación adicional (por ejemplo, restricciones en otro porcentaje o comparación entre dos totales)."
       ]
     },
     "ambiguity_avoid": [
-      "No usar expresiones que sugieran cambio porcentual como 'es un 20% más que' o 'disminuyó un 15%' en ítems destinados a este átomo; limitarse a 'representa el', 'corresponde al', 'equivale al'.",
-      "Especificar con claridad qué cantidad es la parte y qué porcentaje se asocia a esa parte, especialmente si el contexto incluye varias cantidades.",
-      "Evitar enunciados donde no esté claro si el porcentaje se aplica sobre un valor con o sin impuestos, recargos, etc.; si se incluye IVA u otros, explicitar 'del precio original', 'del valor sin impuesto', etc.",
-      "No mezclar en el mismo ítem porcentajes referidos a distintos totales sin aclararlo explícitamente.",
-      "Evitar porcentajes redactados solo en palabras si el enunciado ya es largo o complejo; preferir combinación de palabras y notación numérica (por ejemplo, 'veinte por ciento (20%)').",
-      "No presentar datos con distintos posibles roles (por ejemplo, varias cantidades que podrían ser parte o total) sin una indicación contextual clara.",
-      "Evitar que la alternativa correcta pueda ser inferida solo por redondeos 'bonitos' o por ser el único entero, cuando el contexto permite respuestas decimales."
+      "Evitar expresiones vagas como 'parte', 'cantidad', 'número' sin aclarar a qué se refiere cada una en contextos con varias magnitudes; nombrar claramente 'valor parcial', 'valor total', 'porcentaje'.",
+      "No mezclar porcentajes referidos a bases distintas sin especificarlas explícitamente (por ejemplo, '20 % de los hombres y 30 % de las mujeres' sin aclarar tamaños de cada grupo si no es necesario).",
+      "Precisar siempre si el valor entregado ya incluye el aumento o descuento porcentual ('el precio final', 'el valor después del descuento') para diferenciarlo del valor original.",
+      "Evitar frases como 'aumentado al 20 %' o 'disminuido al 30 %', preferir 'aumentado en un 20 %' o 'disminuido en un 30 %' y, si se usa 'queda en el 80 %', indicar explícitamente que se refiere al 80 % del valor original.",
+      "No usar porcentajes dobles potencialmente confusos sin aclaración (por ejemplo, 'el 20 % del 30 % de x') cuando el foco es solo recuperar un total a partir de un único porcentaje.",
+      "Evitar enunciados donde no se distingue si el porcentaje se aplica sobre el valor original o sobre el valor modificado; siempre indicar sobre qué magnitud se toma el porcentaje.",
+      "En ítems algebraicos, evitar letras que se puedan confundir visualmente (como l y 1), y mantener consistencia en el uso de símbolos para total, parte y porcentaje."
     ],
     "error_families": [
       {
-        "name": "Multiplicar_en_vez_de_dividir",
-        "description": "El estudiante, dado que para hallar una parte de un total se multiplica el total por el porcentaje, aplica el mismo procedimiento invertido: multiplica la parte por el porcentaje o por 100, en lugar de dividir la parte por el porcentaje en forma decimal o fracción.",
-        "how_to_address": "Insistir en la relación parte = porcentaje · total y mostrar explícitamente cómo despejar el total (total = parte / porcentaje). Trabajar ejemplos comparando los dos tipos de problemas: 'dado el total, hallar la parte' versus 'dada la parte, hallar el total'."
+        "name": "Multiplicar_en_lugar_de_dividir",
+        "description": "El estudiante, al intentar hallar el total a partir de una parte y su porcentaje, multiplica la parte por el porcentaje en vez de dividirla por este, aplicando la regla directa en vez de la inversa.",
+        "how_to_address": "Reforzar la ecuación base parte = porcentaje · total y mostrar que al despejar total se obtiene total = parte / porcentaje. Trabajar con ejemplos comparando explícitamente: 'hallar la parte' versus 'hallar el total' y destacando que el operador cambia de multiplicar a dividir."
       },
       {
-        "name": "No_convertir_correctamente_el_porcentaje",
-        "description": "El estudiante usa el porcentaje como número entero (por ejemplo, 25 en vez de 0,25 o 25/100) al operar, lo que genera resultados 100 veces mayores o menores.",
-        "how_to_address": "Reforzar la equivalencia entre porcentaje, fracción y decimal mediante ejercicios simples (25% = 25/100 = 0,25). Promover el uso sistemático de la división por (p/100) y revisar con estimaciones si el resultado es razonable."
+        "name": "Uso_incorrecto_del_porcentaje_como_entero",
+        "description": "El estudiante toma el porcentaje como un número entero (por ejemplo, 20) en vez de transformarlo en 0,20 o 20/100, lo que genera totales erróneos muy grandes o muy pequeños.",
+        "how_to_address": "Practicar la conversión sistemática de porcentajes a decimales o fracciones antes de usarlos en ecuaciones. Hacer que el estudiante estime mentalmente si el total debe ser mayor o menor que la parte para detectar resultados absurdos."
       },
       {
-        "name": "Confusion_parte_total",
-        "description": "En contextos con varias cantidades, el estudiante toma como 'parte' una cantidad que no corresponde al porcentaje dado, o asume erróneamente que la cantidad conocida es el total.",
-        "how_to_address": "Practicar la identificación de 'parte' y 'total' en distintos contextos antes de calcular. Usar preguntas guiadas del tipo: '¿De qué se está diciendo el porcentaje?', '¿Qué conjunto completo se menciona?'. Utilizar subrayado o esquemas de lectura en aula."
+        "name": "Confusion_entre_parte_y_total",
+        "description": "El estudiante identifica mal qué dato corresponde a la parte y cuál al total, especialmente en contextos verbales con varias cantidades, o intenta considerar el total como si fuera una parte adicional.",
+        "how_to_address": "Trabajar representaciones con diagramas de parte–todo (por ejemplo, barras o rectángulos) donde se marque explícitamente el 100 % y el porcentaje dado. Hacer que el estudiante subraye en el texto qué es 'el total' y qué es 'el porcentaje del total'."
       },
       {
-        "name": "Uso_del_porcentaje_complementario",
-        "description": "El estudiante trabaja con 100% − p% por intuición (por ejemplo, usar 80% cuando se da 20%) sin que el problema lo justifique, obteniendo totales incorrectos.",
-        "how_to_address": "Hacer visible el significado del porcentaje en el contexto: ¿el 20% se refiere directamente al grupo conocido o al grupo que falta? Diseñar contrastes entre problemas donde el complementario sí es útil y donde no lo es, explicando la diferencia."
+        "name": "Lectura_erronea_de_aumentos_y_descuentos",
+        "description": "En expresiones como 'x aumentado en su 40 % es 150', el estudiante formula erróneamente la ecuación (por ejemplo, 1,4x = 150 → 150 + 0,4x, o x + 40 = 150) y no reconoce que el porcentaje se calcula sobre x.",
+        "how_to_address": "Traducir paso a paso las frases al lenguaje algebraico: 'aumentado en su 40 %' como 'x + 0,4x' o '1,4x'. Proponer ejemplos numéricos simples (por ejemplo, con x = 100) para que el estudiante vea concretamente qué significa un aumento del 40 % y generalizar después a x."
       },
       {
-        "name": "Errores_de_manejo_de_decimales_en_la_division",
-        "description": "Aunque el procedimiento conceptual es correcto, el estudiante se equivoca al dividir por un decimal (por ejemplo, por 0,4 o 0,12), ya sea al mover comas o al realizar la división larga.",
-        "how_to_address": "Revisar técnicas para convertir la división por un decimal en división por un entero (multiplicar numerador y denominador por 10, 100, etc.). Proponer ejercicios de práctica de divisiones con decimales desconectados de contexto, y luego volver a problemas de porcentaje."
+        "name": "Despeje_algebraico_incorrecto",
+        "description": "En ítems simbólicos (por ejemplo, 'p es el 25 % de k'), el estudiante plantea correctamente la ecuación pero despeja mal la variable objetivo (por ejemplo, obtiene p = 0,25k cuando se busca k en función de p, o aísla la letra equivocada).",
+        "how_to_address": "Reforzar el procedimiento de despeje paso a paso y la idea de 'qué variable se busca'. Trabajar ejercicios en que la misma ecuación se reescribe resolviendo para distintos símbolos y verificar sustituyendo valores numéricos para comprobar la corrección."
       },
       {
-        "name": "Lectura_superficial_del_enunciado",
-        "description": "El estudiante se queda con la primera cifra o con la palabra 'porcentaje' sin leer cuidadosamente la relación, aplicando un procedimiento estándar aunque no corresponda.",
-        "how_to_address": "Usar actividades donde la clave sea distinguir problemas de 'hallar la parte' de problemas de 'hallar el total'. Incorporar preguntas metacognitivas breves antes de calcular: '¿Qué se conoce: la parte o el total?', '¿Qué representa el porcentaje?'."
+        "name": "Errores_en_division_con_decimales",
+        "description": "Aun cuando el modelo mental de porcentaje inverso es correcto, se cometen errores de cálculo al dividir por decimales (por ejemplo, confundir 30 ÷ 0,2 con 0,2 ÷ 30).",
+        "how_to_address": "Practicar la transformación de divisiones por decimales en divisiones por enteros (multiplicando numerador y denominador por una potencia de 10). Proponer estimaciones previas para anticipar el orden de magnitud del resultado."
+      },
+      {
+        "name": "Aplicacion_incorrecta_de_regla_de_tres",
+        "description": "Al usar la regla de tres, el estudiante ubica mal los valores de parte, total y porcentaje, o cruza los productos incorrectamente, llegando a un total que no tiene sentido.",
+        "how_to_address": "Estandarizar el esquema de la regla de tres (porcentaje en una fila, cantidades en otra) y hacer que el estudiante verbalice qué representa cada número antes de armar la proporción. Comparar soluciones por regla de tres y por ecuación simple para mostrar que deben coincidir."
       }
     ],
     "future_targets": [
-      "Cálculo de porcentajes de cantidades desconocidas en contextos de aumento y disminución porcentual (precios con descuento, reajustes salariales, etc.).",
-      "Resolución de problemas de interés simple y compuesto donde se desconoce el capital inicial y se conocen intereses o montos finales.",
-      "Análisis e interpretación de datos estadísticos presentados en porcentajes, especialmente cuando se requiere reconstruir totales a partir de porcentajes parciales.",
-      "Modelación algebraica con porcentajes usando ecuaciones lineales sencillas (por ejemplo, plantear y resolver p% · x = k).",
-      "Razonamiento proporcional más avanzado en contextos de repartos proporcionales y mezclas donde se usan porcentajes.",
-      "Comprensión de indicadores porcentuales en contextos ciudadanos y científicos (tasas de crecimiento, participación, votación) a partir de datos parciales."
+      "Cálculo de aumentos y descuentos porcentuales directos sobre un total conocido (precio final, rebajas, impuestos).",
+      "Resolución de problemas de comparación porcentual entre dos cantidades (por ejemplo, cuánto mayor en porcentaje es A respecto de B).",
+      "Análisis de variaciones porcentuales sucesivas y su efecto no aditivo (composición de porcentajes).",
+      "Problemas de interés simple y compuesto donde es necesario recuperar capitales iniciales a partir de montos finales.",
+      "Interpretación de porcentajes en gráficos estadísticos (diagramas de sectores, barras con porcentajes) para determinar totales a partir de partes.",
+      "Modelación de situaciones reales mediante ecuaciones lineales con porcentajes y parámetros desconocidos.",
+      "Resolución de problemas de mezcla y proporcionalidad donde se usan porcentajes de concentración para hallar cantidades totales."
     ],
     "representation_variants": [
-      "Enunciados verbales directos del tipo 'x es el y% de una cantidad'.",
-      "Contextos aplicados (compras, encuestas, población, producción, notas de pruebas) donde se describe la parte y su porcentaje en lenguaje cotidiano.",
-      "Tablas de datos en que una fila o columna indique la parte y otra el porcentaje, requiriendo inferir el total.",
-      "Expresiones simbólicas simples como p% · T = P donde se pide determinar T a partir de P y p%.",
-      "Problemas donde se usan equivalencias frecuentes de porcentajes y fracciones (25% ↔ 1/4, 50% ↔ 1/2, 75% ↔ 3/4) para facilitar o verificar el cálculo del total.",
-      "Situaciones con dos subgrupos en un mismo contexto (por ejemplo, hombres y mujeres, aprobados y reprobados) donde uno de ellos está dado como porcentaje del total y se proporciona su cantidad."
+      "Enunciados verbales directos sin contexto, del tipo 'x es el y % de una cantidad'.",
+      "Contextos cotidianos con precios, sueldos, impuestos, descuentos y aumentos donde se entrega un monto parcial (por ejemplo, el impuesto o el monto rebajado) y su porcentaje.",
+      "Situaciones con poblaciones o grupos (estudiantes, personas, objetos) en que se da el número de elementos que representa cierto porcentaje del total y se pide el total.",
+      "Representaciones algebraicas con letras para la parte, el porcentaje y el total (por ejemplo, 'p es el a % de k'), exigiendo plantear y manipular ecuaciones simbólicas.",
+      "Tablas de datos numéricos donde se indica el porcentaje de cada categoría y el valor de una categoría en términos absolutos, pidiendo recuperar el total.",
+      "Diagrama de barras o de segmentos (dibujos simples, no necesariamente gráficos estadísticos formales) que muestran el 100 % dividido en porciones, marcando la parte conocida para inferir el total.",
+      "Relatos que involucren valores 'antes' y 'después' de un aumento o descuento porcentual, obligando a distinguir correctamente el valor original del modificado."
     ],
     "numbers_profiles": [
       "small_integers",
-      "larger_integers",
-      "decimals_one_decimal_place",
-      "decimals_two_decimal_places",
-      "simple_fractions",
-      "friendly_percents_simple (10, 20, 25, 50, 75)",
-      "less_friendly_percents (15, 30, 40, 60, 80)",
-      "non_round_percents (12.5, 17, 22, 37)",
-      "percents_over_100 (solo en ítems más complejos donde el contexto lo justifique claramente)"
+      "medium_integers",
+      "decimal_percentages_simple",
+      "decimal_percentages_nontrivial",
+      "fractions_simple",
+      "algebraic_symbols"
     ],
     "required_image_types": []
   }

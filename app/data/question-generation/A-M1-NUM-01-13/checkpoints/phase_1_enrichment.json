@@ -3,134 +3,139 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Conversión directa de un número decimal finito a una fracción con denominador potencia de 10 (10, 100, 1000, etc.).",
-        "Identificación del número de cifras decimales para determinar la potencia de 10 adecuada en el denominador.",
-        "Escritura inicial de la fracción y simplificación hasta la mínima expresión mediante divisiones sucesivas o uso de factores primos.",
-        "Manejo de decimales finitos positivos y negativos, incluyendo mayores que 1 y entre -1 y 1.",
-        "Tratamiento de ceros a la derecha en la parte decimal (por ejemplo, 0,50; 2,340) sin alterar el valor del número al convertirlo."
+        "Conversión directa de un número decimal finito a fracción usando potencia de 10 en el denominador.",
+        "Identificación del número de cifras decimales para definir la potencia de 10 correspondiente (10, 100, 1000, etc.).",
+        "Inclusión correcta del signo del número en la fracción (positivos y negativos).",
+        "Simplificación de la fracción obtenida hasta su mínima expresión mediante factores comunes.",
+        "Conversión de decimales finitos menores que 1 (por ejemplo, 0,4; 0,125) y mayores que 1 (por ejemplo, 2,5; 13,75).",
+        "Uso de representaciones verbales de decimales (por ejemplo, \"cero coma veinticinco\") que deben llevarse a fracción."
       ],
       "out_of_scope": [
-        "Conversión de decimales infinitos periódicos o semiperiódicos a fracción.",
-        "Operaciones con fracciones (suma, resta, multiplicación, división) posteriores a la conversión.",
-        "Conversión inversa de fracción a decimal.",
-        "Números con notación científica (por ejemplo, 3,1 × 10⁻²) o con potencias de 10 explícitas en el enunciado.",
-        "Uso de radicales, fracciones algebraicas o expresiones simbólicas más allá de números racionales simples.",
-        "Demostraciones teóricas sobre densidad de los racionales o propiedades formales de los números racionales."
+        "Conversión de decimales periódicos puros o mixtos a fracción.",
+        "Conversión de fracción a decimal (el proceso inverso como foco principal).",
+        "Operaciones aritméticas entre fracciones (suma, resta, multiplicación, división) más allá de la simplificación de la fracción resultante.",
+        "Uso de fracciones algebraicas (con variables en numerador o denominador).",
+        "Análisis de aproximaciones o redondeos de decimales antes de convertir a fracción.",
+        "Trabajo con porcentajes, razones o proporciones como eje principal del ítem."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprensión del valor posicional en el sistema decimal (unidades, décimas, centésimas, milésimas).",
-        "A-M1-NUM-01-03: Lectura y escritura de números decimales finitos.",
-        "A-M1-NUM-01-08: Simplificación de fracciones a su mínima expresión.",
-        "A-M1-NUM-01-05: Manejo básico de potencias de 10 (10, 100, 1000) y su relación con mover la coma decimal.",
-        "A-M1-NUM-01-10: Comprensión del uso del signo negativo en números racionales."
+        "A-M1-NUM-01-01: Lectura y escritura de números decimales.",
+        "A-M1-NUM-01-02: Comprensión de valor posicional en el sistema decimal (décimas, centésimas, milésimas).",
+        "A-M1-NUM-01-05: Reconocimiento y uso de potencias de 10 (10, 100, 1000, etc.).",
+        "A-M1-NUM-01-08: Noción básica de fracción (numerador, denominador) y equivalencias simples.",
+        "A-M1-NUM-01-09: Simplificación de fracciones mediante factores comunes.",
+        "A-M1-NUM-01-10: Manejo de números enteros negativos y su signo."
       ],
       "common_traps": [
-        "Contar mal el número de cifras decimales y usar una potencia de 10 incorrecta en el denominador.",
-        "Omitir el signo negativo al convertir decimales negativos a fracción.",
-        "No simplificar la fracción obtenida hasta la mínima expresión, dejándola con denominadores como 10, 100, 1000 cuando se puede reducir.",
-        "Eliminar ceros significativos en la parte decimal que cambian el valor del número (por ejemplo, confundir 0,05 con 0,5).",
-        "Confundir formato de coma decimal con separación de miles, especialmente en contextos verbales o de dinero.",
-        "Pensar que decimales con muchas cifras necesariamente no se pueden convertir a fracción exacta.",
-        "Simplificar solo el numerador o solo el denominador y detenerse en una fracción aún reducible."
+        "Olvidar contar correctamente la cantidad de cifras decimales y usar una potencia de 10 incorrecta (por ejemplo, usar 10 en vez de 100).",
+        "Perder la parte entera del número al convertir (por ejemplo, transformar 1,5 en 5/10 en vez de 15/10).",
+        "No trasladar el signo negativo a la fracción, obteniendo una fracción positiva a partir de un decimal negativo.",
+        "No simplificar la fracción a su mínima expresión, o creer que cualquier fracción ya está simplificada sin revisar factores comunes.",
+        "Simplificar incorrectamente cancelando dígitos en lugar de factores (por ejemplo, de 25/100 a 2/10 por borrar el 5 y un cero).",
+        "Confundir ceros finales en el decimal con ceros \"inútiles\" y alterar la potencia de 10 necesaria (por ejemplo, 0,50 tratado como 0,5).",
+        "Interpretar decimales escritos con coma como separados de miles (confusión de notación) o leer mal el número dado en contexto verbal."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Decimales positivos con 1 o 2 cifras decimales cuya fracción equivalente se simplifica con factores muy evidentes (2, 5 o 10). Ej: 0,4; 1,2; 0,75.",
-        "Ítems donde el procedimiento es de un solo paso explícito: escribir el número sobre 10 o 100 y simplificar en una sola división.",
-        "Valores sin ceros internos en la parte decimal (evitar casos como 0,05; 2,30).",
-        "Alternativas que no incluyen distractores con errores muy sutiles; diferencias claras entre respuestas.",
-        "Sin presencia de contexto verbal complejo: se pide directamente la conversión de un número dado."
+        "Decimales positivos con 1 o 2 cifras decimales, menores que 10, sin ceros intermedios (por ejemplo, 0,3; 2,4).",
+        "Ítems donde el decimal ya está explícito en notación numérica y solo se pide la conversión directa a fracción.",
+        "Situaciones donde la simplificación es inmediata o muy evidente (por ejemplo, 0,5 → 5/10 → 1/2).",
+        "Alternativas que difieren claramente en la potencia de 10 o en la presencia/ausencia de simplificación, facilitando la identificación de la opción correcta.",
+        "Sin decimales negativos, ni mezcla de parte entera y parte decimal compleja."
       ],
       "medium": [
-        "Decimales positivos o negativos con 2 o 3 cifras decimales que requieren al menos dos pasos de simplificación o reconocer factores no tan inmediatos (por ejemplo, 0,125; -0,375; 2,625).",
-        "Casos con ceros a la derecha que exigen distinguir entre 0,5 y 0,50 sin cambiar el resultado (pero pueden aumentar la carga de conteo de cifras).",
-        "Números mayores que 1 (por ejemplo, 3,4; -2,75), que inducen a confusión entre fracción propia, impropia o número mixto.",
-        "Ítems ligeramente contextualizados donde el estudiante debe identificar primero el número decimal relevante y luego convertirlo.",
-        "Distractores que incluyen errores típicos de conteo de cifras decimales o ausencia de simplificación completa."
+        "Decimales con 2 o 3 cifras decimales, con parte entera distinta de cero (por ejemplo, 3,75; 0,125; 6,40).",
+        "Presencia de ceros intermedios o finales en el decimal (por ejemplo, 0,040; 1,50) que obligan a discriminar bien la cantidad de cifras decimales.",
+        "Incluye números negativos donde el signo debe ser manejado correctamente en la fracción.",
+        "Necesidad de simplificar una fracción con factores comunes no tan obvios (por ejemplo, 375/1000 → 3/8).",
+        "Ítems donde el estudiante debe elegir, entre varias fracciones, cuál corresponde al decimal dado (comparación de procedimientos posibles)."
       ],
       "hard": [
-        "Decimales con 3 o 4 cifras decimales donde la simplificación exige reconocer factores compuestos (por ejemplo, 0,3125; -1,0625) o usar descomposición en factores primos.",
-        "Situaciones donde se debe comparar alternativas de fracción equivalentes para el mismo decimal y elegir la que está en mínima expresión, distinguiendo entre varias formas correctas pero solo una simplificada.",
-        "Ítems en que la conversión a fracción es un paso intermedio para resolver una pregunta mayor (por ejemplo, elegir entre expresiones equivalentes en un contexto de proporcionalidad) pero donde la habilidad central sigue siendo este átomo.",
-        "Casos con ceros internos en la parte decimal (por ejemplo, 0,040; 1,005; -0,050) que pueden llevar a errores de conteo o de valor posicional.",
-        "Decimales negativos mayores que -1 o menores que -1 en contexto, donde omitir el signo lleva a caer en un distractor plausible.",
-        "Distractores diseñados con simplificaciones parciales o con el signo equivocado, muy cercanos a la respuesta correcta."
+        "Decimales con 3 o 4 cifras decimales y con ceros en posiciones internas o finales que generan denominadores grandes (por ejemplo, 0,0625; 4,2500).",
+        "Contextos verbales donde el decimal está descrito con palabras y debe deducirse primero el número decimal antes de convertirlo a fracción.",
+        "Ítems que involucran comparar o ordenar varias representaciones (dos o más decimales y sus fracciones correspondientes) donde solo una pareja está correctamente relacionada.",
+        "Fracciones resultantes que requieren más de un paso de simplificación o el reconocimiento de factores menos frecuentes (por ejemplo, múltiplos de 25, 125).",
+        "Distractores construidos a partir de errores típicos (mala cuenta de cifras decimales, omisión del signo, no simplificación), que exigen atención cuidadosa al algoritmo completo."
       ]
     },
     "ambiguity_avoid": [
-      "No usar decimales infinitos periódicos ni notaciones como 0,3̅ o 0,(3) en ítems de este átomo.",
-      "Evitar contextos donde la respuesta pueda aceptarse tanto como fracción propia, impropia o número mixto si el criterio no está claramente indicado; explicitar si se espera fracción impropia o cualquier forma equivalente.",
-      "No mezclar en el mismo ítem la conversión decimal↔fracción en ambas direcciones si eso hace confuso qué se está pidiendo exactamente.",
-      "Evitar enunciados donde la coma decimal pueda confundirse con separación de miles (por ejemplo, usar 3,25 en lugar de 3,2500 al lado de 3.000).",
-      "No introducir simultáneamente porcentajes, decimales y fracciones si no es indispensable, porque puede diluir el foco en la conversión decimal→fracción.",
-      "Evitar enunciados muy contextuales donde el número decimal aparezca implícito o ambiguo (por ejemplo, descripciones verbales vagas de medidas) en lugar de entregarlo de forma clara.",
-      "No usar lenguaje como \"aproximadamente\" o \"redondeado\" en el mismo ítem, ya que puede generar dudas sobre si se requiere una fracción exacta o aproximada.",
-      "No plantear varias fracciones equivalentes correctas como opciones sin especificar que se busca la fracción en su mínima expresión."
+      "No incluir decimales periódicos (indicados con barra o con puntos suspensivos), ya que este átomo solo cubre decimales finitos.",
+      "Evitar enunciados donde el mismo número pueda interpretarse como aproximación o valor exacto si no se explicita; aclarar que se trabaja con el valor dado tal cual.",
+      "Indicar explícitamente cuando se requiera \"fracción irreducible\" o \"en su mínima expresión\" para evitar dudas sobre la forma esperada de la respuesta.",
+      "No mezclar en el mismo ítem la conversión de decimal a fracción y de fracción a decimal como tareas simultáneas, si no se especifica claramente qué conversión se pide.",
+      "Usar de forma consistente la coma como separador decimal y evitar notaciones que puedan confundirse con notación anglosajona de punto decimal sin aclaración.",
+      "Evitar frases verbales ambiguas como \"cero punto veinticinco\" y preferir \"cero coma veinticinco\" en contexto chileno.",
+      "No utilizar contextos de porcentajes o tasas donde el estudiante pueda dudar si debe primero convertir a decimal o a fracción, a menos que se explicite claramente el número decimal inicial.",
+      "Evitar que más de una alternativa esté correctamente relacionada con el decimal si no se exige explícitamente la forma irreducible (por ejemplo, 25/100 y 1/4); en ese caso, dejar solo una correcta según la consigna."
     ],
     "error_families": [
       {
-        "name": "Denominador_incorrecto_por_conteo_de_cifras",
-        "description": "El estudiante cuenta mal las cifras decimales y elige un denominador 10, 100, 1000, etc. que no corresponde (por ejemplo, 0,25 → 25/10 o 25/1000).",
-        "how_to_address": "En los ítems, incluir distractores que reflejen estos errores para diagnosticar, y en las retroalimentaciones resaltar la relación directa: 'tantas cifras decimales → tantos ceros en el denominador'. Proponer que primero se escriba mental o explícitamente la posición de cada cifra (décimas, centésimas, milésimas)."
+        "name": "Potencia_de_10_incorrecta",
+        "description": "El estudiante cuenta mal las cifras decimales y elige una potencia de 10 equivocada para el denominador (por ejemplo, usar 10 en lugar de 100 para un número con dos cifras decimales).",
+        "how_to_address": "Proponer ítems y explicaciones que enfaticen el conteo explícito de las posiciones decimales (décimas, centésimas, milésimas) y la relación directa con 10, 100, 1000. Incluir ejemplos donde el conteo correcto sea clave, especialmente con ceros intermedios o finales."
       },
       {
-        "name": "Olvido_del_signo",
-        "description": "Al convertir un decimal negativo, el estudiante obtiene la fracción correcta en valor absoluto pero positiva (por ejemplo, -1,5 → 3/2).",
-        "how_to_address": "Incluir alternativas con el mismo valor absoluto pero distinto signo. En la explicación reforzar que el signo afecta a todo el número y que se agrega al numerador (o delante de la fracción completa) sin alterar el denominador como potencia de 10."
+        "name": "Pérdida_de_parte_entera",
+        "description": "Al convertir decimales mayores que 1, el estudiante ignora la parte entera y solo transforma la parte decimal (por ejemplo, 3,5 → 5/10).",
+        "how_to_address": "Incluir ejercicios que combinen parte entera y decimal, mostrando la escritura del número sin coma como numerador (por ejemplo, 3,5 → 35/10) y destacando que la parte entera también se desplaza al numerador."
       },
       {
-        "name": "No_simplificar_la_fraccion",
-        "description": "El estudiante se queda con la fracción con denominador potencia de 10 (por ejemplo, 0,6 → 6/10) sin reducirla a mínima expresión.",
-        "how_to_address": "Diseñar ítems donde solo una opción esté en mínima expresión, aunque haya otras equivalentes, obligando a verificar la simplificación. En la retroalimentación recalcar que el procedimiento no termina hasta que numerador y denominador sean coprimos."
+        "name": "Signo_omitido_o_mal_ubicado",
+        "description": "El estudiante no traslada el signo negativo del decimal a la fracción o lo coloca solo en el numerador/denominador creyendo que cambia el valor.",
+        "how_to_address": "Mostrar explícitamente que el signo negativo afecta a toda la fracción y que -a/b, a/(-b) y (-a)/b representan el mismo número. Diseñar ítems con distractores que reflejen la omisión del signo para promover la atención a este detalle."
       },
       {
-        "name": "Simplificacion_incompleta",
-        "description": "La fracción se simplifica parcialmente (por ejemplo, 0,40 → 40/100 → 2/5, pero el estudiante se queda en 4/10).",
-        "how_to_address": "Proponer ítems que confronten fracciones parcialmente simplificadas con la totalmente reducida. En la explicación, promover el uso sistemático de divisores comunes máximos o verificación final de que no quedan factores comunes."
+        "name": "No_simplificación",
+        "description": "El estudiante deja la fracción equivalente al decimal, pero no la reduce a su mínima expresión (por ejemplo, 25/100 en lugar de 1/4).",
+        "how_to_address": "Plantear ítems donde la consigna exija claramente la fracción irreducible y proporcionar retroalimentación sobre la importancia de buscar factores comunes. Proponer comparaciones entre fracciones equivalentes para reforzar el concepto de simplificación."
       },
       {
-        "name": "Manejo_erroneo_de_ceros_decimales",
-        "description": "Confundir el valor de decimales con ceros internos o finales (por ejemplo, interpretar 0,05 como 5/10 o simplificar 0,50 a 5/10 y luego a 1/10 en lugar de 1/2).",
-        "how_to_address": "Incluir ejemplos con 0,05; 0,50; 0,500 y distractores que reflejen la confusión. En la retroalimentación, enfatizar la lectura posicional (0,05 = cinco centésimas) y no solo 'cortar ceros'."
+        "name": "Simplificación_incorrecta",
+        "description": "El estudiante intenta simplificar, pero lo hace de forma incorrecta, cancelando dígitos en lugar de factores o dividiendo numerador y denominador por valores distintos.",
+        "how_to_address": "Presentar ejemplos de simplificación paso a paso, subrayando que se dividen ambos términos por el mismo número y que la cancelación solo procede con factores completos. Usar distractores construidos a partir de simplificaciones erróneas para discutir por qué están mal."
       },
       {
-        "name": "Confusion_con_porcentajes",
-        "description": "Al ver un decimal que podría relacionarse con un porcentaje (por ejemplo, 0,25), el estudiante se salta el paso decimal→fracción y aplica reglas de porcentaje de forma incorrecta.",
-        "how_to_address": "Si se usan contextos con porcentajes, separar claramente las etapas y aclarar que primero se convierte el decimal a fracción. En la explicación, recordar que 0,25 = 25/100 independientemente de que también represente 25%."
+        "name": "Manejo_erróneo_de_ceros_finales",
+        "description": "El estudiante ignora ceros finales en el decimal (por ejemplo, trata 0,50 como 0,5) o añade/quita ceros sin ajustar la potencia de 10, alterando la fracción obtenida.",
+        "how_to_address": "Diseñar ítems con decimales que contengan ceros finales o intermedios, y enfatizar que la cantidad de cifras decimales, incluyendo ceros, determina la potencia de 10. Explicar que 0,5 y 0,50 representan el mismo número, pero se pueden obtener fracciones equivalentes que luego se simplifican."
       },
       {
-        "name": "Confusion_entre_fraccion_propia_impropia_y_mixta",
-        "description": "Ante decimales mayores que 1, algunos intentan escribir números mixtos sin claridad o creen que la fracción debe ser siempre propia, llegando a representaciones erróneas.",
-        "how_to_address": "Parafrasear en el enunciado que se acepta o se requiere fracción impropia. En retroalimentaciones, mostrar explícitamente cómo se pasa de un decimal como 1,5 a 3/2 y, si se quiere, a 1 1/2 como equivalencia, pero manteniendo el foco en la fracción impropia como estándar."
+        "name": "Confusión_decimal_fracción",
+        "description": "El estudiante confunde la lectura del decimal con la fracción directa (por ejemplo, interpreta 0,25 como 0/25 o 2/5, asociando solo dígitos sueltos).",
+        "how_to_address": "Trabajar la lectura posicional adecuada del decimal (veinticinco centésimos) y su vínculo con la fracción 25/100. Incluir actividades donde se relacione la forma verbal con la fraccionaria antes de simplificar."
       }
     ],
     "future_targets": [
-      "Conversión de fracciones a decimales finitos e identificación de cuándo una fracción produce un decimal finito o periódico.",
-      "Operaciones con números racionales en forma de fracción (suma, resta, multiplicación, división).",
-      "Manejo de porcentajes a través de su relación con fracciones y decimales.",
-      "Resolución de problemas de proporcionalidad directa e inversa usando números racionales.",
-      "Comparación y ordenamiento de números racionales en sus distintas representaciones (decimal, fracción, porcentaje).",
-      "Comprensión y conversión de decimales infinitos periódicos a fracción.",
-      "Resolución de ecuaciones lineales sencillas que involucran coeficientes racionales.",
-      "Interpretación de medidas y magnitudes en contextos geométricos y estadísticos expresadas como decimales o fracciones."
+      "A-M1-NUM-01-14: Conversión de fracción a decimal mediante división.",
+      "A-M1-NUM-01-15: Comparación y ordenamiento de fracciones y decimales en la recta numérica.",
+      "A-M1-NUM-01-16: Operaciones con fracciones (suma, resta, multiplicación, división) usando equivalencias.",
+      "A-M1-NUM-01-18: Resolución de problemas con porcentajes donde se requiera pasar entre decimal, fracción y porcentaje.",
+      "A-M1-NUM-02-03: Trabajo con razones y proporciones que involucren fracciones y decimales equivalentes.",
+      "A-M1-NUM-02-05: Interpretación de situaciones de escala y tasas que impliquen fracciones o decimales.",
+      "A-M1-EST-01-02: Cálculo de probabilidades simples representadas como fracciones y decimales equivalentes."
     ],
     "representation_variants": [
-      "Números escritos en notación decimal estándar con coma (por ejemplo, 0,25; -1,5; 2,375).",
-      "Números decimales presentados en contexto verbal (por ejemplo, 'cero coma veinticinco'; 'uno coma cinco metros').",
-      "Presentación de una cantidad en un contexto (dinero, longitud, tiempo) expresada con decimal que debe transformarse a fracción.",
-      "Uso de tablas pequeñas donde se muestran valores decimales y se pide identificar la fracción equivalente.",
-      "Comparación entre distintas representaciones de un mismo número (decimal y varias fracciones candidatas) para elegir la fracción equivalente en mínima expresión.",
-      "Ítems donde se presenta primero la fracción con denominador potencia de 10 y el estudiante debe decidir cuál corresponde a un decimal dado, obligándolo a interiorizar la relación inversa."
+      "Decimal explícito a fracción (por ejemplo, convertir 0,375 a fracción irreducible).",
+      "Número con parte entera y decimal a fracción impropia (por ejemplo, 2,5 → 5/2).",
+      "Representación verbal del decimal a fracción (por ejemplo, \"cero coma setenta y cinco\" a fracción).",
+      "Elección de la fracción correcta entre varias alternativas que representan un mismo decimal dado.",
+      "Tabla de correspondencias parcial entre decimales y fracciones donde se debe completar o identificar una pareja correcta.",
+      "Reescritura de una fracción dada para verificar si corresponde o no a un decimal propuesto (validar la conversión).",
+      "Contextos sencillos (recorridos, dinero, medidas) donde el dato numérico esté en forma decimal y la pregunta exija la fracción equivalente."
     ],
     "numbers_profiles": [
-      "small_integers",
-      "finite_decimals_tenths",
-      "finite_decimals_hundredths",
-      "finite_decimals_thousandths",
-      "finite_decimals_with_trailing_zeros",
-      "finite_decimals_greater_than_one",
-      "negative_finite_decimals"
+      "small_decimals_one_decimal_place",
+      "small_decimals_two_decimal_places",
+      "small_decimals_three_decimal_places",
+      "integers_with_one_decimal_place",
+      "integers_with_two_decimal_places",
+      "integers_with_three_decimal_places",
+      "decimals_with_trailing_zeros",
+      "decimals_with_internal_zeros",
+      "negative_decimals",
+      "denominators_powers_of_10",
+      "fractions_reducible_by_2_5_10_25_50_125"
     ],
     "required_image_types": []
   }

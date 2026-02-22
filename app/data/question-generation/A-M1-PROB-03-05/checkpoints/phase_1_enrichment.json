@@ -3,120 +3,123 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Interpretar en palabras el significado de Q1, Q2 (mediana) o Q3 dados en un contexto (por ejemplo, notas, ingresos, tiempos, puntajes).",
-        "Relacionar un cuartil con el porcentaje de datos que quedan por debajo o por encima de él (25%, 50%, 75%).",
-        "Determinar qué significa que un valor individual esté bajo, cerca o sobre un cuartil específico en el contexto descrito.",
-        "Decidir si afirmaciones sobre la distribución (por ejemplo, 'la mayoría aprobó', 'pocos tienen ingresos muy altos') son coherentes con los cuartiles entregados.",
-        "Comparar dos grupos usando información de sus cuartiles para hacer juicios cualitativos (por ejemplo, cuál grupo tiende a tener valores mayores).",
-        "Interpretar cuartiles presentados en forma numérica o en diagramas de caja ya construidos."
+        "Interpretar el significado de Q1, Q2 (mediana) y Q3 como porcentajes acumulados aproximados de la población (25%, 50%, 75%) en contextos cotidianos (notas, sueldos, tiempos, cantidades).",
+        "Relacionar el valor de un cuartil con expresiones como 'un 25% de los datos está bajo...', 'el 75% de los estudiantes obtuvo...', 'la mitad de los casos tiene a lo más...'.",
+        "Determinar si una persona o caso particular está bajo, sobre o en torno a un cuartil y qué implica eso en el contexto (peor/mejor rendimiento, menor/mayor ingreso, menor/mayor tiempo, etc.).",
+        "Evaluar la veracidad de afirmaciones verbales sobre la distribución de los datos usando solamente la información que entregan los cuartiles (sin requerir media ni desviación estándar).",
+        "Interpretar cuartiles dados explícitamente o leídos desde un gráfico estadístico (especialmente diagramas de caja) o desde una tabla/resumen estadístico.",
+        "Confrontar afirmaciones tipo 'la mayoría aprobó', 'casi todos tienen más de X', 'pocos ganan menos de Y', usando el valor de uno o más cuartiles."
       ],
       "out_of_scope": [
-        "Cálculo algorítmico de cuartiles a partir de datos sin que se entregue explícitamente el valor del cuartil.",
-        "Cálculo de otros estadígrafos (media, varianza, desviación estándar, percentiles distintos de Q1, Q2, Q3).",
-        "Construcción de diagramas de caja a partir de datos crudos.",
-        "Inferencias formales de probabilidad o estadística inferencial (contrastes de hipótesis, estimaciones de parámetros poblacionales).",
-        "Interpretación de gráficos estadísticos que no involucren explícitamente cuartiles (por ejemplo, solo barras o tortas sin relación a cuartiles).",
-        "Trabajos con modelos de distribución teóricos (normal, binomial, etc.)."
+        "Cálculo algorítmico de cuartiles a partir de datos crudos (ordenar datos y ubicar la posición exacta del cuartil).",
+        "Uso de otros percentiles distintos de Q1, Q2 y Q3 (como P10, P90) o deciles.",
+        "Análisis profundo de dispersión (rango intercuartílico, valores extremos, outliers) más allá de lo estrictamente necesario para entender qué fracción de datos está en ciertos rangos.",
+        "Interpretación o comparación de medias, varianzas o desviaciones estándar.",
+        "Problemas que requieran modelar o asumir formas específicas de distribución (normal, sesgo positivo/negativo detallado) más allá de reconocer 'mayoría/minoría'.",
+        "Cálculo de probabilidades formales a partir de cuartiles (p.ej., P(X > Q3)).",
+        "Construcción de diagramas de caja o gráficos a partir de datos; aquí el foco es leer e interpretar."
       ],
       "prerequisites": [
-        "A-M1-PROB-03-01: Comprender noción de ordenamiento de datos y posición relativa en una distribución.",
-        "A-M1-PROB-03-02: Reconocer y describir el significado de cuartiles y mediana en términos de porcentajes acumulados (25%, 50%, 75%).",
-        "A-M1-PROB-03-03: Interpretar la mediana como punto que deja aproximadamente la mitad de los datos a cada lado.",
-        "A-M1-PROB-03-04: Leer información básica desde un diagrama de caja (identificar Q1, mediana, Q3)."
+        "A-M1-PROB-03-01",
+        "A-M1-PROB-03-02",
+        "A-M1-PROB-03-03"
       ],
       "common_traps": [
-        "Confundir 'el 75% está sobre Q3' en lugar de 'el 75% está en Q3 o por debajo', invirtiendo el sentido acumulado del cuartil.",
-        "Interpretar el valor del cuartil como un valor 'típico' individual (como si todos tuvieran aproximadamente ese valor) y no como un punto de corte en la distribución.",
-        "Tomar expresiones cotidianas como 'la mayoría' o 'casi todos' sin confrontarlas con los porcentajes asociados a los cuartiles.",
-        "Olvidar que los cuartiles se refieren a la distribución completa, no solo a la muestra mostrada en uno o dos ejemplos individuales del enunciado.",
-        "Suponer que los cuartiles implican que los datos están uniformemente distribuidos entre ellos (por ejemplo, creer que entre Q1 y Q3 hay necesariamente la misma cantidad de datos que entre el mínimo y Q1).",
-        "Confundir cuartiles con percentiles arbitrarios (por ejemplo, creer que Q3 es el 30% o el 80% de los datos).",
-        "Usar los cuartiles para comparar incorrectamente tamaños de muestra entre grupos (por ejemplo, interpretar un valor de cuartil mayor como si significara más personas)."
+        "Confundir el significado direccional de los cuartiles: afirmar, por ejemplo, que 'el 25% de los datos está sobre Q1' en vez de 'bajo o igual a Q1'.",
+        "Interpretar Q3 como 'el 75% de los datos está sobre Q3' en lugar de entenderlo como valor hasta el cual se acumula aproximadamente el 75% de los datos.",
+        "Olvidar que los cuartiles se refieren a porcentajes SOBRE EL CONJUNTO TOTAL y no al porcentaje dentro de un segmento intermedio (por ejemplo, pensar que entre Q1 y Q3 está el 75% en lugar del 50%).",
+        "Tomar un valor típico del contexto como 'promedio' cuando el problema está hablando de la mediana (Q2) y su uso como cuartil.",
+        "Suponer que los datos están uniformemente repartidos entre cuartiles y hacer inferencias de conteo detalladas sin respaldo (por ejemplo, cuántas personas exactas hay en cada tramo sin tener el tamaño de la muestra).",
+        "Interpretar juicios de valor de forma invertida según el contexto: no distinguir que 'mayor' es mejor en notas pero peor en tiempos de demora, y viceversa.",
+        "Asumir que un caso encima de Q3 es 'imposible' o 'no pertenece a la muestra', olvidando que pueden existir datos superiores e inferiores a los cuartiles."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Se da un único cuartil (Q1, Q2 o Q3) y se pide seleccionar la afirmación correcta que describa el porcentaje de datos bajo o sobre ese valor, sin contexto complejo (por ejemplo, notas de una prueba en un solo curso).",
-        "Las alternativas usan vocabulario directo de porcentaje ('el 25% de los estudiantes', 'la mitad del grupo') y no expresiones indirectas ('la mayoría', 'pocos').",
-        "No se requiere comparar grupos ni evaluar múltiples afirmaciones: solo identificar la interpretación correcta de un cuartil.",
-        "No hay mezcla de diferentes medidas estadísticas en el enunciado; solo se mencionan cuartiles."
+        "El valor de un cuartil (Q1, Q2 o Q3) está dado explícitamente en el enunciado, sin necesidad de leerlo en un gráfico complejo.",
+        "La pregunta se centra en un único cuartil y una única afirmación a interpretar, usualmente directa, del tipo '¿qué significa que Q2 sea 6,0 en las notas de un curso?'.",
+        "Las opciones contienen formulaciones claramente distintas en términos de porcentaje (25%, 50%, 75%, 100%), con distractores burdos (confundir 25% con 75%, o mezclar 'bajo' con 'sobre').",
+        "No se exige comparar dos afirmaciones ni decidir cuál es más adecuada; solo identificar la que corresponde al significado básico del cuartil.",
+        "Contextos muy familiares y lineales (notas escolares, cantidad de amigos en redes, número de libros leídos) donde 'más' es claramente 'mejor' o al menos claramente interpretable."
       ],
       "medium": [
-        "Se entregan dos o tres cuartiles (por ejemplo, Q1 y Q3, o los tres) y se pide evaluar una o más afirmaciones que usan lenguaje cotidiano ('la mayoría aprobó', 'menos de la mitad reprobaron').",
-        "El contexto incluye una condición relevante (por ejemplo, nota mínima de aprobación, umbral de pobreza, tiempo máximo aceptable), que el estudiante debe relacionar con el cuartil.",
-        "Puede requerir decidir si una conclusión es válida o no para un grupo, utilizando el cuartil apropiado (por ejemplo, si al menos la mitad supera cierto umbral).",
-        "Las alternativas mezclan interpretaciones correctas e incorrectas de diferentes cuartiles, obligando a discriminar entre ellas."
+        "El valor del cuartil se obtiene desde un diagrama de caja u otro gráfico estadístico simple, pero no requiere cálculos, solo lectura de escala.",
+        "Se combinan dos elementos: entender el porcentaje asociado al cuartil y relacionarlo con términos como 'la mayoría', 'casi la mitad', 'un cuarto', 'tres cuartos'.",
+        "Se requiere evaluar la veracidad de 1 o 2 afirmaciones sobre la distribución de logros o características (por ejemplo, quiénes aprobaron, quiénes están en el grupo con mayores valores).",
+        "Los distractores usan errores conceptuales frecuentes: invertir 'sobre/bajo', intercambiar 25% con 75%, o malinterpretar 'entre Q1 y Q3' como el 75% de los datos.",
+        "Puede incluir contexto donde que el valor sea mayor no necesariamente es mejor (por ejemplo, tiempo de viaje, deuda, consumo de combustible), obligando a interpretar semánticamente el 'estar sobre/bajo un cuartil'."
       ],
       "hard": [
-        "Se comparan dos o más grupos a partir de sus cuartiles (por ejemplo, Q1 y Q3 de dos cursos o dos comunas) para decidir cuál tiene, en general, valores mayores o cuál presenta mayor proporción por sobre cierto umbral.",
-        "Se presentan varias afirmaciones sutiles sobre la distribución (por ejemplo, sobre qué fracción de cada grupo aprueba, quiénes están en situación de vulnerabilidad, o quién presenta mayor desigualdad), y se debe identificar la que está correctamente respaldada solo por los cuartiles.",
-        "El contexto usa términos cualitativos ('mayoría clara', 'una pequeña parte', 'alrededor de la mitad') que el estudiante debe traducir a rangos de porcentaje compatibles con los cuartiles.",
-        "Puede incluir la lectura de un diagrama de caja para obtener los cuartiles y luego interpretar su significado en el contexto, combinando dos niveles de trabajo (lectura gráfica + interpretación semántica)."
+        "El ítem exige razonar simultáneamente con más de un cuartil (por ejemplo, comparar interpretaciones que involucran Q1 y Q3, o Q2 y Q3).",
+        "Se pide evaluar varias afirmaciones sutiles sobre la distribución (por ejemplo, decidir cuál(es) de 3–4 enunciados es(son) necesariamente verdadero(s) usando solo la información de cuartiles).",
+        "Las opciones incluyen enunciados plausibles que requieren distinguir cuidadosamente porcentajes acumulados (hasta cierto valor) de porcentajes en rangos (entre dos cuartiles).",
+        "El contexto obliga a hacer inferencias cualitativas sobre 'minoría', 'mayoría clara', 'grupo reducido', sin que estén expresadas explícitamente, usando la idea de cuartiles.",
+        "Se puede requerir identificar la consecuencia relativa de estar sobre Q3 o bajo Q1 en un escenario comparativo (por ejemplo, elegir quién pertenece al grupo de rendimiento más alto, considerando varias personas con datos respecto de distintos cuartiles)."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar 'mayoría', 'casi todos', 'pocos', 'una parte importante' sin que el ítem permita vincular claramente esas expresiones con porcentajes compatibles o incompatibles con los cuartiles.",
-      "No usar cuartiles en contextos donde se esté hablando simultáneamente de probabilidades teóricas, para no mezclar frecuencia relativa muestral con probabilidad matemática.",
-      "No formular alternativas que dependan de supuestos adicionales sobre la forma de la distribución (simetría, uniformidad, ausencia de valores extremos) que no se indiquen explícitamente.",
-      "Evitar datos o valores adicionales innecesarios (media, desviación estándar, porcentaje de aprobación) que puedan dar pie a interpretaciones alternativas ajenas al foco en cuartiles.",
-      "No presentar cuartiles sin indicar claramente a qué variable y grupo se refieren, sobre todo cuando hay más de un grupo o más de una variable en el enunciado.",
-      "Evitar redacciones donde no quede claro si el 25%, 50% o 75% se refiere a 'por debajo', 'por encima' o 'a lo más', especificando siempre el sentido acumulado ('a lo más ese valor', 'a lo menos ese valor').",
-      "No usar el mismo número para diferentes cosas (por ejemplo, 5 como valor de Q1 y 5 como nota mínima de aprobación) sin aclaraciones, para evitar confusión semántica."
+      "Evitar usar simultáneamente 'mayoría', 'casi todos', 'gran parte', 'la mitad' sin anclar al menos una de esas expresiones a porcentajes claros (por ejemplo, mayoría ≈ más del 50%) cuando se relacionan con cuartiles.",
+      "No redactar alternativas que dependan de asumir tamaños de muestra específicos cuando estos no se entregan; los cuartiles deben interpretarse sin necesidad de saber el número exacto de datos.",
+      "Evitar contextos donde el significado de 'más' o 'mejor' sea ambiguo (por ejemplo, más horas de pantalla, más estrés) sin explicitar si se considera deseable o indeseable solo cuando eso sea esencial para elegir la respuesta.",
+      "No mezclar en el mismo problema interpretación de cuartiles con interpretación de media o desviación estándar, a menos que quede clarísimo qué afirmación se relaciona con qué medida.",
+      "Evitar gráficos estadísticos donde no se distingan claramente los valores de Q1, mediana y Q3 (por ejemplo, líneas muy juntas, etiquetas poco visibles, escalas confusas).",
+      "No plantear afirmaciones cuya verdad dependa de la forma específica de la distribución (simétrica, sesgada) si esto no está indicado; las conclusiones deben sostenerse solo con la información de cuartiles.",
+      "Evitar expresiones como 'exactamente la mitad', 'todos', 'ninguno' al interpretar cuartiles, salvo que el problema incluya información explícita que lo justifique."
     ],
     "error_families": [
       {
-        "name": "inversion_sentido_cuarto_superior",
-        "description": "El estudiante interpreta Q3 como 'el 75% de los datos está sobre este valor' en vez de entender que es un punto de corte acumulado hacia abajo (75% en o bajo Q3).",
-        "how_to_address": "En las alternativas incorrectas, incluir formulaciones que inviertan el sentido de la acumulación. En la retroalimentación, remarcar explícitamente que los cuartiles se leen como 'porcentaje de datos que están en ese valor o por debajo', y que lo que queda por encima es el complemento."
+        "name": "Inversión del sentido de los cuartiles",
+        "description": "El estudiante cree que Q1 es el valor por sobre el cual se encuentra el 25% de los datos (en vez del 75%), o que Q3 es el valor por debajo del cual está solo el 25%, invirtiendo el porcentaje acumulado asociado.",
+        "how_to_address": "Incluir distractores donde se exprese explícitamente la confusión (por ejemplo, 'el 25% de los estudiantes tiene nota igual o superior a Q1') y contrastarlos con la formulación correcta. Resaltar en las retroalimentaciones la idea de 'porcentaje de datos que NO supera el cuartil'."
       },
       {
-        "name": "confusion_Q1_Q3",
-        "description": "El estudiante no distingue el rol de Q1 y Q3 y los intercambia, creyendo que Q1 está asociado al 75% y Q3 al 25%.",
-        "how_to_address": "Usar ítems donde solo una interpretación consistente de Q1 (25%) o Q3 (75%) hace verdadera una afirmación. Destacar en la explicación que el número del cuartil indica el número de 'cuartos' acumulados desde abajo: Q1 = un cuarto, Q2 = dos cuartos, Q3 = tres cuartos."
+        "name": "Confusión entre porcentaje acumulado y porcentaje en un tramo",
+        "description": "El estudiante interpreta que entre Q1 y Q3 está el 75% de los datos, o que debajo de Q3 hay un 25%, mezclando la idea de 'hasta un valor' con 'entre dos valores'.",
+        "how_to_address": "Diseñar ítems que obliguen a distinguir entre 'hasta Q3' (75%) y 'entre Q1 y Q3' (50%), mostrando en las opciones ambos tipos de afirmación. Explicar en la retroalimentación que cada cuartil corta la distribución en cuatro partes iguales, no solapadas."
       },
       {
-        "name": "cuartil_como_valor_típico",
-        "description": "El estudiante trata un cuartil como si fuera el valor que tiene 'la mayoría' o 'la mayoría alrededor de ese valor', ignorando que es un punto de corte, no una concentración de casos.",
-        "how_to_address": "Plantear ítems donde se deba escoger entre afirmar 'la mayoría tiene un valor cercano a Q2' y 'la mitad o menos está por debajo de Q2'. Resaltar en la retroalimentación que el cuartil no indica cuán concentrados están los datos, solo cómo se dividen en segmentos de igual cantidad de casos."
+        "name": "Lectura superficial de términos verbales",
+        "description": "El estudiante responde solo fijándose en palabras como 'mayoría', 'pocos', 'casi todos', sin relacionar rigurosamente estas expresiones con los porcentajes derivados de los cuartiles.",
+        "how_to_address": "Proponer alternativas donde esas expresiones coloquiales contradicen claramente lo que indican los cuartiles. En los comentarios, vincular 'mayoría' con más del 50% y 'minoría' con menos de 50%, y mostrar cómo Q2 y Q3 permiten (o no) afirmar eso."
       },
       {
-        "name": "sobreinterpretacion_forma_distribucion",
-        "description": "El estudiante supone que entre cuartiles los datos se distribuyen uniformemente, o que la distribución es simétrica, sacando conclusiones que no están respaldadas solo por los cuartiles.",
-        "how_to_address": "Incluir alternativas atractivas que dependan de suponer simetría o uniformidad y marcarlas como incorrectas. En la explicación, explicitar que con solo los cuartiles no se puede concluir cómo están 'espaciados' los datos, solo cuántos caen en cada segmento."
+        "name": "Ignorar el contexto semántico del valor",
+        "description": "El estudiante no considera si un valor mayor es mejor o peor en el contexto (por ejemplo, confunde 'estar sobre Q3 en tiempo de espera' como algo positivo).",
+        "how_to_address": "Utilizar contextos donde el significado de valores altos sea contrario al intuitivo de 'mejor', y construir distractores que capten la interpretación mecánica. En la retroalimentación, enfatizar que primero se debe entender el contexto (qué se está midiendo) y luego interpretar el cuartil."
       },
       {
-        "name": "mezcla_con_otros_estadigrafos",
-        "description": "El estudiante usa la media, porcentajes de aprobación u otra información no pedida para justificar conclusiones sobre cuartiles, confundiendo los roles de cada estadígrafo.",
-        "how_to_address": "Cuando el enunciado contenga más de una medida, formular preguntas que obliguen explícitamente a basarse en cuartiles (por ejemplo, 'solo a partir de los cuartiles entregados'). Explicar en la retroalimentación qué conclusión se puede sacar con cuartiles y cuál requeriría otras medidas."
+        "name": "Suposición de uniformidad de datos",
+        "description": "El estudiante asume que hay la misma cantidad de datos en subtramos dentro de cada cuartil o entre ellos y extrae conclusiones numéricas más finas que las permitidas.",
+        "how_to_address": "Plantear ítems donde se muestre que con solo cuartiles no se puede saber, por ejemplo, cuántos alumnos tienen nota entre dos valores no coincidentes con cuartiles. Explicar que los cuartiles solo garantizan porcentajes mínimos acumulados, no distribuciones internas detalladas."
       },
       {
-        "name": "lectura_incorrecta_diagrama_caja",
-        "description": "El estudiante confunde en el diagrama de caja la mediana con Q1 o Q3, o interpreta los 'bigotes' como cuartiles, llevando a conclusiones erróneas sobre porcentajes.",
-        "how_to_address": "Diseñar ítems donde la posición relativa de Q1, mediana y Q3 sea crucial para evaluar la veracidad de una afirmación. En la retroalimentación, repasar la correspondencia entre cada parte del boxplot y su significado porcentual (25%, 50%, 75%)."
+        "name": "Confundir mediana con promedio",
+        "description": "El estudiante cree que el valor de la mediana (Q2) representa el promedio aritmético y responde como si se estuviera hablando de media.",
+        "how_to_address": "Incluir enunciados donde una afirmación incorrecta use lenguaje de 'promedio' asociado a Q2, y contrastarlo con una interpretación que remita a 'la mitad de los datos está bajo o igual a este valor'. Reforzar verbalmente que la mediana es un cuartil, no la media."
       }
     ],
     "future_targets": [
-      "Interpretar y comparar distribuciones de datos utilizando en conjunto media, mediana, cuartiles y rango intercuartílico.",
-      "Analizar y comparar desigualdad o dispersión entre grupos usando cuartiles y diagramas de caja.",
-      "Tomar decisiones informadas en contextos aplicados (educación, economía, salud) a partir de resúmenes estadísticos basados en cuartiles.",
-      "Comprender y trabajar con percentiles generales (no solo cuartiles) en contextos como puntajes estandarizados y rankings.",
-      "Distinguir entre estadística descriptiva e inferencial, entendiendo el rol de los cuartiles como descriptores de la distribución muestral.",
-      "Leer e interpretar informes y gráficos estadísticos complejos donde los cuartiles aparecen junto a otras medidas de tendencia central y dispersión."
+      "Interpretación y comparación de otras medidas de posición (percentiles, deciles) en contextos similares.",
+      "Análisis de dispersión usando rango intercuartílico y detección de valores atípicos en diagramas de caja.",
+      "Comparación de distribuciones de dos o más grupos a partir de sus diagramas de caja (posición y dispersión relativas).",
+      "Toma de decisiones informadas basadas en resúmenes estadísticos (seleccionar ofertas, planes, estrategias según distribución de resultados).",
+      "Lectura crítica de información estadística en medios, especialmente cuando se citan medianas y cuartiles para describir desigualdad (por ejemplo, ingresos).",
+      "Introducción a la noción de distribución de datos y su forma (simetría, sesgo) inferida cualitativamente desde cuartiles.",
+      "Uso de medidas de posición en problemas de probabilidad aproximada (por ejemplo, estimar la probabilidad de que un valor caiga bajo cierto cuartil)."
     ],
     "representation_variants": [
-      "Cuartiles presentados en forma de valores numéricos en una tabla o en el texto (por ejemplo, 'Q1 = 520 mil pesos, Q2 = 650 mil pesos, Q3 = 800 mil pesos').",
-      "Diagramas de caja que muestren explícitamente Q1, mediana (Q2) y Q3, asociados a un contexto real (por ejemplo, puntajes de prueba, edades).",
-      "Descripciones verbales de posiciones relativas en la distribución sin dar directamente el porcentaje, que el estudiante deba asociar con el cuartil correspondiente (por ejemplo, 'está entre el 25% de menores resultados').",
-      "Comparación de cuartiles de dos grupos presentados en paralelo, ya sea en tabla o en dos diagramas de caja contiguos.",
-      "Situaciones donde se entrega un umbral relevante (nota de aprobación, línea de pobreza) y se indica su relación con un cuartil (por ejemplo, 'la nota de aprobación coincide con Q1')."
+      "Descripción textual de cuartiles y su valor numérico explícito dentro de un relato contextual (historia de un curso, de sueldos, de tiempos).",
+      "Lectura de cuartiles desde diagramas de caja con escala numérica clara en el eje horizontal.",
+      "Tablas de resumen estadístico que incluyan Q1, mediana (Q2) y Q3 junto a otros valores (mínimo y máximo) sin requerir calcularlos.",
+      "Situaciones donde se comparan verbalmente dos grupos usando sus cuartiles (por ejemplo, 'en el curso A Q1 es mayor que en el curso B').",
+      "Preguntas que presenten afirmaciones en lenguaje coloquial (mayoría, pocos, casi todos) para ser contrastadas con la información por cuartiles.",
+      "Escenarios donde se entregan varios casos individuales ubicados en relación a un cuartil (por encima, por debajo) y se pregunta por su posición relativa en el grupo."
     ],
     "numbers_profiles": [
       "small_integers",
-      "large_integers",
-      "contextual_decimals",
-      "percentages_simple",
-      "money_context",
-      "time_context"
+      "two_digit_integers",
+      "rounded_decimals",
+      "contextual_large_numbers"
     ],
     "required_image_types": [
       "statistical_chart"

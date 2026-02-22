@@ -3,131 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo del área de superficie total de paralelepípedos rectos (prismas rectangulares) a partir de sus tres dimensiones lineales (largo, ancho, alto).",
-        "Uso de la fórmula explícita del área total: 2(ab + ac + bc), donde a, b y c son las dimensiones del paralelepípedo.",
-        "Cálculo del área total sumando las áreas de las seis caras rectangulares, identificando correctamente los tres pares de caras opuestas congruentes.",
-        "Problemas de contexto (cajas, paquetes, ladrillos, contenedores rectangulares) donde se requiere el área de superficie total para, por ejemplo, recubrir, pintar o forrar.",
-        "Cálculos con números racionales positivos (enteros, fracciones, decimales) en las dimensiones o en resultados intermedios."
+        "Cálculo del área de superficie total de paralelepípedos rectos (prismas rectangulares) a partir de sus tres dimensiones: largo, ancho y alto.",
+        "Uso de la fórmula 2(ab + ac + bc) para calcular el área total, donde a, b y c son las tres dimensiones del paralelepípedo.",
+        "Cálculo del área total sumando directamente las áreas de las 6 caras rectangulares, identificando pares de caras opuestas con igual área.",
+        "Problemas de contexto sencillo donde se entrega o se puede inferir que el cuerpo es un prisma rectangular (caja, ladrillo, contenedor, etc.).",
+        "Cálculos con números racionales positivos (enteros, fracciones y decimales) sin requerir justificación algebraica avanzada."
       ],
       "out_of_scope": [
-        "Cálculo de área de superficie o volumen de cubos considerados como caso especial aislado (se evalúa en otro átomo).",
-        "Cálculo de área de superficie o volumen de otros cuerpos 3D (prismas no rectangulares, cilindros, pirámides, conos, esferas, cuerpos compuestos).",
-        "Cálculo de área de desarrollo plano de cajas donde se deba deducir la forma del cuerpo a partir de la red (desarrollo) sin que se especifique claramente que corresponde a un paralelepípedo recto.",
-        "Problemas que requieran teorema de Pitágoras u otras relaciones métricas para deducir aristas oblicuas o diagonales antes de calcular áreas.",
-        "Transformaciones geométricas (rotaciones, traslaciones) de paralelepípedos o comparación de vistas en perspectiva que no se traduzcan directamente en cálculo de su área total.",
-        "Cálculo de áreas parciales en los que se excluyan algunas caras (por ejemplo, caja abierta) de forma que la tarea central deje de ser ‘área total’ y pase a ser selección combinatoria de caras (eso corresponde a variaciones más complejas).",
-        "Problemas que involucren fórmulas de volumen o relación entre área y volumen como objetivo central."
+        "Cálculo de área de superficie de cubos como caso principal de evaluación (se aborda en otro átomo, aunque se puede usar como subcaso para verificar comprensión).",
+        "Cálculo de áreas o volúmenes de otros cuerpos 3D (prismas oblicuos, cilindros, pirámides, conos, esferas o combinaciones de cuerpos).",
+        "Problemas que requieran optimización, minimización de material o uso de derivadas para optimizar área.",
+        "Demostraciones formales de la fórmula del área de superficie total.",
+        "Problemas que exijan razonamiento sobre redes (desarrollos planos) complejos o su construcción detallada.",
+        "Cálculo de áreas parciales (por ejemplo, solo caras laterales o solo base y tapa) como objetivo principal.",
+        "Uso de unidades de medida mixtas que requieran conversiones complejas (por ejemplo, de cm a m con varios pasos)."
       ],
       "prerequisites": [
-        "A-M1-GEO-01-01: Comprender y calcular el área de rectángulos a partir de base y altura.",
-        "A-M1-GEO-01-02: Reconocer caras opuestas congruentes en prismas rectangulares simples en contextos gráficos o verbales.",
-        "A-M1-NUM-01-02: Manejo operativo básico de números racionales (suma, resta, multiplicación) con enteros, fracciones y decimales positivos.",
-        "A-M1-ALG-01-01: Uso básico de fórmulas con sustitución correcta de valores numéricos en expresiones como 2(ab + ac + bc)."
+        "A-M1-GEO-01-01: Reconocimiento e identificación de caras, aristas y vértices en prismas rectangulares.",
+        "A-M1-GEO-01-02: Cálculo de áreas de rectángulos y cuadrados con números racionales.",
+        "A-M1-NUM-01-02: Operaciones básicas con números racionales (suma, multiplicación) y manejo de paréntesis.",
+        "A-M1-MED-01-01: Manejo básico de unidades de medida de longitud y área (cm, m, cm², m²)."
       ],
       "common_traps": [
-        "Confundir área total con volumen del paralelepípedo (multiplicar las tres dimensiones en lugar de combinarlas por pares).",
-        "Olvidar el factor 2 en la fórmula 2(ab + ac + bc), calculando solo la suma de las tres áreas de pares de caras distintas y no de las seis caras.",
-        "Confundir qué dimensiones forman cada par de caras rectangulares, especialmente cuando el enunciado nombra las dimensiones con letras o se presentan en un dibujo no alineado a ejes.",
-        "Interpretar erróneamente unidades, mezclando unidades de longitud y de área o no elevando correctamente las unidades al cuadrado en el resultado.",
-        "Contar dos veces la misma cara o dejar de considerar una cara cuando se hace el recuento directa y verbalmente (por ejemplo, solo cuatro caras en lugar de seis).",
-        "No reconocer que las caras opuestas tienen la misma área, y calcular seis áreas distintas innecesariamente (aumenta carga cognitiva, puede inducir errores aritméticos).",
-        "Errores por mala lectura de dimensiones en el dibujo (confundir alto con ancho o largo, o tomar como arista una diagonal dibujada solo como referencia)."
+        "Olvidar multiplicar por 2 al considerar solo un rectángulo de cada par de caras opuestas.",
+        "Confundir área de superficie con volumen y aplicar la fórmula a·b·c en lugar de 2(ab + ac + bc).",
+        "Omitir una o dos caras cuando se suman las 6 áreas manualmente.",
+        "Interpretar mal cuál dimensión corresponde a largo, ancho y alto en un dibujo tridimensional.",
+        "No mantener coherencia en las unidades (por ejemplo, mezclar cm y m) o escribir el resultado sin unidades cuadradas.",
+        "Aplicar incorrectamente la fórmula, agrupando mal los productos (por ejemplo, 2ab + ac + bc, sin factorizar el 2).",
+        "Asumir que todas las caras son iguales (tratando un prisma rectangular como si fuera un cubo)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Dimensiones dadas explícitamente como tres números enteros pequeños (entre 1 y 10) claramente identificados como largo, ancho y alto, sin contexto verbal complejo.",
-        "Solicitud directa del área total, indicando o sugiriendo explícitamente la fórmula 2(ab + ac + bc).",
-        "Sin necesidad de interpretar un dibujo 3D: las dimensiones se entregan en una frase sencilla o en una tabla.",
-        "Cálculo que no requiere más de 2 o 3 multiplicaciones y una suma sencilla, sin fracciones ni decimales no terminantes.",
-        "Enunciados sin información irrelevante, sin cambio de unidades y sin relectura de datos."
+        "Dimensiones dadas explícitamente como enteros positivos pequeños (entre 1 y 20) en el enunciado, sin contexto verbal complejo.",
+        "Pregunta directa por el área total, indicando explícitamente que se trata de un prisma rectangular o paralelepípedo recto.",
+        "Estructura donde el estudiante solo debe reemplazar en la fórmula 2(ab + ac + bc) y operar con una o dos multiplicaciones sencillas.",
+        "Sin necesidad de interpretar un dibujo complejo ni de decidir qué partes del cuerpo se consideran: siempre se pide el área total.",
+        "Opciones de respuesta alejadas numéricamente, de modo que errores de cálculo groseros no coincidan con distractores."
       ],
       "medium": [
-        "Dimensiones expresadas como enteros de dos cifras o decimales simples (por ejemplo, con un decimal) que requieren al menos 3 multiplicaciones y varias sumas.",
-        "Presencia de un dibujo de paralelepípedo recto en perspectiva, del cual el estudiante debe identificar qué medidas corresponden a cada arista antes de calcular.",
-        "Problemas contextualizados (por ejemplo, una caja para embalaje) en los que es necesario decidir si se pide realmente el área total o se interpreta desde la narración (por ejemplo, ‘cantidad de cartón para construir la caja cerrada’).",
-        "Posible presencia de una distracción, como una medida no necesaria para el cálculo de la superficie o información sobre volumen que no se debe usar.",
-        "Uso de la estrategia de sumar explícitamente las áreas de las seis caras o de la fórmula 2(ab + ac + bc), sin indicar cuál usar."
+        "Dimensiones dadas en contexto (por ejemplo, medidas de una caja) o leídas desde un esquema simple de prisma rectangular.",
+        "Uso de números racionales no enteros (fracciones con denominadores pequeños o decimales con una cifra), requiriendo varias multiplicaciones y sumas.",
+        "Necesidad de identificar primero los pares de caras y luego decidir si usar la fórmula compacta o sumar las 6 áreas.",
+        "Enunciados que incluyen información irrelevante mínima (peso de la caja, contenido, etc.) que debe ser ignorada para el cálculo.",
+        "Distractores asociados a errores típicos: olvidar un par de caras, no multiplicar por 2, confundir con el volumen."
       ],
       "hard": [
-        "Dimensiones dadas como fracciones o decimales no tan simples (por ejemplo, 1,25; 2,4; 3/5), requiriendo manipulación cuidadosa de números racionales.",
-        "Problemas donde no se indica la fórmula y el estudiante debe construirla implícitamente agrupando las áreas de las caras por pares (identificando la estructura 2(ab + ac + bc)).",
-        "Contextos en los que se debe inferir que el cuerpo es un paralelepípedo recto a partir de la descripción (por ejemplo, ‘un bloque rectangular de madera’) sin nombrarlo explícitamente como prisma rectangular.",
-        "Problemas con condiciones adicionales, como cambio de unidades de cm a m antes de calcular el área, o donde se pide comparar dos áreas totales de paralelepípedos distintos.",
-        "Enunciados donde se da parcialmente la información (por ejemplo, perímetros de caras o área de una cara y una dimensión faltante) y se debe deducir una o más dimensiones antes de aplicar el cálculo del área total, manteniendo siempre que el cuerpo es un prisma rectangular.",
-        "Ítems con distractores diseñados a partir de errores típicos (usar ab·c, omitir el factor 2, sumar solo tres caras), de modo que la discriminación del concepto sea más exigente."
+        "Dimensiones expresadas en distintas formas racionales (por ejemplo, combinación de fracciones y decimales) sin requerir conversiones de unidades de longitud.",
+        "Contextos donde no se pide explícitamente el área total, sino la cantidad de material necesario para forrar, pintar o empapelar la totalidad del prisma, exigiendo interpretar que se trata de área de superficie.",
+        "Problemas en que se excluye o incluye deliberadamente alguna cara (por ejemplo, caja abierta por arriba) como parte de comprender el modelo antes de aplicar la fórmula.",
+        "Uso de un diagrama 3D donde no todas las dimensiones están rotuladas directamente en la misma arista y el estudiante debe inferir qué medidas corresponden a caras opuestas.",
+        "Distractores diseñados a partir de cálculos correctos de solo algunas caras, o del volumen, o de una interpretación equivocada (por ejemplo, área lateral en vez de total), que exigen mayor auto-chequeo conceptual.",
+        "Requerir dos pasos encadenados, por ejemplo: primero determinar una dimensión a partir de un dato (como área de una cara) y luego calcular el área total."
       ]
     },
     "ambiguity_avoid": [
-      "No usar el término ‘caja’ cuando el contexto podría sugerir que está abierta por arriba si el objetivo es el área total de las seis caras; especificar claramente si está ‘completamente cerrada’ o ‘sin tapa’.",
-      "Evitar dibujos de paralelepípedos donde las aristas no estén claramente etiquetadas o donde se superpongan medidas que puedan confundirse con diagonales o líneas auxiliares.",
-      "No mezclar en el mismo ítem preguntas sobre volumen y área de superficie si eso hace que la consigna principal sea difusa; si se incluyen ambas, separar claramente qué se pide.",
-      "Evitar que la descripción textual de las dimensiones sea vaga (por ejemplo, ‘mide 2 y 3 por 4’); siempre especificar qué números corresponden a largo, ancho y alto o que son las tres dimensiones del bloque rectangular.",
-      "No pedir solo ‘el área de la figura’ cuando se muestra un prisma rectangular en 3D sin aclarar que se trata de ‘área de superficie total’; podría interpretarse como área de una cara.",
-      "Evitar cambios de unidades no declarados o poco claros (por ejemplo, dar dos medidas en cm y una en m sin señalarlo explícitamente en el texto).",
-      "No usar notación de variables que pueda confundirse entre sí (por ejemplo, usar l, 1 y I simultáneamente) o letras muy similares para diferentes dimensiones.",
-      "No incluir desarrollos planos (redes) de forma abstracta sin indicar que corresponden a un paralelepípedo recto, ya que puede inducir duda sobre la forma tridimensional."
+      "No usar el término 'caja' o 'bloque' sin aclarar que se trata de un prisma rectangular/paralelepípedo recto; si la forma no es claramente rectangular, se debe indicar explícitamente.",
+      "Evitar enunciados donde no quede claro si se considera el área interior, exterior o ambas; por defecto, especificar 'área de superficie total exterior'.",
+      "Cuando se trabajen cajas abiertas o recipientes sin tapa, indicar explícitamente qué caras se consideran (por ejemplo, 'todas las caras excepto la superior').",
+      "No mezclar contextos de volumen y área sin decir cuál magnitud se pide; usar frases claras como 'área de superficie total' o 'cantidad de papel necesaria para cubrir todas las caras exteriores'.",
+      "En los diagramas, rotular claramente las dimensiones y, si una medida corresponde a varias aristas, asegurarse de que la notación lo haga evidente (por ejemplo, mediante repeticiones o marcas de igualdad).",
+      "Evitar dimensiones redundantes o inconsistentes entre texto y dibujo (por ejemplo, largo diferente entre figura y texto).",
+      "No usar notación poco estándar para el paralelepípedo (por ejemplo, letras de vértices sin usar el término 'prisma rectangular') si eso no se necesita para el objetivo del átomo.",
+      "Si se usan unidades, mantenerlas consistentes en todas las dimensiones y en la pregunta; si se quiere evaluar manejo de unidades, señalar explícitamente la necesidad de convertirlas."
     ],
     "error_families": [
       {
-        "name": "Confusión area-volumen",
-        "description": "El estudiante multiplica las tres dimensiones (a·b·c) para obtener un solo número, interpretando la tarea como cálculo de volumen y no de área superficial.",
-        "how_to_address": "En los distractores, incluir el producto a·b·c como opción incorrecta. En la retroalimentación, enfatizar que el área de superficie se obtiene sumando áreas de caras (combinando las dimensiones de a dos) y que el volumen es un concepto distinto."
+        "name": "Confundir área de superficie con volumen",
+        "description": "El estudiante calcula a·b·c en lugar de 2(ab + ac + bc), entregando el volumen del prisma en vez del área total.",
+        "how_to_address": "Incluir ítems donde ambas cantidades sean numéricamente diferentes pero razonables, y enfatizar en el enunciado expresiones como 'cubrir todas las caras' o 'superficie exterior', reforzando el significado geométrico de área de superficie."
       },
       {
-        "name": "Omisión del factor 2",
-        "description": "El estudiante calcula ab + ac + bc pero no multiplica por 2, obteniendo solo la suma de las áreas de tres tipos de caras, no de las seis.",
-        "how_to_address": "Diseñar distractores con el valor sin el factor 2. En la explicación, remarcar la existencia de pares de caras opuestas iguales y asociar cada término a su par (por ejemplo, ‘hay dos caras de ab’)."
+        "name": "Olvidar multiplicar por 2 los pares de caras",
+        "description": "El estudiante suma ab + ac + bc sin el factor 2, o solo considera una cara de cada par opuesto.",
+        "how_to_address": "Diseñar distractores iguales a ab + ac + bc y usar representaciones que visualicen claramente los pares de caras opuestas; plantear ejercicios intermedios donde se pidan áreas de pares de caras antes del total."
       },
       {
-        "name": "Suma de solo cuatro caras",
-        "description": "El estudiante considera incorrectamente que el paralelepípedo tiene cuatro caras relevantes (como si fuera una pared envolvente) y omite base y tapa o alguna pareja de caras.",
-        "how_to_address": "Incluir opciones donde falte el área de una pareja de caras. En la retroalimentación, utilizar un esquema verbal o gráfico que muestre las seis caras numeradas, reforzando el conteo total."
+        "name": "Omisión de una o más caras",
+        "description": "Al sumar las áreas una por una, se omite una cara o se repite otra, obteniendo un valor menor o mayor que el correcto.",
+        "how_to_address": "Proponer estrategias de conteo sistemático (por ejemplo, agrupar por pares opuestos o recorrer el prisma), y en los ítems usar opciones de respuesta cercanas que delaten omisiones típicas para que el estudiante deba revisar su procedimiento."
       },
       {
         "name": "Asignación incorrecta de dimensiones a las caras",
-        "description": "El estudiante empareja mal las dimensiones, por ejemplo, usa a·b dos veces y b·c solo una, o usa dimensiones que no corresponden a las caras dibujadas.",
-        "how_to_address": "Proponer distractores que resulten de combinaciones erróneas de pares de dimensiones. En la explicación, explicitar qué aristas definen cada cara y recomendar marcar o listar las combinaciones antes de calcular."
+        "description": "El estudiante combina dimensiones equivocadas (por ejemplo, usa largo·alto para una cara que en realidad es ancho·alto según el dibujo).",
+        "how_to_address": "En ítems con dibujo, mantener una correspondencia clara entre texto y figura, y proponer algunas tareas de identificar primero las dimensiones de cada cara antes de calcular el área; evitar cambios innecesarios de nombres de dimensiones entre texto y figura."
       },
       {
-        "name": "Errores aritméticos con números racionales",
-        "description": "El estudiante comprende bien la estructura del cálculo, pero se equivoca al multiplicar o sumar fracciones y decimales, generando un resultado numérico incorrecto.",
-        "how_to_address": "Diferenciar en distractores errores de proceso geométrico de errores puramente numéricos. En la retroalimentación, sugerir estrategias de cálculo ordenado (por ejemplo, calcular cada producto por separado y luego sumar) y recordar reglas básicas de multiplicación de fracciones y decimales."
+        "name": "Manejo deficiente de números racionales",
+        "description": "Errores al multiplicar o sumar fracciones y decimales, provocando resultados erróneos a pesar de un modelo geométrico correcto.",
+        "how_to_address": "Escalar la dificultad numérica en forma gradual y usar distractores que permitan distinguir entre errores conceptuales (fórmula equivocada) y puramente aritméticos; fomentar verificaciones aproximadas para detectar resultados inconsistentes (por ejemplo, estimar tamaños)."
       },
       {
-        "name": "Manejo inadecuado de unidades",
-        "description": "El estudiante no convierte unidades (por ejemplo, combina cm y m sin conversión) o entrega la respuesta en unidades de longitud en lugar de unidades de área.",
-        "how_to_address": "Incluir distractores con resultados numéricos correctos pero con unidades equivocadas o sin convertir. En la explicación, recalcar que al calcular área de superficie las unidades se elevan al cuadrado y que todas las dimensiones deben estar en la misma unidad antes de operar."
+        "name": "Descuido en el uso de unidades",
+        "description": "El estudiante responde con unidades de longitud (cm, m) en lugar de unidades de área (cm², m²), o mezcla unidades distintas sin conversión.",
+        "how_to_address": "Incluir en algunos ítems la exigencia explícita de indicar unidades, y ofrecer distractores con unidades incorrectas; reforzar la relación entre área y unidades cuadradas en el texto cuando sea pertinente."
       },
       {
-        "name": "Dependencia excesiva de la fórmula sin comprensión",
-        "description": "El estudiante intenta aplicar la fórmula 2(ab + ac + bc) de memoria, pero asigna mal las letras a las dimensiones o sustituye una dimensión errónea sin verificar el sentido geométrico.",
-        "how_to_address": "En los ítems, variar el orden y el modo en que se presentan las dimensiones para forzar la verificación conceptual. En la retroalimentación, proponer que antes de usar la fórmula se identifiquen explícitamente las tres parejas de caras (ab, ac, bc) con palabras o esquemas."
+        "name": "Tratar el prisma como si fuera un cubo",
+        "description": "El estudiante asume todas las dimensiones iguales o infiere que todas las caras tienen la misma área aunque se entreguen dimensiones distintas.",
+        "how_to_address": "Diseñar problemas donde las tres dimensiones sean claramente distintas y los números hagan evidente que no se trata de un cubo; usar distractores que coincidan con 6 veces una de las áreas de cara para evidenciar este error."
       }
     ],
     "future_targets": [
-      "Cálculo de área de superficie total y lateral de otros cuerpos geométricos (prismas no rectangulares, cilindros, pirámides y conos).",
-      "Resolución de problemas de optimización simple relacionados con empaques, embalajes y costos de materiales donde el área de superficie es una variable relevante.",
-      "Análisis de redes (desarrollos planos) de sólidos 3D, reconociendo qué redes generan un paralelepípedo y calculando su área.",
-      "Conexión entre área de superficie y volumen en contextos de comparación de cuerpos (por ejemplo, cuerpos con igual volumen y distinta superficie).",
-      "Modelación de situaciones reales en las que se debe decidir entre diferentes diseños de cajas o envases a partir de sus áreas de superficie.",
-      "Uso de expresiones algebraicas más complejas para generalizar el área de superficie de familias de prismas y analizar el efecto de cambios de dimensiones (doblar una dimensión, escalar el sólido, etc.)."
+      "Cálculo del área de superficie de cubos y comparación con paralelepípedos rectos.",
+      "Cálculo de áreas de superficie de otros sólidos (prismas no rectangulares, cilindros, pirámides, conos).",
+      "Cálculo y comparación de volúmenes de cuerpos 3D y su relación con el área de superficie.",
+      "Problemas de optimización elemental (minimizar material para empaques, maximizar volumen con área fija).",
+      "Interpretación de desarrollos planos (redes) de prismas y otros cuerpos.",
+      "Aplicación de razones de proporcionalidad entre escalas (cambios de dimensiones y efecto sobre área y volumen).",
+      "Modelación de problemas físicos sencillos que involucren recubrimientos, pintura o aislación térmica de cuerpos rectangulares."
     ],
     "representation_variants": [
-      "Descripción puramente verbal del paralelepípedo, dando las tres dimensiones en el texto.",
-      "Presentación en tabla con columnas para largo, ancho y alto, eventualmente comparando dos o más paralelepípedos.",
-      "Uso explícito de la fórmula simbólica 2(ab + ac + bc), con variables identificadas en el texto.",
-      "Dibujo esquemático de un paralelepípedo recto en perspectiva con las tres dimensiones etiquetadas en algunas aristas.",
-      "Contextos aplicados (cajas, ladrillos, muebles rectangulares, contenedores) donde las dimensiones aparecen integradas en la narración.",
-      "Representación mixta: texto que describe el objeto y un esquema simple que refuerza qué aristas corresponden a cada medida.",
-      "Situaciones de comparación de dos paralelepípedos donde se presenta uno con dimensiones numéricas y otro con relaciones entre dimensiones (por ejemplo, uno tiene el doble de altura que otro) para inferir áreas relativas."
+      "Descripción puramente verbal de las dimensiones del paralelepípedo (por ejemplo, largo, ancho y alto dados en el texto).",
+      "Figura tridimensional esquemática de un prisma rectangular con sus dimensiones rotuladas en algunas o todas las aristas.",
+      "Tabla con las dimensiones (largo, ancho, alto) de diferentes cajas o prismas, pidiendo comparar o seleccionar la que tiene mayor o menor área de superficie.",
+      "Combinación de texto y figura donde parte de la información está en el diagrama (dimensiones) y parte en el texto (qué caras se cubren, si tiene tapa, etc.).",
+      "Situaciones de contexto cotidiano (cajas, paquetes, ladrillos, acuarios) donde se infiera que son prismas rectangulares y se deba traducir a un modelo geométrico.",
+      "Descripción semi-geométrica que menciona explícitamente los pares de caras (por ejemplo, 'dos caras de 3 cm por 5 cm, dos de 3 cm por 8 cm y dos de 5 cm por 8 cm')."
     ],
     "numbers_profiles": [
       "small_integers",
-      "two_digit_integers",
-      "simple_decimals",
-      "non_trivial_decimals",
-      "simple_fractions"
+      "medium_integers",
+      "decimal_one_place",
+      "decimal_two_places",
+      "simple_fractions",
+      "mixed_fractions"
     ],
     "required_image_types": [
       "complex_3d"

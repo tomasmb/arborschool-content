@@ -3,131 +3,130 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Dividir raíces que tienen explícitamente el mismo índice (por ejemplo, ambas cuadradas, ambas cúbicas).",
-        "Reescribir el cociente de dos raíces de igual índice como una sola raíz del cociente de radicandos.",
-        "Simplificar la fracción dentro de la raíz antes o después de unirla en una sola raíz.",
-        "Aplicar la propiedad general: √[n](a) / √[n](b) = √[n](a/b), considerando restricciones habituales (b ≠ 0, radicando válido según índice).",
-        "Divisiones con radicandos numéricos enteros, fraccionarios o algebraicos sencillos (potencias de una misma base, monomios simples)."
+        "Aplicar la propiedad \\( \\sqrt[n]{a} : \\sqrt[n]{b} = \\sqrt[n]{\\frac{a}{b}} \\) solo cuando los índices son iguales.",
+        "Reconocer visual y algebraicamente que los radicales involucrados en la división tienen el mismo índice.",
+        "Reescribir un cociente de raíces como una única raíz con el mismo índice y radicando fraccionario o simplificado.",
+        "Simplificar el radicando después de dividir, incluyendo la simplificación de fracciones numéricas y algebraicas simples dentro de la raíz.",
+        "Usar esta propiedad tanto con números como con expresiones algebraicas básicas (potencias de una misma base).",
+        "Transformar divisiones de radicales a formas equivalentes que faciliten la simplificación posterior (por ejemplo, separar factores para obtener raíces exactas)."
       ],
       "out_of_scope": [
-        "División de raíces con índices distintos (por ejemplo √a / ³√b) y procesos para igualar índices.",
-        "Operar con radicales que ya están sumados o restados (expresiones del tipo √a + √b en el numerador o denominador).",
-        "Racionalización de denominadores con radicales (eso corresponde a otro átomo).",
-        "Raíces de índice fraccionario o negativo expresadas en notación de potencia con exponente racional avanzado.",
-        "División que implique funciones más allá de radicales (logaritmos, trigonometría, etc.).",
-        "Contextos geométricos o de modelos aplicados donde la dificultad principal no sea la propiedad de división de raíces."
+        "Radicales con índices distintos en la división (por ejemplo, \\( \\sqrt{a} : \\sqrt[3]{b} \\)).",
+        "Racionalización de denominadores con raíces (eso es otro átomo).",
+        "Operaciones con raíces que combinen suma o resta simultáneamente con división (por ejemplo, expresiones del tipo \\( \\frac{\\sqrt{a} + \\sqrt{b}}{\\sqrt{c}} \\) que requieran varios pasos de álgebra).",
+        "Uso de propiedades de potencias y raíces de nivel avanzado, como exponentes racionales con bases negativas o complejas.",
+        "Aplicaciones geométricas o físicas de raíces (por ejemplo, teorema de Pitágoras, escalas, etc.).",
+        "Ecuaciones o inecuaciones radicales donde la división de raíces es solo un paso dentro de un procedimiento más complejo."
       ],
       "prerequisites": [
-        "A-M1-NUM-03-01: Comprensión básica de la notación de raíz e índice.",
-        "A-M1-NUM-03-05: Simplificación de raíces con radicandos numéricos (inclusive uso de cuadrados y cubos perfectos).",
-        "A-M1-NUM-03-10: Propiedad de multiplicación de raíces con igual índice.",
-        "A-M1-NUM-02-02: Operaciones con fracciones numéricas (simplificación de fracciones).",
-        "A-M1-NUM-01-03: Manejo de potencias de una misma base (útil para casos algebraicos a^m / a^n)."
+        "A-M1-NUM-03-05: Comprensión básica de la notación de raíz y de índice.",
+        "A-M1-NUM-03-06: Simplificación de raíces cuadradas y cúbicas con radicandos numéricos.",
+        "A-M1-NUM-03-08: Propiedad del producto de raíces con igual índice.",
+        "A-M1-NUM-02-03: Simplificación de fracciones numéricas (reducción a fracción irreducible).",
+        "A-M1-NUM-02-05: Manejo de potencias con la misma base (suma y resta de exponentes)."
       ],
       "common_traps": [
-        "Unir en una sola raíz radicales que NO tienen el mismo índice, aunque parezcan similares.",
-        "Intentar dividir índices en lugar de radicandos (pensar, por ejemplo, que √a / √b = √(a/b) siempre sin verificar condiciones o que √a / √b = √(a/b) pero cambiando el índice).",
-        "Olvidar simplificar la fracción dentro de la raíz, quedándose en √(18/2) en vez de llegar a √9 = 3.",
-        "Confundir el orden de operaciones y dividir primero los índices o aplicar propiedades de potencias equivocadas (como interpretar √a / √b = a/b).",
-        "Ignorar restricciones del radicando con índice par (por ejemplo, asumir que se puede dejar raíz de número negativo en el contexto real).",
-        "Perder factores al simplificar etapas intermedias, especialmente cuando el radicando tiene factores comunes numerador–denominador.",
-        "Tratar erróneamente expresiones algebraicas, por ejemplo simplificar incorrectamente ³√(a^5) / ³√(a^2) sin usar exponente de la misma base."
+        "Aplicar la propiedad de división de raíces cuando los índices no son iguales, mezclando índices por error.",
+        "Olvidar simplificar la fracción dentro del radicando, dejando resultados innecesariamente complejos.",
+        "Confundir la propiedad de producto con la de cociente y transformar \\( \\sqrt{a} : \\sqrt{b} \\) en \\( \\sqrt{ab} \\) en lugar de \\( \\sqrt{a/b} \\).",
+        "No reconocer factores cuadrados (o cúbicos, etc.) dentro del radicando resultante que permiten simplificar la raíz.",
+        "Dividir por cero al formar el radicando fraccionario (casos donde el radicando del denominador es 0).",
+        "Ignorar restricciones de dominio para índices pares (por ejemplo, radicandos negativos en raíces cuadradas en contexto numérico real).",
+        "Tratar la división de radicales como una división de índices (por ejemplo, pensar que \\( \\sqrt[4]{a} : \\sqrt[4]{b} = \\sqrt[1]{a/b} \\))."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Cocientes de dos raíces cuadradas con radicandos numéricos pequeños y que producen un resultado entero sin radical (por ejemplo, cocientes que llevan a un cuadrado perfecto).",
-        "Índices bajos e iguales explícitos (principalmente índice 2, notación √ ).",
-        "Radicandos enteros positivos sin fracciones, sin variables y con divisiones directas (como 18/2, 27/3).",
-        "Pocas etapas de simplificación: una sola aplicación de la propiedad y una simplificación evidente."
+        "División de raíces cuadradas con radicandos positivos pequeños que generan un radicando entero exacto al dividir, por ejemplo, \\( \\sqrt{18} : \\sqrt{2} \\).",
+        "Índice fijo igual a 2, claramente indicado, sin necesidad de identificar índices implícitos complicados.",
+        "Radicandos numéricos que al dividir producen un número cuadrado perfecto (o cúbico perfecto si se usa raíz cúbica).",
+        "Pocas operaciones: un único paso de uso de la propiedad y un paso simple de simplificación.",
+        "Opciones de respuesta que difieren claramente (por ejemplo, con y sin raíz, o con números muy distintos) para disminuir confusión."
       ],
       "medium": [
-        "Cocientes de raíces con igual índice cuyo radicando resultante no es un cuadrado/cubo perfecto, quedando todavía una raíz en la respuesta.",
-        "Radicandos que son fracciones simples o productos de varios factores (por ejemplo, 12·3 / 2·3 dentro de la raíz).",
-        "Presencia de variables en monomios sencillos (por ejemplo, √(8x^2) / √(2x)).",
-        "Necesidad de identificar y simplificar factores comunes en numerador y denominador del radicando.",
-        "Índices distintos de 2 pero no complicados (principalmente índice 3 o 4) manteniendo el mismo índice en ambos radicales."
+        "División de raíces con índice 2 o 3 donde el radicando resultante no es una potencia perfecta completa, pero se puede simplificar parcialmente (por ejemplo, extrayendo un factor cuadrado).",
+        "Radicandos que incluyen productos sencillos de factores (por ejemplo, \\( \\sqrt{50} : \\sqrt{2} \\), o \\( \\sqrt[3]{8a^5} : \\sqrt[3]{a^2} \\)).",
+        "Presencia de fracciones en el radicando inicial (por ejemplo, \\( \\sqrt{\\frac{a}{b}} : \\sqrt{c} \\)).",
+        "Índice explícito distinto de 2 (como raíz cúbica o cuarta) sin mezclas de índices.",
+        "Requiere dos o tres pasos: aplicar la propiedad, simplificar fracción, y luego simplificar la raíz (extracción de factores).",
+        "Opciones de respuesta con distractores que reflejan errores típicos (por ejemplo, producto en lugar de cociente dentro de la raíz)."
       ],
       "hard": [
-        "Radicandos con fracciones compuestas o que requieren más de una etapa de simplificación (por ejemplo, fracciones que primero se simplifican fuera y luego dentro de la raíz, o viceversa).",
-        "Expresiones algebraicas con potencias de variables donde se requiere manejar exponentes al dividir (por ejemplo, ⁴√(a^7b^3) / ⁴√(a^3b)).",
-        "Situaciones en las que sea conveniente reexpresar radicales como potencias con exponente racional para simplificar el cociente, manteniéndose en el mismo índice.",
-        "Cocientes encadenados de más de dos radicales con el mismo índice (por ejemplo, √a / √b / √c reescritos como una sola raíz).",
-        "Ítems en contexto (problemas verbales) donde la propiedad de división de raíces está implícita, y el estudiante debe reconocer que la simplificación pasa por unir radicales en una sola raíz."
+        "División de expresiones con raíces de igual índice que combinan varios factores numéricos y literales, exigiendo uso simultáneo de reglas de potencias y simplificación de fracciones.",
+        "Radicandos con potencias algebraicas donde se debe restar exponentes usando la propiedad de cociente (por ejemplo, \\( \\sqrt[3]{a^7b^4} : \\sqrt[3]{a^2b} \\)).",
+        "Casos en que es ventajoso primero factorizar los radicandos (por ejemplo, descomponer en factores primos o cuadrados/cúbicos perfectos) antes de dividir.",
+        "Situaciones donde el resultado final debe presentarse en una forma específica (por ejemplo, sin fracciones en el radicando, o con exponente mínimo positivo dentro de la raíz).",
+        "Índice distinto de 2 con radicandos más grandes o con varios factores (por ejemplo, raíces cuartas o quintas simples pero con manipulación de exponentes).",
+        "Ítems encadenados donde la división de raíces es un paso clave para comparar dos expresiones o decidir cuál es mayor, manteniéndose todavía dentro de una sola habilidad principal."
       ]
     },
     "ambiguity_avoid": [
-      "No usar en un mismo ítem radicales con índices distintos sin dejar totalmente claro que NO deben combinarse en una sola raíz, salvo que el objetivo del ítem sea precisamente reconocer que no se puede aplicar la propiedad.",
-      "Evitar notaciones en las que el índice de la raíz pueda confundirse con un exponente del radicando (por ejemplo, escribir mal ubicado el '3' en una raíz cúbica).",
-      "No mezclar, en el mismo paso del enunciado, varias operaciones de radicales (suma, resta, multiplicación y división) si la pregunta solo evalúa la división; delimitar claramente qué operación debe realizar el estudiante.",
-      "Evitar expresiones verbales vagas como 'simplifique la expresión' cuando hay más de una estrategia posible; preferir 'reescriba el cociente de las raíces de igual índice como una sola raíz y simplifique'.",
-      "No usar contextos que requieran suposiciones adicionales sobre el dominio (por ejemplo, raíces de números negativos) sin especificar que se trabaja en números reales.",
-      "Evitar fraccionamientos tipográficos confusos: cuando haya fracciones dentro de una raíz, usar paréntesis claros para indicar qué está dentro y qué está fuera del radical.",
-      "No usar notación de raíz principal en casos donde el signo podría generar dudas (por ejemplo, ±√a) si el foco no es el signo, sino la propiedad de división."
+      "No mezclar en el mismo ítem raíces con distintos índices si la tarea solo evalúa división con igual índice; si se incluyen, dejar muy claro cuáles se deben operar y cuáles no.",
+      "Evitar notación poco clara de radicales, como escribir índices muy pequeños o mal ubicados que puedan confundirse con exponentes.",
+      "No plantear radicandos que sean 0 en el denominador de la fracción resultante sin explicitar la imposibilidad, para no generar conflictos con la definición de división por 0.",
+      "Evitar contextos donde la raíz pueda interpretarse como valor absoluto (por ejemplo, \\( \\sqrt{x^2} \\)) si eso no es parte del objetivo del átomo.",
+      "No usar expresiones donde la simplificación admita formas distintas pero igualmente correctas sin aclarar el formato deseado (por ejemplo, \\( \\sqrt{12/3} \\) vs \\( 2 \\sqrt{1} \\)); especificar siempre el tipo de forma esperada en la pregunta o en las alternativas.",
+      "Evitar situaciones en que se deba decidir entre trabajar en números reales o complejos; mantener radicandos coherentes con el trabajo en \\(\\mathbb{R}\\) (por ejemplo, sin raíces pares de números negativos).",
+      "No sobrecargar el ítem con demasiadas operaciones distintas (suma, resta, multiplicación y división de radicales a la vez), porque se difumina si se está evaluando realmente la propiedad de división."
     ],
     "error_families": [
       {
-        "name": "Unificación_indebida_de_indices_distintos",
-        "description": "El estudiante aplica la propiedad de división de raíces de igual índice a radicales con índices distintos, intentando, por ejemplo, unir √a y ³√b en una sola raíz.",
-        "how_to_address": "Enfatizar visualmente el rol del índice: solo radicales con exactamente el mismo índice pueden combinarse. Proponer ejercicios de clasificación donde se distinga 'se puede unir en una sola raíz' vs 'no se puede' antes de pedir cálculos."
+        "name": "Confusión producto vs cociente bajo la raíz",
+        "description": "El estudiante transforma \\( \\sqrt[n]{a} : \\sqrt[n]{b} \\) en \\( \\sqrt[n]{ab} \\) en lugar de \\( \\sqrt[n]{\\frac{a}{b}} \\), aplicando erróneamente la propiedad del producto en vez de la del cociente.",
+        "how_to_address": "En los enunciados y retroalimentación, contrastar explícitamente \\( \\sqrt[n]{a}\\cdot\\sqrt[n]{b} = \\sqrt[n]{ab} \\) con \\( \\sqrt[n]{a} : \\sqrt[n]{b} = \\sqrt[n]{\\frac{a}{b}} \\). Proponer ejemplos numéricos sencillos donde se note la diferencia en el resultado final para que internalice el patrón correcto."
       },
       {
-        "name": "Division_de_indices_en_lugar_de_radicandos",
-        "description": "El estudiante interpreta erróneamente que, al dividir radicales, se deben dividir o alterar los índices (por ejemplo, transformar √a / √b en ³√(a/b) o cambiar el índice sin fundamento).",
-        "how_to_address": "Reforzar la forma general √[n](a) / √[n](b) = √[n](a/b), mostrando que el índice es una 'instrucción de raíz' que permanece constante. Trabajar con ejemplos donde el mismo índice se arrastra intacto durante todo el procedimiento."
+        "name": "Usar la propiedad con índices distintos",
+        "description": "El estudiante intenta combinar \\( \\sqrt{a} \\) y \\( \\sqrt[3]{b} \\) como si tuvieran el mismo índice, o asume que los índices se pueden sumar, restar o dividir.",
+        "how_to_address": "Reforzar la condición \"mismo índice\" como requisito indispensable en la consigna y en ejercicios guiados. Incorporar distractores que muestren el error y aclarar que, si los índices son distintos, primero habría que reexpresar en forma de potencias con el mismo exponente racional (contenido fuera de este átomo)."
       },
       {
-        "name": "Omisión_de_simplificacion_de_la_fraccion_interna",
-        "description": "El estudiante se queda en un paso intermedio como √(18/2) y no simplifica a √9 ni a 3, o deja fracciones como 24/8 sin reducir antes de aplicar propiedades sobre el radicando.",
-        "how_to_address": "Modelar sistemáticamente la simplificación: primero simplificar el cociente de radicandos y luego, si es posible, la raíz. Proponer ejercicios donde la calificación destaque explícitamente la etapa de simplificar la fracción dentro del radical."
+        "name": "Omisión de la simplificación de la fracción",
+        "description": "El estudiante deja el resultado como \\( \\sqrt[n]{\\frac{a}{b}} \\) aunque \\( \\frac{a}{b} \\) tenga factores comunes que se pueden simplificar, o no reduce la fracción al máximo.",
+        "how_to_address": "Incluir en la consigna la instrucción de \"simplificar completamente\". Diseñar ítems donde dos alternativas contengan la misma raíz pero con fracciones equivalentes, para obligar a distinguir la forma simplificada. Recordar explícitamente la reducción de fracciones como paso intermedio en las explicaciones."
       },
       {
-        "name": "Confusion_entre_radical_y_exponente_entero",
-        "description": "El estudiante olvida la raíz y trata el cociente como si fuera un cociente directo de números o variables (por ejemplo, √18 / √2 = 18/2).",
-        "how_to_address": "Hacer contrastes directos entre 18/2 y √18 / √2, remarcando que la operación está 'protegida' por el radical. Incluir pasos intermedios obligatorios con la notación de una sola raíz para reforzar la estructura √(a/b)."
+        "name": "No extraer factores perfectos tras dividir",
+        "description": "Luego de aplicar la propiedad de división, el estudiante no reconoce que el radicando es (o contiene) una potencia perfecta que permite simplificar la raíz, quedándose en una forma menos simple.",
+        "how_to_address": "Diseñar ejercicios escalonados: primero reconocimiento de cuadrados/cúbicos perfectos en una lista, luego dentro de un radicando y finalmente en el contexto de una división. En retroalimentación, mostrar la descomposición en factores del radicando para evidenciar qué parte sale de la raíz."
       },
       {
-        "name": "Manejo_deficiente_de_fracciones_en_el_radicando",
-        "description": "Errores al dividir radicandos fraccionarios, como invertir erróneamente numeradores y denominadores, o mezclar operaciones de fracción fuera y dentro de la raíz.",
-        "how_to_address": "Volver explícito que la división de radicales se traduce en una división de radicandos, que a su vez es una división de fracciones habitual. Proponer problemas escalonados: primero operar las fracciones fuera de raíces, luego replicar la misma lógica dentro de un radical."
+        "name": "Errores con exponentes en expresiones algebraicas",
+        "description": "En radicales con letras, confunde las reglas de exponentes al dividir (por ejemplo, \\( \\sqrt[3]{a^5} : \\sqrt[3]{a^2} = \\sqrt[3]{a^{10}} \\) o \\( \\sqrt[3]{a^{5-2}} = \\sqrt[3]{a^2} \\) en lugar de \\( \\sqrt[3]{a^3} \\)).",
+        "how_to_address": "Relacionar claramente la propiedad de división de raíces con la de cociente de potencias de misma base: primero trabajar \\( a^m : a^n = a^{m-n} \\), luego traducir \\( \\sqrt[n]{a^m} : \\sqrt[n]{a^k} \\) a potencias y volver a radicales. En distractores, incluir las formas de error habituales para poder comentarlas en la retroalimentación."
       },
       {
-        "name": "Errores_con_potencias_de_la_misma_base",
-        "description": "En expresiones algebraicas, el estudiante se equivoca al combinar exponentes (por ejemplo, ³√(a^5) / ³√(a^2) = ³√(a^7) en lugar de ³√(a^3)).",
-        "how_to_address": "Recordar y ejercitar la regla a^m / a^n = a^(m−n) antes de aplicarla dentro de radicales. Proponer ítems donde se pida explícitamente escribir primero el cociente de radicandos sin raíz y simplificar exponentes, para luego 'volver' al radical."
-      },
-      {
-        "name": "Descuido_de_restricciones_de_dominio",
-        "description": "El estudiante acepta sin cuestionar raíces pares de números negativos o no considera que el denominador del radicando no puede ser cero.",
-        "how_to_address": "Cuando corresponda, mencionar que se trabaja en números reales y pedir explícitamente identificar restricciones para el radicando y el denominador antes de operar. Incorporar un par de ítems conceptuales cortos sobre qué valores son admisibles."
+        "name": "Ignorar restricciones de denominador o dominio",
+        "description": "Al formar la fracción dentro de la raíz, el estudiante no identifica que el denominador es cero o que el radicando es negativo en raíces de índice par, aceptando resultados sin sentido en reales.",
+        "how_to_address": "En los pocos casos donde esto pueda aparecer, explicitar siempre que se trabaja en números reales. Incluir ejemplos donde se pregunte explícitamente si la expresión está definida o no, para obligar a considerar el denominador y el signo del radicando."
       }
     ],
     "future_targets": [
-      "Aplicación de propiedades de radicales en simplificación de expresiones algebraicas más complejas (suma, resta y multiplicación combinadas).",
-      "Racionalización de denominadores que contengan radicales, donde se requiere dominar división y multiplicación de raíces.",
-      "Manipulación de potencias con exponentes racionales, conectando notación radical con notación de potencia.",
-      "Resolución de ecuaciones e inecuaciones que incluyen radicales, donde se deban simplificar cocientes de raíces como parte del procedimiento.",
-      "Trabajar con funciones que involucran radicales (por ejemplo, f(x) = √(p(x)/q(x))) y su análisis algebraico previo a la representación gráfica.",
-      "Simplificación de expresiones en contextos geométricos y de física donde aparezcan longitudes expresadas con raíces que deban dividirse."
+      "Manejo general de propiedades de radicales (producto, cociente, simplificación al máximo).",
+      "Racionalización de expresiones con raíces en el denominador.",
+      "Transformación de radicales en potencias con exponente racional y viceversa.",
+      "Resolución de ecuaciones e inecuaciones con radicales donde se requiere simplificar divisiones de raíces.",
+      "Operaciones combinadas con expresiones algebraicas que incluyen radicales (suma, resta y multiplicación de términos radicales).",
+      "Estudio de funciones radicales simples, donde la simplificación de la expresión es necesaria para analizar dominio y comportamiento.",
+      "Aplicación de raíces en contextos geométricos (por ejemplo, teorema de Pitágoras) y físicos, donde se necesita simplificar resultados radicales."
     ],
     "representation_variants": [
-      "Notación radical estándar con cociente de dos raíces de igual índice (por ejemplo, √a / √b).",
-      "Una sola raíz que contiene una fracción como radicando (por ejemplo, √(a/b)).",
-      "Notación con índice explícito mayor que 2 (³√a, ⁴√b) manteniendo igualdad de índices.",
-      "Expresiones verbales que describen la división de raíces, por ejemplo 'el cociente de la raíz cúbica de a^5 con la raíz cúbica de a^2'.",
-      "Radicandos algebraicos con monomios (por ejemplo, √(8x^2) / √(2x)).",
-      "Forma de exponente racional equivalente (por ejemplo, a^(1/2) / b^(1/2)) siempre que quede claro que comparten exponente y el foco siga siendo la propiedad de división.",
-      "Expresiones con fracciones dentro de la raíz representadas de manera claramente parentetizada (por ejemplo, √((18x^2)/(2x)))."
+      "Notación estándar con índice explícito: \\( \\sqrt[n]{a} : \\sqrt[n]{b} \\).",
+      "Notación con índice implícito 2: \\( \\sqrt{a} : \\sqrt{b} \\) sin escribir el 2.",
+      "Expresiones con fracciones como radicandos: \\( \\sqrt{\\frac{a}{b}} : \\sqrt{\\frac{c}{d}} \\).",
+      "Expresiones con factores numéricos y literales dentro del radicando: \\( \\sqrt{18x^2} : \\sqrt{2x} \\).",
+      "Presentación como una sola raíz ya combinada que debe ser reconocida como resultado de una división: \\( \\sqrt[n]{\\frac{a}{b}} \\) y relacionarla con la forma de cociente de dos raíces.",
+      "Contextualización verbal mínima (por ejemplo, longitud de un segmento expresada con raíces) donde la tarea matemática central sigue siendo dividir radicales de igual índice.",
+      "Expresiones que mezclan producto y cociente de raíces de igual índice, donde el estudiante debe aplicar ambas propiedades pero la división de raíces sigue siendo un paso clave."
     ],
     "numbers_profiles": [
       "small_integers",
-      "larger_integers",
-      "simple_fractions",
-      "fractions_with_common_factors",
+      "medium_integers",
       "perfect_squares",
-      "non_perfect_squares",
+      "near_perfect_squares",
       "perfect_cubes",
-      "algebraic_monomials"
+      "simple_fractions",
+      "algebraic_symbols_simple"
     ],
     "required_image_types": []
   }

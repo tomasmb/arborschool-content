@@ -3,122 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Aplicar la propiedad (a/b)^{n})^{m} = (a/b)^{n·m} con base racional positiva o negativa.",
-        "Trabajar con exponentes enteros positivos, negativos y fraccionarios (racionales).",
-        "Reconocer la estructura de potencia de una potencia en expresiones como ((a/b)^n)^m o (x^p)^q y reescribir el exponente como un producto.",
-        "Simplificar y comparar expresiones equivalentes que difieren solo en la forma del exponente (por ejemplo, ((1/2)^{1/2})^2 vs (1/2)^1).",
-        "Usar la propiedad de potencia de una potencia dentro de un procedimiento más largo de simplificación de potencias (solo en el paso específico de potencia de una potencia)."
+        "Aplicar la propiedad de potencia de una potencia: (a/b)^n elevado a m se transforma en (a/b)^(n·m), con a y b racionales y b ≠ 0.",
+        "Trabajar con exponentes enteros positivos, negativos y cero, así como con exponentes racionales (fracciones).",
+        "Identificar correctamente la estructura de una potencia elevada a otra potencia, por ejemplo ((a/b)^n)^m o (x^p)^q.",
+        "Simplificar expresiones donde solo se usa la propiedad de potencia de una potencia, sin requerir otras propiedades más allá de pasos muy básicos (como reducir fracciones de exponentes).",
+        "Aplicar la multiplicación de exponentes racionales, incluyendo productos de fracciones y simplificación de estas."
       ],
       "out_of_scope": [
-        "Introducir o evaluar raíces n-ésimas como objeto principal (por ejemplo, simplificar √[3](x^2)), salvo que aparezcan solo implícitamente vía exponentes racionales.",
-        "Aplicar otras propiedades de potencias que no sean potencia de una potencia, como producto de potencias de igual base o potencia de un producto, salvo de forma muy secundaria.",
-        "Logaritmos, ecuaciones exponenciales o modelos de crecimiento y decrecimiento exponencial.",
-        "Cambio de base de fracción a número decimal periódico o viceversa como foco principal.",
-        "Uso de potencias con base algebraica compleja (expresiones con sumas o restas en la base, por ejemplo (2x+3)^2) o binomios notables."
+        "Uso de la propiedad de producto de potencias de igual base (a^m · a^n = a^(m+n)) como foco principal.",
+        "Uso de la propiedad de potencia de un producto o de un cociente como foco principal (por ejemplo, (ab)^n o (a/b)^n descompuesto en a^n b^n).",
+        "Cambio de base de potencias o uso de logaritmos.",
+        "Situaciones de modelamiento complejo donde la dificultad principal sea interpretar el contexto, y no manipular la potencia de una potencia.",
+        "Potencias con exponentes irracionales no racionales (por ejemplo, √2 como exponente) o notación de radicales muy avanzada.",
+        "Trabajo con bases negativas en combinación con exponentes racionales que generen ambigüedad sobre la definición (por ejemplo, (-2)^(1/2)).",
+        "Demostraciones formales de la propiedad de potencia de una potencia."
       ],
       "prerequisites": [
-        "A-M1-NUM-03-01",
-        "A-M1-NUM-03-02",
-        "A-M1-NUM-03-03",
-        "A-M1-NUM-03-04"
+        "A-M1-NUM-02-01: Comprender el significado de potencia con exponente entero (incluyendo negativos) y operar con ellas.",
+        "A-M1-NUM-02-02: Operar con números racionales en forma fraccionaria (suma, resta, multiplicación, división y simplificación).",
+        "A-M1-NUM-03-01: Interpretar y operar con exponentes racionales simples (por ejemplo, a^(1/n), a^(p/q)).",
+        "A-M1-ALG-01-01: Manejo básico de letras como variables y de expresiones algebraicas simples."
       ],
       "common_traps": [
-        "Olvidar multiplicar los exponentes y en cambio sumarlos: ((a/b)^n)^m → (a/b)^{n+m}.",
-        "Multiplicar la base en vez de los exponentes: ((a/b)^n)^m → (a·b)^{n·m} o (a^n·b^n)^m.",
-        "Tratar (a/b)^n como a^n/b en lugar de a^n/b^n, generando errores al simplificar.",
-        "Manejar mal los signos de exponentes negativos al multiplicar: ((1/3)^{-2})^3 → (1/3)^{-2+3} o (1/3)^{6}.",
-        "Errores al multiplicar fracciones en los exponentes, por ejemplo (x^{1/3})^{3/2} → x^{1/3+3/2} o x^{3/6} mal simplificado.",
-        "Perder el paréntesis de la base racional, interpretando (1/2)^1/2 como 1/2^1/2.",
-        "Confundir potencia de una potencia con potencia de un producto de fracciones, mezclando propiedades en un solo paso y generando simplificaciones incorrectas."
+        "Confundir potencia de una potencia con potencia de un producto o cociente, por ejemplo transformar erróneamente ((a/b)^2)^3 en (a^2/b^2)^3 o en (a/b)^(2+3).",
+        "Sumar los exponentes en lugar de multiplicarlos: ((a/b)^n)^m → (a/b)^(n+m).",
+        "Aplicar mal el producto de fracciones al multiplicar exponentes racionales, por ejemplo (1/2 · 2/3) calculado incorrectamente.",
+        "Olvidar el signo de exponentes negativos al multiplicarlos, por ejemplo (-2)·3 = 2·3.",
+        "Interpretar a^(1/2) como a/2 en lugar de √a, lo que perturba el manejo de exponentes racionales.",
+        "No simplificar el exponente fraccionario resultante cuando es posible (por ejemplo, dejar x^(6/8) en vez de x^(3/4)), cuando la simplificación es clave para la opción correcta.",
+        "Perder la estructura de paréntesis y cambiar el orden de las operaciones, por ejemplo interpretar (a^2)^3 como a^(2^3).",
+        "En ejercicios tipo diagnóstico de errores (como el ejemplar), no identificar en qué paso se vulnera la propiedad, al mezclar varias propiedades de potencias."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Expresiones con base racional sencilla (fracciones propias con numeradores y denominadores pequeños, como 1/2, 2/3, 3/4) y exponentes enteros positivos.",
-        "Estructura directa y explícita de potencia de una potencia, sin otras operaciones mezcladas, por ejemplo ((1/3)^2)^3.",
-        "Un solo paso de aplicación de la propiedad, sin necesidad de simplificar fracciones o reducir exponentes posteriormente.",
-        "Opciones de respuesta numéricas bien separadas, evitando distractores muy cercanos que requieran análisis fino de fracciones."
+        "Expresiones con una sola base numérica positiva simple (por ejemplo 2, 3, 5, 10 o fracciones tipo 1/2, 3/4) y exponentes enteros pequeños (entre -3 y 3).",
+        "Estructuras directas del tipo (a^n)^m o ((a/b)^n)^m con un solo paso de aplicación de la propiedad y sin necesidad de combinarla con otras propiedades.",
+        "Exponentes racionales de la forma 1/2, 1/3, 3/2 cuando el producto de exponentes es inmediato (por ejemplo, (x^(1/2))^2).",
+        "Foco en calcular el nuevo exponente (multiplicación simple) más que en simplificaciones adicionales.",
+        "Enunciados puramente simbólicos, sin contexto verbal, con instrucciones explícitas del tipo 'simplifique la expresión'."
       ],
       "medium": [
-        "Bases racionales con numeradores y/o denominadores mayores, o fracciones impropias como 5/3 o -7/4.",
-        "Incorporar exponentes negativos o fraccionarios simples (1/2, 3/2, -1/3), donde la principal dificultad es multiplicar y simplificar el exponente racional.",
-        "Expresiones donde se combine potencia de una potencia con un paso adicional de simplificación (por ejemplo reducir la fracción del exponente o simplificar una potencia con exponente negativo).",
-        "Ítems que requieren comparar dos expresiones para decidir si son equivalentes, obligando a aplicar correctamente la propiedad a una de ellas."
+        "Expresiones que requieren más de un paso de manipulación, combinando potencia de una potencia con simplificación de fracciones en los exponentes (por ejemplo, (x^(3/4))^(8/3)).",
+        "Bases racionales diferentes de fracciones unitarias, como (3/5), (4/9), o con signos negativos sólo cuando el resultado se mantiene bien definido con exponentes enteros.",
+        "Exponentes racionales con numeradores y denominadores mayores (por ejemplo 5/3, -4/5), de modo que el producto de fracciones no sea inmediato pero siga siendo de cálculo manejable.",
+        "Ítems de detección de error en un procedimiento dado (como el ejemplar citado), donde el estudiante debe identificar en qué paso se aplica incorrectamente la propiedad de potencia de una potencia.",
+        "Problemas en contexto sencillo (porcentaje de crecimiento, escalas, áreas) donde el paso clave para resolver implica reconocer y usar una potencia de una potencia.",
+        "Alternativas distractoras que incorporan errores típicos (sumar exponentes en vez de multiplicarlos, olvidar signos, no simplificar fracciones de exponentes)."
       ],
       "hard": [
-        "Expresiones con varios niveles de exponentes anidados que exigen aplicar la propiedad más de una vez, por ejemplo (((1/2)^{1/2})^3)^{4}.",
-        "Exponentes racionales menos inmediatos (por ejemplo 2/5, -3/4, 7/6) que requieran multiplicaciones de fracciones no triviales y posterior simplificación.",
-        "Ítems en contexto algebraico donde la base es una expresión con parámetro racional (por ejemplo (x^{1/3})^{3/2} o ((a/b)^{p/q})^{r/s}), manteniendo el foco en el tratamiento de los exponentes.",
-        "Preguntas que pidan determinar condiciones sobre exponentes racionales para que dos potencias de una misma base sean iguales, exigiendo plantear y resolver una igualdad de productos de fracciones.",
-        "Distractores que explotan simultáneamente varios errores típicos (sumar exponentes, invertir fracciones en el exponente, perder el signo) obligando a un dominio sólido del procedimiento."
+        "Expresiones con varias potencias anidadas o encadenadas que exigen aplicar la propiedad más de una vez, por ejemplo (((a^(1/2))^3)^(4/3)) o (( (1/2)^(-3/4) )^(8/9)).",
+        "Combinaciones de propiedades de potencias donde la potencia de una potencia es el núcleo, pero debe coordinarse con potencia de un producto o cociente y con producto de potencias, sin que esas otras propiedades sean el foco principal.",
+        "Exponentes racionales con números mayores o signos mixtos, donde el producto requiere simplificación no inmediata (por ejemplo, (x^(5/6))^(-9/10) → x^(-3/4)).",
+        "Problemas en contexto donde el uso de potencia de una potencia no está explícito y el estudiante debe reconocerla como una estrategia conveniente de simplificación (por ejemplo, crecimiento iterado, aplicaciones con escalas compuestas).",
+        "Ítems que requieren comparar expresiones distintas para decidir cuál es equivalente utilizando la propiedad de potencia de una potencia, exigiendo razonamiento algebraico más que solo cálculo numérico.",
+        "Ítems donde la presencia de radicales implícitos en los exponentes racionales (por ejemplo a^(3/2), a^(-5/3)) obliga a manipular con cuidado la notación y a elegir la forma más adecuada para comparar o simplificar."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar escribir potencias sin paréntesis en bases fraccionarias cuando la base completa debe ser elevada, preferir ((1/2)^3)^2 en lugar de (1/2^3)^2.",
-      "No mezclar en el mismo ítem notaciones como 1/2^3 y (1/2)^3 sin aclarar precedencia; siempre usar paréntesis en la base racional.",
-      "Evitar igualar expresiones en las que la base cambie sin explicitar el paso (por ejemplo pasar de (1/2)^{n} a 2^{-n} sin aclaración cuando el foco es solo la propiedad de potencia de una potencia).",
-      "No introducir símbolos o letras nuevas en las alternativas que no aparezcan en el enunciado, para no desviar el foco del tratamiento de exponentes.",
-      "Evitar contextos verbales largos o historias irrelevantes; mantener enunciados limpios para que la dificultad se centre en la manipulación de potencias.",
-      "No combinar en la misma pregunta varias propiedades de potencias de manera que sea imposible discernir qué parte evalúa específicamente potencia de una potencia.",
-      "Evitar valores de base 0 o 1 con exponentes conflictivos (0^0, 1^{cualquier}) que introducen discusiones fuera del programa.",
-      "No usar exponentes irracionales (como √2) en la propiedad; restringir a racionales para evitar ambigüedad de alcance."
+      "No usar bases negativas con exponentes racionales no enteros (por ejemplo, (-2)^(1/2)), ya que puede no estar definido en los reales o generar interpretaciones inconsistentes.",
+      "Evitar expresiones donde sea dudoso qué parte está afectada por el exponente exterior por falta de paréntesis; siempre escribir explícitamente ((a/b)^n)^m y no (a/b^n)^m o a/b^n^m.",
+      "No mezclar en el mismo ítem notación de raíz y notación de exponente racional de forma poco clara; si se usan ambas, explicitar la equivalencia o hacerlo en pasos bien señalados.",
+      "Evitar contextos verbales excesivamente complejos donde la principal dificultad sea de comprensión lectora y no de aplicación de la propiedad de potencia de una potencia.",
+      "No usar letras tanto en base como en exponentes de forma que se vuelva difícil distinguir qué se está multiplicando (por ejemplo, (x^a)^b con otros parámetros a y b en el enunciado); privilegiar exponentes numéricos en PAES M1.",
+      "No introducir simultáneamente demasiadas propiedades de potencias en un mismo ítem (producto de potencias, potencia de un cociente, potencias de exponente negativo), si eso hace difícil aislar qué se está evaluando.",
+      "Evitar combinaciones con radicales donde la elección de la raíz principal pueda provocar respuestas ambiguas (por ejemplo, √(x^2) vs x, sin aclarar dominio)."
     ],
     "error_families": [
       {
-        "name": "Suma en lugar de producto de exponentes",
-        "description": "El estudiante transforma ((a/b)^n)^m en (a/b)^{n+m} o hace operaciones mixtas como n+m·n.",
-        "how_to_address": "Destacar visualmente la estructura de potencia de una potencia como repetición de la misma potencia, mostrando que se trata de multiplicar la cantidad de veces que se aplica la base. Proponer ejercicios de comparación entre (a^n)^m y a^{n+m} para evidenciar que dan resultados distintos."
+        "name": "Suma_de_exponentes_en_lugar_de_producto",
+        "description": "El estudiante transforma una potencia de una potencia como si fuera producto de potencias de la misma base, por ejemplo, ((a/b)^2)^3 → (a/b)^(2+3) en lugar de (a/b)^(2·3).",
+        "how_to_address": "Diseñar ítems que contrasten explícitamente a^(m+n) y (a^m)^n, pidiendo al estudiante elegir cuál representa la situación dada; incluir pasos intermedios donde se escriba claramente n·m en el exponente resultante y usar ejemplos numéricos simples que permitan verificar el resultado evaluando ambas expresiones."
       },
       {
-        "name": "Alterar la base racional",
-        "description": "La base (a/b) se modifica al aplicar la propiedad, por ejemplo ((1/2)^3)^2 → (1/4)^{6} o (2)^{3·2} sin justificar el cambio.",
-        "how_to_address": "Enfatizar la idea de 'conservar la base' en la propiedad. Proponer ejercicios en que se marque la base fija y solo se trabaje con exponentes, pidiendo explícitamente no modificar la base en ningún paso."
+        "name": "Manejo_incorrecto_de_parentesis_y_estructura",
+        "description": "El estudiante pierde la referencia de qué parte está elevada al exponente exterior, por ejemplo, interpretar a^2^3 como a^(2^3) o como a^(2·3), o confundir (a/b^2)^3 con ((a/b)^2)^3.",
+        "how_to_address": "Incluir ejercicios donde el foco sea reconocer la estructura correcta a partir de distintas escrituras, enfatizando el uso de paréntesis y pidiendo reescrituras equivalentes; usar distractores que se diferencien solo en la ubicación del paréntesis para incentivar la atención a la estructura."
       },
       {
-        "name": "Manejo incorrecto de exponentes negativos",
-        "description": "Al multiplicar exponentes negativos se pierde el signo o se interpreta mal, por ejemplo ((1/3)^{-2})^{3} → (1/3)^{6} o (3)^{6}.",
-        "how_to_address": "Separar el tratamiento en dos pasos: primero obtener el exponente resultante n·m, luego, en un segundo paso, interpretar qué significa un exponente negativo. Practicar multiplicaciones de enteros con signos antes de combinarlas con potencias."
+        "name": "Errores_en_producto_de_fracciones_en_exponentes",
+        "description": "El estudiante se equivoca al multiplicar exponentes fraccionarios, por ejemplo, (x^(2/3))^(3/4) → x^(5/7) o x^(6/12) sin posterior simplificación.",
+        "how_to_address": "Proponer ítems con exponente racional donde el producto sea relativamente simple y permita detectar el error, incorporando alternativas que reflejen multiplicaciones incorrectas de fracciones; reforzar la idea de multiplicar numerador con numerador y denominador con denominador y luego simplificar la fracción resultante."
       },
       {
-        "name": "Multiplicación incorrecta de exponentes fraccionarios",
-        "description": "Errores al multiplicar y simplificar fracciones en el exponente, como (x^{1/3})^{3/2} → x^{1/5} o x^{3/2+1/3}.",
-        "how_to_address": "Reforzar el procedimiento de multiplicación de fracciones aislado del contexto de potencias, y luego volver a aplicarlo en exponentes. Incluir ítems que pidan solo encontrar el nuevo exponente como fracción simplificada, sin evaluar la potencia completa."
+        "name": "Signos_de_exponentes_olvidados_o_mal_manejados",
+        "description": "El estudiante ignora el signo de uno de los exponentes o se confunde al multiplicar, por ejemplo, ((1/3)^(-2))^3 → (1/3)^2 en lugar de (1/3)^(-6).",
+        "how_to_address": "Incorporar exponentes negativos en casos simples, pidiendo comparar resultados con y sin considerar el signo; usar líneas de razonamiento donde se haga explícito (-2)·3 = -6, y ofrecer distractores que muestren el error de signo para que el estudiante deba justificar su elección."
       },
       {
-        "name": "Pérdida de paréntesis y precedencia",
-        "description": "Confusiones entre (1/2)^3^2, ((1/2)^3)^2 y (1/2)^{3^2}, llevando a exponentes o bases equivocados.",
-        "how_to_address": "Insistir en el uso obligatorio de paréntesis para bases fraccionarias y en la lectura de la expresión dada, no en interpretaciones personales. Proponer ejercicios donde se comparen distintas colocaciones de paréntesis y sus resultados numéricos."
+        "name": "Confusion_entre_potencia_de_un_producto_y_potencia_de_una_potencia",
+        "description": "El estudiante aplica propiedades cruzadas, por ejemplo ((ab)^2)^3 → a^2 b^2 · a^3 b^3, mezclando erróneamente potencia de un producto con potencia de una potencia.",
+        "how_to_address": "Usar ítems tipo diagnóstico de procedimiento donde se muestre un desarrollo paso a paso que mezcle ambas propiedades y se pida identificar el paso incorrecto; diseñar ejercicios que separen claramente: primero potencia de una potencia y luego potencia de un producto, para que el alumno vea el orden correcto de aplicación."
       },
       {
-        "name": "Confusión con otras propiedades de potencias",
-        "description": "Aplicar simultáneamente reglas de producto o cociente de potencias en situaciones donde solo corresponde potencia de una potencia, por ejemplo (a^2)^3 → a^{2+3} o (a·b)^2 → a^2·b^{2·2}.",
-        "how_to_address": "Trabajar con un cuadro comparativo de propiedades, destacando para cada una qué cambia (base o exponente) y en qué tipo de estructura se aplica. Proponer ejercicios de clasificación de expresiones según la propiedad que corresponde aplicar."
+        "name": "No_simplificar_el_exponente_resultante",
+        "description": "El estudiante obtiene un exponente correcto pero no lo simplifica (por ejemplo, x^(8/12) en vez de x^(2/3)), lo que puede llevar a perder la opción correcta o a fallar en comparaciones de expresiones.",
+        "how_to_address": "Incluir preguntas donde dos alternativas difieren solo en la forma equivalente del exponente (simplificada vs no simplificada), pidiendo explícitamente 'forma más simple'; reforzar el vínculo entre simplificación de fracciones y claridad en exponentes."
+      },
+      {
+        "name": "Mala_interpretacion_de_exponentes_racionales",
+        "description": "El estudiante interpreta a^(1/2) como a/2 o a^(p/q) de forma errónea, dificultando la correcta multiplicación de exponentes y la comprensión del significado de la operación.",
+        "how_to_address": "Proponer ítems que alternen notación de radical y exponente racional en casos sencillos (a^(1/2) vs √a) para fijar la equivalencia, y usar contextos donde el cálculo con raíces conocidas (por ejemplo, (√2)^2) ayude a validar la interpretación correcta."
       }
     ],
     "future_targets": [
-      "Simplificación de expresiones algebraicas más complejas con potencias, incluyendo radicales expresados como exponentes racionales.",
-      "Resolución de ecuaciones exponenciales sencillas donde se requiere igualar exponentes después de manipular potencias.",
-      "Trabajo con funciones de tipo potencia y exponenciales, donde manipular correctamente los exponentes es clave para transformar expresiones.",
-      "Aplicación de leyes de exponentes en contextos de modelación (crecimiento y decrecimiento), aunque este átomo se centra en el paso algebraico puntual.",
-      "Manipulación de expresiones con raíces n-ésimas mediante la escritura con exponentes fraccionarios para facilitar cálculos y simplificaciones."
+      "A-M1-NUM-03-06: Manejo integrado de todas las propiedades de potencias con exponentes racionales (producto, cociente, potencia de un producto y potencia de una potencia).",
+      "A-M1-NUM-04-01: Introducción y manipulación de expresiones radicales y su relación con exponentes racionales en contextos más complejos.",
+      "A-M1-FUN-01-02: Comprensión de funciones exponenciales simples, donde la simplificación de exponentes (incluyendo potencia de una potencia) permite comparar tasas de crecimiento y reescribir modelos.",
+      "A-M1-NUM-05-01: Resolución de ecuaciones exponenciales sencillas mediante manipulación de potencias, donde es clave reconocer potencias de potencias para igualar exponentes.",
+      "A-M1-MOD-01-01: Modelamiento de procesos iterativos (crecimiento compuesto, escalas repetidas) que pueden describirse como potencias de potencias.",
+      "A-M1-ALG-02-01: Simplificación de expresiones algebraicas más complejas que combinan potencias, productos y cocientes con letras y parámetros."
     ],
     "representation_variants": [
-      "Notación con base fraccionaria explícita entre paréntesis, por ejemplo ((2/3)^4)^2.",
-      "Base racional negativa, por ejemplo ((-1/2)^3)^2, cuidando el efecto del exponente en el signo.",
-      "Base racional expresada como potencia de un número entero, por ejemplo ((2^{-1})^{3})^{2}.",
-      "Base algebraica con exponente racional, por ejemplo (x^{1/3})^{3/2}, manteniendo el foco en la multiplicación de exponentes.",
-      "Comparación de dos expresiones escritas en formas distintas que requieren usar la propiedad para ver si son equivalentes.",
-      "Contextos numéricos (sin letras) y contextos algebraicos simples (con una variable) para mostrar que la regla es general.",
-      "Uso de exponentes fraccionarios que representen raíces cuadradas y cúbicas, como 1/2, 1/3, 3/2, 5/3, para que el estudiante reconozca la generalidad de la propiedad."
+      "Expresiones puramente numéricas con base racional y exponentes enteros o fraccionarios, centradas en la manipulación simbólica.",
+      "Expresiones algebraicas simples con una variable en la base y exponentes racionales, por ejemplo (x^(1/3))^(3/2).",
+      "Desarrollos paso a paso de un procedimiento (parcialmente correcto o con un error incorporado) para que el estudiante identifique el uso correcto o incorrecto de la propiedad de potencia de una potencia.",
+      "Tablas o listados de expresiones donde se pide seleccionar todas las que son equivalentes usando la propiedad de potencia de una potencia.",
+      "Contextos verbales breves (por ejemplo, duplicar o triplicar un factor de crecimiento varias veces) que conduzcan naturalmente a expresiones tipo (a^n)^m.",
+      "Comparaciones de formas equivalentes de una misma expresión (por ejemplo, (a^(1/2))^4 vs a^2) para decidir cuál es más conveniente para un cálculo dado."
     ],
     "numbers_profiles": [
       "small_integers",
-      "non_zero_integers",
-      "simple_unit_fractions",
-      "non_unit_fractions",
-      "negative_fractions",
-      "simple_rational_exponents",
-      "negative_integer_exponents"
+      "medium_integers",
+      "unit_fractions",
+      "simple_fractions",
+      "negative_integers",
+      "simple_rational_exponents"
     ],
     "required_image_types": []
   }

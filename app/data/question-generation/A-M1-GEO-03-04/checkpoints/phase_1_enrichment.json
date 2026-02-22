@@ -3,127 +3,120 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de las coordenadas de la imagen P' de un punto P(x, y) al aplicar una traslación definida por un vector v(a, b) usando P' = (x + a, y + b).",
-        "Cálculo de las coordenadas del punto original P(x, y) conociendo P'(x', y') y el vector de traslación v(a, b) usando P = (x' - a, y' - b).",
-        "Interpretación del vector de traslación como par ordenado de componentes horizontales y verticales (a, b).",
-        "Uso de representación simbólica, verbal o gráfica simple (plano cartesiano con puntos y vector) para expresar la traslación de UN punto.",
-        "Casos con números enteros o racionales simples (fracciones o decimales sencillos) en las coordenadas del punto y/o del vector."
+        "Calcular las coordenadas de la imagen P' de un punto P(x, y) aplicando una traslación dada por un vector v(a, b), usando P' = (x + a, y + b).",
+        "Calcular las coordenadas del punto original P a partir de la imagen P' y del vector de traslación v, usando P = (x' - a, y' - b).",
+        "Uso de coordenadas en el plano cartesiano con interpretación básica de ejes (x horizontal, y vertical).",
+        "Traslación de puntos individuales en contextos geométricos o de situaciones cotidianas (por ejemplo, tablero, mapa, cuadrícula).",
+        "Vectores de traslación expresados en forma de componente (a, b) y asociados visualmente a un desplazamiento paralelo en el plano."
       ],
       "out_of_scope": [
-        "Traslación de figuras completas (segmentos, polígonos, circunferencias) y no solo de un punto.",
-        "Composición de varias traslaciones sucesivas como objeto principal del ítem (más de un vector aplicado secuencialmente).",
-        "Uso de matrices, notación de vectores columna o formalismo de álgebra lineal para representar la traslación.",
-        "Problemas que requieran demostrar propiedades de las traslaciones (isometría, conservación de distancias o paralelismo).",
-        "Traslaciones en dimensiones distintas de 2D (por ejemplo, en el espacio 3D).",
-        "Cálculo de longitudes de vectores, módulos o ángulos entre vectores.",
-        "Lectura aproximada de coordenadas desde un dibujo a escala sin grilla ni marcas claras."
+        "Traslación de figuras completas (segmentos, polígonos, etc.) y composición de transformaciones.",
+        "Cálculo de distancias, pendientes o áreas antes o después de la traslación.",
+        "Transformaciones que no son traslaciones (rotaciones, simetrías, homotecias).",
+        "Uso de vectores en notación avanzada (por ejemplo, forma i, j, matrices de transformación, notación de columna).",
+        "Coordenadas en R^3 o traslaciones en el espacio tridimensional.",
+        "Números complejos interpretados como puntos del plano.",
+        "Problemas que requieren justificar rigurosamente propiedades isométricas de la traslación (congruencia, paralelismo)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Manejo de suma y resta de números enteros con signo.",
-        "A-M1-NUM-01-02: Manejo de suma y resta de números racionales simples (fracciones con igual denominador y decimales sencillos).",
+        "A-M1-NUM-01-01: Manejo de suma y resta de números enteros y racionales simples.",
         "A-M1-GEO-03-01: Identificación y lectura de coordenadas de puntos en el plano cartesiano.",
-        "A-M1-GEO-03-02: Interpretación básica de un par ordenado (a, b) como desplazamiento horizontal y vertical.",
-        "A-M1-GEO-03-03: Reconocimiento intuitivo de vectores en el plano (dirección y sentido) sin cálculos avanzados."
+        "A-M1-GEO-03-02: Interpretación básica de vectores en el plano como desplazamientos con componentes horizontales y verticales."
       ],
       "common_traps": [
-        "Intercambiar las componentes del vector al aplicarlo: usar (b, a) en lugar de (a, b).",
-        "Sumar la componente horizontal del vector a la coordenada y y la componente vertical a la coordenada x.",
-        "Restar en lugar de sumar las componentes cuando se pide la imagen P' y se entrega directamente el vector de traslación.",
-        "No invertir adecuadamente la operación al buscar P a partir de P' (sumar en lugar de restar el vector).",
-        "Ignorar los signos del vector de traslación, tratando los valores como si fueran siempre positivos.",
-        "Confundir el vector de traslación con las coordenadas de un punto final, sin entenderlo como desplazamiento.",
-        "Interpretar descriptivamente 'hacia la izquierda/derecha/arriba/abajo' en sentido contrario al convenio cartesiano.",
-        "Leer o ubicar mal las coordenadas de P o P' en un gráfico si la grilla o los ejes no están claramente marcados."
+        "Confundir el vector de traslación con el punto imagen, usando (a, b) directamente como P'.",
+        "Aplicar el vector con signos incorrectos, por ejemplo, restar cuando se debe sumar las componentes o viceversa.",
+        "Intercambiar las componentes, aplicando a al eje y y b al eje x.",
+        "Olvidar que una componente negativa significa desplazamiento en el sentido opuesto del eje correspondiente.",
+        "Invertir el rol de P y P' en la operación inversa, construyendo P' = P - v cuando ya se conoce P'.",
+        "Leer al revés las coordenadas desde una grilla o tablero (eje horizontal y vertical confundidos).",
+        "Usar distancia (módulo del vector) en lugar de componente, intentando sumar un solo número a ambas coordenadas.",
+        "Interpretar movimientos en contextos como tablero o mapa sin respetar la convención de que el eje horizontal es x y el vertical es y."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Ítems donde se da explícitamente P(x, y) y v(a, b) con números enteros pequeños (entre -5 y 5) y se pide directamente calcular P'.",
-        "Ítems donde todas las coordenadas y componentes son positivas, evitando cambios de signo al sumar.",
-        "Contextos simbólicos directos (sin contexto verbal complejo) con notación estándar de puntos y vectores.",
-        "Gráficos simples donde las coordenadas de P y el vector están claramente etiquetados con valores enteros y alineados con la grilla."
+        "Pedir la imagen de un punto con coordenadas enteras pequeñas (entre -5 y 5) mediante un vector con componentes enteras pequeñas, dado todo en forma simbólica sin contexto gráfico.",
+        "Presentar el vector explícito en forma (a, b) con signos evidentes y operaciones sin necesidad de trabajar con fracciones o decimales.",
+        "Solicitar solo una coordenada a la vez (por ejemplo, hallar la coordenada x' sabiendo x y a) cuando la otra no cambia o el cambio es trivial (b = 0)."
       ],
       "medium": [
-        "Ítems donde una o más coordenadas o componentes del vector son negativas, obligando a manejar sumas con signos.",
-        "Ítems que incluyen números racionales simples (fracciones con el mismo denominador o decimales con una cifra) en P o en v.",
-        "Problemas donde se pide encontrar el punto original P conociendo P' y v (uso de la operación inversa con resta).",
-        "Contextos verbales donde la traslación se describe en lenguaje cotidiano (por ejemplo, '2 unidades a la derecha y 3 hacia abajo') que el estudiante debe traducir a un vector.",
-        "Gráficos donde se requiere leer correctamente las coordenadas de P o P' desde el plano, pero con marcas y grilla claras."
+        "Incluir un contexto visual simple (plano cartesiano, mapa cuadrículado, tablero) donde el estudiante debe identificar las coordenadas del punto y luego aplicar el vector de traslación.",
+        "Usar enteros de valor moderado (entre -10 y 10) y combinar signos positivos y negativos en punto y vector.",
+        "Pedir la operación inversa (encontrar P a partir de P' y v) con datos en contexto gráfico o textual.",
+        "Incorporar fracciones simples (denominadores 2, 4, 5, 10) en una de las componentes del punto o del vector, manteniendo la otra como entero.",
+        "Exigir decidir entre varias alternativas que mezclan errores típicos de signo o intercambio de componentes."
       ],
       "hard": [
-        "Ítems donde se debe determinar el vector de traslación v a partir de las coordenadas de P y P', y luego usarlo o interpretarlo en otra parte del enunciado (por ejemplo, comparar dos traslaciones).",
-        "Ítems donde se combinan coordenadas enteras y racionales en el mismo ejercicio, exigiendo cuidado en la suma de fracciones o decimales con signo.",
-        "Problemas donde se usa la operación inversa de forma implícita (por ejemplo, deducir P a partir de una condición contextual, no dicho expresamente como 'encuentre P').",
-        "Situaciones donde el estudiante debe decidir si sumar o restar el vector según el sentido de la traslación descrito en un contexto verbal o gráfico.",
-        "Ítems con representación mixta: lectura de información desde un gráfico para obtener P, uso algebraico del vector y verificación de la imagen P'."
+        "Combinar punto y vector con fracciones o decimales simples en ambas componentes, requiriendo suma de racionales sin apoyo intermedio.",
+        "Dar la información de manera indirecta en el gráfico, por ejemplo, describir la traslación como un movimiento entre dos puntos marcados y pedir el vector, el punto original o la imagen.",
+        "Plantear un contexto donde el estudiante deba reconstruir mentalmente la traslación a partir de múltiples desplazamientos equivalentes (por ejemplo, dos pasos horizontales y tres verticales equivalentes a un solo vector (2, 3)).",
+        "Solicitar varias aplicaciones encadenadas de traslación con el mismo vector (por ejemplo, aplicar k veces el vector) para determinar la posición final de un punto.",
+        "Pedir la determinación de P conociendo P' y una descripción verbal compleja del vector (por ejemplo, primero se desplaza 3 unidades al oeste y luego 2 al norte), obligando a traducir al vector (a, b) y luego hacer la operación inversa correctamente."
       ]
     },
     "ambiguity_avoid": [
-      "No usar diagramas sin grilla o sin ejes claramente marcados cuando se requiere leer coordenadas exactas de puntos.",
-      "Evitar escalas no estándar o no indicadas en los ejes que obliguen a estimar coordenadas en lugar de leerlas con precisión.",
-      "No usar la misma letra para el punto y para el vector asociado (por ejemplo, llamar A al punto y también A al vector).",
-      "Evitar expresiones vagas como 'mover un poco hacia arriba' sin indicar con claridad la magnitud de la traslación.",
-      "No mezclar en el mismo ítem distintas convenciones de orientación (por ejemplo, 'arriba es negativo' en el eje y); respetar la convención cartesiana estándar.",
-      "Evitar que el dibujo sugiera una traslación distinta de la que indican los datos algebraicos; el gráfico debe ser coherente con las coordenadas y el vector.",
-      "No plantear enunciados donde no queda claro si el vector entregado se aplica desde P hacia P' o al revés; explicitar siempre que se trata de la traslación de P mediante el vector dado.",
-      "Evitar notaciones de puntos o vectores poco usuales (como usar corchetes para puntos y paréntesis para vectores sin aclaración); usar notación estándar: puntos como (x, y), vectores como v(a, b)."
+      "No usar notación de puntos o vectores sin aclarar el orden de las coordenadas; siempre explicitar que el primer número corresponde al eje x y el segundo al eje y.",
+      "Evitar contextos donde los ejes estén rotulados con letras no estándar (por ejemplo, N, S, E, O) sin aclarar explícitamente qué sentido representa el eje x y cuál el eje y.",
+      "No mezclar en el mismo ítem direcciones tipo norte/sur/este/oeste con ejes cartesianos sin establecer claramente la correspondencia (ejemplo: este = x positivo, norte = y positivo).",
+      "Evitar figuras donde la escala de los ejes no sea uniforme o no esté indicada; usar siempre cuadriculado regular o marcar unidades.",
+      "No presentar el vector de traslación solo como una flecha en el plano si su origen o su sentido pueden ser interpretados de más de una manera; indicar siempre con flechas de dirección clara o con componentes numéricas.",
+      "Evitar que el punto P y el punto P' sean visualmente indistinguibles en el gráfico (colores o marcas diferentes, etiquetas claras).",
+      "No usar la misma letra para punto y vector (por ejemplo, A y →A) que pueda confundir el rol de cada uno; preferir notaciones distintas (P, Q para puntos; v, u para vectores).",
+      "Evitar textos donde la secuencia de desplazamientos pueda confundirse con la ubicación de origen; explicar con lenguaje directo como 'desde el punto P se aplica el vector v(a, b)'."
     ],
     "error_families": [
       {
-        "name": "Intercambio_de_componentes",
-        "description": "El estudiante confunde el orden de las componentes del vector de traslación, aplicando (b, a) en lugar de (a, b), lo que produce un desplazamiento equivocado en los ejes.",
-        "how_to_address": "Incluir ítems que fuercen a distinguir entre cambio horizontal y vertical (por ejemplo, donde a ≠ b) y explicitar en el enunciado qué componente corresponde a cada eje. Usar lenguaje como 'a unidades en el eje x y b unidades en el eje y' para reforzar la asociación."
+        "name": "signos_equivocados",
+        "description": "El estudiante suma donde debe restar o viceversa, especialmente al trabajar con la operación inversa (encontrar P a partir de P' y v) o cuando hay componentes negativas.",
+        "how_to_address": "Incluir ítems que expliciten los pasos intermedios (por ejemplo, escribir las igualdades x' = x + a, x = x' - a) y distractores que contrasten claramente errores de signo. Usar contextos gráficos donde se vea el sentido del desplazamiento para alinear el cálculo con la visualización."
       },
       {
-        "name": "Suma_en_eje_equivocado",
-        "description": "El estudiante suma la componente horizontal del vector a la coordenada y y la vertical a la coordenada x, cruzando las componentes.",
-        "how_to_address": "Diseñar preguntas que pidan mostrar pasos intermedios (aunque la PAES no los califique) en material de apoyo y ejercicios de práctica, enfatizando la estructura (x + a, y + b). Incluir distractores que representen específicamente este error para visibilizarlo en los resultados."
+        "name": "componentes_invertidas",
+        "description": "El estudiante intercambia las componentes del vector y aplica a como desplazamiento vertical y b como desplazamiento horizontal.",
+        "how_to_address": "Diseñar preguntas donde las componentes sean muy distintas (por ejemplo, (1, 5) o (2, -4)) y los distractores incluyan el resultado de intercambiarlas. Reforzar en enunciados y gráficos la idea de 'a a lo largo del eje x' y 'b a lo largo del eje y'."
       },
       {
-        "name": "Signos_ignorados",
-        "description": "Se ignoran o se cambian los signos de las componentes del vector o de las coordenadas, tratando todos los valores como positivos o confundiendo 'hacia la izquierda/abajo' con valores positivos.",
-        "how_to_address": "Usar enunciados que expliquen el sentido asociado a los signos (por ejemplo, '−3 en la componente horizontal significa 3 unidades a la izquierda'). Incluir comparaciones entre dos traslaciones con signos opuestos para reforzar el significado del signo."
+        "name": "confundir_vector_y_punto_imagen",
+        "description": "El estudiante interpreta el vector de traslación como la nueva ubicación del punto, respondiendo P' = v en lugar de P' = P + v.",
+        "how_to_address": "Presentar ítems donde el vector y el punto inicial tengan valores distintos y mostrar en el gráfico que el vector es un desplazamiento, no una ubicación. Incorporar alternativas donde P' coincide con v para detectar este error y luego trabajar la diferencia entre 'desde' (P) y 'hacia' (P')."
       },
       {
-        "name": "Operacion_inversa_mal_aplicada",
-        "description": "Al buscar el punto original P a partir de P' y v, el estudiante vuelve a sumar el vector en lugar de restarlo, o resta en el orden equivocado.",
-        "how_to_address": "Plantear ítems que alternen explícitamente 'de P a P'' y 'de P' a P' para destacar que se trata de operaciones inversas (sumar y restar). En material de preparación, representar ambas situaciones en la recta numérica y en el plano para reforzar la idea de 'deshacer' la traslación."
+        "name": "ignorancia_de_la_operacion_inversa",
+        "description": "Cuando se conoce P' y v, el estudiante vuelve a sumar las componentes en lugar de restarlas, o intenta con prueba y error.",
+        "how_to_address": "Incluir problemas que contrasten explícitamente los dos casos (hallar P' y hallar P) en el mismo contexto, subrayando en el enunciado 'imagen' vs 'punto original'. Proponer distractores provenientes de aplicar la operación directa en lugar de la inversa."
       },
       {
-        "name": "Confusion_vector_punto",
-        "description": "El estudiante trata el vector de traslación como si fuera simplemente el punto final de un segmento, sin entender que representa un desplazamiento aplicable a cualquier punto.",
-        "how_to_address": "Incluir situaciones donde se aplica el mismo vector a distintos puntos y se comparan las imágenes, para resaltar que el vector no está 'pegado' a un punto específico. En gráficos, mostrar el vector en posición estándar (desde el origen) y también aplicado a P."
+        "name": "mala_lectura_de_coordenadas_en_el_grafico",
+        "description": "El estudiante lee mal las coordenadas desde un plano o tablero (se equivoca en el eje, cuenta cuadros de manera incorrecta, olvida el origen).",
+        "how_to_address": "Usar gráficos con ejes claramente marcados, cuadrículas visibles y puntos alejados del origen. Incluir ítems donde solo una de las coordenadas es razonable para detectar errores en la otra, y distractores que representen desplazamientos contados con un cuadro de más o de menos."
       },
       {
-        "name": "Lectura_incorrecta_de_coordenadas_en_grafico",
-        "description": "El estudiante lee mal las coordenadas de P o P' desde el dibujo, ya sea por contar mal las unidades o por no identificar bien la intersección con la grilla.",
-        "how_to_address": "Asegurar que los gráficos de los ítems tengan grilla clara y marcas de unidades visibles. En ejercicios de entrenamiento, pedir explícitamente que se escriban las coordenadas de los puntos marcados antes de aplicar la traslación."
-      },
-      {
-        "name": "Uso_de_modulo_en_lugar_de_componentes",
-        "description": "El estudiante cree que debe usar la longitud del vector (su módulo) en lugar de sus componentes, o mezcla la idea de distancia con la de traslación por componentes.",
-        "how_to_address": "Evitar en este átomo mencionar longitudes de vectores o distancias. En materiales de apoyo, contrastar ejemplos donde dos vectores tienen el mismo módulo pero distintas componentes, destacando que la traslación depende de las componentes, no solo de la longitud."
+        "name": "solo_considera_una_componente",
+        "description": "El estudiante aplica correctamente una componente del vector (por ejemplo, la horizontal) pero olvida o deja igual la otra componente.",
+        "how_to_address": "Plantear ítems en que ambas componentes del vector sean diferentes de cero y generen cambios visibles en el gráfico, de modo que olvidar una componente produzca un resultado gráfico obviamente incorrecto. Incluir distractores que reflejen este error para diagnosticarlo."
       }
     ],
     "future_targets": [
-      "Aplicación de traslaciones a figuras geométricas completas (segmentos, triángulos, polígonos) en el plano cartesiano.",
-      "Composición de transformaciones isométricas (traslaciones combinadas con rotaciones o simetrías).",
-      "Trabajar con vectores en el plano de forma más general: suma y resta de vectores, interpretación de vectores como desplazamientos entre puntos.",
-      "Estudio de funciones trasladadas en el plano (por ejemplo, gráficos de y = f(x - a) + b como traslaciones de y = f(x)).",
-      "Análisis de propiedades de las traslaciones como isometrías (conservación de distancias, paralelismo y forma).",
-      "Introducción informal a la representación matricial de transformaciones en el plano (traslación como transformación afín)."
+      "Aplicar traslaciones a figuras completas (segmentos, polígonos) manteniendo paralelismo y distancias.",
+      "Componer traslaciones con otras transformaciones isométricas (rotaciones, simetrías) en el plano.",
+      "Representar traslaciones mediante matrices de transformación y operar con ellas.",
+      "Analizar invariantes de la traslación (distancias, ángulos, paralelismo) en problemas geométricos más complejos.",
+      "Modelar movimientos en contextos físicos o de navegación usando vectores de desplazamiento en el plano.",
+      "Trabajar con vectores en R^2 en contextos algebraicos más avanzados (suma de vectores, multiplicación por escalar, combinación lineal).",
+      "Generalizar la idea de traslación a cambios de variable en funciones (por ejemplo, f(x - a), f(x) + b como desplazamientos de gráficas)."
     ],
     "representation_variants": [
-      "Representación puramente algebraica: se entregan P(x, y) y v(a, b) y se pide calcular P' o P.",
-      "Representación verbal: se describe la traslación en palabras ('mover 3 unidades a la derecha y 2 hacia abajo') y el estudiante debe traducirla a un vector y luego a las nuevas coordenadas.",
-      "Representación gráfica simple en plano cartesiano: se marca P y se dibuja o indica el vector de traslación; se pide determinar P' o verificar si un punto dado corresponde a la imagen.",
-      "Uso de tablas de correspondencia entre puntos y sus imágenes (por ejemplo, columnas P y P') para reforzar la idea de la misma traslación aplicada a varios puntos.",
-      "Representación de vectores tanto en posición estándar (desde el origen) como 'anclados' en P, destacando que la suma P + v es independiente del punto de origen gráfico del vector.",
-      "Contextos geométricos sencillos (por ejemplo, traslado del vértice de un rectángulo) pero manteniendo el foco en el cálculo de coordenadas de UN punto."
+      "Notación simbólica pura con puntos escritos como P(x, y) y vectores como v(a, b).",
+      "Plano cartesiano cuadriculado con puntos y vectores dibujados como flechas desde distintos orígenes.",
+      "Tableros o rejillas (por ejemplo, ajedrez, mapas urbanos idealizados) donde filas y columnas se relacionen con ejes cartesianos.",
+      "Descripción verbal del vector de traslación usando términos de dirección y magnitud (por ejemplo, '3 unidades hacia la derecha y 2 hacia arriba') que el estudiante debe traducir a (a, b).",
+      "Uso de letras para las coordenadas (por ejemplo, P(x, y) y vector v(h, k)) para enfatizar la regla general de traslación.",
+      "Representación de la traslación mediante pares ordenados inicial-final, permitiendo inferir el vector como diferencia entre coordenadas."
     ],
     "numbers_profiles": [
       "small_integers",
-      "signed_integers",
+      "medium_integers",
       "simple_fractions",
       "simple_decimals"
     ],

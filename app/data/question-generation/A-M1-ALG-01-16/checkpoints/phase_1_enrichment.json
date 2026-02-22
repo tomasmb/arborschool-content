@@ -3,126 +3,123 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Simplificar fracciones algebraicas donde el paso clave es factorizar completamente numerador y/o denominador y luego cancelar factores comunes.",
-        "Uso de factorizaciones básicas: factor común, diferencia de cuadrados, trinomio cuadrado perfecto y, ocasionalmente, trinomios cuadráticos simples (con coeficiente principal 1 o pequeño).",
-        "Expresiones racionales simples con una sola fracción (no suma ni resta de fracciones algebraicas entre sí).",
-        "Identificación y cancelación de factores idénticos (mismo factor multiplicativo completo, incluyendo signos).",
-        "Manejo explícito de restricciones de dominio cuando se pida justificar la simplificación o comparar expresiones (ej.: x ≠ -3)."
+        "Simplificar fracciones algebraicas donde basta factorizar numerador y/o denominador y cancelar factores comunes.",
+        "Uso de factorizaciones básicas: factor común, diferencia de cuadrados, trinomio cuadrado perfecto y algunos trinomios simples de la forma x^2 + bx + c.",
+        "Simplificación de fracciones algebraicas que incluyen constantes numéricas factorizables (por ejemplo, 2x + 4, 6x^2 - 3x).",
+        "Reconocer cuándo una expresión ya está simplificada porque no tiene factores algebraicos comunes cancelables.",
+        "Relacionar expresiones equivalentes a través de la expansión y la factorización sencilla (por ejemplo, reescribir b - 3(b - 1) en forma simplificada)."
       ],
       "out_of_scope": [
-        "Suma, resta, multiplicación o división entre dos o más fracciones algebraicas distintas.",
-        "Racionalización de denominadores o expresiones con raíces en el numerador/denominador.",
-        "Ecuaciones racionales (resolver para x) y desigualdades racionales.",
-        "Simplificaciones que requieren factorizaciones avanzadas (polinomios de grado mayor a 3 con factorización no evidente, métodos como agrupación compleja o Ruffini no directos).",
-        "Uso de gráficos de funciones racionales para interpretar asíntotas, intersecciones, etc.",
-        "Contextos verbales extensos donde la parte algebraica no sea claramente una simplificación de expresión racional.",
-        "Casos que involucren valor absoluto, funciones por tramos u operaciones con matrices."
+        "Operaciones entre fracciones algebraicas (suma, resta, producto, división) antes de simplificar.",
+        "Simplificación de expresiones racionales con raíces, radicales o potencias fraccionarias en numerador o denominador.",
+        "Expresiones con polinomios de grado mayor a 3 en numerador o denominador con factorización no evidente (por ejemplo, métodos avanzados o con coeficientes complejos).",
+        "Simplificación de expresiones racionales definidas por partes o con valor absoluto.",
+        "Análisis de dominio, asíntotas u otros aspectos funcionales de las expresiones racionales.",
+        "Resolución de ecuaciones o inecuaciones que involucren fracciones algebraicas; solo se simplifica la expresión, no se resuelve."
       ],
       "prerequisites": [
-        "A-M1-ALG-01-01: Manejo de operaciones básicas con monomios y polinomios (suma, resta, producto).",
-        "A-M1-ALG-01-05: Reconocimiento de factor común y extracción de factor común numérico y literal.",
-        "A-M1-ALG-01-08: Productos notables básicos (cuadrado de binomio, producto de suma por diferencia).",
-        "A-M1-ALG-01-10: Factorización de trinomios cuadráticos simples (x^2 + bx + c con coeficientes enteros).",
-        "A-M1-ALG-01-14: Interpretación de una fracción algebraica como cociente de polinomios.",
-        "A-M1-NT-01-02: Manejo de fracciones numéricas simples y cancelación de factores comunes numéricos."
+        "A-M1-ALG-01-05: Manejo de operaciones básicas con polinomios (suma, resta, multiplicación y ordenación de términos semejantes).",
+        "A-M1-ALG-01-10: Factorización por factor común numérico y literal.",
+        "A-M1-ALG-01-11: Factorización de diferencia de cuadrados.",
+        "A-M1-ALG-01-12: Factorización de trinomios cuadráticos simples x^2 + bx + c.",
+        "A-M1-ALG-01-13: Uso correcto de paréntesis y propiedad distributiva, incluyendo signos negativos.",
+        "A-M1-NUM-01-03: Manejo de fracciones numéricas simples y cancelación de factores numéricos."
       ],
       "common_traps": [
-        "Cancelar términos en vez de factores (por ejemplo, cancelar x en x^2 + 3x sobre x cuando no se ha factorizado como x(x + 3)).",
-        "Cancelar expresiones parcialmente iguales ignorando signos, como simplificar (x - 3)/(3 - x) a 1 en lugar de -1.",
-        "No factorizar completamente el numerador o el denominador y detenerse en una simplificación incompleta.",
-        "Olvidar que solo se pueden cancelar factores multiplicativos, no sumandos de un binomio o polinomio.",
-        "Perder el control del dominio al cancelar factores que pueden ser cero, especialmente si el ítem pide comparar expresiones equivalentes.",
-        "Errores en la factorización base (por ejemplo, factorizar x^2 - 9 como (x - 9)(x + 1)).",
-        "Cancelar el exponente en lugar de la base (por ejemplo, en x^2/x creer que el resultado es x^0 o 1 por confusión con reglas de potencias)."
+        "Cancelar términos en lugar de factores (por ejemplo, simplificar incorrectamente (x^2 + 3x) / x a x + 3 en lugar de factorizar primero).",
+        "Olvidar factorizar completamente el numerador y/o denominador antes de cancelar, quedando con una expresión no totalmente simplificada.",
+        "Cambiar la expresión al expandir pero no volver a factorizar, perdiendo de vista la simplificación posible.",
+        "Error en signos al factorizar con factor común negativo o al aplicar la distributiva (especialmente con expresiones como b - 3(b - 1)).",
+        "Confundir suma/resta con multiplicación y creer que se puede cancelar elementos ‘que se repiten’ sin que sean factores comunes.",
+        "Omitir restricciones implícitas del denominador (aunque no se evalúen formalmente, evitar ítems donde dos alternativas solo se distinguen por el dominio)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Expresiones con un solo tipo de factorización evidente (factor común numérico o literal) ya sea en el numerador o en el denominador, pero no en ambos.",
-        "Polinomios de grado máximo 2 con coeficientes pequeños (entre -5 y 5) y sin signos mixtos complejos.",
-        "Casos donde el alumno puede reconocer a simple vista el factor común sin tener que reorganizar términos.",
-        "Items donde la cancelación se realiza solo con factores numéricos (por ejemplo, 2, 3, 5) y la parte literal queda intacta.",
-        "No se exige explicitar o razonar sobre restricciones de dominio; basta la expresión simplificada."
+        "Expresiones con un solo tipo de factorización directa (por ejemplo, solo factor común numérico o literal).",
+        "Numerador o denominador con polinomios de grado máximo 2, con coeficientes pequeños y positivos.",
+        "Casos donde solo uno de los dos (numerador o denominador) requiere factorización para simplificar.",
+        "Ítems donde la cancelación evidente se ve casi de inmediato después de la factorización (por ejemplo, (2x + 4) / 2).",
+        "Enunciados muy cortos, sin contexto verbal, que piden ‘¿Cuál expresión es equivalente a…?’."
       ],
       "medium": [
-        "Expresiones donde se requiere factorizar tanto el numerador como el denominador para poder simplificar.",
-        "Uso combinado de dos tipos de factorización simples (por ejemplo, factor común y luego diferencia de cuadrados).",
-        "Trinomios cuadráticos sencillos con coeficiente principal 1 o 2, donde los factores se obtienen con un par de pruebas simples.",
-        "Presencia de signos negativos que obligan a reordenar o factorizar -1 para evidenciar factores comunes (por ejemplo, (3 - x) y (x - 3)).",
-        "Ítems que plantean la simplificación en un contexto simbólico algo más largo (por ejemplo, incluir parámetros a, b pero con estructura clara)."
+        "Expresiones donde se requiere factorizar tanto el numerador como el denominador antes de cancelar.",
+        "Uso combinado de dos técnicas de factorización (por ejemplo, factor común y diferencia de cuadrados).",
+        "Presencia de signos negativos que requieran cuidado (por ejemplo, -(x - 3), o factor común negativo).",
+        "Coeficientes enteros algo mayores o mixtos (positivos y negativos), pero con factorización aún evidente.",
+        "Ítems donde más de una alternativa parece plausible si el estudiante comete un error típico (p. ej., cancela términos y no factores)."
       ],
       "hard": [
-        "Expresiones racionales donde la factorización no es obvia a primera vista y requiere reordenar términos o agrupar para luego aplicar factorización estándar.",
-        "Trinomios cuadráticos con coeficiente principal distinto de 1 que requieren mayor cuidado en la búsqueda de factores (por ejemplo, 2x^2 + 5x - 3).",
-        "Casos con varias oportunidades de simplificación encadenada (primero factorizar, luego cancelar, luego volver a factorizar un factor restante).",
-        "Presencia deliberada de distractores estructurales, como términos comunes que no son factores completos (para forzar a distinguir entre término y factor).",
-        "Ítems que incluyen la discusión del dominio o de la equivalencia de dos expresiones dadas ya simplificadas, donde la respuesta correcta implica reconocer que no se puede cancelar si no se ha factorizado o que hay cambios en el dominio.",
-        "Uso de parámetros simbólicos (a, b, k) que obligan a razonar en forma general sobre factores comunes, manteniendo la estructura multiplicativa correcta."
+        "Expresiones con más de dos factores en numerador y/o denominador, que requieren una secuencia de factorizaciones (por ejemplo, dos pasos encadenados).",
+        "Trinomios cuadráticos donde el estudiante debe identificar correctamente pares de números que multiplican y suman a los coeficientes dados, con signos no triviales.",
+        "Casos donde la simplificación implica reordenar términos o agrupar antes de factorizar, aunque siga siendo un caso ‘directo’.",
+        "Alternativas diseñadas para atrapar errores más sutiles (signos, cancelación indebida de términos, factorización mal hecha) sin que la respuesta correcta sea visualmente obvia.",
+        "Ítems en contexto verbal donde el estudiante deba reconocer una expresión equivalente a otra ya simplificada, obligándolo a realizar la factorización ‘mentalmente’."
       ]
     },
     "ambiguity_avoid": [
-      "No usar notación fraccionaria ambigua en texto plano: siempre agrupar claramente numerador y denominador, por ejemplo, (x^2 - 9)/(x + 3) y no x^2 - 9/x + 3.",
-      "Evitar expresiones donde no se distingan bien sumas y productos, usar paréntesis suficientes para indicar factores completos.",
-      "No mezclar en el mismo ítem demasiados tipos de factorización distintos que hagan dudoso cuál es el camino esperado (mantener 1–2 técnicas por expresión).",
-      "Evitar que la alternativa correcta sea afectada por cambios de dominio que no se explicitan en el enunciado; si el dominio importa, declararlo o preguntar explícitamente por él.",
-      "No formular distractores que impliquen simplificaciones inválidas pero poco distinguibles tipográficamente (por ejemplo, cancelar partes de un binomio por simple tachado); la diferencia entre factor y término debe ser visualmente clara.",
-      "Evitar letras de parámetros que puedan confundirse con números (p, q, g) cuando se usan junto a coeficientes numéricos pequeños; privilegiar a, b, k, m, n.",
-      "No usar notación de división con slash en línea cuando la fracción incluye más de un término por lado; preferir formato de fracción estructurada o paréntesis obligatorios.",
-      "Evitar contextos verbales donde la pregunta pueda entenderse como cálculo numérico en lugar de simplificación simbólica; explicitar que se debe simplificar la expresión algebraica."
+      "No proponer alternativas donde dos expresiones sean algebraicamente equivalentes pero difieran solo en el dominio (por ejemplo, expresiones con denominadores ya simplificados pero diferentes).",
+      "Evitar expresiones donde la simplificación dependa de una convención no explícita sobre el signo del denominador (por ejemplo, - (x - 1) / - (x - 1)).",
+      "No usar formas ambiguas de escritura de fracciones (por ejemplo, a + b / c en una sola línea sin paréntesis, cuando se necesita (a + b) / c).",
+      "Evitar alternativas que solo difieran por el orden de factores o términos cuando el orden no sea relevante, especialmente si eso no se explicita en el enunciado.",
+      "No combinar en un mismo ítem la simplificación de la expresión y la resolución de una ecuación; eso mezcla objetivos de distintos átomos.",
+      "Evitar expresiones demasiado largas donde la lectura de paréntesis y signos pueda generar confusión gráfica más que dificultad matemática.",
+      "No usar letras que puedan confundirse entre sí o con números (por ejemplo, l, O) en las variables de las expresiones."
     ],
     "error_families": [
       {
-        "name": "Cancelar_terminos_no_factores",
-        "description": "El estudiante cancela partes de sumas o restas como si fueran factores, por ejemplo simplificar (x^2 + 3x)/x a x^2 + 3 en vez de x + 3.",
-        "how_to_address": "Insistir en la diferencia entre término y factor. Trabajar con ejemplos en los que primero se escribe el polinomio factorizado (x^2 + 3x = x(x + 3)) y luego se ve recién ahí la cancelación. Usar contraejemplos numéricos para mostrar que cancelar sobre sumas cambia el valor de la expresión."
+        "name": "Cancelación de términos en vez de factores",
+        "description": "El estudiante elimina términos que se repiten en numerador y denominador sin factorizar primero, como pasar de (x^2 + 3x) / x a x + 3 cancelando un solo x.",
+        "how_to_address": "Presentar explícitamente la diferencia entre ‘término’ y ‘factor’, trabajando ejemplos paralelos donde solo se puede cancelar tras factorizar por factor común. Reforzar la idea de escribir la expresión como producto antes de cancelar."
       },
       {
-        "name": "Factorizacion_incompleta",
-        "description": "Se realiza una parte de la factorización (por ejemplo, se extrae factor común numérico) pero se omite otra posible (como diferencia de cuadrados), dejando la expresión sin simplificar al máximo.",
-        "how_to_address": "Modelar sistemáticamente la revisión después del primer paso: preguntar siempre si cada polinomio resultante puede factorizarse más. Proponer ejercicios donde solo al factorizar completamente aparece un factor común claro a cancelar."
+        "name": "Factorización incompleta",
+        "description": "El estudiante factoriza solo parcialmente el numerador o el denominador, dejando factores comunes sin reconocer (por ejemplo, factoriza 2x^2 + 4x como 2x(x + 2), pero no factoriza abajo 4x como 4x).",
+        "how_to_address": "Insistir en revisar si cada polinomio se puede factorizar aún más. Proponer ejercicios donde, después de una primera factorización, se siga preguntando ‘¿se puede seguir factorizando?’. Trabajar con checklist: factor común numérico, factor común literal, patrones notables."
       },
       {
-        "name": "Uso_incorrecto_de_signos",
-        "description": "Errores al manejar signos, especialmente al relacionar (x - a) y (a - x), lo que lleva a simplificaciones como (x - 3)/(3 - x) = 1 en vez de -1.",
-        "how_to_address": "Trabajar con identidades simples como (a - b) = -(b - a) y aplicarlas explícitamente en contextos de fracciones. Hacer que el estudiantado reescriba expresiones como (3 - x) = -(x - 3) antes de intentar cancelar factores."
+        "name": "Errores de signo en factorización y distributiva",
+        "description": "Problemas al sacar factor común negativo o al distribuir signos, lo que produce factores erróneos y simplificaciones incorrectas (por ejemplo, b - 3(b - 1) mal distribuido).",
+        "how_to_address": "Proponer actividades centradas solo en el manejo de signos y la propiedad distributiva, usando ejemplos simbólicos simples antes de combinarlos con fracciones algebraicas. Promover la verificación expandiendo de nuevo el resultado factorizado para comprobar equivalencia."
       },
       {
-        "name": "Olvido_de_restricciones_de_dominio",
-        "description": "Al cancelar un factor que puede ser cero, se asume que la expresión simplificada es válida para todos los reales, sin considerar que el denominador original imponía restricciones.",
-        "how_to_address": "Incorporar deliberadamente preguntas donde se pida el dominio antes o después de simplificar. Enfatizar que si un factor estaba en el denominador, los valores que lo anulan siempre deben excluirse, aun cuando se cancelen algebraicamente."
+        "name": "Confusión de técnicas de factorización",
+        "description": "El estudiante aplica un método de factorización inadecuado (por ejemplo, intenta diferencia de cuadrados donde no corresponde, o fuerza un trinomio cuadrado perfecto que no lo es).",
+        "how_to_address": "Clasificar explícitamente tipos de polinomios con sus técnicas asociadas (dos términos → potencialmente diferencia de cuadrados; tres términos grado 2 → trinomio tipo x^2 + bx + c; varios términos → factor común o agrupación). Resolver primero ejercicios de ‘identificar la técnica’ sin llegar a la simplificación final."
       },
       {
-        "name": "Confusion_con_reglas_de_potencias",
-        "description": "Al simplificar expresiones como x^2/x el estudiante aplica mal las reglas de exponentes (por ejemplo, obtiene x^0 o 1) o ignora la condición x ≠ 0.",
-        "how_to_address": "Revisar la regla a^m/a^n = a^(m-n) con ejemplos numéricos concretos y luego pasar a la forma factorizada x^2/x = (x·x)/x para visualizar la cancelación de factores. Reforzar que la base debe ser distinta de cero."
+        "name": "Omisión de factores numéricos",
+        "description": "El estudiante se enfoca en las letras y olvida que también se pueden cancelar factores numéricos, dejando expresiones no totalmente simplificadas.",
+        "how_to_address": "Integrar en los ejemplos la simplificación numérica junto con la literal, mostrando que 2x / 4x se simplifica tanto en la parte numérica como en la literal. Usar ejemplos donde la única simplificación posible sea numérica para forzar la atención en ese aspecto."
       },
       {
-        "name": "Eleccion_erronea_de_pares_en_trinomios",
-        "description": "En trinomios cuadráticos se eligen pares de números incorrectos para factorizar (por ejemplo, factorizar x^2 + 5x + 6 como (x + 1)(x + 5) en vez de (x + 2)(x + 3)).",
-        "how_to_address": "Practicar la verificación sistemática de la factorización multiplicando los binomios propuestos antes de seguir con la cancelación. Destacar que una factorización errónea arrastra el error a toda la simplificación."
+        "name": "Rechazo de expresiones equivalentes pero de forma distinta",
+        "description": "El estudiante no reconoce que expresiones como -(x - 3) y 3 - x son equivalentes, lo que dificulta identificar alternativas correctas que están escritas en una forma distinta.",
+        "how_to_address": "Trabajar pares de expresiones equivalentes con distintos formatos de signos y órdenes de términos, pidiendo justificar la equivalencia mediante factorización o distributiva. Destacar que la forma puede cambiar, pero el valor de la expresión es el mismo."
       }
     ],
     "future_targets": [
-      "Simplificación de expresiones racionales más complejas que involucren suma y resta de fracciones algebraicas con distintos denominadores.",
-      "Resolución de ecuaciones racionales donde es necesario simplificar previamente para despejar la variable.",
-      "Análisis de funciones racionales (dominio, asíntotas, intersecciones), donde la cancelación de factores afecta la forma de la gráfica.",
-      "Estudio de límites de funciones racionales en contextos de cálculo, donde la cancelación de factores ayuda a resolver indeterminaciones.",
-      "Modelación de situaciones reales mediante funciones racionales y su simplificación para interpretar parámetros.",
-      "Manipulación simbólica en álgebra superior (por ejemplo, simplificación de expresiones en identidades algebraicas y trigonométricas)."
+      "Operaciones con fracciones algebraicas (suma, resta, multiplicación y división) usando simplificación antes y después de operar.",
+      "Resolución de ecuaciones racionales donde la simplificación de fracciones algebraicas reduce la complejidad del problema.",
+      "Análisis de funciones racionales simples (dominio, intersecciones, comportamiento), donde se requiere simplificar para interpretar.",
+      "Estudio de inequaciones que incluyen expresiones racionales, donde la simplificación previa es clave para el análisis de signos.",
+      "Aplicación de modelos algebraicos a problemas de contexto donde aparecen razones de polinomios que se pueden simplificar.",
+      "Manejo avanzado de factorización en contextos más complejos (por ejemplo, para resolver ecuaciones cuadráticas y superiores)."
     ],
     "representation_variants": [
-      "Expresiones puramente simbólicas en forma de fracción clásica con numerador y denominador polinómicos.",
-      "Expresiones en notación lineal usando slash, siempre con paréntesis claros, por ejemplo (2x^2 - 8)/(2x).",
-      "Enunciados breves en lenguaje natural que describen la expresión a simplificar (por ejemplo, 'el cociente entre...'), seguidos de la expresión algebraica explícita.",
-      "Formas equivalentes donde primero se presenta una expresión parcialmente factorada y se pide completar la simplificación.",
-      "Comparación de dos expresiones racionales dadas y elección de la que corresponde a la versión simplificada correcta.",
-      "Uso de parámetros (a, b, k) en lugar de algunos coeficientes numéricos para enfatizar la estructura de factorización y cancelación."
+      "Expresiones puramente simbólicas presentadas en forma de fracción, con polinomios en numerador y denominador.",
+      "Enunciados verbales que describen una expresión y piden elegir la forma simplificada equivalente en el listado de alternativas.",
+      "Expresiones dadas inicialmente expandidas que requieren primero agrupar o reordenar términos antes de factorizar y simplificar.",
+      "Ítems que presentan varias expresiones aparentemente distintas y piden identificar cuál es equivalente a una dada tras simplificar.",
+      "Uso de paréntesis y corchetes para expresar claramente la estructura de la fracción y forzar al estudiante a aplicar distributiva y factorización en el orden correcto."
     ],
     "numbers_profiles": [
       "small_integers",
-      "signed_integers",
-      "simple_rationals",
-      "symbolic_parameters"
+      "medium_integers",
+      "integer_coefficients_mixed_signs",
+      "simple_fractions",
+      "monomials_with_coefficients",
+      "binomials_and_trinomials_degree_2"
     ],
     "required_image_types": []
   }

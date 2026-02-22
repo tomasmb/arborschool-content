@@ -3,125 +3,124 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Ecuaciones cuadráticas incompletas estrictamente de la forma ax^2 + bx = 0, con a y b reales y a ≠ 0.",
-        "Identificación y extracción de factor común máximo entre los términos ax^2 y bx (al menos factor x).",
-        "Aplicación explícita de la propiedad del producto nulo para obtener las soluciones: si x(ax + b) = 0, entonces x = 0 o ax + b = 0.",
-        "Determinación del conjunto solución en R, incluyendo el caso de soluciones iguales (cuando corresponde) aunque en este átomo típicamente habrá dos raíces, una de ellas 0.",
-        "Uso de notación de solución en forma de conjunto {x1; x2} o lista ordenada de soluciones."
+        "Ecuaciones cuadráticas incompletas de la forma ax² + bx = 0, con a y b reales y a ≠ 0",
+        "Identificación del factor común máximo entre ax² y bx (al menos x)",
+        "Extracción de factor común para reescribir la ecuación como producto: x(ax + b) = 0 o kx(x + c) = 0",
+        "Aplicación explícita de la propiedad del producto nulo para obtener dos ecuaciones lineales",
+        "Determinación del conjunto solución en ℝ (dos soluciones reales, iguales o distintas)",
+        "Chequeo mental o algorítmico sustituyendo las soluciones en la ecuación original"
       ],
       "out_of_scope": [
-        "Ecuaciones cuadráticas completas de la forma ax^2 + bx + c = 0 con término independiente distinto de 0.",
-        "Ecuaciones cuadráticas incompletas de la forma ax^2 + c = 0 (sin término lineal).",
-        "Resolución de ecuaciones cuadráticas por fórmula general, completación de cuadrado u otros métodos que no sean factor común.",
-        "Ecuaciones de grado mayor a 2 o productos de más de dos factores distintos.",
-        "Contextos que requieran interpretación de gráficos de funciones cuadráticas o análisis de vértice, concavidad, etc.",
-        "Resolución de inecuaciones cuadráticas o sistemas de ecuaciones.",
-        "Coeficientes complejos o soluciones en C (solo se trabaja en R).",
-        "Problemas de modelamiento donde la dificultad principal sea traducir el contexto a la ecuación (ese es otro átomo); aquí la habilidad central es la manipulación algebraica una vez dada o casi dada la forma ax^2 + bx = 0."
+        "Ecuaciones cuadráticas completas con término independiente (ax² + bx + c = 0, c ≠ 0)",
+        "Resolución por fórmula general o completación de cuadrados",
+        "Ecuaciones factorizadas que no provienen de una forma ax² + bx = 0 (por ejemplo, (x+1)(x-3)=0)",
+        "Ecuaciones de grado mayor que 2 o con potencias fraccionarias/negativas",
+        "Análisis gráfico de la parábola asociada a la ecuación",
+        "Resolución de inequaciones cuadráticas",
+        "Contextualizaciones que requieran modelar la situación; aquí se asume que la ecuación ya está dada"
       ],
       "prerequisites": [
-        "A-M1-ALG-02-01: Manejo de expresiones algebraicas con potencias de variable (x, x^2, etc.).",
-        "A-M1-ALG-03-01: Identificación y extracción de factor común en expresiones polinomiales simples (sin igualdades).",
-        "A-M1-ALG-05-01: Comprensión básica de ecuación e idea de solución como valor que hace verdadera la igualdad.",
-        "A-M1-NUM-01-01: Operaciones con números reales (incluyendo enteros, fracciones y decimales), especialmente suma, resta, multiplicación y división por números no nulos."
+        "A-M1-ALG-01-01: Manejo de expresiones algebraicas básicas y operaciones con polinomios",
+        "A-M1-ALG-02-01: Identificación y extracción de factor común en expresiones del tipo ax², bx",
+        "A-M1-ALG-03-01: Resolución de ecuaciones lineales simples en una variable",
+        "A-M1-NUM-01-01: Operaciones con números enteros y racionales (incluyendo fracciones y negativos)"
       ],
       "common_traps": [
-        "Olvidar factorizar por x y, en cambio, intentar despejar x directamente dividiendo por x, perdiendo la solución x = 0.",
-        "Dividir toda la ecuación por x cuando x es desconocida, asumiendo implícitamente x ≠ 0, y obteniendo solo una de las soluciones.",
-        "No sacar el factor común máximo y dejar un factor residual innecesario (por ejemplo, factorizar solo x en 6x^2 - 12x en lugar de 6x), lo que complica las operaciones posteriores.",
-        "Signos incorrectos al factorizar: errores al extraer factor común cuando alguno de los coeficientes es negativo.",
-        "Confundir el procedimiento con el de ecuaciones lineales y resolver solo ax + b = 0, omitiendo la solución x = 0.",
-        "Interpretar mal el cero en la ecuación (por ejemplo, transformar ax^2 + bx = 0 en ax^2 + bx = c con c ≠ 0 por error de transposición de términos).",
-        "Olvidar aplicar la propiedad del producto nulo a ambos factores o escribir solo una de las igualdades (x = 0 o ax + b = 0).",
-        "Errores aritméticos al resolver la ecuación lineal resultante ax + b = 0 (cambio de signo o división incorrecta)."
+        "Incluir un término independiente inexistente al manipular la ecuación (por ejemplo, transformar ax² + bx = 0 en ax² + bx + c = 0 por error)",
+        "Olvidar extraer el factor x cuando sólo se identifica a como factor común (por ejemplo, sacar factor 3 en 3x² - 12x = 0 y terminar en 3(x² - 4x) = 0)",
+        "Aplicar la propiedad del producto nulo sobre una suma o sobre una expresión que no está completamente factorizada",
+        "Obtener sólo una de las dos soluciones (usualmente olvidar x = 0)",
+        "Perder o cambiar el signo de b al formar el binomio (por ejemplo, de bx a (x - b/a) cuando corresponde (x + b/a))",
+        "Dividir por x en lugar de factorizar, eliminando la solución x = 0 sin darse cuenta",
+        "Confundir el coeficiente a de la ecuación con el factor común extraído y generar factores incorrectos"
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Ecuaciones con coeficientes enteros pequeños, positivos, y con factor común evidente, por ejemplo, a y b múltiplos sencillos (2, 3, 4, 5, 10).",
-        "Formas donde el factor común máximo es directamente x o kx con k pequeño, sin necesidad de manejar signos negativos complicados.",
-        "Ítemes que guían el procedimiento casi paso a paso (por ejemplo, ya mostrando parcialmente la factorización y pidiendo completar o elegir el conjunto solución correcto).",
-        "Distractores que representen errores aritméticos simples, pero sin requerir mucha atención a signos ni fracciones.",
-        "Enunciados cortos, directamente algebraicos, sin contexto verbal extenso."
+        "Ecuaciones con coeficientes enteros pequeños y positivos, sin fracciones ni signos mezclados, por ejemplo con a y b múltiplos simples (2, 3, 4, 5)",
+        "Factor común evidente del tipo x o kx con k entero positivo, sin necesidad de simplificar fracciones",
+        "Estructura casi directa a x(x + c) = 0, con soluciones enteras pequeñas (entre -5 y 5)",
+        "Enunciados directos, sin contexto verbal extenso, que pidan explícitamente resolver ax² + bx = 0",
+        "Distractores que correspondan a errores muy básicos (por ejemplo, tomar sólo una raíz o cambiar un signo) pero sin pasos intermedios complicados"
       ],
       "medium": [
-        "Ecuaciones con coeficientes enteros que incluyen números negativos o mixtos (uno positivo y otro negativo), donde la extracción de factor común implica manejar signos con cuidado.",
-        "Factor común que incluye un número distinto de 1, por ejemplo, 6x^2 - 9x = 0 → 3x(2x - 3) = 0, requiriendo identificar el máximo factor común numérico.",
-        "Presencia de fracciones simples como coeficientes (por ejemplo, 1/2, -3/4) que obligan a manejar la factorización con racionales o, al menos, a resolver correctamente la ecuación lineal resultante.",
-        "Ítemes sin pasos intermedios sugeridos: el estudiante debe decidir espontáneamente factorizar por x y aplicar el producto nulo.",
-        "Distractores que reflejen errores conceptuales frecuentes, como perder la solución x = 0 o resolver mal ax + b = 0, no solo errores numéricos triviales."
+        "Ecuaciones con coeficientes enteros negativos o mezcla de signos (por ejemplo, ax² - bx = 0, -ax² + bx = 0)",
+        "Casos en que el factor común incluye un coeficiente distinto de 1 (por ejemplo, 6x² + 12x = 0 → 6x(x + 2) = 0)",
+        "Presencia de fracciones simples en a o b (por ejemplo, (1/2)x² - 3x = 0), que obliguen a manejar coeficientes racionales al factorizar",
+        "Contextos verbales breves donde la ecuación ya está escrita, pero se debe interpretar qué raíz tiene sentido en el contexto",
+        "Distractores que reflejen errores conceptuales frecuentes: eliminar el 0 como solución, factorizar mal el binomio, o dividir por x en lugar de factorizar"
       ],
       "hard": [
-        "Ecuaciones con coeficientes racionales menos evidentes (por ejemplo, 5/3, -7/2) o con números enteros relativamente grandes que dificultan identificar el máximo factor común.",
-        "Situaciones donde se presenta la ecuación en una forma que requiere un paso previo de ordenamiento o simplificación para reconocer la estructura ax^2 + bx = 0 (por ejemplo, x(3x - 6) = 0 que debe expandirse mentalmente o reconocerse como ya factorizada).",
-        "Problemas en contexto verbal donde el estudiante debe traducir correctamente a una ecuación de la forma ax^2 + bx = 0 y luego resolverla por factor común, siendo la parte central del ítem la resolución por producto nulo.",
-        "Ítems que incluyen alternativas de respuesta muy cercanas entre sí, donde algunos distractores corresponden a errores de dividir por x o a considerar solo una de las soluciones, requiriendo alta atención conceptual.",
-        "Casos en los que el máximo factor común es negativo (por ejemplo, -4x^2 + 8x = 0 → -4x(x - 2) = 0), obligando a manejar con precisión el signo global en la factorización y en la ecuación lineal resultante."
+        "Coeficientes racionales menos evidentes (por ejemplo, (3/4)x² - (5/2)x = 0) que requieran normalizar o manejar fracciones al extraer el factor común",
+        "Uso combinado de múltiplos y factores negativos, con necesidad de simplificación previa (por ejemplo, -8x² + 12x = 0)",
+        "Enunciados en los que se pide razonar sobre las soluciones (por ejemplo, comparar, contar o clasificar raíces) más que solo calcularlas",
+        "Ítems en que se presenta la ecuación en forma ligeramente desordenada o equivalente (por ejemplo, bx + ax² = 0, o se factoriza parcialmente y se debe completar el procedimiento correcto)",
+        "Distractores diseñados a partir de procedimientos incorrectos pero verosímiles (dividir por x, confundir a y b, aplicar mal la propiedad del producto nulo) que exigen comprensión profunda para ser descartados"
       ]
     },
     "ambiguity_avoid": [
-      "No usar notaciones inconsistentes para el conjunto solución (mezclar paréntesis, llaves o intervalos cuando se trata de soluciones discretas); preferir llaves o lista clara de soluciones.",
-      "Evitar ecuaciones donde algún coeficiente pueda interpretarse equivocadamente como producto de variables (por ejemplo, escribir 2x^2x en vez de 2x^2, lo que induce confusión).",
-      "No mezclar, en el mismo ítem, métodos diferentes de resolución de ecuaciones cuadráticas (como sugerir simultáneamente fórmula general y factorización) para este átomo.",
-      "Evitar enunciados donde el cero aparezca en ambos lados de la ecuación de forma confusa (por ejemplo, ax^2 + bx = 0 = expresión), lo que dificulta ver correctamente la estructura ax^2 + bx = 0.",
-      "No proponer alternativas de respuesta que difieran solo en orden de las soluciones cuando no se explicite claramente si el orden importa; mejor listar soluciones en cualquier orden pero dejarlo explícito o usar conjuntos.",
-      "No usar variables distintas de x en el mismo ítem (por ejemplo, mezclar x y y sin justificación), ya que este átomo se centra en una sola variable.",
-      "Evitar expresiones donde el factor común x quede ambiguo por mala tipografía (como xax + b en vez de x(ax + b)); usar paréntesis claros.",
-      "No incluir ecuaciones que, tras simplificar correctamente, dejen de ser de la forma ax^2 + bx = 0 (por ejemplo, donde se cancele el término x^2), ya que salen del alcance del átomo."
+      "No usar ecuaciones donde el término común no incluya necesariamente a x (por ejemplo, 6x² + 3x = 0 está bien, pero evitar cosas como ax² + a = 0 en este átomo)",
+      "Evitar enunciados donde la ecuación pueda interpretarse como cuadrática completa (especificar claramente que no hay término independiente y escribirlo explícitamente = 0)",
+      "No mezclar en el mismo ítem distintas formas de resolución (fórmula general, completación de cuadrados) que puedan sugerir múltiples caminos fuera del alcance del átomo",
+      "No usar lenguaje que sugiera que solo se busca una solución cuando corresponden dos (evitar frases ambiguas como 'encuentra el valor de x' sin contexto, preferir 'determina todas las soluciones reales de la ecuación')",
+      "Evitar números demasiado grandes o poco manejables que conviertan el ítem en un ejercicio de cálculo aritmético más que de procedimiento algebraico",
+      "No usar notación confusa para los coeficientes (por ejemplo, repetir la letra a en distintos roles: coeficiente y variable de otro contexto)",
+      "No introducir raíces cuadradas u otras operaciones que hagan pensar en métodos fuera de factor común y producto nulo",
+      "Evitar contextos donde una de las soluciones deba descartarse por razones externas sin indicarlo claramente (por ejemplo, medidas físicas que no permiten x = 0) a menos que el descarte sea explícito en el texto"
     ],
     "error_families": [
       {
-        "name": "Perder_la_solucion_x_igual_0",
-        "description": "El estudiante divide la ecuación completa por x, asumiendo implícitamente x ≠ 0, y resuelve solo la ecuación lineal restante (ax + b = 0), obteniendo una sola raíz y omitiendo x = 0.",
-        "how_to_address": "En las alternativas incluir distractores que muestran solo la solución no nula para evidenciar este error. En la retroalimentación, enfatizar que no se puede dividir por una incógnita porque se descarta la posibilidad de que esa incógnita sea cero, y mostrar explícitamente cómo la forma factorizada x(ax + b) = 0 produce dos ecuaciones: x = 0 y ax + b = 0."
+        "name": "Perder la solución x = 0",
+        "description": "El estudiante divide toda la ecuación por x (asumiendo x ≠ 0) en lugar de factorizar, resolviendo solo ax + b = 0 y omitiendo la raíz x = 0.",
+        "how_to_address": "En los distractores, incluir sistemáticamente la solución proveniente solo de ax + b = 0. En la retroalimentación, enfatizar que la propiedad del producto nulo requiere escribir la ecuación como producto igual a cero sin dividir por posibles raíces; destacar que x = 0 satisface siempre ax² + bx = x(ax + b) = 0."
       },
       {
-        "name": "Factor_comun_incorrecto_o_incompleto",
-        "description": "El estudiante no identifica el máximo factor común (por ejemplo, factoriza solo x en vez de 4x en 4x^2 + 8x) o saca un factor erróneo que altera los coeficientes internos, llevando a una factorización y solución incorrecta.",
-        "how_to_address": "Proponer ítems donde haya alternativas que reflejen factorizaciones parciales y equivocadas. En la explicación, insistir en revisar qué expresión multiplicada por el factor común recupera cada término original y practicar la búsqueda del máximo factor común numérico y literal."
+        "name": "Factor común incompleto",
+        "description": "Se extrae solo el coeficiente numérico como factor común, pero no la variable x, lo que deja una expresión que no permite aplicar correctamente el producto nulo.",
+        "how_to_address": "Mostrar pasos intermedios donde se identifique explícitamente que ambos términos contienen x, y recordar que el factor común debe ser un monomio completo (coeficiente y variable). Distractores pueden provenir de factorizar solo el número (por ejemplo, 3(x² - 4x) = 0) y luego resolver mal."
       },
       {
-        "name": "Manejo_deficiente_de_signos",
-        "description": "Errores al factorizar cuando uno o ambos coeficientes son negativos, lo que lleva a una expresión interna con signos invertidos o a soluciones opuestas a las correctas.",
-        "how_to_address": "Incluir ejercicios con factores negativos en el enunciado y distractores con soluciones que corresponden a errores de signo. En la retroalimentación, sugerir sacar un factor común negativo de forma sistemática o reescribir la ecuación para verificar que la expansión de la factorización coincide con la original."
+        "name": "Signos incorrectos en el binomio",
+        "description": "Al extraer el factor común, se cambia el signo de b o se forma incorrectamente el segundo factor (por ejemplo, 3x² - 12x = 0 → 3x(x + 4) = 0).",
+        "how_to_address": "Incluir distractores que usen el binomio con signo equivocado. En la explicación, sugerir verificar multiplicando hacia atrás el producto factorizado para comprobar que se recupera el término original, poniendo énfasis en la conservación de signos."
       },
       {
-        "name": "Error_en_la_ecuacion_lineal_resultante",
-        "description": "Una vez obtenida la factorización x(ax + b) = 0, el estudiante plantea bien las dos ecuaciones, pero resuelve mal la ecuación lineal ax + b = 0 por errores aritméticos o de despeje.",
-        "how_to_address": "Diseñar distractores que reflejen estos errores (por ejemplo, cambiar el signo de la solución o invertir a y b). En la explicación, repasar el procedimiento estándar para resolver ax + b = 0: restar b y luego dividir por a, destacando la importancia de conservar los signos."
+        "name": "Aplicación errónea de producto nulo",
+        "description": "Se aplica la propiedad del producto nulo cuando la expresión no está completamente factorizada o, al revés, se pretende usarla en una suma (por ejemplo, de ax² + bx = 0 se pasa a ax² = 0 y bx = 0 por separado).",
+        "how_to_address": "Contrastar ejemplos correctos e incorrectos, subrayando que la propiedad solo se aplica cuando se tiene un producto de factores igual a cero. Proponer como estrategia revisar visualmente que aparezca el símbolo de multiplicación (o yuxtaposición clara x(...)) antes de separar en ecuaciones simples."
       },
       {
-        "name": "Confusion_con_producto_nulo",
-        "description": "El estudiante no aplica correctamente la propiedad del producto nulo y, por ejemplo, cree que solo uno de los factores debe ser cero, o intenta igualar a cero la suma de los factores en vez del producto.",
-        "how_to_address": "Incluir alternativas que vengan de igualar a cero la suma de factores o de tomar solo una igualdad. En la retroalimentación, reforzar la idea de que si el producto de dos números es cero, entonces al menos uno de ellos debe ser cero, ilustrándolo con ejemplos numéricos simples antes de volver a la situación algebraica."
+        "name": "Confundir coeficientes y soluciones",
+        "description": "El estudiante interpreta erróneamente que las soluciones son los coeficientes a y b, o realiza reglas de tres o proporciones sin sentido, en lugar de resolver las ecuaciones simples obtenidas.",
+        "how_to_address": "En la retroalimentación, insistir en la secuencia: factorizar → obtener dos ecuaciones lineales (x = 0 y ax + b = 0) → resolver la ecuación lineal. Presentar explícitamente el paso de aislar x en ax + b = 0 para reforzar el procedimiento correcto."
       },
       {
-        "name": "Reescritura_erronea_de_la_ecuacion",
-        "description": "Al intentar reorganizar la ecuación para verla como ax^2 + bx = 0, el estudiante mueve términos al lado contrario con signo incorrecto o altera los coeficientes antes de factorizar.",
-        "how_to_address": "Crear ítems donde la ecuación deba ser reordenada mínimamente y considerar distractores que surjan de trasposiciones mal hechas. En la explicación, mostrar paso a paso cómo trasladar términos manteniendo los signos y verificar que la forma final mantiene la igualdad original."
+        "name": "Manejo deficiente de fracciones",
+        "description": "Cuando los coeficientes son racionales, el estudiante se equivoca al extraer el factor común o al resolver ax + b = 0, obteniendo soluciones con fracciones mal simplificadas.",
+        "how_to_address": "En ítems con fracciones, usar distractores que reflejen fracciones no simplificadas o con numerador/denominador invertidos. Sugerir como estrategia multiplicar por el mínimo común múltiplo antes de factorizar para evitar fracciones, o revisar la solución sustituyéndola en la ecuación original."
       }
     ],
     "future_targets": [
-      "Resolución de ecuaciones cuadráticas completas ax^2 + bx + c = 0 mediante factorización.",
-      "Comprensión general de la estructura de un polinomio de segundo grado y su descomposición en factores.",
-      "Análisis de las raíces de una función cuadrática y su relación con los interceptos en el eje x del gráfico.",
-      "Resolución de problemas de modelamiento que conduzcan a ecuaciones cuadráticas y elección del método de solución más conveniente.",
-      "Estudio de inecuaciones cuadráticas y representación de sus soluciones en la recta real.",
-      "Aplicación de la fórmula general para ecuaciones cuadráticas y comparación entre métodos de resolución (fórmula, factorización, completación de cuadrado)."
+      "Resolución de ecuaciones cuadráticas completas mediante factorización",
+      "Comprensión de la relación entre las soluciones de la ecuación y las intersecciones de la parábola con el eje x",
+      "Uso de la fórmula general para ecuaciones cuadráticas",
+      "Resolución de problemas contextualizados que se modelan con ecuaciones cuadráticas",
+      "Resolución de inecuaciones cuadráticas apoyadas en la factorización",
+      "Estudio de funciones cuadráticas y análisis de sus raíces como ceros de la función"
     ],
     "representation_variants": [
-      "Ecuaciones dadas explícitamente en forma ax^2 + bx = 0 con términos ya en un lado de la igualdad.",
-      "Ecuaciones presentadas con todos los términos en distintos lados, requiriendo trasladar términos para llegar a ax^2 + bx = 0.",
-      "Expresiones ya parcialmente factorizadas, como x(ax + b) = 0, donde el foco está en la aplicación del producto nulo y la obtención de soluciones.",
-      "Problemas verbales sencillos que se traducen directamente a una ecuación de la forma ax^2 + bx = 0 sin mucho ruido contextual.",
-      "Tablas o pequeños esquemas textuales donde se comparen varias ecuaciones de la forma ax^2 + bx = 0 y se pida identificar cuál tiene ciertas características de sus soluciones (por ejemplo, raíces enteras)."
+      "Ecuaciones presentadas directamente en forma ax² + bx = 0 con coeficientes numéricos explícitos",
+      "Ecuaciones reordenadas (por ejemplo, bx + ax² = 0) que requieren reconocer la forma cuadrática incompleta",
+      "Ecuaciones donde primero se factoriza un factor numérico común en toda la expresión y luego x (por ejemplo, 12x² + 8x = 0 → 4(3x² + 2x) = 0 → 4x(3x + 2) = 0)",
+      "Ecuaciones ya factorizadas parcialmente donde se debe completar o identificar correctamente el segundo factor (por ejemplo, x(3x + k) = 0, determinar k para que sea equivalente a 3x² - 12x = 0)",
+      "Contextos verbales breves donde se presenta la ecuación ax² + bx = 0 dentro de una situación (por ejemplo, relación entre tiempo y área) pero el foco del ítem está en resolver la ecuación factorizando",
+      "Formulación que pida comparar o clasificar ecuaciones del tipo ax² + bx = 0 según el número o tipo de soluciones (por ejemplo, si a y b son no nulos, siempre una solución es cero y la otra es -b/a)"
     ],
     "numbers_profiles": [
       "small_integers",
-      "medium_integers",
-      "negative_integers",
+      "signed_integers",
       "simple_fractions",
-      "simple_decimals"
+      "integer_multiples"
     ],
     "required_image_types": []
   }

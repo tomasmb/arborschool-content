@@ -3,128 +3,135 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Problemas contextualizados donde las cantidades se modelan explícitamente con números enteros (ganancias/pérdidas, depósitos/retiros, subidas/bajadas, aumentos/disminuciones de temperatura, cambios de altitud).",
-        "Uso de todas las operaciones con enteros (suma, resta, multiplicación y división) para resolver una situación, incluyendo varias etapas de cálculo.",
-        "Interpretación del signo del resultado (positivo, negativo o cero) en función del contexto (por ejemplo, saldo final, temperatura final, cambio total, posición final).",
-        "Juicio de razonabilidad del resultado en términos del contexto (por ejemplo, descartar resultados negativos cuando representan cantidades que no pueden ser negativas, como número de personas u objetos).",
-        "Modelación simple de la situación: traducir un relato a una secuencia de operaciones con números enteros, sin uso de álgebra simbólica avanzada."
+        "Problemas contextualizados donde se requiere modelar cambios con números enteros (aumentos/disminuciones, ganancias/pérdidas, subidas/bajadas, depósitos/retiros, variaciones de temperatura, desplazamientos en línea recta).",
+        "Secuencias de cambios sucesivos representados con sumas y restas de enteros, eventualmente encadenadas (hasta 3–4 operaciones).",
+        "Uso de operaciones con enteros (principalmente suma y resta, ocasionalmente multiplicación como suma reiterada de cambios enteros iguales).",
+        "Interpretación del resultado final en el contexto (saldo final, puntaje final, temperatura final, posición final, tiempo final, etc.).",
+        "Juicio sobre la validez o sentido del resultado en el contexto (por ejemplo, determinar si tiene o no sentido un resultado negativo en un caso dado).",
+        "Problemas que involucren cambios representados en tablas simples, listados, líneas de tiempo o descripciones verbales."
       ],
       "out_of_scope": [
-        "Problemas que requieren fracciones, decimales o porcentajes mezclados con enteros como foco principal (esos pertenecen a otros átomos).",
-        "Ecuaciones algebraicas formales con incógnita simbólica como objetivo principal (por ejemplo, resolver 3x − 5 = −2).",
-        "Uso de recta numérica o representación gráfica como foco central de la pregunta (eso se aborda en átomos específicos de representación).",
-        "Problemas que exigen combinatoria, probabilidad o estadística más allá de un simple contexto narrativo.",
-        "Operaciones con potencias, raíces o notación científica como contenido principal.",
-        "Contextos con múltiples magnitudes distintas que requieran sistemas de ecuaciones para ser resueltos."
+        "Operaciones con fracciones, decimales o porcentajes (aunque puedan aparecer en el texto, el cálculo central del ítem no debe requerir operar con ellos).",
+        "Potencias, raíces, módulos o expresiones algebraicas con variables (x, y) como foco principal.",
+        "Problemas que requieran interpretar gráficos estadísticos complejos, funciones en el plano cartesiano o figuras geométricas para resolver la parte numérica.",
+        "Ecuaciones o inecuaciones formales con enteros como objetivo principal (por ejemplo, resolver 3x − 5 = −7).",
+        "Probabilidad, combinatoria o conteo estructurado como foco principal.",
+        "Modelos financieros avanzados (interés compuesto, tasas, impuestos) donde los enteros no son el foco conceptual.",
+        "Secuencias numéricas abstractas o patrones sin contexto (eso corresponde a otros átomos)."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprensión del conjunto de los números enteros (Z) y su representación simbólica.",
-        "A-M1-NUM-01-02: Orden y comparación de números enteros en contextos sencillos.",
-        "A-M1-NUM-01-03: Suma y resta de números enteros, incluyendo interpretación del signo.",
-        "A-M1-NUM-01-04: Multiplicación de números enteros y reglas de signos.",
-        "A-M1-NUM-01-05: División de enteros en contextos donde el resultado es entero.",
-        "A-M1-NUM-01-06: Modelación aritmética básica de situaciones cotidianas (traducción relato → operaciones)."
+        "A-M1-NUM-01-01: Comprensión del conjunto de los enteros y su representación en la recta numérica.",
+        "A-M1-NUM-01-02: Comparación y orden de números enteros.",
+        "A-M1-NUM-01-03: Suma y resta de números enteros con apoyo de representaciones (recta numérica, contexto de ganancias/pérdidas, etc.).",
+        "A-M1-NUM-01-04: Suma y resta de enteros sin apoyo gráfico (cálculo mental y escrito).",
+        "A-M1-NUM-01-05: Multiplicación de números enteros y sus reglas de signos básica.",
+        "A-M1-NUM-01-08: Modelación simple de situaciones cotidianas con números enteros (asociar expresiones numéricas a descripciones)."
       ],
       "common_traps": [
-        "Ignorar el contexto y responder solo con el número calculado, sin considerar si un resultado negativo o cero tiene sentido en la situación planteada.",
-        "Confundir el rol del signo al modelar el contexto: usar signo positivo para retiros o pérdidas, o signo negativo para depósitos o ganancias.",
-        "Perder información intermedia en problemas con varias etapas (por ejemplo, aplicar operaciones en orden incorrecto o saltarse una transacción).",
-        "No diferenciar entre \"cambio\" y \"valor final\": interpretar un −5 como valor final cuando es la variación total, o viceversa.",
-        "No explicitar (en el diseño del ítem) qué cantidad específica se pide: saldo final, variación total, valor inicial faltante, lo que puede inducir respuestas ambiguas.",
-        "Incluir divisiones que producen resultados no enteros, obligando a usar racionales y saliéndose del foco del átomo.",
-        "Contextos donde un valor negativo podría ser plausible o no según interpretación cultural (por ejemplo, deudas en juegos, temperaturas idealizadas) sin explicitar bien la situación."
+        "Plantear contextos donde la variable principal no admite valores negativos pero no se explicita suficientemente (ejemplo: número de personas, cantidad de objetos), generando dudas sobre si un resultado negativo es posible o no.",
+        "Contextos con más de una magnitud que cambian a la vez (por ejemplo, temperatura y tiempo) donde no se señala claramente qué magnitud debe modelar el estudiante con enteros.",
+        "Descripciones verbales ambiguas del cambio (por ejemplo, \"baja 3 puntos\" aplicado a un valor ya negativo), que pueden confundirse con cambio de signo o doble negación.",
+        "Uso ambiguo de términos como \"saldo\", \"diferencia\" o \"variación\" sin precisar si se pide el valor final o el cambio neto.",
+        "Incluir información redundante o distractora que sugiere operaciones con otros números (por ejemplo, porcentajes o fracciones) cuando el foco es la operación con enteros.",
+        "Cronologías o líneas de tiempo mal especificadas (inicio/fin poco claros), que hacen dudar sobre si se debe sumar o restar cierto cambio.",
+        "Preguntar por algo distinto a lo que naturalmente se calcula en el contexto (por ejemplo, describir cambios de temperatura por hora y luego preguntar por el día siguiente sin dejarlo totalmente claro)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Problemas de una sola etapa de cálculo con uno o dos enteros, preferentemente con magnitudes pequeñas (entre −20 y 20).",
-        "Contexto muy familiar y directo (dinero, temperatura, pisos de un edificio, goles a favor/en contra) donde el signo se interpreta de manera inmediata.",
-        "Secuencia de cambios ya resumida en una sola operación (por ejemplo, indicar directamente la variación total en vez de cada cambio por separado).",
-        "La pregunta apunta a una única cantidad claramente explícita (por ejemplo, \"¿cuál es el saldo final?\") sin distractores contextuales.",
-        "No se requiere juzgar si el resultado es razonable; basta con hacer el cálculo correcto e identificar el significado del signo."
+        "Problemas con un solo contexto simple y familiar para estudiantes (juegos de puntos, saldos sencillos, temperatura durante parte del día).",
+        "Requieren una o dos operaciones con enteros, usualmente solo sumas y restas directas, sin necesidad de decidir el orden de las operaciones.",
+        "Uso de números enteros pequeños en valor absoluto (entre −20 y 20), con pocos cambios y datos presentados explícitamente.",
+        "La relación entre la historia y la operación con enteros es directa y casi literal (por ejemplo, cada \"gana\" es sumar y cada \"pierde\" es restar).",
+        "La interpretación del resultado en el contexto es inmediata (por ejemplo, el número final ya corresponde directamente al saldo o temperatura pedida, sin pasos adicionales).",
+        "No se exige evaluar explícitamente si un resultado negativo tiene sentido; el resultado que se obtiene es evidentemente razonable."
       ],
       "medium": [
-        "Problemas con dos o tres etapas de cálculo, combinando suma y resta de enteros (y eventualmente un producto simple, como repetir un cambio varias veces).",
-        "Contextos donde el estudiante debe decidir cómo representar con signos cada acción (por ejemplo, avances y retrocesos, subidas y bajadas, depósitos y retiros).",
-        "Se requiere distinguir entre cambiar un valor y conocer el valor final (por ejemplo, calcular el saldo final a partir de un saldo inicial y varias transacciones).",
-        "Incluyen la necesidad de interpretar el resultado en el contexto (por ejemplo, decidir si un resultado negativo implica deuda, pérdida de altura, temperatura bajo cero).",
-        "Piden explícitamente revisar la coherencia del resultado (por ejemplo, determinar cuál de varias descripciones es compatible con un resultado dado)."
+        "Problemas con 2 o más etapas de cambio, donde se combinan aumentos y disminuciones, ganancias y pérdidas, o desplazamientos en sentidos opuestos.",
+        "Requieren 3–4 operaciones con enteros, pudiendo involucrar multiplicación como suma reiterada de un mismo cambio entero (por ejemplo, un monto semanal repetido).",
+        "Los datos pueden estar organizados en una tabla simple, texto relativamente largo o mezcla de descripciones y números, pero sin información superflua compleja.",
+        "Exigen decidir el orden de las operaciones (por ejemplo, calcular primero un cambio total y luego aplicarlo a un valor inicial).",
+        "Requieren interpretar el resultado en el contexto más allá del número en sí (por ejemplo, explicar puntaje final o determinar si se debe a una ganancia neta o pérdida neta).",
+        "Incluyen la necesidad de reconocer si un resultado negativo es coherente, por ejemplo en contextos de saldo de deuda o posición relativa."
       ],
       "hard": [
-        "Problemas con varias etapas (tres o más) que combinan distintas operaciones con enteros y requieren organizar la información antes de operar.",
-        "Contextos menos rutinarios o más abstractos (por ejemplo, movimientos en una recta numérica implícita, cambios de puntaje con penalizaciones y bonificaciones, marcadores acumulativos).",
-        "Se exige evaluar la validez del resultado en función de restricciones contextuales (por ejemplo, descartar soluciones porque implican un tiempo negativo o una cantidad imposible).",
-        "Requieren inferencia inversa: dado un resultado final o una variación total, determinar un valor inicial o una transacción faltante representada por un entero.",
-        "Distractores diseñados a partir de errores de signo y de interpretación contextual (por ejemplo, confundir variación con valor final, o invertir ganancias/pérdidas) que obligan a una lectura y modelación cuidadosa.",
-        "Problemas donde dos o más escenarios se comparan (por ejemplo, quién termina más arriba/abajo, quién tiene mayor deuda o saldo), requiriendo razonar con el orden de enteros en contexto."
+        "Problemas donde parte de la información está implícita o debe deducirse desde el contexto (por ejemplo, determinar un valor inicial desconocido a partir de cambios y resultado final dado).",
+        "Involucran varias fuentes de información (texto + tabla, o una descripción por etapas) y exigen seleccionar solo los datos relevantes para modelar con enteros.",
+        "Pueden requerir comparar dos estrategias o dos secuencias de cambios (por ejemplo, dos jugadores, dos cuentas, dos recorridos) y decidir cuál lleva a mayor/menor resultado.",
+        "Usan enteros con valores absolutos algo mayores (por ejemplo, hasta alrededor de 100 o 200) o secuencias más largas de cambios, manteniendo el cálculo manejable sin ser trivial.",
+        "Exigen evaluar críticamente la validez de un resultado (por ejemplo, discutir si un tiempo negativo o una cantidad negativa es posible y qué significa en el contexto), pudiendo implicar descartar una opción que da un resultado numérico correcto pero contextualmente imposible.",
+        "Pueden incluir reformulación del contexto en lenguaje matemático (expresión numérica o verbalización formal del cambio neto) antes o después del cálculo."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar contextos donde un número negativo pueda interpretarse de dos maneras distintas sin aclaración (por ejemplo, deuda vs. pago de deuda) si el rol del signo es crucial.",
-      "No usar expresiones vagas como \"sube 5\" o \"baja 5\" sin indicar con claridad si se está hablando de cambio o de valor final, cuando ambas interpretaciones podrían generar respuestas distintas.",
-      "Evitar preguntas que no especifiquen claramente qué cantidad se debe determinar (por ejemplo, \"¿cuál es la situación final?\" en lugar de \"¿cuál es la temperatura final?\" o \"¿cuál es la variación total?\").",
-      "No mezclar en un mismo problema dos tipos de magnitudes que usan signos de manera distinta (por ejemplo, deudas y altitud) sin segmentar o explicar bien el modelo.",
-      "Evitar intervalos de tiempo poco claros (\"al día siguiente\", \"después\") que podrían inducir a omitir eventos o a contarlos dos veces.",
-      "No usar números innecesariamente grandes o muy cercanos entre sí que hagan difícil verificar mentalmente la coherencia del resultado y oculten errores de signo.",
-      "Evitar que el enunciado sugiera implícitamente una respuesta positiva o negativa solo por el lenguaje coloquial (por ejemplo, \"perdió 3 metros\" podría interpretarse como −3 o como un cambio de 3 sin signo explícito).",
-      "No plantear alternativas de respuesta que mezclen unidades o descripciones diferentes del resultado (por ejemplo, algunas en términos de saldo y otras en términos de variación) si no se explicita bien qué se pide.",
-      "Evitar contextos culturalmente poco familiares o ambiguos para estudiantes chilenos que puedan distraer del foco matemático (por ejemplo, sistemas de puntaje exóticos sin explicación)."
+      "Evitar usar simultáneamente varios sentidos de la misma palabra (por ejemplo, \"baja\" para referirse a altura, temperatura y puntaje en el mismo ítem).",
+      "No usar expresiones con doble negación o poco claras como \"deja de perder 3 puntos\" o \"reduce la deuda negativa\" sin explicación adicional.",
+      "Precisar claramente el momento inicial y final en líneas de tiempo o procesos por etapas (indicar explícitamente \"comienza con\", \"al final del día\", \"después de todos los cambios\").",
+      "Especificar con claridad qué se pide: \"saldo final\", \"variación total\", \"temperatura final\" o \"diferencia entre…\" y no usar estos términos indistintamente.",
+      "En contextos donde algunas cantidades no pueden ser negativas (personas, objetos físicos, tiempo transcurrido), explicitar si un resultado negativo representa una situación imposible o, en su defecto, modelar el problema de manera que no aparezca ambigüedad.",
+      "Evitar que en las alternativas aparezcan dos resultados con el mismo valor absoluto y distinto signo si el contexto no determina inequívocamente el signo correcto.",
+      "No introducir porcentajes, fracciones o decimales irrelevantes que puedan interpretarse como parte del cálculo principal con enteros.",
+      "Si se usan abreviaturas o símbolos (p. ej., $ para dinero), asegurarse de que sean estándar y conocidas y no añadan otra posible lectura del ítem."
     ],
     "error_families": [
       {
-        "name": "signo_invertido_en_el_modelo",
-        "description": "Modelar una ganancia, depósito, subida o avance con un número negativo, o una pérdida, retiro, bajada o retroceso con un número positivo, produciendo un resultado global con signo incorrecto.",
-        "how_to_address": "Diseñar ítems donde la correspondencia entre acción y signo sea explícita y comparar narraciones distintas del mismo proceso. Usar distractores que representen cambios con signo invertido para detectar esta dificultad y forzar al estudiante a revisar el significado de cada término."
+        "name": "Inversión de signo en aumentos y disminuciones",
+        "description": "El estudiante interpreta una disminución como suma o un aumento como resta, o confunde ganar/perder con el signo correcto del cambio, generando resultados desplazados simétricamente.",
+        "how_to_address": "Proponer ítems donde se distinga explícitamente entre \"cambio\" y \"estado final\" y usar vocabulario consistente (ganar/aumentar = sumar, perder/disminuir = restar). Incluir alternativas distractoras que reflejen este error para poder diagnosticarlos y acompañarlas de retroalimentación que destaque la correspondencia verbal–operación."
       },
       {
-        "name": "confusion_entre_variacion_y_valor_final",
-        "description": "Interpretar la variación total como si fuera el valor final (o viceversa), por ejemplo, responder −5 como temperatura final cuando es solo el cambio respecto de un valor inicial.",
-        "how_to_address": "Plantear preguntas que distingan claramente entre \"¿en cuánto cambió?\" y \"¿cuál es el valor final?\", y usar tablas o descripciones paso a paso donde se destaquen valor inicial, cambios y valor final. Incluir distractores que correspondan a la variación en lugar del valor final para evidenciar el error."
+        "name": "Ignorar el valor inicial",
+        "description": "El estudiante calcula solo la suma de los cambios (variación total) y la confunde con el valor final, sin agregar o restar el valor inicial del contexto.",
+        "how_to_address": "Diseñar problemas donde el valor inicial sea numéricamente distinto de cero y sea explícitamente relevante. En la retroalimentación, separar en dos fases: (1) hallar variación total, (2) aplicar la variación al valor inicial, mostrando la estructura Estado final = Estado inicial + Cambio total."
       },
       {
-        "name": "perdida_de_informacion_en_procesos_multietapa",
-        "description": "Omitir una de las transacciones o cambios, o aplicar el orden de operaciones de forma inadecuada cuando hay varias etapas (por ejemplo, sumar cambios diarios y luego aplicar un cambio mensual, pero en el orden incorrecto).",
-        "how_to_address": "Usar enunciados que incentiven organizar la información (listas, tablas, líneas de tiempo) aunque la pregunta final sea de opción múltiple. Incorporar distractores que correspondan a haber considerado solo parte de los cambios."
+        "name": "Suma de valores absolutos",
+        "description": "Al enfrentar cambios con signos opuestos, el estudiante suma los valores absolutos sin considerar la compensación (por ejemplo, trata +5 y −3 como +8).",
+        "how_to_address": "Incluir ítems que contrasten casos donde los cambios se refuerzan con casos donde se compensan parcialmente. Destacar en la explicación que los cambios opuestos se restan en valor absoluto y el signo indica cuál es mayor. Usar representaciones como línea numérica o fichas de color para clarificar la compensación."
       },
       {
-        "name": "errores_de_regla_de_signos_en_operaciones",
-        "description": "Aplicar incorrectamente las reglas de signos en sumas o restas de enteros (por ejemplo, tratar −3 − 5 como 2, o −4 + (−7) como 3).",
-        "how_to_address": "Diseñar problemas donde el resultado de cada etapa tenga interpretación clara en el contexto (por ejemplo, \"pérdida total de goles\", \"metros por debajo del punto de partida\"), de modo que soluciones con signo o magnitud evidentemente incongruentes se puedan reconocer como erróneas."
+        "name": "Pérdida del orden temporal",
+        "description": "El estudiante aplica cambios en un orden distinto al planteado, o mezcla etapas, lo que altera el resultado final en secuencias de varios pasos.",
+        "how_to_address": "Usar tablas o listas que separen explícitamente cada etapa y requerir al estudiante seguir el orden. En la retroalimentación, remarcar que la secuencia de cambios en contextos temporales importa, y sugerir subrayar o numerar etapas en el enunciado antes de calcular."
       },
       {
-        "name": "no_evaluar_la_coherencia_contextual",
-        "description": "Aceptar resultados negativos o positivos sin cuestionar si tienen sentido en el contexto (por ejemplo, un número negativo de personas, una cantidad negativa de lápices).",
-        "how_to_address": "Incluir preguntas que pidan explícitamente escoger la interpretación adecuada de un resultado o identificar cuál de varios resultados posibles tiene sentido en la situación. Usar distractores con resultados numéricamente correctos pero contextualmente imposibles."
+        "name": "Confusión entre resultado negativo y situación imposible",
+        "description": "El estudiante descarta automáticamente un resultado negativo incluso en contextos donde un valor negativo es válido (por ejemplo, saldo de deuda, temperatura bajo cero), o al revés, acepta resultados negativos en contextos donde no tienen sentido.",
+        "how_to_address": "Plantear ítems que comparen contextos donde un número negativo es razonable (temperatura, saldo de deuda, posición relativa) con otros donde no lo es (número de personas, cantidad de objetos). En la explicación, discutir explícitamente qué representa el signo en cada contexto y cuándo un resultado debe interpretarse como \"no posible\"."
       },
       {
-        "name": "mezcla_inadecuada_de_unidades_o_referencias",
-        "description": "Confundir la unidad o el punto de referencia (por ejemplo, mezclar metros sobre el nivel del mar con metros bajo tierra sin distinguir el cero de referencia).",
-        "how_to_address": "Diseñar contextos donde el punto de referencia (cero) y las unidades estén claramente explicitados, y alternativas que reflejen errores típicos de desplazamiento del origen o de cambio de unidad, para hacer visible la importancia de esta distinción."
+        "name": "Uso indebido de la multiplicación con enteros",
+        "description": "El estudiante multiplica por −1 en momentos indebidos (por ejemplo, considera que \"pierde 3 puntos en 4 rondas\" es −3 × (−4)) o aplica erróneamente la regla de signos.",
+        "how_to_address": "Cuando se use multiplicación, explicitar qué representa cada factor (cantidad de rondas, cambio por ronda) y por qué uno de ellos es negativo (pérdida) y el otro no (número de repeticiones). En la retroalimentación, enfatizar la interpretación contextual de la regla de signos, más que la memorización aislada."
+      },
+      {
+        "name": "No identificación de la magnitud preguntada",
+        "description": "El estudiante realiza cálculos correctos, pero responde con un valor intermedio (por ejemplo, la variación total en vez del valor final, o el saldo de una persona cuando se pedía la comparación entre dos saldos).",
+        "how_to_address": "En el diseño, formular preguntas muy explícitas sobre qué se pide, y en la retroalimentación, insistir en releer la parte final del enunciado y verificar que la respuesta se refiera exactamente a esa magnitud. Proponer ejercicios de reexpresión del enunciado en una frase corta tipo \"Me están preguntando...\"."
       }
     ],
     "future_targets": [
-      "Modelación algebraica más formal de situaciones con números enteros y racionales (traducción relato → ecuaciones).",
-      "Trabajo con recta numérica para representación y comparación de enteros y racionales en contextos más complejos.",
-      "Resolución de ecuaciones lineales simples en Z y en Q a partir de problemas verbales.",
-      "Análisis de variaciones en funciones lineales (aumentos y disminuciones constantes) como generalización de cambios con enteros.",
-      "Razonamiento proporcional y porcentajes con ganancias y pérdidas sobre un valor inicial.",
-      "Cálculo de expresión de valores absolutos como distancia a un punto de referencia en la recta numérica.",
-      "Análisis de datos en contextos estadísticos donde se interpretan diferencias y variaciones (por ejemplo, comparaciones de puntajes o temperaturas).",
-      "Estudios de movimientos en el plano (coordenadas positivas y negativas) donde la idea de avance/retroceso y cambio acumulado se generaliza a dos dimensiones."
+      "Resolución de problemas más complejos que integren enteros con fracciones y decimales en contextos financieros, físicos y estadísticos.",
+      "Modelación algebraica básica de situaciones de cambio, pasando de descripciones en lenguaje natural a expresiones y ecuaciones con variables enteras.",
+      "Trabajo con funciones lineales simples donde la pendiente se interpreta como cambio constante (positivo o negativo) y la ordenada al origen como valor inicial.",
+      "Análisis de gráficos de funciones y datos (pendiente, variación, tendencias), donde la comprensión de cambios positivos y negativos es esencial.",
+      "Resolución de inecuaciones simples e interpretación de soluciones en contextos de cotas y restricciones (por ejemplo, saldo mínimo o máximo).",
+      "Estudio de secuencias y progresiones aritméticas con términos que pueden ser enteros negativos o positivos.",
+      "Análisis de errores y validación de resultados en problemas más elaborados, fortaleciendo la habilidad metacognitiva de revisar si una respuesta tiene sentido contextual."
     ],
     "representation_variants": [
-      "Texto narrativo simple con descripción lineal de cambios sucesivos (por ejemplo, secuencia de depósitos y retiros).",
-      "Tablas de dos columnas que registran momento y cambio (o momento y saldo), permitiendo visualizar la acumulación de enteros.",
-      "Listas enumeradas de eventos (por ejemplo, cambios de temperatura por hora) que el estudiante debe sintetizar en una operación con enteros.",
-      "Diálogos breves donde dos personajes describen interpretaciones distintas de un mismo resultado entero, para trabajar la interpretación contextual.",
-      "Esquematización de procesos como subir y bajar pisos, o avanzar y retroceder en una línea, descritos en palabras sin requerir gráficos.",
-      "Uso de símbolos + y − explícitos asociados a verbos del contexto (ganar, perder, subir, bajar) para reforzar la conexión entre lenguaje natural y modelo numérico."
+      "Descripciones verbales paso a paso de una situación (por ejemplo, relato de depósitos y retiros, o secuencia de puntos en un juego).",
+      "Tablas simples que registran el valor inicial, los cambios por etapa y el valor acumulado o final.",
+      "Líneas de tiempo textuales donde se marcan eventos con sus respectivos cambios en la magnitud estudiada.",
+      "Descripciones espaciales en una dimensión (avanzar/retroceder, subir/bajar pisos) interpretadas como movimientos sobre una recta numérica conceptual.",
+      "Contextos de temperaturas con mínimas, máximas y variaciones presentados en formato de texto o tabla.",
+      "Registros de puntajes de juego o marcador deportivo a lo largo de una secuencia de rondas, sin necesidad de gráficos estadísticos formales."
     ],
     "numbers_profiles": [
       "small_integers",
-      "medium_integers",
-      "large_integers_simple_structure",
-      "integers_with_zero"
+      "negative_integers",
+      "mixed_integers_large",
+      "contextual_round_numbers"
     ],
     "required_image_types": []
   }

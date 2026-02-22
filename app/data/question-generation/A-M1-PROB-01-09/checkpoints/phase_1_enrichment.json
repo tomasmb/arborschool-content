@@ -3,134 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Construir un gráfico de línea a partir de una tabla de datos secuenciales (por ejemplo, tiempo vs valor).",
-        "Ubicar pares ordenados (tiempo, valor) en un plano cartesiano con ejes claramente identificados.",
-        "Elegir y mantener una escala uniforme en ambos ejes, especialmente en el eje horizontal (tiempo).",
-        "Unir con segmentos de recta puntos consecutivos en el tiempo o en el orden dado.",
-        "Identificar, entre varios gráficos de línea, cuál representa correctamente una tabla o descripción dada.",
-        "Completar un gráfico de línea parcialmente dibujado agregando puntos y segmentos faltantes."
+        "Construcción de gráficos de línea a partir de una tabla o descripción verbal de datos secuenciales (tiempo vs valor u otra variable ordenada).",
+        "Elección del gráfico de línea correcto entre varias alternativas dadas, a partir de una tabla o relato.",
+        "Ubicación de puntos en el plano cartesiano con ejes ya dibujados y escala indicada o deducible.",
+        "Trazado (o selección) de líneas que unen puntos consecutivos respetando el orden temporal o secuencial.",
+        "Manejo de escalas simples y uniformes en uno o ambos ejes, especialmente el eje horizontal.",
+        "Situaciones contextualizadas tipo evolución de una magnitud en el tiempo (temperatura, precio, cantidad acumulada, etc.)."
       ],
       "out_of_scope": [
-        "Cálculo de medidas de tendencia central o dispersión (promedios, mediana, desviación estándar) a partir del gráfico.",
-        "Interpretación cualitativa compleja del gráfico (pronósticos, explicación de causas, conclusiones estadísticas avanzadas).",
-        "Modelar funciones explícitas (por ejemplo, encontrar la ecuación de una recta a partir del gráfico).",
-        "Construcción o interpretación de otros tipos de gráficos (barras, histogramas, diagramas de caja, gráficos circulares).",
-        "Uso de herramientas tecnológicas específicas (software de gráficos) o comandos de planilla de cálculo.",
-        "Análisis de continuidad, derivadas o características funcionales avanzadas (crecimiento, decrecimiento formal, pendientes exactas)."
+        "Cálculo e interpretación de pendiente, tasa de variación o velocidad a partir del gráfico (eso es un átomo distinto).",
+        "Construcción o interpretación de otros tipos de gráficos estadísticos (barras, histograma, circular, boxplot, dispersión).",
+        "Ajuste de modelos funcionales (lineal, cuadrático, etc.) a partir de puntos de un gráfico de línea.",
+        "Trabajo con escalas logarítmicas o no uniformes avanzadas.",
+        "Interpolación o predicción numérica precisa usando el gráfico (estimaciones finas más allá de la sola construcción).",
+        "Lectura de datos desde gráficos ya construidos sin requerir construir o seleccionar el gráfico de línea (eso corresponde a interpretación de gráficos).",
+        "Uso de herramientas tecnológicas específicas (software, planilla) como requisito para construir el gráfico."
       ],
       "prerequisites": [
-        "A-M1-NUM-COORD-01: Comprender el plano cartesiano y ubicar puntos con coordenadas (x, y).",
-        "A-M1-DAT-ORG-01: Leer e interpretar tablas de datos con una variable temporal u ordinal.",
-        "A-M1-NUM-ESC-01: Manejar escalas uniformes en rectas y ejes numéricos (saltos regulares, identificación de unidades).",
-        "A-M1-PROB-REP-01: Reconocer distintos tipos de representaciones estadísticas básicas (tablas vs gráficos)."
+        "A-M1-NUME-01-01: Lectura y escritura de números naturales y decimales simples.",
+        "A-M1-GEOM-01-01: Comprensión básica del plano cartesiano: ejes, origen y pares ordenados.",
+        "A-M1-PROB-01-01: Lectura de tablas de frecuencia o de datos simples.",
+        "A-M1-FUNC-01-01: Correspondencia entre dos variables en una tabla (sin lenguaje funcional formal)."
       ],
       "common_traps": [
-        "Invertir los ejes: colocar el tiempo en el eje vertical y el valor en el horizontal, contradiciendo el enunciado.",
-        "Tomar valores desiguales en el eje horizontal como si fueran equiespaciados (por ejemplo, días no consecutivos) sin que el ítem lo explicite.",
-        "Elegir un gráfico donde la escala del eje vertical no es uniforme o no corresponde a los datos dados.",
-        "Unir puntos que no son consecutivos en el tiempo o dejar puntos sin unir cuando deberían estarlo.",
-        "Interpretar que el gráfico debe comenzar en (0,0) aunque la tabla parta en otro tiempo o valor.",
-        "Confundir el orden de los datos al graficar (reordenar los pares por valor en vez de mantener el orden temporal).",
-        "Marcar valores intermedios o extrapolaciones que no están dados cuando el ítem solo pide graficar los datos entregados."
+        "Invertir el orden de los pares ordenados y ubicar (valor, tiempo) en lugar de (tiempo, valor).",
+        "Tratar la variable tiempo (u ordinal) como eje vertical y el valor como eje horizontal cuando el enunciado no es explícito.",
+        "No respetar la escala dada en el eje vertical y ubicar los puntos proporcionalmente mal.",
+        "Asumir que el eje debe partir en 0 aunque la tabla comience en otro valor, deformando la representación.",
+        "Olvidar unir los puntos consecutivos o unirlos en un orden incorrecto (por valor en lugar de por tiempo).",
+        "Interpretar datos acumulados como datos instantáneos (o viceversa) y graficarlos erróneamente.",
+        "Confundir gráficos de barras con gráfico de línea y seleccionar una representación inadecuada para datos secuenciales."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Tablas con pocos datos (4 a 6 pares ordenados) y tiempos equiespaciados (por ejemplo, días consecutivos u horas consecutivas).",
-        "Escalas simples con números pequeños enteros y saltos regulares (por ejemplo, 1 unidad, 2 unidades).",
-        "Ítems donde el eje horizontal ya está etiquetado con los tiempos en orden y solo se requiere ubicar y unir los puntos.",
-        "Preguntas de selección de gráfico correcto donde solo uno respeta claramente el orden temporal y la escala y los distractores tienen errores groseros (ejes invertidos, puntos en posiciones evidentemente erróneas).",
-        "Contextos directos y cotidianos (temperatura diaria, precio diario de un producto, cantidad de asistentes por día)."
+        "Tablas con pocos datos (3 a 5 puntos) y tiempos igualmente espaciados (por ejemplo, días 1, 2, 3, 4).",
+        "Escalas sencillas y explícitas en ambos ejes, comenzando en 0 y con incrementos unitarios o de 10 en 10.",
+        "Valores enteros pequeños y positivos (por ejemplo entre 0 y 100).",
+        "Ejes ya dibujados y etiquetados con nombres de las variables y unidades claras.",
+        "Ítemes que piden principalmente decidir cuál de dos o tres gráficos dados corresponde a la tabla, con diferencias visuales claras (por ejemplo, un gráfico con un punto notoriamente mal ubicado)."
       ],
       "medium": [
-        "Tablas con una cantidad moderada de datos (6 a 10 pares), manteniendo tiempos equiespaciados pero con valores que pueden incluir algunos decimales simples.",
-        "Escalas del eje vertical que no parten en cero, o donde el estudiante debe inferir el valor de cada división a partir de algunos marcados.",
-        "Ítems donde se ofrece un gráfico parcialmente construido y el estudiante debe completarlo correctamente ubicando y uniendo nuevos puntos.",
-        "Ítems de selección entre varios gráficos donde las diferencias son sutiles (por ejemplo, error en un solo punto o en un solo tramo de la línea).",
-        "Casos en que el orden temporal no es explícito en la primera columna (por ejemplo, datos etiquetados L, M, X, J, V) y el estudiante debe conocer o inferir el orden para graficar."
+        "Tablas con un número moderado de datos (5 a 8 puntos) y tiempos no necesariamente consecutivos (por ejemplo horas 8, 10, 13, 16).",
+        "Escalas que no comienzan en 0 pero son uniformes (por ejemplo de 200 en 200).",
+        "Presencia de valores decimales sencillos (con una cifra decimal) o múltiplos de 0,5.",
+        "Necesidad de interpretar un contexto verbal para identificar qué variable va en cada eje y en qué orden graficar los puntos.",
+        "Alternativas que difieren en detalles más sutiles: por ejemplo, todos los puntos correctos salvo uno mal ubicado o un tramo de línea que no respeta el orden temporal.",
+        "Posible presencia de datos constantes en algún tramo (segmentos horizontales) o cambios de tendencia (sube y luego baja)."
       ],
       "hard": [
-        "Tablas con más datos (8 a 12 pares) donde las unidades de tiempo pueden no ser equiespaciadas (por ejemplo, mediciones a las 8:00, 9:30, 11:00, 14:00), requiriendo colocar los puntos en posiciones proporcionales a la escala del eje horizontal.",
-        "Escalas poco habituales o donde el eje vertical muestra solo algunos valores marcados, requiriendo interpolar la ubicación exacta de los puntos (por ejemplo, marcar solo 0, 20, 40, 60 y ubicar 35).",
-        "Ítems con varios gráficos candidatos que tienen escalas diferentes y el estudiante debe reconocer cuál representa correctamente los datos aún cuando comiencen en valores distintos de cero.",
-        "Contextos que mezclan distintas magnitudes o unidades y obligan a leer con detenimiento la tabla (por ejemplo, cambio de unidad implícito o especificado en el enunciado).",
-        "Preguntas donde el estudiante debe detectar un error específico de construcción del gráfico (por ejemplo, un punto mal ubicado o un tramo mal conectado) y seleccionar la corrección adecuada."
+        "Tablas con varios datos (8 a 12 puntos) o combinación de tabla parcial y descripción verbal para completar puntos.",
+        "Escalas no triviales: por ejemplo, eje vertical con incrementos de 0,2 o 25 unidades, o ejes que no parten en el origen pero requieren lectura cuidadosa.",
+        "Valores con decimales menos familiares (0,3; 0,7; 1,25) o mezclados con enteros.",
+        "Contextos donde la variable representada es acumulada y se debe distinguir de una magnitud instantánea para ubicar correctamente los valores.",
+        "Alternativas de respuesta con errores muy verosímiles: ejes intercambiados, escala horizontal irregular, conexión de puntos en orden equivocado o inicio en un tiempo distinto.",
+        "Ítems que combinan construcción/selección del gráfico con una breve conclusión sobre la forma global (por ejemplo identificar en cuál tramo aumenta o disminuye), manteniendo el foco principal en la correcta construcción del gráfico."
       ]
     },
     "ambiguity_avoid": [
-      "No usar datos temporales donde el orden no sea claro sin explicitarlo (por ejemplo, meses abreviados de forma poco usual o códigos sin ordenar previamente).",
-      "Evitar ejes sin escala clara o sin valores de referencia suficientes para determinar la posición de los puntos.",
-      "No mezclar en un mismo ítem varias unidades de tiempo en el eje horizontal sin indicarlo claramente (por ejemplo, minutos y horas sin aclaración).",
-      "No presentar gráficos donde los puntos están aproximadamente ubicados pero no se puede distinguir de forma nítida qué valor representan.",
-      "Evitar tablas donde haya datos repetidos en el tiempo (dos valores para el mismo instante) sin explicar qué hacer con ellos.",
-      "No pedir inferencias sobre tramos entre puntos si el objetivo del átomo es únicamente la construcción del gráfico de línea a partir de los datos dados.",
-      "Evitar que los distractores contengan detalles extra fuera del contenido del ítem que puedan interpretarse como válidos (por ejemplo, agregar marcadores o símbolos no mencionados en el enunciado).",
-      "No usar escalas rotas o con saltos irregulares en el eje vertical sin una explicación explícita, ya que dificultan centrar el ítem en la habilidad de construcción básica.",
-      "Evitar que los ejes carezcan de rótulo (nombre de la variable y unidad) cuando de ello dependa distinguir cuál gráfico es correcto."
+      "Evitar enunciados que no digan explícitamente cuál variable va en el eje horizontal cuando no es obvio por contexto (dejar claro que el tiempo u orden va en el eje horizontal).",
+      "No usar escalas irregulares sin avisar; si el eje no es uniforme, debe indicarse claramente o no utilizarse en este átomo.",
+      "No mezclar en el mismo ítem datos de tipo acumulado y datos instantáneos sin especificarlo con claridad.",
+      "Evitar tablas o relatos donde el orden temporal no quede claro (por ejemplo, datos enumerados pero no ordenados).",
+      "No incluir alternativas de respuesta que combinen más de un tipo de error simultáneo (por ejemplo ejes intercambiados y escala incorrecta) si eso impide identificar qué habilidad se está evaluando.",
+      "Evitar contextos donde el tiempo no sea lineal (por ejemplo, meses no consecutivos sin explicitarlo) si la pregunta se centra en la construcción básica del gráfico.",
+      "No usar unidades ambiguas o poco realistas que puedan distraer del foco en la representación gráfica (mantener unidades simples y coherentes con el contexto)."
     ],
     "error_families": [
       {
-        "name": "Ejes_invertidos",
-        "description": "El estudiante coloca la variable tiempo en el eje vertical y el valor en el eje horizontal, o selecciona un gráfico con esa configuración incorrecta.",
-        "how_to_address": "En la formulación del ítem destacar explícitamente qué variable va en cada eje y proponer distractores que muestren este error de manera clara, para poder diagnosticarlo. En retroalimentación, enfatizar la convención de usar el tiempo en el eje horizontal."
+        "name": "ejes_invertidos",
+        "description": "El estudiante coloca la variable dependiente en el eje horizontal y la variable independiente (tiempo u orden) en el eje vertical.",
+        "how_to_address": "Incluir ítems donde algunas alternativas muestren claramente los ejes intercambiados, obligando a leer los nombres de los ejes y la tabla. Destacar en el enunciado cuál variable se representa en cada eje."
       },
       {
-        "name": "Perdida_de_orden_temporal",
-        "description": "Al construir o elegir un gráfico, el estudiante ordena los datos por el valor numérico (por ejemplo, de menor a mayor) en lugar de respetar la secuencia temporal dada.",
-        "how_to_address": "Usar contextos donde el orden temporal sea relevante (evolución en el tiempo) y reforzar en la explicación que los puntos se conectan en el orden en que ocurren, no del menor al mayor valor."
+        "name": "orden_incorrecto_de_puntos",
+        "description": "Los puntos se unen siguiendo el valor (de menor a mayor) y no el orden temporal o secuencial dado.",
+        "how_to_address": "Diseñar alternativas donde el conjunto de puntos es correcto pero el trazado une los puntos en orden incorrecto. En el enunciado, enfatizar que los segmentos deben unir puntos en el orden de la tabla o del tiempo."
       },
       {
-        "name": "Escala_incorrecta",
-        "description": "El estudiante asume saltos erróneos en la escala de los ejes o ignora que el eje no comienza en cero, ubicando los puntos en posiciones desproporcionadas.",
-        "how_to_address": "Diseñar ítems donde la escala sea visible pero no trivial, forzando al estudiante a leer los valores marcados. En retroalimentación, destacar cómo se determina el tamaño de cada división y la importancia de la proporcionalidad."
+        "name": "mala_lectura_de_escala",
+        "description": "Los puntos se ubican en posiciones que no corresponden a los valores por no interpretar bien la escala del eje (por ejemplo, tomar cada marca como 1 cuando vale 5).",
+        "how_to_address": "Usar escalas explícitas en el gráfico y opciones que representen errores de interpretación típicos. En correcciones o retroalimentación, subrayar la importancia de leer los valores asociados a cada marca del eje."
       },
       {
-        "name": "Puntos_mal_ubicados",
-        "description": "El estudiante intercambia las coordenadas del punto (valor, tiempo) o confunde filas/columnas de la tabla, ubicando uno o más puntos en lugar incorrecto.",
-        "how_to_address": "Incluir opciones donde solo un punto esté mal para detectar este error. En la explicación, enfatizar la lectura cuidadosa de la tabla (primero tiempo, luego valor) y la identificación clara de cada eje."
+        "name": "omision_de_puntos_o_tramos",
+        "description": "Se omite graficar uno o más puntos, o no se une con segmentos algún par de puntos consecutivos.",
+        "how_to_address": "Proponer alternativas donde falta un punto intermedio o un segmento de conexión. Formular preguntas que requieran verificar el número total de puntos y tramos según la tabla."
       },
       {
-        "name": "Segmentos_incorrectos",
-        "description": "El estudiante no une todos los puntos consecutivos, une puntos que no corresponden al orden o introduce segmentos adicionales.",
-        "how_to_address": "Diseñar ítems donde parte de los puntos ya estén unidos correctamente y otros no, pidiendo completar o identificar el error. Aclarar que el gráfico de línea muestra la evolución uniendo puntos en el orden dado, sin saltarse ni reordenar valores."
+        "name": "asuncion_del_origen_cero",
+        "description": "El estudiante fuerza el eje a comenzar en 0 cuando los datos parten en un valor distinto, deformando la representación o dejando espacio innecesario.",
+        "how_to_address": "Plantear gráficos correctos y erróneos respecto al punto de inicio del eje, preguntando cuál respeta mejor los datos entregados. Destacar, en el contexto, que el eje puede comenzar en un valor distinto de 0 si así se indica."
       },
       {
-        "name": "Confusion_con_otro_tipo_de_grafico",
-        "description": "El estudiante selecciona o construye representaciones más cercanas a gráficos de barras o de puntos aislados en vez de una línea continua o poligonal.",
-        "how_to_address": "En enunciados y explicaciones, nombrar explícitamente \"gráfico de línea\" y mostrar la diferencia con barras o símbolos aislados. Usar distractores con gráficos de barras para detectar la confusión y explicitar la diferencia en la retroalimentación."
+        "name": "confusion_barras_vs_linea",
+        "description": "El estudiante cree que cualquier variación en el tiempo debe graficarse con barras y no identifica el gráfico de línea como la representación adecuada.",
+        "how_to_address": "Incluir ítems de selección de representación en que se deba optar entre barras y línea, con datos claramente secuenciales. Explicitar en las instrucciones que se busca mostrar la evolución continua o tendencial en el tiempo."
       },
       {
-        "name": "Ignorar_unidades_o_etiquetas",
-        "description": "El estudiante no considera las unidades o los rótulos de los ejes, eligiendo un gráfico que representa otra magnitud o escala distinta.",
-        "how_to_address": "Diseñar ítems en los que las unidades de los ejes sean relevantes para distinguir la opción correcta. En la explicación, insistir en que leer las etiquetas es parte esencial de interpretar y construir gráficos adecuados."
+        "name": "ignorar_unidades",
+        "description": "Se grafican valores sin considerar las unidades, lo que lleva a confusiones cuando hay cambios de unidad en el relato (por ejemplo ml vs L).",
+        "how_to_address": "Usar contextos donde la unidad quede muy clara en ejes y tabla. Ofrecer alternativas con valores mal convertidos para resaltar la necesidad de coherencia de unidades antes de graficar."
       }
     ],
     "future_targets": [
-      "Interpretar la información representada en gráficos de línea para responder preguntas sobre el contexto.",
-      "Comparar dos o más gráficos de línea sobre la misma escala para analizar diferencias y similitudes en la evolución de variables.",
-      "Estimar tasas de cambio promedio a partir de la pendiente aproximada de tramos en el gráfico de línea.",
-      "Relacionar gráficos de línea simples con expresiones algebraicas o funciones lineales y no lineales básicas.",
-      "Detectar tendencias generales (creciente, decreciente, estable) y cambios de tendencia en conjuntos de datos temporales.",
-      "Elegir la representación gráfica más adecuada (línea, barras, etc.) para distintos tipos de datos y objetivos.",
-      "Analizar críticamente gráficos estadísticos en medios de comunicación, identificando escalas engañosas o representaciones inadecuadas."
+      "Interpretación de gráficos de línea más complejos (identificar máximos, mínimos, tramos de aumento o disminución).",
+      "Análisis de tendencias y comparación de dos o más gráficos de línea en un mismo sistema de ejes.",
+      "Modelación de situaciones con funciones a partir de gráficos de línea (lineales o aproximadamente lineales).",
+      "Cálculo aproximado de tasas de variación promedio utilizando segmentos del gráfico.",
+      "Toma de decisiones informadas en contextos de datos (por ejemplo, comparar evoluciones de precios, temperaturas, rendimientos).",
+      "Transición entre diferentes representaciones de datos: tabla, gráfico de línea y descripción verbal.",
+      "Trabajo posterior con funciones y gráficos en álgebra, aprovechando la familiaridad con el plano cartesiano."
     ],
     "representation_variants": [
-      "Tabla de datos ordenada por tiempo (variable temporal en la primera columna, valor en la segunda).",
-      "Descripción verbal secuencial de datos (por ejemplo, \"el lunes valía 500, el martes 520, el miércoles 510...\").",
-      "Gráfico de línea parcialmente construido donde faltan algunos puntos o tramos de línea.",
-      "Conjunto de gráficos de línea alternativos entre los cuales el estudiante debe elegir el que corresponde a la tabla o descripción dada.",
-      "Tabla donde el tiempo no es numérico directo (por ejemplo, nombres de días, meses) pero tiene un orden conocido que se refleja en el eje horizontal.",
-      "Plano cartesiano con ejes y escalas ya dibujados, donde el estudiante solo debe ubicar los puntos o completar la línea.",
-      "Tablas con tiempos no equiespaciados donde el eje horizontal contiene marcas temporales específicas (horas del día, años seleccionados)."
+      "Tabla de valores (tiempo, valor) a gráfico de línea con ejes dibujados.",
+      "Descripción verbal de una evolución en el tiempo a tabla intermedia y luego a gráfico de línea.",
+      "Selección del gráfico de línea correcto entre varias alternativas a partir de una tabla dada.",
+      "Comparación entre un gráfico de barras y uno de línea para el mismo conjunto de datos, eligiendo cuál corresponde a la consigna.",
+      "Gráfico de línea con algunos puntos ya dibujados que el estudiante debe completar o verificar.",
+      "Escenarios con más de una serie temporal (dos líneas en un mismo gráfico) donde el foco sea construir o identificar correctamente una de ellas."
     ],
     "numbers_profiles": [
       "small_integers",
       "medium_integers",
-      "decimals_one_decimal",
-      "decimals_two_decimals",
-      "context_numbers_money",
-      "context_numbers_temperature",
-      "context_numbers_time_hours_minutes"
+      "decimals_one_place",
+      "decimals_simple_fractions",
+      "contextual_measures"
     ],
     "required_image_types": [
       "statistical_chart"

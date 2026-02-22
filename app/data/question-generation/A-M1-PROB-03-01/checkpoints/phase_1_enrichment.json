@@ -3,117 +3,120 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Definir cuartiles como tres valores (Q1, Q2, Q3) que dividen un conjunto de datos ordenados en cuatro partes con igual proporción de datos (25% cada una).",
-        "Reconocer que el segundo cuartil (Q2) coincide con la mediana del conjunto de datos.",
-        "Asociar Q1, Q2 y Q3 con sus porcentajes acumulados aproximados: 25%, 50% y 75%, respectivamente.",
-        "Identificar, a nivel conceptual, qué parte del conjunto de datos queda por debajo o entre determinados cuartiles (por ejemplo, que entre Q1 y Q3 se encuentra el 50% central de los datos).",
-        "Relacionar verbalmente la idea de cuartiles con la noción de distribución de datos ordenados (inicio, centro, parte alta)."
+        "Definir cuartiles como valores que dividen un conjunto de datos ORDENADOS en cuatro partes con igual proporción de datos (25% cada una).",
+        "Reconocer que el primer cuartil (Q1) deja por debajo aproximadamente al 25% de los datos y por encima al 75%.",
+        "Reconocer que el segundo cuartil (Q2) corresponde a la mediana y deja por debajo aproximadamente al 50% de los datos.",
+        "Reconocer que el tercer cuartil (Q3) deja por debajo aproximadamente al 75% de los datos y por encima al 25%.",
+        "Asociar cada cuartil con su porcentaje acumulado: Q1 ↔ 25%, Q2 ↔ 50%, Q3 ↔ 75%.",
+        "Identificar verbalmente qué parte de los datos se encuentra entre Q1 y Q3 (el 50% central de los datos).",
+        "Diferenciar conceptualmente cuartil de extremos (mínimo y máximo) y de media aritmética."
       ],
       "out_of_scope": [
-        "Cálculo explícito de cuartiles a partir de un conjunto de datos (aplicar fórmulas, posiciones, interpolaciones).",
-        "Uso de definiciones alternativas conflictivas para el cálculo de cuartiles (distintos métodos de posición o redondeo).",
-        "Interpretación numérica detallada de boxplots (identificar valores atípicos, extremos, rangos intercuartílicos).",
-        "Comparación formal de distribuciones usando cuartiles (por ejemplo, determinar simetría o sesgo con base en cuartiles).",
-        "Probabilidad o inferencia estadística basada en cuartiles (por ejemplo, probabilidad de que un dato caiga bajo cierto cuartil).",
-        "Cálculo de porcentajes finos distintos de 25%, 50% o 75% (por ejemplo, deciles, percentiles específicos).",
-        "Uso de fórmulas de media, varianza o desviación estándar."
+        "Cálculo numérico de cuartiles a partir de datos sin procesar, fórmulas de posición o interpolación.",
+        "Lectura o interpretación detallada de diagramas de caja (boxplot) más allá de reconocer su relación conceptual con cuartiles.",
+        "Uso de percentiles específicos (p.ej., percentil 10, 90) distintos de los cuartiles.",
+        "Comparación de distribuciones usando cuartiles (asimetría, dispersión) de forma profunda.",
+        "Probabilidad asociada a intervalos de una distribución continua (normal u otras) usando cuartiles.",
+        "Validación de métodos de cálculo de cuartiles o discusión de distintas convenciones.",
+        "Trabajo con datos agrupados en intervalos para estimar cuartiles."
       ],
       "prerequisites": [
-        "A-M1-PROB-01-01: Comprender la idea de conjunto de datos y de dato individual.",
-        "A-M1-PROB-02-01: Reconocer la necesidad de ordenar datos para describir su distribución.",
-        "A-M1-PROB-02-02: Comprender el concepto de mediana como valor central de un conjunto de datos ordenados.",
-        "A-M1-NUM-01-02: Interpretar porcentajes básicos (25%, 50%, 75%, 100%) como partes de un todo."
+        "A-M1-DATOS-01-01: Comprende la idea de conjunto de datos y de dato individual.",
+        "A-M1-DATOS-02-01: Reconoce la necesidad de ordenar datos para describir su posición relativa.",
+        "A-M1-PROC-01-01: Comprende el concepto de mediana como valor central de un conjunto de datos ordenados.",
+        "A-M1-NUM-05-01: Interpreta porcentajes y los relaciona con partes de un todo (por ejemplo, 25%, 50%, 75%)."
       ],
       "common_traps": [
-        "Creer que los cuartiles son cuatro valores en vez de tres (confundir cuartiles con «cuatro partes» y no con los valores que delimitan esas partes).",
-        "Confundir Q1, Q2 y Q3 con el 1%, 2% y 3% de los datos, en lugar de 25%, 50% y 75%.",
-        "Pensar que Q1 contiene el 25% de los datos, en vez de entender que Q1 es el valor que deja por debajo aproximadamente al 25% de los datos.",
-        "Confundir Q2 con el promedio (media) y no con la mediana.",
-        "Asumir que los cuartiles se definen solo para distribuciones continuas y no para cualquier conjunto de datos ordenados.",
-        "Interpretar los porcentajes asociados a los cuartiles como exactos en cualquier tamaño de muestra, sin considerar que son aproximaciones al 25%, 50%, 75%."
+        "Olvidar que la definición de cuartiles exige que los datos estén ordenados.",
+        "Confundir cuartiles con cuartos de la amplitud del rango numérico en la recta (dividir el intervalo mínimo-máximo en cuatro segmentos congruentes).",
+        "Pensar que Q1 corresponde al 25% superior en vez del 25% inferior de los datos.",
+        "Creer que Q2 es un valor distinto de la mediana o que son conceptos separados.",
+        "Asumir que entre Q1 y Q3 está el 75% de los datos en lugar del 50% central.",
+        "Confundir cuartiles con cuartas partes de la frecuencia absoluta (contar datos) sin considerar que el foco aquí es solo conceptual, no de cálculo.",
+        "Mezclar cuartiles con otros indicadores (media, moda, percentiles) frente a descripciones verbales poco precisas."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Preguntas que solo requieren reconocer la definición verbal de cuartiles (por ejemplo, identificar enunciados correctos sobre qué son Q1, Q2 y Q3).",
-        "Ítems donde se debe identificar explícitamente que Q2 coincide con la mediana, sin contexto adicional ni distractores sofisticados.",
-        "Reconocimiento directo del porcentaje acumulado asociado a un cuartil (Q1 ↔ 25%, Q2 ↔ 50%, Q3 ↔ 75%) en una lista corta de alternativas.",
-        "Descripciones sencillas del tipo «Q1 deja por debajo alrededor de la cuarta parte de los datos» versus enunciados claramente erróneos."
+        "Ítems que piden reconocer la definición correcta de cuartiles entre varias alternativas claramente distintas (por ejemplo, dividir en cuatro partes con igual cantidad de datos versus igual amplitud numérica).",
+        "Ítems que preguntan explícitamente qué porcentaje de los datos queda por debajo de Q1, Q2 o Q3, con opciones de respuesta alejadas (por ejemplo, 10%, 25%, 50%, 90%).",
+        "Ítems donde se debe identificar que Q2 coincide con la mediana a partir de una lista simple de afirmaciones evidentes.",
+        "Contextos sin datos explícitos, donde solo se contrasta enunciados verbales directos con la definición (p.ej., ‘Q1 es el valor que deja por debajo a la cuarta parte de los datos’)."
       ],
       "medium": [
-        "Ítems que presentan una breve descripción de una distribución de datos ordenados y piden seleccionar la afirmación correcta que relacione cuartiles con proporciones de datos.",
-        "Preguntas donde se debe distinguir entre enunciados similares sobre qué porcentaje de datos queda entre dos cuartiles (por ejemplo, entre Q1 y Q3 se encuentra la mitad de los datos).",
-        "Ítems que mezclan conceptos de mediana y cuartiles, donde el estudiante debe identificar cuál de los cuartiles corresponde a la mediana y cuáles delimitan el 50% central.",
-        "Situaciones cotidianas breves (por ejemplo, puntajes de una prueba o alturas) donde se pide interpretar cuál grupo de personas queda por debajo de cierto cuartil, sin cálculo explícito."
+        "Ítems que presentan una breve situación contextual (puntajes de prueba, alturas, tiempos) y piden identificar una afirmación correcta sobre Q1, Q2 o Q3 en términos de porcentaje de individuos por debajo o por encima.",
+        "Ítems que requieren relacionar simultáneamente varios cuartiles, por ejemplo, reconocer que entre Q1 y Q3 está el 50% central de los datos.",
+        "Ítems con distractores que representan errores típicos realistas (confundir 25% con 75%, o cuartiles con dividir la amplitud del rango en cuatro partes iguales).",
+        "Ítems donde se pide reconocer, a partir de una descripción verbal de posiciones (‘la mitad de los estudiantes’, ‘un cuarto de los datos’, ‘tres cuartos de los casos’), a cuál cuartil se hace referencia."
       ],
       "hard": [
-        "Preguntas conceptuales que incluyen distractores que se apoyan en otros conceptos estadísticos (media, rango, percentiles) y requieren discriminar con precisión qué enunciados se refieren específicamente a cuartiles.",
-        "Ítems en los que se presentan varias afirmaciones simultáneas sobre Q1, Q2 y Q3 (por ejemplo, qué porcentaje de datos queda debajo, entre ellos, sobre Q3) y se pide identificar la combinación correcta.",
-        "Situaciones donde se requiere razonar sobre cómo se distribuyen los datos en los cuatro segmentos delimitados por los cuartiles, sin datos numéricos ni gráficos explícitos, solo a partir del concepto.",
-        "Ítems que obligan a reconocer implícitamente que los cuartiles se definen sobre datos ordenados y que Q1, Q2 y Q3 son puntos de corte y no grupos de datos, diferenciándolos de frecuencias absolutas o relativas."
+        "Ítems que proponen varias afirmaciones simultáneas sobre cuartiles (porcentaje acumulado, parte central, relación con mediana) y piden identificar la combinación correcta, obligando a revisar en detalle cada componente conceptual.",
+        "Ítems en los que se debe discriminar entre cuartiles y otros conceptos cercanos (percentiles generales, terciles, deciles) dentro de un texto más largo o con lenguaje cotidiano impreciso.",
+        "Ítems donde la información verbal es más sutil, por ejemplo describir que ‘alrededor de un 75% de las observaciones no superan cierto valor’ y pedir identificar que ese valor corresponde al tercer cuartil.",
+        "Ítems que introducen tablas sencillas de frecuencias (sin cálculo explícito de cuartiles) y piden interpretar correctamente qué fracción de los datos se ubica por debajo de un cuartil dado, haciendo que los distractores exploten malinterpretaciones de «debajo»/«encima» y porcentajes acumulados."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar redactar que los cuartiles «dividen los datos en cuatro grupos iguales» sin aclarar que se refiere a la misma cantidad de datos (porcentaje de observaciones) y no al mismo ancho numérico del intervalo.",
-      "No usar el término «cuartiles» para referirse tanto a los valores de corte como a los grupos de datos; explicitar que Q1, Q2 y Q3 son valores y que los datos se agrupan entre ellos.",
-      "Evitar mezclar en la misma pregunta distintos métodos de cálculo de cuartiles (posiciones, interpolaciones); en este átomo solo se aborda la idea conceptual, sin método.",
-      "No presentar opciones donde las palabras «media» y «mediana» se usen indistintamente; si aparecen, debe quedar claramente que Q2 se asocia con la mediana, no con la media.",
-      "Evitar hablar de «el primer 25% de los datos» sin precisar si se refiere a los datos más pequeños o a un porcentaje arbitrario; especificar que se trata de los datos de menor valor en el conjunto ordenado.",
-      "No formular enunciados que sugieran que Q4 existe como un cuartil adicional; si se menciona el total de los datos, referirse a 100% o a «todos los datos», no a un supuesto Q4.",
-      "Evitar usar expresiones como «exactamente el 25%» o «exactamente el 75%» en contextos donde pudiera interpretarse literalismo; preferir «aproximadamente» o «alrededor de» cuando proceda."
+      "Evitar usar el término ‘cuarto’ sin aclarar si se refiere a ‘una cuarta parte de los datos’ o a ‘la cuarta parte de la amplitud del intervalo numérico’.",
+      "No escribir enunciados que puedan interpretarse como que los cuartiles dividen el ‘rango numérico’ en cuatro partes iguales en vez del conjunto de datos.",
+      "Evitar muestras extremadamente pequeñas donde la idea de cuartil se vuelva poco intuitiva (por ejemplo, menos de 8–10 datos) si no se explicita que es solo una ilustración conceptual.",
+      "No mezclar en el mismo ítem, sin explicitar, términos como percentil 25, cuartil 1, primer cuarto, ya que pueden generar confusión si la pregunta no apunta a esa equivalencia.",
+      "Cuidar expresiones como ‘la mayoría de los datos’ o ‘casi todos’ cuando se discuten 50%, 75%; preferir porcentajes explícitos para no inducir interpretaciones subjetivas.",
+      "No sugerir procesos de cálculo (por ejemplo, fórmulas de posición, conteos detallados) en este átomo, ya que el foco es conceptual, no procedimental.",
+      "Evitar contextos donde se requiera interpretar un boxplot completo (mínimo, máximo, valores atípicos), a menos que la pregunta se limite estrictamente a qué representan Q1, Q2 y Q3."
     ],
     "error_families": [
       {
-        "name": "Confusión_cuartiles_con_grupos",
-        "description": "El estudiante interpreta que Q1, Q2 y Q3 son grupos de datos (el primer cuarto, el segundo cuarto, etc.) y no valores específicos que delimitan estos grupos.",
-        "how_to_address": "En las preguntas, enfatizar que los cuartiles son valores en la escala de la variable (por ejemplo, una nota, una estatura) y que el grupo de datos queda por debajo o entre esos valores. Incluir formulaciones que contrasten explícitamente: «Q1 es un valor» vs «el primer grupo de datos»."
+        "name": "Confundir cuartiles con división del rango numérico",
+        "description": "El estudiante cree que los cuartiles se obtienen dividiendo el intervalo entre el mínimo y el máximo en cuatro partes numéricas de igual longitud, sin considerar el número de datos en cada parte.",
+        "how_to_address": "En las preguntas, enfatizar que los cuartiles dividen el CONJUNTO DE DATOS (no la recta numérica) en cuatro grupos con aproximadamente la misma cantidad de datos. Incluir distractores que mencionen ‘intervalos de igual tamaño’ y marcarlos como incorrectos, reforzando en el feedback la idea de proporción de datos, no de longitud numérica."
       },
       {
-        "name": "Q2_confundido_con_media",
-        "description": "El estudiantado asume que el segundo cuartil coincide con la media aritmética en lugar de con la mediana.",
-        "how_to_address": "Diseñar ítems que contrapongan afirmaciones del tipo «el segundo cuartil es el valor central (mediana)» frente a «el segundo cuartil es el promedio (media)». Resaltar la idea de orden y posición en la definición correcta."
+        "name": "Invertir el significado de Q1 y Q3",
+        "description": "El estudiante asocia Q1 con el 25% superior y Q3 con el 25% inferior de los datos, o confunde qué porcentaje queda por debajo de cada uno.",
+        "how_to_address": "Plantear ítems donde se explicite ‘por debajo’ y ‘por encima’ para Q1 y Q3, y usar esquemas verbales claros (Q1 ↔ 25% inferior, Q3 ↔ 75% inferior). Destacar, en la retroalimentación, la lectura ‘porcentaje acumulado bajo el cuartil’ para fijar el sentido correcto."
       },
       {
-        "name": "Porcentajes_mal_asignados",
-        "description": "Se asignan porcentajes incorrectos a cada cuartil (por ejemplo, pensar que Q1 corresponde al 10% o 20%, o que entre Q1 y Q3 hay 25% de datos).",
-        "how_to_address": "Incluír alternativas que mezclen porcentajes plausibles pero incorrectos con los correctos (25%, 50%, 75%, 50% entre Q1 y Q3) y forzar a que el estudiante identifique la relación correcta. Repetir en el enunciado la idea de cuatro partes de igual proporción de datos."
+        "name": "Separar incorrectamente mediana y segundo cuartil",
+        "description": "El estudiante piensa que la mediana y el segundo cuartil (Q2) son conceptos distintos o que se refieren a posiciones diferentes en el conjunto de datos.",
+        "how_to_address": "Incluir ítems que comparen enunciados del tipo ‘Q2 es la mediana’ versus ‘Q2 está más arriba que la mediana’. En la explicación, remarcar que Q2 ES, por definición, la mediana y representa el 50% de datos por debajo y 50% por encima (aprox.)."
       },
       {
-        "name": "Confusión_con_percentiles_generales",
-        "description": "El estudiante cree que los cuartiles son cualquier percentil (por ejemplo, asociar Q1 con el 10% o 30% de los datos, o hablar de Q3 como el 90%).",
-        "how_to_address": "Plantear preguntas donde se contraste explícitamente la idea de cuartil con la de percentil, aclarando que los cuartiles corresponden a percentiles específicos: aproximadamente 25, 50 y 75. Evitar mezclar muchos percentiles distintos en este átomo, pero sí usar uno o dos como distractores bien controlados."
+        "name": "Confundir cuartiles con otros indicadores estadísticos",
+        "description": "El estudiante confunde cuartiles con media aritmética, moda, percentiles generales, terciles o deciles, especialmente cuando se usan expresiones como ‘valor típico’ o ‘valor central’.",
+        "how_to_address": "Diseñar distractores que nombren explícitamente ‘promedio’ o ‘valor más frecuente’ y mostrar que estos no se relacionan con dividir los datos en cuatro partes iguales. Reforzar en la retroalimentación que los cuartiles se definen en función de la posición relativa en el orden de los datos, no de suma o frecuencia máxima."
       },
       {
-        "name": "Olvido_del_orden_de_los_datos",
-        "description": "Se pasa por alto que la definición de cuartiles exige que los datos estén ordenados, interpretando cuartiles en datos en bruto sin referencia al orden.",
-        "how_to_address": "Incluir enunciados que mencionen explícitamente «conjunto de datos ordenados» y alternativas erróneas que omitan el orden como requisito. Valorar positivamente aquellas opciones que subrayan el rol del orden en la definición."
+        "name": "Interpretación errónea del 50% central",
+        "description": "El estudiante cree que entre Q1 y Q3 se encuentra el 75% o algún otro porcentaje distinto del 50% de los datos, al sumar incorrectamente porcentajes.",
+        "how_to_address": "Proponer ítems que comparen enunciados sobre cuántos datos quedan entre Q1 y Q3. En las explicaciones, mostrar numéricamente que si debajo de Q1 hay 25% y debajo de Q3 hay 75%, entonces entre ellos hay 75%−25%=50% de los datos."
       },
       {
-        "name": "Igualar_ancho_numerico_con_proporcion_de_datos",
-        "description": "El estudiante piensa que los cuatro segmentos delimitados por los cuartiles tienen el mismo ancho numérico (mismo rango de valores), en lugar de entender que contienen cantidades similares de datos.",
-        "how_to_address": "Proponer descripciones verbales de distribuciones donde el ancho de los intervalos difiere, y preguntar cuál afirmación sobre cuartiles y porcentaje de datos es correcta, reforzando que lo constante es la proporción de datos, no el ancho de los intervalos."
+        "name": "Confusión entre cuartiles y percentiles específicos",
+        "description": "El estudiante no reconoce que Q1, Q2 y Q3 se corresponden conceptualmente con los percentiles 25, 50 y 75, y por lo tanto no logra relacionar enunciados que usan lenguaje de ‘porcentaje acumulado’ con los cuartiles.",
+        "how_to_address": "Aunque no se desarrolle cálculo de percentiles, se puede incluir enunciados verbales que digan ‘el valor por debajo del cual está el 25% de los datos’ y relacionarlos directamente con Q1, aclarando la equivalencia conceptual en la retroalimentación."
       }
     ],
     "future_targets": [
-      "Interpretación y construcción de diagramas de caja (boxplots), identificando los cuartiles, el rango intercuartílico y posibles valores atípicos.",
-      "Comparación de distribuciones de datos a partir de sus cuartiles, identificando simetría, sesgo y dispersión relativa.",
-      "Trabajo con percentiles en contextos aplicados (por ejemplo, resultados de pruebas estandarizadas, indicadores de salud), generalizando la idea de cuartiles.",
-      "Uso de medidas de posición (cuartiles, percentiles, mediana) para resumir e interpretar conjuntos de datos grandes.",
-      "Análisis de datos en estudios estadísticos simples, donde la comprensión de cuartiles permite interpretar reportes y gráficos estadísticos más complejos.",
-      "Conexión entre cuartiles y probabilidad en modelos continuos (por ejemplo, cuartiles de una distribución teórica)."
+      "Interpretar y calcular cuartiles en conjuntos de datos no agrupados (procedimental).",
+      "Leer e interpretar diagramas de caja (boxplot), identificando mínimo, Q1, mediana (Q2), Q3 y máximo.",
+      "Describir la dispersión y la asimetría de una distribución utilizando cuartiles y rango intercuartílico.",
+      "Comparar dos distribuciones a partir de sus cuartiles y de sus diagramas de caja.",
+      "Relacionar cuartiles con otros percentiles y con conceptos de probabilidad acumulada en distribuciones continuas.",
+      "Integrar cuartiles con otras medidas de tendencia central y de dispersión para caracterizar datos estadísticos.",
+      "Aplicar cuartiles en contextos reales (rendimiento académico, tiempos de espera, salarios, etc.) para tomar decisiones informadas."
     ],
     "representation_variants": [
-      "Descripción verbal de la distribución de datos (por ejemplo, «la cuarta parte de los estudiantes obtuvo puntajes inferiores a X»).",
-      "Listas o tablas de datos ordenados donde se habla de los puntos de corte sin exigir cálculo, solo referencia conceptual a Q1, Q2 y Q3.",
-      "Recta numérica descrita textualmente (sin imagen) indicando sectores que contienen aproximadamente el 25%, 50% o 75% de los datos, para asociarlos con los cuartiles.",
-      "Contextos cotidianos (notas, tiempos, alturas, pesos) donde se indica qué porcentaje de individuos queda por debajo de cierto valor que se describe como un cuartil.",
-      "Referencias textuales a un diagrama de caja (por ejemplo, «en el diagrama de caja, el segmento central corresponde a los datos entre Q1 y Q3»), sin necesidad de mostrar el gráfico en este átomo."
+      "Listas de datos discretos presentados explícitamente, indicando que están ordenados o pidiendo reconocer la necesidad de ordenarlos (aunque sin exigir el cálculo de cuartiles).",
+      "Tablas simples de datos o de frecuencias absolutas donde se hable en forma conceptual de ‘la cuarta parte’, ‘la mitad’, ‘tres cuartos’ de los datos, sin llegar al cálculo mecánico.",
+      "Descripciones verbales de distribuciones (por ejemplo, resultados de una prueba, tallas de estudiantes) que mencionen proporciones de datos bajo o sobre cierto valor, asociables a Q1, Q2 o Q3.",
+      "Contextos cotidianos donde se habla de ‘25% de los casos’, ‘la mitad de los estudiantes’, ‘el 75% de las familias’, para vincularlos con la idea de cuartiles sin mostrar fórmulas.",
+      "Referencias textuales a diagramas de caja (por ejemplo, ‘el primer cuartil del diagrama de caja corresponde al valor bajo el cual está el 25% de los datos’), sin exigir lectura gráfica detallada."
     ],
     "numbers_profiles": [
       "small_integers",
-      "integer_ranges_0_100",
-      "simple_percentages",
-      "contextual_real_values"
+      "medium_integers",
+      "simple_percentages"
     ],
     "required_image_types": []
   }

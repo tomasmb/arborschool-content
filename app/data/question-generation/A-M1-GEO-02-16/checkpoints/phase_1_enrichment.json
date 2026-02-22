@@ -3,133 +3,138 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Problemas contextualizados que requieran cálculo de área y/o volumen de prismas con base no rectangular (especialmente prismas triangulares) y cilindros.",
-        "Cálculo de áreas laterales, áreas de base y áreas totales de cilindros y prismas triangulares en contextos reales (envases, depósitos, estructuras, piscinas, etc.).",
-        "Problemas donde se deba decidir qué área usar: solo base, solo lateral o área total (por ejemplo, latas sin tapa, vasos, piscinas abiertas).",
-        "Conversión básica entre unidades de longitud/área/volumen cuando es necesaria para interpretar o validar el resultado en contexto.",
-        "Verificación de la razonabilidad del resultado (dimensiones y volúmenes positivos, órdenes de magnitud coherentes con la situación).",
-        "Uso de fórmulas estándar: área del triángulo, perímetro de la base, área lateral del cilindro como rectángulo desplegado, volumen como área de base por altura."
+        "Cálculo de área total, área lateral o área de bases de cilindros rectos en contextos reales (envases, vasos, tubos, latas, depósitos).",
+        "Cálculo de volumen de cilindros rectos en situaciones de la vida cotidiana (capacidad de recipientes, estanques, columnas).",
+        "Cálculo de área o volumen de prismas rectos de base no rectangular, en particular prismas triangulares (piscinas, vigas, techumbres, cunetas).",
+        "Problemas que combinan partes de la superficie (por ejemplo, solo área lateral o área sin tapa/base) para determinar material utilizado o pintado.",
+        "Problemas contextualizados que exigen interpretar qué se pide (material, capacidad, costo asociado al área, etc.) y verificar la plausibilidad del resultado (dimensiones y medidas no negativas).",
+        "Combinación de cuerpos simples del tipo cilindro y prisma (por ejemplo, unión o corte de piezas) siempre que el cálculo se reduzca a suma o resta de áreas/volúmenes conocidos.",
+        "Uso de π aproximado (3,14 o 22/7) o mantener π simbólico según se indique en el ítem."
       ],
       "out_of_scope": [
-        "Cuerpos que no sean prismas generales o cilindros (no incluir conos, pirámides, esferas u otros cuerpos de revolución distintos del cilindro).",
-        "Prismas con bases compuestas muy irregulares o polígonos de muchos lados que requieran técnicas avanzadas (polígonos regulares con apotema, descomposición compleja).",
-        "Uso de fórmulas avanzadas de geometría del espacio (por ejemplo, secciones oblicuas, ángulos entre planos o diagonales espaciales).",
-        "Optimización geométrica (maximizar o minimizar área/volumen variando dimensiones) con herramientas de cálculo o funciones.",
-        "Problemas que requieran estadística o probabilidad asociada a los cuerpos (por ejemplo, probabilidad de que un punto al azar caiga dentro de cierta región).",
-        "Uso de trigonometría avanzada para determinar dimensiones de la base; a lo más, se puede usar triángulos rectángulos simples si se explicita o es inmediato."
+        "Prismas con bases rectangulares como foco principal (eso pertenece a átomos de menor complejidad).",
+        "Cuerpos que no sean prismas o cilindros (conos, pirámides, esferas, troncos de cono, etc.), salvo que aparezcan solo como distractores visuales no calculables.",
+        "Problemas que requieran fórmulas avanzadas de áreas de polígonos irregulares, sectores circulares o figuras curvas no estándar.",
+        "Uso de trigonometría para deducir dimensiones de la base (por ejemplo, calcular lados de un triángulo con senos/cosenos para luego el volumen).",
+        "Demostraciones formales de fórmulas de área o volumen; este átomo es procedimental y aplicado.",
+        "Optimización o problemas de máximos/mínimos (por ejemplo, minimizar superficie para volumen dado).",
+        "Prismas oblicuos o cilindros inclinados donde se requiera manejo de proyecciones.",
+        "Situaciones que se reduzcan únicamente a recordar la fórmula sin interpretación contextual (por ejemplo, solo ‘calcule el volumen de este cilindro’ sin relato ni contexto)."
       ],
       "prerequisites": [
-        "A-M1-GEO-01-xx: Reconoce y calcula áreas de figuras planas simples (triángulos, rectángulos, polígonos compuestos sencillos).",
-        "A-M1-GEO-02-xx: Comprende y aplica las fórmulas de volumen de prismas rectos y cilindros en casos básicos.",
-        "A-M1-NUM-01-xx: Maneja operaciones con números naturales, decimales y fracciones simples.",
-        "A-M1-MED-01-xx: Maneja unidades de medida de longitud, superficie y volumen, incluyendo conversiones simples (cm–m, cm²–m², cm³–L)."
+        "A-M1-GEO-01-01: Reconocer y describir cuerpos geométricos básicos (prisma, cilindro) y sus elementos (base, altura, arista, radio, diámetro).",
+        "A-M1-GEO-01-05: Calcular áreas de polígonos simples, en particular triángulos y rectángulos.",
+        "A-M1-GEO-01-06: Conocer y usar la fórmula de área del círculo (A = πr²) y perímetro de la circunferencia (P = 2πr).",
+        "A-M1-NUM-01-02: Manejo fluido de operaciones con números racionales, incluyendo potencias simples y multiplicaciones por π.",
+        "A-M1-GEO-02-10: Cálculo de volumen y área de prismas rectos simples (bases rectangulares) como caso base."
       ],
       "common_traps": [
-        "Calcular solo el área lateral cuando el problema requiere área total (olvidar la base o la tapa, por ejemplo, en un estanque cerrado).",
-        "Incluir la tapa cuando la situación describe explícitamente un objeto abierto por arriba (piscina, macetero, vaso sin tapa).",
-        "Confundir perímetro de la base con área de la base, lo que lleva a áreas laterales o volúmenes erróneos.",
-        "Usar mal la fórmula de área lateral del cilindro (tomar 2πr² en vez de 2πrh, o confundir radio con diámetro).",
-        "Olvidar multiplicar por la altura al calcular volumen (quedarse solo con el área de la base).",
-        "No coordinar unidades (por ejemplo, radio en cm y altura en m, o volumen pedido en litros y calculado en cm³).",
-        "No interpretar bien qué representa la altura del cuerpo en contexto (confundir ‘largo’ del prisma con ‘alto’ requerido en la fórmula).",
-        "No revisar si las respuestas negativas, demasiado grandes o demasiado pequeñas son razonables en el contexto (no aplicar criterio de realidad)."
+        "Confundir altura del cuerpo con radio o diámetro del cilindro, especialmente cuando solo algunos datos están rotulados en la figura.",
+        "Usar el diámetro en lugar del radio en las fórmulas de área de la base (A = πd² en vez de A = πr²) o de perímetro de la circunferencia.",
+        "Olvidar multiplicar el área de la base por la altura al calcular el volumen de prismas o cilindros.",
+        "Confundir área lateral con área total: sumar o no las bases cuando el contexto indica ‘sin tapa’, ‘solo la parte curva’, ‘solo los lados’, etc.",
+        "No interpretar correctamemente el contexto y calcular área cuando se pide volumen (o al revés), por ejemplo, capacidad vs. cantidad de pintura o material.",
+        "No considerar el número de elementos iguales en el contexto (por ejemplo, dos cilindros unidos, varias vigas prismáticas) y calcular solo uno.",
+        "Realizar conversiones de unidades incorrectas o ignorar que todas las dimensiones deben estar en la misma unidad antes de calcular.",
+        "Aceptar resultados numéricos imposibles en el contexto (volúmenes negativos, áreas menores que una de las caras, capacidades totalmente desproporcionadas)."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Contextos cotidianos muy directos (lata, vaso cilíndrico, estanque rectangular de base triangular simple) donde se indica explícitamente qué magnitud calcular (área lateral, área total o volumen).",
-        "Figuras con todos los datos necesarios claramente dados en la imagen o en el texto, sin necesidad de inferir dimensiones faltantes.",
-        "Uso de una sola fórmula principal (solo volumen o solo área total) con base muy simple (triángulo rectángulo con catetos dados, círculo con radio entero pequeño).",
-        "Números sencillos (enteros pequeños, decimales con una cifra o fracciones muy simples) y resultados sin conversiones de unidades.",
-        "Sin pasos intermedios de modelación: el estudiante solo debe reemplazar en la fórmula adecuada y calcular."
+        "Cuerpos individuales (un solo cilindro o un solo prisma triangular) con todas las dimensiones dadas explícitamente y en la misma unidad.",
+        "Solicitar directamente volumen o área total, sin necesidad de distinguir entre área lateral y bases según el contexto.",
+        "Bases de área inmediata (por ejemplo, triángulo rectángulo con catetos pequeños, radio entero pequeño) que no requieran cálculos fraccionarios complejos.",
+        "Enunciados cortos, con contexto cercano (envases, piscinas, recipientes) donde el estudiante solo debe identificar la fórmula adecuada y aplicarla.",
+        "Sin necesidad de sumar o restar volúmenes o áreas de varias piezas; solo un cálculo principal y, a lo más, una multiplicación por una cantidad de elementos idénticos.",
+        "Opciones de respuesta con diferencias notorias (órdenes de magnitud distintos) que no exijan análisis fino de plausibilidad."
       ],
       "medium": [
-        "Contextos donde se deba decidir si usar área lateral, solo base o área total, a partir de la interpretación del objeto (por ejemplo, envases abiertos o cerrados, piscinas con o sin tapa).",
-        "Necesidad de combinar varias superficies (por ejemplo, área lateral más una sola base, o suma de paredes y fondo de una piscina prismática triangular).",
-        "Prismas de base triangular no rectángula o triangulares que requieran calcular el área de la base con una pequeña descomposición o uso de la fórmula 1/2·base·altura no inmediatamente evidente.",
-        "Cilindros donde sea necesario distinguir claramente entre radio y diámetro y usar correctamente circunferencia y área del círculo.",
-        "Incluyen una conversión sencilla de unidades (por ejemplo, cm³ a litros, cm a m) o un cálculo intermedio (por ejemplo, determinar primero el área de la base a partir de otras longitudes dadas).",
-        "Validación básica del resultado: el alumno debe descartar alternativas no razonables por signo, orden de magnitud o incompatibilidad con el contexto."
+        "Situaciones con uno o dos cuerpos del mismo tipo (por ejemplo, dos cilindros unidos o varios prismas iguales) donde se requiera sumar volúmenes o áreas.",
+        "Problemas que exijan decidir si corresponde área total o área lateral, interpretando correctamente expresiones como ‘sin tapa’, ‘solo la parte curva’, ‘solo los costados’.",
+        "Bases no rectangulares que requieren al menos un paso intermedio de cálculo de área (triángulo no recto, por ejemplo usando base·altura/2 explícita en el enunciado o figura).",
+        "Datos presentados parcialmente en el enunciado y parcialmente en la figura, obligando a leer y relacionar ambos.",
+        "Cálculos que involucren π con radios o alturas de dos dígitos, pero con operaciones manejables y sin fracciones demasiado complejas.",
+        "Verificación básica de plausibilidad, por ejemplo, discriminar entre opciones muy cercanas en valor mediante una estimación somera del orden de magnitud."
       ],
       "hard": [
-        "Problemas de modelación más compleja donde se debe extraer del texto o de un esquema las dimensiones relevantes (la altura del líquido vs altura total, espesor despreciable, etc.).",
-        "Situaciones que combinan varias partes de un mismo cuerpo (por ejemplo, un depósito cilíndrico sin tapa que se refuerza con una lámina adicional en el fondo, o una piscina prismática con un lado inclinado que genera base triangular no trivial).",
-        "Requieren varios pasos encadenados: determinar dimensión faltante a partir de otra información, luego calcular área de base, luego volumen o área total, y finalmente aplicar una interpretación (por ejemplo, cuántos recipientes se pueden llenar).",
-        "Uso de decimales no tan simples, fracciones no triviales o resultados que requieren aproximación razonable (por ejemplo, usar π ≈ 3,14 de manera adecuada).",
-        "Necesidad de comparar dos opciones o escenarios (por ejemplo, dos diseños de envase con diferentes dimensiones) usando área o volumen, eligiendo el más eficiente a partir de los cálculos.",
-        "Exigen una revisión crítica más elaborada del resultado, considerando el contexto (por ejemplo, restricciones de capacidad máxima, coherencia con datos de cantidad de material disponible)."
+        "Problemas con combinación de cuerpos de distinto tipo (por ejemplo, unión o diferencia de cilindro y prisma triangular) que requieran suma y/o resta de áreas o volúmenes.",
+        "Contextos donde se deba interpretar indirectamente alguna dimensión (por ejemplo, deducir el radio a partir del diámetro, o la altura a partir de una descripción de profundidad, espesor, etc.).",
+        "Ítems que demandan distinguir y combinar adecuadamente área lateral y bases en varios pasos (por ejemplo, área total de una pieza compuesta con partes sin tapa y otras cerradas).",
+        "Cálculos que involucren fracciones, conversiones de unidades (cm a m, L a cm³, etc.) o números no tan amigables que exigen planificación de las operaciones.",
+        "Contextos donde el estudiante deba decidir explícitamente si el modelo geométrico adecuado es prisma o cilindro (o una combinación de ambos) a partir de una descripción verbal o imagen menos obvia.",
+        "Problemas que requieran análisis de plausibilidad más sofisticado, por ejemplo, comparar resultados cercanos sin cálculo exacto, o descartar opciones por ser incompatibles con el contexto físico (capacidad excesiva, cantidad de material irreal, etc.)."
       ]
     },
     "ambiguity_avoid": [
-      "Indicar explícitamente si el objeto está ‘abierto’ o ‘cerrado’ por arriba y por abajo (ej.: ‘sin tapa’, ‘con tapa’, ‘abierto por arriba’, ‘cerrado por ambos extremos’) para no confundir el uso de bases en el área total.",
-      "Especificar claramente si el espesor del material es despreciable o no, evitando interpretaciones sobre volúmenes de paredes vs volumen interno.",
-      "Definir con precisión las dimensiones en la figura: distinguir entre radio y diámetro, y etiquetar claramente altura del cuerpo, largo, ancho y profundidad cuando corresponda.",
-      "Evitar describir la base con términos vagos; si la base es triangular, indicar o dibujar qué lados y alturas se conocen, evitando ambigüedad en la elección de ‘base’ y ‘altura’ del triángulo.",
-      "Explicitar la unidad de cada magnitud y la unidad solicitada en la respuesta, evitando que se preste a respuestas numéricas en unidades distintas (indicar si se espera L, m³, cm³, etc.).",
-      "Cuando se trate de recipientes con cierto nivel de llenado, indicar con claridad si se pide el volumen total del recipiente o solo el volumen ocupado por el líquido.",
-      "Evitar contextos en que el mismo término pueda referirse a dos dimensiones distintas (ej.: ‘alto’ de una piscina vs ‘profundidad del agua’); usar vocabulario diferenciador y apoyarse en el diagrama.",
-      "Si se usa π, indicar si se debe aproximar (y con qué valor) o si se acepta la respuesta en términos de π, para evitar interpretaciones distintas entre alternativas."
+      "No usar términos vagos como ‘alto’, ‘ancho’, ‘largo’ en cilindros sin aclarar claramente qué corresponde al radio/diámetro y qué a la altura; etiquetar las medidas en la figura.",
+      "Evitar figuras donde no se distinga si la medida mostrada corresponde al radio o al diámetro; especificar en el enunciado o marcar el centro de la base si es radio.",
+      "No usar expresiones ambiguas como ‘superficie del cilindro’ sin precisar si se refiere a área lateral, área de base, o área total; siempre explicitar ‘área lateral’, ‘área total’, ‘incluyendo las dos bases’, etc.",
+      "Evitar contextos donde la forma real del objeto pueda interpretarse como otro sólido (por ejemplo, un estanque que podría interpretarse como prisma o como cilindro) sin describir explícitamente el modelo geométrico a usar.",
+      "No mezclar unidades de medida sin especificarlo claramente ni obligar a conversiones implícitas; indicar siempre las unidades en las dimensiones y, si es relevante, en la respuesta.",
+      "Evitar problemas donde la base del prisma no esté claramente identificada en la figura (qué caras son base y cuáles son laterales); usar sombreado o etiquetas claras (‘base’).",
+      "No dar datos redundantes o irrelevantes que puedan confundir cuál es la altura del cuerpo; solo incluir las dimensiones necesarias o explicitar en el texto cuáles se requieren.",
+      "No plantear situaciones donde el nivel de ‘llenado’ (por ejemplo, mitad del estanque, tres cuartos lleno) pueda interpretarse de distintas maneras; señalar claramente proporciones o volúmenes iniciales/finales."
     ],
     "error_families": [
       {
-        "name": "Confusión entre área lateral y área total",
-        "description": "El estudiante calcula solo el área lateral cuando el problema requiere área total (o viceversa), por no interpretar si el sólido tiene tapa, base o ambas expuestas.",
-        "how_to_address": "Plantear preguntas que obliguen a describir primero qué superficies efectivamente se cubren/pintan/están en contacto, antes de aplicar la fórmula; enfatizar la lectura de ‘con/sin tapa’ y el análisis previo del objeto en el diagrama."
+        "name": "Confusión de radio y diámetro",
+        "description": "El estudiante usa el diámetro como si fuera el radio en las fórmulas de área (πr²) y de perímetro (2πr), generando resultados cuatro veces mayores en área y el doble en perímetro.",
+        "how_to_address": "Destacar explícitamente en el enunciado si la medida entregada es radio o diámetro, y en ítems formativos incluir distractores que evidencien este error. Reforzar con esquemas que muestren r = d/2 y ejercicios donde se deba calcular primero el radio a partir del diámetro."
       },
       {
-        "name": "Base mal identificada en prismas triangulares",
-        "description": "Se elige mal ‘base’ y ‘altura’ en el triángulo de la base del prisma, usando pares de lados que no son perpendiculares, lo que genera áreas de base incorrectas.",
-        "how_to_address": "Usar figuras donde la altura del triángulo esté claramente trazada y etiquetada; pedir explícitamente que identifiquen qué segmento es la altura del triángulo antes de pedir el cálculo del área; trabajar ejemplos de triángulos no rectángulos."
+        "name": "Olvido de las bases en el área total",
+        "description": "Al calcular el área total de un cilindro o prisma, el estudiante solo considera el área lateral y omite una o ambas bases.",
+        "how_to_address": "Diseñar ítems que contrasten casos ‘con tapa’, ‘sin tapa’ y ‘sin fondo y sin tapa’ para forzar la reflexión sobre qué superficies se incluyen. Mostrar en la figura las partes pintadas o cubiertas, y en retroalimentación descomponer el área total en lateral + bases."
       },
       {
-        "name": "Formulas de cilindro mal utilizadas",
-        "description": "Confusión entre 2πrh y 2πr², uso incorrecto del diámetro como si fuera el radio, o mezcla de fórmulas de circunferencia y área de círculo.",
-        "how_to_address": "Incluir ítems intermedios donde deban identificar el significado de cada símbolo (r, h, 2πr, πr²) en el contexto y relacionar el desarrollo plano (rectángulo + 2 círculos) con las fórmulas de área."
+        "name": "Confusión de fórmulas de área de triángulo",
+        "description": "En prismas triangulares, el estudiante aplica mal la fórmula del área de la base (usa suma de lados, producto de lados sin dividir por 2, o confunde base y altura).",
+        "how_to_address": "Incluir figuras donde base y altura del triángulo estén claramente señaladas con un ángulo recto o marcas, y ejercicios intermedios donde la tarea sea solo ‘calcule el área de la base’ antes de usarla en el volumen."
       },
       {
-        "name": "Volumen sin multiplicar por la altura",
-        "description": "El estudiante calcula correctamente el área de la base pero olvida multiplicarla por la altura del cuerpo al hallar el volumen.",
-        "how_to_address": "Proponer problemas donde se compare explícitamente ‘área de base’ con ‘volumen’ del mismo objeto, destacando con unidades (m² vs m³) y pidiendo interpretar la diferencia en palabras."
+        "name": "Altura del cuerpo confundida con otra dimensión",
+        "description": "El estudiante toma como altura del cilindro o prisma una dimensión que corresponde a otra característica (por ejemplo, longitud total de la pieza, longitud de una arista lateral no vertical, espesor).",
+        "how_to_address": "En problemas de práctica, destacar visualmente la altura h en la figura y proponer distractores que surjan de usar la medida equivocada. Promover que el estudiante identifique verbalmente ‘qué representa la altura en este contexto’ antes de calcular."
       },
       {
-        "name": "Manejo deficiente de unidades",
-        "description": "Se mezclan unidades de longitud distintas sin convertir, o se entrega el resultado en unidades de longitud o área cuando se pide volumen (por ejemplo, m en vez de m³, o cm³ cuando se pedían litros).",
-        "how_to_address": "Incluir pasos intermedios en que deban escribir la unidad en cada resultado parcial; diseñar ítems donde solo una alternativa tenga la unidad correcta aunque varios valores numéricos sean parecidos."
+        "name": "Mala gestión de unidades",
+        "description": "El estudiante mezcla cm, m, L, mL sin convertir, lo que origina resultados con unidades incoherentes o de orden de magnitud incorrecto.",
+        "how_to_address": "Proponer ítems con cambios de unidades explícitos (por ejemplo, volumen en cm³ y respuesta pedida en litros) y enfatizar en la retroalimentación las equivalencias clave (1 L = 1000 cm³, 1 m = 100 cm)."
       },
       {
-        "name": "Resultados irreales no detectados",
-        "description": "El estudiante obtiene dimensiones negativas, volúmenes imposibles (demasiado grandes o pequeños) o cantidades que no encajan con el contexto y no los cuestiona.",
-        "how_to_address": "Plantear alternativas con resultados numéricamente ‘cercanos’ pero claramente imposibles en el contexto (por ejemplo, una piscina para una casa con volumen de varios millones de litros) y pedir justificar por qué son inadecuados."
+        "name": "No considerar todas las piezas en contextos compuestos",
+        "description": "En situaciones con varias piezas o cuerpos unidos (por ejemplo, dos cilindros o varios prismas que forman una estructura), el estudiante calcula solo para uno de ellos o no suma/resta correctamente.",
+        "how_to_address": "Usar contextos donde la cantidad de elementos sea parte central del enunciado (dos estanques, cuatro vigas, etc.), y en corrección explicitar la suma de volúmenes/áreas de cada componente. Incorporar esquemas que enumeren visualmente cada pieza."
       },
       {
-        "name": "Interpretación parcial de la figura",
-        "description": "Se ignoran medidas clave que están solo en el dibujo (por ejemplo, altura del agua, ancho de la base) o se usan medidas erróneas al leer la figura, provocando un modelo incorrecto.",
-        "how_to_address": "Diseñar ítems en que algunas dimensiones aparezcan solo en la imagen, obligando a leerla; enfatizar el subrayado o marcaje de datos en el esquema antes de calcular; incluir distractores que reflejen el uso de una medida equivocada de la figura."
+        "name": "Aceptación acrítica de resultados imposibles",
+        "description": "El estudiante elige resultados numéricamente correctos desde la aritmética, pero incompatibles con el contexto (por ejemplo, una pequeña lata con capacidad de miles de litros).",
+        "how_to_address": "Diseñar opciones de respuesta que incluyan valores con órdenes de magnitud extremos y pedir explícitamente estimaciones rápidas. En la retroalimentación, enfatizar comparar el resultado con dimensiones reales aproximadas (tamaño de una piscina, una botella, etc.)."
       }
     ],
     "future_targets": [
-      "Resolución de problemas con cuerpos geométricos compuestos (combinaciones de prismas, cilindros, pirámides y conos).",
-      "Optimización geométrica básica en contextos de diseño de envases (minimizar área para un volumen dado, o maximizar volumen con área limitada).",
-      "Modelación de situaciones físicas simples que relacionan volumen con otras magnitudes (por ejemplo, caudal de llenado de un estanque en función del tiempo).",
-      "Uso de funciones para describir cómo cambia el volumen o el nivel de llenado en recipientes de diferentes formas.",
-      "Aplicación de teoremas más avanzados de geometría espacial y trigonometría para determinar dimensiones faltantes en cuerpos más complejos.",
-      "Resolución de problemas integrados que combinen geometría 3D, proporcionalidad y estadística (por ejemplo, análisis de consumo de agua, costos de materiales, etc.)."
+      "Resolución de problemas con cuerpos más complejos (conos, pirámides, esferas y troncos) y combinación de varios tipos de sólidos.",
+      "Modelación geométrica de situaciones reales más sofisticadas, donde se descompone un objeto cotidiano en sólidos elementales para estimar materiales o capacidades.",
+      "Optimización geométrica básica, como minimizar superficie para un volumen dado o maximizar volumen para un área de material fija.",
+      "Integración de proporcionalidad y escalas, por ejemplo, analizar cómo cambian volumen y área cuando se escala linealmente un cuerpo.",
+      "Uso inicial de herramientas de cálculo diferencial en cursos posteriores para justificar fórmulas de volumen y área de sólidos de revolución.",
+      "Problemas de física básica que usan volumen y área (presión, caudal, llenado de estanques, resistencia de materiales) en contextos interdisciplinarios."
     ],
     "representation_variants": [
-      "Descripción textual detallada del objeto (por ejemplo, tanque cilíndrico, piscina prismática triangular) con las dimensiones indicadas en el texto.",
-      "Diagrama 3D sencillo del prisma o cilindro con sus dimensiones etiquetadas (alto, radio, largo, ancho, etc.), donde el estudiante deba interpretar el esquema.",
-      "Desarrollo plano del cilindro (rectángulo + dos círculos) o del prisma (rectángulos y triángulos) para calcular áreas de superficie.",
-      "Sección transversal 2D que represente la base del prisma o del cilindro, en la que se calcule el área de base a partir de sus dimensiones.",
-      "Tablas o listados de medidas (por ejemplo, distintas opciones de altura y radio para un mismo volumen) que el estudiante deba comparar usando cálculo de área o volumen.",
-      "Representación mixta texto-diagrama, donde parte de las dimensiones se entregan en el dibujo y otras en el texto del problema."
+      "Cuerpos representados en perspectiva 3D (cilindros y prismas triangulares) con dimensiones claramente etiquetadas (altura, radio/diámetro, lados de la base).",
+      "Desarrollos planos (redes) de cilindros y prismas, especialmente para trabajar área lateral y bases en contextos de construcción de envases o envolturas.",
+      "Diagramas esquemáticos simplificados de objetos reales (estanques, piscinas, vigas, postes, envases) que se aproximan por cilindros o prismas triangulares.",
+      "Tablas con medidas de distintas piezas (diámetro, altura, cantidad de elementos) que deben combinarse para calcular volumen o área total.",
+      "Representaciones mixtas texto–figura, donde parte de la información está en la imagen (dimensiones, forma) y parte en el texto (cantidad de elementos, nivel de llenado, superficies a considerar)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "two_digit_integers",
-      "decimal_one_place",
-      "decimal_two_places",
+      "medium_integers",
+      "decimals_one_decimal_place",
+      "decimals_two_decimal_places",
       "simple_fractions",
-      "powers_of_10_for_units_conversion"
+      "pi_approx_3_14",
+      "pi_symbolic"
     ],
     "required_image_types": [
       "complex_3d"

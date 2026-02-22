@@ -3,127 +3,143 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de la cantidad final luego de UNA sola disminución porcentual aplicada a un valor inicial.",
-        "Descuentos comerciales directos sobre precios de productos o servicios.",
-        "Rebajas expresadas como porcentaje del precio original.",
-        "Pérdidas porcentuales de cantidades (por ejemplo, de dinero, de masa, de puntaje).",
-        "Uso equivalente de ambos métodos: restar el porcentaje del valor inicial o multiplicar por el factor de disminución (1 - porcentaje).",
-        "Contextos cotidianos simples: compras, promociones, rebajas, pérdidas en inversiones, disminución de aforos, etc."
+        "Cálculo del valor final después de aplicar una única disminución porcentual a un valor inicial.",
+        "Contextos de descuentos comerciales, rebajas, promociones, pérdidas de valor o merma expresadas como porcentaje.",
+        "Cálculo mediante resta de la parte porcentual del valor inicial.",
+        "Cálculo mediante multiplicación por el factor de disminución (1 - porcentaje).",
+        "Situaciones donde el porcentaje de descuento está dado explícitamente o se lee de datos presentados en texto o tabla simple.",
+        "Aplicación de disminuciones sobre montos expresados en pesos chilenos u otras cantidades numéricas (litros, kilos, puntajes, etc.)."
       ],
       "out_of_scope": [
-        "Aplicación de DOS o más descuentos o disminuciones sucesivas.",
-        "Aumentos porcentuales o mezclas de aumentos y disminuciones en un mismo ítem.",
-        "Cálculo de porcentaje aplicado a la CANTIDAD DESCONTADA (por ejemplo, comisiones) como resultado principal.",
-        "Problemas que requieran ecuaciones o sistemas para encontrar el porcentaje desconocido (descuento incógnita).",
-        "Interés simple o compuesto, depreciación en varios períodos o procesos iterativos.",
-        "Situaciones que exijan trabajar con tasas porcentuales variables en el tiempo.",
-        "Cálculo de porcentajes sobre bases cambiantes (por ejemplo, IVA más descuento) cuando implica dos operaciones porcentuales distintas."
+        "Aplicar aumentos porcentuales (interés, reajustes al alza, IVA, etc.) salvo que el ítem pregunte solo por la disminución.",
+        "Descuentos sucesivos o compuestos (por ejemplo, primero 10 % y luego 20 %).",
+        "Cálculo del porcentaje de descuento a partir de los valores inicial y final (eso corresponde a hallar un porcentaje, no a aplicarlo).",
+        "Aplicación simultánea de aumento y disminución en la misma situación.",
+        "Cálculos que requieran ecuaciones algebraicas no triviales (resolver por x) más allá de una regla de tres directa.",
+        "Problemas que exijan interpretar o comparar gráficos estadísticos complejos; si aparece un gráfico, solo debe entregar el porcentaje para aplicar la disminución.",
+        "Trabajar con tasas de variación porcentual acumulada en varios periodos de tiempo.",
+        "Uso de porcentajes sobre cantidades negativas o sobre expresiones algebraicas generales."
       ],
       "prerequisites": [
-        "A-M1-NUM-01-01: Comprender el significado de porcentaje como razón sobre 100.",
-        "A-M1-NUM-01-02: Convertir porcentajes a fracciones decimales y viceversa (por ejemplo, 20% ↔ 0,20).",
-        "A-M1-NUM-01-03: Calcular un porcentaje de una cantidad dada (por ejemplo, hallar el 15% de 8000).",
-        "A-M1-NUM-01-04: Operar con números decimales y fracciones en contextos aritméticos simples.",
-        "A-M1-NUM-02-08: Aplicar incrementos porcentuales simples (como contraste conceptual)."
+        "A-M1-NUM-01-01: Comprensión de porcentajes como razones sobre 100.",
+        "A-M1-NUM-01-02: Conversión entre fracciones decimales, decimales y porcentajes (ej. 20 % = 0,2).",
+        "A-M1-NUM-01-03: Cálculo de un porcentaje de una cantidad (por ejemplo, hallar el 15 % de 80).",
+        "A-M1-NUM-01-04: Operaciones básicas con números decimales y naturales (suma, resta, multiplicación)."
       ],
       "common_traps": [
-        "Interpretar la disminución porcentual como un AUMENTO (suma en vez de resta).",
-        "Olvidar que el factor de disminución es (1 - p) y usar solo p (por ejemplo, multiplicar por 0,20 en lugar de 0,80 para un 20% de descuento).",
-        "Confundir el porcentaje de descuento con el precio final (por ejemplo, responder 20 en vez de el precio rebajado).",
-        "Aplicar mal la base del porcentaje cuando aparecen dos cantidades (por ejemplo, usar el precio rebajado en lugar del original para calcular el descuento).",
-        "Confundir una disminución del x% con restar x unidades (por ejemplo, 20% de 5000 como 5000 - 20).",
-        "Errores de redondeo excesivo que cambian la alternativa correcta (redondear demasiado pronto o mal uso de aproximaciones).",
-        "Plantear bienes con dos etapas de cálculo porcentual (por ejemplo, descuento y luego impuesto) que violen el alcance de una sola disminución en este átomo."
+        "Interpretar un porcentaje de descuento como un monto fijo y no relativo al valor inicial.",
+        "Sumar el porcentaje al valor inicial en vez de restarlo (confusión entre aumento y disminución).",
+        "Calcular correctamente el porcentaje de la cantidad, pero olvidarse de restarlo al valor inicial.",
+        "Usar mal el factor de disminución, por ejemplo, multiplicar por 0,2 en lugar de 0,8 cuando el descuento es del 20 %.",
+        "Confundirse cuando el descuento se aplica al total de varias unidades y no a una sola (no multiplicar primero por la cantidad de productos).",
+        "Errores de lectura en contextos con varios porcentajes donde solo uno corresponde a disminución.",
+        "Redondeos innecesarios o incoherentes en precios en pesos cuando los datos son enteros y el resultado también debería ser entero.",
+        "Tomar el porcentaje respecto de la cantidad equivocada cuando se mencionan varias magnitudes en el enunciado."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Descuentos con porcentajes simples (10%, 20%, 25%, 50%) y números enteros pequeños o redondos (como 5000, 10000, 20000).",
-        "Enunciado corto y directo, con explícita indicación de que se trata de un descuento o rebaja sobre un precio único.",
-        "Requiere solo un cálculo directo del porcentaje y una resta o multiplicación por el factor (1 - p), sin pasos intermedios textuales complejos.",
-        "Opciones de respuesta suficientemente separadas numéricamente para que errores de cálculo gruesos no coincidan con distractores cercanos."
+        "Porcentaje de descuento dado explícitamente como número entero simple (10 %, 20 %, 25 %, 50 %).",
+        "Valor inicial dado como número entero pequeño o múltiplo sencillo (por ejemplo, $5 000, $10 000, 100 unidades).",
+        "Contextos cotidianos directos (precio de 1 artículo, rebaja simple en un solo producto).",
+        "Estructura de cálculo lineal y única: calcular el porcentaje y restarlo, o multiplicar directamente por el factor (1 - p).",
+        "Datos presentados todos en una misma unidad sin necesidad de conversiones.",
+        "Distractores que correspondan a errores típicos simples (no restar el descuento, confundir 20 % con 0,2)."
       ],
       "medium": [
-        "Porcentajes menos inmediatos (15%, 18%, 30%, 35%) o combinaciones que generan decimales no exactos.",
-        "Valores iniciales con más de cuatro cifras o con decimales (por ejemplo, 12 990; 57,5).",
-        "Contextos verbales de la vida cotidiana ligeramente más extensos (promociones con condiciones simples, pérdidas sobre montos acumulados, descuentos en cuentas).",
-        "Necesidad de elegir entre dos caminos de solución (resta del porcentaje o uso del factor 1 - p), sin ambigüedad pero exigiendo comprensión del concepto.",
-        "Inclusión de información irrelevante mínima que debe ser filtrada (por ejemplo, marca del producto, información narrativa que no cambia el cálculo)."
+        "Porcentajes menos inmediatos (15 %, 30 %, 35 %, 12 %) que requieran manejo más flexible de decimales.",
+        "Valores iniciales no triviales (por ejemplo, $37 500, $82 000) que dificulten el cálculo mental rápido.",
+        "Situaciones con más de un paso aritmético sencillo, como calcular el total de varios ítems y luego aplicar el descuento global.",
+        "Contextos con información adicional irrelevante que el estudiante debe filtrar.",
+        "Uso explícito del factor de disminución (multiplicar por 0,85; 0,7; 0,88) en lugar de pedir primero el cálculo del porcentaje.",
+        "Lectura de porcentajes o valores iniciales desde una tabla simple o un gráfico muy básico, pero donde el trabajo principal sea aplicar la disminución.",
+        "Distractores que incluyan resultados cercanos al correcto y que provengan de errores de procedimiento ligeramente más sutiles (aplicar el porcentaje a un subtotal incorrecto, redondear mal un decimal intermedio)."
       ],
       "hard": [
-        "Porcentajes menos comunes (12%, 17%, 22%, 37%) y montos que resultan en decimales no redondos, requiriendo manejo cuidadoso de aproximaciones.",
-        "Problemas que requieren dos pasos conceptuales dentro de UNA sola disminución, como: primero determinar el valor base pertinente y luego aplicar el descuento a ese valor.",
-        "Enunciados contextualizados con lenguaje más denso o técnico cotidiano (por ejemplo, pérdidas sobre una inversión, merma de stock, disminución de aforo en porcentaje).",
-        "Ítems donde los distractores están diseñados como errores típicos (usar solo p en vez de 1 - p; sumar el porcentaje; aplicar el porcentaje a la base incorrecta) y con valores numéricamente cercanos.",
-        "Exigen comparar dos posibles ofertas de disminución porcentual y escoger la que da menor precio final, manteniendo el requisito de UNA disminución por cálculo en cada alternativa."
+        "Porcentajes no redondos (17 %, 22 %, 37 %, 12,5 %) que exijan operar con decimales con más cuidado.",
+        "Montos iniciales de mayor tamaño o con varios ceros que puedan inducir errores de posición (por ejemplo, $345 000, $2 380 000).",
+        "Problemas con estructura verbal más compleja o con varias magnitudes donde solo una sufre la disminución porcentual.",
+        "Situaciones donde haya que identificar primero cuál es la base sobre la cual se aplica la disminución (por ejemplo, seleccionar la categoría correcta dentro de un cuadro para luego aplicar el descuento).",
+        "Contextos menos familiares o con terminología propia de un área (energía, producción, mermas, etc.), aunque los cálculos sigan siendo de una sola disminución.",
+        "Distractores diseñados a partir de errores conceptuales avanzados (aplicar el porcentaje respecto de la magnitud equivocada, intercambiar aumento y disminución en un texto más largo, confundir porcentaje de un total con porcentaje de una parte).",
+        "Ítems donde se requiere comparar dos opciones de disminución porcentual y decidir cuál es más conveniente, siempre calculando explícitamente al menos una disminución."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar expresiones vagas como \"rebaja de 20\" sin especificar si es 20% o 20 unidades monetarias; siempre indicar el símbolo % o la palabra porcentaje.",
-      "No mezclar en el mismo enunciado rebaja porcentual y rebaja en monto fijo si la consigna no pide explícitamente comparar ambos tipos; esto puede generar dudas sobre qué cálculo realizar.",
-      "Precisar con claridad sobre qué cantidad se calcula el porcentaje cuando hay más de un valor presente (precio lista, cuotas, precio con impuestos, etc.).",
-      "Evitar hablar de \"descuento sobre el descuento\" o frases similares que sugieran descuentos sucesivos, ya que este átomo solo considera una disminución.",
-      "No usar contextos en que el porcentaje pueda interpretarse como porcentaje de aumento o de disminución según la lectura (por ejemplo, \"cambia en un 20%\" sin indicar si baja o sube).",
-      "Indicar siempre si el resultado debe considerarse con o sin redondeo, y en qué formato (pesos enteros, decimales a una o dos cifras) cuando los números no son exactos.",
-      "Evitar que la misma cifra aparezca como posible base y como resultado final sin especificar claramente el rol de cada una, para no inducir a aplicar el porcentaje a la cantidad equivocada.",
-      "No introducir simultáneamente porcentajes de impuestos y porcentajes de descuento si eso implica dos operaciones porcentuales sucesivas, fuera del alcance del átomo."
+      "Evitar enunciados donde no quede claro si el descuento se aplica al precio por unidad o al total de varias unidades; especificar explícitamente: \"al precio de cada\" o \"al total de la compra\".",
+      "No usar simultáneamente distintos porcentajes de descuento en el mismo ítem si solo uno se aplica, sin dejar muy explícito cuál corresponde al cálculo pedido.",
+      "Evitar expresiones lingüísticas ambiguas como \"rebaja de hasta un 20 %\" o \"aproximadamente un 30 %\"; indicar siempre un porcentaje único y preciso.",
+      "No mezclar distintas interpretaciones posibles de la base del porcentaje (precio de lista, precio con impuestos, precio con otra promoción) sin indicarlo claramente.",
+      "Evitar que el contexto sugiera descuentos sucesivos o encadenados; dejar claro que se aplica una sola disminución al valor inicial indicado.",
+      "No usar frases contradictorias como \"sube un descuento\" o \"se aumenta una rebaja\"; mantener un vocabulario coherente con disminución: \"baja\", \"reduce\", \"pierde\", \"descuenta\".",
+      "Si se usan tablas o descripciones con varios datos económicos, dejar completamente claro sobre cuál de ellos se calcula el descuento.",
+      "Evitar porcentajes presentados en forma verbal vaga (\"un quinto\", \"una parte considerable\"); expresar siempre el porcentaje como número porcentual o decimal inequívoco.",
+      "No incluir condiciones comerciales reales que tengan otras reglas implícitas (2x1, tope máximo de descuento, etc.) a menos que se definan matemáticamente en el enunciado."
     ],
     "error_families": [
       {
-        "name": "Sumar_en_vez_de_restar",
-        "description": "El estudiante interpreta un descuento como un aumento y calcula precio_final = precio_inicial × (1 + p) o precio_inicial + porcentaje, en vez de restar.",
-        "how_to_address": "Reforzar la idea de que un descuento reduce la cantidad inicial y que el factor de disminución es menor que 1. Utilizar ejemplos concretos donde se compare visualmente el antes y el después para distinguir aumento de disminución."
+        "name": "Confusión entre descuento y aumento",
+        "description": "El estudiante interpreta el porcentaje como un aumento en lugar de una disminución y suma el porcentaje al valor inicial o multiplica por un factor mayor que 1 en lugar de menor que 1.",
+        "how_to_address": "Destacar el uso de palabras clave (descuento, rebaja, pierde, disminuye) asociadas a restar o multiplicar por un factor menor que 1. Incluir ítems donde comparar explícitamente un caso de aumento y uno de disminución sobre el mismo valor."
       },
       {
-        "name": "Uso_incorrecto_del_factor_porcentual",
-        "description": "Se multiplica por el porcentaje mismo (p) en vez de por el factor de disminución (1 - p), tomando así el descuento como precio final.",
-        "how_to_address": "Practicar la secuencia: 1) determinar el porcentaje de descuento en valor monetario; 2) restarlo del precio original; 3) conectar ese procedimiento con el factor 1 - p mostrando la equivalencia en varios ejemplos."
+        "name": "Olvido de restar el porcentaje calculado",
+        "description": "El estudiante calcula correctamente el porcentaje de la cantidad inicial (por ejemplo, el 20 % de 30 000 es 6 000), pero entrega este valor como respuesta final sin restarlo del valor original.",
+        "how_to_address": "Diseñar ejercicios intermedios con dos preguntas encadenadas: primero calcular el monto del descuento y luego el precio final, para reforzar la idea de que la disminución implica una segunda operación."
       },
       {
-        "name": "Base_erronea_del_porcentaje",
-        "description": "El porcentaje de disminución se aplica a una cantidad que no corresponde al valor inicial relevante (por ejemplo, al precio ya rebajado o a solo una parte del total).",
-        "how_to_address": "Trabajar con diagramas o tablas que distingan claramente \"valor inicial\", \"monto de descuento\" y \"valor final\". Incluir problemas comparando cálculos correctos e incorrectos y pidiendo identificar la base adecuada."
+        "name": "Uso incorrecto del factor de disminución",
+        "description": "El estudiante entiende que debe multiplicar, pero usa el porcentaje mismo en vez del factor de disminución (por ejemplo, multiplica por 0,2 en vez de 0,8 para un 20 % de descuento).",
+        "how_to_address": "Trabajar explícitamente la relación \"precio final = precio inicial × (1 - porcentaje)\" con ejemplos numéricos y representación en tabla que muestre simultáneamente el porcentaje, el factor y el resultado."
       },
       {
-        "name": "Confusion_monto_vs_porcentaje",
-        "description": "El estudiante responde con el monto del descuento (por ejemplo, $1000) cuando se pide el precio final, o viceversa.",
-        "how_to_address": "En los ejercicios, variar explícitamente lo que se pide: a veces el descuento, a veces el valor final. Subrayar en las consignas verbos como \"¿cuál es el PRECIO FINAL?\" o \"¿cuánto se DESCUENTA?\" para consolidar la distinción."
+        "name": "Porcentaje aplicado a la cantidad equivocada",
+        "description": "En contextos con varias cantidades (precio por unidad, total de unidades, subtotales por categoría), el estudiante aplica el porcentaje a una magnitud distinta de la que se pide en el enunciado.",
+        "how_to_address": "Diseñar ítems donde se deba identificar primero correctamente la magnitud base antes de calcular, y usar subrayados o preguntas guía que expliciten \"¿sobre qué cantidad se calcula el descuento?\"."
       },
       {
-        "name": "Manejo_deficiente_de_decimales",
-        "description": "Errores de cálculo asociados a decimales (por ejemplo, 15% como 0,15 pero manejado mal en la multiplicación, o redondeos que cambian el resultado correcto).",
-        "how_to_address": "Reforzar estrategias de cálculo mental y escrito con decimales, y explicitar reglas de redondeo. Proponer ejercicios donde se compare el resultado exacto con el redondeado y se hable de tolerancias aceptables."
+        "name": "Manejo deficiente de decimales",
+        "description": "Errores al convertir porcentajes a decimales (15 % → 0,15; 2 % → 0,02) o al multiplicar decimales y redondear, lo que genera respuestas numéricas alejadas del valor correcto.",
+        "how_to_address": "Incluir ítems con porcentajes que obliguen a usar decimales (12 %, 18 %, 7 %) y enfatizar la escritura correcta de los decimales y la interpretación de ceros a la izquierda (0,07 vs 0,7)."
       },
       {
-        "name": "Lectura_incompleta_del_contexto",
-        "description": "Ignorar datos clave del contexto y aplicar el descuento a un valor inadecuado por no leer completamente el enunciado (por ejemplo, aplicar el descuento al precio de una sola unidad cuando se compra más de una).",
-        "how_to_address": "Incorporar actividades de lectura matemática donde primero se pida identificar datos relevantes e irrelevantes antes de calcular. Modelar subrayado de la información sobre la que se aplica el porcentaje."
+        "name": "Interpretación literal de expresiones verbales",
+        "description": "El estudiante se confunde con frases como \"pierde el 20 % de su valor\" o \"queda con el 80 %\" y no vincula correctamente ambas expresiones, provocando dobles descuentos o descuentos insuficientes.",
+        "how_to_address": "Usar ítems que presenten ambas formas de enunciar la misma situación (\"descuento del 20 %\" y \"queda con el 80 %\") y pedir que elijan la expresión equivalente correcta, reforzando la complementariedad 100 % - p %."
+      },
+      {
+        "name": "Errores de orden de operaciones en contextos con varias unidades",
+        "description": "En compras de varias unidades, algunos estudiantes aplican el descuento a una unidad y luego multiplican mal, o suman primero descuentos individuales sin tomar el total correcto.",
+        "how_to_address": "Proponer problemas que comparen dos procedimientos posibles (descontar primero por unidad vs. calcular el total y luego descontar) y mostrar que llevan al mismo resultado si se aplican correctamente."
       }
     ],
     "future_targets": [
-      "Aplicación de descuentos y aumentos porcentuales sucesivos en distintos pasos.",
-      "Cálculo de porcentajes desconocidos a partir de valores iniciales y finales (por ejemplo, determinar el porcentaje de descuento aplicado).",
-      "Interés simple y compuesto, incluyendo contextos financieros básicos (créditos, ahorros, deudas).",
-      "Comparación de distintas ofertas comerciales combinando descuentos porcentuales y montos fijos.",
-      "Análisis de variaciones porcentuales en datos estadísticos (crecimiento/disminución de índices, tasas de variación).",
-      "Modelación algebraica de situaciones de porcentaje usando ecuaciones lineales.",
-      "Cálculo y comparación de tasas efectivas de descuento en procesos de varias etapas."
+      "Aplicación de aumentos porcentuales en contextos de interés, inflación y reajustes.",
+      "Cálculo del porcentaje de cambio a partir de valores inicial y final (variación porcentual).",
+      "Manejo de descuentos y recargos sucesivos (promociones encadenadas, variaciones en varios periodos).",
+      "Resolución de problemas de proporcionalidad directa e inversa con porcentajes más complejos.",
+      "Modelación de situaciones de depreciación de bienes en el tiempo mediante factores porcentuales.",
+      "Interpretación y comparación de gráficos estadísticos donde se expresan datos como porcentajes de un total.",
+      "Análisis de opciones financieras o comerciales equivalentes basadas en diferentes porcentajes de descuento o recargo.",
+      "Uso de expresiones algebraicas simples para representar descuentos y variaciones porcentuales (por ejemplo, P_final = P_inicial·(1 - r))."
     ],
     "representation_variants": [
-      "Enunciados puramente verbales con contexto cotidiano (compras, promociones, pérdidas).",
-      "Tablas de precios antes y después del descuento, en las que se pide completar o interpretar el valor final para un caso específico.",
-      "Uso explícito de la forma decimal del porcentaje (por ejemplo, 0,15 en lugar de 15%) para enfatizar el método del factor multiplicativo.",
-      "Representación mediante expresiones numéricas dadas que el estudiante debe evaluar (por ejemplo, elegir la expresión correcta para calcular el precio final).",
-      "Comparación de dos expresiones diferentes para la misma situación (restar el porcentaje versus multiplicar por el factor) para resaltar la equivalencia de procedimientos."
+      "Enunciados verbales directos de descuentos en precios de productos o servicios.",
+      "Tablas simples que muestren precios de lista y porcentajes de descuento por categoría, de donde se extrae el dato para calcular el valor final.",
+      "Contextos de pérdida o merma en producción o almacenamiento, expresadas como porcentaje del total inicial.",
+      "Descripciones textuales de cambio de valor de un bien (auto, dispositivo, maquinaria) donde se indique el porcentaje que pierde de su valor inicial.",
+      "Situaciones donde se entregue el factor de disminución en forma decimal (por ejemplo, \"queda con el 0,85 del valor inicial\").",
+      "Comparación de dos ofertas de descuento sobre el mismo producto, forzando al estudiante a calcular o estimar la disminución en cada caso.",
+      "Problemas en los que la disminución porcentual se aplica a cantidades distintas de dinero (peso, volumen, cantidad de elementos) para diversificar el contexto."
     ],
     "numbers_profiles": [
       "small_integers",
-      "medium_integers",
-      "large_integers",
-      "decimals_one_decimal_place",
-      "decimals_two_decimal_places",
-      "simple_percentage_integers",
-      "non_round_percentages"
+      "money_context",
+      "percentages_multiples_of_5",
+      "percentages_common_non_multiples_of_5",
+      "decimals_one_place",
+      "decimals_two_places",
+      "powers_of_10_multiples_of_1000"
     ],
     "required_image_types": []
   }

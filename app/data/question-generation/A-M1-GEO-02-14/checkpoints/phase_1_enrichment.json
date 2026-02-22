@@ -3,117 +3,118 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Decidir si en un problema contextualizado corresponde modelar con área de superficie o con volumen, sin hacer el cálculo numérico.",
-        "Distinguir en contexto entre el uso de área lateral y área total (ejemplo: pintar solo paredes, envolver completamente un objeto).",
-        "Relacionar palabras y expresiones del lenguaje cotidiano con la idea de volumen (capacidad, cuánto cabe, llenar, espacio interior).",
-        "Relacionar palabras y expresiones del lenguaje cotidiano con la idea de área de superficie (pintar, forrar, cubrir, envolver, material para fabricar).",
-        "Identificar si una misma situación puede requerir tanto área como volumen, y decidir qué magnitud se necesita según lo que se pregunte explícitamente."
+        "Decidir si una situación contextualizada requiere modelo de área de superficie, de volumen o de área lateral sin efectuar el cálculo numérico.",
+        "Distinguir contextos de 'rellenar', 'contener', 'capacidad' o 'espacio interno' (volumen) versus 'recubrir', 'pintar', 'forrar', 'fabricar paredes' (área de superficie).",
+        "Determinar si se necesita área total o solo área lateral en contextos como pintar paredes, empapelar, cubrir solo costados de un cuerpo geométrico.",
+        "Reconocer, a partir del texto, qué partes del objeto participan en el modelo (por ejemplo, incluir o excluir piso/techo/tapa/fondo).",
+        "Seleccionar el tipo de magnitud geométrica adecuada (área o volumen) aun cuando no se mencionen explícitamente esas palabras, sino sinónimos o descripciones."
       ],
       "out_of_scope": [
-        "Cálculo numérico efectivo de áreas o volúmenes (resolver fórmulas y entregar resultados).",
-        "Demostraciones geométricas o deducción de fórmulas de área o volumen.",
-        "Problemas cuya dificultad principal sea trigonométrica o algebraica (p.ej., hallar medidas desconocidas usando ecuaciones) y no la elección área vs volumen.",
-        "Conversión de unidades de medida (cm² a m², litros a m³, etc.) como foco principal del ítem.",
-        "Problemas centrados en perímetro sin relación directa con área o volumen.",
-        "Análisis fino de figuras 3D complejas (intersecciones de cuerpos, cortes, sólidos de revolución, etc.)."
+        "Cálculo numérico efectivo de áreas o volúmenes (fórmulas, operaciones).",
+        "Identificación o memorización de fórmulas de área o volumen de cuerpos geométricos.",
+        "Problemas puramente algebraicos sin contexto espacial (por ejemplo, solo manipulación de expresiones de área o volumen ya dadas).",
+        "Comparación de magnitudes numéricas de áreas o volúmenes ya calculados por otros.",
+        "Optimización geométrica (minimizar material, maximizar volumen) que requiera derivadas o procedimientos avanzados.",
+        "Problemas que solo requieren perímetro o longitud de contornos, sin tomar decisiones entre área y volumen."
       ],
       "prerequisites": [
-        "A-M1-GEO-02-01: Comprende la diferencia conceptual entre magnitudes lineales, de superficie y de volumen.",
-        "A-M1-GEO-02-02: Reconoce y describe situaciones cotidianas que involucran área y volumen.",
-        "A-M1-GEO-02-05: Identifica las unidades típicas de área (cm², m²) y de volumen/capacidad (cm³, m³, L)."
+        "A-M1-GEO-02-01: Comprender la diferencia conceptual entre área (superficie) y volumen (espacio ocupado).",
+        "A-M1-GEO-02-02: Reconocer cuerpos geométricos básicos (prisma rectangular, cilindro, pirámide, cono) en contextos cotidianos.",
+        "A-M1-GEO-02-03: Entender la idea de área lateral versus área total en prismas y cilindros a nivel conceptual (qué caras incluye cada una).",
+        "A-M1-NUM-01-01: Comprender magnitudes y unidades de medida básicas (m, m², m³, litros) y su significado general."
       ],
       "common_traps": [
-        "Usar enunciados donde aparezcan simultáneamente ideas de pintar y llenar sin especificar claramente qué se pregunta, generando ambigüedad entre área y volumen.",
-        "Problemas con recipientes donde solo se insinúa el uso (p.ej., un estanque dibujado) pero no se explicita si el interés es cuánta agua cabe o cuánta superficie se debe cubrir.",
-        "Contextos donde se menciona 'espacio' sin indicar si se refiere al espacio interior (volumen) o al espacio de superficie expuesta (área), dejando la interpretación abierta.",
-        "No precisar si en el cálculo de superficie se debe considerar techo y piso, o solo paredes, provocando dudas entre área lateral y total.",
-        "Escenarios con objetos huecos (por ejemplo, cajas sin tapa) sin clarificar qué partes efectivamente existen y cuáles se quieren cubrir.",
-        "Introducir muchos datos numéricos irrelevantes que hagan parecer que se espera un cálculo, desviando el foco desde la elección del modelo hacia el cómputo."
+        "Confundir volumen con área cuando el problema menciona 'piso' o 'superficie' pero también aparece un dato de altura, llevando al estudiante a elegir volumen solo porque hay tres dimensiones.",
+        "Asumir que 'tamaño' o 'medidas de la pieza' implica siempre volumen, aunque la pregunta refiera a cubrir o pintar.",
+        "No distinguir entre cubrir solo paredes y cubrir toda la habitación, sin identificar la exclusión del piso o techo (área lateral vs total).",
+        "Tomar palabras como 'llenar de cajas' o 'meter personas' y asociarlas a área del piso en lugar de volumen del recinto.",
+        "Creer que 'capacidad de un envase' puede modelarse con área de la base y no con el volumen interno.",
+        "Ignorar detalles del contexto que especifican partes abiertas o sin cubrir (por ejemplo, un estanque sin tapa) y elegir área total por defecto.",
+        "Interpretar cualquier referencia a 'material' como volumen de material sólido, en contextos donde en realidad se requiere área de lámina o tela para recubrir."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "El enunciado incluye palabras gatillo muy directas asociadas a volumen (capacidad, cuántos litros caben, llenar completamente, contenido de un envase) o a área (pintar una pared, cubrir un piso, envolver un regalo).",
-        "El objeto involucrado es sencillo y cotidiano (habitaciones rectangulares, cajas, botellas, piscinas rectangulares) sin detalles adicionales ni partes excluidas.",
-        "La tarea se limita a escoger explícitamente entre dos alternativas claras: 'Se debe usar área de superficie' o 'Se debe usar volumen'.",
-        "No se exige diferenciar entre área lateral y total; solo se pregunta por área vs volumen.",
-        "Poca o ninguna información numérica; el foco está en la interpretación verbal de la situación."
+        "Contextos muy cotidianos y directos con una sola opción razonable (por ejemplo, pintar paredes de una pieza o llenar un recipiente con agua).",
+        "Uso explícito de palabras clave fuertes como 'capacidad en litros', 'rellenar con agua' o 'pintar las paredes y el techo', señalando claramente volumen o área.",
+        "Objetos descritos de forma simple (caja, pieza rectangular, macetero) sin detalles que puedan inducir a considerar perímetro u otras magnitudes.",
+        "Preguntas que solo requieren elegir entre dos alternativas globales: 'área de superficie' vs 'volumen', sin considerar área lateral vs total."
       ],
       "medium": [
-        "El enunciado combina información que apunta tanto a superficie como a interior, pero la pregunta especifica una sola magnitud y el estudiante debe discriminar la relevante.",
-        "Se requiere diferenciar entre área lateral y área total, en contextos como pintar solo paredes, forrar solo el exterior, o cubrir piso y techo.",
-        "Las palabras gatillo no son tan directas; el estudiante debe inferir si la acción afecta el interior (rellenar con tierra, aire, agua, arena) o la superficie (pegar azulejos, papel mural, láminas).",
-        "El objeto tiene una o dos partes excluidas o especiales (caja sin tapa, piscina sin considerar el borde, pieza con una pared con ventana que no se pinta), lo que obliga a interpretar qué superficie se considera.",
-        "Se presentan algunos datos numéricos y dimensiones que no es necesario usar, pero pueden distraer a quienes intentan calcular en vez de decidir el modelo adecuado."
+        "Situaciones donde se mezclan datos de largo, ancho y alto, pero la pregunta exige centrarse en el uso (llenar, recubrir).",
+        "Contextos en que el enunciado no usa directamente las palabras 'área' o 'volumen', sino expresiones como 'cuánta pintura', 'cuánto cemento cabe', 'cuánta tierra entra'.",
+        "Problemas en los que se debe discriminar entre área total y área lateral, con una indicación clara pero no redundante (por ejemplo, 'solo paredes', 'sin techo').",
+        "Ítems con distractores que sugieren el uso de la magnitud incorrecta (perímetro o área cuando corresponde volumen, o viceversa), requiriendo leer con atención el contexto."
       ],
       "hard": [
-        "Situaciones menos obvias o de uso técnico (aislamiento térmico, recubrimientos, embalajes industriales, almacenamiento en silos, estanques de formas no triviales) donde la conexión con área o volumen no es inmediata.",
-        "Problemas donde la misma situación admite de forma natural dos modelos (por ejemplo, diseño de un estanque donde importa tanto su capacidad como la cantidad de material para construirlo), y la pregunta se centra en una de ellas según un objetivo específico.",
-        "Contextos que exigen distinguir simultáneamente: área lateral vs total, interior vs exterior, o considerar qué superficies sí están expuestas o requieren tratamiento (por ejemplo, pintar solo por dentro, aislar solo la cara externa, enchapar solo parte de las paredes).",
-        "Enunciados más largos con pasos intermedios narrativos (etapas de construcción o uso) donde el estudiante debe focalizar en qué se pregunta exactamente al final para elegir área o volumen.",
-        "Ítems con distractores que representan de forma verosímil decisiones incorrectas (por ejemplo, elegir volumen cuando la palabra 'espacio' aparece pero el contexto indica recubrir superficies)."
+        "Escenarios con más de un objeto o etapas, donde en una parte se requiere volumen y en otra área, y el ítem pide identificar cuál magnitud corresponde a una etapa específica.",
+        "Contextos menos obvios o más técnicos (por ejemplo, aislación térmica de muros, recubrimiento interior de un estanque abierto, diseño de envases) donde la asociación a 'área' o 'volumen' no es tan inmediata.",
+        "Problemas donde se deben considerar explícitamente partes que no se cubren (puertas, ventanas, agujeros, tapa abierta), obligando a pensar en qué superficies sí entran en el modelo.",
+        "Ítems en que las palabras claves son más sutiles o incluso potencialmente confusas ('instalar cerámica en el piso y zócalos', 'forrar interiormente con lámina'), y el estudiante debe inferir si es solo área de piso, área lateral o ambas.",
+        "Situaciones que deliberadamente presentan datos numéricos sugerentes de la magnitud equivocada (por ejemplo, enfatizar el área de la base cuando lo que se pregunta es capacidad), para evaluar la solidez del criterio de selección."
       ]
     },
     "ambiguity_avoid": [
-      "Evitar preguntas donde, con la misma información, podrían justificarse razonablemente tanto un modelo de área como de volumen; debe quedar claro qué aspecto interesa (cubrir superficies o llenar espacio interior).",
-      "No usar de manera vaga palabras como 'espacio', 'tamaño', 'grande' o 'chico' sin indicar si se refiere al interior del objeto o a la superficie que se ve o se cubre.",
-      "Especificar siempre si se consideran o no techo y piso cuando se habla de pintar, cubrir, forrar una habitación o un objeto similar, para que la diferencia entre área lateral y total sea inequívoca.",
-      "En recipientes o estructuras huecas (cajas, estanques, piscinas), aclarar si el recubrimiento es por dentro, por fuera o por ambos lados, para no dejar duda sobre qué superficie interesa.",
-      "Evitar enunciados que mezclen en una misma pregunta dos demandas diferentes (por ejemplo, '¿qué se debe calcular para saber cuánto material se necesita y cuánta agua cabe?'); cada ítem debe apuntar a una decisión única.",
-      "No sugerir cálculos innecesarios (con muchos números o fórmulas explícitas) que oculten el foco en la elección del modelo; el estudiante debe poder responder razonando sobre la situación, no haciendo cuentas.",
-      "Evitar figuras o descripciones que no indiquen claramente si un objeto tiene o no tapa, base, huecos o aberturas cuando eso afecta qué parte se recubre o se llena."
+      "Evitar enunciados donde tanto un modelo de área como de volumen podrían interpretarse razonablemente como respuesta correcta sin que el texto lo aclare (por ejemplo, 'tamaño de una piscina' sin decir si es para llenarla o para pintar sus muros).",
+      "No mezclar en la misma pregunta verbos o expresiones contrapuestas sin precisar el foco (por ejemplo, 'pintar y llenar' un mismo estanque) si solo se permite una respuesta.",
+      "Evitar usos poco precisos de 'espacio' o 'tamaño' sin contexto adicional; siempre especificar si se trata de cubrir superficies o llenar con algo.",
+      "No utilizar unidades de medida inconsistentes con la magnitud buscada (por ejemplo, hablar de litros en un contexto que pretende ser de área, o m² para capacidad).",
+      "No describir figuras tridimensionales de manera incompleta cuando sea importante decidir entre área total y lateral; siempre indicar si hay techo, tapa, fondo, puertas o ventanas relevantes para el recubrimiento.",
+      "Evitar problemas donde el estudiante pueda interpretar que se modela el material sólido del objeto (volumen del sólido) o solo su superficie, si el texto no deja clara la intención (por ejemplo, 'fabricar un bloque de madera' vs 'forrar un bloque').",
+      "No usar términos técnicos ambiguos como 'superficie' sin aclarar si se refiere al área de la envolvente o al área de la base, cuando eso pueda cambiar la respuesta."
     ],
     "error_families": [
       {
-        "name": "Confusión área-volumen por palabra gatillo superficial",
-        "description": "El estudiante se queda solo con una palabra llamativa sin procesar el contexto completo, por ejemplo, asocia automáticamente 'piscina' con volumen aunque la pregunta se refiera a 'poner cerámica en las paredes de la piscina'.",
-        "how_to_address": "Diseñar ítems que obliguen a leer con atención la acción específica (llenar, pintar, cubrir) y no solo el objeto; en la retroalimentación, destacar que siempre se debe identificar qué se quiere medir: el espacio interior o la superficie."
+        "name": "Volumen_por_tener_tres_dimensiones",
+        "description": "El estudiante elige volumen cada vez que el enunciado menciona largo, ancho y alto, aunque la tarea sea cubrir o pintar superficies.",
+        "how_to_address": "Diseñar retroalimentación que enfatice que la elección no depende de cuántas medidas aparecen, sino de la acción: rellenar vs cubrir. Incluir ejemplos donde se dan tres dimensiones pero se trabaja con área lateral (pintar paredes de una bodega)."
       },
       {
-        "name": "Uso de área en lugar de volumen",
-        "description": "El estudiante elige área cuando en realidad se requiere volumen, a menudo porque se fija más en las dimensiones dadas (largo, ancho, alto) que en la idea de capacidad o contenido.",
-        "how_to_address": "Incluir ejemplos donde se explicite que las dimensiones se usan de diferentes maneras según si se mide superficie o capacidad; reforzar que palabras como 'cabe', 'llenar', 'contenidos', 'litros' remiten a volumen."
+        "name": "Area_por_asociacion_a_piso",
+        "description": "El estudiante se focaliza solo en el piso o base del recinto para decidir la magnitud, usando área del piso cuando el problema se refiere a capacidad o cantidad que cabe.",
+        "how_to_address": "Presentar contraejemplos (misma pieza, dos preguntas: capacidad de aire vs cerámica del piso) para mostrar que el mismo objeto puede requerir modelos distintos según la pregunta."
       },
       {
-        "name": "Uso de volumen en lugar de área",
-        "description": "El estudiante elige volumen cuando corresponde área, generalmente porque interpreta 'tamaño' o 'grande' como cantidad de espacio, aunque el problema habla de recubrir o pintar superficies.",
-        "how_to_address": "Modelar situaciones paralelas (dos habitaciones de igual volumen pero superficies distintas por su forma) para mostrar que para pintura importa la superficie, no solo el espacio interno; enfatizar en la lectura de verbos de acción: pintar, cubrir, forrar, envolver."
+        "name": "Confusion_area_lateral_vs_total",
+        "description": "No se distingue si se deben incluir o excluir techo, piso, tapas o bases, asumiendo siempre área total.",
+        "how_to_address": "Explicitar en la retroalimentación el significado de 'solo paredes', 'sin techo', 'sin tapa', y asociarlo visualmente a qué caras del cuerpo se consideran. Trabajar con descripciones verbales claras de qué partes se pintan o cubren."
       },
       {
-        "name": "Confusión entre área lateral y área total",
-        "description": "El estudiante identifica que es un problema de área, pero no distingue si se deben considerar todas las caras del sólido o solo algunas (ejemplo típico: incluye techo y piso cuando solo se pintan paredes, o viceversa).",
-        "how_to_address": "Trabajar explícitamente con dibujos esquemáticos o descripciones que indiquen qué partes se intervienen; en la retroalimentación, hacer que el estudiante verbalice qué caras del objeto están involucradas en la acción descrita."
+        "name": "Palabras_clave_mal_leidas",
+        "description": "Ignorar o malinterpretar palabras como 'capacidad', 'llenar', 'meter', 'recubrir', 'pintar', 'forrar', centrándose solo en los datos numéricos.",
+        "how_to_address": "Proponer estrategias de lectura: subrayar verbos y sustantivos que indiquen la acción sobre el objeto antes de mirar los números. Ofrecer ejercicios donde los mismos números aparecen en contextos distintos y la magnitud cambia."
       },
       {
-        "name": "Sobrevaloración del cálculo por sobre la modelización",
-        "description": "El estudiante intenta de inmediato aplicar fórmulas y calcular antes de decidir qué magnitud se necesita, y puede llegar a un resultado numérico pero para la magnitud equivocada.",
-        "how_to_address": "Plantear ítems donde no se pueda calcular (por falta de datos numéricos) y donde la única tarea sea elegir la magnitud; enfatizar en la enseñanza el paso de 'elegir el modelo' como etapa previa al cálculo."
+        "name": "Confusion_material_sólido_vs_recubrimiento",
+        "description": "Interpretar 'material para fabricar' como volumen de material sólido en lugar de superficie de lámina o paneles necesarios para construir paredes o envases.",
+        "how_to_address": "Diferenciar explícitamente entre fabricar un bloque macizo (volumen de material) y construir un contenedor hueco (área de láminas). Usar ejemplos de cajas de cartón y estanques metálicos como contenedores huecos."
       },
       {
-        "name": "Ignorar partes excluidas o condiciones del contexto",
-        "description": "El estudiante asume por defecto que se consideran todas las caras o todo el interior, aunque el enunciado indique que ciertas partes no se cubren o no se llenan (por ejemplo, una pared con puerta grande que no se pinta).",
-        "how_to_address": "Incluir problemas donde se mencionen explícitamente partes que se excluyen, y en la retroalimentación subrayar la importancia de identificar con precisión el objeto matemático que se va a medir (qué superficies sí y cuáles no)."
+        "name": "Uso_de_perimetro_en_lugar_de_area",
+        "description": "Elegir implícitamente perímetro cuando el contexto sugiere más bien área de superficie (por ejemplo, al hablar de cercar un terreno sin aclarar si es con muro superficial o con reja lineal).",
+        "how_to_address": "Incluir ítems y explicaciones que contrasten cercar con muro (área de material) versus cercar con alambre (longitud), para afinar la discriminación entre tipos de magnitud geométrica."
       }
     ],
     "future_targets": [
-      "Modelación completa de problemas geométricos que incluyen el cálculo efectivo de áreas de superficie y volúmenes de cuerpos sólidos.",
-      "Optimización de diseños geométricos, como minimizar área de superficie para un volumen dado o maximizar volumen con una cantidad fija de material.",
-      "Comparación de diferentes diseños o envases según su eficiencia de material (razón entre volumen útil y área de superficie).",
-      "Aplicación integrada de área y volumen en contextos de física y ciencias (presión, densidad, flujo, aislación térmica, etc.).",
-      "Resolución de problemas multi-etapa donde la elección adecuada de área o volumen sea solo una parte de un razonamiento más largo (por ejemplo, presupuestos de construcción, planificación de almacenaje).",
-      "Razonamiento con escalas y semejanza de figuras, donde los factores de escala afectan de manera distinta a área y volumen."
+      "A-M1-GEO-02-15: Cálculo efectivo de áreas de superficie de cuerpos geométricos en contextos aplicados.",
+      "A-M1-GEO-02-16: Cálculo de volúmenes de prismas, cilindros y otros cuerpos en problemas de capacidad y llenado.",
+      "A-M1-GEO-02-17: Resolución de problemas multietapa que combinan área y volumen (por ejemplo, construir un estanque y luego llenarlo).",
+      "A-M1-MOD-01-01: Modelación matemática avanzada de situaciones físicas o de ingeniería básica, eligiendo adecuadamente tipos de magnitud.",
+      "A-M1-GEO-02-18: Comparación y optimización de diseños (distintos envases o recintos) según material utilizado (área) o capacidad (volumen).",
+      "A-M1-DAT-01-03: Interpretar datos empíricos relacionados con superficie construida, volúmenes de producción o consumo de materiales, vinculándolos con modelos geométricos previos."
     ],
     "representation_variants": [
-      "Enunciados puramente verbales con descripción clara del contexto (habitaciones, piscinas, maceteros, estanques, cajas, envases, murallas).",
-      "Esquemas simples de plantas de habitaciones o vistas de objetos indicando con palabras qué se hace en cada superficie (pintar, azulejar, forrar).",
-      "Descripciones de envases o recipientes con su uso previsto (almacenar líquido, envasar cereal, guardar objetos) sin necesidad de dibujo, destacando el foco en contenido o recubrimiento.",
-      "Comparación textual de dos alternativas de diseño (por ejemplo, dos modelos de estanque o dos formas de caja) donde en cada una interese una magnitud diferente (área o volumen).",
-      "Uso de tablas o listados que describen distintas tareas (pintar, llenar, envolver, revestir) y distintos objetos, donde el estudiante debe asociar cada tarea a área, área lateral, área total o volumen."
+      "Descripción puramente verbal del contexto (habitación, envase, piscina, macetero) indicando dimensiones pero sin requerir su uso numérico.",
+      "Esquemas simples en texto que nombran caras (piso, techo, paredes, tapa, base) para hacer explícito qué superficies están involucradas.",
+      "Tablas o listas con distintas acciones posibles sobre el mismo objeto (pintar, llenar, cubrir con cerámica) y elección de magnitud para cada acción.",
+      "Comparaciones entre dos soluciones propuestas por personas ficticias: una que elige área y otra volumen, y el estudiante debe decidir cuál corresponde al contexto.",
+      "Descripciones de objetos no geométricos pero modelables (sacos, cajas de envío, depósitos cilíndricos), que obligan a traducir el lenguaje cotidiano a área/volumen."
     ],
     "numbers_profiles": [
-      "context_no_numbers",
       "small_integers",
-      "simple_decimals"
+      "medium_integers",
+      "simple_decimals",
+      "simple_measurements"
     ],
     "required_image_types": []
   }

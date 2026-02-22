@@ -3,118 +3,129 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Racionalizar fracciones cuyo denominador es un monomio que contiene una raíz cuadrada simple, por ejemplo 1/√2, 3/√5, −7/√3.",
-        "Uso del procedimiento estándar: multiplicar numerador y denominador por la misma raíz que aparece en el denominador para eliminar la raíz.",
-        "Simplificar el resultado: combinar factores, reducir fracciones y escribir el resultado con radical en el numerador y denominador racional.",
-        "Casos donde el denominador es un producto de entero por raíz cuadrada, por ejemplo 4√3, −2√5, incluyendo la simplificación final (por ejemplo 6/(2√3) → 3/√3 → racionalizar).",
-        "Manipulación básica de raíces cuadradas de números positivos que no son cuadrados perfectos, como √2, √3, √5, √6, √7, √10."
+        "Racionalizar fracciones cuyo denominador es un único término con raíz cuadrada de un número real positivo (por ejemplo 1/√2, 6/√3, -5/√7).",
+        "Uso del factor 1 en la forma √a/√a para eliminar la raíz cuadrada del denominador.",
+        "Simplificación posterior de factores y fracciones resultantes (por ejemplo extracción de factores comunes, reducción de fracción, uso de que √a·√a = a).",
+        "Reconocimiento de equivalencia numérica entre la fracción original y la fracción racionalizada.",
+        "Racionalización en contextos aritméticos simples (cálculo directo) y en pasos intermedios de procedimientos más largos de cálculo numérico o algebraico básico."
       ],
       "out_of_scope": [
-        "Racionalización de denominadores binomiales (por ejemplo 1/(a+√b)), que requieren conjugados.",
-        "Racionalización con raíces de índice distinto de 2 (raíces cúbicas, cuartas, etc.).",
-        "Racionalización en expresiones con varias operaciones algebraicas complejas (por ejemplo, fracciones algebraicas con varias variables y sumas en numerador y denominador).",
-        "Demostraciones teóricas sobre irracionalidad de raíces o sobre por qué se racionaliza; el foco es procedimental.",
-        "Uso de propiedades avanzadas de radicales como racionalización sucesiva de productos con varias raíces distintas en el denominador (por ejemplo 1/(√2√3√5))."
+        "Racionalización de denominadores binomiales que requieran conjugado (por ejemplo 1/(√2+1)).",
+        "Racionalización de raíces de índice distinto de 2 (por ejemplo raíces cúbicas).",
+        "Expresiones con varios términos en el denominador (suma o resta de radicales) que involucren más que un monomio con raíz.",
+        "Contextos avanzados de álgebra simbólica donde la racionalización se combine con factorizaciones no vistas en M1.",
+        "Racionalización en expresiones con radicales anidados complejos o con parámetros literales complicados."
       ],
       "prerequisites": [
-        "A-M1-NUM-03-01: Manejo de fracciones (equivalencia, amplificación y simplificación).",
-        "A-M1-NUM-03-10: Interpretación y cálculo básico con raíces cuadradas de números reales positivos.",
-        "A-M1-NUM-03-12: Propiedad √a · √a = a, para a ≥ 0.",
-        "A-M1-NUM-03-05: Operaciones con números enteros y racionales (suma, resta, producto, cociente)."
+        "A-M1-NUM-02-01: Manejo de fracciones (equivalencia, amplificación y simplificación).",
+        "A-M1-NUM-02-05: Propiedades de la multiplicación y división de números reales.",
+        "A-M1-NUM-03-01: Interpretación de la raíz cuadrada como número cuyo cuadrado es el radicando.",
+        "A-M1-NUM-03-02: Uso de la propiedad √a·√a = a para a ≥ 0.",
+        "A-M1-NUM-03-05: Simplificación de radicales simples cuando sea posible (por ejemplo √4 = 2, √9 = 3)."
       ],
       "common_traps": [
-        "Multiplicar solo el denominador por la raíz y olvidar el numerador, rompiendo la equivalencia de la fracción.",
-        "Creer que siempre se debe eliminar toda raíz de la expresión, incluyendo raíces en el numerador, y no solo del denominador.",
-        "Confundir √a · √a = a con √a + √a = a; sumar raíces en lugar de multiplicarlas.",
-        "Simplificar incorrectamente factores como √4 o √9, no reemplazándolos por 2 o 3 cuando corresponde.",
-        "No simplificar completamente al final (por ejemplo dejar 4√2/4 en lugar de √2).",
-        "Errores de signo al racionalizar fracciones negativas (ubicar el signo solo en numerador o solo en denominador).",
-        "Elegir un factor inadecuado para racionalizar (por ejemplo multiplicar por 2 en vez de por √2)."
+        "Olvidar multiplicar el numerador por el mismo factor con el que se multiplica el denominador (es decir, no usar realmente un factor igual a 1).",
+        "Tratar de \"eliminar\" la raíz solo del denominador escribiendo √a = a sin justificar (confundir raíz con el número).",
+        "No simplificar la expresión final aunque existan factores comunes entre numerador y denominador (por ejemplo quedarse en 4√2/4 en vez de √2).",
+        "Confundir racionalización con aproximación decimal de la raíz, dando como respuesta una aproximación en vez de una expresión exacta.",
+        "Cambiar indebidamente el valor de la fracción al usar un factor de amplificación distinto de √a/√a (por ejemplo multiplicar solo por √a).",
+        "Cometer errores de signos al racionalizar fracciones negativas (ubicar el signo solo en el denominador o cambiar el signo final sin justificación).",
+        "Manipular mal fracciones con coeficientes que se pueden simplificar antes o después de la racionalización, generando errores de cálculo o expresiones innecesariamente complejas."
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Denominadores con una sola raíz cuadrada simple y numeradores enteros pequeños, por ejemplo 1/√2, 3/√5.",
-        "Casos en que no se requiere simplificación posterior más allá de aplicar √a·√a = a (por ejemplo 5/√3 → 5√3/3).",
-        "Item explícitamente guiado en el procedimiento, por ejemplo indicando o sugiriendo el factor por el cual multiplicar.",
-        "Números positivos pequeños, sin fracciones en el numerador ni coeficientes multiplicando la raíz en el denominador."
+        "Denominador con una sola raíz cuadrada de un entero pequeño sin posibilidad de simplificar el radical (por ejemplo √2, √3, √5).",
+        "Numerador entero pequeño, positivo, con operaciones mínimas o nulas de simplificación posterior (por ejemplo 2/√2, 3/√3, 1/√5).",
+        "Alternativas que difieren claramente en estructura (solo una está racionalizada y es numéricamente equivalente; otras contienen errores evidentes como no multiplicar numerador).",
+        "No inclusión de fracciones complejas ni combinación con otras operaciones aritméticas (suma, resta o productos de fracciones).",
+        "Enunciado directo del tipo \"¿cuál de los siguientes números es igual a …?\" sin contexto verbal adicional."
       ],
       "medium": [
-        "Denominadores del tipo k√a con k entero distinto de 1, que requieren simplificar fracciones después de racionalizar, por ejemplo 6/(2√3), −10/(5√2).",
-        "Numeradores que son fracciones simples o expresiones con signo, por ejemplo −3/√5, 1,5/√2 o (1/2)/√3.",
-        "Necesidad de combinar simplificación de raíces exactas (como √4, √9) con la racionalización.",
-        "Contextos verbales breves donde la fracción aparece en un cálculo intermedio y se exige entregar el resultado racionalizado."
+        "Denominadores con raíz cuadrada de un entero mayor o con posibilidad de simplificar luego (por ejemplo √8, √12), pudiendo requerir reorganizar factores.",
+        "Numeradores que no son 1, incluyendo enteros negativos o fraccionarios sencillos (por ejemplo -3/√5, 1/(2√3)).",
+        "Necesidad de hacer al menos dos pasos de simplificación posteriores (por ejemplo reducir fracciones, extraer factores comunes del numerador).",
+        "Distractores que incluyen errores típicos de racionalización (no multiplicar el numerador, olvidar simplificar, confundir √a·√a con √a).",
+        "Contextos verbales breves donde la fracción a racionalizar aparece como resultado intermedio o como parte de un dato de un problema sencillo."
       ],
       "hard": [
-        "Expresiones que requieren más de un paso previo antes de racionalizar, por ejemplo simplificar factores comunes entre numerador y denominador antes o después de racionalizar.",
-        "Denominadores del tipo (a√b)/c con a y c enteros, que implican manipulación de fracciones anidadas, por ejemplo 3/((2√5)/3).",
-        "Uso simultáneo de varias propiedades de radicales, como factorizar √(ab) = √a·√b cuando conviene para simplificar después de racionalizar.",
-        "Números no tan inmediatos para el estudiante (por ejemplo √6, √7, √10) y requerimiento explícito de dejar el resultado en la forma más simplificada posible, incluyendo reducción de fracciones.",
-        "Item donde se comparan o se elige entre varias expresiones ya racionalizadas para determinar cuál es equivalente a la original, exigiendo reconocer el procedimiento indirectamente."
+        "Fracciones con coeficientes fraccionarios o productos de radicales en el numerador (por ejemplo (3√2)/√5, 5/(3√2)).",
+        "Denominadores que incluyen un factor numérico junto al radical, requiriendo decidir si simplificar antes o después (por ejemplo 4√3, (1/2)√5).",
+        "Ítems donde se pide comparar dos o más expresiones para determinar cuáles son equivalentes, implicando racionalizar mentalmente y simplificar para decidir.",
+        "Alternativas muy cercanas en apariencia, donde la única diferencia es una simplificación final correcta o incorrecta, o un error sutil de factor.",
+        "Problemas donde la racionalización es un paso intermedio imprescindible para continuar un cálculo o argumentar sobre el valor de una expresión (por ejemplo comparar tamaños sin aproximar raíces), sin estar explícitamente indicada la instrucción de \"racionalizar\".",
+        "Uso de números menos familiares bajo la raíz (por ejemplo √7, √11, √13) que impiden apoyarse en memorias de ejemplos estándar."
       ]
     },
     "ambiguity_avoid": [
-      "No usar denominadores binomiales con raíces (por ejemplo a+√b) en este átomo, porque corresponde a racionalización con conjugado y excede el alcance.",
-      "Evitar expresiones en las que no quede claro si la raíz afecta solo a una parte del denominador o a todo, por ejemplo escribir 1/√2x; en su lugar, usar paréntesis claros: 1/(√2·x) o 1/√(2x).",
-      "No mezclar en el mismo ítem varios objetivos (por ejemplo racionalizar y luego aplicar una operación algebraica extensa) de modo que no sea evidente que el foco es la racionalización del denominador.",
-      "Evitar instrucciones vagas como 'simplifique la expresión' cuando la intención sea específicamente 'racionalice el denominador'; explicitar la acción esperada.",
-      "No usar notaciones no estándar para raíces (por ejemplo √( ) sin radicando claramente escrito o símbolos gráficos poco legibles).",
-      "Evitar resultados de alternativas que sean algebraicamente equivalentes pero escritos en formas muy distintas sin aclarar el criterio de 'forma simplificada', para no generar duda en la corrección.",
-      "No incluir raíces de índice distinto de 2 ni notaciones ambiguas como √^2 a, que pueden confundirse con potencias."
+      "Evitar expresiones donde el alcance del radical pueda ser ambiguo; usar siempre paréntesis claros, por ejemplo 2/√3 en vez de 2/√3+1.",
+      "No mezclar en la misma alternativa aproximaciones decimales de raíces con expresiones exactas, salvo que el ítem trate explícitamente sobre aproximaciones; para este átomo, privilegiar siempre la forma exacta.",
+      "No usar denominadores que sugieran necesidad de conjugados (por ejemplo a+√b) ya que salen del alcance de \"raíz simple\" y pueden confundir sobre el procedimiento esperado.",
+      "Evitar enunciados en que no quede claro si se pide racionalizar, simplificar, o ambas cosas; especificar la tarea o pedir equivalencia numérica de forma explícita.",
+      "No usar notaciones no estándar para la raíz cuadrada (como exponentes 1/2 mal ubicados sin paréntesis) que puedan generar dudas sobre qué parte está bajo el radical.",
+      "No plantear alternativas que sean todas formalmente racionalizadas pero solo una simplificada al máximo, a menos que el enunciado pida explícitamente \"forma más simple\"; de lo contrario, se vuelve subjetivo cuál es la respuesta correcta.",
+      "Evitar casos límite con cero en numerador o denominador (por ejemplo 0/√2, 1/√0) que introducen otros conceptos (indeterminaciones, divisiones por cero)."
     ],
     "error_families": [
       {
-        "name": "Amplificación incompleta",
-        "description": "El estudiante multiplica solo el denominador por la raíz, pero deja el numerador sin multiplicar, cambiando el valor de la fracción.",
-        "how_to_address": "Reforzar la idea de fracción equivalente: al multiplicar por 1 se debe usar el mismo factor en numerador y denominador. Proponer ejercicios que comparen el valor numérico antes y después para evidenciar el cambio indebido."
+        "name": "No amplificar el numerador",
+        "description": "El estudiante multiplica solo el denominador por la raíz, transformando 1/√2 en 1/2, cambiando el valor de la fracción porque no respeta el factor 1 = √2/√2.",
+        "how_to_address": "Insistir en la idea de fracción equivalente y del factor 1. Trabajar con ejemplos numéricos donde se vea que multiplicar solo el denominador altera el valor, y usar representaciones de fracciones equivalentes sin radicales para reforzar el procedimiento completo numerador–denominador."
       },
       {
-        "name": "Confusión suma vs producto de raíces",
-        "description": "Se aplica incorrectamente √a + √a = a en lugar de √a · √a = a, lo que lleva a resultados numéricamente erróneos.",
-        "how_to_address": "Trabajar ejemplos numéricos concretos (por ejemplo √4 + √4 frente a √4·√4) para contrastar resultados. Reforzar la notación y el significado de las operaciones con radicales."
+        "name": "Confundir raíz con el número",
+        "description": "Escribir √a = a, o usar √a·√a = √a, lo que lleva a resultados como 1/√3 = √3/√3 = √3/√3 = 1.",
+        "how_to_address": "Reforzar el significado de raíz como \"número que al cuadrado da el radicando\" y practicar ejercicios donde se verifique numéricamente que √a·√a = a usando ejemplos concretos. Incluir contraejemplos que muestren que √3 ≠ 3."
       },
       {
-        "name": "No simplificar el resultado final",
-        "description": "Después de racionalizar, el estudiante no reduce fracciones ni simplifica factores comunes (por ejemplo dejar 4√2/4 en vez de √2).",
-        "how_to_address": "Incorporar en las consignas 'deje su resultado en la forma más simple posible' y planificar ejercicios donde la comparación de alternativas exija verificar la simplificación final."
+        "name": "Omisión de la simplificación final",
+        "description": "El estudiante llega a expresiones como 4√2/4 o 6√3/3 y no reduce la fracción, manteniendo factores comunes innecesarios.",
+        "how_to_address": "Incorporar sistemáticamente un paso de \"revisión y simplificación\" al final de los procedimientos. Practicar tareas donde se deban identificar expresiones ya racionalizadas pero no simplificadas y transformarlas a una forma más compacta."
       },
       {
-        "name": "Selección incorrecta del factor para racionalizar",
-        "description": "El estudiante multiplica por un número racional (por ejemplo 2) en lugar de por la raíz del denominador (por ejemplo √2), manteniendo la raíz en el denominador.",
-        "how_to_address": "Explicitar la meta del procedimiento: obtener un número racional en el denominador. Mostrar la igualdad √a·√a = a y practicar con varios ejemplos para construir el patrón correcto."
+        "name": "Manejo incorrecto de signos",
+        "description": "El signo negativo se pierde o se ubica mal al racionalizar, por ejemplo -3/√2 → 3√2/2 o 3/√2 → -3√2/2 sin justificación.",
+        "how_to_address": "Trabajar con ejemplos donde el signo se mantenga visible como factor en el numerador (−3)/√2 y mostrar que se mantiene a lo largo de la amplificación. Hacer hincapié en que el factor √a/√a es positivo, por lo que no altera el signo original."
       },
       {
-        "name": "Manejo inseguro de signos",
-        "description": "Errores al tratar fracciones negativas, ubicando el signo en un solo factor o cambiando su posición y confundiendo el resultado.",
-        "how_to_address": "Recordar que −(p/q), (−p)/q y p/(−q) son equivalentes. Practicar racionalizaciones con numeradores y denominadores negativos, enfatizando que el signo global puede ponerse delante de toda la fracción."
+        "name": "Confusión con factores numéricos en el denominador",
+        "description": "En expresiones como 5/(2√3), el estudiante racionaliza como si el denominador fuera solo √3 y olvida el 2, o simplifica mal 5·√3/2 en la fracción final.",
+        "how_to_address": "Practicar ejemplos que separen claramente el factor numérico y el radical (5/(2√3) = 5/2·1/√3) y luego racionalizar. Enfatizar el uso ordenado de propiedades de fracciones (agrupando factores) antes de racionalizar."
       },
       {
-        "name": "Manejo deficiente de fracciones compuestas",
-        "description": "Dificultades cuando el numerador o el denominador incluye fracciones internas, lo que deriva en errores de multiplicación o simplificación al racionalizar.",
-        "how_to_address": "Descomponer el procedimiento en pasos: primero simplificar la fracción compuesta, luego racionalizar. Utilizar representaciones intermedias claras con paréntesis y barras de fracción bien definidas."
+        "name": "Mezclar racionalización con aproximación decimal",
+        "description": "El estudiante reemplaza la raíz por una aproximación decimal (por ejemplo √2 ≈ 1,4) y luego racionaliza o simplifica sobre esa base, perdiendo exactitud.",
+        "how_to_address": "Diferenciar explícitamente entre trabajo con expresiones exactas y uso de aproximaciones. Proponer actividades donde se comparen los resultados exactos con aproximaciones para mostrar la pérdida de precisión, y aclarar que racionalizar busca mantener la exactitud."
+      },
+      {
+        "name": "Racionalizar donde no corresponde o de forma innecesaria",
+        "description": "Aplicar el procedimiento de racionalización a denominadores que ya son racionales o que no requieren ese paso, añadiendo complejidad sin sentido.",
+        "how_to_address": "Discutir el propósito de la racionalización: facilitar cálculos o comparaciones. Hacer ejercicios de decisión: \"¿Es necesario racionalizar aquí? ¿Por qué?\" para desarrollar criterio y no aplicar la técnica de manera mecánica."
       }
     ],
     "future_targets": [
-      "Racionalización de denominadores binomiales mediante conjugados.",
-      "Operaciones con radicales más complejos, incluyendo suma y resta de expresiones con raíces ya racionalizadas.",
-      "Resolución de ecuaciones que incluyen raíces en el denominador, donde racionalizar ayuda a despejar incógnitas.",
-      "Trabajo con expresiones algebraicas que incluyen raíces (con variables) en contextos de álgebra elemental.",
-      "Aplicación de radicales y racionalización en problemas geométricos, por ejemplo, longitudes que surgen de teorema de Pitágoras.",
-      "Preparación para manipulación de expresiones con potencias fraccionarias equivalentes a raíces."
+      "Racionalización de denominadores binomiales mediante conjugados (por ejemplo 1/(√2+1)).",
+      "Simplificación de expresiones algebraicas con radicales que incluyan variables (por ejemplo x/√y).",
+      "Operaciones con radicales (suma, resta y multiplicación de radicales semejantes).",
+      "Resolución de ecuaciones que involucran raíces cuadradas donde la racionalización facilite despejar.",
+      "Análisis de funciones que incluyen radicales en el denominador, donde racionalizar ayuda a estudiar dominios o límites sencillos.",
+      "Trabajo con potencias de exponente fraccionario equivalentes a radicales (a^(1/2)) y su manipulación algebraica.",
+      "Demostraciones y argumentaciones más formales que requieren expresar resultados en forma exacta (sin raíces en el denominador)."
     ],
     "representation_variants": [
-      "Expresiones simbólicas directas en forma de fracción con raíz en el denominador, usando notación estándar de radical.",
-      "Enunciados verbales breves que describen una situación numérica que conduce a una fracción con raíz en el denominador, pidiendo el resultado racionalizado.",
-      "Comparación de varias expresiones racionalizadas en forma simbólica para decidir cuál es equivalente a una fracción dada con raíz en el denominador.",
-      "Items de completar espacio en blanco dentro de una expresión del tipo ( ? )/a = b/√c, donde el estudiante debe determinar el factor que permite racionalizar."
+      "Expresiones puramente numéricas en forma de fracción con raíz en el denominador (forma más directa).",
+      "Expresiones mixtas en lenguaje natural donde la raíz se describe verbalmente (por ejemplo \"la raíz cuadrada de 2\" en vez de √2).",
+      "Inclusión de letras como parámetros numéricos simples multiplicando radicales (por ejemplo k/√2 con k entero), siempre que no implique álgebra avanzada.",
+      "Contextos de problemas verbales sencillos (geometría básica, medidas, razones) donde aparece naturalmente una fracción con raíz en el denominador que debe ser reexpresada.",
+      "Comparación de diferentes formas equivalentes de un mismo número (antes y después de racionalizar) para seleccionar la expresión adecuada según un criterio dado (por ejemplo exactitud, ausencia de radicales en el denominador)."
     ],
     "numbers_profiles": [
       "small_integers",
-      "signed_integers",
+      "medium_integers",
+      "simple_radicals",
+      "compound_radicals_simple_product",
       "simple_fractions",
-      "simple_decimals",
-      "simple_square_roots",
-      "integer_times_square_root"
+      "negative_numbers"
     ],
     "required_image_types": []
   }

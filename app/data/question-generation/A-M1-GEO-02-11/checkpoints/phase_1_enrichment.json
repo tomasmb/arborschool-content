@@ -3,123 +3,132 @@
   "enrichment_data": {
     "scope_guardrails": {
       "in_scope": [
-        "Cálculo de área lateral de cilindros rectos usando la fórmula 2πrh, dado radio y altura o datos directamente equivalentes.",
-        "Cálculo de área total de cilindros rectos usando la fórmula 2πrh + 2πr², incluyendo casos de cilindros abiertos o sin tapas (explicitado en el enunciado).",
-        "Determinación de radio o altura a partir del área lateral de un cilindro recto en situaciones simples (ecuación lineal de una variable).",
-        "Problemas contextualizados de superficies de envases cilíndricos (latas, tubos, tarros, cañerías) que se reduzcan al uso directo de las fórmulas.",
-        "Reconocimiento de qué partes del cilindro corresponden al área lateral y a las bases en contextos concretos (p. ej., etiqueta versus tapas)."
+        "Cálculo del área lateral de un cilindro recto usando explícitamente la fórmula 2πrh, dado radio y altura o sus valores equivalentes",
+        "Cálculo del área total de un cilindro recto sumando el área lateral y el área de las dos bases circulares: 2πrh + 2πr²",
+        "Determinación de radio o altura a partir del área lateral en situaciones directas donde solo una incógnita aparece en 2πrh",
+        "Problemas contextualizados de superficie de cilindros, como latas, tubos, estanques, donde se distinga entre cilindro abierto, cerrado o sin tapas",
+        "Uso de π como constante exacta (π) o aproximada (por ejemplo 3,14 o 3,1) de manera coherente con el enunciado",
+        "Identificación de qué partes del cilindro se consideran para el cálculo (solo área lateral, solo tapas, total) a partir de la descripción verbal o del dibujo"
       ],
       "out_of_scope": [
-        "Cálculo de volumen de cilindros o combinación simultánea de área superficial y volumen en la misma pregunta.",
-        "Cilindros oblicuos o figuras no rectas (no perpendiculares a la base).",
-        "Cilindros con dimensiones variables o dependientes de parámetros no numéricos (modelación avanzada).",
-        "Uso de trigonometría o cálculo diferencial/integral para deducir las fórmulas de área de superficie.",
-        "Combinaciones complejas de sólidos (uniones o intersecciones de cilindros con conos, prismas, esferas) donde el foco no sea solo la parte cilíndrica y sus áreas.",
-        "Problemas que requieran optimización (p. ej., minimizar superficie para un volumen dado)."
+        "Cálculo de volumen de cilindros",
+        "Cálculo de áreas de conos, esferas u otros cuerpos de revolución",
+        "Cilindros oblicuos o situaciones que requieran trigonometría para determinar radio o altura",
+        "Desarrollo de fórmulas de área de cilindro a partir de argumentos geométricos; en este átomo se asume la fórmula",
+        "Optimización geométrica (por ejemplo, minimizar material de una lata con volumen fijo)",
+        "Sistemas de ecuaciones con más de una incógnita geométrica que no se resuelvan de manera directa desde 2πrh",
+        "Problemas que exijan cálculo diferencial o integral para justificar superficies curvas"
       ],
       "prerequisites": [
-        "A-M1-GEO-01-01: Comprensión del concepto de área como medida de superficie.",
-        "A-M1-GEO-01-02: Cálculo de perímetro y área de círculos (πr²) y longitud de circunferencia (2πr).",
-        "A-M1-ALG-01-01: Manejo básico de expresiones con π, sustitución de datos y operatoria con números reales positivos.",
-        "A-M1-ALG-02-01: Resolución de ecuaciones lineales simples de una variable (ax = b, x = b/a)."
+        "A-M1-GEO-02-01: Perímetro y área del círculo (P = 2πr, A = πr²)",
+        "A-M1-ALG-01-01: Operaciones con números reales (enteros y decimales) y uso de aproximaciones con π",
+        "A-M1-ALG-02-01: Despeje de una incógnita en ecuaciones lineales simples del tipo kx = a",
+        "A-M1-GEO-01-02: Reconocer y describir cuerpos geométricos básicos, incluyendo el cilindro recto"
       ],
       "common_traps": [
-        "Confundir área lateral con área total e incluir o excluir erróneamente las tapas (bases) cuando el contexto habla de “lata abierta”, “sin tapa”, “solo etiqueta”, etc.",
-        "Olvidar que el perímetro de la base es 2πr y reemplazarlo incorrectamente por πr, r² o el diámetro.",
-        "Intercambiar radio y diámetro al usar la fórmula, especialmente cuando el enunciado entrega el diámetro y no explicita el radio.",
-        "Interpretar mal las unidades (p. ej., usar cm en una dimensión y m en otra sin convertir, o responder el área sin unidades cuadradas).",
-        "Resolver incorrectamente al despejar radio o altura a partir del área lateral (errores de álgebra básica, como dividir por 2π en vez de 2πr).",
-        "Omitir que hay dos bases en el área total y usar 2πrh + πr² en vez de 2πrh + 2πr².",
-        "Usar mal el valor aproximado de π (confundir 3,14 con 3,4 o truncar demasiado), cuando el ítem pide aproximaciones numéricas.",
-        "Tomar “altura” como medida inclinada (generatriz) en lugar de la altura recta del cilindro en esquemas visuales poco claros."
+        "Confundir área lateral con área total y sumar las bases cuando el contexto solo pide el material de la etiqueta o superficie lateral",
+        "Olvidar que son dos bases circulares y usar πr² en lugar de 2πr² para el área total",
+        "Usar la fórmula 2πr² para el área lateral, confundiendo con el área de las tapas",
+        "Usar el diámetro en la fórmula como si fuera el radio, provocando un factor 2 de error",
+        "Interpretar mal el contexto de cilindro abierto o sin tapas y sumar o restar áreas de más o de menos",
+        "Cambiar de criterio respecto del uso de π (empezar con π exacto y luego reemplazar por 3,14 de forma inconsistente en las alternativas)",
+        "No diferenciar entre unidades lineales (cm, m) y cuadradas (cm², m²) al interpretar o comparar las alternativas",
+        "Problemas donde la etiqueta no cubre toda la altura o todo el contorno pero el estudiante asume que sí, ignorando recortes parciales"
       ]
     },
     "difficulty_rubric": {
       "easy": [
-        "Datos entregados directamente como radio y altura con números enteros pequeños (≤ 10) y uso explícito de la fórmula enunciada o recordada (2πrh o 2πrh + 2πr²).",
-        "Preguntas donde se pide solo área lateral o solo área total, sin contexto verbal complejo ni interpretación adicional.",
-        "Situaciones donde se puede dejar la respuesta en términos de π sin necesidad de aproximar numéricamente.",
-        "Cálculo directo en el que no hay que distinguir entre radio y diámetro porque el radio se entrega claramente como tal."
+        "Enunciar explícitamente la fórmula requerida (por ejemplo, 'use 2πrh para calcular el área lateral') y dar radio y altura como enteros pequeños",
+        "Pedir solo un tipo de área (lateral o total), sin mezclar ambas en el mismo ítem",
+        "Proponer contextos simples y directos (por ejemplo, 'lata cerrada' o 'etiqueta que cubre todo el cilindro') sin ambigüedades sobre qué partes se consideran",
+        "Usar π como número dado en el enunciado (por ejemplo, 'considere π = 3') o dejar la respuesta esperada en términos de π con operaciones muy simples",
+        "Evitar despejes: solo cálculo directo del área conocida la altura y el radio"
       ],
       "medium": [
-        "Problemas contextualizados (latas, tubos, recipientes) donde el estudiante debe identificar si necesita área lateral, total o solo tapas, a partir del texto.",
-        "Enunciados donde se entrega el diámetro, el perímetro de la base o una vista desplegada (rectángulo + círculos) y el estudiante debe inferir el radio antes de aplicar la fórmula.",
-        "Cálculo de área cuando al menos una dimensión es un número no entero simple (fracciones poco complejas o decimales con una cifra), requiriendo algo más de operatoria.",
-        "Ítems que piden determinar altura o radio a partir del área lateral o total en ecuaciones lineales simples (por ejemplo, 2πr·h = A dado r, o 2πrh = A dado h), sin pasos algebraicos extensos."
+        "No indicar la fórmula explícitamente, esperando que el estudiante recuerde y seleccione 2πrh y 2πrh + 2πr² según corresponda",
+        "Combinar área lateral y total en un mismo contexto, por ejemplo comparar material de etiqueta versus material total de la lata",
+        "Incluir valores numéricos moderados (como 7, 12, 15) y alturas o radios con uno o dos decimales",
+        "Pedir determinar el radio o la altura a partir del área lateral dada, con una ecuación lineal simple (por ejemplo 2πr·h = A, con solo una incógnita)",
+        "Contextos donde el cilindro está abierto por arriba o por abajo, exigiendo que el estudiante decida si incluir 0, 1 o 2 bases en el área total"
       ],
       "hard": [
-        "Problemas donde se debe comparar o elegir entre distintas configuraciones cilíndricas en términos de área de superficie (por ejemplo, cuál usa más material) sin hacer cálculos exhaustivos, usando razonamiento proporcional.",
-        "Situaciones donde una de las dimensiones debe obtenerse indirectamente a partir de otra magnitud geométrica relacionada (por ejemplo, longitud de etiqueta desplegada que da el perímetro, o datos de desarrollo plano con escalas).",
-        "Ítems que mezclan varios pasos: interpretar el contexto (qué partes se consideran), convertir unidades, deducir radio o altura a partir de una información intermedia y luego calcular el área pedida.",
-        "Preguntas que implican discriminar entre área lateral, de bases y total, en cilindros parcialmente abiertos/cerrados (por ejemplo, sin tapa, sin base, con solo una tapa) donde hay que adaptar la fórmula estándar.",
-        "Casos donde se entrega el área total y se pide una dimensión (radio o altura) requiriendo reorganizar 2πrh + 2πr² o usar información adicional para simplificar la ecuación (aunque siempre en contextos resolubles sin álgebra avanzada)."
+        "Problemas donde solo se da el desarrollo plano (rectángulo y círculos) y el estudiante debe inferir radio y altura a partir de dimensiones parciales (por ejemplo, ancho = perímetro de la base, alto = altura del cilindro)",
+        "Situaciones en que se entrega una medida relacionada (como diámetro, circunferencia de la base o área de la base) y se debe convertir correctamente a radio antes de aplicar 2πrh o 2πr²",
+        "Determinación de radio o altura a partir de un área lateral o total dada en forma numérica no trivial (por ejemplo, con π aproximado, decimales o fracciones) que implica operaciones de división menos directas",
+        "Comparación de dos cilindros con distintas dimensiones para decidir cuál tiene mayor área lateral o total, requiriendo cálculos y/o estimaciones comparativas",
+        "Contextos con información redundante o distractora (por ejemplo, volumen o masa del contenido) que debe ser descartada para centrarse solo en superficie"
       ]
     },
     "ambiguity_avoid": [
-      "Evitar usar simultáneamente los términos “radio” y “diámetro” sin aclarar cuál valor se está entregando; especificar explícitamente si la medida corresponde al radio o al diámetro.",
-      "No usar expresiones vagas como “área del cilindro” sin especificar si se refiere a área lateral, área de las bases o área total.",
-      "En contextos de envases, precisar si la superficie a calcular incluye tapa, base, o solo la superficie que se etiqueta (por ejemplo, “solo la superficie curva donde va la etiqueta, sin contar tapas”).",
-      "Cuando el cilindro está “abierto” o “sin tapa”, explicar si falta la tapa superior, la base inferior o ambas, para que no haya interpretaciones múltiples.",
-      "Evitar dibujos donde la altura parezca inclinada o confusa respecto de la generatriz; marcar claramente la altura con un segmento perpendicular a la base y etiquetarlo con h.",
-      "No mezclar distintas unidades de medida sin explicitar la necesidad de conversión; si se usan, indicar de forma clara o mantener todas las dimensiones en las mismas unidades.",
-      "Si se pide aproximar π, indicar el valor a usar (por ejemplo, “Use π ≈ 3,14”) o especificar si se permite dejar la respuesta en términos de π.",
-      "Evitar textos excesivamente largos o con datos irrelevantes que dificulten identificar si la pregunta apunta a área lateral o total.",
-      "En desarrollos planos, indicar explícitamente qué corresponde a la base (círculos) y qué al rectángulo lateral, y etiquetar el ancho del rectángulo como altura y el largo como perímetro de base."
+      "Evitar usar términos como 'área de la lata' sin precisar si se refiere a área total o solo área lateral; especificar 'área lateral', 'área total', 'solo las tapas', etc.",
+      "No usar expresiones coloquiales ambiguas como 'lo que se ve por fuera' si el cilindro puede estar abierto o cerrado; aclarar si incluye o no las bases",
+      "En problemas con etiquetas, indicar claramente qué partes cubre la etiqueta (toda la altura, solo una franja, incluye o no las tapas)",
+      "Especificar si el valor dado corresponde al radio, al diámetro o a la circunferencia de la base; no usar 'tamaño de la base' sin detalle",
+      "Cuando se use π aproximado, indicar explícitamente el valor a usar y ser consistente en el cálculo de la respuesta correcta y distractores",
+      "Indicar siempre las unidades en las longitudes y en las áreas para evitar dudas sobre si se debe convertir unidades",
+      "En dibujos de cilindros, etiquetar con claridad altura y radio/diámetro, evitando que el estudiante tenga que adivinar cuál medida corresponde a cuál dimensión",
+      "No mezclar en el mismo ítem propiedades de volumen y de área sin aclarar que solo se requiere área, para evitar interpretaciones dobles",
+      "Evitar que dos alternativas numéricas muy cercanas correspondan a decisiones distintas sobre π (por ejemplo, usar 3,14 vs 3,1416) si el enunciado no fija un valor"
     ],
     "error_families": [
       {
-        "name": "Confusión_entre_area_lateral_y_total",
-        "description": "El estudiante no distingue entre área lateral y área total; suele sumar o restar indebidamente las áreas de las bases, usando fórmulas incorrectas como 2πrh + πr² o solo 2πr² cuando se le pide el área total.",
-        "how_to_address": "Diseñar ítems que obliguen a identificar explícitamente qué partes del cilindro se consideran (tapas, base, etiqueta) y que contrasten casos de solo área lateral, solo tapas y área total. Incluir esquemas que sombreen las partes relevantes y pedir al estudiante asociarlas con 2πrh o 2πr², reforzando la interpretación geométrica de cada término de la fórmula."
+        "name": "Confusión área lateral vs área total",
+        "description": "El estudiante aplica la fórmula de área total cuando se pide área lateral o viceversa, típicamente sumando o restando 2πr² de forma incorrecta.",
+        "how_to_address": "Diseñar ítems que destaquen el lenguaje técnico (lateral, total, tapas) y que requieran decidir explícitamente qué superficies se incluyen, con retroalimentación que contraste ambos casos en un mismo contexto."
       },
       {
-        "name": "Uso_incorrecto_del_perimetro_de_la_base",
-        "description": "El estudiante reemplaza el perímetro de la base por πr o por r², o bien usa el diámetro en lugar del radio sin ajustarlo, lo que afecta el cálculo del área lateral.",
-        "how_to_address": "Proponer preguntas donde el perímetro se entregue explícitamente y se pida relacionarlo con 2πr, y otras donde se entregue el diámetro para que el estudiante deba transformarlo en radio. Reforzar la idea de que el rectángulo lateral tiene una dimensión igual a la altura y la otra igual al perímetro de la base, conectando la fórmula con el desarrollo plano."
+        "name": "Una sola base en área total",
+        "description": "Al calcular el área total de un cilindro cerrado, el estudiante usa A_total = 2πrh + πr², olvidando que existen dos tapas.",
+        "how_to_address": "Incluir ítems que pidan comparar el efecto de tener 0, 1 o 2 tapas en el área total y enfatizar visualmente que el cilindro tiene dos bases circulares iguales."
       },
       {
-        "name": "Manejo_deficiente_de_π_y_de_las_unidades",
-        "description": "Errores numéricos al aproximar π, al multiplicar por π o al no usar unidades cuadradas en el resultado del área (por ejemplo, responder en cm en lugar de cm²).",
-        "how_to_address": "Incluir ítems que pidan explícitamente respuestas en términos de π y otros que exijan un valor numérico aproximado, especificando el valor de π a usar. Destacar en los enunciados las unidades de las dimensiones y de la respuesta esperada, pudiendo incorporar alternativas distractoras que difieran solo en las unidades para enfatizar el cuidado con ellas."
+        "name": "Radio vs diámetro",
+        "description": "Se usa el diámetro directamente en las fórmulas 2πrh o πr², lo que produce áreas cuatro veces mayores o con error constante, según el caso.",
+        "how_to_address": "Proponer problemas donde algunas medidas se den como diámetro y otras como radio, pidiendo explícitamente el paso intermedio de hallar el radio, y generar distractores que reflejen el error típico para poder diagnosticarlo."
       },
       {
-        "name": "Errores_al_despejar_radio_o_altura",
-        "description": "Dificultad para reorganizar la fórmula del área lateral o total para encontrar r o h, llevando a pasos como dividir por una expresión incompleta (p. ej., dividir solo por 2π en vez de por 2πr) o confundir el orden de operaciones.",
-        "how_to_address": "Plantear ítems que guíen en un solo paso de despeje (por ejemplo, teniendo ya agrupados los términos de área lateral) y usar estructuras de ecuación simples (A = k·x). Ofrecer alternativas donde el error típico quede reflejado para evidenciar la importancia de identificar correctamente qué factor multiplica a la incógnita."
+        "name": "Identificación incorrecta de altura y circunferencia",
+        "description": "En desarrollos planos o en lecturas de medidas del dibujo, el estudiante confunde la altura del cilindro con la longitud de la circunferencia de la base o viceversa.",
+        "how_to_address": "Usar ítems con desarrollos planos donde se deba identificar qué longitud corresponde a 2πr y cuál a h, reforzando la idea de 'envolver' el cilindro."
       },
       {
-        "name": "Interpretacion_erronea_del_contexto",
-        "description": "En problemas verbales, el estudiante malinterpreta qué superficies están siendo cubiertas o pintadas, por ejemplo asumiendo que se incluye la base apoyada en el suelo cuando el texto sugiere lo contrario.",
-        "how_to_address": "Diseñar contextos claros y variados (lata apoyada en una mesa, tubo empotrado, vaso sin tapa) donde se explicite qué superficies se consideran. Preguntar primero por la identificación cualitativa de las partes (¿se incluye la base?, ¿solo la superficie curva?) antes de pedir el cálculo numérico, o usar alternativas que muestren distintas combinaciones para que el estudiante distinga la correcta."
+        "name": "Despeje incorrecto desde el área",
+        "description": "Al determinar radio o altura desde un área dada, el estudiante se equivoca al despejar una ecuación del tipo 2πrh = A, por ejemplo dividiendo solo por 2π o por h de manera incorrecta o manipulando mal los decimales.",
+        "how_to_address": "Diseñar preguntas que incluyan el paso explícito de plantear la ecuación y luego una opción múltiple sobre el despeje correcto antes de llegar al valor numérico, reforzando el procedimiento algebraico paso a paso."
+      },
+      {
+        "name": "Manejo inadecuado de π y aproximaciones",
+        "description": "Se mezclan cálculos exactos con π y aproximaciones con 3,14 sin consistencia, o se redondea π demasiado pronto generando discrepancias con las alternativas.",
+        "how_to_address": "Incluir ítems donde el enunciado especifique claramente cómo tratar π y generar alternativas que permitan ver la diferencia entre trabajar en forma exacta vs aproximada, explicando en la retroalimentación cuándo conviene cada enfoque."
       }
     ],
     "future_targets": [
-      "Cálculo de área de superficie y volumen de otros cuerpos de revolución como conos y esferas.",
-      "Resolución de problemas de optimización geométrica elemental (minimizar superficie para un volumen dado, o viceversa) en contextos simples.",
-      "Análisis comparativo de envases y diseños industriales desde la perspectiva de uso de material (eficiencia en el uso de superficie).",
-      "Cálculo de costos asociados a recubrimientos (pintura, etiquetas, aislantes) en contextos financieros básicos.",
-      "Trabajo con sólidos compuestos que incluyan cilindros junto con prismas o conos, tanto en área de superficie como en volumen.",
-      "Modelación de situaciones reales que involucren tuberías, columnas o depósitos cilíndricos, integrando datos de longitud, radio y recubrimientos.",
-      "Introducción a argumentos más formales sobre cuerpos de revolución y su área en cursos posteriores (por ejemplo, con cálculo integral)."
+      "Cálculo de volumen de cilindros a partir de base circular y altura",
+      "Cálculo de áreas y volúmenes de otros cuerpos de revolución (cono, tronco de cono, esfera)",
+      "Problemas de optimización geométrica simple (minimizar material para un volumen dado)",
+      "Modelación de situaciones físicas con cilindros, como estanques, cañerías o silos, incluyendo costo de materiales según área de superficie",
+      "Composición de figuras 3D más complejas que incluyan cilindros junto con prismas, conos u otros sólidos",
+      "Uso de ecuaciones más complejas con varias incógnitas geométricas (por ejemplo, relacionar área y volumen de un cilindro en problemas de diseño)"
     ],
     "representation_variants": [
-      "Cilindros representados en perspectiva 3D con radio y altura etiquetados directamente en la figura.",
-      "Desarrollos planos del cilindro (un rectángulo correspondiente al área lateral más uno o dos círculos como bases) con medidas indicadas.",
-      "Contextos verbales sin figura explícita, donde el objeto cilíndrico se describe en palabras (por ejemplo, “un tarro cilíndrico de radio 5 cm y altura 12 cm”).",
-      "Esquemas que sombrean solo ciertas partes del cilindro (solo área lateral, solo una tapa, ambas tapas) para asociar visualmente con los términos de la fórmula.",
-      "Tablas de datos con varios cilindros (distintas combinaciones de r y h) para comparar áreas laterales o totales sin necesidad de dibujo detallado de cada uno.",
-      "Vistas parciales, como solo la etiqueta desplegada (rectángulo) con largo y alto, desde las cuales inferir el perímetro de la base y la altura del cilindro."
+      "Cilindro representado en perspectiva 3D con radio y altura etiquetados directamente en la figura",
+      "Desarrollo plano del cilindro compuesto por un rectángulo (superficie lateral) y dos círculos (tapas), con algunas o todas las dimensiones indicadas",
+      "Descripción completamente verbal de un objeto cilíndrico (lata, tubo, estanque) con datos incorporados en el texto sin dibujo",
+      "Tablas con distintas combinaciones de radio y altura de cilindros y sus respectivas áreas laterales o totales, para comparar o completar valores",
+      "Uso de datos intermedios como longitud de la etiqueta (igual a la circunferencia de la base) o área de la base, en lugar de dar directamente el radio",
+      "Situaciones donde solo una parte del cilindro está cubierta (por ejemplo, una banda o franja alrededor), obligando a interpretar qué parte de la superficie lateral se considera"
     ],
     "numbers_profiles": [
       "small_integers",
-      "medium_integers",
-      "decimals_one_digit",
-      "simple_fractions",
-      "use_pi_symbol",
-      "pi_approx_3_14"
+      "moderate_integers",
+      "simple_decimals",
+      "contextual_measurements",
+      "multiples_of_pi",
+      "pi_approximations"
     ],
     "required_image_types": [
-      "complex_3d"
+      "complex_3d",
+      "geometric_figure"
     ]
   }
 }
