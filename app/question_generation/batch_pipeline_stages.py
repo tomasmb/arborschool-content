@@ -219,14 +219,14 @@ def _run_enhance(
 
     if failures:
         logger.warning(
-            "Phase 7: %d enhancement failures", len(failures),
+            "Phase 7: %d enhancement failures — keeping original QTI XML "
+            "(item is not dropped, enhancement simply not applied).",
+            len(failures),
         )
-        for item_id in failures:
-            for atom_id in list(items):
-                items[atom_id] = [
-                    i for i in items[atom_id]
-                    if i.item_id != item_id
-                ]
+        # Do NOT drop items that failed post-enhancement QTI validation.
+        # Their qti_xml was never modified (only succeeded items are updated
+        # in-place), so they naturally retain their pre-enhancement XML and
+        # continue through the pipeline at full quality.
 
     update_phase(
         state, "phase_78_enhance", ckpt_path, status="completed",
