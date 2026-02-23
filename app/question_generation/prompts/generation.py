@@ -113,6 +113,14 @@ El contenido será distinto.
 {reference_example}
 </reference_example>
 
+<encoding_rules>
+CRÍTICO — ENCODING UTF-8:
+- Escribe SIEMPRE los caracteres españoles directamente en UTF-8.
+- CORRECTO: é, ó, á, ú, í, ñ, ü, ¿, ¡, Á, É, Í, Ó, Ú, Ñ
+- INCORRECTO: e9, f3, e1, fa, ed, f1, fc, bf, a1, c9, d3, c1, da, cd, d1
+  (esos son bytes Latin-1 — nunca los incluyas como texto)
+</encoding_rules>
+
 <rules>
 {rules}
 </rules>

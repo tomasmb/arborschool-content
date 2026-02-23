@@ -122,7 +122,10 @@ SOLUCIÓN PASO A PASO:
 
 3. REGLAS XML CRÍTICAS — violaciones causan que el ítem sea ELIMINADO del pipeline:
 
-   a) USA UTF-8 DIRECTAMENTE, NUNCA entidades HTML:
+   a) USA UTF-8 DIRECTAMENTE — dos formas incorrectas a evitar:
+      INCORRECTO (entidades HTML): &oacute; &aacute; &eacute; → usa ó á é directamente
+      INCORRECTO (bytes Latin-1 como texto): e9 f3 e1 bf fa ed f1 → NUNCA escribas estos como texto
+      CORRECTO: escribe ó, á, é, í, ú, ñ, ¿, ¡ directamente en UTF-8
       - Escribe ó, á, é, í, ú, ñ (no &oacute;, &aacute;, &eacute;, &iacute;, &uacute;, &ntilde;)
       - Escribe →, ≤, ≥, ×, ≠, −, ± (no &rarr;, &le;, &ge;, &times;, &ne;, &minus;, &plusmn;)
       - Escribe ¡, ¿, °, ², ³ (no &iexcl;, &iquest;, &deg;, &sup2;, &sup3;)
