@@ -98,7 +98,10 @@ def run_phase_6(
 ) -> dict[str, list[GeneratedItem]]:
     """Phase 6: Solvability validation via batch."""
     if is_phase_completed(state, "phase_6"):
-        return _reload_items(state, 6, "base_validation", items)
+        # Pass {} (not items) so Phase 4 cache doesn't block Phase 6 reload.
+        # If an atom has no Phase 6 checkpoint it will be absent from the
+        # result — correct behaviour, since it failed Phase 6.
+        return _reload_items(state, 6, "base_validation", {})
 
     logger.info("Phase 6: Solvability validation")
     requests: list[BatchRequest] = []
@@ -163,7 +166,11 @@ def run_phase_78(
 ) -> dict[str, list[GeneratedItem]]:
     """Phases 7-8: Enhancement + review + correction cycle."""
     if is_phase_completed(state, "phase_78_review"):
-        return _reload_items(state, 8, "feedback", items)
+        # Pass {} (not items) so Phase 4/6 cache doesn't block Phase 8 reload.
+        # Root cause of Phase 9 saving Phase 4 XML: _reload_items skips an
+        # atom if it already exists in `items`, so Phase 8 feedback items were
+        # silently ignored when the pipeline was resumed after Phase 4 loaded.
+        return _reload_items(state, 8, "feedback", {})
 
     items = _run_enhance(state, ckpt_path, items, model, submit_fn)
     items = _run_review(state, ckpt_path, items, model, submit_fn)
