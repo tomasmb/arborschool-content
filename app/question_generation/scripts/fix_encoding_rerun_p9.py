@@ -1,13 +1,26 @@
 """
 fix_encoding_rerun_p9.py
 ------------------------
-Identifies Phase 9 failures caused by Latin-1 hex encoding corruption,
-fixes the XML in those items, re-submits to Phase 9, and patches
-phase_9_results.jsonl with the new results.
+⛔ DO NOT USE — DEPRECATED, KNOWN BUG ⛔
 
-Usage:
-    uv run python -m app.question_generation.scripts.fix_encoding_rerun_p9
+This script has a critical bug: the fix_encoding() regex replaces normal
+letter combinations that look like hex (e.g. "ed" in "reducción" → "í",
+producing "ríucción"). It introduces new errors instead of fixing the
+original ones.
+
+Additionally, some corruption was "character drop" (e.g. ó → deleted),
+which cannot be recovered with regex — those items need Phase 4 re-generation.
+
+Result: this script was run on 2026-02-23 and produced 14/2498 PASS (0.6%).
+
+USE rerun_underperforming.py INSTEAD for atoms below the quality threshold.
 """
+
+import sys
+
+print("⛔ ABORTED: fix_encoding_rerun_p9.py is deprecated and has a known bug.")
+print("   Use rerun_underperforming.py instead.")
+sys.exit(1)
 
 from __future__ import annotations
 
@@ -44,6 +57,10 @@ P9_RESULTS = BASE / "phase_9_results.jsonl"
 
 MODEL = "gpt-5.1"
 POLL_INTERVAL = 60  # seconds
+
+# If resuming after a crash/power-off, set this to the existing batch ID
+# to skip submission and go straight to polling.
+RESUME_BATCH_ID: str | None = "batch_699c5e95b4748190830f1dca9b6949e4"
 
 # Latin-1 hex → UTF-8 mapping for Spanish characters
 LATIN1_MAP: dict[str, str] = {
@@ -179,26 +196,30 @@ def main() -> None:
 
     logger.info(f"Built {len(fixed_requests)} fixed requests")
 
-    # 4. Upload and submit batch
-    with tempfile.NamedTemporaryFile(
-        mode="w", suffix=".jsonl", delete=False, encoding="utf-8"
-    ) as tmp:
-        for req in fixed_requests:
-            tmp.write(json.dumps(req, ensure_ascii=False) + "\n")
-        tmp_path = tmp.name
+    # 4. Upload and submit batch (skip if resuming existing batch)
+    if RESUME_BATCH_ID:
+        logger.info(f"Resuming existing batch: {RESUME_BATCH_ID}")
+        batch = client.batches.retrieve(RESUME_BATCH_ID)
+    else:
+        with tempfile.NamedTemporaryFile(
+            mode="w", suffix=".jsonl", delete=False, encoding="utf-8"
+        ) as tmp:
+            for req in fixed_requests:
+                tmp.write(json.dumps(req, ensure_ascii=False) + "\n")
+            tmp_path = tmp.name
 
-    logger.info(f"Uploading batch file ({len(fixed_requests)} requests)...")
-    with open(tmp_path, "rb") as f:
-        upload = client.files.create(file=f, purpose="batch")
-    logger.info(f"Uploaded file: {upload.id}")
+        logger.info(f"Uploading batch file ({len(fixed_requests)} requests)...")
+        with open(tmp_path, "rb") as f:
+            upload = client.files.create(file=f, purpose="batch")
+        logger.info(f"Uploaded file: {upload.id}")
 
-    batch = client.batches.create(
-        input_file_id=upload.id,
-        endpoint="/v1/chat/completions",
-        completion_window="24h",
-        metadata={"job_id": JOB_ID, "phase": "phase_9_encoding_fix"},
-    )
-    logger.info(f"Batch created: {batch.id}")
+        batch = client.batches.create(
+            input_file_id=upload.id,
+            endpoint="/v1/chat/completions",
+            completion_window="24h",
+            metadata={"job_id": JOB_ID, "phase": "phase_9_encoding_fix"},
+        )
+        logger.info(f"Batch created: {batch.id}")
 
     # 5. Poll until complete
     while True:
