@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 _VALIDATION_REASONING = "low"
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 _MAX_PARALLEL_IMAGES = 3
-_MAX_IMAGE_RETRIES = 2
+_MAX_IMAGE_RETRIES = 1
 
 
 class _RateLimiter:

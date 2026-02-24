@@ -466,7 +466,11 @@ class GeminiImageClient:
         except genai_errors.ClientError as exc:
             if exc.status == 429:
                 msg = str(exc).lower()
-                is_daily = "per day" in msg or "rpd" in msg
+                is_daily = (
+                    "per day" in msg
+                    or "per_day" in msg
+                    or "rpd" in msg
+                )
                 raise RateLimitError(
                     str(exc), is_daily=is_daily,
                 ) from exc
