@@ -485,7 +485,7 @@ class GeminiImageClient:
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
-ENV_FALLBACK_API_KEY = "FALLBACK_GEMINI_API_KEY"
+_FALLBACK_KEY_PATTERN = "FALLBACK_GEMINI_API_KEY"
 
 
 @dataclass
@@ -579,15 +579,21 @@ def load_default_gemini_image_client(
     return GeminiImageClient(api_key=api_key, model=model)
 
 
-def load_fallback_gemini_image_client(
+def load_fallback_gemini_image_clients(
     model: str = _IMAGE_MODEL,
-) -> GeminiImageClient | None:
-    """Load a fallback client from ``FALLBACK_GEMINI_API_KEY``.
+) -> list[GeminiImageClient]:
+    """Load fallback clients from env vars matching the pattern.
 
-    Returns None if the env var is not set.
+    Checks FALLBACK_GEMINI_API_KEY, FALLBACK_GEMINI_API_KEY_2, _3, etc.
+    Returns a list (possibly empty) of ready-to-use clients.
     """
     load_dotenv()
-    api_key = os.getenv(ENV_FALLBACK_API_KEY)
-    if not api_key:
-        return None
-    return GeminiImageClient(api_key=api_key, model=model)
+    clients: list[GeminiImageClient] = []
+    suffixes = ["", "_2", "_3", "_4", "_5"]
+    for suffix in suffixes:
+        key = os.getenv(f"{_FALLBACK_KEY_PATTERN}{suffix}")
+        if key:
+            clients.append(
+                GeminiImageClient(api_key=key, model=model),
+            )
+    return clients

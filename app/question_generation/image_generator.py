@@ -24,7 +24,7 @@ from app.llm_clients import (
     OpenAIClient,
     RateLimitError,
     load_default_gemini_image_client,
-    load_fallback_gemini_image_client,
+    load_fallback_gemini_image_clients,
 )
 from app.question_generation.models import (
     GeneratedItem,
@@ -84,7 +84,8 @@ class ImageGenerator:
         self._openai = openai_client
         self._gemini: GeminiImageClient | None = gemini_image_client
         self._rate_limiter = _RateLimiter(gemini_max_rpm)
-        self._fallback_available = True
+        self._fallbacks: list[GeminiImageClient] = []
+        self._fallbacks_loaded = False
         self._swap_lock = threading.Lock()
 
     def _ensure_gemini(self) -> GeminiImageClient:
@@ -94,18 +95,17 @@ class ImageGenerator:
         return self._gemini
 
     def _try_swap_to_fallback(self) -> bool:
-        """Swap to FALLBACK_GEMINI_API_KEY. Returns True if swapped."""
+        """Swap to next available fallback key."""
         with self._swap_lock:
-            if not self._fallback_available:
+            if not self._fallbacks_loaded:
+                self._fallbacks = load_fallback_gemini_image_clients()
+                self._fallbacks_loaded = True
+            if not self._fallbacks:
                 return False
-            fallback = load_fallback_gemini_image_client()
-            if fallback is None:
-                self._fallback_available = False
-                return False
-            self._gemini = fallback
-            self._fallback_available = False
+            self._gemini = self._fallbacks.pop(0)
             logger.info(
-                "Switched to fallback Gemini API key",
+                "Switched to fallback Gemini key "
+                "(%d more available)", len(self._fallbacks),
             )
             return True
 
