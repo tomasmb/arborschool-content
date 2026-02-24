@@ -69,6 +69,18 @@ class LLMResponse:
     usage: LLMUsage = field(default_factory=LLMUsage)
 
 
+class RateLimitError(Exception):
+    """Raised when an API returns a 429 rate-limit error.
+
+    ``is_daily`` distinguishes per-minute (sleep & retry) from
+    per-day quotas (caller should stop the pipeline).
+    """
+
+    def __init__(self, message: str, *, is_daily: bool = False):
+        super().__init__(message)
+        self.is_daily = is_daily
+
+
 # ---------------------------------------------------------------------------
 # Global cost accumulator hook (set by pipeline orchestrators)
 # ---------------------------------------------------------------------------
@@ -413,10 +425,9 @@ class GeminiImageClient:
         api_key: str,
         model: str = _IMAGE_MODEL,
     ) -> None:
+        import httpx
         from google import genai as google_genai
         from google.genai import types as genai_types
-
-        import httpx
 
         transport = httpx.HTTPTransport(
             local_address="0.0.0.0",
@@ -435,30 +446,37 @@ class GeminiImageClient:
     def generate_image(self, prompt: str) -> bytes | None:
         """Generate an image from a text prompt.
 
-        Args:
-            prompt: Detailed description of the image to generate.
-
         Returns:
             Raw PNG bytes if generation succeeded, None otherwise.
+
+        Raises:
+            RateLimitError: on HTTP 429 (per-minute or per-day).
         """
+        from google.genai import errors as genai_errors
         from google.genai import types as genai_types
 
-        response = self._client.models.generate_content(
-            model=self._model,
-            contents=[prompt],
-            config=genai_types.GenerateContentConfig(
-                response_modalities=["TEXT", "IMAGE"],
-            ),
-        )
+        try:
+            response = self._client.models.generate_content(
+                model=self._model,
+                contents=[prompt],
+                config=genai_types.GenerateContentConfig(
+                    response_modalities=["TEXT", "IMAGE"],
+                ),
+            )
+        except genai_errors.ClientError as exc:
+            if exc.status == 429:
+                msg = str(exc).lower()
+                is_daily = "per day" in msg or "rpd" in msg
+                raise RateLimitError(
+                    str(exc), is_daily=is_daily,
+                ) from exc
+            raise
 
-        # Extract image data from response parts
         if not response.candidates:
             return None
-
         for part in response.parts:
             if part.inline_data is not None:
                 return part.inline_data.data
-
         return None
 
 

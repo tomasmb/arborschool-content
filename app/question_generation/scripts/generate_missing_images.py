@@ -96,18 +96,34 @@ def _apply_limit(
 ) -> int:
     """Count total placeholder items, optionally truncate to limit.
 
-    When limit is set, prunes atoms to stay within the budget.
+    When limit is set, disables excess items by clearing their
+    image_description so ``generate_for_placeholders`` skips them.
+    Removes atoms entirely when no budget remains.
     Returns total placeholder items that will be processed.
     """
-    total = 0
+    if limit is None:
+        return sum(
+            _count_needing_images(its)
+            for its in items_by_atom.values()
+        )
+
+    budget = limit
     for atom_id in list(items_by_atom):
-        count = _count_needing_images(items_by_atom[atom_id])
-        if limit is not None and total + count > limit:
-            if limit - total <= 0:
-                del items_by_atom[atom_id]
+        if budget <= 0:
+            del items_by_atom[atom_id]
+            continue
+
+        kept = 0
+        for item in items_by_atom[atom_id]:
+            if not _needs_image(item):
                 continue
-        total += count
-    return total
+            if kept < budget:
+                kept += 1
+            else:
+                item.image_description = ""
+        budget -= kept
+
+    return limit - budget
 
 
 def _run_dry(
@@ -123,7 +139,7 @@ def _run_dry(
             total += count
     print(f"\n  Total: {total} images to generate")
     print("  Per image: 1 Gemini call + 1 GPT-5.1 vision call")
-    print(f"  Max retries: 3 attempts per image")
+    print("  Max retries: 3 attempts per image")
     print(f"  Worst-case API calls: {total * 3 * 2}")
     print("\n  Run without --dry-run to proceed.\n")
 
@@ -132,9 +148,9 @@ def _run_generation(
     items_by_atom: dict[str, list[GeneratedItem]],
 ) -> None:
     """Generate images and save updated checkpoints."""
-    from app.llm_clients import OpenAIClient
+    from app.llm_clients import load_default_openai_client
 
-    image_gen = ImageGenerator(OpenAIClient())
+    image_gen = ImageGenerator(load_default_openai_client())
     total_ok = 0
     total_fail = 0
 
