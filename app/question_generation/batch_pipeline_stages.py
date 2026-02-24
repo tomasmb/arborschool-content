@@ -13,8 +13,6 @@ from typing import Any
 
 from app.question_generation.batch_api import (
     BatchRequest,
-    BatchResponse,
-    OpenAIBatchSubmitter,
 )
 from app.question_generation.batch_checkpoint import (
     get_active_atoms,
@@ -42,6 +40,9 @@ from app.question_generation.helpers import (
     serialize_items,
 )
 from app.question_generation.models import GeneratedItem
+from app.question_generation.validation_checks import (
+    run_deterministic_checks,
+)
 from app.question_generation.validators import DuplicateGate
 from app.utils.paths import QUESTION_GENERATION_DIR
 
@@ -49,18 +50,7 @@ logger = logging.getLogger(__name__)
 
 _MAX_CORRECTION_ROUNDS = 2
 
-
-# ------------------------------------------------------------------
-# Types for passing pipeline state without self
-# ------------------------------------------------------------------
-
-
 SubmitFn = Any  # Callable[[str, list[BatchRequest]], list[BatchResponse]]
-
-
-# ------------------------------------------------------------------
-# Phase 5 — Dedupe (local)
-# ------------------------------------------------------------------
 
 
 def run_phase_5(
@@ -95,11 +85,6 @@ def run_phase_5(
     return items
 
 
-# ------------------------------------------------------------------
-# Phase 6 — Base Validation (batch)
-# ------------------------------------------------------------------
-
-
 def run_phase_6(
     state: dict[str, Any],
     ckpt_path: Path,
@@ -109,12 +94,11 @@ def run_phase_6(
 ) -> dict[str, list[GeneratedItem]]:
     """Phase 6: Solvability validation via batch."""
     if is_phase_completed(state, "phase_6"):
-        # Pass {} (not items) so Phase 4 cache doesn't block Phase 6 reload.
-        # If an atom has no Phase 6 checkpoint it will be absent from the
-        # result — correct behaviour, since it failed Phase 6.
         return _reload_items(state, 6, "base_validation", {})
 
-    logger.info("Phase 6: Solvability validation")
+    logger.info("Phase 6: Deterministic pre-filter + solvability")
+    _apply_deterministic_filter(items, "Phase 6")
+
     requests: list[BatchRequest] = []
     items_by_id: dict[str, GeneratedItem] = {}
 
@@ -139,15 +123,11 @@ def run_phase_6(
     if errors:
         logger.warning("Phase 6: %d validation errors", len(errors))
 
-    # Recover items that had no API response (quota/rate-limit errors).
-    # These items passed all prior phases — carry them forward rather
-    # than silently losing them.
     missing = find_missing_items(responses, items_by_id)
     if missing:
         logger.warning(
-            "Phase 6: %d items had no API response (quota error) — "
-            "carrying forward as passed.",
-            len(missing),
+            "Phase 6: %d items had no API response — "
+            "carrying forward as passed.", len(missing),
         )
         passed.extend(missing)
 
@@ -163,11 +143,6 @@ def run_phase_6(
     return passed_by_atom
 
 
-# ------------------------------------------------------------------
-# Phases 7-8 — Feedback (batch, multi-round)
-# ------------------------------------------------------------------
-
-
 def run_phase_78(
     state: dict[str, Any],
     ckpt_path: Path,
@@ -177,10 +152,6 @@ def run_phase_78(
 ) -> dict[str, list[GeneratedItem]]:
     """Phases 7-8: Enhancement + review + correction cycle."""
     if is_phase_completed(state, "phase_78_review"):
-        # Pass {} (not items) so Phase 4/6 cache doesn't block Phase 8 reload.
-        # Root cause of Phase 9 saving Phase 4 XML: _reload_items skips an
-        # atom if it already exists in `items`, so Phase 8 feedback items were
-        # silently ignored when the pipeline was resumed after Phase 4 loaded.
         return _reload_items(state, 8, "feedback", {})
 
     items = _run_enhance(state, ckpt_path, items, model, submit_fn)
@@ -223,49 +194,25 @@ def _run_enhance(
         responses, items_by_id,
     )
 
-    # Recover items with no API response (quota errors) — keep them
-    # unmodified (no enhancement applied, but item is not lost).
     missing = find_missing_items(responses, items_by_id)
     if missing:
         logger.warning(
-            "Phase 7: %d items had no API response (quota error) — "
-            "keeping unmodified (no enhancement applied).",
-            len(missing),
+            "Phase 7: %d items had no API response — "
+            "keeping unmodified.", len(missing),
         )
         for item in missing:
             succeeded[item.item_id] = item
 
     if failures:
         logger.warning(
-            "Phase 7: %d items quarantined — enhancement produced invalid "
-            "QTI XML (even after entity normalization). Inspect "
-            "phase_7_quarantine.json for root cause before re-run.",
+            "Phase 7: %d items quarantined (invalid QTI XML)",
             len(failures),
         )
-        # Save quarantine details for investigation.
-        quarantine_path = ckpt_path.parent / "phase_7_quarantine.json"
-        import json as _json
-        with open(quarantine_path, "w", encoding="utf-8") as _f:
-            _json.dump(
-                {
-                    "quarantined_count": len(failures),
-                    "items": [
-                        {"item_id": iid, "error": err}
-                        for iid, err in failures.items()
-                    ],
-                },
-                _f,
-                indent=2,
-                ensure_ascii=False,
-            )
-        logger.info("Phase 7 quarantine saved → %s", quarantine_path)
-
-        # Remove quarantined items from the pipeline.
-        # Questions without valid feedback have no learning value in Arbor.
+        _save_quarantine(ckpt_path.parent, failures)
         failure_ids = set(failures.keys())
         items = {
-            atom_id: [it for it in atom_items if it.item_id not in failure_ids]
-            for atom_id, atom_items in items.items()
+            aid: [it for it in its if it.item_id not in failure_ids]
+            for aid, its in items.items()
         }
 
     update_phase(
@@ -305,16 +252,11 @@ def _run_review(
     responses = submit_fn("phase_78_review", requests)
     passed, failed_issues = process_review_responses(responses)
 
-    # Items with no API response (quota errors) are in neither
-    # passed nor failed_issues.  They are NOT in _correction_cycle's
-    # still_failed set so they will NOT be removed — they carry
-    # forward in `items` unchanged.  Log a warning for visibility.
     missing = find_missing_items(responses, items_by_id)
     if missing:
         logger.warning(
-            "Phase 8: %d items had no API response (quota error) — "
-            "carrying forward without review (no corrections applied).",
-            len(missing),
+            "Phase 8: %d items had no API response — "
+            "carrying forward without review.", len(missing),
         )
 
     if failed_issues:
@@ -411,11 +353,6 @@ def _correction_cycle(
     return items
 
 
-# ------------------------------------------------------------------
-# Phase 9 — Final Validation (batch)
-# ------------------------------------------------------------------
-
-
 def run_phase_9(
     state: dict[str, Any],
     ckpt_path: Path,
@@ -427,7 +364,9 @@ def run_phase_9(
     if is_phase_completed(state, "phase_9"):
         return items
 
-    logger.info("Phase 9: Final validation")
+    logger.info("Phase 9: Deterministic pre-filter + LLM validation")
+    _apply_deterministic_filter(items, "Phase 9", check_feedback=True)
+
     requests: list[BatchRequest] = []
     items_by_id: dict[str, GeneratedItem] = {}
 
@@ -452,14 +391,11 @@ def run_phase_9(
     if errors:
         logger.warning("Phase 9: %d validation failures", len(errors))
 
-    # Recover items with no API response (quota/rate-limit errors).
-    # These items passed all prior phases — carry them forward.
     missing = find_missing_items(responses, items_by_id)
     if missing:
         logger.warning(
-            "Phase 9: %d items had no API response (quota error) — "
-            "carrying forward as passed.",
-            len(missing),
+            "Phase 9: %d items had no API response — "
+            "carrying forward as passed.", len(missing),
         )
         passed.extend(missing)
 
@@ -473,11 +409,6 @@ def run_phase_9(
 
     update_phase(state, "phase_9", ckpt_path, status="completed")
     return final_by_atom
-
-
-# ------------------------------------------------------------------
-# Shared helpers
-# ------------------------------------------------------------------
 
 
 def _group_items_by_atom(
@@ -503,6 +434,49 @@ def _find_atom_for_item(
         if any(i.item_id == item_id for i in atom_items):
             return atom_id
     return None
+
+
+def _save_quarantine(
+    parent_dir: Path,
+    failures: dict[str, str],
+) -> None:
+    """Persist quarantine details for post-mortem investigation."""
+    import json as _json
+    qp = parent_dir / "phase_7_quarantine.json"
+    with open(qp, "w", encoding="utf-8") as fh:
+        _json.dump(
+            {"quarantined_count": len(failures),
+             "items": [{"item_id": k, "error": v}
+                       for k, v in failures.items()]},
+            fh, indent=2, ensure_ascii=False,
+        )
+    logger.info("Phase 7 quarantine saved → %s", qp)
+
+
+def _apply_deterministic_filter(
+    items: dict[str, list[GeneratedItem]],
+    phase_label: str,
+    *,
+    check_feedback: bool = False,
+) -> None:
+    """Filter items in-place using shared deterministic checks."""
+    pre_total = sum(len(v) for v in items.values())
+    for atom_id in list(items):
+        items[atom_id] = [
+            it for it in items[atom_id]
+            if not run_deterministic_checks(
+                it.qti_xml, it.item_id,
+                check_feedback=check_feedback,
+            )
+        ]
+    post_total = sum(len(v) for v in items.values())
+    if pre_total != post_total:
+        logger.info(
+            "%s pre-filter: %d -> %d items "
+            "(%d rejected by deterministic checks)",
+            phase_label, pre_total, post_total,
+            pre_total - post_total,
+        )
 
 
 def _reload_items(

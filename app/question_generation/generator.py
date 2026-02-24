@@ -12,12 +12,9 @@ This phase is MANDATORY and BLOCKING (spec section 8, Phase 4).
 
 from __future__ import annotations
 
-import json
 import logging
-import re
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Any
 
 from app.llm_clients import OpenAIClient
 from app.question_generation.models import (
@@ -34,6 +31,7 @@ from app.question_generation.prompts.generation import (
     build_xsd_retry_prompt,
 )
 from app.question_generation.validation_checks import validate_qti_xml
+from app.question_generation.xml_utils import parse_generation_response
 
 logger = logging.getLogger(__name__)
 
@@ -204,7 +202,7 @@ class BaseQtiGenerator:
                 response_mime_type="application/json",
                 reasoning_effort=_GENERATION_REASONING,
             )
-            item = _parse_single_response(
+            item = parse_generation_response(
                 llm_resp.text, atom_id, slot,
             )
 
@@ -235,111 +233,6 @@ class BaseQtiGenerator:
         )
         raise ValueError(msg)
 
-
-# ------------------------------------------------------------------
-# Response parsing helpers
-# ------------------------------------------------------------------
-
-
-def _parse_single_response(
-    response: str,
-    atom_id: str,
-    slot: PlanSlot,
-) -> GeneratedItem:
-    """Parse a single-item LLM JSON response into a GeneratedItem.
-
-    Expected format:
-      {"slot_index": N, "qti_xml": "..."}
-    For image slots also includes:
-      {"slot_index": N, "qti_xml": "...", "image_description": "..."}
-
-    Args:
-        response: Raw JSON string from LLM.
-        atom_id: Atom identifier for item IDs.
-        slot: Original PlanSlot for fallback slot_index.
-
-    Returns:
-        GeneratedItem with cleaned QTI XML and optional
-        image_description.
-
-    Raises:
-        json.JSONDecodeError: If response is not valid JSON.
-        ValueError: If qti_xml is empty.
-    """
-    data: dict[str, Any] = json.loads(response)
-
-    # Support both flat format and wrapped {"items": [...]} format
-    if "items" in data and isinstance(data["items"], list):
-        if not data["items"]:
-            msg = "LLM returned empty items array"
-            raise ValueError(msg)
-        data = data["items"][0]
-
-    qti_xml = data.get("qti_xml", "")
-    if not qti_xml:
-        msg = f"Slot {slot.slot_index}: LLM returned empty qti_xml"
-        raise ValueError(msg)
-
-    qti_xml = _extract_qti_xml(qti_xml)
-    slot_idx = data.get("slot_index", slot.slot_index)
-    item_id = f"{atom_id}_Q{slot_idx}"
-
-    image_desc = data.get("image_description", "")
-
-    return GeneratedItem(
-        item_id=item_id,
-        qti_xml=qti_xml,
-        slot_index=slot_idx,
-        image_description=image_desc,
-    )
-
-
-def _strip_control_chars(text: str) -> str:
-    """Strip invalid XML control characters from text.
-
-    GPT-5.1 occasionally emits raw control bytes (\\x00, \\x03, \\x1b, etc.)
-    where Spanish accented characters should be.  These make the XML
-    unparseable (HTTP 422 from the QTI validator).  We strip them here,
-    upstream of all validation, so the item can at least be evaluated;
-    garbled Spanish text will then fail other quality checks if needed.
-
-    Valid XML whitespace (\\t, \\n, \\r) is preserved.
-    """
-    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
-
-
-def _extract_qti_xml(text: str) -> str:
-    """Extract QTI XML from potentially wrapped text.
-
-    Handles markdown code blocks and extraneous content.
-
-    Args:
-        text: Raw text that may contain QTI XML.
-
-    Returns:
-        Clean QTI XML string.
-    """
-    cleaned = text.strip()
-
-    # Remove markdown code blocks if present
-    if cleaned.startswith("```"):
-        lines = cleaned.split("\n")
-        lines = lines[1:]
-        if lines and lines[-1].strip() == "```":
-            lines = lines[:-1]
-        cleaned = "\n".join(lines)
-
-    # Extract QTI element if embedded in other text
-    match = re.search(
-        r"(<qti-assessment-item\b.*?</qti-assessment-item>)",
-        cleaned,
-        re.DOTALL,
-    )
-    if match:
-        cleaned = match.group(1)
-
-    # Strip control chars AFTER extracting the XML block.
-    return _strip_control_chars(cleaned.strip())
 
 
 # ------------------------------------------------------------------
