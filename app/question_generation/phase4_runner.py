@@ -5,6 +5,8 @@ Extracted from ``pipeline.py`` to keep the main orchestrator under
 
 - ``run_phase_4``: top-level Phase 4 + 4b entry point with
   slot-level resume, incremental checkpoints, and image generation.
+- ``run_phase_4b_batch``: Phase 4b for the batch pipeline
+  (synchronous image gen between Phase 4 and Phase 5).
 - ``_generate_with_checkpoints``: wraps the generator with a
   callback that saves progress after each successful item.
 """
@@ -186,15 +188,12 @@ def _maybe_run_image_phase(
     )
 
 
-def _save_and_filter_active(
+def _mark_failed_placeholders(
     items: list[GeneratedItem],
-    output_dir: Path,
-    result: PipelineResult,
-) -> list[GeneratedItem] | None:
-    """Persist all items and return only image-complete ones.
+) -> list[GeneratedItem]:
+    """Mark items that still have IMAGE_PLACEHOLDER as failed.
 
-    Items that still contain IMAGE_PLACEHOLDER are marked as
-    image_failed so they can be retried on resume.
+    Returns only active (non-failed) items.
     """
     for it in items:
         if "IMAGE_PLACEHOLDER" in it.qti_xml and not it.image_failed:
@@ -203,11 +202,20 @@ def _save_and_filter_active(
                 "%s: placeholder still present — marking failed",
                 it.item_id,
             )
+    return [it for it in items if not it.image_failed]
+
+
+def _save_and_filter_active(
+    items: list[GeneratedItem],
+    output_dir: Path,
+    result: PipelineResult,
+) -> list[GeneratedItem] | None:
+    """Persist all items and return only image-complete ones."""
+    active = _mark_failed_placeholders(items)
     save_checkpoint(output_dir, 4, "generation", {
         "item_count": len(items),
         "items": serialize_items(items),
     })
-    active = [it for it in items if not it.image_failed]
     result.total_generated = len(active)
     return active if active else None
 
@@ -304,3 +312,82 @@ def _run_image_gen(
     if not phase.success:
         return None
     return all_items if all_items else None
+
+
+# ------------------------------------------------------------------
+# Phase 4b for the batch pipeline (synchronous, real-time APIs)
+# ------------------------------------------------------------------
+
+
+def run_phase_4b_batch(
+    items: dict[str, list[GeneratedItem]],
+    plans: dict[str, list[PlanSlot]],
+    *,
+    skip_images: bool = False,
+) -> dict[str, list[GeneratedItem]]:
+    """Run Phase 4b image generation across all atoms (batch mode).
+
+    Called between Phase 4 and Phase 5 in the batch pipeline.
+    Uses real-time Gemini + GPT-5.1 vision APIs (not batch API).
+
+    Args:
+        items: Per-atom generated items from Phase 4.
+        plans: Per-atom plan slots from Phase 2-3.
+        skip_images: When True, skip image generation entirely.
+
+    Returns:
+        Updated items dict with failed-image items removed.
+    """
+    if skip_images:
+        logger.info("Phase 4b: Skipped (skip_images=True)")
+        return items
+
+    needs_images = any(
+        any(s.image_required for s in slots)
+        for slots in plans.values()
+    )
+    if not needs_images:
+        logger.info("Phase 4b: No atoms require images")
+        return items
+
+    from app.llm_clients import OpenAIClient
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    image_gen = ImageGenerator(OpenAIClient())
+    total_generated = 0
+    total_failed = 0
+
+    for atom_id, atom_items in list(items.items()):
+        slots = plans.get(atom_id, [])
+        if not any(s.image_required for s in slots):
+            continue
+
+        slot_map = {s.slot_index: s for s in slots}
+        logger.info(
+            "Phase 4b: Generating images for %s (%d items)",
+            atom_id, len(atom_items),
+        )
+        phase = image_gen.generate_images(
+            atom_items, slot_map, atom_id,
+        )
+        gen_items = phase.data.get("items", atom_items)
+        active = _mark_failed_placeholders(gen_items)
+
+        save_checkpoint(
+            QUESTION_GENERATION_DIR / atom_id,
+            4, "generation",
+            {
+                "item_count": len(gen_items),
+                "items": serialize_items(gen_items),
+            },
+        )
+
+        total_generated += len(active)
+        total_failed += len(gen_items) - len(active)
+        items[atom_id] = active
+
+    logger.info(
+        "Phase 4b complete: %d images generated, %d failed",
+        total_generated, total_failed,
+    )
+    return items

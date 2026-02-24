@@ -48,6 +48,9 @@ from app.question_generation.batch_pipeline_stages import (
     run_phase_78,
     run_phase_9,
 )
+from app.question_generation.phase4_runner import (
+    run_phase_4b_batch,
+)
 from app.question_generation.progress import (
     report_cost,
     report_progress,
@@ -160,6 +163,10 @@ class BatchAtomPipeline:
         self._run_phase_2_3()
         report_progress(int(n * 0.2), n)
         self._run_phase_4()
+        self._items = run_phase_4b_batch(
+            self._items, self._plans,
+            skip_images=self._skip_images,
+        )
         report_progress(int(n * 0.4), n)
         fn = self._submit_and_wait
         st, cp, it, m = self._state, self._ckpt_path, self._items, self._model

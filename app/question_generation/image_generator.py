@@ -89,15 +89,54 @@ class ImageGenerator:
     ) -> PhaseResult:
         """Generate images concurrently for items that need them.
 
-        Runs up to _MAX_PARALLEL_IMAGES items in parallel.
-        Failed items get image_failed=True but keep their XML.
+        Requires slot_map to determine which items have
+        ``image_required=True``. Use ``generate_for_placeholders``
+        when slot data is unavailable.
         """
         self._ensure_gemini()
         image_items = _select_image_items(items, slot_map)
-        total = len(image_items)
-        if not total:
+        if not image_items:
             return _build_result(items, errors=[])
+        return self._run_parallel_generation(
+            image_items, items, atom_id, on_image_complete,
+        )
 
+    def generate_for_placeholders(
+        self,
+        items: list[GeneratedItem],
+        atom_id: str,
+        on_image_complete: (
+            Callable[[GeneratedItem], None] | None
+        ) = None,
+    ) -> PhaseResult:
+        """Generate images for items with placeholder + description.
+
+        Unlike ``generate_images``, does not require a slot_map.
+        Selects items by ``IMAGE_PLACEHOLDER`` presence and
+        non-empty ``image_description``.
+        """
+        self._ensure_gemini()
+        image_items = [
+            it for it in items
+            if _has_placeholder(it.qti_xml) and it.image_description
+        ]
+        if not image_items:
+            return _build_result(items, errors=[])
+        return self._run_parallel_generation(
+            image_items, items, atom_id, on_image_complete,
+        )
+
+    def _run_parallel_generation(
+        self,
+        image_items: list[GeneratedItem],
+        all_items: list[GeneratedItem],
+        atom_id: str,
+        on_image_complete: (
+            Callable[[GeneratedItem], None] | None
+        ),
+    ) -> PhaseResult:
+        """Run image gen + validation in parallel for selected items."""
+        total = len(image_items)
         logger.info(
             "Phase 4b: %d images to generate (%d workers)",
             total, _MAX_PARALLEL_IMAGES,
@@ -107,22 +146,13 @@ class ImageGenerator:
         done = [0]
 
         def _worker(item: GeneratedItem) -> None:
-            slot = slot_map.get(item.slot_index)
-            logger.info(
-                "Generating image for %s (type: %s)",
-                item.item_id,
-                slot.image_type if slot else "unknown",
-            )
             error = self._process_image_for_item(item, atom_id)
             with lock:
                 if error:
                     errors.append(error)
                 done[0] += 1
                 n = done[0]
-            logger.info(
-                "Phase 4b progress: %d/%d images done",
-                n, total,
-            )
+            logger.info("Phase 4b progress: %d/%d", n, total)
             if on_image_complete:
                 try:
                     on_image_complete(item)
@@ -149,7 +179,7 @@ class ImageGenerator:
                             f"{item.item_id}: unexpected — {exc}",
                         )
 
-        return _build_result(items, errors)
+        return _build_result(all_items, errors)
 
     # ------------------------------------------------------------------
     # Per-item pipeline
@@ -214,13 +244,7 @@ class ImageGenerator:
         stem: str,
         max_attempts: int,
     ) -> bytes | None:
-        """Try generate+validate up to *max_attempts* times.
-
-        Returns validated image bytes, or None if all attempts
-        fail.  Generation and validation are the two steps most
-        susceptible to transient failures (network, borderline
-        quality).
-        """
+        """Try generate+validate up to *max_attempts* times."""
         for attempt in range(max_attempts):
             image_bytes = self._generate_image(description)
             if image_bytes is None:
@@ -364,14 +388,7 @@ _s3_upload_fn: Any = None
 
 
 def _load_s3_upload_fn() -> Any:
-    """Lazily load upload_image_to_s3 from the pdf-to-qti module.
-
-    The pdf-to-qti directory uses dashes, so we need importlib
-    to import it. Caches the function after first load.
-
-    Returns:
-        The upload_image_to_s3 function, or None if unavailable.
-    """
+    """Lazily load upload_image_to_s3 from the pdf-to-qti module."""
     global _s3_upload_fn  # noqa: PLW0603
     if _s3_upload_fn is not None:
         return _s3_upload_fn
@@ -438,15 +455,7 @@ def _has_placeholder(qti_xml: str) -> bool:
 
 
 def _replace_placeholder(qti_xml: str, s3_url: str) -> str:
-    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL.
-
-    Args:
-        qti_xml: QTI XML with IMAGE_PLACEHOLDER in an <img> tag.
-        s3_url: Public S3 URL to substitute.
-
-    Returns:
-        Updated QTI XML with the real image URL.
-    """
+    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL."""
     return qti_xml.replace(
         f'src="{_PLACEHOLDER_SRC}"',
         f'src="{s3_url}"',
@@ -455,17 +464,7 @@ def _replace_placeholder(qti_xml: str, s3_url: str) -> str:
 
 
 def _extract_stem_text(qti_xml: str) -> str:
-    """Extract plain text from the QTI XML stem for context.
-
-    Strips XML tags to get readable text content from the
-    item body (before the choice interaction).
-
-    Args:
-        qti_xml: Full QTI XML string.
-
-    Returns:
-        Plain text content of the stem.
-    """
+    """Extract plain text from the QTI item body for context."""
     match = re.search(
         r"<qti-item-body[^>]*>(.*?)<qti-choice-interaction",
         qti_xml,
