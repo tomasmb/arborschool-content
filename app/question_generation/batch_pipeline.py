@@ -235,17 +235,61 @@ class BatchAtomPipeline:
             return
 
         logger.info("Phase 1: Enrichment for all atoms")
-        reqs = [build_enrichment_request(c, self._model) for c in self._contexts.values()]
-        if not reqs:
-            update_phase(self._state, "phase_1", self._ckpt_path, status="completed", request_count=0)
-            return
-        self._enrichments = process_enrichment_responses(self._submit_and_wait("phase_1", reqs))
-        for aid, enr in self._enrichments.items():
-            save_checkpoint(QUESTION_GENERATION_DIR / aid, 1, "enrichment", {
-                "has_enrichment": enr is not None,
-                "enrichment_data": enr.model_dump() if enr else None,
-            })
-        update_phase(self._state, "phase_1", self._ckpt_path, status="completed")
+
+        # Reuse existing enrichment checkpoints to avoid redundant API calls
+        missing_ctx: list[AtomContext] = []
+        for aid, ctx in self._contexts.items():
+            ckpt = load_checkpoint(
+                QUESTION_GENERATION_DIR / aid, 1, "enrichment",
+            )
+            data = (ckpt or {}).get("enrichment_data")
+            if data:
+                self._enrichments[aid] = (
+                    AtomEnrichment.model_validate(data)
+                )
+                logger.debug(
+                    "Reused existing enrichment for %s", aid,
+                )
+            else:
+                missing_ctx.append(ctx)
+
+        if missing_ctx:
+            logger.info(
+                "Generating enrichment for %d atoms "
+                "(%d already cached)",
+                len(missing_ctx),
+                len(self._contexts) - len(missing_ctx),
+            )
+            reqs = [
+                build_enrichment_request(c, self._model)
+                for c in missing_ctx
+            ]
+            new_enrichments = process_enrichment_responses(
+                self._submit_and_wait("phase_1", reqs),
+            )
+            for aid, enr in new_enrichments.items():
+                self._enrichments[aid] = enr
+                save_checkpoint(
+                    QUESTION_GENERATION_DIR / aid,
+                    1, "enrichment", {
+                        "has_enrichment": enr is not None,
+                        "enrichment_data": (
+                            enr.model_dump() if enr else None
+                        ),
+                    },
+                )
+        else:
+            logger.info(
+                "All %d atoms have cached enrichment, "
+                "skipping batch API call",
+                len(self._contexts),
+            )
+
+        update_phase(
+            self._state, "phase_1", self._ckpt_path,
+            status="completed",
+            request_count=len(missing_ctx),
+        )
 
     def _reload_enrichments(self) -> None:
         for aid in get_active_atoms(self._state):
