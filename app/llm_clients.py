@@ -485,6 +485,7 @@ class GeminiImageClient:
 
 
 ENV_API_KEY = "GEMINI_API_KEY"
+ENV_FALLBACK_API_KEY = "FALLBACK_GEMINI_API_KEY"
 
 
 @dataclass
@@ -575,4 +576,18 @@ def load_default_gemini_image_client(
     api_key = os.getenv(ENV_API_KEY)
     if not api_key:
         raise RuntimeError(f"{ENV_API_KEY} is required.")
+    return GeminiImageClient(api_key=api_key, model=model)
+
+
+def load_fallback_gemini_image_client(
+    model: str = _IMAGE_MODEL,
+) -> GeminiImageClient | None:
+    """Load a fallback client from ``FALLBACK_GEMINI_API_KEY``.
+
+    Returns None if the env var is not set.
+    """
+    load_dotenv()
+    api_key = os.getenv(ENV_FALLBACK_API_KEY)
+    if not api_key:
+        return None
     return GeminiImageClient(api_key=api_key, model=model)

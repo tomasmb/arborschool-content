@@ -1,8 +1,6 @@
 """Phase 4b — Image Generation & Validation.
 
-Per-item flow: generate image (Gemini) -> validate (GPT-5.1 vision)
--> upload to S3 -> replace IMAGE_PLACEHOLDER in QTI XML -> XSD check.
-Items that fail get image_failed=True but keep their XML intact.
+Generate (Gemini) -> validate (GPT-5.1) -> S3 upload -> XML patch.
 """
 
 from __future__ import annotations
@@ -26,6 +24,7 @@ from app.llm_clients import (
     OpenAIClient,
     RateLimitError,
     load_default_gemini_image_client,
+    load_fallback_gemini_image_client,
 )
 from app.question_generation.models import (
     GeneratedItem,
@@ -85,12 +84,30 @@ class ImageGenerator:
         self._openai = openai_client
         self._gemini: GeminiImageClient | None = gemini_image_client
         self._rate_limiter = _RateLimiter(gemini_max_rpm)
+        self._fallback_available = True
+        self._swap_lock = threading.Lock()
 
     def _ensure_gemini(self) -> GeminiImageClient:
         """Lazily load the Gemini image client."""
         if self._gemini is None:
             self._gemini = load_default_gemini_image_client()
         return self._gemini
+
+    def _try_swap_to_fallback(self) -> bool:
+        """Swap to FALLBACK_GEMINI_API_KEY. Returns True if swapped."""
+        with self._swap_lock:
+            if not self._fallback_available:
+                return False
+            fallback = load_fallback_gemini_image_client()
+            if fallback is None:
+                self._fallback_available = False
+                return False
+            self._gemini = fallback
+            self._fallback_available = False
+            logger.info(
+                "Switched to fallback Gemini API key",
+            )
+            return True
 
     def generate_images(
         self,
@@ -265,6 +282,8 @@ class ImageGenerator:
                 )
             except RateLimitError as rle:
                 if rle.is_daily:
+                    if self._try_swap_to_fallback():
+                        continue
                     raise
                 logger.warning(
                     "%s: per-minute rate limit — sleeping 60 s",
@@ -323,6 +342,15 @@ class ImageGenerator:
             )
             return None
         except Exception as exc:
+            msg = str(exc).lower()
+            if "429" in msg and "resource_exhausted" in msg:
+                is_daily = (
+                    "per_day" in msg or "per day" in msg
+                    or "rpd" in msg
+                )
+                raise RateLimitError(
+                    str(exc), is_daily=is_daily,
+                ) from exc
             logger.error("Gemini image generation failed: %s", exc)
             return None
 
