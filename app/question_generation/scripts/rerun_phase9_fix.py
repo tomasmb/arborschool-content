@@ -109,11 +109,16 @@ def pre_save_phase9(job_id: str, affected_atoms: list[str]) -> Path:
 
 
 def find_affected_atoms(atom_filter: set[str] | None) -> list[str]:
-    """Find atoms needing Phase 9 re-run: Phase 8 has feedback, Phase 9 doesn't."""
+    """Find atoms needing Phase 9 re-run: Phase 8 has feedback, Phase 9 doesn't.
+
+    When atom_filter is provided (--atoms flag), SKIP_ATOMS is bypassed so that
+    explicitly requested atoms are always processed.
+    """
     affected = []
     for atom_dir in sorted(QUESTION_GENERATION_DIR.glob("A-M1-*")):
         atom_id = atom_dir.name
-        if atom_id in SKIP_ATOMS:
+        # Only apply SKIP_ATOMS when no explicit atom list was given
+        if not atom_filter and atom_id in SKIP_ATOMS:
             continue
         if atom_filter and atom_id not in atom_filter:
             continue
