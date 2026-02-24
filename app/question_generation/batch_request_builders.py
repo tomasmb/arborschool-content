@@ -44,6 +44,7 @@ from app.question_generation.prompts.planning import (
     PLAN_GENERATION_PROMPT,
     build_difficulty_distribution,
     build_enrichment_section,
+    build_existing_inventory_section,
     build_image_instruction,
 )
 from app.question_generation.prompts.validation import (
@@ -113,6 +114,7 @@ def build_plan_request(
     enrichment: AtomEnrichment | None,
     distribution: DifficultyDistribution,
     model: str = _DEFAULT_MODEL,
+    existing_summary: dict | None = None,
 ) -> BatchRequest:
     """Build a BatchRequest for Phase 2 plan generation."""
     image_types = (
@@ -130,7 +132,9 @@ def build_plan_request(
         criterios_atomicos=", ".join(ctx.criterios_atomicos),
         enrichment_section=build_enrichment_section(enrichment),
         exemplars_section=build_exemplars_section(ctx.exemplars),
-        existing_count=ctx.existing_item_count,
+        existing_inventory_section=(
+            build_existing_inventory_section(existing_summary)
+        ),
         pool_size=distribution.total,
         skeleton_cap=skeleton_repetition_cap(distribution.total),
         difficulty_distribution=build_difficulty_distribution(

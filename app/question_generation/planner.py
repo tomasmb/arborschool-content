@@ -28,6 +28,7 @@ from app.question_generation.prompts.planning import (
     PLAN_GENERATION_PROMPT,
     build_difficulty_distribution,
     build_enrichment_section,
+    build_existing_inventory_section,
     build_image_instruction,
 )
 
@@ -71,6 +72,7 @@ class PlanGenerator:
         atom_context: AtomContext,
         enrichment: AtomEnrichment | None,
         distribution: DifficultyDistribution,
+        existing_summary: dict | None = None,
     ) -> PhaseResult:
         """Generate a plan of item slots (Phase 2).
 
@@ -78,9 +80,8 @@ class PlanGenerator:
             atom_context: Atom data from Phase 0.
             enrichment: Enrichment from Phase 1 (may be None).
             distribution: Planned difficulty distribution.
-
-        Returns:
-            PhaseResult with list[PlanSlot] data on success.
+            existing_summary: Output of load_existing_items_summary(),
+                passed to the prompt so the planner fills gaps.
         """
         pool_size = distribution.total
         logger.info(
@@ -90,6 +91,7 @@ class PlanGenerator:
 
         prompt = self._build_prompt(
             atom_context, enrichment, distribution,
+            existing_summary,
         )
 
         for attempt in range(self._max_retries + 1):
@@ -136,6 +138,7 @@ class PlanGenerator:
         ctx: AtomContext,
         enrichment: AtomEnrichment | None,
         distribution: DifficultyDistribution,
+        existing_summary: dict | None = None,
     ) -> str:
         """Build the plan generation prompt."""
         image_types = (
@@ -153,7 +156,9 @@ class PlanGenerator:
             criterios_atomicos=", ".join(ctx.criterios_atomicos),
             enrichment_section=build_enrichment_section(enrichment),
             exemplars_section=build_exemplars_section(ctx.exemplars),
-            existing_count=ctx.existing_item_count,
+            existing_inventory_section=(
+                build_existing_inventory_section(existing_summary)
+            ),
             pool_size=distribution.total,
             skeleton_cap=skeleton_repetition_cap(distribution.total),
             difficulty_distribution=build_difficulty_distribution(

@@ -35,7 +35,8 @@ ENRIQUECIMIENTO DEL ÁTOMO:
 EJEMPLARES DISPONIBLES:
 {exemplars_section}
 
-INVENTARIO EXISTENTE: {existing_count} ítems ya generados para este átomo.
+INVENTARIO EXISTENTE:
+{existing_inventory_section}
 </context>
 
 <task>
@@ -49,7 +50,9 @@ un ítem a generar. El plan DEBE cumplir:
 4. **Diversidad numérica**: Varía `numbers_profile` cuando sea posible.
 5. **Anclaje a ejemplares**: Si hay ejemplares, cada slot DEBE tener
    `target_exemplar_id` y `distance_level`.
-6. **Imágenes**: {image_instruction}
+6. **Complementariedad**: Tu plan debe COMPLEMENTAR el inventario existente.
+   Prioriza skeletons, contextos y perfiles numéricos sub-representados.
+7. **Imágenes**: {image_instruction}
 </task>
 
 <rules>
@@ -196,16 +199,59 @@ def build_enrichment_section(enrichment: object | None) -> str:
 def build_difficulty_distribution(
     distribution: DifficultyDistribution,
 ) -> str:
-    """Format a difficulty distribution for the planning prompt.
-
-    Args:
-        distribution: Per-difficulty planned counts.
-
-    Returns:
-        Human-readable distribution string for the LLM.
-    """
+    """Format a difficulty distribution for the planning prompt."""
     return (
         f"{distribution.easy} easy, "
         f"{distribution.medium} medium, "
         f"{distribution.hard} hard"
     )
+
+
+def build_existing_inventory_section(
+    summary: dict | None,
+) -> str:
+    """Format existing item inventory for the planner prompt.
+
+    Gives the planner visibility into what already exists so it
+    can generate complementary (non-duplicate) plan slots.
+
+    Args:
+        summary: Output of load_existing_items_summary(), or None.
+    """
+    if not summary or summary.get("total", 0) == 0:
+        return "No hay ítems existentes para este átomo."
+
+    lines: list[str] = []
+    total = summary["total"]
+    by_diff = summary.get("by_difficulty", {})
+    lines.append(
+        f"{total} ítems ya generados: "
+        f"{by_diff.get('easy', 0)} easy, "
+        f"{by_diff.get('medium', 0)} medium, "
+        f"{by_diff.get('hard', 0)} hard."
+    )
+
+    skel = summary.get("skeleton_counts", {})
+    if skel:
+        top = sorted(skel.items(), key=lambda x: -x[1])[:10]
+        skel_lines = [f"  {s} (x{c})" for s, c in top]
+        lines.append("Skeletons ya usados (top):")
+        lines.extend(skel_lines)
+
+    ctx = summary.get("surface_contexts", {})
+    if ctx:
+        ctx_parts = [f"{k}: {v}" for k, v in sorted(ctx.items())]
+        lines.append(f"Contextos usados: {', '.join(ctx_parts)}")
+
+    prof = summary.get("numbers_profiles", {})
+    if prof:
+        prof_parts = [f"{k}: {v}" for k, v in sorted(prof.items())]
+        lines.append(
+            f"Perfiles numéricos usados: {', '.join(prof_parts)}"
+        )
+
+    lines.append(
+        "IMPORTANTE: Evita repetir los skeletons y contextos ya "
+        "sobre-representados. Prioriza combinaciones nuevas."
+    )
+    return "\n".join(lines)

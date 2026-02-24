@@ -1,7 +1,7 @@
 """Shared helpers for the question generation pipeline.
 
-Contains atom loading, metadata building, result saving, checkpoint
-management, prerequisite validation, and console output formatting.
+Atom loading, metadata building, result saving, checkpoint management,
+prerequisite validation, and existing-item analysis.
 """
 
 from __future__ import annotations
@@ -35,18 +35,8 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
 }
 
 
-
 def load_atom(atom_id: str) -> Atom | None:
-    """Load an atom by ID from the canonical atoms files.
-
-    Searches all *_atoms.json files in the atoms data directory.
-
-    Args:
-        atom_id: Atom identifier to find.
-
-    Returns:
-        Atom object if found, None otherwise.
-    """
+    """Load an atom by ID from the canonical atoms files."""
     if not ATOMS_DIR.exists():
         logger.error("Atoms directory not found: %s", ATOMS_DIR)
         return None
@@ -65,17 +55,8 @@ def load_atom(atom_id: str) -> Atom | None:
     return None
 
 
-
 def build_pipeline_meta(atom_id: str, slot: PlanSlot) -> PipelineMeta:
-    """Build pipeline metadata from a plan slot.
-
-    Args:
-        atom_id: Atom identifier.
-        slot: Plan slot specification.
-
-    Returns:
-        PipelineMeta populated with slot data.
-    """
+    """Build pipeline metadata from a plan slot."""
     return PipelineMeta(
         atom_id=atom_id,
         component_tag=slot.component_tag,
@@ -126,12 +107,7 @@ def _merge_with_existing_report(
     report_path: Path,
     new_report: dict,
 ) -> dict:
-    """Merge new report with existing one, keeping max counts.
-
-    On partial/resume runs the PipelineResult only has counts for
-    phases that executed. Without merging, earlier phase counts
-    would be zeroed out.
-    """
+    """Merge new report with existing, keeping max counts per field."""
     if not report_path.exists():
         return new_report
 
@@ -155,7 +131,6 @@ def _merge_with_existing_report(
 
     return new_report
 
-
 def _build_report_dict(result: PipelineResult) -> dict:
     """Build a serializable report dict from PipelineResult."""
     return {
@@ -178,7 +153,6 @@ def _build_report_dict(result: PipelineResult) -> dict:
             for p in result.phase_results
         ],
     }
-
 
 
 def save_checkpoint(
@@ -216,14 +190,7 @@ def load_checkpoint(
 
 
 def _scan_max_checkpoint_phase(ckpt_dir: Path) -> int | None:
-    """Scan a checkpoint directory for the highest phase number.
-
-    Args:
-        ckpt_dir: Directory containing phase_*_*.json files.
-
-    Returns:
-        Highest phase number found, or None if no checkpoints.
-    """
+    """Scan a checkpoint directory for the highest phase number."""
     if not ckpt_dir.exists():
         return None
 
@@ -240,21 +207,11 @@ def _scan_max_checkpoint_phase(ckpt_dir: Path) -> int | None:
 
 
 def get_last_completed_phase(atom_id: str) -> int | None:
-    """Get the highest completed phase for an atom.
-
-    Used by the API to enable/disable frontend phase buttons.
-
-    Args:
-        atom_id: Atom identifier.
-
-    Returns:
-        Highest completed phase number, or None.
-    """
+    """Get the highest completed phase for an atom."""
     from app.utils.paths import QUESTION_GENERATION_DIR
 
     ckpt_dir = QUESTION_GENERATION_DIR / atom_id / "checkpoints"
     return _scan_max_checkpoint_phase(ckpt_dir)
-
 
 
 def get_enrichment_image_types(atom_id: str) -> list[str] | None:
@@ -289,9 +246,6 @@ def classify_image_status(image_types: list[str] | None) -> str:
 
 
 # Checkpoint phase → next phase group for --resume.
-# Phase 9/4→"generate" so completed or partial gen re-enters
-# slot-level resume.  Phase 8→"final_validate" to skip straight
-# to phase 9 after feedback completes.
 _CHECKPOINT_TO_NEXT_GROUP: dict[int, str] = {
     9: "generate",
     8: "final_validate",
@@ -364,7 +318,6 @@ def load_phase_state(
             state["items"] = deserialize_items(raw_items)
 
     return state
-
 
 
 def serialize_items(items: list[GeneratedItem]) -> list[dict]:
@@ -452,36 +405,79 @@ def load_existing_fingerprints(atom_id: str) -> set[str]:
         return set()
 
 
-def print_pipeline_header(atom_id: str) -> None:
-    """Print pipeline header to console."""
-    print(f"\n{'=' * 60}")
-    print("PIPELINE: Generación de Preguntas por Átomo")
-    print(f"Átomo: {atom_id}")
-    print(f"{'=' * 60}\n")
+def load_existing_items_summary(atom_id: str) -> dict | None:
+    """Extract a structured summary of existing Phase 9 items for an atom.
+
+    Returns a dict with per-difficulty counts, skeleton frequencies,
+    surface context distribution, and number profile distribution.
+    Used by the planner to generate complementary (non-duplicate) slots.
+
+    Returns None if the atom has no Phase 9 checkpoint.
+    """
+    from collections import Counter
+    from app.utils.paths import QUESTION_GENERATION_DIR
+
+    ckpt = load_checkpoint(
+        QUESTION_GENERATION_DIR / atom_id, 9, "final_validation",
+    )
+    if not ckpt or not ckpt.get("items"):
+        return None
+
+    items = ckpt["items"]
+    difficulty: Counter[str] = Counter()
+    skeletons: Counter[str] = Counter()
+    contexts: Counter[str] = Counter()
+    profiles: Counter[str] = Counter()
+
+    for item in items:
+        meta = item.get("pipeline_meta")
+        if not meta:
+            continue
+        difficulty[meta.get("difficulty_level", "unknown")] += 1
+        skel = meta.get("operation_skeleton_ast", "")
+        if skel:
+            skeletons[skel] += 1
+        ctx = meta.get("surface_context", "")
+        if ctx:
+            contexts[ctx] += 1
+        prof = meta.get("numbers_profile", "")
+        if prof:
+            profiles[prof] += 1
+
+    return {
+        "total": len(items),
+        "by_difficulty": dict(difficulty),
+        "skeleton_counts": dict(skeletons),
+        "surface_contexts": dict(contexts),
+        "numbers_profiles": dict(profiles),
+    }
 
 
-def print_pipeline_summary(result: PipelineResult) -> None:
-    """Print pipeline summary to console."""
-    print(f"\n{'=' * 60}")
-    print("RESUMEN")
-    print(f"{'=' * 60}")
-    print(f"Átomo: {result.atom_id}")
-    print(f"Planificados:       {result.total_planned}")
-    print(f"Generados:          {result.total_generated}")
-    print(f"Pasaron dedupe:     {result.total_passed_dedupe}")
-    print(f"Pasaron validación: {result.total_passed_base_validation}")
-    print(f"Pasaron feedback:   {result.total_passed_feedback}")
-    print(f"Finales:            {result.total_final}")
+def load_checkpoint_fingerprints(atom_id: str) -> set[str]:
+    """Compute SHA-256 fingerprints from existing Phase 9 checkpoint items.
 
-    # Print phase errors/warnings
-    for phase in result.phase_results:
-        if phase.errors:
-            print(f"\n  Errores [{phase.phase_name}]:")
-            for err in phase.errors:
-                print(f"    - {err}")
-        if phase.warnings:
-            print(f"\n  Advertencias [{phase.phase_name}]:")
-            for w in phase.warnings:
-                print(f"    - {w}")
+    Counterpart to load_existing_fingerprints() (which loads from DB).
+    Both return the same set[str] type for use in DuplicateGate.
+    """
+    from app.question_generation.validation_checks import (
+        compute_fingerprint,
+    )
+    from app.utils.paths import QUESTION_GENERATION_DIR
 
-    print(f"{'=' * 60}\n")
+    ckpt = load_checkpoint(
+        QUESTION_GENERATION_DIR / atom_id, 9, "final_validation",
+    )
+    if not ckpt or not ckpt.get("items"):
+        return set()
+
+    fps = set()
+    for item in ckpt["items"]:
+        xml = item.get("qti_xml", "")
+        if xml:
+            fps.add(compute_fingerprint(xml))
+    if fps:
+        logger.info(
+            "Loaded %d checkpoint fingerprints for %s",
+            len(fps), atom_id,
+        )
+    return fps

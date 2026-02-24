@@ -67,8 +67,14 @@ def run_phase_5(
     state: dict[str, Any],
     ckpt_path: Path,
     items: dict[str, list[GeneratedItem]],
+    existing_fingerprints: dict[str, set[str]] | None = None,
 ) -> dict[str, list[GeneratedItem]]:
-    """Phase 5: Deduplication gate (local, no LLM)."""
+    """Phase 5: Deduplication gate (local, no LLM).
+
+    Args:
+        existing_fingerprints: Per-atom SHA-256 fingerprints of
+            existing items (from checkpoint or DB) to dedupe against.
+    """
     if is_phase_completed(state, "phase_5"):
         return items
 
@@ -76,7 +82,12 @@ def run_phase_5(
     gate = DuplicateGate()
     for atom_id in list(items):
         atom_items = items[atom_id]
-        result = gate.run(atom_items, pool_total=len(atom_items))
+        fps = (existing_fingerprints or {}).get(atom_id, set())
+        result = gate.run(
+            atom_items,
+            existing_fingerprints=fps or None,
+            pool_total=len(atom_items),
+        )
         if result.success and result.data:
             items[atom_id] = result.data["filtered_items"]
 

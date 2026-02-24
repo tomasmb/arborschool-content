@@ -17,18 +17,13 @@ from app.question_generation.enricher import AtomEnricher
 from app.question_generation.exemplars import load_exemplars_for_atom
 from app.question_generation.generator import BaseQtiGenerator
 from app.question_generation.helpers import (
-    check_prerequisites,
-    deserialize_items,
-    find_resume_phase_group,
-    load_atom,
-    load_checkpoint,
-    load_existing_fingerprints,
-    load_phase_state,
-    print_pipeline_header,
-    print_pipeline_summary,
-    save_checkpoint,
-    save_pipeline_results,
-    serialize_items,
+    check_prerequisites, deserialize_items,
+    find_resume_phase_group, load_atom, load_checkpoint,
+    load_existing_fingerprints, load_phase_state,
+    save_checkpoint, save_pipeline_results, serialize_items,
+)
+from app.question_generation.progress import (
+    print_pipeline_header, print_pipeline_summary,
 )
 from app.question_generation.image_generator import ImageGenerator
 from app.question_generation.image_types import (

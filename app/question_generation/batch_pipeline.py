@@ -94,6 +94,11 @@ class BatchAtomPipeline:
         batch_dir: Path | None = None,
         poll_interval: int = 30,
         max_wait: int = 86400,
+        per_atom_distributions: (
+            dict[str, DifficultyDistribution] | None
+        ) = None,
+        existing_fingerprints: dict[str, set[str]] | None = None,
+        existing_summaries: dict[str, dict] | None = None,
     ) -> None:
         load_dotenv()
         api_key = os.getenv("OPENAI_API_KEY", "")
@@ -116,6 +121,9 @@ class BatchAtomPipeline:
         self._distribution = compute_planned_distribution(
             DEFAULT_TARGET_DISTRIBUTION, _DEFAULT_BUFFER_RATIO,
         )
+        self._per_atom_dists = per_atom_distributions
+        self._existing_fps = existing_fingerprints
+        self._existing_summaries = existing_summaries
 
         self._contexts: dict[str, AtomContext] = {}
         self._enrichments: dict[str, AtomEnrichment | None] = {}
@@ -155,7 +163,7 @@ class BatchAtomPipeline:
         report_progress(int(n * 0.4), n)
         fn = self._submit_and_wait
         st, cp, it, m = self._state, self._ckpt_path, self._items, self._model
-        self._items = run_phase_5(st, cp, it)
+        self._items = run_phase_5(st, cp, it, self._existing_fps)
         self._items = run_phase_6(st, cp, self._items, m, fn)
         report_progress(int(n * 0.6), n)
         self._items = run_phase_78(st, cp, self._items, m, fn)
@@ -170,6 +178,7 @@ class BatchAtomPipeline:
     def _run_phase_0(self) -> None:
         if is_phase_completed(self._state, "phase_0"):
             self._load_contexts(get_active_atoms(self._state))
+            self._apply_existing_counts()
             return
 
         logger.info("Phase 0: Loading inputs for all atoms")
@@ -185,6 +194,7 @@ class BatchAtomPipeline:
             mark_atoms_failed(
                 self._state, failed, self._ckpt_path,
             )
+        self._apply_existing_counts()
         update_phase(
             self._state, "phase_0", self._ckpt_path,
             status="completed",
@@ -193,6 +203,15 @@ class BatchAtomPipeline:
             "Phase 0: %d loaded, %d failed",
             len(self._contexts), len(failed),
         )
+
+    def _apply_existing_counts(self) -> None:
+        """Set existing_item_count on contexts from summaries."""
+        if not self._existing_summaries:
+            return
+        for aid, ctx in self._contexts.items():
+            summary = self._existing_summaries.get(aid)
+            if summary:
+                ctx.existing_item_count = summary.get("total", 0)
 
     def _load_contexts(self, atom_ids: list[str]) -> None:
         for atom_id in atom_ids:
@@ -247,21 +266,43 @@ class BatchAtomPipeline:
 
         self._run_phase_3_validation()
 
+    def _get_distribution(self, atom_id: str) -> DifficultyDistribution:
+        """Get per-atom distribution if available, else default."""
+        if self._per_atom_dists:
+            return self._per_atom_dists.get(
+                atom_id, self._distribution,
+            )
+        return self._distribution
+
     def _run_phase_2(self) -> None:
         logger.info("Phase 2: Plan generation for all atoms")
         reqs: list[BatchRequest] = []
+        summaries = self._existing_summaries or {}
         for aid in get_active_atoms(self._state):
             ctx = self._contexts.get(aid)
             if ctx:
-                reqs.append(build_plan_request(ctx, self._enrichments.get(aid), self._distribution, self._model))
+                dist = self._get_distribution(aid)
+                reqs.append(build_plan_request(
+                    ctx, self._enrichments.get(aid), dist,
+                    self._model,
+                    existing_summary=summaries.get(aid),
+                ))
         if not reqs:
-            update_phase(self._state, "phase_2", self._ckpt_path, status="completed", request_count=0)
+            update_phase(
+                self._state, "phase_2", self._ckpt_path,
+                status="completed", request_count=0,
+            )
             return
-        plans, failures = process_plan_responses(self._submit_and_wait("phase_2", reqs))
+        plans, failures = process_plan_responses(
+            self._submit_and_wait("phase_2", reqs),
+        )
         self._plans = plans
         if failures:
             mark_atoms_failed(self._state, failures, self._ckpt_path)
-        update_phase(self._state, "phase_2", self._ckpt_path, status="completed")
+        update_phase(
+            self._state, "phase_2", self._ckpt_path,
+            status="completed",
+        )
 
     def _run_phase_3_validation(self) -> None:
         logger.info("Phase 3: Validating plans")
@@ -270,7 +311,8 @@ class BatchAtomPipeline:
             ctx = self._contexts.get(atom_id)
             if not ctx:
                 continue
-            result = validate_plan(slots, ctx, self._distribution)
+            dist = self._get_distribution(atom_id)
+            result = validate_plan(slots, ctx, dist)
             if not result.success:
                 failed[atom_id] = "; ".join(result.errors)
             else:
