@@ -106,7 +106,7 @@ export interface GeneratedItem {
   item_id: string;
   qti_xml: string;
   slot_index: number;
-  pipeline_meta: GeneratedItemMeta;
+  pipeline_meta?: GeneratedItemMeta | null;
 }
 
 // -----------------------------------------------------------------------------

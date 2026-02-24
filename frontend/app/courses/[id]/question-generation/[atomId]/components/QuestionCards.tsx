@@ -105,17 +105,19 @@ export function QuestionCards({
     ],
   );
 
-  // Unique filter values
+  // Unique filter values (items may lack pipeline_meta)
   const difficulties = useMemo(
     () =>
-      Array.from(new Set(items.map((i) => i.pipeline_meta.difficulty_level)))
-        .sort(),
+      Array.from(new Set(
+        items.map((i) => i.pipeline_meta?.difficulty_level ?? "unknown"),
+      )).sort(),
     [items],
   );
   const contexts = useMemo(
     () =>
-      Array.from(new Set(items.map((i) => i.pipeline_meta.surface_context)))
-        .sort(),
+      Array.from(new Set(
+        items.map((i) => i.pipeline_meta?.surface_context ?? "unknown"),
+      )).sort(),
     [items],
   );
 
@@ -134,12 +136,12 @@ export function QuestionCards({
     }
     if (diffFilter !== "all") {
       result = result.filter(
-        (r) => r.item.pipeline_meta.difficulty_level === diffFilter,
+        (r) => (r.item.pipeline_meta?.difficulty_level ?? "unknown") === diffFilter,
       );
     }
     if (contextFilter !== "all") {
       result = result.filter(
-        (r) => r.item.pipeline_meta.surface_context === contextFilter,
+        (r) => (r.item.pipeline_meta?.surface_context ?? "unknown") === contextFilter,
       );
     }
     return result;
@@ -259,23 +261,30 @@ function computeStatus(
   hasFinalValidation: boolean,
   finalPassedIds?: Set<string>,
 ): { status: OverallStatus; failedGate: FailedGate } {
-  if (!hasValidation) {
-    return {
-      status: getOverallStatus(item.pipeline_meta.validators),
-      failedGate: null,
-    };
-  }
-  const passedBase = passedIds.has(item.item_id);
-  if (!passedBase) {
-    return { status: "fail", failedGate: "base" };
-  }
+  // Phase 9 is the ultimate authority — items present there passed all gates
   if (hasFinalValidation && finalPassedIds) {
-    const passedFinal = finalPassedIds.has(item.item_id);
-    return passedFinal
-      ? { status: "pass", failedGate: null }
-      : { status: "fail", failedGate: "final" };
+    if (finalPassedIds.has(item.item_id)) {
+      return { status: "pass", failedGate: null };
+    }
+    if (hasValidation && !passedIds.has(item.item_id)) {
+      return { status: "fail", failedGate: "base" };
+    }
+    return { status: "fail", failedGate: "final" };
   }
-  return { status: "pass", failedGate: null };
+
+  // Only base validation available
+  if (hasValidation) {
+    return passedIds.has(item.item_id)
+      ? { status: "pass", failedGate: null }
+      : { status: "fail", failedGate: "base" };
+  }
+
+  // No validation data — fall back to pipeline_meta validators
+  const validators = item.pipeline_meta?.validators;
+  return {
+    status: validators ? getOverallStatus(validators) : "pending",
+    failedGate: null,
+  };
 }
 
 // ---------------------------------------------------------------------------

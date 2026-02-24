@@ -30,11 +30,6 @@ import {
   type OverallStatus,
 } from "./shared";
 
-// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-
-/** Revalidation result shape (shared by base + final). */
 interface RevalResult {
   passed: boolean;
   errors: string[];
@@ -44,12 +39,9 @@ interface RevalResult {
 interface QuestionCardDetailProps {
   item: GeneratedItem;
   status: OverallStatus;
-  /** Which validation gate the item failed at (null = passed). */
   failedGate?: FailedGate;
   planSlot: PlanSlot | null;
-  /** Atom ID for per-item revalidation API call. */
   atomId?: string;
-  /** Called after revalidation completes to refresh parent data. */
   onRevalidated?: () => void;
 }
 
@@ -96,13 +88,13 @@ export function QuestionCardDetail({
   const [finalRevalResult, setFinalRevalResult] =
     useState<RevalResult | null>(null);
 
-  const meta = item.pipeline_meta;
+  const meta = item.pipeline_meta ?? null;
 
   // Use revalidation result if available, otherwise original
   const latestResult = finalRevalResult ?? revalResult;
-  const displayValidators: ValidatorStatuses = latestResult
+  const displayValidators: ValidatorStatuses | null = latestResult
     ? (latestResult.validators as unknown as ValidatorStatuses)
-    : meta.validators;
+    : (meta?.validators ?? null);
 
   const displayStatus: OverallStatus = latestResult
     ? (latestResult.passed ? "pass" : "fail")
@@ -126,12 +118,12 @@ export function QuestionCardDetail({
         errors: [
           err instanceof Error ? err.message : "Revalidation failed",
         ],
-        validators: meta.validators as unknown as Record<string, string>,
+        validators: (meta?.validators ?? {}) as unknown as Record<string, string>,
       });
     } finally {
       setRevalLoading(false);
     }
-  }, [atomId, item.item_id, meta.validators, revalLoading, onRevalidated]);
+  }, [atomId, item.item_id, meta?.validators, revalLoading, onRevalidated]);
 
   const handleRevalidateFinal = useCallback(async () => {
     if (!atomId || finalRevalLoading) return;
@@ -151,13 +143,13 @@ export function QuestionCardDetail({
             ? err.message
             : "Final revalidation failed",
         ],
-        validators: meta.validators as unknown as Record<string, string>,
+        validators: (meta?.validators ?? {}) as unknown as Record<string, string>,
       });
     } finally {
       setFinalRevalLoading(false);
     }
   }, [
-    atomId, item.item_id, meta.validators,
+    atomId, item.item_id, meta?.validators,
     finalRevalLoading, onRevalidated,
   ]);
 
@@ -193,7 +185,9 @@ export function QuestionCardDetail({
         >
           {item.item_id}
         </span>
-        <DifficultyBadge level={meta.difficulty_level} />
+        {meta && (
+          <DifficultyBadge level={meta.difficulty_level} />
+        )}
         <span className="text-[10px] text-text-secondary">
           #{item.slot_index}
         </span>
@@ -205,7 +199,9 @@ export function QuestionCardDetail({
 
         {/* Validator pills pushed right */}
         <div className="flex-1 flex justify-end">
-          <ValidatorPills validators={displayValidators} />
+          {displayValidators && (
+            <ValidatorPills validators={displayValidators} />
+          )}
         </div>
 
         {expanded ? (
@@ -243,16 +239,12 @@ export function QuestionCardDetail({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Expanded content (split out to keep main component readable)
-// ---------------------------------------------------------------------------
-
 interface ExpandedContentProps {
   item: GeneratedItem;
   planSlot: PlanSlot | null;
   showXml: boolean;
   onToggleXml: () => void;
-  displayValidators: ValidatorStatuses;
+  displayValidators: ValidatorStatuses | null;
   revalLoading: boolean;
   revalResult: RevalResult | null;
   onRevalidate?: () => void;
@@ -342,11 +334,20 @@ function ExpandedContent(props: ExpandedContentProps) {
             "border-b lg:border-b-0 lg:border-r border-border",
           )}
         >
-          <PlanSpec
-            meta={item.pipeline_meta}
-            planSlot={planSlot}
-          />
-          <ValidatorBreakdown validators={displayValidators} />
+          {item.pipeline_meta && (
+            <PlanSpec
+              meta={item.pipeline_meta}
+              planSlot={planSlot}
+            />
+          )}
+          {displayValidators && (
+            <ValidatorBreakdown validators={displayValidators} />
+          )}
+          {!item.pipeline_meta && !displayValidators && (
+            <p className="text-xs text-text-secondary italic">
+              No pipeline metadata available
+            </p>
+          )}
         </div>
         <div className="lg:col-span-2 p-4">
           <QTIRenderer
@@ -496,5 +497,3 @@ function RevalErrors({ errors }: { errors: string[] }) {
     </div>
   );
 }
-
-
