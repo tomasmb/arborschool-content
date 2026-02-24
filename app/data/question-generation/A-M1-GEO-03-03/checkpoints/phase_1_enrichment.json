@@ -1,0 +1,137 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar las componentes (a, b) de un vector de traslación observado en un plano cartesiano cuadriculado.",
+        "Calcular las componentes de un vector de traslación dados un punto de origen (x1, y1) y un punto de destino (x2, y2), usando (a, b) = (x2 - x1, y2 - y1).",
+        "Representar gráficamente un vector dadas sus componentes numéricas, ubicándolo en el plano cartesiano (usualmente desde el origen o desde un punto dado).",
+        "Relacionar desplazamientos horizontales con la componente a y desplazamientos verticales con la componente b.",
+        "Reconocer el sentido de las componentes: a > 0 hacia la derecha, a < 0 hacia la izquierda, b > 0 hacia arriba, b < 0 hacia abajo."
+      ],
+      "out_of_scope": [
+        "Cálculo de magnitud (módulo) del vector usando raíz cuadrada.",
+        "Operaciones entre vectores: suma, resta, multiplicación por escalar, producto punto o producto vectorial.",
+        "Modelación de situaciones físicas avanzadas (fuerzas, velocidad, etc.) que requieran otros conceptos vectoriales.",
+        "Vectores en el espacio tridimensional o en sistemas de coordenadas no cartesianos.",
+        "Transformaciones geométricas completas (rotaciones, reflexiones, homotecias) más allá de la traslación como desplazamiento.",
+        "Uso de notación matricial o formalismo algebraico avanzado para vectores."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de números enteros, especialmente interpretación de signos (positivos y negativos).",
+        "A-M1-ALG-01-01: Interpretación de pares ordenados (x, y) y ubicación de puntos en el plano cartesiano.",
+        "A-M1-GEO-03-01: Lectura básica del plano cartesiano con cuadrícula y comprensión de ejes y unidades.",
+        "A-M1-ALG-01-02: Cálculo de diferencias simples entre números enteros (restas con resultado positivo o negativo)."
+      ],
+      "common_traps": [
+        "Confundir orden de las componentes de un vector, escribiendo (b, a) en lugar de (a, b).",
+        "Olvidar que el vector se obtiene como destino menos origen: usar (x1 - x2, y1 - y2) en vez de (x2 - x1, y2 - y1).",
+        "Interpretar incorrectamente el signo: tomar desplazamientos hacia abajo o hacia la izquierda como positivos.",
+        "Creer que el vector depende del punto donde se dibuja, sin comprender que vectores equipolentes representan el mismo desplazamiento.",
+        "Contar mal las unidades en la cuadrícula (por ejemplo, confundir la unidad de la grilla o no considerar que cada cuadrito vale 1).",
+        "Asumir que todo vector debe partir obligatoriamente del origen, aunque se indique claramente otro punto de inicio.",
+        "Confundir coordenadas de un punto con componentes de un vector, especialmente cuando el vector parte del origen."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Vectores con componentes enteras pequeñas en valor absoluto (entre -5 y 5), sin fracciones ni decimales.",
+        "Lectura directa desde una grilla clara donde el vector parte del origen o de un punto con coordenadas sencillas (por ejemplo, (0,0), (1,2), (-1,1)).",
+        "Ítems donde solo se cambia uno de los aspectos: o se pide identificar (a, b) a partir del dibujo, o dibujar el vector dado (a, b) desde el origen.",
+        "Situaciones con un solo vector y sin distracciones visuales (pocas marcas, una sola figura asociada).",
+        "Opciones de respuesta claramente diferenciadas en signos y en valores, enfatizando la lectura básica del desplazamiento."
+      ],
+      "medium": [
+        "Vectores cuyas componentes surgen de la diferencia entre dos puntos con coordenadas positivas y negativas, pero todavía enteras y pequeñas.",
+        "Vectores que no necesariamente parten del origen: se debe identificar origen y destino en la figura para calcular (a, b).",
+        "Ítems que combinan verbalización del desplazamiento (por ejemplo, '3 unidades a la derecha y 2 arriba') con representación simbólica (3, 2) o dibujo.",
+        "Figuras con más de un vector dibujado, donde solo uno corresponde al desplazamiento descrito o pedido.",
+        "Distractores que implican errores típicos: invertir orden, cambiar signos, tomar origen equivocado."
+      ],
+      "hard": [
+        "Uso de puntos con coordenadas enteras algo mayores (por ejemplo, entre -10 y 10) que obligan a contar más cuidadosamente en la grilla.",
+        "Situaciones donde hay que combinar dos pasos: por ejemplo, primero determinar las coordenadas de un punto trasladado, y luego obtener el vector, o viceversa (se mantiene en el ámbito de traslación).",
+        "Figuras donde el vector se infiere comparando la posición de una figura original y su imagen trasladada, sin que se indique explícitamente el origen y destino del vector.",
+        "Ítems que exigen discriminar entre varios vectores candidatos a representar la misma traslación (equipolencia de vectores).",
+        "Distractores diseñados para captar errores más sutiles, como usar la dirección correcta pero con longitud incorrecta, o tomar el desplazamiento en orden inverso (destino a origen)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar diagramas con cuadrículas borrosas, poco contrastadas o sin marcas claras de unidad en los ejes.",
+      "Evitar figuras donde no esté claramente distinguido cuál es el punto de origen y cuál es el punto de destino del vector, si eso es relevante para la tarea.",
+      "No mezclar en el mismo ítem varios desplazamientos distintos sin etiquetarlos claramente, cuando solo uno es el que se debe analizar.",
+      "Evitar enunciados verbales vagos como 'se mueve un poco hacia la derecha' sin precisar número de unidades.",
+      "No presentar puntos con coordenadas no enteras si no están claramente rotulados en la grilla (fracciones o decimales sobre cuadrículas que aparentan enteros).",
+      "No usar notación vectorial avanzada (flechas sobre letras, negritas) que no se explique o no sea necesaria para el nivel.",
+      "Evitar que el vector buscado pueda interpretarse de más de una manera por simetrías o por falta de referencia (por ejemplo, dos figuras posibles como 'original' si no se etiquetan).",
+      "No colocar flechas ambiguas o poco visibles en los vectores dibujados; el sentido debe ser inequívoco.",
+      "No combinar en la misma alternativa varias afirmaciones distintas (por ejemplo, escribir tanto el vector como la imagen del punto) si el ítem solo pide una de ellas.",
+      "Evitar escalas distintas en ejes X e Y cuando solo se trabaja con traslaciones; si se usan, deben estar muy claramente explicitadas."
+    ],
+    "error_families": [
+      {
+        "name": "Inversión_origen_destino",
+        "description": "El estudiante calcula el vector como (x1 - x2, y1 - y2) en lugar de (x2 - x1, y2 - y1), obteniendo un vector con dirección opuesta.",
+        "how_to_address": "Incluir ítems donde se enfatice qué punto es origen y cuál es destino, y usar apoyos visuales (flechas y etiquetas). En las explicaciones, recalcar la idea de 'desde' y 'hasta' y practicar con ejemplos donde se compare explícitamente el vector correcto y el invertido."
+      },
+      {
+        "name": "Signos_invertidos",
+        "description": "El estudiante identifica correctamente el número de unidades de desplazamiento, pero se equivoca en el signo (por ejemplo, escribe (3, 2) en vez de (3, -2) al ir hacia abajo).",
+        "how_to_address": "Diseñar ejercicios focalizados en el significado de los signos: derecha/izquierda y arriba/abajo. Usar tablas que relacionen dirección con signo y ejemplos contrastivos, y proponer preguntas donde el objetivo principal sea decidir el signo correcto."
+      },
+      {
+        "name": "Orden_componentes",
+        "description": "Se confunden las componentes horizontal y vertical, escribiendo (b, a) en lugar de (a, b).",
+        "how_to_address": "Reforzar la asociación 'primero eje X, después eje Y' tanto en coordenadas de puntos como en vectores. Proponer actividades que pidan distinguir explícitamente 'componente horizontal' y 'componente vertical' y comparar pares ordenados con sus representaciones gráficas."
+      },
+      {
+        "name": "Confusion_punto_vector",
+        "description": "El estudiante toma las coordenadas del punto de destino como si fueran directamente las componentes del vector, especialmente cuando el vector parte del origen, y generaliza erróneamente este procedimiento a casos donde el origen no es (0, 0).",
+        "how_to_address": "Presentar casos donde el vector no parte del origen y hacer que el estudiante compare las coordenadas de los puntos con las componentes del vector. Explícitamente mostrar cuándo 'coordenadas = componentes' se cumple (solo si el origen es (0, 0)) y cuándo no."
+      },
+      {
+        "name": "Conteo_incorrecto_en_grilla",
+        "description": "Errores al contar cuadritos en la cuadrícula: se omiten unidades o se cuentan de más, produciendo componentes con valor absoluto equivocado.",
+        "how_to_address": "Usar grillas claras con marcadores en los ejes y proponer ítems de entrenamiento donde el objetivo sea exclusivamente contar desplazamientos. Recomendar marcar mental o físicamente el conteo paso a paso, y verificar con la diferencia de coordenadas numéricamente."
+      },
+      {
+        "name": "Desconocimiento_vectores_equipolentes",
+        "description": "El estudiante cree que solo el vector dibujado desde un punto específico representa la traslación, rechazando vectores paralelos de igual longitud y sentido dibujados desde otros puntos.",
+        "how_to_address": "Incluir ítems que muestren varios vectores paralelos que representan la misma traslación y preguntar directamente cuáles son equivalentes. En la retroalimentación, enfatizar que el vector representa el desplazamiento, no la posición donde se dibuja."
+      },
+      {
+        "name": "Interpretacion_erronea_de_la_figura_original",
+        "description": "En traslaciones de figuras, el estudiante no identifica correctamente cuál es la figura original y cuál es la imagen, lo que lleva a obtener el vector al revés o uno que no corresponde.",
+        "how_to_address": "Asegurar uso consistente de etiquetas 'original' e 'imagen', y proponer ejercicios donde se pida primero identificar visualmente qué figura es cada una antes de calcular el vector. En la explicación, remarcar la lectura de rótulos y leyendas."
+      }
+    ],
+    "future_targets": [
+      "A-M1-GEO-03-04: Composición de traslaciones y otras transformaciones isométricas en el plano.",
+      "A-M1-GEO-03-05: Estudio más formal de transformaciones geométricas utilizando vectores como operadores.",
+      "A-M1-ALG-02-03: Modelación de desplazamientos en problemas de movimiento en el plano (cinemática simple, trayectorias).",
+      "A-M1-GEO-04-01: Uso de vectores para describir lados y diagonales en polígonos, y análisis de paralelismo mediante vectores.",
+      "A-M1-ALG-03-02: Introducción a sistemas de ecuaciones lineales con interpretación geométrica mediante vectores y puntos en el plano.",
+      "A-M1-GEO-04-02: Cálculo de magnitudes de vectores y uso del Teorema de Pitágoras en el plano cartesiano.",
+      "A-M1-DAT-01-02: Representación de datos en el plano de dispersión, interpretando pares ordenados y desplazamientos entre puntos."
+    ],
+    "representation_variants": [
+      "Vector representado gráficamente como una flecha sobre una cuadrícula cartesiana, con origen y destino explícitos.",
+      "Vector descrito verbalmente como un desplazamiento (por ejemplo, '5 unidades a la izquierda y 1 hacia arriba').",
+      "Vector dado simbólicamente como par ordenado (a, b), sin dibujo, pidiendo su representación gráfica.",
+      "Desplazamiento implícito a través de la comparación entre la posición inicial y final de un punto etiquetado en el plano.",
+      "Desplazamiento implícito a partir de la posición de una figura original y su imagen trasladada en el plano.",
+      "Tabla que muestre varios puntos y sus imágenes bajo una misma traslación, desde la cual deducir el vector (a, b).",
+      "Uso de notación de puntos origen y destino, por ejemplo, A(x1, y1) y B(x2, y2), para calcular el vector de traslación.",
+      "Referencia al vector como 'traslación T: (x, y) → (x + a, y + b)', centrada en identificar (a, b) a partir de ejemplos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "zero_in_components"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

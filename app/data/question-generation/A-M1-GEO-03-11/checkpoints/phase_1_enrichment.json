@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Rotar figuras planas (polígonos sencillos y segmentos) respecto del origen del plano cartesiano.",
+        "Rotaciones con ángulos de 90°, 180° y 270° (equivalente a -90°) exclusivamente.",
+        "Aplicar reglas de transformación de coordenadas para rotaciones respecto del origen, por ejemplo: (x, y) → (-y, x), (-x, -y), (y, -x).",
+        "Determinar coordenadas de la imagen de cada vértice y dibujar la figura resultante en el plano.",
+        "Reconocer visualmente que la figura rotada es congruente con la original (igual forma y tamaño, distinta orientación).",
+        "Determinar a partir de un dibujo cuál es la imagen rotada correcta entre varias alternativas."
+      ],
+      "out_of_scope": [
+        "Rotaciones alrededor de centros distintos del origen.",
+        "Rotaciones con ángulos distintos de 90°, 180° o 270° (por ejemplo 45°, 30° o ángulos generales).",
+        "Composición de varias rotaciones o de rotaciones con otras transformaciones (traslaciones, simetrías, homotecias).",
+        "Cálculo de matrices de rotación o uso de trigonometría para rotaciones.",
+        "Demostraciones formales de por qué la rotación preserva distancias y ángulos.",
+        "Transformaciones en el espacio 3D o sobre cuerpos geométricos.",
+        "Problemas de área o perímetro que no dependan de la rotación (más allá de constatar que se conservan)."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-03-01: Identificación y ubicación de puntos en el plano cartesiano (coordenadas enteras).",
+        "A-M1-GEO-03-02: Lectura e interpretación de figuras simples en el plano cartesiano.",
+        "A-M1-GEO-03-05: Comprensión informal de transformaciones isométricas (congruencia, mismo tamaño y forma).",
+        "A-M1-GEO-03-09: Simetrías simples en el plano cartesiano (reflexión respecto de ejes) como base para entender giros."
+      ],
+      "common_traps": [
+        "Confundir el sentido del giro: interpretar 90° como horario cuando el convenio usual es antihorario.",
+        "Aplicar rotación solo a algunos vértices y no a todos los puntos de la figura.",
+        "Intercambiar mal las coordenadas en las reglas de transformación (por ejemplo (x, y) → (y, x) en lugar de (-y, x)).",
+        "Olvidar cambiar el signo correcto al rotar, especialmente con coordenadas negativas.",
+        "Creer que la rotación altera tamaño o forma de la figura (perímetro o área).",
+        "Interpretar 270° como un giro de 270° horario, en lugar de 270° antihorario (= 90° horario).",
+        "Confundir rotación con traslación: desplazar la figura sin cambiar su orientación.",
+        "Elegir figuras demasiado simétricas (cuadrado centrado en el origen) que no permitan distinguir visualmente la orientación tras la rotación."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Figuras formadas por pocos puntos (uno, un segmento o un triángulo) ubicados en coordenadas enteras pequeñas (entre -3 y 3).",
+        "Rotaciones de 90° o 180° claramente indicadas, con sentido explícito estándar (por ejemplo, '90° en sentido antihorario').",
+        "Plano cartesiano con cuadrícula clara y ejes etiquetados, sin necesidad de inferencias complejas.",
+        "Ítems donde basta aplicar mental o gráficamente una sola regla de rotación a cada punto, con signos simples (pocas coordenadas negativas).",
+        "Alternativas que se diferencian de forma evidente (por ejemplo, una está rotada en sentido contrario, otra es una traslación)."
+      ],
+      "medium": [
+        "Figuras con más vértices (por ejemplo cuadriláteros o pentágonos sencillos) con varios puntos en distintos cuadrantes.",
+        "Uso de todos los ángulos pedidos en el átomo (90°, 180° o 270°), incluyendo la relación entre 270° antihorario y 90° horario.",
+        "Necesidad de calcular explícitamente las coordenadas de todos los vértices antes de identificar la alternativa correcta.",
+        "Coordenadas enteras un poco mayores en valor absoluto (entre -5 y 5), combinando positivos y negativos.",
+        "Ítems donde la figura original y la rotada no comparten el mismo cuadrante, lo que obliga a razonar sobre el cambio de signos.",
+        "Comparación entre varias imágenes rotadas para decidir cuál corresponde a un ángulo dado."
+      ],
+      "hard": [
+        "Figuras con varios vértices no alineados ni simétricos que obligan a aplicar sistemáticamente las reglas de rotación a cada punto.",
+        "Coordenadas con valores enteros entre -8 y 8, combinando varios puntos en todos los cuadrantes.",
+        "Ítems que exigen deducir el ángulo de rotación a partir de la posición de la figura rotada (dado original e imagen, inferir si fue 90°, 180° o 270°).",
+        "Rotación no directa: por ejemplo, se entrega la figura rotada y se pide la posición original.",
+        "Alternativas muy parecidas entre sí, que difieren solo en signos o en intercambio de coordenadas, exigiendo precisión algebraica.",
+        "Problemas en los que la congruencia debe ser argumentada: por ejemplo, elegir la rotación correcta entre figuras alternativas que incluyen reflexiones o traslaciones visualmente similares."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Indicar siempre el sentido de la rotación (por ejemplo, 'en sentido antihorario') y mantener ese convenio en toda la prueba.",
+      "No usar la palabra 'giro' sin ángulo y sentido claramente especificados.",
+      "Evitar figuras excesivamente simétricas (cuadrados o círculos centrados en el origen) donde la orientación después de la rotación no se distinga claramente.",
+      "Dibujar y etiquetar con claridad el origen y los ejes; evitar cuadrículas densas o poco legibles.",
+      "No mezclar en la misma pregunta centro de rotación en el origen con expresiones que puedan sugerir otro centro (por ejemplo, 'giro alrededor del punto A' en este átomo).",
+      "Evitar que la figura rotada quede muy cerca de los bordes del sistema de ejes, para que todos los puntos sean visibles.",
+      "Asegurar que las alternativas gráficas estén alineadas en la misma escala y con la misma orientación de ejes para no inducir interpretaciones erróneas.",
+      "No combinar, en este átomo, rotaciones con otras transformaciones en el enunciado principal (por ejemplo, 'rotar y luego trasladar') porque confunde el foco del procedimiento.",
+      "Evitar notación inconsistente para los puntos imagen (usar sistemáticamente A' , B' , C' o etiquetas claras distintas de los puntos originales)."
+    ],
+    "error_families": [
+      {
+        "name": "Sentido_incorrecto_del_giro",
+        "description": "El estudiante aplica un giro en sentido horario cuando el enunciado indica antihorario, o interpreta 270° antihorario como 270° horario.",
+        "how_to_address": "Clarificar el convenio de sentido en el enunciado y en los apoyos gráficos (flechas en el plano). Incluir ítems que contrasten explícitamente 90° horario vs 90° antihorario para que el estudiante deba discriminar."
+      },
+      {
+        "name": "Regla_de_coordenadas_mal_aplicada",
+        "description": "Al rotar un punto, el estudiante intercambia mal x e y o asigna signos incorrectos, por ejemplo usa (x, y) → (y, x) en vez de (-y, x) o (x, y) → (-x, y) confundiendo con reflexión.",
+        "how_to_address": "Diseñar ítems donde un solo punto mal transformado hace que la alternativa sea incorrecta y donde se pueda comparar patrones de cambio de signos. Incluir explicaciones en retroalimentación con ejemplos claros de cada regla de rotación."
+      },
+      {
+        "name": "Rotacion_parcial_de_la_figura",
+        "description": "Se rotan correctamente uno o algunos puntos, pero se omiten otros vértices o se deja parte de la figura sin transformar.",
+        "how_to_address": "Proponer ejercicios que exijan verificar congruencia global de la figura (comparación de longitudes y forma) y no solo de puntos aislados. Usar alternativas donde solo un vértice está mal ubicado para fomentar la revisión completa."
+      },
+      {
+        "name": "Confusion_con_traslaciones_o_reflexiones",
+        "description": "El estudiante elige imágenes que corresponden a desplazamientos o simetrías en lugar de rotaciones, porque solo observa 'cambio de posición'.",
+        "how_to_address": "Ofrecer alternativas que incluyan traslaciones y reflexiones como distractores y enfatizar en la preparación que la rotación cambia la orientación (dirección de los lados) y no solo la posición general. Promover que comparen ángulos y direcciones de segmentos, no solo ubicación aproximada."
+      },
+      {
+        "name": "Manejo_deficiente_de_coordenadas_negativas",
+        "description": "Errores sistemáticos al operar con puntos en cuadrantes II, III y IV, como olvidar que -(-3) = 3 o asignar signos equivocados tras la rotación.",
+        "how_to_address": "Incluir puntos en varios cuadrantes, obligando a reflexionar sobre cambios de signos. Usar grillas donde se vean claramente los cuadrantes y pedir que se justifique en qué cuadrante debería quedar el punto después del giro."
+      },
+      {
+        "name": "Congruencia_no_verificada",
+        "description": "El estudiante se fija solo en que 'se parece' o que un punto coincide, sin verificar que todos los lados y ángulos se conservan, aceptando figuras que no son congruentes.",
+        "how_to_address": "Plantear ítems en los que algunas alternativas tienen forma parecida pero distinta escala o ángulos, para forzar a comprobar congruencia. Sugerir el uso de la cuadrícula para contar unidades y comparar longitudes correspondientes."
+      }
+    ],
+    "future_targets": [
+      "A-M1-GEO-03-12: Composición de transformaciones isométricas en el plano (por ejemplo, combinación de rotaciones y traslaciones).",
+      "A-M1-GEO-03-13: Rotaciones respecto de un centro distinto del origen.",
+      "A-M1-GEO-03-14: Uso de la notación matricial para expresar rotaciones en el plano.",
+      "A-M1-GEO-03-15: Resolución de problemas geométricos que requieren elegir y aplicar transformaciones para simplificar la situación.",
+      "A-M1-GEO-04-01: Análisis de simetrías y patrones en teselaciones o diseños que involucran giros.",
+      "A-M1-ALG-04-02: Modelación algebraica de transformaciones geométricas usando funciones y matrices."
+    ],
+    "representation_variants": [
+      "Figura geométrica (triángulo, cuadrilátero, polígono simple) dibujada en un plano cartesiano con todos sus vértices etiquetados, pidiendo la imagen rotada.",
+      "Listado de coordenadas de los vértices en una tabla o en forma de pares ordenados, solicitando las coordenadas de la figura rotada sin dibujo explícito.",
+      "Dibujo que muestra tanto la figura original como varias imágenes posibles (rotaciones, traslaciones, reflexiones) y se pide seleccionar cuál corresponde a una rotación específica.",
+      "Situaciones verbales breves que describen puntos o vértices (por ejemplo, 'El punto A(2, -3) se rota 90° en torno al origen') y se pregunta por las nuevas coordenadas.",
+      "Representaciones mixtas: se entrega la tabla de coordenadas originales y un gráfico con varias imágenes posibles, y se debe asociar la tabla transformada con la imagen correcta.",
+      "Uso de marcas en el dibujo para enfatizar congruencia (lados con misma marca, ángulos iguales) antes y después de la rotación, para apoyar el criterio de conservación de forma y tamaño."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "zero"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

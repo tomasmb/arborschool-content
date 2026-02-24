@@ -1,0 +1,144 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo explícito de sumas de dos o más números enteros usando reglas de signos (igual y distinto signo).",
+        "Identificación del signo del resultado a partir de la comparación de valores absolutos en sumas de distinto signo.",
+        "Traducción de situaciones contextuales simples (ganancias/pérdidas, desplazamientos, cambios de temperatura, migración neta, etc.) a adiciones de enteros.",
+        "Uso de la idea de valor absoluto de manera operativa (sin requerir definición formal) para decidir si se suman o se restan magnitudes en la adición.",
+        "Secuenciación correcta de varias adiciones de enteros en una sola expresión, con o sin paréntesis sencillos."
+      ],
+      "out_of_scope": [
+        "Introducción o uso formal de propiedades de la adición (conmutatividad, asociatividad) como foco principal.",
+        "Operaciones que involucren otros conjuntos numéricos (fracciones, decimales, racionales no enteros).",
+        "Sustracción de enteros tratada como operación primaria (por ejemplo, a − b), más allá de su reescritura como suma con opuesto.",
+        "Resolución de ecuaciones o inecuaciones que requieran más que una o dos sumas de enteros como paso intermedio.",
+        "Uso de notación vectorial formal, coordenadas cartesianas o álgebra literal como foco central.",
+        "Problemas que requieran interpretación de gráficos estadísticos o funciones para luego sumar enteros."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de los números enteros como extensiones de los naturales (pérdidas, temperaturas bajo cero, deudas).",
+        "A-M1-NUM-01-02: Orden y comparación de números enteros en la recta numérica (mayor, menor, más a la derecha/izquierda).",
+        "A-M1-NUM-01-03: Valor absoluto como distancia al cero en la recta numérica, aplicado al menos de forma intuitiva.",
+        "A-M1-NUM-00-01: Manejo fluido de sumas y restas con números naturales pequeños."
+      ],
+      "common_traps": [
+        "Confundir el signo del número con la operación, especialmente en expresiones como 5 + (−3) o −2 + −4.",
+        "Asumir erróneamente que la suma de un positivo y un negativo siempre da negativo o siempre da positivo, sin comparar valores absolutos.",
+        "Olvidar que sumar números de igual signo mantiene el signo (por ejemplo, pensar que −3 + −5 = +8).",
+        "Tratar sumas de distinto signo como si fueran de igual signo (por ejemplo, 7 + (−5) = 12 en lugar de 2).",
+        "No respetar el orden y los paréntesis en sumas encadenadas, lo que lleva a cambiar involuntariamente los signos.",
+        "Interpretar de manera ambigua contextos verbales con doble negación (‘disminuye una deuda’, ‘sube una pérdida’, etc.).",
+        "Perder la referencia al punto de partida en recorridos (movimientos norte/sur, este/oeste) y confundir desplazamiento neto con trayecto total."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Sumas de dos enteros con valores absolutos pequeños (hasta 10) y sin necesidad de reorganizar la expresión.",
+        "Casos de igual signo con estructura directa: a + b, donde ambos son positivos o ambos negativos, sin paréntesis.",
+        "Casos de distinto signo donde la diferencia de valores absolutos es evidente (por ejemplo, 7 y 2), con resultado de valor absoluto pequeño.",
+        "Enunciados casi sin contexto o con contexto muy transparente (cambios de temperatura, puntaje en un juego) donde la expresión a sumar se indica explícitamente.",
+        "Distractores que se distinguen claramente del resultado correcto (no explotan errores finos de signo o de valor absoluto)."
+      ],
+      "medium": [
+        "Sumas de tres o más enteros donde al menos uno es negativo y se requiere aplicar reglas de signos en más de un paso.",
+        "Uso de paréntesis simples y signos juntos (por ejemplo, 4 + (−7) + 3) que exigen distinguir entre signo y operación.",
+        "Contextos verbales donde el/la estudiante debe construir la expresión de suma de enteros (ganancias y pérdidas, ascensos y descensos, migración neta, desplazamientos en dos direcciones opuestas).",
+        "Valores absolutos medianos (entre 10 y 30 aproximadamente) que requieren un cálculo mental o escrito algo más elaborado, pero sin cómputos extensos.",
+        "Distractores diseñados a partir de errores frecuentes: sumar valores absolutos en lugar de restarlos, mantener siempre el signo del primer número, etc."
+      ],
+      "hard": [
+        "Expresiones con varios enteros de signos mixtos y paréntesis anidados simples, por ejemplo, (−8 + 5) + (−3 + 7) − 4, donde se requiere aplicar la regla en varios subcálculos.",
+        "Contextos donde la adición de enteros es implícita y el/la estudiante debe identificar cambios sucesivos (por ejemplo, balance neto tras varias etapas, movimientos norte/sur y este/oeste en recorridos, migración de entrada y salida).",
+        "Problemas donde se debe comparar resultados de distintas expresiones de suma de enteros para decidir cuál representa mejor una situación dada.",
+        "Valores absolutos algo mayores (hasta 50–100) o combinaciones que generan resultados intermedios que pueden ser cero, para evaluar comprensión fina del signo.",
+        "Distractores muy cercanos al correcto que combinan bien los errores típicos de signo con errores de valor absoluto, de forma que obligan a revisar cada paso."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro si un número negativo representa ‘aumentar una deuda’ o ‘disminuir una deuda’, o si la operación ya incorpora el signo (por ejemplo, no usar ‘pierde −3 puntos’).",
+      "No mezclar redundante o contradictoriamente palabras de operación con signos numéricos (ejemplo confuso: ‘resta −4 puntos’ cuando el foco es la adición).",
+      "Evitar expresiones simbólicas con doble signo sin paréntesis claros (por ejemplo, escribir −3 + −5 en vez de −3 + (−5) cuando pueda inducir a confusión sobre dónde termina cada número).",
+      "No usar formatos donde el signo quede visualmente separado del número (por ejemplo, saltos de línea o espaciados extraños entre el ‘−’ y el número).",
+      "Cuidar que en contextos espaciales (norte/sur, este/oeste, migración entrada/salida) se enuncie con claridad cuál dirección se considera positiva y cuál negativa, o que esto se desprenda inequívocamente del texto.",
+      "Evitar enunciados donde ‘sube’ y ‘baja’ se combinen con la palabra ‘disminución’ o ‘aumento’ de forma contradictoria (‘sube la disminución de…’).",
+      "No mezclar múltiples cambios de referencia (por ejemplo, cambiar el ‘cero’ de temperatura a mitad del problema) si el foco es solo la suma de enteros."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_incorrecta_en_distinto_signo",
+        "description": "El/la estudiante suma los valores absolutos en lugar de restarlos cuando los sumandos tienen distinto signo (por ejemplo, 7 + (−5) = 12).",
+        "how_to_address": "En los ítems, incluir distractores que representen esta suma errónea y en la retroalimentación enfatizar que al sumar números de distinto signo se restan los valores absolutos y se mantiene el signo del número de mayor valor absoluto."
+      },
+      {
+        "name": "Signo_erroneo_en_distinto_signo",
+        "description": "Luego de calcular correctamente la diferencia de valores absolutos, se asigna el signo del número de menor valor absoluto o simplemente el signo del primer número.",
+        "how_to_address": "Comparar explícitamente los valores absolutos en la explicación (‘¿quién tiene mayor valor absoluto?’) y remarcar que el resultado conserva el signo del número con mayor valor absoluto, sin importar el orden en que aparezca en la suma."
+      },
+      {
+        "name": "Cambio_de_regla_entre_igual_y_distinto_signo",
+        "description": "Aplicar la regla de igual signo cuando los números son de distinto signo (por ejemplo, −3 + 5 = −8) o viceversa.",
+        "how_to_address": "Proponer ítems que contrasten casos de igual y distinto signo y, en la retroalimentación, explicitar la diferencia: ‘si los signos son iguales, se suman los valores absolutos; si son distintos, se restan’."
+      },
+      {
+        "name": "Confusion_operacion_vs_signo",
+        "description": "Interpretar el signo ‘−’ como parte de la operación y no del número, lo que lleva a errores al leer expresiones como 4 + (−7) o −2 + (−3).",
+        "how_to_address": "Usar sistemáticamente paréntesis en ejemplos con números negativos y destacar en la retroalimentación que el símbolo ‘+’ o ‘−’ delante de un número indica su signo, mientras que el signo entre números indica la operación."
+      },
+      {
+        "name": "Ignorar_parentesis_o_orden",
+        "description": "Resolver las sumas en un orden diferente al indicado o ‘anular’ paréntesis cambiando signos sin justificación, lo que altera el resultado.",
+        "how_to_address": "Incluir ítems donde el orden de agrupación sea relevante y enfatizar en la explicación que, en suma de enteros, se pueden reagrupar solo si se conservan los signos correctamente, mostrando un ejemplo paso a paso."
+      },
+      {
+        "name": "Error_en_traduccion_del_contexto",
+        "description": "Construir mal la expresión de suma de enteros desde un enunciado verbal: usar − donde corresponde + o viceversa (ganancias, pérdidas, subidas, bajadas).",
+        "how_to_address": "En ítems con contexto, mostrar en la retroalimentación una tabla o esquema ‘situación → entero’ (ganar = +, perder = −, subir = +, bajar = −) y revisar verbalmente el sentido de cada cambio."
+      },
+      {
+        "name": "Desplazamiento_vs_trayecto_total",
+        "description": "En recorridos o movimientos con direcciones opuestas, confundir la suma de desplazamientos (desplazamiento neto) con la suma de distancias recorridas.",
+        "how_to_address": "En contextos de movimiento, explicitar la diferencia entre distancia total recorrida (siempre positiva) y desplazamiento neto (puede ser positivo, negativo o cero) y mostrar ambas cantidades en la solución."
+      },
+      {
+        "name": "Manejo_deficiente_de_calculo_basico",
+        "description": "Errores de cálculo en sumas o restas de valores absolutos sencillos (por ejemplo, 8 − 3 = 6) que no se deben a las reglas de signos sino a aritmética básica.",
+        "how_to_address": "Acompañar los pasos de cálculo con descomposiciones simples y promover el uso de estrategias de cálculo mental (como completar hasta 10) en la retroalimentación."
+      }
+    ],
+    "future_targets": [
+      "A-M1-NUM-01-05: Sustracción de números enteros como suma con el opuesto.",
+      "A-M1-NUM-01-06: Adición y sustracción de números racionales (fracciones y decimales) usando reglas de signos.",
+      "A-M1-ALG-01-01: Simplificación de expresiones algebraicas que involucran enteros y parámetros (por ejemplo, 3x − 5 + (−2x + 7)).",
+      "A-M1-ALG-01-02: Resolución de ecuaciones lineales de una incógnita donde se deben sumar y restar enteros en ambos lados.",
+      "A-M1-GEO-02-01: Cálculo de desplazamientos en el plano cartesiano (uso de coordenadas y vectores de la forma (a, b) asociados a movimientos positivos y negativos).",
+      "A-M1-DAT-01-01: Cálculo de variaciones y diferencias en datos (cambios de temperatura, saldos, variaciones de población).",
+      "A-M1-FUN-01-01: Interpretación de interceptos y cambios en gráficos de funciones lineales donde la ordenada al origen y las pendientes se expresan con enteros positivos y negativos."
+    ],
+    "representation_variants": [
+      "Expresiones numéricas simbólicas directas, como (−3) + (−5), 7 + (−4), −2 + 9 + (−3).",
+      "Contextos verbales de ganancias y pérdidas de dinero, puntos en juegos, saldo en cuentas, donde cada cambio se modela con un entero.",
+      "Situaciones de temperatura (sube/baja, más frío/más caliente) en grados enteros.",
+      "Problemas de desplazamientos en líneas rectas (norte/sur, este/oeste, subir/bajar pisos, altitud respecto del nivel del mar) modelados con enteros.",
+      "Situaciones de flujo neto (migración interior/exterior, entradas y salidas de personas de un lugar, inventario que entra y sale de una bodega) expresadas como suma de enteros.",
+      "Representaciones en la recta numérica descritas verbalmente (‘avanza 3 unidades a la derecha desde −2 y luego 5 a la izquierda’), aunque la imagen no sea imprescindible.",
+      "Tablas que registran cambios sucesivos (por ejemplo, día a día, etapa a etapa) con una columna de variación expresada en enteros y se pide el cambio total.",
+      "Comparación de diferentes expresiones de suma de enteros que representan, o no, una misma situación."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "large_integers",
+      "zero_included",
+      "positive_only_same_sign",
+      "negative_only_same_sign",
+      "mixed_sign_pair",
+      "mixed_sign_multi",
+      "result_zero_cases",
+      "asymmetric_magnitudes",
+      "symmetric_magnitudes"
+    ],
+    "required_image_types": []
+  }
+}

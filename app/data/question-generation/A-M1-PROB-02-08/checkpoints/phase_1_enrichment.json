@@ -1,0 +1,132 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo del rango en datos no agrupados como diferencia entre el valor máximo y el mínimo de un conjunto de datos.",
+        "Identificación explícita de los valores máximo y mínimo en un conjunto de datos dado (lista, tabla, datos descritos en texto).",
+        "Interpretación del rango como medida de cuán extendidos están los datos entre los extremos.",
+        "Comparación de la dispersión de dos o más conjuntos de datos usando solo el rango.",
+        "Diferenciación conceptual entre rango (dispersión) y medidas de tendencia central (media, mediana, moda)."
+      ],
+      "out_of_scope": [
+        "Cálculo de rango en datos agrupados por intervalos (tablas de frecuencias con clases).",
+        "Uso de varianza, desviación estándar u otras medidas de dispersión distintas del rango.",
+        "Análisis de outliers formales (datos atípicos) o criterios cuantitativos para detectarlos.",
+        "Situaciones que requieren lectura e interpretación de gráficos estadísticos complejos (barras, histogramas, boxplots) como foco principal.",
+        "Cálculo de rango intercuartílico u otras medidas basadas en cuartiles.",
+        "Modelación probabilística o inferencia estadística basada en el rango."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comparar y ordenar números enteros y decimales.",
+        "A-M1-PROB-01-01: Reconocer y leer correctamente datos presentados en listas y tablas simples.",
+        "A-M1-PROB-02-01: Identificar valores máximo y mínimo en un conjunto de datos."
+      ],
+      "common_traps": [
+        "Confundir rango con la media, la mediana o la moda cuando se pide identificar o comparar dispersión.",
+        "Olvidar que el rango se calcula como una diferencia (máximo menos mínimo) y responder solo con el par de valores extremos.",
+        "Invertir el orden y calcular mínimo menos máximo, obteniendo un número negativo.",
+        "Tomar el segundo valor más grande o el segundo más pequeño por mala lectura u omitir algún dato de la lista o tabla.",
+        "Creer que un rango pequeño implica necesariamente valores bajos, confundiendo magnitud de los datos con dispersión.",
+        "Creer que distintos conjuntos de datos no pueden tener el mismo rango si tienen valores diferentes.",
+        "No considerar datos negativos y calcular mal la diferencia cuando el mínimo es negativo.",
+        "Interpretar mal un enunciado verbal y usar el primer y último dato mencionado, en vez del verdadero máximo y mínimo."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Conjuntos de datos pequeños (3 a 6 datos) con números enteros positivos de una o dos cifras.",
+        "Los valores máximo y mínimo están explícitamente señalados o la lista ya está ordenada de menor a mayor o de mayor a menor.",
+        "El ítem pide directamente '¿cuál es el rango?' o '¿cuánto varían los datos entre el menor y el mayor valor?'.",
+        "No se requiere comparar con otro conjunto de datos ni interpretar el rango, solo calcularlo.",
+        "Contextos simples y cotidianos donde el foco esté en el cálculo (ejemplo, alturas de pocas personas, puntajes en una pequeña prueba)."
+      ],
+      "medium": [
+        "Conjuntos de datos de tamaño moderado (7 a 12 datos) presentados en listas desordenadas o tablas simples sin destacar explícitamente máximo y mínimo.",
+        "Presencia de números enteros negativos o decimales con un decimal, obligando a una comparación de valores más cuidadosa.",
+        "Ítems donde se debe comparar rangos de dos conjuntos y decidir cuál presenta mayor dispersión.",
+        "Enunciados verbales donde el máximo y mínimo deben inferirse desde la descripción (por ejemplo, 'la menor temperatura fue X y la mayor fue Y').",
+        "Necesidad de distinguir entre una afirmación sobre tendencia central y otra sobre rango, sin cálculos extensos."
+      ],
+      "hard": [
+        "Comparación de dos o más conjuntos de datos donde el conjunto con mayor media no tiene necesariamente mayor rango, obligando a separar claramente ambos conceptos.",
+        "Situaciones donde el rango debe deducirse a partir de cambios en los datos (por ejemplo, agregar o quitar un dato y analizar si el rango cambia o se mantiene).",
+        "Conjuntos de datos que incluyen simultáneamente enteros negativos, positivos y decimales, con varios valores cercanos entre sí.",
+        "Problemas donde no se entrega el rango explícito, pero se menciona información suficiente sobre máximos y mínimos implícitos o restringidos (por ejemplo, expresiones del tipo 'todos los puntajes están entre A y B...').",
+        "Ítems que piden identificar una tabla o conjunto de datos que cumpla una condición de rango dada (por ejemplo, 'el rango es 7') entre varias alternativas, lo que implica calcular y comparar mentalmente varios rangos.",
+        "Ítems que piden evaluar la veracidad de afirmaciones cualitativas sobre dispersión basadas en el rango, en contexto de interpretación crítica de datos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar la palabra 'rango' en otros sentidos (por ejemplo, 'rango militar', 'rango etario') sin aclarar que se refiere a la medida estadística.",
+      "Evitar enunciados donde se pueda interpretar rango como 'conjunto de valores posibles' en vez de 'diferencia entre el valor máximo y el mínimo'.",
+      "Siempre dejar claro si los valores entregados son todos los datos o solo algunos ejemplos; si solo se dan extremos, explicitar que son el mayor y el menor.",
+      "No mezclar en la misma pregunta la palabra 'rango' con términos como 'rango intercuartílico' o 'desviación estándar', que están fuera de alcance.",
+      "Evitar tablas o contextos en que no quede claro si se debe considerar la frecuencia de los datos para el rango: recalcar que el rango solo depende del valor máximo y mínimo.",
+      "No presentar listas parcialmente ordenadas que puedan inducir a tomar los primeros y últimos valores sin verificar si son realmente extremos.",
+      "Si se entregan intervalos (por ejemplo, 10–15), indicar claramente si representan todos los datos posibles o solo cotas de los valores observados, para que el estudiante sepa qué tomar como máximo y mínimo.",
+      "Evitar distractores donde aparezcan diferencias entre datos consecutivos que puedan confundirse con la definición misma de rango si no se indica que se trata de extremos."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir_rango_con_tendencia_central",
+        "description": "El estudiante responde con la media, mediana o moda en lugar de la diferencia entre el máximo y el mínimo, porque asocia 'medida' estadística con posición más que con dispersión.",
+        "how_to_address": "Incluir ítems donde aparezcan explícitamente media y rango, pidiendo distinguir cuál describe mejor la dispersión de los datos, y enfatizar en el enunciado que el rango solo usa los valores extremos."
+      },
+      {
+        "name": "Olvidar_la_diferencia",
+        "description": "El estudiante identifica correctamente el valor máximo y el mínimo, pero responde indicando ambos valores o el intervalo [mínimo, máximo] en lugar del valor numérico de la diferencia.",
+        "how_to_address": "Plantear preguntas que contrasten '¿cuáles son los extremos?' con '¿cuál es el rango?', obligando a dar un número único para el rango, y usar alternativas que incluyan el par de extremos como distractor explícito."
+      },
+      {
+        "name": "Invertir_máximo_y_mínimo",
+        "description": "El estudiante calcula mínimo − máximo, obteniendo un resultado negativo o elige la alternativa con el mismo valor en positivo si está disponible como distractor.",
+        "how_to_address": "Incluir ítems donde un distractor sea el valor negativo del rango correcto e insistir en el significado de amplitud como cantidad positiva; reforzar la idea de 'mayor menos menor'."
+      },
+      {
+        "name": "Omitir_o_leer_mal_un_dato",
+        "description": "En conjuntos de datos más extensos o en tablas, el estudiante no considera uno de los valores extremos, obteniendo un rango menor al verdadero.",
+        "how_to_address": "Usar tablas o listas con valores cercanos y uno claramente extremo, destacando la importancia de revisar todo el conjunto; diseñar alternativas donde aparezca el rango usando un casi-extremo para evidenciar el error."
+      },
+      {
+        "name": "Confundir_rango_con_diferencia_entre_cualesquiera_dos_datos",
+        "description": "El estudiante toma la diferencia entre dos datos no extremos (por ejemplo, los dos más frecuentes o los últimos mencionados en el texto) creyendo que eso es el rango.",
+        "how_to_address": "Proponer preguntas donde el máximo y mínimo no sean los datos más frecuentes ni los últimos del relato, y explicitar que el rango utiliza el valor más grande y el más pequeño del conjunto completo."
+      },
+      {
+        "name": "Ignorar_signos_en_valores_negativos",
+        "description": "Al trabajar con datos que incluyen números negativos, el estudiante comete errores al comparar o calcular la diferencia (por ejemplo, toma −2 como mayor que 3 o calcula 3 − (−2) como 1).",
+        "how_to_address": "Incluir ejemplos con temperaturas u otros contextos naturales con negativos, y enfatizar la recta numérica mental: el valor máximo es el que está más a la derecha y el mínimo el más a la izquierda."
+      },
+      {
+        "name": "Asumir_que_mayor_media_implica_mayor_rango",
+        "description": "En comparaciones de dos conjuntos, el estudiante elige como 'más disperso' al que tiene mayor media o mayor valor máximo, sin considerar el mínimo.",
+        "how_to_address": "Diseñar ítems donde el conjunto con mayor media tenga menor rango y pedir justificar cuál tiene datos más extendidos, forzando a mirar ambos extremos en cada conjunto."
+      }
+    ],
+    "future_targets": [
+      "Uso del rango junto con la media y mediana para describir distribuciones de datos de manera más completa.",
+      "Comparación de distribuciones de datos utilizando varias medidas de tendencia central y dispersión básicas.",
+      "Comprensión de la influencia de valores extremos en medidas de dispersión, como preparación para el estudio de varianza y desviación estándar.",
+      "Lectura e interpretación de gráficos estadísticos (barras, histogramas, boxplots) donde se puedan inferir máximos, mínimos y rangos.",
+      "Toma de decisiones informadas en contextos de datos (por ejemplo, comparar variabilidad de resultados entre grupos o períodos)."
+    ],
+    "representation_variants": [
+      "Listas explícitas de datos numéricos, en una sola fila o columna.",
+      "Tablas simples de una variable (por ejemplo, nombre y puntaje) donde el rango se basa solo en los valores numéricos.",
+      "Contextos verbales que indican directamente los valores extremos (por ejemplo, 'la menor temperatura fue X y la mayor fue Y').",
+      "Contextos verbales donde los datos se enumeran en el texto (por ejemplo, 'obtuvo 5, 6, 4 y 7 en cuatro pruebas').",
+      "Comparación de dos o más conjuntos de datos presentados en tablas o descripciones paralelas, para comparar sus rangos.",
+      "Preguntas que entregan una condición sobre el rango (por ejemplo, 'el rango es 8') y piden identificar un conjunto de datos que la satisfaga.",
+      "Representación de datos con números negativos (temperaturas, deudas, niveles bajo cero) para reforzar la identificación de máximos y mínimos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "integers_with_negatives",
+      "simple_decimals",
+      "contextual_measurements"
+    ],
+    "required_image_types": []
+  }
+}

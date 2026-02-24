@@ -1,0 +1,115 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Aplicar directamente la identidad (a + b)(a - b) = a^2 - b^2 para simplificar productos de binomios conjugados.",
+        "Reconocer la estructura de suma por diferencia cuando los términos ya están organizados como (expresión + algo)(expresión - algo).",
+        "Calcular correctamente los cuadrados de términos simples (enteros, monomios, binomios muy simples usados como 'a' y 'b').",
+        "Transformar expresiones dadas explícitamente como producto de suma por diferencia en una diferencia de cuadrados, sin pasos intermedios extensos."
+      ],
+      "out_of_scope": [
+        "Factorizar una diferencia de cuadrados hacia atrás (pasar de a^2 - b^2 a (a + b)(a - b)); eso pertenece a átomos de factorización.",
+        "Uso combinado de varias identidades notables en cadena (por ejemplo, desarrollar completamente (a + b)(a - b)(a + b) o mezclar con (a + b)^2).",
+        "Problemas de contexto verbal donde el foco principal es modelar la situación y no el uso de la fórmula de suma por diferencia.",
+        "Manejo de expresiones con más de dos términos dentro de cada paréntesis que no sean claramente de la forma 'algo' más/menos 'otro algo' (por ejemplo, (x^2 + x + 1 + 3)(x^2 + x + 1 - 3) sí, pero no desarrollos que requieran reagrupaciones avanzadas).",
+        "Uso de la diferencia de cuadrados en el contexto de ecuaciones cuadráticas o sistemas de ecuaciones como objetivo principal.",
+        "Manipulación de potencias altas o raíces complejas donde la dificultad radique en exponentes fraccionarios o negativos, más que en la estructura suma por diferencia."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Manejo de enteros y operaciones básicas (suma, resta, multiplicación).",
+        "A-M1-ALG-01-01: Conocimiento del concepto de potencia y cálculo de cuadrados de números y monomios.",
+        "A-M1-ALG-01-04: Uso correcto de paréntesis y jerarquía de operaciones.",
+        "A-M1-ALG-01-07: Simplificación de expresiones algebraicas simples (combinar términos semejantes)."
+      ],
+      "common_traps": [
+        "Confundir la identidad (a + b)(a - b) con (a + b)^2, agregando un término 2ab o anulándolo incorrectamente.",
+        "Olvidar que solo se elevan al cuadrado los dos términos que juegan el rol de 'a' y 'b', dejando sin cuadrar coeficientes o variables.",
+        "Elegir mal quién es 'a' y quién es 'b' cuando la expresión dentro del paréntesis es más compleja (por ejemplo, tomar solo 2x como 'a' en vez de 2x - 3).",
+        "Errores de signo al calcular b^2 cuando b es una expresión negativa o con signo explícito.",
+        "Intentar desarrollar por distributiva término a término cuando bastaba con aplicar la identidad, aumentando el riesgo de errores de signo o de cálculo.",
+        "No reconocer que expresiones como (p(x) + 5)(p(x) - 5) siguen siendo suma por diferencia aunque 'a' sea una expresión polinómica."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Producto de binomios conjugados explícitos con coeficientes enteros pequeños y positivos, donde 'a' y 'b' son monomios simples (por ejemplo, 2x, 3, 5y).",
+        "Estructura de suma por diferencia evidente y ya ordenada como (a + b)(a - b), sin necesidad de reordenar términos.",
+        "Cálculo de cuadrados que no requiere manipular exponentes compuestos (como (3x)^2 o (5y)^2) y no mezcla más de una variable.",
+        "Distractores que se basan en errores directos y evidentes (por ejemplo, agregar un término 2ab) pero con números muy manejables."
+      ],
+      "medium": [
+        "Uso de expresiones algebraicas algo más complejas como 'a' y 'b' (por ejemplo, (3x - 1) o (x^2 + 1)) donde hay que identificar correctamente qué se está elevando al cuadrado.",
+        "Presencia de coeficientes enteros negativos o combinación de signos que aumente el riesgo de error de signo al calcular a^2 o b^2.",
+        "Ítems donde se requiere una ligera reescritura mental para identificar la estructura (por ejemplo, reconocer que (k + 2x)(k - 2x) es suma por diferencia en términos de k y 2x).",
+        "Distractores que resultan de desarrollar incorrectamente por distributiva (errores de suma de términos cruzados, confusión con (a + b)^2) y que son algebraicamente plausibles.",
+        "Incluir parámetros literales sencillos (k, m) de modo que la respuesta quede en términos de estos, manteniendo el cálculo accesible."
+      ],
+      "hard": [
+        "Términos 'a' y 'b' que son binomios o polinomios de más de un término (por ejemplo, (x^2 + 2x + 1 + 3)(x^2 + 2x + 1 - 3)), donde el estudiante debe ver la estructura global y no confundirse.",
+        "Coeficientes fraccionarios simples o enteros de valor absoluto mayor (por ejemplo, (3x + 1/2)(3x - 1/2)), que aumenten la carga de cálculo pero sin cambiar el tipo de procedimiento.",
+        "Ítems donde la expresión original no está presentada explícitamente como suma por diferencia y requiere un pequeño reordenamiento conceptual o simbólico para aplicar la identidad sin desarrollarla completamente.",
+        "Combinación ligera con otra operación posterior o anterior (por ejemplo, primero aplicar suma por diferencia y luego simplificar una expresión mayor) sin que se convierta en un problema de factorización general.",
+        "Distractores diseñados a partir de errores más sutiles, como elevar parcialmente una expresión al cuadrado, omitir un término dentro de '(a)^2' o cambiar de signo solo uno de los términos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar opciones de respuesta que sean algebraicamente equivalentes entre sí pero escritas de forma distinta (por ejemplo, cambiar solo el orden de los términos o factor común), a menos que la consigna pida explícitamente una forma específica.",
+      "Evitar paréntesis ambiguos o ausentes en enunciados y alternativas; siempre explicitar bien qué expresión completa está elevada al cuadrado o multiplicada.",
+      "No mezclar en un mismo ítem expresiones que puedan interpretarse como suma por diferencia o como otra identidad notable distinta sin dejar claro qué operación se solicita.",
+      "No usar notación de potencias sin paréntesis cuando pueda interpretarse de dos maneras (por ejemplo, escribir (2x - 3)^2 y no 2x - 3^2 si se quiere el cuadrado del binomio).",
+      "Evitar consignas que pidan 'desarrollar completamente' si el objetivo del átomo es solo llegar a la diferencia de cuadrados, para no solaparse con átomos de distributiva general.",
+      "No incluir lenguaje vago como 'simplificar lo más posible' si dos o más formas igualmente simplificadas pueden ser consideradas correctas; especificar 'expresar como diferencia de cuadrados' o similar."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_con_cuadrado_de_binomio",
+        "description": "El estudiante trata (a + b)(a - b) como si fuera (a + b)^2 o (a - b)^2, agregando o eliminando incorrectamente el término 2ab.",
+        "how_to_address": "Resaltar la diferencia entre las identidades (a + b)^2 = a^2 + 2ab + b^2 y (a + b)(a - b) = a^2 - b^2, trabajando comparaciones directas con ejemplos numéricos y pidiendo que identifiquen explícitamente los términos cruzados."
+      },
+      {
+        "name": "Cuadrado_parcial_o_mal_identificado",
+        "description": "Se eleva al cuadrado solo una parte de la expresión que corresponde a 'a' o 'b' (por ejemplo, tomar (2x - 3)^2 como 4x^2 - 3^2) o se pierde alguna variable o coeficiente en el proceso.",
+        "how_to_address": "Trabajar la idea de 'bloques' o 'paquetes' para la identidad: todo lo que está dentro del paréntesis juega el rol de 'a' o 'b'. Practicar sustituyendo temporalmente la expresión complicada por una letra, aplicar la identidad y luego reemplazar de vuelta."
+      },
+      {
+        "name": "Error_de_signo_en_b_cuadrado",
+        "description": "Cuando b es negativo o con signo explícito, el estudiante mantiene el signo negativo en b^2 (por ejemplo, creer que (-3)^2 = -9) o lo aplica de forma inconsistente.",
+        "how_to_address": "Refrescar la regla de que todo número o expresión al cuadrado es no negativo. Hacer énfasis en el uso de paréntesis al elevar al cuadrado expresiones con signo y proponer ejercicios donde se compare (-3)^2 con -3^2 y con -(3^2)."
+      },
+      {
+        "name": "Desarrollo_distributivo_innecesario_y_erróneo",
+        "description": "En vez de aplicar la identidad de forma directa, el estudiante reparte multiplicando término a término y comete errores de agrupación o signo, llegando a expresiones incorrectas.",
+        "how_to_address": "Mostrar que la identidad es un atajo confiable que reduce el número de operaciones. Hacer ejercicios donde se comparen ambos caminos (distributiva vs. identidad) y se cuenten los pasos, reforzando la conveniencia y seguridad de usar suma por diferencia cuando la estructura está presente."
+      },
+      {
+        "name": "No_reconocer_estructura_con_a_o_b_compuestos",
+        "description": "El estudiante no identifica que expresiones como (p(x) + 4)(p(x) - 4) o (3x - 1)(3x + 1) siguen siendo suma por diferencia, y por lo tanto no aplica la fórmula.",
+        "how_to_address": "Practicar con 'a' y 'b' representando polinomios completos y no solo monomios. Utilizar sustituciones temporales como a = p(x) para que vean la estructura, y luego deshacer la sustitución en la respuesta final."
+      }
+    ],
+    "future_targets": [
+      "Factorización de diferencias de cuadrados (pasar de a^2 - b^2 a (a + b)(a - b)).",
+      "Resolución de ecuaciones cuadráticas sencillas mediante factorización que incluyen diferencias de cuadrados.",
+      "Reconocimiento y uso de identidades notables más complejas, como suma y diferencia de cubos.",
+      "Simplificación de expresiones algebraicas más extensas donde se requiera identificar bloques que forman diferencias de cuadrados.",
+      "Aplicación de factorizaciones en la simplificación de fracciones algebraicas.",
+      "Análisis de funciones cuadráticas donde aparezcan diferencias de cuadrados al completar cuadrados o al factorizar."
+    ],
+    "representation_variants": [
+      "Expresiones simbólicas directas del tipo (a + b)(a - b) con a y b monomios.",
+      "Expresiones donde a y/o b son binomios o polinomios sencillos, presentadas explícitamente como suma por diferencia.",
+      "Enunciados verbales breves que describen 'el producto de la suma y la diferencia de dos términos' y piden expresarlo como diferencia de cuadrados.",
+      "Ítems con parámetros literales (k, m) dentro de los binomios conjugados, manteniendo la estructura de suma por diferencia.",
+      "Expresiones donde la misma subexpresión p(x) aparece sumada y restada con un número o monomio, resaltando la idea de bloque (p(x) + c)(p(x) - c)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_parameters"
+    ],
+    "required_image_types": []
+  }
+}

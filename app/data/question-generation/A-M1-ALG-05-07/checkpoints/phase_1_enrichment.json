@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo numérico de la pendiente de una recta que pasa por dos puntos dados usando la fórmula m = (y2 - y1) / (x2 - x1).",
+        "Identificación correcta de (x1, y1) y (x2, y2) a partir de un enunciado verbal o notación de puntos.",
+        "Cálculo de pendientes a partir de coordenadas que pueden incluir números enteros, fracciones o decimales.",
+        "Respeto de los signos en las operaciones de resta en numerador y denominador al calcular la pendiente.",
+        "Contextos de razón de cambio constante modelados linealmente (por ejemplo, distancia-tiempo, costo-cantidad), siempre que el cálculo central sea la pendiente entre dos puntos."
+      ],
+      "out_of_scope": [
+        "Interpretación gráfica o conceptual profunda de la pendiente (creciente/decreciente, más inclinada/menos inclinada).",
+        "Determinación de la ecuación completa de la recta (forma pendiente-intersección u otras).",
+        "Casos de pendiente indefinida o recta vertical (x1 = x2).",
+        "Cálculo de pendientes a partir de un gráfico sin entregar coordenadas explícitas de dos puntos.",
+        "Relación entre pendiente y ángulo de inclinación (tangente del ángulo).",
+        "Uso de derivadas o tasas de cambio instantáneas."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01: Operaciones con números enteros y racionales (suma, resta, multiplicación, división).",
+        "A-M1-NUM-02: Manejo de fracciones y decimales (equivalencias y simplificación básica).",
+        "A-M1-ALG-04: Comprensión básica de pares ordenados y plano cartesiano.",
+        "A-M1-ALG-05-06: Concepto de pendiente como razón de cambio constante entre dos variables (sin necesidad de cálculo complejo)."
+      ],
+      "common_traps": [
+        "Intercambiar x con y al aplicar la fórmula, generando (x2 - x1)/(y2 - y1) en lugar de (y2 - y1)/(x2 - x1).",
+        "No mantener coherencia de orden en los puntos: usar y2 - y1 en el numerador y x1 - x2 en el denominador.",
+        "Errores de signo en restas del tipo negativo menos negativo, o al invertir el orden de los puntos.",
+        "No reconocer que la pendiente puede ser negativa, cero o fraccionaria y forzar respuestas sólo positivas o enteras.",
+        "Perder el sentido de razón de cambio y confundir la pendiente con una de las coordenadas (por ejemplo, tomar directamente y2 o el cociente y2/x2).",
+        "Olvidar dividir al final y quedarse sólo con la diferencia de las y o de las x.",
+        "Simplificar mal fracciones (por ejemplo, dividir sólo numerador o sólo denominador por un mismo factor)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ambos puntos dados explícitamente en forma de pares ordenados con números enteros pequeños (entre -10 y 10).",
+        "Diferencias en x y en y que resultan en una razón sencilla (por ejemplo, 2, -2, 1, -1, 1/2, -1/2).",
+        "Estructura del enunciado directa, sin contexto verbal complejo ni información irrelevante.",
+        "Mismo orden de presentación de las coordenadas que en la fórmula (primero el punto 1, luego el punto 2) y sin necesidad de decidir qué punto usar primero.",
+        "Opciones de respuesta numéricamente bien diferenciadas (por ejemplo, 2, 3, -1, 0) que no requieran discriminar entre fracciones muy parecidas."
+      ],
+      "medium": [
+        "Coordenadas con al menos un número fraccionario o decimal sencillo (por ejemplo, 0,5; -1,5; 3/2).",
+        "Contexto verbal donde el estudiante debe reconocer qué representa x y qué representa y (por ejemplo, tiempo vs distancia).",
+        "Puntos entregados en orden no explícito, siendo necesario identificar adecuadamente qué valores corresponden a x1, y1, x2, y2.",
+        "Pendiente resultante fraccionaria no trivial pero simplificable (por ejemplo, 6/8 que se reduce a 3/4).",
+        "Incluye distractores construidos a partir de errores típicos: invertir la fracción, cambiar el signo, usar diferencias inconsistentes de los puntos."
+      ],
+      "hard": [
+        "Al menos una de las coordenadas es un número racional más complejo (fracciones impropias, negativos con fracción: -7/3, 5/4, etc.).",
+        "Enunciados de contexto donde las coordenadas deben ser inferidas desde información distribuida (por ejemplo, tablas o descripciones de dos instantes distintos).",
+        "Puntos dados en forma implícita (por ejemplo, “cuando han pasado 3 segundos la posición es 5 m, y después de 7 segundos es -3 m”) sin formato de par ordenado explícito.",
+        "Pendiente que resulta en fracción negativa o que requiere varias simplificaciones intermedias (por ejemplo, (-12/5) / (8/3)).",
+        "Distractores que exigen distinguir entre distintas interpretaciones erróneas sutiles (por ejemplo, usar sólo diferencias de y, invertir orden de puntos, confundir unidades o variables)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar la misma letra para ambas variables (usar x e y de forma consistente, evitar mezclar con t, s, d sin aclarar qué es qué).",
+      "Evitar enunciados donde no quede claro cuál magnitud es la variable independiente (x) y cuál la dependiente (y); si se usan otras letras, indicar explícitamente el orden del par.",
+      "No presentar puntos sin especificar el orden (evitar frases como “los puntos 2 y 5” sin aclarar a qué corresponde cada número).",
+      "Evitar incluir casos donde x1 = x2, ya que generan pendiente indefinida y salen del alcance del átomo.",
+      "No mezclar más de dos puntos si no se indica con total claridad cuáles se deben usar para el cálculo de la pendiente.",
+      "Evitar contextos donde la razón de cambio pudiera interpretarse de dos maneras válidas (por ejemplo, km/h y su recíproco h/km) sin especificar qué se pide.",
+      "No usar notaciones inconsistentes para los subíndices (por ejemplo, usar P y Q en el enunciado y luego referirse sólo a x1, y1, x2, y2 sin vincularlos explícitamente).",
+      "Evitar escribir la fórmula de la pendiente de forma abreviada o incorrecta que pueda confundir (como m = y2 - y1 / x2 - x1 sin paréntesis)."
+    ],
+    "error_families": [
+      {
+        "name": "Intercambio_de_variables",
+        "description": "El estudiante calcula la razón (x2 - x1)/(y2 - y1) en lugar de (y2 - y1)/(x2 - x1), confundiendo qué va en el numerador y qué en el denominador.",
+        "how_to_address": "Explicitando en ítems de refuerzo qué representa cada coordenada (x, y) y trabajando ejemplos donde la magnitud en el numerador tiene una interpretación clara (por ejemplo, variación de distancia sobre variación de tiempo)."
+      },
+      {
+        "name": "Inconsistencia_en_el_orden_de_los_puntos",
+        "description": "El estudiante usa y2 - y1 en el numerador y x1 - x2 en el denominador, mezclando órdenes distintos y obteniendo el signo incorrecto.",
+        "how_to_address": "Destacar que el orden elegido para el primer punto debe mantenerse en ambos numerador y denominador, ejercitando con tablas donde se cambie intencionalmente el orden de presentación de los puntos."
+      },
+      {
+        "name": "Errores_de_signo_en_las_restas",
+        "description": "Dificultades al restar números negativos (por ejemplo, -2 - 3 o -2 - (-3)), lo que lleva a pendientes con signo opuesto al correcto.",
+        "how_to_address": "Reforzar operaciones con enteros en contexto de diferencias (y2 - y1) usando recta numérica y ejemplos guiados, antes de volver al cálculo de pendiente."
+      },
+      {
+        "name": "Omisión_de_la_división",
+        "description": "El estudiante calcula correctamente y2 - y1 y x2 - x1, pero no realiza la división final o la hace con sólo uno de los valores.",
+        "how_to_address": "Hacer explícita la estructura de la fórmula (dos pasos: diferencias y luego cociente) y utilizar chequeos de plausibilidad en el contexto (por ejemplo, unidades: metros/segundo)."
+      },
+      {
+        "name": "Simplificacion_incorrecta_de_fracciones",
+        "description": "Al obtener una fracción como pendiente, el estudiante simplifica sólo numerador o sólo denominador o divide por factores distintos.",
+        "how_to_address": "Practicar simplificación de fracciones con ejemplos concretos de pendientes y resaltar que se divide numerador y denominador por el mismo número distinto de cero."
+      },
+      {
+        "name": "Confusion_con_el_contexto",
+        "description": "En problemas verbales, el estudiante confunde qué variable va en el eje horizontal y cuál en el vertical, asignando mal los pares (x, y).",
+        "how_to_address": "Proponer ítems donde se haga el paso explícito de texto → tabla → par ordenado, subrayando la elección de variable independiente y dependiente."
+      },
+      {
+        "name": "Rechazo_de_pendientes_negativas_o_cero",
+        "description": "El estudiante cree que la pendiente siempre debe ser positiva y descarta resultados cero o negativos, aunque el cálculo sea correcto.",
+        "how_to_address": "Incluir ejemplos donde el contexto haga sentido con pendientes negativa o cero (descenso de una magnitud, valor constante) para validar estos casos como respuestas posibles."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-05-08: Interpretación de la pendiente como tasa de cambio en contextos diversos.",
+      "A-M1-ALG-05-09: Determinación de la ecuación de una recta a partir de su pendiente y un punto.",
+      "A-M1-ALG-05-10: Comparación de pendientes de distintas rectas para analizar crecimiento y decrecimiento.",
+      "A-M1-ALG-05-11: Identificación de rectas paralelas y perpendiculares a partir de sus pendientes.",
+      "A-M1-ALG-06-01: Modelación de situaciones reales con funciones lineales y análisis de su comportamiento.",
+      "A-M1-ALG-06-02: Interpretación de pendientes en gráficos de funciones lineales y afines.",
+      "A-M1-FUN-01-03: Uso de la pendiente en el estudio de patrones lineales y progresiones aritméticas en el plano."
+    ],
+    "representation_variants": [
+      "Pares ordenados dados explícitamente como (x1, y1) y (x2, y2).",
+      "Tabla de valores con dos filas o dos columnas que representen los dos puntos, a partir de la cual se extraen las coordenadas.",
+      "Descripción verbal de dos estados de una magnitud en momentos diferentes (por ejemplo, tiempo y distancia, horas trabajadas y pago).",
+      "Contexto numérico donde se dan directamente los cambios en la variable dependiente y en la independiente (por ejemplo, “la cantidad aumenta en 8 cuando el tiempo aumenta en 4”).",
+      "Notación de puntos con letras, como P(a, b) y Q(c, d), indicando luego que se pide la pendiente de la recta PQ.",
+      "Uso simbólico de variables en lugar de valores numéricos concretos para reforzamiento conceptual simple (por ejemplo, cambio de y sobre cambio de x), manteniendo operaciones accesibles."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "proper_fractions",
+      "improper_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

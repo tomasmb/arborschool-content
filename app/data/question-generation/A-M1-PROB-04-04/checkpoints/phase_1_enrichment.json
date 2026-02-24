@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar si dos eventos de un mismo experimento aleatorio pueden ocurrir al mismo tiempo o no, en contextos cotidianos y simples (juegos de azar, encuestas, selección de personas u objetos).",
+        "Decidir, a partir de la descripción de los eventos o de sus resultados posibles, si la intersección entre dos eventos es vacía o no.",
+        "Usar la condición A ∩ B = ∅ como criterio formal para reconocer eventos mutuamente excluyentes (disjuntos).",
+        "Justificar de manera verbal por qué dos eventos son o no mutuamente excluyentes, haciendo referencia explícita a la posibilidad de ocurrencia simultánea o a ejemplos de resultados que pertenezcan a ambos eventos.",
+        "Relacionar la identificación de eventos mutuamente excluyentes con la elección de la regla de la probabilidad de la unión (P(A ∪ B) = P(A) + P(B) para eventos excluyentes)."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico de probabilidades de eventos (se puede dar información de probabilidades como contexto, pero el foco no está en el cálculo).",
+        "Probabilidad condicional, independencia de eventos y su formalización (P(A|B), P(A ∩ B) = P(A)P(B)).",
+        "Uso de más de dos eventos a la vez (no trabajar simultáneamente con tres o más eventos).",
+        "Cálculos combinatorios complejos para determinar espacios muestrales (permutaciones, combinaciones avanzadas).",
+        "Diagramas de Venn con trazos y áreas a escala que requieran razonamiento geométrico o medición.",
+        "Eventos continuos o modelados con variables aleatorias continuas (intervalos de la recta real, densidades).",
+        "Demostraciones formales con notación de teoría de conjuntos más allá de la intersección vacía (no usar pruebas formales, solo argumentación básica)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-01-01: Comprender el concepto de experimento aleatorio, resultado y espacio muestral.",
+        "A-M1-PROB-01-02: Manejar la idea de evento como subconjunto del espacio muestral.",
+        "A-M1-CONJ-01-02: Comprender la intersección de conjuntos y el concepto de conjunto vacío.",
+        "A-M1-PROB-02-01: Interpretar en forma básica la probabilidad como medida de la posibilidad de ocurrencia de un evento (sin formalismo avanzado)."
+      ],
+      "common_traps": [
+        "Confundir eventos mutuamente excluyentes con eventos independientes, pensando erróneamente que 'no se relacionan' es lo mismo que 'no pueden ocurrir juntos'.",
+        "Considerar equivocados ejemplos como 'ser hombre' y 'ser estudiante' como excluyentes, por asumir subgrupos que en realidad se pueden solapar.",
+        "Asumir que si dos eventos tienen probabilidades muy bajas ambos, entonces son excluyentes (mezcla de idea de rareza con exclusión).",
+        "Pensar que eventos complementarios son el único ejemplo de eventos mutuamente excluyentes, o que 'excluyente' implica automáticamente ser complementarios.",
+        "No revisar el espacio muestral completo y pasar por alto resultados que pertenecen a ambos eventos, clasificando erróneamente como excluyentes.",
+        "Confundir 'no ocurre nunca A ∩ B en la práctica' con A ∩ B = ∅, usando experiencias personales en lugar de la definición teórica.",
+        "Diseñar contextos donde los eventos no quedan bien definidos (por ejemplo, condiciones vagas como 'ser alto' sin criterio de corte), generando ambigüedad en la exclusión."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Contextos de juegos de azar simples con espacio muestral muy familiar y pequeño (por ejemplo, lanzar un dado justo o una moneda).",
+        "Eventos descritos directamente en términos de propiedades excluyentes obvias (por ejemplo, 'sacar un número par' y 'sacar un número impar' al lanzar un dado).",
+        "Formulación que permita inspeccionar de manera inmediata si existe o no un resultado común a ambos eventos, usualmente a partir de una lista corta de resultados.",
+        "Preguntas que solo exigen reconocer si los eventos son o no mutuamente excluyentes, sin necesidad de justificar ni de usar notación de conjuntos.",
+        "Sin combinaciones de condiciones compuestas (evitar expresiones del tipo 'ser múltiplo de 2 o 3 y ser…')."
+      ],
+      "medium": [
+        "Contextos cotidianos con categorizaciones cruzadas (por ejemplo, encuestas con variables como sexo, curso, preferencia) donde la exclusión no es visualmente obvia.",
+        "Eventos definidos por dos o más condiciones simples (por ejemplo, 'ser número par mayor que 3' y 'ser número múltiplo de 3') que requieren revisar con cuidado algún elemento en común.",
+        "Uso ligero de notación de conjuntos (A ∩ B, ∅) o descripción del espacio muestral como conjunto, pidiendo declarar si A ∩ B = ∅ o no en base a esa información.",
+        "Exigir una breve justificación verbal o seleccionar la justificación correcta entre alternativas que mencionan explícitamente la idea de intersección vacía o de resultado común.",
+        "Casos en que la intuición puede ser engañosa y el estudiante deba probar con ejemplos concretos (por ejemplo, sospechosos de ser excluyentes pero con 1 o 2 casos en común)."
+      ],
+      "hard": [
+        "Contextos donde los eventos se definen mediante descripciones más complejas o en lenguaje natural menos directo, requiriendo traducir a condiciones sobre resultados (por ejemplo, 'llegar atrasado al colegio' y 'haber tomado desayuno en casa', dependiendo de cómo se definan).",
+        "Eventos construidos a partir de condiciones lógicas compuestas (y, o, no), donde la exclusión debe analizarse examinando casos posibles y su pertenencia simultánea a ambos eventos.",
+        "Problemas que requieren comparar varios pares de eventos y decidir para cada uno si son mutuamente excluyentes, justificando la respuesta más adecuada entre varias explicaciones verosímiles.",
+        "Ítems que exigen identificar un error de razonamiento en un personaje que confunde independencia con exclusión, o que aplica mal la regla de la suma porque supone que los eventos son excluyentes.",
+        "Situaciones donde algunos eventos sí son excluyentes y otros no, dentro de un mismo contexto, obligando al estudiante a diferenciar cuidadosamente y no aplicar un criterio global simplista."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar términos vagos o relativos (por ejemplo, 'ser alto', 'ser joven', 'gustarle mucho un deporte') sin un criterio numérico o categórico claro que defina el evento.",
+      "Evitar contextos donde la definición de los eventos dependa de interpretaciones culturales o subjetivas (por ejemplo, 'ser responsable', 'tener buena conducta').",
+      "No mezclar tiempos o etapas diferentes del mismo experimento en la definición de los eventos, a menos que se especifique con claridad si se refieren al mismo resultado o a secuencias de resultados.",
+      "Evitar usar 'no puede ocurrir casi nunca' o expresiones probabilísticas vagas como sinónimo de 'no puede ocurrir simultáneamente'; la exclusión debe ser lógica, no empírica.",
+      "No proponer ejemplos reales dudosos desde el punto de vista científico (por ejemplo, enfermedades supuestamente excluyentes que en realidad podrían coexistir) que requieran conocimiento especializado.",
+      "Formular los eventos claramente como propiedades del mismo espacio muestral; evitar que parezca que corresponden a experimentos distintos (por ejemplo, mezclar 'sacar un número par en un dado' con 'sacar cara en una moneda' sin especificar que el experimento incluye ambos lanzamientos).",
+      "No usar la palabra 'independiente' como sinónimo de 'no relacionado' en el enunciado; reservarla para contextos donde la independencia forme parte explícita del contenido a contrastar, y definirla si se usa.",
+      "Evitar enunciados donde la pertenencia a una categoría excluya otra por definición lingüística, pero no desde el punto de vista lógico de conjuntos (por ejemplo, etiquetar personas como 'solo' una categoría cuando en la realidad pueden pertenecer a varias)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_excluyentes_vs_independientes",
+        "description": "El estudiante cree que si dos eventos no influyen uno en el otro (o percibe que no hay relación causal), entonces son 'mutuamente excluyentes', confundiendo independencia con imposibilidad de ocurrencia simultánea.",
+        "how_to_address": "Diseñar ítems donde se muestren pares de eventos que son independientes pero que claramente pueden ocurrir simultáneamente, y pedir decidir si son excluyentes; enfatizar la pregunta clave '¿pueden ocurrir juntos?' y mostrar que eso es diferente de '¿uno afecta la probabilidad del otro?'."
+      },
+      {
+        "name": "Uso_intuitivo_en_lugar_de_analizar_el_espacio_muestral",
+        "description": "El estudiante se basa solo en la intuición o en la experiencia personal (por ejemplo, 'casi nunca veo esto y esto juntos') sin revisar los resultados posibles para verificar si existe algún caso común.",
+        "how_to_address": "Proponer actividades donde se liste explícitamente el espacio muestral o se den ejemplos concretos de resultados; pedir encontrar un resultado que pertenezca a ambos eventos cuando existan, o argumentar por qué no es posible encontrarlo."
+      },
+      {
+        "name": "Olvido_de_resultados_comunes",
+        "description": "En contextos con números o categorías cruzadas, el estudiante omite uno o más resultados que pertenecen a ambos eventos y decide erróneamente que la intersección es vacía.",
+        "how_to_address": "Usar ejercicios con listas cortas o tablas de doble entrada y pedir explícitamente identificar todos los resultados que cumplen ambas condiciones, antes de clasificar los eventos como excluyentes o no."
+      },
+      {
+        "name": "Interpretacion_incorrecta_del_complemento",
+        "description": "El estudiante piensa que si dos eventos son excluyentes, entonces necesariamente uno es el complemento del otro, o que 'no A' es el único evento excluyente con A.",
+        "how_to_address": "Mostrar ejemplos de eventos excluyentes que no son complementarios (por ejemplo, 'sacar 1' y 'sacar 2' en un dado), y contrastarlos con un par de eventos complementarios donde se cubre todo el espacio muestral."
+      },
+      {
+        "name": "Confusion_con_uniones_de_eventos",
+        "description": "El estudiante aplica automáticamente la regla P(A ∪ B) = P(A) + P(B) suponiendo que los eventos son excluyentes, sin verificar la intersección.",
+        "how_to_address": "Plantear ítems donde una justificación incorrecta use esa regla por considerar falsamente que los eventos son excluyentes, y pedir elegir la explicación correcta; reforzar que primero se debe decidir si A ∩ B = ∅ o no."
+      },
+      {
+        "name": "Eventos_mal_definidos_o_espacio_muestral_implicito",
+        "description": "El estudiante no identifica con claridad cuál es el espacio muestral o qué significa cada evento, por lo que no puede decidir coherentemente sobre la exclusión.",
+        "how_to_address": "Insistir en que todo problema explicite o permita reconstruir el espacio muestral; usar preguntas que obliguen a definir o describir los eventos en términos de resultados concretos antes de clasificarlos como excluyentes o no."
+      }
+    ],
+    "future_targets": [
+      "Aplicación correcta de la regla de la suma de probabilidades distinguiendo entre eventos mutuamente excluyentes y no excluyentes.",
+      "Cálculo de probabilidades de uniones de eventos en situaciones más complejas (incluyendo P(A ∪ B) = P(A) + P(B) − P(A ∩ B)).",
+      "Comprensión y contraste entre eventos mutuamente excluyentes e independientes en contextos de probabilidad.",
+      "Análisis de tablas de contingencia donde algunos pares de categorías son excluyentes y otros pueden solaparse.",
+      "Modelación de situaciones reales con eventos y elección adecuada de supuestos (por ejemplo, decidir si en un modelo conviene tratar ciertos eventos como excluyentes).",
+      "Interpretación crítica de afirmaciones probabilísticas en medios o estudios, identificando cuando se confunden exclusión, independencia o rareza.",
+      "Uso de diagramas de Venn y representaciones de conjuntos para razonar sobre uniones, intersecciones y complementos en problemas de probabilidad."
+    ],
+    "representation_variants": [
+      "Descripción verbal de los eventos en lenguaje cotidiano, indicando explícitamente las categorías o situaciones a las que se refieren.",
+      "Listados de resultados posibles del experimento (espacio muestral enumerado) con indicación de cuáles pertenecen a cada evento.",
+      "Notación de conjuntos para el espacio muestral y los eventos, incluyendo la representación explícita de A ∩ B y la mención de ∅ cuando corresponda.",
+      "Tablas simples (por ejemplo, tablas de doble entrada o de frecuencia) donde las celdas representan combinaciones de categorías y se deben identificar celdas que pertenezcan simultáneamente a ambos eventos.",
+      "Descripciones de categorías cruzadas (por ejemplo, curso y deporte practicado, color y talla de una prenda) donde se analice si algunas combinaciones son imposibles o no.",
+      "Uso de lenguaje lógico básico en las condiciones de los eventos (y, o, no) para ejercitar la identificación de resultados que cumplan ambas condiciones a la vez."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "simple_fractions",
+      "simple_probabilities",
+      "categorical_labels"
+    ],
+    "required_image_types": []
+  }
+}

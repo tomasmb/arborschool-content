@@ -1,0 +1,122 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Interpretar intervalos representados en una recta numérica como inecuaciones de una variable real.",
+        "Determinar si el punto extremo es incluido o excluido a partir de la marca (punto lleno/vacío, corchete/paréntesis).",
+        "Identificar la dirección del sombreado (hacia la izquierda, derecha, entre dos puntos o fuera de dos puntos) y traducirla a símbolos de desigualdad.",
+        "Escribir inecuaciones simples de la forma x > a, x ≥ a, x < a, x ≤ a.",
+        "Escribir inecuaciones compuestas con conectores lógicos implícitos del tipo a < x < b o x < a o x ≥ b cuando el gráfico las sugiera claramente."
+      ],
+      "out_of_scope": [
+        "Resolución algebraica de inecuaciones (despejar x a partir de una expresión).",
+        "Sistemas de inecuaciones con más de una inecuación dada simbólicamente para resolver.",
+        "Representaciones en el plano cartesiano (región de solución en 2D).",
+        "Inecuaciones con valor absoluto, cuadráticas, racionales u otras expresiones no lineales.",
+        "Traducción desde lenguaje natural extenso (contextos verbales complejos) a inecuaciones sin mediar un gráfico explícito en la recta numérica.",
+        "Interpretación de intervalos abiertos/cerrados solo en notación de intervalo (por ejemplo (a,b], sin gráfica)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-02: Reconocimiento y orden en la recta numérica (comparar números reales y ubicarlos en la recta).",
+        "A-M1-ALG-03-08: Comprensión básica del significado de los símbolos <, >, ≤, ≥ en desigualdades simples.",
+        "A-M1-REP-01-01: Lectura de marcas y etiquetas en una recta numérica (identificar valores señalados y su posición relativa)."
+      ],
+      "common_traps": [
+        "Confundir punto abierto con cerrado, escribiendo ≤ o ≥ cuando el gráfico muestra exclusión del extremo.",
+        "Invertir el símbolo de desigualdad al mirar el gráfico de izquierda a derecha (escribir x < a cuando el sombreado va hacia la derecha de a).",
+        "Perder el sentido de la variable al interpretar una inecuación compuesta, por ejemplo escribir a < x > b o x > a > b en lugar de a < x < b.",
+        "Ignorar que la recta puede no estar centrada en cero y asociar mal el extremo sombreado con la etiqueta numérica más cercana.",
+        "No considerar si el sombreado es 'entre' dos puntos o 'fuera' de ellos, confundiendo unión con intersección (por ejemplo escribir a < x < b en lugar de x < a o x > b).",
+        "Interpretar un punto aislado sombreado como si fuera un intervalo, intentando usar símbolos de desigualdad estricta en lugar de x = a (este tipo de caso debe evitarse o explicitarse)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Gráfico con un solo límite, claramente etiquetado por un número entero pequeño (por ejemplo entre -5 y 5).",
+        "Sombreado solo hacia la izquierda o solo hacia la derecha del punto límite, sin necesidad de interpretar inecuaciones compuestas.",
+        "Uso consistente y evidente de un único tipo de marca para inclusión o exclusión (punto lleno o punto vacío, no mezclas).",
+        "Opciones que difieren únicamente en el símbolo de desigualdad y en la cual solo una respeta claramente la dirección del sombreado y el tipo de punto."
+      ],
+      "medium": [
+        "Gráficos con dos límites y sombreado entre ellos (inecuación compuesta con 'y' implícito: a < x ≤ b).",
+        "Uso combinado de puntos abiertos y cerrados en un mismo gráfico, requiriendo distinguir estricta vs no estricta en cada extremo.",
+        "Valores de límite que pueden incluir enteros negativos o fracciones simples, pero con etiquetas claras y espaciadas.",
+        "Distractores que proponen la misma estructura de inecuación pero con uno o ambos símbolos invertidos o con extremos intercambiados."
+      ],
+      "hard": [
+        "Gráficos que representan unión de intervalos (por ejemplo, dos tramos sombreados separados), requiriendo escribir dos inecuaciones unidas por 'o'.",
+        "Límites no alineados con marcas principales (por ejemplo, número fraccionario o decimal ubicado entre marcas), donde el estudiante debe asociar correctamente la etiqueta numérica al punto.",
+        "Rectas donde no se muestran todos los números intermedios y el límite está etiquetado solo en un extremo del tramo, requiriendo buena lectura de escala.",
+        "Ítems que exigen distinguir entre expresiones que parecen equivalentes pero cambian el orden de los términos (por ejemplo a < x < b vs x > a y x < b) o que requieren seleccionar la opción más simplificada y correctamente escrita.",
+        "Situaciones donde el sentido de la desigualdad no es tan inmediato por presentar, por ejemplo, el intervalo 'fuera' de dos puntos (x < a o x ≥ b) y distractores que proponen intervalos 'entre' los puntos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar puntos de extremo ubicados exactamente en el centro entre dos etiquetas numéricas sin aclarar el valor, a menos que se indique explícitamente con una marca o etiqueta.",
+      "Evitar rectas numéricas sin escala clara o con etiquetas desordenadas, porque dificulta determinar el valor límite a interpretar.",
+      "No mezclar diferentes convenciones de notación de extremos (por ejemplo, un extremo con corchete y otro con punto lleno) dentro del mismo ítem sin explicitar su equivalencia.",
+      "Evitar representar conjuntos que sean en realidad un solo punto aislado usando un símbolo gráfico típico de intervalo, ya que induce a interpretarlo como inecuación en vez de x = a.",
+      "No diseñar ítems donde, visualmente, el sombreado parezca tocar el punto pero el dibujo pretende representar exclusión: el punto abierto debe ser claramente distinguible del sombreado.",
+      "Evitar casos en los que la recta esté parcialmente oculta o cortada justo cerca del extremo, generando duda sobre si el intervalo se extiende más allá del área visible.",
+      "No usar colores o estilos de sombreado cuya intensidad o patrón haga confusa la identificación del tramo sombreado (especialmente en impresos en blanco y negro)."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_extremos_abierto_cerrado",
+        "description": "El estudiante interpreta al revés si un valor límite está incluido o excluido, por lo que escribe ≤ o ≥ cuando corresponde < o >, o viceversa.",
+        "how_to_address": "En las explicaciones, hacer foco explícito en la asociación visual: 'punto lleno ↔ incluido (≤, ≥)', 'punto vacío ↔ excluido (<, >)'. Proponer comparaciones directas de dos gráficos casi iguales que solo difieren en el tipo de punto y discutir cómo cambia la inecuación."
+      },
+      {
+        "name": "Error_direccion_sombreado",
+        "description": "El estudiante reconoce bien el valor límite, pero escribe la desigualdad con el símbolo en sentido contrario, confundiendo 'mayor que' con 'menor que'.",
+        "how_to_address": "Reforzar la lectura de izquierda a derecha: números mayores quedan a la derecha en la recta, menores a la izquierda. Hacer que el estudiante verbalice 'todos los números a la derecha de 3' antes de elegir entre x > 3 y x < 3."
+      },
+      {
+        "name": "Interpretacion_incorrecta_inecuacion_compuesta",
+        "description": "Ante un intervalo entre dos puntos, el estudiante escribe inecuaciones mal organizadas (por ejemplo a < b < x o a < x > b) o se olvida de uno de los extremos.",
+        "how_to_address": "Modelar la construcción paso a paso: primero describir verbalmente 'x es mayor que a' y 'x es menor que b', luego unir ambas frases en una sola inecuación a < x < b, cuidando que x quede en el centro."
+      },
+      {
+        "name": "Confusion_entre_union_e_interseccion",
+        "description": "En gráficos con dos tramos separados, el estudiante los interpreta como un solo intervalo entre ambos extremos (a < x < b) en vez de como una unión (x < a o x ≥ b).",
+        "how_to_address": "Trabajar con ejemplos de 'dentro' y 'fuera' de un rango, destacando visualmente que cuando hay un espacio sin sombrear no se trata de todos los valores entre los límites. Practicar la lectura de 'valores menores que a o mayores que b'."
+      },
+      {
+        "name": "Lectura_inexacta_de_escala",
+        "description": "El estudiante identifica mal el valor del punto límite debido a una escala no unitaria (por ejemplo, intervalos de 2 en 2 o presencia de fracciones) y construye la inecuación alrededor de un número incorrecto.",
+        "how_to_address": "Insistir en observar las etiquetas y la separación entre marcas antes de interpretar el gráfico. Incluir preguntas intermedias como '¿qué número representa este punto?' antes de pedir la inecuación."
+      },
+      {
+        "name": "Uso_incorrecto_de_simbolos",
+        "description": "El estudiante escribe expresiones no convencionales o sintácticamente incorrectas, como x => 3, 3 < x ≤, o mezcla de notaciones (intervalo e inecuación) en una misma respuesta.",
+        "how_to_address": "Recordar la sintaxis correcta de desigualdades, mostrando ejemplos de inecuaciones bien escritas y pidiendo que identifiquen errores de forma. Reforzar que cada inecuación debe tener un lado con la variable y otro con un número, con símbolos estándar <, >, ≤, ≥."
+      }
+    ],
+    "future_targets": [
+      "Interpretación y graficación de soluciones de inecuaciones lineales más complejas en la recta numérica.",
+      "Resolución y representación de sistemas de inecuaciones en una variable.",
+      "Traducción entre descripciones verbales de condiciones (por ejemplo, 'al menos', 'a lo más') y su representación gráfica y simbólica.",
+      "Lectura e interpretación de soluciones de inecuaciones en el plano cartesiano (regiones en 2D).",
+      "Trabajo con funciones por tramos, donde cada tramo se define en un intervalo descrito por inecuaciones.",
+      "Comprensión de intervalos de dominio y rango en el estudio de funciones, representados en recta numérica."
+    ],
+    "representation_variants": [
+      "Intervalos semiinfinitos representados solo hacia la derecha o izquierda (por ejemplo, desde un punto hacia la derecha con flecha).",
+      "Intervalos acotados entre dos puntos, con ambos extremos abiertos, ambos cerrados o combinaciones mixtas.",
+      "Uniones de intervalos disjuntos, representadas con dos tramos sombreados separados en la misma recta.",
+      "Uso de flechas en uno o ambos extremos de la recta para indicar que se prolonga indefinidamente.",
+      "Gráficos con distinta convención de extremos: puntos llenos/vacíos, corchetes/paréntesis tocando la recta.",
+      "Rectas con distinta escala (enteros de 2 en 2, inclusión de negativos, fracciones simples)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": [
+      "number_line"
+    ]
+  }
+}

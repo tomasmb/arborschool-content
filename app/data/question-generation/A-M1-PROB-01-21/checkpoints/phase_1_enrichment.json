@@ -1,0 +1,149 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo de la medida angular de un sector de gráfico circular a partir de frecuencia relativa o porcentaje usando proporción con 360°.",
+        "Cálculo de porcentaje o frecuencia relativa a partir del ángulo de un sector en un gráfico circular.",
+        "Verificación de que la suma de los ángulos calculados para todos los sectores es 360° y detección de inconsistencias simples (pequeñas diferencias por redondeo).",
+        "Identificación y orden de pasos lógicos para construir un gráfico circular: obtención de frecuencias relativas o porcentajes, cálculo de ángulos, trazado de sectores, etiquetado.",
+        "Interpretación de un gráfico circular dado solo con ángulos (sin porcentajes ni frecuencias explícitas), relacionando cada ángulo con la proporción que representa.",
+        "Conversión entre frecuencia absoluta, frecuencia relativa y porcentaje en contextos simples para luego obtener el ángulo del sector."
+      ],
+      "out_of_scope": [
+        "Construcción física precisa del gráfico circular con instrumentos (compás, transportador) o descripción detallada de trazos geométricos.",
+        "Análisis avanzado de calidad de muestreo, sesgos estadísticos o inferencia estadística.",
+        "Comparación compleja entre distintos tipos de gráficos (barras vs circular vs histograma) más allá de decisiones sencillas basadas en proporciones.",
+        "Cálculo de medidas de tendencia central o dispersión (media, mediana, moda, desviación estándar) a partir del gráfico.",
+        "Problemas de probabilidad que usen el gráfico circular como modelo sin centrarse en el cálculo/interpretación de ángulos y proporciones.",
+        "Gráficos circulares con sectores definidos por funciones continuas o contextos de cálculo integral/geométrico del área.",
+        "Trabajos con diagramas de sectores anidados (gráficos de rosquilla, diagramas de varios niveles) o 3D."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo básico de porcentajes (interpretar X% de un total, convertir fracciones simples a porcentaje).",
+        "A-M1-NUM-01-02: Comprensión de fracción y frecuencia relativa como parte de un todo (≤ 1).",
+        "A-M1-NUM-01-03: Multiplicación de números decimales y fracciones por enteros.",
+        "A-M1-GEO-ANG-01: Reconocer la vuelta completa como 360° y sumar/restar ángulos simples.",
+        "A-M1-PROB-01-10: Lectura básica de tablas de frecuencia absoluta y relativa."
+      ],
+      "common_traps": [
+        "Olvidar multiplicar por 360° y tratar la frecuencia relativa o el porcentaje como si ya fueran medidas angulares.",
+        "Confundir porcentaje con frecuencia relativa, usando 25 en vez de 0,25 al multiplicar por 360°.",
+        "No verificar que la suma de ángulos sea 360°, aceptando resultados que se desvían notablemente por errores de cálculo.",
+        "No diferenciar entre frecuencia absoluta y relativa, usando directamente la frecuencia absoluta como si fuera proporcional a 360° sin normalizar por el total.",
+        "Errores de redondeo acumulados: redondear cada ángulo temprano y perder el control de que la suma se aproxime a 360°.",
+        "Interpretar un ángulo como porcentaje directo (ej.: creer que 72° representa el 72% en lugar del 20%).",
+        "Malentender el orden de pasos para construir el gráfico: intentar trazar sectores antes de tener calculados todos los ángulos.",
+        "Desestimar un ángulo faltante (sector \"restante\") sin calcularlo como 360° menos la suma de los otros sectores, cuando la información lo permite."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Usar porcentajes o frecuencias relativas sencillos (0,5; 0,25; 0,2; 50%; 25%; 20%) que generen ángulos enteros fáciles (180°, 90°, 72°).",
+        "Presentar toda la información necesaria de manera directa en tabla (categorías y sus porcentajes o frecuencias relativas) con un total ya indicado.",
+        "Pedir el cálculo del ángulo de un solo sector o de dos sectores con cuentas directas, sin necesidad de trabajar con el total de la distribución.",
+        "Verificación de suma de ángulos con pocos sectores (3 o 4) y sumas simples, donde el estudiante solo deba constatar si suma 360°.",
+        "Interpretación directa de un sector de ángulo dado para identificar el porcentaje que representa cuando el número es exacto (por ejemplo 36° → 10%)."
+      ],
+      "medium": [
+        "Incluir varias categorías (4 a 6) con porcentajes o frecuencias relativas menos inmediatas (por ejemplo 0,15; 0,35; 0,1) que den ángulos como 54°, 126°, 36°.",
+        "Exigir la conversión explícita de frecuencia absoluta a frecuencia relativa o porcentaje antes de calcular el ángulo.",
+        "Pedir verificar tanto la suma de ángulos como corregir un error evidente en uno de los sectores (por ejemplo, detectar cuál ángulo fue mal calculado).",
+        "Dar un gráfico circular con ángulos y solicitar identificar cuál categoría tiene mayor/menor proporción o cuál representa un porcentaje dado aproximado.",
+        "Plantear un ítem donde falte un sector y el estudiante deba calcular su ángulo usando 360° menos la suma de los otros sectores.",
+        "Requerir la ordenación correcta de pasos para construir el gráfico (secuencia de 4–5 pasos) en un contexto con datos numéricos concretos."
+      ],
+      "hard": [
+        "Trabajar con porcentajes o frecuencias relativas que produzcan ángulos no tan amigables (ej.: 17%; 23%; 7%; 0,13; 0,27), exigiendo manejo de decimales y redondeo razonable.",
+        "Solicitar al estudiante inferir o comparar porcentajes aproximados a partir de ángulos poco simples en un gráfico circular dibujado (sin que todos los ángulos estén numéricamente indicados).",
+        "Combinar varios pasos: partir de frecuencias absolutas, hallar el total, calcular frecuencias relativas/porcentajes, obtener ángulos y luego decidir si un gráfico propuesto es coherente.",
+        "Incluir una situación donde la suma de porcentajes no es exactamente 100% por redondeo y el estudiante debe decidir cuál gráfico circular es más adecuado o cuál ajuste es razonable.",
+        "Plantear ítems donde se pidan relaciones entre sectores (por ejemplo, qué sector tiene el doble de proporción que otro) usando los ángulos o porcentajes implícitos en el gráfico.",
+        "Presentar más categorías (6 o más) y exigir identificar errores sutiles en la construcción o etiquetado del gráfico (por ejemplo, ángulos correctos pero etiquetas de porcentaje intercambiadas)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas como \"aproximadamente\" sin indicar si se espera que el estudiante redondee o compare solo de manera cualitativa. En ítems con redondeo, especificar el criterio (por ejemplo, al entero más cercano).",
+      "Evitar tablas donde no se indica claramente si los datos son frecuencia absoluta, relativa o porcentaje; siempre etiquetar la columna correspondiente.",
+      "No mezclar en la misma tabla porcentajes y frecuencias relativas sin aclararlo explícitamente, ya que ambas son números menores o iguales a 1 o 100 pero con escalas distintas.",
+      "Cuando se dé un gráfico circular dibujado, no depender de la percepción a ojo del ángulo si la precisión numérica es necesaria; en ese caso, rotular los ángulos o aclarar que se trata de aproximaciones visuales.",
+      "Evitar ángulos o porcentajes que no correspondan exactamente entre sí en contextos donde se busque exactitud, salvo que se explicite que hay redondeos.",
+      "No usar la palabra \"proporción\" de forma indistinta con \"frecuencia absoluta\"; reservar \"proporción\" para frecuencias relativas o porcentajes.",
+      "Especificar siempre si el total de casos ya está incluido o se debe calcular, para que no haya dudas sobre el denominador al obtener frecuencias relativas.",
+      "No plantear alternativas de respuesta que se diferencien solo por pequeños errores de redondeo sin indicar el criterio, para no generar más de una alternativa defendible.",
+      "Evitar que en los distractores aparezcan dos opciones numéricamente muy cercanas que podrían resultar de distintos criterios de redondeo; preferir distractores basados en errores conceptuales claros.",
+      "En preguntas sobre orden de pasos para construir el gráfico, asegurarse de que cada paso sea claramente distinto y no haya dos formulaciones casi equivalentes."
+    ],
+    "error_families": [
+      {
+        "name": "Confundir porcentaje con frecuencia relativa",
+        "description": "El estudiante usa 30 en vez de 0,30 al multiplicar por 360°, obteniendo ángulos desproporcionadamente grandes.",
+        "how_to_address": "Incluir ítems donde aparezcan explícitamente ambas representaciones (0,3 y 30%) y se exija elegir cuál corresponde a la fórmula con 360°, reforzando que la frecuencia relativa está entre 0 y 1."
+      },
+      {
+        "name": "Omitir la multiplicación por 360°",
+        "description": "El estudiante cree que la frecuencia relativa o porcentaje ya está en grados y lo usa directamente como ángulo del sector.",
+        "how_to_address": "Diseñar preguntas que muestren resultados evidentemente inconsistentes (suma de ángulos muy distinta a 360°) para que el estudiante detecte que falta el factor 360°."
+      },
+      {
+        "name": "Confundir frecuencia absoluta con relativa",
+        "description": "El estudiante toma directamente el número de casos de una categoría como si fuera la parte de 360°, por ejemplo, asignando 15° a una categoría con 15 casos en lugar de calcular su proporción del total.",
+        "how_to_address": "Proponer ítems donde se deba calcular primero la frecuencia relativa desde una tabla de frecuencias absolutas y usarla luego en la fórmula, comparando alternativas que muestren ambos tipos de error."
+      },
+      {
+        "name": "Manejo deficiente de redondeos",
+        "description": "El estudiante redondea cada ángulo con poca precisión, provocando que la suma sea muy distinta de 360°, o ajusta un ángulo al final en exceso.",
+        "how_to_address": "Incluir preguntas que expliciten la necesidad de redondear a grados enteros y evaluar si la suma se mantiene razonablemente cerca de 360°, destacando la idea de pequeños ajustes finales controlados."
+      },
+      {
+        "name": "Errores de cálculo aritmético básico",
+        "description": "Fallas en la multiplicación de decimales o en la conversión fracción–porcentaje–ángulo llevan a ángulos incorrectos aunque el procedimiento conceptual sea correcto.",
+        "how_to_address": "Usar números que permitan ver rápidamente si el resultado tiene sentido (por ejemplo, si el porcentaje es cercano a 50%, el ángulo debe ser cercano a 180°), obligando al estudiante a realizar estimaciones de control."
+      },
+      {
+        "name": "Interpretación errónea del ángulo como porcentaje directo",
+        "description": "El estudiante compara ángulos como si fueran porcentajes (cree que 90° representa 90% y 45° representa 45%).",
+        "how_to_address": "Plantear ítems que pidan explícitamente el porcentaje correspondiente a un ángulo sencillo (90°, 45°, 72°) para forzar el uso de la relación ángulo/360° y no la lectura directa."
+      },
+      {
+        "name": "Saltar o desordenar pasos en la construcción del gráfico",
+        "description": "El estudiante no distingue el orden lógico: a veces intenta etiquetar porcentajes sin haber calculado ángulos, o traza sectores sin considerar el total.",
+        "how_to_address": "Diseñar ítems de ordenamiento de pasos con distractores que representen estos desórdenes, y retroalimentar que primero se normaliza (frecuencias relativas/porcentajes), después se pasa a ángulos y finalmente se construye y etiqueta."
+      },
+      {
+        "name": "No usar 360° como referencia total",
+        "description": "El estudiante utiliza 100, 180 o el total de casos como si fuera la medida total del círculo.",
+        "how_to_address": "Incluir preguntas que contrasten explícitamente el total de 100% y de 360°, pidiendo relacionar ambos con un mismo sector, reforzando que 100% ↔ 360° y que cualquier proporción debe ser parte de ese total."
+      }
+    ],
+    "future_targets": [
+      "Interpretación comparativa de gráficos estadísticos de distinto tipo (barras, circular, histograma) para un mismo conjunto de datos.",
+      "Toma de decisiones y argumentación basada en datos representados gráficamente (por ejemplo, identificar categorías predominantes o subrepresentadas).",
+      "Cálculo e interpretación de probabilidades simples usando gráficos de sectores como modelos de espacio muestral equiprobable.",
+      "Análisis crítico de gráficos estadísticos en medios de comunicación, incluyendo detección de manipulaciones en la presentación de proporciones.",
+      "Lectura y construcción de gráficos más complejos (por ejemplo, gráficos de doble entrada o gráficos compuestos) que requieren comprensión previa de proporciones.",
+      "Resolución de problemas de porcentajes encadenados o cambios porcentuales donde la visualización en gráficos circulares pueda servir como apoyo conceptual.",
+      "Trabajo con distribuciones de frecuencias grandes en contextos reales (encuestas, censos) usando el gráfico circular como una de varias herramientas de resumen."
+    ],
+    "representation_variants": [
+      "Tabla de frecuencias absolutas por categoría, desde la cual se debe calcular la frecuencia relativa, el porcentaje y luego el ángulo del sector.",
+      "Tabla donde ya se entregan frecuencias relativas o porcentajes y se requiere solo el paso a ángulos.",
+      "Gráfico circular completamente numérico, con ángulos rotulados pero sin porcentajes, donde el estudiante debe deducir proporciones.",
+      "Gráfico circular con porcentajes rotulados pero sin ángulos, donde se pide calcular o verificar las medidas angulares correspondientes.",
+      "Descripción verbal de una situación (por ejemplo, distribución de preferencias) con porcentajes dados en texto, que debe transformarse en cálculo de ángulos.",
+      "Conjunto de varios gráficos circulares simplificados (por ejemplo, con pocas categorías) para comparar proporciones entre ellos a partir de sus ángulos o porcentajes.",
+      "Secuencia de pasos enunciados textualmente para construir un gráfico circular, que el estudiante debe ordenar o completar con el cálculo de ángulos."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "simple_fractions",
+      "percentages_simple",
+      "percentages_non_trivial",
+      "decimals_one_place",
+      "decimals_two_places"
+    ],
+    "required_image_types": [
+      "statistical_chart"
+    ]
+  }
+}

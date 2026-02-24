@@ -1,0 +1,135 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas contextualizados que involucren cubos y paralelepípedos rectos (prismas rectos de base rectangular) en situaciones de la vida cotidiana o productiva.",
+        "Cálculo de área total o área lateral de cubos y paralelepípedos, incluyendo uso del resultado para determinar costos (pintar, forrar, revestir).",
+        "Cálculo de volumen de cubos y paralelepípedos para problemas de capacidad (litros, metros cúbicos) o cantidad de unidades que caben dentro de un contenedor.",
+        "Determinación indirecta de una dimensión a partir de datos de volumen o área y otras dimensiones conocidas.",
+        "Problemas donde se combinan varias piezas o cuerpos rectangulares simples, siempre reducibles a suma de áreas o volúmenes de paralelepípedos/cubos.",
+        "Interpretación del resultado con unidades adecuadas (m², cm², m³, cm³, L) y su relación con el contexto (cantidad de pintura, agua, cajas, etc.).",
+        "Casos con niveles de llenado parciales en recipientes paralelepipédicos (altura de agua menor que la altura total)."
+      ],
+      "out_of_scope": [
+        "Cuerpos no rectangulares: cilindros, esferas, pirámides, conos, prismas de base triangular u otras bases poligonales.",
+        "Cálculo de áreas de desarrollo plano de cuerpos 3D que requiera plegado complejo o razonamiento de redes más allá de identificar caras rectangulares.",
+        "Problemas que exijan fórmulas avanzadas de geometría (teorema de Pitágoras, teoremas de semejanza, trigonometría) para encontrar dimensiones.",
+        "Optimización geométrica (minimizar material, maximizar volumen) que requiera modelación algebraica no lineal o cálculo diferencial.",
+        "Probabilidad o estadística asociada a cuerpos 3D (por ejemplo, elegir una caja al azar) como foco central.",
+        "Conversión compleja entre muchas unidades encadenadas (por ejemplo, m³ a cm³ a L a kL de manera acumulativa) como foco principal del ítem.",
+        "Contextos puramente numéricos sin relato o sin conexión reconocible con una situación real o cercana a la experiencia estudiantil."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01: Manejo de operaciones básicas con números naturales, enteros y decimales.",
+        "A-M1-MED-01-01: Uso de unidades de medida de longitud, superficie y volumen, y conversiones simples (cm a m, cm³ a L, etc.).",
+        "A-M1-GEO-02-01: Cálculo de áreas de rectángulos y cuadrados.",
+        "A-M1-GEO-02-05: Cálculo de volúmenes de prismas rectos de base rectangular (incluyendo el caso particular del cubo).",
+        "A-M1-ALG-01-02: Despeje de una variable en fórmulas simples (por ejemplo, V = a·b·c para encontrar una dimensión desconocida)."
+      ],
+      "common_traps": [
+        "Confundir área con volumen al seleccionar o usar fórmulas, especialmente cuando el contexto menciona capacidad o cantidad de líquido.",
+        "Olvidar alguna cara al calcular área total de un paralelepípedo (por ejemplo, sumar solo tres caras en vez de seis).",
+        "No considerar TODAS las dimensiones involucradas (ejemplo: usar solo largo y ancho en un cálculo de volumen).",
+        "No convertir las unidades antes del cálculo (por ejemplo, dimensiones en cm y precio en m², o profundidad en metros y altura de llenado en centímetros).",
+        "Interpretar mal una vista parcial del cuerpo (vista frontal o lateral) y asignar erróneamente qué medida corresponde a largo, ancho o alto.",
+        "Suponer que el cuerpo está completamente lleno cuando el enunciado describe un llenado parcial (por ejemplo, agua hasta cierta marca).",
+        "Olvidar multiplicar por el número de cajas/cuerpos cuando se trabaja con arreglos de cubos o paralelepípedos apilados.",
+        "Confundir área lateral con área total cuando el contexto solo requiere pintar o cubrir ciertas caras (por ejemplo, caras visibles, interior o exterior)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados breves, con un solo cuerpo (un cubo o un paralelepípedo) y todas sus dimensiones explícitas en la misma unidad.",
+        "Requieren aplicar directamente la fórmula de volumen o de área total sin necesidad de despejar variables.",
+        "Contexto muy directo, con una única pregunta (por ejemplo, cuántos litros caben, cuántos m² se van a pintar).",
+        "Números pequeños y amigables (enteros o decimales con 1 cifra) que lleven a cálculos aritméticos sencillos.",
+        "Sin niveles de llenado parcial ni combinaciones de varios cuerpos; no se requieren decisiones sobre qué superficie específica se considera."
+      ],
+      "medium": [
+        "Problemas con uno o dos cuerpos rectangulares, donde puede ser necesario sumar áreas o volúmenes de partes.",
+        "Requieren seleccionar correctamente entre área o volumen a partir del contexto, sin que la fórmula esté sugerida explícitamente.",
+        "Incluyen al menos una conversión de unidades simple (por ejemplo, cm a m, o m³ a L) o se debe inferir una dimensión a partir de un volumen/área dado.",
+        "Pueden involucrar llenado parcial (por ejemplo, hasta cierta altura) o disposición de varias cajas en filas/columnas/capas alineadas.",
+        "Datos presentados en un esquema o ilustración que exige leer medidas desde la imagen, pero sin vistas demasiado complejas."
+      ],
+      "hard": [
+        "Contextos con varios pasos de razonamiento, por ejemplo: determinar volumen ocupado, compararlo con capacidad total y luego deducir una nueva altura o número de cajas adicionales.",
+        "Requieren combinar área y volumen en la misma situación (por ejemplo, primero calcular volumen de agua añadido y luego el área de paredes mojadas).",
+        "Involucran más de dos cuerpos o descomponer una figura compuesta en varios paralelepípedos, eligiendo una descomposición conveniente.",
+        "Necesitan despejar dimensiones a partir de fórmulas de volumen o área y luego usar esas dimensiones en un nuevo cálculo.",
+        "Incluyen conversiones de unidades no triviales (por ejemplo, relacionar cm³ y L en el mismo problema) y/o números menos amigables (decimales con dos cifras, fracciones simples).",
+        "La imagen presenta el cuerpo en perspectiva con distintas vistas o marcas de nivel, y el estudiante debe interpretar correctamente qué medidas corresponden a cada dimensión y qué parte se considera para el cálculo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar usos inconsistentes de términos como largo, ancho, alto, profundidad; si se usan, acompañarlos con un diagrama claro o referirse a dimensiones por letras (a, b, c).",
+      "No mezclar unidades sin explicitarlas claramente ni indicar la conversión necesaria (por ejemplo, no usar cm en la imagen y m en el texto sin aclarar).",
+      "No usar expresiones vagas en el contexto como 'más o menos', 'cerca de la mitad' cuando se requiere un cálculo exacto.",
+      "Evitar figuras donde no esté claro qué segmento corresponde a qué medida o si una dimensión mostrada pertenece a la parte interior o exterior del cuerpo.",
+      "No plantear situaciones en que no se especifique si se considera el interior o el exterior del recipiente para el cálculo del área a pintar/forrar.",
+      "Evitar problemas en que no quede claro si la pila de cajas o cuerpos está completa o si falta una capa, cuando esto es relevante para el volumen total.",
+      "No usar marcas de nivel o referencias ('20 cm antes del borde') sin indicar claramente desde qué punto se mide (desde el fondo o desde el borde superior).",
+      "Evitar contextos que involucren cuerpos no rectangulares mezclados con cubos/paralelepípedos si su tratamiento no es parte del ítem, para no inducir interpretaciones fuera de alcance."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_area_volumen",
+        "description": "El estudiante aplica una fórmula de área cuando el contexto pide volumen (capacidad, litros) o viceversa, lo que lleva a resultados con unidades inadecuadas.",
+        "how_to_address": "Reforzar la lectura cuidadosa del contexto (palabras como 'llenar', 'capacidad', 'litros', vs. 'pintar', 'forrar', 'cubrir') y pedir al estudiante que anticipe la unidad esperada (m² vs. m³/L) antes de elegir la fórmula."
+      },
+      {
+        "name": "Unidades_incompatibles",
+        "description": "Se realizan cálculos usando dimensiones en diferentes unidades (por ejemplo, cm y m) sin convertir, o se olvida la relación entre m³ y L.",
+        "how_to_address": "Promover la estrategia de listar todas las cantidades con unidad antes de calcular y elegir una unidad de trabajo única; practicar conversiones clave como 1 m = 100 cm, 1 m³ = 1000 L, 1 L = 1000 cm³ en problemas similares."
+      },
+      {
+        "name": "Olvido_de_caras_o_dimensiones",
+        "description": "En el cálculo de área total se omite una o más caras, o en volumen se consideran solo dos dimensiones (largo y ancho) ignorando la altura.",
+        "how_to_address": "Trabajar con representaciones que ayuden a visualizar las seis caras de un paralelepípedo (o las tres parejas de caras opuestas), y hacer que el estudiante escriba explícitamente qué caras o dimensiones está usando en el cálculo."
+      },
+      {
+        "name": "Interpretacion_erronea_de_la_imagen",
+        "description": "Se leen mal las dimensiones desde la figura: se intercambian largo y alto, se confunde profundidad con ancho o no se entiende desde dónde se mide una marca de nivel.",
+        "how_to_address": "Practicar la lectura de esquemas 3D identificando cada dimensión con su etiqueta y pidiendo que el estudiante la ubique físicamente (horizontal/vertical/profundidad); usar preguntas intermedias tipo '¿cuál es la altura del agua?'."
+      },
+      {
+        "name": "Manejo_incorrecto_de_lleno_parcial",
+        "description": "Se asume que el recipiente está lleno completamente cuando solo está parcialmente lleno, o se calcula volumen como si la altura del líquido fuera la altura total.",
+        "how_to_address": "Insistir en traducir el relato a un dibujo simplificado marcando claramente la altura real del líquido, y en escribir una fórmula de volumen específica para el líquido (usando la altura efectiva y no la altura total)."
+      },
+      {
+        "name": "Despeje_inadecuado_en_formulas",
+        "description": "Errores al despejar una dimensión desconocida de la fórmula de volumen o área (por ejemplo, dividir por una dimensión incorrecta o multiplicar en vez de dividir).",
+        "how_to_address": "Practicar despejes con ejemplos simples a partir de V = a·b·c y A = 2(ab + ac + bc), enfatizando el control mediante sustitución inversa para verificar que la dimensión encontrada reproduce el dato original."
+      }
+    ],
+    "future_targets": [
+      "Resolución de problemas con cuerpos geométricos más complejos (cilindros, prismas de bases no rectangulares, pirámides, conos) en contextos reales.",
+      "Modelación de situaciones más sofisticadas de capacidad y flujo (llenado y vaciado de estanques, caudales, tiempos de llenado) usando volumen.",
+      "Análisis de redes o desarrollos planos de cuerpos tridimensionales para problemas de empaquetado y diseño de envases.",
+      "Problemas de optimización geométrica básica (minimizar material de empaque para un volumen dado, elegir dimensiones convenientes).",
+      "Integración de geometría con proporcionalidad y escala (planos, maquetas, cambio de tamaño de envases manteniendo volumen o área).",
+      "Aplicación de nociones de densidad y masa volumétrica en contextos físicos (peso de cuerpos según su volumen)."
+    ],
+    "representation_variants": [
+      "Texto descriptivo sin imagen, donde las dimensiones se entregan explícitamente en el enunciado.",
+      "Prisma rectangular o cubo dibujado en perspectiva con sus dimensiones etiquetadas en algunas o todas las aristas.",
+      "Vista frontal, lateral o superior de un mueble, contenedor o caja, donde se deben asociar las dimensiones dadas a ancho, alto y profundidad.",
+      "Esquemas de apilamiento de cajas o bloques en filas, columnas y capas, mostrando el arreglo pero no necesariamente todas las medidas en cada bloque.",
+      "Recipientes rectangulares con una marca de nivel interior que indica una altura específica de líquido, con la profundidad y largo señalados.",
+      "Figuras compuestas por dos o más paralelepípedos adosados (por ejemplo, muebles, camas con respaldo, estructuras rectangulares), donde el estudiante debe descomponer para calcular área o volumen."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "two_digit_integers",
+      "simple_decimals_one_place",
+      "simple_decimals_two_places",
+      "unit_conversions_metric",
+      "volume_to_liters_conversions"
+    ],
+    "required_image_types": [
+      "complex_3d"
+    ]
+  }
+}

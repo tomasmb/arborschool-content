@@ -1,0 +1,146 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de sistemas de ecuaciones lineales 2x2 por el método de sustitución, con dos ecuaciones de primer grado en dos incógnitas.",
+        "Selección de la ecuación e incógnita más conveniente para despejar (coeficiente 1 o -1, o más simple de manipular).",
+        "Despeje algebraico correcto de una incógnita en una de las ecuaciones.",
+        "Sustitución de la expresión obtenida en la otra ecuación y reducción de términos.",
+        "Resolución de la ecuación lineal resultante en una sola incógnita (incluyendo casos con fracciones o coeficientes negativos).",
+        "Obtención del valor de la segunda incógnita reemplazando en alguna de las ecuaciones originales o en la expresión despejada.",
+        "Verificación implícita mediante comparación de alternativas (detectar soluciones imposibles por inspección).",
+        "Sistemas con soluciones enteras, racionales positivas o negativas, o con un valor 0 en alguna incógnita."
+      ],
+      "out_of_scope": [
+        "Uso del método de igualación, reducción/eliminación o métodos matriciales para resolver el sistema.",
+        "Interpretación gráfica de la solución del sistema en el plano cartesiano.",
+        "Sistemas 3x3 o con más de dos incógnitas.",
+        "Sistemas no lineales (con productos de incógnitas, potencias, raíces, etc.).",
+        "Discusión formal de existencia y unicidad de solución mediante determinante o rango (casos indeterminados o incompatibles tratados teóricamente).",
+        "Modelación verbal compleja de situaciones reales (traducción texto → sistema) como foco principal; aquí el foco es el procedimiento algebraico una vez dado el sistema.",
+        "Resolución de inecuaciones o sistemas de inecuaciones.",
+        "Manipulación de expresiones que requiera factorizaciones complejas, identidades notables avanzadas o álgebra de fracciones algebraicas fuera de líneas simples."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión del concepto de ecuación lineal de primer grado con una incógnita.",
+        "A-M1-ALG-01-02: Despeje de una incógnita en ecuaciones lineales simples (transposición de términos, manejo de signos).",
+        "A-M1-ALG-02-01: Operaciones con números enteros y racionales (suma, resta, multiplicación, división).",
+        "A-M1-ALG-02-02: Manejo de fracciones (simplificación, mínimo común múltiplo, operaciones básicas).",
+        "A-M1-ALG-03-01: Uso correcto de paréntesis y propiedad distributiva.",
+        "A-M1-ALG-04-01: Reconocimiento de un sistema 2x2 y su solución como par ordenado (x, y)."
+      ],
+      "common_traps": [
+        "Elegir para despejar una incógnita con coeficientes complicados (por ejemplo 7x o 5y) cuando existe otra ecuación o incógnita más simple (como x o -y), aumentando la carga de cálculo innecesariamente.",
+        "Olvidar el uso de paréntesis al sustituir una expresión que corresponde a una suma o resta, generando errores en la distribución de signos (por ejemplo, reemplazar y = 3 - x en 2y como 2·3 - x en vez de 2(3 - x)).",
+        "Realizar una sustitución parcial, dejando mezcladas dos incógnitas en la ecuación que debiera quedar con una sola variable.",
+        "Perder una solución correcta por errores aritméticos simples en operaciones con enteros negativos o fracciones.",
+        "Confundir el orden del par ordenado (x, y) al leer o marcar la alternativa correcta, especialmente cuando las alternativas entregan los valores cambiados.",
+        "No comprobar mentalmente la coherencia aproximada de la solución (por ejemplo, soluciones con números muy grandes o fracciones poco plausibles cuando los coeficientes son pequeños).",
+        "Asumir que la solución siempre es de números enteros y descartar alternativas con fracciones aun cuando se obtendrían naturalmente del sistema."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Sistemas con coeficientes pequeños (entre -5 y 5), mayoritariamente enteros, y sin fracciones en los enunciados.",
+        "Al menos una ecuación presenta una incógnita con coeficiente 1 o -1 (por ejemplo x + y = 6 o x - 2y = 1), facilitando el despeje directo.",
+        "La sustitución genera una ecuación en una incógnita con operaciones simples (a lo más una distribución y una suma/resta de términos semejantes).",
+        "La solución del sistema entrega valores enteros pequeños (entre -5 y 10) sin necesidad de simplificar fracciones.",
+        "Distractores construidos a partir de errores muy básicos (como invertir el orden del par (x, y) o un solo error de signo), fáciles de descartar verificando rápidamente en una de las ecuaciones.",
+        "Contexto puramente algebraico, sin texto verbal extenso ni información irrelevante."
+      ],
+      "medium": [
+        "Sistemas donde ninguna ecuación tiene un coeficiente 1, pero el despeje sigue siendo razonable (por ejemplo 2x + y = 7 o 3x - 2y = 4).",
+        "Presencia moderada de fracciones ya sea en coeficientes o al resolver la ecuación resultante, requiriendo manejar mínimo común múltiplo o división por un entero.",
+        "La sustitución requiere aplicar distributiva y combinar al menos tres términos semejantes, con posibles números negativos.",
+        "Soluciones racionales no enteras pero con fracciones simples (denominadores pequeños como 2, 3, 4 o 5).",
+        "Distractores que reflejen errores típicos de procedimiento en sustitución (falta de paréntesis, error al pasar términos, error al dividir por el coeficiente), por lo que no se descartan solo por inspección superficial.",
+        "Eventual presencia de un breve contexto (problema verbal sencillo) que se traduce a un sistema ya relativamente directo, pero el énfasis evaluativo está en el algoritmo de sustitución."
+      ],
+      "hard": [
+        "Sistemas en que la elección eficiente de qué ecuación y qué incógnita despejar no es inmediata, pudiendo haber varias opciones pero con distinta complejidad de cálculo; se espera que el estudiante identifique la más conveniente.",
+        "Presencia explícita de fracciones en las ecuaciones originales o aparición de fracciones con denominadores mayores o múltiples (como 6, 8, 12), exigiendo manejo de aritmética de fracciones más cuidadoso.",
+        "Necesidad de realizar varias etapas de simplificación (distributiva, reducción de términos semejantes en ambos miembros, y eventual multiplicación por un número para eliminar fracciones antes o después de sustituir).",
+        "Soluciones con números racionales negativos y/o con fracciones no inmediatas (por ejemplo -5/3, 7/4), donde la verificación mental es menos obvia.",
+        "Distractores diseñados a partir de cadenas de errores verosímiles donde el procedimiento de sustitución está casi completo pero con una falla sutil (por ejemplo, correcto despeje pero mal reemplazo, o buen reemplazo pero error en una sola operación con fracciones).",
+        "Problemas en que se evalúa también la capacidad de detectar si un determinado par ordenado dado como alternativa satisface ambas ecuaciones, requiriendo eventualmente probar más de una alternativa para concluir.",
+        "Ítems donde un método alternativo (como eliminación) sería algebraicamente más directo, pero la redacción orienta a que se use sustitución y se evalúa si el estudiante puede aplicar este procedimiento aun en un contexto poco óptimo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en el mismo ítem instrucciones que mencionen distintos métodos (por ejemplo, \"resuelva por sustitución o por cualquier método\") cuando el objetivo es evaluar específicamente sustitución.",
+      "Evitar sistemas que puedan ser interpretados como no lineales (productos xy, potencias, raíces) o que incluyan notación ambigua (como x/y sin contexto claro de fracción).",
+      "No usar letras de incógnitas que puedan confundirse con números o símbolos (por ejemplo, l con 1, O con 0); preferir x, y, u, v.",
+      "Evitar presentar el sistema en formatos gráficos o contextos que sugieran fuertemente un método gráfico como el principal, cuando se quiere evaluar procedimiento algebraico.",
+      "No usar enunciados verbales excesivamente largos o con datos irrelevantes que desplacen el foco desde el procedimiento de sustitución a la comprensión lectora.",
+      "No incluir más de un sistema por ítem a menos que esté muy claramente indicado cuál se debe resolver; evitar tablas o listados de sistemas que puedan generar duda sobre cuál se refiere la pregunta.",
+      "En las alternativas de respuesta, dejar claro que corresponden a pares ordenados (x, y); evitar expresiones como \"x = 2, 3\" que puedan confundirse con conjuntos o rangos.",
+      "No plantear implícitamente casos sin solución o con infinitas soluciones si no se va a evaluar la discusión del sistema; en este átomo se buscan sistemas con solución única salvo que se explicite lo contrario.",
+      "Evitar notación confusa al usar fracciones; preferir formato claramente fraccionario (a/b) o notación matemática estándar bien segmentada, sin ambigüedad en numeradores y denominadores."
+    ],
+    "error_families": [
+      {
+        "name": "Despeje_incorrecto",
+        "description": "Errores al dejar una incógnita sola en una ecuación: mover términos al lado opuesto con signo equivocado, olvidar dividir por el coeficiente, o aislar parcialmente la variable sin completar el despeje.",
+        "how_to_address": "Incluir pasos intermedios en el enunciado o en el razonamiento esperado, donde se muestre explícitamente la transposición de términos y la división final; diseñar distractores que hagan evidente la importancia de pasar términos con el signo correcto para obtener la expresión adecuada."
+      },
+      {
+        "name": "Sustitucion_sin_parentesis",
+        "description": "Al reemplazar la expresión despejada en la otra ecuación, el estudiante omite paréntesis cuando la expresión es una suma o resta, provocando errores en los signos al aplicar la distributiva.",
+        "how_to_address": "Proponer sistemas donde la sustitución correcta exige necesariamente el uso de paréntesis, de modo que el error produzca un resultado claramente distinto; acompañar con distractores que surjan de esa omisión para que pueda diagnosticarse este fallo específico."
+      },
+      {
+        "name": "Manejo_deficiente_de_fracciones",
+        "description": "Dificultades para operar con fracciones al resolver la ecuación resultante: no usar el mínimo común múltiplo, sumar o restar fracciones con denominadores distintos como si fueran enteros, o dividir mal al aislar la incógnita.",
+        "how_to_address": "Incluir algunos ítems con fracciones simples donde se pueda ver el paso recomendado de eliminar denominadores (multiplicando por el m.c.m.); usar distractores que provengan de sumar numeradores y denominadores o de una mala simplificación, para reforzar la necesidad de aplicar el algoritmo correcto."
+      },
+      {
+        "name": "Errores_en_reemplazo_final",
+        "description": "Luego de encontrar el valor de una incógnita, se comete error al sustituirlo para hallar la segunda (por ejemplo, usar otra ecuación o expresión distinta, o errar en una operación sencilla).",
+        "how_to_address": "Diseñar ítems donde la comprobación de la solución en ambas ecuaciones permita detectar rápidamente incoherencias; promover ítems que incentiven a verificar al menos en una ecuación, y usar distractores asociados a valor correcto de la primera incógnita pero segunda incorrecta."
+      },
+      {
+        "name": "Confusion_orden_par_ordenado",
+        "description": "El estudiante obtiene correctamente los valores de las incógnitas pero al responder selecciona el par ordenado en el orden inverso (y, x) o interpreta mal el orden indicado en la pregunta.",
+        "how_to_address": "Ser explícito en los enunciados sobre el orden buscado (\"(x, y)\"); generar distractores que intercambien los valores para identificar este error; en correcciones o retroalimentación, insistir en que el primer valor corresponde sistemáticamente a x y el segundo a y."
+      },
+      {
+        "name": "Eleccion_ineficiente_de_ecuacion_para_despejar",
+        "description": "El estudiante elige despejar una incógnita en la ecuación con coeficientes más complejos, lo que lleva a cálculos más largos y aumenta la probabilidad de error, pese a que existía una opción más sencilla.",
+        "how_to_address": "Proponer ítems donde sea notoria la diferencia en dificultad al despejar desde una u otra ecuación, y en análisis posterior destacar por qué una elección es más conveniente; diseñar explicaciones que expliciten el criterio de \"buscar coeficiente 1 o -1\" o formas más simples."
+      },
+      {
+        "name": "No_verificacion_de_la_solucion",
+        "description": "Se acepta un par (x, y) obtenido por un procedimiento con errores intermedios sin verificar que satisface ambas ecuaciones, lo que lleva a marcar respuestas incorrectas muy alejadas de la solución real.",
+        "how_to_address": "Incluir ítems donde la sustitución rápida de una alternativa en una ecuación revele fácilmente que es incorrecta, fomentando la verificación; comentar en la retroalimentación la importancia de probar la solución en al menos una ecuación, especialmente cuando los cálculos fueron extensos."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-04-06: Resolución de sistemas 2x2 por otros métodos (igualación, reducción) y comparación de eficiencia entre métodos.",
+      "A-M1-ALG-04-07: Interpretación gráfica de sistemas de ecuaciones lineales como rectas en el plano y su punto de intersección.",
+      "A-M1-ALG-05-01: Modelación de problemas de aplicación (número, dinero, mezcla, movimiento) mediante sistemas de ecuaciones y resolución algebraica.",
+      "A-M1-ALG-05-02: Resolución y discusión de sistemas con parámetros y análisis de condiciones para existencia y unicidad de solución.",
+      "A-M1-FUNC-01-02: Comprensión de la intersección de funciones lineales como solución de sistemas de ecuaciones.",
+      "A-M1-ALG-06-01: Extensión del razonamiento de sustitución a sistemas con tres incógnitas o más en contextos avanzados.",
+      "A-M1-GEO-EST-01-01: Uso de ecuaciones y sistemas en contextos geométricos (por ejemplo, encontrar puntos de intersección de figuras definidas algebraicamente)."
+    ],
+    "representation_variants": [
+      "Sistema presentado en forma de llaves con las dos ecuaciones alineadas verticalmente.",
+      "Sistema escrito en forma lineal separando las ecuaciones con punto y coma o con conectores textuales (por ejemplo, \"Sabemos que x + y = 5 y 2x - y = 1\").",
+      "Uso de notación matricial mínima solo para presentar el sistema, pero exigiendo su resolución vía sustitución, sin requerir cálculo matricial.",
+      "Ecuaciones ordenadas de forma convencional (términos con x, luego y, luego término independiente) y también en orden no estándar para evaluar flexibilidad en el despeje.",
+      "Presentación de la solución pedida explícitamente como par ordenado (x, y) o como valores separados (\"el valor de x es..., el valor de y es...\") dentro de las alternativas.",
+      "Incorporación de contexto verbal breve que conduce claramente a un sistema 2x2 (por ejemplo, cantidades de dos tipos de objetos, o suma y diferencia de números) pero centrando la dificultad en el paso algebraico de sustitución.",
+      "Ecuaciones con términos ya distribuidos y también con paréntesis iniciales que requieran aplicar distributiva antes o después de sustituir."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "mixed_fractions",
+      "zero_values"
+    ],
+    "required_image_types": []
+  }
+}

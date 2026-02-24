@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación de la red de construcción (desarrollo plano) correspondiente a un prisma recto dado, incluyendo comparación entre varias redes posibles.",
+        "Reconocimiento explícito de que en un prisma recto las caras laterales son rectángulos que comparten una misma altura (la altura del prisma).",
+        "Relación entre los lados del polígono base y las dimensiones de los rectángulos laterales en la red: un lado de la base se corresponde con un lado de un rectángulo lateral.",
+        "Comprensión de que la suma de los anchos de los rectángulos laterales (o el largo de una “tira” lateral continua) es igual al perímetro de la base.",
+        "Redes de prismas rectos con bases triangulares, cuadrangulares o polígonos de más lados, regulares o irregulares, sin requerir cálculo exacto de áreas.",
+        "Reconocimiento de redes correctas aunque estén rotadas, reflejadas o con las bases ubicadas en posiciones no convencionales (por ejemplo, no necesariamente en los extremos de la tira de rectángulos).",
+        "Conteo cualitativo de caras a partir de la red (2 bases congruentes + n caras laterales rectangulares) para decidir si una red puede plegarse en un prisma recto dado."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico de área total o lateral de prismas (eso pertenece a átomos de procedimientos y aplicaciones, no a este de representación).",
+        "Volumen de prismas o uso de fórmulas de volumen.",
+        "Redes de otros cuerpos geométricos: cilindros, pirámides, conos, esferas u otros poliedros que no sean prismas rectos.",
+        "Prismas oblicuos o interpretaciones donde las caras laterales no son rectángulos.",
+        "Demostraciones formales de propiedades de prismas o poliedros (teorema de Euler, etc.).",
+        "Uso de coordenadas en el plano o el espacio para describir prismas o sus redes.",
+        "Problemas de optimización o modelamiento físico (por ejemplo, minimizar material de envases) que requieran razonamiento más allá de identificar/relacionar la red."
+      ],
+      "prerequisites": [
+        "A-M1-GEO-01-01: Reconocer y nombrar polígonos (triángulos, cuadriláteros, polígonos de n lados) y sus lados.",
+        "A-M1-GEO-01-02: Comprender perímetro de polígonos como suma de las longitudes de sus lados.",
+        "A-M1-GEO-02-01: Reconocer prismas rectos, sus elementos (bases, caras laterales, aristas) y distinguirlos de otros cuerpos.",
+        "A-M1-NUM-01-01: Manejo básico de números naturales y enteros pequeños para interpretar medidas sencillas en dibujos."
+      ],
+      "common_traps": [
+        "Confundir prismas rectos con prismas oblicuos en dibujos poco claros: en este átomo todas las caras laterales deben ser rectángulos y la altura perpendicular a la base.",
+        "Seleccionar redes donde las bases no son congruentes (por ejemplo, dos polígonos de forma o tamaño distinto) pensando que cualquier par de polígonos sirve.",
+        "Aceptar redes donde el número de caras laterales no coincide con el número de lados de la base.",
+        "Ignorar la correspondencia de adyacencias: elegir redes donde los rectángulos laterales no se conectan a los lados correctos de las bases o el orden de los lados de la base no coincide con el orden de los rectángulos.",
+        "Pensar que el ancho de los rectángulos laterales puede variar entre caras de un prisma recto con base regular, aceptando redes con alturas diferentes para distintas caras laterales.",
+        "Desconocer que redes rotadas o reflejadas representan el mismo prisma, rechazando opciones correctas solo porque la disposición es menos habitual.",
+        "Confundir el perímetro de la base con el área de la base al interpretar el largo total de la tira de rectángulos laterales."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Prismas rectos con base triangular o rectangular, mostrados claramente en perspectiva sencilla, con redes muy evidentes (2 bases idénticas y 3 o 4 rectángulos) y pocas alternativas.",
+        "Tareas donde solo se pide identificar las bases y las caras laterales rectangulares en una red ya dada, sin necesidad de decidir si la red es correcta o incorrecta.",
+        "Ítems donde se pregunta cuál es la red de un prisma dado, ofreciendo alternativas donde las incorrectas tienen errores gruesos (por ejemplo, una sola base, número de rectángulos muy distinto al número de lados de la base, caras no rectangulares).",
+        "Preguntas sin medidas numéricas, apoyadas casi solo en el reconocimiento visual de la forma y del conteo de caras."
+      ],
+      "medium": [
+        "Prismas rectos con bases cuadrangulares no necesariamente rectangulares (rombos, trapecios) o polígonos de 5 o 6 lados, con redes completas pero menos obvias.",
+        "Ítems donde se debe verificar la correspondencia entre los lados de la base y las dimensiones de los rectángulos laterales (por ejemplo, identificar qué rectángulo está asociado a qué lado de la base).",
+        "Preguntas que requieren reconocer que el largo total de una banda continua de rectángulos laterales coincide con el perímetro de la base, ya sea a nivel conceptual o con números sencillos.",
+        "Alternativas incorrectas que requieren notar errores más finos, como inversión del orden de los lados de la base o bases bien dibujadas pero mal alineadas con los rectángulos.",
+        "Uso de una o dos medidas numéricas simples para relacionar la altura del prisma con una dimensión común de las caras laterales (todos los rectángulos comparten esa medida)."
+      ],
+      "hard": [
+        "Prismas rectos con bases poligonales de 6 o más lados, en que la red incluye muchos rectángulos y exige controlar cuidadosamente el orden de los lados de la base.",
+        "Ítems donde se presentan varias redes cercanas a la correcta, que difieren solo en detalles sutiles (un rectángulo mal dimensionado, una base mal ubicada, adyacencias incorrectas), exigiendo un análisis detallado de la estructura del prisma.",
+        "Preguntas que combinan la idea de perímetro de una base irregular con la longitud total de los rectángulos laterales, requiriendo verificar consistencia numérica entre varias dimensiones dadas.",
+        "Redes parcialmente mostradas (falta una cara o una base) en las que se pide completar o decidir qué cara falta y cómo debe ser para que forme el prisma recto descrito.",
+        "Situaciones donde hay que identificar todas las redes que sirven para un mismo prisma (más de una correcta), lo que obliga a reconocer que rotaciones, reflejos y distintas disposiciones de las bases pueden generar redes equivalentes."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar dibujos de prismas donde las aristas posteriores se confundan con las delanteras (sin diferenciar líneas ocultas y visibles) si la decisión depende de contar o identificar caras.",
+      "No usar redes donde algún lado crucial queda oculto o tapado por texto o símbolos, de modo que no se pueda ver con claridad qué rectángulos se conectan con qué lados de las bases.",
+      "No presentar alternativas que sean redes geométricamente equivalentes (rotadas o reflejadas) entre sí si solo una está marcada como correcta.",
+      "Evitar mezclar prismas rectos y oblicuos en las figuras cuando el enunciado hable genéricamente de 'prisma', a menos que se explicite que se trata de un prisma recto.",
+      "No dibujar rectángulos tan fuera de escala (por ejemplo, muy alargados o muy achatados en comparación con los lados de la base) que induzcan a pensar que corresponden a lados distintos de los que se pretende.",
+      "Evitar bases dibujadas con líneas curvas o poco rectas que dificulten distinguir que son polígonos (mantener polígonos nítidos).",
+      "No depender de colores para marcar bases o caras laterales como única pista; si se usan colores, deben acompañarse de etiquetas o tramas distinguibles en escala de grises para no generar ambigüedad a personas con dificultades de visión cromática.",
+      "Precisar siempre si las medidas indicadas en la figura corresponden a la base, a la altura del prisma o a otra longitud (evitar marcas numéricas sin contexto).",
+      "No usar palabras como 'cubo' y 'prisma cuadrangular' indistintamente; si es un cubo, declararlo, y si es un prisma de base cuadrada no necesariamente regular en todas sus dimensiones, indicarlo con claridad."
+    ],
+    "error_families": [
+      {
+        "name": "Número_de_caras_incorrecto",
+        "description": "El/la estudiante elige redes con demasiados o muy pocos rectángulos laterales o con una sola base, ignorando que un prisma recto con base de n lados necesita exactamente n rectángulos y 2 bases congruentes.",
+        "how_to_address": "Incluir ítems y explicaciones que hagan explicitar la regla 'n lados en la base → n caras laterales rectangulares' y practiquen el conteo sistemático de caras en distintos prismas (triangular, cuadrangular, pentagonal, etc.)."
+      },
+      {
+        "name": "Bases_no_congruentes",
+        "description": "El/la estudiante acepta redes donde las dos bases tienen formas o tamaños distintos, asumiendo que basta con que haya dos polígonos similares.",
+        "how_to_address": "Diseñar actividades donde se comparen explícitamente las dos bases de una red y se pregunte cuál no sirve para formar un prisma recto; reforzar la idea de 'bases congruentes' como condición esencial del prisma."
+      },
+      {
+        "name": "Confusión_perímetro_vs_área",
+        "description": "Se interpreta que el largo total de la banda de rectángulos laterales corresponde al área de la base o a otra magnitud, en vez de reconocerlo como el perímetro de la base.",
+        "how_to_address": "Proponer situaciones donde el perímetro de la base esté dado o se calcule primero, y luego se observe cómo coincide con la suma de los anchos de los rectángulos laterales en la red; contrastar con el área de la base para que se visualicen las diferencias."
+      },
+      {
+        "name": "Altura_mal_identificada",
+        "description": "El/la estudiante no reconoce que la altura del prisma es la dimensión común de todos los rectángulos laterales, y en su lugar asigna alturas diferentes a cada cara lateral en la red.",
+        "how_to_address": "Mostrar redes con las alturas claramente marcadas igual en todos los rectángulos y relacionarlas copn la distancia entre las bases en el dibujo 3D; incluir preguntas que pidan identificar explícitamente la altura del prisma en la red."
+      },
+      {
+        "name": "Adyacencias_incorrectas",
+        "description": "Se aceptan redes donde los rectángulos laterales no están conectados a los lados de la base en el orden correcto, lo que impediría plegar la figura sin solapamientos o huecos.",
+        "how_to_address": "Trabajar con ejemplos de redes casi correctas pero con un rectángulo mal ubicado; pedir que el estudiantado imagine el plegado o marque cómo se unirían los bordes, fortaleciendo la idea de que el orden de los lados alrededor de la base debe respetarse en la red."
+      },
+      {
+        "name": "Equivalencia_de_redes_no_reconocida",
+        "description": "El/la estudiante rechaza redes correctas por estar rotadas, reflejadas o con las bases en posiciones no habituales (por ejemplo, al medio de la tira de rectángulos).",
+        "how_to_address": "Presentar varias redes equivalentes de un mismo prisma y discutir por qué todas funcionan; enfatizar que rotaciones y cambios de posición en el papel no alteran la posibilidad de plegado si se conservan las conexiones entre caras."
+      },
+      {
+        "name": "Confusión_cara_lateral_y_base",
+        "description": "Se confunden caras laterales con bases, especialmente en prismas cuadrangulares, pensando que cualquier rectángulo puede ser 'base' sin respetar la definición de base en el contexto del prisma descrito.",
+        "how_to_address": "Usar vistas 3D con las bases destacadas (por color o sombreado) y pedir que se identifiquen sus correspondientes en la red; reforzar que la base es el polígono original del cual surgen las caras laterales rectangulares."
+      }
+    ],
+    "future_targets": [
+      "Cálculo del área lateral y total de prismas rectos a partir de sus redes de construcción.",
+      "Cálculo del volumen de prismas rectos usando área de la base y altura.",
+      "Comparación y optimización de diseños de envases (minimizar material) usando redes de prismas en contextos de modelamiento.",
+      "Comprensión y uso de redes de otros poliedros (pirámides, cuerpos compuestos) a partir de la experiencia con redes de prismas.",
+      "Análisis de poliedros y relación entre caras, aristas y vértices (teorema de Euler) usando redes como apoyo visual.",
+      "Transición a problemas combinados que usen simultáneamente prisma + red + cálculo numérico de áreas en contextos aplicados (arquitectura, embalaje, construcción)."
+    ],
+    "representation_variants": [
+      "Dibujo en perspectiva de un prisma recto (triangular, cuadrangular o de más lados) con sus caras diferenciadas y, opcionalmente, bases sombreadas.",
+      "Red completa del prisma, mostrando claramente las dos bases congruentes y todas las caras laterales rectangulares, dispuestas en una o más 'tiras'.",
+      "Redes alternativas (correctas e incorrectas) presentadas en paralelo para seleccionar cuál(es) corresponden al prisma dado.",
+      "Prisma 3D acompañado de su red parcialmente construida, pidiendo identificar la cara que falta o la ubicación de una cara dada.",
+      "Contextos cotidianos como cajas, envases o embalajes desplegados (por ejemplo, plantilla de una caja de cartón) interpretados como redes de prismas rectos.",
+      "Redes con dimensiones numéricas marcadas en algunos lados de las bases y en las caras laterales para reforzar la relación entre perímetro de la base y largo total de la banda lateral.",
+      "Representaciones donde las bases o las caras laterales están resaltadas mediante color, trama o letras (A, B, C, ...) para apoyar la identificación de correspondencias entre prisma y red."
+    ],
+    "numbers_profiles": [
+      "no_numbers",
+      "small_integers",
+      "simple_decimals"
+    ],
+    "required_image_types": [
+      "complex_3d",
+      "geometric_figure"
+    ]
+  }
+}

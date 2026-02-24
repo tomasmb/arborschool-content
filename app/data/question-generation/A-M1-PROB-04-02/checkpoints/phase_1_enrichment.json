@@ -1,0 +1,140 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Cálculo directo de la probabilidad de un evento simple usando la definición clásica: P(E) = casos favorables / casos posibles.",
+        "Problemas en los que todos los casos elementales del espacio muestral son equiprobables y esto es explícito o claramente deducible (por ejemplo, dados y monedas ideales, bolitas del mismo tipo, sorteos al azar).",
+        "Eventos simples asociados a un solo experimento aleatorio (un lanzamiento, una extracción, una elección, una encuesta ya realizada).",
+        "Cálculo de probabilidades a partir de conteo por enumeración explícita o por operaciones aritméticas básicas (sumas, restas, multiplicaciones sencillas).",
+        "Probabilidades obtenidas a partir de frecuencias absolutas o relativas dadas en tablas o enunciados verbales (por ejemplo, número de personas que prefieren una opción).",
+        "Eventos del tipo 'ser de cierto grupo', 'preferir cierta opción', 'obtener cierto resultado' definidos sobre una tabla o descripción simple.",
+        "Complemento cuando es inmediato y no involucra más de un evento: usar que P(E) = 1 − P(no E) si eso simplifica el cálculo."
+      ],
+      "out_of_scope": [
+        "Uso de permutaciones, combinaciones u otras técnicas avanzadas de conteo para construir el espacio muestral.",
+        "Problemas que requieren calcular la probabilidad de la intersección o unión de dos eventos no triviales usando reglas formales (por ejemplo, P(A ∩ B), P(A ∪ B)) más allá de una suma directa de casos.",
+        "Probabilidad condicional formal (P(A|B)) o teorema de Bayes.",
+        "Experimentos compuestos con muchos pasos donde la dificultad central está en el conteo estructurado (por ejemplo, diagramas de árbol complejos).",
+        "Modelación de fenómenos aleatorios con distribución binomial, normal u otras distribuciones teóricas.",
+        "Interpretación de frecuencias relativas empíricas como aproximaciones de probabilidad en experimentos repetidos (no es el foco de este átomo).",
+        "Interpretación o lectura de gráficos estadísticos (barras, histogramas, diagramas de caja, etc.) como fuente principal de datos; aquí los datos vienen dados típicamente en tablas o texto."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo fluido de fracciones y decimales, incluyendo cálculo de cocientes simples.",
+        "A-M1-NUM-02-01: Uso de porcentajes básicos y conversión entre fracción, decimal y porcentaje (no imprescindible, pero frecuente en contexto).",
+        "A-M1-DAT-01-01: Lectura e interpretación de tablas simples de datos categóricos.",
+        "A-M1-PROB-01-01: Comprensión intuitiva de azar y de experimento aleatorio sencillo.",
+        "A-M1-PROB-03-01: Comprender la idea de espacio muestral y casos posibles en contextos sencillos (dados, monedas, encuestas simples)."
+      ],
+      "common_traps": [
+        "Olvidar dividir por el total de casos posibles y trabajar solo con el número de casos favorables.",
+        "Confundir frecuencia absoluta con probabilidad cuando los datos provienen de una tabla, sin efectuar el cociente entre la categoría de interés y el total.",
+        "Malinterpretar el espacio muestral cuando se combinan resultados (por ejemplo, suma de dos dados) y considerar resultados no posibles o duplicados.",
+        "Suponer que todos los resultados numéricos son equiprobables cuando en realidad corresponden a sumas de dos dados, donde las probabilidades son distintas.",
+        "Interpretar de manera incorrecta expresiones como 'al menos', 'no ser', 'diferente de', 'o', generando el conjunto de casos favorables equivocado.",
+        "Olvidar que la probabilidad debe quedar entre 0 y 1 (o entre 0% y 100%), aceptando resultados imposibles por errores de conteo o de cociente.",
+        "No incluir todas las categorías relevantes al calcular el total (por ejemplo, sumar solo algunas filas o columnas de una tabla).",
+        "Tratar como experimentos distintos casos que en realidad forman parte de un mismo experimento simple (por ejemplo, confundir 'escoger una opción' con dos pasos)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Contextos muy familiares y cercanos al estudiante (dados estándar, monedas, urnas con pocas categorías, encuestas sencillas).",
+        "Datos entregados de forma directa y completa, típicamente con números pequeños y totales explícitos en el enunciado o en una tabla muy simple.",
+        "Evento simple claramente identificado con una categoría única (por ejemplo, 'ser mujer', 'preferir Matemática', 'bolita roja').",
+        "Cálculo de probabilidad que requiere un solo cociente, sin necesidad de sumar o restar múltiples frecuencias.",
+        "Espacio muestral evidente sin necesidad de enumeración detallada (por ejemplo, dado de 6 caras, 3 tipos de bolitas, 4 talleres).",
+        "Sin uso de lenguaje probabilístico potencialmente confuso (evitar 'al menos', 'a lo más', 'no ser', etc.)."
+      ],
+      "medium": [
+        "Contextos que requieren una ligera elaboración del espacio muestral o del evento simple, por ejemplo, sumas de dos dados, tres monedas o combinaciones pequeñas.",
+        "Necesidad de obtener la cantidad de casos favorables mediante una suma o una breve enumeración estructurada, pero sin técnicas avanzadas.",
+        "Tablas de doble entrada donde el estudiante debe identificar la celda, fila o columna pertinente y el total adecuado para formar el cociente.",
+        "Eventos formulados con lenguaje más elaborado (por ejemplo, 'no preferir área científica', 'ser hombre y preferir área A', siempre manteniendo un solo evento simple).",
+        "Requiere un paso intermedio de cálculo aritmético para llegar a la cantidad de casos favorables o totales (por ejemplo, usar que una parte es 2/3 del total para deducir una cantidad).",
+        "Casos en que se debe distinguir correctamente entre diferentes totales relevantes (por ejemplo, total de encuestados vs. total de un subgrupo)."
+      ],
+      "hard": [
+        "Experimentos simples pero con espacio muestral menos evidente que requiere enumeración cuidadosa (por ejemplo, lanzamientos múltiples con condición sobre la suma o diferencia).",
+        "Eventos formulados de manera indirecta que obligan a usar el complemento o a interpretar correctamente expresiones como 'al menos', 'a lo más', 'diferente de', manteniendo un único evento global.",
+        "Situaciones donde los resultados numéricos NO son todos equiprobables (por ejemplo, suma de dos dados) y se debe determinar correctamente la cantidad de casos favorables para una suma específica.",
+        "Problemas en los que se debe combinar información parcial (por ejemplo, un porcentaje o fracción del total que corresponde a una unión de categorías) para reconstruir el número de casos favorables o totales antes de calcular la probabilidad.",
+        "Preguntas en que se esconde un error típico de conteo o de elección del total relevante, de modo que el estudiante deba discriminar entre varios cocientes posibles muy parecidos.",
+        "Usar datos no explícitos de manera directa, pero deducibles a partir de relaciones sencillas (por ejemplo, deducir cantidades desconocidas en una tabla para luego calcular una probabilidad)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones vagas como 'al azar' sin aclarar que todos los elementos son del mismo tipo o que son equiprobables cuando esto sea necesario para aplicar la definición clásica.",
+      "Evitar situaciones donde el espacio muestral pueda interpretarse de más de una forma (por ejemplo, 'sacar dos bolitas' sin especificar si hay reemplazo o no, en este átomo focalizarse en un solo evento simple).",
+      "No mezclar frecuencias absolutas y relativas sin indicar claramente qué representa cada número (personas, porcentaje, fracción del total).",
+      "Evitar tablas donde el total no esté claro o sea ambiguo (por ejemplo, no indicar si la tabla incluye a todos los participantes o solo a una muestra parcial).",
+      "No usar la palabra 'o' en contextos donde pueda confundirse con unión inclusiva vs. exclusiva; aclarar con ejemplos de categorías mutuamente excluyentes si es necesario.",
+      "Evitar contextos donde la noción de equiprobabilidad sea discutible en la vida real (por ejemplo, 'clima', 'noticias', 'accidentes') si se va a usar la definición clásica.",
+      "No plantear eventos que en realidad combinan más de un experimento en serie; en este átomo, el evento debe poder entenderse como un resultado simple de un solo experimento aleatorio.",
+      "Evitar notaciones formales de probabilidad (como P(A), P(B)) sin definir claramente qué representan A y B si se usan, para que el foco siga siendo procedimental y no notacional."
+    ],
+    "error_families": [
+      {
+        "name": "Olvidar_dividir_por_el_total",
+        "description": "El estudiante identifica correctamente el número de casos favorables, pero lo entrega como respuesta sin dividir por el total de casos posibles.",
+        "how_to_address": "Incluir alternativas de respuesta que correspondan tanto a los casos favorables como al cociente correcto y enfatizar en la retroalimentación que probabilidad siempre es una razón: se debe formar la fracción 'casos favorables / casos totales'."
+      },
+      {
+        "name": "Total_incorrecto",
+        "description": "El estudiante usa un total equivocado al formar el cociente, por ejemplo, usa solo una fila o columna de la tabla en vez del total general, o solo suma algunas categorías.",
+        "how_to_address": "Diseñar ítems donde haya más de un 'total' posible y explicitar en la retroalimentación cómo identificar correctamente el conjunto sobre el cual se define el evento (quiénes participan en el experimento)."
+      },
+      {
+        "name": "Confundir_categoria_y_evento",
+        "description": "El estudiante elige como casos favorables una categoría distinta a la pedida, o interpreta mal expresiones como 'no ser', 'al menos', 'diferente de'.",
+        "how_to_address": "En la explicación, descomponer el enunciado en lenguaje cotidiano, listar las categorías que sí cuentan como favorables y las que no, y mostrar explícitamente cómo se construye ese conjunto antes de calcular el cociente."
+      },
+      {
+        "name": "Suponer_equiprobabilidad_donde_no_corresponde",
+        "description": "En experimentos como suma de dos dados, el estudiante trata todos los resultados numéricos posibles (2 a 12) como igualmente probables.",
+        "how_to_address": "Proponer ítems que contrasten resultados que aparecen con distinta frecuencia, y en la retroalimentación mostrar la enumeración de pares posibles (1,1), (1,2), etc., destacando que la probabilidad depende del número de formas en que puede ocurrir cada suma."
+      },
+      {
+        "name": "Error_en_enumeracion_de_casos",
+        "description": "El estudiante omite algunos casos posibles o cuenta casos duplicados, especialmente en lanzamientos múltiples o combinaciones simples.",
+        "how_to_address": "Utilizar esquemas de listado ordenado (por ejemplo, tablas o listados sistemáticos) en la explicación y recomendar un orden fijo para evitar omisiones o duplicaciones (primero fijar un resultado y variar el otro)."
+      },
+      {
+        "name": "Tratamiento_incorrecto_de_datos_tabulares",
+        "description": "Confunde leer un dato de una tabla con calcular una probabilidad: da como respuesta la frecuencia absoluta o el porcentaje ya mostrado sin verificar que sea la probabilidad pedida.",
+        "how_to_address": "En ítems con tablas, pedir explícitamente conteos intermedios y usar la retroalimentación para remarcar la diferencia entre 'número de personas' y 'probabilidad', reforzando la idea de que la probabilidad se obtiene siempre dividiendo por el total apropiado."
+      },
+      {
+        "name": "Resultados_fuera_de_rango",
+        "description": "Por errores de conteo o de cálculo, obtiene probabilidades mayores que 1 o menores que 0 y no detecta el problema.",
+        "how_to_address": "En la retroalimentación, hacer que el estudiante compare su resultado con el rango permitido (0 a 1) e incorporar preguntas de reflexión rápida del tipo '¿este resultado puede ser una probabilidad? ¿por qué?'."
+      }
+    ],
+    "future_targets": [
+      "Cálculo de probabilidad de eventos compuestos (unión e intersección de eventos) usando reglas de suma y producto en contextos discretos simples.",
+      "Uso sistemático de diagramas de árbol y tablas de contingencia para contar casos y calcular probabilidades en experimentos de varios pasos.",
+      "Probabilidad condicional en contextos discretos y su interpretación a partir de frecuencias en tablas y gráficos.",
+      "Aplicación de técnicas de conteo (permutaciones y combinaciones) para determinar el número de casos favorables y posibles en experimentos más complejos.",
+      "Modelamiento de situaciones aleatorias mediante distribuciones discretas como la binomial y su conexión con repeticiones de experimentos simples.",
+      "Interpretación de frecuencias relativas empíricas como aproximación de probabilidades teóricas en experimentos repetidos.",
+      "Resolución de problemas de decisión y evaluación de riesgo que utilizan probabilidades simples como insumo (por ejemplo, juegos de azar, sorteos, muestreos)."
+    ],
+    "representation_variants": [
+      "Datos presentados en tablas simples de una entrada (lista de categorías con sus frecuencias) para que el estudiante identifique casos favorables y total.",
+      "Datos en tablas de doble entrada (por ejemplo, género vs. preferencia) donde el evento corresponde a una celda, a una fila o a una columna específica.",
+      "Descripción puramente verbal del experimento aleatorio y de las cantidades (por ejemplo, 'en un grupo de 30 personas, 12 prefieren...').",
+      "Contextos con dispositivos aleatorios clásicos (dados, monedas, ruletas sencillas, urnas con bolitas) descritos textualmente, con o sin enumeración de resultados posibles.",
+      "Representaciones numéricas que incluyan frecuencias absolutas, porcentajes o fracciones del total, donde el estudiante debe transformar esa información en una probabilidad.",
+      "Listados explícitos de resultados posibles (por ejemplo, todas las parejas obtenidas al lanzar dos dados) para que el estudiante cuente los casos favorables."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "fractions",
+      "simple_decimals",
+      "simple_percentages"
+    ],
+    "required_image_types": []
+  }
+}
