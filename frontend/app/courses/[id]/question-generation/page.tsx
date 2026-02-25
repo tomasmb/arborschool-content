@@ -16,6 +16,7 @@ import {
   type BatchGenOptions,
 } from "./components/GenerationTab";
 import { ResultsTab } from "./components/ResultsTab";
+import { QuestionBankTab } from "./components/QuestionBankTab";
 import { GenQuestionSyncTab } from "./components/GenQuestionSyncTab";
 import { BatchEnrichModal } from "./components/BatchEnrichModal";
 
@@ -184,6 +185,10 @@ export default function QuestionGenerationPage() {
               handleRunPhase(atomId, "all")
             }
           />
+        )}
+
+        {activeTab === "question-bank" && (
+          <QuestionBankTab />
         )}
 
         {activeTab === "sync" && (

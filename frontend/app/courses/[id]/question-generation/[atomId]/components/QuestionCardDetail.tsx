@@ -12,7 +12,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { QTIRenderer } from "@/components/qti/QTIRenderer";
+import { QTIInteractive } from "@/components/qti/QTIInteractive";
 import { revalidateSingleItem, revalidateFinalItem } from "@/lib/api";
 import type {
   GeneratedItem,
@@ -350,11 +350,9 @@ function ExpandedContent(props: ExpandedContentProps) {
           )}
         </div>
         <div className="lg:col-span-2 p-4">
-          <QTIRenderer
+          <QTIInteractive
             qtiXml={item.qti_xml}
             showCorrectAnswer
-            showFeedback={false}
-            showWorkedSolution={false}
             size="sm"
           />
         </div>

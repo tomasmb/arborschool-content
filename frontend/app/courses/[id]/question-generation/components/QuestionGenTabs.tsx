@@ -1,9 +1,14 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type QGenTab = "overview" | "generation" | "results" | "sync";
+export type QGenTab =
+  | "overview"
+  | "generation"
+  | "results"
+  | "question-bank"
+  | "sync";
 
 export interface QuestionGenTabsProps {
   activeTab: QGenTab;
@@ -16,13 +21,16 @@ interface TabConfig {
   id: QGenTab;
   step: number;
   label: string;
+  /** Use an icon instead of step number */
+  icon?: typeof Library;
 }
 
 const tabConfigs: TabConfig[] = [
   { id: "overview", step: 1, label: "Overview" },
   { id: "generation", step: 2, label: "Generate" },
   { id: "results", step: 3, label: "Results" },
-  { id: "sync", step: 4, label: "Sync" },
+  { id: "question-bank", step: 4, label: "Question Bank", icon: Library },
+  { id: "sync", step: 5, label: "Sync" },
 ];
 
 export function QuestionGenTabs({
@@ -48,12 +56,14 @@ export function QuestionGenTabs({
                 "border-b-2 transition-colors whitespace-nowrap",
                 isActive
                   ? "border-accent text-accent bg-accent/5"
-                  : "border-transparent text-text-secondary hover:text-text-primary hover:bg-white/5",
+                  : "border-transparent text-text-secondary"
+                    + " hover:text-text-primary hover:bg-white/5",
               )}
             >
               <span
                 className={cn(
-                  "flex items-center justify-center w-5 h-5 rounded-full text-xs font-semibold",
+                  "flex items-center justify-center",
+                  "w-5 h-5 rounded-full text-xs font-semibold",
                   isActive
                     ? "bg-accent text-white"
                     : isComplete
@@ -63,6 +73,8 @@ export function QuestionGenTabs({
               >
                 {isComplete ? (
                   <CheckCircle2 className="w-3.5 h-3.5" />
+                ) : tab.icon ? (
+                  <tab.icon className="w-3.5 h-3.5" />
                 ) : (
                   tab.step
                 )}
@@ -70,19 +82,19 @@ export function QuestionGenTabs({
 
               <span>{tab.label}</span>
 
-              {/* Count badge for Results tab */}
-              {tab.id === "results" && atomsWithQuestions > 0 && (
-                <span
-                  className={cn(
-                    "px-1.5 py-0.5 text-xs rounded",
-                    isActive
-                      ? "bg-accent/20"
-                      : "bg-surface text-text-secondary",
-                  )}
-                >
-                  {atomsWithQuestions}/{atomCount}
-                </span>
-              )}
+              {tab.id === "results" &&
+                atomsWithQuestions > 0 && (
+                  <span
+                    className={cn(
+                      "px-1.5 py-0.5 text-xs rounded",
+                      isActive
+                        ? "bg-accent/20"
+                        : "bg-surface text-text-secondary",
+                    )}
+                  >
+                    {atomsWithQuestions}/{atomCount}
+                  </span>
+                )}
             </button>
           );
         })}
