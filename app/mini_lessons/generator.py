@@ -11,6 +11,7 @@ import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from app.llm_clients import LLMResponse, OpenAIClient
+from app.mini_lessons.html_validator import count_words
 from app.mini_lessons.models import (
     LessonContext,
     LessonPlan,
@@ -38,15 +39,27 @@ class SectionGenerator:
         self,
         ctx: LessonContext,
         plan: LessonPlan,
+        only: list[tuple[str, int | None]] | None = None,
     ) -> tuple[PhaseResult, list[LessonSection]]:
         """Run Phase 2: parallel section generation.
+
+        Args:
+            ctx: Lesson context with atom + enrichment data.
+            plan: The lesson plan to generate sections from.
+            only: If provided, generate only these (block_name, index)
+                  pairs. Used by refinement to regenerate weak sections
+                  without re-generating everything.
 
         Returns:
             Tuple of (PhaseResult, list of generated sections).
         """
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
-        jobs = _build_generation_jobs(plan)
+        all_jobs = _build_generation_jobs(plan)
+        jobs = (
+            [j for j in all_jobs if j in only]
+            if only else all_jobs
+        )
 
         sections: list[LessonSection] = []
         errors: list[str] = []
@@ -123,7 +136,7 @@ class SectionGenerator:
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
-            word_count = len(html.split())
+            word_count = count_words(html)
 
             return LessonSection(
                 block_name=block_name,
@@ -175,8 +188,9 @@ def _build_generation_jobs(
     jobs.append(("error-patterns", None))
     jobs.append(("transition-to-adaptive", None))
 
+    existing_blocks = {name for name, _ in jobs}
     for opt in plan.optional_sections:
-        if opt.block_name not in dict(jobs):
+        if opt.block_name not in existing_blocks:
             jobs.append((opt.block_name, None))
 
     return jobs

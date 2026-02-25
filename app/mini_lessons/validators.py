@@ -232,6 +232,20 @@ def _deterministic_section_checks(
 # ===================================================================
 
 
+_EDUCATIONAL_WPM = 160
+
+
+def estimate_duration_minutes(html: str) -> float:
+    """Estimate reading time for educational content with MathML.
+
+    Uses ~160 wpm for educational content (slower than casual
+    reading due to math, step-by-step reasoning, and MCQ
+    interaction time).
+    """
+    words = count_words(html)
+    return round(words / _EDUCATIONAL_WPM, 1)
+
+
 def assemble_lesson(
     sections: list[LessonSection],
     atom_id: str,
@@ -260,10 +274,22 @@ def assemble_lesson(
             errors=gate_errors,
         ), full_html
 
+    warnings: list[str] = []
+    duration = estimate_duration_minutes(full_html)
+    if duration > 7:
+        warnings.append(
+            f"Estimated duration {duration} min exceeds "
+            f"7 min target window",
+        )
+
     return PhaseResult(
         phase_name="assembly",
         success=True,
-        data={"html_length": len(full_html)},
+        data={
+            "html_length": len(full_html),
+            "estimated_duration_min": duration,
+        },
+        warnings=warnings,
     ), full_html
 
 
@@ -272,9 +298,10 @@ def build_lesson_meta(
     template_type: str,
     ctx: LessonContext,
     plan: LessonPlan,
+    html: str = "",
 ) -> dict:
     """Build the mini-class.meta.json content."""
-    return {
+    meta: dict = {
         "atom_id": atom_id,
         "template_type": template_type,
         "eje": ctx.eje,
@@ -285,6 +312,11 @@ def build_lesson_meta(
         ],
         "quick_check_count": len(plan.quick_checks),
     }
+    if html:
+        meta["estimated_duration_min"] = (
+            estimate_duration_minutes(html)
+        )
+    return meta
 
 
 # ===================================================================
@@ -369,11 +401,19 @@ def _extract_enrichment_for_gate(
 
 
 def _is_publishable(report: QualityReport) -> bool:
-    """Determine if the lesson meets publication criteria."""
+    """Determine if the lesson meets publication criteria.
+
+    Spec Gate 5: total >= 12/14 AND minimum 1/2 per dimension.
+    """
     if report.auto_fail_triggered:
         return False
     if not report.math_correct:
         return False
     if not report.coverage_pass:
         return False
-    return report.total_score >= 12
+    if report.total_score < 12:
+        return False
+    for score in report.dimension_scores.values():
+        if score < 1:
+            return False
+    return True

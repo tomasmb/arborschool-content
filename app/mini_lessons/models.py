@@ -7,9 +7,12 @@ sections, quality reporting, and phase management.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pydantic import BaseModel, Field
+
+if TYPE_CHECKING:
+    from app.question_generation.models import AtomEnrichment
 
 # ---------------------------------------------------------------------------
 # Template type mapping (spec section 4)
@@ -107,7 +110,7 @@ class LessonContext:
     ejemplos_conceptuales: list[str]
     notas_alcance: list[str]
     prerequisites: list[str]
-    enrichment: Any | None = None
+    enrichment: AtomEnrichment | None = None
     sample_questions: dict[str, list[str]] = field(
         default_factory=dict,
     )
@@ -199,7 +202,7 @@ RUBRIC_DIMENSIONS: list[str] = [
     "step_rationale_clarity",
     "quick_check_quality",
     "feedback_quality",
-    "tone_engagement",
+    "transition_readiness",
 ]
 
 

@@ -96,8 +96,8 @@ oración enseña o estructura. 0=verbose, 1=algo exceso, 2=limpio.
 "cómo". Sin sobre-explicar.
 5. quick_check_quality: Distractores plausibles, no triviales.
 6. feedback_quality: Explicativo, accionable, conciso.
-7. tone_engagement: Natural, directo, español chileno apropiado. \
-0=robótico/académico, 1=aceptable, 2=natural y motivante.
+7. transition_readiness: Transición explícita al set adaptativo con \
+acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
 </task>
 
 <rules>
@@ -126,7 +126,7 @@ JSON puro:
     "step_rationale_clarity": 2,
     "quick_check_quality": 2,
     "feedback_quality": 2,
-    "tone_engagement": 2
+    "transition_readiness": 2
   }},
   "total_score": 14,
   "auto_fail_triggered": false,

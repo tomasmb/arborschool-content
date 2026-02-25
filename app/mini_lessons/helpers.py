@@ -169,15 +169,12 @@ def _extract_question_stem(qti_xml: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def resolve_template_type(tipo_atomico: str) -> str:
-    """Map atom tipo_atomico to template type (P, C, or M)."""
-    template = TEMPLATE_MAP.get(tipo_atomico)
-    if not template:
-        logger.warning(
-            "Unknown tipo_atomico '%s', defaulting to M", tipo_atomico,
-        )
-        return "M"
-    return template
+def resolve_template_type(tipo_atomico: str) -> str | None:
+    """Map atom tipo_atomico to template type (P, C, or M).
+
+    Returns None for unknown tipo_atomico values (no fallback).
+    """
+    return TEMPLATE_MAP.get(tipo_atomico)
 
 
 # ---------------------------------------------------------------------------
@@ -189,15 +186,26 @@ def build_lesson_context(
     atom: Atom,
     enrichment: AtomEnrichment | None,
     sample_questions: dict[str, list[str]],
-) -> LessonContext:
-    """Build the full lesson context from atom + enrichment + questions."""
+) -> LessonContext | None:
+    """Build the full lesson context from atom + enrichment + questions.
+
+    Returns None if the atom's tipo_atomico is unrecognized.
+    """
+    template = resolve_template_type(atom.tipo_atomico)
+    if template is None:
+        logger.error(
+            "Unknown tipo_atomico '%s' for atom %s — cannot "
+            "determine template type",
+            atom.tipo_atomico, atom.id,
+        )
+        return None
     return LessonContext(
         atom_id=atom.id,
         atom_title=atom.titulo,
         atom_description=atom.descripcion,
         eje=atom.eje,
         tipo_atomico=atom.tipo_atomico,
-        template_type=resolve_template_type(atom.tipo_atomico),
+        template_type=template,
         criterios_atomicos=atom.criterios_atomicos,
         ejemplos_conceptuales=atom.ejemplos_conceptuales,
         notas_alcance=atom.notas_alcance,
@@ -299,10 +307,12 @@ def find_resume_phase_group(output_dir: Path) -> str | None:
         return None
 
     checkpoint_to_next: dict[int, str] = {
-        5: "output",
-        4: "quality",
-        3: "assemble",
+        0: "plan",
         1: "generate",
+        2: "generate",
+        3: "assemble",
+        4: "quality",
+        5: "output",
     }
     return checkpoint_to_next.get(max_phase)
 

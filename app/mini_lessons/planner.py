@@ -92,7 +92,7 @@ class LessonPlanner:
             )
             data = json.loads(resp.text)
             return LessonPlan.model_validate(data)
-        except (json.JSONDecodeError, Exception) as exc:
+        except Exception as exc:
             logger.warning("Plan LLM call failed: %s", exc)
             return None
 

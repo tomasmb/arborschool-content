@@ -54,6 +54,12 @@ FORBIDDEN_FILLER_PHRASES = [
 # ---------------------------------------------------------------------------
 
 
+_ATOM_ID_RE = re.compile(
+    r"^A-M\d+-[A-Z]{3}-\d{2}-\d{2}$",
+)
+_VALID_TEMPLATES = frozenset({"P", "C", "M"})
+
+
 class _StructureParser(HTMLParser):
     """Extracts structural information from mini-lesson HTML."""
 
@@ -66,6 +72,8 @@ class _StructureParser(HTMLParser):
         self.option_counts: dict[int, int] = {}
         self.correct_options: dict[int, str | None] = {}
         self._current_qc_index: int | None = None
+        self.article_atom_id: str | None = None
+        self.article_template: str | None = None
 
     def handle_starttag(
         self,
@@ -80,6 +88,10 @@ class _StructureParser(HTMLParser):
 
         if attr_dict.get("style"):
             self.has_inline_style = True
+
+        if tag == "article":
+            self.article_atom_id = attr_dict.get("data-atom-id")
+            self.article_template = attr_dict.get("data-template")
 
         block = attr_dict.get("data-block")
         if block:
@@ -202,7 +214,11 @@ def count_words(html: str) -> int:
 
 
 def _gate_1_contract(html: str) -> list[str]:
-    """Gate 1: Contract validity."""
+    """Gate 1: Contract validity.
+
+    Checks root article attrs, required blocks, multiplicities,
+    and tag allowlist per spec v1.1 (Appendix B §A).
+    """
     errors: list[str] = []
     parser = parse_html_structure(html)
 
@@ -210,6 +226,23 @@ def _gate_1_contract(html: str) -> list[str]:
     if article_count != 1:
         errors.append(
             f"Expected 1 <article>, found {article_count}",
+        )
+
+    aid = parser.article_atom_id
+    if not aid:
+        errors.append("Missing data-atom-id on <article>")
+    elif not _ATOM_ID_RE.match(aid):
+        errors.append(
+            f"data-atom-id '{aid}' does not match "
+            f"expected pattern A-M<d>+-<ABC>-<dd>-<dd>",
+        )
+
+    tmpl = parser.article_template
+    if not tmpl:
+        errors.append("Missing data-template on <article>")
+    elif tmpl not in _VALID_TEMPLATES:
+        errors.append(
+            f"data-template '{tmpl}' not in {{P, C, M}}",
         )
 
     block_names = [b["block"] for b in parser.blocks]
@@ -255,9 +288,8 @@ def _gate_2_quick_check_integrity(html: str) -> list[str]:
                 f"QC {idx}: missing data-correct-option",
             )
 
-    if "data-role=\"feedback\"" not in html:
-        if 'data-role="feedback"' not in html:
-            errors.append("Missing feedback div in quick-check")
+    if 'data-role="feedback"' not in html:
+        errors.append("Missing feedback div in quick-check")
 
     return errors
 

@@ -170,6 +170,15 @@ class MiniLessonPipeline:
         enrichment = load_enrichment(config.atom_id)
         samples = load_sample_questions(config.atom_id)
         ctx = build_lesson_context(atom, enrichment, samples)
+        if ctx is None:
+            result.phase_results.append(PhaseResult(
+                phase_name="input_loading", success=False,
+                errors=[
+                    f"Unknown tipo_atomico '{atom.tipo_atomico}' "
+                    f"for atom {config.atom_id}",
+                ],
+            ))
+            return None
         result.phase_results.append(PhaseResult(
             phase_name="input_loading", success=True,
             data={"template_type": ctx.template_type},
@@ -302,23 +311,25 @@ class MiniLessonPipeline:
         ctx: LessonContext, plan: LessonPlan,
         result: LessonResult,
     ) -> str | None:
-        """Phase 5b: regenerate weak sections and re-validate."""
+        """Phase 5b: regenerate only weak sections, re-validate."""
         weak = _identify_weak_sections(report, sections)
         if not weak:
             return None
+        weak_keys = [
+            (s.block_name, s.index) for s in weak
+        ]
         logger.info(
             "Refining %d sections: %s",
             len(weak), [s.block_name for s in weak],
         )
         _, regenerated = self._generator.generate_sections(
-            ctx, plan,
+            ctx, plan, only=weak_keys,
         )
         regen_map = {
             (s.block_name, s.index): s for s in regenerated
         }
         refined = [
             regen_map.get((s.block_name, s.index), s)
-            if s in weak else s
             for s in sections
         ]
         _, validated = self._section_validator.validate_sections(
@@ -342,6 +353,7 @@ class MiniLessonPipeline:
         )
         meta = build_lesson_meta(
             ctx.atom_id, ctx.template_type, ctx, plan,
+            html=full_html,
         )
         (output_dir / "mini-class.meta.json").write_text(
             json.dumps(meta, indent=2, ensure_ascii=False),
@@ -419,9 +431,7 @@ def _identify_weak_sections(
         "step_rationale_clarity": ["worked-example"],
         "quick_check_quality": ["quick-check"],
         "feedback_quality": ["quick-check"],
-        "tone_engagement": [
-            "concept", "worked-example", "error-patterns",
-        ],
+        "transition_readiness": ["transition-to-adaptive"],
     }
     weak_blocks: set[str] = set()
     for dim, score in report.dimension_scores.items():
