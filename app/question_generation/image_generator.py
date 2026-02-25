@@ -23,6 +23,7 @@ from app.llm_clients import (
     GeminiImageClient,
     OpenAIClient,
     RateLimitError,
+    ServiceUnavailableError,
     load_default_gemini_image_client,
     load_fallback_gemini_image_clients,
 )
@@ -44,6 +45,7 @@ _VALIDATION_REASONING = "low"
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 _MAX_PARALLEL_IMAGES = 3
 _MAX_IMAGE_RETRIES = 1
+_MAX_503_RETRIES = 3
 
 
 class _RateLimiter:
@@ -192,15 +194,17 @@ class ImageGenerator:
             for future in as_completed(futures):
                 try:
                     future.result()
-                except RateLimitError:
+                except (RateLimitError, ServiceUnavailableError) as exc:
+                    kind = ("Daily quota" if isinstance(
+                        exc, RateLimitError,
+                    ) else "503 unavailable")
                     logger.error(
-                        "Daily quota exhausted — cancelling "
-                        "remaining images",
+                        "%s — cancelling remaining images", kind,
                     )
                     for f in futures:
                         f.cancel()
                     with lock:
-                        errors.append("daily quota exhausted")
+                        errors.append(kind.lower())
                     break
                 except Exception as exc:
                     item = futures[future]
@@ -332,27 +336,40 @@ class ImageGenerator:
             prompt = GEMINI_IMAGE_GENERATION_PROMPT.format(
                 generation_prompt=image_description,
             )
-        try:
-            return gemini.generate_image(prompt)
-        except RateLimitError:
-            raise
-        except (TimeoutError, OSError) as exc:
-            logger.error(
-                "Gemini image generation timed out: %s", exc,
-            )
-            return None
-        except Exception as exc:
-            msg = str(exc).lower()
-            if "429" in msg and "resource_exhausted" in msg:
-                is_daily = (
-                    "per_day" in msg or "per day" in msg
-                    or "rpd" in msg
+        for retry_503 in range(_MAX_503_RETRIES + 1):
+            if retry_503 > 0:
+                delay = 30 * (2 ** (retry_503 - 1))
+                logger.warning(
+                    "503 backoff %ds (%d/%d)",
+                    delay, retry_503, _MAX_503_RETRIES,
                 )
-                raise RateLimitError(
-                    str(exc), is_daily=is_daily,
-                ) from exc
-            logger.error("Gemini image generation failed: %s", exc)
-            return None
+                time.sleep(delay)
+            try:
+                return gemini.generate_image(prompt)
+            except RateLimitError:
+                raise
+            except (TimeoutError, OSError) as exc:
+                logger.error(
+                    "Gemini image generation timed out: %s", exc,
+                )
+                return None
+            except Exception as exc:
+                msg = str(exc).lower()
+                if "429" in msg and "resource_exhausted" in msg:
+                    is_daily = (
+                        "per_day" in msg or "per day" in msg
+                        or "rpd" in msg
+                    )
+                    raise RateLimitError(
+                        str(exc), is_daily=is_daily,
+                    ) from exc
+                if "503" in msg and "unavailable" in msg:
+                    continue
+                logger.error(
+                    "Gemini image generation failed: %s", exc,
+                )
+                return None
+        raise ServiceUnavailableError("503 persists after retries")
 
     def _validate_image(
         self,
@@ -390,20 +407,14 @@ class ImageGenerator:
             return False, f"validation error: {exc}"
 
     def _upload_to_s3(
-        self,
-        image_bytes: bytes,
-        item_id: str,
-        atom_id: str,
+        self, image_bytes: bytes, item_id: str, atom_id: str,
     ) -> str | None:
         """Upload PNG to S3. Returns public URL or None."""
         upload_fn = _load_s3_upload_fn()
         if upload_fn is None:
-            logger.error("S3 uploader not available")
             return None
-
-        image_b64 = base64.b64encode(image_bytes).decode("utf-8")
         return upload_fn(
-            image_base64=image_b64,
+            image_base64=base64.b64encode(image_bytes).decode(),
             question_id=item_id,
             path_prefix="images/question-generation/",
             test_name=atom_id,
@@ -418,19 +429,15 @@ def _load_s3_upload_fn() -> Any:
     global _s3_upload_fn  # noqa: PLW0603
     if _s3_upload_fn is not None:
         return _s3_upload_fn
-
     import importlib
     from pathlib import Path
-
     spec_path = (
         Path(__file__).resolve().parents[1]
         / "pruebas" / "pdf-to-qti" / "modules" / "utils"
         / "s3_uploader.py"
     )
     if not spec_path.exists():
-        logger.error("S3 uploader module not found: %s", spec_path)
         return None
-
     try:
         spec = importlib.util.spec_from_file_location(
             "s3_uploader", spec_path,
@@ -439,8 +446,7 @@ def _load_s3_upload_fn() -> Any:
         spec.loader.exec_module(mod)  # type: ignore[union-attr]
         _s3_upload_fn = mod.upload_image_to_s3
         return _s3_upload_fn
-    except Exception as exc:
-        logger.error("Failed to load S3 uploader: %s", exc)
+    except Exception:
         return None
 
 
@@ -458,16 +464,13 @@ def _select_image_items(
 
 
 def _build_result(
-    items: list[GeneratedItem],
-    errors: list[str],
+    items: list[GeneratedItem], errors: list[str],
 ) -> PhaseResult:
     """Build PhaseResult from all items after image generation."""
-    active = [it for it in items if not it.image_failed]
     return PhaseResult(
         phase_name="image_generation",
-        success=len(active) > 0,
-        data={"items": items},
-        errors=errors,
+        success=any(not it.image_failed for it in items),
+        data={"items": items}, errors=errors,
     )
 
 
@@ -489,12 +492,9 @@ def _extract_stem_text(qti_xml: str) -> str:
     """Extract plain text from the QTI item body for context."""
     match = re.search(
         r"<qti-item-body[^>]*>(.*?)<qti-choice-interaction",
-        qti_xml,
-        re.DOTALL,
+        qti_xml, re.DOTALL,
     )
     if not match:
         return ""
-
-    body = match.group(1)
-    text = re.sub(r"<[^>]+>", " ", body)
+    text = re.sub(r"<[^>]+>", " ", match.group(1))
     return re.sub(r"\s+", " ", text).strip()

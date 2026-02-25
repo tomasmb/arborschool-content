@@ -81,6 +81,10 @@ class RateLimitError(Exception):
         self.is_daily = is_daily
 
 
+class ServiceUnavailableError(Exception):
+    """Raised on HTTP 503 (model overloaded) after retries exhausted."""
+
+
 # ---------------------------------------------------------------------------
 # Global cost accumulator hook (set by pipeline orchestrators)
 # ---------------------------------------------------------------------------
