@@ -14,6 +14,7 @@ Extracted from ``pipeline.py`` to keep the main orchestrator under
 from __future__ import annotations
 
 import logging
+import os
 import threading
 from pathlib import Path
 
@@ -353,7 +354,8 @@ def run_phase_4b_batch(
     from app.llm_clients import OpenAIClient
     from app.utils.paths import QUESTION_GENERATION_DIR
 
-    image_gen = ImageGenerator(OpenAIClient())
+    api_key = os.environ.get("OPENAI_API_KEY", "")
+    image_gen = ImageGenerator(OpenAIClient(api_key=api_key))
     total_generated = 0
     total_failed = 0
 

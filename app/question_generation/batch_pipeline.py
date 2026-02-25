@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -347,6 +348,7 @@ class BatchAtomPipeline:
         plans, failures = process_plan_responses(
             self._submit_and_wait("phase_2", reqs),
         )
+        self._offset_slot_indices(plans)
         self._plans = plans
         if failures:
             mark_atoms_failed(self._state, failures, self._ckpt_path)
@@ -354,6 +356,35 @@ class BatchAtomPipeline:
             self._state, "phase_2", self._ckpt_path,
             status="completed",
         )
+
+    def _offset_slot_indices(
+        self,
+        plans: dict[str, list[PlanSlot]],
+    ) -> None:
+        """Offset slot indices so new item IDs don't collide.
+
+        Reads existing Phase 9 checkpoints to find the max Q
+        number per atom, then shifts all new slot indices above it.
+        """
+        for atom_id, slots in plans.items():
+            ckpt = load_checkpoint(
+                QUESTION_GENERATION_DIR / atom_id,
+                9, "final_validation",
+            )
+            if not ckpt or not ckpt.get("items"):
+                continue
+            max_q = 0
+            for item in ckpt["items"]:
+                m = re.search(r"_Q(\d+)$", item.get("item_id", ""))
+                if m:
+                    max_q = max(max_q, int(m.group(1)))
+            offset = max_q + 1
+            for slot in slots:
+                slot.slot_index += offset
+            logger.info(
+                "Offset %s slots by +%d (existing max Q%d)",
+                atom_id, offset, max_q,
+            )
 
     def _run_phase_3_validation(self) -> None:
         logger.info("Phase 3: Validating plans")
