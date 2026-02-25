@@ -240,6 +240,31 @@ export async function revalidateFinalItem(
   );
 }
 
+export interface QuestionBankParams {
+  eje?: string;
+  difficulty?: string;
+  status?: string;
+  search?: string;
+  offset?: number;
+  limit?: number;
+}
+
+export async function getAllQuestions(
+  params: QuestionBankParams = {},
+): Promise<import("./api-types-question-gen").QuestionBankResponse> {
+  const qp = new URLSearchParams();
+  if (params.eje) qp.set("eje", params.eje);
+  if (params.difficulty) qp.set("difficulty", params.difficulty);
+  if (params.status) qp.set("status", params.status);
+  if (params.search) qp.set("search", params.search);
+  if (params.offset !== undefined) qp.set("offset", String(params.offset));
+  if (params.limit !== undefined) qp.set("limit", String(params.limit));
+  const qs = qp.toString();
+  return fetchAPI(
+    `/pipelines/question_gen/all_questions${qs ? `?${qs}` : ""}`,
+  );
+}
+
 // --- Enrichment API ---
 export interface StartEnrichmentParams {
   question_ids?: string[];

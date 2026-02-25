@@ -76,10 +76,6 @@ export function CollapsibleSection({
   );
 }
 
-// ---------------------------------------------------------------------------
-// Pro Pagination (page pills, page-size selector, range display)
-// ---------------------------------------------------------------------------
-
 const PAGE_SIZE_OPTIONS = [10, 25, 50];
 
 interface ProPaginationProps {
@@ -279,9 +275,11 @@ export type OverallStatus = "pass" | "fail" | "pending";
 
 /** Compute overall item status from validator statuses. */
 export function getOverallStatus(
-  validators: ValidatorStatuses,
+  validators: ValidatorStatuses | null | undefined,
 ): OverallStatus {
+  if (!validators) return "pending";
   const values = Object.values(validators) as string[];
+  if (values.length === 0) return "pending";
   if (values.some((v) => v === "fail")) return "fail";
   if (values.every((v) => v === "pending")) return "pending";
   return "pass";
@@ -339,7 +337,7 @@ export function PlanSpec({
   meta,
   planSlot,
 }: {
-  meta: GeneratedItem["pipeline_meta"];
+  meta: NonNullable<GeneratedItem["pipeline_meta"]>;
   planSlot: PlanSlot | null;
 }) {
   return (
@@ -391,8 +389,9 @@ const VALIDATOR_ICON_MAP = {
 export function ValidatorBreakdown({
   validators,
 }: {
-  validators: ValidatorStatuses;
+  validators: ValidatorStatuses | null;
 }) {
+  if (!validators) return null;
   return (
     <div className="pt-3 border-t border-border">
       <h3 className={SECTION_LABEL}>Validators</h3>
@@ -432,8 +431,10 @@ export function ValidatorBreakdown({
 export function ValidatorPills({
   validators,
 }: {
-  validators: ValidatorStatuses;
+  validators: ValidatorStatuses | null;
 }) {
+  if (!validators) return null;
+
   const entries = (
     Object.entries(validators) as [string, string][]
   ).filter(([, v]) => v !== "pending");

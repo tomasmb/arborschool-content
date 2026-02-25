@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Divisiones donde al menos uno de los términos es un número decimal positivo o negativo.",
+        "Procedimiento de transformar el divisor decimal en entero multiplicando dividendo y divisor por potencias de 10 (desplazar la coma a la derecha).",
+        "Ubicación correcta de la coma en el cociente después de haber eliminado la coma del divisor.",
+        "Aplicación de la regla de los signos en la división de números decimales positivos y negativos.",
+        "Problemas de contexto que se resuelven esencialmente mediante una división con decimales (por ejemplo, cálculo de una medida o valor unitario)."
+      ],
+      "out_of_scope": [
+        "División de fracciones en notación fraccionaria explícita (p. ej. 3/5 ÷ 1/4) sin pasar por decimales.",
+        "División con números en notación científica como contenido central.",
+        "Algoritmos alternativos de división de decimales que no usan la eliminación de la coma del divisor (p. ej. solo uso de calculadora, descomposiciones aditivas sofisticadas).",
+        "División de polinomios o expresiones algebraicas con coeficientes decimales.",
+        "Problemas donde la dificultad principal es de geometría avanzada, álgebra o funciones, y la división decimal es solo una operación menor dentro de muchos pasos.",
+        "Redondeos, aproximaciones o estimaciones como foco principal del ítem (solo se aceptan si están al servicio de la división decimal exacta)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprensión de la notación decimal y valor posicional.",
+        "A-M1-NUM-01-05: Manejo de potencias de 10 para desplazar la coma decimal.",
+        "A-M1-NUM-01-10: División de números naturales con algoritmo estándar.",
+        "A-M1-NUM-01-15: Regla de los signos para suma, resta, multiplicación y división de enteros."
+      ],
+      "common_traps": [
+        "Olvidar multiplicar el dividendo al mismo tiempo que el divisor al desplazar la coma (solo se transforma el divisor).",
+        "Desplazar la coma en sentido incorrecto (hacia la izquierda en lugar de hacia la derecha).",
+        "No continuar desplazando la coma del dividendo cuando la división exige agregar ceros a la derecha.",
+        "Colocar la coma del cociente en una posición que no corresponde al número de desplazamientos realizados.",
+        "Confundir el número de ceros agregados en el dividendo con el número de cifras decimales en el cociente.",
+        "Ignorar la regla de los signos y responder solo con el valor absoluto del cociente.",
+        "Interpretar mal el contexto y dividir al revés (intercambiar dividendo y divisor: usar a : b en vez de b : a)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Divisiones donde el divisor tiene a lo más una cifra decimal y se transforma en entero con una sola potencia de 10 (p. ej. 0,5; 1,2).",
+        "Números positivos, sin uso de regla de signos.",
+        "Cantidades pequeñas, con resultados enteros o con una sola cifra decimal y algoritmo de división corto.",
+        "Enunciados directos, sin contexto o con contexto muy simple (por ejemplo, encontrar un número a partir de su parte o de una razón directa).",
+        "Estructura de cálculo del tipo '¿Cuál es el número que al dividirlo por k da un decimal dado?' donde la operación principal es evidente."
+      ],
+      "medium": [
+        "Divisiones donde el divisor tiene dos cifras decimales o más, requiriendo desplazar la coma 2 lugares o más.",
+        "Resultados decimales no exactos de lectura sencilla (1 o 2 decimales no periódicos) y que exigen al menos un paso de 'bajar cero' en el algoritmo.",
+        "Uso explícito de la regla de los signos con un solo número negativo (cociente negativo).",
+        "Problemas de contexto donde la división con decimales es el paso central, pero con una sola ecuación simple (p. ej. área conocida, base conocida, se pide la altura).",
+        "Divisiones con números de dos o tres cifras en el dividendo que exigen aplicar el algoritmo de división estándar de manera completa pero sin cálculos excesivamente largos."
+      ],
+      "hard": [
+        "Divisiones con divisor decimal que requiere varios desplazamientos y genera un dividendo grande (muchos ceros añadidos) antes de poder completar el algoritmo.",
+        "Involucrar números negativos en ambos términos (dividendo y divisor) de forma que el estudiante deba razonar intencionalmente la regla de signos.",
+        "Resultados decimales con más de dos cifras, donde se indica un criterio de detención (por ejemplo, hasta cierta cifra decimal o redondeo a ciertas décimas) sin que la dificultad principal sea el redondeo.",
+        "Problemas contextualizados donde la división decimal se inserta en una pequeña cadena de operaciones (por ejemplo, calcular un área o una suma de cantidades y luego dividir por un número decimal para hallar una medida).",
+        "Ítems que requieren decidir cuál es la operación correcta (entre suma, resta, multiplicación y división) y luego aplicar correctamente la técnica de eliminación de la coma del divisor.",
+        "Divisiones que involucren comparación de dos procedimientos o de dos expresiones equivalentes (por ejemplo, reconocer qué expresión escrita representa la misma división decimal después de transformar divisor y dividendo)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados en que no quede claro cuál número es el dividendo y cuál el divisor; usar notaciones claras a : b o a ÷ b y formulaciones inequívocas en contexto.",
+      "No mezclar en el mismo ítem diferentes convenciones de coma y punto decimal (mantener siempre la coma como separador decimal).",
+      "No formular ítems donde distintas interpretaciones del contexto conduzcan legítimamente a invertir la división (por ejemplo, tasas 'por' unidad que puedan leerse al revés).",
+      "Evitar usar la palabra 'parte' o 'por cada' sin especificar la relación exacta (por ejemplo, 'la tercera parte de' debe referirse claramente a dividir por 3).",
+      "No pedir simultáneamente un resultado exacto y redondeado sin declarar expresamente qué se debe entregar en la alternativa correcta.",
+      "Evitar datos superfluos que incluyan otros números decimales que puedan confundirse con los términos de la división principal.",
+      "No usar notaciones mixtas (por ejemplo, 0,5/2,5 en línea sin explicitar qué es numerador y qué es denominador) si puede generar dudas en lecturas rápidas.",
+      "Evitar cortarle parte de la información necesaria al contexto (por ejemplo, describir una razón verbalmente pero omitir la mención de que se trata de 'en total' o 'para cada uno')."
+    ],
+    "error_families": [
+      {
+        "name": "No transformar simultáneamente dividendo y divisor",
+        "description": "El estudiante desplaza la coma solo en el divisor para hacerlo entero, pero deja el dividendo sin modificar, alterando el valor real de la división.",
+        "how_to_address": "Reforzar la idea de que multiplicar por potencias de 10 es una operación que debe aplicarse a ambos términos de la división para mantener el cociente. Usar ejemplos donde se compare 4,5 : 0,5 con 45 : 5 y se muestre que el cociente no cambia si se transforma de la misma forma ambos números."
+      },
+      {
+        "name": "Desplazar la coma en sentido incorrecto",
+        "description": "Al hacer el divisor entero, el estudiante corre la coma hacia la izquierda o hacia la derecha en forma inconsistente, generando un número distinto del esperado.",
+        "how_to_address": "Trabajar con la relación entre mover la coma y multiplicar o dividir por 10, 100, etc. Practicar con ejercicios solo de desplazamiento de coma, sin división, para consolidar el significado posicional antes de combinarlo con el algoritmo de división."
+      },
+      {
+        "name": "Ubicación errónea de la coma en el cociente",
+        "description": "La división entera se realiza correctamente después de eliminar la coma del divisor, pero la coma del resultado final se coloca en una posición equivocada.",
+        "how_to_address": "Hacer explícito el vínculo entre el número de lugares que se desplazó la coma y la posición que debe ocupar en el cociente. Proponer que se reescriba la división en forma de fracción y se verifique el número de decimales del resultado para comprobar la ubicación de la coma."
+      },
+      {
+        "name": "Aplicación incorrecta de la regla de los signos",
+        "description": "En divisiones con números negativos, el estudiante ignora el signo o asume que el resultado es negativo siempre que aparezca un negativo, independientemente de cuántos haya.",
+        "how_to_address": "Revisar tablas o esquemas de signos, enfatizando que dos números con el mismo signo dan resultado positivo y con signos distintos, negativo. Incluir ítems simples con solo cambio de signo para separar el manejo del valor absoluto de la gestión de signos."
+      },
+      {
+        "name": "Intercambiar dividendo y divisor",
+        "description": "En problemas de contexto, el estudiante configura la división al revés (por ejemplo, divide la cantidad de personas entre el número de grupos, cuando debía ser al revés).",
+        "how_to_address": "Trabajar la lectura de frases como 'cada', 'por' y 'para' en contextos diversos. Proponer que el estudiante verbalice la operación como 'total dividido por cantidad de partes' antes de escribir la expresión numérica."
+      },
+      {
+        "name": "Truncar o redondear indebidamente el resultado",
+        "description": "El estudiante corta el resultado decimal antes de que el algoritmo concluya o redondea sin que el problema lo pida, generando respuestas aproximadas cuando se espera exactitud.",
+        "how_to_address": "Precisar en los enunciados si se desea resultado exacto o aproximado. Entrenar en detectar cuándo la división termina en un decimal exacto (resto cero) y cuándo aparece un patrón que puede sugerir período, indicando criterios claros de detención solo si el ítem lo exige."
+      },
+      {
+        "name": "Confundir ceros añadidos con decimales del resultado",
+        "description": "Al agregar ceros al dividendo durante la división, el estudiante cree que cada cero añadido corresponde a una cifra decimal más, lo que lo lleva a colocar mal la coma o a contar mal las cifras necesarias.",
+        "how_to_address": "Distinguir claramente el momento en que se pasa de la parte entera a la parte decimal del cociente y, a partir de ahí, explicar que agregar ceros solo permite seguir dividiendo, sin cambiar la posición de la coma ya fijada. Usar esquemas paso a paso con anotaciones de la coma al comienzo del proceso."
+      }
+    ],
+    "future_targets": [
+      "Resolución de problemas de porcentajes donde se usa la división de decimales para hallar valores unitarios o tasas.",
+      "Manejo fluido de razones y proporciones con números decimales (por ejemplo, precios por unidad, densidades, rendimientos).",
+      "Operaciones con fracciones y decimales combinadas, incluyendo conversiones entre ambas representaciones.",
+      "Cálculo de medidas geométricas (perímetros, áreas, volúmenes) que requieren dividir por constantes decimales.",
+      "Trabajo con promedios aritméticos y otras medidas estadísticas cuando implican divisiones con decimales.",
+      "Uso de calculadora con sentido numérico, siendo capaz de estimar y verificar resultados decimales de divisiones.",
+      "Comprensión y manipulación de funciones lineales con pendientes o interceptos decimales, donde interpretar la razón de cambio implica divisiones decimales."
+    ],
+    "representation_variants": [
+      "Divisiones presentadas en formato de fracción (a/b) con números decimales y requerir que se transformen eliminando la coma del divisor.",
+      "Uso del símbolo ÷ o de los dos puntos ':' para representar la división de decimales en forma lineal.",
+      "Algoritmo de división en formato de 'llave' tradicional, mostrando explícitamente los pasos intermedios con desplazamiento de coma.",
+      "Contextos verbales que describen razones o repartos en partes iguales que se modelan con divisiones de números decimales.",
+      "Enunciados que entregan la información en tablas o descripciones textuales, obligando a identificar qué números participan en la división decimal.",
+      "Representación de la transformación por potencias de 10 de manera explícita (por ejemplo, 0,25 : 0,5 = (0,25·10) : (0,5·10))."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "positive_decimals_1dp",
+      "positive_decimals_2dp",
+      "positive_decimals_3dp",
+      "negative_decimals_1dp",
+      "negative_decimals_2dp",
+      "simple_unit_fractions_as_decimals",
+      "contextual_measure_decimals"
+    ],
+    "required_image_types": []
+  }
+}

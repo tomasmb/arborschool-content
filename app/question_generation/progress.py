@@ -71,6 +71,44 @@ def report_cost(cost_usd: float) -> None:
         )
 
 
+def print_pipeline_header(atom_id: str) -> None:
+    """Print pipeline header to console."""
+    print(f"\n{'=' * 60}")
+    print("PIPELINE: Generación de Preguntas por Átomo")
+    print(f"Átomo: {atom_id}")
+    print(f"{'=' * 60}\n")
+
+
+def print_pipeline_summary(result: object) -> None:
+    """Print pipeline summary to console.
+
+    Args:
+        result: PipelineResult (untyped to avoid circular import).
+    """
+    print(f"\n{'=' * 60}")
+    print("RESUMEN")
+    print(f"{'=' * 60}")
+    print(f"Átomo: {result.atom_id}")  # type: ignore[attr-defined]
+    print(f"Planificados:       {result.total_planned}")  # type: ignore[attr-defined]
+    print(f"Generados:          {result.total_generated}")  # type: ignore[attr-defined]
+    print(f"Pasaron dedupe:     {result.total_passed_dedupe}")  # type: ignore[attr-defined]
+    print(f"Pasaron validación: {result.total_passed_base_validation}")  # type: ignore[attr-defined]
+    print(f"Pasaron feedback:   {result.total_passed_feedback}")  # type: ignore[attr-defined]
+    print(f"Finales:            {result.total_final}")  # type: ignore[attr-defined]
+
+    for phase in result.phase_results:  # type: ignore[attr-defined]
+        if phase.errors:
+            print(f"\n  Errores [{phase.phase_name}]:")
+            for err in phase.errors:
+                print(f"    - {err}")
+        if phase.warnings:
+            print(f"\n  Advertencias [{phase.phase_name}]:")
+            for w in phase.warnings:
+                print(f"    - {w}")
+
+    print(f"{'=' * 60}\n")
+
+
 class CostAccumulator:
     """Thread-safe accumulator for LLM token usage across a run.
 

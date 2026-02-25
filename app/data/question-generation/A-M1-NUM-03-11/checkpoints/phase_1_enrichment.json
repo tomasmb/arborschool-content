@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Multiplicar dos o más raíces que tienen exactamente el mismo índice (mismo número de índice).",
+        "Reescribir el producto de raíces con igual índice como una sola raíz cuyo radicando es el producto de los radicandos originales.",
+        "Trabajar con raíces cuadradas y de otros índices naturales pequeños (por ejemplo, índice 3, 4, 5) sin cambiar el índice.",
+        "Incluir variables en los radicandos siempre que se mantenga el mismo índice en todas las raíces del producto.",
+        "Simplificar el radicando solo mediante multiplicación directa y, opcionalmente, simplificaciones evidentes (por ejemplo, sqrt(4x) = 2sqrt(x) si es inmediato y no requiere descomposición extensa)."
+      ],
+      "out_of_scope": [
+        "Multiplicar raíces de distinto índice (por ejemplo, raíz cúbica con raíz cuarta) y transformarlas para igualar índices.",
+        "Racionalizar denominadores que contienen raíces.",
+        "Simplificación avanzada de radicales mediante factorización compleja del radicando (por ejemplo, descomponer en factores primos para extraer factores fuera de la raíz).",
+        "Operar con potencias fraccionarias de forma explícita (reescribir raíces como exponentes racionales).",
+        "Sumar o restar radicales (no corresponde a este átomo, que es puramente multiplicación).",
+        "Aplicar este procedimiento en contextos geométricos o de funciones donde la comprensión principal sea de otro eje (área, volumen, gráficos, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de multiplicación de números enteros y racionales positivos.",
+        "A-M1-NUM-03-01: Comprensión básica del concepto de raíz como operación inversa de la potencia.",
+        "A-M1-NUM-03-05: Lectura y escritura correcta de expresiones con radicales (índice, signo radical, radicando)."
+      ],
+      "common_traps": [
+        "Aplicar la propiedad de multiplicación de radicales cuando los índices son distintos, sin darse cuenta de la diferencia.",
+        "Multiplicar el índice de la raíz en lugar de mantenerlo constante al combinar radicales.",
+        "Sumar en vez de multiplicar los radicandos (confundir operaciones).",
+        "Distribuir incorrectamente un número fuera de la raíz hacia adentro sin usar la propiedad adecuada (por ejemplo, pensar que 2·sqrt(5) = sqrt(2+5)).",
+        "Confundir el producto de radicales con la potencia de un radical (por ejemplo, interpretar (sqrt(a))^2 en lugar de sqrt(a)·sqrt(b)).",
+        "Omitir el factor numérico externo cuando se combina con la multiplicación de radicales (por ejemplo, errores de orden de operaciones al tener coeficientes fuera de la raíz)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Productos que involucran solo raíces cuadradas con radicandos numéricos pequeños y positivos, que no requieren simplificación adicional compleja.",
+        "Un máximo de dos factores radicales en el producto.",
+        "Estructura directa del tipo sqrt(a)·sqrt(b) o k·sqrt(a) con k entero positivo pequeño, donde basta con multiplicar y dar el resultado simplificado si es evidente.",
+        "Ausencia de variables y de fracciones dentro del radical.",
+        "Distractores que reflejen errores simples (sumar radicandos, no combinar radicales) pero con cálculos muy accesibles."
+      ],
+      "medium": [
+        "Productos con más de dos radicales, todos del mismo índice, que requieren combinar varios radicandos en una sola raíz.",
+        "Incluir al menos una variable en los radicandos (por ejemplo, sqrt(3x)·sqrt(2)).",
+        "Radicandos con números de 2 dígitos o que generan productos que permiten una simplificación moderada (por ejemplo, sqrt(12)·sqrt(3) → sqrt(36)).",
+        "Presencia de coeficientes fuera de la raíz que deben mantenerse y no integrarse al radical salvo que sea directo y coherente con el nivel.",
+        "Distractores que incluyan: mantener radicales separados, multiplicar índices, o no multiplicar completamente los radicandos."
+      ],
+      "hard": [
+        "Productos que involucren índices distintos de 2, especialmente raíces cúbicas o cuartas, manteniendo siempre el mismo índice en todos los factores.",
+        "Radicandos con expresiones algebraicas sencillas (por ejemplo, sqrt(3x)·sqrt(5x) → sqrt(15x^2)), donde el estudiante deba manejar producto de coeficientes y de variables en un solo paso.",
+        "Uso de fracciones o decimales simples dentro del radical (por ejemplo, sqrt(3/2)·sqrt(4)).",
+        "Combinar tres o más radicales con coeficientes externos, donde sea necesario respetar el orden de operaciones y no confundir qué se multiplica dentro y fuera de la raíz.",
+        "Distractores que evidencien errores más sutiles: producto parcial de radicandos, pérdida de una variable, mezclar suma con producto dentro de la raíz, o modificar incorrectamente el índice."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones donde el índice no esté claramente indicado si no es 2; siempre explicitar el índice cuando sea distinto de raíz cuadrada.",
+      "Evitar notaciones ambiguas sin paréntesis cuando hay coeficientes externos y varios factores radicales; usar paréntesis claros para el alcance del producto.",
+      "No mezclar en la misma pregunta raíces de distinto índice si la intención no es que el estudiante identifique que no se puede aplicar la propiedad; de usarse, debe estar explícito que solo se operan las de índice igual.",
+      "Evitar radicandos que puedan simplificarse de múltiples maneras no requeridas por el ítem (por ejemplo, números muy grandes con muchas factorizaciones) si el foco es solo aplicar la propiedad de multiplicación.",
+      "No introducir condiciones sobre dominio (por ejemplo, restricciones de signo) dentro del enunciado si no son necesarias para la multiplicación de radicales.",
+      "Evitar contextos verbales demasiado largos donde la operación principal (multiplicación de raíces con mismo índice) quede oculta o se confunda con otras operaciones."
+    ],
+    "error_families": [
+      {
+        "name": "multiplica_indices",
+        "description": "El estudiante multiplica o altera el índice de la raíz al combinar radicales, por ejemplo, transformando sqrt(a)·sqrt(b) en raíz cuarta de ab, o cambiando el índice 3 a 6 si hay dos raíces cúbicas.",
+        "how_to_address": "Diseñar ítems donde el índice se mantenga explícito y se contraste en distractores el resultado correcto (índice igual al original) con alternativas que muestran índices alterados, reforzando en la retroalimentación que el índice es común y se conserva."
+      },
+      {
+        "name": "suma_radicandos",
+        "description": "En lugar de multiplicar los radicandos, el estudiante los suma: sqrt(a)·sqrt(b) → sqrt(a+b).",
+        "how_to_address": "Incluir distractores con suma de radicandos y explicitar en la explicación que la propiedad es del producto de radicales y que solo el producto de radicandos es válido; mostrar contraejemplos numéricos simples donde sqrt(a)·sqrt(b) ≠ sqrt(a+b)."
+      },
+      {
+        "name": "no_combina_raices",
+        "description": "El estudiante realiza la multiplicación numérica externa pero deja los radicales separados, o no reconoce que se puede escribir como una sola raíz.",
+        "how_to_address": "Proponer ítems donde la forma pedida en el enunciado sea explícita (por ejemplo, 'escribe como una sola raíz') y usar distractores que mantengan las raíces separadas, comentando en la retroalimentación que la propiedad permite unificarlas bajo un solo radical."
+      },
+      {
+        "name": "ignora_coeficientes_externos",
+        "description": "El estudiante solo combina las raíces y olvida multiplicar los factores numéricos que están fuera del signo radical (por ejemplo, 2·sqrt(3)·sqrt(5) → sqrt(15) en vez de 2·sqrt(15)).",
+        "how_to_address": "Incluir ítems con coeficientes externos y distractores que omitan dichos coeficientes, explicando que la multiplicación involucra todos los factores: los que están fuera de la raíz y los radicandos dentro de una raíz común."
+      },
+      {
+        "name": "mezcla_producto_y_potencia",
+        "description": "Confunde el producto de radicales con elevar un radical a una potencia, por ejemplo, interpretando sqrt(a)·sqrt(a) como sqrt(a^2) sin razonar correctamente su equivalencia.",
+        "how_to_address": "Diseñar ejercicios que comparen explícitamente sqrt(a)·sqrt(a) con a y sqrt(a^2) para enfatizar la relación correcta, remarcando que la propiedad se refiere al producto de radicales, no a la potencia de un radical, y que en este átomo basta multiplicar radicandos manteniendo el índice."
+      },
+      {
+        "name": "desordena_operaciones",
+        "description": "Aplica primero simplificaciones innecesarias o incorrectas en los radicandos antes de multiplicar, generando errores por pérdida de factores o por mala priorización de operaciones.",
+        "how_to_address": "Proponer ítems donde la vía más directa sea aplicar de inmediato la propiedad de multiplicación de radicales, y en la retroalimentación enfatizar el orden recomendado: primero combinar radicales con igual índice, luego simplificar si es evidente."
+      }
+    ],
+    "future_targets": [
+      "Aplicar operaciones combinadas con radicales (suma, resta y multiplicación) respetando las propiedades de cada una.",
+      "Simplificación más avanzada de radicales mediante factorización del radicando y extracción de factores fuera del radical.",
+      "Racionalización de denominadores que contienen radicales, utilizando la propiedad de multiplicación de raíces.",
+      "Manipulación de expresiones con exponentes racionales y su equivalencia con radicales.",
+      "Resolución de ecuaciones que involucran raíces, donde se requiera multiplicar radicales para aislar términos.",
+      "Aplicación de radicales en contextos geométricos (por ejemplo, teorema de Pitágoras, distancias en el plano) donde la multiplicación de raíces simplifica expresiones.",
+      "Trabajo con funciones radicales y su simplificación algebraica previa a la graficación o análisis."
+    ],
+    "representation_variants": [
+      "Expresiones puramente simbólicas con radicales numéricos (por ejemplo, sqrt(2)·sqrt(8)).",
+      "Expresiones mixtas con números y variables en los radicandos (por ejemplo, raíz cúbica de 2x por raíz cúbica de 4x).",
+      "Expresiones con coeficientes externos y varios factores radicales (por ejemplo, 3·sqrt(2)·sqrt(5)).",
+      "Contextos verbales breves donde el resultado natural de una situación conduce a la multiplicación de radicales (sin depender de gráficas o geometría).",
+      "Preguntas que pidan dar la respuesta 'como una sola raíz' para enfatizar la propiedad de combinación de radicandos.",
+      "Comparación de dos formas equivalentes de una misma expresión radical para reconocer la aplicación correcta de la propiedad."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "perfect_squares",
+      "near_perfect_squares",
+      "simple_fractions",
+      "simple_decimals",
+      "small_integer_coefficients",
+      "literal_expressions_simple"
+    ],
+    "required_image_types": []
+  }
+}

@@ -5,7 +5,7 @@ canonical standards JSON that is:
 
 - faithful to the official scope,
 - rich enough to support **granular atom generation** (see
-  `docs/learning-atom-granularity-guidelines.md`),
+  `docs/specifications/learning-atom-granularity-guidelines.md`),
 - optimised as input for **Gemini** (`gemini-3-pro-preview`, see
   `docs/gemini-3-pro-prompt-engineering-best-practices.md`).
 
@@ -156,7 +156,7 @@ We separate the process into two stages:
    (this document; uses Gemini `gemini-3-pro-preview`).
 2. **From canonical standards JSON to learning atoms**  
    (future work; also uses Gemini and
-   `docs/learning-atom-granularity-guidelines.md`).
+   `docs/specifications/learning-atom-granularity-guidelines.md`).
 
 This section focuses on stage 1.
 
@@ -186,7 +186,7 @@ We use Gemini (`gemini-3-pro-preview`) to **write the rich fields** for each sta
     `legacy/PAES-kg/standards-paes-m1-full-GPT.md` rewritten into the
     canonical schema,
   - the **atom granularity guidelines**
-    (`docs/learning-atom-granularity-guidelines.md`),
+    (`docs/specifications/learning-atom-granularity-guidelines.md`),
   - key parts of the Gemini best‑practices doc, especially:
     - clear task description,
     - explicit JSON schema,
@@ -331,7 +331,7 @@ In code, we will typically:
   `paes_m1_regular_2026.json`), we can design the separate pipeline
   that:
   - takes this standards JSON,
-  - applies `docs/learning-atom-granularity-guidelines.md`,
+  - applies `docs/specifications/learning-atom-granularity-guidelines.md`,
   - uses Gemini (`gemini-3-pro-preview`) to generate a consistent atoms JSON.
 
 Until the standards pipeline is implemented, downstream work should
@@ -508,7 +508,7 @@ taking into account the DEMRE use of habilidades and conocimientos.
   - global list of habilidades and their criterios de evaluación,
   - list of ejes and unidades.
 - Atom design guidelines:
-  - `docs/learning-atom-granularity-guidelines.md`.
+  - `docs/specifications/learning-atom-granularity-guidelines.md`.
 - Gemini best‑practices:
   - `docs/gemini-3-pro-prompt-engineering-best-practices.md`.
 

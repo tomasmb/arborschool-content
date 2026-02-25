@@ -1,0 +1,127 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución paso a paso de inecuaciones lineales de una variable con paréntesis y/o coeficientes negativos.",
+        "Inecuaciones con la variable en ambos lados que requieren uso de propiedad distributiva y agrupación de términos semejantes.",
+        "Manipulación de inecuaciones donde es necesario dividir o multiplicar por números negativos, invirtiendo el signo de la desigualdad.",
+        "Determinación del conjunto solución en forma de intervalo o frase verbal (por ejemplo, x mayor que un número).",
+        "Resolución de inecuaciones encadenadas lineales simples (por ejemplo, a < expresión lineal ≤ b) siempre que el proceso sea equivalente a dos inecuaciones lineales."
+      ],
+      "out_of_scope": [
+        "Sistemas de inecuaciones (dos o más inecuaciones simultáneas) que requieren intersección gráfica o algebraica.",
+        "Inecuaciones cuadráticas, racionales, con valor absoluto o con expresiones no lineales.",
+        "Representación gráfica detallada de soluciones en recta numérica como objetivo central (pertenece más a interpretación que a resolución algebraica).",
+        "Problemas de contexto que requieran modelar la situación con una inecuación desde cero (eso se asocia más a modelación que al procedimiento puro).",
+        "Uso de parámetros simbólicos múltiples (a, b, k) que lleven a razonamientos de casos en general, en vez de resolución numérica concreta."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Manejo fluido de operaciones con números enteros y fraccionarios, incluyendo negativos.",
+        "A-M1-ALG-02-02: Uso de propiedad distributiva y simplificación de expresiones lineales con paréntesis.",
+        "A-M1-ALG-03-10: Resolución de ecuaciones lineales simples de uno o varios pasos.",
+        "A-M1-ALG-03-12: Comprensión básica de la relación de orden y significado de los signos <, >, ≤, ≥."
+      ],
+      "common_traps": [
+        "Olvidar invertir el signo de la desigualdad al multiplicar o dividir por un número negativo.",
+        "Aplicar mal la propiedad distributiva con signos, especialmente al distribuir un coeficiente negativo.",
+        "Mover términos de un lado a otro cambiando de signo de manera incorrecta (errores de transposición).",
+        "Perder una parte de la inecuación encadenada al operar (por ejemplo, trabajar sólo con un extremo).",
+        "Confundir el tipo de desigualdad en la respuesta final (usar < en lugar de ≤ o viceversa).",
+        "Detener el proceso antes de aislar completamente la variable (dejar coeficiente distinto de 1 multiplicando a la variable).",
+        "Suponer que el procedimiento es idéntico a una ecuación y olvidar que la solución es un conjunto de valores, no un único número."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones lineales con un solo paréntesis máximo y todos los coeficientes positivos o, a lo más, un coeficiente negativo claro (por ejemplo, -x sin fracciones).",
+        "Variable presente sólo en un lado de la inecuación luego de aplicar distributiva, con a lo sumo dos pasos de despeje (sumar/restar y luego dividir).",
+        "Números enteros pequeños (entre -10 y 10) y sin fracciones ni decimales.",
+        "No se requiere interpretar el resultado en contexto, sólo entregar la desigualdad equivalente (por ejemplo, x > 2)."
+      ],
+      "medium": [
+        "Inecuaciones con variables en ambos lados, que obligan a agrupar términos (por ejemplo, llevar las x a un lado y los términos independientes al otro).",
+        "Presencia de coeficientes negativos que impliquen invertir el signo de la inecuación al dividir o multiplicar.",
+        "Uso moderado de fracciones o decimales simples en coeficientes o términos independientes.",
+        "Inecuaciones que requieren 3–4 pasos claros: distributiva, simplificación, traslado de términos y despeje final.",
+        "Posible presencia de una inecuación encadenada simple que se resuelve operando simultáneamente en los tres miembros."
+      ],
+      "hard": [
+        "Inecuaciones con más de un paréntesis, algunos con coeficientes negativos, que requieren varias aplicaciones de la propiedad distributiva.",
+        "Coeficientes fraccionarios o decimales menos amigables que obligan a multiplicar toda la inecuación por un mismo número (positivo o negativo) para eliminar denominadores.",
+        "Estructuras que generen varios cambios de signo en el proceso, aumentando la probabilidad de invertir mal la desigualdad.",
+        "Inecuaciones encadenadas que obligan a mantener el control simultáneo de tres expresiones y de la dirección de ambas desigualdades.",
+        "Contextos verbales donde se da la inecuación de forma implícita (por ejemplo, restricciones múltiples sobre una cantidad) pero el foco sigue siendo el despeje algebraico, no el modelamiento.",
+        "Casos donde, tras simplificar, la inecuación resulta en una afirmación siempre verdadera o falsa (por ejemplo, 3 ≤ 5), requiriendo interpretar la solución como todos los reales o conjunto vacío."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar distintas variables en una misma inecuación (por ejemplo, x y y) salvo que se especifique claramente que una puede tratarse como constante.",
+      "Evitar contextos verbales donde no quede claro cuál es la variable y qué representa la desigualdad.",
+      "No usar intervalos de respuesta sin aclarar el tipo de paréntesis o corchete si llegan a aparecer (en PAES, preferir forma simbólica con <, ≤).",
+      "Evitar notación poco estándar para la desigualdad (como usar ≦, ≧ o símbolos poco legibles tipográficamente).",
+      "No incluir operaciones ambiguas con fracciones (por ejemplo, 2x/3+1 sin paréntesis) que generen dudas sobre el alcance del denominador.",
+      "Evitar coeficientes o números excesivamente grandes o poco habituales que añadan carga de cálculo sin aportar a la habilidad objetivo.",
+      "No combinar en un mismo ítem la resolución algebraica y la representación gráfica en la recta numérica como requisito obligatorio, para no mezclar objetivos de átomos distintos.",
+      "Evitar construcciones lingüísticas que puedan interpretarse como límite estricto o no estricto de manera ambigua (por ejemplo, 'al menos' vs 'más de') si no está claramente definido en el ítem."
+    ],
+    "error_families": [
+      {
+        "name": "No invertir la desigualdad al multiplicar/dividir por un negativo",
+        "description": "El estudiante multiplica o divide ambos lados por un número negativo pero mantiene la dirección original de la desigualdad, obteniendo un conjunto solución invertido.",
+        "how_to_address": "Incluir ítems donde el paso de dividir por un negativo sea explícito y central, y ofrecer alternativas distractoras que reflejen el error. En la retroalimentación, enfatizar que multiplicar/dividir por número negativo invierte el orden, usando ejemplos numéricos simples para justificarlo."
+      },
+      {
+        "name": "Error en la propiedad distributiva con signos",
+        "description": "Al desarrollar paréntesis, el estudiante cambia incorrectamente los signos (por ejemplo, 3(x - 2) → 3x - 2 en lugar de 3x - 6, o -2(x+3) → -2x + 3).",
+        "how_to_address": "Diseñar inecuaciones donde la correcta aplicación de la distributiva sea imprescindible para llegar a una de las alternativas. En la explicación, recordar que el signo del coeficiente afecta a todos los términos dentro del paréntesis e ilustrar con un caso numérico concreto."
+      },
+      {
+        "name": "Transposición defectuosa de términos",
+        "description": "El estudiante 'pasa' términos de un lado a otro sin respetar la operación inversa, cambiando mal de signo o dejando el término igual.",
+        "how_to_address": "Proponer ítems con reordenamiento de términos en varios pasos y distractores que representen transposiciones erróneas. En la retroalimentación, sugerir escribir explícitamente la misma operación en ambos lados en lugar de 'pasar' términos en forma mecánica."
+      },
+      {
+        "name": "Pérdida de un miembro en inecuaciones encadenadas",
+        "description": "En inecuaciones del tipo a < expresión ≤ b, el estudiante opera sólo con dos de los miembros y olvida arrastrar el tercer miembro en cada paso, obteniendo una solución parcial o incorrecta.",
+        "how_to_address": "Plantear algunas inecuaciones encadenadas sencillas y mostrar en la resolución cómo la misma operación se aplica simultáneamente a los tres lados. Resaltar en comentarios que todas las partes deben modificarse con la misma operación para preservar la equivalencia."
+      },
+      {
+        "name": "Confusión entre <, > y ≤, ≥ en la respuesta final",
+        "description": "El proceso de despeje es correcto, pero se cambia el tipo de desigualdad en la etapa final (por ejemplo, de ≤ a <).",
+        "how_to_address": "Incluir alternativas que solo difieran en el tipo de desigualdad para obligar a revisar este detalle. En la retroalimentación, recalcar la importancia de conservar el tipo de desigualdad a lo largo de todos los pasos salvo al invertir el sentido por multiplicación/división negativa."
+      },
+      {
+        "name": "No identificar soluciones vacías o universales",
+        "description": "Cuando la inecuación se simplifica a una afirmación siempre verdadera o siempre falsa, el estudiante intenta seguir despejando o elige un valor numérico arbitrario.",
+        "how_to_address": "Crear ejemplos específicos que conduzcan a igualdades o desigualdades numéricas sin variable. Explicar que si la afirmación es siempre verdadera, cualquier número real cumple; si es falsa, ningún número real cumple."
+      }
+    ],
+    "future_targets": [
+      "Resolución de sistemas de inecuaciones lineales y representación de la solución común.",
+      "Modelación de situaciones reales usando inecuaciones y conjuntos solución (por ejemplo, restricciones de presupuesto, tiempo, capacidad).",
+      "Resolución de inecuaciones cuadráticas y racionales usando factorización y análisis de signos.",
+      "Resolución de inecuaciones con valor absoluto y su interpretación en la recta numérica.",
+      "Análisis de dominios de funciones mediante inecuaciones (por ejemplo, restricciones de denominadores, radicandos, argumentos de logaritmos).",
+      "Comprensión y uso de intervalos e intersección/unión de conjuntos solución en estudios más avanzados de funciones.",
+      "Inecuaciones en contexto de programación lineal básica (regiones factibles en el plano)."
+    ],
+    "representation_variants": [
+      "Expresión simbólica pura de la inecuación, sin contexto, presentada en forma algebraica estándar.",
+      "Enunciados verbales que describen una restricción lineal y ya entregan la inecuación formulada, centrando la dificultad en el despeje.",
+      "Inecuaciones encadenadas escritas en una sola línea (por ejemplo, a < 2x - 1 ≤ b) que deben resolverse manteniendo los tres miembros.",
+      "Respuestas pedidas como desigualdad en x o como descripción verbal del conjunto solución (por ejemplo, 'todos los números mayores que...').",
+      "Uso opcional de notación de intervalos sólo en las alternativas de respuesta, manteniendo la resolución en forma de inecuación.",
+      "Ítems en los que se muestra un procedimiento parcialmente resuelto y se pregunta por el paso correcto siguiente o por el error cometido, manteniendo el foco en las reglas de manipulación de inecuaciones."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals",
+      "integer_coefficients",
+      "fractional_coefficients"
+    ],
+    "required_image_types": []
+  }
+}

@@ -412,3 +412,61 @@ def check_feedback_completeness(qti_xml: str) -> list[str]:
         )
 
     return errors
+
+
+# ---------------------------------------------------------------------------
+# Composite deterministic check (shared by both pipelines)
+# ---------------------------------------------------------------------------
+
+
+def run_deterministic_checks(
+    qti_xml: str,
+    item_id: str,
+    exemplars: list[Exemplar] | None = None,
+    meta: Any | None = None,
+    *,
+    check_feedback: bool = False,
+) -> list[str]:
+    """Run all deterministic (non-LLM) validation checks on one item.
+
+    This is the single source of truth for structural checks used by
+    both the single-atom and batch pipelines.  Checks run in order:
+
+    0. IMAGE_PLACEHOLDER rejection (fatal — skips remaining checks)
+    1. XSD validity
+    2. PAES structural compliance
+    3. Exemplar distance (when exemplars are provided)
+    4. Feedback completeness (when *check_feedback* is True)
+
+    Returns:
+        List of error messages (empty = all checks passed).
+    """
+    errors: list[str] = []
+
+    if "IMAGE_PLACEHOLDER" in qti_xml:
+        errors.append(
+            f"{item_id}: contains IMAGE_PLACEHOLDER"
+            " — image generation incomplete",
+        )
+        return errors
+
+    xsd_result = validate_qti_xml(qti_xml)
+    if not xsd_result.get("valid", False):
+        errors.append(
+            f"{item_id}: XSD invalid — "
+            f"{xsd_result.get('validation_errors', 'unknown')}",
+        )
+
+    paes_errors = check_paes_structure(qti_xml)
+    errors.extend(f"{item_id}: {e}" for e in paes_errors)
+
+    if exemplars:
+        copy_err = check_exemplar_distance(qti_xml, exemplars, meta)
+        if copy_err:
+            errors.append(f"{item_id}: {copy_err}")
+
+    if check_feedback:
+        fb_errors = check_feedback_completeness(qti_xml)
+        errors.extend(f"{item_id}: {e}" for e in fb_errors)
+
+    return errors

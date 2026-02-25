@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificación del parámetro m en ecuaciones de la forma y = mx + n, incluyendo casos con m negativo, fraccionario o cero.",
+        "Interpretación del signo de m como indicador de crecimiento (m > 0), decrecimiento (m < 0) o constancia (m = 0) de la función lineal.",
+        "Comprensión cualitativa y cuantitativa de m como tasa de cambio constante: variación de y asociada a un aumento de 1 unidad en x.",
+        "Interpretación de m en contextos de razón o rendimiento (por ejemplo, km/L, $/kg, puntos por partido), sin requerir el cálculo de m a partir de datos en bruto más allá de una razón simple ya dada.",
+        "Comparación de pendientes en términos de “más inclinada” / “menos inclinada” o “mayor tasa de cambio” / “menor tasa de cambio”, manteniendo siempre la linealidad implícita."
+      ],
+      "out_of_scope": [
+        "Cálculo procedimental de la pendiente a partir de dos puntos (m = (y2 - y1)/(x2 - x1)).",
+        "Estimación o cálculo de la pendiente a partir de un gráfico de puntos dispersos no lineal (aplicaciones de regresión o mejor ajuste).",
+        "Pendiente de rectas verticales (pendiente no definida) o análisis de funciones que no se pueden expresar como y = mx + n.",
+        "Cálculo de ecuaciones de la recta (encontrar m y n simultáneamente) a partir de condiciones dadas.",
+        "Uso de pendiente en contextos de derivada o tasa de cambio instantánea en funciones no lineales.",
+        "Problemas que exigen manipulación algebraica compleja o sistemas de ecuaciones para determinar m."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Comprensión de variable independiente (x) y dependiente (y) en una relación funcional simple.",
+        "A-M1-ALG-04-01: Reconocimiento de funciones lineales básicas y noción de recta creciente/decreciente en lenguaje cotidiano.",
+        "A-M1-NUM-01-02: Manejo de números enteros y fracciones simples en contextos de razón (por unidad)."
+      ],
+      "common_traps": [
+        "Confundir el parámetro m con el parámetro n (ordenada al origen) al identificar la pendiente en y = mx + n.",
+        "Interpretar m como variación de x por cada unidad que cambia y (invertir la razón).",
+        "Suponer que un valor grande de n implica mayor crecimiento, sin considerar que quien determina el crecimiento/decrecimiento es m.",
+        "Pensar que cualquier razón entre dos magnitudes es constante, aunque el contexto sugiera claramente comportamiento no lineal.",
+        "Interpretar equivocadamente m = 0 como que la función “no existe” o que “no cambia x”, en lugar de entender que y es constante.",
+        "Ignorar el signo de m en contextos de razón, interpretando solo la magnitud (por ejemplo, tratar m = -3 como si significara ‘aumenta 3 por cada 1’, sin considerar que decrece)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ítems donde la ecuación está explícitamente en la forma y = mx + n, con m un entero pequeño (entre -5 y 5) y n también entero pequeño, pidiendo identificar m o decidir si la función crece, decrece o es constante.",
+        "Contextos verbales muy directos donde la tasa ya está expresada como ‘por cada 1 unidad’, con números naturales pequeños (ejemplo: ‘por cada hora, avanza 4 km’) y se pide reconocer esa cantidad como la pendiente.",
+        "Preguntas que solo requieren distinguir entre m > 0, m < 0 y m = 0 sin comparación entre varias funciones ni razonamientos encadenados.",
+        "Comparaciones sencillas del tipo ‘¿cuál de estas funciones crece más rápido?’ cuando se dan dos ecuaciones explícitas con m positivos claramente diferenciados (por ejemplo, m = 2 y m = 5)."
+      ],
+      "medium": [
+        "Ítems donde la pendiente se presenta como una razón no entera (fracción simple, por ejemplo 3/2 o -1/4) y se pide interpretarla en lenguaje natural (‘por cada 1 que aumenta x, y aumenta/disminuye …’).",
+        "Problemas de contexto donde hay que identificar correctamente qué magnitud corresponde a x y cuál a y para interpretar m como tasa de cambio (por ejemplo, km en función de litros, costo en función de cantidad).",
+        "Comparación de dos pendientes, una positiva y otra negativa, pidiendo determinar cuál representa crecimiento y cuál decrecimiento y justificar en términos de tasa de cambio.",
+        "Uso de expresiones equivalentes donde la pendiente no está aislada directamente, pero puede leerse sin cálculo complejo (por ejemplo, y = 4x - 3, y = -2x + 10, presentada en lista o tabla, y se pregunta cuál recta es más inclinada hacia arriba/abajo).",
+        "Interpretación de m = 0 en un contexto verbal como situación donde la magnitud representada por y no cambia aunque varíe x (por ejemplo, precio fijo por entrada independiente del número de personas)."
+      ],
+      "hard": [
+        "Ítems donde la pendiente se presenta implícitamente a través de una descripción de cómo cambia y cuando x aumenta en más de 1 unidad (por ejemplo, ‘cada vez que x aumenta en 2 unidades, y disminuye en 6’), requiriendo inferir la pendiente (m = -3) sin fórmulas consideradas ‘fórmulas de dos puntos’.",
+        "Comparaciones de magnitud de pendientes en valor absoluto y signo a la vez, analizando cuál recta decrece más rápido, cuál crece más lento, etc., entre varias ecuaciones o descripciones verbales mixtas.",
+        "Contextos de razones compuestas donde una misma situación se presenta de dos maneras (por ejemplo, km/L y L/km) y el estudiante debe identificar cuál representa la pendiente de y en función de x y cómo cambia según la elección de variable independiente.",
+        "Situaciones donde es necesario descartar distractores que reiteran la razón invertida (variación de x sobre variación de y) o confunden m con n, obligando a utilizar explícitamente la interpretación ‘variación de y por cada 1 en x’.",
+        "Interpretar y contrastar la idea de pendiente constante frente a una descripción que sugiere cambio de tasa (no lineal), debiendo elegir la situación que realmente corresponde a una función lineal con pendiente constante."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar contextos donde la tasa de cambio no es constante (por ejemplo, consumo de combustible que cambia con la velocidad) sin explicitar que se está modelando con una tasa promedio constante; si se usa, aclarar que se asume comportamiento lineal.",
+      "No mezclar en el mismo ítem la interpretación de pendiente con cálculo de pendiente a partir de dos puntos, para no invadir el átomo procedimental asociado.",
+      "No usar rectas verticales ni expresiones que no se pueden poner en forma y = mx + n (por ejemplo, x = 3) en preguntas centradas en la pendiente, ya que la definición de este átomo se basa en la función y en términos de x.",
+      "Evitar tablas o descripciones donde un par de datos no son consistentes con linealidad si el foco es interpretar la pendiente; o, en caso de usarlas, explicitar que la relación es lineal.",
+      "No usar unidades confusas o poco habituales (por ejemplo, razones con tres magnitudes) que hagan difícil identificar ‘variación de y por unidad de x’.",
+      "Evitar wording que pueda invertir sutilmente las variables (por ejemplo, ‘litros por kilómetro’ cuando se ha tratado todo el ítem en ‘kilómetros por litro’) sin una aclaración muy explícita sobre qué se considera variable dependiente.",
+      "No plantear ítems donde el cálculo de la razón numérica exacta sea complejo (por ejemplo, fracciones con números grandes) si el objetivo es solo interpretar signo y sentido de la pendiente."
+    ],
+    "error_families": [
+      {
+        "name": "Confusión_m_con_n",
+        "description": "El estudiante toma el valor de n (término independiente) como si fuera la pendiente, especialmente cuando m y n son ambos enteros sencillos.",
+        "how_to_address": "Diseñar ítems donde m y n tengan roles claramente diferenciados en el contexto (por ejemplo, n como valor inicial y m como ‘por cada 1 que aumenta x’), y donde variar m manteniendo n muestre cambios claros en la tasa pero no en el valor inicial."
+      },
+      {
+        "name": "Inversión_de_razón",
+        "description": "El estudiante interpreta la pendiente como ‘cuánto cambia x cuando y cambia 1’, invirtiendo la razón correcta (Δy/Δx).",
+        "how_to_address": "Incluir distractores que representen explícitamente la razón invertida y forzar al estudiante a vincular lenguaje natural (‘por cada 1 en x, y cambia en ...’) con la forma y = mx + n; reforzar el orden variable independiente → variable dependiente."
+      },
+      {
+        "name": "Ignorar_signo_de_m",
+        "description": "El estudiante solo considera la magnitud de m y no su signo, interpretando m = -3 como si representara un aumento de 3 unidades en y.",
+        "how_to_address": "Proponer ítems que contrasten pares de pendientes m y -m en el mismo contexto y pidan comparar cuál representa crecimiento y cuál decrecimiento, enfatizando que el signo determina sentido de cambio en la recta y en la situación real."
+      },
+      {
+        "name": "Asociar_crecimiento_a_n",
+        "description": "El estudiante cree que un valor mayor de n significa que la recta ‘crece más’ o ‘sube más rápido’, confundiendo el efecto de desplazar la recta verticalmente con el de cambiar la inclinación.",
+        "how_to_address": "Incluir ítems comparativos donde dos rectas tengan mismo m y distinto n (igual tasa, distinto valor inicial) y otros con mismo n y distinto m, preguntando explícitamente por la rapidez de crecimiento para que el foco sea m."
+      },
+      {
+        "name": "Mal_interpretar_m_cero",
+        "description": "El estudiante interpreta m = 0 como que la función no existe, que x es constante o que ‘no pasa nada’, sin comprender que y es una constante independiente de x.",
+        "how_to_address": "Diseñar contextos donde m = 0 represente claramente una cantidad fija (por ejemplo, una tarifa base que no depende del número de usos), pidiendo explicar en palabras qué significa que la pendiente sea cero."
+      },
+      {
+        "name": "Linealidad_suponida_sin_evidencia",
+        "description": "El estudiante asume linealidad en cualquier tabla o contexto y extrapola una pendiente constante a pesar de que los datos no lo sostienen.",
+        "how_to_address": "Contrastar descripciones explícitamente lineales con otras que indiquen cambio de ritmo (por ejemplo, ‘al principio aumenta rápido y después más lento’) y preguntar cuál situación puede representarse con una pendiente constante, reforzando que ‘pendiente’ en este átomo se refiere a tasa constante."
+      },
+      {
+        "name": "Confusión_tasa_vs_valor_total",
+        "description": "El estudiante confunde la tasa de cambio (pendiente) con el valor total de la magnitud en un instante dado (por ejemplo, confundir km/h con km recorridos).",
+        "how_to_address": "Incluir ítems donde se den explícitamente ambas informaciones (valor inicial y tasa) y se pregunte cuál corresponde a la pendiente y cuál al valor de y cuando x = 0, enfatizando el rol de cada parámetro."
+      }
+    ],
+    "future_targets": [
+      "Interpretación y cálculo de pendiente a partir de dos puntos de una recta en el plano cartesiano.",
+      "Construcción de la ecuación de una recta conociendo su pendiente y un punto, o dos puntos.",
+      "Análisis comparativo de funciones lineales en distintos contextos (tarifas, rendimientos, velocidades), escogiendo la opción más conveniente a partir de las pendientes.",
+      "Comprensión de la pendiente como versión elemental de la derivada (tasa de cambio) en el estudio posterior de funciones no lineales.",
+      "Lectura e interpretación de gráficos de funciones lineales y no lineales, distinguiendo tramos con distintas tasas de cambio.",
+      "Análisis de movimientos rectilíneos con velocidad constante (modelo s = vt + s0) y posteriormente con velocidad variable.",
+      "Modelación de situaciones reales mediante funciones lineales, identificando parámetros a partir de descripciones verbales o datos tabulados."
+    ],
+    "representation_variants": [
+      "Ecuaciones explícitas en la forma y = mx + n, con m y n dados numéricamente.",
+      "Descripciones verbales de la tasa de cambio del tipo ‘por cada 1 unidad de x, y aumenta/disminuye en k unidades’.",
+      "Tablas ordenadas de valores (x, y) donde la pendiente se infiere por la variación constante de y cuando x aumenta siempre en 1 unidad.",
+      "Contextos de razones o rendimientos (kilómetros por litro, precio por kilogramo, páginas por hora, etc.) interpretados como m.",
+      "Comparación textual de dos o más situaciones con diferentes tasas (‘más rápido’, ‘menos rendidor’, ‘más inclinada’), sin necesidad de gráfica.",
+      "Uso de lenguaje mixto donde se combina una ecuación y = mx + n con una interpretación en palabras de la pendiente (‘mide cuánto... por cada...’)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "simple_fractions",
+      "unit_rates",
+      "contextual_decimals"
+    ],
+    "required_image_types": []
+  }
+}

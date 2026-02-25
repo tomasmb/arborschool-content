@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Suma de dos o más fracciones con igual denominador, con numeradores enteros positivos o negativos.",
+        "Resta de dos o más fracciones con igual denominador, con numeradores enteros positivos o negativos.",
+        "Mantener el mismo denominador en el resultado al sumar o restar fracciones homogéneas.",
+        "Aplicar correctamente las reglas de signos de los números enteros a los numeradores.",
+        "Simplificar la fracción resultado (reducción a fracción irreducible, sacar signo al numerador).",
+        "Incluír fracciones impropias y resultados mayores que 1 o menores que -1, siempre en forma de fracción.",
+        "Uso de contextos verbales simples (problemas cotidianos) donde la operación esencial sea suma o resta de fracciones homogéneas."
+      ],
+      "out_of_scope": [
+        "Fracciones con distinto denominador (no considerar cambio de denominador ni m.c.m.).",
+        "Operaciones que involucren multiplicación o división de fracciones.",
+        "Conversión entre fracción y número mixto como foco principal del ítem.",
+        "Uso de decimales o porcentajes mezclados con fracciones como parte esencial del cálculo.",
+        "Operaciones con radicales, potencias o expresiones algebraicas en numerador o denominador.",
+        "Problemas que requieran varias etapas donde haya que decidir la operación a realizar (resolución de problemas complejos).",
+        "Comparación de fracciones o ordenamiento sin realizar explícitamente una suma o resta.",
+        "Uso de recta numérica o representaciones geométricas como objetivo principal (pertenece a otros átomos)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-05: Lectura y escritura de fracciones simples.",
+        "A-M1-NUM-01-08: Identificación de numerador y denominador y su significado.",
+        "A-M1-NUM-01-10: Comparación básica de fracciones con igual denominador.",
+        "A-M1-NUM-01-12: Reglas de signos con números enteros en suma y resta.",
+        "A-M1-NUM-01-15: Simplificación de fracciones (dividir numerador y denominador por un factor común)."
+      ],
+      "common_traps": [
+        "Cambiar innecesariamente el denominador cuando ya es común, introduciendo errores en el m.c.m.",
+        "Sumar o restar también los denominadores en vez de mantener el mismo denominador.",
+        "Aplicar mal la regla de signos en el numerador (particularmente en restas del tipo a/b - c/b donde a < c).",
+        "Olvidar simplificar la fracción resultado cuando numerador y denominador tienen factores comunes.",
+        "Confundir la operación requerida por el contexto verbal (interpretar pérdida como suma o ganancia como resta).",
+        "Ubicar el signo en el denominador o en toda la fracción en vez de mantenerlo en el numerador.",
+        "No considerar que el resultado puede ser cero cuando los numeradores opuestos se anulan.",
+        "Errores de cálculo aritmético simples en numeradores con valores mayores (por ejemplo, 17 - 9)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Dos fracciones homogéneas con denominadores pequeños (2, 3, 4, 5, 6, 8, 10) y numeradores positivos de un dígito.",
+        "Operaciones sin contexto o con enunciado muy directo (por ejemplo, '¿Cuál es el valor de ...?').",
+        "Resultados que no requieren simplificación o cuya simplificación es muy evidente (por ejemplo, 2/4 a 1/2).",
+        "Evitar signos negativos y evitar que el resultado sea menor que 0 o mayor que 2 en valor absoluto.",
+        "Un solo paso de cálculo (sin cadenas como a/b + c/b - d/b)."
+      ],
+      "medium": [
+        "Fracciones homogéneas con algunos numeradores negativos o combinación de signos.",
+        "Denominadores de dos dígitos pero fáciles de manejar (12, 15, 20, 24) manteniendo cálculos razonables.",
+        "Requerir explícitamente la fracción simplificada como respuesta correcta, incluyendo divisiones por factores no tan obvios (por ejemplo, 18/30).",
+        "Incluir sumas y restas en una misma expresión, pero con máximo tres fracciones.",
+        "Contextos verbales sencillos donde la operación está sugerida pero no nombrada explícitamente (por ejemplo, juntar o quitar partes de una misma unidad)."
+      ],
+      "hard": [
+        "Expresiones con tres o más fracciones homogéneas combinadas con sumas y restas, incluyendo al menos un numerador negativo.",
+        "Numeradores de dos dígitos que exijan manejo cuidadoso de las reglas de signos y del cálculo aritmético.",
+        "Resultados que sean fracciones impropias que además se deban simplificar con factores no triviales (por ejemplo, 42/56).",
+        "Contextos verbales donde el estudiante deba identificar claramente la suma o la resta y el uso de fracciones homogéneas antes de operar.",
+        "Distractores diseñados a partir de errores típicos (sumar denominadores, error de signo, no simplificar, resultado con signo mal ubicado)."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones verbales ambiguas sobre la unidad de referencia; dejar claro que todas las fracciones se refieren a la misma unidad o totalidad.",
+      "Evitar contextos donde podría interpretarse una operación distinta a suma o resta (por ejemplo, 'el doble', 'la mitad') si no es estrictamente necesario.",
+      "No mezclar fracciones con igual denominador y otras con distinto denominador en el mismo ítem para este átomo.",
+      "Especificar si se espera el resultado en forma de fracción simplificada cuando esto sea relevante para discriminar alternativas.",
+      "Evitar fracciones con denominadores muy grandes o poco familiares que distraigan del foco (la suma o resta) y parezcan errores tipográficos.",
+      "No usar notación mixta confusa (por ejemplo, 1 2/3) a menos que se indique claramente que se trabaja solo con fracciones propias o impropias.",
+      "Cuando haya signos negativos, escribir la fracción de manera estándar con el signo en el numerador o delante de la fracción completa, pero no en el denominador."
+    ],
+    "error_families": [
+      {
+        "name": "Suma_de_denominadores",
+        "description": "El estudiante suma o resta tanto numeradores como denominadores, produciendo resultados del tipo a/b + c/b = (a+c)/(b+b).",
+        "how_to_address": "Incluir alternativas distractoras con denominadores mal sumados y explicitar en la retroalimentación que el denominador se mantiene porque las partes son de igual tamaño."
+      },
+      {
+        "name": "Regla_de_signos_incorrecta",
+        "description": "Al sumar o restar fracciones con numeradores negativos, el estudiante ignora o aplica mal la regla de signos (por ejemplo, -3/7 + 1/7 = 4/7).",
+        "how_to_address": "Proponer ítems que aíslen el trabajo con signos en el numerador y ofrecer retroalimentación que recuerde la regla de suma de enteros antes de incorporar la fracción."
+      },
+      {
+        "name": "Omisión_de_simplificación",
+        "description": "El estudiante obtiene el resultado correcto pero en una fracción no simplificada, y no la reduce a su forma irreducible.",
+        "how_to_address": "Diseñar ítems donde varias alternativas comparten el mismo valor pero en distintos niveles de simplificación, y enfatizar en la retroalimentación la importancia de dividir por el máximo factor común."
+      },
+      {
+        "name": "Signo_mal_ubicado",
+        "description": "El signo negativo queda mal posicionado (en el denominador) o se pierde en algún paso, cambiando el signo de la fracción final.",
+        "how_to_address": "Presentar alternativas que difieran solo en el signo y explicar en la retroalimentación que el signo afecta a toda la fracción y se suele ubicar en el numerador o delante de la fracción."
+      },
+      {
+        "name": "Error_en_resta_como_suma",
+        "description": "En expresiones mixtas, el estudiante trata la resta como suma (por ejemplo, a/b - c/b calculado como a+c en el numerador).",
+        "how_to_address": "Incluir ejemplos donde el resultado esperado disminuye claramente la cantidad y contrastarlos en la retroalimentación con representaciones de 'quitar partes' de una misma unidad."
+      },
+      {
+        "name": "Descuido_en_aritmética_de_numeradores",
+        "description": "Errores de cálculo con numeradores de dos dígitos (por ejemplo, 17 - 9 = 6), que no se deben al concepto de fracción sino a aritmética básica.",
+        "how_to_address": "Usar ítems de práctica con numeradores algo mayores pero controlables y sugerir estrategias como descomponer números o revisar el cálculo antes de elegir la alternativa."
+      },
+      {
+        "name": "Confusión_con_la_unidad",
+        "description": "En contextos verbales, el estudiante interpreta que las fracciones se refieren a unidades distintas y no reconoce que son partes de la misma totalidad.",
+        "how_to_address": "Redactar contextos donde la unidad esté explícita y única, y en la retroalimentación remarcar frases como 'de la misma torta', 'del mismo recipiente'."
+      }
+    ],
+    "future_targets": [
+      "A-M1-NUM-01-18: Adición y sustracción de fracciones heterogéneas (distinto denominador).",
+      "A-M1-NUM-01-20: Operaciones combinadas con fracciones (suma, resta, multiplicación y división).",
+      "A-M1-NUM-01-22: Resolución de problemas de contexto que involucren varias operaciones con fracciones.",
+      "A-M1-NUM-02-05: Uso de fracciones en proporcionalidad, porcentajes y razones.",
+      "A-M1-ALG-01-10: Manipulación de expresiones algebraicas con coeficientes fraccionarios.",
+      "A-M1-NUM-01-25: Representación y ubicación de fracciones en la recta numérica.",
+      "A-M1-NUM-01-28: Promedios y otras medidas con datos fraccionarios."
+    ],
+    "representation_variants": [
+      "Fracciones escritas en notación estándar a/b sin mezcla con números mixtos.",
+      "Expresiones con varias fracciones alineadas horizontalmente, usando paréntesis cuando sea necesario para agrupar operaciones.",
+      "Enunciados verbales cortos que describen partes de una misma unidad (por ejemplo, porciones de comida, tramos de distancia, tiempo).",
+      "Tablas numéricas simples donde cada fila o columna corresponde a una fracción de la misma unidad que se debe sumar o restar.",
+      "Situaciones con 'ganancias' y 'pérdidas' expresadas como fracciones de una cantidad, para reforzar el uso de signos en el numerador."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "proper_fractions",
+      "improper_fractions",
+      "negative_fractions_with_common_denominator",
+      "two_digit_numerators_with_simple_denominators"
+    ],
+    "required_image_types": []
+  }
+}

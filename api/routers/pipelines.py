@@ -10,6 +10,7 @@ Endpoints:
     POST /api/pipelines/jobs/{job_id}/cancel - Cancel a running job
     DELETE /api/pipelines/jobs/{job_id} - Delete a job record
     GET  /api/pipelines/question_gen/{atom_id}/checkpoints - Read checkpoint data
+    GET  /api/pipelines/question_gen/all_questions - Browse all generated questions
 """
 
 from __future__ import annotations
@@ -438,6 +439,32 @@ async def clear_pipeline_outputs(
         "deleted_paths": deleted_paths[:10],  # Limit paths in response
         "message": f"Cleared {deleted_count} items for {pipeline_id}",
     }
+
+
+@router.get("/question_gen/all_questions")
+async def get_all_questions(
+    eje: str | None = None,
+    difficulty: str | None = None,
+    status: str | None = None,
+    search: str | None = None,
+    offset: int = 0,
+    limit: int = 50,
+) -> dict[str, Any]:
+    """Browse all generated questions across atoms."""
+    from app.question_generation.question_bank_reader import (
+        load_atom_maps,
+        read_all_questions,
+    )
+    from app.utils.paths import ATOMS_DIR, QUESTION_GENERATION_DIR
+
+    eje_map, titulo_map = load_atom_maps(
+        ATOMS_DIR / "paes_m1_2026_atoms.json",
+    )
+    return read_all_questions(
+        QUESTION_GENERATION_DIR, eje_map, titulo_map,
+        eje=eje, difficulty=difficulty, status=status,
+        search=search, offset=offset, limit=min(limit, 100),
+    )
 
 
 # -----------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useEffect } from "react";
+import { useMemo } from "react";
 import { CheckCircle2, XCircle, Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import katex from "katex";
@@ -30,9 +30,9 @@ export interface QTIRendererProps {
   qtiXml: string;
   /** Show correct answer highlighting */
   showCorrectAnswer?: boolean;
-  /** Show feedback for each option */
+  /** Show feedback for each option (always visible) */
   showFeedback?: boolean;
-  /** Show worked solution */
+  /** Show worked solution (always visible) */
   showWorkedSolution?: boolean;
   /** Size variant */
   size?: "sm" | "md" | "lg";
@@ -53,18 +53,18 @@ function parseQTIXml(qtiXml: string): ParsedQTI | null {
     const parser = new DOMParser();
     const doc = parser.parseFromString(qtiXml, "text/xml");
 
-    // Check for parse errors
     const parseError = doc.querySelector("parsererror");
     if (parseError) {
       console.error("QTI XML parse error:", parseError.textContent);
       return null;
     }
 
-    // Extract correct answer
-    const correctValueEl = doc.querySelector("qti-correct-response qti-value");
-    const correctAnswer = correctValueEl?.textContent?.trim() || null;
+    const correctValueEl = doc.querySelector(
+      "qti-correct-response qti-value",
+    );
+    const correctAnswer =
+      correctValueEl?.textContent?.trim() || null;
 
-    // Extract prompt/stem
     const promptEl = doc.querySelector("qti-prompt");
     const itemBodyEl = doc.querySelector("qti-item-body");
     let stem = "";
@@ -72,82 +72,72 @@ function parseQTIXml(qtiXml: string): ParsedQTI | null {
     if (promptEl) {
       stem = extractContent(promptEl);
     } else if (itemBodyEl) {
-      // Get content before the choice interaction
-      const choiceInteraction = itemBodyEl.querySelector("qti-choice-interaction");
+      const choiceInteraction = itemBodyEl.querySelector(
+        "qti-choice-interaction",
+      );
       if (choiceInteraction) {
-        // Clone and remove choice interaction to get remaining content
         const clone = itemBodyEl.cloneNode(true) as Element;
-        const toRemove = clone.querySelector("qti-choice-interaction");
-        toRemove?.remove();
+        clone.querySelector("qti-choice-interaction")?.remove();
         stem = extractContent(clone);
       } else {
         stem = extractContent(itemBodyEl);
       }
     }
 
-    // Extract options
     const options: QTIOption[] = [];
-    const choiceElements = doc.querySelectorAll("qti-simple-choice");
+    const choiceElements = doc.querySelectorAll(
+      "qti-simple-choice",
+    );
 
     choiceElements.forEach((choice) => {
       const id = choice.getAttribute("identifier") || "";
-
-      // Get choice text (excluding feedback elements)
       const clone = choice.cloneNode(true) as Element;
-      const feedbackEl = clone.querySelector("qti-feedback-inline");
-      const feedbackText = feedbackEl?.textContent?.trim() || "";
+      const feedbackEl = clone.querySelector(
+        "qti-feedback-inline",
+      );
+      const feedbackText =
+        feedbackEl?.textContent?.trim() || "";
       feedbackEl?.remove();
-
-      const text = extractContent(clone);
 
       options.push({
         id,
-        text,
+        text: extractContent(clone),
         isCorrect: id === correctAnswer,
         feedback: feedbackText || undefined,
       });
     });
 
-    // Extract images
     const images: string[] = [];
-    const imgElements = doc.querySelectorAll("img");
-    imgElements.forEach((img) => {
+    doc.querySelectorAll("img").forEach((img) => {
       const src = img.getAttribute("src");
       if (src) images.push(src);
     });
 
-    // Extract worked solution
     const solutionBlock =
-      doc.querySelector('qti-feedback-block[outcome-identifier="SOLUTION"]') ||
-      doc.querySelector('qti-feedback-block[identifier="SOLUTION"]');
-    const workedSolution = solutionBlock ? extractContent(solutionBlock) : null;
+      doc.querySelector(
+        'qti-feedback-block[outcome-identifier="SOLUTION"]',
+      ) ||
+      doc.querySelector(
+        'qti-feedback-block[identifier="SOLUTION"]',
+      );
+    const workedSolution = solutionBlock
+      ? extractContent(solutionBlock)
+      : null;
 
-    return {
-      stem,
-      options,
-      correctAnswer,
-      images,
-      workedSolution,
-    };
+    return { stem, options, correctAnswer, images, workedSolution };
   } catch (error) {
     console.error("Failed to parse QTI XML:", error);
     return null;
   }
 }
 
-/**
- * Extract text content from an element, handling MathML and other special cases.
- */
-function extractContent(element: Element): string {
-  // Get inner HTML first
-  let html = element.innerHTML;
+/** Re-export parser for use by QuestionPreviewCard. */
+export { parseQTIXml };
 
-  // Clean up namespaced tags
+function extractContent(element: Element): string {
+  let html = element.innerHTML;
   html = html.replace(/<qti-([^>]+)>/g, "<span data-qti-$1>");
   html = html.replace(/<\/qti-([^>]+)>/g, "</span>");
-
-  // Convert MathML to HTML comment placeholder for later processing
-  // We'll handle MathML rendering separately
   return html.trim();
 }
 
@@ -155,49 +145,48 @@ function extractContent(element: Element): string {
 // Math Rendering
 // -----------------------------------------------------------------------------
 
-/**
- * Render LaTeX math expressions in a string.
- * Handles both inline ($...$) and display ($$...$$) math.
- */
 function renderMath(text: string): string {
   if (!text) return text;
 
-  // Handle display math first ($$...$$)
   text = text.replace(/\$\$([\s\S]+?)\$\$/g, (_, latex) => {
     try {
       return katex.renderToString(latex.trim(), {
         displayMode: true,
         throwOnError: false,
       });
-    } catch (e) {
+    } catch {
       return `$$${latex}$$`;
     }
   });
 
-  // Handle inline math ($...$)
   text = text.replace(/\$([^$]+)\$/g, (_, latex) => {
     try {
       return katex.renderToString(latex.trim(), {
         displayMode: false,
         throwOnError: false,
       });
-    } catch (e) {
+    } catch {
       return `$${latex}$`;
     }
   });
 
-  // Handle MathML (attempt to convert or render as-is)
-  // Note: Modern browsers support MathML natively
-  // We leave MathML as-is since it renders in browsers
-
   return text;
 }
+
+/** Exported for reuse by shared question components. */
+export { renderMath };
 
 // -----------------------------------------------------------------------------
 // Sub-components
 // -----------------------------------------------------------------------------
 
-function QuestionStem({ html, size }: { html: string; size: "sm" | "md" | "lg" }) {
+export function QuestionStem({
+  html,
+  size,
+}: {
+  html: string;
+  size: "sm" | "md" | "lg";
+}) {
   const rendered = useMemo(() => renderMath(html), [html]);
 
   return (
@@ -206,7 +195,7 @@ function QuestionStem({ html, size }: { html: string; size: "sm" | "md" | "lg" }
         "prose prose-invert max-w-none",
         size === "sm" && "text-sm",
         size === "md" && "text-base",
-        size === "lg" && "text-lg"
+        size === "lg" && "text-lg",
       )}
       dangerouslySetInnerHTML={{ __html: rendered }}
     />
@@ -224,7 +213,10 @@ function OptionItem({
   showFeedback: boolean;
   size: "sm" | "md" | "lg";
 }) {
-  const rendered = useMemo(() => renderMath(option.text), [option.text]);
+  const rendered = useMemo(
+    () => renderMath(option.text),
+    [option.text],
+  );
 
   const Icon = showCorrect
     ? option.isCorrect
@@ -241,10 +233,11 @@ function OptionItem({
   return (
     <div
       className={cn(
-        "flex items-start gap-3 p-3 rounded-lg border transition-colors",
+        "flex items-start gap-3 p-3 rounded-lg border",
+        "transition-colors",
         showCorrect && option.isCorrect
           ? "bg-success/10 border-success/30"
-          : "bg-surface border-border"
+          : "bg-surface border-border",
       )}
     >
       <div className="flex items-center gap-2 shrink-0">
@@ -255,7 +248,7 @@ function OptionItem({
             size === "sm" && "text-xs",
             size === "md" && "text-sm",
             size === "lg" && "text-base",
-            showCorrect && option.isCorrect && "text-success"
+            showCorrect && option.isCorrect && "text-success",
           )}
         >
           {option.id})
@@ -268,7 +261,7 @@ function OptionItem({
             "prose prose-invert max-w-none",
             size === "sm" && "text-sm",
             size === "md" && "text-base",
-            size === "lg" && "text-lg"
+            size === "lg" && "text-lg",
           )}
           dangerouslySetInnerHTML={{ __html: rendered }}
         />
@@ -279,13 +272,22 @@ function OptionItem({
               "mt-2 pt-2 border-t border-border/50",
               size === "sm" && "text-xs",
               size === "md" && "text-sm",
-              size === "lg" && "text-base"
+              size === "lg" && "text-base",
             )}
           >
-            <span className={cn("font-medium", option.isCorrect ? "text-success" : "text-warning")}>
+            <span
+              className={cn(
+                "font-medium",
+                option.isCorrect
+                  ? "text-success"
+                  : "text-warning",
+              )}
+            >
               {option.isCorrect ? "Correct: " : "Feedback: "}
             </span>
-            <span className="text-text-secondary">{option.feedback}</span>
+            <span className="text-text-secondary">
+              {option.feedback}
+            </span>
           </div>
         )}
       </div>
@@ -293,7 +295,7 @@ function OptionItem({
   );
 }
 
-function ImageGallery({ images }: { images: string[] }) {
+export function ImageGallery({ images }: { images: string[] }) {
   if (images.length === 0) return null;
 
   return (
@@ -311,18 +313,26 @@ function ImageGallery({ images }: { images: string[] }) {
   );
 }
 
-function WorkedSolution({ html, size }: { html: string; size: "sm" | "md" | "lg" }) {
+function WorkedSolution({
+  html,
+  size,
+}: {
+  html: string;
+  size: "sm" | "md" | "lg";
+}) {
   const rendered = useMemo(() => renderMath(html), [html]);
 
   return (
     <div className="mt-4 pt-4 border-t border-border">
-      <h4 className="text-sm font-semibold text-accent mb-2">Worked Solution</h4>
+      <h4 className="text-sm font-semibold text-accent mb-2">
+        Worked Solution
+      </h4>
       <div
         className={cn(
           "prose prose-invert max-w-none text-text-secondary",
           size === "sm" && "text-sm",
           size === "md" && "text-base",
-          size === "lg" && "text-lg"
+          size === "lg" && "text-lg",
         )}
         dangerouslySetInnerHTML={{ __html: rendered }}
       />
@@ -354,13 +364,9 @@ export function QTIRenderer({
 
   return (
     <div className={cn("space-y-4", className)}>
-      {/* Question stem */}
       <QuestionStem html={parsed.stem} size={size} />
-
-      {/* Images */}
       <ImageGallery images={parsed.images} />
 
-      {/* Options */}
       <div className="space-y-2">
         {parsed.options.map((option) => (
           <OptionItem
@@ -373,25 +379,31 @@ export function QTIRenderer({
         ))}
       </div>
 
-      {/* Worked solution */}
       {showWorkedSolution && parsed.workedSolution && (
-        <WorkedSolution html={parsed.workedSolution} size={size} />
+        <WorkedSolution
+          html={parsed.workedSolution}
+          size={size}
+        />
       )}
     </div>
   );
 }
 
-/**
- * Simple preview of QTI content showing just stem and options.
- * Used in comparison views and tables.
- */
+// -----------------------------------------------------------------------------
+// Preset components
+// -----------------------------------------------------------------------------
+
 export interface QTIPreviewProps {
   qtiXml: string;
   showCorrectAnswer?: boolean;
   className?: string;
 }
 
-export function QTIPreview({ qtiXml, showCorrectAnswer = true, className }: QTIPreviewProps) {
+export function QTIPreview({
+  qtiXml,
+  showCorrectAnswer = true,
+  className,
+}: QTIPreviewProps) {
   return (
     <QTIRenderer
       qtiXml={qtiXml}
@@ -404,16 +416,15 @@ export function QTIPreview({ qtiXml, showCorrectAnswer = true, className }: QTIP
   );
 }
 
-/**
- * Full QTI display with all feedback and worked solution.
- * Used in detail panels.
- */
 export interface QTIFullViewProps {
   qtiXml: string;
   className?: string;
 }
 
-export function QTIFullView({ qtiXml, className }: QTIFullViewProps) {
+export function QTIFullView({
+  qtiXml,
+  className,
+}: QTIFullViewProps) {
   return (
     <QTIRenderer
       qtiXml={qtiXml}

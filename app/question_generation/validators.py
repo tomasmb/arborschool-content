@@ -29,15 +29,13 @@ from app.question_generation.prompts.validation import (
     build_solvability_prompt,
 )
 from app.question_generation.validation_checks import (
-    check_exemplar_distance,
     check_feedback_completeness,
-    check_paes_structure,
     compute_fingerprint,
     extract_correct_option,
     extract_qti_skeleton,
     is_skeleton_near_duplicate,
     normalize_option_letter,
-    validate_qti_xml,
+    run_deterministic_checks,
 )
 
 logger = logging.getLogger(__name__)
@@ -277,39 +275,28 @@ class BaseValidator:
         skip_solvability: bool = False,
     ) -> list[str]:
         """Run all checks on a single item. Returns errors (empty=pass)."""
-        errors: list[str] = []
         reports = (
             item.pipeline_meta.validators if item.pipeline_meta else None
         )
 
-        # Check 0: Reject unresolved image placeholders
-        if "IMAGE_PLACEHOLDER" in item.qti_xml:
-            errors.append(
-                f"{item.item_id}: contains IMAGE_PLACEHOLDER"
-                " — image generation incomplete",
-            )
-            return errors
+        # Deterministic checks (shared with batch pipeline)
+        errors = run_deterministic_checks(
+            item.qti_xml, item.item_id,
+            exemplars=exemplars, meta=item.pipeline_meta,
+        )
 
-        # Check 1: XSD validity
-        xsd_result = validate_qti_xml(item.qti_xml)
-        xsd_ok = xsd_result.get("valid", False)
-        if not xsd_ok:
-            errors.append(
-                f"{item.item_id}: XSD invalid — "
-                f"{xsd_result.get('validation_errors', 'unknown')}",
-            )
+        # Update per-check report flags from the error strings
         if reports:
-            reports.xsd = "pass" if xsd_ok else "fail"
+            has = lambda tag: any(tag in e for e in errors)  # noqa: E731
+            if "IMAGE_PLACEHOLDER" in item.qti_xml:
+                return errors  # fatal — no further reports
+            reports.xsd = "fail" if has("XSD invalid") else "pass"
+            reports.paes = (
+                "fail" if has("options (A-D)")
+                or has("Missing qti-") else "pass"
+            )
 
-        # Check 2: PAES structural compliance
-        paes_errors = check_paes_structure(item.qti_xml)
-        errors.extend(f"{item.item_id}: {e}" for e in paes_errors)
-        if reports:
-            reports.paes = "pass" if not paes_errors else "fail"
-
-        # Check 3: Solvability (LLM-based independent solve)
-        # Skipped in Phase 9: stem/answer unchanged since Phase 6,
-        # and the result is already in pipeline_meta.validators.
+        # Solvability (LLM-based) — skipped in Phase 9
         if not skip_solvability:
             solve_err = self._check_solvability(item)
             if solve_err:
@@ -319,20 +306,12 @@ class BaseValidator:
             elif reports:
                 reports.solve_check = "pass"
 
-        # Check 4: Exemplar distance check
-        if exemplars:
-            copy_err = check_exemplar_distance(
-                item.qti_xml, exemplars, item.pipeline_meta,
-            )
-            if copy_err:
-                errors.append(f"{item.item_id}: {copy_err}")
-                if reports:
-                    reports.exemplar_copy_check = "fail"
-            elif reports:
-                reports.exemplar_copy_check = "pass"
-
-        # Scope is enforced at plan time (Phase 3), not per-item.
+        # Update exemplar report flag
         if reports:
+            has_copy = any("exemplar" in e.lower() for e in errors)
+            reports.exemplar_copy_check = (
+                "fail" if has_copy else "pass"
+            )
             reports.scope = "pass"
 
         return errors

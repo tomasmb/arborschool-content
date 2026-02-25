@@ -1,0 +1,134 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Convertir una raíz enésima de un número o expresión algebraica a potencia con exponente racional.",
+        "Identificar el índice de la raíz como denominador del exponente fraccionario.",
+        "Identificar el exponente del radicando (o 1 si no aparece) como numerador del exponente fraccionario.",
+        "Reescribir expresiones del tipo √[n](a^m) como a^(m/n), incluyendo el caso m = 1.",
+        "Trabajar con raíces de números reales positivos y con letras (variables con exponente entero)."
+      ],
+      "out_of_scope": [
+        "Convertir de potencia con exponente racional a expresión radical (eso corresponde al átomo inverso A-M1-NUM-03-08).",
+        "Operar o simplificar potencias con exponentes racionales (sumar, multiplicar, racionalizar, etc.).",
+        "Evaluar numéricamente raíces o potencias (por ejemplo, calcular el valor aproximado).",
+        "Uso de propiedades de radicales para simplificar antes o después de la conversión (por ejemplo, extraer factores del radicando).",
+        "Raíces de índices no enteros o exponentes fraccionarios sobre fracciones ya dadas (como (a^(2/3))^(3/5)).",
+        "Análisis de dominio o signos de funciones con raíces o exponentes racionales.",
+        "Trabajo con números complejos o raíces pares de números negativos."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Reconocer y leer notación de potencias con exponente entero.",
+        "A-M1-NUM-03-02: Reconocer y leer notación de raíces (índice, radical, radicando).",
+        "A-M1-NUM-01-01: Manejo básico de números enteros y naturales.",
+        "A-M1-NUM-02-01: Comprensión básica de fracciones como numerador/denominador (nivel de lectura, no de operaciones complejas)."
+      ],
+      "common_traps": [
+        "Intercambiar numerador y denominador al convertir, escribiendo a^(n/m) en lugar de a^(m/n).",
+        "Olvidar que, cuando el radicando no muestra exponente, este es 1 (por ejemplo, √[5](x) → x^(1/5), no x^(5/1)).",
+        "Confundir índice de la raíz con el radicando (por ejemplo, interpretar √[3](x^2) como (3x)^(2/?) ).",
+        "Omitir el índice 2 en la raíz cuadrada y por tanto no identificar que el denominador es 2 (√x → x^(1/2)).",
+        "Tratar la raíz como si fuera una multiplicación o división, por ejemplo √[3](a^2) → a^2/3.",
+        "Creer que la conversión cambia el valor numérico de la expresión y no solo su forma de escritura.",
+        "Confundir la base de la potencia resultante (por ejemplo, tomar el índice n como base y escribir n^(m/a) en lugar de a^(m/n))."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Raíces con índice pequeño (2, 3, 4) y explícito o implícito, con radicandos simples de una sola letra o número sin exponente o con exponente 1 o 2.",
+        "Conversión directa con una única raíz sin operaciones adicionales (suma, producto, cociente) en la expresión.",
+        "Uso de números enteros positivos como radicandos (por ejemplo, √[3](7), √x, √[4](y)).",
+        "Alternativas de respuesta que difieren claramente en numerador y denominador, sin distractores muy cercanos."
+      ],
+      "medium": [
+        "Raíces con índices mayores (5, 6, 7, 10) pero aún enteros positivos.",
+        "Radicandos con exponentes enteros mayores que 2, incluyendo negativos (por ejemplo, √[5](x^7), √[3](a^-2)).",
+        "Expresiones con más de un factor en el radicando, pero donde SOLO se pida la conversión de la raíz completa a exponente racional, sin simplificar productos (por ejemplo, √[3](2x^4)).",
+        "Ítems donde el estudiante debe distinguir entre varios exponentes fraccionarios similares (mismo numerador o mismo denominador) para elegir la correcta.",
+        "Combinar raíces cuadradas (índice implícito) con raíces de otros índices en un mismo ítem, siempre pidiendo solo la traducción de cada una."
+      ],
+      "hard": [
+        "Expresiones con varios términos o factores donde aparece más de una raíz y se pide la conversión de todas a notación con exponentes racionales dentro de una misma opción.",
+        "Radicandos con exponentes compuestos (por ejemplo, (x^3 y^2)^4) donde, sin exigir expansión, el estudiante debe identificar correctamente el exponente total del radicando antes de construir la fracción m/n.",
+        "Uso de exponentes negativos o cero en el radicando de forma sistemática (por ejemplo, √[4](a^-3 b^0)).",
+        "Opciones de respuesta que incluyen errores típicos muy cercanos (invertir m/n, olvidar el 1, confundir índice), lo que exige alta precisión en la identificación de numerador y denominador.",
+        "Contextos verbales breves donde se describe la raíz en palabras y se debe traducir a potencia con exponente racional (por ejemplo, “la raíz séptima del cuadrado de p”), manteniendo siempre que la tarea siga siendo meramente de conversión de notación."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en el mismo ítem la conversión a exponente racional con operaciones de simplificación de radicales o potencias; si aparecen, deben ser decorativas o claramente no requeridas para responder.",
+      "Evitar expresiones donde no esté claro si todo el producto está bajo la raíz o solo una parte; usar paréntesis o notación radical clara para el alcance del radical.",
+      "No usar índices no enteros ni símbolos poco habituales (como raíces con índice fraccionario), ya que el átomo se centra en índices enteros.",
+      "Evitar notaciones ambiguas como ³√a^2 sin paréntesis cuando pueda interpretarse como (³√a)^2 o ³√(a^2); siempre usar paréntesis o un formato que deje claro qué está dentro de la raíz.",
+      "No combinar, en una misma alternativa, cambios en el orden de factores o en la escritura que puedan confundir al estudiante sobre cuál es la base real de la potencia.",
+      "Evitar que en las alternativas aparezcan potencias con base igual al índice de la raíz, para no inducir a confusiones de base (por ejemplo, no proponer n^(a/m) cuando el enunciado tiene √[n](a^m) salvo que se busque específicamente ese distractor y siga siendo claramente incorrecto).",
+      "No incluir raíces de números negativos con índice par (para no entrar en temas de números complejos), a menos que el contexto especifique claramente que se trabaja solo a nivel de notación formal sin evaluar validez numérica; preferir evitarlas.",
+      "Cuidar que, cuando la raíz es cuadrada, quede explícito en el enunciado que corresponde a índice 2 si se menciona el índice en el planteo verbal."
+    ],
+    "error_families": [
+      {
+        "name": "Inversión de fracción exponente",
+        "description": "El estudiante confunde numerador y denominador al convertir √[n](a^m) y obtiene a^(n/m) en lugar de a^(m/n).",
+        "how_to_address": "Reforzar la asociación verbal: “índice abajo, exponente arriba”, y practicar con muchos ejemplos donde se identifiquen por separado índice y exponente del radicando antes de escribir la fracción."
+      },
+      {
+        "name": "Olvido del exponente 1 en el radicando",
+        "description": "Cuando el radicando no muestra exponente, el estudiante no reconoce que es 1 y comete errores como √[3](x) → x^(3/1) o x^3.",
+        "how_to_address": "Insistir en que toda letra tiene exponente 1 aunque no esté escrito, y pedir explícitamente que escriban ese 1 en varios pasos intermedios: √[3](x^1) → x^(1/3)."
+      },
+      {
+        "name": "Confusión entre índice y radicando",
+        "description": "Se interpreta erróneamente el índice como parte de la base o del exponente del radicando, por ejemplo, √[5](2^3) → (5·2)^(3/?) o similar.",
+        "how_to_address": "Trabajar la descomposición visual de la raíz: identificar claramente tres partes (índice, símbolo radical, radicando) y pedir que las etiqueten antes de convertir."
+      },
+      {
+        "name": "Tratar la raíz como fracción ordinaria",
+        "description": "El estudiante escribe expresiones del tipo √[3](a^2) como a^2/3, confundiendo el exponente racional con una división simple.",
+        "how_to_address": "Diferenciar el rol de la potencia (a^(2/3)) de la fracción a^2/3; mostrar que en el primer caso el 2/3 afecta al exponente de la base, no al número como numerador sobre 3 como denominador de una fracción numérica."
+      },
+      {
+        "name": "Pérdida o cambio de la base",
+        "description": "Al convertir, el estudiante modifica la base, por ejemplo, √[4](3^2) → 4^(2/3) o 3^(2/4) sin aclarar bien qué es base y qué es exponente.",
+        "how_to_address": "Enfatizar que la base de la potencia resultante SIEMPRE es el radicando (sin incluir el índice) y que el índice nunca pasa a ser base.Llamar a leer en voz alta: “la cuarta raíz de tres al cuadrado” → base: tres; exponente: 2/4."
+      },
+      {
+        "name": "Error con raíz cuadrada (índice implícito)",
+        "description": "El estudiante olvida que el índice de √a es 2 y escribe a^(1/?) o asume otro número, o no pone denominador.",
+        "how_to_address": "Practicar casos específicos de raíces cuadradas mostrando explícitamente el 2: √a = √[2](a) → a^(1/2); luego retirar progresivamente el 2, manteniendo el denominador 2 en el exponente racional."
+      },
+      {
+        "name": "Manejo incorrecto de exponentes negativos",
+        "description": "Cuando el radicando tiene exponente negativo (por ejemplo, a^-3), el estudiante cambia signos o ignora el signo del exponente al formar la fracción, por ejemplo √[4](a^-3) → a^(3/4).",
+        "how_to_address": "Destacar que la fracción solo organiza numerador y denominador, pero el signo del exponente viene del radicando: m/n conserva el signo de m; practicar ejemplos con y sin signo negativo."
+      }
+    ],
+    "future_targets": [
+      "Comprender y operar con potencias de exponente racional (multiplicar, dividir, potenciar potencias).",
+      "Simplificar expresiones con radicales usando notación de exponentes racionales.",
+      "Resolver ecuaciones que involucran raíces mediante reescritura en términos de exponentes racionales.",
+      "Analizar funciones con raíces (por ejemplo, f(x) = √[n](x^m)) reescribiéndolas como funciones potencia y utilizando sus propiedades.",
+      "Aplicar reglas de derivación e integración de funciones potencia en cursos posteriores, donde los exponentes racionales son estándar.",
+      "Racionalización de denominadores usando exponentes racionales.",
+      "Estudio de progresiones y expresiones algebraicas avanzadas que incluyen exponentes fraccionarios o radicales anidados."
+    ],
+    "representation_variants": [
+      "Notación radical tradicional con índice explícito: √[n](a^m).",
+      "Raíz cuadrada con índice implícito: √a, √(x^m).",
+      "Descripción verbal de raíces: “la raíz cúbica de 7”, “la raíz quinta del cuadrado de y”.",
+      "Expresiones con letras y números combinados como radicando: √[3](2x^4), √(5a).",
+      "Uso de paréntesis para delimitar el radicando: √[n]((ab)^m), √(x^2 y).",
+      "Conversión donde el resultado incluye exponentes racionales positivos y negativos: a^(-3/4), x^(5/2)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "moderate_integers",
+      "simple_variables",
+      "integer_exponents",
+      "negative_integer_exponents",
+      "unit_fractions",
+      "simple_rational_exponents"
+    ],
+    "required_image_types": []
+  }
+}

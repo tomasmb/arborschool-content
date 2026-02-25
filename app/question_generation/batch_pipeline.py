@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 from pathlib import Path
 from typing import Any
 
@@ -47,6 +48,9 @@ from app.question_generation.batch_pipeline_stages import (
     run_phase_6,
     run_phase_78,
     run_phase_9,
+)
+from app.question_generation.phase4_runner import (
+    run_phase_4b_batch,
 )
 from app.question_generation.progress import (
     report_cost,
@@ -94,6 +98,11 @@ class BatchAtomPipeline:
         batch_dir: Path | None = None,
         poll_interval: int = 30,
         max_wait: int = 86400,
+        per_atom_distributions: (
+            dict[str, DifficultyDistribution] | None
+        ) = None,
+        existing_fingerprints: dict[str, set[str]] | None = None,
+        existing_summaries: dict[str, dict] | None = None,
     ) -> None:
         load_dotenv()
         api_key = os.getenv("OPENAI_API_KEY", "")
@@ -116,6 +125,9 @@ class BatchAtomPipeline:
         self._distribution = compute_planned_distribution(
             DEFAULT_TARGET_DISTRIBUTION, _DEFAULT_BUFFER_RATIO,
         )
+        self._per_atom_dists = per_atom_distributions
+        self._existing_fps = existing_fingerprints
+        self._existing_summaries = existing_summaries
 
         self._contexts: dict[str, AtomContext] = {}
         self._enrichments: dict[str, AtomEnrichment | None] = {}
@@ -152,10 +164,14 @@ class BatchAtomPipeline:
         self._run_phase_2_3()
         report_progress(int(n * 0.2), n)
         self._run_phase_4()
+        self._items = run_phase_4b_batch(
+            self._items, self._plans,
+            skip_images=self._skip_images,
+        )
         report_progress(int(n * 0.4), n)
         fn = self._submit_and_wait
         st, cp, it, m = self._state, self._ckpt_path, self._items, self._model
-        self._items = run_phase_5(st, cp, it)
+        self._items = run_phase_5(st, cp, it, self._existing_fps)
         self._items = run_phase_6(st, cp, self._items, m, fn)
         report_progress(int(n * 0.6), n)
         self._items = run_phase_78(st, cp, self._items, m, fn)
@@ -170,6 +186,7 @@ class BatchAtomPipeline:
     def _run_phase_0(self) -> None:
         if is_phase_completed(self._state, "phase_0"):
             self._load_contexts(get_active_atoms(self._state))
+            self._apply_existing_counts()
             return
 
         logger.info("Phase 0: Loading inputs for all atoms")
@@ -185,6 +202,7 @@ class BatchAtomPipeline:
             mark_atoms_failed(
                 self._state, failed, self._ckpt_path,
             )
+        self._apply_existing_counts()
         update_phase(
             self._state, "phase_0", self._ckpt_path,
             status="completed",
@@ -193,6 +211,15 @@ class BatchAtomPipeline:
             "Phase 0: %d loaded, %d failed",
             len(self._contexts), len(failed),
         )
+
+    def _apply_existing_counts(self) -> None:
+        """Set existing_item_count on contexts from summaries."""
+        if not self._existing_summaries:
+            return
+        for aid, ctx in self._contexts.items():
+            summary = self._existing_summaries.get(aid)
+            if summary:
+                ctx.existing_item_count = summary.get("total", 0)
 
     def _load_contexts(self, atom_ids: list[str]) -> None:
         for atom_id in atom_ids:
@@ -209,17 +236,61 @@ class BatchAtomPipeline:
             return
 
         logger.info("Phase 1: Enrichment for all atoms")
-        reqs = [build_enrichment_request(c, self._model) for c in self._contexts.values()]
-        if not reqs:
-            update_phase(self._state, "phase_1", self._ckpt_path, status="completed", request_count=0)
-            return
-        self._enrichments = process_enrichment_responses(self._submit_and_wait("phase_1", reqs))
-        for aid, enr in self._enrichments.items():
-            save_checkpoint(QUESTION_GENERATION_DIR / aid, 1, "enrichment", {
-                "has_enrichment": enr is not None,
-                "enrichment_data": enr.model_dump() if enr else None,
-            })
-        update_phase(self._state, "phase_1", self._ckpt_path, status="completed")
+
+        # Reuse existing enrichment checkpoints to avoid redundant API calls
+        missing_ctx: list[AtomContext] = []
+        for aid, ctx in self._contexts.items():
+            ckpt = load_checkpoint(
+                QUESTION_GENERATION_DIR / aid, 1, "enrichment",
+            )
+            data = (ckpt or {}).get("enrichment_data")
+            if data:
+                self._enrichments[aid] = (
+                    AtomEnrichment.model_validate(data)
+                )
+                logger.debug(
+                    "Reused existing enrichment for %s", aid,
+                )
+            else:
+                missing_ctx.append(ctx)
+
+        if missing_ctx:
+            logger.info(
+                "Generating enrichment for %d atoms "
+                "(%d already cached)",
+                len(missing_ctx),
+                len(self._contexts) - len(missing_ctx),
+            )
+            reqs = [
+                build_enrichment_request(c, self._model)
+                for c in missing_ctx
+            ]
+            new_enrichments = process_enrichment_responses(
+                self._submit_and_wait("phase_1", reqs),
+            )
+            for aid, enr in new_enrichments.items():
+                self._enrichments[aid] = enr
+                save_checkpoint(
+                    QUESTION_GENERATION_DIR / aid,
+                    1, "enrichment", {
+                        "has_enrichment": enr is not None,
+                        "enrichment_data": (
+                            enr.model_dump() if enr else None
+                        ),
+                    },
+                )
+        else:
+            logger.info(
+                "All %d atoms have cached enrichment, "
+                "skipping batch API call",
+                len(self._contexts),
+            )
+
+        update_phase(
+            self._state, "phase_1", self._ckpt_path,
+            status="completed",
+            request_count=len(missing_ctx),
+        )
 
     def _reload_enrichments(self) -> None:
         for aid in get_active_atoms(self._state):
@@ -247,21 +318,73 @@ class BatchAtomPipeline:
 
         self._run_phase_3_validation()
 
+    def _get_distribution(self, atom_id: str) -> DifficultyDistribution:
+        """Get per-atom distribution if available, else default."""
+        if self._per_atom_dists:
+            return self._per_atom_dists.get(
+                atom_id, self._distribution,
+            )
+        return self._distribution
+
     def _run_phase_2(self) -> None:
         logger.info("Phase 2: Plan generation for all atoms")
         reqs: list[BatchRequest] = []
+        summaries = self._existing_summaries or {}
         for aid in get_active_atoms(self._state):
             ctx = self._contexts.get(aid)
             if ctx:
-                reqs.append(build_plan_request(ctx, self._enrichments.get(aid), self._distribution, self._model))
+                dist = self._get_distribution(aid)
+                reqs.append(build_plan_request(
+                    ctx, self._enrichments.get(aid), dist,
+                    self._model,
+                    existing_summary=summaries.get(aid),
+                ))
         if not reqs:
-            update_phase(self._state, "phase_2", self._ckpt_path, status="completed", request_count=0)
+            update_phase(
+                self._state, "phase_2", self._ckpt_path,
+                status="completed", request_count=0,
+            )
             return
-        plans, failures = process_plan_responses(self._submit_and_wait("phase_2", reqs))
+        plans, failures = process_plan_responses(
+            self._submit_and_wait("phase_2", reqs),
+        )
+        self._offset_slot_indices(plans)
         self._plans = plans
         if failures:
             mark_atoms_failed(self._state, failures, self._ckpt_path)
-        update_phase(self._state, "phase_2", self._ckpt_path, status="completed")
+        update_phase(
+            self._state, "phase_2", self._ckpt_path,
+            status="completed",
+        )
+
+    def _offset_slot_indices(
+        self,
+        plans: dict[str, list[PlanSlot]],
+    ) -> None:
+        """Offset slot indices so new item IDs don't collide.
+
+        Reads existing Phase 9 checkpoints to find the max Q
+        number per atom, then shifts all new slot indices above it.
+        """
+        for atom_id, slots in plans.items():
+            ckpt = load_checkpoint(
+                QUESTION_GENERATION_DIR / atom_id,
+                9, "final_validation",
+            )
+            if not ckpt or not ckpt.get("items"):
+                continue
+            max_q = 0
+            for item in ckpt["items"]:
+                m = re.search(r"_Q(\d+)$", item.get("item_id", ""))
+                if m:
+                    max_q = max(max_q, int(m.group(1)))
+            offset = max_q + 1
+            for slot in slots:
+                slot.slot_index += offset
+            logger.info(
+                "Offset %s slots by +%d (existing max Q%d)",
+                atom_id, offset, max_q,
+            )
 
     def _run_phase_3_validation(self) -> None:
         logger.info("Phase 3: Validating plans")
@@ -270,7 +393,8 @@ class BatchAtomPipeline:
             ctx = self._contexts.get(atom_id)
             if not ctx:
                 continue
-            result = validate_plan(slots, ctx, self._distribution)
+            dist = self._get_distribution(atom_id)
+            result = validate_plan(slots, ctx, dist)
             if not result.success:
                 failed[atom_id] = "; ".join(result.errors)
             else:

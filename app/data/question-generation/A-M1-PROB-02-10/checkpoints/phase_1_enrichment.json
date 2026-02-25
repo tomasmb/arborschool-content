@@ -1,0 +1,136 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Elección cualitativa entre media, mediana y moda como medida de tendencia central más representativa, a partir de una descripción verbal o tabla de datos.",
+        "Identificación argumentada de cuándo un valor es claramente atípico (mucho mayor o mucho menor que la mayoría) solo de forma cualitativa.",
+        "Justificación de la mediana como medida más representativa cuando hay uno o pocos valores muy extremos que arrastran la media.",
+        "Justificación de la media cuando los datos son aproximadamente equilibrados y sin valores extremadamente alejados del resto.",
+        "Selección de la moda en contextos de datos cualitativos (categorías) o cuando el interés principal es saber qué valor se repite más.",
+        "Comparaciones del tipo: ‘¿qué medida describe mejor el comportamiento típico de este conjunto de datos?’ y pedir fundamentar esa elección."
+      ],
+      "out_of_scope": [
+        "Cálculo numérico detallado de media, mediana o moda como objetivo central (se puede usar, pero solo de apoyo a una decisión cualitativa).",
+        "Criterios formales de detección de outliers (como 1,5·RIQ, reglas basadas en desviación estándar u otros métodos avanzados).",
+        "Uso de medidas de dispersión (varianza, desviación estándar, rango intercuartílico) como contenido principal.",
+        "Interpretación de gráficos estadísticos complejos (boxplot, diagrama de dispersión) como foco del ítem.",
+        "Probabilidad, combinatoria o inferencia estadística (intervalos de confianza, test de hipótesis).",
+        "Trabajar con grandes bases de datos o cálculos con software estadístico.",
+        "Análisis formal de asimetría (coeficientes de asimetría, funciones de densidad, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-PROB-02-01: Comprender el concepto básico de conjunto de datos y lectura de tablas simples.",
+        "A-M1-PROB-02-02: Reconocer y calcular media aritmética en conjuntos pequeños de datos.",
+        "A-M1-PROB-02-03: Reconocer y determinar mediana en listas de datos ordenados (casos par e impar).",
+        "A-M1-PROB-02-04: Reconocer y determinar la(s) moda(s) en conjuntos de datos, incluyendo datos cualitativos.",
+        "A-M1-PROB-02-05: Comprender la idea de ‘valor típico’ o ‘representativo’ en lenguaje cotidiano.",
+        "A-M1-PROB-02-06: Leer e interpretar descripciones verbales sencillas de contextos reales (sueldos, estaturas, puntajes, etc.)."
+      ],
+      "common_traps": [
+        "Plantear conjuntos de datos donde no sea claro si hay valores atípicos, generando respuestas discutibles entre media y mediana.",
+        "Proponer situaciones en que más de una medida pueda considerarse razonablemente ‘la más representativa’ sin dar un criterio claro en el enunciado.",
+        "Olvidar que la moda es preferente en variables categóricas y plantear ítems donde se pregunte por la media de datos claramente cualitativos.",
+        "Usar datos con demasiados valores iguales o con varios picos (multimodales) sin explicitar qué se entiende por ‘típico’, generando ambigüedad con la moda.",
+        "Incluir cálculos extensos que sobrecargan la aritmética y desvían la atención del objetivo argumentativo de elección de medida.",
+        "Contextos poco realistas (números absurdamente grandes o negativos en situaciones donde no tienen sentido) que distraen del razonamiento estadístico.",
+        "Enunciados que mezclan criterios (por ejemplo, preguntar simultáneamente por representatividad y por ‘mayor valor’, confundiendo al estudiante)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Datos presentados en listas cortas (5 a 8 valores numéricos) o categorías simples, con un valor atípico muy evidente (por ejemplo, un sueldo muy superior al resto).",
+        "Contextos cotidianos muy familiares (sueldos, edades, estaturas, precios sencillos) donde ‘valor típico’ es intuitivo.",
+        "Ítems que solo requieren identificar la medida adecuada (media, mediana o moda) sin exigir una justificación muy elaborada, o con distractores muy poco plausibles.",
+        "Situaciones donde una medida es claramente incorrecta (por ejemplo, usar media en datos cualitativos) y la correcta destaca de forma obvia.",
+        "Enunciados que sugieren casi explícitamente el criterio (por ejemplo: se menciona la existencia de ‘un valor muy extremo que altera el promedio’)."
+      ],
+      "medium": [
+        "Conjuntos de datos algo más largos (8 a 15 datos) que obligan a mirar la distribución global, pero sin exigir operaciones extensas.",
+        "Presencia de uno o dos valores atípicos menos evidentes, requiriendo que el estudiante compare con la mayoría de los datos.",
+        "Ítems que piden justificar brevemente la elección, obligando a mencionar explícitamente la presencia/ausencia de valores extremos o el equilibrio de los datos.",
+        "Situaciones donde media y mediana son candidatas plausibles y el estudiante debe discriminar cuál describe mejor el ‘comportamiento típico’.",
+        "Uso de moda en contextos más sutiles (por ejemplo, selección de producto o talla más vendida) donde no se menciona la palabra ‘repetir’ explícitamente."
+      ],
+      "hard": [
+        "Contextos en los que la distribución está algo sesgada (muchos datos concentrados en un extremo y cola larga) pero sin valores aislados extremadamente obvios, exigiendo un análisis más fino entre media y mediana.",
+        "Datos mixtos (por ejemplo, sueldos de un grupo con varios niveles muy distintos) donde hay más de un valor alto o bajo, y el estudiante debe decidir si calificarlos como atípicos y argumentar.",
+        "Ítems que presentan más de una medida potencialmente defendible y exigen justificar por qué una es mejor que otra en ese caso, identificando explícitamente las limitaciones de la medida descartada.",
+        "Situaciones en que se deben comparar dos conjuntos de datos distintos (por ejemplo, dos cursos, dos empresas) y elegir en cada uno una medida distinta con una justificación diferenciada.",
+        "Enunciados con distracciones contextuales o información irrelevante que el estudiante debe filtrar para centrarse en la estructura del conjunto de datos y su representatividad."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar conjuntos de datos donde no sea clara la existencia de valores ‘muy extremos’; si se requiere que haya un outlier, que su diferencia con la mayoría sea notoria en el contexto (por ejemplo, 95% de salarios entre 400 y 600 mil, y uno de 3 millones).",
+      "No usar expresiones vagas como ‘un poco más grande’ o ‘algo menor’ para describir valores atípicos; preferir frases como ‘mucho mayor que todos los demás’ o ‘muy por debajo de la mayoría’.",
+      "Evitar preguntas donde el objetivo no especifique claramente qué se entiende por ‘más representativa’ (típico del grupo, valor más frecuente, promedio general, etc.).",
+      "No mezclar en la misma pregunta objetivos distintos (por ejemplo, pedir elegir la medida más representativa y simultáneamente la que sea ‘más alta’ o ‘más conveniente económicamente’).",
+      "Evitar que la redacción haga pensar que se debe usar siempre la media por costumbre (por ejemplo, frases como ‘calcular el promedio’ cuando en realidad se debe elegir la medida adecuada).",
+      "No usar conjuntos de datos donde la media, mediana y moda coincidan exactamente a menos que el foco del ítem sea otra distinción clara, para no generar respuestas que parezcan equivalentes.",
+      "Evitar contextos en que datos negativos o cero sean confusos o poco realistas (por ejemplo, estatura negativa), lo que podría distraer y generar interpretaciones alternativas.",
+      "No presentar variables cualitativas con números de código (por ejemplo, 1=hombre, 2=mujer) sin aclararlo, para que no se confundan con datos numéricos donde tenga sentido hablar de media."
+    ],
+    "error_families": [
+      {
+        "name": "Media_por_costumbre",
+        "description": "El estudiante elige siempre la media como medida de tendencia central sin considerar la forma de la distribución ni la presencia de valores atípicos.",
+        "how_to_address": "Diseñar ítems donde el uso de la media produzca una descripción claramente engañosa (por ejemplo, un sueldo promedio muy alto debido a un solo salario extremo) y donde la explicación de por qué la media no es adecuada sea parte explícita de las alternativas."
+      },
+      {
+        "name": "Confusion_media_mediana",
+        "description": "El estudiante no diferencia conceptualmente entre media y mediana, o cree que ambas representarán igual de bien cualquier conjunto de datos.",
+        "how_to_address": "Proponer situaciones comparativas donde media y mediana sean numéricamente distintas y mostrar, en el contexto, cómo la mediana se mantiene más cercana al comportamiento típico cuando hay outliers, reforzando que la mediana solo depende del orden y no de la magnitud extrema."
+      },
+      {
+        "name": "Uso_incorrecto_de_moda",
+        "description": "El estudiante ignora la moda o la usa solo como ‘otra media numérica’, sin reconocer su rol privilegiado en datos cualitativos o en la identificación del valor más frecuente.",
+        "how_to_address": "Incluir ítems con variables claramente categóricas (talla de ropa, marca preferida, medio de transporte habitual) donde solo la moda tenga sentido, y enfatizar en la justificación que se busca el valor más frecuente, no un promedio numérico."
+      },
+      {
+        "name": "No_reconocer_valores_atipicos",
+        "description": "El estudiante no detecta que uno o algunos valores son muy diferentes del resto, por lo que no ajusta su elección de medida representativa.",
+        "how_to_address": "Usar tablas o descripciones donde la mayoría de los valores estén en un rango acotado y un par de datos estén muy por fuera, resaltando verbalmente esta situación (por ejemplo, ‘un estudiante con una estatura muy superior a la del resto’) y pidiendo explicar cómo afecta a la media pero no a la mediana."
+      },
+      {
+        "name": "Sobre_reaccion_a_outliers",
+        "description": "El estudiante cataloga como ‘atípicos’ valores que solo son ligeramente diferentes de la mayoría, descartando la media incluso cuando sigue siendo adecuada.",
+        "how_to_address": "Plantear conjuntos donde las diferencias sean moderadas y explicitar que todos los datos provienen de la misma población sin extremos claros, mostrando que en esos casos la media sigue describiendo bien el comportamiento general."
+      },
+      {
+        "name": "Confusion_tipos_de_dato",
+        "description": "El estudiante trata datos cualitativos como si fueran numéricos (calculando o privilegiando la media) o no distingue entre variables donde el orden importa y donde no.",
+        "how_to_address": "Proponer ejemplos con etiquetas no numéricas (colores, marcas, tallas S-M-L) donde sea evidente que no se puede ‘promediar’, y enfatizar que en estos casos la medida de interés es cuál ocurre con mayor frecuencia (moda)."
+      },
+      {
+        "name": "Focalizacion_en_valores_individuales",
+        "description": "El estudiante justifica su elección aludiendo a un solo dato (por ejemplo, el máximo o el mínimo) en vez de considerar el conjunto completo.",
+        "how_to_address": "Diseñar ítems donde varias medidas posibles sean cercanas, de manera que solo mirando el comportamiento global (concentración de datos, simetría/apertura) se pueda decidir correctamente, y explicitar en los comentarios o claves que la decisión debe basarse en el conjunto y no en casos aislados."
+      }
+    ],
+    "future_targets": [
+      "Interpretación y comparación de distribuciones mediante gráficos estadísticos (histogramas, diagramas de caja) donde la elección de media o mediana está ligada a la forma del gráfico.",
+      "Análisis más avanzado de asimetría y sesgo en distribuciones, relacionando la posición relativa de media, mediana y moda.",
+      "Uso de medidas de dispersión (rango, varianza, desviación estándar, rango intercuartílico) para complementar la descripción del conjunto de datos.",
+      "Toma de decisiones informadas en contextos reales (políticas públicas, economía, educación) donde se deba justificar qué medida resume mejor la información.",
+      "Comprensión básica de inferencia estadística, donde la elección de parámetros descriptivos adecuados (media vs mediana) afecta la interpretación de muestras y poblaciones.",
+      "Lectura crítica de información estadística en medios de comunicación, identificando posibles sesgos al reportar ‘promedios’ en contextos con valores extremos.",
+      "Modelación de fenómenos aleatorios o variables con distribuciones no simétricas, entendiendo qué parámetro central es más robusto."
+    ],
+    "representation_variants": [
+      "Listas simples de datos numéricos (por ejemplo, sueldos, edades, notas) presentadas en forma ordenada o desordenada.",
+      "Tablas de frecuencia con datos numéricos agrupados en valores individuales o en pocos intervalos sencillos, cuando no se requiere cálculo fino.",
+      "Tablas con datos cualitativos (categorías) y su frecuencia absoluta (p. ej., talla de zapato, marca de celular, medio de transporte).",
+      "Descripciones verbales de la distribución, sin presentar todos los datos, del tipo: ‘la mayoría de los estudiantes obtuvo entre 5,0 y 5,5, excepto uno que obtuvo 2,0’.",
+      "Comparaciones textuales entre dos grupos, donde se describen rangos típicos y valores extremos de cada grupo para elegir medidas distintas en cada caso.",
+      "Escenarios narrativos breves (contextos cotidianos: empresa, curso, tienda, club deportivo) donde se explique cómo se distribuyen típicamente los valores y se señalen explícitamente los casos muy alejados."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "contextual_integers",
+      "simple_decimals",
+      "rounded_percentages",
+      "realistic_context_data"
+    ],
+    "required_image_types": []
+  }
+}

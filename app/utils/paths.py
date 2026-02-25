@@ -61,6 +61,9 @@ PRUEBAS_ALTERNATIVAS_DIR = PRUEBAS_DIR / "alternativas"
 # Question generation output (per-atom question pools)
 QUESTION_GENERATION_DIR = DATA_DIR / "question-generation"
 
+# Mini-lesson output (per-atom mini-class HTML + metadata)
+MINI_LESSONS_DIR = DATA_DIR / "mini-lessons"
+
 # Diagnostic test configuration
 DIAGNOSTICO_DIR = DATA_DIR / "diagnostico"
 

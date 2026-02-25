@@ -1,0 +1,129 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Calcular el valor de f(x) en funciones lineales y afines dadas en forma explícita, del tipo f(x) = ax + b.",
+        "Sustituir correctamente un valor numérico de x en la expresión algebraica y efectuar el cálculo aritmético completo hasta obtener un número.",
+        "Trabajar con contextos verbales donde la relación entre variables esté modelada por una función lineal o afín dada algebraicamente.",
+        "Operar con números racionales (enteros, fracciones, decimales positivos y negativos) al evaluar la función.",
+        "Evaluar la función para uno o varios valores específicos de x en una misma pregunta."
+      ],
+      "out_of_scope": [
+        "Determinar la ecuación de la función lineal o afín a partir de puntos, tablas o gráficos.",
+        "Calcular el valor de x a partir de un valor dado de f(x) (resolver ecuaciones).",
+        "Trabajar con funciones no lineales (cuadráticas, exponenciales, valor absoluto, por partes, etc.).",
+        "Interpretar o comparar gráficos de funciones (pendiente, intercepto, crecimiento/disminución).",
+        "Análisis de variación de la función al cambiar parámetros a y b.",
+        "Modelar la situación desde cero (elegir o justificar que el modelo es lineal/afín).",
+        "Uso de sistemas de ecuaciones; solo se evalúa una función a la vez."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01: Manejo de sumas y restas con números enteros y racionales.",
+        "A-M1-ARIT-01-02: Manejo de productos y cocientes con números racionales.",
+        "A-M1-ALG-01-01: Sustitución de valores en expresiones algebraicas simples.",
+        "A-M1-ALG-03-01: Comprender la forma general de una función lineal o afín f(x) = ax + b."
+      ],
+      "common_traps": [
+        "Confundir el valor de x con el de f(x), especialmente cuando la situación contextual nombra ambas magnitudes (por ejemplo, tiempo y distancia).",
+        "Olvidar multiplicar por el coeficiente a antes de sumar o restar el término independiente b.",
+        "Aplicar incorrectamente el orden de las operaciones, por ejemplo, sumar antes de multiplicar o distribuir mal signos negativos.",
+        "Error de interpretación de unidades o de qué variable corresponde a x al leer un contexto verbal.",
+        "Reemplazar el valor de x solo en una parte de la expresión (por ejemplo, en ax pero no en otro lugar donde también aparezca x).",
+        "Operar mal con fracciones o decimales (especialmente en multiplicaciones con números negativos o fracciones impropias).",
+        "Asumir que el valor de salida debe ser entero, descartando fracciones o decimales correctos.",
+        "En contextos de costo o distancia, olvidar agregar el término fijo b (por ejemplo, costo base) y calcular solo ax."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Función dada explícitamente en forma f(x) = ax + b con a y b enteros pequeños (entre -5 y 5, evitando muchos negativos simultáneos).",
+        "Valor de x entero pequeño (entre -5 y 10) que no produzca fracciones en el resultado.",
+        "Enunciado breve, casi directo, con escasa carga verbal y una sola sustitución a realizar.",
+        "Operaciones con a o b cero o uno (por ejemplo, f(x) = 2x, f(x) = x + 3), reduciendo el número de pasos.",
+        "Sin presencia de fracciones en los coeficientes ni en el valor de x."
+      ],
+      "medium": [
+        "Función f(x) = ax + b con a y/o b racionales (fracciones simples o decimales con un solo decimal).",
+        "Valores de x que pueden ser negativos o fraccionarios, pero que mantengan cálculos manejables.",
+        "Contexto verbal moderado donde se debe identificar claramente qué magnitud es x y cuál es f(x).",
+        "Puede requerir dos pasos encadenados de cálculo (por ejemplo, evaluar para dos valores distintos de x y comparar resultados).",
+        "Resultado que puede ser fraccionario o decimal no inmediato, pero con números razonables (denominadores 2, 4, 5, 10)."
+      ],
+      "hard": [
+        "Uso simultáneo de fracciones y/o decimales en a, b y x, con necesidad de manejar signos negativos correctamente.",
+        "Contextos donde x no está dada directamente y se obtiene por un cálculo previo sencillo (por ejemplo, sumar o restar cantidades antes de sustituir en la función).",
+        "Evaluar la función en más de un valor de x y, a partir de esos resultados, tomar una decisión o compararlos (por ejemplo, determinar cuál de dos opciones tiene mayor costo).",
+        "Enunciados contextuales extensos en los que la expresión de la función está incrustada en el texto y no aislada, exigiendo identificarla con precisión.",
+        "Cálculos que dan resultados no enteros con necesidad de simplificar fracciones o redondear decimales según se indique explícitamente en el ítem."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar la misma letra para la función y para otra magnitud distinta en el contexto (por ejemplo, f y fuerza).",
+      "Evitar enunciados en que no quede claro cuál variable es la entrada (x) y cuál es la salida (f(x)); siempre nombrar explícitamente qué representa x.",
+      "No mezclar notaciones distintas para la misma función en un mismo ítem (por ejemplo, f(x) y y = al mismo tiempo sin aclaración).",
+      "Evitar que el valor de x pueda interpretarse como f(x) por la forma de la frase; usar formulaciones del tipo: \"Si la cantidad de ... es x = 5, ¿cuál es ... según la fórmula ...?\".",
+      "No incluir información numérica irrelevante que pueda confundirse con el valor de x o con parámetros de la función.",
+      "Cuando haya unidades, aclarar consistentemente a qué se refieren (por ejemplo, x en horas, f(x) en kilómetros), para no inducir a confundir magnitudes.",
+      "No exigir al estudiante que deduzca la forma de la función a partir de una tabla o gráfico; la expresión algebraica debe estar explícita.",
+      "Evitar que x o f(x) coincidan numéricamente con a o b de la función de manera que pueda inducir sustituciones erróneas (por ejemplo, x = a = 2 sin aclaración suficiente)."
+    ],
+    "error_families": [
+      {
+        "name": "sustitucion_incompleta",
+        "description": "El estudiante reemplaza el valor de x solo en una parte de la expresión o se equivoca de valor (por ejemplo, usa otro número presente en el enunciado en vez del valor indicado para x).",
+        "how_to_address": "Resaltar en los enunciados qué número corresponde exactamente a x, evitando números distractores similares. En retroalimentación, mostrar el paso de sustitución destacando todas las apariciones de x y cómo fueron reemplazadas."
+      },
+      {
+        "name": "error_de_signos",
+        "description": "Errores al manejar signos negativos al multiplicar o sumar (por ejemplo, f(x) = -3x + 2 con x negativo, o sumar mal un término negativo).",
+        "how_to_address": "Incluir ítems graduados que separen el desafío algebraico del aritmético con negativos. En la explicación, detallar el producto de signos y el efecto de sumar/restar números negativos paso a paso."
+      },
+      {
+        "name": "ignorancia_del_termino_independiente",
+        "description": "El estudiante calcula solo ax y olvida sumar o restar el término independiente b, especialmente en contextos de costo fijo más costo por unidad.",
+        "how_to_address": "En ítems de refuerzo, pedir explícitamente que se identifique qué representa el término fijo y qué representa el coeficiente de x. En retroalimentación, recalcar el rol del término independiente en el contexto (por ejemplo, costo base)."
+      },
+      {
+        "name": "orden_de_las_operaciones",
+        "description": "El estudiante suma o resta antes de multiplicar, o interpreta mal expresiones como 2x + 3 cuando x es negativo o fracción, llevando a resultados incorrectos.",
+        "how_to_address": "Presentar el cálculo en pasos clarificando primero la multiplicación ax y luego la suma con b. Recomendar el uso de paréntesis al sustituir, por ejemplo f(x) = 2(x) + 3, para enfatizar el orden correcto."
+      },
+      {
+        "name": "mala_lectura_del_contexto",
+        "description": "En enunciados verbales, el estudiante asigna la variable independiente a la magnitud equivocada o confunde qué cantidad debe calcular con la fórmula dada.",
+        "how_to_address": "Diseñar ítems que pidan explícitamente identificar qué representa x y qué representa f(x) antes de calcular. En retroalimentación, relacionar en forma directa la frase del contexto con la expresión algebraica, subrayando las palabras clave."
+      },
+      {
+        "name": "errores_en_fracciones_y_decimales",
+        "description": "Dificultades al multiplicar o sumar fracciones y decimales al evaluar la función (por ejemplo, denominadores mal manejados o ubicación errónea de la coma decimal).",
+        "how_to_address": "En ítems de práctica, usar fracciones con denominadores simples y modelar el proceso de conversión (si es necesario) o suma de fracciones. En retroalimentación, mostrar claramente el cálculo numérico, ya sea manteniendo fracción o decimal, y explicar por qué ambas representaciones equivalen al mismo valor."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-05-05: Determinar la ecuación de una función lineal o afín a partir de pares ordenados, tablas o situaciones contextualizadas.",
+      "A-M1-ALG-06-01: Interpretar y analizar gráficos de funciones lineales (pendiente, intercepto, comportamiento creciente/disminuyente).",
+      "A-M1-ALG-06-02: Resolver problemas que requieren comparar dos funciones lineales o afines (por ejemplo, planes tarifarios) evaluando y contrastando valores de f(x).",
+      "A-M1-ECU-02-01: Resolver ecuaciones lineales en una variable, relacionadas con la búsqueda de preimagenes dado un valor de la función.",
+      "A-M1-MOD-01-01: Modelar situaciones reales con funciones lineales o afines, incluyendo la formulación de la expresión y su evaluación.",
+      "A-M1-ALG-07-01: Trabajar con sistemas de ecuaciones lineales donde se evalúan y comparan distintas funciones simultáneamente."
+    ],
+    "representation_variants": [
+      "Función dada como fórmula explícita con notación funcional, por ejemplo f(x) = 3x - 2.",
+      "Función dada como ecuación en forma y = ax + b, donde se pide el valor de y para un x dado.",
+      "Función descrita verbalmente en un contexto (por ejemplo, costo total, distancia recorrida, monto a pagar) junto con su expresión algebraica explícita.",
+      "Función presentada en forma mixta, con parte expresada en palabras y parte simbólicamente (por ejemplo, \"se cobra una tarifa fija de 2000 pesos más 500 pesos por cada hora, lo que se puede modelar como C(x) = 500x + 2000\").",
+      "Notación tabular donde se entrega la expresión algebraica y una tabla con algunos valores de x, pidiéndose completar un valor específico mediante evaluación.",
+      "Uso opcional de letras distintas de f para la función (por ejemplo, C(x), d(x), P(x)), siempre que se identifique claramente la magnitud representada."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_decimals",
+      "simple_fractions",
+      "mixed_numbers"
+    ],
+    "required_image_types": []
+  }
+}

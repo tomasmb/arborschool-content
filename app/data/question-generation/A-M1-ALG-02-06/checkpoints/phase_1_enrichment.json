@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas de proporción directa entre dos magnitudes (si una aumenta, la otra aumenta en la misma razón).",
+        "Aplicación de regla de tres simple directa en contextos cotidianos y científicos (recetas, mezclas, dosis, precios, conversiones de unidades, rendimientos constantes).",
+        "Uso de igualdad de razones a/b = c/x o estructura de tabla proporcional para encontrar un valor desconocido.",
+        "Verificación básica de sentido del resultado en el contexto (orden de magnitud coherente, dirección del cambio adecuada)."
+      ],
+      "out_of_scope": [
+        "Regla de tres inversa o proporciones inversas (por ejemplo, más obreros, menos tiempo).",
+        "Reglas de tres compuestas con más de dos magnitudes relacionadas de manera simultánea.",
+        "Porcentajes que no se modelan directamente como proporción simple (por ejemplo, interés compuesto, crecimiento porcentual iterado).",
+        "Funciones lineales en su tratamiento formal (pendiente, intersecciones, ecuación y = mx + n).",
+        "Proporciones que requieren interpretación de gráficos estadísticos (eso pertenece a ejes de datos y azar).",
+        "Cálculo de promedios ponderados o mezclas que no sean una simple regla de tres directa."
+      ],
+      "prerequisites": [
+        "A-M1-ARIT-01-01: Manejo de las cuatro operaciones con números naturales y decimales positivos.",
+        "A-M1-ARIT-01-02: Comprensión de fracciones y su equivalencia con decimales sencillos.",
+        "A-M1-ALG-01-02: Despeje de una incógnita en ecuaciones lineales simples del tipo ax = b o a/b = x.",
+        "A-M1-MED-01-01: Uso básico de unidades de medida (longitud, masa, tiempo, volumen, moneda) y lectura de precios y cantidades."
+      ],
+      "common_traps": [
+        "Aplicar una regla de tres directa cuando la relación en realidad es inversa (por ejemplo, confundir ‘más personas, menos tiempo’ con relación directa).",
+        "Invertir una de las razones al plantear la igualdad de razones (por ejemplo, escribir a/b = x/c en lugar de a/b = c/x).",
+        "Cruzar cantidades que no corresponden a la misma magnitud o unidad (por ejemplo, mezclar gramos con kilogramos sin convertir).",
+        "Olvidar convertir unidades antes o después del cálculo (por ejemplo, gramos a kilogramos, centímetros a pulgadas).",
+        "Aceptar resultados numéricamente correctos pero sin sentido en el contexto (por ejemplo, más litros de los que caben en un recipiente, número negativo o decimal donde se requiere entero pequeño).",
+        "Suponer proporcionalidad directa cuando el enunciado solo da un modelo explícito no proporcional (por ejemplo, C = 160934·x ya está dado; no se debe re-plantear una regla de tres diferente)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Situaciones directas con dos magnitudes claramente identificadas y un solo paso de regla de tres simple.",
+        "Números naturales pequeños o decimales con una o dos cifras, sin fracciones ni conversiones de unidades intermedias.",
+        "Texto corto, sin información distractora, donde la estructura proporcional es evidente (por ejemplo, ‘por cada’, ‘por kilo’, ‘por unidad’).",
+        "Ecuación resultante del tipo k·x = n o n/x = k, que se resuelve con una sola operación.",
+        "No se requiere análisis fino del contexto para validar el resultado, basta una revisión rápida de orden de magnitud."
+      ],
+      "medium": [
+        "Problemas donde se deben identificar las magnitudes proporcionales entre varios datos o filtrar información irrelevante.",
+        "Presencia de conversiones simples de unidades (por ejemplo, gramos a kilogramos, minutos a horas) o mezcla de enteros con decimales o fracciones sencillas.",
+        "Planteamiento de igualdad de razones menos evidente (por ejemplo, razones dadas en forma verbal o tabular, razones tipo 1 : 3, 3 : 5).",
+        "Necesidad de realizar dos o más operaciones encadenadas (por ejemplo, calcular un total y luego repartir o comparar).",
+        "Validación del resultado que exige comprobar coherencia con un contexto un poco más elaborado (por ejemplo, negocios con ganancia/reparto, consumo de combustible, diluciones)."
+      ],
+      "hard": [
+        "Enunciados largos con varias etapas, donde la proporción directa es una parte del razonamiento, pero se debe decidir en qué paso aplicarla.",
+        "Datos numéricos menos amigables: fracciones no triviales, decimales periódicos cortos o números grandes (millones, miles de millones) que exigen controlar ceros.",
+        "Necesidad de combinar más de una proporción directa en secuencia (por ejemplo, escalar una receta y luego calcular costo total unitario).",
+        "Contextos donde es fácil confundir relaciones directas con otras (por ejemplo, tiempo/velocidad/distancia, diluciones con tablas, cambios de moneda con tasas no evidentes), exigiendo interpretar bien el texto.",
+        "Requieren una validación crítica del resultado (comparar escenarios, analizar si aumenta o disminuye, decidir entre valores cercanos) y descartar distractores basados en errores típicos de proporción."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro cuáles son las dos magnitudes que se relacionan directamente (nombrar explícitamente ambas y sus unidades).",
+      "No mezclar en la misma pregunta una relación directa y otra inversa sin explicitar cuál se debe usar en cada paso.",
+      "Evitar expresiones vagas como ‘varía con’ sin aclarar si es proporcional directa, proporcional inversa u otra relación.",
+      "No usar datos redondeados o aproximaciones que permitan más de una interpretación razonable del resultado correcto (por ejemplo, múltiplos muy cercanos).",
+      "Evitar que el orden de las razones sea distinto entre texto y ecuación sin dejarlo claro, para no dar pie a confusión sobre numerador/denominador.",
+      "No incluir información numérica extra que pueda ser confundida con una de las magnitudes proporcionales si no es relevante; si se incluye, rotular su rol (por ejemplo, ‘dato referencial’, ‘tarifa fija’).",
+      "Evitar contextos en que el modelo de proporcionalidad directa sea discutible en la realidad (por ejemplo, descuentos progresivos, tarifas con tramo fijo más variable) a menos que se explicite el modelo a usar.",
+      "No presentar tablas con valores inconsistentes con la proporcionalidad directa si lo que se evalúa es aplicar regla de tres; si se quiere usar un modelo dado (como C = 160934·x), dejar claro que ese modelo es el que se aplica."
+    ],
+    "error_families": [
+      {
+        "name": "inversion_de_razones",
+        "description": "El/la estudiante escribe una de las razones al revés, por ejemplo 3/1500 = x/7 en lugar de 3/1500 = 7/x, lo que lleva a un valor de x que no corresponde.",
+        "how_to_address": "Enfatizar que en ambas fracciones el numerador y denominador deben representar la misma magnitud en el mismo orden (cantidad/costo con cantidad/costo). Trabajar con tablas de doble entrada antes de pasar a la notación de fracción para fijar el pareo correcto."
+      },
+      {
+        "name": "confusion_directa_inversa",
+        "description": "Se aplica regla de tres directa en situaciones que son inversas (y viceversa), especialmente en contextos de tiempo y trabajo o velocidad y tiempo.",
+        "how_to_address": "Hacer que el/la estudiante razone verbalmente qué ocurre si aumenta una magnitud: ¿la otra también aumenta o disminuye? Utilizar ejemplos contrastivos muy simples y pedir justificar en palabras antes de hacer el cálculo numérico."
+      },
+      {
+        "name": "mal_manejo_de_unidades",
+        "description": "Se mezclan unidades incongruentes (por ejemplo, gramos con kilogramos) o se omite la conversión necesaria, produciendo resultados con unidades erróneas o incoherentes.",
+        "how_to_address": "Insistir en escribir siempre las unidades al lado de cada número y simplificarlas simbólicamente en el planteamiento. Proponer ejercicios centrados solo en convertir unidades antes de aplicar la proporción."
+      },
+      {
+        "name": "operacion_aritmetica_erronea",
+        "description": "El planteamiento proporcional es correcto, pero hay errores al multiplicar, dividir o manejar decimales y ceros (sobre todo con números grandes o muy pequeños).",
+        "how_to_address": "Separar el problema en dos fases: (1) planteamiento proporcional, (2) cálculo numérico. Revisar con el/la estudiante estimaciones rápidas para detectar resultados imposibles y entrenar cálculo con factores de 10 y manejo de decimales."
+      },
+      {
+        "name": "aceptar_resultados_sin_sentido",
+        "description": "Se obtiene un número numéricamente ‘limpio’ pero que no tiene sentido en el contexto (por ejemplo, 0,3 personas, más litros que la capacidad del recipiente, menos dinero que el invertido).",
+        "how_to_address": "Incorporar de forma sistemática una etapa de ‘chequeo de realidad’ en cada ejercicio: pedir al estudiante que explique si el resultado es razonable usando comparación con los datos iniciales y sentido común del contexto."
+      },
+      {
+        "name": "uso_innecesario_de_modelos_complejos",
+        "description": "El/la estudiante intenta aplicar fórmulas más complejas (por ejemplo, ecuaciones de recta, porcentajes compuestos) cuando bastaría con una proporción directa simple.",
+        "how_to_address": "Reforzar la identificación de palabras clave de proporcionalidad simple (‘por cada’, ‘a razón de’, ‘en la misma proporción’). Proponer la regla de tres como estrategia preferente en estos contextos, mostrando que es más directa."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-02-07: Modelación de situaciones de proporcionalidad directa mediante funciones lineales.",
+      "A-M1-ALG-02-08: Resolución de problemas con regla de tres inversa y compuesta.",
+      "A-M1-DAT-01-03: Interpretación de tasas y razones en gráficos estadísticos (frecuencia por unidad, densidades).",
+      "A-M1-GEO-02-04: Aplicación de teoremas de semejanza de triángulos que usan razones de proporcionalidad.",
+      "A-M1-FIN-01-02: Cálculo de porcentajes, descuentos y aumentos proporcionales en contextos financieros.",
+      "A-M1-MOD-01-01: Construcción y uso de modelos matemáticos simples en contextos científicos (concentraciones, densidades, escalas)."
+    ],
+    "representation_variants": [
+      "Igualdad de razones expresada como fracción a/b = c/x o b/a = x/c, cuidando mantener el orden coherente de magnitudes.",
+      "Tablas de proporcionalidad de dos columnas (por ejemplo, cantidad vs precio, tiempo vs distancia) donde se completa un valor faltante.",
+      "Razones en notación a : b, especialmente en contextos de mezclas, escalas o repartos, que luego se transforman en una proporción.",
+      "Modelos directos del tipo y = k·x ya dados en el enunciado (por ejemplo, una constante multiplicativa), donde se usa sustitución en vez de plantear de nuevo una regla de tres.",
+      "Descripción puramente verbal de la razón (‘0,05 g por cada kilogramo’, ‘3 gotas de rojo por cada 5 de amarillo’) que se convierte a la representación formal.",
+      "Contextos con más de dos datos donde las magnitudes proporcionales se organizan primero en una tabla o diagrama simple antes de escribir la ecuación."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "large_integers_with_zeros",
+      "simple_decimals",
+      "percentages_as_decimals",
+      "simple_fractions",
+      "rates_and_unit_rates",
+      "mixed_units_with_simple_conversions"
+    ],
+    "required_image_types": []
+  }
+}

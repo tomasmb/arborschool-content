@@ -14,27 +14,25 @@ from typing import Any
 
 from app.question_generation.batch_api import BatchResponse
 from app.question_generation.batch_request_builders import (
-    build_correction_request,
     build_generation_request,
-    build_review_request,
     build_xsd_retry_request,
     parse_custom_id,
 )
+from app.question_generation.image_types import filter_valid_types
 from app.question_generation.models import (
     AtomEnrichment,
     GeneratedItem,
     PlanSlot,
 )
-from app.question_generation.image_types import filter_valid_types
 from app.question_generation.validation_checks import (
     extract_correct_option,
     normalize_option_letter,
     validate_qti_xml,
 )
-from app.question_feedback.models import (
-    CheckResult,
-    CheckStatus,
-    FeedbackReviewResult,
+from app.question_generation.xml_utils import (
+    extract_qti_xml,
+    normalize_html_entities,
+    parse_generation_response,
 )
 
 logger = logging.getLogger(__name__)
@@ -156,7 +154,7 @@ def process_generation_responses(
             continue
 
         try:
-            item = _parse_generation_response(
+            item = parse_generation_response(
                 resp.text, atom_id, slot,
             )
             xsd_result = validate_qti_xml(item.qti_xml)
@@ -337,42 +335,6 @@ def _check_solvability_result(
 # ------------------------------------------------------------------
 
 
-# HTML entities the LLM writes in feedback that are not valid in XML.
-# XML only allows 5 built-ins: &amp; &lt; &gt; &quot; &apos;
-_HTML_ENTITY_MAP: dict[str, str] = {
-    "nbsp": "\u00a0", "oacute": "ó", "aacute": "á", "eacute": "é",
-    "iacute": "í", "uacute": "ú", "ntilde": "ñ", "ordm": "º", "ordf": "ª",
-    "Aacute": "Á", "Eacute": "É", "Iacute": "Í", "Oacute": "Ó",
-    "Uacute": "Ú", "Ntilde": "Ñ", "Agrave": "À", "Egrave": "È",
-    "rarr": "→", "larr": "←", "uarr": "↑", "darr": "↓", "harr": "↔",
-    "minus": "−", "times": "×", "divide": "÷", "plusmn": "±",
-    "le": "≤", "ge": "≥", "ne": "≠", "approx": "≈", "infin": "∞",
-    "alpha": "α", "beta": "β", "pi": "π", "theta": "θ", "sigma": "σ",
-    "lambda": "λ", "delta": "δ", "epsilon": "ε", "phi": "φ", "omega": "ω",
-    "iexcl": "¡", "iquest": "¿", "ldquo": "\u201c", "rdquo": "\u201d",
-    "lsquo": "\u2018", "rsquo": "\u2019", "hellip": "…",
-    "mdash": "—", "ndash": "–", "bull": "•",
-    "deg": "°", "sup2": "²", "sup3": "³", "frac12": "½", "frac14": "¼",
-    "laquo": "«", "raquo": "»", "thinsp": "\u2009",
-    "div": "÷", "leq": "≤", "ctdot": "⋯",
-}
-
-_ENTITY_RE = __import__("re").compile(r"&([a-zA-Z][a-zA-Z0-9]*);")
-
-
-def _normalize_html_entities(xml: str) -> str:
-    """Replace HTML entities with their UTF-8 equivalents before XSD validation.
-
-    The enhancement LLM frequently writes HTML entities (&oacute;, &nbsp;,
-    &rarr;, &ne;, etc.) that are invalid in XML.  This accounts for ~21% of
-    phase-7 failures.  Replace them with the actual UTF-8 characters so the
-    XSD validator sees clean XML.  Unknown entities are left unchanged so the
-    validator can still report them.
-    """
-    return _ENTITY_RE.sub(
-        lambda m: _HTML_ENTITY_MAP.get(m.group(1), m.group(0)), xml,
-    )
-
 
 def process_enhancement_responses(
     responses: list[BatchResponse],
@@ -402,7 +364,7 @@ def process_enhancement_responses(
             continue
 
         try:
-            xml = _normalize_html_entities(_extract_qti_xml(resp.text))
+            xml = normalize_html_entities(extract_qti_xml(resp.text))
             xsd_result = validate_qti_xml(xml)
             if xsd_result.get("valid"):
                 item.qti_xml = xml
@@ -514,72 +476,3 @@ def process_final_validation_responses(
     return passed, errors
 
 
-# ------------------------------------------------------------------
-# Helpers
-# ------------------------------------------------------------------
-
-
-def _parse_generation_response(
-    text: str,
-    atom_id: str,
-    slot: PlanSlot,
-) -> GeneratedItem:
-    """Parse a generation response into a GeneratedItem.
-
-    Replicates generator._parse_single_response logic.
-    """
-    data: dict[str, Any] = json.loads(text)
-
-    if "items" in data and isinstance(data["items"], list):
-        if not data["items"]:
-            raise ValueError("Empty items array")
-        data = data["items"][0]
-
-    qti_xml = data.get("qti_xml", "")
-    if not qti_xml:
-        raise ValueError(f"Slot {slot.slot_index}: empty qti_xml")
-
-    qti_xml = _extract_qti_xml(qti_xml)
-    slot_idx = data.get("slot_index", slot.slot_index)
-    image_desc = data.get("image_description", "")
-
-    return GeneratedItem(
-        item_id=f"{atom_id}_Q{slot_idx}",
-        qti_xml=qti_xml,
-        slot_index=slot_idx,
-        image_description=image_desc,
-    )
-
-
-def _strip_control_chars(text: str) -> str:
-    """Strip invalid XML control characters from text.
-
-    GPT-5.1 occasionally emits raw control bytes (\\x00, \\x03, \\x1b, etc.)
-    where Spanish accented characters should be.  These make the XML
-    unparseable (HTTP 422 from the QTI validator).  We strip them here,
-    upstream of all validation, so the item can at least be evaluated;
-    garbled Spanish text will then fail other quality checks if needed.
-
-    Valid XML whitespace (\\t, \\n, \\r) is preserved.
-    """
-    import re
-    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", text)
-
-
-def _extract_qti_xml(text: str) -> str:
-    """Extract QTI XML from potentially wrapped text."""
-    cleaned = text.strip()
-    if cleaned.startswith("```"):
-        lines = cleaned.split("\n")
-        lines = lines[1:]
-        if lines and lines[-1].strip() == "```":
-            lines = lines[:-1]
-        cleaned = "\n".join(lines)
-    if "<qti-assessment-item" in cleaned:
-        start = cleaned.index("<qti-assessment-item")
-        end_tag = "</qti-assessment-item>"
-        end = cleaned.rindex(end_tag) + len(end_tag)
-        cleaned = cleaned[start:end]
-    # Strip control chars AFTER extracting the XML block so we don't
-    # accidentally keep garbage outside the <qti-assessment-item> tag.
-    return _strip_control_chars(cleaned.strip())

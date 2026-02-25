@@ -1,0 +1,128 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Leer coordenadas (x, y) de puntos ya marcados en un plano cartesiano con cuadrícula visible",
+        "Escribir las coordenadas de un punto dado gráficamente, incluyendo puntos en los cuatro cuadrantes y sobre los ejes",
+        "Ubicar y marcar un punto en el plano cartesiano dadas sus coordenadas (x, y)",
+        "Identificar el origen (0, 0) y reconocer cuándo un punto pertenece a un eje",
+        "Distinguir el signo de las coordenadas y relacionarlo con el cuadrante o eje correspondiente",
+        "Trabajar con escalas simples y moderadamente modificadas en los ejes (por ejemplo, de 2 en 2 o 5 en 5)"
+      ],
+      "out_of_scope": [
+        "Cálculo de distancia entre dos puntos o uso del teorema de Pitágoras",
+        "Cálculo de punto medio, pendiente de rectas o ecuaciones de rectas",
+        "Transformaciones isométricas (traslaciones, rotaciones, simetrías) de figuras completas",
+        "Graficar funciones completas (lineales, cuadráticas, etc.) a partir de su expresión algebraica",
+        "Sistemas de coordenadas distintos al cartesiano (polares, geográficos reales)",
+        "Problemas que requieran trigonometría o vectores formales (módulo, dirección)"
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Comprensión de números enteros positivos, negativos y cero en la recta numérica",
+        "A-M1-GEO-03-01: Reconocimiento del plano cartesiano, ejes coordenados y origen",
+        "A-M1-ARI-01-02: Manejo básico de valor absoluto como distancia a 0 en la recta numérica (implícito, no formal)"
+      ],
+      "common_traps": [
+        "Invertir el orden de las coordenadas y leer (x, y) como (y, x)",
+        "Olvidar que el primer número corresponde al eje horizontal (abscisa) y el segundo al eje vertical (ordenada)",
+        "No considerar la escala específica de los ejes y asumir que todas las cuadriculas valen 1 unidad",
+        "Confundir la ubicación de los cuadrantes y sus signos característicos",
+        "Pensar que los puntos sobre los ejes pertenecen a un cuadrante en lugar de estar en el eje",
+        "No reconocer el origen (0, 0) o confundirlo con otro cruce de líneas en el gráfico",
+        "En contextos aplicados (mapas simples, diagramas), confundir norte/sur, este/oeste con arriba/abajo, derecha/izquierda del plano cartesiano"
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Pedir identificar las coordenadas de un único punto claramente marcado en un plano con cuadrícula uniforme y escala 1 en ambos ejes",
+        "Trabajar solo en el primer cuadrante o con puntos sobre los ejes, usando números enteros pequeños entre -5 y 5",
+        "Solicitar ubicar un punto dadas sus coordenadas en un plano sencillo, con ejes claramente nombrados y origen visible",
+        "Reconocer el origen (0, 0) o puntos con una coordenada igual a 0, sin necesidad de interpretar contexto"
+      ],
+      "medium": [
+        "Incluir puntos en varios cuadrantes, obligando a considerar correctamente los signos de las coordenadas",
+        "Usar escalas simples pero no unitarias (por ejemplo, marcas cada 2 o cada 5 unidades) en uno o ambos ejes",
+        "Pedir comparar o seleccionar entre varios puntos cuál cumple una condición dada (por ejemplo, mismo valor de x o y que otro punto, mayor altura, mayor distancia al eje X)",
+        "Contextualizar el plano en una situación aplicada sencilla (por ejemplo, un croquis cuadriculado de una plaza o cancha) manteniendo el foco en leer y escribir coordenadas",
+        "Trabajar con puntos no etiquetados directamente, pero ubicados exactamente sobre intersecciones de la cuadrícula"
+      ],
+      "hard": [
+        "Usar escalas distintas en cada eje (por ejemplo, eje X de 2 en 2 y eje Y de 5 en 5) que el estudiante deba interpretar con atención",
+        "Incluir varios puntos cercanos o en posiciones similares, donde errores de signo o de orden (x, y) lleven a distractores plausibles",
+        "Pedir identificar o ubicar un punto que satisfaga simultáneamente varias condiciones de coordenadas (por ejemplo, mismo valor de x que A, mayor valor de y que B, y estar en un cuadrante específico)",
+        "Requerir interpretar la posición relativa de puntos (más a la derecha, más arriba, más lejos del origen) usando sus coordenadas sin necesidad de calcular distancias formales",
+        "Usar contextos gráficos más cargados (por ejemplo, trayectoria esquemática de un objeto en un plano) donde el plano cartesiano no esté aislado, pero la tarea siga siendo lectura/ubicación de puntos"
+      ]
+    },
+    "ambiguity_avoid": [
+      "No omitir la indicación explícita de qué eje es X y cuál es Y cuando no es completamente obvio en la imagen",
+      "Evitar gráficos sin cuadrícula o con marcas demasiado tenues que dificulten contar unidades",
+      "No mezclar diferentes escalas sin aclararlo claramente en los ejes (rotular valores numéricos visibles, no solo marcas)",
+      "Evitar puntos ubicados entre intersecciones de la cuadrícula sin aclarar si representan coordenadas enteras o no",
+      "No usar letras de puntos y de ejes que puedan confundirse visualmente (por ejemplo, punto O y origen, letras muy pequeñas o superpuestas)",
+      "Evitar enunciados que puedan interpretarse tanto como desplazamiento relativo (desde otro punto) como coordenadas absolutas, sin aclaración",
+      "No usar contextos geográficos reales con latitud/longitud que puedan confundirse con el sistema cartesiano escolar",
+      "Evitar que el origen quede fuera del área visible del gráfico si se preguntan coordenadas absolutas",
+      "No usar símbolos de grados, porcentajes u otras anotaciones cerca de los puntos que puedan confundirse con las coordenadas"
+    ],
+    "error_families": [
+      {
+        "name": "Intercambio_de_abscisa_y_ordenada",
+        "description": "El estudiante confunde el orden de las coordenadas, ubicando o leyendo (x, y) como si fuera (y, x).",
+        "how_to_address": "Incluir ítems que obliguen a diferenciar abscisa y ordenada (por ejemplo, puntos con x ≠ y) y usar distractores que evidencien este error. Reforzar en enunciados y figuras el eje horizontal como X y el vertical como Y, y usar preguntas que pidan explícitamente 'primera coordenada' y 'segunda coordenada'."
+      },
+      {
+        "name": "Signos_incorrectos",
+        "description": "El estudiante omite o asigna mal los signos de las coordenadas, especialmente en cuadrantes II, III y IV.",
+        "how_to_address": "Diseñar preguntas que requieran identificar el cuadrante a partir del signo, y viceversa. Incluir distractores que cambien solo el signo de una coordenada. Usar enunciados que destaquen expresiones como 'a la izquierda del origen' o 'debajo del eje X' vinculadas con signos negativos."
+      },
+      {
+        "name": "Desatencion_a_la_escala",
+        "description": "El estudiante asume que cada cuadricula vale 1 unidad aunque la escala del eje indique otra cosa, leyendo coordenadas erróneas.",
+        "how_to_address": "Incluir gráficos con escalas no unitarias claramente etiquetadas y distractores que correspondan a 'contar casillas' en vez de leer la escala. En el feedback o explicación, enfatizar la lectura de los números en los ejes antes de contar cuadrículas."
+      },
+      {
+        "name": "Confusion_ejes_y_cuadrantes",
+        "description": "El estudiante confunde cuál es el eje X y cuál es el eje Y, o cree que un punto sobre un eje pertenece a un cuadrante.",
+        "how_to_address": "Proponer ítems que distingan entre puntos en ejes y en cuadrantes, preguntando explícitamente si un punto está en un eje o en un cuadrante. Marcar y nombrar visiblemente los ejes en la imagen. Usar ejemplos que incluyan puntos como (0, a) y (b, 0) para hacer evidente el caso límite."
+      },
+      {
+        "name": "Origen_mal_identificado",
+        "description": "El estudiante no reconoce el origen (0, 0) o lo confunde con otro cruce de líneas de referencia en el gráfico.",
+        "how_to_address": "Incluir figuras donde haya otras líneas además de los ejes, diferenciando visualmente los ejes (grosor, color) y rotulando el origen. Plantear al menos un ítem que requiera decidir si un punto es el origen o tiene alguna coordenada distinta de 0."
+      },
+      {
+        "name": "Lectura_imprecisa_de_posicion_relativa",
+        "description": "El estudiante entiende mal la relación entre posición gráfica y coordenadas (por ejemplo, elige un punto más alto pero con menor valor de y en la lista de coordenadas).",
+        "how_to_address": "Proponer preguntas que involucren comparar 'más a la derecha', 'más arriba', 'más lejos del origen' usando solo las coordenadas. Incluir distractores que requieran analizar ambas coordenadas y no solo una."
+      }
+    ],
+    "future_targets": [
+      "A-M1-GEO-03-03: Cálculo de distancia entre dos puntos en el plano cartesiano",
+      "A-M1-GEO-03-04: Cálculo del punto medio de un segmento definido por dos puntos",
+      "A-M1-ALG-02-01: Representación gráfica de funciones lineales a partir de pares ordenados",
+      "A-M1-GEO-04-01: Aplicación de transformaciones isométricas usando coordenadas (traslaciones, simetrías, rotaciones básicas)",
+      "A-M1-GEO-05-01: Introducción a vectores en el plano mediante coordenadas (desplazamientos)",
+      "A-M1-PRO-02-01: Representación de datos en diagramas de dispersión identificando puntos en un plano",
+      "A-M1-INE-01-01: Representación de inecuaciones en el plano como regiones de puntos que cumplen condiciones sobre x e y"
+    ],
+    "representation_variants": [
+      "Plano cartesiano con cuadrícula completa y ejes X e Y rotulados, con puntos marcados mediante símbolos (por ejemplo, •, ×) y letras",
+      "Lista o tabla de pares ordenados (x, y) a asociar con puntos marcados en el plano",
+      "Descripciones verbales de desplazamientos desde el origen o desde otro punto (por ejemplo, '3 unidades a la derecha y 2 hacia arriba') a traducir a coordenadas",
+      "Contextos gráficos simplificados (croquis de ciudad, cancha, sala) discretizados en una cuadrícula cartesiana donde las intersecciones corresponden a coordenadas",
+      "Ejes con escalas no unitarias explícitas (marcas numeradas cada 2, 5 o 10 unidades) para reforzar la lectura de escala",
+      "Uso de colores o símbolos distintos para varios puntos en la misma figura, manteniendo la correspondencia con sus coordenadas"
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "negative_integers",
+      "zero",
+      "simple_fractions"
+    ],
+    "required_image_types": [
+      "geometric_figure"
+    ]
+  }
+}

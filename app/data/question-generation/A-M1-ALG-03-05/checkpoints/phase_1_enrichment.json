@@ -1,0 +1,135 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Plantear una ecuación lineal en una variable a partir de un enunciado verbal que describe una relación de igualdad.",
+        "Situaciones con una cantidad desconocida principal y otras expresadas en función de ella (por ejemplo, números consecutivos, precios relacionados, edades).",
+        "Traducción de expresiones como doble, triple, mitad, tercio, número aumentado/disminuido en, diferencia entre, suma de, es igual a, equivale a, tiene el mismo valor que, etc.",
+        "Modelar con ecuaciones lineales relaciones dadas con porcentajes simples (por ejemplo, un producto vale el 30 % del total) siempre que el resultado sea lineal.",
+        "Contextos cotidianos: dinero (precios, descuentos, sueldos), medidas, edades, puntajes, cantidades de objetos, reparto proporcional simple.",
+        "Plantear una única ecuación lineal que sintetice la información de un contexto, sin necesidad de resolverla."
+      ],
+      "out_of_scope": [
+        "Resolver la ecuación lineal planteada (en este átomo solo se evalúa el modelamiento, no el cálculo del valor de la incógnita).",
+        "Plantear sistemas de ecuaciones como objetivo principal; si se requieren dos incógnitas, deben poder representarse con una sola ecuación lineal (por ejemplo, usando expresiones como x, x+1, x+2).",
+        "Ecuaciones cuadráticas, con valor absoluto, con productos de incógnitas o no lineales en general.",
+        "Inecuaciones, intervalos de solución o representación gráfica de soluciones.",
+        "Problemas de conteo combinatorio, probabilidad o estadística donde el foco no sea la igualdad algebraica sino otras habilidades.",
+        "Traducción de enunciados que naturalmente llevan a funciones (dependencia explícita entre dos variables a lo largo de muchos valores) más que a una sola ecuación puntual.",
+        "Modelación que exija varias etapas de razonamiento proporcional complejo (por ejemplo, porcentajes encadenados, intereses compuestos) más allá de una relación lineal directa."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-01: Uso de operaciones básicas con números enteros y decimales en contexto.",
+        "A-M1-ALG-02-01: Representación de cantidades desconocidas mediante letras (introducción a variables).",
+        "A-M1-ALG-02-02: Traducción de frases numéricas simples a expresiones algebraicas sin igualdad (por ejemplo, el doble de un número, la mitad de un número aumentado en 3).",
+        "A-M1-ALG-03-01: Reconocimiento de la estructura de una ecuación lineal simple (coeficiente, incógnita, término independiente) sin contexto verbal.",
+        "A-M1-NUM-02-03: Comprensión básica de porcentajes como fracción de un total."
+      ],
+      "common_traps": [
+        "Elegir mal la incógnita: tomar como x una cantidad secundaria en lugar de la que el contexto sugiere naturalmente (por ejemplo, modelar el descuento en vez del precio original sin ajustar bien la relación).",
+        "Confundir expresiones como \"aumentado en\" con productos (escribir 2x·3 en vez de 2x + 3, o 30x en lugar de x + 30).",
+        "Interpretar mal estructuras con diferencia o resta: \"la diferencia entre A y B\" como A + B, o invertir el orden de la resta sin justificación.",
+        "Traducir porcentajes a números sin considerar que se aplican a un total (por ejemplo, escribir 30x cuando el 30 % es del total 50 000, no de x).",
+        "Omitir parte de la información del enunciado, quedando una ecuación incompleta (por ejemplo, olvidar sumar todos los elementos que forman el total).",
+        "Plantear expresiones sin símbolo de igualdad, o con igualdades incompletas (solo un lado de la ecuación).",
+        "Convertir la situación innecesariamente en un sistema de ecuaciones, saliéndose del foco del átomo.",
+        "Usar más de una letra para la misma incógnita o usar una misma letra para cantidades distintas dentro del mismo problema."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados cortos (una sola oración) con estructura casi directa a la forma ax + b = c.",
+        "Incógnita explícita y única, claramente identificable (por ejemplo, \"un número\", \"la edad de Ana\").",
+        "Uso de pocas palabras clave estándar y poco ambiguas: doble, triple, suma, diferencia, aumentado en, disminuido en, es igual a.",
+        "Sin porcentajes, ni descuentos, ni múltiplos niveles de relación; a lo más, sumas y restas simples combinadas con un coeficiente entero pequeño.",
+        "Números enteros positivos pequeños, sin decimales ni fracciones.",
+        "Sin información irrelevante: todos los datos del enunciado se usan directamente en la ecuación."
+      ],
+      "medium": [
+        "Enunciados de una o dos oraciones que requieren identificar qué cantidad conviene tomar como incógnita (no siempre la que se pregunta textualmente).",
+        "Situaciones que combinan más de una relación simple (por ejemplo, dos tipos de objetos con precios diferentes, o números consecutivos modelados como x, x+1, x+2).",
+        "Presencia de porcentajes simples o descuentos lineales, pero con un solo porcentaje o descuento relevante.",
+        "Existencia de datos que no son necesarios para la ecuación (información de contexto que puede distraer).",
+        "Números enteros algo mayores, o decimales con una cifra, pero que mantienen el carácter lineal claro.",
+        "Necesidad de agrupar términos para representar un total (por ejemplo, varias cantidades iguales multiplicadas por un mismo valor unitario)."
+      ],
+      "hard": [
+        "Enunciados más largos (dos o tres oraciones) donde la relación de igualdad no es inmediata y debe inferirse a partir de varias condiciones.",
+        "Contextos en que la elección de la incógnita no es obvia y existen varias alternativas posibles, requiriendo analizar cuál permite una ecuación lineal más simple.",
+        "Combinación de porcentajes, descuentos o recargos con montos fijos, manteniendo la linealidad pero exigiendo un paso intermedio de interpretación (por ejemplo, un porcentaje de un total más un monto fijo adicional).",
+        "Situaciones con expresiones compuestas como \"la mitad de la suma de\", \"la tercera parte de la cantidad restante\", \"lo que falta para llegar a\", que implican anidar operaciones en la ecuación.",
+        "Números con decimales y/o fracciones simples que requieren cuidado en la traducción (por ejemplo, 1/3 del total, 0,2 del precio).",
+        "Problemas donde es necesario explicitar patrones (por ejemplo, n términos consecutivos o equidistantes) a través de una misma variable, o sintetizar en una sola ecuación relaciones expresadas en frases separadas."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar frases donde varias cantidades parezcan igualmente razonables como incógnita sin que el contexto lo aclare; siempre dejar claro qué se busca modelar (por ejemplo, \"sea x el precio de...\" puede aparecer sugerido o implícito).",
+      "Evitar expresiones coloquiales poco precisas como \"más o menos\", \"casi\", \"alrededor de\", que no se traducen directamente a una igualdad lineal.",
+      "No usar estructuras con doble negación verbal que dificulten la traducción (por ejemplo, \"no es menor que\" si se quiere solo una igualdad).",
+      "Evitar frases donde el orden de la resta sea ambiguo (\"la diferencia entre A y B\") sin aclarar claramente qué va primero; preferir formulaciones tipo \"A es 5 más que B\" o \"B es 5 menos que A\".",
+      "No mezclar tiempos verbales que confundan si la relación es actual o futura; mantener coherencia temporal para que la igualdad sea estática.",
+      "Evitar que aparezcan varias relaciones posibles (por ejemplo, varios totales o varias igualdades mencionadas) si en realidad se evalúa solo una ecuación; en esos casos, separar en ítems distintos o simplificar el contexto.",
+      "No introducir redacciones con condicionales complejos (\"si sucediera tal cosa, entonces...\") cuando solo se desea una relación fija de igualdad.",
+      "Evitar palabras como \"promedio\" o \"proporcional\" si no se van a modelar explícitamente, para no inducir a construir expresiones que no se ajustan a una ecuación lineal simple."
+    ],
+    "error_families": [
+      {
+        "name": "Seleccion_incorrecta_de_la_incognita",
+        "description": "El estudiante elige como variable una cantidad secundaria que complica o rompe la linealidad, o mezcla varias letras para la misma incógnita. Por ejemplo, define x como el descuento en vez del precio original sin ajustar adecuadamente las relaciones, o usa x y y para la misma cantidad en diferentes partes del problema.",
+        "how_to_address": "Explícitar en la enseñanza la libertad de elección de la incógnita, pero mostrar cuál elección hace más simple la ecuación. Proponer ejercicios comparando dos modelaciones distintas de un mismo problema y discutir cuál es más clara. Insistir en usar solo una letra por cantidad y en declarar mentalmente \"x representa...\" antes de escribir la ecuación."
+      },
+      {
+        "name": "Confusion_suma_producto_en_frases_clave",
+        "description": "Interpretación errónea de expresiones como \"aumentado en\", \"disminuido en\" o \"más que\" como multiplicación en lugar de suma o resta. Por ejemplo, traducir \"un número aumentado en 5\" como 5x o x·5 en vez de x + 5.",
+        "how_to_address": "Trabajar tablas de correspondencia entre lenguaje natural y símbolo (\"aumentado en\" → +, \"disminuido en\" → −) con muchos ejemplos y contraejemplos. Hacer que el estudiantado verbalice la operación antes de escribirla: \"si lo aumento en 5, lo estoy sumando\". Practicar traducciones inversas: de expresión algebraica a frase en castellano."
+      },
+      {
+        "name": "Orden_de_las_restas_y_diferencias",
+        "description": "Confundir el sentido de la diferencia, escribiendo a − b en vez de b − a, o viceversa. Esto suele ocurrir con frases como \"A es 5 menos que B\" o \"la diferencia entre A y B\".",
+        "how_to_address": "Usar ejemplos concretos con números pequeños y representaciones en recta numérica para fijar el sentido de \"menos que\". Hacer ejercicios en los que el estudiante reemplace las letras por valores numéricos de prueba para verificar si la ecuación respeta la frase. Trabajar la reescritura de enunciados destacando el sujeto de la oración: \"A es 5 menos que B\" → A = B − 5."
+      },
+      {
+        "name": "Porcentajes_mal_aplicados",
+        "description": "El estudiante no identifica correctamente sobre qué cantidad se aplica el porcentaje (total, precio original, parte restante) o lo reemplaza erróneamente por un número natural sin dividir por 100, generando una ecuación no lineal o numéricamente equivocada.",
+        "how_to_address": "Reforzar que un porcentaje siempre se refiere a \"de algo\" y debe escribirse como fracción o decimal (por ejemplo, 30 % de T → 0,3T). Proponer problemas centrados solo en identificar la base del porcentaje dentro del texto. Practicar conversiones 10 %, 20 %, 50 %, 25 % → 0,1; 0,2; 0,5; 0,25 antes de integrarlos en ecuaciones completas."
+      },
+      {
+        "name": "Ecuaciones_incompletas_o_sin_igualdad",
+        "description": "Se escriben solo expresiones de un lado (por ejemplo, 2x + 5) sin igualarlas al total, o se deja una igualdad sin término en uno de los lados. También aparece la suma parcial de algunos términos y se olvida incluir otros que el enunciado menciona.",
+        "how_to_address": "Enfatizar la idea de ecuación como \"dos expresiones que representan la misma cantidad\". Hacer que el estudiantado subraye en el texto \"lo que se iguala a\" (el total, la suma, el puntaje, etc.) y que siempre busque ese momento para decidir el lado derecho de la ecuación. Utilizar plantillas del tipo \"(expresión izquierda) = (total o expresión derecha)\" como andamiaje inicial."
+      },
+      {
+        "name": "Sobrecomplicacion_con_sistemas",
+        "description": "Ante un problema que se podía modelar con una sola ecuación en una variable, el estudiante introduce dos o más incógnitas y termina armando un sistema innecesario, muchas veces con inconsistencias internas.",
+        "how_to_address": "Mostrar ejemplos donde dos planteamientos (una ecuación vs. un sistema) representan la misma situación, comparando su simplicidad. Enseñar explícitamente a buscar si todas las cantidades pueden expresarse a partir de una sola variable (por ejemplo, x, x+1, x+2). Reforzar que en esta etapa el objetivo es una sola ecuación lineal, no la resolución de sistemas."
+      }
+    ],
+    "future_targets": [
+      "Planteamiento y resolución de ecuaciones lineales en una variable a partir de contextos variados (A-M1-ALG-03-06).",
+      "Modelación de situaciones más complejas mediante sistemas de ecuaciones lineales en dos variables (A-M1-ALG-04-01).",
+      "Construcción y análisis de funciones lineales a partir de descripciones verbales de dependencia entre variables (A-M1-ALG-05-01).",
+      "Resolución de problemas de porcentajes, descuentos sucesivos y recargos con apoyo de ecuaciones (A-M1-NUM-03-02).",
+      "Interpretación de parámetros en modelos lineales (pendiente e intercepto) en contextos reales (A-M1-ALG-05-02).",
+      "Modelación algebraica en geometría (por ejemplo, perímetros, áreas) usando ecuaciones lineales (A-M1-GEO-02-03)."
+    ],
+    "representation_variants": [
+      "Ecuaciones lineales en una variable de la forma ax + b = c con a, b, c reales sencillos.",
+      "Uso de expresiones como x, x+1, x+2 para representar números consecutivos o cantidades relacionadas.",
+      "Ecuaciones donde un lado es una suma de varios términos del tipo (cantidad)·(precio unitario) y el otro lado es un total.",
+      "Ecuaciones que incorporan porcentajes como coeficientes (por ejemplo, 0,3T, 0,8x) siempre manteniendo la linealidad.",
+      "Casos donde la incógnita se ubica en distintos lugares de la ecuación (por ejemplo, en el lado derecho, dentro de un paréntesis o distribuida en varios términos).",
+      "Ecuaciones que representan balances o conservación (por ejemplo, total antes = total después, entrada = salida).",
+      "Traducción inversa sugerida para diseño de ítems complementarios: partir de una ecuación dada y pedir identificar cuál enunciado verbal la representa, manteniendo el foco en este átomo de representación."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "money_context",
+      "simple_decimals",
+      "simple_fractions",
+      "percentages_simple"
+    ],
+    "required_image_types": []
+  }
+}

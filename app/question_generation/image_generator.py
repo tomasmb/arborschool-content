@@ -1,19 +1,6 @@
 """Phase 4b — Image Generation & Validation.
 
-Generates images for QTI items that have IMAGE_PLACEHOLDER in their
-XML, validates them with GPT-5.1 vision, uploads to S3, and replaces
-the placeholder with the S3 URL.
-
-Flow per item:
-1. Extract image_description from GeneratedItem (set by Phase 4).
-2. Generate image with Gemini (nano banana pro).
-3. Validate image with GPT-5.1 (vision).
-4. Upload to S3.
-5. Replace IMAGE_PLACEHOLDER with S3 URL in QTI XML.
-6. Re-validate XSD on the final XML.
-
-Items that fail any step get image_failed=True but keep their XML
-so checkpoints preserve the work done in Phase 4.
+Generate (Gemini) -> validate (GPT-5.1) -> S3 upload -> XML patch.
 """
 
 from __future__ import annotations
@@ -24,6 +11,8 @@ import json
 import logging
 import re
 import threading
+import time
+from collections import deque
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any
@@ -33,7 +22,10 @@ from PIL import Image
 from app.llm_clients import (
     GeminiImageClient,
     OpenAIClient,
+    RateLimitError,
+    ServiceUnavailableError,
     load_default_gemini_image_client,
+    load_fallback_gemini_image_clients,
 )
 from app.question_generation.models import (
     GeneratedItem,
@@ -42,6 +34,7 @@ from app.question_generation.models import (
 )
 from app.question_generation.prompts.image_generation import (
     GEMINI_IMAGE_GENERATION_PROMPT,
+    GEMINI_IMAGE_RETRY_PROMPT,
     IMAGE_VALIDATION_PROMPT,
 )
 from app.question_generation.validation_checks import validate_qti_xml
@@ -51,7 +44,34 @@ logger = logging.getLogger(__name__)
 _VALIDATION_REASONING = "low"
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 _MAX_PARALLEL_IMAGES = 3
-_MAX_IMAGE_RETRIES = 2
+_MAX_IMAGE_RETRIES = 1
+_MAX_503_RETRIES = 3
+
+
+class _RateLimiter:
+    """Thread-safe sliding-window rate limiter."""
+
+    def __init__(self, max_rpm: int) -> None:
+        self._max = max_rpm
+        self._times: deque[float] = deque()
+        self._lock = threading.Lock()
+
+    def wait(self) -> None:
+        """Block the calling thread until a slot is available."""
+        while True:
+            with self._lock:
+                now = time.monotonic()
+                while (self._times
+                       and now - self._times[0] >= 60.0):
+                    self._times.popleft()
+                if len(self._times) < self._max:
+                    self._times.append(now)
+                    return
+                delay = 60.0 - (now - self._times[0])
+            time.sleep(delay + 0.1)
+
+
+_DEFAULT_GEMINI_RPM = 10
 
 
 class ImageGenerator:
@@ -61,22 +81,35 @@ class ImageGenerator:
         self,
         openai_client: OpenAIClient,
         gemini_image_client: GeminiImageClient | None = None,
+        gemini_max_rpm: int = _DEFAULT_GEMINI_RPM,
     ) -> None:
-        """Initialize the image generator.
-
-        Args:
-            openai_client: GPT-5.1 client for image validation.
-            gemini_image_client: Gemini client for image generation.
-                Loaded from env if None.
-        """
         self._openai = openai_client
         self._gemini: GeminiImageClient | None = gemini_image_client
+        self._rate_limiter = _RateLimiter(gemini_max_rpm)
+        self._fallbacks: list[GeminiImageClient] = []
+        self._fallbacks_loaded = False
+        self._swap_lock = threading.Lock()
 
     def _ensure_gemini(self) -> GeminiImageClient:
         """Lazily load the Gemini image client."""
         if self._gemini is None:
             self._gemini = load_default_gemini_image_client()
         return self._gemini
+
+    def _try_swap_to_fallback(self) -> bool:
+        """Swap to next available fallback key."""
+        with self._swap_lock:
+            if not self._fallbacks_loaded:
+                self._fallbacks = load_fallback_gemini_image_clients()
+                self._fallbacks_loaded = True
+            if not self._fallbacks:
+                return False
+            self._gemini = self._fallbacks.pop(0)
+            logger.info(
+                "Switched to fallback Gemini key "
+                "(%d more available)", len(self._fallbacks),
+            )
+            return True
 
     def generate_images(
         self,
@@ -87,17 +120,46 @@ class ImageGenerator:
             Callable[[GeneratedItem], None] | None
         ) = None,
     ) -> PhaseResult:
-        """Generate images concurrently for items that need them.
-
-        Runs up to _MAX_PARALLEL_IMAGES items in parallel.
-        Failed items get image_failed=True but keep their XML.
-        """
+        """Generate images for items where slot has image_required."""
         self._ensure_gemini()
         image_items = _select_image_items(items, slot_map)
-        total = len(image_items)
-        if not total:
+        if not image_items:
             return _build_result(items, errors=[])
+        return self._run_parallel_generation(
+            image_items, items, atom_id, on_image_complete,
+        )
 
+    def generate_for_placeholders(
+        self,
+        items: list[GeneratedItem],
+        atom_id: str,
+        on_image_complete: (
+            Callable[[GeneratedItem], None] | None
+        ) = None,
+    ) -> PhaseResult:
+        """Generate images for items with placeholder + description."""
+        self._ensure_gemini()
+        image_items = [
+            it for it in items
+            if _has_placeholder(it.qti_xml) and it.image_description
+        ]
+        if not image_items:
+            return _build_result(items, errors=[])
+        return self._run_parallel_generation(
+            image_items, items, atom_id, on_image_complete,
+        )
+
+    def _run_parallel_generation(
+        self,
+        image_items: list[GeneratedItem],
+        all_items: list[GeneratedItem],
+        atom_id: str,
+        on_image_complete: (
+            Callable[[GeneratedItem], None] | None
+        ),
+    ) -> PhaseResult:
+        """Run image gen + validation in parallel for selected items."""
+        total = len(image_items)
         logger.info(
             "Phase 4b: %d images to generate (%d workers)",
             total, _MAX_PARALLEL_IMAGES,
@@ -107,22 +169,13 @@ class ImageGenerator:
         done = [0]
 
         def _worker(item: GeneratedItem) -> None:
-            slot = slot_map.get(item.slot_index)
-            logger.info(
-                "Generating image for %s (type: %s)",
-                item.item_id,
-                slot.image_type if slot else "unknown",
-            )
             error = self._process_image_for_item(item, atom_id)
             with lock:
                 if error:
                     errors.append(error)
                 done[0] += 1
                 n = done[0]
-            logger.info(
-                "Phase 4b progress: %d/%d images done",
-                n, total,
-            )
+            logger.info("Phase 4b progress: %d/%d", n, total)
             if on_image_complete:
                 try:
                     on_image_complete(item)
@@ -141,6 +194,18 @@ class ImageGenerator:
             for future in as_completed(futures):
                 try:
                     future.result()
+                except (RateLimitError, ServiceUnavailableError) as exc:
+                    kind = ("Daily quota" if isinstance(
+                        exc, RateLimitError,
+                    ) else "503 unavailable")
+                    logger.error(
+                        "%s — cancelling remaining images", kind,
+                    )
+                    for f in futures:
+                        f.cancel()
+                    with lock:
+                        errors.append(kind.lower())
+                    break
                 except Exception as exc:
                     item = futures[future]
                     item.image_failed = True
@@ -149,21 +214,14 @@ class ImageGenerator:
                             f"{item.item_id}: unexpected — {exc}",
                         )
 
-        return _build_result(items, errors)
-
-    # ------------------------------------------------------------------
-    # Per-item pipeline
-    # ------------------------------------------------------------------
+        return _build_result(all_items, errors)
 
     def _process_image_for_item(
         self,
         item: GeneratedItem,
         atom_id: str,
     ) -> str | None:
-        """Run the full image pipeline for one item (thread-safe).
-
-        Returns error message on failure, None on success.
-        """
+        """Run full pipeline for one item. Returns error or None."""
         item.image_failed = False
         desc = item.image_description
         if not desc:
@@ -216,84 +274,110 @@ class ImageGenerator:
     ) -> bytes | None:
         """Try generate+validate up to *max_attempts* times.
 
-        Returns validated image bytes, or None if all attempts
-        fail.  Generation and validation are the two steps most
-        susceptible to transient failures (network, borderline
-        quality).
+        Per-minute 429 -> sleep 60 s (no attempt consumed).
+        Per-day 429 -> re-raise to stop the pipeline.
         """
-        for attempt in range(max_attempts):
-            image_bytes = self._generate_image(description)
+        rejection: str | None = None
+        attempt = 0
+        while attempt < max_attempts:
+            try:
+                image_bytes = self._generate_image(
+                    description, previous_rejection=rejection,
+                )
+            except RateLimitError as rle:
+                if rle.is_daily:
+                    if self._try_swap_to_fallback():
+                        continue
+                    raise
+                logger.warning(
+                    "%s: per-minute rate limit — sleeping 60 s",
+                    item_id,
+                )
+                time.sleep(60)
+                continue
+
             if image_bytes is None:
                 logger.warning(
                     "%s: generation failed (attempt %d/%d)",
                     item_id, attempt + 1, max_attempts,
                 )
+                attempt += 1
                 continue
 
-            valid = self._validate_image(
+            passed, reason = self._validate_image(
                 image_bytes, description, stem,
             )
-            if not valid:
+            if not passed:
                 logger.warning(
                     "%s: validation failed (attempt %d/%d)",
                     item_id, attempt + 1, max_attempts,
                 )
+                rejection = reason
+                attempt += 1
                 continue
 
             return image_bytes
         return None
 
-    # ------------------------------------------------------------------
-    # Step 1: Gemini image generation
-    # ------------------------------------------------------------------
-
     def _generate_image(
-        self, image_description: str,
+        self,
+        image_description: str,
+        previous_rejection: str | None = None,
     ) -> bytes | None:
-        """Generate an image using Gemini.
-
-        Args:
-            image_description: Detailed content description
-                from Phase 4 (item.image_description).
-
-        Returns:
-            Raw PNG bytes, or None on failure.
-        """
+        """Generate image via Gemini. Lets RateLimitError propagate."""
+        self._rate_limiter.wait()
         gemini = self._ensure_gemini()
-        prompt = GEMINI_IMAGE_GENERATION_PROMPT.format(
-            generation_prompt=image_description,
-        )
-        try:
-            return gemini.generate_image(prompt)
-        except (TimeoutError, OSError) as exc:
-            logger.error(
-                "Gemini image generation timed out: %s", exc,
+        if previous_rejection:
+            prompt = GEMINI_IMAGE_RETRY_PROMPT.format(
+                generation_prompt=image_description,
+                rejection_reason=previous_rejection,
             )
-            return None
-        except Exception as exc:
-            logger.error("Gemini image generation failed: %s", exc)
-            return None
-
-    # ------------------------------------------------------------------
-    # Step 2: GPT-5.1 image validation (vision)
-    # ------------------------------------------------------------------
+        else:
+            prompt = GEMINI_IMAGE_GENERATION_PROMPT.format(
+                generation_prompt=image_description,
+            )
+        for retry_503 in range(_MAX_503_RETRIES + 1):
+            if retry_503 > 0:
+                delay = 30 * (2 ** (retry_503 - 1))
+                logger.warning(
+                    "503 backoff %ds (%d/%d)",
+                    delay, retry_503, _MAX_503_RETRIES,
+                )
+                time.sleep(delay)
+            try:
+                return gemini.generate_image(prompt)
+            except RateLimitError:
+                raise
+            except (TimeoutError, OSError) as exc:
+                logger.error(
+                    "Gemini image generation timed out: %s", exc,
+                )
+                return None
+            except Exception as exc:
+                msg = str(exc).lower()
+                if "429" in msg and "resource_exhausted" in msg:
+                    is_daily = (
+                        "per_day" in msg or "per day" in msg
+                        or "rpd" in msg
+                    )
+                    raise RateLimitError(
+                        str(exc), is_daily=is_daily,
+                    ) from exc
+                if "503" in msg and "unavailable" in msg:
+                    continue
+                logger.error(
+                    "Gemini image generation failed: %s", exc,
+                )
+                return None
+        raise ServiceUnavailableError("503 persists after retries")
 
     def _validate_image(
         self,
         image_bytes: bytes,
         image_description: str,
         stem_context: str,
-    ) -> bool:
-        """Validate generated image using GPT-5.1 with vision.
-
-        Args:
-            image_bytes: Raw PNG data from Gemini.
-            image_description: Expected content description.
-            stem_context: Question stem text for context.
-
-        Returns:
-            True if image passes validation.
-        """
+    ) -> tuple[bool, str]:
+        """Validate via GPT-5.1 vision. Returns (passed, reason)."""
         prompt = IMAGE_VALIDATION_PROMPT.format(
             image_description=image_description,
             stem_context=stem_context[:500],
@@ -313,81 +397,47 @@ class ImageGenerator:
 
             if result == "pass":
                 logger.info("Image validation passed: %s", reason)
-                return True
+                return True, reason
 
             logger.warning("Image validation failed: %s", reason)
-            return False
+            return False, reason
 
         except Exception as exc:
             logger.error("Image validation error: %s", exc)
-            return False
-
-    # ------------------------------------------------------------------
-    # Step 3: S3 upload
-    # ------------------------------------------------------------------
+            return False, f"validation error: {exc}"
 
     def _upload_to_s3(
-        self,
-        image_bytes: bytes,
-        item_id: str,
-        atom_id: str,
+        self, image_bytes: bytes, item_id: str, atom_id: str,
     ) -> str | None:
-        """Upload image bytes to S3.
-
-        Args:
-            image_bytes: Raw PNG data.
-            item_id: Item ID for file naming.
-            atom_id: Atom ID for path organization.
-
-        Returns:
-            Public S3 URL, or None on failure.
-        """
+        """Upload PNG to S3. Returns public URL or None."""
         upload_fn = _load_s3_upload_fn()
         if upload_fn is None:
-            logger.error("S3 uploader not available")
             return None
-
-        image_b64 = base64.b64encode(image_bytes).decode("utf-8")
         return upload_fn(
-            image_base64=image_b64,
+            image_base64=base64.b64encode(image_bytes).decode(),
             question_id=item_id,
             path_prefix="images/question-generation/",
             test_name=atom_id,
         )
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
 _s3_upload_fn: Any = None
 
 
 def _load_s3_upload_fn() -> Any:
-    """Lazily load upload_image_to_s3 from the pdf-to-qti module.
-
-    The pdf-to-qti directory uses dashes, so we need importlib
-    to import it. Caches the function after first load.
-
-    Returns:
-        The upload_image_to_s3 function, or None if unavailable.
-    """
+    """Lazily load upload_image_to_s3 from the pdf-to-qti module."""
     global _s3_upload_fn  # noqa: PLW0603
     if _s3_upload_fn is not None:
         return _s3_upload_fn
-
     import importlib
     from pathlib import Path
-
     spec_path = (
         Path(__file__).resolve().parents[1]
         / "pruebas" / "pdf-to-qti" / "modules" / "utils"
         / "s3_uploader.py"
     )
     if not spec_path.exists():
-        logger.error("S3 uploader module not found: %s", spec_path)
         return None
-
     try:
         spec = importlib.util.spec_from_file_location(
             "s3_uploader", spec_path,
@@ -396,8 +446,7 @@ def _load_s3_upload_fn() -> Any:
         spec.loader.exec_module(mod)  # type: ignore[union-attr]
         _s3_upload_fn = mod.upload_image_to_s3
         return _s3_upload_fn
-    except Exception as exc:
-        logger.error("Failed to load S3 uploader: %s", exc)
+    except Exception:
         return None
 
 
@@ -405,30 +454,23 @@ def _select_image_items(
     items: list[GeneratedItem],
     slot_map: dict[int, PlanSlot],
 ) -> list[GeneratedItem]:
-    """Filter items that need image generation."""
-    result: list[GeneratedItem] = []
-    for item in items:
-        slot = slot_map.get(item.slot_index)
-        if (
-            slot is not None
-            and slot.image_required
-            and _has_placeholder(item.qti_xml)
-        ):
-            result.append(item)
-    return result
+    """Filter items whose slot has image_required and a placeholder."""
+    return [
+        it for it in items
+        if (s := slot_map.get(it.slot_index)) is not None
+        and s.image_required
+        and _has_placeholder(it.qti_xml)
+    ]
 
 
 def _build_result(
-    items: list[GeneratedItem],
-    errors: list[str],
+    items: list[GeneratedItem], errors: list[str],
 ) -> PhaseResult:
     """Build PhaseResult from all items after image generation."""
-    active = [it for it in items if not it.image_failed]
     return PhaseResult(
         phase_name="image_generation",
-        success=len(active) > 0,
-        data={"items": items},
-        errors=errors,
+        success=any(not it.image_failed for it in items),
+        data={"items": items}, errors=errors,
     )
 
 
@@ -438,15 +480,7 @@ def _has_placeholder(qti_xml: str) -> bool:
 
 
 def _replace_placeholder(qti_xml: str, s3_url: str) -> str:
-    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL.
-
-    Args:
-        qti_xml: QTI XML with IMAGE_PLACEHOLDER in an <img> tag.
-        s3_url: Public S3 URL to substitute.
-
-    Returns:
-        Updated QTI XML with the real image URL.
-    """
+    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL."""
     return qti_xml.replace(
         f'src="{_PLACEHOLDER_SRC}"',
         f'src="{s3_url}"',
@@ -455,25 +489,12 @@ def _replace_placeholder(qti_xml: str, s3_url: str) -> str:
 
 
 def _extract_stem_text(qti_xml: str) -> str:
-    """Extract plain text from the QTI XML stem for context.
-
-    Strips XML tags to get readable text content from the
-    item body (before the choice interaction).
-
-    Args:
-        qti_xml: Full QTI XML string.
-
-    Returns:
-        Plain text content of the stem.
-    """
+    """Extract plain text from the QTI item body for context."""
     match = re.search(
         r"<qti-item-body[^>]*>(.*?)<qti-choice-interaction",
-        qti_xml,
-        re.DOTALL,
+        qti_xml, re.DOTALL,
     )
     if not match:
         return ""
-
-    body = match.group(1)
-    text = re.sub(r"<[^>]+>", " ", body)
+    text = re.sub(r"<[^>]+>", " ", match.group(1))
     return re.sub(r"\s+", " ", text).strip()

@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Convertir números decimales finitos a porcentaje multiplicando por 100.",
+        "Escribir el resultado con el símbolo % y con ubicación correcta de la coma decimal.",
+        "Interpretar el 1 como 100% y números mayores que 1 como porcentajes mayores que 100%.",
+        "Interpretar números decimales entre 0 y 1 como porcentajes menores que 100%.",
+        "Realizar conversiones en ambos sentidos cuando la tarea central es pasar de decimal a porcentaje (por ejemplo, dado un decimal, elegir el porcentaje equivalente).",
+        "Usar la equivalencia entre desplazamiento de coma dos lugares y multiplicación por 100 en contextos simples."
+      ],
+      "out_of_scope": [
+        "Conversión de fracciones a porcentaje (eso corresponde a otro átomo).",
+        "Cálculo de porcentajes de una cantidad (por ejemplo, calcular el 15% de 200).",
+        "Problemas de interés simple o compuesto donde la dificultad principal sea la fórmula financiera.",
+        "Porcentajes sucesivos o porcentajes sobre porcentajes.",
+        "Decimales periódicos infinitos que requieran redondeos no triviales o aproximaciones avanzadas.",
+        "Comparación compleja de porcentajes en contextos de probabilidad o estadística.",
+        "Lectura de porcentajes desde gráficos estadísticos (barras, torta, etc.)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Comprender el sistema de numeración decimal y el valor posicional.",
+        "A-M1-NUM-01-03: Manejar la multiplicación por potencias de 10 como desplazamiento de la coma decimal.",
+        "A-M1-NUM-02-01: Reconocer la relación entre parte y todo en porcentajes simples (porcentaje como razón sobre 100).",
+        "A-M1-NUM-01-02: Lectura y escritura de números decimales hasta milésimos."
+      ],
+      "common_traps": [
+        "Olvidar multiplicar por 100 y solo agregar el símbolo % al número decimal.",
+        "Desplazar la coma en sentido incorrecto (por ejemplo, 0,45 → 0,0045%).",
+        "Confundir 0,1 con 1% en lugar de 10%.",
+        "Interpretar 1,2 solo como 1,2% y no como 120%.",
+        "No considerar que números mayores que 1 representan más del 100%.",
+        "Errores de redondeo cuando se convierten decimales con muchos dígitos (por ejemplo, cortar en vez de redondear).",
+        "Olvidar el símbolo % en la respuesta o mezclar notación decimal y porcentual en la misma alternativa de manera confusa.",
+        "Cambiar el valor al simplificar notaciones como 0,008 ↔ 0,8% (confundir cantidad de ceros)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Decimales con uno o dos dígitos, positivos, sin contexto verbal complejo (por ejemplo, 0,3; 0,45; 1,2).",
+        "La tarea explícita es “¿a qué porcentaje equivale...?” sin pasos intermedios ni interpretación adicional.",
+        "Opciones claramente diferenciadas por orden de magnitud (por ejemplo, 3%, 30%, 300%, 3000%).",
+        "Ítems que trabajan solo con la relación 1 ↔ 100% y decimales menores que 1.",
+        "Sin necesidad de redondeo: los resultados son porcentajes con máximo una cifra decimal o enteros."
+      ],
+      "medium": [
+        "Decimales con tres o cuatro cifras, incluyendo ceros iniciales o finales (por ejemplo, 0,008; 0,075; 2,05).",
+        "Contexto breve (población, proporción de estudiantes, descuentos) donde se pide identificar el porcentaje equivalente al decimal entregado en un modelo o expresión.",
+        "Exigir distinguir entre porcentajes mayores, iguales o menores a 100% (por ejemplo, decidir si un crecimiento descrito por 1,1 representa un 10% de aumento).",
+        "Incluir distratores que reflejen errores típicos de desplazamiento de coma (por ejemplo, 0,008 → 8%, 0,8%, 0,08%).",
+        "Puede requerir un pequeño paso previo de cálculo sencillo (por ejemplo, obtener un decimal intermedio y luego pasarlo a porcentaje)."
+      ],
+      "hard": [
+        "Decimales con varios dígitos y necesidad de redondeo explícito (por ejemplo, “redondeado al décimo de porcentaje”).",
+        "Contextos donde el decimal no está dado directamente sino como resultado de una expresión simple (por ejemplo, resultados de razones o de modelos como a·b^t ya evaluados).",
+        "Comparar o ordenar varios decimales en términos de sus porcentajes equivalentes, especialmente alrededor de 1 (por ejemplo, 0,98; 1,03; 1,25).",
+        "Distinguir entre porcentaje de aumento y factor multiplicativo, obligando a interpretar que 1,1 equivale a un 110% del valor inicial (incremento de 10%).",
+        "Distractores diseñados con más sutileza, que implican errores combinados (mal desplazamiento de coma + mala interpretación de >100%).",
+        "Contextos donde se requiere inferir que un resultado mayor que 1 indica “más del 100%” y usarlo para justificar una afirmación."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en la misma alternativa notación decimal y porcientos de manera que deje dudas sobre qué cantidad se pregunta (por ejemplo, evitar respuestas del tipo “0,3 = 3%” en una sola alternativa).",
+      "Evitar preguntas donde no queda claro si se pide el porcentaje respecto de qué todo (por ejemplo, “¿qué porcentaje representa 0,75?” sin aclarar que se refiere al 1 como total).",
+      "No usar decimales periódicos sin indicar claramente si se trabaja con aproximaciones ni el nivel de redondeo requerido.",
+      "Evitar enunciados donde “porcentaje de aumento” pueda confundirse con “porcentaje total” (por ejemplo, aclarar si se pregunta por el factor 1,1 o por el 10% de incremento).",
+      "No usar comas y puntos de manera inconsistente; en PAES Chile debe usarse coma para decimales y punto para miles.",
+      "Evitar contextos con varias cantidades porcentuales distintas que no se relacionan claramente con el decimal a convertir.",
+      "No incluir rangos de porcentaje como respuesta cuando se evalúa conversión exacta; usar un solo valor o especificar que se acepta aproximación.",
+      "Evitar formular preguntas donde tanto la respuesta en decimal como en porcentaje podrían ser interpretadas como válidas si el enunciado no especifica el formato requerido."
+    ],
+    "error_families": [
+      {
+        "name": "Solo-agregar-símbolo",
+        "description": "El estudiante toma el número decimal y solo le agrega el símbolo %, sin multiplicar por 100 (por ejemplo, 0,45 → 0,45%).",
+        "how_to_address": "Insistir en el significado de porcentaje como “de cada 100” y en que 1 equivale a 100%. Trabajar con tablas que muestren la correspondencia 0,01 ↔ 1%, 0,1 ↔ 10%, 1 ↔ 100% y generalizar la regla de multiplicar por 100."
+      },
+      {
+        "name": "Desplazamiento-invertido",
+        "description": "Desplaza la coma en sentido contrario, disminuyendo el número en lugar de aumentarlo (por ejemplo, 0,45 → 0,0045%).",
+        "how_to_address": "Usar rectas numéricas y comparaciones de orden: mostrar que 0,45 debe transformarse en un número mayor al pasarlo a porcentaje. Trabajar ejercicios de “visible check” donde se discute si tiene sentido que el porcentaje resultante sea tan pequeño o grande."
+      },
+      {
+        "name": "Confusión-menor-mayor-que-uno",
+        "description": "No distingue entre números menores y mayores que 1, tratando todos como porcentajes menores que 100% (por ejemplo, 1,2 → 1,2%).",
+        "how_to_address": "Proponer contextos de crecimiento donde 1,2 represente un valor superior al inicial (por ejemplo, población, precios). Resaltar con diagramas de barras que 1,2 está por sobre 1 y por lo tanto equivale a más de 100%."
+      },
+      {
+        "name": "Error-en-cantidad-de-ceros",
+        "description": "Falla al contar posiciones al mover la coma con muchos ceros (por ejemplo, 0,008 → 0,8% u 8% según se equivoque en la cantidad de ceros).",
+        "how_to_address": "Practicar conversiones en columnas, marcando explícitamente el número de lugares que se mueve la coma. Proponer series de números como 0,8; 0,08; 0,008 con sus respectivos porcentajes y pedir comparaciones cualitativas antes del cálculo exacto."
+      },
+      {
+        "name": "Omisión-del-símbolo-porcentaje",
+        "description": "Da la respuesta en número correcto pero sin el símbolo %, lo que puede llevar a confundirlo con decimal.",
+        "how_to_address": "Refuerza que “porcentaje” requiere dos cosas: valor numérico y el símbolo %. Incluir ítems de selección de formato correcto (por ejemplo, elegir la escritura adecuada entre 0,45; 45; 45%)."
+      },
+      {
+        "name": "Redondeo-inapropiado",
+        "description": "Trunca o redondea de manera inconsistente al convertir decimales con muchos dígitos, afectando el valor porcentual final.",
+        "how_to_address": "Especificar siempre el criterio de redondeo en ítems que lo requieran. Practicar con ejemplos donde el redondeo se realiza luego de obtener el valor porcentual, destacando la posición de la cifra a redondear."
+      }
+    ],
+    "future_targets": [
+      "Interpretar y calcular porcentajes de una cantidad en contextos variados (descuentos, impuestos, intereses simples).",
+      "Trabajar con factores de cambio multiplicativos (por ejemplo, 1,1; 0,85) en modelos de crecimiento y decrecimiento porcentual.",
+      "Comprender y aplicar porcentajes sucesivos y comparación de porcentajes en problemas de aumento y disminución.",
+      "Interpretar y producir datos estadísticos expresados en porcentajes (tablas de frecuencia relativa, encuestas).",
+      "Resolver problemas de interés compuesto y crecimiento exponencial donde los porcentajes se expresan como factores decimales.",
+      "Transformar flexiblemente entre fracciones, decimales y porcentajes al comparar proporciones.",
+      "Analizar tasas de variación y cambios relativos usando porcentajes en contextos científicos y económicos."
+    ],
+    "representation_variants": [
+      "Número decimal simple (por ejemplo, 0,45) a porcentaje explícito (45%).",
+      "Texto contextual que describe una parte de un todo mediante decimal (por ejemplo, proporción de una población, tasa de crecimiento) y se pide el porcentaje equivalente.",
+      "Tabla con una columna en notación decimal y otra incompleta en porcentaje, donde se debe completar o emparejar equivalencias.",
+      "Expresiones con factor multiplicativo en decimales (por ejemplo, 1,1; 0,75; 2,3) que deben interpretarse como porcentajes totales o de cambio.",
+      "Número en porcentaje indicado en el enunciado, pero se pide escoger su decimal equivalente y luego convertir otro decimal similar, para reforzar la relación bidireccional.",
+      "Comparación entre representaciones mixtas (por ejemplo, decidir si 0,87 equivale a menos, igual o más que 90%)."
+    ],
+    "numbers_profiles": [
+      "small_decimals",
+      "large_decimals",
+      "greater_than_one_decimals",
+      "powers_of_ten_decimals",
+      "contextual_decimals"
+    ],
+    "required_image_types": []
+  }
+}

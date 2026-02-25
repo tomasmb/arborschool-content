@@ -1,0 +1,130 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Traducción de expresiones verbales simples y compuestas que involucren suma, resta, multiplicación y división hacia expresiones algebraicas sin signo igual.",
+        "Traducción de expresiones algebraicas (con una o más variables) a enunciados en lenguaje natural, tanto en forma general como en contexto.",
+        "Identificación del rol de las variables (cantidades desconocidas o generales) y constantes (números fijos, parámetros) dentro de una expresión.",
+        "Uso de vocabulario de relaciones de cantidad tales como doble, triple, mitad, tercio, sucesor, antecesor, número anterior o siguiente.",
+        "Interpretación contextual básica de expresiones algebraicas (por ejemplo, costos, cantidades, edades) sin llegar a plantear ni resolver ecuaciones.",
+        "Diferenciación entre operaciones aplicadas a un número versus operaciones aplicadas a una suma o diferencia completa (uso implícito de paréntesis)."
+      ],
+      "out_of_scope": [
+        "Planteamiento o resolución de ecuaciones, inecuaciones o sistemas (no se incluye el signo igual ni procesos de despeje).",
+        "Trabajar con funciones explícitas (por ejemplo, f(x)=...), sus gráficos o tablas de valores como objetos centrales del ítem.",
+        "Traducción de expresiones que involucren potencias avanzadas (más allá de cuadrados o cubos sencillos), raíces, logaritmos o funciones especiales.",
+        "Modelamiento estadístico o probabilístico que requiera tablas de frecuencia, gráficos estadísticos o cálculos de probabilidad.",
+        "Problemas que requieran varios pasos de razonamiento algebraico encadenado más allá de la traducción e interpretación inmediata.",
+        "Manipulación simbólica avanzada (factorización, desarrollo de productos notables, simplificación de fracciones algebraicas)."
+      ],
+      "prerequisites": [
+        "A-M1-NT-01-01: Comprensión y uso de las cuatro operaciones básicas con números naturales y enteros.",
+        "A-M1-NT-01-02: Interpretación de expresiones numéricas con paréntesis y prioridad de operaciones.",
+        "A-M1-ALG-00-01: Reconocimiento de símbolos algebraicos básicos (variables, coeficientes, constantes, exponentes simples).",
+        "A-M1-ALG-00-02: Comprender el significado de una variable como número desconocido o general."
+      ],
+      "common_traps": [
+        "Confundir expresiones con ecuaciones, agregando o buscando un signo igual cuando el ítem solo pide una expresión.",
+        "Interpretar frases como \"el doble de la suma de\" y \"la suma del doble de\" como si fueran equivalentes (uso incorrecto o ausencia de paréntesis).",
+        "Invertir el orden en frases de resta, por ejemplo, confundir \"la diferencia entre A y B\" con \"B − A\".",
+        "Traducir mal estructuras encadenadas como \"el doble de un número aumentado en 5\" transformándolas en 2x + 5 en lugar de 2(x + 5), o viceversa, según corresponda.",
+        "Perder el contexto al traducir de álgebra a lenguaje natural, generando descripciones que no se ajustan a la situación propuesta (costos, cantidades de objetos, edades, etc.).",
+        "Confundir sucesor/antecesor con doble/mitad, o interpretar sucesor solo como 'sumar 1' sin conectar con la variable correctamente (x + 1, x − 1).",
+        "Omitir términos o factores en la traducción (por ejemplo, olvidar el \"más 5\" o el \"dividido en 3\" al pasar de lenguaje natural a algebraico)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Enunciados en lenguaje natural cortos, con una sola variable y una o dos operaciones básicas sin anidación (por ejemplo, suma y un doble o mitad).",
+        "Expresiones algebraicas simples del tipo ax + b o x ± n, con uno o dos términos y sin presencia de paréntesis ni productos entre expresiones.",
+        "Vocabulario directo y frecuente (doble, mitad, más, menos) sin estructuras comparativas complejas.",
+        "Traducciones que no requieren distinguir entre operar sobre un número o sobre una suma completa (no hay ambigüedad de paréntesis).",
+        "Interpretación de expresiones algebraicas en contextos muy transparentes (precio por unidad, cantidad de objetos, edad + un número fijo) con datos numéricos sencillos."
+      ],
+      "medium": [
+        "Enunciados con dos o más variables o cantidades distintas, cada una con su propio coeficiente o operación (por ejemplo, costo que depende de x y de y).",
+        "Presencia de paréntesis o estructuras anidadas simples, donde se debe interpretar correctamente expresiones del tipo 2(x + 3) o (x − 1)/2.",
+        "Vocabulario algo más variado: sucesor, antecesor, triple, la mitad de la diferencia, el doble de la suma, etc.",
+        "Ítems que exigen elegir, entre varias expresiones dadas, cuál representa mejor un enunciado verbal algo más extenso o contextualizado.",
+        "Traducciones en ambas direcciones (Natural→Algebraico y Algebraico→Natural) donde se debe mantener la coherencia con una pequeña historia o situación."
+      ],
+      "hard": [
+        "Enunciados verbales más largos con varias cláusulas, donde el orden de las operaciones no es obvio y se requiere decidir el uso correcto de paréntesis y el orden de la resta.",
+        "Expresiones algebraicas con más de dos variables, combinación de coeficientes y constantes, y operaciones mixtas como 2(x − 3) + 3(y + 1) o (x² − x)/2 en contextos significativos.",
+        "Uso de lenguaje natural más sutil, con comparaciones (\"cuatro unidades más que el triple de\"), referencias indirectas (\"el número de estudiantes que queda después de...\") o relaciones encadenadas (\"primero se duplica, luego se restan 5 unidades\").",
+        "Necesidad de discriminar entre varias expresiones muy similares, donde la diferencia radica en detalles de orden, signo o agrupación (por ejemplo, distinguir x − (2x + 3) de (x − 2)x + 3).",
+        "Interpretación algebra→natural que exige conservar con precisión el rol de cada variable y constante en un contexto no trivial (por ejemplo, tarifas combinadas, promociones, combinaciones de cantidades) sin hacer inferencias adicionales fuera de la expresión dada."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar frases donde no quede claro si la operación se aplica a un solo número o a una suma/diferencia completa, por ejemplo, reemplazar \"el doble de un número aumentado en 5\" por \"el doble de un número, y luego se le suman 5\" si se quiere 2x + 5, o especificar \"el doble de la suma entre un número y 5\" si se quiere 2(x + 5).",
+      "No usar expresiones con \"más que\" o \"menos que\" sin aclarar el orden; preferir formulaciones tipo \"un número aumentado en 3\" (x + 3) en lugar de \"3 más que un número\" cuando el curso objetivo pueda confundirse.",
+      "Evitar enunciados donde \"la diferencia entre A y B\" pueda interpretarse como A − B o B − A sin contexto; especificar claramente el minuendo y el sustraendo (\"la diferencia entre un número y 5\" para x − 5).",
+      "No mezclar tiempo verbal o contexto de manera que parezca que hay varios pasos temporales complejos cuando solo se quiere una expresión estática.",
+      "Evitar utilizar el mismo símbolo de variable con dos significados distintos dentro de un mismo ítem (por ejemplo, x como edad y también como cantidad de objetos).",
+      "No usar contextos que sugieran ecuaciones (igualdades, metas exactas) si el ítem solo pide una expresión; mantener el enfoque en describir cantidades, no en resolver condiciones.",
+      "Evitar expresiones verbales excesivamente literales, forzadas o coloquiales que puedan dar pie a interpretaciones distintas a la formal matemática.",
+      "No combinar demasiadas relaciones distintas (doble, mitad, sucesor, \"tres menos que\", \"dos veces la suma de\") en un solo enunciado si la intención no es justamente evaluar la capacidad de descomponerlas claramente."
+    ],
+    "error_families": [
+      {
+        "name": "Orden_invertido_en_la_resta",
+        "description": "El o la estudiante interpreta frases como \"la diferencia entre un número y 5\" o \"5 menos un número\" de forma invertida, escribiendo 5 − x cuando corresponde x − 5, o al revés.",
+        "how_to_address": "En los ítems, contrastar alternativas que difieran solo en este orden para evidenciar el error, y en las retroalimentaciones explicitar quién es el minuendo y quién el sustraendo, conectando con ejemplos concretos (por ejemplo, \"tengo x y le quito 5\" versus \"tengo 5 y le quito x\")."
+      },
+      {
+        "name": "Falta_o_mal_uso_de_paréntesis",
+        "description": "No distinguir entre aplicar una operación a un término o a toda una suma/diferencia: por ejemplo, representar \"el doble de la suma de un número y 5\" como 2x + 5 en lugar de 2(x + 5), o a la inversa.",
+        "how_to_address": "Diseñar ítems que comparen expresiones con y sin paréntesis, pidiendo elegir cuál corresponde al enunciado dado, y enfatizar en la retroalimentación que los paréntesis indican que primero se calcula la suma o diferencia completa."
+      },
+      {
+        "name": "Coeficientes_mal_asignados",
+        "description": "Olvidar o ubicar mal los coeficientes al traducir expresiones como \"el triple de un número\" (3 + x en vez de 3x) o \"la mitad de un número\" (x − 1/2 en vez de x/2).",
+        "how_to_address": "Incluir opciones que separen claramente la suma de la multiplicación y la fracción de la resta, explicando en la retroalimentación que \"triple\" implica multiplicar por 3, y \"la mitad\" implica dividir por 2, usualmente como x/2."
+      },
+      {
+        "name": "Omisión_de_términos",
+        "description": "Al trasladar del lenguaje natural al algebraico, se omite alguna parte del enunciado, como un \"más 5\" o un \"menos el sucesor del número\", resultando en expresiones incompletas.",
+        "how_to_address": "Proponer enunciados donde cada parte esté claramente separada por conectores (primero, luego, después), y en la retroalimentación mostrar cómo cada frase se corresponde con un término de la expresión final."
+      },
+      {
+        "name": "Confusión_sucesor_antecesor",
+        "description": "Interpretar el sucesor como x + k distinto de 1, o confundir sucesor con doble, o escribir el antecesor de x como −x o x − k incorrecto.",
+        "how_to_address": "Incluir ítems específicos donde se confronte x + 1, x − 1 y 1 − x, aclarando en la retroalimentación que sucesor siempre es \"sumar 1\" y antecesor \"restar 1\" al número en cuestión."
+      },
+      {
+        "name": "Literalismo_sin_contexto",
+        "description": "Al interpretar expresiones algebraicas en contexto, el o la estudiante traduce de manera literal (\"2x + 3y es dos por x más tres por y\") sin conectar con el significado contextual dado (costos, cantidades de objetos).",
+        "how_to_address": "Plantear ítems donde se pida escoger la interpretación contextual correcta entre varias opciones, y en la retroalimentación vincular explícitamente cada término de la expresión con elementos del contexto (precio por unidad, número de objetos, tarifa fija, etc.)."
+      },
+      {
+        "name": "Conversión_a_ecuación_innecesaria",
+        "description": "El o la estudiante tiende a agregar un '= 0' o '= resultado' al traducir un enunciado que solo requiere una expresión, tratando el problema como una ecuación.",
+        "how_to_address": "Formular claramente en el enunciado que solo se pide una expresión, e incluir como distractor opciones con '='; en la retroalimentación, reforzar la diferencia entre 'expresión' (solo describe una cantidad) y 'ecuación' (plantea una igualdad para resolver)."
+      }
+    ],
+    "future_targets": [
+      "Planteamiento de ecuaciones lineales de una variable a partir de enunciados verbales.",
+      "Planteamiento de sistemas de ecuaciones lineales en contextos de modelamiento (por ejemplo, mezcla de cantidades, combinación de tarifas).",
+      "Comprensión e interpretación de funciones lineales y afines, incluyendo su escritura como y = mx + b a partir de descripciones verbales.",
+      "Modelamiento algebraico de situaciones más complejas que involucren ecuaciones cuadráticas simples o relaciones proporcionales.",
+      "Resolución de problemas de inecuaciones lineales que requieran traducir restricciones verbales a lenguaje algebraico.",
+      "Interpretación de parámetros en modelos algebraicos (por ejemplo, tarifa fija y costo por unidad como términos constantes y coeficientes)."
+    ],
+    "representation_variants": [
+      "Expresión algebraica simbólica sin contexto (por ejemplo, 2x + 5, x² − x/2).",
+      "Enunciado en lenguaje natural sin contexto específico (por ejemplo, \"el doble de un número aumentado en cinco\").",
+      "Enunciado en lenguaje natural contextualizado (situaciones de compra, edades, cantidades de objetos, recorridos, etc.).",
+      "Listas de opciones mixtas donde algunas son expresiones algebraicas y otras descripciones verbales, para emparejar o seleccionar equivalentes.",
+      "Descripciones de relaciones de cantidad entre dos o más magnitudes (por ejemplo, una cantidad es el triple de otra, la suma de ambas menos 5)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "natural_numbers",
+      "simple_fractions",
+      "contextual_whole_numbers"
+    ],
+    "required_image_types": []
+  }
+}

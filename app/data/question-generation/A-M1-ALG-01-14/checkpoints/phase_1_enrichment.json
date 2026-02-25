@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Identificar si un trinomio cuadrático de la forma ax^2 + bx + c (con a>0) corresponde al desarrollo de un cuadrado de binomio.",
+        "Verificar que los términos primero y tercero sean cuadrados perfectos (incluyendo coeficientes) y que el término central sea el doble producto de las raíces cuadradas de los extremos.",
+        "Factorizar expresiones del tipo a^2x^2 ± 2abx + b^2 como (ax ± b)^2.",
+        "Reescribir un trinomio cuadrado perfecto con término central negativo en la forma (a x - b)^2.",
+        "Trabajar principalmente con una variable (x o y) y coeficientes numéricos enteros.",
+        "Uso de la verificación posterior expandiendo el binomio al cuadrado para comprobar la factorización."
+      ],
+      "out_of_scope": [
+        "Factorización de trinomios cuadráticos generales ax^2 + bx + c que no sean cuadrados perfectos (caso de raíces distintas o método de suma y producto).",
+        "Factorización por agrupación de polinomios de más de tres términos.",
+        "Resolución completa de ecuaciones cuadráticas usando fórmula general o completación de cuadrados (más allá de reconocer el cuadrado perfecto).",
+        "Polinomios de grado mayor que 2 o con más de una variable mezclada (por ejemplo, ax^2 + bxy + cy^2).",
+        "Aplicaciones geométricas o de área que requieran interpretación de gráficos.",
+        "Uso de radicales no simplificables o coeficientes irracionales en los trinomios."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-01-11: Reconocer y calcular cuadrados perfectos de enteros pequeños.",
+        "A-M1-ALG-01-12: Operar con productos notables, en particular cuadrado de binomio (a ± b)^2.",
+        "A-M1-ALG-01-13: Identificar coeficiente principal, término independiente y término lineal en un trinomio cuadrático.",
+        "A-M1-ARIT-01-02: Manejo de enteros positivos y negativos, y multiplicación de signos."
+      ],
+      "common_traps": [
+        "Asumir que cualquier trinomio con extremos cuadrados perfectos es automáticamente un cuadrado perfecto sin revisar el término central.",
+        "Olvidar el factor 2 en el término central (confundir (a ± b)^2 con a^2 ± ab + b^2).",
+        "Aplicar incorrectamente la raíz cuadrada al coeficiente del término cuadrático (por ejemplo, confundir 4x^2 con (4x)^2 en vez de (2x)^2).",
+        "Ignorar el signo del término central y elegir el signo del binomio al azar.",
+        "Confundir la factorización como cuadrado perfecto con factorizaciones de la forma (x + m)(x + n) donde m ≠ n.",
+        "Reordenar mal los términos y perder la estructura a^2x^2 ± 2abx + b^2.",
+        "Tratar trinomios donde el término lineal no corresponde exactamente al doble producto como si pudieran ajustarse artificialmente (inventar términos)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Trinomios con coeficiente principal 1 y términos en orden estándar x^2 + bx + c.",
+        "Extremos que son cuadrados perfectos de enteros positivos pequeños (1, 4, 9, 16, 25).",
+        "Término central exactamente el doble producto de números pequeños y positivos.",
+        "Signos todos positivos o combinación simple que conduzca a (x - b)^2 con b entero pequeño.",
+        "Alternativas de respuesta que incluyen claramente un único binomio al cuadrado y distractores menos estructurados."
+      ],
+      "medium": [
+        "Trinomios con coeficiente principal cuadrado perfecto distinto de 1 (por ejemplo, 4x^2, 9x^2, 16x^2).",
+        "Participación de coeficientes negativos, en particular término central negativo pero extremos positivos.",
+        "Requiere reorganizar mentalmente la expresión para reconocer a^2x^2 ± 2abx + b^2, sin que esté explícitamente ordenada.",
+        "Inclusión de distractores que representan factorizaciones correctas pero no como cuadrado perfecto (por ejemplo, (x + m)(x + n) con m ≠ n).",
+        "Casos donde se debe verificar que NO es un cuadrado perfecto y elegir la opción que indica que no se puede factorizar como (ax ± b)^2."
+      ],
+      "hard": [
+        "Coeficientes mayores, aunque aún cuadrados perfectos, que exigen más cuidado al extraer raíces (por ejemplo, 25x^2, 36x^2) combinados con términos lineales de mayor magnitud.",
+        "Trinomios con signo negativo en el término independiente que parecen a simple vista candidatos, pero requieren detectar que no cumplen la estructura de cuadrado perfecto.",
+        "Ítems que mezclan varios trinomios y piden seleccionar cuáles son cuadrados perfectos o contar cuántos lo son.",
+        "Situaciones en que es necesario simplificar un factor común previo antes de reconocer el cuadrado perfecto.",
+        "Distractores diseñados con el error típico de olvidar el factor 2 en el término central o con raíces mal calculadas, que exigen verificación cuidadosa expandiendo mentalmente."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar expresiones donde el trinomio pueda factorizarse de manera distinta a un cuadrado perfecto y la consigna no especifique claramente que se busca la forma (ax ± b)^2.",
+      "Evitar coeficientes que no sean cuadrados perfectos si la intención es que el trinomio sí sea un cuadrado perfecto.",
+      "No mezclar más de una variable en la misma expresión (por ejemplo, x^2 + 4xy + 4y^2) a menos que el ítem explicite que se acepta un binomio en dos variables; este átomo se centra en una variable.",
+      "Evitar ordenar los términos de forma poco estándar si esto no agrega dificultad relevante y solo introduce confusión (por ejemplo, poner primero el término lineal sin aclaración).",
+      "No plantear enunciados donde la instrucción sea ambigua entre factorizar completamente o solo reconocer si es o no un cuadrado perfecto.",
+      "No usar la palabra 'siempre' o 'nunca' en afirmaciones generales que dependan de valores específicos de parámetros sin aclarar su dominio.",
+      "Evitar notaciones poco claras como omitir el signo de multiplicación entre número y variable (usar 3x y no 3·x en el mismo ítem de forma inconsistente)."
+    ],
+    "error_families": [
+      {
+        "name": "Olvido_del_doble_producto",
+        "description": "El estudiante identifica los extremos como cuadrados perfectos pero considera cuadrado perfecto a cualquier trinomio de la forma a^2x^2 + bx + c, sin verificar que b sea exactamente 2ab.",
+        "how_to_address": "Diseñar ítems donde los extremos son cuadrados pero el término central no es el doble producto, pidiendo decidir si es o no cuadrado perfecto y justificar mentalmente con la relación 2ab."
+      },
+      {
+        "name": "Raiz_del_coeficiente_mal_calculada",
+        "description": "El estudiante confunde la raíz cuadrada del coeficiente del término cuadrático (por ejemplo, toma √4x^2 como 4x en vez de 2x).",
+        "how_to_address": "Incluir trinomios con coeficientes cuadrados perfectos distintos de 1 y distractores que reflejen exactamente esta confusión, reforzando la idea de que la raíz se aplica al número y a la variable."
+      },
+      {
+        "name": "Signo_del_binomio_incorrecto",
+        "description": "El estudiante determina correctamente las magnitudes a y b pero se equivoca en el signo dentro del binomio (elige (ax + b)^2 en lugar de (ax - b)^2 o viceversa).",
+        "how_to_address": "Proponer pares de alternativas que solo difieran en el signo interno del binomio, obligando a relacionar el signo del término central con la forma (a + b)^2 o (a - b)^2."
+      },
+      {
+        "name": "Confusion_con_factorizacion_general",
+        "description": "El estudiante intenta factorizar todo trinomio como (x + m)(x + n) y no utiliza la estructura específica del cuadrado perfecto, generando factores con m ≠ n.",
+        "how_to_address": "Crear ítems que contrasten trinomios cuadrados perfectos con otros que no lo son y exigir identificar cuáles dan lugar a un solo binomio al cuadrado, resaltando la igualdad de los factores."
+      },
+      {
+        "name": "Desorden_de_terminos",
+        "description": "Cuando el trinomio no está escrito en orden estándar, el estudiante no es capaz de reconocer la forma de cuadrado perfecto y falla en identificarlo.",
+        "how_to_address": "Incluir algunos ítems con términos en distinto orden pero claramente reordenables, guiando a que se identifique primero el término cuadrático y el independiente para comprobar la estructura."
+      },
+      {
+        "name": "Aceptacion_de_cuadrados_no_enteros",
+        "description": "El estudiante considera como 'cuadrado perfecto' casos donde la raíz cuadrada de los coeficientes no es entera, asumiendo que igual se trata de un cuadrado perfecto en este contexto.",
+        "how_to_address": "Diseñar ejemplos donde la raíz de los coeficientes no es entera y pedir explícitamente que trabaje con enteros, mostrando que en este nivel se busca reconocimiento con raíces enteras."
+      }
+    ],
+    "future_targets": [
+      "A-M1-ALG-01-15: Factorización de trinomios cuadráticos no notables mediante métodos generales (suma y producto, fórmula general).",
+      "A-M1-ALG-01-16: Resolución de ecuaciones cuadráticas utilizando la estructura de cuadrado perfecto.",
+      "A-M1-ALG-01-17: Completación de cuadrados para reescribir expresiones cuadráticas en forma canonica.",
+      "A-M1-FUN-01-05: Análisis de funciones cuadráticas usando la forma (x - h)^2 + k para identificar vértice y traslaciones.",
+      "A-M1-ALG-01-18: Simplificación de expresiones algebraicas involucrando productos notables encadenados.",
+      "A-M1-MOD-01-03: Modelación de situaciones con expresiones cuadráticas donde la factorización como cuadrado perfecto permite interpretar mínimos o máximos."
+    ],
+    "representation_variants": [
+      "Trinomios escritos en forma estándar ax^2 + bx + c con a, b y c enteros.",
+      "Expresiones factorizadas ya como (ax ± b)^2, donde se pide identificar el trinomio equivalente.",
+      "Listas de varias expresiones donde se pide seleccionar todas las que son cuadrados perfectos.",
+      "Expresiones donde primero se extrae un factor común y luego queda un trinomio cuadrado perfecto a factorizar.",
+      "Contextos verbales simples donde se describe 'el cuadrado de la suma/diferencia de dos cantidades' y se debe asociar al trinomio correspondiente.",
+      "Tablas que emparejan trinomios con sus posibles factorizaciones, pidiendo elegir la correspondencia correcta."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "perfect_square_coefficients",
+      "negative_linear_terms",
+      "factor_common_coefficient"
+    ],
+    "required_image_types": []
+  }
+}

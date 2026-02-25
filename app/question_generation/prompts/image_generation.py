@@ -1,10 +1,10 @@
 """Prompt templates for Phase 4b — Image Generation & Validation.
 
-Two prompts with separated concerns:
-1. GEMINI_IMAGE_GENERATION_PROMPT — wraps a content description with
-   HOW to draw it (visual style, background, contrast). The content
-   description itself comes from Phase 4 (image_description field).
-2. IMAGE_VALIDATION_PROMPT — GPT-5.1 (vision) judges whether the
+Three prompts with separated concerns:
+1. GEMINI_IMAGE_GENERATION_PROMPT — first-attempt style wrapper.
+2. GEMINI_IMAGE_RETRY_PROMPT — retry wrapper that includes the
+   validator's rejection reason so Gemini can fix the specific issue.
+3. IMAGE_VALIDATION_PROMPT — GPT-5.1 (vision) judges whether the
    generated image matches the expected description and question.
 
 The description-generation step that previously lived here was removed:
@@ -22,6 +22,30 @@ Generate a clean, educational image for a math exam question.
 
 CONTENT (what to draw):
 {generation_prompt}
+
+STYLE (how to draw it):
+- Clean white background
+- Black lines with subtle color accents where needed
+- High contrast, easy to read at small sizes
+- Minimal labels only (axis labels, point names, measurements)
+- No title, header text, or explanatory text
+- No watermarks or logos
+- Professional, exam-quality visual
+"""
+
+# ---------------------------------------------------------------------------
+# Gemini image generation — RETRY (includes validator feedback)
+# Concern: same style rules + explicit fix instruction from validator
+# ---------------------------------------------------------------------------
+
+GEMINI_IMAGE_RETRY_PROMPT = """\
+Generate a clean, educational image for a math exam question.
+
+CONTENT (what to draw):
+{generation_prompt}
+
+PREVIOUS ATTEMPT WAS REJECTED — you MUST fix this specific issue:
+{rejection_reason}
 
 STYLE (how to draw it):
 - Clean white background

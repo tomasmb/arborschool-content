@@ -1,0 +1,123 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de inecuaciones lineales de una variable que requieren multiplicar o dividir ambos lados por un número negativo para despejar la incógnita.",
+        "Uso explícito de la regla: al multiplicar o dividir por un número negativo se invierte el sentido de la desigualdad.",
+        "Justificación sencilla, con ejemplos numéricos concretos, de por qué se debe invertir el signo de la desigualdad al operar con números negativos.",
+        "Determinación correcta del conjunto solución en notación de desigualdad y/o intervalo, una vez aplicada la inversión del signo.",
+        "Ítems que distinguen entre operar con un número positivo y uno negativo, poniendo a prueba si se reconoce el momento en que debe invertirse el signo."
+      ],
+      "out_of_scope": [
+        "Inecuaciones que involucren valor absoluto, cuadrados o raíces que requieran pasos conceptuales adicionales (más allá de operaciones lineales básicas).",
+        "Sistemas de inecuaciones (conjunción o disyunción de dos o más inecuaciones) como foco principal.",
+        "Representación gráfica detallada del conjunto solución en la recta numérica como objetivo central (eso corresponde a otro átomo).",
+        "Inecuaciones con funciones no lineales (cuadráticas, racionales, exponenciales, etc.) donde la dificultad principal no sea la inversión del signo.",
+        "Contextos verbales complejos de modelación donde la traducción desde el texto a la inecuación sea el foco principal y no la operación con negativos."
+      ],
+      "prerequisites": [
+        "A-M1-NT-01-xx: Comprensión del orden en los números enteros y racionales (saber que −2 > −5, etc.).",
+        "A-M1-NT-02-xx: Dominio de multiplicación y división con números negativos (producto y cociente de signos).",
+        "A-M1-ALG-03-10: Resolución de inecuaciones lineales simples sin necesidad de multiplicar o dividir por números negativos.",
+        "A-M1-ALG-01-xx: Manipulación algebraica básica (traslado de términos, simplificación, operaciones con coeficientes)."
+      ],
+      "common_traps": [
+        "Olvidar invertir el signo de la desigualdad al multiplicar o dividir por un número negativo, obteniendo un conjunto solución con sentido contrario.",
+        "Invertir el signo de la desigualdad al multiplicar o dividir por un número positivo, generalizando indebidamente la regla.",
+        "Confundir cambio de signo de un término (pasarlo al otro lado) con multiplicar por −1 a ambos lados, e invertir o no invertir el signo según corresponda.",
+        "Errores al determinar qué lado es mayor luego de obtener la solución (por ejemplo, interpretar x > −2 como si fuera x < −2 en la lectura del enunciado).",
+        "Perder el orden de las operaciones y decidir multiplicar por −1 cuando aún se podrían simplificar términos sin necesidad de ello, aumentando riesgo de error.",
+        "No verificar la solución con un valor de prueba, especialmente en ítems que piden justificar por qué cambia el sentido de la desigualdad."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Inecuaciones lineales muy simples donde la única operación relevante es multiplicar o dividir por −1 (por ejemplo, el coeficiente de x ya está aislado y es −1).",
+        "Coeficientes y términos constantes enteros pequeños (entre −10 y 10) sin fracciones ni decimales.",
+        "Formato directo y simbólico, sin contexto verbal: se pide solo despejar x y marcar el intervalo correcto.",
+        "Distractores que reflejan un único error típico (por ejemplo, no invertir el signo) sin combinarlos con otros errores.",
+        "Ítems donde la posición de x es estándar (en el numerador, sin paréntesis ni reordenamientos adicionales)."
+      ],
+      "medium": [
+        "Inecuaciones lineales que requieren al menos dos pasos antes de multiplicar por un número negativo (por ejemplo, sumar/restar términos y luego dividir por un coeficiente negativo).",
+        "Uso de fracciones simples (denominadores pequeños como 2, 3, 4) o decimales de una cifra, manteniendo la estructura lineal clara.",
+        "Contextos verbales breves donde el estudiante debe interpretar la inecuación pero la dificultad central sigue siendo operar con un coeficiente negativo.",
+        "Distractores que combinan errores de signo en coeficientes con la no inversión (o inversión indebida) del signo de desigualdad.",
+        "Ítems que piden comparar dos procedimientos distintos para resolver la misma inecuación y decidir cuál respeta la regla de inversión del signo."
+      ],
+      "hard": [
+        "Inecuaciones lineales con fracciones que impliquen reordenar términos y luego multiplicar por un número negativo (por ejemplo, denominadores negativos o paso a paso que lleva a un coeficiente negativo no evidente al inicio).",
+        "Estructuras con paréntesis que, al ser desarrollados, generan un coeficiente negativo frente a la incógnita, obligando a reconocer el momento adecuado para dividir o multiplicar por un número negativo.",
+        "Ítems que requieren explicar o justificar, con un ejemplo numérico, por qué debe invertirse el sentido de la desigualdad, evaluando el razonamiento más que el solo algoritmo.",
+        "Distractores construidos cuidadosamente para reflejar distintos razonamientos incorrectos pero verosímiles (no invertir el signo, invertirlo dos veces, comparar mal números negativos).",
+        "Situaciones donde se pide identificar un error en una resolución dada y corregirla, incluyendo la detección específica del paso donde faltó (o sobró) invertir el signo."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No usar enunciados donde la inecuación esté escrita de forma ambigua, por ejemplo, sin paréntesis en expresiones como −2x+3<5 que puedan interpretarse como −(2x+3)<5.",
+      "Evitar inecuaciones donde el signo de desigualdad pueda confundirse visualmente (por ejemplo, usar tipografía clara para distinguir <, >, ≤, ≥).",
+      "No mezclar en el mismo ítem varios cambios de sentido de desigualdad por razones diferentes (por ejemplo, multiplicar por −1 y luego aplicar recíprocos) si el foco es únicamente la multiplicación o división por negativos.",
+      "Evitar contextos verbales en los que la traducción al símbolo ≤ o < sea discutible (\"al menos\", \"como máximo\", etc.), salvo que eso sea explícitamente parte de otro átomo; aquí el foco es el cambio de sentido al operar.",
+      "No plantear inecuaciones equivalentes escritas en orden invertido (por ejemplo, 5 > −2x) sin dejar muy claro qué operación se realiza en cada lado, para no inducir confusión entre reorganizar y multiplicar por −1.",
+      "Evitar distractores que dependan de sutilezas de notación más que de la comprensión de la inversión del signo (por ejemplo, cambios cosméticos de orden en los términos).",
+      "No combinar este átomo con representación gráfica de la solución en recta numérica como criterio principal de corrección, para no mezclar dificultades de otros átomos."
+    ],
+    "error_families": [
+      {
+        "name": "No_invertir_signo_al_operar_con_negativo",
+        "description": "El estudiante multiplica o divide ambos lados de la inecuación por un número negativo para despejar la incógnita, pero mantiene el signo de desigualdad sin cambio (por ejemplo, obtiene x < −5 en lugar de x > −5).",
+        "how_to_address": "Diseñar ítems donde la respuesta incorrecta visible corresponda exactamente a este error, contrastada con la correcta. Incluir en algunos ítems la verificación con un valor de prueba (reemplazar un valor del conjunto solución en la inecuación original) para mostrar la inconsistencia cuando no se invierte el signo."
+      },
+      {
+        "name": "Invertir_signo_sin_razon_valida",
+        "description": "El estudiante asume que siempre que despeja o mueve términos debe cambiar el signo de la desigualdad, incluso cuando suma/resta o multiplica/divide por positivos.",
+        "how_to_address": "Proponer ítems de comparación de procedimientos donde una de las soluciones invierte el signo en un paso que solo implica sumar o restar el mismo número en ambos lados, y pedir identificar el error. Resaltar que la inversión solo ocurre al multiplicar o dividir por números negativos."
+      },
+      {
+        "name": "Confundir_cambio_de_signo_con_traslado_de_terminos",
+        "description": "El estudiante cree que pasar un término de un lado al otro de la inecuación equivale a multiplicar por −1 a todo, lo que puede llevarlo a invertir o no invertir la desigualdad en momentos inapropiados.",
+        "how_to_address": "Presentar resoluciones paso a paso donde se diferencie claramente entre: (1) sumar/restar en ambos lados, y (2) multiplicar por −1 a toda la expresión. Pedir identificar qué operación se realizó y cuándo corresponde (o no) invertir la desigualdad."
+      },
+      {
+        "name": "Mala_comprension_del_orden_en_numeros_negativos",
+        "description": "El estudiante se confunde al comparar números negativos (por ejemplo, considera que −5 > −2) y, aunque aplique mecánicamente la regla de invertir el signo, llega a conclusiones erróneas sobre qué valores satisfacen la inecuación.",
+        "how_to_address": "Incluir ítems que requieran decidir cuál de dos números negativos es mayor antes o después de aplicar la regla. Utilizar ejemplos numéricos simples (sin incógnita) para justificar que al multiplicar por −1 se invierte el orden."
+      },
+      {
+        "name": "Error_en_manejo_de_fracciones_con_negativos",
+        "description": "En inecuaciones con fracciones, el estudiante no identifica correctamente si el número por el que divide es positivo o negativo (por ejemplo, trata −1/2 como si fuera 1/2), lo que lo lleva a no invertir o a invertir indebidamente el signo.",
+        "how_to_address": "Diseñar ítems con fracciones simples donde el signo negativo esté en distintas posiciones (en el numerador, en el denominador, delante de la fracción) y pedir determinar explícitamente si el factor de multiplicación/división es positivo o negativo antes de resolver."
+      },
+      {
+        "name": "Sobre_reliancia_en_regla_memorizada_sin_justificacion",
+        "description": "El estudiante recuerda que \"hay que cambiar el signo\" pero no comprende por qué, lo que genera inseguridad y errores al enfrentar configuraciones menos estándar.",
+        "how_to_address": "Agregar ítems que pidan explicar o completar una justificación numérica simple (por ejemplo, a partir de −2 > −5, mostrar qué pasa al multiplicar por −1). Evaluar la explicación en lenguaje natural o mediante selección de la justificación correcta."
+      }
+    ],
+    "future_targets": [
+      "Resolución de sistemas de inecuaciones lineales y representación de sus soluciones en la recta numérica.",
+      "Resolución de inecuaciones que involucran valor absoluto, donde la inversión del signo al multiplicar por negativos es clave en cada rama.",
+      "Análisis de funciones lineales y determinación de intervalos donde la función toma valores mayores o menores que un umbral dado.",
+      "Resolución de inecuaciones cuadráticas y racionales mediante factorización y análisis de signos en intervalos.",
+      "Modelación de situaciones reales con restricciones expresadas como inecuaciones y sistemas de inecuaciones.",
+      "Demostraciones simples relacionadas con la propiedad de orden de los números reales y la preservación o inversión del orden bajo ciertas operaciones."
+    ],
+    "representation_variants": [
+      "Expresión simbólica directa de la inecuación en forma ax + b < c, con a negativo.",
+      "Expresión simbólica donde la incógnita aparece en ambos lados, requiriendo reorganizar términos antes de multiplicar o dividir por un número negativo.",
+      "Inecuaciones expresadas inicialmente con la incógnita a la derecha (por ejemplo, 5 < −2x), obligando a pensar cuidadosamente en el orden al despejar.",
+      "Contextos verbales breves que se traducen a una inecuación lineal con coeficiente negativo frente a la incógnita.",
+      "Representación del conjunto solución en notación de intervalo (por ejemplo, (−5, ∞)) o en forma de desigualdad equivalente (x > −5), destacando el efecto del cambio de sentido.",
+      "Comparación de dos resoluciones o de dos inecuaciones supuestamente equivalentes, pidiendo decidir si ambas expresan el mismo conjunto solución."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "negative_integers",
+      "simple_fractions",
+      "simple_decimals"
+    ],
+    "required_image_types": []
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Problemas verbales que se modelan con UNA sola ecuación lineal de una variable (primer grado).",
+        "Contextos cotidianos o científicos simples donde hay una magnitud desconocida relacionada linealmente con otras (dinero, edades, largo–ancho, temperatura-tiempo, dosis, etc.).",
+        "Traducción explícita del enunciado a una ecuación lineal, resolución algebraica y vuelta al contexto (interpretar la solución, unidades, pertinencia).",
+        "Problemas en que se debe decidir qué representa la incógnita y escribir la ecuación a partir de expresiones como 'el doble de', '4 menos que', 'la mitad de', 'en total', etc.",
+        "Situaciones donde se descartan soluciones no pertinentes (negativas, no enteras cuando el contexto lo exige, mayores que un máximo dado, etc.).",
+        "Problemas que implican una simple reexpresión de una relación lineal ya dada en forma de ecuación para calcular una cantidad específica (sustitución directa en una ecuación lineal dada).",
+        "Contextos en que la ecuación lineal proviene de razones o proporcionalidad directa, pero el foco está en plantear y resolver la ecuación, no en la teoría de proporcionalidad."
+      ],
+      "out_of_scope": [
+        "Sistemas de ecuaciones (dos o más ecuaciones simultáneas en dos o más incógnitas).",
+        "Ecuaciones cuadráticas o de grado mayor como modelo principal, aun cuando surjan de áreas o productos de longitudes (estas deben reservarse para otros átomos).",
+        "Problemas puramente numéricos sin contexto (solo pedir resolver ecuaciones lineales aisladas sin historia ni interpretación).",
+        "Modelamiento de situaciones que requieren funciones lineales en sentido global (pendiente, intercepto, análisis de gráfico) más que una ecuación puntual para un caso específico.",
+        "Uso de lenguajes simbólicos avanzados (inecuaciones compuestas, valor absoluto, parámetros múltiples) como foco central del ítem.",
+        "Problemas que exigen técnicas algebraicas que exceden la resolución lineal estándar, como fracciones algebraicas complejas o cambio de variable no evidente.",
+        "Contextos estadísticos o geométricos donde el foco es interpretar gráficos o figuras, y la ecuación es solo un detalle secundario."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-01: Manejo de operaciones básicas con números enteros y racionales (incluyendo fracciones y decimales).",
+        "A-M1-ALG-01-01: Comprensión de expresiones algebraicas simples y significado de la variable.",
+        "A-M1-ALG-02-01: Resolución de ecuaciones lineales de una variable en contextos no verbales (ya dadas algebraicamente).",
+        "A-M1-LEM-01-01: Lectura comprensiva de enunciados, identificación de datos, incógnitas y pregunta.",
+        "A-M1-ALG-03-01: Comprensión de relaciones lineales simples entre cantidades (doble, triple, diferencia fija)."
+      ],
+      "common_traps": [
+        "Elegir la incógnita en forma confusa (por ejemplo, definir x como 'dinero total' cuando la relación se describe en términos de 'dinero que sobró').",
+        "Interpretar mal expresiones como '4 menos que', '10 más del doble de', 'la tercera parte de', invirtiendo el orden de las operaciones.",
+        "Suponer que la solución debe ser positiva o entera sin justificarlo desde el contexto (o al revés, aceptar cualquier número sin mirar la coherencia contextual).",
+        "Olvidar considerar todos los momentos de tiempo mencionados (edad hace unos años / en unos años, semanas antes y después, meses adicionales, etc.).",
+        "Confundir magnitud unitaria con cantidad de unidades (precio por unidad vs total pagado; calorías por porción vs calorías totales).",
+        "Tomar datos intermedios del contexto como si fueran el valor final que se pregunta (por ejemplo, reportar el valor de la incógnita sin transformarlo a lo que realmente pide la pregunta).",
+        "Omitir unidades o no usar la unidad correcta en la respuesta (pesos, metros, años, °C, ml/h, etc.).",
+        "Intentar 'probar' alternativas por ensayo y error sin comprender el modelo, lo que lleva a elegir una respuesta que satisface parcialmente los datos pero no todos."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "La ecuación lineal está prácticamente dada o se obtiene de una sola frase clara del enunciado, con relación directa (por ejemplo, una constante por una cantidad igual a un total).",
+        "Solo interviene una relación lineal simple sin pasos intermedios (una operación directa o a lo más dos operaciones encadenadas).",
+        "Todos los datos son números enteros pequeños, sin fracciones ni decimales no terminantes.",
+        "No se requiere tomar decisiones sobre pertinencia de la solución (la solución natural de la ecuación ya es coherente con el contexto).",
+        "La incógnita coincide exactamente con lo que pide la pregunta (no hay que hacer transformaciones adicionales como sumar, restar o convertir unidades al final).",
+        "Contexto cotidiano muy familiar y corto, con poca cantidad de texto y sin información distractora."
+      ],
+      "medium": [
+        "Se debe construir la ecuación a partir de dos o más frases del enunciado, combinando al menos dos relaciones lineales (por ejemplo, una cantidad fija y otra proporcional).",
+        "La incógnita debe definirse con cierto cuidado (por ejemplo, elegir si la variable representa cantidad de objetos, precio unitario, tiempo transcurrido o edad actual).",
+        "Puede requerir uno o dos pasos de álgebra posteriores a la ecuación simple (distribuir, ordenar términos, trabajar con un par de fracciones o decimales sencillos).",
+        "Es necesario interpretar la solución y posiblemente descartar valores no pertinentes (por ejemplo, soluciones negativas o no enteras en un contexto de cantidades contables).",
+        "La pregunta final exige un pequeño procesamiento extra de la solución de la ecuación (por ejemplo, usar la edad actual para calcular edad futura, o usar el largo para hallar un perímetro).",
+        "Puede incluir datos distractores o reformulación de la misma información con distinto vocabulario, obligando a una lectura atenta."
+      ],
+      "hard": [
+        "El enunciado exige integrar varias relaciones lineales encadenadas, pudiendo involucrar más de un momento temporal, más de una persona u objeto, o varias etapas de un proceso.",
+        "La ecuación lineal no es evidente: requiere una planificación explícita de qué representar con la variable y cómo traducir cada parte del texto a expresiones algebraicas.",
+        "Incluye fracciones, decimales o razones que requieren manipulación cuidadosa (por ejemplo, cantidades por porción, tarifas mixtas, descuentos o incrementos porcentuales simples pero encadenados) siempre que el modelo resultante sea lineal.",
+        "Se requiere evaluar la solución respecto de condiciones adicionales del contexto (cotas máximas o mínimas, integridad, pertenencia a un intervalo, etc.), y solo algunas alternativas cumplen todas las condiciones.",
+        "La magnitud pedida NO coincide con la variable definida, y obliga a una o más transformaciones posteriores (por ejemplo, la variable es 'número de porciones' y se pregunta 'número de galletas' o 'energía total').",
+        "El texto puede ser más largo o incluir información irrelevante que se debe descartar, manteniendo coherencia entre varias unidades y momentos temporales."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro qué cantidad se mantiene constante y cuál varía (por ejemplo, 'siempre recibe lo mismo' debe explicitar que se refiere a un monto fijo por período).",
+      "No usar expresiones ambiguas de tiempo como 'hace años', 'después de un tiempo', sin especificar cuántos años o períodos concretos.",
+      "Evitar decir simplemente 'gasta dinero' sin precisar si se refiere a todo su dinero, a una parte, o a varias compras separadas.",
+      "No mezclar en el mismo problema diferentes posibles magnitudes para la variable sin decir explícitamente cuál se escoge (por ejemplo, largo del terreno vs área vs ancho).",
+      "Evitar frases que puedan invertirse en la traducción algebraica, como '4 menos que el triple de x'; en su lugar, complementar con ejemplos o redacción clara para que sea inequívoca.",
+      "No introducir porcentajes o razones si pueden interpretarse de más de una forma (por ejemplo, 'aumenta en un 20%' vs 'queda en el 120% de lo inicial'); si se usan, la relación debe poder expresarse linealmente sin ambigüedad.",
+      "Evitar unidades implícitas; siempre indicar si se trata de pesos, metros, años, litros, etc., sobre todo cuando hay más de un tipo de cantidad involucrada.",
+      "No plantear contextos donde haya más de una solución razonable si no se especifican todas las condiciones necesarias (por ejemplo, relaciones de edades sin fijar claramente los momentos que se comparan)."
+    ],
+    "error_families": [
+      {
+        "name": "Traducción_incorrecta_del_lenguaje_verbal_al_algebraico",
+        "description": "El estudiante interpreta mal expresiones como '4 menos que', 'el doble de', 'le faltan 3', y arma una ecuación con orden u operaciones equivocadas.",
+        "how_to_address": "Trabajar con tablas de correspondencia entre frases frecuentes y expresiones algebraicas, pidiendo que expliquen con palabras lo que significa cada término en la ecuación y revisando con ejemplos concretos (sustituir valores numéricos para verificar sentido)."
+      },
+      {
+        "name": "Elección_inadecuada_de_la_incógnita",
+        "description": "Se define la variable como una cantidad secundaria o ambigua (por ejemplo, dinero total recibido en vez de monto semanal), lo que hace difícil o imposible organizar la información y llegar a una ecuación simple.",
+        "how_to_address": "Practicar la identificación explícita de 'lo que se desea saber' y reformularlo como una magnitud clara, alentando a escribir primero 'Sea x = ...' en palabras antes de escribir cualquier ecuación. Comparar distintas posibles definiciones y discutir cuál simplifica más el modelo."
+      },
+      {
+        "name": "Olvido_de_condiciones_contextuales",
+        "description": "Se resuelve correctamente la ecuación, pero se acepta cualquier solución numérica sin verificar si tiene sentido (negativa, no entera, fuera de rango, sin unidad).",
+        "how_to_address": "Incorporar sistemáticamente una etapa final de 'chequeo contextual' en la resolución de problemas: pedir siempre que expliquen por qué la respuesta es razonable en el contexto y qué soluciones se descartan y por qué."
+      },
+      {
+        "name": "Confusión_entre_magnitud_y_cantidad_de_unidades",
+        "description": "El estudiante confunde precio unitario con total pagado, calorías por porción con calorías totales, rapidez con tiempo, etc., llevando a ecuaciones con la variable asociada a la magnitud equivocada.",
+        "how_to_address": "Utilizar esquemas o tablas que separen claramente 'valor por unidad', 'número de unidades' y 'total', haciendo que el estudiantado complete estos cuadros antes de escribir la ecuación. Emplear problemas comparativos donde se evidencie la diferencia."
+      },
+      {
+        "name": "Manejo_deficiente_de_fracciones_y_decimales_en_la_ecuación",
+        "description": "Aunque el modelo lineal es correcto, se cometen errores aritméticos al operar con fracciones o decimales (equivalencias, multiplicaciones, simplificaciones), lo que lleva a resultados incorrectos.",
+        "how_to_address": "Reforzar habilidades numéricas de base (equivalencias fracción–decimal, mínimo común múltiplo, operaciones básicas) en el contexto de ecuaciones simples. Proponer primero versiones con números fáciles y luego aumentar gradualmente la complejidad numérica."
+      },
+      {
+        "name": "Responder_con_la_variable_en_lugar_de_la_pregunta",
+        "description": "Se determina correctamente el valor de la incógnita pero se olvida que la pregunta requiere otra cantidad derivada (por ejemplo, encontrar el largo total, el número total de objetos o la edad en otro momento).",
+        "how_to_address": "Enfatizar la importancia de releer la pregunta al final y de escribir una frase de respuesta completa con contexto y unidad. Realizar ejercicios donde deliberadamente la incógnita y la pregunta no coincidan, para caer en la cuenta de este paso adicional."
+      },
+      {
+        "name": "Uso_de_ensayo_y_error_sin_verificación_completa",
+        "description": "Se elige una alternativa probando números rápidamente sin construir la ecuación y sin revisar si el valor encontrado cumple todas las condiciones del problema.",
+        "how_to_address": "Fomentar el modelamiento formal incluso cuando el problema parece sencillo. Hacer que el estudiantado compare el método de ensayo y error con el método algebraico, mostrando casos donde el ensayo falla o es más largo, y exigir la verificación de todas las condiciones con la solución hallada."
+      }
+    ],
+    "future_targets": [
+      "Modelación de situaciones más complejas con sistemas de ecuaciones lineales (dos o más incógnitas).",
+      "Estudio y análisis de funciones lineales en distintos registros: gráfica, tabla, fórmula y contexto.",
+      "Resolución de problemas de optimización lineal sencilla (maximizar o minimizar cantidades bajo restricciones lineales).",
+      "Comprensión y uso de modelos lineales en contextos científicos (rapidez de cambio constante, leyes físicas simples, escalas).",
+      "Transición a ecuaciones y funciones no lineales (cuadráticas, exponenciales) manteniendo la habilidad de traducir contextos a expresiones algebraicas.",
+      "Interpretación crítica de gráficos y tablas que representan relaciones lineales aproximadas en datos reales.",
+      "Aplicación de ecuaciones lineales en contextos financieros y de proporcionalidad (intereses simples, tarifas por tramos lineales, mezclas simples)."
+    ],
+    "representation_variants": [
+      "Enunciado puramente verbal donde se debe pasar desde el texto a la ecuación y luego a la solución contextual.",
+      "Enunciado que entrega una ecuación lineal ya construida a partir de un contexto (por ejemplo, una fórmula) y se pide interpretar o usar esa ecuación para un caso particular.",
+      "Uso de tablas de valores (por ejemplo, cantidad vs costo total) donde se debe identificar la relación lineal y luego plantear/usar la ecuación correspondiente.",
+      "Contextos que mencionan expresiones aritméticas en lenguaje natural (el doble, la mitad, tres veces más, resta fija) que deben ser representadas simbólicamente.",
+      "Problemas donde se combina una breve descripción verbal con datos organizados en una tabla o esquema, para apoyar la identificación de la relación lineal.",
+      "Representaciones con una igualdad entre 'suma de aportes' o 'suma de partes' y un total, que deben expresarse como ecuación lineal."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "contextual_decimals",
+      "simple_fractions",
+      "mixed_profile"
+    ],
+    "required_image_types": []
+  }
+}

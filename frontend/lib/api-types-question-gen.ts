@@ -106,7 +106,7 @@ export interface GeneratedItem {
   item_id: string;
   qti_xml: string;
   slot_index: number;
-  pipeline_meta: GeneratedItemMeta;
+  pipeline_meta?: GeneratedItemMeta | null;
 }
 
 // -----------------------------------------------------------------------------
@@ -134,4 +134,34 @@ export interface AtomCheckpointData {
   validation_results: GeneratedItem[] | null;
   feedback_items: GeneratedItem[] | null;
   final_items: GeneratedItem[] | null;
+}
+
+// -----------------------------------------------------------------------------
+// Question Bank (all questions across atoms)
+// -----------------------------------------------------------------------------
+
+export interface QuestionBankItem {
+  item_id: string;
+  atom_id: string;
+  atom_titulo: string;
+  eje: string;
+  slot_index: number;
+  qti_xml: string;
+  difficulty: string;
+  context: string;
+  status: "pass" | "fail" | "pending";
+  phase: number;
+  pipeline_meta: GeneratedItemMeta | null;
+}
+
+export interface QuestionBankFilters {
+  ejes: string[];
+  difficulties: string[];
+}
+
+export interface QuestionBankResponse {
+  items: QuestionBankItem[];
+  total: number;
+  status_counts: Record<string, number>;
+  filters: QuestionBankFilters;
 }

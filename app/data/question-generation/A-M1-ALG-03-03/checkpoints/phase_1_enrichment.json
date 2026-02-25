@@ -1,0 +1,131 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolver ecuaciones lineales de una incógnita de la forma ax + b = c y ax = b con a, b, c racionales simples.",
+        "Aplicar inverso aditivo para eliminar el término independiente o trasladarlo al otro lado de la igualdad.",
+        "Aplicar inverso multiplicativo (división) para despejar x cuando el coeficiente es distinto de 1.",
+        "Ecuaciones que se resuelven en uno o dos pasos de despeje, sin necesidad de simplificaciones previas complejas.",
+        "Contextos verbales simples donde el modelo algebraico ya está dado o se reduce directamente a ax + b = c o ax = b."
+      ],
+      "out_of_scope": [
+        "Ecuaciones con la incógnita en ambos lados (por ejemplo, ax + b = cx + d).",
+        "Ecuaciones que requieren más de dos pasos de despeje (por ejemplo, con paréntesis, fracciones compuestas o varios términos con x).",
+        "Sistemas de ecuaciones lineales o inecuaciones.",
+        "Ecuaciones con potencias, raíces, valores absolutos u operaciones no lineales.",
+        "Modelación compleja que exija plantear la ecuación desde cero a partir de un contexto con varias etapas de razonamiento.",
+        "Uso de métodos gráficos para resolver ecuaciones (intersección de rectas en el plano)."
+      ],
+      "prerequisites": [
+        "A-M1-ARI-01-01: Comprensión de la recta numérica y comparación de números enteros y racionales.",
+        "A-M1-ARI-02-01: Operaciones básicas con enteros (suma, resta, multiplicación y división).",
+        "A-M1-ARI-02-02: Operaciones básicas con fracciones y decimales simples.",
+        "A-M1-ALG-01-01: Uso de la letra como incógnita y traducción de expresiones verbales simples a expresiones algebraicas.",
+        "A-M1-ALG-02-01: Propiedades de la igualdad y balance (lo que se hace a un lado debe hacerse al otro)."
+      ],
+      "common_traps": [
+        "Mover términos de un lado a otro cambiando el signo sin explicitar que corresponde a sumar o restar la misma cantidad en ambos lados, lo que lleva a errores de signo.",
+        "Olvidar dividir por el coeficiente de la incógnita cuando este es distinto de 1, dejando x todavía multiplicada por a.",
+        "Dividir solo uno de los lados de la ecuación en lugar de ambos, rompiendo la igualdad.",
+        "Errores al operar con fracciones o decimales en el último paso (por ejemplo, al calcular 0,09 × 3 o al dividir por una fracción).",
+        "Confundir 'la tercera parte de un número' con 'el triple de un número'.",
+        "En contextos verbales, confundir el dato que corresponde al total con el que corresponde a la parte, lo que genera una ecuación mal planteada aunque formalmente simple.",
+        "Tratar porcentajes como números enteros (por ejemplo, usar 25 en lugar de 0,25 o 25/100 al despejar)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Ecuaciones de un solo paso, del tipo ax = b o x + b = c, con a, b, c enteros pequeños (entre -20 y 20).",
+        "Ecuaciones de dos pasos sin cambio de signo complejo, por ejemplo ax + b = c con a > 0 y b, c enteros pequeños, donde las operaciones intermedias son con resultados enteros.",
+        "Contextos breves y directos donde la ecuación ya está escrita o se indica de manera casi explícita el cálculo (por ejemplo, 'la tercera parte de un número es 0,09').",
+        "Coeficientes y resultados que no involucran fracciones no enteras (el valor de x es entero).",
+        "Sin números negativos en la solución y con pocas operaciones con decimales o fracciones."
+      ],
+      "medium": [
+        "Ecuaciones de dos pasos con números racionales simples (fracciones con denominador 2, 4, 5, 10 o decimales con una o dos cifras), manteniendo la forma ax + b = c.",
+        "Presencia de enteros negativos ya sea en el término independiente, en el resultado o en el coeficiente de x, exigiendo manejo cuidadoso de signos.",
+        "Contextos verbales donde el estudiante debe identificar correctamente qué magnitud corresponde a x y qué expresión representa el enunciado, pero que se simplifican directamente a ax + b = c o ax = b.",
+        "Situaciones con porcentajes simples (25 %, 50 %, 10 %) que obligan a usar el inverso multiplicativo de un número racional.",
+        "Cálculos intermedios que dan lugar a soluciones fraccionarias o decimales que no son 'bonitas' pero siguen siendo de manejo rutinario (por ejemplo, 0,76 / 0,5)."
+      ],
+      "hard": [
+        "Ecuaciones de dos pasos donde el coeficiente de x es un número racional distinto de 1 con fracción o decimal no inmediato (por ejemplo, 0,25x + 3 = 7, (3/4)x - 2 = 1,6).",
+        "Contextos que exigen leer e integrar varios datos numéricos (por ejemplo, promedio, área de una figura, relación porcentaje-parte-total) antes de llegar a una ecuación lineal de hasta dos pasos.",
+        "Ecuaciones en las que la solución es un número racional no entero (fracción o decimal periódico simple), lo que obliga a una manipulación más cuidadosa de los números.",
+        "Presencia simultánea de números negativos y racionales (por ejemplo, -0,5x + 3 = 1,2).",
+        "Ítems donde el distractor atractivo proviene de aplicar mal el inverso aditivo o multiplicativo (ejemplo: sumar en vez de restar, invertir fracción al revés), requiriendo comprensión sólida del procedimiento para no caer en ellos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no se distinga claramente qué cantidad es x y qué valores son constantes, especialmente en problemas verbales de porcentaje o promedios.",
+      "No usar expresiones ambiguas como 'la parte de un número' sin especificar si se trata de fracción o porcentaje.",
+      "Evitar contextos demasiado cargados de texto donde puedan interpretarse varias ecuaciones distintas; la traducción al modelo ax + b = c debe ser única y directa.",
+      "No mezclar varias variables en el mismo enunciado si solo se va a resolver para una de ellas, a menos que esté explícitamente fijada como incógnita.",
+      "Evitar notaciones poco estándar o caseras (por ejemplo, usar ':' para dividir sin contexto) que puedan confundirse con otras operaciones.",
+      "No usar frases del tipo 'p es el 25 % de k' y luego preguntar por 'el valor de p' cuando la ecuación ya da p en función de k; para este átomo debe ser claro que se despeja la incógnita asociada a la variable objetivo.",
+      "Evitar ecuaciones que, una vez simplificadas, caigan fuera del alcance (por ejemplo, que terminen teniendo x en ambos lados) aun si originalmente parecían simples."
+    ],
+    "error_families": [
+      {
+        "name": "Error_de_signo_en_inverso_aditivo",
+        "description": "Al resolver ax + b = c, el estudiante suma en vez de restar (o viceversa) al trasladar el término b al otro lado, obteniendo una expresión del tipo ax = b + c en lugar de ax = c - b.",
+        "how_to_address": "Enfatizar la idea de 'hacer la misma operación en ambos lados' y no 'mover términos'. Proponer pasos escritos: primero sumar/restar explícitamente la cantidad en ambos lados, luego simplificar."
+      },
+      {
+        "name": "No_aplica_inverso_multiplicativo_completo",
+        "description": "Después de aislar el término ax, el estudiante divide solo a una parte de la igualdad o 'borra' el coeficiente sin explicitar que debe dividir ambos lados por a.",
+        "how_to_address": "Reforzar el uso de la notación de fracción: x = b/a, mostrando el paso intermedio (ax)/a = b/a. Trabajar ejemplos donde el coeficiente no es entero para que se vea la importancia de dividir a ambos lados."
+      },
+      {
+        "name": "Confusion_tercera_parte_vs_triple",
+        "description": "Errores de comprensión de expresiones como 'la tercera parte de un número' que se modelan como 3x en vez de x/3, afectando el planteamiento de ax = b.",
+        "how_to_address": "Contrastar sistemáticamente 'el triple de un número' con 'la tercera parte de un número' usando tablas y ejemplos numéricos concretos antes de pasar a la letra x."
+      },
+      {
+        "name": "Manejo_incorrecto_de_porcentajes",
+        "description": "Usar 25 en lugar de 0,25 o 25/100 en ecuaciones del tipo p es el 25 % de k, lo que produce soluciones desproporcionadas.",
+        "how_to_address": "Insistir en las representaciones equivalentes de un porcentaje (25 % = 25/100 = 0,25) y practicar la escritura sistemática de la expresión algebraica: p = 0,25k, luego despejar k dividiendo por 0,25."
+      },
+      {
+        "name": "Operaciones_con_fracciones/decimales_erroneas",
+        "description": "Errores al sumar, restar o dividir fracciones y decimales durante los pasos intermedios, aun cuando el procedimiento algebraico es correcto.",
+        "how_to_address": "Proporcionar ejercicios de cálculo numérico focalizado con los mismos perfiles de números que aparecerán en las ecuaciones. Reforzar equivalencias entre formas decimal y fraccionaria para simplificar algunos pasos."
+      },
+      {
+        "name": "Pierd_e_el_balance_de_la_ecuacion",
+        "description": "Agregar o quitar términos solo en un lado de la igualdad al intentar 'limpiar' la ecuación, rompiendo el principio de equilibrio.",
+        "how_to_address": "Utilizar la metáfora de la balanza y ejercicios donde se marque con flechas la misma operación aplicada a ambos lados. Hacer que el estudiante verifique al final reemplazando la solución en la ecuación original."
+      },
+      {
+        "name": "Interpretacion_erronea_de_contexto",
+        "description": "En problemas de promedio, área o distancia, se confunde qué valor representa el total, la cantidad de elementos o la medida buscada, llevando a una ecuación ax + b = c incorrecta.",
+        "how_to_address": "Descomponer el contexto en datos y pregunta antes de escribir la ecuación. Usar tablas o esquemas donde se liste 'dato conocido', 'relación' e 'incógnita', y solo después se modele la ecuación lineal."
+      }
+    ],
+    "future_targets": [
+      "Resolución de ecuaciones lineales con la incógnita en ambos lados (ax + b = cx + d).",
+      "Resolución de sistemas de ecuaciones lineales de dos incógnitas por métodos algebraicos (sustitución, igualación, reducción).",
+      "Análisis de funciones lineales en formato algebraico, incluyendo cálculo de raíces (cortes con el eje x) y ordenadas al origen.",
+      "Planteamiento y resolución de problemas de modelación más complejos (movimiento rectilíneo uniforme, tarifas por tramos, promedios ponderados).",
+      "Resolución de ecuaciones con expresiones algebraicas más complejas (paréntesis, factorizaciones sencillas) que requieren más pasos.",
+      "Trabajo con inecuaciones lineales de una incógnita y representación de soluciones en la recta numérica.",
+      "Resolución de ecuaciones que involucran porcentajes, razones y proporciones en contextos de probabilidad y estadística básica."
+    ],
+    "representation_variants": [
+      "Ecuaciones presentadas directamente en forma simbólica ax + b = c o ax = b.",
+      "Contextos verbales cortos que se traducen de manera directa a una ecuación lineal simple (porcentaje de una cantidad, promedio de pocos números, parte de un número).",
+      "Situaciones descritas con tablas numéricas donde una de las columnas corresponde a la variable x y se da una relación lineal simple que lleva a ax + b = c.",
+      "Enunciados en que la relación ya se da como fórmula (por ejemplo, función lineal f(x) = ax + b) y se pide encontrar x para un valor dado de f(x).",
+      "Descripciones de magnitudes físicas simples (tiempo, distancia, costo) donde la ecuación lineal ya está planteada, priorizando el procedimiento de despeje más que la modelación."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "integers_with_negatives",
+      "simple_decimals",
+      "simple_fractions",
+      "percentages_simple"
+    ],
+    "required_image_types": []
+  }
+}

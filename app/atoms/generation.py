@@ -2,7 +2,7 @@
 
 Handles standard-by-standard generation of learning atoms using Gemini
 (`gemini-3-pro-preview`), following the guidelines in
-`docs/learning-atom-granularity-guidelines.md`.
+`docs/specifications/learning-atom-granularity-guidelines.md`.
 
 Flow per standard:
 1. Generate atoms with Gemini

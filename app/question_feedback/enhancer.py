@@ -20,6 +20,10 @@ from app.question_feedback.utils.image_utils import (
 from app.question_generation.prompts.reference_examples import (
     FEEDBACK_QTI_REFERENCE,
 )
+from app.question_generation.xml_utils import (
+    extract_qti_xml,
+    normalize_html_entities,
+)
 
 
 def _import_xml_validator() -> Any:
@@ -164,7 +168,9 @@ class FeedbackEnhancer:
                     images,
                     reasoning_effort=_ENHANCE_REASONING,
                 )
-                enhanced_xml = self._extract_xml(llm_resp.text)
+                enhanced_xml = normalize_html_entities(
+                    extract_qti_xml(llm_resp.text),
+                )
 
                 xsd_result = validate_qti_xml(enhanced_xml)
                 if xsd_result.get("valid"):
@@ -241,7 +247,9 @@ class FeedbackEnhancer:
                 images,
                 reasoning_effort=_ENHANCE_REASONING,
             )
-            corrected_xml = self._extract_xml(llm_resp.text)
+            corrected_xml = normalize_html_entities(
+                extract_qti_xml(llm_resp.text),
+            )
 
             xsd_result = validate_qti_xml(corrected_xml)
             if xsd_result.get("valid"):
@@ -267,34 +275,3 @@ class FeedbackEnhancer:
                 success=False, error=f"Correction failed: {e}", attempts=1,
             )
 
-    # ------------------------------------------------------------------
-    # Internal helpers
-    # ------------------------------------------------------------------
-
-    def _extract_xml(self, response_text: str) -> str:
-        """Extract QTI XML from response, handling any wrapping.
-
-        Args:
-            response_text: Raw response text from LLM.
-
-        Returns:
-            Clean QTI XML string.
-        """
-        text = response_text.strip()
-
-        # Remove markdown code blocks if present
-        if text.startswith("```"):
-            lines = text.split("\n")
-            lines = lines[1:]  # Remove opening fence line
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            text = "\n".join(lines)
-
-        # Extract QTI element
-        if "<qti-assessment-item" in text:
-            start = text.index("<qti-assessment-item")
-            end_tag = "</qti-assessment-item>"
-            end = text.rindex(end_tag) + len(end_tag)
-            text = text[start:end]
-
-        return text.strip()

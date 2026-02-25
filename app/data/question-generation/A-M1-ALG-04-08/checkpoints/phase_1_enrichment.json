@@ -1,0 +1,139 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Plantear sistemas de dos ecuaciones lineales con dos incógnitas a partir de un enunciado en lenguaje natural.",
+        "Definir explícitamente las variables, con significado claro en el contexto del problema.",
+        "Traducir datos de total, diferencia, suma de cantidades, proporciones o porcentajes a ecuaciones lineales.",
+        "Modelar situaciones de mezcla, compras, distribución de cantidades, tarifas combinadas, entradas/boletos, usando 2x2.",
+        "Reconocer si un sistema dado corresponde o no a una situación descrita, sin necesidad de resolverlo.",
+        "Trabajar con unidades de medida consistentes (dinero, kilogramos, cantidad de objetos, horas, etc.) en el planteamiento."
+      ],
+      "out_of_scope": [
+        "Resolver el sistema de ecuaciones (hallar valores numéricos de las incógnitas).",
+        "Interpretar la solución del sistema en el contexto (análisis de resultados).",
+        "Modelar con más de dos incógnitas o más de dos ecuaciones.",
+        "Modelar relaciones no lineales (cuadráticas, proporcionales inversas, exponenciales, etc.).",
+        "Uso de métodos específicos de resolución (sustitución, igualación, suma y resta, matrices).",
+        "Uso de representaciones gráficas de rectas o sistemas en el plano cartesiano.",
+        "Problemas puramente algebraicos sin contexto verbal (por ejemplo, 'escribe un sistema que tenga tal solución')."
+      ],
+      "prerequisites": [
+        "A-M1-ALG-03-01: Comprensión de expresión algebraica y uso de letras para representar cantidades desconocidas.",
+        "A-M1-ALG-03-02: Traducir relaciones sencillas del lenguaje natural a ecuaciones lineales de una incógnita.",
+        "A-M1-ALG-04-01: Reconocer estructura de ecuación lineal en una y dos variables.",
+        "A-M1-NUM-02-02: Manejo de operaciones con números enteros y decimales en contextos de dinero, medidas y conteo.",
+        "A-M1-PRO-01-01: Interpretar porcentajes y descuentos en contextos cotidianos."
+      ],
+      "common_traps": [
+        "No declarar las variables o declararlas, pero de forma ambigua (por ejemplo, 'x = manzanas' sin indicar si es número de kilos, número de unidades, precio, etc.).",
+        "Intercambiar el significado de las variables entre una ecuación y otra (x es cantidad en una y es precio en la otra).",
+        "Armar solo una ecuación cuando la situación claramente requiere dos condiciones independientes.",
+        "Usar los datos numéricos sin considerar las unidades, generando coeficientes inconsistentes (por ejemplo, mezclar precio por kilo con precio total sin aclarar la unidad de la variable).",
+        "Traducciones erróneas de frases como 'el doble de', '30 % del total', '20 % de descuento', 'en total son 36', que llevan a signos o coeficientes incorrectos.",
+        "Elegir un tipo de relación incorrecta, por ejemplo, modelar un descuento como resta fija en vez de porcentaje sobre el precio original.",
+        "Plantear ecuaciones que no son independientes (dos veces la misma información reescrita), de modo que no se obtiene verdaderamente un sistema 2x2.",
+        "Confundir la totalidad de objetos con la totalidad de dinero (ej: igualar suma de precios a número de objetos)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Situaciones con dos tipos de objetos o productos, con datos explícitos de total de unidades y total de costo, ambos enteros pequeños.",
+        "Relaciones lineales directas, sin porcentajes ni descuentos, con coeficientes sencillos (por ejemplo, precios 1000 y 1500, totales como 8 unidades o $13 500).",
+        "Enunciados breves, con la información claramente separada y en orden lógico (primero definición de cantidades, luego totales).",
+        "Ítems donde se pide seleccionar, entre varios sistemas propuestos, el que mejor representa la situación, siendo uno claramente correcto y distractores con errores típicos evidentes.",
+        "Variables sugeridas explícitamente en el enunciado o en las alternativas (por ejemplo, 'Sea x la cantidad de manzanas y y la cantidad de peras')."
+      ],
+      "medium": [
+        "Problemas de compra o mezcla que incluyen porcentajes o descuentos simples (por ejemplo, un producto al 30 % del total, otro con 20 % de descuento).",
+        "Totales que combinan cantidad de objetos y montos, exigiendo al estudiante decidir qué representa cada variable (cantidad, precio, etc.).",
+        "Enunciados con más texto y al menos dos frases clave que deben traducirse a ecuaciones lineales distintas.",
+        "Ítems donde el estudiante debe construir mentalmente la ecuación correcta a partir de una condición de porcentaje o relación tipo 'la cantidad de adultos es el doble que la de niños'.",
+        "Distractores que incorporan errores de traducción más sutiles (confusión entre 'del total' y 'del original', porcentajes aplicados a la variable equivocada)."
+      ],
+      "hard": [
+        "Situaciones en las que las variables posibles no son obvias (por ejemplo, elegir entre modelar precios unitarios, cantidades o montos totales), requiriendo decidir qué par de incógnitas es más conveniente.",
+        "Problemas donde el porcentaje se aplica a magnitudes distintas (por ejemplo, un precio es un porcentaje del total, otro es un porcentaje de su propio precio original con descuento).",
+        "Enunciados con información implícita o que requieren reorganizar datos, por ejemplo, totales expresados en forma relativa ('gasta la mitad en A y el resto en B, pero B tiene un descuento').",
+        "Ítems en que todas las alternativas están escritas como sistemas razonables, pero solo una corresponde con precisión a la lectura del contexto, obligando a un análisis fino de cada frase.",
+        "Problemas donde hay que evitar sobreparametrizar (más variables de las necesarias) y reducir la situación a dos incógnitas adecuadas y dos condiciones independientes.",
+        "Uso moderado de números menos amables (valores no múltiplos fáciles, montos con ceros no alineados o porcentajes que producen decimales simples) sin requerir cálculos complejos, pero que dificultan la detección inmediata de patrones."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar enunciados donde no quede claro qué magnitud está siendo medida (peso vs cantidad de objetos vs precio); siempre explicitar unidades en los datos clave.",
+      "No usar expresiones vagas como 'x representa las manzanas' sin precisar si es número de kilos, unidades o costo.",
+      "Evitar situaciones donde se puedan modelar razonablemente más de dos incógnitas sin indicar qué se espera, a menos que el ítem explicite que se deben elegir dos variables específicas.",
+      "No mezclar, en una misma frase, varias magnitudes diferentes sin conectores claros (por ejemplo, 'compró manzanas y peras y gastó 10 000 en 8 kilos', sin separar costo y cantidad).",
+      "Evitar frases ambiguas con porcentajes, distinguiendo claramente entre 'del total pagado', 'del precio original', 'sobre el valor sin descuento'.",
+      "No usar expresiones como 'vale el doble que el otro' sin dejar claro si se refiere al precio o a la cantidad comprada.",
+      "Evitar que varias alternativas usen distintas definiciones de variables sin declararlas; cada sistema propuesto debe indicar, en el enunciado o en la alternativa, qué representa cada letra.",
+      "No usar datos redundantes que puedan generar sistemas distintos igualmente coherentes; cada dato debe aportar una condición específica que lleve a un único tipo de sistema correcto.",
+      "Evitar que la corrección del ítem dependa de detalles irrelevantes de notación (orden de ecuaciones, nombre de variables) en lugar de la relación entre cantidades."
+    ],
+    "error_families": [
+      {
+        "name": "Variables mal definidas o ambiguas",
+        "description": "El estudiante define variables sin especificar su unidad o significado exacto, o bien cambia el significado de una misma variable entre diferentes ecuaciones.",
+        "how_to_address": "En el ítem, exigir que las alternativas expliciten el significado de cada variable o que el enunciado lo establezca antes de mostrar el sistema. Dar distractores donde la confusión de significado quede en evidencia al revisar la coherencia de unidades."
+      },
+      {
+        "name": "Uso de una sola ecuación",
+        "description": "El estudiante identifica una relación principal (por ejemplo, el total de dinero gastado) pero no traduce la segunda condición (total de objetos, diferencia entre cantidades, etc.), por lo que no llega a un sistema 2x2.",
+        "how_to_address": "Incluir alternativas que representen solo una de las dos condiciones y otra alternativa que incorpore ambas, y pedir elegir el sistema completo. Destacar en el texto que se necesitan 'dos ecuaciones' o 'dos condiciones' para representar la situación."
+      },
+      {
+        "name": "Confusión suma vs diferencia",
+        "description": "Errores al traducir expresiones como 'en total son 36', 'le lleva 5 años', 'la cantidad de A excede en 3 a B', generando ecuaciones con signos incorrectos o usando suma donde debe ir diferencia.",
+        "how_to_address": "Diseñar distractores con exactamente ese tipo de error (por ejemplo, x + y = 3 en lugar de x − y = 3) y forzar al estudiante a revisar el sentido de la frase en castellano. En la retroalimentación, explicitar el significado de 'excede en', 'más que', 'menos que'."
+      },
+      {
+        "name": "Porcentajes mal aplicados",
+        "description": "El estudiante confunde porcentajes del total con porcentajes de una parte, o un porcentaje de descuento con el porcentaje que queda, lo que produce coeficientes incorrectos en la ecuación.",
+        "how_to_address": "Incluir opciones donde el porcentaje se aplique a la cantidad equivocada (por ejemplo, al total en lugar del precio original) y contrastarlas con la opción correcta. Reforzar la lectura cuidadosa de 'del total pagado' vs 'sobre su precio original'."
+      },
+      {
+        "name": "Mezcla de unidades en una misma ecuación",
+        "description": "Se igualan cantidades de distinta naturaleza (por ejemplo, sumar 'número de monedas' con 'monto de dinero' en la misma expresión), produciendo ecuaciones sin sentido dimensional.",
+        "how_to_address": "Crear distractores en los que se visualice este error (como 100x + 500y = 36), y usar enunciados donde las unidades estén muy claras. En la explicación, remarcar que cada término de una ecuación debe estar expresado en la misma unidad."
+      },
+      {
+        "name": "Ecuaciones dependientes o redundantes",
+        "description": "Las dos ecuaciones expresan en el fondo la misma relación (por ejemplo, una es múltiplo de la otra), por lo que el sistema no representa realmente dos condiciones independientes.",
+        "how_to_address": "Incluir como distractor un sistema correcto en apariencia pero con ecuaciones proporcionalmente equivalentes. En la retroalimentación, destacar la importancia de que cada ecuación provenga de una condición distinta del enunciado."
+      },
+      {
+        "name": "Selección inadecuada de incógnitas",
+        "description": "El estudiante intenta definir muchas más variables de las necesarias o escoge variables que no permiten traducir cómodamente las condiciones planteadas.",
+        "how_to_address": "Proponer ítems donde sea conveniente elegir un cierto tipo de variable (por ejemplo, cantidades en lugar de precios unitarios) y ofrecer alternativas con distintas elecciones; solo una debe traducir el texto sin contradicciones. Explicitar por qué la elección de incógnitas simplifica la traducción."
+      }
+    ],
+    "future_targets": [
+      "Resolver sistemas de ecuaciones lineales 2x2 mediante distintos métodos y verificar soluciones en el contexto.",
+      "Interpretar las soluciones de un sistema 2x2 en situaciones reales, incluyendo casos sin solución o con infinitas soluciones.",
+      "Extender el modelamiento a sistemas con tres ecuaciones y tres incógnitas en contextos más complejos.",
+      "Analizar gráficamente la intersección de rectas en el plano cartesiano como representación del sistema planteado.",
+      "Modelar y resolver problemas de optimización lineal básica (programación lineal simple) con dos variables.",
+      "Desarrollar estrategias para comparar modelos alternativos y validar si un sistema propuesto representa adecuadamente una situación dada.",
+      "Integrar el uso de ecuaciones lineales en estudios de funciones lineales (pendiente, intercepto) a partir de contextos reales."
+    ],
+    "representation_variants": [
+      "Enunciados puramente verbales en lenguaje natural, sin ecuaciones previas.",
+      "Problemas donde ya se propone un sistema de ecuaciones y se pide determinar si modela o no la situación descrita.",
+      "Tablas de datos (por ejemplo, cantidad vs costo) que deben sintetizarse en dos ecuaciones.",
+      "Esquemas textuales de mezcla o combinación (por ejemplo, formato tipo lista: 'tipo A: precio..., tipo B: precio..., total: ...').",
+      "Formato de alternativas donde cada opción incluye una declaración de variables y el sistema correspondiente.",
+      "Diagramas de doble entrada presentados como texto (por ejemplo, familia 1 / familia 2 y sus gastos) que deben traducirse a ecuaciones.",
+      "Enunciados con porcentajes y descuentos descritos en palabras (en vez de fórmulas), requeridos de pasar a coeficientes numéricos en las ecuaciones."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "medium_integers",
+      "money_context_integers",
+      "simple_decimals",
+      "simple_percentages"
+    ],
+    "required_image_types": []
+  }
+}

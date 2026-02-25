@@ -1,0 +1,138 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Resolución de expresiones y problemas que combinen potencias con raíces en un mismo cálculo (numéricos o con variables).",
+        "Uso de propiedades de potencias (misma base, misma exponente, potencia de una potencia, potencia de un producto/cociente) junto con propiedades básicas de raíces.",
+        "Cambio entre notación de raíz y de potencia con exponente fraccionario para simplificar o calcular.",
+        "Identificación y corrección de errores en procedimientos que combinan potencias y raíces.",
+        "Entrega del resultado final en la forma pedida (como raíz o como potencia) en su versión simplificada."
+      ],
+      "out_of_scope": [
+        "Logaritmos o ecuaciones logarítmicas.",
+        "Ecuaciones exponenciales complejas que requieran resolver para el exponente usando métodos avanzados.",
+        "Demostraciones formales de propiedades de potencias y raíces.",
+        "Operaciones con radicales que involucren sumas y restas no simplificables (p.ej., √2 + √3) más allá de simplificar los radicales.",
+        "Potencias con exponentes irracionales (p.ej., 2^√2) salvo como contexto puramente simbólico sin cálculo numérico.",
+        "Uso de calculadora o estimaciones numéricas avanzadas de raíces no exactas."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-03-01: Comprensión de potencias con exponente entero (incluyendo negativos) y sus propiedades básicas.",
+        "A-M1-NUM-03-02: Comprensión de raíces cuadradas y cúbicas como inversas de potencias y su notación radical.",
+        "A-M1-NUM-03-05: Uso de exponentes fraccionarios simples para representar raíces (p.ej., a^(1/2), a^(1/3), a^(m/n)).",
+        "A-M1-NUM-03-10: Simplificación de potencias de un producto y de un cociente.",
+        "A-M1-NUM-03-12: Simplificación de raíces que generan resultados exactos (extracción de factores cuadrados o cúbicos)."
+      ],
+      "common_traps": [
+        "Tratar incorrectamente la potencia de un producto o cociente, aplicando el exponente solo a un factor.",
+        "Confundir (a^m)^n con a^(m+n) en vez de a^(m·n).",
+        "Olvidar que √(a^2) no siempre es igual a a, sino |a| si se considera el dominio real completo (para PAES, evitar casos con ambigüedad de signo).",
+        "Suponer que √(a + b) = √a + √b o que √(ab) = √a + √b.",
+        "Errores al pasar de raíz a exponente fraccionario, invirtiendo numerador y denominador (confundir a^(m/n) con a^(n/m)).",
+        "No respetar la forma pedida de la respuesta: dejar el resultado como potencia cuando se pide raíz, o viceversa, o no simplificar completamente.",
+        "Perder factores o cambiar bases al descomponer números en potencias de primos (por ejemplo, errores al descomponer 125, 81, 32, etc.).",
+        "Confundir la prioridad de operaciones (p.ej., aplicar antes la raíz que la potencia o viceversa en expresiones anidadas sin paréntesis claros)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Expresiones numéricas directas con una o dos operaciones de potencias y raíces, con bases pequeñas y exponentes enteros o fraccionarios simples (1/2, 2, 3).",
+        "Requieren solo una propiedad principal (p.ej., potencia de un producto, o raíz de potencia) sin necesidad de varios pasos encadenados.",
+        "Números que conducen a raíces exactas evidentes (4, 9, 16, 25, 27, 64, 81, 125) y sin combinaciones con variables.",
+        "Transición sencilla raíz ↔ potencia (p.ej., √a = a^(1/2)) para facilitar un cálculo corto.",
+        "Formatos de pregunta directos: simplificar una expresión dada o elegir el procedimiento correcto sin contexto verbal complejo."
+      ],
+      "medium": [
+        "Expresiones que combinan varias propiedades de potencias y raíces en dos o tres pasos (por ejemplo, descomponer en potencias de primos y luego aplicar una potencia).",
+        "Uso simultáneo de notación radical y de exponente fraccionario con necesidad de decidir cuándo convertir de una a otra para simplificar.",
+        "Problemas contextualizados breves donde una magnitud se expresa mediante potencias y raíces y se requiere llegar a una forma equivalente simplificada.",
+        "Incorporan variables con exponentes sencillos (p.ej., x^(3/2), x^(1/2)·x^2, (a^3b^2)^(1/2)) manteniendo la operación principalmente algorítmica.",
+        "Ítems que exigen identificar o ubicar un error puntual en un procedimiento que aplica propiedades de potencias y raíces, similar a ejemplos PAES.",
+        "Números que requieren factorización conocida (p.ej., 32 = 2^5, 125 = 5^3, 81 = 3^4) pero con una sola base principal involucrada (2, 3 o 5)."
+      ],
+      "hard": [
+        "Expresiones con varios niveles de anidamiento (potencia de una raíz, raíz de una potencia de un producto) que requieren 3 o más pasos coherentes de simplificación.",
+        "Combinación de varias bases y diferentes exponentes racionales (p.ej., (2^3·5^3)^(2/3), (a^(1/2)b^(3/2))/a^(1/4)).",
+        "Problemas contextualizados donde el estudiante debe modelar la situación con potencias/raíces y luego simplificar (no solo aplicar un algoritmo dado).",
+        "Necesidad de elegir una estrategia de simplificación no obvia (por ejemplo, decidir entre descomponer en factorización prima, usar exponentes fraccionarios o aplicar primero una potencia externa).",
+        "Ítems que piden comparar procedimientos o determinar en qué paso se comete un error lógico entre varias transformaciones encadenadas.",
+        "Uso de exponentes racionales menos inmediatos para PAES (1/3, 2/3, 3/2) o combinaciones de estos, manteniendo resultados exactos pero menos evidentes.",
+        "Presencia simultánea de factores numéricos y algebraicos que exigen aplicar correctamente las propiedades a ambos tipos de términos sin mezclarlos."
+      ]
+    },
+    "ambiguity_avoid": [
+      "Evitar raíces de expresiones con posibles resultados de signo ambiguo (p.ej., √(x^2)) en contextos donde el signo de x no esté acotado; si se usan, restringir claramente el dominio (x ≥ 0).",
+      "No proponer situaciones donde sea necesario decidir entre raíz principal y otras soluciones de una ecuación (trabajar siempre con la raíz principal no negativa).",
+      "Evitar números que generen raíces irracionales no exactas si el ítem pretende un resultado cerrado (no forzar aproximaciones salvo que se indique explícitamente).",
+      "Especificar siempre con paréntesis la parte afectada por la potencia o la raíz para evitar ambigüedades de alcance (por ejemplo, escribir (ab)^2 y no ab^2 cuando aplique a ambos factores).",
+      "No mezclar en la misma pregunta instrucciones contradictorias sobre el formato de respuesta (p.ej., pedir simultáneamente forma de raíz y forma de potencia).",
+      "Evitar contextos verbales donde las magnitudes involucradas puedan asumir valores negativos si se trabajará con raíces pares (acotar explícitamente como cantidades positivas).",
+      "No usar notación inusual o no escolar (por ejemplo, notaciones alternativas para radicales o exponentes) que puedan confundirse con otras operaciones.",
+      "Evitar preguntas donde dos alternativas de respuesta sean algebraicamente equivalentes pero se diferencien solo por orden de factores o forma superficial si el foco del átomo es la combinación de propiedades, no la forma estética."
+    ],
+    "error_families": [
+      {
+        "name": "Mala aplicación de potencia de un producto/cociente",
+        "description": "El estudiante aplica un exponente solo a uno de los factores de un producto o de un cociente, o distribuye de forma incorrecta (p.ej., (ab)^2 = a^2b).",
+        "how_to_address": "Diseñar ítems donde se explicite cada paso correcto (ab)^n = a^n·b^n y (a/b)^n = a^n/b^n, incluyendo distractores que muestren la mala distribución y pidiendo identificar el error o la opción correcta."
+      },
+      {
+        "name": "Confusión entre multiplicación y potenciación",
+        "description": "Interpretar a^m·a^n como a^(m·n) o (a^m)^n como a^(m+n), intercambiando las reglas de producto de potencias y potencia de potencia.",
+        "how_to_address": "Plantear expresiones que obliguen a elegir entre sumar o multiplicar exponentes y usar alternativas distractoras con ambos tipos de error, reforzando en la retroalimentación la diferencia entre las situaciones."
+      },
+      {
+        "name": "Errores al convertir raíces a exponentes fraccionarios",
+        "description": "Confundir a^(m/n) con a^(n/m), o creer que √[n](a^m) = a^(n/m) en vez de a^(m/n).",
+        "how_to_address": "Incluir ítems que comparen expresiones en ambas notaciones, pidiendo decidir cuáles son equivalentes. Usar bases numéricas simples y exponer como distractor explícito la inversión errónea de la fracción del exponente."
+      },
+      {
+        "name": "Mitos sobre propiedades de la raíz",
+        "description": "Asumir falsas propiedades como √(a + b) = √a + √b o √(ab) = √a + √b, y errores al sacar factores de un radical.",
+        "how_to_address": "Construir ejemplos contrastivos donde se vea que aplicar la falsa propiedad lleva a un resultado numérico diferente. Usar distractores que apliquen explícitamente estas falsas reglas y pedir la alternativa correcta justificando con un cálculo directo."
+      },
+      {
+        "name": "Manejo inadecuado de signos y dominios",
+        "description": "Olvidar restricciones de dominio (por ejemplo, aplicar raíz par a números negativos o asumir que √(x^2) = x sin considerar el signo).",
+        "how_to_address": "Para PAES, restringir explícitamente a valores positivos y, en ítems de diagnóstico, mostrar ejemplos con restricciones claras tipo x ≥ 0. Evitar construir preguntas donde la respuesta dependa de considerar valor absoluto si eso no es el foco del átomo."
+      },
+      {
+        "name": "Pérdida de factores al simplificar",
+        "description": "Omitir factores numéricos o de variables al combinar exponentes o al descomponer números en potencias de primos (por ejemplo, olvidar un factor 2 al escribir 40 = 2^3·5).",
+        "how_to_address": "Incluir pasos intermedios detallados en el enunciado o en opciones de respuesta, donde un distractor represente explícitamente la pérdida de un factor. Fomentar el chequeo de equivalencia numérica evaluando la expresión original y la simplificada con un valor simple."
+      },
+      {
+        "name": "No respetar la forma requerida del resultado",
+        "description": "Dejar el resultado como raíz cuando se pide potencia o viceversa, o no simplificar completamente potencias y raíces combinadas.",
+        "how_to_address": "Enunciar con claridad la forma solicitada y construir distractores que sean numéricamente correctos pero en forma no pedida. De esta forma se evalúa explícitamente la atención al formato de la respuesta y el cierre del procedimiento."
+      }
+    ],
+    "future_targets": [
+      "Manejo fluido de exponentes racionales en contextos de funciones potencias y radicales.",
+      "Resolución de ecuaciones y desigualdades que involucren potencias y raíces, incluyendo cambios de forma para aislar la incógnita.",
+      "Comprensión de funciones exponenciales y logarítmicas, y sus propiedades, apoyándose en la familiaridad con la manipulación de exponentes.",
+      "Modelación de fenómenos de crecimiento/disminución que utilizan potencias y raíces (escalado, leyes de potencia, áreas y volúmenes).",
+      "Simplificación de expresiones algebraicas más complejas que combinen potencias, radicales, fracciones y productos notables.",
+      "Uso de potencias y raíces en geometría (por ejemplo, teorema de Pitágoras, escalamiento de figuras, relaciones entre área, volumen y longitud).",
+      "Transición hacia el estudio de límites y derivadas de funciones que incluyen potencias y raíces, donde se requiere manipulación algebraica sólida."
+    ],
+    "representation_variants": [
+      "Notación radical clásica (√a, √[n]{a}, raíces de expresiones con productos y cocientes).",
+      "Notación de potencias con exponentes fraccionarios (a^(1/2), a^(m/n)) como alternativa a la raíz.",
+      "Descomposición de números compuestos en potencias de primos (por ejemplo, 125 = 5^3, 32 = 2^5) para facilitar la combinación de exponentes.",
+      "Expresiones mixtas numéricas y algebraicas (por ejemplo, √(x)·x^2, (a^2b^3)^(1/2)).",
+      "Procedimientos paso a paso escritos en lenguaje natural y simbólico, donde se piden identificar o completar pasos de simplificación.",
+      "Tablas o esquemas breves que muestren equivalencias entre representaciones (p.ej., columna de forma radical y columna de forma potencia)."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "moderate_integers",
+      "perfect_powers",
+      "fractions",
+      "simple_rationals_exponents",
+      "integers_with_prime_factorization_simple"
+    ],
+    "required_image_types": []
+  }
+}

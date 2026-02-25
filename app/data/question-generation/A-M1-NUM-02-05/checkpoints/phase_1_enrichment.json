@@ -1,0 +1,126 @@
+{
+  "has_enrichment": true,
+  "enrichment_data": {
+    "scope_guardrails": {
+      "in_scope": [
+        "Convertir fracciones positivas propias y mixtas simples a porcentaje mediante el paso intermedio decimal (división numerador ÷ denominador y luego multiplicar por 100).",
+        "Reconocer y usar equivalencias directas de fracciones comunes a porcentaje: 1/2 = 50%, 1/4 = 25%, 3/4 = 75%, 1/10 = 10%, 2/5 = 40%, etc.",
+        "Interpretar el porcentaje obtenido como cantidad por cada 100 (por ejemplo, 0,37 → 37%).",
+        "Trabajar con resultados porcentuales que pueden ser enteros o con uno o dos decimales (por ejemplo, 12,5%, 33,3%).",
+        "Comparar procedimientos de conversión (por ejemplo, vía decimal vs. vía fracciones equivalentes con denominador 100), manteniendo el foco en la ruta `fracción → decimal → porcentaje`."
+      ],
+      "out_of_scope": [
+        "Conversión inversa de porcentaje a fracción o decimal (eso corresponde a otro átomo).",
+        "Cálculo de porcentajes de una cantidad (por ejemplo, 30% de 200).",
+        "Problemas de aumento o descuento porcentual, interés simple o compuesto.",
+        "Fracciones algebraicas con literales en numerador o denominador.",
+        "Uso de proporciones complejas o reglas de tres; aquí la estrategia central debe ser la división para obtener el decimal.",
+        "Interpretación de porcentajes mayores a 100% como situaciones de comparación de cantidades (eso ya entra en razonamiento proporcional más complejo)."
+      ],
+      "prerequisites": [
+        "A-M1-NUM-01-02: Comprensión de la fracción como parte de un todo y como razón.",
+        "A-M1-NUM-01-03: Lectura y escritura de fracciones propias, impropias y mixtas sencillas.",
+        "A-M1-NUM-02-01: División de números naturales con resultado decimal (incluyendo uso de coma decimal).",
+        "A-M1-NUM-02-03: Comprensión de porcentaje como razón sobre 100 (significado básico de %)."
+      ],
+      "common_traps": [
+        "Olvidar multiplicar por 100 después de obtener el decimal y confundir 0,75 con 0,75%.",
+        "Mover la coma en sentido incorrecto al pasar de decimal a porcentaje (por ejemplo, 0,6 → 0,06% en vez de 60%).",
+        "Interpretar el denominador como el porcentaje directo (por ejemplo, asumir que 1/4 es 4% o 25/4%).",
+        "Errores de redondeo excesivo o inadecuado en fracciones que producen decimales periódicos (por ejemplo, 2/3 → 0,6 → 60% en lugar de aproximar razonablemente a 66,7%).",
+        "Confundir 0,125 con 1,25% (mover la coma demasiado) o con 12,5% sin justificar el paso.",
+        "Equivocar el orden de operaciones: multiplicar la fracción por 100 directamente sin dividir (por ejemplo, 3/4 × 100 = 300/4 → 300,4%)."
+      ]
+    },
+    "difficulty_rubric": {
+      "easy": [
+        "Fracciones comunes muy frecuentes con equivalencia porcentual estándar: 1/2, 1/4, 3/4, 1/10, 2/5, 3/10.",
+        "Denominadores pequeños (2, 4, 5, 8, 10, 20, 25) que generan decimales finitos de una o dos cifras (por ejemplo, 3/4, 1/5, 3/8).",
+        "Ítems donde se sugiere explícitamente el procedimiento `dividir el numerador por el denominador y luego multiplicar por 100`.",
+        "Opciones de respuesta claramente diferenciadas (solo una con la escala correcta y sin distractores muy cercanos)."
+      ],
+      "medium": [
+        "Fracciones con denominadores algo mayores pero que siguen generando decimales finitos manejables (por ejemplo, 7/8, 9/20, 11/25).",
+        "Necesidad de realizar la división con uno o dos decimales y luego convertir a porcentaje (por ejemplo, 1/8, 9/40).",
+        "Incorporar fracciones impropias sencillas (por ejemplo, 5/4, 7/5) produciendo porcentajes mayores a 100%.",
+        "Opciones de respuesta que incluyen distractores derivados de errores típicos (no multiplicar por 100, mover mal la coma, confundir denominador con porcentaje)."
+      ],
+      "hard": [
+        "Fracciones con decimales periódicos simples o que requieren aproximación razonable (por ejemplo, 1/3, 2/3, 5/6).",
+        "Fracciones con denominadores compuestos que exigen dividir con más de dos cifras decimales antes de redondear (por ejemplo, 7/12, 11/30).",
+        "Ítems en contexto que obligan a interpretar si el resultado debe darse aproximado y explicitar el criterio de redondeo (por ejemplo, al décimo o centésimo de porcentaje).",
+        "Fracciones mixtas o impropias que al convertirse superan bastante el 100% y pueden generar confusión en la interpretación (por ejemplo, 2 1/2, 7/4).",
+        "Preguntas donde hay que comparar o seleccionar, entre varias fracciones dadas, la que corresponde a un porcentaje específico o rango de porcentajes, exigiendo hacer varias conversiones mentales o aproximadas."
+      ]
+    },
+    "ambiguity_avoid": [
+      "No mezclar en la misma pregunta la conversión fracción → porcentaje con cálculos de porcentaje de una cantidad, para no confundir el foco del procedimiento evaluado.",
+      "Evitar pedir simultáneamente la respuesta en decimal y en porcentaje cuando las opciones son solo porcentajes; esto puede inducir dudas sobre el formato esperado.",
+      "Especificar claramente el nivel de aproximación cuando el resultado no es un porcentaje exacto (por ejemplo, indicar 'redondee al décimo más cercano').",
+      "No usar contextos donde el porcentaje calculado pueda interpretarse como probabilidad, frecuencia relativa u otro significado adicional que no sea necesario para el ítem.",
+      "Evitar notaciones incorrectas o mixtas en opciones de respuesta (por ejemplo, '0,75%' y '0.75%' combinados sin aclarar el uso de coma/punto decimal).",
+      "No incluir fracciones con denominador 100 que hagan trivial la conversión si el objetivo es evaluar el paso decimal; esas conversiones corresponden más bien a otro átomo.",
+      "Cuando se usen fracciones equivalentes, evitar que más de una opción represente el mismo porcentaje pero con distinta forma, salvo que el objetivo explícito sea discriminar esa equivalencia (lo cual no es el foco de este átomo)."
+    ],
+    "error_families": [
+      {
+        "name": "Olvidar multiplicar por 100",
+        "description": "El estudiante realiza correctamente la división numerador ÷ denominador, obtiene el decimal correcto (por ejemplo, 0,2) pero responde ese decimal como si fuera el porcentaje final (0,2% en vez de 20%).",
+        "how_to_address": "Resaltar que el porcentaje expresa cuántas partes de cada 100, por lo que siempre se debe multiplicar el decimal por 100 o, de manera equivalente, mover la coma dos lugares a la derecha."
+      },
+      {
+        "name": "Mover mal la coma decimal",
+        "description": "El estudiante sabe que debe modificar la posición de la coma, pero la desplaza en dirección o magnitud incorrecta (por ejemplo, 0,6 → 0,06% o 6%).",
+        "how_to_address": "Trabajar con una tabla de valor posicional y ejemplos concretos mostrando que 1 = 100% y que 0,01 = 1%, reforzando el patrón de 'dos lugares' hacia la derecha al pasar de decimal a porcentaje."
+      },
+      {
+        "name": "Denominador confundido con porcentaje",
+        "description": "El estudiante asume que el denominador de la fracción indica directamente el porcentaje (por ejemplo, 1/4 → 4%).",
+        "how_to_address": "Contrastar ejemplos como 1/2 y 1/3 mostrando sus porcentajes, enfatizando que el denominador indica en cuántas partes se divide el todo, no el porcentaje en sí. Hacer énfasis en el procedimiento de división como paso obligatorio."
+      },
+      {
+        "name": "Multiplicar la fracción por 100 sin dividir",
+        "description": "El estudiante hace 3/4 × 100 y lee el resultado 300/4 o 75/1 de forma incorrecta, generando respuestas absurdas (por ejemplo, 300,4%).",
+        "how_to_address": "Mostrar que multiplicar por 100 equivale a cambiar la unidad de referencia, pero que si se hace directamente con la fracción se debe simplificar correctamente (3/4 × 100/1 = 300/4 = 75). Conectar este procedimiento con el camino decimal para que vea que ambos llegan al mismo resultado si se hacen bien."
+      },
+      {
+        "name": "Redondeo inadecuado en decimales periódicos",
+        "description": "En fracciones como 1/3 o 2/3, el estudiante corta el decimal muy pronto o redondea sin criterio (por ejemplo, 1/3 → 0,3 → 30% en vez de aproximar razonablemente a 33,3%).",
+        "how_to_address": "Enseñar explícitamente el criterio de redondeo requerido en el ejercicio (al décimo, centésimo, etc.) y practicar con decimales periódicos, mostrando la diferencia entre truncar y redondear."
+      },
+      {
+        "name": "Dificultad con división que produce más de un decimal",
+        "description": "El error se origina en la división larga (por ejemplo, dividir 1 por 8), generando un decimal incorrecto y, por ende, un porcentaje equivocado.",
+        "how_to_address": "Reforzar las habilidades de división con resultado decimal usando fracciones simples del tipo 1/n antes de introducir el paso de multiplicar por 100. Usar calculadora en una fase de comprensión para que el foco quede en la relación fracción–decimal–porcentaje."
+      }
+    ],
+    "future_targets": [
+      "Conversión de porcentaje a fracción y decimal (procesos inversos).",
+      "Cálculo de porcentajes de cantidades (por ejemplo, hallar el 15% de un número).",
+      "Problemas de aumento y disminución porcentual, descuentos, IVA, interés simple.",
+      "Comparación de razones y proporciones usando la representación porcentual.",
+      "Interpretación de datos estadísticos presentados en porcentajes (tablas y gráficos).",
+      "Trabajo con porcentajes compuestos y porcentajes sobre porcentajes.",
+      "Aplicación de porcentajes en funciones lineales simples (por ejemplo, cambios porcentuales constantes)."
+    ],
+    "representation_variants": [
+      "Fracción simbólica simple (a/b) sin contexto verbal.",
+      "Fracción presentada en contexto (por ejemplo, parte de un grupo o de una cantidad total) donde se pide solo su conversión a porcentaje.",
+      "Fracción impropia o número mixto (por ejemplo, 5/4, 2 1/2) para evidenciar porcentajes mayores que 100%.",
+      "Fracción equivalente explícita (por ejemplo, 25/100) que puede usarse como paso intermedio hacia el porcentaje.",
+      "Uso de recta numérica conceptual donde se comparan ubicaciones de una fracción dada, su decimal y su porcentaje en forma simbólica (sin requerir dibujo).",
+      "Tablas de doble entrada con columnas 'Fracción', 'Decimal', 'Porcentaje', donde se deba completar la columna porcentaje a partir de la fracción.",
+      "Situaciones de selección múltiple donde varias fracciones se deben asociar con porcentajes dados, sin necesidad de resolver problemas adicionales."
+    ],
+    "numbers_profiles": [
+      "small_integers",
+      "simple_proper_fractions",
+      "common_unit_fractions",
+      "simple_improper_fractions",
+      "mixed_numbers_simple",
+      "terminating_decimals",
+      "simple_repeating_decimals"
+    ],
+    "required_image_types": []
+  }
+}
