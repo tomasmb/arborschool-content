@@ -111,8 +111,8 @@ CREATE TABLE lessons (
     atom_id VARCHAR(50) REFERENCES atoms(id) UNIQUE NOT NULL,
     question_set_id VARCHAR(100) REFERENCES question_sets(id),
     title VARCHAR(255) NOT NULL,
-    worked_example_html TEXT NOT NULL,
-    explanation_html TEXT,
+    content_html TEXT NOT NULL,
+    template_type VARCHAR(1) NOT NULL CHECK (template_type IN ('P', 'C', 'M')),
     created_at TIMESTAMPTZ DEFAULT NOW(),
     updated_at TIMESTAMPTZ DEFAULT NOW()
 );
@@ -294,9 +294,11 @@ users ──N:N──▶ atoms (via atom_mastery)
 - `last_demonstrated_at`: used for spaced repetition scheduling
 
 ### Question Generation
-- Generate question_sets BEFORE lessons
 - Minimum 14 easy, 18 medium, 14 hard (46 total per atom)
-- Lessons only created after question_set status = `reviewed`
+
+### Mini-class Generation
+- Mini-classes only created after question_set status = `reviewed`
+- Content structure and quality gates: see `mini-class-specification.md`
 
 ### Prerequisites
 - `prerequisite_ids` array defines direct dependencies

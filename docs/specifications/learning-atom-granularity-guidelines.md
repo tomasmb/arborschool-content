@@ -13,7 +13,8 @@ that can be taught, practiced and assessed independently.
 In practical terms, an atom should:
 
 - have exactly **one cognitive intention**,  
-- be teachable in an **isolated mini-lesson**,  
+- be teachable in an **isolated mini-class**
+  (see `mini-class-specification.md`),  
 - support one or more **standards** in a traceable way.
 
 ---
@@ -53,12 +54,12 @@ is a valid atom or should be split:
 ## 3. Practical examples
 
 - **Good atom candidates**
-  - “Interpretar la pendiente como tasa de cambio constante.”
-  - “Calcular el porcentaje de una cantidad en contextos cotidianos.”
-  - “Identificar el vértice de una parábola en una tabla de valores.”
+  - "Interpretar la pendiente como tasa de cambio constante."
+  - "Calcular el porcentaje de una cantidad en contextos cotidianos."
+  - "Identificar el vértice de una parábola en una tabla de valores."
 
 - **Likely too large (should be split)**
-  - “Entender todo sobre funciones lineales”  
+  - "Entender todo sobre funciones lineales"  
     → split into atoms for pendiente, intercepto, forma y = mx + b,
     lectura de gráficos, etc.
 
@@ -74,5 +75,3 @@ is a valid atom or should be split:
   - standards nodes,
   - atom nodes,
   - prerequisite and support edges between them.
-
-

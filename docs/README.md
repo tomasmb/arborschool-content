@@ -14,7 +14,8 @@
 - [🔒 **Estándares de Código**](specifications/CODE_STANDARDS.md) ← *Documento maestro de calidad*
 - [Modelo de Datos](specifications/data-model-specification.md)
 - [Átomos de Aprendizaje](specifications/learning-atom-granularity-guidelines.md)
-- [Métodos de Aprendizaje](specifications/learning-method-specification.md)
+- [Método de Aprendizaje](specifications/learning-method-specification.md)
+- [Mini-Clase](specifications/mini-class-specification.md)
 - [Pipeline de Variantes](specifications/variant-generation-pipeline.md)
 - [Estructura del Repo](specifications/repo-structure-and-modules.md)
 - [Estándares de Código Python](specifications/python-best-practices.md)
