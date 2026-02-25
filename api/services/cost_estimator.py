@@ -164,13 +164,7 @@ class CostEstimatorService:
         self, params: dict[str, Any],
     ) -> TokenEstimate:
         """Atoms generation — Gemini 3 Pro, ~4x thinking."""
-        standard_ids = params.get("standard_ids")
-        if isinstance(standard_ids, str) and standard_ids:
-            num_standards = len(standard_ids.split(","))
-        elif isinstance(standard_ids, list):
-            num_standards = len(standard_ids) if standard_ids else 21
-        else:
-            num_standards = 21
+        num_standards = _resolve_count(params, "standard_ids", 21)
         input_per_std = 5_000
         total_output_per_std = 3_000 * 4
 
@@ -206,13 +200,7 @@ class CostEstimatorService:
         self, params: dict[str, Any],
     ) -> TokenEstimate:
         """PDF to QTI — Gemini 3 Pro, ~4x thinking per question."""
-        question_ids = params.get("question_ids", [])
-        if isinstance(question_ids, str) and question_ids:
-            num_questions = len(question_ids.split(","))
-        elif isinstance(question_ids, list):
-            num_questions = len(question_ids) if question_ids else 65
-        else:
-            num_questions = 65
+        num_questions = _resolve_count(params, "question_ids", 65)
         input_per_q = 4_000
         total_output_per_q = 3_000 * 4
 
@@ -231,14 +219,7 @@ class CostEstimatorService:
         self, params: dict[str, Any],
     ) -> TokenEstimate:
         """Tagging — Gemini 3 Pro, 3 calls/question, no thinking."""
-        question_ids = params.get("question_ids", [])
-        if isinstance(question_ids, str) and question_ids:
-            num_questions = len(question_ids.split(","))
-        elif isinstance(question_ids, list):
-            num_questions = len(question_ids) if question_ids else 65
-        else:
-            num_questions = 65
-
+        num_questions = _resolve_count(params, "question_ids", 65)
         input_per_q = 6_300   # 3 calls totaled
         output_per_q = 1_000  # 3 calls totaled, no thinking
 
@@ -258,13 +239,7 @@ class CostEstimatorService:
         self, params: dict[str, Any],
     ) -> TokenEstimate:
         """Variant generation — Gemini 3 Pro, ~2x thinking."""
-        question_ids = params.get("question_ids", [])
-        if isinstance(question_ids, str) and question_ids:
-            num_questions = len(question_ids.split(","))
-        elif isinstance(question_ids, list):
-            num_questions = len(question_ids) if question_ids else 1
-        else:
-            num_questions = 1
+        num_questions = _resolve_count(params, "question_ids", 1)
         variants_per_q = params.get("variants_per_question", 3)
 
         # Generation call
@@ -407,27 +382,39 @@ class CostEstimatorService:
         return eligible
 
     def _estimate_lessons(self, params: dict[str, Any]) -> TokenEstimate:
-        """Lesson generation — GPT-5.1, 1 call per atom."""
-        atom_ids = params.get("atom_ids", [])
-        if isinstance(atom_ids, str) and atom_ids:
-            num_atoms = len(atom_ids.split(","))
-        elif isinstance(atom_ids, list):
-            num_atoms = len(atom_ids) if atom_ids else 127
-        else:
-            num_atoms = 127
-
-        input_per_atom = 10_000
-        output_per_atom = 3_000
-
+        """Lesson generation — GPT-5.1, ~13-16 LLM calls per atom."""
+        num_atoms = _resolve_count(params, "atom_ids", 127)
+        r = GPT51_REASONING_OVERHEAD
+        # plan(1) + coherence(1) + gen(8) + sec_val(4) + quality(1)
+        input_per_atom = 2_500 + 1_500 + 3_000 * 8 + 2_000 * 4 + 5_000
+        output_per_atom = (
+            (1_500 + r["medium"]) + (300 + r["low"])
+            + (1_800 + r["medium"]) * 8
+            + (500 + r["medium"]) * 4
+            + (1_500 + r["high"])
+        )
         return TokenEstimate(
             input_tokens=input_per_atom * num_atoms,
             output_tokens=output_per_atom * num_atoms,
             breakdown={
                 "num_atoms": num_atoms,
+                "calls_per_atom": "~13-16",
                 "input_per_atom": input_per_atom,
                 "output_per_atom": output_per_atom,
             },
         )
+
+
+def _resolve_count(
+    params: dict[str, Any], key: str, default: int,
+) -> int:
+    """Resolve item count from params (string, list, or default)."""
+    val = params.get(key, [])
+    if isinstance(val, str) and val:
+        return len(val.split(","))
+    if isinstance(val, list) and val:
+        return len(val)
+    return default
 
 
 def _count_eligible_atoms(
