@@ -109,6 +109,8 @@ _OBJECTIVE_RULES = (
 _CON_BUDGET = SECTION_WORD_BUDGETS["concept"]
 _CONCEPT_RULES = (
     "- Divide el concepto en micro-bloques con <h3> subtítulos.\n"
+    "- MÁXIMO 4 bloques <h3> (incluyendo Trampa PAES si aplica). "
+    "Fusiona ideas relacionadas en un solo bloque.\n"
     "- Cada <h3> cubre UNA sola idea o regla.\n"
     "- Formato: <h3>título corto</h3> seguido de 1-2 oraciones "
     "+ opcional mini-ejemplo de 1 línea.\n"

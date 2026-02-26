@@ -6,7 +6,7 @@
 
 Date: 2026-02-26
 Owner: Max (Chief of Staff)
-Spec version: 1.1
+Spec version: 1.2
 
 ---
 
@@ -105,6 +105,9 @@ atom-dependent optional modules.
    - 1 measurable verb + 1 PAES relevance line.
 2. **Concept** (60–120 seconds)
    - Divided into micro-blocks with `<h3>` subtitles.
+   - **Maximum 4 `<h3>` micro-blocks** (including Trampa PAES if
+     applicable). Merge related ideas; do not repeat what the worked
+     examples will demonstrate.
    - Each `<h3>` covers ONE idea or rule.
    - If error families include sign/notation confusion, add a
      `<h3>Trampa PAES</h3>` block with correct vs incorrect (2 lines).
@@ -134,7 +137,10 @@ atom-dependent optional modules.
    - Distribute error families across QC1 and QC2: QC1 covers
      errors A/B; QC2 covers errors C/D (when 2 QCs are present).
 6. **Common errors + PAES checklist**
-   - Top 2–3 traps in `<ul>`.
+   - The lesson plan selects **max 5 error families** from the
+     enrichment (merging overlapping families). All sections reference
+     only these selected families.
+   - Top errors in `<ul>` (one bullet per selected family).
    - Checklist PAES: exactly 3 items with ✅, each actionable in 10s.
 7. **Bridge to adaptive practice**
    - Explicit transition: "Ahora pasas al set adaptativo."
@@ -272,11 +278,13 @@ Concept + procedure.
 [Transition] — "Ahora pasas al set adaptativo" → button
 ```
 
-Total time: 4–7 minutes. Every screen has ONE job.
+Total time: 4–6 minutes. Every screen has ONE job.
 
 ### Constraints
 
 - Hard rule: if the atom can be taught in less time, prefer shorter.
+  Evidence: EdTech Hub 2025 (n = 94K) found shorter sessions (5 min)
+  beat longer ones (9 min) for learning outcomes.
 - Max text density per block: short paragraphs + bullets.
 - Progressive disclosure: `<details>/<summary>` for steps and
   feedback. Without a renderer, native browser toggle works.
@@ -308,6 +316,14 @@ is **forbidden**. This applies to both plain text and MathML
 
 A deterministic linter checks for the regex `\d+\.\d+` in all
 generated content. Any match is an auto-fail.
+
+### Word counting and MathML
+
+Word budgets are enforced by a deterministic counter. Each
+`<math>...</math>` block counts as **3 reading-equivalent words**
+regardless of internal MathML complexity, since students process a
+formula as one visual unit. This prevents MathML token inflation
+from distorting duration estimates.
 
 ### Semantic attributes for rendering logic
 
@@ -400,7 +416,8 @@ Score 0–2 each dimension (pass threshold: >= 12/14):
 
 1. **Objective clarity** + measurability
 2. **Cognitive load control**: 0 = concept is one block without h3
-   sub-titles OR verbose; 1 = some excess; 2 = clean with h3 sub-blocks
+   sub-titles OR verbose OR exceeds 4 h3 blocks; 1 = some excess;
+   2 = clean with 2–4 h3 sub-blocks
 3. **Worked example correctness**: math verified
 4. **Step rationale clarity**: 0 = WE2 has same annotation density as WE1
    (must show fading) OR no rationale OR canonical step names differ
@@ -419,7 +436,7 @@ Score 0–2 each dimension (pass threshold: >= 12/14):
 - Vague / non-actionable feedback
 - Missing worked examples
 - In-scope item not covered
-- Error family not addressed
+- Selected error family not addressed (plan selects max 5)
 - Section exceeds 2x word budget
 - Forbidden filler phrases detected
 - Scope gate violation (off-scope teaching phrases > 1 occurrence)

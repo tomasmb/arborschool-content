@@ -271,9 +271,21 @@ def check_filler_phrases(text: str) -> list[str]:
     return [p for p in FORBIDDEN_FILLER_PHRASES if p in text_lower]
 
 
+_MATH_BLOCK_RE = re.compile(r"<math[^>]*>.*?</math>", re.DOTALL)
+_MATH_WORD_EQUIVALENT = 3
+
+
 def count_words(html: str) -> int:
-    """Count words in HTML content (strips tags first)."""
-    text = re.sub(r"<[^>]+>", " ", html)
+    """Count words in HTML, collapsing each MathML formula to ~3 words.
+
+    Students process a formula as one visual unit, not as individual
+    XML tokens. Without collapsing, a simple fraction in MathML can
+    inflate the count by 10+ phantom "words."
+    """
+    collapsed = _MATH_BLOCK_RE.sub(
+        " MATHBLOCK " * _MATH_WORD_EQUIVALENT, html,
+    )
+    text = re.sub(r"<[^>]+>", " ", collapsed)
     return len(text.split())
 
 

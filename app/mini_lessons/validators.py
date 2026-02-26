@@ -284,10 +284,10 @@ def assemble_lesson(
 
     warnings: list[str] = []
     duration = estimate_duration_minutes(full_html)
-    if duration > 7:
+    if duration > 6:
         warnings.append(
             f"Estimated duration {duration} min exceeds "
-            f"7 min target window",
+            f"6 min target window",
         )
 
     return PhaseResult(
@@ -357,14 +357,19 @@ class QualityGate:
         self,
         full_html: str,
         ctx: LessonContext,
+        plan: LessonPlan | None = None,
     ) -> tuple[PhaseResult, QualityReport]:
         """Run Phase 5: math + coverage + rubric evaluation.
+
+        When plan is provided, checks error-family coverage against
+        the plan's selected families (max 5) instead of the full
+        enrichment list.
 
         Returns:
             Tuple of (PhaseResult, QualityReport).
         """
         in_scope, error_families, rubric = (
-            extract_enrichment_for_gate(ctx)
+            extract_enrichment_for_gate(ctx, plan=plan)
         )
 
         prompt = build_quality_gate_prompt(

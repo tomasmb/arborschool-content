@@ -322,10 +322,31 @@ def find_resume_phase_group(output_dir: Path) -> str | None:
 # ---------------------------------------------------------------------------
 
 
+def extract_plan_error_families(plan: LessonPlan) -> list[str]:
+    """Return the deduplicated set of error families used in a plan.
+
+    Unions families from WE1, WE2, quick-checks, and the
+    error-patterns section so the quality gate checks coverage
+    against the plan's selected families (max 5), not the full
+    enrichment list.
+    """
+    families: set[str] = set()
+    families.update(plan.worked_example_1.error_families_addressed)
+    families.update(plan.worked_example_2.error_families_addressed)
+    for qc in plan.quick_checks:
+        families.update(qc.error_families_addressed)
+    families.update(plan.error_patterns_families)
+    return sorted(families)
+
+
 def extract_enrichment_for_gate(
     ctx: LessonContext,
+    plan: LessonPlan | None = None,
 ) -> tuple[list[str], list[str], dict[str, list[str]]]:
     """Extract enrichment data needed for quality gate evaluation.
+
+    When a plan is provided, uses the plan's selected error
+    families (max 5) instead of the full enrichment list.
 
     Returns:
         Tuple of (in_scope items, error family names, difficulty rubric).
@@ -337,8 +358,11 @@ def extract_enrichment_for_gate(
     scope = data.get("scope_guardrails", {})
     in_scope = scope.get("in_scope", [])
 
-    error_fams = data.get("error_families", [])
-    error_names = [e.get("name", "") for e in error_fams]
+    if plan is not None:
+        error_names = extract_plan_error_families(plan)
+    else:
+        error_fams = data.get("error_families", [])
+        error_names = [e.get("name", "") for e in error_fams]
 
     rubric = data.get("difficulty_rubric", {})
 

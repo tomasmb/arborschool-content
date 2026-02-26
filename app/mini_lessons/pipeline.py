@@ -331,7 +331,7 @@ class MiniLessonPipeline:
         output_dir: Path, result: LessonResult,
     ) -> QualityReport:
         phase_result, report = self._quality_gate.evaluate(
-            full_html, ctx,
+            full_html, ctx, plan=plan,
         )
         result.phase_results.append(phase_result)
 
@@ -350,7 +350,7 @@ class MiniLessonPipeline:
             )
             if refined:
                 pr2, report = self._quality_gate.evaluate(
-                    refined, ctx,
+                    refined, ctx, plan=plan,
                 )
                 result.phase_results.append(pr2)
                 if report.publishable:

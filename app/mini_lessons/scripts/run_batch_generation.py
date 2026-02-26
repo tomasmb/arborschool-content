@@ -1,13 +1,8 @@
 """Batch mini-lesson generation via OpenAI Batch API (50% cost).
 
-Uses the 5-state checkpoint lifecycle so any interruption is fully
-recoverable: pending -> file_uploaded -> submitted ->
-results_downloaded -> completed.
-
-Usage:
-    python -m app.mini_lessons.scripts.run_batch_generation
-    python -m app.mini_lessons.scripts.run_batch_generation \
-        --max-atoms 10 --job-id ml_batch_20260226_abc123
+5-state checkpoint lifecycle: pending -> file_uploaded -> submitted
+-> results_downloaded -> completed.
+Usage: python -m app.mini_lessons.scripts.run_batch_generation
 """
 
 from __future__ import annotations
@@ -73,11 +68,7 @@ def _run_batch_phase(
     phase_key: str,
     requests: list[BatchRequest],
 ) -> list[BatchResponse]:
-    """Execute one batch phase through the 5-state lifecycle.
-
-    Returns the list of BatchResponse objects. Handles file upload,
-    submission, orphan detection, polling, and checkpoint updates.
-    """
+    """Execute one batch phase through the 5-state lifecycle."""
     phase = get_phase(state, phase_key)
     status = phase.get("status", "pending")
 
@@ -176,7 +167,7 @@ def main() -> None:
     plans = _phase_1(sub, state, ckpt, ctxs)
     secs = _phase_2(sub, state, ckpt, ctxs, plans)
     asm = _phases_3_4(state, ckpt, ctxs, plans, secs)
-    res = _phase_5(sub, state, ckpt, ctxs, asm)
+    res = _phase_5(sub, state, ckpt, ctxs, asm, plans)
     _phase_6(ctxs, plans, asm, res)
 
     ok = sum(1 for v in res.values() if v)
@@ -404,6 +395,7 @@ def _phase_5(
     sub: OpenAIBatchSubmitter, state: dict, ckpt: Path,
     ctxs: dict[str, LessonContext],
     assembled: dict[str, str],
+    plans: dict[str, LessonPlan] | None = None,
 ) -> dict[str, bool]:
     pk = "phase_5"
     if is_phase_completed(state, pk):
@@ -413,7 +405,12 @@ def _phase_5(
     for aid, html in assembled.items():
         ctx = ctxs.get(aid)
         if ctx:
-            reqs.append(build_quality_gate_request(html, ctx, aid))
+            plan = plans.get(aid) if plans else None
+            reqs.append(
+                build_quality_gate_request(
+                    html, ctx, aid, plan=plan,
+                ),
+            )
 
     responses = _run_batch_phase(sub, state, ckpt, pk, reqs)
     results: dict[str, bool] = {}

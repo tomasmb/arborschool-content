@@ -27,9 +27,10 @@ El plan DEBE cumplir:
 
 1. **Cobertura total de in_scope**: Cada ítem de "En alcance" del \
 enriquecimiento debe estar asignado a al menos una sección.
-2. **Cobertura total de error_families**: Cada familia de error \
-debe estar asignada a ejemplos resueltos (rationale de pasos), \
-feedback de quick-checks, o sección de errores.
+2. **Cobertura de error_families**: Selecciona máximo 5 familias \
+de error (las más relevantes del enriquecimiento). Cada familia \
+seleccionada debe estar asignada a ejemplos resueltos (rationale \
+de pasos), feedback de quick-checks, o sección de errores.
 3. **Progresión de dificultad**: Ejemplo 1 usa criterios del nivel \
 "easy" de la rúbrica. Ejemplo 2 sube a criterios "medium"/"hard".
 4. **Contextos diferentes**: Los dos ejemplos resueltos usan \
@@ -45,7 +46,7 @@ QC2 = integrador, combina conceptos (45-60s).
 dificultad nueva vs WE1. \
 Dimensiones: tipo de número, número de variables, tipo de \
 expresión, presencia de potencias. NO 3+ cambios de golpe.
-7. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
+7. **Brevedad**: El plan debe producir una clase de 4-6 minutos. \
 Cada sección tiene un presupuesto de palabras indicado.
 8. **Prerequisitos**: Decide si incluir bloque de repaso de \
 prerequisitos basándote en la lista de prerrequisitos.
@@ -58,6 +59,16 @@ de verificación; WE2 lo omite.
 10. **Mapeo error → distractor**: Cada distractor de quick-check \
 DEBE mapearse a una familia de error del enriquecimiento. \
 Distribuye las familias entre QC1 y QC2.
+11. **Máximo 4 subtemas en concepto**: La sección concepto tiene \
+MÁXIMO 4 bloques h3 (incluyendo Trampa PAES si aplica). \
+Fusiona ideas relacionadas; no repitas lo que los ejemplos \
+mostrarán.
+12. **Máximo 5 familias de error**: Si el enriquecimiento tiene \
+más de 5 familias de error, selecciona las 5 más relevantes \
+para una clase de 6 minutos. Fusiona familias que se solapan \
+(ej.: "manejo de signos" y "omisión de paréntesis en negativos" \
+pueden ser una sola). Distribuye esas 5 entre WEs, QCs y la \
+sección de errores.
 </task>
 
 <rules>
@@ -117,8 +128,10 @@ JSON puro (sin bloques markdown):
 
 <final_instruction>
 Genera el plan para la mini-clase del átomo {atom_id}. \
-Asegúrate de que TODOS los ítems in_scope y TODAS las familias \
-de error estén asignados a alguna sección. \
+Asegúrate de que TODOS los ítems in_scope estén asignados a \
+alguna sección. Para familias de error, selecciona las 5 más \
+relevantes (fusionando solapamientos) y distribúyelas entre \
+WEs, QCs y sección de errores. \
 Responde SOLO con el JSON.
 </final_instruction>
 """
@@ -143,7 +156,7 @@ Revisa el plan y responde con JSON:
 (fading)?
 2. ¿El contenido está dentro del alcance del átomo?
 3. ¿Los quick-checks evalúan habilidades vistas en los ejemplos?
-4. ¿La cobertura de error_families es completa?
+4. ¿Las familias de error seleccionadas (máx 5) están cubiertas?
 </task>
 
 <output_format>

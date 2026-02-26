@@ -120,8 +120,8 @@ acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
 <rules>
 - AUTO-FAIL: matemática incorrecta, contradicción explicación vs \
 clave, feedback vago, ejemplos resueltos faltantes, ítem in_scope \
-no cubierto, familia de error no abordada, sección que excede 2x \
-presupuesto, frases relleno prohibidas.
+no cubierto, familia de error listada abajo no abordada, sección \
+que excede 2x presupuesto, frases relleno prohibidas.
 - AUTO-FAIL SCOPE GATE: si la mini-clase enseña reglas generales \
 de fracciones, decimales o álgebra que no son el tema del átomo \
 (frases como "denominador común", "invierte la fracción", \

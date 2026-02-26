@@ -144,11 +144,12 @@ def build_quality_gate_request(
     full_html: str,
     ctx: LessonContext,
     atom_id: str,
+    plan: LessonPlan | None = None,
     model: str = _DEFAULT_MODEL,
 ) -> BatchRequest:
     """Build a BatchRequest for the full quality gate."""
     in_scope, error_families, rubric = (
-        extract_enrichment_for_gate(ctx)
+        extract_enrichment_for_gate(ctx, plan=plan)
     )
     prompt = build_quality_gate_prompt(
         full_html=full_html,
