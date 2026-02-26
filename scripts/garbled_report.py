@@ -1,11 +1,16 @@
 """Generate a report of questions with garbled accented characters.
 
-Detects two classes of corruption:
-1. Hex-digit substitution: accented chars replaced by hex (e.g. funcif3n)
-2. Stripped accents: accented chars removed entirely (e.g. grfico)
+Detects five classes of corruption:
+1. Hex-digit substitution: accented chars replaced by hex (funcif3n)
+2. Char-deleted accents: accented chars removed entirely (grfico)
+3. Tilde-stripped ñ→n: (tamaño→tamano, año→ano)
+4. Accent→base substitution: á→a, é→e, etc. (gráfico→grafico)
+   Only flagged when 3+ words are affected (systemic issue).
+5. Double-encoded entities / literal unicode escapes
 """
 from __future__ import annotations
 
+import html as _html
 import json
 import re
 from collections import Counter
@@ -14,14 +19,12 @@ from pathlib import Path
 QG_ROOT = Path("app/data/question-generation")
 REPORT_PATH = QG_ROOT / "garbled_questions_report.txt"
 
-# --- Class 1: hex-digit substitution patterns ---
+# ── Class 1: hex-digit substitution patterns ──────────────────
 _HEX_PATTERNS: list[str] = [
-    # ¿ corrupted forms
     "bfCue1l", "bfcue1l", "bfCue1ntas", "bfcue1ntas",
     "bfcue1les", "0bfcu01l", "0bfcu0e1l", "0bfcu03l",
     "0bCu03l", "bf00Cue100l", "00Cu03l", "bbfCue1ntos",
-    "BFcuE1l", "bcue1l", "bfEn", r"bfque9",
-    # -ción/-sión with f3/03
+    "BFcuE1l", "bcue1l", "bfEn", "bfque9",
     "funcif3n", "funci03n",
     "relacif3n", "relaci03n", "relaci53n",
     "ecuacif3n", "ecuaci03n",
@@ -44,7 +47,6 @@ _HEX_PATTERNS: list[str] = [
     "Funcif3n", "Conclusif3n", "Cif3mo",
     "cuacif3n", "olucif3n", "osicif3n",
     "elacif3n", "seccif3n", "tuacif3n",
-    # ó in common words
     "cb3mo", "c03mo", "c0f3mo",
     "n0dmero", "n03mero", "nf3mero", "n0famero",
     "gr01fico", "gr03fico", "gre1fico",
@@ -54,38 +56,28 @@ _HEX_PATTERNS: list[str] = [
     "automf3vil",
     "Seg03n", "Seg01n",
     "Adem03s", "AdemE1s", "ademe1s",
-    "Despue9s", "despue9s",
-    "Tendre1n",
-    # á in common words
-    "var0da", "var01a", "var03a",
-    "seg0dn",
+    "Despue9s", "despue9s", "Tendre1n",
+    "var0da", "var01a", "var03a", "seg0dn",
     "cuadre1tic", "cuadre1ticas", "cuadre1tico",
     "Mateme1tica", "matemE1tica",
     "Matem03ticas", "Matem3tica",
-    "categor01a", "ategor01a",
-    "autome1tico",
+    "categor01a", "ategor01a", "autome1tico",
     "aritme9tica", "aritm03tica", "aritm7tica",
-    "deber0da", "deber31a",
-    "le1pices",
-    # misc garbled words
+    "deber0da", "deber31a", "le1pices",
     "me9todo", "Tome1s", "tamaf1os",
     "cu03ntas", "cu01ntas", "contin03an",
     "Me1ximo", "m5nimo", "m5ximo",
     "mednimo", "fanica",
     "ldneas", "l0dneas",
     "pa0eds", "a03os",
-    "03pidamente", "r03pidamente",
-    "00Seg03n",
-    # round 2: additional hex-garbled words
+    "03pidamente", "r03pidamente", "00Seg03n",
     "cart0dn", "per0dmetro", "0bfCu01l",
     "uni3n", "est01n",
     "im03genes", "dise03o", "Tambi03n",
     "c3f3mo", "var3b0a", "gr31fico", "l33nea",
-    "af1o", "c9En",
-    "bfen cue1l",
+    "af1o", "c9En", "bfen cue1l",
 ]
 
-# Regex patterns needing raw regex syntax
 _REGEX_HEX: list[str] = [
     r"\\u[0-9a-fA-F]{4}",
 ]
@@ -96,52 +88,167 @@ _HEX_RE = re.compile(
     + "|".join(_REGEX_HEX),
 )
 
-# --- Class 2: stripped accent patterns (whole word, case-insensitive) ---
-_STRIPPED_WORDS: list[tuple[re.Pattern[str], str]] = [
-    (re.compile(r"\bpatrn\b", re.I), "patrón→patrn"),
-    (re.compile(r"\bgrfico\b", re.I), "gráfico→grfico"),
-    (re.compile(r"\bgrfica\b", re.I), "gráfica→grfica"),
-    (re.compile(r"\bgrficas\b", re.I), "gráficas→grficas"),
-    (re.compile(r"\bgrficos\b", re.I), "gráficos→grficos"),
-    (re.compile(r"\blnea\b", re.I), "línea→lnea"),
-    (re.compile(r"\breflexin\b", re.I), "reflexión→reflexin"),
-    (re.compile(r"\bfuncin\b", re.I), "función→funcin"),
-    (re.compile(r"\brelacin\b", re.I), "relación→relacin"),
-    (re.compile(r"\becuacin\b", re.I), "ecuación→ecuacin"),
-    (re.compile(r"\bsolucin\b", re.I), "solución→solucin"),
-    (re.compile(r"\bexpresin\b", re.I), "expresión→expresin"),
-    (re.compile(r"\bproporcin\b", re.I), "proporción→proporcin"),
-    (re.compile(r"\binformacin\b", re.I), "información→informacin"),
-    (re.compile(r"\bconclusin\b", re.I), "conclusión→conclusin"),
-    (re.compile(r"\bsituacin\b", re.I), "situación→situacin"),
-    (re.compile(r"\bnmero\b", re.I), "número→nmero"),
-    (re.compile(r"\bcmo\b", re.I), "cómo→cmo"),
-    (re.compile(r"\bsegn\b", re.I), "según→segn"),
-    (re.compile(r"\badems\b", re.I), "además→adems"),
-    (re.compile(r"\bcul\b", re.I), "cuál→cul"),
-    (re.compile(r"\btambin\b", re.I), "también→tambin"),
-    (re.compile(r"\bimgenes\b", re.I), "imágenes→imgenes"),
-    (re.compile(r"\brazn\b", re.I), "razón→razn"),
-    (re.compile(r"\brepresentacin\b", re.I), "representación→representacin"),
-    (re.compile(r"\bvariacin\b", re.I), "variación→variacin"),
-    (re.compile(r"\banlisis\b", re.I), "análisis→anlisis"),
-    (re.compile(r"\boperacin\b", re.I), "operación→operacin"),
-    (re.compile(r"\bdisminucin\b", re.I), "disminución→disminucin"),
-    (re.compile(r"\bpoblacin\b", re.I), "población→poblacin"),
-    (re.compile(r"\bmximo\b", re.I), "máximo→mximo"),
-    (re.compile(r"\bltimo\b", re.I), "último→ltimo"),
-    (re.compile(r"\bmnimo\b", re.I), "mínimo→mnimo"),
-    (re.compile(r"\bmtodo\b", re.I), "método→mtodo"),
+# ── Class 2: char-deleted accents (entire char missing) ───────
+_DELETED_WORDS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(p, re.I), label)
+    for p, label in [
+        (r"\bpatrn\b", "patrón→patrn"),
+        (r"\bgrfico\b", "gráfico→grfico"),
+        (r"\bgrfica\b", "gráfica→grfica"),
+        (r"\bgrficas\b", "gráficas→grficas"),
+        (r"\bgrficos\b", "gráficos→grficos"),
+        (r"\blnea\b", "línea→lnea"),
+        (r"\breflexin\b", "reflexión→reflexin"),
+        (r"\bfuncin\b", "función→funcin"),
+        (r"\brelacin\b", "relación→relacin"),
+        (r"\becuacin\b", "ecuación→ecuacin"),
+        (r"\bsolucin\b", "solución→solucin"),
+        (r"\bexpresin\b", "expresión→expresin"),
+        (r"\bproporcin\b", "proporción→proporcin"),
+        (r"\binformacin\b", "información→informacin"),
+        (r"\bconclusin\b", "conclusión→conclusin"),
+        (r"\bsituacin\b", "situación→situacin"),
+        (r"\bnmero\b", "número→nmero"),
+        (r"\bcmo\b", "cómo→cmo"),
+        (r"\bsegn\b", "según→segn"),
+        (r"\badems\b", "además→adems"),
+        (r"\bcul\b", "cuál→cul"),
+        (r"\btambin\b", "también→tambin"),
+        (r"\bimgenes\b", "imágenes→imgenes"),
+        (r"\brazn\b", "razón→razn"),
+        (r"\brepresentacin\b", "representación→representacin"),
+        (r"\bvariacin\b", "variación→variacin"),
+        (r"\banlisis\b", "análisis→anlisis"),
+        (r"\boperacin\b", "operación→operacin"),
+        (r"\bdisminucin\b", "disminución→disminucin"),
+        (r"\bpoblacin\b", "población→poblacin"),
+        (r"\bmximo\b", "máximo→mximo"),
+        (r"\bltimo\b", "último→ltimo"),
+        (r"\bmnimo\b", "mínimo→mnimo"),
+        (r"\bmtodo\b", "método→mtodo"),
+    ]
 ]
 
+# ── Class 3: ñ → n (tilde stripped) ──────────────────────────
+_TILDE_WORDS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(p, re.I), label)
+    for p, label in [
+        (r"\bano\b", "año→ano"), (r"\banos\b", "años→anos"),
+        (r"\bnino\b", "niño→nino"), (r"\bninos\b", "niños→ninos"),
+        (r"\bnina\b", "niña→nina"), (r"\bninas\b", "niñas→ninas"),
+        (r"\bpequeno\b", "pequeño→pequeno"),
+        (r"\bpequena\b", "pequeña→pequena"),
+        (r"\btamano\b", "tamaño→tamano"),
+        (r"\btamanos\b", "tamaños→tamanos"),
+        (r"\bdiseno\b", "diseño→diseno"),
+        (r"\bespanol\b", "español→espanol"),
+        (r"\bsenal\b", "señal→senal"),
+        (r"\bensenanza\b", "enseñanza→ensenanza"),
+        (r"\bcompania\b", "compañía→compania"),
+        (r"\bmontana\b", "montaña→montana"),
+        (r"\bmanana\b", "mañana→manana"),
+        (r"\bdueno\b", "dueño→dueno"),
+        (r"\bsueno\b", "sueño→sueno"),
+        (r"\botono\b", "otoño→otono"),
+        (r"\bdano\b", "daño→dano"),
+        (r"\bbano\b", "baño→bano"),
+    ]
+]
 
-def _strip_non_text(xml: str) -> str:
+# ── Class 4: accent→base (á→a, é→e, …) — systemic only ──────
+_ACCENT_PAIRS: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
+    (re.compile(bad, re.I), re.compile(good, re.I), label)
+    for bad, good, label in [
+        (r"\bgrafico\b", r"\bgráfico\b", "gráfico→grafico"),
+        (r"\bgrafica\b", r"\bgráfica\b", "gráfica→grafica"),
+        (r"\bgraficos\b", r"\bgráficos\b", "gráficos→graficos"),
+        (r"\bgraficas\b", r"\bgráficas\b", "gráficas→graficas"),
+        (r"\bfuncion\b", r"\bfunción\b", "función→funcion"),
+        (r"\brelacion\b", r"\brelación\b", "relación→relacion"),
+        (r"\becuacion\b", r"\becuación\b", "ecuación→ecuacion"),
+        (r"\bsolucion\b", r"\bsolución\b", "solución→solucion"),
+        (r"\bexpresion\b", r"\bexpresión\b", "expresión→expresion"),
+        (r"\bproporcion\b", r"\bproporción\b", "proporción→proporcion"),
+        (r"\binformacion\b", r"\binformación\b", "información→informacion"),
+        (r"\bconclusion\b", r"\bconclusión\b", "conclusión→conclusion"),
+        (r"\bsituacion\b", r"\bsituación\b", "situación→situacion"),
+        (r"\bnumero\b", r"\bnúmero\b", "número→numero"),
+        (r"\bsegun\b", r"\bsegún\b", "según→segun"),
+        (r"\bademas\b", r"\bademás\b", "además→ademas"),
+        (r"\btambien\b", r"\btambién\b", "también→tambien"),
+        (r"\banalisis\b", r"\banálisis\b", "análisis→analisis"),
+        (r"\bmaximo\b", r"\bmáximo\b", "máximo→maximo"),
+        (r"\bminimo\b", r"\bmínimo\b", "mínimo→minimo"),
+        (r"\bultimo\b", r"\búltimo\b", "último→ultimo"),
+        (r"\bultimos\b", r"\búltimos\b", "últimos→ultimos"),
+        (r"\bmetodo\b", r"\bmétodo\b", "método→metodo"),
+        (r"\blinea\b", r"\blínea\b", "línea→linea"),
+        (r"\bformula\b", r"\bfórmula\b", "fórmula→formula"),
+        (r"\bangulo\b", r"\bángulo\b", "ángulo→angulo"),
+        (r"\btriangulo\b", r"\btriángulo\b", "triángulo→triangulo"),
+        (r"\brectangulo\b", r"\brectángulo\b", "rectángulo→rectangulo"),
+        (r"\bdiametro\b", r"\bdiámetro\b", "diámetro→diametro"),
+        (r"\bperimetro\b", r"\bperímetro\b", "perímetro→perimetro"),
+        (r"\bcalculo\b", r"\bcálculo\b", "cálculo→calculo"),
+        (r"\bparabola\b", r"\bparábola\b", "parábola→parabola"),
+        (r"\bvertice\b", r"\bvértice\b", "vértice→vertice"),
+        (r"\bsimbolo\b", r"\bsímbolo\b", "símbolo→simbolo"),
+        (r"\brazon\b", r"\brazón\b", "razón→razon"),
+        (r"\bpatron\b", r"\bpatrón\b", "patrón→patron"),
+    ]
+]
+
+# ── Class 5: double-encoded entities ─────────────────────────
+_DBL_ENC_RE = re.compile(
+    r"&amp;(?:aacute|eacute|iacute|oacute|uacute|ntilde"
+    r"|Aacute|iquest|iexcl|#x[0-9a-fA-F]+|#\d+);?"
+)
+
+# Min unaccented words to flag as systemic (Class 4)
+_MIN_ACCENT_BASE_HITS = 3
+
+
+def _visible_text(xml: str) -> str:
     """Remove MathML/tags and decode entities to get visible text."""
-    import html as _html
     text = re.sub(r"<math[^>]*>.*?</math>", " ", xml, flags=re.DOTALL)
     text = re.sub(r"<[^>]+>", " ", text)
     text = _html.unescape(text)
     return re.sub(r"\s+", " ", text)
+
+
+def _check_item(xml: str) -> list[str]:
+    """Return list of corruption labels found in a single item."""
+    matches: list[str] = []
+
+    # Class 1: hex-digit substitutions (raw XML)
+    matches.extend(_HEX_RE.findall(xml))
+
+    text = _visible_text(xml)
+
+    # Class 2: char-deleted accents
+    for pat, label in _DELETED_WORDS:
+        if pat.search(text):
+            matches.append(label)
+
+    # Class 3: ñ → n
+    for pat, label in _TILDE_WORDS:
+        if pat.search(text):
+            matches.append(label)
+
+    # Class 4: accent→base (only if systemic — 3+ hits)
+    base_hits = [
+        label for bad, good, label in _ACCENT_PAIRS
+        if bad.search(text) and not good.search(text)
+    ]
+    if len(base_hits) >= _MIN_ACCENT_BASE_HITS:
+        matches.extend(base_hits)
+
+    # Class 5: double-encoded entities (raw XML)
+    dbl = _DBL_ENC_RE.findall(xml)
+    if dbl:
+        matches.extend(f"dbl:{d}" for d in set(dbl))
+
+    return sorted(set(matches))
 
 
 def scan() -> None:
@@ -158,20 +265,9 @@ def scan() -> None:
                 continue
             total += 1
             item_id = item.get("item_id", "?")
-
-            # Class 1: hex-digit substitutions (search raw XML)
-            hex_matches = _HEX_RE.findall(xml)
-
-            # Class 2: stripped accents (search visible text only)
-            text = _strip_non_text(xml)
-            stripped_matches = [
-                label for pat, label in _STRIPPED_WORDS
-                if pat.search(text)
-            ]
-
-            all_matches = sorted(set(hex_matches + stripped_matches))
-            if all_matches:
-                results.append((item_id, all_matches))
+            matches = _check_item(xml)
+            if matches:
+                results.append((item_id, matches))
 
     atom_counts = Counter(
         r[0].rsplit("_", 1)[0] for r in results
@@ -186,14 +282,14 @@ def scan() -> None:
         f"# Percentage garbled: {len(results)/total*100:.1f}%",
         f"# Affected atoms: {len(atom_counts)} / 205",
         "#",
-        "# Root cause: LLM occasionally emits corrupted UTF-8",
-        "# for accented characters during generation.",
+        "# Root cause: LLM occasionally corrupts accented characters.",
         "#",
-        "# Two corruption classes detected:",
-        "#   1) Hex substitution: accented chars replaced by hex digits",
-        "#      e.g. función → funcif3n, gráfico → gr01fico",
-        "#   2) Stripped accents: accented chars removed entirely",
-        "#      e.g. gráfico → grfico, según → segn",
+        "# Five corruption classes detected:",
+        "#   1) Hex substitution  — función → funcif3n",
+        "#   2) Char deleted      — gráfico → grfico",
+        "#   3) Tilde stripped    — tamaño → tamano, año → ano",
+        "#   4) Accent→base      — gráfico → grafico (3+ per Q)",
+        "#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;",
         "#",
         "# Fix: regenerate these questions through the pipeline.",
         "",

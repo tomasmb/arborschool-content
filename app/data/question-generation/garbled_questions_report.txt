@@ -1,19 +1,19 @@
 # Garbled Character Report
 # Generated: 2026-02-26
 # Total questions scanned: 8264
-# Garbled questions found: 159
-# Clean questions: 8105
-# Percentage garbled: 1.9%
-# Affected atoms: 26 / 205
+# Garbled questions found: 190
+# Clean questions: 8074
+# Percentage garbled: 2.3%
+# Affected atoms: 41 / 205
 #
-# Root cause: LLM occasionally emits corrupted UTF-8
-# for accented characters during generation.
+# Root cause: LLM occasionally corrupts accented characters.
 #
-# Two corruption classes detected:
-#   1) Hex substitution: accented chars replaced by hex digits
-#      e.g. función → funcif3n, gráfico → gr01fico
-#   2) Stripped accents: accented chars removed entirely
-#      e.g. gráfico → grfico, según → segn
+# Five corruption classes detected:
+#   1) Hex substitution  — función → funcif3n
+#   2) Char deleted      — gráfico → grfico
+#   3) Tilde stripped    — tamaño → tamano, año → ano
+#   4) Accent→base      — gráfico → grafico (3+ per Q)
+#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;
 #
 # Fix: regenerate these questions through the pipeline.
 
@@ -50,6 +50,9 @@ A-M1-ALG-02-04_Q9	cómo→cmo, funci03n, relaci03n, var0da
 ## A-M1-ALG-02-05 (1 questions)
 A-M1-ALG-02-05_Q44	conclusión→conclusin, cuál→cul, expresión→expresin, razón→razn, relación→relacin, según→segn, situación→situacin, también→tambin
 
+## A-M1-ALG-03-10 (1 questions)
+A-M1-ALG-03-10_Q13	gráfico→grafico, información→informacion, número→numero, símbolo→simbolo, también→tambien
+
 ## A-M1-ALG-03-13 (1 questions)
 A-M1-ALG-03-13_Q17	inecuaci03n, soluci03n
 
@@ -77,8 +80,13 @@ A-M1-ALG-04-05_Q40	situaci03n
 A-M1-ALG-04-05_Q46	bfEn, ecuacif3n, me9todo, sustitucif3n
 A-M1-ALG-04-05_Q54	bfque9, fanica, me9todo, solucif3n, sustitucif3n
 
-## A-M1-ALG-05-08 (1 questions)
+## A-M1-ALG-05-08 (3 questions)
 A-M1-ALG-05-08_Q13	conclusión→conclusin, cuál→cul, cómo→cmo, función→funcin, gráfica→grfica, gráfico→grfico
+A-M1-ALG-05-08_Q17	conclusión→conclusion, ecuación→ecuacion, función→funcion, gráfico→grafico, número→numero
+A-M1-ALG-05-08_Q55	conclusión→conclusion, función→funcion, gráficos→graficos, gráfico→grafico
+
+## A-M1-ALG-05-11 (1 questions)
+A-M1-ALG-05-11_Q1	dbl:&amp;#xD7;
 
 ## A-M1-ALG-05-13 (1 questions)
 A-M1-ALG-05-13_Q6	0bfcu03l, funci03n, n03mero
@@ -92,8 +100,27 @@ A-M1-ALG-06-04_Q5	bfCue1l, cuadre1tic, funcif3n
 A-M1-ALG-06-04_Q56	bfcue1l, cuadre1tic, funcif3n, gre1fico
 A-M1-ALG-06-04_Q6	además→adems, análisis→anlisis, cuál→cul, función→funcin, gráfica→grfica, situación→situacin
 
+## A-M1-ALG-06-11 (2 questions)
+A-M1-ALG-06-11_Q15	análisis→analisis, conclusión→conclusion, ecuación→ecuacion, función→funcion, fórmula→formula, gráficas→graficas, gráfico→grafico, parábola→parabola, según→segun, vértice→vertice
+A-M1-ALG-06-11_Q38	diseño→diseno
+
+## A-M1-ALG-06-12 (1 questions)
+A-M1-ALG-06-12_Q46	análisis→analisis, conclusión→conclusion, gráfica→grafica, gráfico→grafico, parábola→parabola, razón→razon, según→segun, vértice→vertice
+
+## A-M1-GEO-01-05 (1 questions)
+A-M1-GEO-01-05_Q55	conclusión→conclusion, fórmula→formula, perímetro→perimetro, relación→relacion
+
 ## A-M1-GEO-02-01 (1 questions)
 A-M1-GEO-02-01_Q36	0bfCu01l, además→adems, cart0dn, conclusión→conclusin, per0dmetro
+
+## A-M1-GEO-02-02 (1 questions)
+A-M1-GEO-02-02_Q24	además→ademas, análisis→analisis, conclusión→conclusion, número→numero, rectángulo→rectangulo
+
+## A-M1-GEO-02-04 (1 questions)
+A-M1-GEO-02-04_Q60	conclusión→conclusion, cálculo→calculo, fórmula→formula
+
+## A-M1-GEO-02-05 (1 questions)
+A-M1-GEO-02-05_Q29	además→ademas, conclusión→conclusion, cálculo→calculo, fórmula→formula, pequeño→pequeno, rectángulo→rectangulo, también→tambien
 
 ## A-M1-GEO-02-16 (5 questions)
 A-M1-GEO-02-16_Q11	0bfcu03l
@@ -101,6 +128,10 @@ A-M1-GEO-02-16_Q15	bfCue1l
 A-M1-GEO-02-16_Q19	bfcue1l
 A-M1-GEO-02-16_Q43	bfcue1l
 A-M1-GEO-02-16_Q52	est01n, uni3n
+
+## A-M1-GEO-03-01 (2 questions)
+A-M1-GEO-03-01_Q17	además→ademas, análisis→analisis, gráficos→graficos, gráfico→grafico, proporción→proporcion, razón→razon, rectángulo→rectangulo, según→segun, situación→situacion, tamaño→tamano, también→tambien, ángulo→angulo
+A-M1-GEO-03-01_Q61	análisis→analisis, rectángulo→rectangulo, según→segun, también→tambien, triángulo→triangulo, ángulo→angulo
 
 ## A-M1-GEO-03-04 (1 questions)
 A-M1-GEO-03-04_Q33	Despue9s, bfcue1l, dispersif3n, gre1fico
@@ -117,6 +148,27 @@ A-M1-GEO-03-06_Q54	número→nmero, posici03n, soluci03n
 A-M1-GEO-03-06_Q6	bfcue1l, posicif3n
 A-M1-GEO-03-06_Q60	bfCue1l
 A-M1-GEO-03-06_Q9	bfCue1l
+
+## A-M1-GEO-03-09 (1 questions)
+A-M1-GEO-03-09_Q26	conclusión→conclusion, línea→linea, también→tambien, ángulo→angulo
+
+## A-M1-GEO-03-12 (10 questions)
+A-M1-GEO-03-12_Q13	además→ademas, análisis→analisis, rectángulo→rectangulo, situación→situacion, tamaño→tamano, triángulo→triangulo, vértice→vertice
+A-M1-GEO-03-12_Q16	además→ademas, gráficos→graficos, gráfico→grafico, situación→situacion, tamaños→tamanos, tamaño→tamano, también→tambien
+A-M1-GEO-03-12_Q19	además→ademas, análisis→analisis, situación→situacion, tamaño→tamano, también→tambien
+A-M1-GEO-03-12_Q3	análisis→analisis, conclusión→conclusion, según→segun, situación→situacion, tamaño→tamano
+A-M1-GEO-03-12_Q32	análisis→analisis, conclusión→conclusion, línea→linea, tamaño→tamano, también→tambien, ángulo→angulo
+A-M1-GEO-03-12_Q36	análisis→analisis, gráficos→graficos, gráfico→grafico, relación→relacion, tamaño→tamano
+A-M1-GEO-03-12_Q40	además→ademas, análisis→analisis, conclusión→conclusion, ángulo→angulo
+A-M1-GEO-03-12_Q42	además→ademas, análisis→analisis, conclusión→conclusion, número→numero, situación→situacion, también→tambien, vértice→vertice
+A-M1-GEO-03-12_Q43	análisis→analisis, conclusión→conclusion, diseño→diseno, patrón→patron, tamaño→tamano, triángulo→triangulo
+A-M1-GEO-03-12_Q49	análisis→analisis, conclusión→conclusion, línea→linea, número→numero, situación→situacion, también→tambien
+
+## A-M1-NUM-01-10 (1 questions)
+A-M1-NUM-01-10_Q58	conclusión→conclusion, número→numero, según→segun, también→tambien
+
+## A-M1-NUM-02-07 (1 questions)
+A-M1-NUM-02-07_Q0	dbl:&amp;#215;, dbl:&amp;#247;
 
 ## A-M1-PROB-01-04 (12 questions)
 A-M1-PROB-01-04_Q10	bfque9, gráfico→grfico
@@ -137,15 +189,16 @@ A-M1-PROB-01-05_Q0	bfque9, gráfico→grfico, según→segn
 A-M1-PROB-01-05_Q2	gráfico→grfico
 A-M1-PROB-01-05_Q44	cuál→cul, gráfico→grfico, número→nmero
 
-## A-M1-PROB-01-07 (12 questions)
+## A-M1-PROB-01-07 (13 questions)
 A-M1-PROB-01-07_Q1	gráfico→grfico, línea→lnea
 A-M1-PROB-01-07_Q13	c3f3mo, gr31fico, l33nea, var3b0a
 A-M1-PROB-01-07_Q22	evolucif3n, gre1fico
 A-M1-PROB-01-07_Q31	evoluci93n, gráfico→grfico
 A-M1-PROB-01-07_Q34	af1o, bfcue1l, evolucif3n, gre1fico
-A-M1-PROB-01-07_Q35	bfque9, dispersif3n, evolucif3n, funcif3n, gre1fico
+A-M1-PROB-01-07_Q35	bfque9, dbl:&amp;aacute;, dbl:&amp;eacute;, dbl:&amp;iacute;, dbl:&amp;ntilde;, dbl:&amp;oacute;, dispersif3n, evolucif3n, funcif3n, gre1fico
 A-M1-PROB-01-07_Q39	a03os, gr03fico, n03mero, r03pidamente
 A-M1-PROB-01-07_Q42	c9En
+A-M1-PROB-01-07_Q47	análisis→analisis, gráfico→grafico, línea→linea
 A-M1-PROB-01-07_Q49	af1o, bfcue1l, evolucif3n
 A-M1-PROB-01-07_Q51	gr03afico, minuci03on
 A-M1-PROB-01-07_Q52	a03os, c03mo, gr03fico, n03mero
@@ -161,17 +214,25 @@ A-M1-PROB-01-08_Q29	cuál→cul, cómo→cmo, gráfico→grfico, según→segn
 A-M1-PROB-01-08_Q33	c03mo, gr0303fico
 A-M1-PROB-01-08_Q55	00Seg03n, bitaci03n, c03mo, gr03fico, r03pidamente, var03a
 
-## A-M1-PROB-01-10 (10 questions)
+## A-M1-PROB-01-10 (11 questions)
 A-M1-PROB-01-10_Q11	categor01a, gr01fico, gráfico→grfico
 A-M1-PROB-01-10_Q12	gráfico→grfico
 A-M1-PROB-01-10_Q19	bfque9, cu01ntas, gr01fico, proporci03n
 A-M1-PROB-01-10_Q2	bfcue1l, gráfico→grfico
 A-M1-PROB-01-10_Q34	af1o, automf3vil, bfEn, gre1fico, proporcif3n, tamaf1os
+A-M1-PROB-01-10_Q43	tamaños→tamanos
 A-M1-PROB-01-10_Q49	cuál→cul, cómo→cmo, gráficos→grficos, gráfico→grfico, línea→lnea, proporción→proporcin, situación→situacin, variación→variacin
 A-M1-PROB-01-10_Q5	gr03fico, gráficos→grficos
 A-M1-PROB-01-10_Q50	Mateme1tica, bfEn, gre1fico
 A-M1-PROB-01-10_Q56	gr1fico, según→segn
 A-M1-PROB-01-10_Q57	bfCue1ntas, gráfico→grfico
+
+## A-M1-PROB-01-18 (2 questions)
+A-M1-PROB-01-18_Q15	gráfico→grafico, información→informacion, montaña→montana, según→segun
+A-M1-PROB-01-18_Q31	años→anos, año→ano, gráfico→grafico, información→informacion, línea→linea, según→segun, últimos→ultimos
+
+## A-M1-PROB-01-21 (1 questions)
+A-M1-PROB-01-21_Q60	conclusión→conclusion, gráfico→grafico, número→numero, razón→razon, relación→relacion
 
 ## A-M1-PROB-02-01 (15 questions)
 A-M1-PROB-02-01_Q13	bfCue1l
