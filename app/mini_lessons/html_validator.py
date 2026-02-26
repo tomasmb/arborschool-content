@@ -43,7 +43,7 @@ FORBIDDEN_FILLER_PHRASES = [
 
 
 _ATOM_ID_RE = re.compile(
-    r"^A-M\d+-[A-Z]{3}-\d{2}-\d{2}$",
+    r"^A-M\d+-[A-Z]{3,4}-\d{2}-\d{2}$",
 )
 _VALID_TEMPLATES = frozenset({"P", "C", "M"})
 
