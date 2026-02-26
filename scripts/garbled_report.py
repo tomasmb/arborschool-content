@@ -231,7 +231,27 @@ _UNAMBIGUOUS_ACCENT: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
         (r"\bparabola\b", r"\bparábola\b", "parábola→parabola"),
         (r"\bsimbolo\b", r"\bsímbolo\b", "símbolo→simbolo"),
         (r"\bdiametro\b", r"\bdiámetro\b", "diámetro→diametro"),
+        (r"\bgrafico\b", r"\bgráfico\b", "gráfico→grafico"),
+        (r"\bgrafica\b", r"\bgráfica\b", "gráfica→grafica"),
+        (r"\bnumero\b", r"\bnúmero\b", "número→numero"),
+        (r"\bfuncion\b", r"\bfunción\b", "función→funcion"),
+        (r"\becuacion\b", r"\becuación\b", "ecuación→ecuacion"),
+        (r"\bfraccion\b", r"\bfracción\b", "fracción→fraccion"),
+        (r"\bsolucion\b", r"\bsolución\b", "solución→solucion"),
+        (r"\brelacion\b", r"\brelación\b", "relación→relacion"),
     ]
+]
+
+# ── Class 6: interrogative pronouns missing accent ───────────
+_INTERROG_RE: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"¿\s*Cual\b"), "¿Cuál→¿Cual"),
+    (re.compile(r"¿\s*cual\b"), "¿cuál→¿cual"),
+    (re.compile(r"¿\s*Que\b"), "¿Qué→¿Que"),
+    (re.compile(r"¿\s*que\b"), "¿qué→¿que"),
+    (re.compile(r"¿\s*Cuantos?\b"), "¿Cuánto→¿Cuanto"),
+    (re.compile(r"¿\s*cuantos?\b"), "¿cuánto→¿cuanto"),
+    (re.compile(r"¿\s*Cuantas?\b"), "¿Cuánta→¿Cuanta"),
+    (re.compile(r"¿\s*cuantas?\b"), "¿cuánta→¿cuanta"),
 ]
 
 
@@ -273,6 +293,11 @@ def _check_item(xml: str) -> list[str]:
     # Class 4b: unambiguous accent→base (even 1 hit is enough)
     for bad, good, label in _UNAMBIGUOUS_ACCENT:
         if bad.search(text) and not good.search(text):
+            matches.append(label)
+
+    # Class 6: interrogative pronouns after ¿ missing accent
+    for pat, label in _INTERROG_RE:
+        if pat.search(text):
             matches.append(label)
 
     # Class 5: double-encoded entities (raw XML)
@@ -323,6 +348,7 @@ def scan() -> None:
         "#   4) Accent→base      — gráfico → grafico (3+ per Q)",
         "#   4b) Unambiguous     — según → segun (always wrong)",
         "#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;",
+        "#   6) Interrogative    — ¿Cual instead of ¿Cuál",
         "#",
         "# Fix: regenerate these questions through the pipeline.",
         "",
