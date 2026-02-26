@@ -17,6 +17,7 @@ from typing import Any
 from app.utils.paths import (
     ATOMS_DIR,
     PRUEBAS_FINALIZADAS_DIR,
+    QUESTION_GENERATION_DIR,
     STANDARDS_DIR,
 )
 
@@ -42,6 +43,7 @@ class ExtractedAtom:
     prerrequisitos: list[str]
     notas_alcance: list[str]
     en_alcance_m1: bool
+    enrichment: dict[str, Any] | None = None
 
 
 @dataclass
@@ -123,8 +125,33 @@ def _find_images_in_qti(qti_xml: str) -> list[str]:
 # -----------------------------------------------------------------------------
 
 
+def _load_atom_enrichment(atom_id: str) -> dict[str, Any] | None:
+    """Load Phase 1 enrichment data for an atom from its checkpoint.
+
+    Returns the enrichment_data dict or None if not available.
+    """
+    ckpt = (
+        QUESTION_GENERATION_DIR / atom_id
+        / "checkpoints" / "phase_1_enrichment.json"
+    )
+    if not ckpt.exists():
+        return None
+    try:
+        with open(ckpt, encoding="utf-8") as f:
+            data = json.load(f)
+        enrichment = data.get("enrichment_data")
+        if enrichment and data.get("has_enrichment"):
+            return enrichment
+    except (json.JSONDecodeError, OSError):
+        pass
+    return None
+
+
 def extract_atoms(atoms_file: Path | None = None) -> list[ExtractedAtom]:
     """Extract all atoms from the canonical atoms JSON file.
+
+    Also loads Phase 1 enrichment data from pipeline checkpoints
+    when available, attaching it to each atom.
 
     Args:
         atoms_file: Path to atoms JSON. Defaults to paes_m1_2026_atoms.json.
@@ -140,21 +167,27 @@ def extract_atoms(atoms_file: Path | None = None) -> list[ExtractedAtom]:
 
     atoms: list[ExtractedAtom] = []
     for atom_data in data.get("atoms", []):
+        atom_id = atom_data["id"]
         atoms.append(
             ExtractedAtom(
-                id=atom_data["id"],
+                id=atom_id,
                 eje=atom_data["eje"],
                 standard_ids=atom_data["standard_ids"],
                 habilidad_principal=atom_data["habilidad_principal"],
-                habilidades_secundarias=atom_data.get("habilidades_secundarias", []),
+                habilidades_secundarias=atom_data.get(
+                    "habilidades_secundarias", [],
+                ),
                 tipo_atomico=atom_data["tipo_atomico"],
                 titulo=atom_data["titulo"],
                 descripcion=atom_data["descripcion"],
                 criterios_atomicos=atom_data["criterios_atomicos"],
-                ejemplos_conceptuales=atom_data.get("ejemplos_conceptuales", []),
+                ejemplos_conceptuales=atom_data.get(
+                    "ejemplos_conceptuales", [],
+                ),
                 prerrequisitos=atom_data.get("prerrequisitos", []),
                 notas_alcance=atom_data.get("notas_alcance", []),
                 en_alcance_m1=atom_data.get("en_alcance_m1", True),
+                enrichment=_load_atom_enrichment(atom_id),
             )
         )
 

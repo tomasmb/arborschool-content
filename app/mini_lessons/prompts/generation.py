@@ -80,6 +80,13 @@ PLAN DE LA MINI-CLASE:
 {plan_section}
 </context>
 
+<task>
+{task_details}
+
+La versión anterior falló por los errores listados abajo. \
+Corrige todos los problemas manteniendo la estructura correcta.
+</task>
+
 <failed_html>
 {failed_html}
 </failed_html>
@@ -128,8 +135,8 @@ _TASK_DETAILS: dict[str, str] = {
         "mostrarán."
     ),
     "worked-example": (
-        "Genera el ejemplo resuelto con pasos numerados. "
-        "Cada paso incluye \"por qué\", no solo \"cómo\". "
+        "Genera el ejemplo resuelto con pasos en "
+        "<details>/<summary>. "
         "Aborda las familias de error asignadas en el plan "
         "mostrando por qué el enfoque correcto funciona."
     ),
@@ -141,7 +148,7 @@ _TASK_DETAILS: dict[str, str] = {
     "error-patterns": (
         "Cubre TODAS las familias de error restantes (las no "
         "cubiertas en ejemplos o quick-checks). "
-        "Incluye un tip PAES al final."
+        "Incluye un Checklist PAES de exactamente 3 ítems con ✅."
     ),
     "transition-to-adaptive": (
         "Transición explícita al set adaptativo. "
@@ -183,7 +190,7 @@ def build_section_prompt(
     if not reference_html:
         reference_html = "(No hay ejemplo de referencia disponible)"
 
-    rules = build_generation_rules(block_name)
+    rules = build_generation_rules(block_name, index)
     task_details = _TASK_DETAILS.get(block_name, "")
     index_label = f" (índice {index})" if index else ""
     index_json = str(index) if index else "null"
@@ -217,7 +224,8 @@ def build_retry_prompt(
     if not reference_html:
         reference_html = "(No hay ejemplo de referencia disponible)"
 
-    rules = build_generation_rules(block_name)
+    rules = build_generation_rules(block_name, index)
+    task_details = _TASK_DETAILS.get(block_name, "")
     index_json = str(index) if index else "null"
 
     return SECTION_RETRY_PROMPT.format(
@@ -228,6 +236,7 @@ def build_retry_prompt(
         index_json=index_json,
         failed_html=failed_html,
         validation_errors=validation_errors,
+        task_details=task_details,
         rules=rules,
     )
 
@@ -255,6 +264,13 @@ def extract_plan_section_for_block(
     if block_name == "worked-example":
         key = f"worked_example_{index}" if index else "worked_example_1"
         we = plan_data.get(key, {})
+        canonical = plan_data.get("canonical_steps", [])
+        canonical_line = ""
+        if canonical:
+            canonical_line = (
+                f"\n  Pasos canónicos: "
+                f"{', '.join(canonical)}"
+            )
         if isinstance(we, dict):
             return (
                 f"Ejemplo {index}:\n"
@@ -267,6 +283,7 @@ def extract_plan_section_for_block(
                 f"{', '.join(we.get('in_scope_items_covered', []))}\n"
                 f"  Errores: "
                 f"{', '.join(we.get('error_families_addressed', []))}"
+                f"{canonical_line}"
             )
         return str(we)
 
@@ -281,18 +298,29 @@ def extract_plan_section_for_block(
                     f"  Tema: {qc.get('stem_topic', '')}\n"
                     f"  Correcta: "
                     f"{qc.get('correct_answer_theme', '')}\n"
-                    f"  Distractores: "
+                    f"  Distractores (cada uno = familia de error): "
                     f"{', '.join(qc.get('distractor_themes', []))}\n"
-                    f"  Errores: "
-                    f"{', '.join(qc.get('error_families_addressed', []))}"
+                    f"  Errores cubiertos: "
+                    f"{', '.join(qc.get('error_families_addressed', []))}\n"
+                    f"  IMPORTANTE: cada <li data-option> en "
+                    f"distractor-rationale debe llevar "
+                    f"data-error-id=\"nombre_familia\"."
                 )
         return "Quick check según el plan."
 
     if block_name == "error-patterns":
         families = plan_data.get("error_patterns_families", [])
+        canonical = plan_data.get("canonical_steps", [])
+        canonical_line = ""
+        if canonical:
+            canonical_line = (
+                f"\nPasos canónicos (reflejar en Checklist PAES): "
+                f"{', '.join(canonical)}"
+            )
         return (
             f"Errores: {plan_data.get('error_patterns_spec', '')}\n"
             f"Familias a cubrir: {', '.join(families)}"
+            f"{canonical_line}"
         )
 
     if block_name == "transition-to-adaptive":

@@ -27,17 +27,47 @@ El plan DEBE cumplir:
 
 1. **Cobertura total de in_scope**: Cada ítem de "En alcance" del \
 enriquecimiento debe estar asignado a al menos una sección.
-2. **Cobertura total de error_families**: Cada familia de error \
-debe estar asignada a ejemplos resueltos (rationale de pasos), \
-feedback de quick-checks, o sección de errores.
+2. **Cobertura de error_families**: Selecciona máximo 5 familias \
+de error (las más relevantes del enriquecimiento). Cada familia \
+seleccionada debe estar asignada a ejemplos resueltos (rationale \
+de pasos), feedback de quick-checks, o sección de errores.
 3. **Progresión de dificultad**: Ejemplo 1 usa criterios del nivel \
 "easy" de la rúbrica. Ejemplo 2 sube a criterios "medium"/"hard".
 4. **Contextos diferentes**: Los dos ejemplos resueltos usan \
 contextos matemáticos distintos.
-5. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
+5. **Quick-checks por template**:
+  - P-template: EXACTAMENTE 2 quick-checks. \
+QC1 = rápido, un solo concepto (20-30s). \
+QC2 = integrador, combina conceptos (45-60s).
+  - C-template: 1-2 quick-checks.
+  - M-template: 2 quick-checks (1 procedimental + 1 conceptual).
+  NUNCA 3 o más quick-checks.
+6. **Complejidad gradual**: WE2 agrega máximo UNA dimensión de \
+dificultad nueva vs WE1. \
+Dimensiones: tipo de número, número de variables, tipo de \
+expresión, presencia de potencias. NO 3+ cambios de golpe.
+7. **Brevedad**: El plan debe producir una clase de 4-6 minutos. \
 Cada sección tiene un presupuesto de palabras indicado.
-6. **Prerequisitos**: Decide si incluir bloque de repaso de \
+8. **Prerequisitos**: Decide si incluir bloque de repaso de \
 prerequisitos basándote en la lista de prerrequisitos.
+9. **Pasos canónicos (P-template)**: Si el template es P, define \
+3-5 pasos con nombres fijos que forman el procedimiento repetible \
+del átomo. Ambos ejemplos resueltos DEBEN usar exactamente estos \
+nombres de paso ("Paso 1: X", "Paso 2: Y"…). El Checklist PAES \
+debe reflejar estos mismos pasos. WE1 puede agregar un paso final \
+de verificación; WE2 lo omite.
+10. **Mapeo error → distractor**: Cada distractor de quick-check \
+DEBE mapearse a una familia de error del enriquecimiento. \
+Distribuye las familias entre QC1 y QC2.
+11. **Máximo 4 subtemas en concepto**: La sección concepto tiene \
+MÁXIMO 4 bloques h3 (incluyendo Trampa PAES si aplica). \
+Fusiona ideas relacionadas; no repitas lo que los ejemplos \
+mostrarán.
+12. **Máximo 5 familias de error**: Si el enriquecimiento tiene \
+más de 5 familias de error, selecciona las 5 más relevantes \
+para una clase de 6 minutos. Usa los NOMBRES EXACTOS del \
+enriquecimiento (no inventes nombres nuevos ni fusiones). \
+Distribuye esas 5 entre WEs, QCs y la sección de errores.
 </task>
 
 <rules>
@@ -55,6 +85,7 @@ JSON puro (sin bloques markdown):
   "objective_spec": "descripción del objetivo medible",
   "concept_spec": "qué explicar en la sección concepto",
   "concept_in_scope_items": ["in_scope item 1", "..."],
+  "canonical_steps": ["Sustituye", "Reescribe", "Calcula", "Chequeo"],
   "worked_example_1": {{
     "topic": "tema del ejemplo",
     "mathematical_context": "contexto matemático",
@@ -73,12 +104,14 @@ JSON puro (sin bloques markdown):
     "in_scope_items_covered": ["..."],
     "error_families_addressed": ["nombre_familia"]
   }},
-  "quick_checks": [
+  "quick_checks": [  // MÁXIMO 2 elementos en esta lista
     {{
       "stem_topic": "tema del quick check",
       "correct_answer_theme": "qué evalúa",
-      "distractor_themes": ["error 1", "error 2", "error 3"],
-      "error_families_addressed": ["nombre_familia"]
+      "distractor_themes": ["nombre_familia_1", "nombre_familia_2", \
+"nombre_familia_3"],
+      "error_families_addressed": ["nombre_familia"],
+      "difficulty": "simple"  // "simple" o "integrative"
     }}
   ],
   "error_patterns_spec": "qué errores cubrir + tip PAES",
@@ -94,8 +127,10 @@ JSON puro (sin bloques markdown):
 
 <final_instruction>
 Genera el plan para la mini-clase del átomo {atom_id}. \
-Asegúrate de que TODOS los ítems in_scope y TODAS las familias \
-de error estén asignados a alguna sección. \
+Asegúrate de que TODOS los ítems in_scope estén asignados a \
+alguna sección. Para familias de error, selecciona hasta 5 \
+usando sus NOMBRES EXACTOS del enriquecimiento y distribúyelas \
+entre WEs, QCs y sección de errores. \
 Responde SOLO con el JSON.
 </final_instruction>
 """
@@ -120,7 +155,7 @@ Revisa el plan y responde con JSON:
 (fading)?
 2. ¿El contenido está dentro del alcance del átomo?
 3. ¿Los quick-checks evalúan habilidades vistas en los ejemplos?
-4. ¿La cobertura de error_families es completa?
+4. ¿Las familias de error seleccionadas (máx 5) están cubiertas?
 </task>
 
 <output_format>

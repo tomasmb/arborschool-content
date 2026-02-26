@@ -26,7 +26,7 @@ PRICING = {
         },
     },
     "gemini": {
-        "gemini-3-pro-preview": {
+        "gemini-3.1-pro-preview": {
             "input": 0.0,  # Update when pricing is known
             "output": 0.0,
         },

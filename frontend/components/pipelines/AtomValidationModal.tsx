@@ -9,7 +9,7 @@ import {
   type AtomValidationStatusResponse,
 } from "@/lib/api";
 
-// Cost per standard (Gemini 3 Pro, high thinking)
+// Cost per standard (Gemini 3.1 Pro, high thinking)
 const COST_PER_STANDARD = 0.08;
 
 type ModalStep = "configure" | "progress" | "results";

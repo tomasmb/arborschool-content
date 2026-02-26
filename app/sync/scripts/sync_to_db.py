@@ -43,7 +43,14 @@ from app.sync.extractors import (
     extract_atoms,
     extract_standards,
 )
-from app.sync.s3_client import ImageUploader, S3Config, process_all_questions_images
+from app.sync.generated_question_extractor import (
+    extract_generated_questions,
+)
+from app.sync.s3_client import (
+    ImageUploader,
+    S3Config,
+    process_all_questions_images,
+)
 from app.sync.transformers import (
     build_sync_payload,
 )
@@ -84,7 +91,10 @@ Examples:
     parser.add_argument(
         "--only",
         nargs="+",
-        choices=["atoms", "standards", "questions", "tests", "variants"],
+        choices=[
+            "atoms", "standards", "questions",
+            "tests", "variants", "generated_questions",
+        ],
         help="Only sync specific entity types",
     )
 
@@ -98,6 +108,13 @@ Examples:
         "--upload-images",
         action="store_true",
         help="Upload local images in QTI to S3 (requires S3_* env vars)",
+    )
+
+    parser.add_argument(
+        "--env",
+        choices=["local", "staging", "prod"],
+        default="local",
+        help="Target database environment (default: local)",
     )
 
     parser.add_argument(
@@ -119,42 +136,62 @@ def main() -> int:
     sync_standards = args.only is None or "standards" in args.only
     sync_questions = args.only is None or "questions" in args.only
     sync_tests = args.only is None or "tests" in args.only
-    sync_variants = args.include_variants or (args.only is not None and "variants" in args.only)
+    sync_variants = (
+        args.include_variants
+        or (args.only is not None and "variants" in args.only)
+    )
+    sync_gen_questions = (
+        args.only is None
+        or "generated_questions" in args.only
+    )
 
     print("=" * 60)
-    print("Content Repo → Database Sync")
+    print(f"Content Repo → Database Sync ({args.env})")
     print("=" * 60)
 
     if args.dry_run:
-        print("\n🔍 DRY RUN MODE - No changes will be made\n")
+        print("\n  DRY RUN MODE - No changes will be made\n")
 
     # -------------------------------------------------------------------------
     # Extract data
     # -------------------------------------------------------------------------
-    print("\n📖 Extracting data from content repo...")
+    print("\n  Extracting data from content repo...")
 
     extracted_standards = []
     extracted_atoms = []
     extracted_tests = []
     extracted_questions = []
     extracted_variants = []
+    extracted_gen_questions = []
 
     if sync_standards:
         extracted_standards = extract_standards()
-        print(f"   ✓ Standards: {len(extracted_standards)}")
+        print(f"   Standards: {len(extracted_standards)}")
 
     if sync_atoms:
         extracted_atoms = extract_atoms()
-        print(f"   ✓ Atoms: {len(extracted_atoms)}")
+        enriched = sum(
+            1 for a in extracted_atoms if a.enrichment
+        )
+        print(
+            f"   Atoms: {len(extracted_atoms)}"
+            f" ({enriched} with enrichment)",
+        )
 
     if sync_tests or sync_questions:
         extracted_tests, extracted_questions = extract_all_tests()
-        print(f"   ✓ Tests: {len(extracted_tests)}")
-        print(f"   ✓ Questions: {len(extracted_questions)}")
+        print(f"   Tests: {len(extracted_tests)}")
+        print(f"   Questions: {len(extracted_questions)}")
 
     if sync_variants:
         extracted_variants = extract_variants()
-        print(f"   ✓ Variants: {len(extracted_variants)}")
+        print(f"   Variants: {len(extracted_variants)}")
+
+    if sync_gen_questions:
+        extracted_gen_questions = extract_generated_questions()
+        print(
+            f"   Generated questions: {len(extracted_gen_questions)}",
+        )
 
     # -------------------------------------------------------------------------
     # Process images (if requested)
@@ -185,7 +222,7 @@ def main() -> int:
     # -------------------------------------------------------------------------
     # Transform data
     # -------------------------------------------------------------------------
-    print("\n🔄 Transforming to database schema...")
+    print("\n  Transforming to database schema...")
 
     # Filter based on what we're syncing
     if not sync_standards:
@@ -204,43 +241,65 @@ def main() -> int:
         atoms=extracted_atoms,
         tests=extracted_tests,
         questions=extracted_questions,
-        variants=extracted_variants if extracted_variants else None,
+        variants=(
+            extracted_variants if extracted_variants else None
+        ),
     )
+    payload.generated_questions = extracted_gen_questions
 
     summary = payload.summary()
     official_count = len(extracted_questions)
     variant_count = len(extracted_variants)
-    print(f"   ✓ Standards: {summary['standards']}")
-    print(f"   ✓ Atoms: {summary['atoms']}")
-    print(f"   ✓ Tests: {summary['tests']}")
-    print(f"   ✓ Questions: {summary['questions']} ({official_count} official + {variant_count} variants)")
-    print(f"   ✓ Question-Atom links: {summary['question_atoms']} (official only, variants inherit)")
-    print(f"   ✓ Test-Question links: {summary['test_questions']}")
+    print(f"   Standards: {summary['standards']}")
+    print(f"   Atoms: {summary['atoms']}")
+    print(f"   Tests: {summary['tests']}")
+    print(
+        f"   Questions: {summary['questions']}"
+        f" ({official_count} official"
+        f" + {variant_count} variants)",
+    )
+    print(
+        f"   Question-Atom links: {summary['question_atoms']}"
+        f" (official only, variants inherit)",
+    )
+    print(f"   Test-Question links: {summary['test_questions']}")
+    print(
+        f"   Generated questions:"
+        f" {summary['generated_questions']}",
+    )
 
     # -------------------------------------------------------------------------
     # Sync to database
     # -------------------------------------------------------------------------
-    print("\n💾 Syncing to database...")
+    print(f"\n  Syncing to {args.env} database...")
 
     try:
-        db_config = DBConfig.from_env()
+        db_config = DBConfig.for_environment(args.env)
         db_client = DBClient(db_config)
 
         if args.verbose:
-            print(f"   Connecting to {db_config.host}:{db_config.port}/{db_config.database}...")
+            print(
+                f"   Connecting to"
+                f" {db_config.host}:{db_config.port}"
+                f"/{db_config.database}...",
+            )
 
-        results = db_client.sync_all(payload, dry_run=args.dry_run)
+        results = db_client.sync_all(
+            payload, dry_run=args.dry_run,
+        )
 
-        print("\n📊 Results:")
+        print("\n  Results:")
         for table, count in results.items():
-            status = "would affect" if args.dry_run else "affected"
+            status = (
+                "would affect" if args.dry_run else "affected"
+            )
             print(f"   {table}: {count} rows {status}")
 
     except ValueError as e:
-        print(f"\n❌ Configuration error: {e}")
+        print(f"\n  Configuration error: {e}")
         return 1
     except Exception as e:
-        print(f"\n❌ Database error: {e}")
+        print(f"\n  Database error: {e}")
         if args.verbose:
             import traceback
 
@@ -252,10 +311,10 @@ def main() -> int:
     # -------------------------------------------------------------------------
     print("\n" + "=" * 60)
     if args.dry_run:
-        print("✅ Dry run complete - no changes made")
+        print(f"  Dry run on {args.env} complete - no changes")
         print("   Run without --dry-run to apply changes")
     else:
-        print("✅ Sync complete!")
+        print(f"  Sync to {args.env} complete!")
     print("=" * 60)
 
     return 0

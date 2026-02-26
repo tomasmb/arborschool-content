@@ -182,38 +182,33 @@ class DBClient:
         affected = 0
         for atom in atoms:
             data = self._row_to_dict(atom)
-            # Convert to JSONB where needed
-            data["mastery_criteria"] = json.dumps(data["mastery_criteria"])
-            if data.get("conceptual_examples"):
-                data["conceptual_examples"] = json.dumps(data["conceptual_examples"])
-            if data.get("scope_notes"):
-                data["scope_notes"] = json.dumps(data["scope_notes"])
+            for jcol in ("mastery_criteria", "conceptual_examples", "scope_notes", "enrichment"):
+                if data.get(jcol):
+                    data[jcol] = json.dumps(data[jcol])
 
             cur.execute(
                 """
                 INSERT INTO atoms (
                     id, subject_id, axis, standard_ids, atom_type, primary_skill,
                     secondary_skills, title, description, mastery_criteria,
-                    conceptual_examples, scope_notes, prerequisite_ids
-                )
+                    conceptual_examples, scope_notes, prerequisite_ids, enrichment)
                 VALUES (
-                    %(id)s, %(subject_id)s, %(axis)s, %(standard_ids)s, %(atom_type)s, %(primary_skill)s,
-                    %(secondary_skills)s::skill_type[], %(title)s, %(description)s, %(mastery_criteria)s::jsonb,
-                    %(conceptual_examples)s::jsonb, %(scope_notes)s::jsonb, %(prerequisite_ids)s
-                )
+                    %(id)s, %(subject_id)s, %(axis)s, %(standard_ids)s, %(atom_type)s,
+                    %(primary_skill)s, %(secondary_skills)s::skill_type[], %(title)s,
+                    %(description)s, %(mastery_criteria)s::jsonb,
+                    %(conceptual_examples)s::jsonb, %(scope_notes)s::jsonb,
+                    %(prerequisite_ids)s, %(enrichment)s::jsonb)
                 ON CONFLICT (id) DO UPDATE SET
-                    subject_id = EXCLUDED.subject_id,
-                    axis = EXCLUDED.axis,
-                    standard_ids = EXCLUDED.standard_ids,
-                    atom_type = EXCLUDED.atom_type,
+                    subject_id = EXCLUDED.subject_id, axis = EXCLUDED.axis,
+                    standard_ids = EXCLUDED.standard_ids, atom_type = EXCLUDED.atom_type,
                     primary_skill = EXCLUDED.primary_skill,
                     secondary_skills = EXCLUDED.secondary_skills,
-                    title = EXCLUDED.title,
-                    description = EXCLUDED.description,
+                    title = EXCLUDED.title, description = EXCLUDED.description,
                     mastery_criteria = EXCLUDED.mastery_criteria,
                     conceptual_examples = EXCLUDED.conceptual_examples,
                     scope_notes = EXCLUDED.scope_notes,
-                    prerequisite_ids = EXCLUDED.prerequisite_ids
+                    prerequisite_ids = EXCLUDED.prerequisite_ids,
+                    enrichment = EXCLUDED.enrichment
                 """,
                 data,
             )

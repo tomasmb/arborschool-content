@@ -3,8 +3,8 @@
 **Last Updated**: 2025-01-24  
 **Source**: [Gemini Developer Guide](https://ai.google.dev/gemini-api/docs) and Google AI Documentation
 
-**Current model**: We use `gemini-3-pro-preview`. These best practices are designed
-for Gemini 3 Pro models.
+**Current model**: We use `gemini-3.1-pro-preview`. These best practices are designed
+for Gemini 3.1 Pro models.
 
 ---
 
@@ -27,7 +27,7 @@ for Gemini 3 Pro models.
 
 ### 1. Be Precise and Direct
 
-Gemini 3 Pro models respond best to
+Gemini 3.1 Pro models respond best to
 **direct, clear instructions**. Unlike older models that required verbose prompt engineering,
 modern Gemini models may over-analyze overly complex prompts.
 
@@ -43,7 +43,7 @@ I would like you to carefully consider the following task. Please take your time
 
 ### 2. Output Verbosity Control
 
-By default, Gemini 3 is **less verbose** and prefers providing direct, efficient answers. If you need a more conversational tone, explicitly request it.
+By default, Gemini 3.1 is **less verbose** and prefers providing direct, efficient answers. If you need a more conversational tone, explicitly request it.
 
 **✅ Good:**
 ```
@@ -81,9 +81,9 @@ Use phrases like "Based on the information above..." to anchor the model's reaso
 
 **Note**: `thinking_level` may not be directly supported by the
 `google-generativeai` SDK adapter. This section documents the feature for use
-with `gemini-3-pro-preview`.
+with `gemini-3.1-pro-preview`.
 
-Gemini 3 Pro uses **dynamic reasoning**. You can control the maximum
+Gemini 3.1 Pro uses **dynamic reasoning**. You can control the maximum
 depth of reasoning with the `thinking_level` parameter (if supported by the wrapper).
 
 ### Available Levels
@@ -183,7 +183,7 @@ Return ONLY the raw XML string. No markdown blocks.
 
 ### 1. Large Context Windows
 
-Gemini 3 Pro models support large context windows (up to **1M tokens**). For large documents:
+Gemini 3.1 Pro models support large context windows (up to **1M tokens**). For large documents:
 
 1. **Provide all context first**
 2. **Place instructions at the end**
@@ -290,9 +290,9 @@ GenerationConfig(
 )
 ```
 
-### ⚠️ Important: Temperature Settings in Gemini 3
+### ⚠️ Important: Temperature Settings in Gemini 3.1
 
-According to the Gemini 3 documentation:
+According to the Gemini 3.1 documentation:
 > "If your existing code explicitly sets temperature (especially to low values for deterministic outputs), we recommend removing this parameter and using the Gemini 3 default of 1.0 to avoid potential looping issues or performance degradation on complex tasks."
 
 **However**, for structured output tasks (JSON/XML), `temperature=0.0` is still recommended for consistency.
@@ -450,7 +450,7 @@ When you must add a rule, write it as the **general principle** you want enforce
 
 ### 2. Ignoring Default Behavior
 
-**Problem**: Not accounting for Gemini 3's less verbose default output.
+**Problem**: Not accounting for Gemini 3.1's less verbose default output.
 
 **Solution**: Explicitly request verbosity if needed.
 
@@ -591,14 +591,14 @@ Based on the question content above, generate the QTI 3.0 XML following all rule
 
 ## References
 
-1. [Gemini 3 Developer Guide](https://ai.google.dev/gemini-api/docs/gemini-3?thinking=high)
-2. [Gemini 3 Prompting Best Practices](https://ai.google.dev/docs/prompt_best_practices)
+1. [Gemini 3.1 Developer Guide](https://ai.google.dev/gemini-api/docs/gemini-3?thinking=high)
+2. [Gemini 3.1 Prompting Best Practices](https://ai.google.dev/docs/prompt_best_practices)
 3. [Prompt Design Strategies](https://ai.google.dev/gemini-api/docs/prompting-strategies)
 4. [Gemini API Reference](https://ai.google.dev/api)
 
 ---
 
-**Note**: This document is designed for `gemini-3-pro-preview`. Best practices
+**Note**: This document is designed for `gemini-3.1-pro-preview`. Best practices
 may evolve as the models are updated.
 
 

@@ -121,9 +121,19 @@ def transform_atom(extracted: ExtractedAtom, subject_id: str = "paes_m1") -> Ato
         title=extracted.titulo,
         description=extracted.descripcion,
         mastery_criteria=extracted.criterios_atomicos,
-        conceptual_examples=extracted.ejemplos_conceptuales if extracted.ejemplos_conceptuales else None,
-        scope_notes=extracted.notas_alcance if extracted.notas_alcance else None,
-        prerequisite_ids=extracted.prerrequisitos if extracted.prerrequisitos else None,
+        conceptual_examples=(
+            extracted.ejemplos_conceptuales
+            if extracted.ejemplos_conceptuales else None
+        ),
+        scope_notes=(
+            extracted.notas_alcance
+            if extracted.notas_alcance else None
+        ),
+        prerequisite_ids=(
+            extracted.prerrequisitos
+            if extracted.prerrequisitos else None
+        ),
+        enrichment=extracted.enrichment,
     )
 
 

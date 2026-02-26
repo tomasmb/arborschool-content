@@ -28,6 +28,17 @@ logger = logging.getLogger(__name__)
 
 _MAX_WORKERS = 8
 
+_HIGH_REASONING_BLOCKS = frozenset({
+    "worked-example", "quick-check",
+})
+
+
+def reasoning_for_block(block_name: str) -> str:
+    """Return the reasoning effort appropriate for *block_name*."""
+    if block_name in _HIGH_REASONING_BLOCKS:
+        return "high"
+    return "medium"
+
 
 class SectionGenerator:
     """Generates mini-lesson sections in parallel."""
@@ -55,7 +66,7 @@ class SectionGenerator:
         """
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
-        all_jobs = _build_generation_jobs(plan)
+        all_jobs = build_generation_jobs(plan)
         jobs = (
             [j for j in all_jobs if j in only]
             if only else all_jobs
@@ -128,11 +139,12 @@ class SectionGenerator:
             index=index,
         )
 
+        effort = reasoning_for_block(block_name)
         try:
             resp: LLMResponse = self._client.call(
                 prompt,
                 response_format={"type": "json_object"},
-                reasoning_effort="medium",
+                reasoning_effort=effort,
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
@@ -167,7 +179,7 @@ _BLOCK_ORDER = [
 ]
 
 
-def _build_generation_jobs(
+def build_generation_jobs(
     plan: LessonPlan,
 ) -> list[tuple[str, int | None]]:
     """Build the list of (block_name, index) jobs from the plan."""

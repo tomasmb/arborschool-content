@@ -1,7 +1,7 @@
 """Atom generation module.
 
 Handles standard-by-standard generation of learning atoms using Gemini
-(`gemini-3-pro-preview`), following the guidelines in
+(`gemini-3.1-pro-preview`), following the guidelines in
 `docs/specifications/learning-atom-granularity-guidelines.md`.
 
 Flow per standard:

@@ -154,7 +154,7 @@ class StandardsMetadata(BaseModel):
         description="Path to the source temario JSON file",
     )
     generated_with: str = Field(
-        default="gemini-3-pro-preview",
+        default="gemini-3.1-pro-preview",
         description="Model used for generation",
     )
     version: str = Field(

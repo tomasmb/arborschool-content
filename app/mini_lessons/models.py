@@ -59,7 +59,7 @@ SECTION_WORD_BUDGETS: dict[str, int] = {
     "objective": 50,
     "concept": 150,
     "worked-example": 200,
-    "quick-check": 100,
+    "quick-check": 150,
     "error-patterns": 150,
     "transition-to-adaptive": 40,
     "prerequisite-refresh": 100,
@@ -142,6 +142,11 @@ class QuickCheckSpec(BaseModel):
     correct_answer_theme: str
     distractor_themes: list[str] = Field(default_factory=list)
     error_families_addressed: list[str] = Field(default_factory=list)
+    difficulty: str = Field(
+        default="simple",
+        description="'simple' (single concept, 20-30s) or "
+        "'integrative' (multi-concept, 45-60s)",
+    )
 
 
 class OptionalSectionSpec(BaseModel):
@@ -163,6 +168,14 @@ class LessonPlan(BaseModel):
     objective_spec: str
     concept_spec: str
     concept_in_scope_items: list[str] = Field(default_factory=list)
+    canonical_steps: list[str] = Field(
+        default_factory=list,
+        description=(
+            "P-template only: 3-5 named steps that form the "
+            "repeatable procedure. Both WE1 and WE2 must use "
+            "these exact step names."
+        ),
+    )
     worked_example_1: WorkedExampleSpec
     worked_example_2: WorkedExampleSpec
     quick_checks: list[QuickCheckSpec] = Field(min_length=1, max_length=2)
@@ -251,3 +264,4 @@ class LessonResult:
     html: str = ""
     meta: dict[str, Any] = field(default_factory=dict)
     quality_report: QualityReport | None = None
+    cost_usd: float = 0.0

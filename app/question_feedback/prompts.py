@@ -1,6 +1,6 @@
 """PAES-specific prompts for feedback generation and validation (Spanish).
 
-All prompts follow Gemini 3 Pro best practices:
+All prompts follow Gemini 3.1 Pro best practices:
 - Direct, precise instructions
 - Structured sections (Role, Task, Rules, Output Format, Context)
 - Context first, instructions last

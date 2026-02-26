@@ -77,9 +77,9 @@ __all__ = [
 ]
 
 
-# Default provider: Gemini Preview 3 (same as rest of project)
+# Default provider: Gemini 3.1 Pro (same as rest of project)
 _DEFAULT_PROVIDER = "gemini"
-_DEFAULT_GEMINI_MODEL = "gemini-3-pro-preview"
+_DEFAULT_GEMINI_MODEL = "gemini-3.1-pro-preview"
 _DEFAULT_OPENAI_MODEL = "gpt-5.1"
 
 # GPT-5.1 reasoning effort levels

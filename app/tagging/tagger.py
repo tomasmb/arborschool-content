@@ -35,7 +35,7 @@ from app.utils.qti_extractor import parse_qti_xml
 class AtomTagger:
     """Tags QTI questions with atoms using Gemini."""
 
-    def __init__(self, model: str = "gemini-3-pro-preview"):
+    def __init__(self, model: str = "gemini-3.1-pro-preview"):
         config = load_default_gemini_service().config
         config.model = model
         self.service = GeminiService(config)

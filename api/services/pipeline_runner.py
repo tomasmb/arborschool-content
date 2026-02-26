@@ -197,6 +197,7 @@ class PipelineRunner:
             "batch_question_gen_api": (
                 self._cmd_batch_question_gen_api
             ),
+            "lessons": self._cmd_lessons,
         }
 
         builder = commands.get(pipeline_id)
@@ -300,6 +301,20 @@ class PipelineRunner:
             "--no-caffeinate",
         ]
         return self._append_batch_flags(cmd, p)
+
+    def _cmd_lessons(self, p: dict[str, Any]) -> list[str]:
+        """Mini-lesson generation for a single atom."""
+        cmd = [
+            _PYTHON, "-m",
+            "app.mini_lessons.scripts.run_generation",
+            "--atom-id", p.get("atom_id", ""),
+        ]
+        phase = p.get("phase")
+        if phase:
+            cmd.extend(["--phase", phase])
+        if p.get("resume") == "true":
+            cmd.append("--resume")
+        return cmd
 
     @staticmethod
     def _append_batch_flags(

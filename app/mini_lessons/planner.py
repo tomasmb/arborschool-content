@@ -151,14 +151,18 @@ def validate_plan(
 
     if len(plan.quick_checks) < 1 or len(plan.quick_checks) > 2:
         errors.append(
-            f"Must have 1-2 quick checks, got {len(plan.quick_checks)}",
+            f"Must have 1-2 quick checks, "
+            f"got {len(plan.quick_checks)}",
         )
+
+    _validate_template_qc_count(plan, errors)
 
     we1_ctx = plan.worked_example_1.mathematical_context
     we2_ctx = plan.worked_example_2.mathematical_context
     if we1_ctx and we2_ctx and we1_ctx == we2_ctx:
         errors.append(
-            "WE1 and WE2 must have different mathematical contexts",
+            "WE1 and WE2 must have different mathematical "
+            "contexts",
         )
 
     errors.extend(_check_coverage(plan, ctx))
@@ -173,11 +177,27 @@ def validate_plan(
     return errors
 
 
+def _validate_template_qc_count(
+    plan: LessonPlan,
+    errors: list[str],
+) -> None:
+    """Warn if template-specific QC count is not met.
+
+    P-template and M-template expect exactly 2 QCs.
+    """
+    qc_count = len(plan.quick_checks)
+    if plan.template_type in ("P", "M") and qc_count < 2:
+        errors.append(
+            f"{plan.template_type}-template should have 2 "
+            f"quick-checks, got {qc_count}",
+        )
+
+
 def _check_coverage(
     plan: LessonPlan,
     ctx: LessonContext,
 ) -> list[str]:
-    """Check in_scope and error_family coverage in the plan."""
+    """Check in_scope coverage and error-family selection (max 5)."""
     errors: list[str] = []
 
     if ctx.enrichment is None:
@@ -211,8 +231,20 @@ def _check_coverage(
         covered_errors.update(qc.error_families_addressed)
     covered_errors.update(plan.error_patterns_families)
 
-    for name in error_names:
-        if name not in covered_errors:
-            errors.append(f"error_family not covered: {name}")
+    # With the max-5 cap the plan selects a subset of enrichment
+    # families.  Validate that (a) enough were selected and (b)
+    # every selected family actually exists in the enrichment.
+    enrichment_set = set(error_names)
+    max_expected = min(5, len(error_names))
+    if len(covered_errors) < max_expected:
+        errors.append(
+            f"plan covers {len(covered_errors)} error families, "
+            f"need at least {max_expected}",
+        )
+    for name in covered_errors:
+        if name not in enrichment_set:
+            errors.append(
+                f"plan references unknown error family: {name}",
+            )
 
     return errors

@@ -4,7 +4,7 @@ This module re-exports from the prompts package for backward compatibility.
 The actual implementation is now split across multiple files in app/atoms/prompts/.
 
 Follows Gemini best practices from
-`docs/gemini-3-pro-prompt-engineering-best-practices.md` for `gemini-3-pro-preview`:
+`docs/gemini-3-pro-prompt-engineering-best-practices.md` for `gemini-3.1-pro-preview`:
 - Context first, then instructions
 - Explicit output format with JSON schema
 - Clear task description

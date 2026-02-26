@@ -12,7 +12,12 @@ import logging
 import re
 
 from app.llm_clients import LLMResponse, OpenAIClient
+from app.mini_lessons.helpers import extract_enrichment_for_gate
+from app.mini_lessons.html_pedagogical_checks import (
+    check_scope_violations,
+)
 from app.mini_lessons.html_validator import (
+    check_decimal_notation,
     check_filler_phrases,
     check_full_lesson_structure,
     check_section_html,
@@ -106,7 +111,7 @@ class SectionValidator:
     ) -> LessonSection:
         """Validate a single section with optional retry."""
         for attempt in range(1 + self._max_retries):
-            det_errors = _deterministic_section_checks(section)
+            det_errors = deterministic_section_checks(section)
             llm_errors = self._llm_section_checks(section)
             all_errors = det_errors + llm_errors
 
@@ -146,7 +151,7 @@ class SectionValidator:
             resp: LLMResponse = self._client.call(
                 prompt,
                 response_format={"type": "json_object"},
-                reasoning_effort="medium",
+                reasoning_effort="high",
             )
             data = json.loads(resp.text)
             if not data.get("math_correct", True):
@@ -189,14 +194,14 @@ class SectionValidator:
                 block_name=section.block_name,
                 index=data.get("index", section.index),
                 html=html,
-                word_count=len(html.split()),
+                word_count=count_words(html),
             )
         except Exception as exc:
             logger.warning("Section retry failed: %s", exc)
             return None
 
 
-def _deterministic_section_checks(
+def deterministic_section_checks(
     section: LessonSection,
 ) -> list[str]:
     """Run all deterministic checks on a single section."""
@@ -223,6 +228,9 @@ def _deterministic_section_checks(
         errors.append(
             f"Forbidden filler phrases: {', '.join(fillers)}",
         )
+
+    errors.extend(check_scope_violations(section.html))
+    errors.extend(check_decimal_notation(section.html))
 
     return errors
 
@@ -276,10 +284,10 @@ def assemble_lesson(
 
     warnings: list[str] = []
     duration = estimate_duration_minutes(full_html)
-    if duration > 7:
+    if duration > 6:
         warnings.append(
             f"Estimated duration {duration} min exceeds "
-            f"7 min target window",
+            f"6 min target window",
         )
 
     return PhaseResult(
@@ -300,7 +308,9 @@ def build_lesson_meta(
     plan: LessonPlan,
     html: str = "",
 ) -> dict:
-    """Build the mini-class.meta.json content."""
+    """Build the mini-class.meta.json content with provenance."""
+    from datetime import datetime, timezone
+
     meta: dict = {
         "atom_id": atom_id,
         "template_type": template_type,
@@ -311,6 +321,19 @@ def build_lesson_meta(
             s.block_name for s in plan.optional_sections
         ],
         "quick_check_count": len(plan.quick_checks),
+        "provenance": {
+            "model": "gpt-5.1",
+            "reasoning_efforts": {
+                "planning": "medium",
+                "coherence_check": "low",
+                "section_generation_text": "medium",
+                "section_generation_math": "high",
+                "math_verification": "high",
+                "quality_gate": "high",
+            },
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "pipeline_version": "1.0.0",
+        },
     }
     if html:
         meta["estimated_duration_min"] = (
@@ -334,14 +357,19 @@ class QualityGate:
         self,
         full_html: str,
         ctx: LessonContext,
+        plan: LessonPlan | None = None,
     ) -> tuple[PhaseResult, QualityReport]:
         """Run Phase 5: math + coverage + rubric evaluation.
+
+        When plan is provided, checks error-family coverage against
+        the plan's selected families (max 5) instead of the full
+        enrichment list.
 
         Returns:
             Tuple of (PhaseResult, QualityReport).
         """
         in_scope, error_families, rubric = (
-            _extract_enrichment_for_gate(ctx)
+            extract_enrichment_for_gate(ctx, plan=plan)
         )
 
         prompt = build_quality_gate_prompt(
@@ -381,25 +409,6 @@ class QualityGate:
         return phase, report
 
 
-def _extract_enrichment_for_gate(
-    ctx: LessonContext,
-) -> tuple[list[str], list[str], dict[str, list[str]]]:
-    """Extract enrichment data needed for the quality gate."""
-    if ctx.enrichment is None:
-        return [], [], {}
-
-    data = ctx.enrichment.model_dump()
-    scope = data.get("scope_guardrails", {})
-    in_scope = scope.get("in_scope", [])
-
-    error_fams = data.get("error_families", [])
-    error_names = [e.get("name", "") for e in error_fams]
-
-    rubric = data.get("difficulty_rubric", {})
-
-    return in_scope, error_names, rubric
-
-
 def _is_publishable(report: QualityReport) -> bool:
     """Determine if the lesson meets publication criteria.
 
@@ -417,3 +426,30 @@ def _is_publishable(report: QualityReport) -> bool:
         if score < 1:
             return False
     return True
+
+
+def identify_weak_sections(
+    report: QualityReport,
+    sections: list[LessonSection],
+) -> list[LessonSection]:
+    """Map low-scoring rubric dimensions to their sections."""
+    dimension_to_blocks: dict[str, list[str]] = {
+        "objective_clarity": ["objective"],
+        "brevity_cognitive_load": [
+            "concept", "worked-example", "error-patterns",
+        ],
+        "worked_example_correctness": ["worked-example"],
+        "step_rationale_clarity": ["worked-example"],
+        "quick_check_quality": ["quick-check"],
+        "feedback_quality": ["quick-check"],
+        "transition_readiness": ["transition-to-adaptive"],
+    }
+    weak_blocks: set[str] = set()
+    for dim, score in report.dimension_scores.items():
+        if score < 2:
+            weak_blocks.update(
+                dimension_to_blocks.get(dim, []),
+            )
+    return [
+        s for s in sections if s.block_name in weak_blocks
+    ]

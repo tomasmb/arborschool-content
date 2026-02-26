@@ -346,6 +346,34 @@ class OpenAIClient:
         raise RuntimeError("Retry loop ended unexpectedly")
 
     # ------------------------------------------------------------------
+    # JSON-mode helper  (used by mini-lessons pipeline)
+    # ------------------------------------------------------------------
+
+    def call(
+        self,
+        prompt: str,
+        *,
+        response_format: dict[str, str] | None = None,
+        reasoning_effort: str | None = None,
+    ) -> LLMResponse:
+        """Call the model with a cleaner interface for JSON-mode.
+
+        Translates ``response_format={"type": "json_object"}`` into
+        the ``response_mime_type`` kwarg that ``generate_text`` expects.
+        """
+        mime: str | None = (
+            "application/json"
+            if response_format
+            and response_format.get("type") == "json_object"
+            else None
+        )
+        return self.generate_text(
+            prompt,
+            reasoning_effort=reasoning_effort,
+            response_mime_type=mime,
+        )
+
+    # ------------------------------------------------------------------
     # Multimodal helper  (DRY -- used by enhancer / validator)
     # ------------------------------------------------------------------
 
@@ -497,7 +525,7 @@ class GeminiConfig:
     """Runtime config for Gemini (see gemini best-practices doc)."""
 
     api_key: str
-    model: str = "gemini-3-pro-preview"
+    model: str = "gemini-3.1-pro-preview"
     thinking_level: str = "high"
 
 
