@@ -525,7 +525,7 @@ class GeminiConfig:
     """Runtime config for Gemini (see gemini best-practices doc)."""
 
     api_key: str
-    model: str = "gemini-3-pro-preview"
+    model: str = "gemini-3.1-pro-preview"
     thinking_level: str = "high"
 
 

@@ -2,7 +2,7 @@
 
 This package contains prompts and guidelines for generating learning atoms.
 The prompts follow Gemini best practices from
-`docs/gemini-3-pro-prompt-engineering-best-practices.md`.
+`docs/specifications/gemini-prompt-engineering-best-practices.md`.
 """
 
 from __future__ import annotations

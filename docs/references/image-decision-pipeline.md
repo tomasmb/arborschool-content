@@ -267,7 +267,7 @@ All three Gemini image types (`gemini_compositional`, `photo_realistic`,
 1. Description Generation (GPT-5.1, medium reasoning)
    └─ Produces: title, description, alt_text, key_labels, forbidden_elements
 
-2. Image Generation (Gemini 3 Pro)
+2. Image Generation (Gemini 3.1 Pro)
    └─ Produces: base64-encoded PNG/JPEG
 
 3. Validation (GPT-5.1 Vision, high reasoning)

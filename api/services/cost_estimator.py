@@ -22,7 +22,7 @@ MODEL_PRICING: dict[str, dict[str, float]] = {
         "input": 1.25,   # $1.25 per 1M input tokens
         "output": 10.00,  # $10.00 per 1M output tokens
     },
-    "gemini-3-pro-preview": {
+    "gemini-3.1-pro-preview": {
         "input": 2.00,    # $2.00 per 1M input (≤200K context)
         "output": 12.00,  # $12.00 per 1M output (incl. thinking)
     },
@@ -45,12 +45,12 @@ GPT51_REASONING_OVERHEAD: dict[str, int] = {
 
 # Which model each pipeline actually uses (from app/llm_clients.py)
 PIPELINE_MODELS: dict[str, str] = {
-    "standards_gen": "gemini-3-pro-preview",
-    "atoms_gen": "gemini-3-pro-preview",
+    "standards_gen": "gemini-3.1-pro-preview",
+    "atoms_gen": "gemini-3.1-pro-preview",
     "pdf_split": "o4-mini-2025-04-16",
-    "pdf_to_qti": "gemini-3-pro-preview",  # primary; gpt-5.1 fallback
-    "tagging": "gemini-3-pro-preview",
-    "variant_gen": "gemini-3-pro-preview",
+    "pdf_to_qti": "gemini-3.1-pro-preview",  # primary; gpt-5.1 fallback
+    "tagging": "gemini-3.1-pro-preview",
+    "variant_gen": "gemini-3.1-pro-preview",
     "question_gen": "gpt-5.1",
     "batch_question_gen": "gpt-5.1",
     "batch_question_gen_api": "gpt-5.1",
@@ -138,7 +138,7 @@ class CostEstimatorService:
     def _estimate_standards_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Standards generation — Gemini 3 Pro, ~4x thinking."""
+        """Standards generation — Gemini 3.1 Pro, ~4x thinking."""
         num_ejes = 1 if params.get("eje") else 4
         unidades_per_eje = 8
         gen_input = 2_500 * unidades_per_eje
@@ -163,7 +163,7 @@ class CostEstimatorService:
     def _estimate_atoms_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Atoms generation — Gemini 3 Pro, ~4x thinking."""
+        """Atoms generation — Gemini 3.1 Pro, ~4x thinking."""
         num_standards = _resolve_count(params, "standard_ids", 21)
         input_per_std = 5_000
         total_output_per_std = 3_000 * 4
@@ -199,7 +199,7 @@ class CostEstimatorService:
     def _estimate_pdf_to_qti(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """PDF to QTI — Gemini 3 Pro, ~4x thinking per question."""
+        """PDF to QTI — Gemini 3.1 Pro, ~4x thinking per question."""
         num_questions = _resolve_count(params, "question_ids", 65)
         input_per_q = 4_000
         total_output_per_q = 3_000 * 4
@@ -218,7 +218,7 @@ class CostEstimatorService:
     def _estimate_tagging(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Tagging — Gemini 3 Pro, 3 calls/question, no thinking."""
+        """Tagging — Gemini 3.1 Pro, 3 calls/question, no thinking."""
         num_questions = _resolve_count(params, "question_ids", 65)
         input_per_q = 6_300   # 3 calls totaled
         output_per_q = 1_000  # 3 calls totaled, no thinking
@@ -238,7 +238,7 @@ class CostEstimatorService:
     def _estimate_variant_gen(
         self, params: dict[str, Any],
     ) -> TokenEstimate:
-        """Variant generation — Gemini 3 Pro, ~2x thinking."""
+        """Variant generation — Gemini 3.1 Pro, ~2x thinking."""
         num_questions = _resolve_count(params, "question_ids", 1)
         variants_per_q = params.get("variants_per_question", 3)
 

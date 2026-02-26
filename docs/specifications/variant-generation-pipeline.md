@@ -4,7 +4,7 @@
 **Estado Actual**: En desarrollo activo (Fase 1-2 completada)
 
 ## Objetivo del Sistema
-Crear variantes robustas, matemáticamente equivalentes y contextualmente similares de preguntas PAES (Prueba de Acceso a la Educación Superior) para pruebas diagnósticas, usando LLMs (Gemini 3 Pro).
+Crear variantes robustas, matemáticamente equivalentes y contextualmente similares de preguntas PAES (Prueba de Acceso a la Educación Superior) para pruebas diagnósticas, usando LLMs (Gemini 3.1 Pro).
 
 ## 🧠 Filosofía de Diseño y Racionale
 

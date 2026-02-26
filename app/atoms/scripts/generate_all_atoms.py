@@ -218,7 +218,7 @@ def main() -> None:
         tipo_aplicacion=metadata_dict.get("tipo_aplicacion", "unknown"),
         nombre_prueba=metadata_dict.get("nombre_prueba", "unknown"),
         source_standards_json=source_standards_path,
-        generated_with="gemini-3-pro",
+        generated_with="gemini-3.1-pro-preview",
         version=date.today().isoformat(),
     )
 
