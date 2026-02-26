@@ -87,7 +87,7 @@ _HEX_PATTERNS: list[str] = [
 
 # Regex patterns needing raw regex syntax
 _REGEX_HEX: list[str] = [
-    r"\\u00[0-9a-fA-F]{2}",
+    r"\\u[0-9a-fA-F]{4}",
 ]
 
 _HEX_RE = re.compile(
@@ -131,6 +131,7 @@ _STRIPPED_WORDS: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"\bmximo\b", re.I), "máximo→mximo"),
     (re.compile(r"\bltimo\b", re.I), "último→ltimo"),
     (re.compile(r"\bmnimo\b", re.I), "mínimo→mnimo"),
+    (re.compile(r"\bmtodo\b", re.I), "método→mtodo"),
 ]
 
 
