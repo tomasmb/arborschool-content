@@ -80,6 +80,13 @@ PLAN DE LA MINI-CLASE:
 {plan_section}
 </context>
 
+<task>
+{task_details}
+
+La versión anterior falló por los errores listados abajo. \
+Corrige todos los problemas manteniendo la estructura correcta.
+</task>
+
 <failed_html>
 {failed_html}
 </failed_html>
@@ -218,6 +225,7 @@ def build_retry_prompt(
         reference_html = "(No hay ejemplo de referencia disponible)"
 
     rules = build_generation_rules(block_name)
+    task_details = _TASK_DETAILS.get(block_name, "")
     index_json = str(index) if index else "null"
 
     return SECTION_RETRY_PROMPT.format(
@@ -228,6 +236,7 @@ def build_retry_prompt(
         index_json=index_json,
         failed_html=failed_html,
         validation_errors=validation_errors,
+        task_details=task_details,
         rules=rules,
     )
 

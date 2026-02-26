@@ -1,8 +1,4 @@
-"""Main orchestrator for the mini-lesson generation pipeline.
-
-Connects Phases 0-6 with checkpoint/resume support.
-Each phase calls its specialized module (single responsibility).
-"""
+"""Mini-lesson pipeline orchestrator (Phases 0-6, with resume & cost tracking)."""
 
 from __future__ import annotations
 
@@ -11,7 +7,11 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from app.llm_clients import OpenAIClient
+from app.llm_clients import (
+    OpenAIClient,
+    clear_cost_accumulator,
+    set_cost_accumulator,
+)
 from app.mini_lessons.generator import SectionGenerator
 from app.mini_lessons.helpers import (
     build_lesson_context,
@@ -27,6 +27,7 @@ from app.mini_lessons.helpers import (
     save_checkpoint,
     serialize_sections,
 )
+from app.mini_lessons.image_generator import LessonImageGenerator
 from app.mini_lessons.models import (
     PHASE_GROUPS,
     LessonConfig,
@@ -43,28 +44,36 @@ from app.mini_lessons.validators import (
     SectionValidator,
     assemble_lesson,
     build_lesson_meta,
+    identify_weak_sections,
 )
+from app.question_generation.progress import CostAccumulator
 
 logger = logging.getLogger(__name__)
 
 
 class MiniLessonPipeline:
-    """Orchestrates the full mini-lesson generation pipeline.
+    """Orchestrates Phases 0-6: load, plan, generate, validate, assemble, QG, output."""
 
-    Phases 0-6: load -> plan -> generate -> validate sections
-    -> assemble -> quality gate -> final output.
-    """
-
-    def __init__(self, client: OpenAIClient):
+    def __init__(
+        self,
+        client: OpenAIClient,
+        *,
+        skip_images: bool = False,
+    ):
         self._client = client
         self._planner = LessonPlanner(client)
         self._generator = SectionGenerator(client)
+        self._image_gen = LessonImageGenerator(client)
         self._section_validator = SectionValidator(client)
         self._quality_gate = QualityGate(client)
+        self._skip_images = skip_images
 
     def run(self, config: LessonConfig) -> LessonResult:
         """Run the pipeline for a single atom."""
         result = LessonResult(atom_id=config.atom_id)
+        cost_acc = CostAccumulator()
+        set_cost_accumulator(cost_acc)
+
         output_dir = get_output_dir(
             config.atom_id, config.output_dir,
         )
@@ -86,6 +95,29 @@ class MiniLessonPipeline:
             return result
 
         start, end = PHASE_GROUPS.get(phase_group, (0, 6))
+        full_html, quality = self._execute_phases(
+            start, end, config, output_dir, result,
+        )
+
+        result.success = all(
+            p.success for p in result.phase_results
+        )
+        result.html = full_html
+        result.quality_report = quality
+        result.cost_usd = cost_acc.total_cost_usd
+        cost_acc.report()
+        clear_cost_accumulator()
+        return result
+
+    def _execute_phases(
+        self,
+        start: int,
+        end: int,
+        config: LessonConfig,
+        output_dir: Path,
+        result: LessonResult,
+    ) -> tuple[str, QualityReport | None]:
+        """Dispatch and execute pipeline phases *start* through *end*."""
         ctx: LessonContext | None = None
         plan: LessonPlan | None = None
         sections: list[LessonSection] = []
@@ -115,6 +147,10 @@ class MiniLessonPipeline:
                 sections = sections or self._load_sections(
                     output_dir,
                 )
+                if ctx and plan and not self._skip_images:
+                    sections = self._phase_2b_images(
+                        sections, plan, ctx.atom_id, result,
+                    )
                 if ctx and plan:
                     sections = self._phase_3_val(
                         sections, ctx, plan, output_dir, result,
@@ -145,17 +181,11 @@ class MiniLessonPipeline:
                         quality, output_dir, result,
                     )
 
-            # Early exit on failed phase
             if result.phase_results and not result.phase_results[-1].success:
                 if phase < 5:
-                    return result
+                    break
 
-        result.success = all(
-            p.success for p in result.phase_results
-        )
-        result.html = full_html
-        result.quality_report = quality
-        return result
+        return full_html, quality
 
     def _phase_0_load(
         self, config: LessonConfig, result: LessonResult,
@@ -224,6 +254,33 @@ class MiniLessonPipeline:
                 {"sections": serialize_sections(sections)},
             )
             logger.info("Phase 2: %d sections", len(sections))
+        return sections
+
+    def _phase_2b_images(
+        self,
+        sections: list[LessonSection],
+        plan: LessonPlan,
+        atom_id: str,
+        result: LessonResult,
+    ) -> list[LessonSection]:
+        """Phase 2b: Generate images for visual sections."""
+        try:
+            sections = self._image_gen.generate_for_sections(
+                sections, plan, atom_id,
+            )
+            result.phase_results.append(PhaseResult(
+                phase_name="image_generation", success=True,
+            ))
+        except Exception as exc:
+            logger.warning(
+                "Phase 2b: image generation failed (non-blocking)"
+                ": %s", exc,
+            )
+            result.phase_results.append(PhaseResult(
+                phase_name="image_generation",
+                success=True,
+                warnings=[f"Image generation failed: {exc}"],
+            ))
         return sections
 
     def _phase_3_val(
@@ -312,7 +369,7 @@ class MiniLessonPipeline:
         result: LessonResult,
     ) -> str | None:
         """Phase 5b: regenerate only weak sections, re-validate."""
-        weak = _identify_weak_sections(report, sections)
+        weak = identify_weak_sections(report, sections)
         if not weak:
             return None
         weak_keys = [
@@ -348,9 +405,24 @@ class MiniLessonPipeline:
         output_dir: Path, result: LessonResult,
     ) -> None:
         output_dir.mkdir(parents=True, exist_ok=True)
-        (output_dir / "mini-class.html").write_text(
-            full_html, encoding="utf-8",
-        )
+        publishable = quality.publishable if quality else False
+
+        if publishable:
+            (output_dir / "mini-class.html").write_text(
+                full_html, encoding="utf-8",
+            )
+            rejected = output_dir / "mini-class.rejected.html"
+            if rejected.exists():
+                rejected.unlink()
+        else:
+            (output_dir / "mini-class.rejected.html").write_text(
+                full_html, encoding="utf-8",
+            )
+            logger.warning(
+                "Phase 6: quality gate NOT passed — wrote "
+                "mini-class.rejected.html instead",
+            )
+
         meta = build_lesson_meta(
             ctx.atom_id, ctx.template_type, ctx, plan,
             html=full_html,
@@ -371,15 +443,22 @@ class MiniLessonPipeline:
         )
         save_checkpoint(
             output_dir, 6, "final",
-            {"publishable": qa.get("publishable", False)},
+            {"publishable": publishable},
         )
         result.phase_results.append(PhaseResult(
-            phase_name="final_output", success=True,
-            data={"output_dir": str(output_dir)},
+            phase_name="final_output",
+            success=publishable,
+            data={
+                "output_dir": str(output_dir),
+                "publishable": publishable,
+            },
         ))
         result.html = full_html
         result.meta = meta
-        logger.info("Phase 6: Saved to %s", output_dir)
+        logger.info(
+            "Phase 6: Saved to %s (publishable=%s)",
+            output_dir, publishable,
+        )
 
     def _restore_ctx(
         self, config: LessonConfig, result: LessonResult,
@@ -415,28 +494,3 @@ class MiniLessonPipeline:
     def _load_html(self, output_dir: Path) -> str:
         ckpt = load_checkpoint(output_dir, 4, "assembled")
         return ckpt.get("html", "") if ckpt else ""
-
-
-def _identify_weak_sections(
-    report: QualityReport,
-    sections: list[LessonSection],
-) -> list[LessonSection]:
-    """Map low-scoring rubric dimensions to their sections."""
-    dimension_to_blocks: dict[str, list[str]] = {
-        "objective_clarity": ["objective"],
-        "brevity_cognitive_load": [
-            "concept", "worked-example", "error-patterns",
-        ],
-        "worked_example_correctness": ["worked-example"],
-        "step_rationale_clarity": ["worked-example"],
-        "quick_check_quality": ["quick-check"],
-        "feedback_quality": ["quick-check"],
-        "transition_readiness": ["transition-to-adaptive"],
-    }
-    weak_blocks: set[str] = set()
-    for dim, score in report.dimension_scores.items():
-        if score < 2:
-            weak_blocks.update(
-                dimension_to_blocks.get(dim, []),
-            )
-    return [s for s in sections if s.block_name in weak_blocks]

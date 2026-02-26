@@ -146,7 +146,7 @@ class SectionValidator:
             resp: LLMResponse = self._client.call(
                 prompt,
                 response_format={"type": "json_object"},
-                reasoning_effort="medium",
+                reasoning_effort="high",
             )
             data = json.loads(resp.text)
             if not data.get("math_correct", True):
@@ -300,7 +300,9 @@ def build_lesson_meta(
     plan: LessonPlan,
     html: str = "",
 ) -> dict:
-    """Build the mini-class.meta.json content."""
+    """Build the mini-class.meta.json content with provenance."""
+    from datetime import datetime, timezone
+
     meta: dict = {
         "atom_id": atom_id,
         "template_type": template_type,
@@ -311,6 +313,19 @@ def build_lesson_meta(
             s.block_name for s in plan.optional_sections
         ],
         "quick_check_count": len(plan.quick_checks),
+        "provenance": {
+            "model": "gpt-5.1",
+            "reasoning_efforts": {
+                "planning": "medium",
+                "coherence_check": "low",
+                "section_generation_text": "medium",
+                "section_generation_math": "high",
+                "math_verification": "high",
+                "quality_gate": "high",
+            },
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "pipeline_version": "1.0.0",
+        },
     }
     if html:
         meta["estimated_duration_min"] = (
@@ -417,3 +432,30 @@ def _is_publishable(report: QualityReport) -> bool:
         if score < 1:
             return False
     return True
+
+
+def identify_weak_sections(
+    report: QualityReport,
+    sections: list[LessonSection],
+) -> list[LessonSection]:
+    """Map low-scoring rubric dimensions to their sections."""
+    dimension_to_blocks: dict[str, list[str]] = {
+        "objective_clarity": ["objective"],
+        "brevity_cognitive_load": [
+            "concept", "worked-example", "error-patterns",
+        ],
+        "worked_example_correctness": ["worked-example"],
+        "step_rationale_clarity": ["worked-example"],
+        "quick_check_quality": ["quick-check"],
+        "feedback_quality": ["quick-check"],
+        "transition_readiness": ["transition-to-adaptive"],
+    }
+    weak_blocks: set[str] = set()
+    for dim, score in report.dimension_scores.items():
+        if score < 2:
+            weak_blocks.update(
+                dimension_to_blocks.get(dim, []),
+            )
+    return [
+        s for s in sections if s.block_name in weak_blocks
+    ]

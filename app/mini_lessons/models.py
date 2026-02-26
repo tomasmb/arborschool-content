@@ -251,3 +251,4 @@ class LessonResult:
     html: str = ""
     meta: dict[str, Any] = field(default_factory=dict)
     quality_report: QualityReport | None = None
+    cost_usd: float = 0.0

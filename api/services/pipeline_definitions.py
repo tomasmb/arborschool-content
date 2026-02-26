@@ -358,5 +358,32 @@ PIPELINE_PARAMS: dict[str, list[PipelineParam]] = {
             ),
         ),
     ],
-    "lessons": [],
+    "lessons": [
+        PipelineParam(
+            name="atom_id",
+            type="string",
+            label="Atom ID",
+            required=True,
+            description="Single atom ID (e.g. A-M1-ALG-01-02)",
+        ),
+        PipelineParam(
+            name="phase",
+            type="select",
+            label="Phase",
+            required=False,
+            options=[
+                "all", "plan", "generate",
+                "assemble", "quality", "output",
+            ],
+            description="Phase group to run (default: all)",
+        ),
+        PipelineParam(
+            name="resume",
+            type="select",
+            label="Resume",
+            required=False,
+            options=["false", "true"],
+            description="Resume from last checkpoint",
+        ),
+    ],
 }

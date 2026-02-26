@@ -7,6 +7,8 @@ Provides prompts for:
 
 from __future__ import annotations
 
+from app.mini_lessons.html_validator import FORBIDDEN_FILLER_PHRASES
+
 # ------------------------------------------------------------------
 # Section-level math verification (Phase 3)
 # ------------------------------------------------------------------
@@ -55,7 +57,14 @@ correcto.
 # Full quality gate prompt (Phase 5)
 # ------------------------------------------------------------------
 
-QUALITY_GATE_PROMPT = """\
+def _build_quality_filler_list() -> str:
+    """Build filler phrase list for the quality gate prompt."""
+    return ", ".join(
+        f'"{p.capitalize()}..."' for p in FORBIDDEN_FILLER_PHRASES
+    )
+
+
+_QUALITY_GATE_TEMPLATE = """\
 <role>
 Revisor experto de mini-clases PAES M1 (Chile). Evalúas \
 corrección matemática, cobertura pedagógica, brevedad y tono.
@@ -63,15 +72,15 @@ corrección matemática, cobertura pedagógica, brevedad y tono.
 
 <context>
 MINI-CLASE COMPLETA:
-{full_html}
+{{full_html}}
 
 ENRIQUECIMIENTO DEL ÁTOMO:
-Ítems in_scope: {in_scope_items}
-Familias de error: {error_families}
+Ítems in_scope: {{in_scope_items}}
+Familias de error: {{error_families}}
 Rúbrica de dificultad:
-  easy: {rubric_easy}
-  medium: {rubric_medium}
-  hard: {rubric_hard}
+  easy: {{rubric_easy}}
+  medium: {{rubric_medium}}
+  hard: {{rubric_hard}}
 </context>
 
 <task>
@@ -105,21 +114,17 @@ acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
 clave, feedback vago, ejemplos resueltos faltantes, ítem in_scope \
 no cubierto, familia de error no abordada, sección que excede 2x \
 presupuesto, frases relleno prohibidas.
-- Frases relleno prohibidas: "Es importante recordar que...", \
-"Cabe destacar que...", "A continuación veremos...", \
-"Como ya sabemos...", "En este contexto...", \
-"Vale la pena mencionar...", "Se procederá a analizar...", \
-"Considerando lo anterior..."
+- Frases relleno prohibidas: {filler_list}
 </rules>
 
 <output_format>
 JSON puro:
-{{
+{{{{
   "math_correct": true,
   "math_errors": [],
   "coverage_pass": true,
   "coverage_gaps": [],
-  "dimension_scores": {{
+  "dimension_scores": {{{{
     "objective_clarity": 2,
     "brevity_cognitive_load": 2,
     "worked_example_correctness": 2,
@@ -127,13 +132,13 @@ JSON puro:
     "quick_check_quality": 2,
     "feedback_quality": 2,
     "transition_readiness": 2
-  }},
+  }}}},
   "total_score": 14,
   "auto_fail_triggered": false,
   "auto_fail_reasons": [],
   "publishable": true,
   "improvement_suggestions": []
-}}
+}}}}
 </output_format>
 
 <final_instruction>
@@ -142,6 +147,10 @@ y la cobertura. Sé exigente con la brevedad: si una oración no \
 enseña nada, penaliza. Responde SOLO con JSON.
 </final_instruction>
 """
+
+QUALITY_GATE_PROMPT = _QUALITY_GATE_TEMPLATE.format(
+    filler_list=_build_quality_filler_list(),
+)
 
 
 # ------------------------------------------------------------------

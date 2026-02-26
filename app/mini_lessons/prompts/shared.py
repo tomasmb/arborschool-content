@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from typing import Any
 
+from app.mini_lessons.html_validator import FORBIDDEN_FILLER_PHRASES
+from app.mini_lessons.models import SECTION_WORD_BUDGETS
+
 # ------------------------------------------------------------------
 # HTML structural rules (injected into every generation prompt)
 # ------------------------------------------------------------------
@@ -16,7 +19,7 @@ _HTML_RULES = """\
 - Genera HTML semántico SIN estilos inline, sin <style>, sin <script>.
 - Tags permitidos: section, header, h1-h4, p, ul, ol, li, table, \
 thead, tbody, tr, th, td, strong, em, code, math, details, summary, \
-blockquote, hr.
+blockquote, hr, img (requiere atributo alt).
 - Usa MathML nativo con xmlns explícito para toda expresión \
 matemática:
   <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>...</mrow>\
@@ -26,27 +29,31 @@ matemática:
 data-option, data-correct-option, data-feedback-type según la \
 sección.
 - Caracteres UTF-8 directos: é, ó, á, ú, í, ñ, ü, ¿, ¡. \
-NUNCA entidades Latin-1."""
+NUNCA entidades Latin-1.
+- NO cubras temas listados como "Fuera de alcance" en el \
+enriquecimiento. Limítate estrictamente a los ítems "En alcance"."""
 
 # ------------------------------------------------------------------
 # Tone rules (injected into every generation prompt)
 # ------------------------------------------------------------------
 
-_TONE_RULES = """\
-- Español de Chile, tuteo natural, directo y respetuoso.
-- Audiencia: estudiantes de 17 años preparando la PAES.
-- Cada oración debe enseñar algo o cumplir un rol estructural.
-- Si se puede eliminar una oración sin perder significado, \
-elimínala.
-- Voz activa, oraciones cortas, listas sobre párrafos largos.
-- PROHIBIDO: "Es importante recordar que...", \
-"Cabe destacar que...", "A continuación veremos...", \
-"Como ya sabemos...", "En este contexto...", \
-"Vale la pena mencionar...", "Se procederá a analizar...", \
-"Considerando lo anterior...", "Esto es muy fácil", \
-"No te preocupes".
-- USA: dirección directa ("Factoriza sacando el factor común", \
-no "Se debe factorizar sacando...")."""
+def _build_filler_list() -> str:
+    """Build the PROHIBIDO filler list from the canonical constant."""
+    quoted = [f'"{p.capitalize()}..."' for p in FORBIDDEN_FILLER_PHRASES]
+    return ", ".join(quoted)
+
+
+_TONE_RULES = (
+    "- Español de Chile, tuteo natural, directo y respetuoso.\n"
+    "- Audiencia: estudiantes de 17 años preparando la PAES.\n"
+    "- Cada oración debe enseñar algo o cumplir un rol estructural.\n"
+    "- Si se puede eliminar una oración sin perder significado, "
+    "elimínala.\n"
+    "- Voz activa, oraciones cortas, listas sobre párrafos largos.\n"
+    f"- PROHIBIDO: {_build_filler_list()}.\n"
+    '- USA: dirección directa ("Factoriza sacando el factor común", '
+    'no "Se debe factorizar sacando...").'
+)
 
 # ------------------------------------------------------------------
 # Quick-check rules (shared by generation and validation)
@@ -65,32 +72,44 @@ ul[data-role="distractor-rationale"] > li[data-option]."""
 # Section-specific rules (appended per section type)
 # ------------------------------------------------------------------
 
-_OBJECTIVE_RULES = """\
-- Exactamente 2 oraciones: qué aprenderás + relevancia PAES.
-- Verbo medible ("podrás identificar", "podrás resolver").
-- ~30-50 palabras máximo."""
+_OBJ_BUDGET = SECTION_WORD_BUDGETS["objective"]
+_OBJECTIVE_RULES = (
+    "- Exactamente 2 oraciones: qué aprenderás + relevancia PAES.\n"
+    "- Verbo medible (\"podrás identificar\", \"podrás resolver\").\n"
+    f"- ~{_OBJ_BUDGET} palabras máximo."
+)
 
-_CONCEPT_RULES = """\
-- Mínima teoría necesaria: definiciones y notación solo si \
-son imprescindibles.
-- ~80-150 palabras máximo.
-- Una idea por párrafo. Sin repetir lo que los ejemplos mostrarán."""
+_CON_BUDGET = SECTION_WORD_BUDGETS["concept"]
+_CONCEPT_RULES = (
+    "- Mínima teoría necesaria: definiciones y notación solo si "
+    "son imprescindibles.\n"
+    f"- ~{_CON_BUDGET} palabras máximo.\n"
+    "- Una idea por párrafo. Sin repetir lo que los ejemplos "
+    "mostrarán."
+)
 
-_WORKED_EXAMPLE_RULES = """\
-- Pasos numerados con etiquetas (Paso 1, Paso 2...).
-- Cada paso: 1-2 oraciones máximo.
-- ~100-200 palabras por ejemplo.
-- Incluir un "por qué" en cada paso clave, no solo el "cómo"."""
+_WE_BUDGET = SECTION_WORD_BUDGETS["worked-example"]
+_WORKED_EXAMPLE_RULES = (
+    "- Pasos numerados con etiquetas (Paso 1, Paso 2...).\n"
+    "- Cada paso: 1-2 oraciones máximo.\n"
+    f"- ~{_WE_BUDGET} palabras por ejemplo.\n"
+    '- Incluir un "por qué" en cada paso clave, no solo el '
+    '"cómo".'
+)
 
-_ERROR_PATTERNS_RULES = """\
-- Cubre TODAS las familias de error asignadas en el plan.
-- ~1-2 oraciones por error.
-- Incluir un tip PAES al final.
-- ~80-150 palabras total."""
+_ERR_BUDGET = SECTION_WORD_BUDGETS["error-patterns"]
+_ERROR_PATTERNS_RULES = (
+    "- Cubre TODAS las familias de error asignadas en el plan.\n"
+    "- ~1-2 oraciones por error.\n"
+    "- Incluir un tip PAES al final.\n"
+    f"- ~{_ERR_BUDGET} palabras total."
+)
 
-_TRANSITION_RULES = """\
-- Máximo 2 oraciones (~20-40 palabras).
-- Transición explícita al set adaptativo."""
+_TR_BUDGET = SECTION_WORD_BUDGETS["transition-to-adaptive"]
+_TRANSITION_RULES = (
+    f"- Máximo 2 oraciones (~{_TR_BUDGET} palabras).\n"
+    "- Transición explícita al set adaptativo."
+)
 
 
 # ------------------------------------------------------------------
@@ -207,7 +226,7 @@ def build_generation_rules(section_type: str) -> str:
         "objective": _OBJECTIVE_RULES,
         "concept": _CONCEPT_RULES,
         "worked-example": _WORKED_EXAMPLE_RULES,
-        "quick-check": f"{_QUICK_CHECK_RULES}\n{_WORKED_EXAMPLE_RULES}",
+        "quick-check": _QUICK_CHECK_RULES,
         "error-patterns": _ERROR_PATTERNS_RULES,
         "transition-to-adaptive": _TRANSITION_RULES,
     }

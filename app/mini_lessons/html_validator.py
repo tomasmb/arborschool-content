@@ -18,7 +18,7 @@ ALLOWED_TAGS = frozenset({
     "p", "ul", "ol", "li", "table", "thead", "tbody", "tr",
     "th", "td", "strong", "em", "code", "math", "mrow", "mi",
     "mn", "mo", "msup", "msub", "mfrac", "msqrt", "mtext",
-    "details", "summary", "blockquote", "hr", "div",
+    "details", "summary", "blockquote", "hr", "div", "img",
 })
 
 DISALLOWED_TAGS = frozenset({
@@ -71,7 +71,9 @@ class _StructureParser(HTMLParser):
         self.disallowed_tags_found: list[str] = []
         self.option_counts: dict[int, int] = {}
         self.correct_options: dict[int, str | None] = {}
+        self.imgs_missing_alt: list[int] = []
         self._current_qc_index: int | None = None
+        self._img_count: int = 0
         self.article_atom_id: str | None = None
         self.article_template: str | None = None
 
@@ -88,6 +90,11 @@ class _StructureParser(HTMLParser):
 
         if attr_dict.get("style"):
             self.has_inline_style = True
+
+        if tag == "img":
+            self._img_count += 1
+            if not attr_dict.get("alt"):
+                self.imgs_missing_alt.append(self._img_count)
 
         if tag == "article":
             self.article_atom_id = attr_dict.get("data-atom-id")
@@ -319,12 +326,18 @@ def _gate_3_anti_repeat(html: str) -> list[str]:
 
 
 def _gate_4_renderer_safety(html: str) -> list[str]:
-    """Gate 4: Renderer safety checks."""
+    """Gate 4: Renderer safety + accessibility checks."""
     errors: list[str] = []
     parser = parse_html_structure(html)
 
     if parser.has_inline_style:
         errors.append("Inline styles found")
+
+    if parser.imgs_missing_alt:
+        errors.append(
+            f"<img> tags missing alt attribute: "
+            f"{parser.imgs_missing_alt}",
+        )
 
     dangerous_patterns = [
         "onerror=", "onclick=", "onload=",

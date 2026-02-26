@@ -28,6 +28,17 @@ logger = logging.getLogger(__name__)
 
 _MAX_WORKERS = 8
 
+_HIGH_REASONING_BLOCKS = frozenset({
+    "worked-example", "quick-check",
+})
+
+
+def _reasoning_for_block(block_name: str) -> str:
+    """Return the reasoning effort appropriate for *block_name*."""
+    if block_name in _HIGH_REASONING_BLOCKS:
+        return "high"
+    return "medium"
+
 
 class SectionGenerator:
     """Generates mini-lesson sections in parallel."""
@@ -128,11 +139,12 @@ class SectionGenerator:
             index=index,
         )
 
+        effort = _reasoning_for_block(block_name)
         try:
             resp: LLMResponse = self._client.call(
                 prompt,
                 response_format={"type": "json_object"},
-                reasoning_effort="medium",
+                reasoning_effort=effort,
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
