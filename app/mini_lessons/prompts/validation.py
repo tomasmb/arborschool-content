@@ -42,15 +42,8 @@ WORKED_EXAMPLE_TASK = """\
 1. Lee el ejemplo resuelto paso a paso.
 2. Verifica cada paso matemático de forma independiente.
 3. Comprueba que cada paso sigue lógicamente del anterior.
-4. Verifica que la respuesta final es correcta."""
-
-QUICK_CHECK_TASK = """\
-1. Lee el enunciado y las 4 opciones (A-D).
-2. Resuelve el problema paso a paso desde cero.
-3. Compara tu respuesta con la opción marcada como correcta.
-4. Verifica que el feedback de cada distractor es matemáticamente \
-correcto.
-5. Verifica que hay feedback para la correcta + 3 distractores."""
+4. Verifica que la respuesta final es correcta.
+5. Comprueba que el checklist PAES es coherente con los pasos."""
 
 
 # ------------------------------------------------------------------
@@ -87,51 +80,38 @@ Rúbrica de dificultad:
 Evalúa la mini-clase en tres dimensiones:
 
 **1. CORRECCIÓN MATEMÁTICA** (auto-fail si hay error):
-- Verifica cada paso de los ejemplos resueltos.
-- Resuelve cada quick-check desde cero y compara con la clave.
-- Busca contradicciones entre explicación y clave de respuesta.
+- Verifica cada paso del ejemplo resuelto.
+- Busca contradicciones entre explicación y resultado.
 
 **2. COBERTURA** (auto-fail si hay gaps):
-- ¿Cada ítem in_scope está cubierto en alguna sección?
-- ¿Cada familia de error está abordada en alguna sección?
-- ¿Ejemplo 1 usa criterios easy? ¿Ejemplo 2 sube a medium/hard?
+- ¿Cada ítem in_scope está cubierto en concepto o ejemplo resuelto?
+- ¿El ejemplo resuelto aborda al menos 2 familias de error?
 
-**3. RÚBRICA PEDAGÓGICA** (0-2 cada dimensión, umbral >= 12/14):
+**3. RÚBRICA PEDAGÓGICA** (0-2 cada dimensión, umbral >= 6/8):
 1. objective_clarity: Objetivo claro y medible.
 2. brevity_cognitive_load: Sin relleno, sin decoración, cada \
 oración enseña o estructura. 0=concepto es un bloque sin \
 sub-títulos h3 O verbose, 1=algo exceso, 2=limpio con h3 \
 sub-bloques.
-3. worked_example_correctness: Matemática verificada.
+3. worked_example_correctness: Matemática verificada y checklist \
+PAES coherente con el procedimiento.
 4. step_rationale_clarity: Pasos explican "por qué", no solo \
-"cómo". 0=WE2 tiene la misma cantidad de anotaciones que WE1 \
-(debe mostrar fading) O sin rationale, 1=algo fading, 2=fading \
-claro con cues de predicción en WE2.
-5. quick_check_quality: Distractores plausibles, no triviales. \
-Para P-template, penalizar si hay solo 1 QC cuando 2 son \
-apropiados.
-6. feedback_quality: Explicativo, accionable, conciso. 0=feedback \
-de QC no incluye "Regla" al final, 1=regla presente pero vaga, \
-2=regla clara tipo "Si [X], entonces [Y]".
-7. transition_readiness: Transición explícita al set adaptativo con \
-acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
+"cómo". 0=sin rationale, 1=rationale parcial, 2=cada paso \
+explica el razonamiento.
 </task>
 
 <rules>
 - AUTO-FAIL: matemática incorrecta, contradicción explicación vs \
-clave, feedback vago, ejemplos resueltos faltantes, ítem in_scope \
-no cubierto, familia de error listada abajo no abordada, sección \
-que excede 2x presupuesto, frases relleno prohibidas.
+resultado, ejemplo resuelto faltante, ítem in_scope no cubierto, \
+sección que excede 2x presupuesto, frases relleno prohibidas.
 - AUTO-FAIL SCOPE GATE: si la mini-clase enseña reglas generales \
 de fracciones, decimales o álgebra que no son el tema del átomo \
 (frases como "denominador común", "invierte la fracción", \
 "simplifica la fracción", "mínimo común múltiplo"), es auto-fail.
 - AUTO-FAIL NOTACIÓN: si hay decimales con punto en vez de coma \
 (1.5 en vez de 1,5), es auto-fail.
-- AUTO-FAIL DISTRACTORES: si algún distractor de QC no está \
-mapeado a una familia de error (falta data-error-id), es auto-fail.
-- Para P-template: si WE1 y WE2 usan nombres de pasos distintos \
-(no respetan pasos canónicos), penalizar step_rationale_clarity.
+- Para P-template: si el ejemplo no respeta los pasos canónicos, \
+penalizar step_rationale_clarity.
 - Frases relleno prohibidas: {filler_list}
 </rules>
 
@@ -146,12 +126,9 @@ JSON puro:
     "objective_clarity": 2,
     "brevity_cognitive_load": 2,
     "worked_example_correctness": 2,
-    "step_rationale_clarity": 2,
-    "quick_check_quality": 2,
-    "feedback_quality": 2,
-    "transition_readiness": 2
+    "step_rationale_clarity": 2
   }}}},
-  "total_score": 14,
+  "total_score": 8,
   "auto_fail_triggered": false,
   "auto_fail_reasons": [],
   "publishable": true,
@@ -183,7 +160,6 @@ def build_section_math_prompt(
     """Build a math verification prompt for a single section."""
     task_map = {
         "worked-example": WORKED_EXAMPLE_TASK,
-        "quick-check": QUICK_CHECK_TASK,
     }
     task = task_map.get(
         section_type,

@@ -325,17 +325,12 @@ def find_resume_phase_group(output_dir: Path) -> str | None:
 def extract_plan_error_families(plan: LessonPlan) -> list[str]:
     """Return the deduplicated set of error families used in a plan.
 
-    Unions families from WE1, WE2, quick-checks, and the
-    error-patterns section so the quality gate checks coverage
-    against the plan's selected families (max 5), not the full
-    enrichment list.
+    Extracts families from the single worked example so the quality
+    gate checks coverage against the plan's selected families
+    instead of the full enrichment list.
     """
     families: set[str] = set()
-    families.update(plan.worked_example_1.error_families_addressed)
-    families.update(plan.worked_example_2.error_families_addressed)
-    for qc in plan.quick_checks:
-        families.update(qc.error_families_addressed)
-    families.update(plan.error_patterns_families)
+    families.update(plan.worked_example.error_families_addressed)
     return sorted(families)
 
 

@@ -79,6 +79,10 @@ function parseQTIXml(qtiXml: string): ParsedQTI | null {
       clone
         .querySelectorAll("qti-feedback-block")
         .forEach((el) => el.remove());
+      // Strip inline <img> so images render only via ImageGallery
+      clone
+        .querySelectorAll("img")
+        .forEach((el) => el.remove());
       stem = extractContent(clone);
     }
 

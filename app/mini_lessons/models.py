@@ -135,6 +135,14 @@ class QuickCheckSpec(BaseModel):
     difficulty: str = "simple"
 
 
+class OptionalSectionSpec(BaseModel):
+    """Specification for an optional section with justification."""
+
+    block_name: str
+    justification: str
+    content_spec: str
+
+
 class LessonPlan(BaseModel):
     """Full lesson plan generated in Phase 1.
 
@@ -157,6 +165,9 @@ class LessonPlan(BaseModel):
     checklist_items: list[str] = Field(
         default_factory=list,
         description="3 one-line PAES checklist items for the WE closing.",
+    )
+    optional_sections: list[OptionalSectionSpec] = Field(
+        default_factory=list,
     )
     include_prerequisite_refresh: bool = False
     justifications: dict[str, str] = Field(default_factory=dict)

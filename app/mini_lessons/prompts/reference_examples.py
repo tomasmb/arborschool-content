@@ -3,6 +3,9 @@
 Structural anchors per template (P, C, M). The LLM
 pattern-matches these to produce spec-compliant output.
 Injected via str.format() — no unescaped curly braces.
+
+Each template has 3 sections: objective, concept, worked-example
+(with Checklist PAES folded into the WE closing).
 """
 
 from __future__ import annotations
@@ -36,7 +39,7 @@ potencia de cada variable común, (3) divide cada término.</p>
 variables.</p>
   </section>
   <section data-block="worked-example" data-index="1">
-    <h2>Ejemplo resuelto 1</h2>
+    <h2>Ejemplo resuelto</h2>
     <p>Factoriza <math xmlns="http://www.w3.org/1998/Math/MathML"\
 ><mrow><mn>6</mn><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo>\
 <mn>9</mn><mi>x</mi></mrow></math>.</p>
@@ -65,114 +68,11 @@ Resultado: 3x(2x + 3).</p>
     </ol>
     <p data-role="micro-reinforcement">Si obtuviste 3x(2x + 3), \
 vas bien — el punto clave fue tomar la menor potencia de x.</p>
-  </section>
-  <section data-block="worked-example" data-index="2">
-    <h2>Ejemplo resuelto 2</h2>
-    <p>Factoriza 12a³b − 18a²b² + 6ab.</p>
-    <ol data-role="steps">
-      <li><details>
-        <summary><strong>Paso 1:</strong> MCD y variables\
-</summary>
-        <p>MCD(12,18,6) = 6. Menor: a¹, b¹. Factor: 6ab.</p>
-      </details></li>
-      <li><details>
-        <summary><strong>Paso 2:</strong> Divide</summary>
-        <p data-role="prediction-cue">¿Cuánto da 12a³b ÷ 6ab? \
-Piénsalo antes de abrir el siguiente paso.</p>
-      </details></li>
-      <li><details>
-        <summary><strong>Paso 3:</strong> Resultado</summary>
-        <p>2a² − 3ab + 1. Resultado: 6ab(2a² − 3ab + 1).</p>
-      </details></li>
-    </ol>
-    <p data-role="micro-reinforcement">Si obtuviste \
-6ab(2a² − 3ab + 1), vas bien.</p>
-  </section>
-  <section data-block="quick-check" data-index="1"
-           data-format="mcq-abcd">
-    <h3>Quick Check 1</h3>
-    <p data-role="question-stem">¿Factor común de \
-8x³ + 12x²?</p>
-    <ol data-role="options" data-option-format="ABCD">
-      <li data-option="A">2x</li>
-      <li data-option="B">4x²</li>
-      <li data-option="C">4x³</li>
-      <li data-option="D">8x</li>
-    </ol>
-    <div data-role="feedback" data-feedback-type="explanatory">
-      <details>
-        <summary>Ver explicación</summary>
-        <p data-correct-option="B">\
-MCD(8,12)=4; menor potencia=x². Factor: 4x². \
-Regla: Si buscas factor común, toma el MCD de coeficientes \
-y la menor potencia de cada variable.</p>
-        <ul data-role="distractor-rationale">
-          <li data-option="A" data-error-id="factor-no-maximo">\
-2x divide ambos pero no es el \
-máximo. Revisa si hay un divisor mayor.</li>
-          <li data-option="C" data-error-id="potencia-incorrecta">\
-x³ no divide a 12x². Revisa que \
-la potencia sea ≤ en todos los términos.</li>
-          <li data-option="D" data-error-id="factor-no-maximo">\
-8 no divide a 12. Revisa que \
-divida a TODOS los coeficientes.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-  <section data-block="quick-check" data-index="2"
-           data-format="mcq-abcd">
-    <h3>Quick Check 2</h3>
-    <p data-role="question-stem">¿Factorización correcta de \
-15y − 10?</p>
-    <ol data-role="options" data-option-format="ABCD">
-      <li data-option="A">5(3y - 2)</li>
-      <li data-option="B">5(3y + 2)</li>
-      <li data-option="C">5y(3 - 2)</li>
-      <li data-option="D">3(5y - 10)</li>
-    </ol>
-    <div data-role="feedback" data-feedback-type="explanatory">
-      <details>
-        <summary>Ver explicación</summary>
-        <p data-correct-option="A">\
-MCD(15,10)=5. Divide: 3y y 2. Signo resta se mantiene. \
-Regla: Si factorizas, verifica multiplicando — debes recuperar \
-la expresión original.</p>
-        <ul data-role="distractor-rationale">
-          <li data-option="B" data-error-id="signos">\
-Signo cambió a suma. Revisa \
-signos al dividir.</li>
-          <li data-option="C" data-error-id="potencia-incorrecta">\
-y no está en ambos términos. \
-Revisa variables comunes.</li>
-          <li data-option="D" data-error-id="factor-no-maximo">\
-3 no es MCD(15,10). Revisa que \
-uses el máximo.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-  <section data-block="error-patterns">
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li><strong>Factor no máximo:</strong> Sacas 2x cuando \
-es 4x². Busca el MCD completo.</li>
-      <li><strong>Potencia incorrecta:</strong> Tomas la mayor \
-en vez de la menor.</li>
-      <li><strong>Signos:</strong> Al sacar factor negativo, \
-todos los signos del paréntesis cambian.</li>
-    </ul>
-    <p><strong>Checklist PAES</strong></p>
     <ul data-role="paes-checklist">
       <li>✅ ¿El MCD divide a TODOS los coeficientes?</li>
       <li>✅ ¿Tomé la menor potencia de cada variable?</li>
       <li>✅ ¿Al multiplicar recupero la expresión original?</li>
     </ul>
-  </section>
-  <section data-block="transition-to-adaptive">
-    <h2>A practicar</h2>
-    <p>Ahora pasas al set adaptativo donde practicarás \
-factorización con dificultad creciente.</p>
   </section>
 </article>"""
 
@@ -193,111 +93,46 @@ Identificar funciones es base para al menos 5 preguntas PAES.</p>
     <h3>Definición clave</h3>
     <p>Una función asigna a cada entrada <strong>exactamente \
 una</strong> salida.</p>
-    <h3>Prueba de la recta vertical</h3>
-    <p>En un gráfico, si alguna recta vertical corta la curva \
-en más de un punto, no es función.</p>
     <h3>Trampa PAES</h3>
     <p>❌ Creer que si dos x dan la misma y, no es función.</p>
     <p>✔ Lo prohibido es que UNA entrada dé DOS salidas.</p>
   </section>
   <section data-block="worked-example" data-index="1">
-    <h2>Ejemplo resuelto 1 — Interpretación</h2>
+    <h2>Ejemplo resuelto</h2>
     <table>
       <thead><tr><th>x</th><th>y</th></tr></thead>
       <tbody>
         <tr><td>1</td><td>3</td></tr>
         <tr><td>2</td><td>5</td></tr>
-        <tr><td>3</td><td>7</td></tr>
+        <tr><td>1</td><td>7</td></tr>
       </tbody>
     </table>
+    <p>¿Es función esta tabla?</p>
     <ol data-role="steps">
       <li><details>
-        <summary><strong>Paso 1:</strong> Revisa x repetidos\
+        <summary><strong>Paso 1:</strong> Busca x repetidos\
 </summary>
-        <p>x = 1, 2, 3: todos distintos.</p>
+        <p>x = 1 aparece dos veces (con y=3 e y=7).</p>
       </details></li>
       <li><details>
         <summary><strong>Paso 2:</strong> Concluye</summary>
-        <p>Cada x tiene exactamente una y. Sí es función.</p>
+        <p>x=1 tiene dos salidas distintas. No es función.</p>
       </details></li>
       <li><details>
         <summary><strong>Verificación:</strong> Recta vertical\
 </summary>
-        <p>Ninguna recta vertical toca más de un punto. ✓</p>
-      </details></li>
-    </ol>
-    <p data-role="micro-reinforcement">Si concluiste que sí es \
-función, vas bien — ningún x se repite con distinta y.</p>
-  </section>
-  <section data-block="worked-example" data-index="2">
-    <h2>Ejemplo resuelto 2 — Decisión</h2>
-    <p>Pares: (1, 2), (1, 5), (3, 4).</p>
-    <ol data-role="steps">
-      <li><details>
-        <summary><strong>Paso 1:</strong> Entradas repetidas\
-</summary>
-        <p data-role="prediction-cue">¿Hay algún x que aparezca \
-más de una vez? Piénsalo antes de abrir.</p>
-      </details></li>
-      <li><details>
-        <summary><strong>Paso 2:</strong> Concluye</summary>
-        <p>x=1 tiene y=2 e y=5. Dos salidas. No es función.</p>
+        <p>En un gráfico, una recta vertical en x=1 toca dos \
+puntos. Confirma: no es función. ✓</p>
       </details></li>
     </ol>
     <p data-role="micro-reinforcement">Si identificaste que \
-x=1 tiene dos salidas, vas bien.</p>
-  </section>
-  <section data-block="quick-check" data-index="1"
-           data-format="mcq-abcd">
-    <h3>Quick Check</h3>
-    <p data-role="question-stem">\
-¿Cuál conjunto de pares representa una función?</p>
-    <ol data-role="options" data-option-format="ABCD">
-      <li data-option="A">(1,3), (2,3), (3,5)</li>
-      <li data-option="B">(1,2), (1,4), (2,5)</li>
-      <li data-option="C">(2,1), (2,3), (3,1)</li>
-      <li data-option="D">(4,1), (4,2), (4,3)</li>
-    </ol>
-    <div data-role="feedback" data-feedback-type="explanatory">
-      <details>
-        <summary>Ver explicación</summary>
-        <p data-correct-option="A">\
-Cada x aparece una sola vez. Que dos x den la misma y está \
-permitido. Regla: Si cada entrada tiene exactamente una salida, \
-entonces es función.</p>
-        <ul data-role="distractor-rationale">
-          <li data-option="B" data-error-id="entrada-repetida">\
-x=1 tiene dos salidas. Revisa \
-entradas duplicadas.</li>
-          <li data-option="C" data-error-id="entrada-repetida">\
-x=2 tiene dos salidas. Revisa \
-si algún x se repite.</li>
-          <li data-option="D" data-error-id="entrada-repetida">\
-x=4 aparece tres veces. Revisa \
-entradas con múltiples salidas.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-  <section data-block="error-patterns">
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li><strong>Confundir inyectividad:</strong> Que dos x \
-den la misma y no la descalifica.</li>
-      <li><strong>Recta vertical mal aplicada:</strong> Se \
-aplica al gráfico, no a la tabla.</li>
-    </ul>
-    <p><strong>Checklist PAES</strong></p>
+x=1 tiene dos salidas, vas bien — eso descalifica la relación \
+como función.</p>
     <ul data-role="paes-checklist">
       <li>✅ ¿Algún x se repite con distinta y?</li>
       <li>✅ ¿Apliqué recta vertical al gráfico?</li>
       <li>✅ ¿No confundí "misma salida" con "no función"?</li>
     </ul>
-  </section>
-  <section data-block="transition-to-adaptive">
-    <h2>A practicar</h2>
-    <p>Ahora pasas al set adaptativo con ejercicios sobre \
-identificación de funciones.</p>
   </section>
 </article>"""
 
@@ -326,7 +161,7 @@ y = mx + b.</p>
     <p>✔ Mismo orden en numerador y denominador.</p>
   </section>
   <section data-block="worked-example" data-index="1">
-    <h2>Ejemplo resuelto 1 — Procedimiento</h2>
+    <h2>Ejemplo resuelto</h2>
     <p>Ecuación de la recta por (1, 3) y (3, 7).</p>
     <ol data-role="steps">
       <li><details>
@@ -350,108 +185,11 @@ y = mx + b.</p>
     </ol>
     <p data-role="micro-reinforcement">Si obtuviste y=2x+1, \
 vas bien — el punto clave fue el mismo orden al restar.</p>
-  </section>
-  <section data-block="worked-example" data-index="2">
-    <h2>Ejemplo resuelto 2 — Conceptual</h2>
-    <p>Tienda: $500 fijos + $200/km. Puntos: (0,500), \
-(3,1100).</p>
-    <ol data-role="steps">
-      <li><details>
-        <summary><strong>Paso 1:</strong> Pendiente</summary>
-        <p data-role="prediction-cue">¿Cuánto da \
-(1100−500)/(3−0)? Piénsalo antes de abrir.</p>
-      </details></li>
-      <li><details>
-        <summary><strong>Paso 2:</strong> Interpreta</summary>
-        <p>m=600/3=200 (costo/km). b=500 (cargo fijo). \
-Ecuación: y=200x+500.</p>
-      </details></li>
-    </ol>
-    <p data-role="micro-reinforcement">Si obtuviste \
-y=200x+500, vas bien.</p>
-  </section>
-  <section data-block="quick-check" data-index="1"
-           data-format="mcq-abcd">
-    <h3>Quick Check 1</h3>
-    <p data-role="question-stem">\
-¿Pendiente de la recta por (-1,4) y (2,-2)?</p>
-    <ol data-role="options" data-option-format="ABCD">
-      <li data-option="A">-2</li>
-      <li data-option="B">2</li>
-      <li data-option="C">-1/2</li>
-      <li data-option="D">6</li>
-    </ol>
-    <div data-role="feedback" data-feedback-type="explanatory">
-      <details>
-        <summary>Ver explicación</summary>
-        <p data-correct-option="A">\
-m=(-2−4)/(2−(-1))=-6/3=-2. Regla: Si restas coordenadas, \
-mantén el mismo orden arriba y abajo.</p>
-        <ul data-role="distractor-rationale">
-          <li data-option="B" data-error-id="orden-de-resta">\
-Olvidaste el signo. Revisa: \
--2−4=-6.</li>
-          <li data-option="C" data-error-id="confundir-m-y-b">\
-Invertiste Δy/Δx. m=Δy/Δx, \
-no Δx/Δy.</li>
-          <li data-option="D" data-error-id="doble-negativo">\
--6 es el numerador, no m. \
-Divide por Δx.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-  <section data-block="quick-check" data-index="2"
-           data-format="mcq-abcd">
-    <h3>Quick Check 2</h3>
-    <p data-role="question-stem">\
-Si y=3x−5, ¿intercepto con eje y?</p>
-    <ol data-role="options" data-option-format="ABCD">
-      <li data-option="A">3</li>
-      <li data-option="B">-5</li>
-      <li data-option="C">5</li>
-      <li data-option="D">-3</li>
-    </ol>
-    <div data-role="feedback" data-feedback-type="explanatory">
-      <details>
-        <summary>Ver explicación</summary>
-        <p data-correct-option="B">\
-Intercepto: y cuando x=0: y=3(0)−5=-5. Regla: Si necesitas \
-el intercepto, sustituye x=0.</p>
-        <ul data-role="distractor-rationale">
-          <li data-option="A" data-error-id="confundir-m-y-b">\
-3 es la pendiente, no b. Revisa \
-el término sin x.</li>
-          <li data-option="C" data-error-id="doble-negativo">\
-Cambiaste signo de -5. Revisa el \
-término independiente.</li>
-          <li data-option="D" data-error-id="confundir-m-y-b">\
-Confundiste m y b. m multiplica \
-x; b es el término libre.</li>
-        </ul>
-      </details>
-    </div>
-  </section>
-  <section data-block="error-patterns">
-    <h2>Errores frecuentes</h2>
-    <ul>
-      <li><strong>Orden de resta:</strong> Mismo orden en \
-numerador y denominador.</li>
-      <li><strong>Confundir m y b:</strong> m es pendiente; \
-b es donde cruza eje y.</li>
-      <li><strong>Doble negativo:</strong> 2−(−1)=3, no 1.</li>
-    </ul>
-    <p><strong>Checklist PAES</strong></p>
     <ul data-role="paes-checklist">
       <li>✅ ¿Resté en el mismo orden arriba y abajo?</li>
       <li>✅ ¿Identifiqué m (pendiente) y b (intercepto)?</li>
       <li>✅ ¿Al sustituir puntos obtengo igualdad?</li>
     </ul>
-  </section>
-  <section data-block="transition-to-adaptive">
-    <h2>A practicar</h2>
-    <p>Ahora pasas al set adaptativo con problemas de ecuaciones \
-de recta.</p>
   </section>
 </article>"""
 
