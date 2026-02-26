@@ -26,7 +26,7 @@ from app.mini_lessons.batch_request_builders import (
     build_quality_gate_request,
     build_section_request,
 )
-from app.mini_lessons.generator import _build_generation_jobs
+from app.mini_lessons.generator import build_generation_jobs
 from app.mini_lessons.helpers import (
     build_lesson_context,
     deserialize_plan,
@@ -40,8 +40,9 @@ from app.mini_lessons.helpers import (
 from app.mini_lessons.models import LessonContext, LessonPlan
 from app.mini_lessons.planner import validate_plan
 from app.mini_lessons.validators import (
-    _deterministic_section_checks,
     assemble_lesson,
+    build_lesson_meta,
+    deterministic_section_checks,
 )
 from app.question_generation.batch_api import (
     BatchRequest,
@@ -64,10 +65,6 @@ from app.utils.paths import MINI_LESSONS_DIR
 logger = logging.getLogger(__name__)
 _BATCH_DIR = MINI_LESSONS_DIR / ".batch"
 
-
-# ------------------------------------------------------------------
-# Generic batch phase runner (DRY)
-# ------------------------------------------------------------------
 
 def _run_batch_phase(
     sub: OpenAIBatchSubmitter,
@@ -141,10 +138,6 @@ def _run_batch_phase(
     return []
 
 
-# ------------------------------------------------------------------
-# CLI
-# ------------------------------------------------------------------
-
 def main() -> None:
     """CLI entry point."""
     args = _parse_args()
@@ -184,6 +177,7 @@ def main() -> None:
     secs = _phase_2(sub, state, ckpt, ctxs, plans)
     asm = _phases_3_4(state, ckpt, ctxs, plans, secs)
     res = _phase_5(sub, state, ckpt, ctxs, asm)
+    _phase_6(ctxs, plans, asm, res)
 
     ok = sum(1 for v in res.values() if v)
     print(f"\nDone: {ok}/{len(res)} publishable")
@@ -240,10 +234,6 @@ def _build_contexts(
     return ctxs
 
 
-# ------------------------------------------------------------------
-# Phase 1 — Planning
-# ------------------------------------------------------------------
-
 def _phase_1(
     sub: OpenAIBatchSubmitter, state: dict,
     ckpt: Path, ctxs: dict[str, LessonContext],
@@ -296,10 +286,6 @@ def _reload_plans(
     return plans
 
 
-# ------------------------------------------------------------------
-# Phase 2 — Section generation
-# ------------------------------------------------------------------
-
 def _phase_2(
     sub: OpenAIBatchSubmitter, state: dict, ckpt: Path,
     ctxs: dict[str, LessonContext],
@@ -314,7 +300,7 @@ def _phase_2(
         ctx = ctxs.get(aid)
         if not ctx:
             continue
-        for bn, idx in _build_generation_jobs(plan):
+        for bn, idx in build_generation_jobs(plan):
             reqs.append(build_section_request(ctx, plan, bn, idx))
 
     responses = _run_batch_phase(sub, state, ckpt, pk, reqs)
@@ -327,6 +313,12 @@ def _phase_2(
             smap.setdefault(aid, []).append(json.loads(resp.text))
         except Exception:
             continue
+
+    for aid, secs in smap.items():
+        save_checkpoint(
+            get_output_dir(aid), 2, "sections",
+            {"sections": secs},
+        )
 
     update_phase(state, pk, ckpt, status="completed")
     print(f"Phase 2: {len(smap)} atoms with sections")
@@ -343,10 +335,6 @@ def _reload_sections(
             smap[aid] = c["sections"]
     return smap
 
-
-# ------------------------------------------------------------------
-# Phases 3-4 — Local validation + assembly
-# ------------------------------------------------------------------
 
 def _phases_3_4(
     state: dict, ckpt: Path,
@@ -377,7 +365,7 @@ def _phases_3_4(
         ]
         valid = [
             s for s in secs
-            if not _deterministic_section_checks(s)
+            if not deterministic_section_checks(s)
         ]
         for s in valid:
             s.validation_status = "passed"
@@ -411,10 +399,6 @@ def _reload_assembled(
             asm[aid] = c["html"]
     return asm
 
-
-# ------------------------------------------------------------------
-# Phase 5 — Quality gate
-# ------------------------------------------------------------------
 
 def _phase_5(
     sub: OpenAIBatchSubmitter, state: dict, ckpt: Path,
@@ -471,6 +455,45 @@ def _reload_quality(
         if c and "report" in c:
             results[aid] = c["report"].get("publishable", False)
     return results
+
+
+def _phase_6(
+    ctxs: dict[str, LessonContext],
+    plans: dict[str, LessonPlan],
+    assembled: dict[str, str],
+    quality_results: dict[str, bool],
+) -> None:
+    """Write mini-class.meta.json and mini-class.qa.json per atom."""
+    written = 0
+    for aid, html in assembled.items():
+        ctx = ctxs.get(aid)
+        plan = plans.get(aid)
+        if not ctx or not plan:
+            continue
+
+        out = get_output_dir(aid)
+        out.mkdir(parents=True, exist_ok=True)
+
+        meta = build_lesson_meta(
+            aid, ctx.template_type, ctx, plan, html=html,
+        )
+        (out / "mini-class.meta.json").write_text(
+            json.dumps(meta, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+        qa: dict = {"atom_id": aid, "publishable": False}
+        quality_ckpt = load_checkpoint(out, 5, "quality")
+        if quality_ckpt and "report" in quality_ckpt:
+            qa = quality_ckpt["report"]
+            qa["atom_id"] = aid
+        (out / "mini-class.qa.json").write_text(
+            json.dumps(qa, indent=2, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        written += 1
+
+    print(f"Phase 6: {written} atoms with meta + qa files")
 
 
 if __name__ == "__main__":

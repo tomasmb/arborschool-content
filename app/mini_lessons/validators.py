@@ -27,6 +27,7 @@ from app.mini_lessons.models import (
     PhaseResult,
     QualityReport,
 )
+from app.mini_lessons.helpers import extract_enrichment_for_gate
 from app.mini_lessons.prompts.generation import (
     build_retry_prompt,
     extract_plan_section_for_block,
@@ -106,7 +107,7 @@ class SectionValidator:
     ) -> LessonSection:
         """Validate a single section with optional retry."""
         for attempt in range(1 + self._max_retries):
-            det_errors = _deterministic_section_checks(section)
+            det_errors = deterministic_section_checks(section)
             llm_errors = self._llm_section_checks(section)
             all_errors = det_errors + llm_errors
 
@@ -189,14 +190,14 @@ class SectionValidator:
                 block_name=section.block_name,
                 index=data.get("index", section.index),
                 html=html,
-                word_count=len(html.split()),
+                word_count=count_words(html),
             )
         except Exception as exc:
             logger.warning("Section retry failed: %s", exc)
             return None
 
 
-def _deterministic_section_checks(
+def deterministic_section_checks(
     section: LessonSection,
 ) -> list[str]:
     """Run all deterministic checks on a single section."""
@@ -356,7 +357,7 @@ class QualityGate:
             Tuple of (PhaseResult, QualityReport).
         """
         in_scope, error_families, rubric = (
-            _extract_enrichment_for_gate(ctx)
+            extract_enrichment_for_gate(ctx)
         )
 
         prompt = build_quality_gate_prompt(
@@ -394,25 +395,6 @@ class QualityGate:
             phase.errors = report.auto_fail_reasons
 
         return phase, report
-
-
-def _extract_enrichment_for_gate(
-    ctx: LessonContext,
-) -> tuple[list[str], list[str], dict[str, list[str]]]:
-    """Extract enrichment data needed for the quality gate."""
-    if ctx.enrichment is None:
-        return [], [], {}
-
-    data = ctx.enrichment.model_dump()
-    scope = data.get("scope_guardrails", {})
-    in_scope = scope.get("in_scope", [])
-
-    error_fams = data.get("error_families", [])
-    error_names = [e.get("name", "") for e in error_fams]
-
-    rubric = data.get("difficulty_rubric", {})
-
-    return in_scope, error_names, rubric
 
 
 def _is_publishable(report: QualityReport) -> bool:

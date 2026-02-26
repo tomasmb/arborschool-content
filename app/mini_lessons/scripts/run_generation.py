@@ -57,7 +57,9 @@ def main() -> None:
 
     client = OpenAIClient(api_key=api_key)
     pipeline = MiniLessonPipeline(
-        client, skip_images=args.skip_images,
+        client,
+        skip_images=args.skip_images,
+        max_retries=args.max_retries,
     )
 
     results: list[LessonResult] = []

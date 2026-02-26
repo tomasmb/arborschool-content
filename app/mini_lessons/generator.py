@@ -33,7 +33,7 @@ _HIGH_REASONING_BLOCKS = frozenset({
 })
 
 
-def _reasoning_for_block(block_name: str) -> str:
+def reasoning_for_block(block_name: str) -> str:
     """Return the reasoning effort appropriate for *block_name*."""
     if block_name in _HIGH_REASONING_BLOCKS:
         return "high"
@@ -66,7 +66,7 @@ class SectionGenerator:
         """
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
-        all_jobs = _build_generation_jobs(plan)
+        all_jobs = build_generation_jobs(plan)
         jobs = (
             [j for j in all_jobs if j in only]
             if only else all_jobs
@@ -139,7 +139,7 @@ class SectionGenerator:
             index=index,
         )
 
-        effort = _reasoning_for_block(block_name)
+        effort = reasoning_for_block(block_name)
         try:
             resp: LLMResponse = self._client.call(
                 prompt,
@@ -179,7 +179,7 @@ _BLOCK_ORDER = [
 ]
 
 
-def _build_generation_jobs(
+def build_generation_jobs(
     plan: LessonPlan,
 ) -> list[tuple[str, int | None]]:
     """Build the list of (block_name, index) jobs from the plan."""

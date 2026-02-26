@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from pathlib import Path
 
 from app.atoms.models import Atom, CanonicalAtomsFile
@@ -148,7 +149,6 @@ def _extract_question_stem(qti_xml: str) -> str:
     Uses simple tag stripping to get readable text without
     importing heavy XML parsers. Returns empty string on failure.
     """
-    import re
 
     prompt_match = re.search(
         r"<prompt[^>]*>(.*?)</prompt>",
@@ -315,6 +315,34 @@ def find_resume_phase_group(output_dir: Path) -> str | None:
         5: "output",
     }
     return checkpoint_to_next.get(max_phase)
+
+
+# ---------------------------------------------------------------------------
+# Enrichment extraction (shared by validators + batch builders)
+# ---------------------------------------------------------------------------
+
+
+def extract_enrichment_for_gate(
+    ctx: LessonContext,
+) -> tuple[list[str], list[str], dict[str, list[str]]]:
+    """Extract enrichment data needed for quality gate evaluation.
+
+    Returns:
+        Tuple of (in_scope items, error family names, difficulty rubric).
+    """
+    if ctx.enrichment is None:
+        return [], [], {}
+
+    data = ctx.enrichment.model_dump()
+    scope = data.get("scope_guardrails", {})
+    in_scope = scope.get("in_scope", [])
+
+    error_fams = data.get("error_families", [])
+    error_names = [e.get("name", "") for e in error_fams]
+
+    rubric = data.get("difficulty_rubric", {})
+
+    return in_scope, error_names, rubric
 
 
 # ---------------------------------------------------------------------------

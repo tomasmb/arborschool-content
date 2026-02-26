@@ -59,12 +59,15 @@ class MiniLessonPipeline:
         client: OpenAIClient,
         *,
         skip_images: bool = False,
+        max_retries: int = 1,
     ):
         self._client = client
-        self._planner = LessonPlanner(client)
+        self._planner = LessonPlanner(client, max_retries=max_retries)
         self._generator = SectionGenerator(client)
         self._image_gen = LessonImageGenerator(client)
-        self._section_validator = SectionValidator(client)
+        self._section_validator = SectionValidator(
+            client, max_retries=max_retries,
+        )
         self._quality_gate = QualityGate(client)
         self._skip_images = skip_images
 

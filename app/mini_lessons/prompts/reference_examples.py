@@ -441,7 +441,7 @@ def get_reference_for_template(template_type: str) -> str:
         "C": TEMPLATE_C_REFERENCE,
         "M": TEMPLATE_M_REFERENCE,
     }
-    return refs.get(template_type, TEMPLATE_M_REFERENCE)
+    return refs.get(template_type, "")
 
 
 def extract_section_reference(

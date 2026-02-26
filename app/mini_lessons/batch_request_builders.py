@@ -10,7 +10,8 @@ generation batch_api module (DRY).
 
 from __future__ import annotations
 
-from app.mini_lessons.generator import _reasoning_for_block
+from app.mini_lessons.generator import reasoning_for_block
+from app.mini_lessons.helpers import extract_enrichment_for_gate
 from app.mini_lessons.models import LessonContext, LessonPlan
 from app.mini_lessons.prompts.generation import (
     build_section_prompt,
@@ -103,7 +104,7 @@ def build_section_request(
         custom_id=f"ml-p2:{ctx.atom_id}:{block_name}{idx_label}",
         model=model,
         messages=build_text_messages(prompt),
-        reasoning_effort=_reasoning_for_block(block_name),
+        reasoning_effort=reasoning_for_block(block_name),
         response_format={"type": "json_object"},
     )
 
@@ -147,7 +148,7 @@ def build_quality_gate_request(
 ) -> BatchRequest:
     """Build a BatchRequest for the full quality gate."""
     in_scope, error_families, rubric = (
-        _extract_enrichment(ctx)
+        extract_enrichment_for_gate(ctx)
     )
     prompt = build_quality_gate_prompt(
         full_html=full_html,
@@ -164,16 +165,3 @@ def build_quality_gate_request(
     )
 
 
-def _extract_enrichment(
-    ctx: LessonContext,
-) -> tuple[list[str], list[str], dict[str, list[str]]]:
-    """Extract enrichment data needed for the quality gate."""
-    if ctx.enrichment is None:
-        return [], [], {}
-    data = ctx.enrichment.model_dump()
-    scope = data.get("scope_guardrails", {})
-    in_scope = scope.get("in_scope", [])
-    error_fams = data.get("error_families", [])
-    error_names = [e.get("name", "") for e in error_fams]
-    rubric = data.get("difficulty_rubric", {})
-    return in_scope, error_names, rubric
