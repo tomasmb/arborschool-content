@@ -14,6 +14,7 @@ from app.llm_clients import (
 )
 from app.mini_lessons.generator import SectionGenerator
 from app.mini_lessons.helpers import (
+    atom_requires_images,
     build_lesson_context,
     check_prerequisites,
     deserialize_plan,
@@ -74,6 +75,21 @@ class MiniLessonPipeline:
     def run(self, config: LessonConfig) -> LessonResult:
         """Run the pipeline for a single atom."""
         result = LessonResult(atom_id=config.atom_id)
+
+        if self._skip_images and atom_requires_images(config.atom_id):
+            result.phase_results.append(PhaseResult(
+                phase_name="skip_images",
+                success=False,
+                errors=[
+                    f"Atom {config.atom_id} requires images — "
+                    "skipped (--skip-images)",
+                ],
+            ))
+            logger.info(
+                "Skipping %s: requires images", config.atom_id,
+            )
+            return result
+
         cost_acc = CostAccumulator()
         set_cost_accumulator(cost_acc)
 
@@ -150,7 +166,7 @@ class MiniLessonPipeline:
                 sections = sections or self._load_sections(
                     output_dir,
                 )
-                if ctx and plan and not self._skip_images:
+                if ctx and plan:
                     sections = self._phase_2b_images(
                         sections, plan, ctx.atom_id, result,
                     )
@@ -278,13 +294,9 @@ class MiniLessonPipeline:
                 phase_name="image_generation", success=True,
             ))
         except Exception as exc:
-            logger.warning(
-                "Phase 2b: image generation failed (non-blocking)"
-                ": %s", exc,
-            )
+            logger.warning("Phase 2b image gen failed: %s", exc)
             result.phase_results.append(PhaseResult(
-                phase_name="image_generation",
-                success=True,
+                phase_name="image_generation", success=True,
                 warnings=[f"Image generation failed: {exc}"],
             ))
         return sections
@@ -305,10 +317,7 @@ class MiniLessonPipeline:
                 output_dir, 3, "validated",
                 {"sections": serialize_sections(validated)},
             )
-            logger.info(
-                "Phase 3: %d/%d passed",
-                len(validated), len(sections),
-            )
+            logger.info("Phase 3: %d/%d passed", len(validated), len(sections))
         return validated
 
     def _phase_4_asm(
@@ -378,9 +387,7 @@ class MiniLessonPipeline:
         weak = identify_weak_sections(report, sections)
         if not weak:
             return None
-        weak_keys = [
-            (s.block_name, s.index) for s in weak
-        ]
+        weak_keys = [(s.block_name, s.index) for s in weak]
         logger.info(
             "Refining %d sections: %s",
             len(weak), [s.block_name for s in weak],
@@ -388,12 +395,9 @@ class MiniLessonPipeline:
         _, regenerated = self._generator.generate_sections(
             ctx, plan, only=weak_keys,
         )
-        regen_map = {
-            (s.block_name, s.index): s for s in regenerated
-        }
+        regen_map = {(s.block_name, s.index): s for s in regenerated}
         refined = [
-            regen_map.get((s.block_name, s.index), s)
-            for s in sections
+            regen_map.get((s.block_name, s.index), s) for s in sections
         ]
         _, validated = self._section_validator.validate_sections(
             refined, ctx, plan,
@@ -432,12 +436,9 @@ class MiniLessonPipeline:
             json.dumps(meta, indent=2, ensure_ascii=False),
             encoding="utf-8",
         )
-        qa: dict[str, Any] = {
-            "atom_id": ctx.atom_id, "publishable": False,
-        }
+        qa: dict[str, Any] = {"atom_id": ctx.atom_id, "publishable": False}
         if quality:
-            qa = quality.model_dump()
-            qa["atom_id"] = ctx.atom_id
+            qa = {**quality.model_dump(), "atom_id": ctx.atom_id}
         (output_dir / "mini-class.qa.json").write_text(
             json.dumps(qa, indent=2, ensure_ascii=False),
             encoding="utf-8",

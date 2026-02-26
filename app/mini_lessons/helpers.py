@@ -86,6 +86,18 @@ def load_enrichment(atom_id: str) -> AtomEnrichment | None:
         return None
 
 
+def atom_requires_images(atom_id: str) -> bool:
+    """Return True if the atom's enrichment lists required image types.
+
+    Checks ``required_image_types`` in the enrichment checkpoint.
+    Returns False when no enrichment exists (conservative: allow run).
+    """
+    enrichment = load_enrichment(atom_id)
+    if enrichment is None:
+        return False
+    return len(enrichment.required_image_types) > 0
+
+
 # ---------------------------------------------------------------------------
 # Question sampling (from question pipeline final validation)
 # ---------------------------------------------------------------------------

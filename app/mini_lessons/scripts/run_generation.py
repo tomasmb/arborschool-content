@@ -116,7 +116,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--skip-images",
         action="store_true",
-        help="Skip image generation for visual sections",
+        help="Skip atoms whose enrichment requires images",
     )
     parser.add_argument(
         "--max-retries",
@@ -178,9 +178,20 @@ def _print_summary(results: list[LessonResult]) -> None:
     """Print summary of all results."""
     total = len(results)
     ok = sum(1 for r in results if r.success)
+    skipped = sum(
+        1 for r in results
+        if any(p.phase_name == "skip_images" for p in r.phase_results)
+    )
     total_cost = sum(r.cost_usd for r in results)
-    print(f"\n=== Summary: {ok}/{total} succeeded ===")
+    ran = total - skipped
+    print(f"\n=== Summary: {ok}/{ran} succeeded, {skipped} skipped ===")
     for r in results:
+        is_skipped = any(
+            p.phase_name == "skip_images" for p in r.phase_results
+        )
+        if is_skipped:
+            print(f"  [SKIP] {r.atom_id} (requires images)")
+            continue
         status = "OK" if r.success else "FAIL"
         pub = ""
         if r.quality_report:
