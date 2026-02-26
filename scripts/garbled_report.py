@@ -1,4 +1,9 @@
-"""Generate a report of questions with garbled accented characters."""
+"""Generate a report of questions with garbled accented characters.
+
+Detects two classes of corruption:
+1. Hex-digit substitution: accented chars replaced by hex (e.g. funcif3n)
+2. Stripped accents: accented chars removed entirely (e.g. grfico)
+"""
 from __future__ import annotations
 
 import json
@@ -9,7 +14,8 @@ from pathlib import Path
 QG_ROOT = Path("app/data/question-generation")
 REPORT_PATH = QG_ROOT / "garbled_questions_report.txt"
 
-_PATTERNS: list[str] = [
+# --- Class 1: hex-digit substitution patterns ---
+_HEX_PATTERNS: list[str] = [
     # ¿ corrupted forms
     "bfCue1l", "bfcue1l", "bfCue1ntas", "bfcue1ntas",
     "bfcue1les", "0bfcu01l", "0bfcu0e1l", "0bfcu03l",
@@ -61,7 +67,7 @@ _PATTERNS: list[str] = [
     "aritme9tica", "aritm03tica", "aritm7tica",
     "deber0da", "deber31a",
     "le1pices",
-    # misc
+    # misc garbled words
     "me9todo", "Tome1s", "tamaf1os",
     "cu03ntas", "cu01ntas", "contin03an",
     "Me1ximo", "m5nimo", "m5ximo",
@@ -70,9 +76,71 @@ _PATTERNS: list[str] = [
     "pa0eds", "a03os",
     "03pidamente", "r03pidamente",
     "00Seg03n",
+    # round 2: additional hex-garbled words
+    "cart0dn", "per0dmetro", "0bfCu01l",
+    "uni3n", "est01n",
+    "im03genes", "dise03o", "Tambi03n",
+    "c3f3mo", "var3b0a", "gr31fico", "l33nea",
+    "af1o", "c9En",
+    "bfen cue1l",
 ]
 
-GARBLED_RE = re.compile("|".join(re.escape(p) for p in _PATTERNS))
+# Regex patterns needing raw regex syntax
+_REGEX_HEX: list[str] = [
+    r"\\u00[0-9a-fA-F]{2}",
+]
+
+_HEX_RE = re.compile(
+    "|".join(re.escape(p) for p in _HEX_PATTERNS)
+    + "|"
+    + "|".join(_REGEX_HEX),
+)
+
+# --- Class 2: stripped accent patterns (whole word, case-insensitive) ---
+_STRIPPED_WORDS: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(r"\bpatrn\b", re.I), "patrón→patrn"),
+    (re.compile(r"\bgrfico\b", re.I), "gráfico→grfico"),
+    (re.compile(r"\bgrfica\b", re.I), "gráfica→grfica"),
+    (re.compile(r"\bgrficas\b", re.I), "gráficas→grficas"),
+    (re.compile(r"\bgrficos\b", re.I), "gráficos→grficos"),
+    (re.compile(r"\blnea\b", re.I), "línea→lnea"),
+    (re.compile(r"\breflexin\b", re.I), "reflexión→reflexin"),
+    (re.compile(r"\bfuncin\b", re.I), "función→funcin"),
+    (re.compile(r"\brelacin\b", re.I), "relación→relacin"),
+    (re.compile(r"\becuacin\b", re.I), "ecuación→ecuacin"),
+    (re.compile(r"\bsolucin\b", re.I), "solución→solucin"),
+    (re.compile(r"\bexpresin\b", re.I), "expresión→expresin"),
+    (re.compile(r"\bproporcin\b", re.I), "proporción→proporcin"),
+    (re.compile(r"\binformacin\b", re.I), "información→informacin"),
+    (re.compile(r"\bconclusin\b", re.I), "conclusión→conclusin"),
+    (re.compile(r"\bsituacin\b", re.I), "situación→situacin"),
+    (re.compile(r"\bnmero\b", re.I), "número→nmero"),
+    (re.compile(r"\bcmo\b", re.I), "cómo→cmo"),
+    (re.compile(r"\bsegn\b", re.I), "según→segn"),
+    (re.compile(r"\badems\b", re.I), "además→adems"),
+    (re.compile(r"\bcul\b", re.I), "cuál→cul"),
+    (re.compile(r"\btambin\b", re.I), "también→tambin"),
+    (re.compile(r"\bimgenes\b", re.I), "imágenes→imgenes"),
+    (re.compile(r"\brazn\b", re.I), "razón→razn"),
+    (re.compile(r"\brepresentacin\b", re.I), "representación→representacin"),
+    (re.compile(r"\bvariacin\b", re.I), "variación→variacin"),
+    (re.compile(r"\banlisis\b", re.I), "análisis→anlisis"),
+    (re.compile(r"\boperacin\b", re.I), "operación→operacin"),
+    (re.compile(r"\bdisminucin\b", re.I), "disminución→disminucin"),
+    (re.compile(r"\bpoblacin\b", re.I), "población→poblacin"),
+    (re.compile(r"\bmximo\b", re.I), "máximo→mximo"),
+    (re.compile(r"\bltimo\b", re.I), "último→ltimo"),
+    (re.compile(r"\bmnimo\b", re.I), "mínimo→mnimo"),
+]
+
+
+def _strip_non_text(xml: str) -> str:
+    """Remove MathML/tags and decode entities to get visible text."""
+    import html as _html
+    text = re.sub(r"<math[^>]*>.*?</math>", " ", xml, flags=re.DOTALL)
+    text = re.sub(r"<[^>]+>", " ", text)
+    text = _html.unescape(text)
+    return re.sub(r"\s+", " ", text)
 
 
 def scan() -> None:
@@ -89,9 +157,20 @@ def scan() -> None:
                 continue
             total += 1
             item_id = item.get("item_id", "?")
-            matches = GARBLED_RE.findall(xml)
-            if matches:
-                results.append((item_id, sorted(set(matches))))
+
+            # Class 1: hex-digit substitutions (search raw XML)
+            hex_matches = _HEX_RE.findall(xml)
+
+            # Class 2: stripped accents (search visible text only)
+            text = _strip_non_text(xml)
+            stripped_matches = [
+                label for pat, label in _STRIPPED_WORDS
+                if pat.search(text)
+            ]
+
+            all_matches = sorted(set(hex_matches + stripped_matches))
+            if all_matches:
+                results.append((item_id, all_matches))
 
     atom_counts = Counter(
         r[0].rsplit("_", 1)[0] for r in results
@@ -108,11 +187,12 @@ def scan() -> None:
         "#",
         "# Root cause: LLM occasionally emits corrupted UTF-8",
         "# for accented characters during generation.",
-        "# Common corruptions:",
-        "#   ¿Cuál → bfCue1l      ó → f3/03/b3",
-        "#   á     → 01/e1        í/ú → 0d",
-        "#   é     → e9           gráfico → gre1fico",
-        "#   función → funcif3n",
+        "#",
+        "# Two corruption classes detected:",
+        "#   1) Hex substitution: accented chars replaced by hex digits",
+        "#      e.g. función → funcif3n, gráfico → gr01fico",
+        "#   2) Stripped accents: accented chars removed entirely",
+        "#      e.g. gráfico → grfico, según → segn",
         "#",
         "# Fix: regenerate these questions through the pipeline.",
         "",
