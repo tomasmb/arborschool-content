@@ -9,10 +9,6 @@ from __future__ import annotations
 import re
 from html.parser import HTMLParser
 
-# ---------------------------------------------------------------------------
-# Required structure definitions (from spec section 6)
-# ---------------------------------------------------------------------------
-
 ALLOWED_TAGS = frozenset({
     "article", "section", "header", "h1", "h2", "h3", "h4",
     "p", "ul", "ol", "li", "table", "thead", "tbody", "tr",
@@ -412,8 +408,21 @@ def _gate_2_quick_check_integrity(html: str) -> list[str]:
     return errors
 
 
+_STEP_LABEL_RE = re.compile(
+    r"(?:Paso|Ejemplo|Check|Verificaci[oó]n)\s+\d+",
+    re.IGNORECASE,
+)
+
+
+def _extract_math_numbers(section_html: str) -> set[str]:
+    """Extract math-significant numbers (strips tags + step labels)."""
+    text = re.sub(r"<[^>]+>", " ", section_html)
+    text = _STEP_LABEL_RE.sub("", text)
+    return set(re.findall(r"\d+", text))
+
+
 def _gate_3_anti_repeat(html: str) -> list[str]:
-    """Gate 3: Anti-repeat checks between sections."""
+    """Gate 3: Anti-repeat checks between worked examples."""
     errors: list[str] = []
 
     we_sections = re.findall(
@@ -422,8 +431,8 @@ def _gate_3_anti_repeat(html: str) -> list[str]:
         re.DOTALL,
     )
     if len(we_sections) >= 2:
-        nums_1 = set(re.findall(r"\d+", we_sections[0]))
-        nums_2 = set(re.findall(r"\d+", we_sections[1]))
+        nums_1 = _extract_math_numbers(we_sections[0])
+        nums_2 = _extract_math_numbers(we_sections[1])
         if nums_1 and nums_2:
             overlap = len(nums_1 & nums_2) / max(
                 len(nums_1 | nums_2), 1,

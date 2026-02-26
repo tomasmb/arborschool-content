@@ -59,7 +59,7 @@ SECTION_WORD_BUDGETS: dict[str, int] = {
     "objective": 50,
     "concept": 150,
     "worked-example": 200,
-    "quick-check": 100,
+    "quick-check": 150,
     "error-patterns": 150,
     "transition-to-adaptive": 40,
     "prerequisite-refresh": 100,

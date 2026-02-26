@@ -34,9 +34,10 @@ feedback de quick-checks, o sección de errores.
 "easy" de la rúbrica. Ejemplo 2 sube a criterios "medium"/"hard".
 4. **Contextos diferentes**: Los dos ejemplos resueltos usan \
 contextos matemáticos distintos.
-5. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
+5. **Quick-checks**: EXACTAMENTE 1 o 2 quick-checks. NUNCA 3 o más.
+6. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
 Cada sección tiene un presupuesto de palabras indicado.
-6. **Prerequisitos**: Decide si incluir bloque de repaso de \
+7. **Prerequisitos**: Decide si incluir bloque de repaso de \
 prerequisitos basándote en la lista de prerrequisitos.
 </task>
 
@@ -73,7 +74,7 @@ JSON puro (sin bloques markdown):
     "in_scope_items_covered": ["..."],
     "error_families_addressed": ["nombre_familia"]
   }},
-  "quick_checks": [
+  "quick_checks": [  // MÁXIMO 2 elementos en esta lista
     {{
       "stem_topic": "tema del quick check",
       "correct_answer_theme": "qué evalúa",
