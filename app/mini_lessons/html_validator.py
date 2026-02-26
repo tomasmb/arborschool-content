@@ -61,7 +61,12 @@ _VALID_TEMPLATES = frozenset({"P", "C", "M"})
 
 
 class _StructureParser(HTMLParser):
-    """Extracts structural information from mini-lesson HTML."""
+    """Extracts structural information from mini-lesson HTML.
+
+    Tracks per-QC context (options list vs distractor-rationale)
+    so that option counts, feedback presence, rationale completeness,
+    and option-text duplication can be checked independently.
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -69,13 +74,24 @@ class _StructureParser(HTMLParser):
         self.blocks: list[dict[str, str | None]] = []
         self.has_inline_style: bool = False
         self.disallowed_tags_found: list[str] = []
-        self.option_counts: dict[int, int] = {}
-        self.correct_options: dict[int, str | None] = {}
         self.imgs_missing_alt: list[int] = []
-        self._current_qc_index: int | None = None
         self._img_count: int = 0
         self.article_atom_id: str | None = None
         self.article_template: str | None = None
+
+        # Per-QC tracking (keyed by data-index int)
+        self._current_qc_index: int | None = None
+        self.option_counts: dict[int, int] = {}
+        self.correct_options: dict[int, str | None] = {}
+        self.qc_has_feedback: dict[int, bool] = {}
+        self.distractor_rationale_counts: dict[int, int] = {}
+        self.option_texts: dict[int, list[str]] = {}
+
+        # Context flags for distinguishing option vs rationale li's
+        self._in_options_list: bool = False
+        self._in_distractor_rationale: bool = False
+        self._capturing_option_text: bool = False
+        self._current_option_text: list[str] = []
 
     def handle_starttag(
         self,
@@ -111,16 +127,71 @@ class _StructureParser(HTMLParser):
             if block == "quick-check" and index_str:
                 self._current_qc_index = int(index_str)
 
-        if attr_dict.get("data-option"):
+        data_role = attr_dict.get("data-role")
+        if tag == "ol" and data_role == "options":
+            self._in_options_list = True
+        elif tag == "ul" and data_role == "distractor-rationale":
+            self._in_distractor_rationale = True
+        elif tag == "div" and data_role == "feedback":
             if self._current_qc_index is not None:
-                idx = self._current_qc_index
-                self.option_counts[idx] = (
-                    self.option_counts.get(idx, 0) + 1
-                )
+                self.qc_has_feedback[self._current_qc_index] = True
+
+        self._handle_option_or_rationale(tag, attr_dict)
 
         correct = attr_dict.get("data-correct-option")
         if correct and self._current_qc_index is not None:
             self.correct_options[self._current_qc_index] = correct
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "ol":
+            self._in_options_list = False
+        elif tag == "ul":
+            self._in_distractor_rationale = False
+        elif tag == "li" and self._capturing_option_text:
+            self._finish_option_text_capture()
+
+    def handle_data(self, data: str) -> None:
+        if self._capturing_option_text:
+            stripped = data.strip()
+            if stripped:
+                self._current_option_text.append(stripped)
+
+    # -- Internal helpers ------------------------------------------------
+
+    def _handle_option_or_rationale(
+        self,
+        tag: str,
+        attr_dict: dict[str, str | None],
+    ) -> None:
+        """Route li[data-option] to option count or rationale count."""
+        if tag != "li" or not attr_dict.get("data-option"):
+            return
+        idx = self._current_qc_index
+        if idx is None:
+            return
+
+        if self._in_options_list:
+            self.option_counts[idx] = (
+                self.option_counts.get(idx, 0) + 1
+            )
+            self._capturing_option_text = True
+            self._current_option_text = []
+        elif self._in_distractor_rationale:
+            self.distractor_rationale_counts[idx] = (
+                self.distractor_rationale_counts.get(idx, 0) + 1
+            )
+
+    def _finish_option_text_capture(self) -> None:
+        """Store captured text and reset capture state."""
+        idx = self._current_qc_index
+        if idx is not None and self._current_option_text:
+            text = " ".join(self._current_option_text)
+            normalized = re.sub(r"\s+", " ", text).strip().lower()
+            if idx not in self.option_texts:
+                self.option_texts[idx] = []
+            self.option_texts[idx].append(normalized)
+        self._capturing_option_text = False
+        self._current_option_text = []
 
 
 def parse_html_structure(html: str) -> _StructureParser:
@@ -279,24 +350,64 @@ def _gate_1_contract(html: str) -> list[str]:
 
 
 def _gate_2_quick_check_integrity(html: str) -> list[str]:
-    """Gate 2: Quick-check option and feedback integrity."""
+    """Gate 2: Quick-check option, feedback, and rationale integrity.
+
+    Per-QC checks:
+    - Exactly 4 answer options (A-D).
+    - Exactly one correct-option marker.
+    - Feedback div present.
+    - 3 distractor rationale entries (one per incorrect option).
+    - No duplicate option text.
+    """
     errors: list[str] = []
     parser = parse_html_structure(html)
 
-    for idx, count in parser.option_counts.items():
+    qc_indices = sorted({
+        idx for idx in (
+            set(parser.option_counts)
+            | set(parser.qc_has_feedback)
+            | set(parser.correct_options)
+        )
+    })
+
+    for idx in qc_indices:
+        count = parser.option_counts.get(idx, 0)
         if count != 4:
             errors.append(
                 f"QC {idx}: expected 4 options, found {count}",
             )
 
-    for idx in parser.option_counts:
         if idx not in parser.correct_options:
             errors.append(
                 f"QC {idx}: missing data-correct-option",
             )
 
-    if 'data-role="feedback"' not in html:
-        errors.append("Missing feedback div in quick-check")
+        if not parser.qc_has_feedback.get(idx):
+            errors.append(
+                f"QC {idx}: missing feedback div "
+                f"(data-role=\"feedback\")",
+            )
+
+        rationale_count = (
+            parser.distractor_rationale_counts.get(idx, 0)
+        )
+        if rationale_count != 3:
+            errors.append(
+                f"QC {idx}: expected 3 distractor rationales, "
+                f"found {rationale_count}",
+            )
+
+        texts = parser.option_texts.get(idx, [])
+        if len(texts) != len(set(texts)):
+            seen: set[str] = set()
+            dupes: list[str] = []
+            for t in texts:
+                if t in seen:
+                    dupes.append(t)
+                seen.add(t)
+            errors.append(
+                f"QC {idx}: duplicate option text: {dupes}",
+            )
 
     return errors
 
@@ -354,13 +465,27 @@ def _gate_4_renderer_safety(html: str) -> list[str]:
 def _check_quick_check_structure(
     parser: _StructureParser,
 ) -> list[str]:
-    """Validate quick-check specific structure."""
+    """Validate quick-check specific structure (per-section call)."""
     errors: list[str] = []
 
     for idx, count in parser.option_counts.items():
         if count != 4:
             errors.append(
                 f"QC {idx}: expected 4 options, found {count}",
+            )
+
+    for idx in parser.option_counts:
+        if not parser.qc_has_feedback.get(idx):
+            errors.append(
+                f"QC {idx}: missing feedback div",
+            )
+        rationale = (
+            parser.distractor_rationale_counts.get(idx, 0)
+        )
+        if rationale != 3:
+            errors.append(
+                f"QC {idx}: expected 3 distractor rationales, "
+                f"found {rationale}",
             )
 
     return errors
