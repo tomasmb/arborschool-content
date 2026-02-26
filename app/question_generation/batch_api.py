@@ -14,7 +14,7 @@ import json
 import logging
 import tempfile
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -372,13 +372,34 @@ class OpenAIBatchSubmitter:
 
     def _retrieve_batch(
         self, batch_id: str,
+        *,
+        max_retries: int = 3,
+        retry_delay: float = 5.0,
     ) -> dict[str, Any]:
         url = f"{_BATCHES_URL}/{batch_id}"
-        resp = http_requests.get(
-            url, headers=self._headers, timeout=60,
-        )
-        resp.raise_for_status()
-        return resp.json()
+        last_exc: Exception | None = None
+        for attempt in range(1, max_retries + 1):
+            try:
+                resp = http_requests.get(
+                    url, headers=self._headers, timeout=60,
+                )
+                resp.raise_for_status()
+                return resp.json()
+            except (
+                http_requests.exceptions.ConnectionError,
+                http_requests.exceptions.Timeout,
+            ) as exc:
+                last_exc = exc
+                if attempt < max_retries:
+                    logger.warning(
+                        "Transient error polling %s (attempt %d/%d): %s. "
+                        "Retrying in %.0fs…",
+                        batch_id, attempt, max_retries, exc,
+                        retry_delay,
+                    )
+                    time.sleep(retry_delay)
+                    retry_delay *= 2
+        raise last_exc  # type: ignore[misc]
 
 
 # ------------------------------------------------------------------

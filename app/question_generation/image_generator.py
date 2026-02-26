@@ -7,6 +7,7 @@ XSD validation, and progress callbacks.
 
 from __future__ import annotations
 
+import hashlib
 import logging
 import re
 import threading
@@ -181,12 +182,15 @@ class ImageGenerator:
             item.image_failed = True
             return f"{item.item_id}: no image_description"
 
+        file_id = _content_aware_file_id(item.item_id, desc)
+
         existing = self._engine.check_s3_exists(
-            item.item_id, _S3_PATH_PREFIX, atom_id,
+            file_id, _S3_PATH_PREFIX, atom_id,
         )
         if existing:
             logger.info(
-                "S3 hit for %s — skipping generation", item.item_id,
+                "S3 hit for %s — reusing (desc hash match)",
+                item.item_id,
             )
             item.qti_xml = _replace_placeholder(
                 item.qti_xml, existing,
@@ -202,7 +206,7 @@ class ImageGenerator:
             return f"{item.item_id}: image gen/validation failed"
 
         s3_url = self._engine.upload_to_s3(
-            image_bytes, item.item_id,
+            image_bytes, file_id,
             _S3_PATH_PREFIX, atom_id,
         )
         if s3_url is None:
@@ -283,3 +287,18 @@ def _extract_stem_text(qti_xml: str) -> str:
         return ""
     text = re.sub(r"<[^>]+>", " ", match.group(1))
     return re.sub(r"\s+", " ", text).strip()
+
+
+def _content_aware_file_id(item_id: str, description: str) -> str:
+    """Build an S3 file identifier that includes a description hash.
+
+    Format: ``{item_id}-{hash8}``
+
+    Same item + same description → same key → safe S3 reuse.
+    Same item + different description (rerun) → different key →
+    no stale image collision.
+    """
+    desc_hash = hashlib.sha256(
+        description.encode(),
+    ).hexdigest()[:8]
+    return f"{item_id}-{desc_hash}"
