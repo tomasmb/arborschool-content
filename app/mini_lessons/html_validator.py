@@ -57,12 +57,7 @@ _VALID_TEMPLATES = frozenset({"P", "C", "M"})
 
 
 class _StructureParser(HTMLParser):
-    """Extracts structural information from mini-lesson HTML.
-
-    Tracks per-QC context (options list vs distractor-rationale)
-    so that option counts, feedback presence, rationale completeness,
-    and option-text duplication can be checked independently.
-    """
+    """Extracts structural information from mini-lesson HTML."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -82,6 +77,7 @@ class _StructureParser(HTMLParser):
         self.qc_has_feedback: dict[int, bool] = {}
         self.distractor_rationale_counts: dict[int, int] = {}
         self.option_texts: dict[int, list[str]] = {}
+        self.distractor_error_ids: dict[int, list[str]] = {}
 
         # Context flags for distinguishing option vs rationale li's
         self._in_options_list: bool = False
@@ -176,6 +172,10 @@ class _StructureParser(HTMLParser):
             self.distractor_rationale_counts[idx] = (
                 self.distractor_rationale_counts.get(idx, 0) + 1
             )
+            error_id = attr_dict.get("data-error-id", "")
+            if idx not in self.distractor_error_ids:
+                self.distractor_error_ids[idx] = []
+            self.distractor_error_ids[idx].append(error_id or "")
 
     def _finish_option_text_capture(self) -> None:
         """Store captured text and reset capture state."""
@@ -251,7 +251,8 @@ def check_section_html(
 def check_full_lesson_structure(html: str) -> list[str]:
     """Validate the assembled mini-lesson HTML (all gates).
 
-    Implements Gates 1-4 from the spec appendix B.
+    Implements Gates 1-4 from the spec appendix B, plus
+    notation consistency check.
     """
     errors: list[str] = []
 
@@ -259,21 +260,15 @@ def check_full_lesson_structure(html: str) -> list[str]:
     errors.extend(_gate_2_quick_check_integrity(html))
     errors.extend(_gate_3_anti_repeat(html))
     errors.extend(_gate_4_renderer_safety(html))
+    errors.extend(check_decimal_notation(html))
 
     return errors
 
 
 def check_filler_phrases(text: str) -> list[str]:
-    """Scan text for forbidden filler phrases.
-
-    Returns list of found phrases.
-    """
+    """Scan text for forbidden filler phrases."""
     text_lower = text.lower()
-    found: list[str] = []
-    for phrase in FORBIDDEN_FILLER_PHRASES:
-        if phrase in text_lower:
-            found.append(phrase)
-    return found
+    return [p for p in FORBIDDEN_FILLER_PHRASES if p in text_lower]
 
 
 def count_words(html: str) -> int:
@@ -282,17 +277,34 @@ def count_words(html: str) -> int:
     return len(text.split())
 
 
+_DECIMAL_PERIOD_RE = re.compile(r"\d+\.\d+")
+_FALSE_POSITIVE_RE = re.compile(
+    r"(?:version|v|pipeline)[_ ]?\d+\.\d+", re.IGNORECASE,
+)
+
+
+def check_decimal_notation(html: str) -> list[str]:
+    """Check that all decimals use comma (Chilean convention)."""
+    text = re.sub(r"<[^>]+>", " ", html)
+    text = _FALSE_POSITIVE_RE.sub("", text)
+    matches = _DECIMAL_PERIOD_RE.findall(text)
+    if not matches:
+        return []
+    samples = ", ".join(matches[:5])
+    extra = f" (+{len(matches) - 5} more)" if len(matches) > 5 else ""
+    return [
+        f"Decimal period notation found (must use comma): "
+        f"{samples}{extra}",
+    ]
+
+
 # ---------------------------------------------------------------------------
 # Gate implementations
 # ---------------------------------------------------------------------------
 
 
 def _gate_1_contract(html: str) -> list[str]:
-    """Gate 1: Contract validity.
-
-    Checks root article attrs, required blocks, multiplicities,
-    and tag allowlist per spec v1.1 (Appendix B §A).
-    """
+    """Gate 1: Contract validity (root attrs, blocks, multiplicities)."""
     errors: list[str] = []
     parser = parse_html_structure(html)
 
@@ -345,45 +357,29 @@ def _gate_1_contract(html: str) -> list[str]:
     return errors
 
 
-def _gate_2_quick_check_integrity(html: str) -> list[str]:
-    """Gate 2: Quick-check option, feedback, and rationale integrity.
-
-    Per-QC checks:
-    - Exactly 4 answer options (A-D).
-    - Exactly one correct-option marker.
-    - Feedback div present.
-    - 3 distractor rationale entries (one per incorrect option).
-    - No duplicate option text.
-    """
+def _validate_qc_set(parser: _StructureParser) -> list[str]:
+    """Shared QC validation used by gate 2 and per-section checks."""
     errors: list[str] = []
-    parser = parse_html_structure(html)
-
-    qc_indices = sorted({
-        idx for idx in (
-            set(parser.option_counts)
-            | set(parser.qc_has_feedback)
-            | set(parser.correct_options)
-        )
-    })
-
+    qc_indices = sorted(
+        set(parser.option_counts)
+        | set(parser.qc_has_feedback)
+        | set(parser.correct_options),
+    )
     for idx in qc_indices:
         count = parser.option_counts.get(idx, 0)
         if count != 4:
             errors.append(
                 f"QC {idx}: expected 4 options, found {count}",
             )
-
         if idx not in parser.correct_options:
             errors.append(
                 f"QC {idx}: missing data-correct-option",
             )
-
         if not parser.qc_has_feedback.get(idx):
             errors.append(
                 f"QC {idx}: missing feedback div "
                 f"(data-role=\"feedback\")",
             )
-
         rationale_count = (
             parser.distractor_rationale_counts.get(idx, 0)
         )
@@ -392,20 +388,29 @@ def _gate_2_quick_check_integrity(html: str) -> list[str]:
                 f"QC {idx}: expected 3 distractor rationales, "
                 f"found {rationale_count}",
             )
-
         texts = parser.option_texts.get(idx, [])
         if len(texts) != len(set(texts)):
             seen: set[str] = set()
-            dupes: list[str] = []
-            for t in texts:
-                if t in seen:
-                    dupes.append(t)
-                seen.add(t)
+            dupes = [t for t in texts if t in seen or seen.add(t)]  # type: ignore[func-returns-value]
             errors.append(
                 f"QC {idx}: duplicate option text: {dupes}",
             )
-
+        missing_ids = [
+            eid for eid in
+            parser.distractor_error_ids.get(idx, [])
+            if not eid
+        ]
+        if missing_ids:
+            errors.append(
+                f"QC {idx}: {len(missing_ids)} distractor(s) "
+                f"missing data-error-id attribute",
+            )
     return errors
+
+
+def _gate_2_quick_check_integrity(html: str) -> list[str]:
+    """Gate 2: QC option/feedback/rationale/error-id integrity."""
+    return _validate_qc_set(parse_html_structure(html))
 
 
 _STEP_LABEL_RE = re.compile(
@@ -474,27 +479,5 @@ def _gate_4_renderer_safety(html: str) -> list[str]:
 def _check_quick_check_structure(
     parser: _StructureParser,
 ) -> list[str]:
-    """Validate quick-check specific structure (per-section call)."""
-    errors: list[str] = []
-
-    for idx, count in parser.option_counts.items():
-        if count != 4:
-            errors.append(
-                f"QC {idx}: expected 4 options, found {count}",
-            )
-
-    for idx in parser.option_counts:
-        if not parser.qc_has_feedback.get(idx):
-            errors.append(
-                f"QC {idx}: missing feedback div",
-            )
-        rationale = (
-            parser.distractor_rationale_counts.get(idx, 0)
-        )
-        if rationale != 3:
-            errors.append(
-                f"QC {idx}: expected 3 distractor rationales, "
-                f"found {rationale}",
-            )
-
-    return errors
+    """Validate quick-check structure (reuses _validate_qc_set)."""
+    return _validate_qc_set(parser)

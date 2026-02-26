@@ -49,6 +49,15 @@ expresión, presencia de potencias. NO 3+ cambios de golpe.
 Cada sección tiene un presupuesto de palabras indicado.
 8. **Prerequisitos**: Decide si incluir bloque de repaso de \
 prerequisitos basándote en la lista de prerrequisitos.
+9. **Pasos canónicos (P-template)**: Si el template es P, define \
+3-5 pasos con nombres fijos que forman el procedimiento repetible \
+del átomo. Ambos ejemplos resueltos DEBEN usar exactamente estos \
+nombres de paso ("Paso 1: X", "Paso 2: Y"…). El Checklist PAES \
+debe reflejar estos mismos pasos. WE1 puede agregar un paso final \
+de verificación; WE2 lo omite.
+10. **Mapeo error → distractor**: Cada distractor de quick-check \
+DEBE mapearse a una familia de error del enriquecimiento. \
+Distribuye las familias entre QC1 y QC2.
 </task>
 
 <rules>
@@ -66,6 +75,7 @@ JSON puro (sin bloques markdown):
   "objective_spec": "descripción del objetivo medible",
   "concept_spec": "qué explicar en la sección concepto",
   "concept_in_scope_items": ["in_scope item 1", "..."],
+  "canonical_steps": ["Sustituye", "Reescribe", "Calcula", "Chequeo"],
   "worked_example_1": {{
     "topic": "tema del ejemplo",
     "mathematical_context": "contexto matemático",
@@ -88,7 +98,8 @@ JSON puro (sin bloques markdown):
     {{
       "stem_topic": "tema del quick check",
       "correct_answer_theme": "qué evalúa",
-      "distractor_themes": ["error 1", "error 2", "error 3"],
+      "distractor_themes": ["nombre_familia_1", "nombre_familia_2", \
+"nombre_familia_3"],
       "error_families_addressed": ["nombre_familia"],
       "difficulty": "simple"  // "simple" o "integrative"
     }}

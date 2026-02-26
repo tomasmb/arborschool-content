@@ -168,6 +168,14 @@ class LessonPlan(BaseModel):
     objective_spec: str
     concept_spec: str
     concept_in_scope_items: list[str] = Field(default_factory=list)
+    canonical_steps: list[str] = Field(
+        default_factory=list,
+        description=(
+            "P-template only: 3-5 named steps that form the "
+            "repeatable procedure. Both WE1 and WE2 must use "
+            "these exact step names."
+        ),
+    )
     worked_example_1: WorkedExampleSpec
     worked_example_2: WorkedExampleSpec
     quick_checks: list[QuickCheckSpec] = Field(min_length=1, max_length=2)

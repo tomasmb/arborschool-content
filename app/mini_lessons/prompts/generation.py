@@ -264,6 +264,13 @@ def extract_plan_section_for_block(
     if block_name == "worked-example":
         key = f"worked_example_{index}" if index else "worked_example_1"
         we = plan_data.get(key, {})
+        canonical = plan_data.get("canonical_steps", [])
+        canonical_line = ""
+        if canonical:
+            canonical_line = (
+                f"\n  Pasos canónicos: "
+                f"{', '.join(canonical)}"
+            )
         if isinstance(we, dict):
             return (
                 f"Ejemplo {index}:\n"
@@ -276,6 +283,7 @@ def extract_plan_section_for_block(
                 f"{', '.join(we.get('in_scope_items_covered', []))}\n"
                 f"  Errores: "
                 f"{', '.join(we.get('error_families_addressed', []))}"
+                f"{canonical_line}"
             )
         return str(we)
 
@@ -290,18 +298,29 @@ def extract_plan_section_for_block(
                     f"  Tema: {qc.get('stem_topic', '')}\n"
                     f"  Correcta: "
                     f"{qc.get('correct_answer_theme', '')}\n"
-                    f"  Distractores: "
+                    f"  Distractores (cada uno = familia de error): "
                     f"{', '.join(qc.get('distractor_themes', []))}\n"
-                    f"  Errores: "
-                    f"{', '.join(qc.get('error_families_addressed', []))}"
+                    f"  Errores cubiertos: "
+                    f"{', '.join(qc.get('error_families_addressed', []))}\n"
+                    f"  IMPORTANTE: cada <li data-option> en "
+                    f"distractor-rationale debe llevar "
+                    f"data-error-id=\"nombre_familia\"."
                 )
         return "Quick check según el plan."
 
     if block_name == "error-patterns":
         families = plan_data.get("error_patterns_families", [])
+        canonical = plan_data.get("canonical_steps", [])
+        canonical_line = ""
+        if canonical:
+            canonical_line = (
+                f"\nPasos canónicos (reflejar en Checklist PAES): "
+                f"{', '.join(canonical)}"
+            )
         return (
             f"Errores: {plan_data.get('error_patterns_spec', '')}\n"
             f"Familias a cubrir: {', '.join(families)}"
+            f"{canonical_line}"
         )
 
     if block_name == "transition-to-adaptive":

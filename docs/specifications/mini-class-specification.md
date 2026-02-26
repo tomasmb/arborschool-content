@@ -125,6 +125,14 @@ atom-dependent optional modules.
    - 1–2 ABCD questions with immediate explanatory feedback.
    - Feedback wrapped in `<details>` for progressive disclosure.
    - Each feedback ends with a golden rule: "Regla: Si X, entonces Y."
+   - **Error taxonomy mapping:** every distractor MUST correspond to
+     a specific error from the atom's `error_families` enrichment.
+     Each `<li data-option>` inside the `distractor-rationale` list
+     MUST carry a `data-error-id` attribute naming the error family
+     it represents. If a distractor cannot be mapped to a named
+     error family, the QC is regenerated.
+   - Distribute error families across QC1 and QC2: QC1 covers
+     errors A/B; QC2 covers errors C/D (when 2 QCs are present).
 6. **Common errors + PAES checklist**
    - Top 2–3 traps in `<ul>`.
    - Checklist PAES: exactly 3 items with ✅, each actionable in 10s.
@@ -141,6 +149,37 @@ atom-dependent optional modules.
 
 Rule: optional sections must be justified by atom type, not added
 by default.
+
+### Scope gate (mandatory — all atoms)
+
+The scope gate prevents the LLM from "going professor mode" and
+teaching general prerequisite techniques instead of the atom's skill.
+
+**Permitted content:** only skills listed in the enrichment
+`in_scope`. If a prerequisite operation (fraction arithmetic,
+decimal alignment, algebraic simplification, etc.) is needed to
+finish a calculation, resolve it directly — max 1 line, no general
+explanation.
+
+**Prohibited content** (unless strictly needed to complete a short
+calculation):
+
+- Teaching general fraction rules (common denominator, invert and
+  multiply, simplify).
+- Teaching general decimal rules (comma alignment, conversion).
+- Teaching general algebra techniques (combine like terms,
+  distribute, factor).
+
+**Enforcement:**
+
+- Prompt-level: every generation prompt includes an explicit scope
+  gate instruction.
+- Deterministic check: if off-scope trigger phrases (`"denominador
+  común"`, `"invierte la fracción"`, `"simplifica la fracción"`,
+  `"mínimo común múltiplo"`, `"convierte a decimal"`,
+  `"alinea la coma"`, etc.) appear more than once in the full
+  lesson, the section is regenerated.
+- Quality gate: scope violation is an auto-fail condition.
 
 ---
 
@@ -168,6 +207,22 @@ Algebraic manipulation, equation solving.
 - Quick Check x2
 - Error patterns + checklist
 - Transition
+
+**Canonical step sequence (P-template only):** the lesson plan MUST
+define 3–5 named steps that form a repeatable procedure. Both WE1
+and WE2 use **exactly the same step names** in their
+`<summary>` labels ("Paso 1: X", "Paso 2: Y", …). WE1 may add a
+final verification step; WE2 omits it (student does it alone).
+
+The PAES Checklist in the error-patterns section must mirror these
+canonical steps (one checklist item per step).
+
+Example for a substitution atom:
+
+1. Sustituye (paréntesis en negativos)
+2. Reescribe solo con números (cero letras)
+3. Calcula por jerarquía
+4. Chequeo (todas las apariciones + un solo número final)
 
 ### Template C — Conceptual atoms
 
@@ -244,6 +299,16 @@ Total time: 4–7 minutes. Every screen has ONE job.
 
 Inline styles, `<style>`, `<script>`, external embeds.
 
+### Notation consistency (hard rule)
+
+All decimal numbers MUST use the **comma** as decimal separator
+(Chilean convention): `1,5` not `1.5`. Period as decimal separator
+is **forbidden**. This applies to both plain text and MathML
+`<mn>` content.
+
+A deterministic linter checks for the regex `\d+\.\d+` in all
+generated content. Any match is an auto-fail.
+
 ### Semantic attributes for rendering logic
 
 | Attribute | Element | Purpose |
@@ -258,6 +323,7 @@ Inline styles, `<style>`, `<script>`, external embeds.
 | `data-role="prediction-cue"` | `<p>` in WE2 step | Mental-fill prompt |
 | `data-feedback-type` | div | Feedback type |
 | `data-correct-option` | p | Correct answer marker |
+| `data-error-id` | li (distractor) | Error family this distractor maps to |
 
 ### Required root structure
 
@@ -307,9 +373,9 @@ Inline styles, `<style>`, `<script>`, external embeds.
         <summary>Ver explicación</summary>
         <p data-correct-option="B">... Regla: Si X, entonces Y.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="A">... Revisa: ...</li>
-          <li data-option="C">...</li>
-          <li data-option="D">...</li>
+          <li data-option="A" data-error-id="error-fam-1">... Revisa: ...</li>
+          <li data-option="C" data-error-id="error-fam-2">...</li>
+          <li data-option="D" data-error-id="error-fam-3">...</li>
         </ul>
       </details>
     </div>
@@ -337,8 +403,9 @@ Score 0–2 each dimension (pass threshold: >= 12/14):
    sub-titles OR verbose; 1 = some excess; 2 = clean with h3 sub-blocks
 3. **Worked example correctness**: math verified
 4. **Step rationale clarity**: 0 = WE2 has same annotation density as WE1
-   (must show fading) OR no rationale; 1 = some fading; 2 = clear fading
-   with prediction cues in WE2
+   (must show fading) OR no rationale OR canonical step names differ
+   between WE1/WE2; 1 = some fading; 2 = clear fading with prediction
+   cues in WE2 and consistent canonical step naming
 5. **Quick check quality**: non-trivial distractors. For P-template,
    penalize if only 1 QC when 2 are appropriate
 6. **Feedback quality**: 0 = QC feedback doesn't include "Regla";
@@ -355,6 +422,10 @@ Score 0–2 each dimension (pass threshold: >= 12/14):
 - Error family not addressed
 - Section exceeds 2x word budget
 - Forbidden filler phrases detected
+- Scope gate violation (off-scope teaching phrases > 1 occurrence)
+- Notation inconsistency (period used as decimal separator)
+- QC distractor not mapped to a named error family
+- P-template: WE1 and WE2 use different canonical step names
 
 ---
 

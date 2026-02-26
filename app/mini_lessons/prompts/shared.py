@@ -30,8 +30,25 @@ data-option, data-correct-option, data-feedback-type según la \
 sección.
 - Caracteres UTF-8 directos: é, ó, á, ú, í, ñ, ü, ¿, ¡. \
 NUNCA entidades Latin-1.
+- Todo decimal usa COMA (convención chilena): 1,5 y NO 1.5. \
+Punto decimal está PROHIBIDO. Aplica a texto y a <mn> en MathML.
 - NO cubras temas listados como "Fuera de alcance" en el \
 enriquecimiento. Limítate estrictamente a los ítems "En alcance"."""
+
+# ------------------------------------------------------------------
+# Scope gate (injected into concept, WE, and QC prompts)
+# ------------------------------------------------------------------
+
+_SCOPE_GATE_RULES = """\
+- SCOPE GATE: No enseñes reglas generales de fracciones, decimales, \
+simplificación algebraica ni otros prerrequisitos salvo lo mínimo \
+para completar el cálculo en curso (máximo 1 línea).
+- Si aparece un prerrequisito, resuélvelo directamente sin explicar \
+la técnica general.
+- Frases como "denominador común", "invierte la fracción", \
+"simplifica la fracción", "mínimo común múltiplo", "convierte a \
+decimal", "alinea la coma" deben aparecer como máximo 1 vez en \
+toda la mini-clase. Si necesitas más, comprime."""
 
 # ------------------------------------------------------------------
 # Tone rules (injected into every generation prompt)
@@ -62,16 +79,21 @@ _TONE_RULES = (
 _QUICK_CHECK_RULES = """\
 - Exactamente 4 opciones (A-D), 1 correcta.
 - Distractores representan errores plausibles, NO valores al azar.
+- Cada distractor DEBE corresponder a una familia de error del \
+enriquecimiento del átomo.
 - Estructura HTML: ol[data-role="options"] > li[data-option="A|B|C|D"].
 - Feedback dentro de <details><summary>Ver explicación</summary>.
 - El <p data-correct-option> DEBE terminar con \
 "Regla: Si [situación], entonces [acción]."
+- Cada <li> de distractor-rationale DEBE incluir el atributo \
+data-error-id="nombre_de_la_familia_de_error" indicando qué \
+error representa.
 - Cada <li> de distractor-rationale cierra con qué revisar \
 la próxima vez.
 - Estructura feedback: \
 div[data-role="feedback"] > details > summary + \
 p[data-correct-option] + ul[data-role="distractor-rationale"] \
-> li[data-option]."""
+> li[data-option][data-error-id]."""
 
 # ------------------------------------------------------------------
 # Section-specific rules (appended per section type)
@@ -104,6 +126,8 @@ _WE_BUDGET = SECTION_WORD_BUDGETS["worked-example"]
 _WE1_RULES = (
     "- Pasos numerados dentro de <details>/<summary>.\n"
     '- <summary> tiene "Paso N:" + 1 frase corta del objetivo.\n'
+    "- Si el plan incluye canonical_steps, usa EXACTAMENTE esos "
+    "nombres en cada <summary> de paso.\n"
     "- Contenido del <details>: 1-2 oraciones con cálculo + "
     '"por qué".\n'
     "- Último paso: verificación (comprobar resultado por otro "
@@ -118,6 +142,8 @@ _WE1_RULES = (
 _WE2_RULES = (
     "- Misma estructura <details>/<summary> que WE1.\n"
     "- Lista de pasos en <ol data-role=\"steps\">.\n"
+    "- Si el plan incluye canonical_steps, usa EXACTAMENTE los "
+    "mismos nombres de paso que WE1 (sin paso de verificación).\n"
     '- Menos anotaciones "por qué" — solo en el paso clave.\n'
     "- Incluye 1-2 cues de predicción: "
     '<p data-role="prediction-cue">"¿Cuánto da [subcálculo]? '
@@ -256,15 +282,21 @@ def _format_sample_questions(
     return "\n".join(lines)
 
 
+_SCOPE_GATE_SECTIONS = frozenset({
+    "concept", "worked-example", "quick-check",
+})
+
+
 def build_generation_rules(
     section_type: str,
     index: int | None = None,
 ) -> str:
     """Build the full rules block for a section generation prompt.
 
-    Composes shared HTML rules + tone rules + section-specific rules
-    into a single string. For worked-examples, selects WE1 (full
-    scaffolding) or WE2 (faded) rules based on index.
+    Composes shared HTML rules + tone rules + scope gate (for
+    concept / WE / QC) + section-specific rules into a single
+    string. For worked-examples, selects WE1 (full scaffolding)
+    or WE2 (faded) rules based on index.
     """
     section_rules_map: dict[str, str] = {
         "objective": _OBJECTIVE_RULES,
@@ -280,6 +312,8 @@ def build_generation_rules(
         specific = section_rules_map.get(section_type, "")
 
     parts = [_HTML_RULES, _TONE_RULES]
+    if section_type in _SCOPE_GATE_SECTIONS:
+        parts.append(_SCOPE_GATE_RULES)
     if specific:
         parts.append(specific)
     return "\n".join(parts)

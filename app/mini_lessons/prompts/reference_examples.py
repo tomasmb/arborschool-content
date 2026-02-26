@@ -1,14 +1,11 @@
 """HTML reference examples for mini-lesson LLM prompts.
 
-Structural anchors per template type (P, C, M). The LLM
+Structural anchors per template (P, C, M). The LLM
 pattern-matches these to produce spec-compliant output.
-
-NOTE: injected via str.format() — no unescaped curly braces.
+Injected via str.format() — no unescaped curly braces.
 """
 
 from __future__ import annotations
-
-# -- Template P — Procedural atom reference --------------------------
 
 TEMPLATE_P_REFERENCE = """\
 <article data-kind="mini-class"
@@ -110,11 +107,14 @@ MCD(8,12)=4; menor potencia=x². Factor: 4x². \
 Regla: Si buscas factor común, toma el MCD de coeficientes \
 y la menor potencia de cada variable.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="A">2x divide ambos pero no es el \
+          <li data-option="A" data-error-id="factor-no-maximo">\
+2x divide ambos pero no es el \
 máximo. Revisa si hay un divisor mayor.</li>
-          <li data-option="C">x³ no divide a 12x². Revisa que \
+          <li data-option="C" data-error-id="potencia-incorrecta">\
+x³ no divide a 12x². Revisa que \
 la potencia sea ≤ en todos los términos.</li>
-          <li data-option="D">8 no divide a 12. Revisa que \
+          <li data-option="D" data-error-id="factor-no-maximo">\
+8 no divide a 12. Revisa que \
 divida a TODOS los coeficientes.</li>
         </ul>
       </details>
@@ -139,11 +139,14 @@ MCD(15,10)=5. Divide: 3y y 2. Signo resta se mantiene. \
 Regla: Si factorizas, verifica multiplicando — debes recuperar \
 la expresión original.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="B">Signo cambió a suma. Revisa \
+          <li data-option="B" data-error-id="signos">\
+Signo cambió a suma. Revisa \
 signos al dividir.</li>
-          <li data-option="C">y no está en ambos términos. \
+          <li data-option="C" data-error-id="potencia-incorrecta">\
+y no está en ambos términos. \
 Revisa variables comunes.</li>
-          <li data-option="D">3 no es MCD(15,10). Revisa que \
+          <li data-option="D" data-error-id="factor-no-maximo">\
+3 no es MCD(15,10). Revisa que \
 uses el máximo.</li>
         </ul>
       </details>
@@ -172,8 +175,6 @@ todos los signos del paréntesis cambian.</li>
 factorización con dificultad creciente.</p>
   </section>
 </article>"""
-
-# -- Template C — Conceptual atom reference --------------------------
 
 TEMPLATE_C_REFERENCE = """\
 <article data-kind="mini-class"
@@ -265,11 +266,14 @@ Cada x aparece una sola vez. Que dos x den la misma y está \
 permitido. Regla: Si cada entrada tiene exactamente una salida, \
 entonces es función.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="B">x=1 tiene dos salidas. Revisa \
+          <li data-option="B" data-error-id="entrada-repetida">\
+x=1 tiene dos salidas. Revisa \
 entradas duplicadas.</li>
-          <li data-option="C">x=2 tiene dos salidas. Revisa \
+          <li data-option="C" data-error-id="entrada-repetida">\
+x=2 tiene dos salidas. Revisa \
 si algún x se repite.</li>
-          <li data-option="D">x=4 aparece tres veces. Revisa \
+          <li data-option="D" data-error-id="entrada-repetida">\
+x=4 aparece tres veces. Revisa \
 entradas con múltiples salidas.</li>
         </ul>
       </details>
@@ -296,8 +300,6 @@ aplica al gráfico, no a la tabla.</li>
 identificación de funciones.</p>
   </section>
 </article>"""
-
-# -- Template M — Mixed atom reference -------------------------------
 
 TEMPLATE_M_REFERENCE = """\
 <article data-kind="mini-class"
@@ -386,11 +388,14 @@ y=200x+500, vas bien.</p>
 m=(-2−4)/(2−(-1))=-6/3=-2. Regla: Si restas coordenadas, \
 mantén el mismo orden arriba y abajo.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="B">Olvidaste el signo. Revisa: \
+          <li data-option="B" data-error-id="orden-de-resta">\
+Olvidaste el signo. Revisa: \
 -2−4=-6.</li>
-          <li data-option="C">Invertiste Δy/Δx. m=Δy/Δx, \
+          <li data-option="C" data-error-id="confundir-m-y-b">\
+Invertiste Δy/Δx. m=Δy/Δx, \
 no Δx/Δy.</li>
-          <li data-option="D">-6 es el numerador, no m. \
+          <li data-option="D" data-error-id="doble-negativo">\
+-6 es el numerador, no m. \
 Divide por Δx.</li>
         </ul>
       </details>
@@ -414,11 +419,14 @@ Si y=3x−5, ¿intercepto con eje y?</p>
 Intercepto: y cuando x=0: y=3(0)−5=-5. Regla: Si necesitas \
 el intercepto, sustituye x=0.</p>
         <ul data-role="distractor-rationale">
-          <li data-option="A">3 es la pendiente, no b. Revisa \
+          <li data-option="A" data-error-id="confundir-m-y-b">\
+3 es la pendiente, no b. Revisa \
 el término sin x.</li>
-          <li data-option="C">Cambiaste signo de -5. Revisa el \
+          <li data-option="C" data-error-id="doble-negativo">\
+Cambiaste signo de -5. Revisa el \
 término independiente.</li>
-          <li data-option="D">Confundiste m y b. m multiplica \
+          <li data-option="D" data-error-id="confundir-m-y-b">\
+Confundiste m y b. m multiplica \
 x; b es el término libre.</li>
         </ul>
       </details>
@@ -450,50 +458,41 @@ de recta.</p>
 
 # -- Template selection helpers --------------------------------------
 
+_TEMPLATE_REFS: dict[str, str] = {
+    "P": TEMPLATE_P_REFERENCE,
+    "C": TEMPLATE_C_REFERENCE,
+    "M": TEMPLATE_M_REFERENCE,
+}
+
 
 def get_reference_for_template(template_type: str) -> str:
-    """Return the full HTML reference example for a template type."""
-    refs = {
-        "P": TEMPLATE_P_REFERENCE,
-        "C": TEMPLATE_C_REFERENCE,
-        "M": TEMPLATE_M_REFERENCE,
-    }
-    return refs.get(template_type, "")
+    """Return full HTML reference example for a template type."""
+    return _TEMPLATE_REFS.get(template_type, "")
 
 
 def extract_section_reference(
-    template_type: str,
-    block_name: str,
-    index: int | None = None,
+    template_type: str, block_name: str, index: int | None = None,
 ) -> str:
     """Extract a single section from a template reference."""
-    full = get_reference_for_template(template_type)
-    return _extract_block(full, block_name, index)
+    return _extract_block(
+        get_reference_for_template(template_type),
+        block_name, index,
+    )
 
 
 def _extract_block(
-    html: str,
-    block_name: str,
-    index: int | None = None,
+    html: str, block_name: str, index: int | None = None,
 ) -> str:
     """Extract a section/header block from full HTML by data-block."""
     tag = "header" if block_name == "objective" else "section"
-
-    if index is not None:
-        needle = (
-            f'<{tag} data-block="{block_name}" '
-            f'data-index="{index}"'
-        )
-    else:
-        needle = f'<{tag} data-block="{block_name}"'
-
+    needle = (
+        f'<{tag} data-block="{block_name}" data-index="{index}"'
+        if index is not None
+        else f'<{tag} data-block="{block_name}"'
+    )
     start = html.find(needle)
     if start == -1:
         return ""
-
     end_tag = f"</{tag}>"
     end = html.find(end_tag, start)
-    if end == -1:
-        return ""
-
-    return html[start:end + len(end_tag)]
+    return html[start:end + len(end_tag)] if end != -1 else ""

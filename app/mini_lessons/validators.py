@@ -12,7 +12,12 @@ import logging
 import re
 
 from app.llm_clients import LLMResponse, OpenAIClient
+from app.mini_lessons.helpers import extract_enrichment_for_gate
+from app.mini_lessons.html_pedagogical_checks import (
+    check_scope_violations,
+)
 from app.mini_lessons.html_validator import (
+    check_decimal_notation,
     check_filler_phrases,
     check_full_lesson_structure,
     check_section_html,
@@ -27,7 +32,6 @@ from app.mini_lessons.models import (
     PhaseResult,
     QualityReport,
 )
-from app.mini_lessons.helpers import extract_enrichment_for_gate
 from app.mini_lessons.prompts.generation import (
     build_retry_prompt,
     extract_plan_section_for_block,
@@ -224,6 +228,9 @@ def deterministic_section_checks(
         errors.append(
             f"Forbidden filler phrases: {', '.join(fillers)}",
         )
+
+    errors.extend(check_scope_violations(section.html))
+    errors.extend(check_decimal_notation(section.html))
 
     return errors
 

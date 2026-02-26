@@ -122,6 +122,16 @@ acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
 clave, feedback vago, ejemplos resueltos faltantes, ítem in_scope \
 no cubierto, familia de error no abordada, sección que excede 2x \
 presupuesto, frases relleno prohibidas.
+- AUTO-FAIL SCOPE GATE: si la mini-clase enseña reglas generales \
+de fracciones, decimales o álgebra que no son el tema del átomo \
+(frases como "denominador común", "invierte la fracción", \
+"simplifica la fracción", "mínimo común múltiplo"), es auto-fail.
+- AUTO-FAIL NOTACIÓN: si hay decimales con punto en vez de coma \
+(1.5 en vez de 1,5), es auto-fail.
+- AUTO-FAIL DISTRACTORES: si algún distractor de QC no está \
+mapeado a una familia de error (falta data-error-id), es auto-fail.
+- Para P-template: si WE1 y WE2 usan nombres de pasos distintos \
+(no respetan pasos canónicos), penalizar step_rationale_clarity.
 - Frases relleno prohibidas: {filler_list}
 </rules>
 
