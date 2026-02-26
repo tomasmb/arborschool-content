@@ -41,6 +41,7 @@ export function QuestionBankTab() {
   const [diffFilter, setDiffFilter] = useState("all");
   const [statusFilter, setStatusFilter] =
     useState<StatusFilter>("all");
+  const [imagesOnly, setImagesOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(0);
 
@@ -55,6 +56,7 @@ export function QuestionBankTab() {
         status:
           statusFilter !== "all" ? statusFilter : undefined,
         search: searchQuery || undefined,
+        has_images: imagesOnly ? true : undefined,
         offset: page * PAGE_SIZE,
         limit: PAGE_SIZE,
       });
@@ -68,7 +70,7 @@ export function QuestionBankTab() {
     } finally {
       setLoading(false);
     }
-  }, [ejeFilter, diffFilter, statusFilter, searchQuery, page]);
+  }, [ejeFilter, diffFilter, statusFilter, imagesOnly, searchQuery, page]);
 
   useEffect(() => {
     fetchData();
@@ -96,6 +98,7 @@ export function QuestionBankTab() {
         ejeFilter={ejeFilter}
         diffFilter={diffFilter}
         statusFilter={statusFilter}
+        imagesOnly={imagesOnly}
         searchQuery={searchQuery}
         onEjeChange={(v) => {
           setEjeFilter(v);
@@ -107,6 +110,10 @@ export function QuestionBankTab() {
         }}
         onStatusChange={(v) => {
           setStatusFilter(v);
+          resetAndFetch();
+        }}
+        onImagesOnlyChange={(v) => {
+          setImagesOnly(v);
           resetAndFetch();
         }}
         onSearchChange={setSearchQuery}

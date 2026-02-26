@@ -45,6 +45,7 @@ def read_all_questions(
     difficulty: str | None = None,
     status: str | None = None,
     search: str | None = None,
+    has_images: bool | None = None,
     offset: int = 0,
     limit: int = 50,
 ) -> dict[str, Any]:
@@ -81,6 +82,9 @@ def read_all_questions(
                 status_counts.get(item_status, 0) + 1
             )
 
+            qti_xml = item.get("qti_xml", "")
+            item_has_images = "<img" in qti_xml
+
             if eje and atom_eje != eje:
                 continue
             if difficulty and diff != difficulty:
@@ -89,6 +93,8 @@ def read_all_questions(
                 continue
             if search and search.lower() not in atom_id.lower():
                 continue
+            if has_images is not None and item_has_images != has_images:
+                continue
 
             all_items.append({
                 "item_id": item.get("item_id"),
@@ -96,11 +102,12 @@ def read_all_questions(
                 "atom_titulo": atom_titulo,
                 "eje": atom_eje,
                 "slot_index": item.get("slot_index"),
-                "qti_xml": item.get("qti_xml", ""),
+                "qti_xml": qti_xml,
                 "difficulty": diff,
                 "context": meta.get("surface_context", "unknown"),
                 "status": item_status,
                 "phase": phase_num,
+                "has_images": item_has_images,
                 "pipeline_meta": meta or None,
             })
 

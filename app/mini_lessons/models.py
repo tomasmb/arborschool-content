@@ -56,17 +56,10 @@ PHASE_PREREQUISITES: dict[str, list[tuple[int, str]]] = {
 # ---------------------------------------------------------------------------
 
 SECTION_WORD_BUDGETS: dict[str, int] = {
-    "objective": 50,
-    "concept": 150,
-    "worked-example": 200,
-    "quick-check": 150,
-    "error-patterns": 150,
-    "transition-to-adaptive": 40,
-    "prerequisite-refresh": 100,
-    "visual-intuition": 120,
-    "formula-card": 80,
-    "counterexample": 100,
-    "real-context-hook": 80,
+    "objective": 35,
+    "concept": 100,
+    "worked-example": 180,
+    "prerequisite-refresh": 80,
 }
 
 HARD_BUDGET_MULTIPLIER: float = 2.0
@@ -122,46 +115,31 @@ class LessonContext:
 
 
 class WorkedExampleSpec(BaseModel):
-    """Specification for one worked example in the lesson plan."""
+    """Specification for the single worked example in the plan."""
 
     topic: str
     mathematical_context: str
     step_count: int
     numbers_to_use: str
-    fading_level: str = Field(
-        description="'full' for WE1 (guided), 'faded' for WE2",
-    )
     in_scope_items_covered: list[str] = Field(default_factory=list)
     error_families_addressed: list[str] = Field(default_factory=list)
 
 
 class QuickCheckSpec(BaseModel):
-    """Specification for one quick-check question in the lesson."""
+    """Legacy model kept for deserializing old checkpoints."""
 
-    stem_topic: str
-    correct_answer_theme: str
+    stem_topic: str = ""
+    correct_answer_theme: str = ""
     distractor_themes: list[str] = Field(default_factory=list)
     error_families_addressed: list[str] = Field(default_factory=list)
-    difficulty: str = Field(
-        default="simple",
-        description="'simple' (single concept, 20-30s) or "
-        "'integrative' (multi-concept, 45-60s)",
-    )
-
-
-class OptionalSectionSpec(BaseModel):
-    """Specification for an optional section with justification."""
-
-    block_name: str
-    justification: str
-    content_spec: str
+    difficulty: str = "simple"
 
 
 class LessonPlan(BaseModel):
     """Full lesson plan generated in Phase 1.
 
-    Maps every in_scope item and every error_family to at least
-    one section, ensuring complete coverage.
+    Maps every in_scope item to at least one section and selects
+    up to 5 error families to address in the worked example.
     """
 
     template_type: str
@@ -172,17 +150,13 @@ class LessonPlan(BaseModel):
         default_factory=list,
         description=(
             "P-template only: 3-5 named steps that form the "
-            "repeatable procedure. Both WE1 and WE2 must use "
-            "these exact step names."
+            "repeatable procedure for the worked example."
         ),
     )
-    worked_example_1: WorkedExampleSpec
-    worked_example_2: WorkedExampleSpec
-    quick_checks: list[QuickCheckSpec] = Field(min_length=1, max_length=2)
-    error_patterns_spec: str
-    error_patterns_families: list[str] = Field(default_factory=list)
-    optional_sections: list[OptionalSectionSpec] = Field(
+    worked_example: WorkedExampleSpec
+    checklist_items: list[str] = Field(
         default_factory=list,
+        description="3 one-line PAES checklist items for the WE closing.",
     )
     include_prerequisite_refresh: bool = False
     justifications: dict[str, str] = Field(default_factory=dict)
@@ -213,9 +187,6 @@ RUBRIC_DIMENSIONS: list[str] = [
     "brevity_cognitive_load",
     "worked_example_correctness",
     "step_rationale_clarity",
-    "quick_check_quality",
-    "feedback_quality",
-    "transition_readiness",
 ]
 
 

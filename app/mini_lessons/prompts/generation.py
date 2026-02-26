@@ -131,28 +131,15 @@ _TASK_DETAILS: dict[str, str] = {
     "concept": (
         "Genera la explicación conceptual mínima. "
         "Cubre los ítems in_scope asignados en el plan. "
-        "Una idea por párrafo, sin repetir lo que los ejemplos "
-        "mostrarán."
+        "Una idea por párrafo, sin repetir lo que el ejemplo "
+        "resuelto mostrará."
     ),
     "worked-example": (
         "Genera el ejemplo resuelto con pasos en "
         "<details>/<summary>. "
         "Aborda las familias de error asignadas en el plan "
-        "mostrando por qué el enfoque correcto funciona."
-    ),
-    "quick-check": (
-        "Genera el quick-check MCQ con 4 opciones y feedback "
-        "explicativo completo. Los distractores usan las familias "
-        "de error asignadas."
-    ),
-    "error-patterns": (
-        "Cubre TODAS las familias de error restantes (las no "
-        "cubiertas en ejemplos o quick-checks). "
-        "Incluye un Checklist PAES de exactamente 3 ítems con ✅."
-    ),
-    "transition-to-adaptive": (
-        "Transición explícita al set adaptativo. "
-        "Máximo 2 oraciones."
+        "mostrando por qué el enfoque correcto funciona. "
+        "Cierra con micro-refuerzo y Checklist PAES (3 ítems)."
     ),
     "prerequisite-refresh": (
         "Micro-bloque de repaso de prerrequisitos. "
@@ -182,7 +169,7 @@ def build_section_prompt(
         block_name: Section data-block name.
         atom_id: Atom identifier.
         template_type: P, C, or M.
-        index: Section index (for worked-example, quick-check).
+        index: Section index (for worked-example).
     """
     reference_html = extract_section_reference(
         template_type, block_name, index,
@@ -262,68 +249,35 @@ def extract_plan_section_for_block(
         )
 
     if block_name == "worked-example":
-        key = f"worked_example_{index}" if index else "worked_example_1"
-        we = plan_data.get(key, {})
+        we = plan_data.get("worked_example", {})
         canonical = plan_data.get("canonical_steps", [])
+        checklist = plan_data.get("checklist_items", [])
         canonical_line = ""
         if canonical:
             canonical_line = (
                 f"\n  Pasos canónicos: "
                 f"{', '.join(canonical)}"
             )
+        checklist_line = ""
+        if checklist:
+            checklist_line = (
+                f"\n  Checklist PAES: "
+                f"{'; '.join(checklist)}"
+            )
         if isinstance(we, dict):
             return (
-                f"Ejemplo {index}:\n"
+                f"Ejemplo resuelto:\n"
                 f"  Tema: {we.get('topic', '')}\n"
                 f"  Contexto: {we.get('mathematical_context', '')}\n"
                 f"  Pasos: {we.get('step_count', 4)}\n"
                 f"  Números: {we.get('numbers_to_use', '')}\n"
-                f"  Fading: {we.get('fading_level', '')}\n"
                 f"  In_scope: "
                 f"{', '.join(we.get('in_scope_items_covered', []))}\n"
                 f"  Errores: "
                 f"{', '.join(we.get('error_families_addressed', []))}"
                 f"{canonical_line}"
+                f"{checklist_line}"
             )
         return str(we)
-
-    if block_name == "quick-check":
-        checks = plan_data.get("quick_checks", [])
-        idx = (index or 1) - 1
-        if idx < len(checks):
-            qc = checks[idx]
-            if isinstance(qc, dict):
-                return (
-                    f"Quick Check {index}:\n"
-                    f"  Tema: {qc.get('stem_topic', '')}\n"
-                    f"  Correcta: "
-                    f"{qc.get('correct_answer_theme', '')}\n"
-                    f"  Distractores (cada uno = familia de error): "
-                    f"{', '.join(qc.get('distractor_themes', []))}\n"
-                    f"  Errores cubiertos: "
-                    f"{', '.join(qc.get('error_families_addressed', []))}\n"
-                    f"  IMPORTANTE: cada <li data-option> en "
-                    f"distractor-rationale debe llevar "
-                    f"data-error-id=\"nombre_familia\"."
-                )
-        return "Quick check según el plan."
-
-    if block_name == "error-patterns":
-        families = plan_data.get("error_patterns_families", [])
-        canonical = plan_data.get("canonical_steps", [])
-        canonical_line = ""
-        if canonical:
-            canonical_line = (
-                f"\nPasos canónicos (reflejar en Checklist PAES): "
-                f"{', '.join(canonical)}"
-            )
-        return (
-            f"Errores: {plan_data.get('error_patterns_spec', '')}\n"
-            f"Familias a cubrir: {', '.join(families)}"
-            f"{canonical_line}"
-        )
-
-    if block_name == "transition-to-adaptive":
-        return "Transición al set adaptativo."
 
     return ""
