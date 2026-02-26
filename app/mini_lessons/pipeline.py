@@ -169,6 +169,7 @@ class MiniLessonPipeline:
                     )
             elif phase == 5:
                 ctx = ctx or self._restore_ctx(config, result)
+                plan = plan or self._load_plan(output_dir)
                 full_html = full_html or self._load_html(output_dir)
                 if ctx:
                     quality = self._phase_5_qg(
@@ -178,6 +179,8 @@ class MiniLessonPipeline:
             elif phase == 6:
                 ctx = ctx or self._restore_ctx(config, result)
                 plan = plan or self._load_plan(output_dir)
+                quality = quality or self._load_quality(output_dir)
+                full_html = full_html or self._load_html(output_dir)
                 if ctx and plan:
                     self._phase_6_out(
                         full_html, ctx, plan,
@@ -410,20 +413,15 @@ class MiniLessonPipeline:
         output_dir.mkdir(parents=True, exist_ok=True)
         publishable = quality.publishable if quality else False
 
+        html_name = "mini-class.html" if publishable else "mini-class.rejected.html"
+        (output_dir / html_name).write_text(full_html, encoding="utf-8")
         if publishable:
-            (output_dir / "mini-class.html").write_text(
-                full_html, encoding="utf-8",
-            )
             rejected = output_dir / "mini-class.rejected.html"
             if rejected.exists():
                 rejected.unlink()
         else:
-            (output_dir / "mini-class.rejected.html").write_text(
-                full_html, encoding="utf-8",
-            )
             logger.warning(
-                "Phase 6: quality gate NOT passed — wrote "
-                "mini-class.rejected.html instead",
+                "Phase 6: quality gate NOT passed — wrote %s", html_name,
             )
 
         meta = build_lesson_meta(
@@ -449,19 +447,12 @@ class MiniLessonPipeline:
             {"publishable": publishable},
         )
         result.phase_results.append(PhaseResult(
-            phase_name="final_output",
-            success=publishable,
-            data={
-                "output_dir": str(output_dir),
-                "publishable": publishable,
-            },
+            phase_name="final_output", success=publishable,
+            data={"output_dir": str(output_dir), "publishable": publishable},
         ))
         result.html = full_html
         result.meta = meta
-        logger.info(
-            "Phase 6: Saved to %s (publishable=%s)",
-            output_dir, publishable,
-        )
+        logger.info("Phase 6: Saved to %s (publishable=%s)", output_dir, publishable)
 
     def _restore_ctx(
         self, config: LessonConfig, result: LessonResult,
@@ -497,3 +488,11 @@ class MiniLessonPipeline:
     def _load_html(self, output_dir: Path) -> str:
         ckpt = load_checkpoint(output_dir, 4, "assembled")
         return ckpt.get("html", "") if ckpt else ""
+
+    def _load_quality(
+        self, output_dir: Path,
+    ) -> QualityReport | None:
+        ckpt = load_checkpoint(output_dir, 5, "quality")
+        if ckpt and "report" in ckpt:
+            return QualityReport.model_validate(ckpt["report"])
+        return None
