@@ -207,6 +207,33 @@ _DBL_ENC_RE = re.compile(
 # Min unaccented words to flag as systemic (Class 4)
 _MIN_ACCENT_BASE_HITS = 3
 
+# ── Class 4b: single unambiguous accent→base ─────────────────
+# Words that have NO valid unaccented form in ANY context.
+# Flagged even if only 1 occurrence.
+_UNAMBIGUOUS_ACCENT: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
+    (re.compile(bad, re.I), re.compile(good, re.I), label)
+    for bad, good, label in [
+        (r"\btambien\b", r"\btambién\b", "también→tambien"),
+        (r"\bsegun\b", r"\bsegún\b", "según→segun"),
+        (r"\bademas\b", r"\bademás\b", "además→ademas"),
+        (r"\banalisis\b", r"\banálisis\b", "análisis→analisis"),
+        (r"\bconclusion\b", r"\bconclusión\b", "conclusión→conclusion"),
+        (r"\bsituacion\b", r"\bsituación\b", "situación→situacion"),
+        (r"\binformacion\b", r"\binformación\b", "información→informacion"),
+        (r"\bexpresion\b", r"\bexpresión\b", "expresión→expresion"),
+        (r"\bproporcion\b", r"\bproporción\b", "proporción→proporcion"),
+        (r"\blinea\b", r"\blínea\b", "línea→linea"),
+        (r"\btriangulo\b", r"\btriángulo\b", "triángulo→triangulo"),
+        (r"\brectangulo\b", r"\brectángulo\b", "rectángulo→rectangulo"),
+        (r"\bperimetro\b", r"\bperímetro\b", "perímetro→perimetro"),
+        (r"\bangulo\b", r"\bángulo\b", "ángulo→angulo"),
+        (r"\bvertice\b", r"\bvértice\b", "vértice→vertice"),
+        (r"\bparabola\b", r"\bparábola\b", "parábola→parabola"),
+        (r"\bsimbolo\b", r"\bsímbolo\b", "símbolo→simbolo"),
+        (r"\bdiametro\b", r"\bdiámetro\b", "diámetro→diametro"),
+    ]
+]
+
 
 def _visible_text(xml: str) -> str:
     """Remove MathML/tags and decode entities to get visible text."""
@@ -242,6 +269,11 @@ def _check_item(xml: str) -> list[str]:
     ]
     if len(base_hits) >= _MIN_ACCENT_BASE_HITS:
         matches.extend(base_hits)
+
+    # Class 4b: unambiguous accent→base (even 1 hit is enough)
+    for bad, good, label in _UNAMBIGUOUS_ACCENT:
+        if bad.search(text) and not good.search(text):
+            matches.append(label)
 
     # Class 5: double-encoded entities (raw XML)
     dbl = _DBL_ENC_RE.findall(xml)
@@ -289,6 +321,7 @@ def scan() -> None:
         "#   2) Char deleted      — gráfico → grfico",
         "#   3) Tilde stripped    — tamaño → tamano, año → ano",
         "#   4) Accent→base      — gráfico → grafico (3+ per Q)",
+        "#   4b) Unambiguous     — según → segun (always wrong)",
         "#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;",
         "#",
         "# Fix: regenerate these questions through the pipeline.",

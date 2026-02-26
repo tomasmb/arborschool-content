@@ -1,10 +1,10 @@
 # Garbled Character Report
 # Generated: 2026-02-26
 # Total questions scanned: 8264
-# Garbled questions found: 190
-# Clean questions: 8074
-# Percentage garbled: 2.3%
-# Affected atoms: 41 / 205
+# Garbled questions found: 198
+# Clean questions: 8066
+# Percentage garbled: 2.4%
+# Affected atoms: 46 / 205
 #
 # Root cause: LLM occasionally corrupts accented characters.
 #
@@ -13,6 +13,7 @@
 #   2) Char deleted      — gráfico → grfico
 #   3) Tilde stripped    — tamaño → tamano, año → ano
 #   4) Accent→base      — gráfico → grafico (3+ per Q)
+#   4b) Unambiguous     — según → segun (always wrong)
 #   5) Double-encoded   — &amp;#xD7; instead of &#xD7;
 #
 # Fix: regenerate these questions through the pipeline.
@@ -80,9 +81,10 @@ A-M1-ALG-04-05_Q40	situaci03n
 A-M1-ALG-04-05_Q46	bfEn, ecuacif3n, me9todo, sustitucif3n
 A-M1-ALG-04-05_Q54	bfque9, fanica, me9todo, solucif3n, sustitucif3n
 
-## A-M1-ALG-05-08 (3 questions)
+## A-M1-ALG-05-08 (4 questions)
 A-M1-ALG-05-08_Q13	conclusión→conclusin, cuál→cul, cómo→cmo, función→funcin, gráfica→grfica, gráfico→grfico
 A-M1-ALG-05-08_Q17	conclusión→conclusion, ecuación→ecuacion, función→funcion, gráfico→grafico, número→numero
+A-M1-ALG-05-08_Q46	según→segun
 A-M1-ALG-05-08_Q55	conclusión→conclusion, función→funcion, gráficos→graficos, gráfico→grafico
 
 ## A-M1-ALG-05-11 (1 questions)
@@ -107,20 +109,34 @@ A-M1-ALG-06-11_Q38	diseño→diseno
 ## A-M1-ALG-06-12 (1 questions)
 A-M1-ALG-06-12_Q46	análisis→analisis, conclusión→conclusion, gráfica→grafica, gráfico→grafico, parábola→parabola, razón→razon, según→segun, vértice→vertice
 
+## A-M1-GEO-01-03 (1 questions)
+A-M1-GEO-01-03_Q13	según→segun
+
+## A-M1-GEO-01-04 (1 questions)
+A-M1-GEO-01-04_Q59	información→informacion, ángulo→angulo
+
 ## A-M1-GEO-01-05 (1 questions)
 A-M1-GEO-01-05_Q55	conclusión→conclusion, fórmula→formula, perímetro→perimetro, relación→relacion
 
 ## A-M1-GEO-02-01 (1 questions)
 A-M1-GEO-02-01_Q36	0bfCu01l, además→adems, cart0dn, conclusión→conclusin, per0dmetro
 
-## A-M1-GEO-02-02 (1 questions)
+## A-M1-GEO-02-02 (3 questions)
+A-M1-GEO-02-02_Q11	rectángulo→rectangulo
 A-M1-GEO-02-02_Q24	además→ademas, análisis→analisis, conclusión→conclusion, número→numero, rectángulo→rectangulo
+A-M1-GEO-02-02_Q50	según→segun
 
 ## A-M1-GEO-02-04 (1 questions)
 A-M1-GEO-02-04_Q60	conclusión→conclusion, cálculo→calculo, fórmula→formula
 
 ## A-M1-GEO-02-05 (1 questions)
 A-M1-GEO-02-05_Q29	además→ademas, conclusión→conclusion, cálculo→calculo, fórmula→formula, pequeño→pequeno, rectángulo→rectangulo, también→tambien
+
+## A-M1-GEO-02-06 (1 questions)
+A-M1-GEO-02-06_Q38	también→tambien
+
+## A-M1-GEO-02-08 (1 questions)
+A-M1-GEO-02-08_Q2	información→informacion
 
 ## A-M1-GEO-02-16 (5 questions)
 A-M1-GEO-02-16_Q11	0bfcu03l
@@ -169,6 +185,9 @@ A-M1-NUM-01-10_Q58	conclusión→conclusion, número→numero, según→segun, t
 
 ## A-M1-NUM-02-07 (1 questions)
 A-M1-NUM-02-07_Q0	dbl:&amp;#215;, dbl:&amp;#247;
+
+## A-M1-NUM-02-10 (1 questions)
+A-M1-NUM-02-10_Q30	según→segun
 
 ## A-M1-PROB-01-04 (12 questions)
 A-M1-PROB-01-04_Q10	bfque9, gráfico→grfico
