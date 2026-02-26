@@ -255,6 +255,82 @@ _INTERROG_RE: list[tuple[re.Pattern[str], str]] = [
 ]
 
 
+# ── Class 7: article + unaccented noun ────────────────────────
+_ARTICLE_NOUN: list[tuple[re.Pattern[str], str]] = [
+    (re.compile(p, re.I), label)
+    for p, label in [
+        (r"\b(?:la|una|esta|cada) funcion\b", "la+función"),
+        (r"\b(?:la|una|esta|cada) ecuacion\b", "la+ecuación"),
+        (r"\b(?:la|una|esta|cada) relacion\b", "la+relación"),
+        (r"\b(?:la|una|esta|cada) expresion\b", "la+expresión"),
+        (r"\b(?:la|una|esta|cada) situacion\b", "la+situación"),
+        (r"\b(?:la|una|esta|cada) informacion\b", "la+información"),
+        (r"\b(?:la|una|esta|cada) conclusion\b", "la+conclusión"),
+        (r"\b(?:la|una|esta|cada) fraccion\b", "la+fracción"),
+        (r"\b(?:la|una|esta|cada) solucion\b", "la+solución"),
+        (r"\b(?:la|una|esta|cada) proporcion\b", "la+proporción"),
+        (r"\b(?:la|una|esta|cada) linea\b", "la+línea"),
+        (r"\b(?:la|una|esta|cada) formula\b", "la+fórmula"),
+        (r"\b(?:la|una|esta|cada) parabola\b", "la+parábola"),
+        (r"\b(?:la|una|esta|cada) practica\b", "la+práctica"),
+        (r"\b(?:el|un|este|cada) numero\b", "el+número"),
+        (r"\b(?:el|un|este|cada) grafico\b", "el+gráfico"),
+        (r"\b(?:el|un|este|cada) angulo\b", "el+ángulo"),
+        (r"\b(?:el|un|este|cada) triangulo\b", "el+triángulo"),
+        (r"\b(?:el|un|este|cada) rectangulo\b", "el+rectángulo"),
+        (r"\b(?:el|un|este|cada) perimetro\b", "el+perímetro"),
+        (r"\b(?:el|un|este|cada) diametro\b", "el+diámetro"),
+        (r"\b(?:el|un|este|cada) calculo\b", "el+cálculo"),
+        (r"\b(?:el|un|este|cada) analisis\b", "el+análisis"),
+        (r"\b(?:el|un|este|cada) maximo\b", "el+máximo"),
+        (r"\b(?:el|un|este|cada) minimo\b", "el+mínimo"),
+        (r"\b(?:el|un|este|cada) metodo\b", "el+método"),
+        (r"\b(?:el|un|este|cada) vertice\b", "el+vértice"),
+        (r"\b(?:el|un|este|cada) simbolo\b", "el+símbolo"),
+        (r"\b(?:el|un|este|cada) ultimo\b", "el+último"),
+    ]
+]
+
+# ── Class 8: corrupted img alt text ──────────────────────────
+_ALT_RE = re.compile(r'alt="([^"]*)"')
+_ALT_WORDS: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
+    (re.compile(b, re.I), re.compile(g, re.I), label)
+    for b, g, label in [
+        (r"\bgrafico\b", r"\bgráfico\b", "alt:gráfico"),
+        (r"\bnumero\b", r"\bnúmero\b", "alt:número"),
+        (r"\btriangulo\b", r"\btriángulo\b", "alt:triángulo"),
+        (r"\bangulo\b", r"\bángulo\b", "alt:ángulo"),
+        (r"\blinea\b", r"\blínea\b", "alt:línea"),
+        (r"\bfuncion\b", r"\bfunción\b", "alt:función"),
+        (r"\bformula\b", r"\bfórmula\b", "alt:fórmula"),
+        (r"\brectangulo\b", r"\brectángulo\b", "alt:rectángulo"),
+        (r"\bperimetro\b", r"\bperímetro\b", "alt:perímetro"),
+        (r"\bdiametro\b", r"\bdiámetro\b", "alt:diámetro"),
+        (r"\bsituacion\b", r"\bsituación\b", "alt:situación"),
+        (r"\binformacion\b", r"\binformación\b", "alt:información"),
+        (r"\brelacion\b", r"\brelación\b", "alt:relación"),
+        (r"\becuacion\b", r"\becuación\b", "alt:ecuación"),
+        (r"\bconclusion\b", r"\bconclusión\b", "alt:conclusión"),
+        (r"\bexpresion\b", r"\bexpresión\b", "alt:expresión"),
+        (r"\bproporcion\b", r"\bproporción\b", "alt:proporción"),
+        (r"\bfraccion\b", r"\bfracción\b", "alt:fracción"),
+        (r"\bsolucion\b", r"\bsolución\b", "alt:solución"),
+        (r"\bcalculo\b", r"\bcálculo\b", "alt:cálculo"),
+        (r"\banalisis\b", r"\banálisis\b", "alt:análisis"),
+        (r"\bvertice\b", r"\bvértice\b", "alt:vértice"),
+        (r"\bparabola\b", r"\bparábola\b", "alt:parábola"),
+        (r"\bsimbolo\b", r"\bsímbolo\b", "alt:símbolo"),
+        (r"\bmaximo\b", r"\bmáximo\b", "alt:máximo"),
+        (r"\bminimo\b", r"\bmínimo\b", "alt:mínimo"),
+        (r"\bmetodo\b", r"\bmétodo\b", "alt:método"),
+        (r"\bultimo\b", r"\búltimo\b", "alt:último"),
+        (r"\btambien\b", r"\btambién\b", "alt:también"),
+        (r"\bsegun\b", r"\bsegún\b", "alt:según"),
+        (r"\bademas\b", r"\bademás\b", "alt:además"),
+    ]
+]
+
+
 def _visible_text(xml: str) -> str:
     """Remove MathML/tags and decode entities to get visible text."""
     text = re.sub(r"<math[^>]*>.*?</math>", " ", xml, flags=re.DOTALL)
@@ -299,6 +375,19 @@ def _check_item(xml: str) -> list[str]:
     for pat, label in _INTERROG_RE:
         if pat.search(text):
             matches.append(label)
+
+    # Class 7: article + unaccented noun (contextual proof)
+    for pat, label in _ARTICLE_NOUN:
+        if pat.search(text):
+            matches.append(label)
+
+    # Class 8: corrupted img alt text
+    for alt_m in _ALT_RE.finditer(xml):
+        alt = _html.unescape(alt_m.group(1))
+        for bad, good, label in _ALT_WORDS:
+            if bad.search(alt) and not good.search(alt):
+                matches.append(label)
+                break
 
     # Class 5: double-encoded entities (raw XML)
     dbl = _DBL_ENC_RE.findall(xml)
@@ -349,6 +438,8 @@ def scan() -> None:
         "#   4b) Unambiguous     — según → segun (always wrong)",
         "#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;",
         "#   6) Interrogative    — ¿Cual instead of ¿Cuál",
+        "#   7) Article+noun    — 'el grafico' (contextual proof)",
+        "#   8) Alt text        — corrupted img alt attributes",
         "#",
         "# Fix: regenerate these questions through the pipeline.",
         "",

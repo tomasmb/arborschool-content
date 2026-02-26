@@ -1,10 +1,10 @@
 # Garbled Character Report
 # Generated: 2026-02-26
 # Total questions scanned: 8264
-# Garbled questions found: 203
-# Clean questions: 8061
-# Percentage garbled: 2.5%
-# Affected atoms: 48 / 205
+# Garbled questions found: 218
+# Clean questions: 8046
+# Percentage garbled: 2.6%
+# Affected atoms: 53 / 205
 #
 # Root cause: LLM occasionally corrupts accented characters.
 #
@@ -16,6 +16,8 @@
 #   4b) Unambiguous     — según → segun (always wrong)
 #   5) Double-encoded   — &amp;#xD7; instead of &#xD7;
 #   6) Interrogative    — ¿Cual instead of ¿Cuál
+#   7) Article+noun    — 'el grafico' (contextual proof)
+#   8) Alt text        — corrupted img alt attributes
 #
 # Fix: regenerate these questions through the pipeline.
 
@@ -29,9 +31,9 @@ A-M1-ALG-01-09_Q21	bfcue1l
 A-M1-ALG-01-09_Q47	bfcue1l, patrf3n
 A-M1-ALG-01-09_Q51	bfCue1l
 A-M1-ALG-01-09_Q61	bfCue1l, expresif3n, nf3mero, patrón→patrn
-A-M1-ALG-01-09_Q9	patrón→patrn
+A-M1-ALG-01-09_Q9	el+cálculo, la+expresión, patrón→patrn
 
-## A-M1-ALG-02-04 (16 questions)
+## A-M1-ALG-02-04 (18 questions)
 A-M1-ALG-02-04_Q1	bfCue1l, funcif3n, gre1fico, relacif3n
 A-M1-ALG-02-04_Q13	gráfica→grfica, gráfico→grfico, razón→razn, relación→relacin, según→segn
 A-M1-ALG-02-04_Q18	gr01fico, relacif3n, rmacif3n, seccif3n
@@ -40,20 +42,22 @@ A-M1-ALG-02-04_Q2	cb3mo, deber0da, funci03n, gr01fico, n0dmero, proporci03n, rel
 A-M1-ALG-02-04_Q20	cuál→cul, función→funcin, gráficos→grficos, gráfico→grfico, relación→relacin
 A-M1-ALG-02-04_Q32	expresión→expresin, gráfico→grfico, relación→relacin, según→segn
 A-M1-ALG-02-04_Q33	Adem03s, bfCue1l, deber31a, expresi03n, gr31fico, relaci03n, relación→relacin
-A-M1-ALG-02-04_Q34	bfque9, despue9s, gre1fico, relacif3n
+A-M1-ALG-02-04_Q34	alt:gráfico, bfque9, despue9s, gre1fico, relacif3n
 A-M1-ALG-02-04_Q37	0bfcu01l, cómo→cmo, según→segn
 A-M1-ALG-02-04_Q40	bfCue1l, funcif3n, gre1fico, relacif3n
+A-M1-ALG-02-04_Q45	alt:según
 A-M1-ALG-02-04_Q47	cuál→cul, número→nmero, razón→razn, relación→relacin, también→tambin
 A-M1-ALG-02-04_Q51	gre1fico, relacif3n
 A-M1-ALG-02-04_Q6	relación→relacin, situación→situacin
+A-M1-ALG-02-04_Q61	alt:gráfico
 A-M1-ALG-02-04_Q8	c03mo, cu03ntas, gr03fico, var03a
-A-M1-ALG-02-04_Q9	cómo→cmo, funci03n, relaci03n, var0da
+A-M1-ALG-02-04_Q9	alt:gráfico, cómo→cmo, el+gráfico, funci03n, la+línea, la+relación, relaci03n, var0da
 
 ## A-M1-ALG-02-05 (1 questions)
 A-M1-ALG-02-05_Q44	conclusión→conclusin, cuál→cul, expresión→expresin, razón→razn, relación→relacin, según→segn, situación→situacin, también→tambin
 
 ## A-M1-ALG-03-10 (1 questions)
-A-M1-ALG-03-10_Q13	gráfico→grafico, información→informacion, número→numero, símbolo→simbolo, también→tambien, ¿Cuál→¿Cual
+A-M1-ALG-03-10_Q13	el+gráfico, el+número, el+símbolo, gráfico→grafico, información→informacion, la+información, número→numero, símbolo→simbolo, también→tambien, ¿Cuál→¿Cual
 
 ## A-M1-ALG-03-13 (1 questions)
 A-M1-ALG-03-13_Q17	inecuaci03n, soluci03n
@@ -82,11 +86,14 @@ A-M1-ALG-04-05_Q40	situaci03n
 A-M1-ALG-04-05_Q46	bfEn, ecuacif3n, me9todo, sustitucif3n
 A-M1-ALG-04-05_Q54	bfque9, fanica, me9todo, solucif3n, sustitucif3n
 
+## A-M1-ALG-04-08 (1 questions)
+A-M1-ALG-04-08_Q20	el+número, la+situación
+
 ## A-M1-ALG-05-08 (4 questions)
 A-M1-ALG-05-08_Q13	conclusión→conclusin, cuál→cul, cómo→cmo, función→funcin, gráfica→grfica, gráfico→grfico
-A-M1-ALG-05-08_Q17	conclusión→conclusion, ecuación→ecuacion, función→funcion, gráfico→grafico, número→numero, ¿cuál→¿cual
-A-M1-ALG-05-08_Q46	según→segun
-A-M1-ALG-05-08_Q55	conclusión→conclusion, función→funcion, gráficos→graficos, gráfico→grafico, ¿cuál→¿cual
+A-M1-ALG-05-08_Q17	alt:gráfico, conclusión→conclusion, ecuación→ecuacion, el+gráfico, el+número, función→funcion, gráfico→grafico, la+ecuación, la+función, número→numero, ¿cuál→¿cual
+A-M1-ALG-05-08_Q46	el+gráfico, la+función, según→segun
+A-M1-ALG-05-08_Q55	alt:gráfico, conclusión→conclusion, el+gráfico, función→funcion, gráficos→graficos, gráfico→grafico, la+función, ¿cuál→¿cual
 
 ## A-M1-ALG-05-11 (1 questions)
 A-M1-ALG-05-11_Q1	dbl:&amp;#xD7;
@@ -104,40 +111,47 @@ A-M1-ALG-06-04_Q56	bfcue1l, cuadre1tic, funcif3n, gre1fico
 A-M1-ALG-06-04_Q6	además→adems, análisis→anlisis, cuál→cul, función→funcin, gráfica→grfica, situación→situacin
 
 ## A-M1-ALG-06-11 (2 questions)
-A-M1-ALG-06-11_Q15	análisis→analisis, conclusión→conclusion, ecuación→ecuacion, función→funcion, fórmula→formula, gráficas→graficas, gráfico→grafico, parábola→parabola, según→segun, vértice→vertice, ¿cuál→¿cual
-A-M1-ALG-06-11_Q38	diseño→diseno, ¿cuál→¿cual
+A-M1-ALG-06-11_Q15	alt:vértice, análisis→analisis, conclusión→conclusion, ecuación→ecuacion, el+gráfico, el+vértice, función→funcion, fórmula→formula, gráficas→graficas, gráfico→grafico, la+ecuación, la+función, la+fórmula, la+parábola, parábola→parabola, según→segun, vértice→vertice, ¿cuál→¿cual
+A-M1-ALG-06-11_Q38	alt:gráfico, diseño→diseno, el+gráfico, el+vértice, la+función, ¿cuál→¿cual
 
 ## A-M1-ALG-06-12 (1 questions)
-A-M1-ALG-06-12_Q46	análisis→analisis, conclusión→conclusion, gráfica→grafica, gráfico→grafico, parábola→parabola, razón→razon, según→segun, vértice→vertice, ¿cuál→¿cual
+A-M1-ALG-06-12_Q46	alt:gráfico, análisis→analisis, conclusión→conclusion, el+gráfico, el+vértice, gráfica→grafica, gráfico→grafico, la+conclusión, la+parábola, parábola→parabola, razón→razon, según→segun, vértice→vertice, ¿cuál→¿cual
 
-## A-M1-GEO-01-03 (1 questions)
-A-M1-GEO-01-03_Q13	número→numero, según→segun
+## A-M1-GEO-01-03 (2 questions)
+A-M1-GEO-01-03_Q13	alt:triángulo, el+número, el+triángulo, la+expresión, la+relación, número→numero, según→segun
+A-M1-GEO-01-03_Q43	alt:rectángulo
 
 ## A-M1-GEO-01-04 (1 questions)
-A-M1-GEO-01-04_Q59	información→informacion, ángulo→angulo
+A-M1-GEO-01-04_Q59	alt:ángulo, información→informacion, la+información, ángulo→angulo
 
 ## A-M1-GEO-01-05 (1 questions)
-A-M1-GEO-01-05_Q55	conclusión→conclusion, fórmula→formula, perímetro→perimetro, relación→relacion, ¿Cuál→¿Cual
+A-M1-GEO-01-05_Q55	alt:ángulo, conclusión→conclusion, el+perímetro, fórmula→formula, la+fórmula, perímetro→perimetro, relación→relacion, ¿Cuál→¿Cual
+
+## A-M1-GEO-01-13 (1 questions)
+A-M1-GEO-01-13_Q33	alt:rectángulo
 
 ## A-M1-GEO-02-01 (1 questions)
 A-M1-GEO-02-01_Q36	0bfCu01l, además→adems, cart0dn, conclusión→conclusin, per0dmetro
 
 ## A-M1-GEO-02-02 (3 questions)
-A-M1-GEO-02-02_Q11	rectángulo→rectangulo
-A-M1-GEO-02-02_Q24	además→ademas, análisis→analisis, conclusión→conclusion, número→numero, rectángulo→rectangulo, ¿cuál→¿cual
+A-M1-GEO-02-02_Q11	el+rectángulo, rectángulo→rectangulo
+A-M1-GEO-02-02_Q24	además→ademas, análisis→analisis, conclusión→conclusion, el+análisis, el+número, el+rectángulo, número→numero, rectángulo→rectangulo, ¿cuál→¿cual
 A-M1-GEO-02-02_Q50	según→segun, ¿cuál→¿cual
 
 ## A-M1-GEO-02-04 (1 questions)
-A-M1-GEO-02-04_Q60	conclusión→conclusion, cálculo→calculo, fórmula→formula, ¿cuál→¿cual
+A-M1-GEO-02-04_Q60	conclusión→conclusion, cálculo→calculo, fórmula→formula, la+fórmula, ¿cuál→¿cual
 
 ## A-M1-GEO-02-05 (1 questions)
-A-M1-GEO-02-05_Q29	además→ademas, conclusión→conclusion, cálculo→calculo, fórmula→formula, pequeño→pequeno, rectángulo→rectangulo, también→tambien, ¿Cuál→¿Cual
+A-M1-GEO-02-05_Q29	además→ademas, conclusión→conclusion, cálculo→calculo, el+rectángulo, fórmula→formula, la+fórmula, pequeño→pequeno, rectángulo→rectangulo, también→tambien, ¿Cuál→¿Cual
 
 ## A-M1-GEO-02-06 (1 questions)
-A-M1-GEO-02-06_Q38	también→tambien, ¿Cuál→¿Cual
+A-M1-GEO-02-06_Q38	la+relación, también→tambien, ¿Cuál→¿Cual
 
 ## A-M1-GEO-02-08 (1 questions)
-A-M1-GEO-02-08_Q2	información→informacion
+A-M1-GEO-02-08_Q2	información→informacion, la+información
+
+## A-M1-GEO-02-11 (1 questions)
+A-M1-GEO-02-11_Q45	alt:diámetro
 
 ## A-M1-GEO-02-16 (5 questions)
 A-M1-GEO-02-16_Q11	0bfcu03l
@@ -147,8 +161,8 @@ A-M1-GEO-02-16_Q43	bfcue1l
 A-M1-GEO-02-16_Q52	est01n, uni3n
 
 ## A-M1-GEO-03-01 (2 questions)
-A-M1-GEO-03-01_Q17	además→ademas, análisis→analisis, gráficos→graficos, gráfico→grafico, proporción→proporcion, razón→razon, rectángulo→rectangulo, según→segun, situación→situacion, tamaño→tamano, también→tambien, ángulo→angulo
-A-M1-GEO-03-01_Q61	análisis→analisis, rectángulo→rectangulo, según→segun, también→tambien, triángulo→triangulo, ¿cuál→¿cual, ángulo→angulo
+A-M1-GEO-03-01_Q17	además→ademas, análisis→analisis, el+gráfico, el+rectángulo, el+ángulo, gráficos→graficos, gráfico→grafico, la+situación, proporción→proporcion, razón→razon, rectángulo→rectangulo, según→segun, situación→situacion, tamaño→tamano, también→tambien, ángulo→angulo
+A-M1-GEO-03-01_Q61	análisis→analisis, el+triángulo, el+ángulo, rectángulo→rectangulo, según→segun, también→tambien, triángulo→triangulo, ¿cuál→¿cual, ángulo→angulo
 
 ## A-M1-GEO-03-04 (1 questions)
 A-M1-GEO-03-04_Q33	Despue9s, bfcue1l, dispersif3n, gre1fico
@@ -167,22 +181,25 @@ A-M1-GEO-03-06_Q60	bfCue1l
 A-M1-GEO-03-06_Q9	bfCue1l
 
 ## A-M1-GEO-03-09 (1 questions)
-A-M1-GEO-03-09_Q26	conclusión→conclusion, línea→linea, también→tambien, ¿cuál→¿cual, ángulo→angulo
+A-M1-GEO-03-09_Q26	conclusión→conclusion, el+ángulo, línea→linea, también→tambien, ¿cuál→¿cual, ángulo→angulo
 
 ## A-M1-GEO-03-12 (10 questions)
-A-M1-GEO-03-12_Q13	además→ademas, análisis→analisis, rectángulo→rectangulo, situación→situacion, tamaño→tamano, triángulo→triangulo, vértice→vertice, ¿cuál→¿cual
-A-M1-GEO-03-12_Q16	además→ademas, gráficos→graficos, gráfico→grafico, situación→situacion, tamaños→tamanos, tamaño→tamano, también→tambien, ¿qué→¿que
-A-M1-GEO-03-12_Q19	además→ademas, análisis→analisis, situación→situacion, tamaño→tamano, también→tambien, ¿qué→¿que
-A-M1-GEO-03-12_Q3	análisis→analisis, conclusión→conclusion, según→segun, situación→situacion, tamaño→tamano, ¿qué→¿que
+A-M1-GEO-03-12_Q13	además→ademas, análisis→analisis, el+triángulo, el+vértice, la+situación, rectángulo→rectangulo, situación→situacion, tamaño→tamano, triángulo→triangulo, vértice→vertice, ¿cuál→¿cual
+A-M1-GEO-03-12_Q16	además→ademas, el+gráfico, gráficos→graficos, gráfico→grafico, la+situación, situación→situacion, tamaños→tamanos, tamaño→tamano, también→tambien, ¿qué→¿que
+A-M1-GEO-03-12_Q19	además→ademas, análisis→analisis, la+situación, situación→situacion, tamaño→tamano, también→tambien, ¿qué→¿que
+A-M1-GEO-03-12_Q3	análisis→analisis, conclusión→conclusion, la+situación, según→segun, situación→situacion, tamaño→tamano, ¿qué→¿que
 A-M1-GEO-03-12_Q32	análisis→analisis, conclusión→conclusion, línea→linea, tamaño→tamano, también→tambien, ¿qué→¿que, ángulo→angulo
-A-M1-GEO-03-12_Q36	análisis→analisis, gráficos→graficos, gráfico→grafico, relación→relacion, tamaño→tamano, ¿cuál→¿cual
-A-M1-GEO-03-12_Q40	además→ademas, análisis→analisis, conclusión→conclusion, ¿qué→¿que, ángulo→angulo
-A-M1-GEO-03-12_Q42	además→ademas, análisis→analisis, conclusión→conclusion, número→numero, situación→situacion, también→tambien, vértice→vertice, ¿qué→¿que
-A-M1-GEO-03-12_Q43	análisis→analisis, conclusión→conclusion, diseño→diseno, patrón→patron, tamaño→tamano, triángulo→triangulo, ¿qué→¿que
-A-M1-GEO-03-12_Q49	análisis→analisis, conclusión→conclusion, línea→linea, número→numero, situación→situacion, también→tambien, ¿cuál→¿cual
+A-M1-GEO-03-12_Q36	análisis→analisis, el+gráfico, gráficos→graficos, gráfico→grafico, la+relación, relación→relacion, tamaño→tamano, ¿cuál→¿cual
+A-M1-GEO-03-12_Q40	además→ademas, análisis→analisis, conclusión→conclusion, el+ángulo, ¿qué→¿que, ángulo→angulo
+A-M1-GEO-03-12_Q42	además→ademas, alt:línea, análisis→analisis, conclusión→conclusion, el+vértice, la+situación, número→numero, situación→situacion, también→tambien, vértice→vertice, ¿qué→¿que
+A-M1-GEO-03-12_Q43	análisis→analisis, conclusión→conclusion, diseño→diseno, el+triángulo, patrón→patron, tamaño→tamano, triángulo→triangulo, ¿qué→¿que
+A-M1-GEO-03-12_Q49	alt:línea, análisis→analisis, conclusión→conclusion, el+número, la+línea, la+situación, línea→linea, número→numero, situación→situacion, también→tambien, ¿cuál→¿cual
+
+## A-M1-GEO-03-13 (1 questions)
+A-M1-GEO-03-13_Q25	alt:triángulo
 
 ## A-M1-NUM-01-10 (1 questions)
-A-M1-NUM-01-10_Q58	conclusión→conclusion, fracción→fraccion, número→numero, según→segun, también→tambien, ¿qué→¿que
+A-M1-NUM-01-10_Q58	conclusión→conclusion, el+número, fracción→fraccion, la+fracción, número→numero, según→segun, también→tambien, ¿qué→¿que
 
 ## A-M1-NUM-02-07 (1 questions)
 A-M1-NUM-02-07_Q0	dbl:&amp;#215;, dbl:&amp;#247;
@@ -190,10 +207,13 @@ A-M1-NUM-02-07_Q0	dbl:&amp;#215;, dbl:&amp;#247;
 ## A-M1-NUM-02-10 (1 questions)
 A-M1-NUM-02-10_Q30	según→segun, ¿Cuánto→¿Cuanto
 
-## A-M1-PROB-01-04 (12 questions)
+## A-M1-PROB-01-04 (15 questions)
 A-M1-PROB-01-04_Q10	bfque9, gráfico→grfico
 A-M1-PROB-01-04_Q11	bfque9, gráfico→grfico, información→informacin, según→segn
+A-M1-PROB-01-04_Q19	alt:gráfico
+A-M1-PROB-01-04_Q21	alt:gráfico
 A-M1-PROB-01-04_Q24	cb3mo, gr03afico
+A-M1-PROB-01-04_Q32	alt:gráfico
 A-M1-PROB-01-04_Q36	gráfico→grfico, relación→relacin
 A-M1-PROB-01-04_Q38	gráfico→grfico, número→nmero
 A-M1-PROB-01-04_Q42	gre1fico
@@ -201,7 +221,7 @@ A-M1-PROB-01-04_Q43	además→adems, conclusión→conclusin, cuál→cul, cómo
 A-M1-PROB-01-04_Q45	AdemE1s, bfCue1l, gre1fico
 A-M1-PROB-01-04_Q48	bfcue1l, gre1fico
 A-M1-PROB-01-04_Q52	gr1fico
-A-M1-PROB-01-04_Q53	bfCue1l, gre1fico
+A-M1-PROB-01-04_Q53	alt:gráfico, bfCue1l, gre1fico
 A-M1-PROB-01-04_Q57	bfcue1l, gráfico→grfico, número→nmero, según→segn
 
 ## A-M1-PROB-01-05 (3 questions)
@@ -209,28 +229,30 @@ A-M1-PROB-01-05_Q0	bfque9, gráfico→grfico, según→segn
 A-M1-PROB-01-05_Q2	gráfico→grfico
 A-M1-PROB-01-05_Q44	cuál→cul, gráfico→grfico, número→nmero
 
-## A-M1-PROB-01-07 (15 questions)
+## A-M1-PROB-01-07 (17 questions)
 A-M1-PROB-01-07_Q1	gráfico→grfico, línea→lnea
 A-M1-PROB-01-07_Q13	c3f3mo, gr31fico, l33nea, var3b0a
-A-M1-PROB-01-07_Q20	¿Cuál→¿Cual
+A-M1-PROB-01-07_Q20	alt:gráfico, el+gráfico, la+función, ¿Cuál→¿Cual
 A-M1-PROB-01-07_Q22	evolucif3n, gre1fico
 A-M1-PROB-01-07_Q31	evoluci93n, gráfico→grfico
 A-M1-PROB-01-07_Q34	af1o, bfcue1l, evolucif3n, gre1fico
 A-M1-PROB-01-07_Q35	bfque9, dbl:&amp;aacute;, dbl:&amp;eacute;, dbl:&amp;iacute;, dbl:&amp;ntilde;, dbl:&amp;oacute;, dispersif3n, evolucif3n, funcif3n, gre1fico
 A-M1-PROB-01-07_Q39	a03os, gr03fico, n03mero, r03pidamente
+A-M1-PROB-01-07_Q41	alt:gráfico
 A-M1-PROB-01-07_Q42	c9En
-A-M1-PROB-01-07_Q47	análisis→analisis, gráfico→grafico, línea→linea
-A-M1-PROB-01-07_Q49	af1o, bfcue1l, evolucif3n
+A-M1-PROB-01-07_Q43	alt:gráfico
+A-M1-PROB-01-07_Q47	alt:gráfico, análisis→analisis, el+gráfico, gráfico→grafico, la+línea, línea→linea
+A-M1-PROB-01-07_Q49	af1o, alt:gráfico, bfcue1l, evolucif3n
 A-M1-PROB-01-07_Q51	gr03afico, minuci03on
 A-M1-PROB-01-07_Q52	a03os, c03mo, gr03fico, n03mero
-A-M1-PROB-01-07_Q57	AdemE1s, af1o, bfcue1l, gre1fico, rmacif3n
+A-M1-PROB-01-07_Q57	AdemE1s, af1o, alt:gráfico, bfcue1l, gre1fico, rmacif3n
 A-M1-PROB-01-07_Q7	gráfica→grafica
 
 ## A-M1-PROB-01-08 (8 questions)
 A-M1-PROB-01-08_Q10	gr03fico, var03a
 A-M1-PROB-01-08_Q17	gráfico→grfico, línea→lnea, según→segn
-A-M1-PROB-01-08_Q20	cuál→cul, función→funcin, gráfico→grfico, según→segn
-A-M1-PROB-01-08_Q22	0bfcu0e1l, gr0e1fico, gr1fico, n0famero, pa0eds
+A-M1-PROB-01-08_Q20	alt:gráfico, cuál→cul, función→funcin, gráfico→grfico, según→segn
+A-M1-PROB-01-08_Q22	0bfcu0e1l, alt:gráfico, gr0e1fico, gr1fico, n0famero, pa0eds
 A-M1-PROB-01-08_Q28	af1o, bfen cue1l, conclusión→conclusin, cómo→cmo, disminución→disminucin, gráfico→grfico, línea→lnea
 A-M1-PROB-01-08_Q29	cuál→cul, cómo→cmo, gráfico→grfico, según→segn
 A-M1-PROB-01-08_Q33	c03mo, gr0303fico
@@ -239,13 +261,14 @@ A-M1-PROB-01-08_Q55	00Seg03n, bitaci03n, c03mo, gr03fico, r03pidamente, var03a
 ## A-M1-PROB-01-09 (1 questions)
 A-M1-PROB-01-09_Q49	gráfica→grafica
 
-## A-M1-PROB-01-10 (11 questions)
+## A-M1-PROB-01-10 (12 questions)
 A-M1-PROB-01-10_Q11	categor01a, gr01fico, gráfico→grfico
 A-M1-PROB-01-10_Q12	gráfico→grfico
+A-M1-PROB-01-10_Q17	alt:gráfico, el+gráfico
 A-M1-PROB-01-10_Q19	bfque9, cu01ntas, gr01fico, proporci03n
-A-M1-PROB-01-10_Q2	bfcue1l, gráfico→grfico
+A-M1-PROB-01-10_Q2	alt:gráfico, bfcue1l, gráfico→grfico
 A-M1-PROB-01-10_Q34	af1o, automf3vil, bfEn, gre1fico, proporcif3n, tamaf1os
-A-M1-PROB-01-10_Q43	tamaños→tamanos, ¿Cuál→¿Cual
+A-M1-PROB-01-10_Q43	alt:gráfico, el+gráfico, tamaños→tamanos, ¿Cuál→¿Cual
 A-M1-PROB-01-10_Q49	cuál→cul, cómo→cmo, gráficos→grficos, gráfico→grfico, línea→lnea, proporción→proporcin, situación→situacin, variación→variacin
 A-M1-PROB-01-10_Q5	gr03fico, gráficos→grficos
 A-M1-PROB-01-10_Q50	Mateme1tica, bfEn, gre1fico
@@ -253,15 +276,15 @@ A-M1-PROB-01-10_Q56	gr1fico, según→segn
 A-M1-PROB-01-10_Q57	bfCue1ntas, gráfico→grfico
 
 ## A-M1-PROB-01-18 (2 questions)
-A-M1-PROB-01-18_Q15	gráfico→grafico, información→informacion, montaña→montana, según→segun, ¿cuál→¿cual
-A-M1-PROB-01-18_Q31	años→anos, año→ano, gráfico→grafico, información→informacion, línea→linea, según→segun, ¿cuál→¿cual, últimos→ultimos
+A-M1-PROB-01-18_Q15	alt:gráfico, el+gráfico, gráfico→grafico, información→informacion, la+información, montaña→montana, según→segun, ¿cuál→¿cual
+A-M1-PROB-01-18_Q31	alt:gráfico, años→anos, año→ano, el+gráfico, gráfico→grafico, información→informacion, la+información, la+línea, línea→linea, según→segun, ¿cuál→¿cual, últimos→ultimos
 
 ## A-M1-PROB-01-20 (1 questions)
-A-M1-PROB-01-20_Q29	¿qué→¿que
+A-M1-PROB-01-20_Q29	alt:gráfico, el+gráfico, ¿qué→¿que
 
 ## A-M1-PROB-01-21 (2 questions)
-A-M1-PROB-01-21_Q56	gráfico→grafico, ¿qué→¿que
-A-M1-PROB-01-21_Q60	conclusión→conclusion, fracción→fraccion, gráfico→grafico, número→numero, razón→razon, relación→relacion, ¿Cuál→¿Cual
+A-M1-PROB-01-21_Q56	alt:gráfico, el+gráfico, el+ángulo, gráfico→grafico, la+fracción, la+proporción, ¿qué→¿que
+A-M1-PROB-01-21_Q60	alt:gráfico, conclusión→conclusion, el+gráfico, el+número, fracción→fraccion, gráfico→grafico, la+fracción, número→numero, razón→razon, relación→relacion, ¿Cuál→¿Cual
 
 ## A-M1-PROB-02-01 (15 questions)
 A-M1-PROB-02-01_Q13	bfCue1l
@@ -279,6 +302,10 @@ A-M1-PROB-02-01_Q48	aritme9tica, bfCue1l
 A-M1-PROB-02-01_Q49	conclusión→conclusin, cuál→cul, información→informacin
 A-M1-PROB-02-01_Q51	aritme9tica, bfCue1l
 A-M1-PROB-02-01_Q58	aritme9tica, bfcue1l
+
+## A-M1-PROB-02-03 (2 questions)
+A-M1-PROB-02-03_Q16	la+información, la+situación
+A-M1-PROB-02-03_Q50	alt:gráfico
 
 ## A-M1-PROB-02-07 (1 questions)
 A-M1-PROB-02-07_Q32	\u2192
