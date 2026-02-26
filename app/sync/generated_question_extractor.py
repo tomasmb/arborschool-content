@@ -137,8 +137,18 @@ def _extract_atom(
     return rows
 
 
+_IMAGE_PLACEHOLDER = "IMAGE_PLACEHOLDER"
+
+
 def _is_validation_failed(item: dict) -> bool:
-    """Return True if any validator on the item is marked 'fail'."""
+    """Return True if the item should be excluded from sync.
+
+    Excludes items where any validator is marked 'fail' or
+    whose QTI XML still contains an unresolved image placeholder.
+    """
+    qti_xml = item.get("qti_xml", "")
+    if _IMAGE_PLACEHOLDER in qti_xml:
+        return True
     validators = (
         item.get("pipeline_meta") or {}
     ).get("validators", {})
