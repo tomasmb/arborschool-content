@@ -100,6 +100,7 @@ class AtomRow:
     conceptual_examples: list[str] | None = None
     scope_notes: list[str] | None = None
     prerequisite_ids: list[str] | None = None
+    enrichment: dict | None = None
 
 
 @dataclass

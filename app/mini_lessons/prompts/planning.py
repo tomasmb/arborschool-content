@@ -65,10 +65,9 @@ Fusiona ideas relacionadas; no repitas lo que los ejemplos \
 mostrarán.
 12. **Máximo 5 familias de error**: Si el enriquecimiento tiene \
 más de 5 familias de error, selecciona las 5 más relevantes \
-para una clase de 6 minutos. Fusiona familias que se solapan \
-(ej.: "manejo de signos" y "omisión de paréntesis en negativos" \
-pueden ser una sola). Distribuye esas 5 entre WEs, QCs y la \
-sección de errores.
+para una clase de 6 minutos. Usa los NOMBRES EXACTOS del \
+enriquecimiento (no inventes nombres nuevos ni fusiones). \
+Distribuye esas 5 entre WEs, QCs y la sección de errores.
 </task>
 
 <rules>
@@ -129,9 +128,9 @@ JSON puro (sin bloques markdown):
 <final_instruction>
 Genera el plan para la mini-clase del átomo {atom_id}. \
 Asegúrate de que TODOS los ítems in_scope estén asignados a \
-alguna sección. Para familias de error, selecciona las 5 más \
-relevantes (fusionando solapamientos) y distribúyelas entre \
-WEs, QCs y sección de errores. \
+alguna sección. Para familias de error, selecciona hasta 5 \
+usando sus NOMBRES EXACTOS del enriquecimiento y distribúyelas \
+entre WEs, QCs y sección de errores. \
 Responde SOLO con el JSON.
 </final_instruction>
 """

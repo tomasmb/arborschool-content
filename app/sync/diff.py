@@ -104,12 +104,13 @@ _ATOM_DB_COLS = (
     "axis", "standard_ids", "atom_type", "primary_skill",
     "secondary_skills", "title", "description", "mastery_criteria",
     "conceptual_examples", "scope_notes", "prerequisite_ids",
+    "enrichment",
 )
 _ATOM_LOCAL_FIELDS = (
     "eje", "standard_ids", "tipo_atomico", "habilidad_principal",
     "habilidades_secundarias", "titulo", "descripcion",
     "criterios_atomicos", "ejemplos_conceptuales", "notas_alcance",
-    "prerrequisitos",
+    "prerrequisitos", "enrichment",
 )
 
 _QA_HASH_COLS = ("relevance", "reasoning")

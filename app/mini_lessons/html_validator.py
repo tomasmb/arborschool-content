@@ -45,11 +45,6 @@ FORBIDDEN_FILLER_PHRASES = [
 ]
 
 
-# ---------------------------------------------------------------------------
-# HTML structure parser
-# ---------------------------------------------------------------------------
-
-
 _ATOM_ID_RE = re.compile(
     r"^A-M\d+-[A-Z]{3}-\d{2}-\d{2}$",
 )
@@ -197,11 +192,6 @@ def parse_html_structure(html: str) -> _StructureParser:
     return parser
 
 
-# ---------------------------------------------------------------------------
-# Validation functions
-# ---------------------------------------------------------------------------
-
-
 def check_section_html(
     html: str,
     expected_block: str,
@@ -308,11 +298,6 @@ def check_decimal_notation(html: str) -> list[str]:
         f"Decimal period notation found (must use comma): "
         f"{samples}{extra}",
     ]
-
-
-# ---------------------------------------------------------------------------
-# Gate implementations
-# ---------------------------------------------------------------------------
 
 
 def _gate_1_contract(html: str) -> list[str]:
@@ -431,11 +416,21 @@ _STEP_LABEL_RE = re.compile(
 )
 
 
+_STRUCTURAL_NOISE_THRESHOLD = 4
+
+
 def _extract_math_numbers(section_html: str) -> set[str]:
-    """Extract math-significant numbers (strips tags + step labels)."""
+    """Extract math-significant numbers, ignoring structural noise.
+
+    Numbers ≤ _STRUCTURAL_NOISE_THRESHOLD (4) are excluded because
+    single-digit values are ubiquitous in algebraic expressions.
+    """
     text = re.sub(r"<[^>]+>", " ", section_html)
     text = _STEP_LABEL_RE.sub("", text)
-    return set(re.findall(r"\d+", text))
+    return {
+        n for n in re.findall(r"\d+", text)
+        if int(n) > _STRUCTURAL_NOISE_THRESHOLD
+    }
 
 
 def _gate_3_anti_repeat(html: str) -> list[str]:
