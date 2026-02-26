@@ -151,14 +151,18 @@ def validate_plan(
 
     if len(plan.quick_checks) < 1 or len(plan.quick_checks) > 2:
         errors.append(
-            f"Must have 1-2 quick checks, got {len(plan.quick_checks)}",
+            f"Must have 1-2 quick checks, "
+            f"got {len(plan.quick_checks)}",
         )
+
+    _validate_template_qc_count(plan, errors)
 
     we1_ctx = plan.worked_example_1.mathematical_context
     we2_ctx = plan.worked_example_2.mathematical_context
     if we1_ctx and we2_ctx and we1_ctx == we2_ctx:
         errors.append(
-            "WE1 and WE2 must have different mathematical contexts",
+            "WE1 and WE2 must have different mathematical "
+            "contexts",
         )
 
     errors.extend(_check_coverage(plan, ctx))
@@ -171,6 +175,22 @@ def validate_plan(
             )
 
     return errors
+
+
+def _validate_template_qc_count(
+    plan: LessonPlan,
+    errors: list[str],
+) -> None:
+    """Warn if template-specific QC count is not met.
+
+    P-template and M-template expect exactly 2 QCs.
+    """
+    qc_count = len(plan.quick_checks)
+    if plan.template_type in ("P", "M") and qc_count < 2:
+        errors.append(
+            f"{plan.template_type}-template should have 2 "
+            f"quick-checks, got {qc_count}",
+        )
 
 
 def _check_coverage(

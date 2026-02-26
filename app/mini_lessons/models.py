@@ -142,6 +142,11 @@ class QuickCheckSpec(BaseModel):
     correct_answer_theme: str
     distractor_themes: list[str] = Field(default_factory=list)
     error_families_addressed: list[str] = Field(default_factory=list)
+    difficulty: str = Field(
+        default="simple",
+        description="'simple' (single concept, 20-30s) or "
+        "'integrative' (multi-concept, 45-60s)",
+    )
 
 
 class OptionalSectionSpec(BaseModel):

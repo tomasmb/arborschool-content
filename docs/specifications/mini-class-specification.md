@@ -4,9 +4,9 @@
 > structure, content, HTML contract, and quality gates.
 > All other docs reference this file; they do not restate its content.
 
-Date: 2026-02-25
+Date: 2026-02-26
 Owner: Max (Chief of Staff)
-Spec version: 1.0
+Spec version: 1.1
 
 ---
 
@@ -74,7 +74,18 @@ sustained motivation.
 - transparent progress,
 - optional path choice when equal expected score lift.
 
-### F. Retention plan (spacing + interleaving)
+### F. Progressive disclosure (fading + step reveal)
+
+**Why:** revealing steps one at a time reduces cognitive load and
+enables the "I do → We do → You do" instructional sequence.
+**Product rule:**
+
+- WE1 (fully guided): all steps visible one by one with full rationale.
+- WE2 (faded): fewer annotations, prediction cues before reveal.
+- QC feedback: hidden until student selects an option.
+- HTML uses `<details>/<summary>` — works natively without JS.
+
+### G. Retention plan (spacing + interleaving)
 
 **Why:** spaced and interleaved retrieval improves durable performance.
 **Product rule:** mini-class output tags concepts / skills for future
@@ -92,16 +103,31 @@ atom-dependent optional modules.
 1. **Objective**
    - "Al terminar esta mini-clase podrás…"
    - 1 measurable verb + 1 PAES relevance line.
-2. **Concept in 60–120 seconds**
-   - Minimal theory; definitions / notation only if needed.
-3. **Worked Example 1 (guided)**
-   - Fully scaffolded steps + why each step.
-4. **Worked Example 2 (faded guidance)**
-   - Fewer hints than Example 1.
+2. **Concept** (60–120 seconds)
+   - Divided into micro-blocks with `<h3>` subtitles.
+   - Each `<h3>` covers ONE idea or rule.
+   - If error families include sign/notation confusion, add a
+     `<h3>Trampa PAES</h3>` block with correct vs incorrect (2 lines).
+3. **Worked Example 1** ("I do" — full scaffolding)
+   - Steps in `<details>/<summary>` for progressive disclosure.
+   - Each step: calculation + "why" rationale.
+   - Final step: verification (check result by alternate method).
+   - Closes with micro-reinforcement line.
+4. **Worked Example 2** ("We do" — faded scaffolding)
+   - Same `<details>/<summary>` structure as WE1.
+   - Fewer "why" annotations — only on the key step.
+   - Includes 1–2 prediction cues ("¿Cuánto da…? Piénsalo").
+   - NO verification step (student does it themselves).
+   - Closes with micro-reinforcement line.
+   - Adds MAX ONE new difficulty dimension vs WE1 (number type,
+     variable count, expression type, or powers).
 5. **Quick Check(s)**
    - 1–2 ABCD questions with immediate explanatory feedback.
-6. **Common errors + exam tip**
-   - Top 2 traps + one PAES tactical cue.
+   - Feedback wrapped in `<details>` for progressive disclosure.
+   - Each feedback ends with a golden rule: "Regla: Si X, entonces Y."
+6. **Common errors + PAES checklist**
+   - Top 2–3 traps in `<ul>`.
+   - Checklist PAES: exactly 3 items with ✅, each actionable in 10s.
 7. **Bridge to adaptive practice**
    - Explicit transition: "Ahora pasas al set adaptativo."
 
@@ -169,15 +195,38 @@ Concept + procedure.
 
 ---
 
-## 5) UX constraints for the mini-class renderer
+## 5) UX constraints and target student experience
 
-- Target duration: **as short as possible**, default operating window
-  **4–7 minutes** for most atoms.
-- Hard rule: if the atom can be taught well in less time, prefer shorter.
-  Duration is an outcome constraint, not a fixed script length.
+### Target experience (what a 17-year-old sees)
+
+```
+[Objective]  — always visible, 2 lines
+   ↓
+[Concept]    — micro-blocks revealed one at a time (h3 sub-blocks)
+   ↓          includes "Trampa PAES" non-example when relevant
+[WE1]        — problem visible; steps revealed one by one on tap
+   ↓          closes with "Si obtuviste X, vas bien"
+[WE2]        — problem visible; fewer annotations, prediction cues
+   ↓          student predicts before revealing each step (fading)
+[QC1]        — simple, 20-30s; tap option → instant feedback
+   ↓          feedback ends with reusable "Regla de oro"
+[QC2]        — integrative, 45-60s; same interaction
+   ↓
+[Errors]     — scannable list + 3-item PAES checklist (✅)
+   ↓
+[Transition] — "Ahora pasas al set adaptativo" → button
+```
+
+Total time: 4–7 minutes. Every screen has ONE job.
+
+### Constraints
+
+- Hard rule: if the atom can be taught in less time, prefer shorter.
 - Max text density per block: short paragraphs + bullets.
-- Every major step labeled (Paso 1, Paso 2…).
-- Feedback panels should be collapsible / expandable.
+- Progressive disclosure: `<details>/<summary>` for steps and
+  feedback. Without a renderer, native browser toggle works.
+  With React renderer, richer interaction (step-by-step reveal,
+  option-click feedback).
 - Keep interaction friction low (tap / click, instant response).
 - No heavy animation that competes with cognitive focus.
 
@@ -197,8 +246,18 @@ Inline styles, `<style>`, `<script>`, external embeds.
 
 ### Semantic attributes for rendering logic
 
-`data-block`, `data-atom-id`, `data-difficulty`, `data-prereq`,
-`data-feedback-type`.
+| Attribute | Element | Purpose |
+|-----------|---------|---------|
+| `data-block` | section/header | Section type identifier |
+| `data-atom-id` | article | Atom identifier |
+| `data-template` | article | P, C, or M |
+| `data-index` | section | Instance index (WE/QC) |
+| `data-role="steps"` | `<ol>` in WE | Marks step list |
+| `data-role="paes-checklist"` | `<ul>` in errors | Checklist styling |
+| `data-role="micro-reinforcement"` | `<p>` after WE steps | Self-check line |
+| `data-role="prediction-cue"` | `<p>` in WE2 step | Mental-fill prompt |
+| `data-feedback-type` | div | Feedback type |
+| `data-correct-option` | p | Correct answer marker |
 
 ### Required root structure
 
@@ -211,11 +270,28 @@ Inline styles, `<style>`, `<script>`, external embeds.
     <p data-role="learning-objective">...</p>
     <p data-role="paes-relevance">...</p>
   </header>
-
-  <section data-block="concept">...</section>
-  <section data-block="worked-example" data-index="1">...</section>
-  <section data-block="worked-example" data-index="2">...</section>
-
+  <section data-block="concept">
+    <h2>...</h2>
+    <h3>Regla 1</h3><p>...</p>
+    <h3>Regla 2</h3><p>...</p>
+    <h3>Trampa PAES</h3><p>❌ ... / ✔ ...</p>
+  </section>
+  <section data-block="worked-example" data-index="1">
+    <h2>Ejemplo resuelto 1</h2>
+    <p>Problem statement...</p>
+    <ol data-role="steps">
+      <li><details>
+        <summary><strong>Paso 1:</strong> ...</summary>
+        <p>Calculation + why...</p>
+      </details></li>
+      <!-- more steps... -->
+    </ol>
+    <p data-role="micro-reinforcement">Si obtuviste X, vas
+    bien — el punto clave fue Y.</p>
+  </section>
+  <section data-block="worked-example" data-index="2">
+    <!-- Same structure, faded annotations, prediction cues -->
+  </section>
   <section data-block="quick-check" data-index="1"
            data-format="mcq-abcd">
     <h3>Quick Check 1</h3>
@@ -227,16 +303,25 @@ Inline styles, `<style>`, `<script>`, external embeds.
       <li data-option="D">...</li>
     </ol>
     <div data-role="feedback" data-feedback-type="explanatory">
-      <p data-correct-option="B">...</p>
-      <ul data-role="distractor-rationale">
-        <li data-option="A">...</li>
-        <li data-option="C">...</li>
-        <li data-option="D">...</li>
-      </ul>
+      <details>
+        <summary>Ver explicación</summary>
+        <p data-correct-option="B">... Regla: Si X, entonces Y.</p>
+        <ul data-role="distractor-rationale">
+          <li data-option="A">... Revisa: ...</li>
+          <li data-option="C">...</li>
+          <li data-option="D">...</li>
+        </ul>
+      </details>
     </div>
   </section>
-
-  <section data-block="error-patterns">...</section>
+  <section data-block="error-patterns">
+    <h2>Errores frecuentes</h2>
+    <ul><li>...</li></ul>
+    <p><strong>Checklist PAES</strong></p>
+    <ul data-role="paes-checklist">
+      <li>✅ ...</li><li>✅ ...</li><li>✅ ...</li>
+    </ul>
+  </section>
   <section data-block="transition-to-adaptive">...</section>
 </article>
 ```
@@ -247,13 +332,18 @@ Inline styles, `<style>`, `<script>`, external embeds.
 
 Score 0–2 each dimension (pass threshold: >= 12/14):
 
-1. Objective clarity + measurability
-2. Cognitive load control (no fluff)
-3. Worked example correctness
-4. Step rationale clarity (not just procedures)
-5. Quick check quality (non-trivial distractors)
-6. Feedback quality (explanatory, actionable)
-7. Transition readiness to adaptive set
+1. **Objective clarity** + measurability
+2. **Cognitive load control**: 0 = concept is one block without h3
+   sub-titles OR verbose; 1 = some excess; 2 = clean with h3 sub-blocks
+3. **Worked example correctness**: math verified
+4. **Step rationale clarity**: 0 = WE2 has same annotation density as WE1
+   (must show fading) OR no rationale; 1 = some fading; 2 = clear fading
+   with prediction cues in WE2
+5. **Quick check quality**: non-trivial distractors. For P-template,
+   penalize if only 1 QC when 2 are appropriate
+6. **Feedback quality**: 0 = QC feedback doesn't include "Regla";
+   1 = rule present but vague; 2 = clear "Si X, entonces Y" rule
+7. **Transition readiness** to adaptive set
 
 **Automatic fail conditions:**
 
@@ -261,6 +351,10 @@ Score 0–2 each dimension (pass threshold: >= 12/14):
 - Contradiction between explanation and answer key
 - Vague / non-actionable feedback
 - Missing worked examples
+- In-scope item not covered
+- Error family not addressed
+- Section exceeds 2x word budget
+- Forbidden filler phrases detected
 
 ---
 
@@ -286,7 +380,34 @@ Each atom produces:
 
 ---
 
-## 10) Audited reference evidence
+## 10) React renderer contract
+
+The renderer is a React component (`<MiniClassRenderer>`) that takes
+`mini-class.html` as input and outputs an interactive lesson.
+
+| `data-block` | Renderer behavior |
+|--------------|-------------------|
+| `objective` | Always visible. No interaction. |
+| `concept` | Show one `<h3>` block at a time. "Continue" to next. |
+| `worked-example` | Show problem. Steps revealed one-by-one. WE2 shows prediction cue before revealing answer. |
+| `quick-check` | Options as buttons. On selection: highlight correct/wrong, reveal feedback, disable options. |
+| `error-patterns` | Fully visible. Checklist items styled distinctly. |
+| `transition-to-adaptive` | Visible + "Start practice" CTA button. |
+
+**QC interaction**: tap option → correct turns green / wrong turns red →
+feedback slides in → "Regla de oro" highlighted → options disabled.
+
+**WE step-reveal**: problem visible → "Next step" button opens next
+`<details>` → for WE2, prediction cue shown before answer reveals →
+after all steps, micro-reinforcement highlighted.
+
+**Progressive disclosure**: every `<details>` in HTML is a renderer
+hint. Without renderer, native browser toggle works. With renderer,
+controlled components replace `<details>` with richer behavior.
+
+---
+
+## 11) Audited reference evidence
 
 - **Worked examples / novice guidance:**
   Sweller & Cooper (1985); Kirschner, Sweller & Clark (2006)
@@ -494,14 +615,17 @@ Final publish decision:
 `publishable = structural_pass && correctness_pass &&
 anti_repeat_hard_pass && rubric_score >= 12`
 
-### Risk verdict
+### Risk verdict (updated v1.1)
 
 - Pedagogical direction: **strong**
-- Engineering contract readiness: **partial**
-- Production reliability without revisions: **not yet**
+- Engineering contract readiness: **substantially improved** (v1.1 adds
+  h3 chunking, progressive disclosure, WE fading, golden-rule feedback,
+  PAES checklist, template-specific QC counts, gradual complexity,
+  and pedagogical validator warnings)
+- Production reliability: **ready for monitored rollout**
 
-**Recommendation:** implement v1.1 contract hardening + validator gates
-before scaling generation.
+Remaining items for v1.2: full anti-repeat enforcement across attempts,
+renderer compatibility profile, symbolic math validation.
 
 ---
 

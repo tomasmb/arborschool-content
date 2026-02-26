@@ -99,12 +99,20 @@ Evalúa la mini-clase en tres dimensiones:
 **3. RÚBRICA PEDAGÓGICA** (0-2 cada dimensión, umbral >= 12/14):
 1. objective_clarity: Objetivo claro y medible.
 2. brevity_cognitive_load: Sin relleno, sin decoración, cada \
-oración enseña o estructura. 0=verbose, 1=algo exceso, 2=limpio.
+oración enseña o estructura. 0=concepto es un bloque sin \
+sub-títulos h3 O verbose, 1=algo exceso, 2=limpio con h3 \
+sub-bloques.
 3. worked_example_correctness: Matemática verificada.
 4. step_rationale_clarity: Pasos explican "por qué", no solo \
-"cómo". Sin sobre-explicar.
-5. quick_check_quality: Distractores plausibles, no triviales.
-6. feedback_quality: Explicativo, accionable, conciso.
+"cómo". 0=WE2 tiene la misma cantidad de anotaciones que WE1 \
+(debe mostrar fading) O sin rationale, 1=algo fading, 2=fading \
+claro con cues de predicción en WE2.
+5. quick_check_quality: Distractores plausibles, no triviales. \
+Para P-template, penalizar si hay solo 1 QC cuando 2 son \
+apropiados.
+6. feedback_quality: Explicativo, accionable, conciso. 0=feedback \
+de QC no incluye "Regla" al final, 1=regla presente pero vaga, \
+2=regla clara tipo "Si [X], entonces [Y]".
 7. transition_readiness: Transición explícita al set adaptativo con \
 acción clara. 0=sin transición, 1=genérica, 2=específica y motivante.
 </task>

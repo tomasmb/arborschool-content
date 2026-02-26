@@ -135,8 +135,8 @@ _TASK_DETAILS: dict[str, str] = {
         "mostrarán."
     ),
     "worked-example": (
-        "Genera el ejemplo resuelto con pasos numerados. "
-        "Cada paso incluye \"por qué\", no solo \"cómo\". "
+        "Genera el ejemplo resuelto con pasos en "
+        "<details>/<summary>. "
         "Aborda las familias de error asignadas en el plan "
         "mostrando por qué el enfoque correcto funciona."
     ),
@@ -148,7 +148,7 @@ _TASK_DETAILS: dict[str, str] = {
     "error-patterns": (
         "Cubre TODAS las familias de error restantes (las no "
         "cubiertas en ejemplos o quick-checks). "
-        "Incluye un tip PAES al final."
+        "Incluye un Checklist PAES de exactamente 3 ítems con ✅."
     ),
     "transition-to-adaptive": (
         "Transición explícita al set adaptativo. "
@@ -190,7 +190,7 @@ def build_section_prompt(
     if not reference_html:
         reference_html = "(No hay ejemplo de referencia disponible)"
 
-    rules = build_generation_rules(block_name)
+    rules = build_generation_rules(block_name, index)
     task_details = _TASK_DETAILS.get(block_name, "")
     index_label = f" (índice {index})" if index else ""
     index_json = str(index) if index else "null"
@@ -224,7 +224,7 @@ def build_retry_prompt(
     if not reference_html:
         reference_html = "(No hay ejemplo de referencia disponible)"
 
-    rules = build_generation_rules(block_name)
+    rules = build_generation_rules(block_name, index)
     task_details = _TASK_DETAILS.get(block_name, "")
     index_json = str(index) if index else "null"
 

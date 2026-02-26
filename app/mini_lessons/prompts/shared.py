@@ -62,11 +62,16 @@ _TONE_RULES = (
 _QUICK_CHECK_RULES = """\
 - Exactamente 4 opciones (A-D), 1 correcta.
 - Distractores representan errores plausibles, NO valores al azar.
-- Feedback obligatorio: por qué la correcta es correcta, por qué \
-cada distractor es tentador pero incorrecto, y un "next-step cue".
 - Estructura HTML: ol[data-role="options"] > li[data-option="A|B|C|D"].
-- Feedback: div[data-role="feedback"] > p[data-correct-option] + \
-ul[data-role="distractor-rationale"] > li[data-option]."""
+- Feedback dentro de <details><summary>Ver explicación</summary>.
+- El <p data-correct-option> DEBE terminar con \
+"Regla: Si [situación], entonces [acción]."
+- Cada <li> de distractor-rationale cierra con qué revisar \
+la próxima vez.
+- Estructura feedback: \
+div[data-role="feedback"] > details > summary + \
+p[data-correct-option] + ul[data-role="distractor-rationale"] \
+> li[data-option]."""
 
 # ------------------------------------------------------------------
 # Section-specific rules (appended per section type)
@@ -81,27 +86,62 @@ _OBJECTIVE_RULES = (
 
 _CON_BUDGET = SECTION_WORD_BUDGETS["concept"]
 _CONCEPT_RULES = (
+    "- Divide el concepto en micro-bloques con <h3> subtítulos.\n"
+    "- Cada <h3> cubre UNA sola idea o regla.\n"
+    "- Formato: <h3>título corto</h3> seguido de 1-2 oraciones "
+    "+ opcional mini-ejemplo de 1 línea.\n"
+    "- Si las familias de error incluyen confusiones de signos o "
+    "notación, incluye un bloque <h3>Trampa PAES</h3> con "
+    "ejemplo correcto vs incorrecto (2 líneas).\n"
     "- Mínima teoría necesaria: definiciones y notación solo si "
     "son imprescindibles.\n"
-    f"- ~{_CON_BUDGET} palabras máximo.\n"
-    "- Una idea por párrafo. Sin repetir lo que los ejemplos "
-    "mostrarán."
+    f"- ~{_CON_BUDGET} palabras total entre todos los bloques.\n"
+    "- Sin repetir lo que los ejemplos mostrarán."
 )
 
 _WE_BUDGET = SECTION_WORD_BUDGETS["worked-example"]
-_WORKED_EXAMPLE_RULES = (
-    "- Pasos numerados con etiquetas (Paso 1, Paso 2...).\n"
-    "- Cada paso: 1-2 oraciones máximo.\n"
-    f"- ~{_WE_BUDGET} palabras por ejemplo.\n"
-    '- Incluir un "por qué" en cada paso clave, no solo el '
-    '"cómo".'
+
+_WE1_RULES = (
+    "- Pasos numerados dentro de <details>/<summary>.\n"
+    '- <summary> tiene "Paso N:" + 1 frase corta del objetivo.\n'
+    "- Contenido del <details>: 1-2 oraciones con cálculo + "
+    '"por qué".\n'
+    "- Último paso: verificación (comprobar resultado por otro "
+    "camino).\n"
+    "- Lista de pasos en <ol data-role=\"steps\">.\n"
+    "- Cierra con micro-refuerzo: "
+    '<p data-role="micro-reinforcement">"Si obtuviste [X], '
+    'vas bien — el punto clave fue [Y]."</p>\n'
+    f"- ~{_WE_BUDGET} palabras."
+)
+
+_WE2_RULES = (
+    "- Misma estructura <details>/<summary> que WE1.\n"
+    "- Lista de pasos en <ol data-role=\"steps\">.\n"
+    '- Menos anotaciones "por qué" — solo en el paso clave.\n'
+    "- Incluye 1-2 cues de predicción: "
+    '<p data-role="prediction-cue">"¿Cuánto da [subcálculo]? '
+    'Piénsalo antes de abrir el siguiente paso."</p>\n'
+    "- SIN paso de verificación (el estudiante lo hace solo).\n"
+    "- Cierra con micro-refuerzo: "
+    '<p data-role="micro-reinforcement">"Si obtuviste [X], '
+    'vas bien."</p>\n'
+    f"- ~{_WE_BUDGET} palabras."
 )
 
 _ERR_BUDGET = SECTION_WORD_BUDGETS["error-patterns"]
 _ERROR_PATTERNS_RULES = (
     "- Cubre TODAS las familias de error asignadas en el plan.\n"
-    "- ~1-2 oraciones por error.\n"
-    "- Incluir un tip PAES al final.\n"
+    "- Errores en <ul><li> (1-2 oraciones por error).\n"
+    "- Reemplaza el Tip PAES en prosa por un Checklist PAES:\n"
+    "  <p><strong>Checklist PAES</strong></p>\n"
+    '  <ul data-role="paes-checklist">\n'
+    "    <li>✅ [verificación 1]</li>\n"
+    "    <li>✅ [verificación 2]</li>\n"
+    "    <li>✅ [verificación 3]</li>\n"
+    "  </ul>\n"
+    "- Exactamente 3 ítems de checklist. Cada uno es 1 línea que "
+    "el estudiante puede aplicar en 10 segundos bajo presión.\n"
     f"- ~{_ERR_BUDGET} palabras total."
 )
 
@@ -216,22 +256,29 @@ def _format_sample_questions(
     return "\n".join(lines)
 
 
-def build_generation_rules(section_type: str) -> str:
+def build_generation_rules(
+    section_type: str,
+    index: int | None = None,
+) -> str:
     """Build the full rules block for a section generation prompt.
 
     Composes shared HTML rules + tone rules + section-specific rules
-    into a single string. Defined once per section type (DRY).
+    into a single string. For worked-examples, selects WE1 (full
+    scaffolding) or WE2 (faded) rules based on index.
     """
     section_rules_map: dict[str, str] = {
         "objective": _OBJECTIVE_RULES,
         "concept": _CONCEPT_RULES,
-        "worked-example": _WORKED_EXAMPLE_RULES,
         "quick-check": _QUICK_CHECK_RULES,
         "error-patterns": _ERROR_PATTERNS_RULES,
         "transition-to-adaptive": _TRANSITION_RULES,
     }
 
-    specific = section_rules_map.get(section_type, "")
+    if section_type == "worked-example":
+        specific = _WE2_RULES if index == 2 else _WE1_RULES
+    else:
+        specific = section_rules_map.get(section_type, "")
+
     parts = [_HTML_RULES, _TONE_RULES]
     if specific:
         parts.append(specific)

@@ -34,10 +34,20 @@ feedback de quick-checks, o sección de errores.
 "easy" de la rúbrica. Ejemplo 2 sube a criterios "medium"/"hard".
 4. **Contextos diferentes**: Los dos ejemplos resueltos usan \
 contextos matemáticos distintos.
-5. **Quick-checks**: EXACTAMENTE 1 o 2 quick-checks. NUNCA 3 o más.
-6. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
+5. **Quick-checks por template**:
+  - P-template: EXACTAMENTE 2 quick-checks. \
+QC1 = rápido, un solo concepto (20-30s). \
+QC2 = integrador, combina conceptos (45-60s).
+  - C-template: 1-2 quick-checks.
+  - M-template: 2 quick-checks (1 procedimental + 1 conceptual).
+  NUNCA 3 o más quick-checks.
+6. **Complejidad gradual**: WE2 agrega máximo UNA dimensión de \
+dificultad nueva vs WE1. \
+Dimensiones: tipo de número, número de variables, tipo de \
+expresión, presencia de potencias. NO 3+ cambios de golpe.
+7. **Brevedad**: El plan debe producir una clase de 4-7 minutos. \
 Cada sección tiene un presupuesto de palabras indicado.
-7. **Prerequisitos**: Decide si incluir bloque de repaso de \
+8. **Prerequisitos**: Decide si incluir bloque de repaso de \
 prerequisitos basándote en la lista de prerrequisitos.
 </task>
 
@@ -79,7 +89,8 @@ JSON puro (sin bloques markdown):
       "stem_topic": "tema del quick check",
       "correct_answer_theme": "qué evalúa",
       "distractor_themes": ["error 1", "error 2", "error 3"],
-      "error_families_addressed": ["nombre_familia"]
+      "error_families_addressed": ["nombre_familia"],
+      "difficulty": "simple"  // "simple" o "integrative"
     }}
   ],
   "error_patterns_spec": "qué errores cubrir + tip PAES",
