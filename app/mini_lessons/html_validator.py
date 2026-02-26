@@ -245,6 +245,13 @@ def _gate_1_contract(html: str) -> list[str]:
             f"Expected 1 worked-example block, found {we_count}",
         )
 
+    for b in parser.blocks:
+        if b["block"] == "objective" and b["tag"] != "header":
+            errors.append(
+                f"objective block should use <header>, "
+                f"found <{b['tag']}>",
+            )
+
     if parser.disallowed_tags_found:
         errors.append(
             f"Disallowed tags: {parser.disallowed_tags_found}",

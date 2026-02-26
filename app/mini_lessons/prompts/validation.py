@@ -88,16 +88,22 @@ Evalúa la mini-clase en tres dimensiones:
 - ¿El ejemplo resuelto aborda al menos 2 familias de error?
 
 **3. RÚBRICA PEDAGÓGICA** (0-2 cada dimensión, umbral >= 6/8):
-1. objective_clarity: Objetivo claro y medible.
+1. objective_clarity: Objetivo claro y medible. 0=vago o sin verbo \
+medible, 1=claro pero sin relevancia PAES, 2=verbo medible + \
+relevancia PAES en 2 oraciones.
 2. brevity_cognitive_load: Sin relleno, sin decoración, cada \
-oración enseña o estructura. 0=concepto es un bloque sin \
-sub-títulos h3 O verbose, 1=algo exceso, 2=limpio con h3 \
-sub-bloques.
+oración enseña o estructura. 0=concepto sin h3 sub-bloques O \
+Trampa PAES lista más de 1 error, 1=h3 sub-bloques pero algún \
+bloque excede 3 oraciones, 2=cada h3 tiene 1-2 oraciones + \
+opcional mini-ejemplo de 1 línea.
 3. worked_example_correctness: Matemática verificada y checklist \
-PAES coherente con el procedimiento.
+PAES coherente con el procedimiento. 0=error matemático o \
+checklist incongruente, 1=correcto pero checklist genérica, \
+2=correcto + checklist específica al procedimiento.
 4. step_rationale_clarity: Pasos explican "por qué", no solo \
-"cómo". 0=sin rationale, 1=rationale parcial, 2=cada paso \
-explica el razonamiento.
+"cómo". 0=pasos sin explicación del por qué, 1=algunos pasos \
+explican, 2=TODOS los pasos explican por qué + la verificación \
+usa un método alternativo.
 </task>
 
 <rules>
@@ -110,6 +116,11 @@ de fracciones, decimales o álgebra que no son el tema del átomo \
 "simplifica la fracción", "mínimo común múltiplo"), es auto-fail.
 - AUTO-FAIL NOTACIÓN: si hay decimales con punto en vez de coma \
 (1.5 en vez de 1,5), es auto-fail.
+- AUTO-FAIL TRAMPA: si el bloque Trampa PAES lista más de 1 \
+patrón de error en lugar de un contraste enfocado \
+(1 línea ❌ + 1 línea ✔), score brevity_cognitive_load = 0.
+- AUTO-FAIL OBJECTIVE TAG: si el bloque objective usa <section> \
+en vez de <header>, es auto-fail.
 - Para P-template: si el ejemplo no respeta los pasos canónicos, \
 penalizar step_rationale_clarity.
 - Frases relleno prohibidas: {filler_list}

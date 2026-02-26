@@ -53,7 +53,7 @@ Responde con JSON puro (sin bloques markdown):
 {{
   "block_name": "{block_name}",
   "index": {index_json},
-  "html": "<section data-block=\\"{block_name}\\"...>...</section>"
+  "html": "HTML de la sección (usa <header> para objective, <section> para el resto)"
 }}
 </output_format>
 
@@ -108,7 +108,7 @@ JSON puro:
 {{
   "block_name": "{block_name}",
   "index": {index_json},
-  "html": "<section ...>...</section>"
+  "html": "HTML de la sección (<header> para objective, <section> para el resto)"
 }}
 </output_format>
 
@@ -126,7 +126,8 @@ Responde SOLO con JSON.
 _TASK_DETAILS: dict[str, str] = {
     "objective": (
         "Genera el header con objetivo medible + relevancia PAES. "
-        "Usa <header data-block=\"objective\">."
+        "Usa <header data-block=\"objective\"> como tag raíz "
+        "(NO <section>)."
     ),
     "concept": (
         "Genera la explicación conceptual mínima. "

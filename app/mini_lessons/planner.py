@@ -155,8 +155,31 @@ def validate_plan(
             f"got {len(plan.checklist_items)}",
         )
 
+    errors.extend(_check_spec_lengths(plan))
     errors.extend(_check_coverage(plan, ctx))
 
+    return errors
+
+
+_MAX_OBJECTIVE_SPEC_WORDS = 40
+_MAX_CONCEPT_SPEC_WORDS = 60
+
+
+def _check_spec_lengths(plan: LessonPlan) -> list[str]:
+    """Reject plans with bloated spec fields."""
+    errors: list[str] = []
+    obj_words = len(plan.objective_spec.split())
+    if obj_words > _MAX_OBJECTIVE_SPEC_WORDS:
+        errors.append(
+            f"objective_spec too long: {obj_words} words "
+            f"(max {_MAX_OBJECTIVE_SPEC_WORDS})",
+        )
+    con_words = len(plan.concept_spec.split())
+    if con_words > _MAX_CONCEPT_SPEC_WORDS:
+        errors.append(
+            f"concept_spec too long: {con_words} words "
+            f"(max {_MAX_CONCEPT_SPEC_WORDS})",
+        )
     return errors
 
 

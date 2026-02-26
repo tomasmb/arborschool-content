@@ -31,9 +31,12 @@ import sys
 from app.llm_clients import OpenAIClient
 from app.mini_lessons.models import (
     PHASE_GROUP_CHOICES,
+    RUBRIC_DIMENSIONS,
     LessonConfig,
     LessonResult,
 )
+
+_MAX_QUALITY_SCORE = len(RUBRIC_DIMENSIONS) * 2
 from app.mini_lessons.pipeline import MiniLessonPipeline
 from app.utils.logging_config import setup_logging
 
@@ -164,7 +167,7 @@ def _print_result(result: LessonResult) -> None:
     if result.quality_report:
         qr = result.quality_report
         print(
-            f"  Quality: {qr.total_score}/14 "
+            f"  Quality: {qr.total_score}/{_MAX_QUALITY_SCORE} "
             f"(publishable={qr.publishable})",
         )
     if result.cost_usd > 0:
@@ -181,7 +184,11 @@ def _print_summary(results: list[LessonResult]) -> None:
         status = "OK" if r.success else "FAIL"
         pub = ""
         if r.quality_report:
-            pub = f" (score={r.quality_report.total_score}/14)"
+            pub = (
+                f" (score="
+                f"{r.quality_report.total_score}"
+                f"/{_MAX_QUALITY_SCORE})"
+            )
         print(f"  [{status}] {r.atom_id}{pub}")
     if total_cost > 0:
         print(f"\n  Total cost: ${total_cost:.4f}")

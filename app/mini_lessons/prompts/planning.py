@@ -39,8 +39,9 @@ menos 2 de ellas en sus pasos.
 Cada sección tiene un presupuesto de palabras indicado. Prioriza \
 densidad sobre exhaustividad.
 4. **Concepto**: Máximo 3 bloques <h3>. Mínima teoría necesaria. \
-Si hay una confusión frecuente, incluye Trampa PAES como uno de \
-los 3 bloques.
+Si incluyes Trampa PAES, elige la ÚNICA confusión más peligrosa \
+de las familias de error seleccionadas (las demás se cubren en \
+el ejemplo resuelto y las preguntas adaptativas).
 5. **Ejemplo resuelto**: Contexto matemático de dificultad easy/medium \
 (no hard — eso lo cubre el set adaptativo). 3-4 pasos con \
 verificación. Cierra con Checklist PAES de 3 ítems.
@@ -52,6 +53,12 @@ que el estudiante puede aplicar en 10 segundos bajo presión. \
 Deben cubrir las verificaciones más críticas del procedimiento.
 8. **Prerrequisitos**: Decide si incluir bloque de repaso de \
 prerrequisitos basándote en la lista de prerrequisitos.
+9. **Specs son directivas, NO borradores**: Los campos *_spec son \
+instrucciones concisas para el redactor de cada sección. Describe \
+QUÉ cubrir, no CÓMO redactarlo. El redactor decidirá la prosa \
+final. Límites: objective_spec max 30 palabras (1 oración), \
+concept_spec max 40 palabras (1-2 oraciones), \
+mathematical_context max 30 palabras (1 oración).
 </task>
 
 <rules>
@@ -62,18 +69,18 @@ estilo y nivel.
 </rules>
 
 <output_format>
-JSON puro (sin bloques markdown):
+JSON puro (sin bloques markdown). Los *_spec son directivas breves:
 {{
   "template_type": "{template_type}",
-  "objective_spec": "descripción del objetivo medible",
-  "concept_spec": "qué explicar en la sección concepto",
+  "objective_spec": "Evaluar expresiones sustituyendo racionales con jerarquía de operaciones.",
+  "concept_spec": "Definir evaluación, resumir jerarquía, Trampa: confusión signo negativo en potencias.",
   "concept_in_scope_items": ["in_scope item 1", "..."],
   "canonical_steps": ["Sustituye", "Reescribe", "Calcula", "Chequeo"],
   "worked_example": {{
     "topic": "tema del ejemplo",
-    "mathematical_context": "contexto matemático",
+    "mathematical_context": "Expresión racional con x negativo fraccionario y potencia cuadrada.",
     "step_count": 4,
-    "numbers_to_use": "descripción de números",
+    "numbers_to_use": "x=-3/2, y=0,5, coeficientes 2 y 3",
     "in_scope_items_covered": ["..."],
     "error_families_addressed": ["nombre_familia"]
   }},
@@ -84,7 +91,7 @@ JSON puro (sin bloques markdown):
   ],
   "include_prerequisite_refresh": false,
   "justifications": {{
-    "prerequisite_decision": "razón"
+    "prerequisite_decision": "razón breve"
   }}
 }}
 </output_format>
