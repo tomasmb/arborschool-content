@@ -17,9 +17,9 @@ _logger = logging.getLogger(__name__)
 # Transport-level retry configuration
 # ---------------------------------------------------------------------------
 
-_RETRY_MAX_ATTEMPTS = 3
-_RETRY_BASE_DELAY = 10.0  # seconds
-_RETRY_MAX_DELAY = 90.0   # seconds
+_RETRY_MAX_ATTEMPTS = 6
+_RETRY_BASE_DELAY = 5.0   # seconds (5, 10, 20, 40, 80, 120)
+_RETRY_MAX_DELAY = 120.0  # seconds
 
 
 def _is_retryable_status(status_code: int) -> bool:

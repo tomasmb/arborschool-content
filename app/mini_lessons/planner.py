@@ -248,6 +248,9 @@ def _check_image_plan(
         allowed_types = set(ctx.enrichment.required_image_types)
 
     for entry in plan.image_plan:
+        normalised = entry.target_section.replace("_", "-")
+        if normalised != entry.target_section:
+            entry.target_section = normalised
         if entry.target_section not in _VALID_IMAGE_SECTIONS:
             errors.append(
                 f"image_plan target_section "

@@ -1,0 +1,52 @@
+<article data-kind="mini-class"
+         data-atom-id="A-M1-PROB-03-03"
+         data-template="P">
+  <header data-block="objective">
+  <h1>Mini-clase: Cálculo de cuartiles en datos no agrupados</h1>
+  <p data-role="learning-objective">Al terminar esta mini-clase podrás calcular <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>Q</mi><mn>1</mn></msub></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>Q</mi><mn>2</mn></msub></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><msub><mi>Q</mi><mn>3</mn></msub></math> en listas de datos no agrupados ordenando, ubicando posiciones y promediando cuando corresponda.</p>
+  <p data-role="paes-relevance">Te prepara para ítems de estadística descriptiva de la PAES M1.</p>
+</header>
+
+  <section data-block="concept">
+  <h2>Idea clave</h2>
+  <h3>Qué es un cuartil</h3>
+  <p>Un cuartil es un valor que, con los datos ordenados, deja debajo una fracción fija del conjunto: <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>1</mn></math> cerca del <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>25</mn><mo>%</mo></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>2</mn></math> la mediana (<math xmlns="http://www.w3.org/1998/Math/MathML"><mn>50</mn><mo>%</mo></math>) y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>3</mn></math> el <math xmlns="http://www.w3.org/1998/Math/MathML"><mn>75</mn><mo>%</mo></math>; con ellos puedes comprobar si coinciden con un diagrama de caja entregado.</p>
+  <h3>Cómo calcular <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>1</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>2</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>3</mn></math></h3>
+  <p>Ordena siempre la lista de menor a mayor y cuenta cuántos datos hay (<math xmlns="http://www.w3.org/1998/Math/MathML"><mi>n</mi></math>); luego calcula la posición del cuartil usando una fórmula simple, por ejemplo <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>·</mo><mi>k</mi></mrow><mn>4</mn></mfrac></mrow></math> o <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mrow><mi>n</mi><mo>·</mo><mi>k</mi></mrow><mn>4</mn></mfrac></mrow></math> y mantén la misma dentro del ejercicio.</p>
+  <p>Si la posición es un número entero, toma ese dato; si queda entre dos posiciones, promedia esos dos valores, tanto en listas con cantidad par como impar de datos.</p>
+  <h3>Trampa PAES</h3>
+  <p>❌ Buscar las posiciones de <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>1</mn></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>2</mn></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mi>Q</mi><mn>3</mn></math> en la lista tal como aparece en el enunciado.</p>
+  <p>✔ Primero ordena de menor a mayor y solo después ubica cada cuartil según la posición calculada.</p>
+</section>
+
+  <section data-block="worked-example" data-index="1">
+  <header>
+    <h2>Ejemplo resuelto</h2>
+    <p>En una prueba, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>9</mn></mrow></math> estudiantes obtuvieron estos puntajes (desordenados): <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>15</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>14</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>7</mn></mrow></math>. Calcula los cuartiles <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>2</mn></msub></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub></mrow></math> usando la posición <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>·</mo><mi>k</mi><mo>/</mo><mn>4</mn></mrow></math> y, si la posición no es entera, promedia.</p>
+  </header>
+  <ol data-role="steps">
+    <li><details>
+      <summary><strong>Paso 1:</strong> Ordena los datos</summary>
+      <p>Ordena de menor a mayor: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>8</mn><mo>,</mo><mn>9</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>11</mn><mo>,</mo><mn>12</mn><mo>,</mo><mn>14</mn><mo>,</mo><mn>15</mn></mrow></math>. Si no ordenas, los cuartiles quedan mal porque las posiciones apuntan a otros valores.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 2:</strong> Calcula las posiciones de los cuartiles</summary>
+      <p>Hay <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi><mo>=</mo><mn>9</mn></mrow></math> datos, así que usa <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mo>(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo>)</mo><mo>·</mo><mi>k</mi><mo>/</mo><mn>4</mn></mrow></math>. Las posiciones son: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub></mrow></math> en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2,5</mn></mrow></math>; <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>2</mn></msub></mrow></math> en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub></mrow></math> en <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7,5</mn></mrow></math>; cambiar de fórmula mueve estas posiciones.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 3:</strong> Encuentra los valores de <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>2</mn></msub></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub></mrow></math></summary>
+      <p>En la lista ordenada, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2,5</mn></mrow></math> está entre el segundo y el tercer dato, ambos <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>8</mn></mrow></math>, así que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow></math>; <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>5</mn></mrow></math> corresponde al <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn></mrow></math>, así <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>2</mn></msub><mo>=</mo><mn>10</mn></mrow></math>, y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7,5</mn></mrow></math> está entre <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>12</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>14</mn></mrow></math>, así <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mn>13</mn></mrow></math>. Una posición como <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>2,5</mn></mrow></math> o <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>7,5</mn></mrow></math> está a mitad de camino: no redondees, promedia.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 4:</strong> Verifica coherencia con el contexto o con otros datos dados</summary>
+      <p>Verifica: en la lista ordenada hay cuatro datos menores que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn></mrow></math> y cuatro mayores, así que <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>10</mn></mrow></math> es una mediana coherente. Además, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mn>13</mn></mrow></math> dejan grupos de datos razonables en cada extremo del conjunto.</p>
+    </details></li>
+  </ol>
+  <p data-role="micro-reinforcement">Si obtuviste <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>1</mn></msub><mo>=</mo><mn>8</mn></mrow></math>, <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>2</mn></msub><mo>=</mo><mn>10</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><msub><mi>Q</mi><mn>3</mn></msub><mo>=</mo><mn>13</mn></mrow></math>, vas bien — el punto clave fue ordenar y usar bien las posiciones fraccionarias.</p>
+  <ul data-role="paes-checklist">
+    <li>✅ ¿Los datos están ordenados de menor a mayor antes de buscar cualquier cuartil?;</li>
+    <li>✅ ¿Usaste la misma regla de posición para todos los cuartiles y las posiciones quedan entre <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mn>1</mn></mrow></math> y <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>n</mi></mrow></math>?;</li>
+    <li>✅ Si la posición no es entera, ¿promediaste correctamente los dos datos vecinos?</li>
+  </ul>
+</section>
+</article>
