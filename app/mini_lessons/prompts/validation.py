@@ -111,6 +111,104 @@ def build_garbled_text_prompt(section_html: str) -> str:
 
 
 # ------------------------------------------------------------------
+# Garbled text FIX prompt (used by fix_garbled_lessons script)
+# ------------------------------------------------------------------
+
+GARBLED_FIX_PROMPT = """\
+<role>
+Editor técnico de HTML educativo español con MathML. \
+Corriges SOLO los problemas reportados sin alterar nada más.
+</role>
+
+<html>
+{html}
+</html>
+
+<issues>
+{issues}
+</issues>
+
+<task>
+Corrige SOLO los problemas listados en <issues>. Reglas:
+1. Cambia lo mínimo posible — cada cambio debe resolver un \
+issue reportado.
+2. NO reescribas, reformules ni reorganices contenido sano.
+3. NO toques atributos data-*, xmlns, <img src="...">, ni URLs.
+4. NO agregues tags <html>, <head>, <body> ni ningún wrapper. \
+El documento es un fragmento <article>...</article>, devuélvelo \
+exactamente así.
+5. Para MathML roto: reconstruye la estructura mínima correcta \
+(e.g. <msup><mi>x</mi><mn>2</mn></msup> en vez de <msup/>).
+6. Para control chars / bytes garbled: identifica qué carácter \
+debería ser (típicamente +, −, ×, =, →) y reemplaza por el \
+carácter correcto o su entidad HTML.
+7. Para tildes faltantes: agrega la tilde correcta en español.
+8. Para guiones bajos en títulos de pasos: reemplaza _ por \
+espacios y agrega tildes correctas.
+9. Devuelve el HTML COMPLETO corregido, no un fragmento.
+</task>
+
+<output_format>
+JSON puro:
+{{
+  "fixed_html": "<article ...>...</article>"
+}}
+</output_format>
+"""
+
+GARBLED_FIX_VERIFY_PROMPT = """\
+<role>
+Verificador QA de mini-clases PAES en HTML + MathML español.
+</role>
+
+<task>
+Abajo hay un diff de cambios aplicados a una mini-clase. \
+Cada línea cambiada muestra la versión antigua (-) y nueva (+).
+
+Verifica SOLO estos problemas reales:
+1. Un reemplazo produjo español INCORRECTO (e.g. "ccómo" en \
+vez de "cómo", "tampocó" en vez de "tampoco").
+2. Un reemplazo ALTERÓ expresiones matemáticas o MathML de \
+forma que cambió su significado.
+3. Un reemplazo ELIMINÓ contenido que no debía eliminarse.
+4. Un reemplazo ROMPIÓ la estructura HTML (tags sin cerrar, \
+atributos perdidos).
+
+NO marques:
+- Correcciones de tildes/acentos que son correctas en español.
+- Eliminación de caracteres invisibles o de control.
+- Reconstrucción de MathML roto a MathML válido.
+</task>
+
+<diff>
+{diff_text}
+</diff>
+
+<output_format>
+JSON puro:
+{{"verdict": "PASS"}} o {{"verdict": "FAIL", "issues": ["..."]}}
+</output_format>
+"""
+
+
+def build_garbled_fix_prompt(
+    html: str, issues: list[str],
+) -> str:
+    """Build prompt to fix garbled text issues in a lesson."""
+    issues_text = "\n".join(f"- {i}" for i in issues)
+    return GARBLED_FIX_PROMPT.format(
+        html=html, issues=issues_text,
+    )
+
+
+def build_garbled_fix_verify_prompt(diff_text: str) -> str:
+    """Build prompt to verify a garbled-text fix didn't break content."""
+    return GARBLED_FIX_VERIFY_PROMPT.format(
+        diff_text=diff_text,
+    )
+
+
+# ------------------------------------------------------------------
 # Full quality gate prompt (Phase 5)
 # ------------------------------------------------------------------
 
