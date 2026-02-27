@@ -17,8 +17,9 @@ Experto en matemáticas PAES M1 (Chile).
 </context>
 
 <chilean_number_format>
-Formato numérico chileno: punto (.) = miles, coma (,) = decimal.
-Ejemplo: "1.250,5" = mil doscientos cincuenta coma cinco.
+Formato numérico PAES (Chile): espacio = miles, coma (,) = decimal.
+Ejemplo: "1 250,5" = mil doscientos cincuenta coma cinco.
+Enteros de 4 dígitos pueden ir sin separador (e.g. 1000).
 </chilean_number_format>
 
 <task>

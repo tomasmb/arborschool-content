@@ -277,7 +277,8 @@ de fracciones, decimales o álgebra que no son el tema del átomo \
 (frases como "denominador común", "invierte la fracción", \
 "simplifica la fracción", "mínimo común múltiplo"), es auto-fail.
 - AUTO-FAIL NOTACIÓN: si hay decimales con punto en vez de coma \
-(1.5 en vez de 1,5), es auto-fail.
+(1.5 en vez de 1,5), o miles con punto en vez de espacio \
+(10.000 en vez de 10 000), es auto-fail.
 - AUTO-FAIL TRAMPA: si el bloque Trampa PAES lista más de 1 \
 patrón de error en lugar de un contraste enfocado \
 (1 línea ❌ + 1 línea ✔), score brevity_cognitive_load = 0.

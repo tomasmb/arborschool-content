@@ -17,16 +17,17 @@ from __future__ import annotations
 
 CHILEAN_NUMBER_FORMAT_SECTION = """
 <chilean_number_format>
-IMPORTANTE: Este contenido usa formato numérico chileno:
-- Punto (.) = separador de MILES (no decimal)
+IMPORTANTE: Este contenido usa formato numérico PAES (Chile):
 - Coma (,) = separador DECIMAL
+- Espacio = separador de MILES (no punto, no coma)
+- Enteros de 4 dígitos pueden ir sin separador (e.g. 1000, 1500)
 
 Ejemplos de interpretación:
-- "160.934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
-- "100.000" significa 100000 (cien mil)
-- "321.868" significa 321868 (trescientos veintiún mil ochocientos sesenta y ocho)
+- "160 934" significa 160934 (ciento sesenta mil novecientos treinta y cuatro)
+- "100 000" significa 100000 (cien mil)
 - "3,21868" significa 3.21868 (tres coma veintiuno...)
 - "0,80467" significa 0.80467 (cero coma ochenta...)
+- "$25 000" significa veinticinco mil pesos
 
 Al validar cálculos, interpreta los números según este formato ANTES de verificar.
 </chilean_number_format>
@@ -114,11 +115,11 @@ SOLUCIÓN PASO A PASO:
 <formatting_rules>
 1. Notación matemática: usar SOLO MathML, nunca LaTeX (\\(...\\) está prohibido)
 
-2. Formato de números chileno:
-   - Separador de miles: punto (.)
+2. Formato de números PAES (Chile):
    - Separador decimal: coma (,)
-   - MathML: `<mn>160.934</mn>`, `<mn>3,21868</mn>`
-   - Texto: `32.186.800.000 kilómetros`
+   - Separador de miles: espacio (no punto)
+   - MathML: `<mn>160\u00A0934</mn>`, `<mn>3,21868</mn>`
+   - Texto: `32 186 800 000 kilómetros`
 
 3. REGLAS XML CRÍTICAS — violaciones causan que el ítem sea ELIMINADO del pipeline:
 
@@ -221,7 +222,7 @@ Corregir los errores identificados en el feedback. Devolver el XML completo corr
 
 <formatting_rules>
 1. Notación matemática: usar SOLO MathML, nunca LaTeX
-2. Formato de números chileno: punto para miles, coma para decimal
+2. Formato de números PAES: espacio para miles, coma para decimal
 </formatting_rules>
 
 <output_format>
@@ -271,7 +272,7 @@ Resolver el problema y validar que cada feedback sea matemáticamente correcto y
 
 3. FORMATO (formatting_check):
    - ¿Usa MathML para notación matemática (no LaTeX)?
-   - ¿Usa formato chileno? (punto para miles, coma para decimal)
+   - ¿Usa formato PAES? (espacio para miles, coma para decimal)
    - Fallback (qti-response-else): PASS si asigna feedback de cualquier opción INCORRECTA.
      FAIL solo si asigna feedback de la opción CORRECTA (la marcada en qti-correct-response)
 </checks>
@@ -380,7 +381,7 @@ NO marcar como error:
 - qti-response-else asignando feedback de opción incorrecta (válido en QTI 3.0)
 - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
 - Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
-- Cálculos correctos en formato chileno (punto=miles, coma=decimal)
+- Cálculos correctos en formato PAES (espacio=miles, coma=decimal)
 - Diferencias de estilo o redacción que no afectan la corrección matemática
 - Descripciones de imágenes que son razonables aunque no pixel-perfect
 

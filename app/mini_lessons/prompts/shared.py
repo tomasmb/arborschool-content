@@ -36,8 +36,11 @@ Cada tag debe tener apertura y cierre con contenido válido.
 sección.
 - Caracteres UTF-8 directos: é, ó, á, ú, í, ñ, ü, ¿, ¡. \
 NUNCA entidades Latin-1.
-- Todo decimal usa COMA (convención chilena): 1,5 y NO 1.5. \
+- Todo decimal usa COMA (convención PAES): 1,5 y NO 1.5. \
 Punto decimal está PROHIBIDO. Aplica a texto y a <mn> en MathML.
+- Separador de miles es ESPACIO (convención PAES): 10 000 y NO \
+10.000. Usar espacio no separable \\u00A0 dentro de <mn>. \
+Enteros de 4 dígitos pueden ir sin separador (1000, 1500).
 - NO cubras temas listados como "Fuera de alcance" en el \
 enriquecimiento. Limítate estrictamente a los ítems "En alcance"."""
 
