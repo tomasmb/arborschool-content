@@ -29,6 +29,7 @@ from scripts.garbled_mappings import (
     POST_FIX_CORRECTIONS,
     POST_FIX_WORD_CORRECTIONS,
     TILDE_FIXES,
+    UNICODE_CHAR_FIXES,
     WORD_ACCENT_FIXES,
 )
 
@@ -145,11 +146,8 @@ def _apply_null_byte_fixes(text: str) -> str:
     for bad, good in NULL_BYTE_FIXES.items():
         text = text.replace(bad, good)
     return text
-
-
 _LITERAL_ESCAPE_RE = re.compile(r"\\u([0-9a-fA-F]{4})")
-
-
+_XML_TAG_SPLIT_RE = re.compile(r"(<[^>]+>)")
 def _apply_literal_escape_fixes(text: str) -> str:
     r"""Decode literal \uXXXX sequences the LLM wrote as text."""
     return _LITERAL_ESCAPE_RE.sub(
@@ -157,10 +155,35 @@ def _apply_literal_escape_fixes(text: str) -> str:
     )
 
 
+def _apply_unicode_char_fixes_text(text: str) -> str:
+    """Apply unicode cleanups to plain text (not XML tags)."""
+    text = re.sub(
+        r"(?<=[0-9A-Za-zÁÉÍÓÚáéíóúÑñ])।(?=(?:\s|$))",
+        ".",
+        text,
+    )
+    for bad, good in UNICODE_CHAR_FIXES.items():
+        if bad == "।":
+            continue
+        text = text.replace(bad, good)
+    return text
+
+
+def _apply_unicode_char_fixes_xml(xml: str) -> str:
+    """Apply unicode cleanups only on XML text nodes."""
+    parts = _XML_TAG_SPLIT_RE.split(xml)
+    for idx, part in enumerate(parts):
+        if part.startswith("<") and part.endswith(">"):
+            continue
+        parts[idx] = _apply_unicode_char_fixes_text(part)
+    return "".join(parts)
+
+
 def fix_xml(xml: str) -> str:
     """Apply all deterministic fixes to a QTI XML string."""
     protected, stash = _protect_zones(xml)
     protected = _apply_literal_escape_fixes(protected)
+    protected = _apply_unicode_char_fixes_xml(protected)
     protected = _apply_hex_fixes(protected)
     protected = _apply_word_accent_fixes(protected)
     protected = _apply_tilde_fixes(protected)
@@ -174,6 +197,7 @@ def fix_image_description(desc: str) -> str:
     """Apply fixes to an image_description string."""
     desc = _apply_null_byte_fixes(desc)
     desc = _apply_literal_escape_fixes(desc)
+    desc = _apply_unicode_char_fixes_text(desc)
     desc = _apply_hex_fixes(desc)
     desc = _apply_word_accent_fixes(desc)
     desc = _apply_tilde_fixes(desc)
