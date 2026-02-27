@@ -28,7 +28,10 @@ from app.mini_lessons.helpers import (
     save_checkpoint,
     serialize_sections,
 )
-from app.mini_lessons.image_generator import LessonImageGenerator
+from app.mini_lessons.image_generator import (
+    LessonImageGenerator,
+    strip_failed_image_placeholders,
+)
 from app.mini_lessons.models import (
     PHASE_GROUPS,
     LessonConfig,
@@ -77,17 +80,12 @@ class MiniLessonPipeline:
         result = LessonResult(atom_id=config.atom_id)
 
         if self._skip_images and atom_requires_images(config.atom_id):
+            msg = f"Atom {config.atom_id} requires images — skipped (--skip-images)"
             result.phase_results.append(PhaseResult(
-                phase_name="skip_images",
-                success=False,
-                errors=[
-                    f"Atom {config.atom_id} requires images — "
-                    "skipped (--skip-images)",
-                ],
+                phase_name="skip_images", success=False,
+                errors=[msg],
             ))
-            logger.info(
-                "Skipping %s: requires images", config.atom_id,
-            )
+            logger.info("Skipping %s: requires images", config.atom_id)
             return result
 
         cost_acc = CostAccumulator()
@@ -166,9 +164,9 @@ class MiniLessonPipeline:
                 sections = sections or self._load_sections(
                     output_dir,
                 )
-                if ctx and plan:
+                if ctx:
                     sections = self._phase_2b_images(
-                        sections, plan, ctx.atom_id, result,
+                        sections, ctx.atom_id, result,
                     )
                 if ctx and plan:
                     sections = self._phase_3_val(
@@ -199,8 +197,8 @@ class MiniLessonPipeline:
                 full_html = full_html or self._load_html(output_dir)
                 if ctx and plan:
                     self._phase_6_out(
-                        full_html, ctx, plan,
-                        quality, output_dir, result,
+                        full_html, ctx, plan, quality,
+                        sections, output_dir, result,
                     )
 
             if result.phase_results and not result.phase_results[-1].success:
@@ -220,25 +218,20 @@ class MiniLessonPipeline:
             ))
             return None
         enrichment = load_enrichment(config.atom_id)
-        samples = load_sample_questions(config.atom_id)
-        ctx = build_lesson_context(atom, enrichment, samples)
+        ctx = build_lesson_context(
+            atom, enrichment, load_sample_questions(config.atom_id),
+        )
         if ctx is None:
             result.phase_results.append(PhaseResult(
                 phase_name="input_loading", success=False,
-                errors=[
-                    f"Unknown tipo_atomico '{atom.tipo_atomico}' "
-                    f"for atom {config.atom_id}",
-                ],
+                errors=[f"Unknown tipo_atomico for {config.atom_id}"],
             ))
             return None
         result.phase_results.append(PhaseResult(
             phase_name="input_loading", success=True,
             data={"template_type": ctx.template_type},
         ))
-        logger.info(
-            "Phase 0: Loaded %s (template %s)",
-            config.atom_id, ctx.template_type,
-        )
+        logger.info("Phase 0: %s (template %s)", config.atom_id, ctx.template_type)
         return ctx
 
     def _phase_1_plan(
@@ -281,24 +274,30 @@ class MiniLessonPipeline:
     def _phase_2b_images(
         self,
         sections: list[LessonSection],
-        plan: LessonPlan,
         atom_id: str,
         result: LessonResult,
     ) -> list[LessonSection]:
-        """Phase 2b: Generate images for visual sections."""
+        """Phase 2b: Generate images, strip failed placeholders."""
+        warnings: list[str] = []
         try:
             sections = self._image_gen.generate_for_sections(
-                sections, plan, atom_id,
+                sections, atom_id,
             )
-            result.phase_results.append(PhaseResult(
-                phase_name="image_generation", success=True,
-            ))
         except Exception as exc:
             logger.warning("Phase 2b image gen failed: %s", exc)
-            result.phase_results.append(PhaseResult(
-                phase_name="image_generation", success=True,
-                warnings=[f"Image generation failed: {exc}"],
-            ))
+            warnings.append(f"Image generation error: {exc}")
+
+        stripped = strip_failed_image_placeholders(sections)
+        if stripped:
+            warnings.extend(
+                f"Image failed for {b}" for b in stripped
+            )
+
+        result.phase_results.append(PhaseResult(
+            phase_name="image_generation",
+            success=True,
+            warnings=warnings,
+        ))
         return sections
 
     def _phase_3_val(
@@ -342,8 +341,12 @@ class MiniLessonPipeline:
         config: LessonConfig,
         output_dir: Path, result: LessonResult,
     ) -> QualityReport:
+        img_fails = [
+            s.block_name for s in sections if s.image_failed
+        ]
         phase_result, report = self._quality_gate.evaluate(
             full_html, ctx, plan=plan,
+            image_failures=img_fails or None,
         )
         result.phase_results.append(phase_result)
 
@@ -383,7 +386,7 @@ class MiniLessonPipeline:
         ctx: LessonContext, plan: LessonPlan,
         result: LessonResult,
     ) -> str | None:
-        """Phase 5b: regenerate only weak sections, re-validate."""
+        """Phase 5b: regenerate weak sections, re-image, re-validate."""
         weak = identify_weak_sections(report, sections)
         if not weak:
             return None
@@ -397,8 +400,14 @@ class MiniLessonPipeline:
         )
         regen_map = {(s.block_name, s.index): s for s in regenerated}
         refined = [
-            regen_map.get((s.block_name, s.index), s) for s in sections
+            regen_map.get((s.block_name, s.index), s)
+            for s in sections
         ]
+        if not self._skip_images:
+            refined = self._image_gen.generate_for_sections(
+                refined, ctx.atom_id,
+            )
+            strip_failed_image_placeholders(refined)
         _, validated = self._section_validator.validate_sections(
             refined, ctx, plan,
         )
@@ -412,6 +421,7 @@ class MiniLessonPipeline:
     def _phase_6_out(
         self, full_html: str, ctx: LessonContext,
         plan: LessonPlan, quality: QualityReport | None,
+        sections: list[LessonSection],
         output_dir: Path, result: LessonResult,
     ) -> None:
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -419,41 +429,29 @@ class MiniLessonPipeline:
 
         html_name = "mini-class.html" if publishable else "mini-class.rejected.html"
         (output_dir / html_name).write_text(full_html, encoding="utf-8")
-        if publishable:
-            rejected = output_dir / "mini-class.rejected.html"
-            if rejected.exists():
-                rejected.unlink()
-        else:
-            logger.warning(
-                "Phase 6: quality gate NOT passed — wrote %s", html_name,
-            )
+        rejected = output_dir / "mini-class.rejected.html"
+        if publishable and rejected.exists():
+            rejected.unlink()
+        elif not publishable:
+            logger.warning("Phase 6: quality gate NOT passed — wrote %s", html_name)
 
         meta = build_lesson_meta(
             ctx.atom_id, ctx.template_type, ctx, plan,
-            html=full_html,
+            html=full_html, sections=sections,
         )
-        (output_dir / "mini-class.meta.json").write_text(
-            json.dumps(meta, indent=2, ensure_ascii=False),
-            encoding="utf-8",
+        _write_json(output_dir / "mini-class.meta.json", meta)
+        qa: dict[str, Any] = (
+            {**quality.model_dump(), "atom_id": ctx.atom_id}
+            if quality else {"atom_id": ctx.atom_id, "publishable": False}
         )
-        qa: dict[str, Any] = {"atom_id": ctx.atom_id, "publishable": False}
-        if quality:
-            qa = {**quality.model_dump(), "atom_id": ctx.atom_id}
-        (output_dir / "mini-class.qa.json").write_text(
-            json.dumps(qa, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
-        save_checkpoint(
-            output_dir, 6, "final",
-            {"publishable": publishable},
-        )
+        _write_json(output_dir / "mini-class.qa.json", qa)
+        save_checkpoint(output_dir, 6, "final", {"publishable": publishable})
         result.phase_results.append(PhaseResult(
             phase_name="final_output", success=publishable,
             data={"output_dir": str(output_dir), "publishable": publishable},
         ))
-        result.html = full_html
-        result.meta = meta
-        logger.info("Phase 6: Saved to %s (publishable=%s)", output_dir, publishable)
+        result.html, result.meta = full_html, meta
+        logger.info("Phase 6: %s (publishable=%s)", output_dir, publishable)
 
     def _restore_ctx(
         self, config: LessonConfig, result: LessonResult,
@@ -479,21 +477,22 @@ class MiniLessonPipeline:
     def _load_sections(
         self, output_dir: Path, phase_name: str = "sections",
     ) -> list[LessonSection]:
-        phase_map = {"sections": 2, "validated": 3}
-        num = phase_map.get(phase_name, 2)
+        num = {"sections": 2, "validated": 3}.get(phase_name, 2)
         ckpt = load_checkpoint(output_dir, num, phase_name)
-        if ckpt and "sections" in ckpt:
-            return deserialize_sections(ckpt["sections"])
-        return []
+        return deserialize_sections(ckpt["sections"]) if ckpt and "sections" in ckpt else []
 
     def _load_html(self, output_dir: Path) -> str:
         ckpt = load_checkpoint(output_dir, 4, "assembled")
         return ckpt.get("html", "") if ckpt else ""
 
-    def _load_quality(
-        self, output_dir: Path,
-    ) -> QualityReport | None:
+    def _load_quality(self, output_dir: Path) -> QualityReport | None:
         ckpt = load_checkpoint(output_dir, 5, "quality")
         if ckpt and "report" in ckpt:
             return QualityReport.model_validate(ckpt["report"])
         return None
+
+
+def _write_json(path: Path, data: dict) -> None:
+    path.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8",
+    )

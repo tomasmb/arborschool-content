@@ -23,6 +23,7 @@ from app.mini_lessons.html_validator import (
 from app.mini_lessons.models import (
     HARD_BUDGET_MULTIPLIER,
     SECTION_WORD_BUDGETS,
+    ImagePlanEntry,
     LessonContext,
     LessonPlan,
     LessonSection,
@@ -42,6 +43,13 @@ from app.mini_lessons.prompts.validation import (
 logger = logging.getLogger(__name__)
 
 _MATH_CHECK_SECTIONS = {"worked-example"}
+_IMAGE_PLACEHOLDER = "IMAGE_PLACEHOLDER"
+_IMG_TAG_PATTERN = re.compile(r"<img\s[^>]*src=", re.IGNORECASE)
+
+
+def _has_img_tag(html: str) -> bool:
+    """Return True if the HTML contains an <img> tag with a src."""
+    return bool(_IMG_TAG_PATTERN.search(html))
 
 
 # ===================================================================
@@ -73,13 +81,15 @@ class SectionValidator:
         """
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
+        image_map = _build_image_map(plan)
         validated: list[LessonSection] = []
         errors: list[str] = []
 
         for section in sections:
+            ie = image_map.get(section.block_name)
             result = self._validate_one(
                 section, context_section, plan_data,
-                ctx.template_type,
+                ctx.template_type, image_entry=ie,
             )
             if result.validation_status == "passed":
                 validated.append(result)
@@ -104,6 +114,7 @@ class SectionValidator:
         context_section: str,
         plan_data: dict,
         template_type: str,
+        image_entry: ImagePlanEntry | None = None,
     ) -> LessonSection:
         """Validate a single section with optional retry."""
         for attempt in range(1 + self._max_retries):
@@ -124,6 +135,7 @@ class SectionValidator:
                 retried = self._retry_section(
                     section, context_section, plan_data,
                     template_type, all_errors,
+                    image_entry=image_entry,
                 )
                 if retried:
                     section = retried
@@ -164,8 +176,14 @@ class SectionValidator:
         plan_data: dict,
         template_type: str,
         errors: list[str],
+        image_entry: ImagePlanEntry | None = None,
     ) -> LessonSection | None:
-        """Retry section generation with error feedback."""
+        """Retry section generation with error feedback.
+
+        Preserves ``image_description`` from the original section
+        and threads ``image_entry`` to the retry prompt so the LLM
+        knows to keep the ``<img>`` tag with the S3 URL.
+        """
         plan_section = extract_plan_section_for_block(
             plan_data, section.block_name, section.index,
         )
@@ -177,6 +195,7 @@ class SectionValidator:
             failed_html=section.html,
             validation_errors="\n".join(errors),
             index=section.index,
+            image_entry=image_entry,
         )
         try:
             resp: LLMResponse = self._client.call(
@@ -186,15 +205,34 @@ class SectionValidator:
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
-            return LessonSection(
+            retried = LessonSection(
                 block_name=section.block_name,
                 index=data.get("index", section.index),
                 html=html,
                 word_count=count_words(html),
+                image_description=section.image_description,
             )
+            if section.image_description and not _has_img_tag(retried.html):
+                logger.warning(
+                    "Retry of %s dropped <img> tag — "
+                    "image may be lost",
+                    section.block_name,
+                )
+            return retried
         except Exception as exc:
             logger.warning("Section retry failed: %s", exc)
             return None
+
+
+def _build_image_map(
+    plan: LessonPlan,
+) -> dict[str, ImagePlanEntry]:
+    """Map target_section -> ImagePlanEntry for quick lookup."""
+    image_map: dict[str, ImagePlanEntry] = {}
+    for entry in plan.image_plan:
+        if entry.target_section not in image_map:
+            image_map[entry.target_section] = entry
+    return image_map
 
 
 def deterministic_section_checks(
@@ -226,6 +264,13 @@ def deterministic_section_checks(
         )
 
     errors.extend(check_decimal_notation(section.html))
+
+    if _IMAGE_PLACEHOLDER in section.html:
+        errors.append(
+            f"Section {section.block_name} still contains "
+            f"IMAGE_PLACEHOLDER — image generation failed or "
+            f"was not run",
+        )
 
     return errors
 
@@ -301,16 +346,25 @@ def build_lesson_meta(
     ctx: LessonContext,
     plan: LessonPlan,
     html: str = "",
+    sections: list[LessonSection] | None = None,
 ) -> dict:
     """Build the mini-class.meta.json content with provenance."""
     from datetime import datetime, timezone
 
+    image_failures = [
+        s.block_name for s in (sections or [])
+        if s.image_failed
+    ]
     meta: dict = {
         "atom_id": atom_id,
         "template_type": template_type,
         "eje": ctx.eje,
         "title": ctx.atom_title,
         "has_prerequisite_refresh": plan.include_prerequisite_refresh,
+        "planned_images": [
+            e.target_section for e in plan.image_plan
+        ],
+        "image_failures": image_failures,
         "provenance": {
             "model": "gpt-5.1",
             "reasoning_efforts": {
@@ -322,7 +376,7 @@ def build_lesson_meta(
                 "quality_gate": "high",
             },
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "pipeline_version": "2.0.0",
+            "pipeline_version": "2.1.0",
         },
     }
     if html:
@@ -348,12 +402,14 @@ class QualityGate:
         full_html: str,
         ctx: LessonContext,
         plan: LessonPlan | None = None,
+        image_failures: list[str] | None = None,
     ) -> tuple[PhaseResult, QualityReport]:
         """Run Phase 5: math + coverage + rubric evaluation.
 
         When plan is provided, checks error-family coverage against
         the plan's selected families instead of the full
-        enrichment list.
+        enrichment list. ``image_failures`` informs the gate about
+        sections whose planned images failed to generate.
 
         Returns:
             Tuple of (PhaseResult, QualityReport).
@@ -367,6 +423,7 @@ class QualityGate:
             in_scope_items=in_scope,
             error_families=error_families,
             rubric=rubric,
+            image_failures=image_failures,
         )
 
         report = QualityReport()

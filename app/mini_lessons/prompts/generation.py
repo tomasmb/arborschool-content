@@ -9,10 +9,31 @@ Builder functions compose: context + plan + rules + reference.
 
 from __future__ import annotations
 
+from app.mini_lessons.models import ImagePlanEntry
 from app.mini_lessons.prompts.reference_examples import (
     extract_section_reference,
 )
 from app.mini_lessons.prompts.shared import build_generation_rules
+from app.question_generation.image_types import ALL_SPECS
+
+# ------------------------------------------------------------------
+# Image placeholder rules — appended when section needs an image
+# ------------------------------------------------------------------
+
+_IMAGE_PLACEHOLDER_RULES = """\
+- Esta sección REQUIERE una imagen. Incluye EXACTAMENTE un tag \
+<img> dentro de la sección, envuelto en un <p>:
+  <p><img src="IMAGE_PLACEHOLDER" alt="BREVE DESCRIPCION" /></p>
+- El alt DEBE describir brevemente el contenido visual.
+- El texto DEBE referenciar la imagen de forma natural: \
+"La siguiente figura muestra...", "Como se observa en la figura...", etc.
+- Además del HTML, responde con "image_description": una \
+descripción DETALLADA del contenido visual que se debe generar. \
+Incluye: elementos matemáticos, posiciones, etiquetas, valores \
+numéricos, dominio/rango, puntos notables. Esta descripción \
+será usada para generar la imagen automáticamente.
+- La image_description debe ser en español y tener al menos \
+30 palabras de detalle específico."""
 
 # ------------------------------------------------------------------
 # Generic section generation prompt (all section types)
@@ -49,12 +70,7 @@ para el átomo {atom_id}.
 </rules>
 
 <output_format>
-Responde con JSON puro (sin bloques markdown):
-{{
-  "block_name": "{block_name}",
-  "index": {index_json},
-  "html": "HTML de la sección (usa <header> para objective, <section> para el resto)"
-}}
+{output_json}
 </output_format>
 
 <final_instruction>
@@ -104,12 +120,7 @@ Corrige todos los problemas manteniendo la estructura correcta.
 </rules>
 
 <output_format>
-JSON puro:
-{{
-  "block_name": "{block_name}",
-  "index": {index_json},
-  "html": "HTML de la sección (<header> para objective, <section> para el resto)"
-}}
+{output_json}
 </output_format>
 
 <final_instruction>
@@ -150,6 +161,30 @@ _TASK_DETAILS: dict[str, str] = {
 
 
 # ------------------------------------------------------------------
+# Output format helpers
+# ------------------------------------------------------------------
+
+_JSON_OUTPUT = """\
+Responde con JSON puro (sin bloques markdown):
+{{
+  "block_name": "{block_name}",
+  "index": {index_json},
+  "html": "HTML de la sección (usa <header> para objective, \
+<section> para el resto)"
+}}"""
+
+_JSON_OUTPUT_WITH_IMAGE = """\
+Responde con JSON puro (sin bloques markdown):
+{{
+  "block_name": "{block_name}",
+  "index": {index_json},
+  "html": "HTML de la sección con <img src=\\"IMAGE_PLACEHOLDER\\" \
+alt=\\"...\\"/>",
+  "image_description": "Descripción detallada del contenido visual..."
+}}"""
+
+
+# ------------------------------------------------------------------
 # Builder functions
 # ------------------------------------------------------------------
 
@@ -161,6 +196,7 @@ def build_section_prompt(
     atom_id: str,
     template_type: str,
     index: int | None = None,
+    image_entry: ImagePlanEntry | None = None,
 ) -> str:
     """Assemble a section generation prompt.
 
@@ -171,6 +207,7 @@ def build_section_prompt(
         atom_id: Atom identifier.
         template_type: P, C, or M.
         index: Section index (for worked-example).
+        image_entry: If set, this section needs an image.
     """
     reference_html = extract_section_reference(
         template_type, block_name, index,
@@ -183,6 +220,20 @@ def build_section_prompt(
     index_label = f" (índice {index})" if index else ""
     index_json = str(index) if index else "null"
 
+    if image_entry:
+        image_context = build_image_context_for_section(
+            image_entry,
+        )
+        task_details = f"{task_details}\n\n{image_context}"
+        rules = f"{rules}\n{_IMAGE_PLACEHOLDER_RULES}"
+        output_json = _JSON_OUTPUT_WITH_IMAGE.format(
+            block_name=block_name, index_json=index_json,
+        )
+    else:
+        output_json = _JSON_OUTPUT.format(
+            block_name=block_name, index_json=index_json,
+        )
+
     return SECTION_GENERATION_PROMPT.format(
         context_section=context_section,
         plan_section=plan_section,
@@ -193,6 +244,7 @@ def build_section_prompt(
         atom_id=atom_id,
         task_details=task_details,
         rules=rules,
+        output_json=output_json,
     )
 
 
@@ -204,6 +256,7 @@ def build_retry_prompt(
     failed_html: str,
     validation_errors: str,
     index: int | None = None,
+    image_entry: ImagePlanEntry | None = None,
 ) -> str:
     """Assemble a section retry prompt with error feedback."""
     reference_html = extract_section_reference(
@@ -216,6 +269,20 @@ def build_retry_prompt(
     task_details = _TASK_DETAILS.get(block_name, "")
     index_json = str(index) if index else "null"
 
+    if image_entry:
+        image_context = build_image_context_for_section(
+            image_entry,
+        )
+        task_details = f"{task_details}\n\n{image_context}"
+        rules = f"{rules}\n{_IMAGE_PLACEHOLDER_RULES}"
+        output_json = _JSON_OUTPUT_WITH_IMAGE.format(
+            block_name=block_name, index_json=index_json,
+        )
+    else:
+        output_json = _JSON_OUTPUT.format(
+            block_name=block_name, index_json=index_json,
+        )
+
     return SECTION_RETRY_PROMPT.format(
         context_section=context_section,
         plan_section=plan_section,
@@ -226,6 +293,7 @@ def build_retry_prompt(
         validation_errors=validation_errors,
         task_details=task_details,
         rules=rules,
+        output_json=output_json,
     )
 
 
@@ -282,3 +350,40 @@ def extract_plan_section_for_block(
         return str(we)
 
     return ""
+
+
+# ------------------------------------------------------------------
+# Image context builder
+# ------------------------------------------------------------------
+
+
+def build_image_context_for_section(
+    entry: ImagePlanEntry,
+) -> str:
+    """Build the image instruction block for a section.
+
+    Uses the image type spec from the taxonomy plus the planner's
+    hint to give the section generator rich context for producing
+    a coherent ``image_description`` alongside the HTML.
+    """
+    spec_map = {s.key: s for s in ALL_SPECS}
+    spec = spec_map.get(entry.image_type)
+
+    type_info = ""
+    if spec:
+        type_info = (
+            f"Tipo de imagen: {spec.name_es}\n"
+            f"Descripción del tipo: {spec.description}\n"
+            f"Ejemplos: {'; '.join(spec.examples[:3])}"
+        )
+    else:
+        type_info = f"Tipo de imagen: {entry.image_type}"
+
+    return (
+        f"IMAGEN REQUERIDA:\n"
+        f"{type_info}\n"
+        f"Directiva del plan: {entry.image_description_hint}\n"
+        f"Diseña el contenido de la sección y la imagen juntos. "
+        f"La imagen debe complementar el texto y ser referenciada "
+        f"naturalmente."
+    )

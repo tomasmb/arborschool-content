@@ -13,6 +13,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.llm_clients import LLMResponse, OpenAIClient
 from app.mini_lessons.html_validator import count_words
 from app.mini_lessons.models import (
+    ImagePlanEntry,
     LessonContext,
     LessonPlan,
     LessonSection,
@@ -66,6 +67,7 @@ class SectionGenerator:
         """
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
+        image_map = _build_image_map(plan)
         all_jobs = build_generation_jobs(plan)
         jobs = (
             [j for j in all_jobs if j in only]
@@ -85,6 +87,7 @@ class SectionGenerator:
                     ctx.template_type,
                     block_name,
                     index,
+                    image_map.get(block_name),
                 ): (block_name, index)
                 for block_name, index in jobs
             }
@@ -125,6 +128,7 @@ class SectionGenerator:
         template_type: str,
         block_name: str,
         index: int | None,
+        image_entry: ImagePlanEntry | None = None,
     ) -> LessonSection | None:
         """Generate a single section via LLM."""
         plan_section = extract_plan_section_for_block(
@@ -137,6 +141,7 @@ class SectionGenerator:
             atom_id=atom_id,
             template_type=template_type,
             index=index,
+            image_entry=image_entry,
         )
 
         effort = reasoning_for_block(block_name)
@@ -149,12 +154,14 @@ class SectionGenerator:
             data = json.loads(resp.text)
             html = data.get("html", "")
             word_count = count_words(html)
+            image_desc = data.get("image_description", "")
 
             return LessonSection(
                 block_name=block_name,
                 index=data.get("index", index),
                 html=html,
                 word_count=word_count,
+                image_description=image_desc,
             )
         except Exception as exc:
             logger.warning(
@@ -191,6 +198,20 @@ def build_generation_jobs(
     jobs.append(("worked-example", 1))
 
     return jobs
+
+
+def _build_image_map(
+    plan: LessonPlan,
+) -> dict[str, ImagePlanEntry]:
+    """Map target_section -> ImagePlanEntry for quick lookup.
+
+    If multiple entries target the same section, the first one wins.
+    """
+    image_map: dict[str, ImagePlanEntry] = {}
+    for entry in plan.image_plan:
+        if entry.target_section not in image_map:
+            image_map[entry.target_section] = entry
+    return image_map
 
 
 def _section_sort_key(

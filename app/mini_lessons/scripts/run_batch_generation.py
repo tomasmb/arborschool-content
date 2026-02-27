@@ -22,6 +22,10 @@ from app.mini_lessons.batch_request_builders import (
     build_section_request,
 )
 from app.mini_lessons.generator import build_generation_jobs
+from app.mini_lessons.image_generator import (
+    LessonImageGenerator,
+    strip_failed_image_placeholders,
+)
 from app.mini_lessons.helpers import (
     build_lesson_context,
     deserialize_plan,
@@ -166,7 +170,10 @@ def main() -> None:
     ctxs = _build_contexts(get_active_atoms(state))
     plans = _phase_1(sub, state, ckpt, ctxs)
     secs = _phase_2(sub, state, ckpt, ctxs, plans)
-    asm = _phases_3_4(state, ckpt, ctxs, plans, secs)
+    asm = _phases_3_4(
+        state, ckpt, ctxs, plans, secs,
+        skip_images=args.skip_images,
+    )
     res = _phase_5(sub, state, ckpt, ctxs, asm, plans)
     _phase_6(ctxs, plans, asm, res)
 
@@ -182,6 +189,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--job-id", help="Resume a previous job")
     p.add_argument("--poll-interval", type=int, default=30)
     p.add_argument("--max-wait", type=int, default=86400)
+    p.add_argument("--skip-images", action="store_true")
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
 
@@ -266,9 +274,7 @@ def _phase_1(
     return plans
 
 
-def _reload_plans(
-    ctxs: dict[str, LessonContext],
-) -> dict[str, LessonPlan]:
+def _reload_plans(ctxs: dict[str, LessonContext]) -> dict[str, LessonPlan]:
     plans: dict[str, LessonPlan] = {}
     for aid in ctxs:
         c = load_checkpoint(get_output_dir(aid), 1, "plan")
@@ -316,9 +322,7 @@ def _phase_2(
     return smap
 
 
-def _reload_sections(
-    plans: dict[str, LessonPlan],
-) -> dict[str, list[dict]]:
+def _reload_sections(plans: dict[str, LessonPlan]) -> dict[str, list[dict]]:
     smap: dict[str, list[dict]] = {}
     for aid in plans:
         c = load_checkpoint(get_output_dir(aid), 2, "sections")
@@ -332,6 +336,7 @@ def _phases_3_4(
     ctxs: dict[str, LessonContext],
     plans: dict[str, LessonPlan],
     smap: dict[str, list[dict]],
+    skip_images: bool = False,
 ) -> dict[str, str]:
     pk = "phase_3_4"
     if is_phase_completed(state, pk):
@@ -340,6 +345,7 @@ def _phases_3_4(
     from app.mini_lessons.html_validator import count_words
     from app.mini_lessons.models import LessonSection
 
+    img_gen = None if skip_images else _make_image_gen()
     assembled: dict[str, str] = {}
     failed: dict[str, str] = {}
     for aid, raws in smap.items():
@@ -352,8 +358,12 @@ def _phases_3_4(
                 index=r.get("index"),
                 html=r.get("html", ""),
                 word_count=count_words(r.get("html", "")),
+                image_description=r.get("image_description", ""),
             ) for r in raws
         ]
+        if img_gen:
+            img_gen.generate_for_sections(secs, aid)
+            strip_failed_image_placeholders(secs)
         valid = [
             s for s in secs
             if not deterministic_section_checks(s)
@@ -380,9 +390,7 @@ def _phases_3_4(
     return assembled
 
 
-def _reload_assembled(
-    plans: dict[str, LessonPlan],
-) -> dict[str, str]:
+def _reload_assembled(plans: dict[str, LessonPlan]) -> dict[str, str]:
     asm: dict[str, str] = {}
     for aid in plans:
         c = load_checkpoint(get_output_dir(aid), 4, "assembled")
@@ -428,10 +436,7 @@ def _phase_5(
             html = assembled.get(aid, "")
             if html:
                 out.mkdir(parents=True, exist_ok=True)
-                fname = (
-                    "mini-class.html" if pub
-                    else "mini-class.rejected.html"
-                )
+                fname = "mini-class.html" if pub else "mini-class.rejected.html"
                 (out / fname).write_text(html, encoding="utf-8")
         except Exception as exc:
             logger.warning("Phase 5 error %s: %s", aid, exc)
@@ -443,15 +448,25 @@ def _phase_5(
     return results
 
 
-def _reload_quality(
-    assembled: dict[str, str],
-) -> dict[str, bool]:
+def _reload_quality(assembled: dict[str, str]) -> dict[str, bool]:
     results: dict[str, bool] = {}
     for aid in assembled:
         c = load_checkpoint(get_output_dir(aid), 5, "quality")
         if c and "report" in c:
             results[aid] = c["report"].get("publishable", False)
     return results
+
+
+def _write_json(path: Path, data: dict) -> None:
+    path.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8",
+    )
+
+
+def _make_image_gen() -> LessonImageGenerator:
+    """Create a LessonImageGenerator for batch image gen."""
+    from app.llm_clients import OpenAIClient
+    return LessonImageGenerator(OpenAIClient())
 
 
 def _phase_6(
@@ -463,31 +478,19 @@ def _phase_6(
     """Write mini-class.meta.json and mini-class.qa.json per atom."""
     written = 0
     for aid, html in assembled.items():
-        ctx = ctxs.get(aid)
-        plan = plans.get(aid)
+        ctx, plan = ctxs.get(aid), plans.get(aid)
         if not ctx or not plan:
             continue
-
         out = get_output_dir(aid)
         out.mkdir(parents=True, exist_ok=True)
-
         meta = build_lesson_meta(
             aid, ctx.template_type, ctx, plan, html=html,
         )
-        (out / "mini-class.meta.json").write_text(
-            json.dumps(meta, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
-
-        qa: dict = {"atom_id": aid, "publishable": False}
-        quality_ckpt = load_checkpoint(out, 5, "quality")
-        if quality_ckpt and "report" in quality_ckpt:
-            qa = quality_ckpt["report"]
-            qa["atom_id"] = aid
-        (out / "mini-class.qa.json").write_text(
-            json.dumps(qa, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        _write_json(out / "mini-class.meta.json", meta)
+        qc = load_checkpoint(out, 5, "quality")
+        qa = {**(qc["report"] if qc and "report" in qc else {}), "atom_id": aid}
+        qa.setdefault("publishable", False)
+        _write_json(out / "mini-class.qa.json", qa)
         written += 1
 
     print(f"Phase 6: {written} atoms with meta + qa files")

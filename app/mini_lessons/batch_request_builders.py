@@ -10,7 +10,10 @@ generation batch_api module (DRY).
 
 from __future__ import annotations
 
-from app.mini_lessons.generator import reasoning_for_block
+from app.mini_lessons.generator import (
+    _build_image_map,
+    reasoning_for_block,
+)
 from app.mini_lessons.helpers import extract_enrichment_for_gate
 from app.mini_lessons.models import LessonContext, LessonPlan
 from app.mini_lessons.prompts.generation import (
@@ -45,8 +48,13 @@ def build_plan_request(
 ) -> BatchRequest:
     """Build a BatchRequest for lesson plan generation."""
     context_section = build_lesson_context_section(ctx)
+    img_types = (
+        ctx.enrichment.required_image_types
+        if ctx.enrichment else None
+    )
     prompt = build_plan_prompt(
         context_section, ctx.atom_id, ctx.template_type,
+        required_image_types=img_types,
     )
     return BatchRequest(
         custom_id=f"ml-p1:{ctx.atom_id}",
@@ -91,6 +99,8 @@ def build_section_request(
     plan_section = extract_plan_section_for_block(
         plan.model_dump(), block_name, index,
     )
+    image_map = _build_image_map(plan)
+    image_entry = image_map.get(block_name)
     prompt = build_section_prompt(
         context_section=context_section,
         plan_section=plan_section,
@@ -98,6 +108,7 @@ def build_section_request(
         atom_id=ctx.atom_id,
         template_type=ctx.template_type,
         index=index,
+        image_entry=image_entry,
     )
     idx_label = f":{index}" if index else ""
     return BatchRequest(

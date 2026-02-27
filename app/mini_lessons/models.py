@@ -136,11 +136,30 @@ class QuickCheckSpec(BaseModel):
 
 
 class OptionalSectionSpec(BaseModel):
-    """Specification for an optional section with justification."""
+    """Specification for an optional section with justification.
+
+    .. deprecated::
+        Kept for backward compatibility with old checkpoints.
+        Image-related sections now use ``ImagePlanEntry`` via
+        ``LessonPlan.image_plan`` instead.
+    """
 
     block_name: str
     justification: str
     content_spec: str
+
+
+class ImagePlanEntry(BaseModel):
+    """Which section needs an image, what type, and a brief hint.
+
+    The hint is a short directive for the section generator; the
+    generator produces the full ``image_description`` alongside
+    the HTML so text and image are designed together.
+    """
+
+    target_section: str
+    image_type: str
+    image_description_hint: str
 
 
 class LessonPlan(BaseModel):
@@ -168,6 +187,15 @@ class LessonPlan(BaseModel):
     )
     optional_sections: list[OptionalSectionSpec] = Field(
         default_factory=list,
+        description="Deprecated — kept for old checkpoints. Use image_plan.",
+    )
+    image_plan: list[ImagePlanEntry] = Field(
+        default_factory=list,
+        description=(
+            "Sections that need a generated image. Each entry "
+            "specifies the target section, image type from the "
+            "taxonomy, and a brief content hint."
+        ),
     )
     include_prerequisite_refresh: bool = False
     justifications: dict[str, str] = Field(default_factory=dict)
@@ -187,6 +215,8 @@ class LessonSection(BaseModel):
     word_count: int = 0
     validation_status: str = "pending"
     validation_errors: list[str] = Field(default_factory=list)
+    image_description: str = ""
+    image_failed: bool = False
 
 
 # ---------------------------------------------------------------------------

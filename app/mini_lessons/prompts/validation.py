@@ -187,9 +187,15 @@ def build_quality_gate_prompt(
     in_scope_items: list[str],
     error_families: list[str],
     rubric: dict[str, list[str]],
+    image_failures: list[str] | None = None,
 ) -> str:
-    """Build the full quality gate prompt for Phase 5."""
-    return QUALITY_GATE_PROMPT.format(
+    """Build the full quality gate prompt for Phase 5.
+
+    When ``image_failures`` is non-empty, appends a note so the
+    gate knows which planned images are missing and can score
+    accordingly (e.g. penalize dangling figure references).
+    """
+    prompt = QUALITY_GATE_PROMPT.format(
         full_html=full_html,
         in_scope_items="\n  ".join(
             f"- {item}" for item in in_scope_items
@@ -201,3 +207,13 @@ def build_quality_gate_prompt(
         rubric_medium="; ".join(rubric.get("medium", [])),
         rubric_hard="; ".join(rubric.get("hard", [])),
     )
+    if image_failures:
+        note = (
+            "\n\nNOTA: Las siguientes secciones tenían imágenes "
+            "planificadas pero la generación falló: "
+            f"{', '.join(image_failures)}. "
+            "Si el texto referencia figuras inexistentes, "
+            "penaliza en brevity_cognitive_load."
+        )
+        prompt += note
+    return prompt
