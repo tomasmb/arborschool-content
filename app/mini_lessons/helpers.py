@@ -394,3 +394,10 @@ def deserialize_sections(data: list[dict]) -> list[LessonSection]:
 def deserialize_plan(data: dict) -> LessonPlan:
     """Deserialize a LessonPlan from checkpoint data."""
     return LessonPlan.model_validate(data)
+
+
+def write_json(path: Path, data: dict) -> None:
+    """Write a dict as pretty-printed JSON to *path*."""
+    path.write_text(
+        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8",
+    )

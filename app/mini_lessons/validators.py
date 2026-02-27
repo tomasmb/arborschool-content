@@ -213,9 +213,10 @@ class SectionValidator:
                 image_description=section.image_description,
             )
             if section.image_description and not _has_img_tag(retried.html):
+                retried.image_failed = True
                 logger.warning(
                     "Retry of %s dropped <img> tag — "
-                    "image may be lost",
+                    "marked image_failed",
                     section.block_name,
                 )
             return retried
@@ -459,7 +460,8 @@ class QualityGate:
 def _is_publishable(report: QualityReport) -> bool:
     """Determine if the lesson meets publication criteria.
 
-    4 dimensions x 2 max each = 8 total. Threshold: >= 6 (75%).
+    4 dimensions x 2 max each = 8 total.
+    Every dimension must score 2/2 -- no partial credit.
     """
     if report.auto_fail_triggered:
         return False
@@ -467,10 +469,10 @@ def _is_publishable(report: QualityReport) -> bool:
         return False
     if not report.coverage_pass:
         return False
-    if report.total_score < 6:
+    if report.total_score < 8:
         return False
     for score in report.dimension_scores.values():
-        if score < 1:
+        if score < 2:
             return False
     return True
 

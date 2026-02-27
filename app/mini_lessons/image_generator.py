@@ -26,7 +26,7 @@ from app.mini_lessons.models import LessonSection
 logger = logging.getLogger(__name__)
 
 _S3_PATH_PREFIX = "images/mini-lessons/"
-_MAX_IMAGE_RETRIES = 1
+_MAX_IMAGE_RETRIES = 2
 _PLACEHOLDER_SRC = "IMAGE_PLACEHOLDER"
 
 

@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-import json
 import logging
 from pathlib import Path
-from typing import Any
 
 from app.llm_clients import (
     OpenAIClient,
@@ -27,6 +25,7 @@ from app.mini_lessons.helpers import (
     load_sample_questions,
     save_checkpoint,
     serialize_sections,
+    write_json,
 )
 from app.mini_lessons.image_generator import (
     LessonImageGenerator,
@@ -293,10 +292,15 @@ class MiniLessonPipeline:
                 f"Image failed for {b}" for b in stripped
             )
 
+        has_failures = any(s.image_failed for s in sections)
         result.phase_results.append(PhaseResult(
             phase_name="image_generation",
-            success=True,
-            warnings=warnings,
+            success=not has_failures,
+            errors=(
+                [f"Image failed for {b}" for b in stripped]
+                if has_failures else []
+            ),
+            warnings=warnings if not has_failures else [],
         ))
         return sections
 
@@ -353,12 +357,12 @@ class MiniLessonPipeline:
         salvageable = (
             not report.publishable
             and not report.auto_fail_triggered
-            and report.total_score >= 8
+            and report.total_score >= 6
             and plan is not None
         )
         if salvageable and config.max_retries > 0:
             logger.info(
-                "Phase 5: %d/14, refining...", report.total_score,
+                "Phase 5: %d/8, refining...", report.total_score,
             )
             refined = self._refine(
                 report, sections, ctx, plan, result,
@@ -408,6 +412,9 @@ class MiniLessonPipeline:
                 refined, ctx.atom_id,
             )
             strip_failed_image_placeholders(refined)
+            if any(s.image_failed for s in refined):
+                logger.warning("Refine aborted: image failure")
+                return None
         _, validated = self._section_validator.validate_sections(
             refined, ctx, plan,
         )
@@ -427,31 +434,33 @@ class MiniLessonPipeline:
         output_dir.mkdir(parents=True, exist_ok=True)
         publishable = quality.publishable if quality else False
 
-        html_name = "mini-class.html" if publishable else "mini-class.rejected.html"
-        (output_dir / html_name).write_text(full_html, encoding="utf-8")
+        fname = "mini-class.html" if publishable else "mini-class.rejected.html"
+        (output_dir / fname).write_text(full_html, encoding="utf-8")
         rejected = output_dir / "mini-class.rejected.html"
         if publishable and rejected.exists():
             rejected.unlink()
         elif not publishable:
-            logger.warning("Phase 6: quality gate NOT passed — wrote %s", html_name)
+            logger.warning("Phase 6: quality gate NOT passed")
 
         meta = build_lesson_meta(
             ctx.atom_id, ctx.template_type, ctx, plan,
             html=full_html, sections=sections,
         )
-        _write_json(output_dir / "mini-class.meta.json", meta)
-        qa: dict[str, Any] = (
+        write_json(output_dir / "mini-class.meta.json", meta)
+        qa = (
             {**quality.model_dump(), "atom_id": ctx.atom_id}
             if quality else {"atom_id": ctx.atom_id, "publishable": False}
         )
-        _write_json(output_dir / "mini-class.qa.json", qa)
-        save_checkpoint(output_dir, 6, "final", {"publishable": publishable})
+        write_json(output_dir / "mini-class.qa.json", qa)
+        save_checkpoint(
+            output_dir, 6, "final", {"publishable": publishable},
+        )
         result.phase_results.append(PhaseResult(
             phase_name="final_output", success=publishable,
-            data={"output_dir": str(output_dir), "publishable": publishable},
+            data={"output_dir": str(output_dir)},
         ))
         result.html, result.meta = full_html, meta
-        logger.info("Phase 6: %s (publishable=%s)", output_dir, publishable)
+        logger.info("Phase 6: %s (%s)", output_dir, publishable)
 
     def _restore_ctx(
         self, config: LessonConfig, result: LessonResult,
@@ -487,12 +496,4 @@ class MiniLessonPipeline:
 
     def _load_quality(self, output_dir: Path) -> QualityReport | None:
         ckpt = load_checkpoint(output_dir, 5, "quality")
-        if ckpt and "report" in ckpt:
-            return QualityReport.model_validate(ckpt["report"])
-        return None
-
-
-def _write_json(path: Path, data: dict) -> None:
-    path.write_text(
-        json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8",
-    )
+        return QualityReport.model_validate(ckpt["report"]) if ckpt and "report" in ckpt else None
