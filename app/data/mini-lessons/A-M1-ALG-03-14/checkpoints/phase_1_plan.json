@@ -1,24 +1,24 @@
 {
   "plan": {
     "template_type": "C",
-    "objective_spec": "Plantea que el objetivo es traducir oraciones con límites como 'al menos' o 'como máximo' a inecuaciones lineales simples, eligiendo el símbolo correcto y revisando el sentido.",
-    "concept_spec": "Explica correspondencia entre expresiones verbales y símbolos (<, >, ≤, ≥), ejemplos de contextos típicos y variable no negativa. Trampa PAES: invertir la desigualdad al leer 'al menos' y 'a lo más'.",
+    "objective_spec": "Que puedas traducir enunciados verbales con mínimos, máximos y rangos sencillos a inecuaciones lineales correctas, eligiendo bien el símbolo y la variable en contextos típicos PAES.",
+    "concept_spec": "Mostrar cómo pasar de frases con 'al menos / como máximo / no más de / supera a' a inecuaciones lineales, incluyendo rangos simples. Trampa PAES: invertir el sentido del símbolo al leer el texto.",
     "concept_in_scope_items": [
       "Traducción directa de enunciados verbales simples a una sola inecuación lineal de una variable.",
       "Identificación y uso correcto de expresiones como 'al menos', 'a lo más', 'como máximo', 'no menos que', 'no mayor que', 'supera a', 'es menor que'.",
       "Selección del símbolo de desigualdad correcto (<, >, ≤, ≥) según el contexto.",
-      "Modelación de restricciones de tipo capacidad, presupuesto, puntajes, cantidades de objetos, edades, tiempos y distancias mediante inecuaciones lineales.",
       "Inecuaciones con variable que representa una cantidad real no negativa (explícito o implícito en el contexto).",
       "Traducción de frases que combinan igualdad y desigualdad como 'al menos 3 pero no más de 10' en un par de inecuaciones simples (sin exigir resolución del sistema)."
     ],
     "canonical_steps": [],
     "worked_example": {
-      "topic": "Traducción de una condición de presupuesto con 'no más de' a una inecuación lineal.",
-      "mathematical_context": "Presupuesto para entradas a un concierto: precio fijo por entrada, número de entradas como variable y límite de gasto expresado como 'no más de' cierta cantidad.",
+      "topic": "Traducción de una condición de capacidad con 'como máximo' a una inecuación lineal.",
+      "mathematical_context": "Capacidad de un teatro: x es número de personas que pueden entrar y el texto dice que pueden ingresar como máximo 120 personas.",
       "step_count": 4,
-      "numbers_to_use": "precio $2000 por entrada, gasto máximo $10.000, prueba valores x=3 y x=6 para verificar la inecuación.",
+      "numbers_to_use": "Capacidad 120 personas, variable x ≥ 0, cantidades enteras pequeñas.",
       "in_scope_items_covered": [
         "Traducción directa de enunciados verbales simples a una sola inecuación lineal de una variable.",
+        "Identificación y uso correcto de expresiones como 'al menos', 'a lo más', 'como máximo', 'no menos que', 'no mayor que', 'supera a', 'es menor que'.",
         "Selección del símbolo de desigualdad correcto (<, >, ≤, ≥) según el contexto.",
         "Modelación de restricciones de tipo capacidad, presupuesto, puntajes, cantidades de objetos, edades, tiempos y distancias mediante inecuaciones lineales.",
         "Inecuaciones con variable que representa una cantidad real no negativa (explícito o implícito en el contexto)."
@@ -26,19 +26,18 @@
       "error_families_addressed": [
         "Sentido_invertido_de_la_desigualdad",
         "Pérdida_de_inclusión_en_el_límite",
-        "Ignorar_la_negación_en_expresiones_compuestas",
-        "Traducción_verbal_literal_sin_modelo_numérico"
+        "Variable_mal_elegida"
       ]
     },
     "checklist_items": [
-      "¿La palabra clave ('al menos', 'no más de', etc.) coincide con el símbolo <, >, ≤ o ≥ que escribiste?",
-      "¿Incluiste o no el signo igual según si el valor límite está permitido en la situación?",
-      "Si el enunciado da un rango ('entre ... y ...'), ¿escribiste las dos desigualdades usando la misma variable?"
+      "¿Las palabras clave (al menos, como máximo, no más de, más de, menos de) coinciden con el símbolo que elegiste?",
+      "¿El límite debe estar incluido? Si sí, ¿usaste ≥ o ≤ en vez de > o <?",
+      "¿Tu variable representa exactamente la cantidad pedida y asumiste x ≥ 0 si es una cantidad física?"
     ],
     "optional_sections": [],
     "include_prerequisite_refresh": false,
     "justifications": {
-      "prerequisite_decision": "Los prerrequisitos ya trabajan lenguaje algebraico básico e inecuaciones simples; aquí se aplica ese conocimiento a textos verbales, y el tiempo es muy acotado para añadir un bloque extra."
+      "prerequisite_decision": "Los prerrequisitos cubren variable y expresiones lineales; se refuerzan brevemente al definir x y escribir la inecuación, sin necesitar un bloque separado de repaso."
     }
   }
 }
