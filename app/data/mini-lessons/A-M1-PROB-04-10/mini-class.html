@@ -1,0 +1,151 @@
+<article data-kind="mini-class"
+         data-atom-id="A-M1-PROB-04-10"
+         data-template="P">
+  <header data-block="objective">
+  <h1>Mini-clase: Cálculo de probabilidad condicional por reducción del espacio muestral</h1>
+  <p data-role="learning-objective">Al terminar esta mini-clase podrás calcular probabilidades condicionales contando casos en el espacio muestral reducido al suceso dado.</p>
+  <p data-role="paes-relevance">La PAES M1 pregunta seguido esto, y muchos confunden el total original con el grupo condicionado.</p>
+</header>
+
+  <section data-block="concept" data-role="concept">
+  <h2>Idea clave</h2>
+  <h3>¿Qué significa P(A|B)?</h3>
+  <p>La probabilidad condicional <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>|</mo><mi>B</mi><mo>)</mo></mrow></math> es la probabilidad de que ocurra A cuando <strong>solo miras</strong> los casos donde B ya ocurrió.</p>
+  <p>Piénsalo como: "entre los que cumplen B, ¿qué fracción además cumple A?".</p>
+  <h3>Cómo calcularla por conteo</h3>
+  <p>Primero reduce el espacio muestral: quédate solo con los datos que cumplen B, usando la fila, columna o listado correspondiente.</p>
+  <p>Luego cuenta cuántos dentro de ese grupo cumplen A y forma la razón: casos con A dentro de B dividido por el total de casos en B; si no hay reemplazo, usa el nuevo grupo que queda.</p>
+  <h3>Trampa PAES</h3>
+  <p>❌ Usar el total general de datos como denominador al calcular <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>|</mo><mi>B</mi><mo>)</mo></mrow></math>.</p>
+  <p>✔ Usa como denominador <strong>solo</strong> el total del grupo que cumple B: tu espacio muestral reducido.</p>
+</section>
+
+  <section data-block="worked-example" data-index="1">
+  <header>
+    <h2>Ejemplo resuelto</h2>
+    <p>En un curso se encuestó a 30 estudiantes sobre su deporte preferido. La tabla muestra los resultados.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Sexo</th>
+          <th>Fútbol</th>
+          <th>Básquet</th>
+          <th>Otro</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>Hombres</th>
+          <td>8</td>
+          <td>4</td>
+          <td>3</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <th>Mujeres</th>
+          <td>6</td>
+          <td>5</td>
+          <td>4</td>
+          <td>15</td>
+        </tr>
+        <tr>
+          <th>Total</th>
+          <td>14</td>
+          <td>9</td>
+          <td>7</td>
+          <td>30</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>Calcula la probabilidad de que un estudiante prefiera fútbol, dado que es mujer:
+      <math xmlns="http://www.w3.org/1998/Math/MathML">
+        <mrow>
+          <mi>P</mi>
+          <mo>(</mo>
+          <mtext>fútbol</mtext>
+          <mo>|</mo>
+          <mtext>mujer</mtext>
+          <mo>)</mo>
+        </mrow>
+      </math>.
+    </p>
+  </header>
+  <ol data-role="steps">
+    <li>
+      <details>
+        <summary><strong>Paso 1:</strong> Identifica el suceso condicionante B</summary>
+        <p>La frase “dado que es mujer” indica que B es el suceso “ser mujer”, así que solo mirarás a las mujeres de la tabla.</p>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary><strong>Paso 2:</strong> Forma el espacio muestral reducido con solo los casos que cumplen B</summary>
+        <p>El espacio muestral reducido son las 15 mujeres, no los 30 estudiantes, porque la condición ya fijó que la persona elegida es mujer.</p>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary><strong>Paso 3:</strong> Cuenta los casos favorables de A dentro de B</summary>
+        <p>En la fila “Mujeres”, 6 prefieren fútbol; no uses los 14 que prefieren fútbol en total, porque esos incluyen hombres que no están en B.</p>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary><strong>Paso 4:</strong> Calcula P(A|B) = casos favorables en B / total de casos en B</summary>
+        <p>
+          Calcula
+          <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mrow>
+              <mi>P</mi>
+              <mo>(</mo>
+              <mtext>fútbol</mtext>
+              <mo>|</mo>
+              <mtext>mujer</mtext>
+              <mo>)</mo>
+              <mo>=</mo>
+              <mfrac>
+                <mn>6</mn>
+                <mn>15</mn>
+              </mfrac>
+              <mo>=</mo>
+              <mn>0,4</mn>
+            </mrow>
+          </math>, donde el numerador son los 6 casos favorables y el denominador son las 15 mujeres que forman el grupo B.
+        </p>
+      </details>
+    </li>
+    <li>
+      <details>
+        <summary><strong>Paso 5:</strong> Verificación: comprueba el resultado</summary>
+        <p>Como 6 es algo menos de la mitad de 15, una probabilidad de 0,4 es razonable y coincide con que fútbol es el deporte más elegido entre mujeres.</p>
+      </details>
+    </li>
+  </ol>
+  <p data-role="micro-reinforcement">
+    Si obtuviste
+    <math xmlns="http://www.w3.org/1998/Math/MathML">
+      <mrow>
+        <mi>P</mi>
+        <mo>(</mo>
+        <mtext>fútbol</mtext>
+        <mo>|</mo>
+        <mtext>mujer</mtext>
+        <mo>)</mo>
+        <mo>=</mo>
+        <mfrac>
+          <mn>6</mn>
+          <mn>15</mn>
+        </mfrac>
+        <mo>=</mo>
+        <mn>0,4</mn>
+      </mrow>
+    </math>, vas bien — el punto clave fue contar los casos favorables solo dentro del grupo que cumple la condición.
+  </p>
+  <ul data-role="paes-checklist">
+    <li>✅ ¿El denominador es el total de casos que cumplen la condición “dado que B”?</li>
+    <li>✅ ¿El numerador son solo los casos que cumplen A dentro del grupo B?</li>
+    <li>✅ ¿El resultado está entre 0 y 1 y es coherente con los datos de la tabla/listado?</li>
+  </ul>
+</section>
+</article>
