@@ -23,6 +23,7 @@ from app.mini_lessons.html_validator import (
 from app.mini_lessons.models import (
     HARD_BUDGET_MULTIPLIER,
     SECTION_WORD_BUDGETS,
+    ImagePlanEntry,
     LessonContext,
     LessonPlan,
     LessonSection,
@@ -35,6 +36,7 @@ from app.mini_lessons.prompts.generation import (
 )
 from app.mini_lessons.prompts.shared import build_lesson_context_section
 from app.mini_lessons.prompts.validation import (
+    build_garbled_text_prompt,
     build_quality_gate_prompt,
     build_section_math_prompt,
 )
@@ -42,6 +44,37 @@ from app.mini_lessons.prompts.validation import (
 logger = logging.getLogger(__name__)
 
 _MATH_CHECK_SECTIONS = {"worked-example"}
+_IMAGE_PLACEHOLDER = "IMAGE_PLACEHOLDER"
+_IMG_TAG_PATTERN = re.compile(r"<img\s[^>]*src=", re.IGNORECASE)
+
+
+def _has_img_tag(html: str) -> bool:
+    """Return True if the HTML contains an <img> tag with a src."""
+    return bool(_IMG_TAG_PATTERN.search(html))
+
+
+def _llm_check(
+    client: OpenAIClient, prompt: str,
+    pass_key: str, block: str, *, effort: str = "low",
+) -> list[str]:
+    """Generic LLM validation check; returns errors when *pass_key* is False."""
+    try:
+        resp: LLMResponse = client.call(
+            prompt,
+            response_format={"type": "json_object"},
+            reasoning_effort=effort,
+        )
+        data = json.loads(resp.text)
+        if not data.get(pass_key, True):
+            return (
+                data.get("errors", [])
+                or data.get("issues", [])
+                or [f"{pass_key} failed: {block}"]
+            )
+        return []
+    except Exception as exc:
+        logger.warning("LLM check %s failed: %s", pass_key, exc)
+        return [f"LLM check error ({pass_key}): {exc}"]
 
 
 # ===================================================================
@@ -66,20 +99,18 @@ class SectionValidator:
         ctx: LessonContext,
         plan: LessonPlan,
     ) -> tuple[PhaseResult, list[LessonSection]]:
-        """Run Phase 3: validate each section, retry failures.
-
-        Returns:
-            Tuple of (PhaseResult, list of validated sections).
-        """
+        """Run Phase 3: validate each section, retry failures."""
         context_section = build_lesson_context_section(ctx)
         plan_data = plan.model_dump()
+        image_map = _build_image_map(plan)
         validated: list[LessonSection] = []
         errors: list[str] = []
 
         for section in sections:
+            ie = image_map.get(section.block_name)
             result = self._validate_one(
                 section, context_section, plan_data,
-                ctx.template_type,
+                ctx.template_type, image_entry=ie,
             )
             if result.validation_status == "passed":
                 validated.append(result)
@@ -104,6 +135,7 @@ class SectionValidator:
         context_section: str,
         plan_data: dict,
         template_type: str,
+        image_entry: ImagePlanEntry | None = None,
     ) -> LessonSection:
         """Validate a single section with optional retry."""
         for attempt in range(1 + self._max_retries):
@@ -124,6 +156,7 @@ class SectionValidator:
                 retried = self._retry_section(
                     section, context_section, plan_data,
                     template_type, all_errors,
+                    image_entry=image_entry,
                 )
                 if retried:
                     section = retried
@@ -136,26 +169,22 @@ class SectionValidator:
         self,
         section: LessonSection,
     ) -> list[str]:
-        """Run LLM-based checks on a section."""
-        if section.block_name not in _MATH_CHECK_SECTIONS:
-            return []
-
-        prompt = build_section_math_prompt(
-            section.html, section.block_name,
+        """Run LLM-based checks: garbled text (all) + math (worked-example)."""
+        errors = _llm_check(
+            self._client,
+            build_garbled_text_prompt(section.html),
+            "text_clean", section.block_name, effort="low",
         )
-        try:
-            resp: LLMResponse = self._client.call(
-                prompt,
-                response_format={"type": "json_object"},
-                reasoning_effort="high",
-            )
-            data = json.loads(resp.text)
-            if not data.get("math_correct", True):
-                return data.get("errors", ["Math error detected"])
-            return []
-        except Exception as exc:
-            logger.warning("LLM math check failed: %s", exc)
-            return [f"LLM math check error: {exc}"]
+        if section.block_name in _MATH_CHECK_SECTIONS:
+            errors.extend(_llm_check(
+                self._client,
+                build_section_math_prompt(
+                    section.html, section.block_name,
+                ),
+                "math_correct", section.block_name,
+                effort="high",
+            ))
+        return errors
 
     def _retry_section(
         self,
@@ -164,8 +193,9 @@ class SectionValidator:
         plan_data: dict,
         template_type: str,
         errors: list[str],
+        image_entry: ImagePlanEntry | None = None,
     ) -> LessonSection | None:
-        """Retry section generation with error feedback."""
+        """Retry section generation; preserves image_description + img tag."""
         plan_section = extract_plan_section_for_block(
             plan_data, section.block_name, section.index,
         )
@@ -177,6 +207,7 @@ class SectionValidator:
             failed_html=section.html,
             validation_errors="\n".join(errors),
             index=section.index,
+            image_entry=image_entry,
         )
         try:
             resp: LLMResponse = self._client.call(
@@ -186,15 +217,32 @@ class SectionValidator:
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
-            return LessonSection(
+            retried = LessonSection(
                 block_name=section.block_name,
                 index=data.get("index", section.index),
                 html=html,
                 word_count=count_words(html),
+                image_description=section.image_description,
             )
+            if section.image_description and not _has_img_tag(retried.html):
+                retried.image_failed = True
+                logger.warning(
+                    "Retry of %s dropped <img> tag — "
+                    "marked image_failed",
+                    section.block_name,
+                )
+            return retried
         except Exception as exc:
             logger.warning("Section retry failed: %s", exc)
             return None
+
+
+def _build_image_map(plan: LessonPlan) -> dict[str, ImagePlanEntry]:
+    """Map target_section -> ImagePlanEntry for quick lookup."""
+    m: dict[str, ImagePlanEntry] = {}
+    for e in plan.image_plan:
+        m.setdefault(e.target_section, e)
+    return m
 
 
 def deterministic_section_checks(
@@ -227,6 +275,13 @@ def deterministic_section_checks(
 
     errors.extend(check_decimal_notation(section.html))
 
+    if _IMAGE_PLACEHOLDER in section.html:
+        errors.append(
+            f"Section {section.block_name} still contains "
+            f"IMAGE_PLACEHOLDER — image generation failed or "
+            f"was not run",
+        )
+
     return errors
 
 
@@ -238,14 +293,8 @@ _EDUCATIONAL_WPM = 120
 
 
 def estimate_duration_minutes(html: str) -> float:
-    """Estimate reading time for educational content with MathML.
-
-    Uses ~120 wpm for math-heavy educational content (slower than
-    casual reading due to step-by-step reasoning and MathML
-    processing time).
-    """
-    words = count_words(html)
-    return round(words / _EDUCATIONAL_WPM, 1)
+    """Estimate reading time (~120 wpm for math-heavy educational content)."""
+    return round(count_words(html) / _EDUCATIONAL_WPM, 1)
 
 
 def assemble_lesson(
@@ -253,11 +302,7 @@ def assemble_lesson(
     atom_id: str,
     template_type: str,
 ) -> tuple[PhaseResult, str]:
-    """Assemble validated sections into final HTML.
-
-    Returns:
-        Tuple of (PhaseResult, assembled HTML string).
-    """
+    """Assemble validated sections into final HTML."""
     inner_html = "\n\n  ".join(s.html for s in sections)
 
     full_html = (
@@ -301,16 +346,25 @@ def build_lesson_meta(
     ctx: LessonContext,
     plan: LessonPlan,
     html: str = "",
+    sections: list[LessonSection] | None = None,
 ) -> dict:
     """Build the mini-class.meta.json content with provenance."""
     from datetime import datetime, timezone
 
+    image_failures = [
+        s.block_name for s in (sections or [])
+        if s.image_failed
+    ]
     meta: dict = {
         "atom_id": atom_id,
         "template_type": template_type,
         "eje": ctx.eje,
         "title": ctx.atom_title,
         "has_prerequisite_refresh": plan.include_prerequisite_refresh,
+        "planned_images": [
+            e.target_section for e in plan.image_plan
+        ],
+        "image_failures": image_failures,
         "provenance": {
             "model": "gpt-5.1",
             "reasoning_efforts": {
@@ -322,7 +376,7 @@ def build_lesson_meta(
                 "quality_gate": "high",
             },
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "pipeline_version": "2.0.0",
+            "pipeline_version": "2.1.0",
         },
     }
     if html:
@@ -348,15 +402,12 @@ class QualityGate:
         full_html: str,
         ctx: LessonContext,
         plan: LessonPlan | None = None,
+        image_failures: list[str] | None = None,
     ) -> tuple[PhaseResult, QualityReport]:
         """Run Phase 5: math + coverage + rubric evaluation.
 
-        When plan is provided, checks error-family coverage against
-        the plan's selected families instead of the full
-        enrichment list.
-
-        Returns:
-            Tuple of (PhaseResult, QualityReport).
+        Uses plan's selected families for coverage check when
+        provided. ``image_failures`` flags sections with missing images.
         """
         in_scope, error_families, rubric = (
             extract_enrichment_for_gate(ctx, plan=plan)
@@ -367,6 +418,7 @@ class QualityGate:
             in_scope_items=in_scope,
             error_families=error_families,
             rubric=rubric,
+            image_failures=image_failures,
         )
 
         report = QualityReport()
@@ -402,7 +454,8 @@ class QualityGate:
 def _is_publishable(report: QualityReport) -> bool:
     """Determine if the lesson meets publication criteria.
 
-    4 dimensions x 2 max each = 8 total. Threshold: >= 6 (75%).
+    4 dimensions x 2 max each = 8 total.
+    Every dimension must score 2/2 -- no partial credit.
     """
     if report.auto_fail_triggered:
         return False
@@ -410,10 +463,10 @@ def _is_publishable(report: QualityReport) -> bool:
         return False
     if not report.coverage_pass:
         return False
-    if report.total_score < 6:
+    if report.total_score < 8:
         return False
     for score in report.dimension_scores.values():
-        if score < 1:
+        if score < 2:
             return False
     return True
 

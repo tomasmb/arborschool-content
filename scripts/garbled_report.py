@@ -1,18 +1,25 @@
 """Generate a report of questions with garbled accented characters.
 
-Detects five classes of corruption:
+Detects eleven classes of corruption:
 1. Hex-digit substitution: accented chars replaced by hex (funcif3n)
 2. Char-deleted accents: accented chars removed entirely (grfico)
 3. Tilde-stripped ñ→n: (tamaño→tamano, año→ano)
 4. Accent→base substitution: á→a, é→e, etc. (gráfico→grafico)
    Only flagged when 3+ words are affected (systemic issue).
 5. Double-encoded entities / literal unicode escapes
+6. Interrogative pronouns missing accent (¿Cual → ¿Cuál)
+7. Article + unaccented noun (el grafico → el gráfico)
+8. Corrupted img alt text
+9. Wrong-script characters (Devanagari, Cyrillic, etc.)
+10. Invisible/control characters (soft hyphen, zero-width, BOM)
+11. Unusual whitespace outside MathML (NBSP, em space, etc.)
 """
 from __future__ import annotations
 
 import html as _html
 import json
 import re
+import unicodedata
 from collections import Counter
 from pathlib import Path
 
@@ -136,22 +143,14 @@ _TILDE_WORDS: list[tuple[re.Pattern[str], str]] = [
         (r"\bano\b", "año→ano"), (r"\banos\b", "años→anos"),
         (r"\bnino\b", "niño→nino"), (r"\bninos\b", "niños→ninos"),
         (r"\bnina\b", "niña→nina"), (r"\bninas\b", "niñas→ninas"),
-        (r"\bpequeno\b", "pequeño→pequeno"),
-        (r"\bpequena\b", "pequeña→pequena"),
-        (r"\btamano\b", "tamaño→tamano"),
-        (r"\btamanos\b", "tamaños→tamanos"),
-        (r"\bdiseno\b", "diseño→diseno"),
-        (r"\bespanol\b", "español→espanol"),
-        (r"\bsenal\b", "señal→senal"),
-        (r"\bensenanza\b", "enseñanza→ensenanza"),
-        (r"\bcompania\b", "compañía→compania"),
-        (r"\bmontana\b", "montaña→montana"),
-        (r"\bmanana\b", "mañana→manana"),
-        (r"\bdueno\b", "dueño→dueno"),
-        (r"\bsueno\b", "sueño→sueno"),
-        (r"\botono\b", "otoño→otono"),
-        (r"\bdano\b", "daño→dano"),
-        (r"\bbano\b", "baño→bano"),
+        (r"\bpequeno\b", "pequeño→pequeno"), (r"\bpequena\b", "pequeña→pequena"),
+        (r"\btamano\b", "tamaño→tamano"), (r"\btamanos\b", "tamaños→tamanos"),
+        (r"\bdiseno\b", "diseño→diseno"), (r"\bespanol\b", "español→espanol"),
+        (r"\bsenal\b", "señal→senal"), (r"\bensenanza\b", "enseñanza→ensenanza"),
+        (r"\bcompania\b", "compañía→compania"), (r"\bmontana\b", "montaña→montana"),
+        (r"\bmanana\b", "mañana→manana"), (r"\bdueno\b", "dueño→dueno"),
+        (r"\bsueno\b", "sueño→sueno"), (r"\botono\b", "otoño→otono"),
+        (r"\bdano\b", "daño→dano"), (r"\bbano\b", "baño→bano"),
     ]
 ]
 
@@ -256,79 +255,84 @@ _INTERROG_RE: list[tuple[re.Pattern[str], str]] = [
 
 
 # ── Class 7: article + unaccented noun ────────────────────────
+_FEM_ART = r"(?:la|una|esta|cada)"
+_MASC_ART = r"(?:el|un|este|cada)"
+_ART_NOUN_DATA: list[tuple[str, str, str]] = [
+    ("funcion", "función", "f"), ("ecuacion", "ecuación", "f"),
+    ("relacion", "relación", "f"), ("expresion", "expresión", "f"),
+    ("situacion", "situación", "f"), ("informacion", "información", "f"),
+    ("conclusion", "conclusión", "f"), ("fraccion", "fracción", "f"),
+    ("solucion", "solución", "f"), ("proporcion", "proporción", "f"),
+    ("linea", "línea", "f"), ("formula", "fórmula", "f"),
+    ("parabola", "parábola", "f"), ("practica", "práctica", "f"),
+    ("numero", "número", "m"), ("grafico", "gráfico", "m"),
+    ("angulo", "ángulo", "m"), ("triangulo", "triángulo", "m"),
+    ("rectangulo", "rectángulo", "m"), ("perimetro", "perímetro", "m"),
+    ("diametro", "diámetro", "m"), ("calculo", "cálculo", "m"),
+    ("analisis", "análisis", "m"), ("maximo", "máximo", "m"),
+    ("minimo", "mínimo", "m"), ("metodo", "método", "m"),
+    ("vertice", "vértice", "m"), ("simbolo", "símbolo", "m"),
+    ("ultimo", "último", "m"),
+]
 _ARTICLE_NOUN: list[tuple[re.Pattern[str], str]] = [
-    (re.compile(p, re.I), label)
-    for p, label in [
-        (r"\b(?:la|una|esta|cada) funcion\b", "la+función"),
-        (r"\b(?:la|una|esta|cada) ecuacion\b", "la+ecuación"),
-        (r"\b(?:la|una|esta|cada) relacion\b", "la+relación"),
-        (r"\b(?:la|una|esta|cada) expresion\b", "la+expresión"),
-        (r"\b(?:la|una|esta|cada) situacion\b", "la+situación"),
-        (r"\b(?:la|una|esta|cada) informacion\b", "la+información"),
-        (r"\b(?:la|una|esta|cada) conclusion\b", "la+conclusión"),
-        (r"\b(?:la|una|esta|cada) fraccion\b", "la+fracción"),
-        (r"\b(?:la|una|esta|cada) solucion\b", "la+solución"),
-        (r"\b(?:la|una|esta|cada) proporcion\b", "la+proporción"),
-        (r"\b(?:la|una|esta|cada) linea\b", "la+línea"),
-        (r"\b(?:la|una|esta|cada) formula\b", "la+fórmula"),
-        (r"\b(?:la|una|esta|cada) parabola\b", "la+parábola"),
-        (r"\b(?:la|una|esta|cada) practica\b", "la+práctica"),
-        (r"\b(?:el|un|este|cada) numero\b", "el+número"),
-        (r"\b(?:el|un|este|cada) grafico\b", "el+gráfico"),
-        (r"\b(?:el|un|este|cada) angulo\b", "el+ángulo"),
-        (r"\b(?:el|un|este|cada) triangulo\b", "el+triángulo"),
-        (r"\b(?:el|un|este|cada) rectangulo\b", "el+rectángulo"),
-        (r"\b(?:el|un|este|cada) perimetro\b", "el+perímetro"),
-        (r"\b(?:el|un|este|cada) diametro\b", "el+diámetro"),
-        (r"\b(?:el|un|este|cada) calculo\b", "el+cálculo"),
-        (r"\b(?:el|un|este|cada) analisis\b", "el+análisis"),
-        (r"\b(?:el|un|este|cada) maximo\b", "el+máximo"),
-        (r"\b(?:el|un|este|cada) minimo\b", "el+mínimo"),
-        (r"\b(?:el|un|este|cada) metodo\b", "el+método"),
-        (r"\b(?:el|un|este|cada) vertice\b", "el+vértice"),
-        (r"\b(?:el|un|este|cada) simbolo\b", "el+símbolo"),
-        (r"\b(?:el|un|este|cada) ultimo\b", "el+último"),
-    ]
+    (re.compile(
+        rf"\b{_FEM_ART if g == 'f' else _MASC_ART} {bad}\b", re.I,
+    ), f"{'la' if g == 'f' else 'el'}+{good}")
+    for bad, good, g in _ART_NOUN_DATA
 ]
 
 # ── Class 8: corrupted img alt text ──────────────────────────
 _ALT_RE = re.compile(r'alt="([^"]*)"')
-_ALT_WORDS: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
-    (re.compile(b, re.I), re.compile(g, re.I), label)
-    for b, g, label in [
-        (r"\bgrafico\b", r"\bgráfico\b", "alt:gráfico"),
-        (r"\bnumero\b", r"\bnúmero\b", "alt:número"),
-        (r"\btriangulo\b", r"\btriángulo\b", "alt:triángulo"),
-        (r"\bangulo\b", r"\bángulo\b", "alt:ángulo"),
-        (r"\blinea\b", r"\blínea\b", "alt:línea"),
-        (r"\bfuncion\b", r"\bfunción\b", "alt:función"),
-        (r"\bformula\b", r"\bfórmula\b", "alt:fórmula"),
-        (r"\brectangulo\b", r"\brectángulo\b", "alt:rectángulo"),
-        (r"\bperimetro\b", r"\bperímetro\b", "alt:perímetro"),
-        (r"\bdiametro\b", r"\bdiámetro\b", "alt:diámetro"),
-        (r"\bsituacion\b", r"\bsituación\b", "alt:situación"),
-        (r"\binformacion\b", r"\binformación\b", "alt:información"),
-        (r"\brelacion\b", r"\brelación\b", "alt:relación"),
-        (r"\becuacion\b", r"\becuación\b", "alt:ecuación"),
-        (r"\bconclusion\b", r"\bconclusión\b", "alt:conclusión"),
-        (r"\bexpresion\b", r"\bexpresión\b", "alt:expresión"),
-        (r"\bproporcion\b", r"\bproporción\b", "alt:proporción"),
-        (r"\bfraccion\b", r"\bfracción\b", "alt:fracción"),
-        (r"\bsolucion\b", r"\bsolución\b", "alt:solución"),
-        (r"\bcalculo\b", r"\bcálculo\b", "alt:cálculo"),
-        (r"\banalisis\b", r"\banálisis\b", "alt:análisis"),
-        (r"\bvertice\b", r"\bvértice\b", "alt:vértice"),
-        (r"\bparabola\b", r"\bparábola\b", "alt:parábola"),
-        (r"\bsimbolo\b", r"\bsímbolo\b", "alt:símbolo"),
-        (r"\bmaximo\b", r"\bmáximo\b", "alt:máximo"),
-        (r"\bminimo\b", r"\bmínimo\b", "alt:mínimo"),
-        (r"\bmetodo\b", r"\bmétodo\b", "alt:método"),
-        (r"\bultimo\b", r"\búltimo\b", "alt:último"),
-        (r"\btambien\b", r"\btambién\b", "alt:también"),
-        (r"\bsegun\b", r"\bsegún\b", "alt:según"),
-        (r"\bademas\b", r"\bademás\b", "alt:además"),
-    ]
+_ALT_PAIR_DATA: list[tuple[str, str]] = [
+    ("grafico", "gráfico"), ("numero", "número"),
+    ("triangulo", "triángulo"), ("angulo", "ángulo"),
+    ("linea", "línea"), ("funcion", "función"),
+    ("formula", "fórmula"), ("rectangulo", "rectángulo"),
+    ("perimetro", "perímetro"), ("diametro", "diámetro"),
+    ("situacion", "situación"), ("informacion", "información"),
+    ("relacion", "relación"), ("ecuacion", "ecuación"),
+    ("conclusion", "conclusión"), ("expresion", "expresión"),
+    ("proporcion", "proporción"), ("fraccion", "fracción"),
+    ("solucion", "solución"), ("calculo", "cálculo"),
+    ("analisis", "análisis"), ("vertice", "vértice"),
+    ("parabola", "parábola"), ("simbolo", "símbolo"),
+    ("maximo", "máximo"), ("minimo", "mínimo"),
+    ("metodo", "método"), ("ultimo", "último"),
+    ("tambien", "también"), ("segun", "según"),
+    ("ademas", "además"),
 ]
+_ALT_WORDS: list[tuple[re.Pattern[str], re.Pattern[str], str]] = [
+    (re.compile(rf"\b{bad}\b", re.I),
+     re.compile(rf"\b{good}\b", re.I),
+     f"alt:{good}")
+    for bad, good in _ALT_PAIR_DATA
+]
+
+
+# ── Class 9: wrong-script characters ─────────────────────────
+# Devanagari, Cyrillic, Arabic, Bengali, CJK, Japanese Kana.
+# Checked outside MathML (Greek letters in <mo>/<mi> are valid).
+_WRONG_SCRIPT_RE = re.compile(
+    r"[\u0400-\u04FF\u0600-\u06FF\u0900-\u097F"
+    r"\u0980-\u09FF\u3040-\u30FF\u4E00-\u9FFF]",
+)
+
+# ── Class 10: invisible / control characters ─────────────────
+# Always wrong regardless of context (even inside MathML).
+_INVISIBLE_RE = re.compile(
+    r"[\u00AD\u200B-\u200F\u202A-\u202E\u2060\uFEFF]",
+)
+
+# ── Class 11: unusual whitespace outside MathML ──────────────
+# NBSP inside <mo> is valid MathML; elsewhere it's an artifact.
+_UNUSUAL_WS_RE = re.compile(r"[\u00A0\u2002-\u200A\u205F\u3000]")
+
+_MATH_BLOCK_RE = re.compile(r"<math[^>]*>.*?</math>", re.DOTALL)
+
+
+def _strip_math(xml: str) -> str:
+    """Remove MathML blocks for non-math character checks."""
+    return _MATH_BLOCK_RE.sub("", xml)
 
 
 def _visible_text(xml: str) -> str:
@@ -394,6 +398,25 @@ def _check_item(xml: str) -> list[str]:
     if dbl:
         matches.extend(f"dbl:{d}" for d in set(dbl))
 
+    # Class 9: wrong-script characters (outside MathML)
+    no_math = _strip_math(xml)
+    for m in _WRONG_SCRIPT_RE.finditer(no_math):
+        ch = m.group()
+        name = unicodedata.name(ch, f"U+{ord(ch):04X}")
+        matches.append(f"wrong-script:{name}")
+
+    # Class 10: invisible/control chars (anywhere — never valid)
+    for m in _INVISIBLE_RE.finditer(xml):
+        ch = m.group()
+        name = unicodedata.name(ch, f"U+{ord(ch):04X}")
+        matches.append(f"invisible:{name}")
+
+    # Class 11: unusual whitespace (outside MathML only)
+    for m in _UNUSUAL_WS_RE.finditer(no_math):
+        ch = m.group()
+        name = unicodedata.name(ch, f"U+{ord(ch):04X}")
+        matches.append(f"unusual-ws:{name}")
+
     return sorted(set(matches))
 
 
@@ -412,6 +435,11 @@ def scan() -> None:
             total += 1
             item_id = item.get("item_id", "?")
             matches = _check_item(xml)
+            desc = item.get("image_description") or ""
+            if desc:
+                matches.extend(
+                    f"desc:{m}" for m in _check_item(desc)
+                )
             if matches:
                 results.append((item_id, matches))
 
@@ -421,7 +449,7 @@ def scan() -> None:
 
     lines = [
         "# Garbled Character Report",
-        "# Generated: 2026-02-26",
+        "# Generated: 2026-02-27",
         f"# Total questions scanned: {total}",
         f"# Garbled questions found: {len(results)}",
         f"# Clean questions: {total - len(results)}",
@@ -430,7 +458,7 @@ def scan() -> None:
         "#",
         "# Root cause: LLM occasionally corrupts accented characters.",
         "#",
-        "# Five corruption classes detected:",
+        "# Eleven corruption classes detected:",
         "#   1) Hex substitution  — función → funcif3n",
         "#   2) Char deleted      — gráfico → grfico",
         "#   3) Tilde stripped    — tamaño → tamano, año → ano",
@@ -440,6 +468,9 @@ def scan() -> None:
         "#   6) Interrogative    — ¿Cual instead of ¿Cuál",
         "#   7) Article+noun    — 'el grafico' (contextual proof)",
         "#   8) Alt text        — corrupted img alt attributes",
+        "#   9) Wrong-script    — Devanagari danda, Cyrillic, etc.",
+        "#  10) Invisible chars — soft hyphen, zero-width, BOM",
+        "#  11) Unusual whitespace — NBSP, em/en space (not in math)",
         "#",
         "# Fix: regenerate these questions through the pipeline.",
         "",

@@ -18,6 +18,7 @@ from app.question_generation.batch_request_builders import (
     build_xsd_retry_request,
     parse_custom_id,
 )
+from app.question_generation.helpers import build_pipeline_meta
 from app.question_generation.image_types import filter_valid_types
 from app.question_generation.models import (
     AtomEnrichment,
@@ -157,6 +158,7 @@ def process_generation_responses(
             item = parse_generation_response(
                 resp.text, atom_id, slot,
             )
+            item.pipeline_meta = build_pipeline_meta(atom_id, slot)
             xsd_result = validate_qti_xml(item.qti_xml)
             if xsd_result.get("valid"):
                 succeeded.setdefault(atom_id, []).append(item)

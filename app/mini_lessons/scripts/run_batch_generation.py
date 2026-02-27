@@ -1,7 +1,5 @@
 """Batch mini-lesson generation via OpenAI Batch API (50% cost).
 
-5-state checkpoint lifecycle: pending -> file_uploaded -> submitted
--> results_downloaded -> completed.
 Usage: python -m app.mini_lessons.scripts.run_batch_generation
 """
 
@@ -31,8 +29,13 @@ from app.mini_lessons.helpers import (
     load_enrichment,
     load_sample_questions,
     save_checkpoint,
+    write_json,
 )
-from app.mini_lessons.models import LessonContext, LessonPlan
+from app.mini_lessons.image_generator import (
+    LessonImageGenerator,
+    strip_failed_image_placeholders,
+)
+from app.mini_lessons.models import LessonContext, LessonPlan, LessonSection
 from app.mini_lessons.planner import validate_plan
 from app.mini_lessons.validators import (
     assemble_lesson,
@@ -166,10 +169,12 @@ def main() -> None:
     ctxs = _build_contexts(get_active_atoms(state))
     plans = _phase_1(sub, state, ckpt, ctxs)
     secs = _phase_2(sub, state, ckpt, ctxs, plans)
-    asm = _phases_3_4(state, ckpt, ctxs, plans, secs)
+    asm, secs_map = _phases_3_4(
+        state, ckpt, ctxs, plans, secs,
+        skip_images=args.skip_images,
+    )
     res = _phase_5(sub, state, ckpt, ctxs, asm, plans)
-    _phase_6(ctxs, plans, asm, res)
-
+    _phase_6(ctxs, plans, asm, secs_map)
     ok = sum(1 for v in res.values() if v)
     print(f"\nDone: {ok}/{len(res)} publishable")
 
@@ -182,6 +187,7 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--job-id", help="Resume a previous job")
     p.add_argument("--poll-interval", type=int, default=30)
     p.add_argument("--max-wait", type=int, default=86400)
+    p.add_argument("--skip-images", action="store_true")
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
 
@@ -208,9 +214,7 @@ def _load_eligible_atoms() -> list[dict]:
     return atoms
 
 
-def _build_contexts(
-    ids: list[str],
-) -> dict[str, LessonContext]:
+def _build_contexts(ids: list[str]) -> dict[str, LessonContext]:
     ctxs: dict[str, LessonContext] = {}
     for aid in ids:
         atom = load_atom(aid)
@@ -266,9 +270,7 @@ def _phase_1(
     return plans
 
 
-def _reload_plans(
-    ctxs: dict[str, LessonContext],
-) -> dict[str, LessonPlan]:
+def _reload_plans(ctxs: dict[str, LessonContext]) -> dict[str, LessonPlan]:
     plans: dict[str, LessonPlan] = {}
     for aid in ctxs:
         c = load_checkpoint(get_output_dir(aid), 1, "plan")
@@ -316,9 +318,7 @@ def _phase_2(
     return smap
 
 
-def _reload_sections(
-    plans: dict[str, LessonPlan],
-) -> dict[str, list[dict]]:
+def _reload_sections(plans: dict[str, LessonPlan]) -> dict[str, list[dict]]:
     smap: dict[str, list[dict]] = {}
     for aid in plans:
         c = load_checkpoint(get_output_dir(aid), 2, "sections")
@@ -332,15 +332,17 @@ def _phases_3_4(
     ctxs: dict[str, LessonContext],
     plans: dict[str, LessonPlan],
     smap: dict[str, list[dict]],
-) -> dict[str, str]:
+    skip_images: bool = False,
+) -> tuple[dict[str, str], dict[str, list[LessonSection]]]:
     pk = "phase_3_4"
     if is_phase_completed(state, pk):
-        return _reload_assembled(plans)
+        return _reload_assembled(plans), {}
 
     from app.mini_lessons.html_validator import count_words
-    from app.mini_lessons.models import LessonSection
 
+    img_gen = None if skip_images else _make_image_gen()
     assembled: dict[str, str] = {}
+    secs_map: dict[str, list[LessonSection]] = {}
     failed: dict[str, str] = {}
     for aid, raws in smap.items():
         ctx = ctxs.get(aid)
@@ -352,8 +354,20 @@ def _phases_3_4(
                 index=r.get("index"),
                 html=r.get("html", ""),
                 word_count=count_words(r.get("html", "")),
+                image_description=r.get("image_description", ""),
             ) for r in raws
         ]
+        if img_gen:
+            img_gen.generate_for_sections(secs, aid)
+            strip_failed_image_placeholders(secs)
+            img_fails = [
+                s.block_name for s in secs if s.image_failed
+            ]
+            if img_fails:
+                failed[aid] = (
+                    f"Image failed: {', '.join(img_fails)}"
+                )
+                continue
         valid = [
             s for s in secs
             if not deterministic_section_checks(s)
@@ -366,6 +380,7 @@ def _phases_3_4(
         pr, html = assemble_lesson(valid, aid, ctx.template_type)
         if pr.success:
             assembled[aid] = html
+            secs_map[aid] = valid
             save_checkpoint(
                 get_output_dir(aid), 4, "assembled",
                 {"html": html},
@@ -377,12 +392,10 @@ def _phases_3_4(
         mark_atoms_failed(state, failed, ckpt)
     update_phase(state, pk, ckpt, status="completed")
     print(f"Phase 3-4: {len(assembled)} atoms assembled")
-    return assembled
+    return assembled, secs_map
 
 
-def _reload_assembled(
-    plans: dict[str, LessonPlan],
-) -> dict[str, str]:
+def _reload_assembled(plans: dict[str, LessonPlan]) -> dict[str, str]:
     asm: dict[str, str] = {}
     for aid in plans:
         c = load_checkpoint(get_output_dir(aid), 4, "assembled")
@@ -428,10 +441,7 @@ def _phase_5(
             html = assembled.get(aid, "")
             if html:
                 out.mkdir(parents=True, exist_ok=True)
-                fname = (
-                    "mini-class.html" if pub
-                    else "mini-class.rejected.html"
-                )
+                fname = "mini-class.html" if pub else "mini-class.rejected.html"
                 (out / fname).write_text(html, encoding="utf-8")
         except Exception as exc:
             logger.warning("Phase 5 error %s: %s", aid, exc)
@@ -443,9 +453,7 @@ def _phase_5(
     return results
 
 
-def _reload_quality(
-    assembled: dict[str, str],
-) -> dict[str, bool]:
+def _reload_quality(assembled: dict[str, str]) -> dict[str, bool]:
     results: dict[str, bool] = {}
     for aid in assembled:
         c = load_checkpoint(get_output_dir(aid), 5, "quality")
@@ -454,44 +462,38 @@ def _reload_quality(
     return results
 
 
+def _make_image_gen() -> LessonImageGenerator:
+    from app.llm_clients import OpenAIClient
+    return LessonImageGenerator(OpenAIClient())
+
+
 def _phase_6(
     ctxs: dict[str, LessonContext],
     plans: dict[str, LessonPlan],
     assembled: dict[str, str],
-    quality_results: dict[str, bool],
+    secs_map: dict[str, list[LessonSection]] | None = None,
 ) -> None:
     """Write mini-class.meta.json and mini-class.qa.json per atom."""
     written = 0
     for aid, html in assembled.items():
-        ctx = ctxs.get(aid)
-        plan = plans.get(aid)
+        ctx, plan = ctxs.get(aid), plans.get(aid)
         if not ctx or not plan:
             continue
-
         out = get_output_dir(aid)
         out.mkdir(parents=True, exist_ok=True)
-
+        sections = secs_map.get(aid) if secs_map else None
         meta = build_lesson_meta(
-            aid, ctx.template_type, ctx, plan, html=html,
+            aid, ctx.template_type, ctx, plan,
+            html=html, sections=sections,
         )
-        (out / "mini-class.meta.json").write_text(
-            json.dumps(meta, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
-
-        qa: dict = {"atom_id": aid, "publishable": False}
-        quality_ckpt = load_checkpoint(out, 5, "quality")
-        if quality_ckpt and "report" in quality_ckpt:
-            qa = quality_ckpt["report"]
-            qa["atom_id"] = aid
-        (out / "mini-class.qa.json").write_text(
-            json.dumps(qa, indent=2, ensure_ascii=False),
-            encoding="utf-8",
-        )
+        write_json(out / "mini-class.meta.json", meta)
+        qc = load_checkpoint(out, 5, "quality")
+        qa = {**(qc["report"] if qc and "report" in qc else {}), "atom_id": aid}
+        qa.setdefault("publishable", False)
+        write_json(out / "mini-class.qa.json", qa)
         written += 1
 
     print(f"Phase 6: {written} atoms with meta + qa files")
-
 
 if __name__ == "__main__":
     main()

@@ -7,6 +7,10 @@ Uses GPT-5.1 with JSON response format.
 from __future__ import annotations
 
 from app.mini_lessons.prompts.shared import _TONE_RULES
+from app.question_generation.image_types import (
+    ALL_SPECS,
+    NOT_IMAGES_DESCRIPTION,
+)
 
 LESSON_PLAN_PROMPT = """\
 <role>
@@ -59,6 +63,8 @@ QUÉ cubrir, no CÓMO redactarlo. El redactor decidirá la prosa \
 final. Límites: objective_spec max 30 palabras (1 oración), \
 concept_spec max 40 palabras (1-2 oraciones), \
 mathematical_context max 30 palabras (1 oración).
+
+{image_instruction}
 </task>
 
 <rules>
@@ -89,11 +95,20 @@ JSON puro (sin bloques markdown). Los *_spec son directivas breves:
     "¿Verificación 2?",
     "¿Verificación 3?"
   ],
+  "image_plan": [
+    {{
+      "target_section": "concept",
+      "image_type": "function_graph",
+      "image_description_hint": "Parábola y=x²-4 con interceptos"
+    }}
+  ],
   "include_prerequisite_refresh": false,
   "justifications": {{
-    "prerequisite_decision": "razón breve"
+    "prerequisite_decision": "razón breve",
+    "image_decision": "razón breve"
   }}
 }}
+Si el átomo NO necesita imágenes, "image_plan" debe ser [].
 </output_format>
 
 <final_instruction>
@@ -141,13 +156,18 @@ def build_plan_prompt(
     context_section: str,
     atom_id: str,
     template_type: str,
+    required_image_types: list[str] | None = None,
 ) -> str:
     """Assemble the full lesson planning prompt."""
+    image_instruction = build_image_instruction_for_lessons(
+        required_image_types,
+    )
     return LESSON_PLAN_PROMPT.format(
         context_section=context_section,
         atom_id=atom_id,
         template_type=template_type,
         tone_rules=_TONE_RULES,
+        image_instruction=image_instruction,
     )
 
 
@@ -159,4 +179,60 @@ def build_coherence_prompt(
     return PLAN_COHERENCE_PROMPT.format(
         plan_json=plan_json,
         atom_summary=atom_summary,
+    )
+
+
+# ------------------------------------------------------------------
+# Image instruction builder
+# ------------------------------------------------------------------
+
+_VALID_IMAGE_SECTIONS = frozenset({
+    "concept", "worked-example", "prerequisite-refresh",
+})
+
+
+def build_image_instruction_for_lessons(
+    required_image_types: list[str] | None,
+) -> str:
+    """Build the image planning instruction for the lesson planner.
+
+    When the atom has ``required_image_types`` from enrichment, the
+    planner decides which sections need images and what type.
+    The section generator later produces the detailed description.
+    """
+    if not required_image_types:
+        return (
+            "10. **Imágenes**: Este átomo NO necesita imágenes. "
+            '"image_plan" debe ser [].'
+        )
+
+    spec_map = {s.key: s for s in ALL_SPECS}
+    type_lines: list[str] = []
+    keys: list[str] = []
+    for t in required_image_types:
+        spec = spec_map.get(t)
+        if spec:
+            type_lines.append(
+                f"  - `{spec.key}`: {spec.description}\n"
+                f"    Usar cuando: {spec.when_to_use}"
+            )
+            keys.append(spec.key)
+
+    types_catalog = "\n".join(type_lines)
+    sections_str = ", ".join(sorted(_VALID_IMAGE_SECTIONS))
+
+    return (
+        f"10. **Imágenes**: Este átomo puede usar estos tipos "
+        f"de imagen:\n{types_catalog}\n"
+        f"Decide qué secciones ({sections_str}) se benefician "
+        f"genuinamente de una imagen. Agrega una entrada en "
+        f'"image_plan" por cada imagen necesaria.\n'
+        f"- target_section: sección que recibe la imagen.\n"
+        f"- image_type: SOLO valores de: "
+        f"{', '.join(keys)}.\n"
+        f"- image_description_hint: directiva breve (1 oración) "
+        f"del contenido visual. El redactor refinará la "
+        f"descripción junto con el HTML.\n"
+        f"- NO agregues imagen si no aporta comprensión real.\n"
+        f"- IMPORTANTE: {NOT_IMAGES_DESCRIPTION}"
     )

@@ -432,3 +432,37 @@ NULL_BYTE_FIXES: dict[str, str] = {
     "\u0000a1": "¡",
     "\u0000fc": "ü",
 }
+
+# ── Classes 9-11: wrong-script / invisible / unusual whitespace ──
+# Applied only to non-protected text in fix_xml().
+UNICODE_CHAR_FIXES: dict[str, str] = {
+    # Wrong-script punctuation that appears as garbling in Spanish.
+    "।": ".",
+    # Invisible/control characters.
+    "\u00ad": "",
+    "\u200b": "",
+    "\u200c": "",
+    "\u200d": "",
+    "\u200e": "",
+    "\u200f": "",
+    "\u202a": "",
+    "\u202b": "",
+    "\u202c": "",
+    "\u202d": "",
+    "\u202e": "",
+    "\u2060": "",
+    "\ufeff": "",
+    # Unusual whitespace normalized to a standard space.
+    "\u00a0": " ",
+    "\u2002": " ",
+    "\u2003": " ",
+    "\u2004": " ",
+    "\u2005": " ",
+    "\u2006": " ",
+    "\u2007": " ",
+    "\u2008": " ",
+    "\u2009": " ",
+    "\u200a": " ",
+    "\u205f": " ",
+    "\u3000": " ",
+}

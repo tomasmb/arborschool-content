@@ -309,13 +309,18 @@ Inline styles, `<style>`, `<script>`, external embeds.
 
 ### Notation consistency (hard rule)
 
-All decimal numbers MUST use the **comma** as decimal separator
-(Chilean convention): `1,5` not `1.5`. Period as decimal separator
-is **forbidden**. This applies to both plain text and MathML
-`<mn>` content.
+All numbers MUST follow the **PAES (Chile)** convention:
 
-A deterministic linter checks for the regex `\d+\.\d+` in all
-generated content. Any match is an auto-fail.
+- **Decimal separator**: comma — `1,5` not `1.5`.
+- **Thousands grouping**: space — `10 000` not `10.000`.
+  Use non-breaking space (`\u00A0`) inside MathML `<mn>` tags
+  to prevent line-wrap. 4-digit integers may omit the separator
+  (`1000`, `1500`).
+- Period as decimal **or** thousands separator is **forbidden**.
+
+A deterministic linter checks for `\d+\.\d+` (period-as-decimal)
+and `\d{1,3}(\.\d{3})+` (period-as-thousands) in all generated
+content. Any match is an auto-fail.
 
 ### Word counting and MathML
 

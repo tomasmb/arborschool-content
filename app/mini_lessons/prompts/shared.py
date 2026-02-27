@@ -24,13 +24,23 @@ blockquote, hr, img (requiere atributo alt).
 matemática:
   <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>...</mrow>\
 </math>
+- CADA variable o símbolo en texto corrido DEBE estar dentro de \
+un bloque <math>. NUNCA escribas <mi>, <mn>, <mo>, <msup>, \
+<mfrac> u otro tag MathML suelto fuera de <math>. \
+Incorrecto: "donde <mi>x</mi> es..." \
+Correcto: "donde <math xmlns=\\"...\\"><mi>x</mi></math> es..."
+- Tags MathML NUNCA auto-cerrados: NO <msup/>, NO <mfrac/>. \
+Cada tag debe tener apertura y cierre con contenido válido.
 - NO uses LaTeX. SOLO MathML.
 - Atributos semánticos requeridos: data-block, data-role según la \
 sección.
 - Caracteres UTF-8 directos: é, ó, á, ú, í, ñ, ü, ¿, ¡. \
 NUNCA entidades Latin-1.
-- Todo decimal usa COMA (convención chilena): 1,5 y NO 1.5. \
+- Todo decimal usa COMA (convención PAES): 1,5 y NO 1.5. \
 Punto decimal está PROHIBIDO. Aplica a texto y a <mn> en MathML.
+- Separador de miles es ESPACIO (convención PAES): 10 000 y NO \
+10.000. Usar espacio no separable \\u00A0 dentro de <mn>. \
+Enteros de 4 dígitos pueden ir sin separador (1000, 1500).
 - NO cubras temas listados como "Fuera de alcance" en el \
 enriquecimiento. Limítate estrictamente a los ítems "En alcance"."""
 
@@ -108,7 +118,9 @@ _CONCEPT_RULES = (
 _WE_BUDGET = SECTION_WORD_BUDGETS["worked-example"]
 _WE_RULES = (
     "- Pasos numerados dentro de <details>/<summary>.\n"
-    '- <summary> tiene "Paso N:" + 1 frase corta del objetivo.\n'
+    '- <summary> tiene "Paso N:" + 1 frase corta del objetivo '
+    "(español normal con espacios y tildes, NUNCA identificadores "
+    'con guiones bajos como "Elige_y_despeja").\n'
     "- Si el plan incluye canonical_steps, usa EXACTAMENTE esos "
     "nombres en cada <summary> de paso.\n"
     "- Contenido del <details>: 1-2 oraciones con cálculo + "

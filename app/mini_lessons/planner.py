@@ -12,10 +12,12 @@ import logging
 from app.llm_clients import LLMResponse, OpenAIClient
 from app.mini_lessons.models import LessonContext, LessonPlan, PhaseResult
 from app.mini_lessons.prompts.planning import (
+    _VALID_IMAGE_SECTIONS,
     build_coherence_prompt,
     build_plan_prompt,
 )
 from app.mini_lessons.prompts.shared import build_lesson_context_section
+from app.question_generation.image_types import GENERATABLE_TYPES
 
 logger = logging.getLogger(__name__)
 
@@ -37,11 +39,15 @@ class LessonPlanner:
             Tuple of (PhaseResult, LessonPlan or None on failure).
         """
         context_section = build_lesson_context_section(ctx)
+        image_types: list[str] | None = None
+        if ctx.enrichment is not None:
+            image_types = ctx.enrichment.required_image_types or None
         plan: LessonPlan | None = None
 
         for attempt in range(1 + self._max_retries):
             raw_plan = self._call_planner(
-                context_section, ctx.atom_id, ctx.template_type,
+                context_section, ctx.atom_id,
+                ctx.template_type, image_types,
             )
             if raw_plan is None:
                 continue
@@ -79,10 +85,12 @@ class LessonPlanner:
         context_section: str,
         atom_id: str,
         template_type: str,
+        required_image_types: list[str] | None = None,
     ) -> LessonPlan | None:
         """Call the LLM to generate a lesson plan."""
         prompt = build_plan_prompt(
             context_section, atom_id, template_type,
+            required_image_types=required_image_types,
         )
         try:
             resp: LLMResponse = self._client.call(
@@ -157,6 +165,7 @@ def validate_plan(
 
     errors.extend(_check_spec_lengths(plan))
     errors.extend(_check_coverage(plan, ctx))
+    errors.extend(_check_image_plan(plan, ctx))
 
     return errors
 
@@ -223,5 +232,42 @@ def _check_coverage(
         errors.append(
             "worked example should address at least 2 error families",
         )
+
+    return errors
+
+
+def _check_image_plan(
+    plan: LessonPlan,
+    ctx: LessonContext,
+) -> list[str]:
+    """Validate image_plan entries against enrichment and sections."""
+    errors: list[str] = []
+
+    allowed_types: set[str] = set()
+    if ctx.enrichment is not None:
+        allowed_types = set(ctx.enrichment.required_image_types)
+
+    for entry in plan.image_plan:
+        normalised = entry.target_section.replace("_", "-")
+        if normalised != entry.target_section:
+            entry.target_section = normalised
+        if entry.target_section not in _VALID_IMAGE_SECTIONS:
+            errors.append(
+                f"image_plan target_section "
+                f"'{entry.target_section}' is not a valid "
+                f"section (allowed: "
+                f"{', '.join(sorted(_VALID_IMAGE_SECTIONS))})",
+            )
+        if entry.image_type not in GENERATABLE_TYPES:
+            errors.append(
+                f"image_plan image_type '{entry.image_type}' "
+                f"is not a generatable type",
+            )
+        elif allowed_types and entry.image_type not in allowed_types:
+            errors.append(
+                f"image_plan image_type '{entry.image_type}' "
+                f"not in atom's required_image_types: "
+                f"{sorted(allowed_types)}",
+            )
 
     return errors

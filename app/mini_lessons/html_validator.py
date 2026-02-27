@@ -156,6 +156,7 @@ def check_full_lesson_structure(html: str) -> list[str]:
     errors.extend(_gate_1_contract(html))
     errors.extend(_gate_2_renderer_safety(html))
     errors.extend(check_decimal_notation(html))
+    errors.extend(check_thousands_notation(html))
 
     return errors
 
@@ -185,6 +186,7 @@ def count_words(html: str) -> int:
 
 
 _DECIMAL_PERIOD_RE = re.compile(r"\d+\.\d+")
+_THOUSANDS_PERIOD_RE = re.compile(r"\d{1,3}(?:\.\d{3})+")
 _FALSE_POSITIVE_RE = re.compile(
     r"(?:version|v|pipeline)[_ ]?\d+\.\d+", re.IGNORECASE,
 )
@@ -194,14 +196,39 @@ def check_decimal_notation(html: str) -> list[str]:
     """Check that all decimals use comma (Chilean convention)."""
     text = re.sub(r"<[^>]+>", " ", html)
     text = _FALSE_POSITIVE_RE.sub("", text)
-    matches = _DECIMAL_PERIOD_RE.findall(text)
-    if not matches:
+    thousands_hits = set(_THOUSANDS_PERIOD_RE.findall(text))
+    non_thousands = [
+        m for m in _DECIMAL_PERIOD_RE.findall(text)
+        if m not in thousands_hits
+    ]
+    if not non_thousands:
         return []
-    samples = ", ".join(matches[:5])
-    extra = f" (+{len(matches) - 5} more)" if len(matches) > 5 else ""
+    samples = ", ".join(non_thousands[:5])
+    extra = (
+        f" (+{len(non_thousands) - 5} more)"
+        if len(non_thousands) > 5 else ""
+    )
     return [
         f"Decimal period notation found (must use comma): "
         f"{samples}{extra}",
+    ]
+
+
+def check_thousands_notation(html: str) -> list[str]:
+    """Flag period used as thousands separator (PAES uses space)."""
+    text = re.sub(r"<[^>]+>", " ", html)
+    text = _FALSE_POSITIVE_RE.sub("", text)
+    matches = _THOUSANDS_PERIOD_RE.findall(text)
+    if not matches:
+        return []
+    samples = ", ".join(matches[:5])
+    extra = (
+        f" (+{len(matches) - 5} more)"
+        if len(matches) > 5 else ""
+    )
+    return [
+        f"Period used as thousands separator "
+        f"(PAES uses space): {samples}{extra}",
     ]
 
 
