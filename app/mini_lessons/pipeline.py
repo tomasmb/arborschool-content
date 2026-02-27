@@ -185,7 +185,7 @@ class MiniLessonPipeline:
                 plan = plan or self._load_plan(output_dir)
                 full_html = full_html or self._load_html(output_dir)
                 if ctx:
-                    quality = self._phase_5_qg(
+                    quality, full_html = self._phase_5_qg(
                         full_html, ctx, plan, sections,
                         config, output_dir, result,
                     )
@@ -344,10 +344,9 @@ class MiniLessonPipeline:
         sections: list[LessonSection],
         config: LessonConfig,
         output_dir: Path, result: LessonResult,
-    ) -> QualityReport:
-        img_fails = [
-            s.block_name for s in sections if s.image_failed
-        ]
+    ) -> tuple[QualityReport, str]:
+        """Run quality gate; refine once if salvageable. Returns (report, html)."""
+        img_fails = [s.block_name for s in sections if s.image_failed]
         phase_result, report = self._quality_gate.evaluate(
             full_html, ctx, plan=plan,
             image_failures=img_fails or None,
@@ -364,25 +363,26 @@ class MiniLessonPipeline:
             logger.info(
                 "Phase 5: %d/8, refining...", report.total_score,
             )
-            refined = self._refine(
+            refined_html = self._refine(
                 report, sections, ctx, plan, result,
             )
-            if refined:
+            if refined_html:
                 pr2, report = self._quality_gate.evaluate(
-                    refined, ctx, plan=plan,
+                    refined_html, ctx, plan=plan,
                 )
-                result.phase_results.append(pr2)
+                result.phase_results[-1] = pr2
                 if report.publishable:
+                    full_html = refined_html
                     save_checkpoint(
                         output_dir, 4, "assembled",
-                        {"html": refined},
+                        {"html": full_html},
                     )
 
         save_checkpoint(
             output_dir, 5, "quality",
             {"report": report.model_dump()},
         )
-        return report
+        return report, full_html
 
     def _refine(
         self, report: QualityReport,

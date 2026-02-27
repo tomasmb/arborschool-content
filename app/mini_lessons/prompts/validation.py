@@ -47,6 +47,70 @@ WORKED_EXAMPLE_TASK = """\
 
 
 # ------------------------------------------------------------------
+# Garbled / corrupted text check (Phase 3, all sections)
+# ------------------------------------------------------------------
+
+GARBLED_TEXT_CHECK_PROMPT = """\
+<role>
+Revisor de texto español educativo (HTML + MathML). Detectas \
+cualquier texto corrupto, ilegible o con artefactos.
+</role>
+
+<context>
+{section_html}
+</context>
+
+<task>
+Revisa si hay CUALQUIER anomalía textual. Categorías:
+
+ENCODING / CARACTERES:
+1. Hex en lugar de letra: funcif3n → función
+2. Letra eliminada: grfico → gráfico, nmero → número
+3. Tilde faltante obligatoria: tamano, segun, Cual, numero, \
+calculo, area, angulo, formula, ecuacion, grafico
+4. Entidades HTML doble-codificadas: &amp;#xD7; en vez de ×
+5. Caracteres de otro script (Devanagari, Cirílico, árabe) \
+en texto español
+6. Caracteres invisibles (soft hyphen, zero-width, BOM)
+7. Espacios inusuales (NBSP, em-space) fuera de MathML
+
+FORMATO / MARKUP:
+8. LaTeX crudo en HTML: \\frac, \\sqrt, \\cdot, $...$
+9. Markdown crudo en HTML: **texto**, _texto_, ```código```
+10. HTML escapado visible: &lt;p&gt; en vez de <p>
+11. MathML roto: tags <math>, <mrow>, <mi> sin cerrar o truncados
+
+CONTENIDO / ARTEFACTOS:
+12. Texto truncado a mitad de palabra u oración
+13. Párrafo o frase duplicada textualmente
+14. Placeholders: [TODO], {{variable}}, INSERT_HERE, PLACEHOLDER
+15. Filtración de prompt/instrucciones del modelo en el contenido
+16. Mezcla incoherente de idiomas en medio de oración española
+
+Ignora contenido dentro de <math>...</math> al revisar tildes \
+y espacios. Un <img> tag con src= es válido, no es artefacto.
+</task>
+
+<output_format>
+JSON puro:
+{{
+  "text_clean": true,
+  "issues": []
+}}
+Si hay problemas, "text_clean": false y lista cada issue con \
+la categoría y el fragmento afectado.
+</output_format>
+"""
+
+
+def build_garbled_text_prompt(section_html: str) -> str:
+    """Build garbled-text detection prompt for a section."""
+    return GARBLED_TEXT_CHECK_PROMPT.format(
+        section_html=section_html,
+    )
+
+
+# ------------------------------------------------------------------
 # Full quality gate prompt (Phase 5)
 # ------------------------------------------------------------------
 
