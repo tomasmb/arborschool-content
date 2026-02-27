@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from .extractors import (
     ExtractedAtom,
+    ExtractedLesson,
     ExtractedQuestion,
     ExtractedStandard,
     ExtractedTest,
@@ -17,6 +18,7 @@ from .models import (
     AtomRow,
     AtomType,
     DifficultyLevel,
+    LessonRow,
     QuestionAtomRow,
     QuestionRow,
     QuestionSource,
@@ -259,12 +261,26 @@ def transform_variant(extracted: ExtractedVariant) -> QuestionRow:
     )
 
 
+def transform_lesson(extracted: ExtractedLesson) -> LessonRow:
+    """Transform an extracted lesson to a database row.
+
+    Uses the atom_id as the lesson id (1:1 relationship).
+    """
+    return LessonRow(
+        id=f"lesson-{extracted.atom_id}",
+        atom_id=extracted.atom_id,
+        title=extracted.title,
+        lesson_html=extracted.lesson_html,
+    )
+
+
 def build_sync_payload(
     standards: list[ExtractedStandard],
     atoms: list[ExtractedAtom],
     tests: list[ExtractedTest],
     questions: list[ExtractedQuestion],
     variants: list[ExtractedVariant] | None = None,
+    lessons: list[ExtractedLesson] | None = None,
     subject_id: str = "paes_m1",
 ) -> SyncPayload:
     """Build a complete sync payload from all extracted data.
@@ -275,6 +291,7 @@ def build_sync_payload(
         tests: List of extracted tests
         questions: List of extracted questions
         variants: List of extracted variants (optional)
+        lessons: List of extracted lessons (optional)
         subject_id: Subject identifier
 
     Returns:
@@ -305,6 +322,11 @@ def build_sync_payload(
     if variants:
         for v in variants:
             payload.questions.append(transform_variant(v))
+
+    # Transform lessons
+    if lessons:
+        for lesson in lessons:
+            payload.lessons.append(transform_lesson(lesson))
 
     # Transform tests and their question relationships
     for test in tests:

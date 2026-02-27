@@ -41,6 +41,7 @@ from app.sync.extractors import (
     PRUEBAS_FINALIZADAS_DIR,
     extract_all_tests,
     extract_atoms,
+    extract_lessons,
     extract_standards,
 )
 from app.sync.generated_question_extractor import (
@@ -94,6 +95,7 @@ Examples:
         choices=[
             "atoms", "standards", "questions",
             "tests", "variants", "generated_questions",
+            "lessons",
         ],
         help="Only sync specific entity types",
     )
@@ -144,6 +146,7 @@ def main() -> int:
         args.only is None
         or "generated_questions" in args.only
     )
+    sync_lessons = args.only is None or "lessons" in args.only
 
     print("=" * 60)
     print(f"Content Repo → Database Sync ({args.env})")
@@ -163,6 +166,7 @@ def main() -> int:
     extracted_questions = []
     extracted_variants = []
     extracted_gen_questions = []
+    extracted_lessons = []
 
     if sync_standards:
         extracted_standards = extract_standards()
@@ -192,6 +196,10 @@ def main() -> int:
         print(
             f"   Generated questions: {len(extracted_gen_questions)}",
         )
+
+    if sync_lessons:
+        extracted_lessons = extract_lessons()
+        print(f"   Lessons: {len(extracted_lessons)}")
 
     # -------------------------------------------------------------------------
     # Process images (if requested)
@@ -235,6 +243,8 @@ def main() -> int:
         extracted_questions = []
     if not sync_variants:
         extracted_variants = []
+    if not sync_lessons:
+        extracted_lessons = []
 
     payload = build_sync_payload(
         standards=extracted_standards,
@@ -243,6 +253,9 @@ def main() -> int:
         questions=extracted_questions,
         variants=(
             extracted_variants if extracted_variants else None
+        ),
+        lessons=(
+            extracted_lessons if extracted_lessons else None
         ),
     )
     payload.generated_questions = extracted_gen_questions
@@ -267,6 +280,7 @@ def main() -> int:
         f"   Generated questions:"
         f" {summary['generated_questions']}",
     )
+    print(f"   Lessons: {summary['lessons']}")
 
     # -------------------------------------------------------------------------
     # Sync to database
