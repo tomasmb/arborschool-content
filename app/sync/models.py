@@ -179,6 +179,16 @@ class TestRow:
 
 
 @dataclass
+class LessonRow:
+    """Represents a row in the lessons table."""
+
+    id: str
+    atom_id: str
+    title: str
+    lesson_html: str
+
+
+@dataclass
 class TestQuestionRow:
     """Represents a row in the test_questions junction table."""
 
@@ -208,6 +218,7 @@ class SyncPayload:
     generated_questions: list[GeneratedQuestionRow] = field(
         default_factory=list,
     )
+    lessons: list[LessonRow] = field(default_factory=list)
     tests: list[TestRow] = field(default_factory=list)
     test_questions: list[TestQuestionRow] = field(default_factory=list)
 
@@ -219,6 +230,7 @@ class SyncPayload:
             "questions": len(self.questions),
             "question_atoms": len(self.question_atoms),
             "generated_questions": len(self.generated_questions),
+            "lessons": len(self.lessons),
             "tests": len(self.tests),
             "test_questions": len(self.test_questions),
         }
@@ -248,6 +260,8 @@ class SyncPayload:
             self.question_atoms = []
         if "generated_questions" not in entities:
             self.generated_questions = []
+        if "lessons" not in entities:
+            self.lessons = []
         if "tests" not in entities:
             self.tests = []
             self.test_questions = []

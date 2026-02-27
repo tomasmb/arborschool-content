@@ -19,6 +19,7 @@ from .config import DBConfig, SyncEnvironment
 from .models import (
     AtomRow,
     GeneratedQuestionRow,
+    LessonRow,
     QuestionAtomRow,
     QuestionRow,
     StandardRow,
@@ -40,45 +41,28 @@ class DBClient:
     """Database client for syncing content to Postgres."""
 
     def __init__(self, config: DBConfig):
-        """Initialize with database configuration.
-
-        Args:
-            config: Database connection configuration
-        """
         self.config = config
         self._conn: psycopg.Connection | None = None
 
     @contextmanager
     def connection(self) -> Generator[psycopg.Connection, None, None]:
-        """Get a database connection with automatic cleanup.
-
-        Yields:
-            Active database connection
-        """
-        # Timeout is configured in the connection string (see config.py)
-        conn = psycopg.connect(self.config.connection_string, row_factory=dict_row)
+        """Get a database connection with automatic cleanup."""
+        conn = psycopg.connect(
+            self.config.connection_string, row_factory=dict_row,
+        )
         try:
             yield conn
         finally:
             conn.close()
 
     @contextmanager
-    def transaction(self, conn: psycopg.Connection) -> Generator[psycopg.Cursor, None, None]:
-        """Execute operations within a transaction.
-
-        Args:
-            conn: Database connection
-
-        Yields:
-            Database cursor
-        """
+    def transaction(
+        self, conn: psycopg.Connection,
+    ) -> Generator[psycopg.Cursor, None, None]:
+        """Execute operations within a transaction."""
         with conn.transaction():
             with conn.cursor() as cur:
                 yield cur
-
-    # -------------------------------------------------------------------------
-    # Schema management
-    # -------------------------------------------------------------------------
 
     def ensure_schema(self, conn: psycopg.Connection) -> None:
         """Ensure all required columns exist (ADD COLUMN IF NOT EXISTS)."""
@@ -96,10 +80,6 @@ class DBClient:
                     f"ADD COLUMN IF NOT EXISTS {col} {col_type}"
                 )
             conn.commit()
-
-    # -------------------------------------------------------------------------
-    # Helper methods
-    # -------------------------------------------------------------------------
 
     def _serialize_value(self, value: Any) -> Any:
         """Serialize Python values for Postgres insertion."""
@@ -415,6 +395,29 @@ class DBClient:
 
         return affected
 
+    def upsert_lessons(
+        self, cur: psycopg.Cursor, lessons: list[LessonRow],
+    ) -> int:
+        """Upsert lessons to the database (keyed by unique atom_id)."""
+        if not lessons:
+            return 0
+        affected = 0
+        for lesson in lessons:
+            data = self._row_to_dict(lesson)
+            cur.execute(
+                """
+                INSERT INTO lessons (id, atom_id, title, lesson_html)
+                VALUES (%(id)s, %(atom_id)s, %(title)s, %(lesson_html)s)
+                ON CONFLICT (atom_id) DO UPDATE SET
+                    title = EXCLUDED.title,
+                    lesson_html = EXCLUDED.lesson_html,
+                    updated_at = now()
+                """,
+                data,
+            )
+            affected += cur.rowcount
+        return affected
+
     # -------------------------------------------------------------------------
     # Deletion operations
     # -------------------------------------------------------------------------
@@ -475,6 +478,9 @@ class DBClient:
                     results["question_atoms"] = self.upsert_question_atoms(cur, payload.question_atoms)
                     results["generated_questions"] = self.upsert_generated_questions(
                         cur, payload.generated_questions,
+                    )
+                    results["lessons"] = self.upsert_lessons(
+                        cur, payload.lessons,
                     )
                     results["test_questions"] = self.upsert_test_questions(cur, payload.test_questions)
                     # Delete stale rows (reverse dependency order)

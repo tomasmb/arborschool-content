@@ -86,25 +86,28 @@ class ServiceUnavailableError(Exception):
 
 
 # ---------------------------------------------------------------------------
-# Global cost accumulator hook (set by pipeline orchestrators)
+# Thread-local cost accumulator hook (set by pipeline orchestrators)
 # ---------------------------------------------------------------------------
 
-# When set, every OpenAIClient.generate_text call automatically feeds
-# usage into this accumulator.  Pipeline code sets it before a run
-# and calls .report() at the end.
-_global_cost_accumulator: Any = None
+import threading
+
+# Each thread gets its own accumulator so concurrent pipeline runs
+# don't cross-contaminate cost tracking.
+_tls = threading.local()
 
 
 def set_cost_accumulator(acc: Any) -> None:
-    """Install a CostAccumulator for automatic usage tracking."""
-    global _global_cost_accumulator
-    _global_cost_accumulator = acc
+    """Install a CostAccumulator for the current thread."""
+    _tls.cost_acc = acc
 
 
 def clear_cost_accumulator() -> None:
-    """Remove the global cost accumulator."""
-    global _global_cost_accumulator
-    _global_cost_accumulator = None
+    """Remove the current thread's cost accumulator."""
+    _tls.cost_acc = None
+
+
+def _get_cost_accumulator() -> Any:
+    return getattr(_tls, "cost_acc", None)
 
 
 # Lazy import for google-generativeai - only loaded when GeminiClient is used
@@ -284,9 +287,9 @@ class OpenAIClient:
                 "completion_tokens", 0,
             )
 
-        # Auto-feed global cost accumulator when installed
-        if _global_cost_accumulator is not None:
-            _global_cost_accumulator.add(usage)
+        acc = _get_cost_accumulator()
+        if acc is not None:
+            acc.add(usage)
 
         return LLMResponse(text=text, usage=usage)
 

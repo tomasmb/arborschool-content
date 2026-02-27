@@ -146,58 +146,48 @@ def validate_plan(
             f"Invalid template_type: {plan.template_type}",
         )
 
-    if not plan.worked_example_1 or not plan.worked_example_2:
-        errors.append("Must have exactly 2 worked examples")
+    if not plan.worked_example:
+        errors.append("Must have a worked example")
 
-    if len(plan.quick_checks) < 1 or len(plan.quick_checks) > 2:
+    if len(plan.checklist_items) != 3:
         errors.append(
-            f"Must have 1-2 quick checks, "
-            f"got {len(plan.quick_checks)}",
+            f"Must have exactly 3 checklist items, "
+            f"got {len(plan.checklist_items)}",
         )
 
-    _validate_template_qc_count(plan, errors)
-
-    we1_ctx = plan.worked_example_1.mathematical_context
-    we2_ctx = plan.worked_example_2.mathematical_context
-    if we1_ctx and we2_ctx and we1_ctx == we2_ctx:
-        errors.append(
-            "WE1 and WE2 must have different mathematical "
-            "contexts",
-        )
-
+    errors.extend(_check_spec_lengths(plan))
     errors.extend(_check_coverage(plan, ctx))
-
-    for section in plan.optional_sections:
-        if not section.justification:
-            errors.append(
-                f"Optional section '{section.block_name}' "
-                f"missing justification",
-            )
 
     return errors
 
 
-def _validate_template_qc_count(
-    plan: LessonPlan,
-    errors: list[str],
-) -> None:
-    """Warn if template-specific QC count is not met.
+_MAX_OBJECTIVE_SPEC_WORDS = 40
+_MAX_CONCEPT_SPEC_WORDS = 60
 
-    P-template and M-template expect exactly 2 QCs.
-    """
-    qc_count = len(plan.quick_checks)
-    if plan.template_type in ("P", "M") and qc_count < 2:
+
+def _check_spec_lengths(plan: LessonPlan) -> list[str]:
+    """Reject plans with bloated spec fields."""
+    errors: list[str] = []
+    obj_words = len(plan.objective_spec.split())
+    if obj_words > _MAX_OBJECTIVE_SPEC_WORDS:
         errors.append(
-            f"{plan.template_type}-template should have 2 "
-            f"quick-checks, got {qc_count}",
+            f"objective_spec too long: {obj_words} words "
+            f"(max {_MAX_OBJECTIVE_SPEC_WORDS})",
         )
+    con_words = len(plan.concept_spec.split())
+    if con_words > _MAX_CONCEPT_SPEC_WORDS:
+        errors.append(
+            f"concept_spec too long: {con_words} words "
+            f"(max {_MAX_CONCEPT_SPEC_WORDS})",
+        )
+    return errors
 
 
 def _check_coverage(
     plan: LessonPlan,
     ctx: LessonContext,
 ) -> list[str]:
-    """Check in_scope coverage and error-family selection (max 5)."""
+    """Check in_scope coverage and error-family selection."""
     errors: list[str] = []
 
     if ctx.enrichment is None:
@@ -211,10 +201,7 @@ def _check_coverage(
 
     covered_scope = set(plan.concept_in_scope_items)
     covered_scope.update(
-        plan.worked_example_1.in_scope_items_covered,
-    )
-    covered_scope.update(
-        plan.worked_example_2.in_scope_items_covered,
+        plan.worked_example.in_scope_items_covered,
     )
 
     for item in in_scope:
@@ -222,29 +209,19 @@ def _check_coverage(
             errors.append(f"in_scope item not covered: {item[:60]}")
 
     covered_errors = set(
-        plan.worked_example_1.error_families_addressed,
+        plan.worked_example.error_families_addressed,
     )
-    covered_errors.update(
-        plan.worked_example_2.error_families_addressed,
-    )
-    for qc in plan.quick_checks:
-        covered_errors.update(qc.error_families_addressed)
-    covered_errors.update(plan.error_patterns_families)
 
-    # With the max-5 cap the plan selects a subset of enrichment
-    # families.  Validate that (a) enough were selected and (b)
-    # every selected family actually exists in the enrichment.
     enrichment_set = set(error_names)
-    max_expected = min(5, len(error_names))
-    if len(covered_errors) < max_expected:
-        errors.append(
-            f"plan covers {len(covered_errors)} error families, "
-            f"need at least {max_expected}",
-        )
     for name in covered_errors:
         if name not in enrichment_set:
             errors.append(
                 f"plan references unknown error family: {name}",
             )
+
+    if covered_errors and len(covered_errors) < 2:
+        errors.append(
+            "worked example should address at least 2 error families",
+        )
 
     return errors

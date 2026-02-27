@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 _MAX_WORKERS = 8
 
 _HIGH_REASONING_BLOCKS = frozenset({
-    "worked-example", "quick-check",
+    "worked-example",
 })
 
 
@@ -173,9 +173,6 @@ _BLOCK_ORDER = [
     "prerequisite-refresh",
     "concept",
     "worked-example",
-    "quick-check",
-    "error-patterns",
-    "transition-to-adaptive",
 ]
 
 
@@ -192,18 +189,6 @@ def build_generation_jobs(
 
     jobs.append(("concept", None))
     jobs.append(("worked-example", 1))
-    jobs.append(("worked-example", 2))
-
-    for i in range(len(plan.quick_checks)):
-        jobs.append(("quick-check", i + 1))
-
-    jobs.append(("error-patterns", None))
-    jobs.append(("transition-to-adaptive", None))
-
-    existing_blocks = {name for name, _ in jobs}
-    for opt in plan.optional_sections:
-        if opt.block_name not in existing_blocks:
-            jobs.append((opt.block_name, None))
 
     return jobs
 

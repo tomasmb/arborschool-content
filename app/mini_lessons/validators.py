@@ -13,9 +13,6 @@ import re
 
 from app.llm_clients import LLMResponse, OpenAIClient
 from app.mini_lessons.helpers import extract_enrichment_for_gate
-from app.mini_lessons.html_pedagogical_checks import (
-    check_scope_violations,
-)
 from app.mini_lessons.html_validator import (
     check_decimal_notation,
     check_filler_phrases,
@@ -44,8 +41,7 @@ from app.mini_lessons.prompts.validation import (
 
 logger = logging.getLogger(__name__)
 
-# Section types that need LLM math verification
-_MATH_CHECK_SECTIONS = {"worked-example", "quick-check"}
+_MATH_CHECK_SECTIONS = {"worked-example"}
 
 
 # ===================================================================
@@ -212,7 +208,7 @@ def deterministic_section_checks(
     )
     errors.extend(html_errors)
 
-    budget = SECTION_WORD_BUDGETS.get(section.block_name, 200)
+    budget = SECTION_WORD_BUDGETS.get(section.block_name, 180)
     hard_limit = int(budget * HARD_BUDGET_MULTIPLIER)
     word_count = count_words(section.html)
     if word_count > hard_limit:
@@ -229,7 +225,6 @@ def deterministic_section_checks(
             f"Forbidden filler phrases: {', '.join(fillers)}",
         )
 
-    errors.extend(check_scope_violations(section.html))
     errors.extend(check_decimal_notation(section.html))
 
     return errors
@@ -239,16 +234,15 @@ def deterministic_section_checks(
 # Phase 4 — Assembly + Structural Gate
 # ===================================================================
 
-
-_EDUCATIONAL_WPM = 160
+_EDUCATIONAL_WPM = 120
 
 
 def estimate_duration_minutes(html: str) -> float:
     """Estimate reading time for educational content with MathML.
 
-    Uses ~160 wpm for educational content (slower than casual
-    reading due to math, step-by-step reasoning, and MCQ
-    interaction time).
+    Uses ~120 wpm for math-heavy educational content (slower than
+    casual reading due to step-by-step reasoning and MathML
+    processing time).
     """
     words = count_words(html)
     return round(words / _EDUCATIONAL_WPM, 1)
@@ -284,10 +278,10 @@ def assemble_lesson(
 
     warnings: list[str] = []
     duration = estimate_duration_minutes(full_html)
-    if duration > 6:
+    if duration > 4:
         warnings.append(
             f"Estimated duration {duration} min exceeds "
-            f"6 min target window",
+            f"4 min target window",
         )
 
     return PhaseResult(
@@ -317,10 +311,6 @@ def build_lesson_meta(
         "eje": ctx.eje,
         "title": ctx.atom_title,
         "has_prerequisite_refresh": plan.include_prerequisite_refresh,
-        "optional_sections": [
-            s.block_name for s in plan.optional_sections
-        ],
-        "quick_check_count": len(plan.quick_checks),
         "provenance": {
             "model": "gpt-5.1",
             "reasoning_efforts": {
@@ -332,7 +322,7 @@ def build_lesson_meta(
                 "quality_gate": "high",
             },
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "pipeline_version": "1.0.0",
+            "pipeline_version": "2.0.0",
         },
     }
     if html:
@@ -362,7 +352,7 @@ class QualityGate:
         """Run Phase 5: math + coverage + rubric evaluation.
 
         When plan is provided, checks error-family coverage against
-        the plan's selected families (max 5) instead of the full
+        the plan's selected families instead of the full
         enrichment list.
 
         Returns:
@@ -412,7 +402,7 @@ class QualityGate:
 def _is_publishable(report: QualityReport) -> bool:
     """Determine if the lesson meets publication criteria.
 
-    Spec Gate 5: total >= 12/14 AND minimum 1/2 per dimension.
+    4 dimensions x 2 max each = 8 total. Threshold: >= 6 (75%).
     """
     if report.auto_fail_triggered:
         return False
@@ -420,7 +410,7 @@ def _is_publishable(report: QualityReport) -> bool:
         return False
     if not report.coverage_pass:
         return False
-    if report.total_score < 12:
+    if report.total_score < 6:
         return False
     for score in report.dimension_scores.values():
         if score < 1:
@@ -435,14 +425,9 @@ def identify_weak_sections(
     """Map low-scoring rubric dimensions to their sections."""
     dimension_to_blocks: dict[str, list[str]] = {
         "objective_clarity": ["objective"],
-        "brevity_cognitive_load": [
-            "concept", "worked-example", "error-patterns",
-        ],
+        "brevity_cognitive_load": ["concept", "worked-example"],
         "worked_example_correctness": ["worked-example"],
         "step_rationale_clarity": ["worked-example"],
-        "quick_check_quality": ["quick-check"],
-        "feedback_quality": ["quick-check"],
-        "transition_readiness": ["transition-to-adaptive"],
     }
     weak_blocks: set[str] = set()
     for dim, score in report.dimension_scores.items():

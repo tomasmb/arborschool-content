@@ -245,6 +245,7 @@ export interface QuestionBankParams {
   difficulty?: string;
   status?: string;
   search?: string;
+  has_images?: boolean;
   offset?: number;
   limit?: number;
 }
@@ -257,8 +258,12 @@ export async function getAllQuestions(
   if (params.difficulty) qp.set("difficulty", params.difficulty);
   if (params.status) qp.set("status", params.status);
   if (params.search) qp.set("search", params.search);
-  if (params.offset !== undefined) qp.set("offset", String(params.offset));
-  if (params.limit !== undefined) qp.set("limit", String(params.limit));
+  if (params.has_images !== undefined)
+    qp.set("has_images", String(params.has_images));
+  if (params.offset !== undefined)
+    qp.set("offset", String(params.offset));
+  if (params.limit !== undefined)
+    qp.set("limit", String(params.limit));
   const qs = qp.toString();
   return fetchAPI(
     `/pipelines/question_gen/all_questions${qs ? `?${qs}` : ""}`,

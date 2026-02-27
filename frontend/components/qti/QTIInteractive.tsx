@@ -15,6 +15,7 @@ import {
   renderMath,
   QuestionStem,
   ImageGallery,
+  FeedbackBlock,
   type QTIOption,
 } from "./QTIRenderer";
 
@@ -112,28 +113,11 @@ function InteractiveOptionItem({
             "border-t border-border/30 mt-0",
           )}
         >
-          <div
-            className={cn(
-              "pt-2",
-              size === "sm" && "text-xs",
-              size === "md" && "text-sm",
-              size === "lg" && "text-base",
-            )}
-          >
-            <span
-              className={cn(
-                "font-medium",
-                option.isCorrect
-                  ? "text-success"
-                  : "text-warning",
-              )}
-            >
-              {option.isCorrect ? "Correct: " : "Feedback: "}
-            </span>
-            <span className="text-text-secondary">
-              {option.feedback}
-            </span>
-          </div>
+          <FeedbackBlock
+            html={option.feedback}
+            isCorrect={!!option.isCorrect}
+            size={size}
+          />
         </div>
       )}
     </div>

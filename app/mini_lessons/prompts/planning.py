@@ -23,51 +23,42 @@ Tu tarea es crear un PLAN detallado para una mini-clase de un \
 Genera un plan JSON para la mini-clase del átomo {atom_id} \
 (template {template_type}).
 
+La mini-clase tiene SOLO 3 secciones: objetivo, concepto y \
+un ejemplo resuelto (con checklist PAES al final). \
+Toda la práctica ocurre después en un set de preguntas adaptativo.
+
 El plan DEBE cumplir:
 
 1. **Cobertura total de in_scope**: Cada ítem de "En alcance" del \
-enriquecimiento debe estar asignado a al menos una sección.
-2. **Cobertura de error_families**: Selecciona máximo 5 familias \
-de error (las más relevantes del enriquecimiento). Cada familia \
-seleccionada debe estar asignada a ejemplos resueltos (rationale \
-de pasos), feedback de quick-checks, o sección de errores.
-3. **Progresión de dificultad**: Ejemplo 1 usa criterios del nivel \
-"easy" de la rúbrica. Ejemplo 2 sube a criterios "medium"/"hard".
-4. **Contextos diferentes**: Los dos ejemplos resueltos usan \
-contextos matemáticos distintos.
-5. **Quick-checks por template**:
-  - P-template: EXACTAMENTE 2 quick-checks. \
-QC1 = rápido, un solo concepto (20-30s). \
-QC2 = integrador, combina conceptos (45-60s).
-  - C-template: 1-2 quick-checks.
-  - M-template: 2 quick-checks (1 procedimental + 1 conceptual).
-  NUNCA 3 o más quick-checks.
-6. **Complejidad gradual**: WE2 agrega máximo UNA dimensión de \
-dificultad nueva vs WE1. \
-Dimensiones: tipo de número, número de variables, tipo de \
-expresión, presencia de potencias. NO 3+ cambios de golpe.
-7. **Brevedad**: El plan debe producir una clase de 4-6 minutos. \
-Cada sección tiene un presupuesto de palabras indicado.
-8. **Prerequisitos**: Decide si incluir bloque de repaso de \
-prerequisitos basándote en la lista de prerrequisitos.
-9. **Pasos canónicos (P-template)**: Si el template es P, define \
+enriquecimiento debe estar asignado al concepto o al ejemplo resuelto.
+2. **Selección de error_families**: Selecciona máximo 5 familias \
+de error (las más relevantes del enriquecimiento). Usa los NOMBRES \
+EXACTOS del enriquecimiento. El ejemplo resuelto debe abordar al \
+menos 2 de ellas en sus pasos.
+3. **Brevedad extrema**: La clase entera debe tomar 3-4 minutos. \
+Cada sección tiene un presupuesto de palabras indicado. Prioriza \
+densidad sobre exhaustividad.
+4. **Concepto**: Máximo 3 bloques <h3>. Mínima teoría necesaria. \
+Si incluyes Trampa PAES, elige la ÚNICA confusión más peligrosa \
+de las familias de error seleccionadas (las demás se cubren en \
+el ejemplo resuelto y las preguntas adaptativas).
+5. **Ejemplo resuelto**: Contexto matemático de dificultad easy/medium \
+(no hard — eso lo cubre el set adaptativo). 3-4 pasos con \
+verificación. Cierra con Checklist PAES de 3 ítems.
+6. **Pasos canónicos (P-template)**: Si el template es P, define \
 3-5 pasos con nombres fijos que forman el procedimiento repetible \
-del átomo. Ambos ejemplos resueltos DEBEN usar exactamente estos \
-nombres de paso ("Paso 1: X", "Paso 2: Y"…). El Checklist PAES \
-debe reflejar estos mismos pasos. WE1 puede agregar un paso final \
-de verificación; WE2 lo omite.
-10. **Mapeo error → distractor**: Cada distractor de quick-check \
-DEBE mapearse a una familia de error del enriquecimiento. \
-Distribuye las familias entre QC1 y QC2.
-11. **Máximo 4 subtemas en concepto**: La sección concepto tiene \
-MÁXIMO 4 bloques h3 (incluyendo Trampa PAES si aplica). \
-Fusiona ideas relacionadas; no repitas lo que los ejemplos \
-mostrarán.
-12. **Máximo 5 familias de error**: Si el enriquecimiento tiene \
-más de 5 familias de error, selecciona las 5 más relevantes \
-para una clase de 6 minutos. Usa los NOMBRES EXACTOS del \
-enriquecimiento (no inventes nombres nuevos ni fusiones). \
-Distribuye esas 5 entre WEs, QCs y la sección de errores.
+del átomo.
+7. **Checklist PAES**: Exactamente 3 ítems cortos (1 línea cada uno) \
+que el estudiante puede aplicar en 10 segundos bajo presión. \
+Deben cubrir las verificaciones más críticas del procedimiento.
+8. **Prerrequisitos**: Decide si incluir bloque de repaso de \
+prerrequisitos basándote en la lista de prerrequisitos.
+9. **Specs son directivas, NO borradores**: Los campos *_spec son \
+instrucciones concisas para el redactor de cada sección. Describe \
+QUÉ cubrir, no CÓMO redactarlo. El redactor decidirá la prosa \
+final. Límites: objective_spec max 30 palabras (1 oración), \
+concept_spec max 40 palabras (1-2 oraciones), \
+mathematical_context max 30 palabras (1 oración).
 </task>
 
 <rules>
@@ -75,52 +66,32 @@ Distribuye esas 5 entre WEs, QCs y la sección de errores.
 - Responde SOLO en español cuando describes contenido pedagógico.
 - NO copies preguntas generadas; úsalas solo como referencia de \
 estilo y nivel.
-- Secciones opcionales SOLO si el tipo de átomo lo justifica.
 </rules>
 
 <output_format>
-JSON puro (sin bloques markdown):
+JSON puro (sin bloques markdown). Los *_spec son directivas breves:
 {{
   "template_type": "{template_type}",
-  "objective_spec": "descripción del objetivo medible",
-  "concept_spec": "qué explicar en la sección concepto",
+  "objective_spec": "Evaluar expresiones sustituyendo racionales con jerarquía de operaciones.",
+  "concept_spec": "Definir evaluación, resumir jerarquía, Trampa: confusión signo negativo en potencias.",
   "concept_in_scope_items": ["in_scope item 1", "..."],
   "canonical_steps": ["Sustituye", "Reescribe", "Calcula", "Chequeo"],
-  "worked_example_1": {{
+  "worked_example": {{
     "topic": "tema del ejemplo",
-    "mathematical_context": "contexto matemático",
+    "mathematical_context": "Expresión racional con x negativo fraccionario y potencia cuadrada.",
     "step_count": 4,
-    "numbers_to_use": "descripción de números",
-    "fading_level": "full",
+    "numbers_to_use": "x=-3/2, y=0,5, coeficientes 2 y 3",
     "in_scope_items_covered": ["..."],
     "error_families_addressed": ["nombre_familia"]
   }},
-  "worked_example_2": {{
-    "topic": "tema diferente",
-    "mathematical_context": "contexto diferente",
-    "step_count": 3,
-    "numbers_to_use": "números más complejos",
-    "fading_level": "faded",
-    "in_scope_items_covered": ["..."],
-    "error_families_addressed": ["nombre_familia"]
-  }},
-  "quick_checks": [  // MÁXIMO 2 elementos en esta lista
-    {{
-      "stem_topic": "tema del quick check",
-      "correct_answer_theme": "qué evalúa",
-      "distractor_themes": ["nombre_familia_1", "nombre_familia_2", \
-"nombre_familia_3"],
-      "error_families_addressed": ["nombre_familia"],
-      "difficulty": "simple"  // "simple" o "integrative"
-    }}
+  "checklist_items": [
+    "¿Verificación 1?",
+    "¿Verificación 2?",
+    "¿Verificación 3?"
   ],
-  "error_patterns_spec": "qué errores cubrir + tip PAES",
-  "error_patterns_families": ["familias restantes"],
-  "optional_sections": [],
   "include_prerequisite_refresh": false,
   "justifications": {{
-    "prerequisite_decision": "razón",
-    "optional_sections": "razón o vacío"
+    "prerequisite_decision": "razón breve"
   }}
 }}
 </output_format>
@@ -128,9 +99,8 @@ JSON puro (sin bloques markdown):
 <final_instruction>
 Genera el plan para la mini-clase del átomo {atom_id}. \
 Asegúrate de que TODOS los ítems in_scope estén asignados a \
-alguna sección. Para familias de error, selecciona hasta 5 \
-usando sus NOMBRES EXACTOS del enriquecimiento y distribúyelas \
-entre WEs, QCs y sección de errores. \
+concepto o ejemplo resuelto. Para familias de error, selecciona \
+hasta 5 usando sus NOMBRES EXACTOS del enriquecimiento. \
 Responde SOLO con el JSON.
 </final_instruction>
 """
@@ -151,11 +121,9 @@ PLAN:
 
 <task>
 Revisa el plan y responde con JSON:
-1. ¿El Ejemplo 2 es una progresión coherente desde el Ejemplo 1 \
-(fading)?
-2. ¿El contenido está dentro del alcance del átomo?
-3. ¿Los quick-checks evalúan habilidades vistas en los ejemplos?
-4. ¿Las familias de error seleccionadas (máx 5) están cubiertas?
+1. ¿El contenido está dentro del alcance del átomo?
+2. ¿El ejemplo resuelto cubre al menos 2 familias de error?
+3. ¿Los 3 ítems de checklist son accionables y relevantes?
 </task>
 
 <output_format>

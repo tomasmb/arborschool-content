@@ -72,16 +72,18 @@ function parseQTIXml(qtiXml: string): ParsedQTI | null {
     if (promptEl) {
       stem = extractContent(promptEl);
     } else if (itemBodyEl) {
-      const choiceInteraction = itemBodyEl.querySelector(
-        "qti-choice-interaction",
-      );
-      if (choiceInteraction) {
-        const clone = itemBodyEl.cloneNode(true) as Element;
-        clone.querySelector("qti-choice-interaction")?.remove();
-        stem = extractContent(clone);
-      } else {
-        stem = extractContent(itemBodyEl);
-      }
+      const clone = itemBodyEl.cloneNode(true) as Element;
+      clone
+        .querySelector("qti-choice-interaction")
+        ?.remove();
+      clone
+        .querySelectorAll("qti-feedback-block")
+        .forEach((el) => el.remove());
+      // Strip inline <img> so images render only via ImageGallery
+      clone
+        .querySelectorAll("img")
+        .forEach((el) => el.remove());
+      stem = extractContent(clone);
     }
 
     const options: QTIOption[] = [];
@@ -95,15 +97,16 @@ function parseQTIXml(qtiXml: string): ParsedQTI | null {
       const feedbackEl = clone.querySelector(
         "qti-feedback-inline",
       );
-      const feedbackText =
-        feedbackEl?.textContent?.trim() || "";
+      const feedbackHtml = feedbackEl
+        ? extractContent(feedbackEl)
+        : "";
       feedbackEl?.remove();
 
       options.push({
         id,
         text: extractContent(clone),
         isCorrect: id === correctAnswer,
-        feedback: feedbackText || undefined,
+        feedback: feedbackHtml || undefined,
       });
     });
 
@@ -147,6 +150,11 @@ function extractContent(element: Element): string {
 
 function renderMath(text: string): string {
   if (!text) return text;
+
+  // QTI content uses native MathML (<math> elements) for math.
+  // Skip LaTeX $...$ processing to avoid misinterpreting
+  // currency dollar signs (e.g. "$15.000") as LaTeX delimiters.
+  if (text.includes("<math")) return text;
 
   text = text.replace(/\$\$([\s\S]+?)\$\$/g, (_, latex) => {
     try {
@@ -267,30 +275,50 @@ function OptionItem({
         />
 
         {showFeedback && option.feedback && (
-          <div
-            className={cn(
-              "mt-2 pt-2 border-t border-border/50",
-              size === "sm" && "text-xs",
-              size === "md" && "text-sm",
-              size === "lg" && "text-base",
-            )}
-          >
-            <span
-              className={cn(
-                "font-medium",
-                option.isCorrect
-                  ? "text-success"
-                  : "text-warning",
-              )}
-            >
-              {option.isCorrect ? "Correct: " : "Feedback: "}
-            </span>
-            <span className="text-text-secondary">
-              {option.feedback}
-            </span>
-          </div>
+          <FeedbackBlock
+            html={option.feedback}
+            isCorrect={!!option.isCorrect}
+            size={size}
+          />
         )}
       </div>
+    </div>
+  );
+}
+
+export function FeedbackBlock({
+  html,
+  isCorrect,
+  size,
+}: {
+  html: string;
+  isCorrect: boolean;
+  size: "sm" | "md" | "lg";
+}) {
+  const rendered = useMemo(() => renderMath(html), [html]);
+
+  return (
+    <div
+      className={cn(
+        "mt-2 pt-2 border-t border-border/50",
+        size === "sm" && "text-xs",
+        size === "md" && "text-sm",
+        size === "lg" && "text-base",
+      )}
+    >
+      <span
+        className={cn(
+          "font-medium",
+          isCorrect ? "text-success" : "text-warning",
+        )}
+      >
+        {isCorrect ? "Correct: " : "Feedback: "}
+      </span>
+      <span
+        className="text-text-secondary prose prose-invert
+          max-w-none inline"
+        dangerouslySetInnerHTML={{ __html: rendered }}
+      />
     </div>
   );
 }

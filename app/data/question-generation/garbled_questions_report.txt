@@ -1,0 +1,23 @@
+# Garbled Character Report
+# Generated: 2026-02-26
+# Total questions scanned: 8264
+# Garbled questions found: 0
+# Clean questions: 8264
+# Percentage garbled: 0.0%
+# Affected atoms: 0 / 205
+#
+# Root cause: LLM occasionally corrupts accented characters.
+#
+# Five corruption classes detected:
+#   1) Hex substitution  — función → funcif3n
+#   2) Char deleted      — gráfico → grfico
+#   3) Tilde stripped    — tamaño → tamano, año → ano
+#   4) Accent→base      — gráfico → grafico (3+ per Q)
+#   4b) Unambiguous     — según → segun (always wrong)
+#   5) Double-encoded   — &amp;#xD7; instead of &#xD7;
+#   6) Interrogative    — ¿Cual instead of ¿Cuál
+#   7) Article+noun    — 'el grafico' (contextual proof)
+#   8) Alt text        — corrupted img alt attributes
+#
+# Fix: regenerate these questions through the pipeline.
+

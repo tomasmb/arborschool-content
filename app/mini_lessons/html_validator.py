@@ -26,9 +26,6 @@ REQUIRED_BLOCKS = [
     "objective",
     "concept",
     "worked-example",
-    "quick-check",
-    "error-patterns",
-    "transition-to-adaptive",
 ]
 
 FORBIDDEN_FILLER_PHRASES = [
@@ -46,7 +43,7 @@ FORBIDDEN_FILLER_PHRASES = [
 
 
 _ATOM_ID_RE = re.compile(
-    r"^A-M\d+-[A-Z]{3}-\d{2}-\d{2}$",
+    r"^A-M\d+-[A-Z]{3,4}-\d{2}-\d{2}$",
 )
 _VALID_TEMPLATES = frozenset({"P", "C", "M"})
 
@@ -64,21 +61,6 @@ class _StructureParser(HTMLParser):
         self._img_count: int = 0
         self.article_atom_id: str | None = None
         self.article_template: str | None = None
-
-        # Per-QC tracking (keyed by data-index int)
-        self._current_qc_index: int | None = None
-        self.option_counts: dict[int, int] = {}
-        self.correct_options: dict[int, str | None] = {}
-        self.qc_has_feedback: dict[int, bool] = {}
-        self.distractor_rationale_counts: dict[int, int] = {}
-        self.option_texts: dict[int, list[str]] = {}
-        self.distractor_error_ids: dict[int, list[str]] = {}
-
-        # Context flags for distinguishing option vs rationale li's
-        self._in_options_list: bool = False
-        self._in_distractor_rationale: bool = False
-        self._capturing_option_text: bool = False
-        self._current_option_text: list[str] = []
 
     def handle_starttag(
         self,
@@ -111,78 +93,6 @@ class _StructureParser(HTMLParser):
                 "index": index_str,
                 "tag": tag,
             })
-            if block == "quick-check" and index_str:
-                self._current_qc_index = int(index_str)
-
-        data_role = attr_dict.get("data-role")
-        if tag == "ol" and data_role == "options":
-            self._in_options_list = True
-        elif tag == "ul" and data_role == "distractor-rationale":
-            self._in_distractor_rationale = True
-        elif tag == "div" and data_role == "feedback":
-            if self._current_qc_index is not None:
-                self.qc_has_feedback[self._current_qc_index] = True
-
-        self._handle_option_or_rationale(tag, attr_dict)
-
-        correct = attr_dict.get("data-correct-option")
-        if correct and self._current_qc_index is not None:
-            self.correct_options[self._current_qc_index] = correct
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag == "ol":
-            self._in_options_list = False
-        elif tag == "ul":
-            self._in_distractor_rationale = False
-        elif tag == "li" and self._capturing_option_text:
-            self._finish_option_text_capture()
-
-    def handle_data(self, data: str) -> None:
-        if self._capturing_option_text:
-            stripped = data.strip()
-            if stripped:
-                self._current_option_text.append(stripped)
-
-    # -- Internal helpers ------------------------------------------------
-
-    def _handle_option_or_rationale(
-        self,
-        tag: str,
-        attr_dict: dict[str, str | None],
-    ) -> None:
-        """Route li[data-option] to option count or rationale count."""
-        if tag != "li" or not attr_dict.get("data-option"):
-            return
-        idx = self._current_qc_index
-        if idx is None:
-            return
-
-        if self._in_options_list:
-            self.option_counts[idx] = (
-                self.option_counts.get(idx, 0) + 1
-            )
-            self._capturing_option_text = True
-            self._current_option_text = []
-        elif self._in_distractor_rationale:
-            self.distractor_rationale_counts[idx] = (
-                self.distractor_rationale_counts.get(idx, 0) + 1
-            )
-            error_id = attr_dict.get("data-error-id", "")
-            if idx not in self.distractor_error_ids:
-                self.distractor_error_ids[idx] = []
-            self.distractor_error_ids[idx].append(error_id or "")
-
-    def _finish_option_text_capture(self) -> None:
-        """Store captured text and reset capture state."""
-        idx = self._current_qc_index
-        if idx is not None and self._current_option_text:
-            text = " ".join(self._current_option_text)
-            normalized = re.sub(r"\s+", " ", text).strip().lower()
-            if idx not in self.option_texts:
-                self.option_texts[idx] = []
-            self.option_texts[idx].append(normalized)
-        self._capturing_option_text = False
-        self._current_option_text = []
 
 
 def parse_html_structure(html: str) -> _StructureParser:
@@ -232,24 +142,19 @@ def check_section_html(
                 f"for {expected_block}",
             )
 
-    if expected_block == "quick-check":
-        errors.extend(_check_quick_check_structure(parser))
-
     return errors
 
 
 def check_full_lesson_structure(html: str) -> list[str]:
     """Validate the assembled mini-lesson HTML (all gates).
 
-    Implements Gates 1-4 from the spec appendix B, plus
-    notation consistency check.
+    Checks contract validity, renderer safety, and
+    notation consistency.
     """
     errors: list[str] = []
 
     errors.extend(_gate_1_contract(html))
-    errors.extend(_gate_2_quick_check_integrity(html))
-    errors.extend(_gate_3_anti_repeat(html))
-    errors.extend(_gate_4_renderer_safety(html))
+    errors.extend(_gate_2_renderer_safety(html))
     errors.extend(check_decimal_notation(html))
 
     return errors
@@ -301,7 +206,7 @@ def check_decimal_notation(html: str) -> list[str]:
 
 
 def _gate_1_contract(html: str) -> list[str]:
-    """Gate 1: Contract validity (root attrs, blocks, multiplicities)."""
+    """Gate 1: Contract validity (root attrs, required blocks)."""
     errors: list[str] = []
     parser = parse_html_structure(html)
 
@@ -335,16 +240,17 @@ def _gate_1_contract(html: str) -> list[str]:
             errors.append(f"Missing required block: {required}")
 
     we_count = block_names.count("worked-example")
-    if we_count != 2:
+    if we_count != 1:
         errors.append(
-            f"Expected 2 worked-example blocks, found {we_count}",
+            f"Expected 1 worked-example block, found {we_count}",
         )
 
-    qc_count = block_names.count("quick-check")
-    if qc_count < 1 or qc_count > 2:
-        errors.append(
-            f"Expected 1-2 quick-check blocks, found {qc_count}",
-        )
+    for b in parser.blocks:
+        if b["block"] == "objective" and b["tag"] != "header":
+            errors.append(
+                f"objective block should use <header>, "
+                f"found <{b['tag']}>",
+            )
 
     if parser.disallowed_tags_found:
         errors.append(
@@ -354,111 +260,8 @@ def _gate_1_contract(html: str) -> list[str]:
     return errors
 
 
-def _validate_qc_set(parser: _StructureParser) -> list[str]:
-    """Shared QC validation used by gate 2 and per-section checks."""
-    errors: list[str] = []
-    qc_indices = sorted(
-        set(parser.option_counts)
-        | set(parser.qc_has_feedback)
-        | set(parser.correct_options),
-    )
-    for idx in qc_indices:
-        count = parser.option_counts.get(idx, 0)
-        if count != 4:
-            errors.append(
-                f"QC {idx}: expected 4 options, found {count}",
-            )
-        if idx not in parser.correct_options:
-            errors.append(
-                f"QC {idx}: missing data-correct-option",
-            )
-        if not parser.qc_has_feedback.get(idx):
-            errors.append(
-                f"QC {idx}: missing feedback div "
-                f"(data-role=\"feedback\")",
-            )
-        rationale_count = (
-            parser.distractor_rationale_counts.get(idx, 0)
-        )
-        if rationale_count != 3:
-            errors.append(
-                f"QC {idx}: expected 3 distractor rationales, "
-                f"found {rationale_count}",
-            )
-        texts = parser.option_texts.get(idx, [])
-        if len(texts) != len(set(texts)):
-            seen: set[str] = set()
-            dupes = [t for t in texts if t in seen or seen.add(t)]  # type: ignore[func-returns-value]
-            errors.append(
-                f"QC {idx}: duplicate option text: {dupes}",
-            )
-        missing_ids = [
-            eid for eid in
-            parser.distractor_error_ids.get(idx, [])
-            if not eid
-        ]
-        if missing_ids:
-            errors.append(
-                f"QC {idx}: {len(missing_ids)} distractor(s) "
-                f"missing data-error-id attribute",
-            )
-    return errors
-
-
-def _gate_2_quick_check_integrity(html: str) -> list[str]:
-    """Gate 2: QC option/feedback/rationale/error-id integrity."""
-    return _validate_qc_set(parse_html_structure(html))
-
-
-_STEP_LABEL_RE = re.compile(
-    r"(?:Paso|Ejemplo|Check|Verificaci[oó]n)\s+\d+",
-    re.IGNORECASE,
-)
-
-
-_STRUCTURAL_NOISE_THRESHOLD = 4
-
-
-def _extract_math_numbers(section_html: str) -> set[str]:
-    """Extract math-significant numbers, ignoring structural noise.
-
-    Numbers ≤ _STRUCTURAL_NOISE_THRESHOLD (4) are excluded because
-    single-digit values are ubiquitous in algebraic expressions.
-    """
-    text = re.sub(r"<[^>]+>", " ", section_html)
-    text = _STEP_LABEL_RE.sub("", text)
-    return {
-        n for n in re.findall(r"\d+", text)
-        if int(n) > _STRUCTURAL_NOISE_THRESHOLD
-    }
-
-
-def _gate_3_anti_repeat(html: str) -> list[str]:
-    """Gate 3: Anti-repeat checks between worked examples."""
-    errors: list[str] = []
-
-    we_sections = re.findall(
-        r'data-block="worked-example"[^>]*>(.*?)</section>',
-        html,
-        re.DOTALL,
-    )
-    if len(we_sections) >= 2:
-        nums_1 = _extract_math_numbers(we_sections[0])
-        nums_2 = _extract_math_numbers(we_sections[1])
-        if nums_1 and nums_2:
-            overlap = len(nums_1 & nums_2) / max(
-                len(nums_1 | nums_2), 1,
-            )
-            if overlap > 0.4:
-                errors.append(
-                    f"WE1/WE2 numeric overlap {overlap:.0%} > 40%",
-                )
-
-    return errors
-
-
-def _gate_4_renderer_safety(html: str) -> list[str]:
-    """Gate 4: Renderer safety + accessibility checks."""
+def _gate_2_renderer_safety(html: str) -> list[str]:
+    """Gate 2: Renderer safety + accessibility checks."""
     errors: list[str] = []
     parser = parse_html_structure(html)
 
@@ -481,10 +284,3 @@ def _gate_4_renderer_safety(html: str) -> list[str]:
             errors.append(f"Dangerous pattern found: {pattern}")
 
     return errors
-
-
-def _check_quick_check_structure(
-    parser: _StructureParser,
-) -> list[str]:
-    """Validate quick-check structure (reuses _validate_qc_set)."""
-    return _validate_qc_set(parser)

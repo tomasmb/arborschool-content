@@ -16,6 +16,7 @@ from typing import Any
 
 from app.utils.paths import (
     ATOMS_DIR,
+    MINI_LESSONS_DIR,
     PRUEBAS_FINALIZADAS_DIR,
     QUESTION_GENERATION_DIR,
     STANDARDS_DIR,
@@ -388,3 +389,53 @@ def extract_all_tests() -> tuple[list[ExtractedTest], list[ExtractedQuestion]]:
             all_questions.extend(questions)
 
     return all_tests, all_questions
+
+
+# -----------------------------------------------------------------------------
+# Lesson extraction
+# -----------------------------------------------------------------------------
+
+
+@dataclass
+class ExtractedLesson:
+    """Lesson data extracted from mini-lesson HTML + metadata."""
+
+    atom_id: str
+    title: str
+    lesson_html: str
+
+
+def extract_lessons() -> list[ExtractedLesson]:
+    """Extract published mini-lessons from app/data/mini-lessons/.
+
+    Reads each atom directory that contains both mini-class.html and
+    mini-class.meta.json, returning only fully-published lessons.
+    """
+    if not MINI_LESSONS_DIR.exists():
+        return []
+
+    lessons: list[ExtractedLesson] = []
+    for atom_dir in sorted(MINI_LESSONS_DIR.iterdir()):
+        if not atom_dir.is_dir():
+            continue
+        html_file = atom_dir / "mini-class.html"
+        meta_file = atom_dir / "mini-class.meta.json"
+        if not html_file.exists() or not meta_file.exists():
+            continue
+
+        html = html_file.read_text(encoding="utf-8").replace("\x00", "").strip()
+        if not html:
+            continue
+
+        try:
+            meta = json.loads(meta_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        lessons.append(ExtractedLesson(
+            atom_id=atom_dir.name,
+            title=meta.get("title", atom_dir.name),
+            lesson_html=html,
+        ))
+
+    return lessons

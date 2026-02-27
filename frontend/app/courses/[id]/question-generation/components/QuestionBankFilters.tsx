@@ -1,6 +1,6 @@
 "use client";
 
-import { Filter, Search } from "lucide-react";
+import { Filter, Search, ImageIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type StatusFilter = "all" | "pass" | "fail" | "pending";
@@ -43,10 +43,12 @@ export interface FilterBarProps {
   ejeFilter: string;
   diffFilter: string;
   statusFilter: StatusFilter;
+  imagesOnly: boolean;
   searchQuery: string;
   onEjeChange: (v: string) => void;
   onDiffChange: (v: string) => void;
   onStatusChange: (v: StatusFilter) => void;
+  onImagesOnlyChange: (v: boolean) => void;
   onSearchChange: (v: string) => void;
   onSearchSubmit: () => void;
 }
@@ -57,10 +59,12 @@ export function FilterBar({
   ejeFilter,
   diffFilter,
   statusFilter,
+  imagesOnly,
   searchQuery,
   onEjeChange,
   onDiffChange,
   onStatusChange,
+  onImagesOnlyChange,
   onSearchChange,
   onSearchSubmit,
 }: FilterBarProps) {
@@ -107,6 +111,20 @@ export function FilterBar({
           allLabel="All difficulties"
           formatter={capitalize}
         />
+        <button
+          onClick={() => onImagesOnlyChange(!imagesOnly)}
+          className={cn(
+            "inline-flex items-center gap-1 px-2.5 py-1",
+            "rounded-full text-xs font-medium",
+            "transition-all duration-150",
+            imagesOnly
+              ? "bg-accent/15 text-accent"
+              : "text-text-secondary hover:bg-white/[0.04]",
+          )}
+        >
+          <ImageIcon className="w-3 h-3" />
+          Images
+        </button>
       </div>
 
       <div className="flex-1" />

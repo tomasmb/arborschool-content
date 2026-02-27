@@ -1,0 +1,102 @@
+<article data-kind="mini-class"
+         data-atom-id="A-M1-PROB-04-05"
+         data-template="P">
+  <header data-block="objective">
+  <h1>Mini-clase: Regla aditiva con eventos mutuamente excluyentes</h1>
+  <p data-role="learning-objective">Al terminar esta mini-clase podrás aplicar la regla aditiva <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>&#x222A;</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>+</mo><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo></mrow></math> para calcular la probabilidad de “A o B” cuando los eventos son mutuamente excluyentes.</p>
+  <p data-role="paes-relevance">Dominar este procedimiento te ayudará a resolver con seguridad preguntas PAES de probabilidad que piden la probabilidad de uno u otro resultado sin superposición.</p>
+</header>
+
+  <section data-block="concept" data-role="content">
+  <h2>Idea clave</h2>
+  <h3>Eventos excluyentes</h3>
+  <p>Dos eventos son mutuamente excluyentes cuando no pueden ocurrir al mismo tiempo en un único intento; si pasa uno, el otro no pasa. Ejemplo: en un lanzamiento de dado, "sale 2" y "sale 5" no pueden darse juntos.</p>
+  <h3>Regla aditiva</h3>
+  <p>Si A y B son excluyentes, la probabilidad de que ocurra A o B se calcula sumando sus probabilidades individuales: <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>&#8746;</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>+</mo><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo></mrow></math>.</p>
+  <p>En tablas, identifica las categorías que se excluyen entre sí, calcula o usa la probabilidad de cada una y súmalas para obtener la probabilidad pedida.</p>
+  <h3>Trampa PAES</h3>
+  <p>❌ Usar <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mi>P</mi><mo>(</mo><mi>A</mi><mo>&#8746;</mo><mi>B</mi><mo>)</mo><mo>=</mo><mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>+</mo><mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo></mrow></math> cuando A y B sí pueden ocurrir juntos.</p>
+  <p>✔ Aplica esta suma solo cuando del contexto se entienda que en cada experimento se elige una sola opción (una cara del dado, una respuesta en la encuesta, un color en la ruleta).</p>
+</section>
+
+  <section data-block="worked-example" data-index="1">
+  <header>
+    <h2>Ejemplo resuelto</h2>
+  </header>
+  <p>En una encuesta a 30 estudiantes se les preguntó por su fruta favorita (cada uno eligió solo una):</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Fruta</th>
+        <th>Cantidad de estudiantes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Manzana</td>
+        <td>12</td>
+      </tr>
+      <tr>
+        <td>Plátano</td>
+        <td>8</td>
+      </tr>
+      <tr>
+        <td>Naranja</td>
+        <td>10</td>
+      </tr>
+      <tr>
+        <td>Total</td>
+        <td>30</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>¿Cuál es la probabilidad de que un estudiante al azar prefiera manzana o plátano?</p>
+  <ol data-role="steps">
+    <li><details>
+      <summary><strong>Paso 1:</strong> Identifica los eventos</summary>
+      <p>Define A: 'prefiere manzana' y B: 'prefiere plátano'. Solo usas estas dos categorías; muchos suman también naranja por leer rápido, pero la pregunta no la incluye.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 2:</strong> Revisa exclusión mutua</summary>
+      <p>Cada estudiante eligió solo una fruta, así que nadie puede preferir manzana y plátano a la vez. Entonces A y B son mutuamente excluyentes: buscamos 'A o B', no 'A y B'.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 3:</strong> Calcula probabilidades individuales</summary>
+      <p>De 30 estudiantes, 12 prefieren manzana y 8 plátano, entonces 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+          <mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>=</mo><mfrac><mn>12</mn><mn>30</mn></mfrac>
+          <mo>,</mo>
+          <mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo><mo>=</mo><mfrac><mn>8</mn><mn>30</mn></mfrac>
+        </mrow></math>.
+        Muchos se quedan en 12 + 8 = 20 y olvidan dividir por 30; eso es solo conteo, no probabilidad.</p>
+    </details></li>
+    <li><details>
+      <summary><strong>Paso 4:</strong> Suma y chequea el resultado</summary>
+      <p>Como A y B son excluyentes,
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+          <mi>P</mi><mo>(</mo><mi>A</mi><mo>∪</mo><mi>B</mi><mo>)</mo><mo>=</mo>
+          <mi>P</mi><mo>(</mo><mi>A</mi><mo>)</mo><mo>+</mo>
+          <mi>P</mi><mo>(</mo><mi>B</mi><mo>)</mo><mo>=</mo>
+          <mfrac><mn>12</mn><mn>30</mn></mfrac>
+          <mo>+</mo>
+          <mfrac><mn>8</mn><mn>30</mn></mfrac>
+          <mo>=</mo>
+          <mfrac><mn>20</mn><mn>30</mn></mfrac>
+          <mo>=</mo>
+          <mfrac><mn>2</mn><mn>3</mn></mfrac>
+        </mrow></math>.
+        Verifica contando directamente: 12 + 8 = 20 de 30, y 
+        <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>
+          <mfrac><mn>20</mn><mn>30</mn></mfrac><mo>=</mo><mfrac><mn>2</mn><mn>3</mn></mfrac>
+        </mrow></math>, valor entre 0 y 1.</p>
+    </details></li>
+  </ol>
+  <p data-role="micro-reinforcement">Si obtuviste 
+    <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow><mfrac><mn>2</mn><mn>3</mn></mfrac></mrow></math>, vas bien — el punto clave fue sumar probabilidades de eventos excluyentes después de convertir los conteos en probabilidades.</p>
+  <ul data-role="paes-checklist">
+    <li>✅ ¿Verifiqué que los eventos no pueden ocurrir al mismo tiempo (un solo resultado u opción por experimento)?</li>
+    <li>✅ ¿Convertí los datos a probabilidades (casos favorables / total) antes de sumar?</li>
+    <li>✅ ¿Sumé solo las categorías pedidas y el resultado quedó entre 0 y 1?</li>
+  </ul>
+</section>
+</article>

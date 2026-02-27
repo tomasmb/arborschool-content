@@ -151,6 +151,7 @@ export interface QuestionBankItem {
   context: string;
   status: "pass" | "fail" | "pending";
   phase: number;
+  has_images: boolean;
   pipeline_meta: GeneratedItemMeta | null;
 }
 

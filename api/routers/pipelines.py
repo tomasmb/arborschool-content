@@ -447,6 +447,7 @@ async def get_all_questions(
     difficulty: str | None = None,
     status: str | None = None,
     search: str | None = None,
+    has_images: bool | None = None,
     offset: int = 0,
     limit: int = 50,
 ) -> dict[str, Any]:
@@ -463,7 +464,8 @@ async def get_all_questions(
     return read_all_questions(
         QUESTION_GENERATION_DIR, eje_map, titulo_map,
         eje=eje, difficulty=difficulty, status=status,
-        search=search, offset=offset, limit=min(limit, 100),
+        search=search, has_images=has_images,
+        offset=offset, limit=min(limit, 100),
     )
 
 
