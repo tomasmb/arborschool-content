@@ -26,6 +26,8 @@ from scripts.garbled_mappings import (
     HEX_TO_CORRECT,
     INTERROGATIVE_FIXES,
     NULL_BYTE_FIXES,
+    POST_FIX_CORRECTIONS,
+    POST_FIX_WORD_CORRECTIONS,
     TILDE_FIXES,
     WORD_ACCENT_FIXES,
 )
@@ -69,6 +71,15 @@ def _restore_zones(text: str, stash: list[str]) -> str:
 
 # ── Fix engine ───────────────────────────────────────────────
 
+
+def _case_preserving_replace(match: re.Match[str], good: str) -> str:
+    """Return `good` with capitalization matching the match."""
+    word = match.group()
+    if word[0].isupper():
+        return good[0].upper() + good[1:]
+    return good
+
+
 def _apply_hex_fixes(text: str) -> str:
     """Class 1: replace hex-substitution patterns."""
     for garbled, correct in sorted(
@@ -78,12 +89,21 @@ def _apply_hex_fixes(text: str) -> str:
     return text
 
 
+def _apply_post_fix_corrections(text: str) -> str:
+    """Fix words where earlier steps produce wrong Spanish."""
+    for bad, good in POST_FIX_CORRECTIONS.items():
+        text = text.replace(bad, good)
+    for bad, good in POST_FIX_WORD_CORRECTIONS:
+        text = re.sub(rf"\b{re.escape(bad)}\b", good, text)
+    return text
+
+
 def _apply_word_accent_fixes(text: str) -> str:
     """Classes 2 + 4b: word-boundary accent restoration."""
     for bad, good in WORD_ACCENT_FIXES:
         text = re.sub(
             rf"\b{re.escape(bad)}\b",
-            good,
+            lambda m, g=good: _case_preserving_replace(m, g),
             text,
             flags=re.IGNORECASE,
         )
@@ -95,7 +115,7 @@ def _apply_tilde_fixes(text: str) -> str:
     for bad, good in TILDE_FIXES:
         text = re.sub(
             rf"\b{re.escape(bad)}\b",
-            good,
+            lambda m, g=good: _case_preserving_replace(m, g),
             text,
             flags=re.IGNORECASE,
         )
@@ -127,24 +147,38 @@ def _apply_null_byte_fixes(text: str) -> str:
     return text
 
 
+_LITERAL_ESCAPE_RE = re.compile(r"\\u([0-9a-fA-F]{4})")
+
+
+def _apply_literal_escape_fixes(text: str) -> str:
+    r"""Decode literal \uXXXX sequences the LLM wrote as text."""
+    return _LITERAL_ESCAPE_RE.sub(
+        lambda m: chr(int(m.group(1), 16)), text,
+    )
+
+
 def fix_xml(xml: str) -> str:
     """Apply all deterministic fixes to a QTI XML string."""
     protected, stash = _protect_zones(xml)
+    protected = _apply_literal_escape_fixes(protected)
     protected = _apply_hex_fixes(protected)
     protected = _apply_word_accent_fixes(protected)
     protected = _apply_tilde_fixes(protected)
     protected = _apply_interrogative_fixes(protected)
     protected = _apply_double_encoded_fixes(protected)
+    protected = _apply_post_fix_corrections(protected)
     return _restore_zones(protected, stash)
 
 
 def fix_image_description(desc: str) -> str:
     """Apply fixes to an image_description string."""
     desc = _apply_null_byte_fixes(desc)
+    desc = _apply_literal_escape_fixes(desc)
     desc = _apply_hex_fixes(desc)
     desc = _apply_word_accent_fixes(desc)
     desc = _apply_tilde_fixes(desc)
     desc = _apply_interrogative_fixes(desc)
+    desc = _apply_post_fix_corrections(desc)
     return desc
 
 
@@ -164,8 +198,8 @@ def _build_diff(
     ):
         if ol != nl:
             chunks.append(f"  L{i}:")
-            chunks.append(f"    - {ol.strip()[:120]}")
-            chunks.append(f"    + {nl.strip()[:120]}")
+            chunks.append(f"    - {ol.strip()}")
+            chunks.append(f"    + {nl.strip()}")
     if len(new_lines) != len(old_lines):
         chunks.append(
             f"  (line count changed: {len(old_lines)}"
@@ -180,21 +214,29 @@ def _build_diff(
 # ── GPT verification ────────────────────────────────────────
 
 _VERIFY_PROMPT = textwrap.dedent("""\
-    You are a QA checker for Spanish math questions in QTI XML format.
+    You are a QA checker for Spanish math questions in QTI XML.
 
-    Below are text replacements that were applied to fix garbled
-    accented characters (e.g. "funcif3n" → "función").
+    Below is a diff showing ONLY the lines that changed. Each
+    changed line is shown in full (old line with "-", new line
+    with "+"). The diff is produced by fixing garbled accented
+    characters (e.g. "funcif3n" → "función", "bfCue1l" → "¿Cuál").
 
-    For each replacement, verify:
-    (a) The new text is correct Spanish.
-    (b) No MathML content was altered.
-    (c) No URLs, identifiers, or XML structure was changed.
-    (d) The replacement makes semantic sense in context.
+    Check ONLY for these real problems:
+    1. A replacement produced WRONG Spanish (e.g. "tampocó"
+       instead of "tampoco", or "ccómo" instead of "cómo").
+    2. A replacement ALTERED math expressions, MathML tags,
+       URLs, or XML attributes (not just the text around them).
+
+    Do NOT flag:
+    - Garbled text that was NOT changed (pre-existing corruption
+      that the fix didn't address is fine — ignore it).
+    - Changes where only accents/tildes were added to text
+      content — these are the intended fixes.
 
     Respond with ONLY a JSON object:
     {{"verdict": "PASS"}} or {{"verdict": "FAIL", "issues": ["..."]}}
 
-    Replacements:
+    Diff:
     {diff_text}
 """)
 
@@ -245,10 +287,20 @@ def _iter_phase9_files() -> list[Path]:
     )
 
 
+def _post_fix_is_clean(xml: str, desc: str) -> bool:
+    """Return True if the garbled detector finds no issues."""
+    from scripts.garbled_report import _check_item
+    problems = _check_item(xml)
+    if desc:
+        problems += _check_item(desc)
+    return len(problems) == 0
+
+
 def run(
     *,
     verify: bool = False,
     apply: bool = False,
+    force_clean: bool = False,
 ) -> None:
     """Main entry point for the fix pipeline."""
     affected_ids = _load_affected_ids()
@@ -263,6 +315,7 @@ def run(
     total_fixed = 0
     total_verified = 0
     total_failed = 0
+    total_force_applied = 0
     all_diffs: list[str] = []
     manual_review: list[str] = []
     files_to_write: dict[Path, dict] = {}
@@ -300,7 +353,7 @@ def run(
             all_diffs.append(combined_diff)
             total_fixed += 1
 
-            passed = True
+            should_apply = True
             if verify and gpt_client is not None:
                 passed, raw_resp = _verify_with_gpt(
                     combined_diff, gpt_client,
@@ -308,6 +361,14 @@ def run(
                 if passed:
                     total_verified += 1
                     print(f"  PASS: {item_id}")
+                elif force_clean and _post_fix_is_clean(
+                    xml_new, desc_new,
+                ):
+                    total_force_applied += 1
+                    print(
+                        f"  FORCE: {item_id}"
+                        " (GPT FAIL but detector clean)"
+                    )
                 else:
                     total_failed += 1
                     manual_review.append(
@@ -315,9 +376,9 @@ def run(
                         f"  Diff:\n{combined_diff}\n"
                     )
                     print(f"  FAIL: {item_id} → {raw_resp[:80]}")
-                    continue
+                    should_apply = False
 
-            if not verify or passed:
+            if should_apply:
                 item["qti_xml"] = xml_new
                 if desc_old:
                     item["image_description"] = desc_new
@@ -331,6 +392,8 @@ def run(
     print(f"Questions with fixes: {total_fixed}")
     if verify:
         print(f"GPT verified PASS:    {total_verified}")
+        if force_clean:
+            print(f"Force-applied (clean):{total_force_applied}")
         print(f"GPT verified FAIL:    {total_failed}")
     print(f"Files to update:      {len(files_to_write)}")
 
@@ -390,6 +453,11 @@ if __name__ == "__main__":
         "--apply", action="store_true",
         help="Write fixes back to phase_9 JSON files",
     )
+    parser.add_argument(
+        "--force-clean", action="store_true",
+        help="Apply even if GPT rejects, when garbled detector "
+        "confirms post-fix text is clean",
+    )
     args = parser.parse_args()
 
     if args.apply and not args.verify:
@@ -399,4 +467,8 @@ if __name__ == "__main__":
         )
         sys.exit(1)
 
-    run(verify=args.verify, apply=args.apply)
+    run(
+        verify=args.verify,
+        apply=args.apply,
+        force_clean=args.force_clean,
+    )

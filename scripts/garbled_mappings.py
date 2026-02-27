@@ -96,6 +96,7 @@ HEX_TO_CORRECT: dict[str, str] = {
     "seccif3n": "sección",
     # Cómo variants
     "Cif3mo": "Cómo",
+    "cf3mo": "cómo",
     "cb3mo": "cómo",
     "c03mo": "cómo",
     "c0f3mo": "cómo",
@@ -189,15 +190,102 @@ HEX_TO_CORRECT: dict[str, str] = {
     "im03genes": "imágenes",
     "dise03o": "diseño",
     "Tambi03n": "También",
-    "c9En": "cién",
-    # lowercase variants missing from the original list
+    "c9En": "cien",
+    # lowercase variants
     "seg03n": "según",
     "seg01n": "según",
-    # Sí variants (0d = í in some encodings)
+    # Sí variants (ed/0d = í)
     "S0d": "Sí",
+    "Sed": "Sí",
+    # ── Round 2: patterns discovered from GPT review ──
+    # fa = ú patterns
+    "Segfan": "Según",
+    "segfan": "según",
+    "algfan": "algún",
+    "nfameros": "números",
+    # e1 = á patterns (new words)
+    "este1": "está",
+    "me1s": "más",
+    "gre1fica": "gráfica",
+    "gre1ficas": "gráficas",
+    "pare1bola": "parábola",
+    "ime1genes": "imágenes",
+    # ed = í patterns
+    "podreda": "podría",
+    "mayoreda": "mayoría",
+    "categoredas": "categorías",
+    "cedrculos": "círculos",
+    "simetreda": "simetría",
+    "d0da": "día",
+    # f3 = ó patterns (new words)
+    "leyf3": "leyó",
+    "construyf3": "construyó",
+    "distribucif3n": "distribución",
+    "Construccif3n": "Construcción",
+    "reflexif3n": "reflexión",
+    "traslacif3n": "traslación",
+    # Complex/double-hex patterns
+    "cc03mo": "cómo",
+    "c03lculos": "cálculos",
+    "Sof03a": "Sofía",
+    "ma0303ana": "mañana",
+    "cu0303al": "cuál",
+    "var0303a": "varía",
+    "03c03en": "cien",
+    # bf = ¿ patterns (new words)
+    "bfse": "¿se",
+    "bfentre": "¿entre",
+    "bfcufl": "¿cuál",
+    # Additional mangled ¿cuál forms
+    "3fcu31l": "¿cuál",
+    "0bcu03l": "¿cuál",
+    "1cul": "¿cuál",
+    "1cunto": "¿cuánto",
+    "1en": "¿en",
+    # ── Round 3: fixes for simetría, 0bf-prefix, cien ──
+    "simetre1a": "simetría",
+    "simetr e1a": "simetría",
+    "0bfque9": "¿qué",
+    "0bfcue1l": "¿cuál",
+    # ── Round 3b: residual patterns in already-fixed items ──
+    "Gre1fico": "Gráfico",
+    "Gre1ficas": "Gráficas",
+    "Gre1fica": "Gráfica",
+    "he1bitos": "hábitos",
+    "vareda": "varía",
+    "ubicf3": "ubicó",
+    "razf3n": "razón",
+    "debereda": "debería",
+    "cue1nto": "cuánto",
+    "cue1ntas": "cuántas",
+    "cue1ntos": "cuántos",
+    "te1ndose": "tándose",
+    "Cf3mo": "Cómo",
+    # other misc round 2
+    "m0dnimo": "mínimo",
+    "dibuj03": "dibujó",
+    "Mat31as": "Matías",
+    "est03": "está",
+    "fc1ntos": "¿cuántos",
+    "qu03": "qué",
+    "poblaci03n": "población",
     # special case: ¿Cuántas with prefix
     "bfCue1ntas": "¿Cuántas",
 }
+
+# Post-fix corrections: words where null-byte decoding or hex
+# substitution produces valid but WRONG Spanish.
+POST_FIX_CORRECTIONS: dict[str, str] = {
+    "tampocó": "tampoco",
+    "ócien": "cien",
+    "simetráa": "simetría",
+}
+
+# Word-boundary post-fix corrections (applied with \b).
+# "cién" as standalone is wrong, but "recién" is correct.
+POST_FIX_WORD_CORRECTIONS: list[tuple[str, str]] = [
+    ("cién", "cien"),
+]
 
 # ── Classes 2 + 4b: word-boundary accent fixes ──────────────
 # (bad_word, correct_word) — applied with \b word boundaries.
@@ -238,6 +326,16 @@ WORD_ACCENT_FIXES: list[tuple[str, str]] = [
     ("ltimo", "último"),
     ("mnimo", "mínimo"),
     ("mtodo", "método"),
+    # char-deleted round 2
+    ("lneas", "líneas"),
+    ("clculos", "cálculos"),
+    ("mnima", "mínima"),
+    ("sustitucin", "sustitución"),
+    ("distribucin", "distribución"),
+    ("evolucin", "evolución"),
+    ("construccin", "construcción"),
+    ("caractersticas", "características"),
+    ("grficos", "gráficos"),
     # unambiguous accent→base (Class 4b)
     ("tambien", "también"),
     ("segun", "según"),
