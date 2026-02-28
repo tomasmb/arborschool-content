@@ -1,5 +1,4 @@
 """Pipeline phases: sanity + XSD -> LLM validate -> apply -> retry -> verify."""
-
 from __future__ import annotations
 
 import json
@@ -41,11 +40,7 @@ def _parse_json(raw: str) -> dict:
     except json.JSONDecodeError:
         return {"parse_error": True, "raw": raw[:200]}
 
-
-# ------------------------------------------------------------------
-# LLM calls (one item at a time)
-# ------------------------------------------------------------------
-
+# -- LLM calls (one item at a time) --
 
 def validate_one(
     client: OpenAIClient,
@@ -53,16 +48,19 @@ def validate_one(
     corrected: str,
     issues: list[str],
     content_type: str,
+    *,
+    validation_client: OpenAIClient | None = None,
 ) -> dict:
     """LLM validation: verify corrected version didn't break anything."""
+    llm = validation_client or client
     prompt = build_validation_prompt(
         original, corrected, issues, content_type,
     )
     try:
-        resp = client.call(
+        resp = llm.call(
             prompt,
             response_format={"type": "json_object"},
-            reasoning_effort="low",
+            reasoning_effort="medium",
         )
         data = _parse_json(resp.text)
         return {
@@ -141,10 +139,7 @@ def verify_one(
         }
 
 
-# ------------------------------------------------------------------
-# Write-back with backups
-# ------------------------------------------------------------------
-
+# -- Write-back with backups --
 
 def _backup_and_write(
     file_path: Path, new_content: str,
@@ -216,10 +211,7 @@ def _revert_question_item(item: dict) -> None:
     )
 
 
-# ------------------------------------------------------------------
-# Phase 2+3: sanity check + XSD + LLM validation
-# ------------------------------------------------------------------
-
+# -- Phase 2+3: sanity check + XSD + LLM validation --
 
 def _run_xsd_checks(state: PipelineState) -> None:
     """Run XSD validation on QTI XML items still pending validate."""
@@ -246,6 +238,8 @@ def _phase_sanity_validate(
     client: OpenAIClient,
     state: PipelineState,
     workers: int,
+    *,
+    validation_client: OpenAIClient | None = None,
 ) -> None:
     """Run deterministic sanity checks, then LLM validation."""
     pending = state.items_by_status("pending_validate")
@@ -253,8 +247,9 @@ def _phase_sanity_validate(
         return
 
     for key, item in pending:
+        ctype = _content_type(item["source"])
         passed, reasons = run_sanity_checks(
-            item["original"], item["corrected"],
+            item["original"], item["corrected"], ctype,
         )
         item["sanity_result"] = {"pass": passed, "reasons": reasons}
         if not passed:
@@ -278,6 +273,7 @@ def _phase_sanity_validate(
                 validate_one, client,
                 item["original"], item["corrected"],
                 item["issues"], ctype,
+                validation_client=validation_client,
             )] = key
         for fut in as_completed(futs):
             key = futs[fut]
@@ -297,10 +293,7 @@ def _phase_sanity_validate(
                 )
 
 
-# ------------------------------------------------------------------
-# Phase 4: apply passing fixes
-# ------------------------------------------------------------------
-
+# -- Phase 4: apply passing fixes --
 
 def _phase_apply(state: PipelineState, ts: str) -> int:
     """Write back all ``pass`` items with backups. Returns count."""
@@ -328,10 +321,7 @@ def _phase_apply(state: PipelineState, ts: str) -> int:
     return total
 
 
-# ------------------------------------------------------------------
-# Phase 5: retry with feedback
-# ------------------------------------------------------------------
-
+# -- Phase 5: retry with feedback --
 
 def _collect_rejection_reasons(item: dict) -> list[str]:
     """Gather all rejection reasons from sanity and LLM validation."""
@@ -392,10 +382,7 @@ def _phase_retry(
                 )
 
 
-# ------------------------------------------------------------------
-# Phase 4b: verify applied items
-# ------------------------------------------------------------------
-
+# -- Phase 4b: verify applied items --
 
 def _phase_verify(
     client: OpenAIClient,
@@ -446,16 +433,14 @@ def _phase_verify(
                 print(f"  [{done}/{len(futs)}] [VERIFY:{tag}] {key}")
 
 
-# ------------------------------------------------------------------
-# Main pipeline orchestrator
-# ------------------------------------------------------------------
-
+# -- Main pipeline orchestrator --
 
 def run_pipeline(
     client: OpenAIClient,
     state: PipelineState,
     workers: int = 8,
     max_retries: int = 2,
+    validation_client: OpenAIClient | None = None,
 ) -> None:
     """Run the full pipeline: sanity -> validate -> apply -> retry -> verify.
 
@@ -465,7 +450,10 @@ def run_pipeline(
     state.meta["apply_ts"] = ts
 
     print("\nPhase 2+3: sanity check + LLM validation...")
-    _phase_sanity_validate(client, state, workers)
+    _phase_sanity_validate(
+        client, state, workers,
+        validation_client=validation_client,
+    )
     state.save()
 
     print("\nPhase 4: applying validated fixes...")
@@ -479,7 +467,10 @@ def run_pipeline(
         print(f"\nPhase 5: retry round {attempt}/{max_retries}...")
         _phase_retry(client, state, attempt, workers)
         state.save()
-        _phase_sanity_validate(client, state, workers)
+        _phase_sanity_validate(
+            client, state, workers,
+            validation_client=validation_client,
+        )
         state.save()
         _phase_apply(state, ts)
         state.save()

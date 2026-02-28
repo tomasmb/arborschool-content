@@ -2,7 +2,8 @@
 
 Run *before* LLM validation to catch obvious problems instantly
 and cheaply (e.g. stripped currency symbols, deleted content).
-Includes XSD validation for QTI XML via a remote service.
+Includes hard invariant checks (answer key, choice set, MathML
+equivalence) and XSD validation for QTI XML.
 """
 
 from __future__ import annotations
@@ -10,6 +11,7 @@ from __future__ import annotations
 import importlib.util
 import logging
 import re
+import xml.etree.ElementTree as ET
 from collections import Counter
 from typing import Any
 
@@ -27,7 +29,18 @@ _SHRINKABLE_TAGS: frozenset[str] = frozenset({"mn", "mspace"})
 
 _OPEN_TAG_RE = re.compile(r"<([a-zA-Z][\w.-]*)")
 _STRIP_TAGS_RE = re.compile(r"<[^>]+>")
-_MAX_SHRINK_PCT = 0.05  # text content may be at most 5 % shorter
+_MAX_SHRINK_PCT = 0.02  # text content may be at most 2 % shorter
+
+_MATH_BLOCK_RE = re.compile(
+    r"<math[^>]*>.*?</math>", re.DOTALL,
+)
+_MSPACE_RE = re.compile(r"<mspace[^/]*/?>(?:</mspace>)?")
+_ADJACENT_MN_RE = re.compile(r"</mn>\s*<mn>")
+_MN_CONTENT_RE = re.compile(r"<mn>(.*?)</mn>", re.DOTALL)
+_CHOICE_ID_RE = re.compile(
+    r"<(?:qti-simple-choice|simpleChoice)[^>]*"
+    r'\bidentifier=["\']([^"\']+)["\']',
+)
 
 
 # ------------------------------------------------------------------
@@ -38,16 +51,25 @@ _MAX_SHRINK_PCT = 0.05  # text content may be at most 5 % shorter
 def run_sanity_checks(
     original: str,
     corrected: str,
+    content_type: str = "QTI XML",
 ) -> tuple[bool, list[str]]:
     """Return (passed, reasons).
 
     ``passed`` is True when all deterministic checks pass.
     ``reasons`` lists every failing check (empty when passed).
+
+    ``content_type`` is ``"QTI XML"`` or ``"HTML"``.
+    QTI-specific checks (answer key, choice set) run only for
+    QTI XML content.
     """
     reasons: list[str] = []
     _check_symbols(original, corrected, reasons)
     _check_length(original, corrected, reasons)
     _check_tag_balance(original, corrected, reasons)
+    _check_mathml_equivalence(original, corrected, reasons)
+    if content_type == "QTI XML":
+        _check_answer_key(original, corrected, reasons)
+        _check_choice_set(original, corrected, reasons)
     return (len(reasons) == 0, reasons)
 
 
@@ -117,6 +139,126 @@ def _count_tags(html: str) -> dict[str, int]:
         m.group(1).lower() for m in _OPEN_TAG_RE.finditer(html)
     ))
     return counts
+
+
+# ------------------------------------------------------------------
+# Hard invariant checks
+# ------------------------------------------------------------------
+
+
+def _normalize_mn_content(m: re.Match[str]) -> str:
+    """Normalize a <mn> tag's inner text for comparison.
+
+    Converts period-decimals to commas, and all non-breaking
+    space variants to a plain space, so that two versions that
+    differ only by notation normalize to the same string.
+    """
+    content = m.group(1)
+    content = re.sub(r"(\d)\.(\d)", r"\1,\2", content)
+    content = (
+        content
+        .replace("&#160;", " ")
+        .replace("&nbsp;", " ")
+        .replace("\u00a0", " ")
+    )
+    return f"<mn>{content}</mn>"
+
+
+def _normalize_mathml(block: str) -> str:
+    """Normalize a single <math> block for equivalence comparison.
+
+    Removes mspace tags, merges adjacent <mn> elements, and
+    normalizes decimal/thousands notation so that format-only
+    changes become invisible.
+    """
+    result = _MSPACE_RE.sub("", block)
+    result = _ADJACENT_MN_RE.sub("", result)
+    result = _MN_CONTENT_RE.sub(_normalize_mn_content, result)
+    result = re.sub(r"\s+", " ", result)
+    return result.strip()
+
+
+def _check_mathml_equivalence(
+    original: str, corrected: str, reasons: list[str],
+) -> None:
+    """Fail if any MathML block changed beyond notation format."""
+    orig_blocks = _MATH_BLOCK_RE.findall(original)
+    corr_blocks = _MATH_BLOCK_RE.findall(corrected)
+
+    if len(orig_blocks) != len(corr_blocks):
+        reasons.append(
+            f"MathML block count changed: "
+            f"{len(orig_blocks)} -> {len(corr_blocks)}",
+        )
+        return
+
+    for i, (ob, cb) in enumerate(
+        zip(orig_blocks, corr_blocks),
+    ):
+        norm_o = _normalize_mathml(ob)
+        norm_c = _normalize_mathml(cb)
+        if norm_o != norm_c:
+            reasons.append(
+                f"MathML block {i + 1} changed after "
+                f"notation normalization",
+            )
+
+
+def _extract_correct_answer_id(xml: str) -> str | None:
+    """Extract the correct answer identifier from QTI XML."""
+    try:
+        root = ET.fromstring(xml)
+    except ET.ParseError:
+        return None
+    resp = (
+        root.find(".//{*}responseDeclaration")
+        or root.find(".//{*}qti-response-declaration")
+    )
+    if resp is None:
+        return None
+    corr = (
+        resp.find(".//{*}correctResponse")
+        or resp.find(".//{*}qti-correct-response")
+    )
+    if corr is None:
+        return None
+    val = (
+        corr.find(".//{*}value")
+        or corr.find(".//{*}qti-value")
+    )
+    if val is not None and val.text:
+        return val.text.strip()
+    return None
+
+
+def _check_answer_key(
+    original: str, corrected: str, reasons: list[str],
+) -> None:
+    """Fail if the correct answer identifier changed."""
+    orig_id = _extract_correct_answer_id(original)
+    corr_id = _extract_correct_answer_id(corrected)
+    if orig_id is None and corr_id is None:
+        return
+    if orig_id != corr_id:
+        reasons.append(
+            f"Correct answer changed: "
+            f"'{orig_id}' -> '{corr_id}'",
+        )
+
+
+def _check_choice_set(
+    original: str, corrected: str, reasons: list[str],
+) -> None:
+    """Fail if answer choice identifiers changed or reordered."""
+    orig_ids = _CHOICE_ID_RE.findall(original)
+    corr_ids = _CHOICE_ID_RE.findall(corrected)
+    if not orig_ids and not corr_ids:
+        return
+    if orig_ids != corr_ids:
+        reasons.append(
+            f"Choice identifiers changed: "
+            f"{orig_ids} -> {corr_ids}",
+        )
 
 
 # ------------------------------------------------------------------
