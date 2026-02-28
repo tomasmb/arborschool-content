@@ -27,6 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import load_default_openai_client
+from app.prompts.notation_check import build_revalidation_prompt
 
 logger = logging.getLogger(__name__)
 
@@ -35,61 +36,7 @@ _ML_ROOT = Path("app/data/mini-lessons")
 _PRUEBAS_ROOT = Path("app/data/pruebas")
 _PRINT_LOCK = threading.Lock()
 
-# ------------------------------------------------------------------
-# Audit prompt — deliberately different from fix/validate prompts.
-# No knowledge of notation rules, just checks equivalence.
-# ------------------------------------------------------------------
-
-_AUDIT_PROMPT = """\
-<role>
-Auditor QA independiente de contenido educativo PAES M1 (Chile).
-Tu única tarea es verificar que dos versiones de un contenido \
-son equivalentes en significado.
-</role>
-
-<before>
-{before}
-</before>
-
-<after>
-{after}
-</after>
-
-<task>
-La versión AFTER fue producida por un pipeline automatizado de \
-corrección. Verifica TODOS estos puntos:
-
-1. SIGNIFICADO MATEMÁTICO: ¿Las expresiones matemáticas tienen \
-exactamente el mismo significado en ambas versiones? (Coeficientes, \
-exponentes, operadores, signos, valores numéricos.)
-2. RESPUESTA CORRECTA: ¿La respuesta correcta es la misma?
-3. ALTERNATIVAS: ¿Todas las opciones de respuesta están presentes \
-y tienen el mismo significado?
-4. CONTENIDO COMPLETO: ¿Hay texto, oraciones o párrafos que \
-falten en AFTER que sí estaban en BEFORE?
-5. MATHML VÁLIDO: ¿El MathML en AFTER está bien formado? \
-(Tags abiertos y cerrados correctamente.)
-6. NUEVOS ERRORES: ¿Se introdujo algún error nuevo en AFTER \
-que no existía en BEFORE?
-
-NO evalúes formato numérico (comas vs puntos decimales) ni \
-separadores de miles — esos cambios son intencionales.
-NO evalúes gramática ni estilo — solo equivalencia de significado.
-</task>
-
-<output_format>
-JSON puro:
-{{"pass": true}}
-
-Si hay problemas:
-{{"pass": false, "issues": ["descripción del problema"]}}
-</output_format>
-"""
-
-
-# ------------------------------------------------------------------
-# Git helpers
-# ------------------------------------------------------------------
+# -- Git helpers ---------------------------------------------------
 
 
 def _git_show(ref_path: str) -> str | None:
@@ -231,9 +178,9 @@ def _audit_one(
     item: dict,
 ) -> dict:
     """Run the independent audit on a single changed item."""
-    prompt = _AUDIT_PROMPT.format(
-        before=item["before"],
-        after=item["after"],
+    prompt = build_revalidation_prompt(
+        original=item["before"],
+        corrected=item["after"],
     )
     try:
         resp = client.call(

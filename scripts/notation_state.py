@@ -1,8 +1,10 @@
 """Persistent state management for the notation fix pipeline.
 
 Tracks every scanned item through its lifecycle:
-  ok -> pending_validate -> pass -> applied -> verified
-                        \\-> fail -> (retry) -> review
+  ok -> (no issues)
+  flagged -> (fix) -> pending_validate -> pending_revalidate
+          -> pass -> applied -> verified
+  fail / sanity_fail -> (retry) -> review
 
 State is saved to JSON after every phase so the pipeline
 can resume from crashes and retry failed items.
@@ -20,17 +22,17 @@ logger = logging.getLogger(__name__)
 
 _PIPELINE_DIR = Path("app/data/.notation_pipeline")
 
-# Valid status transitions
 STATUSES = (
-    "ok",                # scanned, no issues
-    "pending_validate",  # has correction, awaiting sanity+validate
-    "sanity_fail",       # failed deterministic checks
-    "pending_llm",       # passed sanity, awaiting LLM validation
-    "pass",              # validated, ready to apply
-    "fail",              # LLM validation failed
-    "applied",           # fix written to disk
-    "verified",          # post-apply re-scan came back clean
-    "review",            # exhausted retries, needs manual fix
+    "ok",                   # scanned, no issues
+    "flagged",              # issues detected, awaiting fix (Pass 1)
+    "pending_validate",     # has correction, awaiting sanity+validate
+    "sanity_fail",          # failed deterministic checks
+    "pending_revalidate",   # passed validation, awaiting revalidation
+    "pass",                 # revalidated, ready to apply
+    "fail",                 # LLM validation or revalidation failed
+    "applied",              # fix written to disk
+    "verified",             # post-apply re-scan came back clean
+    "review",               # exhausted retries, needs manual fix
 )
 
 
@@ -45,13 +47,14 @@ def new_item(
     item_key: str,
     file_path: str,
     original: str,
+    status: str = "flagged",
 ) -> dict:
     """Create a fresh pipeline item dict."""
     return {
         "source": source,
         "item_key": item_key,
         "file_path": file_path,
-        "status": "pending_validate",
+        "status": status,
         "original": original,
         "corrected": None,
         "issues": [],
@@ -181,7 +184,11 @@ def populate_from_scan(
     exs: list[tuple[str, Path, str]],
     vas: list[tuple[str, Path, str]],
 ) -> None:
-    """Convert raw scan results into tracked state items."""
+    """Convert raw scan results into tracked state items.
+
+    Scan-only results have ``issues`` but no ``corrected`` content.
+    Items are created with ``flagged`` status.
+    """
     atoms_map = {aid: (p, items) for aid, p, items in atoms}
     single_orig: dict[str, str] = {}
     single_path: dict[str, str] = {}
@@ -216,7 +223,6 @@ def populate_from_scan(
                 file_path=single_path.get(key, ""),
                 original=single_orig.get(key, ""),
             )
-            si["corrected"] = r["corrected"]
             si["issues"] = r["issues"]
             state.set_item(key, si)
 
@@ -230,16 +236,20 @@ def _populate_question_items(
     r: dict,
     atoms_map: dict[str, tuple[Path, list[dict]]],
 ) -> None:
-    """Expand a batch scan result into per-question state items."""
+    """Expand a batch scan result into per-question state items.
+
+    Scan-only results have ``flagged_items`` with issues but no
+    corrected XML. Items are created with ``flagged`` status.
+    """
     aid = r["item_id"]
     if aid not in atoms_map:
         return
     p9_path, atom_items = atoms_map[aid]
     item_map = {it["item_id"]: it for it in atom_items}
-    for fi in r["fixed_items"]:
+    for fi in r["flagged_items"]:
         qid = fi.get("item_id", "")
         orig_item = item_map.get(qid)
-        if not orig_item or not fi.get("corrected_xml"):
+        if not orig_item:
             continue
         key = f"q:{aid}:{qid}"
         si = new_item(
@@ -247,7 +257,6 @@ def _populate_question_items(
             file_path=str(p9_path),
             original=orig_item.get("qti_xml", ""),
         )
-        si["corrected"] = fi["corrected_xml"]
         si["issues"] = fi.get("issues", [])
         si["atom_id"] = aid
         si["question_id"] = qid

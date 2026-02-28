@@ -1,15 +1,7 @@
 """Scan, fix, and validate notation / text quality issues.
 
-Pipeline: scan -> sanity -> validate -> apply -> retry -> verify.
-Covers: questions, mini-classes, exemplars, variants.
-
-Usage:
-    python scripts/scan_notation_issues.py --only exemplars
-    python scripts/scan_notation_issues.py --apply --only exemplars
-    python scripts/scan_notation_issues.py --status --only exemplars
-    python scripts/scan_notation_issues.py --retry --only exemplars
-    python scripts/scan_notation_issues.py --verify --only exemplars
-    python scripts/scan_notation_issues.py --review --only exemplars
+Pass 1 (default): scan-only, detect issues with low reasoning.
+Pass 2-4 (--fix): fix -> validate -> revalidate -> apply.
 """
 
 from __future__ import annotations
@@ -27,9 +19,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.prompts.notation_check import (
-    build_mini_class_prompt,
-    build_qti_batch_prompt,
-    build_xml_file_prompt,
+    build_scan_batch_prompt,
+    build_scan_mini_class_prompt,
+    build_scan_xml_file_prompt,
 )
 from scripts.notation_fix_apply import run_pipeline
 from scripts.notation_state import (
@@ -123,7 +115,7 @@ def _iter_variants() -> list[tuple[str, Path, str]]:
 
 
 # ------------------------------------------------------------------
-# Phase 1: Scan + propose full corrected content
+# Pass 1: Scan-only (detect issues, no corrections)
 # ------------------------------------------------------------------
 
 
@@ -154,7 +146,7 @@ def _split_batches(qti_xmls: list[str]) -> list[list[str]]:
 def _scan_atom(
     client: OpenAIClient, atom_id: str, items: list[dict],
 ) -> dict:
-    """Scan all questions in an atom; return corrected items."""
+    """Scan all questions in an atom (detect only, no fix)."""
     xmls = [
         it.get("qti_xml", "") for it in items if it.get("qti_xml")
     ]
@@ -162,31 +154,31 @@ def _scan_atom(
         return _result("question", atom_id, 0)
 
     batches = _split_batches(xmls)
-    all_fixed: list[dict] = []
+    all_flagged: list[dict] = []
     total_in = total_out = 0
 
     try:
         for batch in batches:
-            prompt = build_qti_batch_prompt(atom_id, batch)
+            prompt = build_scan_batch_prompt(atom_id, batch)
             resp = client.call(
                 prompt,
                 response_format={"type": "json_object"},
-                reasoning_effort="medium",
+                reasoning_effort="low",
             )
             data = _parse_response(resp.text)
-            all_fixed.extend(data.get("items", []))
+            all_flagged.extend(data.get("items", []))
             total_in += resp.usage.input_tokens
             total_out += resp.usage.output_tokens
         return _result(
             "question", atom_id, len(xmls),
-            fixed_items=all_fixed,
+            flagged_items=all_flagged,
             tin=total_in, tout=total_out,
         )
     except Exception as exc:
         logger.warning("Scan failed for %s: %s", atom_id, exc)
         return _result(
             "question", atom_id, len(xmls),
-            fixed_items=all_fixed, error=str(exc),
+            flagged_items=all_flagged, error=str(exc),
             tin=total_in, tout=total_out,
         )
 
@@ -195,22 +187,20 @@ def _scan_single(
     client: OpenAIClient, label: str, content: str,
     source: str, prompt_fn: callable,
 ) -> dict:
-    """Scan a single content item (mini-class or XML file)."""
+    """Scan a single content item (detect only, no fix)."""
     prompt = prompt_fn(label, content)
     try:
         resp = client.call(
             prompt,
             response_format={"type": "json_object"},
-            reasoning_effort="medium",
+            reasoning_effort="low",
         )
         data = _parse_response(resp.text)
         status = data.get("status", "OK")
-        corrected = data.get("corrected_content")
         issues = data.get("issues", [])
         return _result(
             source, label, 1,
-            corrected=corrected if status == "FIXED" else None,
-            issues=issues,
+            issues=issues if status == "HAS_ISSUES" else None,
             tin=resp.usage.input_tokens,
             tout=resp.usage.output_tokens,
         )
@@ -221,24 +211,22 @@ def _scan_single(
 
 def _result(
     source: str, item_id: str, n: int, *,
-    fixed_items: list[dict] | None = None,
-    corrected: str | None = None,
+    flagged_items: list[dict] | None = None,
     issues: list[str] | None = None,
     error: str | None = None,
     tin: int = 0, tout: int = 0,
 ) -> dict:
     has_issues: bool | None = None
     if error is None:
-        if fixed_items is not None:
-            has_issues = len(fixed_items) > 0
+        if flagged_items is not None:
+            has_issues = len(flagged_items) > 0
         else:
-            has_issues = corrected is not None
+            has_issues = issues is not None and len(issues) > 0
     return {
         "source": source, "item_id": item_id,
         "items_checked": n,
         "has_issues": has_issues,
-        "fixed_items": fixed_items or [],
-        "corrected": corrected,
+        "flagged_items": flagged_items or [],
         "issues": issues or [],
         "error": error,
         "input_tokens": tin, "output_tokens": tout,
@@ -258,7 +246,7 @@ def _run_scan(
     variants: list[tuple[str, Path, str]],
     workers: int,
 ) -> list[dict]:
-    """Phase 1: scan all content concurrently."""
+    """Pass 1: scan all content concurrently (detect only)."""
     results: list[dict] = []
     total = len(atoms) + len(mcs) + len(exemplars) + len(variants)
     done = 0
@@ -272,17 +260,17 @@ def _run_scan(
         for aid, _, html in mcs:
             futs[pool.submit(
                 _scan_single, client, aid, html,
-                "mini-class", build_mini_class_prompt,
+                "mini-class", build_scan_mini_class_prompt,
             )] = ("MC", aid)
         for label, _, xml in exemplars:
             futs[pool.submit(
                 _scan_single, client, label, xml,
-                "exemplar", build_xml_file_prompt,
+                "exemplar", build_scan_xml_file_prompt,
             )] = ("EX", label)
         for label, _, xml in variants:
             futs[pool.submit(
                 _scan_single, client, label, xml,
-                "variant", build_xml_file_prompt,
+                "variant", build_scan_xml_file_prompt,
             )] = ("VA", label)
 
         for fut in as_completed(futs):
@@ -294,11 +282,11 @@ def _run_scan(
                 s = "ERROR"
             elif r["has_issues"]:
                 n_issues = (
-                    len(r["fixed_items"])
-                    if r["fixed_items"]
+                    len(r["flagged_items"])
+                    if r["flagged_items"]
                     else len(r["issues"])
                 )
-                s = f"FIX({n_issues})"
+                s = f"FLAG({n_issues})"
             else:
                 s = "OK"
             with _PRINT_LOCK:
@@ -321,18 +309,25 @@ def _pool_name(args: argparse.Namespace) -> str:
     return args.only or "all"
 
 
-def _cmd_scan(args: argparse.Namespace) -> None:
-    """Scan (+ optionally apply full pipeline)."""
-    _require_api_key()
+def _load_data(
+    args: argparse.Namespace,
+) -> tuple[list, list, list, list]:
+    """Load data iterators based on --only and --atoms flags."""
     af: set[str] | None = None
     if args.atoms:
         af = {a.strip() for a in args.atoms.split(",")}
-
     only = args.only
     atoms = _iter_atoms(af) if only in (None, "questions") else []
     mcs = _iter_mini_classes(af) if only in (None, "mini-classes") else []
     exs = _iter_exemplars() if only in (None, "exemplars") else []
     vas = _iter_variants() if only in (None, "variants") else []
+    return atoms, mcs, exs, vas
+
+
+def _cmd_scan(args: argparse.Namespace) -> None:
+    """Pass 1: scan-only (detect issues, no corrections)."""
+    _require_api_key()
+    atoms, mcs, exs, vas = _load_data(args)
 
     tq = sum(len(it) for _, _, it in atoms)
     print(
@@ -347,17 +342,35 @@ def _cmd_scan(args: argparse.Namespace) -> None:
     w = min(args.workers, pool_size)
     client = load_default_openai_client(model="gpt-5.1")
 
-    print(f"Phase 1: scanning with {w} workers (medium reasoning)...")
+    print(f"Pass 1: scanning with {w} workers (low reasoning)...")
     scan_results = _run_scan(client, atoms, mcs, exs, vas, w)
 
     state = PipelineState(pool=_pool_name(args))
     populate_from_scan(state, scan_results, atoms, mcs, exs, vas)
     state.save()
+    state.print_summary()
 
-    if args.apply:
-        run_pipeline(client, state, workers=w, max_retries=2)
-    else:
+
+def _cmd_fix(args: argparse.Namespace) -> None:
+    """Passes 2-4: fix flagged items from the latest scan state."""
+    _require_api_key()
+    state = PipelineState.load_latest(_pool_name(args))
+    if not state:
+        print(f"No saved state for pool '{_pool_name(args)}'.")
+        print("Run a scan first (without --fix).")
+        return
+    flagged = state.items_by_status("flagged")
+    if not flagged:
+        print("No flagged items to fix.")
         state.print_summary()
+        return
+    print(f"Fixing {len(flagged)} flagged items...")
+    client = load_default_openai_client(model="gpt-5.1")
+    run_pipeline(
+        client, state,
+        workers=args.workers,
+        max_retries=2,
+    )
 
 
 def _cmd_status(args: argparse.Namespace) -> None:
@@ -425,7 +438,7 @@ def _cmd_review(args: argparse.Namespace) -> None:
 
 def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Notation & text quality scanner with robust pipeline.",
+        description="Notation & text quality scanner with pipeline.",
     )
     p.add_argument(
         "--only", choices=list(_POOL_CHOICES), default=None,
@@ -433,8 +446,8 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--atoms", type=str, default=None)
     p.add_argument(
-        "--apply", action="store_true",
-        help="Run full pipeline: scan + sanity + validate + apply + retry + verify",
+        "--fix", action="store_true",
+        help="Run Passes 2-4: fix + validate + revalidate + apply",
     )
     p.add_argument(
         "--status", action="store_true",
@@ -450,7 +463,7 @@ def _parse_args() -> argparse.Namespace:
     )
     p.add_argument(
         "--review", action="store_true",
-        help="Export review queue for items that need manual fixing",
+        help="Export review queue for items needing manual fixing",
     )
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
@@ -471,6 +484,8 @@ def main() -> None:
         _cmd_retry(args)
     elif args.verify:
         _cmd_verify(args)
+    elif args.fix:
+        _cmd_fix(args)
     else:
         _cmd_scan(args)
 
