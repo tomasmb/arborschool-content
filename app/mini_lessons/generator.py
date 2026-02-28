@@ -153,6 +153,7 @@ class SectionGenerator:
             )
             data = json.loads(resp.text)
             html = data.get("html", "")
+            html = html.replace("\x00", "")
             word_count = count_words(html)
             image_desc = data.get("image_description", "")
 

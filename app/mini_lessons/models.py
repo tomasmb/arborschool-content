@@ -62,7 +62,7 @@ SECTION_WORD_BUDGETS: dict[str, int] = {
     "prerequisite-refresh": 80,
 }
 
-HARD_BUDGET_MULTIPLIER: float = 2.0
+HARD_BUDGET_MULTIPLIER: float = 2.5
 
 # ---------------------------------------------------------------------------
 # Configuration

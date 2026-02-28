@@ -401,3 +401,63 @@ def write_json(path: Path, data: dict) -> None:
     path.write_text(
         json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8",
     )
+
+
+# ------------------------------------------------------------------
+# Metadata & duration helpers (moved from validators for file size)
+# ------------------------------------------------------------------
+
+_EDUCATIONAL_WPM = 120
+
+
+def estimate_duration_minutes(html: str) -> float:
+    """Estimate reading time (~120 wpm for math-heavy educational content)."""
+    from app.mini_lessons.html_validator import count_words
+
+    return round(count_words(html) / _EDUCATIONAL_WPM, 1)
+
+
+def build_lesson_meta(
+    atom_id: str,
+    template_type: str,
+    ctx: LessonContext,
+    plan: LessonPlan,
+    html: str = "",
+    sections: list[LessonSection] | None = None,
+) -> dict:
+    """Build the mini-class.meta.json content with provenance."""
+    from datetime import datetime, timezone
+
+    image_failures = [
+        s.block_name for s in (sections or [])
+        if s.image_failed
+    ]
+    meta: dict = {
+        "atom_id": atom_id,
+        "template_type": template_type,
+        "eje": ctx.eje,
+        "title": ctx.atom_title,
+        "has_prerequisite_refresh": plan.include_prerequisite_refresh,
+        "planned_images": [
+            e.target_section for e in plan.image_plan
+        ],
+        "image_failures": image_failures,
+        "provenance": {
+            "model": "gpt-5.1",
+            "reasoning_efforts": {
+                "planning": "medium",
+                "coherence_check": "low",
+                "section_generation_text": "medium",
+                "section_generation_math": "high",
+                "math_verification": "high",
+                "quality_gate": "high",
+            },
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "pipeline_version": "2.1.0",
+        },
+    }
+    if html:
+        meta["estimated_duration_min"] = (
+            estimate_duration_minutes(html)
+        )
+    return meta

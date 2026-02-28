@@ -14,6 +14,7 @@ from app.mini_lessons.generator import SectionGenerator
 from app.mini_lessons.helpers import (
     atom_requires_images,
     build_lesson_context,
+    build_lesson_meta,
     check_prerequisites,
     deserialize_plan,
     deserialize_sections,
@@ -46,7 +47,6 @@ from app.mini_lessons.validators import (
     QualityGate,
     SectionValidator,
     assemble_lesson,
-    build_lesson_meta,
     identify_weak_sections,
 )
 from app.question_generation.progress import CostAccumulator
