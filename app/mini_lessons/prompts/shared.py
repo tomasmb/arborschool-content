@@ -39,8 +39,8 @@ NUNCA entidades Latin-1.
 - Todo decimal usa COMA (convención PAES): 1,5 y NO 1.5. \
 Punto decimal está PROHIBIDO. Aplica a texto y a <mn> en MathML.
 - Separador de miles es ESPACIO (convención PAES): 10 000 y NO \
-10.000. Dentro de <mn> usa un espacio normal: <mn>10 000</mn>. \
-Enteros de 4 dígitos pueden ir sin separador (1000, 1500).
+10.000. Dentro de <mn> usa &#160; (non-breaking space entity): \
+<mn>10&#160;000</mn>. Enteros de 4 dígitos sin separador (1000).
 - Operadores MathML: usa caracteres directos en <mo>, nunca \
 secuencias de escape. Ejemplos: <mo>−</mo> (menos), \
 <mo>×</mo> (multiplicación), <mo>·</mo> (punto medio), \

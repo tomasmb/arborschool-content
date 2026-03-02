@@ -19,7 +19,8 @@ CHILEAN_NUMBER_FORMAT_SECTION = """
 <chilean_number_format>
 IMPORTANTE: Este contenido usa formato numérico PAES (Chile):
 - Coma (,) = separador DECIMAL
-- Espacio = separador de MILES (no punto, no coma)
+- Espacio = separador de MILES (no punto, no coma). En MathML \
+<mn> usar &#160; (<mn>10&#160;000</mn>), no espacio normal.
 - Enteros de 4 dígitos pueden ir sin separador (e.g. 1000, 1500)
 
 Ejemplos de interpretación:

@@ -147,14 +147,14 @@ imsqti_asiv3p0_v1p0.xsd"
           El costo total de doce sacos es:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>12</mn><mo>&#xD7;</mo>
-            <mn>10.000</mn><mo>=</mo><mn>120.000</mn>
+            <mn>10&#160;000</mn><mo>=</mo><mn>120&#160;000</mn>
           </math>.
           En cambio, cuatro sacos de 15 kg cuestan:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>4</mn><mo>&#xD7;</mo>
-            <mn>25.000</mn><mo>=</mo><mn>100.000</mn>
+            <mn>25&#160;000</mn><mo>=</mo><mn>100&#160;000</mn>
           </math>,
-          que es menor que $120.000.
+          que es menor que $120&#160;000.
         </qti-feedback-inline>
       </qti-simple-choice>
       <qti-simple-choice identifier="ChoiceB">
@@ -164,7 +164,7 @@ imsqti_asiv3p0_v1p0.xsd"
           Incorrecto. El costo total de cinco sacos es:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>5</mn><mo>&#xD7;</mo>
-            <mn>20.000</mn><mo>=</mo><mn>100.000</mn>
+            <mn>20&#160;000</mn><mo>=</mo><mn>100&#160;000</mn>
           </math>.
           Aunque este valor es igual al costo de cuatro
           sacos de 15 kg, la persona debe priorizar la
@@ -180,11 +180,11 @@ imsqti_asiv3p0_v1p0.xsd"
           exactamente los 60 kg requeridos. Costo total:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>4</mn><mo>&#xD7;</mo>
-            <mn>25.000</mn><mo>=</mo><mn>100.000</mn>
+            <mn>25&#160;000</mn><mo>=</mo><mn>100&#160;000</mn>
           </math>.
-          Comparando: doce sacos de 5 kg cuestan $120.000
-          y tres sacos de 20 kg cuestan $100.500, por lo
-          que $100.000 es el menor precio. Además, esta
+          Comparando: doce sacos de 5 kg cuestan $120&#160;000
+          y tres sacos de 20 kg cuestan $100&#160;500, por lo
+          que $100&#160;000 es el menor precio. Además, esta
           opción tiene menos sacos que cinco sacos de
           12 kg.
         </qti-feedback-inline>
@@ -196,14 +196,14 @@ imsqti_asiv3p0_v1p0.xsd"
           Incorrecto. El costo total de tres sacos es:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>3</mn><mo>&#xD7;</mo>
-            <mn>33.500</mn><mo>=</mo><mn>100.500</mn>
+            <mn>33&#160;500</mn><mo>=</mo><mn>100&#160;500</mn>
           </math>.
           En cambio, cuatro sacos de 15 kg cuestan:
           <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mn>4</mn><mo>&#xD7;</mo>
-            <mn>25.000</mn><mo>=</mo><mn>100.000</mn>
+            <mn>25&#160;000</mn><mo>=</mo><mn>100&#160;000</mn>
           </math>,
-          que es menor que $100.500.
+          que es menor que $100&#160;500.
         </qti-feedback-inline>
       </qti-simple-choice>
     </qti-choice-interaction>
@@ -246,32 +246,32 @@ imsqti_asiv3p0_v1p0.xsd"
               de cada opción</strong></p>
             <p><em>Opción A:</em>
               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                <mn>12</mn><mo>&#xD7;</mo><mn>10.000</mn>
-                <mo>=</mo><mn>120.000</mn>
+                <mn>12</mn><mo>&#xD7;</mo><mn>10&#160;000</mn>
+                <mo>=</mo><mn>120&#160;000</mn>
               </math>
             </p>
             <p><em>Opción B:</em>
               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                <mn>5</mn><mo>&#xD7;</mo><mn>20.000</mn>
-                <mo>=</mo><mn>100.000</mn>
+                <mn>5</mn><mo>&#xD7;</mo><mn>20&#160;000</mn>
+                <mo>=</mo><mn>100&#160;000</mn>
               </math>
             </p>
             <p><em>Opción C:</em>
               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                <mn>4</mn><mo>&#xD7;</mo><mn>25.000</mn>
-                <mo>=</mo><mn>100.000</mn>
+                <mn>4</mn><mo>&#xD7;</mo><mn>25&#160;000</mn>
+                <mo>=</mo><mn>100&#160;000</mn>
               </math>
             </p>
             <p><em>Opción D:</em>
               <math xmlns="http://www.w3.org/1998/Math/MathML">
-                <mn>3</mn><mo>&#xD7;</mo><mn>33.500</mn>
-                <mo>=</mo><mn>100.500</mn>
+                <mn>3</mn><mo>&#xD7;</mo><mn>33&#160;500</mn>
+                <mo>=</mo><mn>100&#160;500</mn>
               </math>
             </p>
           </li>
           <li>
             <p><strong>Paso 3: Comparar costos</strong></p>
-            <p>El menor precio es $100.000, que
+            <p>El menor precio es $100&#160;000, que
               corresponde a las opciones B y C.</p>
           </li>
           <li>
