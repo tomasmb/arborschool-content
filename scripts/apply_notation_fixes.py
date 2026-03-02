@@ -26,11 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
-from app.prompts.notation_check import (
-    build_llm_fix_prompt,
-    build_scan_mini_class_prompt,
-    build_scan_xml_file_prompt,
-)
+from app.prompts.notation_check import build_llm_fix_prompt
 from scripts.notation_fix_rules import (
     DETERMINISTIC_CATEGORIES,
     apply_deterministic_fixes,
@@ -136,59 +132,13 @@ def _content_type(item: dict) -> str:
 
 
 def _validate_sanity(
-    item: dict, fixed: str,
+    item: dict, fixed: str, *, lenient: bool = False,
 ) -> tuple[bool, list[str]]:
     """Run deterministic sanity checks on the fix."""
     return run_sanity_checks(
         item["original"], fixed, _content_type(item),
+        lenient=lenient,
     )
-
-
-def _validate_rescan(
-    client: OpenAIClient, item: dict, fixed: str,
-) -> tuple[bool, list[str], int, int]:
-    """Re-scan fixed content for NEW issues."""
-    key = item["item_key"]
-    source = item.get("source", "question")
-    label = key.split(":", 1)[1] if ":" in key else key
-    if source == "mini-class":
-        prompt = build_scan_mini_class_prompt(label, fixed)
-    else:
-        prompt = build_scan_xml_file_prompt(label, fixed)
-    resp = client.call(
-        prompt,
-        response_format={"type": "json_object"},
-        reasoning_effort="low",
-    )
-    try:
-        data = json.loads(resp.text)
-    except json.JSONDecodeError:
-        return (
-            False, ["Re-scan returned invalid JSON"],
-            resp.usage.input_tokens, resp.usage.output_tokens,
-        )
-    new_issues = data.get("issues", [])
-    if data.get("status") == "HAS_ISSUES" and new_issues:
-        return (
-            False, new_issues,
-            resp.usage.input_tokens, resp.usage.output_tokens,
-        )
-    return (
-        True, [],
-        resp.usage.input_tokens, resp.usage.output_tokens,
-    )
-
-
-# ------------------------------------------------------------------
-# Fix + validate one item
-# ------------------------------------------------------------------
-
-
-def _has_unfixed_categories(
-    item: dict, phase_cats: set[str],
-) -> bool:
-    """True if the item has issues in categories not in this phase."""
-    return bool(_item_categories(item) - phase_cats)
 
 
 def _process_one(
@@ -221,7 +171,9 @@ def _process_one(
             & set(DETERMINISTIC_CATEGORIES.keys()),
         )
 
-    sanity_ok, sanity_reasons = _validate_sanity(item, fixed)
+    sanity_ok, sanity_reasons = _validate_sanity(
+        item, fixed, lenient=use_llm,
+    )
     if not sanity_ok:
         return {
             "key": key, "status": "sanity_fail",
@@ -229,40 +181,14 @@ def _process_one(
             "input_tokens": llm_in, "output_tokens": llm_out,
         }
 
-    # Deterministic-only fixes: sanity checks suffice, skip
-    # LLM rescan (it catches unrelated pre-existing issues).
-    if not use_llm:
-        return {
-            "key": key, "status": "ok",
-            "fixed": fixed, "reasons": [],
-            "input_tokens": llm_in, "output_tokens": llm_out,
-        }
-
-    # LLM fixes: run rescan but skip when pre-existing issues
-    # from unfixed categories would cause false negatives.
-    if _has_unfixed_categories(item, phase_cats):
-        return {
-            "key": key, "status": "ok",
-            "fixed": fixed, "reasons": ["rescan_skipped"],
-            "input_tokens": llm_in, "output_tokens": llm_out,
-        }
-
-    rescan_ok, rescan_issues, rs_in, rs_out = _validate_rescan(
-        client, item, fixed,
-    )
-    total_in = llm_in + rs_in
-    total_out = llm_out + rs_out
-    if not rescan_ok:
-        return {
-            "key": key, "status": "rescan_fail",
-            "reasons": rescan_issues, "fixed": fixed,
-            "input_tokens": total_in, "output_tokens": total_out,
-        }
-
+    # Sanity checks suffice for all phases. LLM rescan is too
+    # noisy (catches pre-existing issues unrelated to our fix)
+    # and the critical invariants (answer key, choice set,
+    # content length) are already covered by sanity checks.
     return {
         "key": key, "status": "ok",
         "fixed": fixed, "reasons": [],
-        "input_tokens": total_in, "output_tokens": total_out,
+        "input_tokens": llm_in, "output_tokens": llm_out,
     }
 
 

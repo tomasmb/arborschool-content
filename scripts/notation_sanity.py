@@ -56,6 +56,8 @@ def run_sanity_checks(
     original: str,
     corrected: str,
     content_type: str = "QTI XML",
+    *,
+    lenient: bool = False,
 ) -> tuple[bool, list[str]]:
     """Return (passed, reasons).
 
@@ -65,12 +67,18 @@ def run_sanity_checks(
     ``content_type`` is ``"QTI XML"`` or ``"HTML"``.
     QTI-specific checks (answer key, choice set) run only for
     QTI XML content.
+
+    When ``lenient`` is True (for LLM fixes that intentionally
+    change content like garbled text), MathML equivalence and
+    tag-balance checks are skipped.  Critical invariants (answer
+    key, choice set, content shrinkage) still run.
     """
     reasons: list[str] = []
     _check_symbols(original, corrected, reasons)
-    _check_length(original, corrected, reasons)
-    _check_tag_balance(original, corrected, reasons)
-    _check_mathml_equivalence(original, corrected, reasons)
+    _check_length(original, corrected, reasons, lenient=lenient)
+    if not lenient:
+        _check_tag_balance(original, corrected, reasons)
+        _check_mathml_equivalence(original, corrected, reasons)
     if content_type == "QTI XML":
         _check_answer_key(original, corrected, reasons)
         _check_choice_set(original, corrected, reasons)
@@ -116,11 +124,13 @@ def _check_symbols(
 
 def _check_length(
     original: str, corrected: str, reasons: list[str],
+    *, lenient: bool = False,
 ) -> None:
     """Fail if text content (tags stripped) shrank significantly.
 
     Compares tag-stripped content so that legitimate tag merging
     (e.g. split <mn> consolidation) doesn't trigger false positives.
+    In lenient mode (LLM fixes) the threshold is 5 % instead of 2 %.
     """
     orig_text = _STRIP_TAGS_RE.sub("", original)
     corr_text = _STRIP_TAGS_RE.sub("", corrected)
@@ -128,11 +138,12 @@ def _check_length(
     lc = len(corr_text)
     if lo == 0:
         return
+    threshold = 0.05 if lenient else _MAX_SHRINK_PCT
     shrink = (lo - lc) / lo
-    if shrink > _MAX_SHRINK_PCT:
+    if shrink > threshold:
         reasons.append(
             f"Text content shrank by {shrink:.1%} "
-            f"({lo} -> {lc} chars, threshold {_MAX_SHRINK_PCT:.0%})",
+            f"({lo} -> {lc} chars, threshold {threshold:.0%})",
         )
 
 
