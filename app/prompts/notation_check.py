@@ -53,15 +53,15 @@ puntuación y emojis pedagógicos (❌ ✔ ✅ ❗ etc.). \
 Sin secuencias hex, bytes sueltos, caracteres de control, ni \
 scripts no latinos (excepto griegas en MathML). Entidades HTML \
 correctamente codificadas (no doble-codificadas). En QTI XML, \
-no debe haber entidades HTML con nombre (&oacute;, &minus;, etc.) \
-— solo Unicode directo o entidades numéricas (&#xF3;, &#x2212;).
+no debe haber entidades HTML con nombre (&oacute;, &minus;) — \
+solo Unicode directo o numéricas. EXCEPCIÓN: las 5 entidades \
+predefinidas de XML (&amp; &lt; &gt; &quot; &apos;) SÍ son \
+válidas y NO deben reportarse.
 
 NOTACIÓN MATEMÁTICA: MathML válido y bien formado. Sin LaTeX \
-crudo (\\frac, \\sqrt, $...$). Sin Markdown crudo. Cada <mn> \
-debe contener SOLO dígitos y separador decimal (coma) o de miles \
-(&#160;). Operadores (×, ·, +, −) dentro de <mn> son error: \
-deben estar en <mo>. Números grandes no deben estar divididos \
-en múltiples <mn> separados por <mspace>.
+crudo (\\frac, \\sqrt, $...$). Sin Markdown crudo. Números \
+grandes no deben estar divididos en múltiples <mn> separados \
+por <mspace>.
 
 INTEGRIDAD: sin texto truncado, placeholders, duplicados, ni \
 filtraciones de instrucciones del modelo.
@@ -72,6 +72,9 @@ NO reportar como problema:
 - Números en atributos XML, URLs, identificadores, hashes SHA.
 - Coordenadas tipo (x, y) donde la coma separa componentes.
 - xmlns, xsi:schemaLocation, src="...".
+- Entidades XML predefinidas (&amp; &lt; &gt; &quot; &apos;).
+- Operadores (−, +, ×) dentro de <mn>: es cosmético, no afecta \
+al estudiante.
 </text_quality_standard>
 
 """
@@ -102,25 +105,23 @@ NOTACIÓN NUMÉRICA PAES:
 25 000 o 25&#160;000 en MathML).
 
 MATHML ESTRUCTURAL:
-- Operadores dentro de <mn> (ej. <mn>5×4</mn> debe ser \
-<mn>5</mn><mo>×</mo><mn>4</mn>).
 - Número grande dividido en múltiples <mn> con <mspace> \
 (debe ser un solo <mn>).
 - Espacio normal dentro de <mn> (debe ser &#160;).
-- Estructura MathML incorrecta (nesting, elementos mal usados).
+- NO reportar operadores (−, ×, +) dentro de <mn>: es \
+cosmético y no afecta la visualización.
 
 CODIFICACIÓN Y ENTIDADES:
 - Texto corrupto/garbled (mojibake, bytes hex, caracteres \
-de control).
+de control, tabulaciones).
 - Entidades HTML con nombre en QTI XML (&oacute;, &minus;) \
-que deberían ser Unicode directo o entidades numéricas.
+que deberían ser Unicode directo o numéricas. NO reportar \
+las 5 predefinidas XML (&amp; &lt; &gt; &quot; &apos;).
 - Doble-codificación de entidades (&amp;amp;).
 
 INTEGRIDAD:
 - LaTeX crudo (\\frac, $...$) o Markdown crudo en HTML/XML.
 - Texto truncado, placeholders, instrucciones del modelo.
-- Símbolos matemáticos inconsistentes (∙ vs ∩, − vs -) en \
-el mismo documento.
 
 Solo REPORTA los problemas encontrados. NO generes contenido \
 corregido. Sé PRECISO: indica qué texto o fragmento tiene \
@@ -147,7 +148,6 @@ Si hay problemas:
 ISSUE_CATEGORIES = (
     "deterministic_thousands_sep",
     "deterministic_encoding",
-    "deterministic_mathml_split",
     "deterministic_spacing",
     "manual_fix",
     "ignore",
@@ -176,21 +176,17 @@ marcó los problemas listados abajo. Tu tarea es:
 Para CADA problema en flagged_issues:
 1. Revisa si es un problema REAL en el contenido.
 2. Si es real, clasifícalo en UNA de estas categorías:
-   - "deterministic_thousands_sep": punto usado como separador \
-de miles en texto plano o MathML donde el contexto lo confirma \
-(montos en pesos, cantidades inequívocamente enteras).
+   - "deterministic_thousands_sep": punto como separador de \
+miles, o número de 5+ dígitos sin separador de miles en texto \
+plano o MathML (montos en pesos, cantidades enteras).
    - "deterministic_encoding": texto con bytes corruptos, \
-caracteres de control, hex incrustado, tildes faltantes por \
-corrupción (NO tildes gramaticales).
-   - "deterministic_mathml_split": operadores o separadores \
-dentro de <mn> que deben separarse en elementos distintos, o \
-dígitos separados en múltiples <mn> que deben unificarse.
-   - "deterministic_spacing": espacios antes de signos de \
-interrogación, tabulaciones, guiones bajos en títulos, o \
-entidades HTML innecesarias.
+caracteres de control, tabulaciones, hex incrustado, tildes \
+faltantes por corrupción (NO tildes gramaticales).
+   - "deterministic_spacing": espacio normal dentro de <mn> \
+(debe ser &#160;), o espacio normal como separador de miles \
+en texto plano (debe ser &#160;).
    - "manual_fix": problemas reales que requieren juicio humano \
-(texto en inglés, contenido duplicado, errores semánticos, \
-MathML con estructura compleja incorrecta).
+(texto en inglés, contenido duplicado, errores semánticos).
    - "ignore": NO es un problema real, o es un cambio de estilo \
 / gramática que no debe tocarse.
 3. Si el modelo previo sugirió algo INCORRECTO (falso positivo), \
