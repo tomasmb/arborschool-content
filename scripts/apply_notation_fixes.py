@@ -44,8 +44,7 @@ _PHASE_CATEGORIES: dict[int, list[str]] = {
         "deterministic_thousands_sep",
         "deterministic_spacing",
     ],
-    2: ["deterministic_mathml_split"],
-    3: ["deterministic_encoding", "manual_fix"],
+    2: ["deterministic_encoding", "manual_fix"],
 }
 
 _LLM_CATEGORIES = {"deterministic_encoding", "manual_fix"}
@@ -326,7 +325,7 @@ def _parse_args() -> argparse.Namespace:
         description="Apply notation fixes with validation.",
     )
     p.add_argument(
-        "--phase", type=int, choices=[1, 2, 3], required=True,
+        "--phase", type=int, choices=[1, 2], required=True,
     )
     p.add_argument(
         "--sample", type=int, default=None,

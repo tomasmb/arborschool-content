@@ -243,14 +243,78 @@ def fix_mathml_split(content: str) -> str:
 
 
 # ------------------------------------------------------------------
+# mn_space: regular space -> &#160; inside <mn> tags
+# ------------------------------------------------------------------
+
+_MN_SPACE_RE = re.compile(r"<mn>([^<]+)</mn>")
+
+
+def _fix_mn_space_inner(m: re.Match) -> str:
+    """Replace regular spaces with &#160; inside <mn>."""
+    inner = m.group(1)
+    if " " not in inner:
+        return m.group(0)
+    fixed = inner.replace(" ", "&#160;")
+    return f"<mn>{fixed}</mn>"
+
+
+def fix_mn_space(content: str) -> str:
+    r"""Replace regular spaces inside <mn> with &#160;.
+
+    ``<mn>12 000</mn>`` -> ``<mn>12&#160;000</mn>``
+
+    Regular spaces inside <mn> can cause numbers to break
+    across lines when rendered.
+    """
+    return _MN_SPACE_RE.sub(_fix_mn_space_inner, content)
+
+
+# ------------------------------------------------------------------
+# bare_thousands_mn: add &#160; separators to 5+ digit <mn>
+# ------------------------------------------------------------------
+
+_MN_BARE_RE = re.compile(r"<mn>(\d{5,})</mn>")
+
+
+def _add_thousands_sep(m: re.Match) -> str:
+    """Add &#160; thousands separators to a bare number in <mn>."""
+    digits = m.group(1)
+    parts: list[str] = []
+    while len(digits) > 3:
+        parts.append(digits[-3:])
+        digits = digits[:-3]
+    parts.append(digits)
+    parts.reverse()
+    return f"<mn>{'&#160;'.join(parts)}</mn>"
+
+
+def fix_bare_thousands_mn(content: str) -> str:
+    r"""Add &#160; thousands separators to bare 5+ digit <mn>.
+
+    ``<mn>25000</mn>`` -> ``<mn>25&#160;000</mn>``
+    ``<mn>1250000</mn>`` -> ``<mn>1&#160;250&#160;000</mn>``
+
+    Only targets <mn> containing solely digits (no existing
+    separators, operators, or decimal parts).
+    """
+    return _MN_BARE_RE.sub(_add_thousands_sep, content)
+
+
+# ------------------------------------------------------------------
 # Dispatch by category
 # ------------------------------------------------------------------
 
 DETERMINISTIC_CATEGORIES = {
     "deterministic_thousands_sep": fix_thousands_sep,
     "deterministic_spacing": fix_spacing,
-    "deterministic_mathml_split": fix_mathml_split,
 }
+
+# Spacing also applies mn_space and bare_thousands_mn for
+# items flagged as spacing or thousands_sep respectively.
+_SUPPLEMENTARY_FIXES: list[tuple[set[str], callable]] = [
+    ({"deterministic_spacing"}, fix_mn_space),
+    ({"deterministic_thousands_sep"}, fix_bare_thousands_mn),
+]
 
 
 def apply_deterministic_fixes(
@@ -259,5 +323,8 @@ def apply_deterministic_fixes(
     """Apply all relevant deterministic fixes to content."""
     for cat, fn in DETERMINISTIC_CATEGORIES.items():
         if cat in categories:
+            content = fn(content)
+    for trigger_cats, fn in _SUPPLEMENTARY_FIXES:
+        if trigger_cats & categories:
             content = fn(content)
     return content
