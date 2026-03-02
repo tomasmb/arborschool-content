@@ -49,18 +49,29 @@ EXCEPCIONES — NO son errores de notación:
 _QUALITY_STANDARD = """\
 <text_quality_standard>
 CODIFICACIÓN: solo caracteres del español, símbolos matemáticos, \
-puntuación. Sin secuencias hex, bytes sueltos, caracteres de \
-control, ni scripts no latinos (excepto griegas en MathML). \
-Entidades HTML correctamente codificadas (no doble-codificadas).
+puntuación y emojis pedagógicos (❌ ✔ ✅ ❗ etc.). \
+Sin secuencias hex, bytes sueltos, caracteres de control, ni \
+scripts no latinos (excepto griegas en MathML). Entidades HTML \
+correctamente codificadas (no doble-codificadas). En QTI XML, \
+no debe haber entidades HTML con nombre (&oacute;, &minus;, etc.) \
+— solo Unicode directo o entidades numéricas (&#xF3;, &#x2212;).
 
 NOTACIÓN MATEMÁTICA: MathML válido y bien formado. Sin LaTeX \
-crudo (\\frac, \\sqrt, $...$). Sin Markdown crudo.
+crudo (\\frac, \\sqrt, $...$). Sin Markdown crudo. Cada <mn> \
+debe contener SOLO dígitos y separador decimal (coma) o de miles \
+(&#160;). Operadores (×, ·, +, −) dentro de <mn> son error: \
+deben estar en <mo>. Números grandes no deben estar divididos \
+en múltiples <mn> separados por <mspace>.
 
 INTEGRIDAD: sin texto truncado, placeholders, duplicados, ni \
 filtraciones de instrucciones del modelo.
 
-Ignora: src="...", xmlns, xsi:schemaLocation, identifier, URLs, \
-hashes SHA. No corrijas gramática ni estilo.
+NO reportar como problema:
+- Emojis (❌, ✔, ✅, ❗) — son intencionales.
+- Gramática, ortografía, estilo o redacción.
+- Números en atributos XML, URLs, identificadores, hashes SHA.
+- Coordenadas tipo (x, y) donde la coma separa componentes.
+- xmlns, xsi:schemaLocation, src="...".
 </text_quality_standard>
 
 """
@@ -82,10 +93,38 @@ y calidad de texto. NO corrijas nada.
 </content>
 
 <task>
-Revisa el contenido buscando problemas de NOTATION (formato \
-numérico PAES) y TEXT_QUALITY (calidad textual).
+Revisa el contenido buscando SOLO estos tipos de problema:
+
+NOTACIÓN NUMÉRICA PAES:
+- Punto como separador de miles (10.000 → 10 000).
+- Punto como separador decimal (3.14 → 3,14).
+- Falta separador de miles en números ≥ 5 dígitos (25000 → \
+25 000 o 25&#160;000 en MathML).
+
+MATHML ESTRUCTURAL:
+- Operadores dentro de <mn> (ej. <mn>5×4</mn> debe ser \
+<mn>5</mn><mo>×</mo><mn>4</mn>).
+- Número grande dividido en múltiples <mn> con <mspace> \
+(debe ser un solo <mn>).
+- Espacio normal dentro de <mn> (debe ser &#160;).
+- Estructura MathML incorrecta (nesting, elementos mal usados).
+
+CODIFICACIÓN Y ENTIDADES:
+- Texto corrupto/garbled (mojibake, bytes hex, caracteres \
+de control).
+- Entidades HTML con nombre en QTI XML (&oacute;, &minus;) \
+que deberían ser Unicode directo o entidades numéricas.
+- Doble-codificación de entidades (&amp;amp;).
+
+INTEGRIDAD:
+- LaTeX crudo (\\frac, $...$) o Markdown crudo en HTML/XML.
+- Texto truncado, placeholders, instrucciones del modelo.
+- Símbolos matemáticos inconsistentes (∙ vs ∩, − vs -) en \
+el mismo documento.
+
 Solo REPORTA los problemas encontrados. NO generes contenido \
-corregido.
+corregido. Sé PRECISO: indica qué texto o fragmento tiene \
+el problema.
 </task>
 
 <output_format>
@@ -151,7 +190,7 @@ interrogación, tabulaciones, guiones bajos en títulos, o \
 entidades HTML innecesarias.
    - "manual_fix": problemas reales que requieren juicio humano \
 (texto en inglés, contenido duplicado, errores semánticos, \
-MathML con estructura compleja incorrecta, emojis).
+MathML con estructura compleja incorrecta).
    - "ignore": NO es un problema real, o es un cambio de estilo \
 / gramática que no debe tocarse.
 3. Si el modelo previo sugirió algo INCORRECTO (falso positivo), \
