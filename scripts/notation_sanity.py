@@ -24,8 +24,9 @@ _PROTECTED_SYMBOLS: tuple[str, ...] = (
     "∪", "∩", "⊂", "⊃",
 )
 
-# Tags whose count is allowed to *decrease* (merging split MathML).
+# Tags whose count may decrease (merging) or increase (splitting).
 _SHRINKABLE_TAGS: frozenset[str] = frozenset({"mn", "mspace"})
+_GROWABLE_TAGS: frozenset[str] = frozenset({"mn", "mo", "mrow"})
 
 _OPEN_TAG_RE = re.compile(r"<([a-zA-Z][\w.-]*)")
 _STRIP_TAGS_RE = re.compile(r"<[^>]+>")
@@ -81,13 +82,32 @@ def run_sanity_checks(
 # ------------------------------------------------------------------
 
 
+_ENTITY_TO_CHAR: dict[str, str] = {
+    "&#xD7;": "×", "&#xd7;": "×", "&#215;": "×",
+    "&#x00D7;": "×", "&#x00d7;": "×",
+    "&#xF7;": "÷", "&#xf7;": "÷", "&#247;": "÷",
+    "&#x00F7;": "÷", "&#x00f7;": "÷",
+    "&#x2212;": "−", "&#8722;": "−",
+    "&#xB7;": "·", "&#183;": "·",
+}
+
+
+def _decode_symbol_entities(text: str) -> str:
+    """Decode common operator entities to characters."""
+    for entity, char in _ENTITY_TO_CHAR.items():
+        text = text.replace(entity, char)
+    return text
+
+
 def _check_symbols(
     original: str, corrected: str, reasons: list[str],
 ) -> None:
     """Fail if any protected symbol lost occurrences."""
+    orig_d = _decode_symbol_entities(original)
+    corr_d = _decode_symbol_entities(corrected)
     for sym in _PROTECTED_SYMBOLS:
-        orig_n = original.count(sym)
-        corr_n = corrected.count(sym)
+        orig_n = orig_d.count(sym)
+        corr_n = corr_d.count(sym)
         if corr_n < orig_n:
             reasons.append(
                 f"Symbol '{sym}' decreased from {orig_n} to {corr_n}",
@@ -131,6 +151,8 @@ def _check_tag_balance(
             continue
         if tag in _SHRINKABLE_TAGS and c <= o:
             continue
+        if tag in _GROWABLE_TAGS and c >= o:
+            continue
         reasons.append(
             f"Tag <{tag}> count changed from {o} to {c}",
         )
@@ -169,19 +191,25 @@ def _normalize_mn_content(m: re.Match[str]) -> str:
 def _normalize_mathml(block: str) -> str:
     """Normalize a single <math> block for equivalence comparison.
 
-    Removes mspace tags and normalizes decimal/thousands notation
-    inside <mn> tags so that format-only changes become invisible.
+    Strips all tags to produce pure text content, then normalizes
+    notation (dots, spaces, entities) so structural changes like
+    <mn>5×4</mn> -> <mn>5</mn><mo>×</mo><mn>4</mn> compare equal.
     """
     result = _MSPACE_RE.sub("", block)
-    result = _MN_CONTENT_RE.sub(_normalize_mn_content, result)
-    result = re.sub(r"\s+", " ", result)
-    return result.strip()
+    result = _decode_symbol_entities(result)
+    result = _STRIP_TAGS_RE.sub("", result)
+    result = result.replace("&#160;", "").replace("\u00a0", "")
+    result = result.replace(" ", "")
+    result = result.replace("-", "\u2212")
+    result = re.sub(r"(?<=\d)\.(?=\d)", "", result)
+    result = re.sub(r"(\d),(\d)", r"\1.\2", result)
+    return result
 
 
 def _check_mathml_equivalence(
     original: str, corrected: str, reasons: list[str],
 ) -> None:
-    """Fail if any MathML block changed beyond notation format."""
+    """Fail if any MathML block changed its semantic content."""
     orig_blocks = _MATH_BLOCK_RE.findall(original)
     corr_blocks = _MATH_BLOCK_RE.findall(corrected)
 

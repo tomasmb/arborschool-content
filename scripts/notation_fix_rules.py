@@ -216,15 +216,21 @@ def _split_mn_content(inner: str) -> str | None:
     result = "".join(parts)
     if result == f"<mn>{inner}</mn>":
         return None
+    if len(parts) > 1:
+        result = f"<mrow>{result}</mrow>"
     return result
 
 
 def fix_mathml_split(content: str) -> str:
-    """Split operators out of <mn> tags into proper <mo> elements.
+    r"""Split operators out of <mn> tags into proper <mo> elements.
 
-    ``<mn>5×4</mn>`` -> ``<mn>5</mn><mo>&#xD7;</mo><mn>4</mn>``
+    Wraps multi-element results in <mrow> to keep valid structure
+    (critical when the <mn> is a child of <mfrac>).
+
+    ``<mn>5×4</mn>`` ->
+        ``<mrow><mn>5</mn><mo>&#xD7;</mo><mn>4</mn></mrow>``
     ``<mn>&#x2212;13000</mn>`` ->
-        ``<mo>&#x2212;</mo><mn>13000</mn>``
+        ``<mrow><mo>&#x2212;</mo><mn>13000</mn></mrow>``
     """
     def _replace(m: re.Match) -> str:
         inner = m.group(1)
