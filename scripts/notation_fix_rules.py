@@ -23,6 +23,20 @@ _MN_DOT_THOUSANDS_RE = re.compile(
     r"</mn>",
 )
 
+# Plain-text: dot between digits where RHS is exactly 3 digits.
+# Chilean notation: 10.000 = ten thousand (comma is decimal).
+# Negative lookahead rejects comma+digit (decimal part like ,5)
+# but allows comma+non-digit (punctuation like ", ya que").
+_PLAIN_DOT_THOUSANDS_RE = re.compile(
+    r"(\d{1,3})"
+    r"((?:\.\d{3})+)"
+    r"(?!\d|,\d)",
+)
+
+_MATH_BLOCK_FOR_TSEP_RE = re.compile(
+    r"<math[^>]*>.*?</math>", re.DOTALL,
+)
+
 
 def _replace_mn_dot(m: re.Match) -> str:
     """Replace dots with &#160; inside a <mn> thousands pattern."""
@@ -34,14 +48,40 @@ def _replace_mn_dot(m: re.Match) -> str:
     return f"<mn>{joined}{decimal}</mn>"
 
 
-def fix_thousands_sep(content: str) -> str:
-    """Replace dots used as thousands separators in <mn> tags.
+def _replace_plain_dot(m: re.Match) -> str:
+    """Replace dots with &#160; in a plain-text thousands pattern."""
+    prefix = m.group(1)
+    groups = m.group(2).split(".")
+    return "&#160;".join([prefix] + [p for p in groups if p])
 
-    ``<mn>10.000</mn>`` -> ``<mn>10&#160;000</mn>``
-    ``<mn>2.495.000</mn>`` -> ``<mn>2&#160;495&#160;000</mn>``
-    ``<mn>10.000,5</mn>`` -> ``<mn>10&#160;000,5</mn>``
+
+def fix_thousands_sep(content: str) -> str:
+    """Replace dots used as thousands separators.
+
+    Inside <mn> tags:
+      ``<mn>10.000</mn>`` -> ``<mn>10&#160;000</mn>``
+    In plain text (outside <math>):
+      ``$3.200`` -> ``$3&#160;200``
     """
-    return _MN_DOT_THOUSANDS_RE.sub(_replace_mn_dot, content)
+    result = _MN_DOT_THOUSANDS_RE.sub(_replace_mn_dot, content)
+    math_spans: list[tuple[int, int]] = [
+        (m.start(), m.end())
+        for m in _MATH_BLOCK_FOR_TSEP_RE.finditer(result)
+    ]
+
+    def _in_math(pos: int) -> bool:
+        return any(s <= pos < e for s, e in math_spans)
+
+    parts: list[str] = []
+    last = 0
+    for m in _PLAIN_DOT_THOUSANDS_RE.finditer(result):
+        if _in_math(m.start()):
+            continue
+        parts.append(result[last:m.start()])
+        parts.append(_replace_plain_dot(m))
+        last = m.end()
+    parts.append(result[last:])
+    return "".join(parts)
 
 
 # ------------------------------------------------------------------
@@ -85,11 +125,10 @@ def fix_spacing(content: str) -> str:
         if not re.search(r"\d{1,3}$", before):
             continue
         result.append(content[last:m.start()])
-        result.append("\u00a0")
+        result.append("&#160;")
         last = m.end()
     result.append(content[last:])
-    fixed = "".join(result)
-    return fixed.replace("\u00a0", "&#160;")
+    return "".join(result)
 
 
 # ------------------------------------------------------------------

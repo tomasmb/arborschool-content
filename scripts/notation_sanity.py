@@ -35,7 +35,10 @@ _MATH_BLOCK_RE = re.compile(
     r"<math[^>]*>.*?</math>", re.DOTALL,
 )
 _MSPACE_RE = re.compile(r"<mspace[^/]*/?>(?:</mspace>)?")
-_ADJACENT_MN_RE = re.compile(r"</mn>\s*<mn>")
+# Only merge truly adjacent <mn> tags (no whitespace between).
+# Previous version used \s* which incorrectly merged <mfrac>
+# children separated by newlines/indentation.
+_ADJACENT_MN_RE = re.compile(r"</mn><mn>")
 _MN_CONTENT_RE = re.compile(r"<mn>(.*?)</mn>", re.DOTALL)
 _CHOICE_ID_RE = re.compile(
     r"<(?:qti-simple-choice|simpleChoice)[^>]*"
@@ -149,30 +152,27 @@ def _count_tags(html: str) -> dict[str, int]:
 def _normalize_mn_content(m: re.Match[str]) -> str:
     """Normalize a <mn> tag's inner text for comparison.
 
-    Converts period-decimals to commas, and all non-breaking
-    space variants to a plain space, so that two versions that
-    differ only by notation normalize to the same string.
+    Strips ALL separators (dots, spaces, nbsp) between digits
+    and normalizes decimal commas to dots, so that format-only
+    changes (e.g. 10.000 -> 10&#160;000) become invisible.
+    Both sides get the same treatment, so the comparison works
+    even if the stripping is aggressive.
     """
-    content = m.group(1)
-    content = re.sub(r"(\d)\.(\d)", r"\1,\2", content)
-    content = (
-        content
-        .replace("&#160;", " ")
-        .replace("&nbsp;", " ")
-        .replace("\u00a0", " ")
-    )
-    return f"<mn>{content}</mn>"
+    c = m.group(1)
+    c = c.replace("&#160;", "").replace("&nbsp;", "")
+    c = c.replace("\u00a0", "").replace(" ", "")
+    c = re.sub(r"(?<=\d)\.(?=\d)", "", c)
+    c = re.sub(r"(\d),(\d)", r"\1.\2", c)
+    return f"<mn>{c}</mn>"
 
 
 def _normalize_mathml(block: str) -> str:
     """Normalize a single <math> block for equivalence comparison.
 
-    Removes mspace tags, merges adjacent <mn> elements, and
-    normalizes decimal/thousands notation so that format-only
-    changes become invisible.
+    Removes mspace tags and normalizes decimal/thousands notation
+    inside <mn> tags so that format-only changes become invisible.
     """
     result = _MSPACE_RE.sub("", block)
-    result = _ADJACENT_MN_RE.sub("", result)
     result = _MN_CONTENT_RE.sub(_normalize_mn_content, result)
     result = re.sub(r"\s+", " ", result)
     return result.strip()

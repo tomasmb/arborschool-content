@@ -184,6 +184,13 @@ def _validate_rescan(
 # ------------------------------------------------------------------
 
 
+def _has_unfixed_categories(
+    item: dict, phase_cats: set[str],
+) -> bool:
+    """True if the item has issues in categories not in this phase."""
+    return bool(_item_categories(item) - phase_cats)
+
+
 def _process_one(
     client: OpenAIClient,
     key: str,
@@ -207,7 +214,6 @@ def _process_one(
             "input_tokens": llm_in, "output_tokens": llm_out,
         }
 
-    # If both deterministic and LLM apply, chain them
     if det_fixed and llm_fixed:
         fixed = apply_deterministic_fixes(
             llm_fixed,
@@ -220,6 +226,24 @@ def _process_one(
         return {
             "key": key, "status": "sanity_fail",
             "reasons": sanity_reasons, "fixed": fixed,
+            "input_tokens": llm_in, "output_tokens": llm_out,
+        }
+
+    # Deterministic-only fixes: sanity checks suffice, skip
+    # LLM rescan (it catches unrelated pre-existing issues).
+    if not use_llm:
+        return {
+            "key": key, "status": "ok",
+            "fixed": fixed, "reasons": [],
+            "input_tokens": llm_in, "output_tokens": llm_out,
+        }
+
+    # LLM fixes: run rescan but skip when pre-existing issues
+    # from unfixed categories would cause false negatives.
+    if _has_unfixed_categories(item, phase_cats):
+        return {
+            "key": key, "status": "ok",
+            "fixed": fixed, "reasons": ["rescan_skipped"],
             "input_tokens": llm_in, "output_tokens": llm_out,
         }
 
