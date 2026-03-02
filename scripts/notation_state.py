@@ -1,18 +1,20 @@
-"""Persistent state management for the notation fix pipeline.
+"""Persistent state management for the notation scan pipeline.
 
 Tracks every scanned item through its lifecycle:
-  ok -> (no issues)
-  flagged -> (fix) -> pending_validate -> pending_revalidate
-          -> pass -> applied -> verified
-  fail / sanity_fail -> (retry) -> review
+  ok              -> no issues found
+  flagged         -> issues detected by scan (Pass 1, low reasoning)
+  confirmed       -> issues validated by confirm pass (Pass 2, medium)
+  false_positive  -> all flagged issues rejected as false positives
+  fix_ok          -> fix applied and validated (sanity + re-scan)
+  fix_fail        -> fix failed validation (sanity or re-scan)
+  review          -> needs manual inspection
 
 State is saved to JSON after every phase so the pipeline
-can resume from crashes and retry failed items.
+can resume from crashes.
 """
 
 from __future__ import annotations
 
-import difflib
 import json
 import logging
 from datetime import datetime
@@ -23,16 +25,13 @@ logger = logging.getLogger(__name__)
 _PIPELINE_DIR = Path("app/data/.notation_pipeline")
 
 STATUSES = (
-    "ok",                   # scanned, no issues
-    "flagged",              # issues detected, awaiting fix (Pass 1)
-    "pending_validate",     # has correction, awaiting sanity+validate
-    "sanity_fail",          # failed deterministic checks
-    "pending_revalidate",   # passed validation, awaiting revalidation
-    "pass",                 # revalidated, ready to apply
-    "fail",                 # LLM validation or revalidation failed
-    "applied",              # fix written to disk
-    "verified",             # post-apply re-scan came back clean
-    "review",               # exhausted retries, needs manual fix
+    "ok",
+    "flagged",
+    "confirmed",
+    "false_positive",
+    "fix_ok",
+    "fix_fail",
+    "review",
 )
 
 
@@ -56,12 +55,9 @@ def new_item(
         "file_path": file_path,
         "status": status,
         "original": original,
-        "corrected": None,
         "issues": [],
-        "sanity_result": None,
-        "validation_result": None,
-        "retries": 0,
-        "retry_feedback": [],
+        "confirmed_issues": [],
+        "rejected_issues": [],
     }
 
 
@@ -73,7 +69,9 @@ def new_item(
 class PipelineState:
     """Manages the JSON state file for one pipeline run."""
 
-    def __init__(self, pool: str, timestamp: str | None = None) -> None:
+    def __init__(
+        self, pool: str, timestamp: str | None = None,
+    ) -> None:
         self.pool = pool
         self.timestamp = timestamp or datetime.now().strftime(
             "%Y%m%d_%H%M%S",
@@ -131,7 +129,9 @@ class PipelineState:
     def get_item(self, key: str) -> dict | None:
         return self.items.get(key)
 
-    def items_by_status(self, *statuses: str) -> list[tuple[str, dict]]:
+    def items_by_status(
+        self, *statuses: str,
+    ) -> list[tuple[str, dict]]:
         return [
             (k, v) for k, v in self.items.items()
             if v["status"] in statuses
@@ -151,6 +151,15 @@ class PipelineState:
             counts[s] = counts.get(s, 0) + 1
         return counts
 
+    def category_summary(self) -> dict[str, int]:
+        """Count confirmed issues by fix category."""
+        counts: dict[str, int] = {}
+        for item in self.items.values():
+            for ci in item.get("confirmed_issues", []):
+                cat = ci.get("category", "unknown")
+                counts[cat] = counts.get(cat, 0) + 1
+        return counts
+
     def print_summary(self) -> None:
         """Print a human-readable summary to stdout."""
         s = self.summary()
@@ -165,7 +174,14 @@ class PipelineState:
             n = s.get(status, 0)
             if n > 0:
                 print(f"  {status:20s}: {n}")
-        print(f"Tokens: {tin:,} in / {tout:,} out")
+        cats = self.category_summary()
+        if cats:
+            print("\nConfirmed issues by category:")
+            for cat, n in sorted(
+                cats.items(), key=lambda x: -x[1],
+            ):
+                print(f"  {cat:35s}: {n}")
+        print(f"\nTokens: {tin:,} in / {tout:,} out")
         print(f"Est. cost: ${cost:.2f}")
         print(f"State file: {self.path}")
         print("=" * 50)
@@ -175,37 +191,29 @@ class PipelineState:
 # Populate state from scan results
 # ------------------------------------------------------------------
 
+# ScanItem: (key, source, file_path, content, label)
+ScanItem = tuple[str, str, str, str, str]
+
 
 def populate_from_scan(
     state: PipelineState,
-    scan_results: list[dict],
-    atoms: list[tuple[str, Path, list[dict]]],
-    mcs: list[tuple[str, Path, str]],
-    exs: list[tuple[str, Path, str]],
-    vas: list[tuple[str, Path, str]],
+    items: list[ScanItem],
+    results: list[dict],
 ) -> None:
-    """Convert raw scan results into tracked state items.
+    """Convert scan results into tracked state items.
 
-    Scan-only results have ``issues`` but no ``corrected`` content.
-    Items are created with ``flagged`` status.
+    Each result maps 1:1 to an input item. Items with issues
+    get ``flagged`` status; clean items are counted as ok.
     """
-    atoms_map = {aid: (p, items) for aid, p, items in atoms}
-    single_orig: dict[str, str] = {}
-    single_path: dict[str, str] = {}
-    for aid, p, html in mcs:
-        single_orig[f"mini-class:{aid}"] = html
-        single_path[f"mini-class:{aid}"] = str(p)
-    for label, p, xml in exs:
-        single_orig[f"exemplar:{label}"] = xml
-        single_path[f"exemplar:{label}"] = str(p)
-    for label, p, xml in vas:
-        single_orig[f"variant:{label}"] = xml
-        single_path[f"variant:{label}"] = str(p)
-
+    content_map = {
+        key: (source, fp, content)
+        for key, source, fp, content, _ in items
+    }
     total_ok = total_errors = 0
-    for r in scan_results:
+    for r in results:
         state.add_tokens(
-            r.get("input_tokens", 0), r.get("output_tokens", 0),
+            r.get("input_tokens", 0),
+            r.get("output_tokens", 0),
         )
         if r.get("error"):
             total_errors += 1
@@ -213,89 +221,39 @@ def populate_from_scan(
         if not r["has_issues"]:
             total_ok += 1
             continue
-        src, iid = r["source"], r["item_id"]
-        if src == "question":
-            _populate_question_items(state, r, atoms_map)
-        else:
-            key = f"{src}:{iid}"
-            si = new_item(
-                source=src, item_key=key,
-                file_path=single_path.get(key, ""),
-                original=single_orig.get(key, ""),
-            )
-            si["issues"] = r["issues"]
-            state.set_item(key, si)
+        key = r["key"]
+        source, fp, content = content_map[key]
+        si = new_item(
+            source=source, item_key=key,
+            file_path=fp, original=content,
+        )
+        si["issues"] = r["issues"]
+        state.set_item(key, si)
 
-    state.meta["total_scanned"] = len(scan_results)
+    state.meta["total_scanned"] = len(results)
     state.meta["total_ok"] = total_ok
     state.meta["total_errors"] = total_errors
 
 
-def _populate_question_items(
-    state: PipelineState,
-    r: dict,
-    atoms_map: dict[str, tuple[Path, list[dict]]],
-) -> None:
-    """Expand a batch scan result into per-question state items.
-
-    Scan-only results have ``flagged_items`` with issues but no
-    corrected XML. Items are created with ``flagged`` status.
-    """
-    aid = r["item_id"]
-    if aid not in atoms_map:
-        return
-    p9_path, atom_items = atoms_map[aid]
-    item_map = {it["item_id"]: it for it in atom_items}
-    for fi in r["flagged_items"]:
-        qid = fi.get("item_id", "")
-        orig_item = item_map.get(qid)
-        if not orig_item:
-            continue
-        key = f"q:{aid}:{qid}"
-        si = new_item(
-            source="question", item_key=key,
-            file_path=str(p9_path),
-            original=orig_item.get("qti_xml", ""),
-        )
-        si["issues"] = fi.get("issues", [])
-        si["atom_id"] = aid
-        si["question_id"] = qid
-        state.set_item(key, si)
-
-
 # ------------------------------------------------------------------
-# Review queue export
+# Export helpers
 # ------------------------------------------------------------------
 
 
 def export_review_queue(state: PipelineState) -> Path | None:
-    """Write a review queue JSON for items stuck in fail/review."""
-    reviewable = state.items_by_status("fail", "review", "sanity_fail")
+    """Write a review queue JSON for items needing manual review."""
+    reviewable = state.items_by_status("review")
     if not reviewable:
         print("No items need manual review.")
         return None
 
     entries: list[dict] = []
     for key, item in reviewable:
-        diff = _unified_diff(
-            item.get("original", ""),
-            item.get("corrected", ""),
-            key,
-        )
         entries.append({
             "item_key": key,
             "file_path": item.get("file_path", ""),
-            "status": item["status"],
-            "retries": item.get("retries", 0),
             "issues": item.get("issues", []),
-            "sanity_reasons": (
-                item.get("sanity_result", {}) or {}
-            ).get("reasons", []),
-            "validation_reasons": (
-                item.get("validation_result", {}) or {}
-            ).get("reasons", []),
-            "retry_feedback": item.get("retry_feedback", []),
-            "diff": diff,
+            "confirmed_issues": item.get("confirmed_issues", []),
         })
 
     out_path = _PIPELINE_DIR / f"review_queue_{state.pool}.json"
@@ -304,43 +262,12 @@ def export_review_queue(state: PipelineState) -> Path | None:
         encoding="utf-8",
     )
     print(f"Review queue: {len(entries)} items -> {out_path}")
-    _print_review_summary(entries)
     return out_path
-
-
-def _print_review_summary(entries: list[dict]) -> None:
-    """Print a concise summary of items needing review."""
-    for e in entries:
-        reasons = (
-            e["sanity_reasons"]
-            or e["validation_reasons"]
-            or ["unknown"]
-        )
-        print(f"  [{e['status']}] {e['item_key']}")
-        for r in reasons:
-            print(f"    - {r}")
 
 
 # ------------------------------------------------------------------
 # Helpers
 # ------------------------------------------------------------------
-
-
-def _unified_diff(
-    original: str, corrected: str | None, label: str,
-) -> str:
-    """Generate a unified diff string."""
-    if not corrected:
-        return "(no corrected version available)"
-    orig_lines = original.splitlines(keepends=True)
-    corr_lines = corrected.splitlines(keepends=True)
-    diff = difflib.unified_diff(
-        orig_lines, corr_lines,
-        fromfile=f"original/{label}",
-        tofile=f"corrected/{label}",
-        n=3,
-    )
-    return "".join(diff) or "(no differences)"
 
 
 def _update_latest_symlink(pool: str, target: Path) -> None:

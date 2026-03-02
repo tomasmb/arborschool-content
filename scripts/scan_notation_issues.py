@@ -1,7 +1,10 @@
-"""Scan, fix, and validate notation / text quality issues.
+"""Scan and confirm notation / text quality issues.
 
-Pass 1 (default): scan-only, detect issues with low reasoning.
-Pass 2-4 (--fix): fix -> validate -> revalidate -> apply.
+Every item (question, mini-class, exemplar, variant) is scanned
+individually — one LLM call per item, no batching.
+
+Pass 1 (default): scan-only, low reasoning.
+Pass 2 (--confirm): validate flagged issues, medium reasoning.
 """
 
 from __future__ import annotations
@@ -19,14 +22,14 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.prompts.notation_check import (
-    build_scan_batch_prompt,
+    ISSUE_CATEGORIES,
+    build_confirm_prompt,
     build_scan_mini_class_prompt,
     build_scan_xml_file_prompt,
 )
-from scripts.notation_fix_apply import run_pipeline
 from scripts.notation_state import (
     PipelineState,
-    export_review_queue,
+    ScanItem,
     populate_from_scan,
 )
 
@@ -37,85 +40,96 @@ _ML_ROOT = Path("app/data/mini-lessons")
 _PRUEBAS_ROOT = Path("app/data/pruebas")
 _PRINT_LOCK = threading.Lock()
 
-_MAX_BATCH_CHARS = 600_000
-_POOL_CHOICES = ("questions", "mini-classes", "exemplars", "variants")
+_POOL_CHOICES = (
+    "questions", "mini-classes", "exemplars", "variants",
+)
 
 
 # ------------------------------------------------------------------
-# Data iterators
+# Data iterators — each returns list[ScanItem]
+# ScanItem = (key, source, file_path, content, label)
 # ------------------------------------------------------------------
 
 
-def _iter_atoms(
+def _iter_questions(
     atom_filter: set[str] | None = None,
-) -> list[tuple[str, Path, list[dict]]]:
-    """Return (atom_id, json_path, items) for phase_9 files."""
-    atoms: list[tuple[str, Path, list[dict]]] = []
-    for p9 in sorted(
-        _QG_ROOT.glob("*/checkpoints/phase_9_final_validation.json"),
-    ):
-        atom_id = p9.parent.parent.name
-        if atom_filter and atom_id not in atom_filter:
+) -> list[ScanItem]:
+    """Yield one ScanItem per individual question."""
+    items: list[ScanItem] = []
+    for p9 in sorted(_QG_ROOT.glob(
+        "*/checkpoints/phase_9_final_validation.json",
+    )):
+        aid = p9.parent.parent.name
+        if atom_filter and aid not in atom_filter:
             continue
-        data = json.loads(p9.read_text(encoding="utf-8"))
-        items = data.get("items", [])
-        if items:
-            atoms.append((atom_id, p9, items))
-    return atoms
+        data = json.loads(p9.read_text("utf-8"))
+        for it in data.get("items", []):
+            xml = it.get("qti_xml", "")
+            qid = it.get("item_id", "")
+            if xml and qid:
+                items.append((
+                    f"q:{aid}:{qid}", "question",
+                    str(p9), xml, f"{aid}/{qid}",
+                ))
+    return items
 
 
 def _iter_mini_classes(
     atom_filter: set[str] | None = None,
-) -> list[tuple[str, Path, str]]:
-    """Return (atom_id, html_path, html) for published mini-classes."""
-    lessons: list[tuple[str, Path, str]] = []
+) -> list[ScanItem]:
+    """Yield one ScanItem per mini-class HTML."""
     if not _ML_ROOT.exists():
-        return lessons
-    for atom_dir in sorted(_ML_ROOT.iterdir()):
-        if not atom_dir.is_dir() or atom_dir.name.startswith("."):
+        return []
+    out: list[ScanItem] = []
+    for d in sorted(_ML_ROOT.iterdir()):
+        if not d.is_dir() or d.name.startswith("."):
             continue
-        if atom_filter and atom_dir.name not in atom_filter:
+        if atom_filter and d.name not in atom_filter:
             continue
-        html_path = atom_dir / "mini-class.html"
-        if html_path.exists():
-            html = html_path.read_text(encoding="utf-8")
-            lessons.append((atom_dir.name, html_path, html))
-    return lessons
+        hp = d / "mini-class.html"
+        if hp.exists():
+            out.append((
+                f"mini-class:{d.name}", "mini-class",
+                str(hp), hp.read_text("utf-8"), d.name,
+            ))
+    return out
 
 
-def _iter_exemplars() -> list[tuple[str, Path, str]]:
-    """Return (label, xml_path, xml) for exemplar questions."""
+def _iter_exemplars() -> list[ScanItem]:
+    """Yield one ScanItem per exemplar question XML."""
     root = _PRUEBAS_ROOT / "finalizadas"
     if not root.exists():
         return []
-    items: list[tuple[str, Path, str]] = []
-    for xml_path in sorted(root.glob("*/qti/*/question.xml")):
-        prueba = xml_path.parent.parent.parent.name
-        q_id = xml_path.parent.name
-        label = f"{prueba}/{q_id}"
-        items.append((label, xml_path, xml_path.read_text("utf-8")))
-    return items
+    out: list[ScanItem] = []
+    for xp in sorted(root.glob("*/qti/*/question.xml")):
+        prueba = xp.parent.parent.parent.name
+        qid = xp.parent.name
+        label = f"{prueba}/{qid}"
+        out.append((
+            f"exemplar:{label}", "exemplar",
+            str(xp), xp.read_text("utf-8"), label,
+        ))
+    return out
 
 
-def _iter_variants() -> list[tuple[str, Path, str]]:
-    """Return (label, xml_path, xml) for variant questions."""
+def _iter_variants() -> list[ScanItem]:
+    """Yield one ScanItem per variant question XML."""
     root = _PRUEBAS_ROOT / "alternativas"
     if not root.exists():
         return []
-    items: list[tuple[str, Path, str]] = []
-    for xml_path in sorted(
-        root.glob("*/Q*/approved/*/question.xml"),
-    ):
-        parts = xml_path.relative_to(root).parts
-        prueba, q_id = parts[0], parts[1]
-        variant = parts[3]
-        label = f"{prueba}/{q_id}/{variant}"
-        items.append((label, xml_path, xml_path.read_text("utf-8")))
-    return items
+    out: list[ScanItem] = []
+    for xp in sorted(root.glob("*/Q*/approved/*/question.xml")):
+        parts = xp.relative_to(root).parts
+        label = f"{parts[0]}/{parts[1]}/{parts[3]}"
+        out.append((
+            f"variant:{label}", "variant",
+            str(xp), xp.read_text("utf-8"), label,
+        ))
+    return out
 
 
 # ------------------------------------------------------------------
-# Pass 1: Scan-only (detect issues, no corrections)
+# Pass 1: Scan-only (one LLM call per item)
 # ------------------------------------------------------------------
 
 
@@ -127,68 +141,15 @@ def _parse_response(raw: str) -> dict:
         return {"parse_error": True}
 
 
-def _split_batches(qti_xmls: list[str]) -> list[list[str]]:
-    """Split XMLs into sub-batches under _MAX_BATCH_CHARS each."""
-    batches: list[list[str]] = []
-    current: list[str] = []
-    current_chars = 0
-    for xml in qti_xmls:
-        if current and current_chars + len(xml) > _MAX_BATCH_CHARS:
-            batches.append(current)
-            current, current_chars = [], 0
-        current.append(xml)
-        current_chars += len(xml)
-    if current:
-        batches.append(current)
-    return batches
-
-
-def _scan_atom(
-    client: OpenAIClient, atom_id: str, items: list[dict],
+def _scan_one(
+    client: OpenAIClient, item: ScanItem,
 ) -> dict:
-    """Scan all questions in an atom (detect only, no fix)."""
-    xmls = [
-        it.get("qti_xml", "") for it in items if it.get("qti_xml")
-    ]
-    if not xmls:
-        return _result("question", atom_id, 0)
-
-    batches = _split_batches(xmls)
-    all_flagged: list[dict] = []
-    total_in = total_out = 0
-
-    try:
-        for batch in batches:
-            prompt = build_scan_batch_prompt(atom_id, batch)
-            resp = client.call(
-                prompt,
-                response_format={"type": "json_object"},
-                reasoning_effort="low",
-            )
-            data = _parse_response(resp.text)
-            all_flagged.extend(data.get("items", []))
-            total_in += resp.usage.input_tokens
-            total_out += resp.usage.output_tokens
-        return _result(
-            "question", atom_id, len(xmls),
-            flagged_items=all_flagged,
-            tin=total_in, tout=total_out,
-        )
-    except Exception as exc:
-        logger.warning("Scan failed for %s: %s", atom_id, exc)
-        return _result(
-            "question", atom_id, len(xmls),
-            flagged_items=all_flagged, error=str(exc),
-            tin=total_in, tout=total_out,
-        )
-
-
-def _scan_single(
-    client: OpenAIClient, label: str, content: str,
-    source: str, prompt_fn: callable,
-) -> dict:
-    """Scan a single content item (detect only, no fix)."""
-    prompt = prompt_fn(label, content)
+    """Scan a single item (question, mini-class, etc.)."""
+    key, source, _fp, content, label = item
+    if source == "mini-class":
+        prompt = build_scan_mini_class_prompt(label, content)
+    else:
+        prompt = build_scan_xml_file_prompt(label, content)
     try:
         resp = client.call(
             prompt,
@@ -196,106 +157,154 @@ def _scan_single(
             reasoning_effort="low",
         )
         data = _parse_response(resp.text)
-        status = data.get("status", "OK")
-        issues = data.get("issues", [])
-        return _result(
-            source, label, 1,
-            issues=issues if status == "HAS_ISSUES" else None,
-            tin=resp.usage.input_tokens,
-            tout=resp.usage.output_tokens,
-        )
+        has = data.get("status") == "HAS_ISSUES"
+        issues = data.get("issues", []) if has else []
+        return {
+            "key": key, "has_issues": has,
+            "issues": issues, "error": None,
+            "input_tokens": resp.usage.input_tokens,
+            "output_tokens": resp.usage.output_tokens,
+        }
     except Exception as exc:
-        logger.warning("Scan failed for %s %s: %s", source, label, exc)
-        return _result(source, label, 1, error=str(exc))
-
-
-def _result(
-    source: str, item_id: str, n: int, *,
-    flagged_items: list[dict] | None = None,
-    issues: list[str] | None = None,
-    error: str | None = None,
-    tin: int = 0, tout: int = 0,
-) -> dict:
-    has_issues: bool | None = None
-    if error is None:
-        if flagged_items is not None:
-            has_issues = len(flagged_items) > 0
-        else:
-            has_issues = issues is not None and len(issues) > 0
-    return {
-        "source": source, "item_id": item_id,
-        "items_checked": n,
-        "has_issues": has_issues,
-        "flagged_items": flagged_items or [],
-        "issues": issues or [],
-        "error": error,
-        "input_tokens": tin, "output_tokens": tout,
-    }
-
-
-# ------------------------------------------------------------------
-# Scan orchestration
-# ------------------------------------------------------------------
+        logger.warning("Scan failed %s: %s", key, exc)
+        return {
+            "key": key, "has_issues": None,
+            "issues": [], "error": str(exc),
+            "input_tokens": 0, "output_tokens": 0,
+        }
 
 
 def _run_scan(
     client: OpenAIClient,
-    atoms: list[tuple[str, Path, list[dict]]],
-    mcs: list[tuple[str, Path, str]],
-    exemplars: list[tuple[str, Path, str]],
-    variants: list[tuple[str, Path, str]],
+    items: list[ScanItem],
     workers: int,
 ) -> list[dict]:
-    """Pass 1: scan all content concurrently (detect only)."""
+    """Pass 1: scan every item individually and concurrently."""
     results: list[dict] = []
-    total = len(atoms) + len(mcs) + len(exemplars) + len(variants)
+    total = len(items)
     done = 0
-
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futs: dict = {}
-        for aid, _, items in atoms:
-            futs[pool.submit(
-                _scan_atom, client, aid, items,
-            )] = ("Q", aid)
-        for aid, _, html in mcs:
-            futs[pool.submit(
-                _scan_single, client, aid, html,
-                "mini-class", build_scan_mini_class_prompt,
-            )] = ("MC", aid)
-        for label, _, xml in exemplars:
-            futs[pool.submit(
-                _scan_single, client, label, xml,
-                "exemplar", build_scan_xml_file_prompt,
-            )] = ("EX", label)
-        for label, _, xml in variants:
-            futs[pool.submit(
-                _scan_single, client, label, xml,
-                "variant", build_scan_xml_file_prompt,
-            )] = ("VA", label)
-
+        futs = {
+            pool.submit(_scan_one, client, it): it
+            for it in items
+        }
         for fut in as_completed(futs):
             r = fut.result()
             results.append(r)
             done += 1
-            tag, aid = futs[fut]
+            it = futs[fut]
+            source = it[1]
+            tag = {
+                "question": "Q", "mini-class": "MC",
+                "exemplar": "EX", "variant": "VA",
+            }.get(source, "?")
             if r["error"]:
                 s = "ERROR"
             elif r["has_issues"]:
-                n_issues = (
-                    len(r["flagged_items"])
-                    if r["flagged_items"]
-                    else len(r["issues"])
-                )
-                s = f"FLAG({n_issues})"
+                s = f"FLAG({len(r['issues'])})"
             else:
                 s = "OK"
             with _PRINT_LOCK:
-                print(f"[{done}/{total}] [{tag}] [{s}] {aid}")
+                print(f"[{done}/{total}] [{tag}] [{s}] {r['key']}")
     return results
 
 
 # ------------------------------------------------------------------
-# CLI commands
+# Pass 2: Confirm flagged issues (medium reasoning)
+# ------------------------------------------------------------------
+
+
+def _confirm_one(
+    client: OpenAIClient, key: str, item: dict,
+) -> dict:
+    """Confirm or reject flagged issues for a single item."""
+    prompt = build_confirm_prompt(
+        content=item["original"],
+        issues=item.get("issues", []),
+    )
+    resp = client.call(
+        prompt,
+        response_format={"type": "json_object"},
+        reasoning_effort="medium",
+    )
+    data = _parse_response(resp.text)
+    return {
+        "key": key,
+        "confirmed": data.get("confirmed", []),
+        "rejected": data.get("rejected", []),
+        "input_tokens": resp.usage.input_tokens,
+        "output_tokens": resp.usage.output_tokens,
+    }
+
+
+def _validate_categories(confirmed: list[dict]) -> list[dict]:
+    """Normalise category values, falling back to manual_fix."""
+    for ci in confirmed:
+        if ci.get("category") not in ISSUE_CATEGORIES:
+            ci["category"] = "manual_fix"
+    return confirmed
+
+
+def _run_confirm(
+    client: OpenAIClient,
+    state: PipelineState,
+    workers: int,
+) -> None:
+    """Pass 2: validate each flagged item concurrently."""
+    flagged = state.items_by_status("flagged")
+    if not flagged:
+        print("No flagged items to confirm.")
+        return
+    total = len(flagged)
+    done = 0
+    print(f"Confirming {total} flagged items (medium reasoning)...")
+
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futs = {
+            pool.submit(_confirm_one, client, key, item): key
+            for key, item in flagged
+        }
+        for fut in as_completed(futs):
+            key = futs[fut]
+            done += 1
+            try:
+                r = fut.result()
+            except Exception as exc:
+                logger.warning(
+                    "Confirm failed for %s: %s", key, exc,
+                )
+                with _PRINT_LOCK:
+                    print(f"  [{done}/{total}] [ERROR] {key}")
+                continue
+
+            item = state.get_item(key)
+            state.add_tokens(
+                r["input_tokens"], r["output_tokens"],
+            )
+            confirmed = _validate_categories(r["confirmed"])
+            rejected = r["rejected"]
+            item["confirmed_issues"] = confirmed
+            item["rejected_issues"] = rejected
+
+            if confirmed:
+                item["status"] = "confirmed"
+                tag = "CONFIRMED"
+            else:
+                item["status"] = "false_positive"
+                tag = "FP"
+
+            with _PRINT_LOCK:
+                print(
+                    f"  [{done}/{total}] [{tag}] {key}"
+                    f" ({len(confirmed)} conf, "
+                    f"{len(rejected)} rej)",
+                )
+
+    state.save()
+
+
+# ------------------------------------------------------------------
+# CLI
 # ------------------------------------------------------------------
 
 
@@ -309,136 +318,92 @@ def _pool_name(args: argparse.Namespace) -> str:
     return args.only or "all"
 
 
-def _load_data(
+def _load_items(
     args: argparse.Namespace,
-) -> tuple[list, list, list, list]:
-    """Load data iterators based on --only and --atoms flags."""
-    af: set[str] | None = None
-    if args.atoms:
-        af = {a.strip() for a in args.atoms.split(",")}
-    only = args.only
-    atoms = _iter_atoms(af) if only in (None, "questions") else []
-    mcs = _iter_mini_classes(af) if only in (None, "mini-classes") else []
-    exs = _iter_exemplars() if only in (None, "exemplars") else []
-    vas = _iter_variants() if only in (None, "variants") else []
-    return atoms, mcs, exs, vas
+) -> list[ScanItem]:
+    """Build flat list of items to scan based on CLI flags."""
+    af = (
+        {a.strip() for a in args.atoms.split(",")}
+        if args.atoms else None
+    )
+    o = args.only
+    items: list[ScanItem] = []
+    if o in (None, "questions"):
+        items.extend(_iter_questions(af))
+    if o in (None, "mini-classes"):
+        items.extend(_iter_mini_classes(af))
+    if o in (None, "exemplars"):
+        items.extend(_iter_exemplars())
+    if o in (None, "variants"):
+        items.extend(_iter_variants())
+    return items
 
 
 def _cmd_scan(args: argparse.Namespace) -> None:
-    """Pass 1: scan-only (detect issues, no corrections)."""
+    """Pass 1: scan every item individually (low reasoning)."""
     _require_api_key()
-    atoms, mcs, exs, vas = _load_data(args)
-
-    tq = sum(len(it) for _, _, it in atoms)
-    print(
-        f"Loaded {len(atoms)} atoms ({tq} Qs), {len(mcs)} MCs, "
-        f"{len(exs)} exemplars, {len(vas)} variants",
-    )
-    pool_size = len(atoms) + len(mcs) + len(exs) + len(vas)
-    if pool_size == 0:
+    items = _load_items(args)
+    src_counts: dict[str, int] = {}
+    for _, source, *_ in items:
+        src_counts[source] = src_counts.get(source, 0) + 1
+    parts = [f"{n} {s}" for s, n in sorted(src_counts.items())]
+    print(f"Loaded {len(items)} items: {', '.join(parts)}")
+    if not items:
         print("Nothing to scan.")
         return
-
-    w = min(args.workers, pool_size)
+    w = min(args.workers, len(items))
     client = load_default_openai_client(model="gpt-5.1")
-
-    print(f"Pass 1: scanning with {w} workers (low reasoning)...")
-    scan_results = _run_scan(client, atoms, mcs, exs, vas, w)
-
+    print(f"Scanning {len(items)} items with {w} workers "
+          f"(low reasoning, 1 item per call)...")
+    results = _run_scan(client, items, w)
     state = PipelineState(pool=_pool_name(args))
-    populate_from_scan(state, scan_results, atoms, mcs, exs, vas)
+    populate_from_scan(state, items, results)
     state.save()
     state.print_summary()
 
 
-def _cmd_fix(args: argparse.Namespace) -> None:
-    """Passes 2-4: fix flagged items from the latest scan state."""
+def _load_state(
+    args: argparse.Namespace,
+) -> PipelineState | None:
+    """Load state from --state path or latest for the pool."""
+    if args.state:
+        return PipelineState.load(Path(args.state))
+    return PipelineState.load_latest(_pool_name(args))
+
+
+def _cmd_confirm(args: argparse.Namespace) -> None:
+    """Pass 2: confirm flagged issues (medium reasoning)."""
     _require_api_key()
-    state = PipelineState.load_latest(_pool_name(args))
+    state = _load_state(args)
     if not state:
-        print(f"No saved state for pool '{_pool_name(args)}'.")
-        print("Run a scan first (without --fix).")
+        print("No saved state. Run a scan first.")
         return
     flagged = state.items_by_status("flagged")
     if not flagged:
-        print("No flagged items to fix.")
+        print("No flagged items to confirm.")
         state.print_summary()
         return
-    print(f"Fixing {len(flagged)} flagged items...")
+    print(f"Found {len(flagged)} flagged items to confirm.")
     client = load_default_openai_client(model="gpt-5.1")
-    run_pipeline(
-        client, state,
-        workers=args.workers,
-        max_retries=2,
-    )
+    _run_confirm(client, state, args.workers)
+    state.print_summary()
 
 
 def _cmd_status(args: argparse.Namespace) -> None:
     """Show pipeline state for a pool."""
-    state = PipelineState.load_latest(_pool_name(args))
+    state = _load_state(args)
     if not state:
         print(f"No saved state for pool '{_pool_name(args)}'.")
         return
     state.print_summary()
-
-
-def _cmd_retry(args: argparse.Namespace) -> None:
-    """Retry failed items from the latest state."""
-    _require_api_key()
-    state = PipelineState.load_latest(_pool_name(args))
-    if not state:
-        print(f"No saved state for pool '{_pool_name(args)}'.")
-        return
-    retryable = state.items_by_status("fail", "sanity_fail", "review")
-    if not retryable:
-        print("No failed items to retry.")
-        state.print_summary()
-        return
-    print(f"Retrying {len(retryable)} failed items...")
-    for _, item in retryable:
-        if item["status"] == "review":
-            item["status"] = "fail"
-    client = load_default_openai_client(model="gpt-5.1")
-    run_pipeline(client, state, workers=args.workers, max_retries=2)
-
-
-def _cmd_verify(args: argparse.Namespace) -> None:
-    """Re-verify applied items from the latest state."""
-    _require_api_key()
-    from scripts.notation_fix_apply import _phase_verify
-    state = PipelineState.load_latest(_pool_name(args))
-    if not state:
-        print(f"No saved state for pool '{_pool_name(args)}'.")
-        return
-    applied = state.items_by_status("applied")
-    if not applied:
-        print("No applied items to verify.")
-        state.print_summary()
-        return
-    print(f"Verifying {len(applied)} applied items...")
-    client = load_default_openai_client(model="gpt-5.1")
-    _phase_verify(client, state, args.workers)
-    state.save()
-    state.print_summary()
-
-
-def _cmd_review(args: argparse.Namespace) -> None:
-    """Export review queue for manual fixing."""
-    state = PipelineState.load_latest(_pool_name(args))
-    if not state:
-        print(f"No saved state for pool '{_pool_name(args)}'.")
-        return
-    export_review_queue(state)
-
-
-# ------------------------------------------------------------------
-# CLI
-# ------------------------------------------------------------------
 
 
 def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
-        description="Notation & text quality scanner with pipeline.",
+        description=(
+            "Notation & text quality scanner — "
+            "individual items, no batching."
+        ),
     )
     p.add_argument(
         "--only", choices=list(_POOL_CHOICES), default=None,
@@ -446,31 +411,26 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument("--workers", type=int, default=8)
     p.add_argument("--atoms", type=str, default=None)
     p.add_argument(
-        "--fix", action="store_true",
-        help="Run Passes 2-4: fix + validate + revalidate + apply",
+        "--confirm", action="store_true",
+        help=(
+            "Pass 2: confirm flagged issues with medium "
+            "reasoning, categorise, eliminate false positives"
+        ),
+    )
+    p.add_argument(
+        "--state", type=str, default=None,
+        help="Path to a specific state JSON file to use",
     )
     p.add_argument(
         "--status", action="store_true",
         help="Show pipeline state for the specified pool",
-    )
-    p.add_argument(
-        "--retry", action="store_true",
-        help="Retry failed items from the latest saved state",
-    )
-    p.add_argument(
-        "--verify", action="store_true",
-        help="Re-verify applied items from the latest saved state",
-    )
-    p.add_argument(
-        "--review", action="store_true",
-        help="Export review queue for items needing manual fixing",
     )
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
 
 
 def main() -> None:
-    """CLI entry point — dispatches to the appropriate command."""
+    """CLI entry point."""
     args = _parse_args()
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -478,14 +438,8 @@ def main() -> None:
     )
     if args.status:
         _cmd_status(args)
-    elif args.review:
-        _cmd_review(args)
-    elif args.retry:
-        _cmd_retry(args)
-    elif args.verify:
-        _cmd_verify(args)
-    elif args.fix:
-        _cmd_fix(args)
+    elif args.confirm:
+        _cmd_confirm(args)
     else:
         _cmd_scan(args)
 

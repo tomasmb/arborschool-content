@@ -1,7 +1,9 @@
 """Prompts for auditing Chilean PAES notation and text quality.
 
-Prompt families: scan-only (Pass 1), fix-only (Pass 2),
-validate (Pass 3), revalidate (Pass 4), retry.
+Prompt families:
+- scan-only (Pass 1, low reasoning): detect issues per item.
+- confirm (Pass 2, medium reasoning): validate flagged issues,
+  eliminate false positives, and categorise confirmed issues.
 """
 
 from __future__ import annotations
@@ -65,7 +67,7 @@ hashes SHA. No corrijas gramática ni estilo.
 
 _STANDARDS = _NOTATION_STANDARD + _QUALITY_STANDARD
 
-# -- Scan-only prompts — Pass 1: detect, no corrections -----------
+# -- Scan-only prompt — Pass 1: detect, no corrections -----------
 
 _SCAN_ONLY_SINGLE = """\
 <role>
@@ -100,309 +102,100 @@ Si hay problemas:
 </output_format>
 """
 
-_SCAN_ONLY_BATCH = """\
+
+# -- Confirm-issues prompt — Pass 2: validate + categorise --------
+
+ISSUE_CATEGORIES = (
+    "deterministic_thousands_sep",
+    "deterministic_encoding",
+    "deterministic_mathml_split",
+    "deterministic_spacing",
+    "manual_fix",
+    "ignore",
+)
+
+_CONFIRM_ISSUES_PROMPT = """\
 <role>
-Revisor experto de contenido educativo matemático PAES M1 \
-(Chile). DETECTAR problemas de notación numérica y calidad \
-de texto en un lote de preguntas QTI XML. NO corrijas.
+Auditor QA senior de contenido educativo matemático PAES M1 \
+(Chile). Un escaneo automático previo (modelo de baja capacidad) \
+marcó los problemas listados abajo. Tu tarea es:
+1. Confirmar cuáles son problemas REALES.
+2. Descartar falsos positivos.
+3. Clasificar cada problema real en una categoría de corrección.
 </role>
 
 {standards}\
-<questions>
-{content}
-</questions>
-
-<task>
-Revisa CADA pregunta buscando problemas de NOTATION y \
-TEXT_QUALITY. Solo REPORTA los problemas por pregunta. \
-NO generes XML corregido.
-</task>
-
-<output_format>
-JSON puro (sin markdown):
-
-Si ninguna pregunta tiene problemas:
-{{"items": []}}
-
-Si hay preguntas con problemas:
-{{
-  "items": [
-    {{"item_id": "question-11", "issues": ["Descripción breve"]}}
-  ]
-}}
-
-- item_id = atributo identifier de la pregunta.
-- Solo incluye preguntas con problemas reales.
-- NO incluyas corrected_xml.
-</output_format>
-"""
-
-
-# -- Fix-only prompts — Pass 2: correct detected issues -----------
-
-_FIX_ONLY_SINGLE = """\
-<role>
-Revisor experto de contenido educativo matemático PAES M1 \
-(Chile). Tu tarea es CORREGIR los problemas detectados \
-previamente y devolver una versión corregida.
-</role>
-
-{standards}\
-<detected_issues>
-{issues_description}
-</detected_issues>
-
 <content>
 {content}
 </content>
 
+<flagged_issues>
+{issues_list}
+</flagged_issues>
+
 <task>
-Los problemas en detected_issues fueron identificados por un \
-escaneo previo. Produce una versión COMPLETA corregida que \
-resuelva estos problemas. Correcciones MÍNIMAS: solo corrige \
-lo necesario. La versión corregida debe ser el documento \
-completo, no un fragmento.
+Para CADA problema en flagged_issues:
+1. Revisa si es un problema REAL en el contenido.
+2. Si es real, clasifícalo en UNA de estas categorías:
+   - "deterministic_thousands_sep": punto usado como separador \
+de miles en texto plano o MathML donde el contexto lo confirma \
+(montos en pesos, cantidades inequívocamente enteras).
+   - "deterministic_encoding": texto con bytes corruptos, \
+caracteres de control, hex incrustado, tildes faltantes por \
+corrupción (NO tildes gramaticales).
+   - "deterministic_mathml_split": operadores o separadores \
+dentro de <mn> que deben separarse en elementos distintos, o \
+dígitos separados en múltiples <mn> que deben unificarse.
+   - "deterministic_spacing": espacios antes de signos de \
+interrogación, tabulaciones, guiones bajos en títulos, o \
+entidades HTML innecesarias.
+   - "manual_fix": problemas reales que requieren juicio humano \
+(texto en inglés, contenido duplicado, errores semánticos, \
+MathML con estructura compleja incorrecta, emojis).
+   - "ignore": NO es un problema real, o es un cambio de estilo \
+/ gramática que no debe tocarse.
+3. Si el modelo previo sugirió algo INCORRECTO (falso positivo), \
+clasifícalo como "ignore" y explica brevemente por qué.
+
+Sé CONSERVADOR: ante la duda, clasifica como "manual_fix" o \
+"ignore". NO inventes problemas que no estén en flagged_issues.
 </task>
 
 <output_format>
 JSON puro (sin markdown):
-
-Si los problemas no son reales o ya están resueltos:
-{{"status": "OK"}}
-
-Si se realizaron correcciones:
 {{
-  "status": "FIXED",
-  "issues": ["Descripción breve del cambio"],
-  "corrected_content": "<contenido completo corregido>"
-}}
-
-- corrected_content DEBE ser el documento COMPLETO.
-</output_format>
-"""
-
-_FIX_ONLY_BATCH = """\
-<role>
-Revisor experto de contenido educativo matemático PAES M1 \
-(Chile). CORREGIR los problemas detectados previamente en \
-un lote de preguntas QTI XML.
-</role>
-
-{standards}\
-<detected_issues>
-{issues_description}
-</detected_issues>
-
-<questions>
-{content}
-</questions>
-
-<task>
-Los problemas en detected_issues fueron identificados por un \
-escaneo previo. Para cada pregunta con problemas, produce su \
-QTI XML COMPLETO corregido. Solo incluye las preguntas que \
-necesitan corrección. Correcciones MÍNIMAS.
-</task>
-
-<output_format>
-JSON puro (sin markdown):
-
-Si ninguna pregunta tiene problemas reales:
-{{"items": []}}
-
-Si hay correcciones:
-{{
-  "items": [
+  "confirmed": [
     {{
-      "item_id": "question-11",
-      "issues": ["Descripción breve del cambio"],
-      "corrected_xml": "<qti-assessment-item>...</qti-assessment-item>"
+      "issue": "Descripción del problema real",
+      "category": "deterministic_thousands_sep"
+    }}
+  ],
+  "rejected": [
+    {{
+      "original_issue": "Lo que reportó el escaneo previo",
+      "reason": "Por qué es falso positivo"
     }}
   ]
 }}
 
-- item_id = atributo identifier de la pregunta.
-- corrected_xml = QTI XML COMPLETO de esa pregunta.
+- "confirmed" contiene SOLO problemas reales con su categoría.
+- "rejected" contiene los falsos positivos descartados.
+- Si TODO es falso positivo: {{"confirmed": [], "rejected": [...]}}
+- Si TODO es real: {{"confirmed": [...], "rejected": []}}
 </output_format>
 """
-
-
-# -- Validate prompt — Pass 3: verify corrected version -----------
-
-_VALIDATE_PROMPT = """\
-<role>
-Verificador QA de contenido PAES M1 (Chile) en formato \
-{content_type}.
-</role>
-
-<changes_summary>
-Cambios reportados:
-{issues_description}
-</changes_summary>
-
-<original>
-{original}
-</original>
-
-<corrected>
-{corrected}
-</corrected>
-
-<task>
-Compara original vs corregida. Verifica TODO:
-1. Cada cambio aborda un problema real de notación o calidad.
-2. Significado matemático idéntico en todas las expresiones.
-3. No se perdió ni agregó contenido fuera de las correcciones.
-4. Estructura MathML/HTML sigue válida.
-5. Sin nuevos errores. Símbolos de moneda ($) preservados.
-6. Misma cantidad de alternativas de respuesta.
-7. Sin texto narrativo eliminado ni truncado.
-Si CUALQUIERA falla, el veredicto es FAIL.
-</task>
-
-<output_format>
-JSON puro:
-{{"verdict": "PASS"}}
-
-Si hay problemas:
-{{"verdict": "FAIL", "reasons": ["descripción del problema"]}}
-</output_format>
-"""
-
-
-# -- Revalidate prompt — Pass 4: semantic equivalence -------------
-
-_REVALIDATE_PROMPT = """\
-<role>
-Auditor QA independiente de contenido educativo PAES M1 (Chile).
-Tu única tarea es verificar que dos versiones de un contenido \
-son equivalentes en significado.
-</role>
-
-<before>
-{original}
-</before>
-
-<after>
-{corrected}
-</after>
-
-<task>
-La versión AFTER fue producida por un pipeline automatizado. \
-Verifica TODOS estos puntos:
-1. SIGNIFICADO MATEMÁTICO: ¿Mismo significado en ambas versiones?
-2. RESPUESTA CORRECTA: ¿La respuesta correcta es la misma?
-3. ALTERNATIVAS: ¿Todas las opciones presentes y equivalentes?
-4. CONTENIDO COMPLETO: ¿Falta texto o párrafos en AFTER?
-5. MATHML VÁLIDO: ¿El MathML en AFTER está bien formado?
-6. NUEVOS ERRORES: ¿Se introdujo algún error nuevo?
-
-NO evalúes formato numérico (comas vs puntos) ni separadores \
-de miles — esos cambios son intencionales.
-NO evalúes gramática ni estilo.
-</task>
-
-<output_format>
-JSON puro:
-{{"pass": true}}
-
-Si hay problemas:
-{{"pass": false, "issues": ["descripción del problema"]}}
-</output_format>
-"""
-
-
-# -- Retry prompt -------------------------------------------------
-
-_RETRY_PROMPT = """\
-<role>
-Revisor experto de contenido educativo matemático PAES M1 \
-(Chile). Un intento previo de corrección fue RECHAZADO. \
-Produce una nueva versión que evite los problemas identificados.
-</role>
-
-<previous_rejection>
-{rejection_reasons}
-</previous_rejection>
-
-<original>
-{original}
-</original>
-
-<task>
-Produce una versión corregida que:
-1. Corrija problemas reales de notación PAES y calidad.
-2. EVITE los errores señalados en previous_rejection.
-3. Sea MÁS CONSERVADORA: solo corrige lo 100% seguro.
-4. NO elimines símbolos ($), operadores, ni contenido.
-Si el original NO tiene problemas reales, devuelve "OK".
-</task>
-
-<output_format>
-JSON puro (sin markdown):
-
-Si no hay problemas reales:
-{{"status": "OK"}}
-
-Si hay correcciones seguras:
-{{
-  "status": "FIXED",
-  "issues": ["Descripción breve del cambio"],
-  "corrected_content": "<contenido completo corregido>"
-}}
-</output_format>
-"""
-
 
 # -- Preambles ----------------------------------------------------
 
-_QTI_BATCH_PREAMBLE = """\
-Lote de preguntas QTI XML del átomo {atom_id}. \
-Cada pregunta está delimitada por <qti-assessment-item>.\
-"""
-
 _MINI_CLASS_PREAMBLE = """\
-Mini-clase HTML educativa del átomo {atom_id}.\
+Mini-clase HTML educativa del átomo {label}.\
 """
 
 _XML_FILE_PREAMBLE = """\
-Pregunta QTI XML individual ({file_label}).\
+Pregunta QTI XML individual ({label}).\
 """
 
-# -- Builders: scan-only (Pass 1) ---------------------------------
-
-
-def build_scan_batch_prompt(
-    atom_id: str, qti_xmls: list[str],
-) -> str:
-    """Build a scan-only prompt for a batch of QTI questions."""
-    separator = "\n<!-- === NEXT ITEM === -->\n"
-    preamble = _QTI_BATCH_PREAMBLE.format(atom_id=atom_id)
-    return preamble + "\n\n" + _SCAN_ONLY_BATCH.format(
-        standards=_STANDARDS, content=separator.join(qti_xmls),
-    )
-
-
-def build_scan_mini_class_prompt(
-    atom_id: str, html: str,
-) -> str:
-    """Build a scan-only prompt for a single mini-class."""
-    preamble = _MINI_CLASS_PREAMBLE.format(atom_id=atom_id)
-    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
-        standards=_STANDARDS, content=html,
-    )
-
-
-def build_scan_xml_file_prompt(
-    file_label: str, xml: str,
-) -> str:
-    """Build a scan-only prompt for a standalone QTI XML file."""
-    preamble = _XML_FILE_PREAMBLE.format(file_label=file_label)
-    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
-        standards=_STANDARDS, content=xml,
-    )
-
-# -- Builders: fix-only (Pass 2) ----------------------------------
+# -- Helpers ------------------------------------------------------
 
 
 def _format_issues(issues: list[str]) -> str:
@@ -411,90 +204,96 @@ def _format_issues(issues: list[str]) -> str:
     return "(ninguna)"
 
 
-def build_fix_batch_prompt(
-    atom_id: str,
-    items_with_issues: list[dict],
-    qti_xmls: list[str],
-) -> str:
-    """Build a fix prompt for a batch of flagged QTI questions.
+# -- Builders: scan-only (Pass 1) ---------------------------------
 
-    ``items_with_issues``: dicts with ``item_id`` and ``issues``.
+
+def build_scan_mini_class_prompt(
+    label: str, html: str,
+) -> str:
+    """Build a scan-only prompt for a single mini-class."""
+    preamble = _MINI_CLASS_PREAMBLE.format(label=label)
+    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
+        standards=_STANDARDS, content=html,
+    )
+
+
+def build_scan_xml_file_prompt(
+    label: str, xml: str,
+) -> str:
+    """Build a scan-only prompt for a single QTI XML item."""
+    preamble = _XML_FILE_PREAMBLE.format(label=label)
+    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
+        standards=_STANDARDS, content=xml,
+    )
+
+
+# -- Builders: confirm-issues (Pass 2) ----------------------------
+
+
+def build_confirm_prompt(content: str, issues: list[str]) -> str:
+    """Build a confirm-issues prompt for a single item.
+
+    *content*: the original HTML / QTI XML of the item.
+    *issues*: the issue descriptions from the scan pass.
     """
-    separator = "\n<!-- === NEXT ITEM === -->\n"
-    lines: list[str] = []
-    for item in items_with_issues:
-        iid = item.get("item_id", "?")
-        for issue in item.get("issues", []):
-            lines.append(f"- {iid}: {issue}")
-    preamble = _QTI_BATCH_PREAMBLE.format(atom_id=atom_id)
-    return preamble + "\n\n" + _FIX_ONLY_BATCH.format(
+    return _CONFIRM_ISSUES_PROMPT.format(
         standards=_STANDARDS,
-        content=separator.join(qti_xmls),
-        issues_description="\n".join(lines) or "(ninguna)",
+        content=content,
+        issues_list=_format_issues(issues),
     )
 
 
-def build_fix_mini_class_prompt(
-    atom_id: str, html: str, issues: list[str],
+# -- LLM fix prompt — for encoding + manual_fix -------------------
+
+_LLM_FIX_PROMPT = """\
+<role>
+Corrector experto de contenido educativo PAES M1 (Chile). \
+Tu tarea es corregir SOLO los problemas específicos listados \
+abajo. NO cambies NADA más.
+</role>
+
+{standards}\
+<content>
+{content}
+</content>
+
+<issues_to_fix>
+{issues_list}
+</issues_to_fix>
+
+<task>
+Corrige EXCLUSIVAMENTE los problemas listados en issues_to_fix.
+Reglas estrictas:
+1. Correcciones MÍNIMAS: solo lo necesario para cada problema.
+2. NO cambies formato numérico, separadores, ni MathML.
+3. NO elimines contenido, símbolos ($, %, °), ni alternativas.
+4. NO cambies la respuesta correcta ni el orden de opciones.
+5. Devuelve el contenido COMPLETO corregido.
+Si los problemas no son reales o no requieren cambios, \
+devuelve el original sin modificar.
+</task>
+
+<output_format>
+JSON puro (sin markdown):
+Si no hay cambios necesarios:
+{{"status": "UNCHANGED"}}
+
+Si hay correcciones:
+{{
+  "status": "FIXED",
+  "changes": ["Descripción breve de cada cambio"],
+  "corrected_content": "<contenido completo corregido>"
+}}
+</output_format>
+"""
+
+
+def build_llm_fix_prompt(
+    content: str, issues: list[str],
 ) -> str:
-    """Build a fix prompt for a single mini-class."""
-    preamble = _MINI_CLASS_PREAMBLE.format(atom_id=atom_id)
-    return preamble + "\n\n" + _FIX_ONLY_SINGLE.format(
+    """Build an LLM fix prompt for encoding/manual issues."""
+    return _LLM_FIX_PROMPT.format(
         standards=_STANDARDS,
-        content=html,
-        issues_description=_format_issues(issues),
-    )
-
-
-def build_fix_xml_file_prompt(
-    file_label: str, xml: str, issues: list[str],
-) -> str:
-    """Build a fix prompt for a standalone QTI XML file."""
-    preamble = _XML_FILE_PREAMBLE.format(file_label=file_label)
-    return preamble + "\n\n" + _FIX_ONLY_SINGLE.format(
-        standards=_STANDARDS,
-        content=xml,
-        issues_description=_format_issues(issues),
-    )
-
-# -- Builders: validate, revalidate, retry ------------------------
-
-
-def build_validation_prompt(
-    original: str,
-    corrected: str,
-    issues: list[str],
-    content_type: str,
-) -> str:
-    """Build a validation prompt comparing original vs corrected."""
-    return _VALIDATE_PROMPT.format(
-        content_type=content_type,
-        issues_description=_format_issues(issues),
-        original=original,
-        corrected=corrected,
-    )
-
-
-def build_revalidation_prompt(
-    original: str,
-    corrected: str,
-) -> str:
-    """Build an independent semantic equivalence check prompt."""
-    return _REVALIDATE_PROMPT.format(
-        original=original,
-        corrected=corrected,
-    )
-
-
-def build_retry_prompt(
-    original: str,
-    rejection_reasons: list[str],
-) -> str:
-    """Build a retry prompt with feedback from failed validation."""
-    reasons_text = "\n".join(
-        f"- {r}" for r in rejection_reasons
-    ) if rejection_reasons else "(sin detalles)"
-    return _RETRY_PROMPT.format(
-        original=original,
-        rejection_reasons=reasons_text,
+        content=content,
+        issues_list=_format_issues(issues),
     )
