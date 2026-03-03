@@ -51,17 +51,13 @@ _POOL_CHOICES = (
 # ------------------------------------------------------------------
 
 
-def _iter_questions(
-    atom_filter: set[str] | None = None,
-) -> list[ScanItem]:
+def _iter_questions() -> list[ScanItem]:
     """Yield one ScanItem per individual question."""
     items: list[ScanItem] = []
     for p9 in sorted(_QG_ROOT.glob(
         "*/checkpoints/phase_9_final_validation.json",
     )):
         aid = p9.parent.parent.name
-        if atom_filter and aid not in atom_filter:
-            continue
         data = json.loads(p9.read_text("utf-8"))
         for it in data.get("items", []):
             xml = it.get("qti_xml", "")
@@ -74,17 +70,13 @@ def _iter_questions(
     return items
 
 
-def _iter_mini_classes(
-    atom_filter: set[str] | None = None,
-) -> list[ScanItem]:
+def _iter_mini_classes() -> list[ScanItem]:
     """Yield one ScanItem per mini-class HTML."""
     if not _ML_ROOT.exists():
         return []
     out: list[ScanItem] = []
     for d in sorted(_ML_ROOT.iterdir()):
         if not d.is_dir() or d.name.startswith("."):
-            continue
-        if atom_filter and d.name not in atom_filter:
             continue
         hp = d / "mini-class.html"
         if hp.exists():
@@ -322,16 +314,12 @@ def _load_items(
     args: argparse.Namespace,
 ) -> list[ScanItem]:
     """Build flat list of items to scan based on CLI flags."""
-    af = (
-        {a.strip() for a in args.atoms.split(",")}
-        if args.atoms else None
-    )
     o = args.only
     items: list[ScanItem] = []
     if o in (None, "questions"):
-        items.extend(_iter_questions(af))
+        items.extend(_iter_questions())
     if o in (None, "mini-classes"):
-        items.extend(_iter_mini_classes(af))
+        items.extend(_iter_mini_classes())
     if o in (None, "exemplars"):
         items.extend(_iter_exemplars())
     if o in (None, "variants"):
@@ -422,7 +410,6 @@ def _parse_args() -> argparse.Namespace:
         "--only", choices=list(_POOL_CHOICES), default=None,
     )
     p.add_argument("--workers", type=int, default=8)
-    p.add_argument("--atoms", type=str, default=None)
     p.add_argument(
         "--confirm", action="store_true",
         help=(

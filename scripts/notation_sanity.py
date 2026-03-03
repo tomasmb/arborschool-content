@@ -45,6 +45,10 @@ _CHOICE_ID_RE = re.compile(
     r"<(?:qti-simple-choice|simpleChoice)[^>]*"
     r'\bidentifier=["\']([^"\']+)["\']',
 )
+_NBSP_MO_RE = re.compile(
+    r"<mo>\s*(?:&#160;|&nbsp;|&#xA0;|&#xa0;)\s*</mo>",
+    re.IGNORECASE,
+)
 
 
 # ------------------------------------------------------------------
@@ -164,6 +168,14 @@ def _check_tag_balance(
             continue
         if tag in _GROWABLE_TAGS and c >= o:
             continue
+        if tag == "mo" and c < o:
+            dropped = o - c
+            nbsp_dropped = max(
+                0, len(_NBSP_MO_RE.findall(original))
+                - len(_NBSP_MO_RE.findall(corrected)),
+            )
+            if dropped <= nbsp_dropped:
+                continue
         reasons.append(
             f"Tag <{tag}> count changed from {o} to {c}",
         )

@@ -47,7 +47,6 @@ def main() -> None:
     setup_logging(verbose=args.verbose)
 
     refs = _load_question_items(
-        atom_ids=_parse_atom_ids(args.atom_ids),
         max_items=args.max_items,
     )
     if not refs:
@@ -85,10 +84,6 @@ def _parse_args() -> argparse.Namespace:
             "Run Phase-9 final validation in Batch API mode over "
             "question-generation phase_8 items."
         ),
-    )
-    parser.add_argument(
-        "--atom-ids",
-        help="Comma-separated atom IDs. Default: all atoms with phase_8 checkpoint.",
     )
     parser.add_argument(
         "--max-items",
@@ -132,15 +127,7 @@ def _parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def _parse_atom_ids(raw: str | None) -> set[str] | None:
-    if not raw:
-        return None
-    ids = {p.strip() for p in raw.split(",") if p.strip()}
-    return ids or None
-
-
 def _load_question_items(
-    atom_ids: set[str] | None = None,
     max_items: int | None = None,
 ) -> list[ItemRef]:
     refs: list[ItemRef] = []
@@ -148,8 +135,6 @@ def _load_question_items(
         if not atom_dir.is_dir() or atom_dir.name.startswith("."):
             continue
         atom_id = atom_dir.name
-        if atom_ids and atom_id not in atom_ids:
-            continue
 
         ckpt = load_checkpoint(atom_dir, 8, "feedback")
         if not ckpt or not ckpt.get("items"):

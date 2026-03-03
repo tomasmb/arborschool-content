@@ -131,12 +131,12 @@ def _content_type(item: dict) -> str:
 
 
 def _validate_sanity(
-    item: dict, fixed: str, *, lenient: bool = False,
+    item: dict, fixed: str,
 ) -> tuple[bool, list[str]]:
     """Run deterministic sanity checks on the fix."""
     return run_sanity_checks(
         item["original"], fixed, _content_type(item),
-        lenient=lenient,
+        lenient=False,
     )
 
 
@@ -170,9 +170,7 @@ def _process_one(
             & set(DETERMINISTIC_CATEGORIES.keys()),
         )
 
-    sanity_ok, sanity_reasons = _validate_sanity(
-        item, fixed, lenient=use_llm,
-    )
+    sanity_ok, sanity_reasons = _validate_sanity(item, fixed)
     if not sanity_ok:
         return {
             "key": key, "status": "sanity_fail",
