@@ -13,10 +13,6 @@ errors rather than attempt to fix them.
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    pass
 
 _logger = logging.getLogger(__name__)
 
@@ -144,35 +140,3 @@ def validate_no_encoding_errors_or_raise(content: str, context: str = "content")
             "This indicates PDF text extraction produced garbled Spanish characters. "
             "The source PDF has non-standard font mappings and should be replaced."
         )
-
-
-def verify_and_fix_encoding(qti_xml: str) -> tuple[str, bool]:
-    """
-    DEPRECATED: Detects encoding errors but does NOT fix them.
-
-    Auto-fixing encoding errors via string replacement is error-prone
-    because it can match IDs, codes, URLs, etc. Instead, this function
-    now only DETECTS errors and logs a warning.
-
-    The pipeline should reject content with encoding errors rather than
-    attempt to fix them.
-
-    Args:
-        qti_xml: The QTI XML to check
-
-    Returns:
-        Tuple of (xml_unchanged, encoding_issues_found)
-    """
-    if not qti_xml:
-        return qti_xml, False
-
-    errors = detect_encoding_errors(qti_xml)
-    if not errors:
-        return qti_xml, False
-
-    # Log warning but do NOT fix - fixing is error-prone
-    _logger.warning(f"Encoding errors detected in QTI XML. Content should be rejected, not auto-fixed. Found {len(errors)} pattern(s): {errors[:5]}")
-
-    # Return unchanged XML with flag indicating errors were found
-    # The caller should reject this content
-    return qti_xml, True

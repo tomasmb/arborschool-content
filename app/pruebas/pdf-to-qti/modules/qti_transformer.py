@@ -30,7 +30,6 @@ from .qti_encoding import (
     ENCODING_FIXES,
     detect_encoding_errors,
     validate_no_encoding_errors_or_raise,
-    verify_and_fix_encoding,
 )
 from .qti_image_handler import (
     convert_remaining_base64_to_s3,
@@ -53,7 +52,6 @@ __all__ = [
     "ENCODING_FIXES",
     "detect_encoding_errors",
     "validate_no_encoding_errors_or_raise",
-    "verify_and_fix_encoding",
     # Answer utils
     "extract_correct_answer_from_qti",
     "update_correct_answer_in_qti_xml",
@@ -239,14 +237,16 @@ def _post_process_qti_result(
     if not result.get("success"):
         return result
 
-    # Verify and fix encoding issues
-    result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
+    validate_no_encoding_errors_or_raise(
+        result["qti_xml"], context="QTI XML after transformation",
+    )
 
     # Clean up any remaining placeholders
     result["qti_xml"] = clean_qti_xml(result["qti_xml"])
 
-    # Final encoding check after cleaning
-    result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
+    validate_no_encoding_errors_or_raise(
+        result["qti_xml"], context="QTI XML after cleaning",
+    )
 
     # Replace data URIs with S3 URLs
     if image_url_mapping:

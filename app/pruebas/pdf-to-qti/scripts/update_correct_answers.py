@@ -14,30 +14,24 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Optional
 
 # Namespace for QTI
 QTI_NS = "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}"
 
 
-def extract_question_number(xml_path: Path) -> Optional[int]:
+def extract_question_number(xml_path: Path) -> int | None:
     """Extract question number from XML filename (e.g., Q3.xml -> 3)."""
     match = re.search(r"Q(\d+)\.xml$", xml_path.name)
     return int(match.group(1)) if match else None
 
 
-def update_qti_correct_answer(xml_path: Path, correct_answer: str) -> tuple[bool, Optional[str]]:
+def update_qti_correct_answer(xml_path: Path, correct_answer: str) -> tuple[bool, str | None]:
     """
     Update the correct answer in a QTI XML file.
 
     Returns (success, old_value) where old_value is None if not found.
     """
     try:
-        # Read the file as text to preserve formatting
-        with open(xml_path, "r", encoding="utf-8") as f:
-            f.read()
-
-        # Parse XML
         tree = ET.parse(str(xml_path))
         root = tree.getroot()
 

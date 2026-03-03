@@ -1,4 +1,8 @@
-"""
+"""ARCHIVED 2026-03-02: One-off data repair script. The underlying cache bug
+is already fixed in batch_pipeline_stages.py and all affected atoms have been
+reprocessed.
+
+Original description:
 Surgical Phase 9 re-run for atoms affected by the _reload_items cache bug.
 
 Root cause: when the pipeline resumed after Phase 78, _reload_items() skipped

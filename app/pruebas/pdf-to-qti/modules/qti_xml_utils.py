@@ -14,7 +14,7 @@ from typing import Any, Optional
 
 from .ai_processing import chat_completion
 from .prompt_builder import create_error_correction_prompt
-from .qti_encoding import verify_and_fix_encoding
+from .qti_encoding import validate_no_encoding_errors_or_raise
 
 _logger = logging.getLogger(__name__)
 
@@ -180,14 +180,15 @@ def fix_qti_xml_with_llm(
         result = parse_correction_response(corrected_content)
 
         if result["success"]:
-            # Verify and fix encoding issues
-            result["qti_xml"], _ = verify_and_fix_encoding(result["qti_xml"])
+            validate_no_encoding_errors_or_raise(
+                result["qti_xml"], context="LLM correction QTI XML",
+            )
 
-            # Clean the result
             cleaned_xml = clean_qti_xml(result["qti_xml"])
 
-            # Final encoding check after cleaning
-            cleaned_xml, _ = verify_and_fix_encoding(cleaned_xml)
+            validate_no_encoding_errors_or_raise(
+                cleaned_xml, context="QTI XML after LLM correction and cleaning",
+            )
 
             # Basic validation
             try:

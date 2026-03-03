@@ -1,4 +1,8 @@
-"""One-off: LLM-fix remaining confirmed+fix_fail notation items.
+"""ARCHIVED 2026-03-02: One-off script, work completed. The permanent
+notation fix pipeline lives in scripts/apply_notation_fixes.py.
+
+Original description:
+One-off: LLM-fix remaining confirmed+fix_fail notation items.
 
 The deterministic regex couldn't handle these edge cases (minus
 signs, entity-encoded operators, decimals in <mn>). Sends each

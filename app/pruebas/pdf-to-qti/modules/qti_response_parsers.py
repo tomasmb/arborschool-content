@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .qti_encoding import verify_and_fix_encoding
+from .qti_encoding import validate_no_encoding_errors_or_raise
 
 
 def parse_transformation_response(response_text: str) -> dict[str, Any]:
@@ -61,8 +61,9 @@ def parse_transformation_response(response_text: str) -> dict[str, Any]:
             if not qti_xml:
                 raise ValueError("No QTI XML found in response")
 
-            # Verify and fix encoding issues (tildes, ñ, etc.)
-            qti_xml, _encoding_fixed = verify_and_fix_encoding(qti_xml)
+            validate_no_encoding_errors_or_raise(
+                qti_xml, context="transformation response QTI XML",
+            )
 
             return {
                 "success": True,
@@ -118,8 +119,9 @@ def parse_correction_response(response_text: str) -> dict[str, Any]:
             if not qti_xml:
                 raise ValueError("No corrected QTI XML found in response")
 
-            # Verify and fix encoding issues (tildes, ñ, etc.)
-            qti_xml, _encoding_fixed = verify_and_fix_encoding(qti_xml)
+            validate_no_encoding_errors_or_raise(
+                qti_xml, context="correction response QTI XML",
+            )
 
             return {"success": True, "qti_xml": qti_xml, "fixes_applied": result.get("fixes_applied", []), "notes": result.get("notes", "")}
         else:
