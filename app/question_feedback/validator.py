@@ -7,6 +7,9 @@ import logging
 from typing import Any
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
+from app.question_feedback.final_validation_parser import (
+    parse_final_validation_payload,
+)
 from app.question_feedback.models import (
     CheckResult,
     CheckStatus,
@@ -117,137 +120,7 @@ class FinalValidator:
         Returns:
             Parsed ValidationResult.
         """
-        # Parse correct_answer_check
-        ca_check = result.get("correct_answer_check", {})
-        correct_answer_check = CorrectAnswerCheck(
-            status=CheckStatus(ca_check.get("status", "fail")),
-            expected_answer=ca_check.get("expected_answer", ""),
-            marked_answer=ca_check.get("marked_answer", ""),
-            verification_steps=ca_check.get("verification_steps", ""),
-            issues=ca_check.get("issues", []),
-        )
-
-        # Parse feedback_check
-        fb_check = result.get("feedback_check", {})
-        feedback_check = CheckResult(
-            status=CheckStatus(fb_check.get("status", "fail")),
-            issues=fb_check.get("issues", []),
-            reasoning=fb_check.get("reasoning", ""),
-        )
-
-        # Parse content_quality_check
-        cq_check = result.get("content_quality_check", {})
-        content_quality_check = ContentQualityCheck(
-            status=CheckStatus(cq_check.get("status", "fail")),
-            typos_found=cq_check.get("typos_found", []),
-            character_issues=cq_check.get("character_issues", []),
-            clarity_issues=cq_check.get("clarity_issues", []),
-        )
-
-        # Parse image_check
-        img_check = result.get("image_check", {})
-        image_check = CheckResult(
-            status=CheckStatus(img_check.get("status", "not_applicable")),
-            issues=img_check.get("issues", []),
-            reasoning=img_check.get("reasoning", ""),
-        )
-
-        # Parse math_validity_check
-        math_check = result.get("math_validity_check", {})
-        math_validity_check = CheckResult(
-            status=CheckStatus(math_check.get("status", "fail")),
-            issues=math_check.get("issues", []),
-            reasoning=math_check.get("reasoning", ""),
-        )
-
-        # Enforce reasoning-verdict consistency
-        all_checks = [
-            correct_answer_check,
-            feedback_check,
-            content_quality_check,
-            image_check,
-            math_validity_check,
-        ]
-        raw_verdict = result.get("validation_result", "fail")
-        computed_verdict = self._compute_consistent_verdict(
-            all_checks, raw_verdict
-        )
-
-        return ValidationResult(
-            validation_result=computed_verdict,
-            correct_answer_check=correct_answer_check,
-            feedback_check=feedback_check,
-            content_quality_check=content_quality_check,
-            image_check=image_check,
-            math_validity_check=math_validity_check,
-            overall_reasoning=result.get("overall_reasoning", ""),
-        )
-
-    def _compute_consistent_verdict(
-        self,
-        checks: list[CorrectAnswerCheck | CheckResult | ContentQualityCheck],
-        raw_verdict: str,
-    ) -> str:
-        """Enforce consistency between individual checks and overall verdict.
-
-        Rules:
-        - If ALL checks pass/not_applicable → verdict must be "pass"
-        - If ANY check has "fail" with non-empty issues → verdict must be "fail"
-        - If a check says "fail" but has NO issues → auto-correct to "pass"
-
-        Args:
-            checks: List of parsed check results.
-            raw_verdict: The LLM's raw validation_result.
-
-        Returns:
-            Consistent verdict string ("pass" or "fail").
-        """
-        any_real_failure = False
-
-        for check in checks:
-            if check.status == CheckStatus.FAIL:
-                has_issues = self._check_has_issues(check)
-                if has_issues:
-                    any_real_failure = True
-                else:
-                    # Fail with no issues = contradiction → auto-correct
-                    check.status = CheckStatus.PASS
-                    logger.warning(
-                        "Auto-corrected check with fail status but "
-                        "no issues to pass"
-                    )
-
-        computed = "fail" if any_real_failure else "pass"
-
-        if computed != raw_verdict:
-            logger.warning(
-                f"Verdict inconsistency: LLM said '{raw_verdict}' "
-                f"but checks compute to '{computed}'. "
-                f"Using computed verdict."
-            )
-
-        return computed
-
-    def _check_has_issues(
-        self,
-        check: CorrectAnswerCheck | CheckResult | ContentQualityCheck,
-    ) -> bool:
-        """Return True if a check has any concrete issues reported.
-
-        Args:
-            check: A parsed check result of any type.
-
-        Returns:
-            True if the check has at least one non-empty issue.
-        """
-        if isinstance(check, ContentQualityCheck):
-            return bool(
-                check.typos_found
-                or check.character_issues
-                or check.clarity_issues
-            )
-        # CorrectAnswerCheck and CheckResult both have .issues
-        return bool(check.issues)
+        return parse_final_validation_payload(result)
 
     def _create_error_result(self, error_message: str) -> ValidationResult:
         """Create an error ValidationResult.
