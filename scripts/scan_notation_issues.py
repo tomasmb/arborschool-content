@@ -340,7 +340,7 @@ def _load_items(
 
 
 def _cmd_scan(args: argparse.Namespace) -> None:
-    """Pass 1: scan every item individually (low reasoning)."""
+    """Pass 1: scan every item (sync or batch mode)."""
     _require_api_key()
     items = _load_items(args)
     src_counts: dict[str, int] = {}
@@ -351,11 +351,18 @@ def _cmd_scan(args: argparse.Namespace) -> None:
     if not items:
         print("Nothing to scan.")
         return
-    w = min(args.workers, len(items))
-    client = load_default_openai_client(model="gpt-5.1")
-    print(f"Scanning {len(items)} items with {w} workers "
-          f"(low reasoning, 1 item per call)...")
-    results = _run_scan(client, items, w)
+
+    if args.batch:
+        from scripts.notation_batch import run_batch_scan
+        print(f"Scanning {len(items)} items via Batch API (50% cost)...")
+        results = run_batch_scan(items)
+    else:
+        w = min(args.workers, len(items))
+        client = load_default_openai_client(model="gpt-5.1")
+        print(f"Scanning {len(items)} items with {w} workers "
+              f"(low reasoning, 1 item per call)...")
+        results = _run_scan(client, items, w)
+
     state = PipelineState(pool=_pool_name(args))
     populate_from_scan(state, items, results)
     state.save()
@@ -372,7 +379,7 @@ def _load_state(
 
 
 def _cmd_confirm(args: argparse.Namespace) -> None:
-    """Pass 2: confirm flagged issues (medium reasoning)."""
+    """Pass 2: confirm flagged issues (sync or batch mode)."""
     _require_api_key()
     state = _load_state(args)
     if not state:
@@ -384,8 +391,14 @@ def _cmd_confirm(args: argparse.Namespace) -> None:
         state.print_summary()
         return
     print(f"Found {len(flagged)} flagged items to confirm.")
-    client = load_default_openai_client(model="gpt-5.1")
-    _run_confirm(client, state, args.workers)
+
+    if args.batch:
+        from scripts.notation_batch import run_batch_confirm
+        run_batch_confirm(state)
+    else:
+        client = load_default_openai_client(model="gpt-5.1")
+        _run_confirm(client, state, args.workers)
+
     state.print_summary()
 
 
@@ -424,6 +437,13 @@ def _parse_args() -> argparse.Namespace:
     p.add_argument(
         "--status", action="store_true",
         help="Show pipeline state for the specified pool",
+    )
+    p.add_argument(
+        "--batch", action="store_true",
+        help=(
+            "Use OpenAI Batch API instead of real-time calls "
+            "(50%% cost savings, async processing)"
+        ),
     )
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
