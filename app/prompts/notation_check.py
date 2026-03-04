@@ -1,149 +1,12 @@
-"""Prompts for auditing Chilean PAES notation and text quality.
+"""Prompts for full QA validation over syncable questions and lessons.
 
-Prompt families:
-- scan-only (Pass 1, low reasoning): detect issues per item.
-- confirm (Pass 2, medium reasoning): validate flagged issues,
-  eliminate false positives, and categorise confirmed issues.
+Design goals:
+- non-contradictory: one consistency rule per phase
+- non-redundant: shared templates with source-specific inserts
+- structured: role/context/task/output blocks for every prompt
 """
 
 from __future__ import annotations
-
-# -- Shared notation and quality standard sections ----------------
-
-_NOTATION_STANDARD = """\
-<chilean_notation_standard>
-Chile usa formato numérico PAES, distinto al anglosajón:
-
-SEPARADOR DECIMAL = coma (,)
-  Correcto: 3,14  |  0,5  |  1,75  |  Incorrecto: 3.14  |  0.5
-
-SEPARADOR DE MILES = espacio (NO punto)
-  Correcto: 10 000  |  25 000  |  1 250 000
-  Incorrecto: 10.000  |  25.000  |  10,000  |  25,000
-
-COMBINADO: 1 250,5 (correcto)  |  1.250,5 / 1,250.5 (incorrecto)
-
-ENTEROS DE 4 DÍGITOS: sin separador es válido (1000, 1500, 2025).
-
-Dentro de MathML, los valores en <mn> siguen la misma convención. \
-El espacio de miles DEBE ser &#160; (espacio de no separación):
-  Correcto: <mn>3,14</mn>  |  <mn>10&#160;000</mn>
-  Incorrecto: <mn>3.14</mn>  |  <mn>10.000</mn>
-  Incorrecto: un espacio normal dentro de <mn> (se puede cortar)
-
-En texto plano, usa también &#160; como separador de miles.
-
-NÚMEROS GRANDES en MathML DEBEN estar en UN SOLO <mn>:
-  Correcto: <mn>25&#160;000</mn>
-  Incorrecto: <mn>25</mn><mspace width="..."/><mn>000</mn>
-
-EXCEPCIONES — NO son errores de notación:
-- Enteros sin separador de miles (e.g. "250", "15") son válidos.
-- Números en atributos XML, URLs, identificadores, hashes SHA.
-- Coordenadas (x, y) donde la coma separa componentes.
-- Exponentes y subíndices (e.g. x², a₁).
-</chilean_notation_standard>
-
-"""
-
-_QUALITY_STANDARD = """\
-<text_quality_standard>
-CODIFICACIÓN: solo caracteres del español, símbolos matemáticos, \
-puntuación y emojis pedagógicos (❌ ✔ ✅ ❗ etc.). \
-Sin secuencias hex, bytes sueltos, caracteres de control, ni \
-scripts no latinos (excepto griegas en MathML). Entidades HTML \
-correctamente codificadas (no doble-codificadas). En QTI XML, \
-no debe haber entidades HTML con nombre (&oacute;, &minus;) — \
-solo Unicode directo o numéricas. EXCEPCIÓN: las 5 entidades \
-predefinidas de XML (&amp; &lt; &gt; &quot; &apos;) SÍ son \
-válidas y NO deben reportarse.
-
-NOTACIÓN MATEMÁTICA: MathML válido y bien formado. Sin LaTeX \
-crudo (\\frac, \\sqrt, $...$). Sin Markdown crudo. Números \
-grandes no deben estar divididos en múltiples <mn> separados \
-por <mspace>.
-
-INTEGRIDAD: sin texto truncado, placeholders, duplicados, ni \
-filtraciones de instrucciones del modelo.
-
-NO reportar como problema:
-- Emojis (❌, ✔, ✅, ❗) — son intencionales.
-- Gramática, ortografía, estilo o redacción.
-- Números en atributos XML, URLs, identificadores, hashes SHA.
-- Coordenadas tipo (x, y) donde la coma separa componentes.
-- xmlns, xsi:schemaLocation, src="...".
-- Entidades XML predefinidas (&amp; &lt; &gt; &quot; &apos;).
-- Operadores (−, +, ×) dentro de <mn>: es cosmético, no afecta \
-al estudiante.
-</text_quality_standard>
-
-"""
-
-_STANDARDS = _NOTATION_STANDARD + _QUALITY_STANDARD
-
-# -- Scan-only prompt — Pass 1: detect, no corrections -----------
-
-_SCAN_ONLY_SINGLE = """\
-<role>
-Revisor experto de contenido educativo matemático PAES M1 \
-(Chile). Tu tarea es DETECTAR problemas de notación numérica \
-y calidad de texto. NO corrijas nada.
-</role>
-
-{standards}\
-<content>
-{content}
-</content>
-
-<task>
-Revisa el contenido buscando SOLO estos tipos de problema:
-
-NOTACIÓN NUMÉRICA PAES:
-- Punto como separador de miles (10.000 → 10 000).
-- Punto como separador decimal (3.14 → 3,14).
-- Falta separador de miles en números ≥ 5 dígitos (25000 → \
-25 000 o 25&#160;000 en MathML).
-
-MATHML ESTRUCTURAL:
-- Número grande dividido en múltiples <mn> con <mspace> \
-(debe ser un solo <mn>).
-- Espacio normal dentro de <mn> (debe ser &#160;).
-- NO reportar operadores (−, ×, +) dentro de <mn>: es \
-cosmético y no afecta la visualización.
-
-CODIFICACIÓN Y ENTIDADES:
-- Texto corrupto/garbled (mojibake, bytes hex, caracteres \
-de control, tabulaciones).
-- Entidades HTML con nombre en QTI XML (&oacute;, &minus;) \
-que deberían ser Unicode directo o numéricas. NO reportar \
-las 5 predefinidas XML (&amp; &lt; &gt; &quot; &apos;).
-- Doble-codificación de entidades (&amp;amp;).
-
-INTEGRIDAD:
-- LaTeX crudo (\\frac, $...$) o Markdown crudo en HTML/XML.
-- Texto truncado, placeholders, instrucciones del modelo.
-
-Solo REPORTA los problemas encontrados. NO generes contenido \
-corregido. Sé PRECISO: indica qué texto o fragmento tiene \
-el problema.
-</task>
-
-<output_format>
-JSON puro (sin markdown):
-
-Si no hay problemas:
-{{"status": "OK"}}
-
-Si hay problemas:
-{{"status": "HAS_ISSUES", "issues": ["Descripción breve"]}}
-
-- Cada string en issues describe un problema encontrado.
-- NO incluyas contenido corregido.
-</output_format>
-"""
-
-
-# -- Confirm-issues prompt — Pass 2: validate + categorise --------
 
 ISSUE_CATEGORIES = (
     "deterministic_thousands_sep",
@@ -153,17 +16,115 @@ ISSUE_CATEGORIES = (
     "ignore",
 )
 
-_CONFIRM_ISSUES_PROMPT = """\
+QUESTION_CHECKS = (
+    "correct_answer_check",
+    "feedback_check",
+    "content_quality_check",
+    "math_validity_check",
+)
+
+LESSON_CHECKS = (
+    "lesson_math_check",
+    "lesson_content_quality_check",
+    "lesson_pedagogy_check",
+    "lesson_format_check",
+)
+
+
+_NOTATION_STANDARD = """\
+<chilean_notation_standard>
+Formato PAES:
+- Decimal: coma (,)
+- Miles: espacio en texto y &#160; dentro de MathML <mn>
+- Enteros de 4 dígitos sin separador son válidos (1000, 1500)
+
+Errores objetivos:
+- Punto decimal (3.14)
+- Punto de miles (10.000)
+- Espacio normal dentro de <mn> para miles
+- Número de 5+ dígitos sin separador de miles
+</chilean_notation_standard>
+"""
+
+_ENCODING_STANDARD = """\
+<encoding_standard>
+Errores objetivos:
+- Mojibake, bytes sueltos, caracteres de control
+- Entidades HTML con nombre en QTI XML (&oacute;, &minus;)
+- Doble codificación (&amp;amp;)
+- Texto truncado o placeholders
+</encoding_standard>
+"""
+
+_SCAN_SHARED_RULES = """\
+<rules>
+- Evalúa cada check de forma independiente.
+- Marca "blocking" solo para errores que invalidan corrección matemática
+  o sincronización segura del contenido.
+- No reportes estilo/redacción si no afecta corrección.
+- No inventes hallazgos: cada issue debe tener evidencia textual.
+</rules>
+"""
+
+_CONFIRM_SHARED_RULES = """\
+<rules>
+- Confirma solo hallazgos demostrables.
+- Si hay duda razonable, rechaza (falso positivo).
+- Usa SOLO categorías legacy permitidas.
+- Incluye decision explícita: confirm/reject.
+</rules>
+"""
+
+_SCAN_TEMPLATE = """\
 <role>
-Auditor QA senior de contenido educativo matemático PAES M1 \
-(Chile). Un escaneo automático previo (modelo de baja capacidad) \
-marcó los problemas listados abajo. Tu tarea es:
-1. Confirmar cuáles son problemas REALES.
-2. Descartar falsos positivos.
-3. Clasificar cada problema real en una categoría de corrección.
+{role}
 </role>
 
-{standards}\
+{standards}
+<content_type>{content_type}</content_type>
+<content_label>{label}</content_label>
+<content>
+{content}
+</content>
+
+<checks>
+{checks_block}
+</checks>
+
+<task>
+{task_body}
+</task>
+
+{scan_rules}
+<consistency_rule>
+- Si no hay hallazgos demostrables: status="OK" e issues=[].
+- Si status="HAS_ISSUES": cada issue debe incluir issue/check_name/severity/evidence.
+</consistency_rule>
+
+<output_format_confirm>
+JSON puro:
+{{
+  "status":"OK" | "HAS_ISSUES",
+  "issues":[
+    {{
+      "issue":"descripción concreta",
+      "check_name":"uno de los checks permitidos",
+      "severity":"blocking|non_blocking",
+      "evidence":"fragmento o referencia concreta"
+    }}
+  ]
+}}
+</output_format_confirm>
+"""
+
+_CONFIRM_TEMPLATE = """\
+<role>
+{role}
+</role>
+
+<phase>confirm</phase>
+{standards}
+<content_type>{content_type}</content_type>
 <content>
 {content}
 </content>
@@ -173,121 +134,190 @@ marcó los problemas listados abajo. Tu tarea es:
 </flagged_issues>
 
 <task>
-Para CADA problema en flagged_issues:
-1. Revisa si es un problema REAL en el contenido.
-2. Si es real, clasifícalo en UNA de estas categorías:
-   - "deterministic_thousands_sep": punto como separador de \
-miles, o número de 5+ dígitos sin separador de miles en texto \
-plano o MathML (montos en pesos, cantidades enteras).
-   - "deterministic_encoding": texto con bytes corruptos, \
-caracteres de control, tabulaciones, hex incrustado, tildes \
-faltantes por corrupción (NO tildes gramaticales).
-   - "deterministic_spacing": espacio normal dentro de <mn> \
-(debe ser &#160;), o espacio normal como separador de miles \
-en texto plano (debe ser &#160;).
-   - "manual_fix": problemas reales que requieren juicio humano \
-(texto en inglés, contenido duplicado, errores semánticos).
-   - "ignore": NO es un problema real, o es un cambio de estilo \
-/ gramática que no debe tocarse.
-3. Si el modelo previo sugirió algo INCORRECTO (falso positivo), \
-clasifícalo como "ignore" y explica brevemente por qué.
-
-Sé CONSERVADOR: ante la duda, clasifica como "manual_fix" o \
-"ignore". NO inventes problemas que no estén en flagged_issues.
+Para cada hallazgo en flagged_issues:
+1) decide si es real (confirm) o falso positivo (reject)
+2) si confirmas, asigna category legacy EXACTA:
+   - deterministic_thousands_sep
+   - deterministic_encoding
+   - deterministic_spacing
+   - manual_fix
+3) preserva o corrige:
+   - check_name (debe ser uno permitido)
+   - severity (blocking|non_blocking)
+   - evidence (texto concreto)
 </task>
 
+{confirm_rules}
+<consistency_rule>
+- confirmed contiene SOLO hallazgos reales con decision="confirm"
+- rejected contiene SOLO falsos positivos con decision="reject"
+- no uses "ignore" en confirmed
+</consistency_rule>
+
 <output_format>
-JSON puro (sin markdown):
+JSON puro:
 {{
-  "confirmed": [
+  "confirmed":[
     {{
-      "issue": "Descripción del problema real",
-      "category": "deterministic_thousands_sep"
+      "issue":"...",
+      "category":"manual_fix",
+      "check_name":"{sample_check}",
+      "severity":"non_blocking",
+      "evidence":"...",
+      "decision":"confirm"
     }}
   ],
-  "rejected": [
+  "rejected":[
     {{
-      "original_issue": "Lo que reportó el escaneo previo",
-      "reason": "Por qué es falso positivo"
+      "original_issue":"...",
+      "reason":"...",
+      "decision":"reject"
     }}
   ]
 }}
-
-- "confirmed" contiene SOLO problemas reales con su categoría.
-- "rejected" contiene los falsos positivos descartados.
-- Si TODO es falso positivo: {{"confirmed": [], "rejected": [...]}}
-- Si TODO es real: {{"confirmed": [...], "rejected": []}}
 </output_format>
 """
 
-# -- Preambles ----------------------------------------------------
 
-_MINI_CLASS_PREAMBLE = """\
-Mini-clase HTML educativa del átomo {label}.\
-"""
+def _format_issue_line(issue: str | dict) -> str:
+    if isinstance(issue, dict):
+        issue_text = str(issue.get("issue", "")).strip()
+        check_name = str(issue.get("check_name", "")).strip()
+        severity = str(issue.get("severity", "")).strip()
+        evidence = str(issue.get("evidence", "")).strip()
+        parts = [p for p in (issue_text, check_name, severity, evidence) if p]
+        return " | ".join(parts) if parts else str(issue)
+    return str(issue)
 
-_XML_FILE_PREAMBLE = """\
-Pregunta QTI XML individual ({label}).\
-"""
 
-# -- Helpers ------------------------------------------------------
-
-
-def _format_issues(issues: list[str]) -> str:
+def _format_issues(issues: list[str | dict]) -> str:
     if issues:
-        return "\n".join(f"- {i}" for i in issues)
+        return "\n".join(f"- {_format_issue_line(i)}" for i in issues)
     return "(ninguna)"
 
 
-# -- Builders: scan-only (Pass 1) ---------------------------------
+def _checks_block(checks: tuple[str, ...]) -> str:
+    return "\n".join(f"- {c}" for c in checks)
 
 
-def build_scan_mini_class_prompt(
-    label: str, html: str,
-) -> str:
-    """Build a scan-only prompt for a single mini-class."""
-    preamble = _MINI_CLASS_PREAMBLE.format(label=label)
-    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
-        standards=_STANDARDS, content=html,
-    )
+_STANDARDS = _NOTATION_STANDARD + "\n" + _ENCODING_STANDARD
+
+_QUESTION_SCAN_TASK = """\
+Resuelve de forma breve el problema para verificar:
+- corrección de respuesta marcada
+- que la pregunta sea respondible con la información dada
+- que feedback/cálculos (si existen) no contradigan la solución
+- validez matemática PAES M1
+Reporta solo errores concretos."""
+
+_LESSON_SCAN_TASK = """\
+Verifica:
+- corrección matemática de ejemplos/pasos
+- contenido sin corrupción de texto/encoding/notación
+- coherencia pedagógica (objetivo, foco, progresión)
+- estructura HTML/MathML utilizable
+Reporta solo errores concretos."""
 
 
-def build_scan_xml_file_prompt(
-    label: str, xml: str,
-) -> str:
-    """Build a scan-only prompt for a single QTI XML item."""
-    preamble = _XML_FILE_PREAMBLE.format(label=label)
-    return preamble + "\n\n" + _SCAN_ONLY_SINGLE.format(
-        standards=_STANDARDS, content=xml,
-    )
-
-
-# -- Builders: confirm-issues (Pass 2) ----------------------------
-
-
-def build_confirm_prompt(content: str, issues: list[str]) -> str:
-    """Build a confirm-issues prompt for a single item.
-
-    *content*: the original HTML / QTI XML of the item.
-    *issues*: the issue descriptions from the scan pass.
-    """
-    return _CONFIRM_ISSUES_PROMPT.format(
+def build_scan_question_prompt(label: str, content: str) -> str:
+    """Build scan prompt for a question item."""
+    return _SCAN_TEMPLATE.format(
+        role="Auditor QA senior de preguntas PAES M1 (Chile).",
         standards=_STANDARDS,
+        content_type="question",
+        label=label,
+        content=content,
+        checks_block=_checks_block(QUESTION_CHECKS),
+        task_body=_QUESTION_SCAN_TASK,
+        scan_rules=_SCAN_SHARED_RULES,
+    )
+
+
+def build_scan_lesson_prompt(label: str, content: str) -> str:
+    """Build scan prompt for a lesson item."""
+    return _SCAN_TEMPLATE.format(
+        role="Auditor QA senior de mini-lecciones PAES M1 (Chile).",
+        standards=_STANDARDS,
+        content_type="lesson",
+        label=label,
+        content=content,
+        checks_block=_checks_block(LESSON_CHECKS),
+        task_body=_LESSON_SCAN_TASK,
+        scan_rules=_SCAN_SHARED_RULES,
+    )
+
+
+def build_scan_prompt(
+    source: str,
+    label: str,
+    content: str,
+) -> str:
+    """Source-routed scan builder for DRY call sites."""
+    if source in {"lesson", "mini-class"}:
+        return build_scan_lesson_prompt(label, content)
+    return build_scan_question_prompt(label, content)
+
+
+# Backward-compatible wrappers
+def build_scan_mini_class_prompt(label: str, html: str) -> str:
+    return build_scan_lesson_prompt(label, html)
+
+
+def build_scan_xml_file_prompt(label: str, xml: str) -> str:
+    return build_scan_question_prompt(label, xml)
+
+
+def build_confirm_question_prompt(
+    content: str,
+    issues: list[str | dict],
+) -> str:
+    """Build confirm prompt for question findings."""
+    return _CONFIRM_TEMPLATE.format(
+        role="Revisor QA de confirmación para preguntas PAES M1.",
+        standards=_STANDARDS,
+        content_type="question",
         content=content,
         issues_list=_format_issues(issues),
+        confirm_rules=_CONFIRM_SHARED_RULES,
+        sample_check="content_quality_check",
     )
 
 
-# -- LLM fix prompt — for encoding + manual_fix -------------------
+def build_confirm_lesson_prompt(
+    content: str,
+    issues: list[str | dict],
+) -> str:
+    """Build confirm prompt for lesson findings."""
+    return _CONFIRM_TEMPLATE.format(
+        role="Revisor QA de confirmación para mini-lecciones PAES M1.",
+        standards=_STANDARDS,
+        content_type="lesson",
+        content=content,
+        issues_list=_format_issues(issues),
+        confirm_rules=_CONFIRM_SHARED_RULES,
+        sample_check="lesson_content_quality_check",
+    )
+
+
+def build_confirm_prompt(
+    content: str,
+    issues: list[str | dict],
+    *,
+    source: str | None = None,
+) -> str:
+    """Source-routed confirm builder for DRY call sites."""
+    if source in {"lesson", "mini-class"}:
+        return build_confirm_lesson_prompt(content, issues)
+    return build_confirm_question_prompt(content, issues)
+
 
 _LLM_FIX_PROMPT = """\
 <role>
-Corrector experto de contenido educativo PAES M1 (Chile). \
-Tu tarea es corregir SOLO los problemas específicos listados \
-abajo. NO cambies NADA más.
+Corrector experto de contenido educativo PAES M1 (Chile).
+Corrige SOLO issues explícitos, sin cambios colaterales.
 </role>
 
-{standards}\
+{standards}
 <content>
 {content}
 </content>
@@ -297,35 +327,27 @@ abajo. NO cambies NADA más.
 </issues_to_fix>
 
 <task>
-Corrige EXCLUSIVAMENTE los problemas listados en issues_to_fix.
-Reglas estrictas:
-1. Correcciones MÍNIMAS: solo lo necesario para cada problema.
-2. NO cambies formato numérico, separadores, ni MathML.
-3. NO elimines contenido, símbolos ($, %, °), ni alternativas.
-4. NO cambies la respuesta correcta ni el orden de opciones.
-5. Devuelve el contenido COMPLETO corregido.
-Si los problemas no son reales o no requieren cambios, \
-devuelve el original sin modificar.
+1) Aplica correcciones mínimas y localizadas.
+2) No alteres respuesta correcta ni significado matemático.
+3) Mantén estructura y formato salvo donde el issue lo requiera.
+4) Si no hay cambios necesarios, devuelve UNCHANGED.
 </task>
 
-<output_format>
-JSON puro (sin markdown):
-Si no hay cambios necesarios:
-{{"status": "UNCHANGED"}}
-
-Si hay correcciones:
+<output_fix_format>
+JSON puro:
+{{"status":"UNCHANGED"}}
+o
 {{
-  "status": "FIXED",
-  "changes": ["Descripción breve de cada cambio"],
-  "corrected_content": "<contenido completo corregido>"
+  "status":"FIXED",
+  "changes":["..."],
+  "corrected_content":"<contenido completo>"
 }}
-</output_format>
+</output_fix_format>
 """
 
 
-def build_llm_fix_prompt(
-    content: str, issues: list[str],
-) -> str:
+# Fix prompt public builder
+def build_llm_fix_prompt(content: str, issues: list[str]) -> str:
     """Build an LLM fix prompt for encoding/manual issues."""
     return _LLM_FIX_PROMPT.format(
         standards=_STANDARDS,

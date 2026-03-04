@@ -1,11 +1,4 @@
-"""Scan and confirm notation / text quality issues.
-
-Every item (question, mini-class, exemplar, variant) is scanned
-individually — one LLM call per item, no batching.
-
-Pass 1 (default): scan-only, low reasoning.
-Pass 2 (--confirm): validate flagged issues, medium reasoning.
-"""
+"""Sync-scoped QA scan and confirm pipeline."""
 
 from __future__ import annotations
 
@@ -17,112 +10,36 @@ import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
+from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
 from app.prompts.notation_check import (
-    ISSUE_CATEGORIES,
     build_confirm_prompt,
-    build_scan_mini_class_prompt,
-    build_scan_xml_file_prompt,
+    build_scan_prompt,
 )
-from scripts.notation_state import (
-    PipelineState,
-    ScanItem,
-    populate_from_scan,
+from scripts.notation_batch import run_batch_confirm, run_batch_scan
+from scripts.notation_shared import (
+    normalize_confirmed_issues,
+    normalize_rejected_issues,
+)
+from scripts.notation_state import PipelineState, ScanItem, populate_from_scan
+from scripts.scan_notation_preflight import (
+    GATE_PATH,
+    ensure_gate,
+    run_dry_run,
+    source_counts,
+)
+from scripts.scan_notation_sources import (
+    POOL_ALIASES,
+    POOL_CHOICES,
+    load_items,
+    pool_name,
 )
 
 logger = logging.getLogger(__name__)
-
-_QG_ROOT = Path("app/data/question-generation")
-_ML_ROOT = Path("app/data/mini-lessons")
-_PRUEBAS_ROOT = Path("app/data/pruebas")
 _PRINT_LOCK = threading.Lock()
-
-_POOL_CHOICES = (
-    "questions", "mini-classes", "exemplars", "variants",
-)
-
-
-# ------------------------------------------------------------------
-# Data iterators — each returns list[ScanItem]
-# ScanItem = (key, source, file_path, content, label)
-# ------------------------------------------------------------------
-
-
-def _iter_questions() -> list[ScanItem]:
-    """Yield one ScanItem per individual question."""
-    items: list[ScanItem] = []
-    for p9 in sorted(_QG_ROOT.glob(
-        "*/checkpoints/phase_9_final_validation.json",
-    )):
-        aid = p9.parent.parent.name
-        data = json.loads(p9.read_text("utf-8"))
-        for it in data.get("items", []):
-            xml = it.get("qti_xml", "")
-            qid = it.get("item_id", "")
-            if xml and qid:
-                items.append((
-                    f"q:{aid}:{qid}", "question",
-                    str(p9), xml, f"{aid}/{qid}",
-                ))
-    return items
-
-
-def _iter_mini_classes() -> list[ScanItem]:
-    """Yield one ScanItem per mini-class HTML."""
-    if not _ML_ROOT.exists():
-        return []
-    out: list[ScanItem] = []
-    for d in sorted(_ML_ROOT.iterdir()):
-        if not d.is_dir() or d.name.startswith("."):
-            continue
-        hp = d / "mini-class.html"
-        if hp.exists():
-            out.append((
-                f"mini-class:{d.name}", "mini-class",
-                str(hp), hp.read_text("utf-8"), d.name,
-            ))
-    return out
-
-
-def _iter_exemplars() -> list[ScanItem]:
-    """Yield one ScanItem per exemplar question XML."""
-    root = _PRUEBAS_ROOT / "finalizadas"
-    if not root.exists():
-        return []
-    out: list[ScanItem] = []
-    for xp in sorted(root.glob("*/qti/*/question.xml")):
-        prueba = xp.parent.parent.parent.name
-        qid = xp.parent.name
-        label = f"{prueba}/{qid}"
-        out.append((
-            f"exemplar:{label}", "exemplar",
-            str(xp), xp.read_text("utf-8"), label,
-        ))
-    return out
-
-
-def _iter_variants() -> list[ScanItem]:
-    """Yield one ScanItem per variant question XML."""
-    root = _PRUEBAS_ROOT / "alternativas"
-    if not root.exists():
-        return []
-    out: list[ScanItem] = []
-    for xp in sorted(root.glob("*/Q*/approved/*/question.xml")):
-        parts = xp.relative_to(root).parts
-        label = f"{parts[0]}/{parts[1]}/{parts[3]}"
-        out.append((
-            f"variant:{label}", "variant",
-            str(xp), xp.read_text("utf-8"), label,
-        ))
-    return out
-
-
-# ------------------------------------------------------------------
-# Pass 1: Scan-only (one LLM call per item)
-# ------------------------------------------------------------------
 
 
 def _parse_response(raw: str) -> dict:
@@ -133,15 +50,15 @@ def _parse_response(raw: str) -> dict:
         return {"parse_error": True}
 
 
-def _scan_one(
-    client: OpenAIClient, item: ScanItem,
-) -> dict:
-    """Scan a single item (question, mini-class, etc.)."""
+def _normalize_issues(raw_issues: Any) -> list[dict | str]:
+    if not isinstance(raw_issues, list):
+        return []
+    return [issue for issue in raw_issues if isinstance(issue, (dict, str))]
+
+
+def _scan_one(client: OpenAIClient, item: ScanItem) -> dict:
     key, source, _fp, content, label = item
-    if source == "mini-class":
-        prompt = build_scan_mini_class_prompt(label, content)
-    else:
-        prompt = build_scan_xml_file_prompt(label, content)
+    prompt = build_scan_prompt(source, label, content)
     try:
         resp = client.call(
             prompt,
@@ -149,20 +66,25 @@ def _scan_one(
             reasoning_effort="low",
         )
         data = _parse_response(resp.text)
-        has = data.get("status") == "HAS_ISSUES"
-        issues = data.get("issues", []) if has else []
+        issues = _normalize_issues(data.get("issues", []))
+        has = data.get("status") == "HAS_ISSUES" and bool(issues)
         return {
-            "key": key, "has_issues": has,
-            "issues": issues, "error": None,
+            "key": key,
+            "has_issues": has,
+            "issues": issues,
+            "error": None,
             "input_tokens": resp.usage.input_tokens,
             "output_tokens": resp.usage.output_tokens,
         }
     except Exception as exc:
         logger.warning("Scan failed %s: %s", key, exc)
         return {
-            "key": key, "has_issues": None,
-            "issues": [], "error": str(exc),
-            "input_tokens": 0, "output_tokens": 0,
+            "key": key,
+            "has_issues": None,
+            "issues": [],
+            "error": str(exc),
+            "input_tokens": 0,
+            "output_tokens": 0,
         }
 
 
@@ -171,24 +93,21 @@ def _run_scan(
     items: list[ScanItem],
     workers: int,
 ) -> list[dict]:
-    """Pass 1: scan every item individually and concurrently."""
     results: list[dict] = []
     total = len(items)
     done = 0
     with ThreadPoolExecutor(max_workers=workers) as pool:
-        futs = {
-            pool.submit(_scan_one, client, it): it
-            for it in items
-        }
+        futs = {pool.submit(_scan_one, client, it): it for it in items}
         for fut in as_completed(futs):
             r = fut.result()
             results.append(r)
             done += 1
-            it = futs[fut]
-            source = it[1]
+            source = futs[fut][1]
             tag = {
-                "question": "Q", "mini-class": "MC",
-                "exemplar": "EX", "variant": "VA",
+                "official-question": "OFF",
+                "variant": "VAR",
+                "generated-question": "GEN",
+                "lesson": "LES",
             }.get(source, "?")
             if r["error"]:
                 s = "ERROR"
@@ -201,18 +120,11 @@ def _run_scan(
     return results
 
 
-# ------------------------------------------------------------------
-# Pass 2: Confirm flagged issues (medium reasoning)
-# ------------------------------------------------------------------
-
-
-def _confirm_one(
-    client: OpenAIClient, key: str, item: dict,
-) -> dict:
-    """Confirm or reject flagged issues for a single item."""
+def _confirm_one(client: OpenAIClient, key: str, item: dict) -> dict:
     prompt = build_confirm_prompt(
         content=item["original"],
         issues=item.get("issues", []),
+        source=item.get("source", ""),
     )
     resp = client.call(
         prompt,
@@ -222,19 +134,15 @@ def _confirm_one(
     data = _parse_response(resp.text)
     return {
         "key": key,
-        "confirmed": data.get("confirmed", []),
-        "rejected": data.get("rejected", []),
+        "confirmed": normalize_confirmed_issues(
+            data.get("confirmed", []),
+        ),
+        "rejected": normalize_rejected_issues(
+            data.get("rejected", []),
+        ),
         "input_tokens": resp.usage.input_tokens,
         "output_tokens": resp.usage.output_tokens,
     }
-
-
-def _validate_categories(confirmed: list[dict]) -> list[dict]:
-    """Normalise category values, falling back to manual_fix."""
-    for ci in confirmed:
-        if ci.get("category") not in ISSUE_CATEGORIES:
-            ci["category"] = "manual_fix"
-    return confirmed
 
 
 def _run_confirm(
@@ -242,7 +150,6 @@ def _run_confirm(
     state: PipelineState,
     workers: int,
 ) -> None:
-    """Pass 2: validate each flagged item concurrently."""
     flagged = state.items_by_status("flagged")
     if not flagged:
         print("No flagged items to confirm.")
@@ -250,7 +157,6 @@ def _run_confirm(
     total = len(flagged)
     done = 0
     print(f"Confirming {total} flagged items (medium reasoning)...")
-
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futs = {
             pool.submit(_confirm_one, client, key, item): key
@@ -262,42 +168,28 @@ def _run_confirm(
             try:
                 r = fut.result()
             except Exception as exc:
-                logger.warning(
-                    "Confirm failed for %s: %s", key, exc,
-                )
+                logger.warning("Confirm failed for %s: %s", key, exc)
                 with _PRINT_LOCK:
                     print(f"  [{done}/{total}] [ERROR] {key}")
                 continue
-
             item = state.get_item(key)
-            state.add_tokens(
-                r["input_tokens"], r["output_tokens"],
-            )
-            confirmed = _validate_categories(r["confirmed"])
-            rejected = r["rejected"]
-            item["confirmed_issues"] = confirmed
-            item["rejected_issues"] = rejected
-
-            if confirmed:
+            if item is None:
+                continue
+            state.add_tokens(r["input_tokens"], r["output_tokens"])
+            item["confirmed_issues"] = r["confirmed"]
+            item["rejected_issues"] = r["rejected"]
+            if r["confirmed"]:
                 item["status"] = "confirmed"
                 tag = "CONFIRMED"
             else:
                 item["status"] = "false_positive"
                 tag = "FP"
-
             with _PRINT_LOCK:
                 print(
                     f"  [{done}/{total}] [{tag}] {key}"
-                    f" ({len(confirmed)} conf, "
-                    f"{len(rejected)} rej)",
+                    f" ({len(r['confirmed'])} conf, {len(r['rejected'])} rej)",
                 )
-
     state.save()
-
-
-# ------------------------------------------------------------------
-# CLI
-# ------------------------------------------------------------------
 
 
 def _require_api_key() -> None:
@@ -306,68 +198,90 @@ def _require_api_key() -> None:
         sys.exit(1)
 
 
-def _pool_name(args: argparse.Namespace) -> str:
-    return args.only or "all"
+def _load_state(args: argparse.Namespace) -> PipelineState | None:
+    if args.state:
+        return PipelineState.load(Path(args.state))
+    return PipelineState.load_latest(pool_name(args.only))
 
 
-def _load_items(
-    args: argparse.Namespace,
-) -> list[ScanItem]:
-    """Build flat list of items to scan based on CLI flags."""
-    o = args.only
-    items: list[ScanItem] = []
-    if o in (None, "questions"):
-        items.extend(_iter_questions())
-    if o in (None, "mini-classes"):
-        items.extend(_iter_mini_classes())
-    if o in (None, "exemplars"):
-        items.extend(_iter_exemplars())
-    if o in (None, "variants"):
-        items.extend(_iter_variants())
-    return items
+def _print_items_summary(items: list[ScanItem]) -> None:
+    counts = source_counts(items)
+    parts = [f"{n} {s}" for s, n in sorted(counts.items())]
+    print(f"Loaded {len(items)} items: {', '.join(parts)}")
+
+
+def _cmd_dry_run(args: argparse.Namespace) -> None:
+    items = load_items(args.only, args.limit)
+    report_path = (
+        Path(args.report)
+        if args.report
+        else Path("app/data/.notation_pipeline/preflight")
+        / f"preflight_{pool_name(args.only)}.json"
+    )
+    emit_dir = Path(args.emit_jsonl) if args.emit_jsonl else None
+    report = run_dry_run(
+        items=items,
+        pool=pool_name(args.only),
+        limit=args.limit,
+        report_path=report_path,
+        emit_jsonl_dir=emit_dir,
+    )
+    print("Dry-run complete (no LLM calls).")
+    print(f"Pool: {report['pool']}  Total: {report['total_items']}")
+    for source, n in sorted(report["counts_by_source"].items()):
+        print(f"  {source:20s}: {n}")
+    c = report["cost_estimate"]
+    print(
+        "Estimated cost range: "
+        f"${c['cost_usd_min']:.2f} - ${c['cost_usd_max']:.2f}",
+    )
+    print(f"Report: {report_path}")
+    if emit_dir:
+        print(f"JSONL dir: {emit_dir}")
+    print(f"Gate file: {GATE_PATH}")
 
 
 def _cmd_scan(args: argparse.Namespace) -> None:
-    """Pass 1: scan every item (sync or batch mode)."""
+    try:
+        ensure_gate(
+            force_run=args.force_run,
+            expected_pool=pool_name(args.only),
+        )
+    except RuntimeError as exc:
+        print(str(exc))
+        sys.exit(2)
     _require_api_key()
-    items = _load_items(args)
-    src_counts: dict[str, int] = {}
-    for _, source, *_ in items:
-        src_counts[source] = src_counts.get(source, 0) + 1
-    parts = [f"{n} {s}" for s, n in sorted(src_counts.items())]
-    print(f"Loaded {len(items)} items: {', '.join(parts)}")
+    items = load_items(args.only, args.limit)
+    _print_items_summary(items)
     if not items:
         print("Nothing to scan.")
         return
-
     if args.batch:
-        from scripts.notation_batch import run_batch_scan
         print(f"Scanning {len(items)} items via Batch API (50% cost)...")
         results = run_batch_scan(items)
     else:
-        w = min(args.workers, len(items))
+        workers = min(args.workers, len(items))
         client = load_default_openai_client(model="gpt-5.1")
-        print(f"Scanning {len(items)} items with {w} workers "
-              f"(low reasoning, 1 item per call)...")
-        results = _run_scan(client, items, w)
-
-    state = PipelineState(pool=_pool_name(args))
+        print(
+            f"Scanning {len(items)} items with {workers} workers "
+            "(low reasoning, 1 item per call)...",
+        )
+        results = _run_scan(client, items, workers)
+    state = PipelineState(pool=pool_name(args.only))
     populate_from_scan(state, items, results)
     state.save()
     state.print_summary()
 
 
-def _load_state(
-    args: argparse.Namespace,
-) -> PipelineState | None:
-    """Load state from --state path or latest for the pool."""
-    if args.state:
-        return PipelineState.load(Path(args.state))
-    return PipelineState.load_latest(_pool_name(args))
-
-
 def _cmd_confirm(args: argparse.Namespace) -> None:
-    """Pass 2: confirm flagged issues (sync or batch mode)."""
+    try:
+        ensure_gate(
+            force_run=args.force_run,
+            expected_pool=pool_name(args.only),
+        )
+    except RuntimeError as exc:
+        print(str(exc))
+        sys.exit(2)
     _require_api_key()
     state = _load_state(args)
     if not state:
@@ -379,22 +293,18 @@ def _cmd_confirm(args: argparse.Namespace) -> None:
         state.print_summary()
         return
     print(f"Found {len(flagged)} flagged items to confirm.")
-
     if args.batch:
-        from scripts.notation_batch import run_batch_confirm
         run_batch_confirm(state)
     else:
         client = load_default_openai_client(model="gpt-5.1")
         _run_confirm(client, state, args.workers)
-
     state.print_summary()
 
 
 def _cmd_status(args: argparse.Namespace) -> None:
-    """Show pipeline state for a pool."""
     state = _load_state(args)
     if not state:
-        print(f"No saved state for pool '{_pool_name(args)}'.")
+        print(f"No saved state for pool '{pool_name(args.only)}'.")
         return
     state.print_summary()
 
@@ -402,48 +312,78 @@ def _cmd_status(args: argparse.Namespace) -> None:
 def _parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description=(
-            "Notation & text quality scanner — "
-            "individual items, no batching."
+            "Sync-scoped QA scanner for questions/variants/"
+            "generated-questions/lessons.",
         ),
     )
     p.add_argument(
-        "--only", choices=list(_POOL_CHOICES), default=None,
+        "--only",
+        choices=list(POOL_CHOICES) + list(POOL_ALIASES),
+        default=None,
     )
     p.add_argument("--workers", type=int, default=8)
     p.add_argument(
-        "--confirm", action="store_true",
-        help=(
-            "Pass 2: confirm flagged issues with medium "
-            "reasoning, categorise, eliminate false positives"
-        ),
+        "--confirm",
+        action="store_true",
+        help="Pass 2: confirm flagged findings (medium reasoning).",
     )
     p.add_argument(
-        "--state", type=str, default=None,
-        help="Path to a specific state JSON file to use",
+        "--state",
+        type=str,
+        default=None,
+        help="Path to a specific state JSON file to use.",
     )
     p.add_argument(
-        "--status", action="store_true",
-        help="Show pipeline state for the specified pool",
+        "--status",
+        action="store_true",
+        help="Show pipeline state for the selected pool.",
     )
     p.add_argument(
-        "--batch", action="store_true",
-        help=(
-            "Use OpenAI Batch API instead of real-time calls "
-            "(50%% cost savings, async processing)"
-        ),
+        "--batch",
+        action="store_true",
+        help="Use OpenAI Batch API for live calls.",
+    )
+    p.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Build preflight report and optional JSONL only (no LLM calls).",
+    )
+    p.add_argument(
+        "--report",
+        type=str,
+        default=None,
+        help="Output path for preflight report JSON.",
+    )
+    p.add_argument(
+        "--emit-jsonl",
+        type=str,
+        default=None,
+        help="Directory to emit scan/confirm request JSONL files.",
+    )
+    p.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Optional cap on candidates (applies to dry-run and live scan).",
+    )
+    p.add_argument(
+        "--force-run",
+        action="store_true",
+        help="Bypass dry-run gate and run live calls directly.",
     )
     p.add_argument("--verbose", "-v", action="store_true")
     return p.parse_args()
 
 
 def main() -> None:
-    """CLI entry point."""
     args = _parse_args()
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
     )
-    if args.status:
+    if args.dry_run:
+        _cmd_dry_run(args)
+    elif args.status:
         _cmd_status(args)
     elif args.confirm:
         _cmd_confirm(args)

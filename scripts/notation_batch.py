@@ -1,10 +1,8 @@
-"""Batch API mode for the notation scan pipeline.
+"""Batch API helpers for sync-scoped QA scan/confirm pipeline.
 
-Builds BatchRequest objects for Pass 1 (scan) and Pass 2 (confirm),
-submits them via OpenAIBatchSubmitter, and returns results in the same
-format as the synchronous pipeline for seamless integration.
-
-Uses the OpenAI Batch API for 50% cost savings.
+Supports two modes:
+- prepare-only: build JSONL requests without submitting (dry run)
+- execute: submit → poll → download → parse
 """
 
 from __future__ import annotations
@@ -15,10 +13,8 @@ import os
 from pathlib import Path
 
 from app.prompts.notation_check import (
-    ISSUE_CATEGORIES,
     build_confirm_prompt,
-    build_scan_mini_class_prompt,
-    build_scan_xml_file_prompt,
+    build_scan_prompt,
 )
 from app.question_generation.batch_api import (
     BatchRequest,
@@ -27,25 +23,27 @@ from app.question_generation.batch_api import (
     build_text_messages,
 )
 from scripts.notation_state import PipelineState, ScanItem
+from scripts.notation_shared import (
+    is_lesson_source,
+    normalize_confirmed_issues,
+    normalize_rejected_issues,
+)
 
 logger = logging.getLogger(__name__)
 
 _MODEL = "gpt-5.1"
 _BATCH_DIR = Path("app/data/.notation_pipeline/batch_files")
+_CONFIRM_PLACEHOLDER_ISSUE = "DRY_RUN_PLACEHOLDER_ISSUE"
 
 
 # ------------------------------------------------------------------
-# Batch request builders
+# Request builders
 # ------------------------------------------------------------------
 
 
 def _build_scan_request(item: ScanItem) -> BatchRequest:
-    """Build a BatchRequest for a single scan-pass item."""
     key, source, _fp, content, label = item
-    if source == "mini-class":
-        prompt = build_scan_mini_class_prompt(label, content)
-    else:
-        prompt = build_scan_xml_file_prompt(label, content)
+    prompt = build_scan_prompt(source, label, content)
     return BatchRequest(
         custom_id=f"scan:{key}",
         model=_MODEL,
@@ -55,13 +53,13 @@ def _build_scan_request(item: ScanItem) -> BatchRequest:
     )
 
 
-def _build_confirm_request(
-    key: str, item: dict,
-) -> BatchRequest:
-    """Build a BatchRequest for a single confirm-pass item."""
+def _build_confirm_request(key: str, item: dict) -> BatchRequest:
+    source = str(item.get("source", ""))
+    issues = item.get("issues", [])
     prompt = build_confirm_prompt(
         content=item["original"],
-        issues=item.get("issues", []),
+        issues=issues,
+        source=source,
     )
     return BatchRequest(
         custom_id=f"confirm:{key}",
@@ -72,44 +70,55 @@ def _build_confirm_request(
     )
 
 
+def build_scan_requests(items: list[ScanItem]) -> list[BatchRequest]:
+    """Build scan requests for a set of items."""
+    return [_build_scan_request(it) for it in items]
+
+
+def build_confirm_template_requests(
+    items: list[ScanItem],
+) -> list[BatchRequest]:
+    """Build confirm-request templates for dry-run schema validation."""
+    requests: list[BatchRequest] = []
+    for key, source, fp, content, _label in items:
+        pseudo_item = {
+            "source": source,
+            "file_path": fp,
+            "original": content,
+            "issues": [{
+                "issue": _CONFIRM_PLACEHOLDER_ISSUE,
+                "check_name": (
+                    "lesson_content_quality_check"
+                    if is_lesson_source(source)
+                    else "content_quality_check"
+                ),
+                "severity": "blocking",
+                "evidence": "dry-run placeholder",
+            }],
+        }
+        requests.append(_build_confirm_request(key, pseudo_item))
+    return requests
+
+
+def write_jsonl(requests: list[BatchRequest], output_path: Path) -> Path:
+    """Write batch JSONL without calling OpenAI."""
+    submitter = OpenAIBatchSubmitter(api_key="dry-run")
+    submitter.write_jsonl(requests, output_path)
+    return output_path
+
+
 # ------------------------------------------------------------------
-# Parse batch responses
+# Response parsing
 # ------------------------------------------------------------------
 
 
 def _parse_scan_response(resp: BatchResponse) -> dict:
-    """Parse a BatchResponse into the same dict format as _scan_one."""
     key = resp.custom_id.removeprefix("scan:")
     if resp.error:
         return {
-            "key": key, "has_issues": None,
-            "issues": [], "error": resp.error,
-            "input_tokens": resp.input_tokens,
-            "output_tokens": resp.output_tokens,
-        }
-    try:
-        data = json.loads(resp.text)
-    except json.JSONDecodeError:
-        logger.warning("Bad JSON from batch for %s: %s", key, resp.text[:200])
-        data = {"parse_error": True}
-
-    has = data.get("status") == "HAS_ISSUES"
-    issues = data.get("issues", []) if has else []
-    return {
-        "key": key, "has_issues": has,
-        "issues": issues, "error": None,
-        "input_tokens": resp.input_tokens,
-        "output_tokens": resp.output_tokens,
-    }
-
-
-def _parse_confirm_response(resp: BatchResponse) -> dict:
-    """Parse a BatchResponse into confirm result dict."""
-    key = resp.custom_id.removeprefix("confirm:")
-    if resp.error:
-        return {
             "key": key,
-            "confirmed": [], "rejected": [],
+            "has_issues": None,
+            "issues": [],
             "error": resp.error,
             "input_tokens": resp.input_tokens,
             "output_tokens": resp.output_tokens,
@@ -117,16 +126,53 @@ def _parse_confirm_response(resp: BatchResponse) -> dict:
     try:
         data = json.loads(resp.text)
     except json.JSONDecodeError:
-        logger.warning("Bad JSON from batch for %s: %s", key, resp.text[:200])
+        logger.warning(
+            "Bad JSON from batch for %s: %s", key, resp.text[:200],
+        )
+        data = {"parse_error": True}
+    raw_issues = data.get("issues", [])
+    issues = raw_issues if isinstance(raw_issues, list) else []
+    has = data.get("status") == "HAS_ISSUES" and bool(issues)
+    return {
+        "key": key,
+        "has_issues": has,
+        "issues": issues,
+        "error": None,
+        "input_tokens": resp.input_tokens,
+        "output_tokens": resp.output_tokens,
+    }
+
+
+def _parse_confirm_response(resp: BatchResponse) -> dict:
+    key = resp.custom_id.removeprefix("confirm:")
+    if resp.error:
+        return {
+            "key": key,
+            "confirmed": [],
+            "rejected": [],
+            "error": resp.error,
+            "input_tokens": resp.input_tokens,
+            "output_tokens": resp.output_tokens,
+        }
+    try:
+        data = json.loads(resp.text)
+    except json.JSONDecodeError:
+        logger.warning(
+            "Bad JSON from batch for %s: %s", key, resp.text[:200],
+        )
         data = {}
-    confirmed = data.get("confirmed", [])
-    for ci in confirmed:
-        if ci.get("category") not in ISSUE_CATEGORIES:
-            ci["category"] = "manual_fix"
+
+    confirmed = normalize_confirmed_issues(
+        data.get("confirmed", []),
+    )
+    rejected = normalize_rejected_issues(
+        data.get("rejected", []),
+    )
+
     return {
         "key": key,
         "confirmed": confirmed,
-        "rejected": data.get("rejected", []),
+        "rejected": rejected,
         "error": None,
         "input_tokens": resp.input_tokens,
         "output_tokens": resp.output_tokens,
@@ -134,7 +180,7 @@ def _parse_confirm_response(resp: BatchResponse) -> dict:
 
 
 # ------------------------------------------------------------------
-# Orchestration: submit → poll → download → parse
+# Orchestration
 # ------------------------------------------------------------------
 
 
@@ -150,7 +196,6 @@ def _submit_and_collect(
     requests: list[BatchRequest],
     phase_label: str,
 ) -> list[BatchResponse]:
-    """Write JSONL, upload, create batch, poll, download, parse."""
     _BATCH_DIR.mkdir(parents=True, exist_ok=True)
     jsonl_path = _BATCH_DIR / f"{phase_label}.jsonl"
     results_path = _BATCH_DIR / f"{phase_label}_results.jsonl"
@@ -164,7 +209,7 @@ def _submit_and_collect(
     print("Creating batch job...")
     batch_id = submitter.create_batch(
         file_id,
-        metadata={"pipeline": "notation_scan", "phase": phase_label},
+        metadata={"pipeline": "sync_scoped_qa_scan", "phase": phase_label},
     )
     print(f"Batch created: {batch_id}. Polling for completion...")
 
@@ -174,13 +219,13 @@ def _submit_and_collect(
     print(
         f"Batch {batch_id} finished: status={status}  "
         f"completed={counts.get('completed', 0)}  "
-        f"failed={counts.get('failed', 0)}"
+        f"failed={counts.get('failed', 0)}",
     )
 
     if status != "completed":
         raise RuntimeError(
             f"Batch {batch_id} ended with status={status}. "
-            f"Check the OpenAI dashboard for details."
+            f"Check the OpenAI dashboard for details.",
         )
 
     output_file_id = batch.get("output_file_id")
@@ -193,19 +238,15 @@ def _submit_and_collect(
 
 
 # ------------------------------------------------------------------
-# Public API: batch scan + batch confirm
+# Public API
 # ------------------------------------------------------------------
 
 
 def run_batch_scan(items: list[ScanItem]) -> list[dict]:
-    """Pass 1 via Batch API: scan every item for notation issues.
-
-    Returns results in the same format as the synchronous _run_scan().
-    """
-    requests = [_build_scan_request(it) for it in items]
+    """Pass 1 via Batch API."""
+    requests = build_scan_requests(items)
     submitter = _get_submitter()
-    responses = _submit_and_collect(submitter, requests, "notation_scan")
-
+    responses = _submit_and_collect(submitter, requests, "sync_qa_scan")
     results = [_parse_scan_response(r) for r in responses]
 
     ok = sum(1 for r in results if r["has_issues"] is False)
@@ -216,24 +257,18 @@ def run_batch_scan(items: list[ScanItem]) -> list[dict]:
 
 
 def run_batch_confirm(state: PipelineState) -> None:
-    """Pass 2 via Batch API: confirm flagged items.
-
-    Updates state in-place with confirmed/rejected issues,
-    same as the synchronous _run_confirm().
-    """
+    """Pass 2 via Batch API."""
     flagged = state.items_by_status("flagged")
     if not flagged:
         print("No flagged items to confirm.")
         return
 
     print(f"Building {len(flagged)} confirm requests...")
-    requests = [
-        _build_confirm_request(key, item) for key, item in flagged
-    ]
+    requests = [_build_confirm_request(key, item) for key, item in flagged]
 
     submitter = _get_submitter()
     responses = _submit_and_collect(
-        submitter, requests, "notation_confirm",
+        submitter, requests, "sync_qa_confirm",
     )
 
     confirmed_count = 0
@@ -248,7 +283,9 @@ def run_batch_confirm(state: PipelineState) -> None:
             resp_dict["input_tokens"], resp_dict["output_tokens"],
         )
         if resp_dict.get("error"):
-            logger.warning("Batch error for %s: %s", key, resp_dict["error"])
+            logger.warning(
+                "Batch error for %s: %s", key, resp_dict["error"],
+            )
             continue
         item["confirmed_issues"] = resp_dict["confirmed"]
         item["rejected_issues"] = resp_dict["rejected"]
@@ -262,5 +299,5 @@ def run_batch_confirm(state: PipelineState) -> None:
     state.save()
     print(
         f"Batch confirm done: {confirmed_count} confirmed, "
-        f"{fp_count} false positive"
+        f"{fp_count} false positive",
     )

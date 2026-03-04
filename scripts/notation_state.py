@@ -58,6 +58,9 @@ def new_item(
         "issues": [],
         "confirmed_issues": [],
         "rejected_issues": [],
+        # Optional rich metadata used by full-QA scan/confirm.
+        "scan_meta": {},
+        "confirm_meta": {},
     }
 
 
@@ -160,6 +163,19 @@ class PipelineState:
                 counts[cat] = counts.get(cat, 0) + 1
         return counts
 
+    def check_summary(self) -> dict[str, int]:
+        """Count confirmed issues by check_name (if provided)."""
+        counts: dict[str, int] = {}
+        for item in self.items.values():
+            for ci in item.get("confirmed_issues", []):
+                if not isinstance(ci, dict):
+                    continue
+                check_name = ci.get("check_name")
+                if not check_name:
+                    continue
+                counts[check_name] = counts.get(check_name, 0) + 1
+        return counts
+
     def print_summary(self) -> None:
         """Print a human-readable summary to stdout."""
         s = self.summary()
@@ -181,6 +197,13 @@ class PipelineState:
                 cats.items(), key=lambda x: -x[1],
             ):
                 print(f"  {cat:35s}: {n}")
+        checks = self.check_summary()
+        if checks:
+            print("\nConfirmed issues by check_name:")
+            for check_name, n in sorted(
+                checks.items(), key=lambda x: -x[1],
+            ):
+                print(f"  {check_name:35s}: {n}")
         print(f"\nTokens: {tin:,} in / {tout:,} out")
         print(f"Est. cost: ${cost:.2f}")
         print(f"State file: {self.path}")
