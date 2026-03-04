@@ -26,7 +26,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.llm_clients import OpenAIClient, load_default_openai_client
-from app.prompts.notation_check import build_llm_fix_prompt
+from app.prompts.qa_check import build_llm_fix_prompt
 from scripts.notation_fix_rules import (
     DETERMINISTIC_CATEGORIES,
     apply_deterministic_fixes,
