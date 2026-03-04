@@ -1,26 +1,20 @@
 """Write validated notation fixes to disk.
 
-Handles three content types:
-- Questions: update qti_xml inside phase_9 JSON checkpoints.
-- Mini-classes: overwrite mini-class.html directly.
-- Exemplars/variants: overwrite question.xml directly.
-
-Creates timestamped backups before any write.
+Handles these source types:
+- generated-question: update qti_xml inside phase_9 checkpoint JSON.
+- official-question / variant: overwrite question_validated.xml.
+- lesson: overwrite mini-class.html.
 """
 
 from __future__ import annotations
 
 import json
 import logging
-import shutil
-from datetime import datetime
 from pathlib import Path
 
 from scripts.notation_state import PipelineState
 
 logger = logging.getLogger(__name__)
-
-_BACKUP_DIR = Path("app/data/.notation_fix_backups")
 
 
 def write_fixes_to_disk(state: PipelineState) -> int:
@@ -33,10 +27,6 @@ def write_fixes_to_disk(state: PipelineState) -> int:
         print("No fix_ok items to write.")
         return 0
 
-    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-    backup_dir = _BACKUP_DIR / f"backup_{ts}"
-    backup_dir.mkdir(parents=True, exist_ok=True)
-
     q_updates: dict[str, list[tuple[str, str]]] = {}
     file_updates: dict[str, str] = {}
 
@@ -47,9 +37,8 @@ def write_fixes_to_disk(state: PipelineState) -> int:
         source = item.get("source", "")
         fp = item.get("file_path", "")
 
-        if source == "question":
-            parts = key.split(":")
-            qid = parts[2] if len(parts) >= 3 else ""
+        if source == "generated-question":
+            qid = item.get("item_key", key)
             q_updates.setdefault(fp, []).append((qid, fixed))
         else:
             file_updates[fp] = fixed
@@ -57,28 +46,24 @@ def write_fixes_to_disk(state: PipelineState) -> int:
     written = 0
     for fp, updates in q_updates.items():
         written += _write_question_fixes(
-            Path(fp), updates, backup_dir,
+            Path(fp), updates,
         )
     for fp, fixed in file_updates.items():
-        _write_file_fix(Path(fp), fixed, backup_dir)
+        _write_file_fix(Path(fp), fixed)
         written += 1
 
-    print(f"Wrote {written} fixes. Backups in {backup_dir}")
+    print(f"Wrote {written} fixes.")
     return written
 
 
 def _write_question_fixes(
     p9_path: Path,
     updates: list[tuple[str, str]],
-    backup_dir: Path,
 ) -> int:
     """Update qti_xml fields in a phase_9 JSON file."""
     if not p9_path.exists():
         logger.warning("File not found: %s", p9_path)
         return 0
-
-    bak = backup_dir / p9_path.name
-    shutil.copy2(p9_path, bak)
 
     data = json.loads(p9_path.read_text("utf-8"))
     update_map = dict(updates)
@@ -99,12 +84,9 @@ def _write_question_fixes(
 def _write_file_fix(
     file_path: Path,
     fixed: str,
-    backup_dir: Path,
 ) -> None:
     """Write a fixed mini-class HTML or question XML file."""
     if not file_path.exists():
         logger.warning("File not found: %s", file_path)
         return
-    bak = backup_dir / file_path.name
-    shutil.copy2(file_path, bak)
     file_path.write_text(fixed, encoding="utf-8")

@@ -9,14 +9,11 @@ from __future__ import annotations
 
 import re
 
-# ------------------------------------------------------------------
-# thousands_sep: dot as thousands separator in <mn>
-# ------------------------------------------------------------------
-
 # Matches <mn>X.XXX</mn> or <mn>X.XXX.XXX</mn> etc.
 # Also handles combined like <mn>10.000,5</mn>
 _MN_DOT_THOUSANDS_RE = re.compile(
     r"<mn>"
+    r"([-−]|&#x2212;)?"
     r"(\d{1,3})"
     r"((?:\.\d{3})+)"
     r"(,\d+)?"
@@ -28,31 +25,63 @@ _MN_DOT_THOUSANDS_RE = re.compile(
 # Negative lookahead rejects comma+digit (decimal part like ,5)
 # but allows comma+non-digit (punctuation like ", ya que").
 _PLAIN_DOT_THOUSANDS_RE = re.compile(
+    r"(?<!\d)"
     r"(\d{1,3})"
     r"((?:\.\d{3})+)"
-    r"(?!\d|,\d)",
+    r"(,\d+)?"
+    r"(?!\d)",
 )
 
 _MATH_BLOCK_FOR_TSEP_RE = re.compile(
     r"<math[^>]*>.*?</math>", re.DOTALL,
 )
+_TAG_RE = re.compile(r"<[^>]+>")
+
+_PLAIN_BARE_THOUSANDS_RE = re.compile(
+    r"([-−]?\d{5,})(,\d+)?",
+)
 
 
 def _replace_mn_dot(m: re.Match) -> str:
     """Replace dots with &#160; inside a <mn> thousands pattern."""
-    prefix = m.group(1)
-    groups_of_3 = m.group(2)
-    decimal = m.group(3) or ""
+    sign = m.group(1) or ""
+    prefix = m.group(2)
+    groups_of_3 = m.group(3)
+    decimal = m.group(4) or ""
     parts = groups_of_3.split(".")
     joined = "&#160;".join([prefix] + [p for p in parts if p])
-    return f"<mn>{joined}{decimal}</mn>"
+    return f"<mn>{sign}{joined}{decimal}</mn>"
 
 
 def _replace_plain_dot(m: re.Match) -> str:
     """Replace dots with &#160; in a plain-text thousands pattern."""
     prefix = m.group(1)
     groups = m.group(2).split(".")
-    return "&#160;".join([prefix] + [p for p in groups if p])
+    decimal = m.group(3) or ""
+    return "&#160;".join([prefix] + [p for p in groups if p]) + decimal
+
+
+def _join_thousands_groups(digits: str) -> str:
+    """Join a digit string into 3-digit groups separated by &#160;."""
+    parts: list[str] = []
+    while len(digits) > 3:
+        parts.append(digits[-3:])
+        digits = digits[:-3]
+    parts.append(digits)
+    parts.reverse()
+    return "&#160;".join(parts)
+
+
+def _replace_plain_bare(m: re.Match) -> str:
+    """Add &#160; thousands separators to bare plain-text numbers."""
+    raw = m.group(1)
+    decimal = m.group(2) or ""
+    sign = ""
+    digits = raw
+    if raw.startswith(("-", "−")):
+        sign = raw[0]
+        digits = raw[1:]
+    return f"{sign}{_join_thousands_groups(digits)}{decimal}"
 
 
 def fix_thousands_sep(content: str) -> str:
@@ -68,17 +97,48 @@ def fix_thousands_sep(content: str) -> str:
         (m.start(), m.end())
         for m in _MATH_BLOCK_FOR_TSEP_RE.finditer(result)
     ]
+    tag_spans: list[tuple[int, int]] = [
+        (m.start(), m.end())
+        for m in _TAG_RE.finditer(result)
+    ]
 
-    def _in_math(pos: int) -> bool:
-        return any(s <= pos < e for s, e in math_spans)
+    def _is_protected(pos: int) -> bool:
+        in_math = any(s <= pos < e for s, e in math_spans)
+        in_tag = any(s <= pos < e for s, e in tag_spans)
+        return in_math or in_tag
 
     parts: list[str] = []
     last = 0
     for m in _PLAIN_DOT_THOUSANDS_RE.finditer(result):
-        if _in_math(m.start()):
+        if _is_protected(m.start()):
             continue
         parts.append(result[last:m.start()])
         parts.append(_replace_plain_dot(m))
+        last = m.end()
+    parts.append(result[last:])
+    result = "".join(parts)
+
+    math_spans = [
+        (m.start(), m.end())
+        for m in _MATH_BLOCK_FOR_TSEP_RE.finditer(result)
+    ]
+    tag_spans = [
+        (m.start(), m.end())
+        for m in _TAG_RE.finditer(result)
+    ]
+
+    def _is_protected_bare(pos: int) -> bool:
+        in_math = any(s <= pos < e for s, e in math_spans)
+        in_tag = any(s <= pos < e for s, e in tag_spans)
+        return in_math or in_tag
+
+    parts = []
+    last = 0
+    for m in _PLAIN_BARE_THOUSANDS_RE.finditer(result):
+        if _is_protected_bare(m.start()):
+            continue
+        parts.append(result[last:m.start()])
+        parts.append(_replace_plain_bare(m))
         last = m.end()
     parts.append(result[last:])
     return "".join(parts)
@@ -88,16 +148,27 @@ def fix_thousands_sep(content: str) -> str:
 # spacing: regular space -> &#160; in plain-text thousands
 # ------------------------------------------------------------------
 
-# Match digits with regular space as separator OUTSIDE <math> blocks.
-# Pattern: 1-3 digits, space, exactly 3 digits (possibly chained).
-# Lookbehind for $ or start context; lookahead for non-digit.
 _PLAIN_THOUSANDS_RE = re.compile(
     r"(?<=\d) (?=\d{3}(?:\D|$))",
 )
-
-# Regions to protect (MathML blocks and HTML tags).
 _MATH_BLOCK_RE = re.compile(
     r"<math[^>]*>.*?</math>", re.DOTALL,
+)
+_MTEXT_RE = re.compile(r"<mtext>([^<]+)</mtext>")
+_MN_MSPACE_CHAIN_RE = re.compile(
+    r"("
+    r"<mn>(?:[-−]|&#x2212;|&#8722;)?\d{1,3}</mn>"
+    r"(?:\s*<mspace[^>]*/>\s*<mn>\d{3}</mn>)+"
+    r")",
+)
+_MN_HEAD_RE = re.compile(
+    r"^(?P<sign>-|−|&#x2212;|&#8722;)?(?P<head>\d{1,3})$",
+)
+_MN_DECIMAL_SPLIT_RE = re.compile(
+    r"<mn>([^<]*,\d*)</mn>\s*<mn>(\d+(?:&#x2026;|…)?|&#x2026;|…)</mn>",
+)
+_MN_DECIMAL_HEAD_RE = re.compile(
+    r"^(?:-|−|&#x2212;|&#8722;)?(?:\d{1,3}(?:[.\u202f ]\d{3})*|\d+),\d*$",
 )
 
 
@@ -131,11 +202,97 @@ def fix_spacing(content: str) -> str:
     return "".join(result)
 
 
-# ------------------------------------------------------------------
-# mathml_split: operators stuck inside <mn> tags
-# ------------------------------------------------------------------
+def _fix_mtext_inner(m: re.Match) -> str:
+    """Replace thousands spaces inside <mtext> with &#160;."""
+    inner = m.group(1)
+    fixed = _PLAIN_THOUSANDS_RE.sub("&#160;", inner)
+    if fixed == inner:
+        return m.group(0)
+    return f"<mtext>{fixed}</mtext>"
 
-# Operators that should be <mo>, not inside <mn>.
+
+def fix_mtext_space(content: str) -> str:
+    r"""Normalize thousands separators inside <mtext> tags.
+
+    ``<mtext>$50 000</mtext>`` -> ``<mtext>$50&#160;000</mtext>``
+    """
+    return _MTEXT_RE.sub(_fix_mtext_inner, content)
+
+
+def _fix_mtext_dot_inner(m: re.Match) -> str:
+    """Replace dot thousands separators inside <mtext>."""
+    inner = m.group(1)
+    fixed = _PLAIN_DOT_THOUSANDS_RE.sub(_replace_plain_dot, inner)
+    if fixed == inner:
+        return m.group(0)
+    return f"<mtext>{fixed}</mtext>"
+
+
+def fix_mtext_dot_thousands(content: str) -> str:
+    r"""Normalize dot thousands separators inside <mtext>.
+
+    ``<mtext>24.800 </mtext>`` -> ``<mtext>24&#160;800 </mtext>``
+    """
+    return _MTEXT_RE.sub(_fix_mtext_dot_inner, content)
+
+
+def _collapse_mn_mspace_chain(m: re.Match) -> str:
+    """Collapse <mn><mspace/><mn> thousands chains into one <mn>."""
+    chain = m.group(1)
+    chunks = re.findall(r"<mn>([^<]+)</mn>", chain)
+    if len(chunks) < 2:
+        return chain
+
+    head_match = _MN_HEAD_RE.match(chunks[0])
+    if not head_match:
+        return chain
+    if any(not re.fullmatch(r"\d{3}", part) for part in chunks[1:]):
+        return chain
+
+    sign = head_match.group("sign") or ""
+    head = head_match.group("head")
+    joined = "&#160;".join([head] + chunks[1:])
+    return f"<mn>{sign}{joined}</mn>"
+
+
+def fix_mn_mspace_thousands(content: str) -> str:
+    r"""Collapse thousands split as <mn> + <mspace/> + <mn>.
+
+    ``<mn>13</mn><mspace .../><mn>500</mn>`` ->
+    ``<mn>13&#160;500</mn>``
+    """
+    prev = content
+    while True:
+        fixed = _MN_MSPACE_CHAIN_RE.sub(
+            _collapse_mn_mspace_chain, prev,
+        )
+        if fixed == prev:
+            return fixed
+        prev = fixed
+
+
+def _merge_split_decimal_mn(m: re.Match) -> str:
+    """Merge decimal numbers split across adjacent <mn> tags."""
+    head = m.group(1).strip()
+    tail = m.group(2).strip()
+    if not _MN_DECIMAL_HEAD_RE.fullmatch(head):
+        return m.group(0)
+    return f"<mn>{head}{tail}</mn>"
+
+
+def fix_split_decimal_mn(content: str) -> str:
+    r"""Merge split decimal numbers and normalize thousands separators.
+
+    ``<mn>83,6</mn><mn>7</mn>`` -> ``<mn>83,67</mn>``
+    ``<mn>75.644,</mn><mn>614</mn>`` -> ``<mn>75&#160;644,614</mn>``
+    """
+    merged = _MN_DECIMAL_SPLIT_RE.sub(
+        _merge_split_decimal_mn, content,
+    )
+    # Merging can create fresh dot-thousands forms inside <mn>.
+    return _MN_DOT_THOUSANDS_RE.sub(_replace_mn_dot, merged)
+
+
 _OPERATOR_CHARS = {
     "+", "-", "×", "÷", "=",
     "\u2212",  # minus sign
@@ -143,7 +300,6 @@ _OPERATOR_CHARS = {
     "\u00f7",  # division sign
 }
 
-# HTML entities for operators.
 _OPERATOR_ENTITIES = {
     "&#x2212;": "\u2212",
     "&#x00D7;": "\u00d7",
@@ -156,7 +312,6 @@ _OPERATOR_ENTITIES = {
     "&#8722;": "\u2212",
 }
 
-# Match <mn> containing operator characters or entities.
 _MN_WITH_OP_RE = re.compile(
     r"<mn>([^<]+)</mn>",
 )
@@ -242,19 +397,25 @@ def fix_mathml_split(content: str) -> str:
     return _MN_WITH_OP_RE.sub(_replace, content)
 
 
-# ------------------------------------------------------------------
-# mn_space: regular space -> &#160; inside <mn> tags
-# ------------------------------------------------------------------
-
 _MN_SPACE_RE = re.compile(r"<mn>([^<]+)</mn>")
 
 
 def _fix_mn_space_inner(m: re.Match) -> str:
     """Replace regular spaces with &#160; inside <mn>."""
     inner = m.group(1)
-    if " " not in inner:
+    if (
+        " " not in inner
+        and "\u202f" not in inner
+        and "&#x202F;" not in inner
+        and "&#8239;" not in inner
+    ):
         return m.group(0)
-    fixed = inner.replace(" ", "&#160;")
+    fixed = (
+        inner.replace(" ", "&#160;")
+        .replace("\u202f", "&#160;")
+        .replace("&#x202F;", "&#160;")
+        .replace("&#8239;", "&#160;")
+    )
     return f"<mn>{fixed}</mn>"
 
 
@@ -269,23 +430,21 @@ def fix_mn_space(content: str) -> str:
     return _MN_SPACE_RE.sub(_fix_mn_space_inner, content)
 
 
-# ------------------------------------------------------------------
-# bare_thousands_mn: add &#160; separators to 5+ digit <mn>
-# ------------------------------------------------------------------
-
-_MN_BARE_RE = re.compile(r"<mn>(\d{5,})</mn>")
+_MN_BARE_RE = re.compile(
+    r"<mn>"
+    r"([-−]|&#x2212;|&#8722;)?"
+    r"(\d{5,})"
+    r"(,\d+(?:&#x2026;|…)?|,\u2026|)?"
+    r"</mn>",
+)
 
 
 def _add_thousands_sep(m: re.Match) -> str:
     """Add &#160; thousands separators to a bare number in <mn>."""
-    digits = m.group(1)
-    parts: list[str] = []
-    while len(digits) > 3:
-        parts.append(digits[-3:])
-        digits = digits[:-3]
-    parts.append(digits)
-    parts.reverse()
-    return f"<mn>{'&#160;'.join(parts)}</mn>"
+    sign = m.group(1) or ""
+    digits = m.group(2)
+    decimal = m.group(3) or ""
+    return f"<mn>{sign}{_join_thousands_groups(digits)}{decimal}</mn>"
 
 
 def fix_bare_thousands_mn(content: str) -> str:
@@ -300,10 +459,6 @@ def fix_bare_thousands_mn(content: str) -> str:
     return _MN_BARE_RE.sub(_add_thousands_sep, content)
 
 
-# ------------------------------------------------------------------
-# Dispatch by category
-# ------------------------------------------------------------------
-
 DETERMINISTIC_CATEGORIES = {
     "deterministic_thousands_sep": fix_thousands_sep,
     "deterministic_spacing": fix_spacing,
@@ -313,7 +468,11 @@ DETERMINISTIC_CATEGORIES = {
 # items flagged as spacing or thousands_sep respectively.
 _SUPPLEMENTARY_FIXES: list[tuple[set[str], callable]] = [
     ({"deterministic_spacing"}, fix_mn_space),
+    ({"deterministic_spacing"}, fix_mtext_space),
+    ({"deterministic_thousands_sep"}, fix_mtext_dot_thousands),
+    ({"deterministic_thousands_sep"}, fix_split_decimal_mn),
     ({"deterministic_thousands_sep"}, fix_bare_thousands_mn),
+    ({"deterministic_thousands_sep"}, fix_mn_mspace_thousands),
 ]
 
 

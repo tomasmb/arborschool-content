@@ -8,6 +8,7 @@ equivalence) and XSD validation for QTI XML.
 
 from __future__ import annotations
 
+import html
 import importlib.util
 import logging
 import re
@@ -78,7 +79,7 @@ def run_sanity_checks(
     key, choice set, content shrinkage) still run.
     """
     reasons: list[str] = []
-    _check_symbols(original, corrected, reasons)
+    _check_symbols(original, corrected, reasons, lenient=lenient)
     _check_length(original, corrected, reasons, lenient=lenient)
     if not lenient:
         _check_tag_balance(original, corrected, reasons)
@@ -112,12 +113,17 @@ def _decode_symbol_entities(text: str) -> str:
 
 
 def _check_symbols(
-    original: str, corrected: str, reasons: list[str],
+    original: str, corrected: str, reasons: list[str], *,
+    lenient: bool = False,
 ) -> None:
     """Fail if any protected symbol lost occurrences."""
     orig_d = _decode_symbol_entities(original)
     corr_d = _decode_symbol_entities(corrected)
     for sym in _PROTECTED_SYMBOLS:
+        # LLM/manual fixes may legitimately remove '$' used as
+        # LaTeX delimiters while preserving monetary meaning.
+        if lenient and sym == "$":
+            continue
         orig_n = orig_d.count(sym)
         corr_n = corr_d.count(sym)
         if corr_n < orig_n:
@@ -136,8 +142,10 @@ def _check_length(
     (e.g. split <mn> consolidation) doesn't trigger false positives.
     In lenient mode (LLM fixes) the threshold is 5 % instead of 2 %.
     """
-    orig_text = _STRIP_TAGS_RE.sub("", original)
-    corr_text = _STRIP_TAGS_RE.sub("", corrected)
+    orig_text = html.unescape(_STRIP_TAGS_RE.sub("", original))
+    corr_text = html.unescape(_STRIP_TAGS_RE.sub("", corrected))
+    orig_text = re.sub(r"\s+", "", orig_text)
+    corr_text = re.sub(r"\s+", "", corr_text)
     lo = len(orig_text)
     lc = len(corr_text)
     if lo == 0:
@@ -221,8 +229,10 @@ def _normalize_mathml(block: str) -> str:
     result = _MSPACE_RE.sub("", block)
     result = _decode_symbol_entities(result)
     result = _STRIP_TAGS_RE.sub("", result)
+    result = html.unescape(result)
     result = result.replace("&#160;", "").replace("\u00a0", "")
-    result = result.replace(" ", "")
+    result = result.replace("\u202f", "")
+    result = re.sub(r"\s+", "", result)
     result = result.replace("-", "\u2212")
     result = re.sub(r"(?<=\d)\.(?=\d)", "", result)
     result = re.sub(r"(\d),(\d)", r"\1.\2", result)

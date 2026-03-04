@@ -32,7 +32,7 @@ from scripts.notation_fix_rules import (
     apply_deterministic_fixes,
 )
 from scripts.notation_fix_writer import write_fixes_to_disk
-from scripts.notation_sanity import run_sanity_checks
+from scripts.notation_sanity import run_sanity_checks, run_xsd_validation
 from scripts.notation_state import PipelineState
 
 logger = logging.getLogger(__name__)
@@ -81,11 +81,24 @@ def _fix_deterministic(
 ) -> str | None:
     """Apply deterministic fixes. Returns fixed content or None."""
     cats = _item_categories(item) & phase_cats
-    det_cats = cats & set(DETERMINISTIC_CATEGORIES.keys())
-    if not det_cats:
+    if not cats:
         return None
+
+    det_cats = cats & set(DETERMINISTIC_CATEGORIES.keys())
     original = item["original"]
-    fixed = apply_deterministic_fixes(original, det_cats)
+    fixed = original
+
+    if det_cats:
+        fixed = apply_deterministic_fixes(fixed, det_cats)
+
+    # Many manual_fix findings are still deterministic thousands/spacing
+    # patterns that can be safely normalized without an LLM rewrite.
+    if "manual_fix" in cats:
+        fixed = apply_deterministic_fixes(
+            fixed,
+            {"deterministic_thousands_sep", "deterministic_spacing"},
+        )
+
     return fixed if fixed != original else None
 
 
@@ -97,7 +110,9 @@ def _fix_llm(
     cats = _item_categories(item) & phase_cats & _LLM_CATEGORIES
     if not cats:
         return None, 0, 0
-    issues = _item_issue_descriptions(item, cats)
+    # For mixed-category items (e.g., manual_fix + deterministic_thousands_sep),
+    # pass all confirmed issues so the LLM can resolve the full local context.
+    issues = _item_issue_descriptions(item)
     if not issues:
         return None, 0, 0
     prompt = build_llm_fix_prompt(
@@ -127,17 +142,27 @@ def _fix_llm(
 
 
 def _content_type(item: dict) -> str:
-    return "HTML" if item.get("source") == "mini-class" else "QTI XML"
+    return "HTML" if item.get("source") in {"mini-class", "lesson"} else "QTI XML"
 
 
 def _validate_sanity(
-    item: dict, fixed: str,
+    item: dict, fixed: str, *,
+    lenient: bool = False,
 ) -> tuple[bool, list[str]]:
     """Run deterministic sanity checks on the fix."""
-    return run_sanity_checks(
+    passed, reasons = run_sanity_checks(
         item["original"], fixed, _content_type(item),
-        lenient=False,
+        lenient=lenient,
     )
+    if not passed:
+        return passed, reasons
+
+    if _content_type(item) == "QTI XML":
+        xsd_ok, xsd_reasons = run_xsd_validation(fixed)
+        if not xsd_ok:
+            return False, reasons + xsd_reasons
+
+    return True, reasons
 
 
 def _process_one(
@@ -148,10 +173,13 @@ def _process_one(
     use_llm: bool,
 ) -> dict:
     """Fix and validate a single item. Returns result dict."""
+    item_cats = _item_categories(item) & phase_cats
     det_fixed = _fix_deterministic(item, phase_cats)
     llm_fixed = None
     llm_in = llm_out = 0
-    if use_llm:
+    if use_llm and (
+        det_fixed is None or "deterministic_encoding" in item_cats
+    ):
         llm_fixed, llm_in, llm_out = _fix_llm(
             client, item, phase_cats,
         )
@@ -170,7 +198,14 @@ def _process_one(
             & set(DETERMINISTIC_CATEGORIES.keys()),
         )
 
-    sanity_ok, sanity_reasons = _validate_sanity(item, fixed)
+    if llm_fixed is not None:
+        sanity_ok, sanity_reasons = _validate_sanity(
+            item, fixed, lenient=True,
+        )
+    else:
+        sanity_ok, sanity_reasons = _validate_sanity(
+            item, fixed, lenient=False,
+        )
     if not sanity_ok:
         return {
             "key": key, "status": "sanity_fail",
@@ -201,7 +236,7 @@ def _select_items(
 ) -> list[tuple[str, dict]]:
     """Select confirmed items matching the phase categories."""
     cats = set(_PHASE_CATEGORIES[phase])
-    confirmed = state.items_by_status("confirmed")
+    confirmed = state.items_by_status("confirmed", "fix_fail")
     matching = [
         (k, item) for k, item in confirmed
         if _item_categories(item) & cats
