@@ -15,12 +15,14 @@ Usage:
     python migrate_base64_to_s3.py --test-name prueba-invierno-2026 --dry-run
 """
 
+from __future__ import annotations
+
 import base64
 import os
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any
 
 from dotenv import load_dotenv
 
@@ -39,19 +41,19 @@ possible_env_locations = [
     Path.cwd() / ".env",  # Current directory
 ]
 
-env_file = None
+env_file: Path | None = None
 for loc in possible_env_locations:
     if loc.exists():
         env_file = loc
         break
-if env_file.exists():
+if env_file is not None:
     load_dotenv(env_file)
     print(f"✅ Loaded environment variables from {env_file}")
 else:
     print("⚠️  No .env file found")
 
 
-def extract_base64_images(qti_xml: str) -> List[Dict[str, str]]:
+def extract_base64_images(qti_xml: str) -> list[dict[str, str]]:
     """
     Extrae todas las imágenes base64 de un QTI XML.
 
@@ -96,7 +98,7 @@ def fix_base64_padding(base64_data: str) -> str:
     return base64_data
 
 
-def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[str, Optional[str]]:
+def upload_images_to_s3(images: list[dict[str, str]], question_id: str) -> dict[str, str | None]:
     """
     Sube imágenes a S3 y retorna un mapeo de data URI a URL S3.
 
@@ -144,7 +146,7 @@ def upload_images_to_s3(images: List[Dict[str, str]], question_id: str) -> Dict[
     return mapping
 
 
-def replace_data_uris_with_s3(qti_xml: str, uri_mapping: Dict[str, str]) -> str:
+def replace_data_uris_with_s3(qti_xml: str, uri_mapping: dict[str, str]) -> str:
     """
     Reemplaza data URIs con URLs S3 en el QTI XML.
 
@@ -178,7 +180,7 @@ def replace_data_uris_with_s3(qti_xml: str, uri_mapping: Dict[str, str]) -> str:
     return updated_xml
 
 
-def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> Dict[str, any]:
+def migrate_qti_file(qti_path: Path, dry_run: bool = False) -> dict[str, Any]:
     """
     Migra un QTI de base64 a S3.
 

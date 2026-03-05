@@ -39,8 +39,12 @@ NUNCA entidades Latin-1.
 - Todo decimal usa COMA (convención PAES): 1,5 y NO 1.5. \
 Punto decimal está PROHIBIDO. Aplica a texto y a <mn> en MathML.
 - Separador de miles es ESPACIO (convención PAES): 10 000 y NO \
-10.000. Usar espacio no separable \\u00A0 dentro de <mn>. \
-Enteros de 4 dígitos pueden ir sin separador (1000, 1500).
+10.000. Dentro de <mn> usa &#160; (non-breaking space entity): \
+<mn>10&#160;000</mn>. Enteros de 4 dígitos sin separador (1000).
+- Operadores MathML: usa caracteres directos en <mo>, nunca \
+secuencias de escape. Ejemplos: <mo>−</mo> (menos), \
+<mo>×</mo> (multiplicación), <mo>·</mo> (punto medio), \
+<mo>→</mo> (flecha).
 - NO cubras temas listados como "Fuera de alcance" en el \
 enriquecimiento. Limítate estrictamente a los ítems "En alcance"."""
 
@@ -115,6 +119,14 @@ _CONCEPT_RULES = (
     "- Sin repetir lo que el ejemplo resuelto mostrará."
 )
 
+_PREREQ_BUDGET = SECTION_WORD_BUDGETS["prerequisite-refresh"]
+_PREREQ_RULES = (
+    "- Micro-bloque de repaso: SOLO definiciones o fórmulas "
+    "estrictamente necesarias para la mini-clase.\n"
+    "- Sin ejemplos, sin demostraciones, sin contexto PAES.\n"
+    f"- MÁXIMO {int(_PREREQ_BUDGET * 1.8)} palabras."
+)
+
 _WE_BUDGET = SECTION_WORD_BUDGETS["worked-example"]
 _WE_RULES = (
     "- Pasos numerados dentro de <details>/<summary>.\n"
@@ -140,7 +152,10 @@ _WE_RULES = (
     "- Usa EXACTAMENTE los 3 ítems de checklist_items del plan.\n"
     "- Cada ítem de checklist es 1 línea que el estudiante puede "
     "aplicar en 10 segundos bajo presión de examen.\n"
-    f"- ~{_WE_BUDGET} palabras."
+    f"- MÁXIMO {int(_WE_BUDGET * 1.8)} palabras "
+    f"(presupuesto ~{_WE_BUDGET}). "
+    "Si el ejemplo necesita imagen, la imagen reemplaza texto — "
+    "no repitas en texto lo que la figura ya muestra."
 )
 
 
@@ -264,6 +279,7 @@ def build_generation_rules(
     """
     section_rules_map: dict[str, str] = {
         "objective": _OBJECTIVE_RULES,
+        "prerequisite-refresh": _PREREQ_RULES,
         "concept": _CONCEPT_RULES,
         "worked-example": _WE_RULES,
     }

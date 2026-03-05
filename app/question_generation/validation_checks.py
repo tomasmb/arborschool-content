@@ -263,6 +263,29 @@ def check_paes_structure(qti_xml: str) -> list[str]:
     return errors
 
 
+# ---------------------------------------------------------------------------
+# PAES notation checks (number formatting inside <mn>)
+# ---------------------------------------------------------------------------
+
+_MN_DOT_THOUSANDS_RE = re.compile(r"<mn>\d{1,3}\.\d{3}")
+_MN_REGULAR_SPACE_RE = re.compile(r"<mn>[^<]*\d \d")
+_MN_BARE_BIG_RE = re.compile(r"<mn>(\d{5,})</mn>")
+
+
+def check_paes_notation(qti_xml: str) -> list[str]:
+    """Check PAES number formatting inside <mn> tags."""
+    errors: list[str] = []
+    if _MN_DOT_THOUSANDS_RE.search(qti_xml):
+        errors.append("Dot as thousands separator in <mn>")
+    for m in _MN_REGULAR_SPACE_RE.finditer(qti_xml):
+        if "&#160;" not in m.group():
+            errors.append("Regular space in <mn> (use &#160;)")
+            break
+    if _MN_BARE_BIG_RE.search(qti_xml):
+        errors.append("5+ digit <mn> without thousands separator")
+    return errors
+
+
 def normalize_option_letter(raw: str) -> str | None:
     """Normalize a raw option value to a single letter A-D.
 
@@ -459,6 +482,9 @@ def run_deterministic_checks(
 
     paes_errors = check_paes_structure(qti_xml)
     errors.extend(f"{item_id}: {e}" for e in paes_errors)
+
+    notation_errors = check_paes_notation(qti_xml)
+    errors.extend(f"{item_id}: {e}" for e in notation_errors)
 
     if exemplars:
         copy_err = check_exemplar_distance(qti_xml, exemplars, meta)

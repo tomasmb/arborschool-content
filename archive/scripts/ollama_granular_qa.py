@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Granular low-cost QA over Phase 9 checkpoint items using local Ollama.
+"""ARCHIVED 2026-03-02: Machine-specific local QA tool (hardcoded to
+/Users/max/.openclaw/workspace). Not part of any pipeline.
+
+Original description:
+Granular low-cost QA over Phase 9 checkpoint items using local Ollama.
 
 - Keeps persistent progress state
 - Runs focused checks per item (question grammar + feedback A/B/C/D)

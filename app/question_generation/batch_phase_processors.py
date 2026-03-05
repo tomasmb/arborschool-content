@@ -12,6 +12,9 @@ import json
 import logging
 from typing import Any
 
+from app.question_feedback.final_validation_parser import (
+    parse_final_validation_payload,
+)
 from app.question_generation.batch_api import BatchResponse
 from app.question_generation.batch_request_builders import (
     build_generation_request,
@@ -463,18 +466,19 @@ def process_final_validation_responses(
             continue
 
         try:
-            result = json.loads(resp.text)
-            verdict = result.get("validation_result", "fail")
-            if verdict == "pass":
+            parsed_result = parse_final_validation_payload(
+                json.loads(resp.text),
+            )
+            if parsed_result.validation_result == "pass":
                 passed.append(item)
             else:
-                reason = result.get(
-                    "overall_reasoning", "Validation failed",
+                reason = (
+                    parsed_result.overall_reasoning
+                    or "Validation failed"
                 )
                 errors.append(f"{item_id}: {reason}")
         except (json.JSONDecodeError, ValueError) as exc:
             errors.append(f"{item_id}: Parse error: {exc}")
 
     return passed, errors
-
 

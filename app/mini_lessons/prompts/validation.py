@@ -87,8 +87,12 @@ CONTENIDO / ARTEFACTOS:
 15. Filtración de prompt/instrucciones del modelo en el contenido
 16. Mezcla incoherente de idiomas en medio de oración española
 
-Ignora contenido dentro de <math>...</math> al revisar tildes \
-y espacios. Un <img> tag con src= es válido, no es artefacto.
+Ignora por completo el interior de <math>...</math>: tags MathML, \
+operadores Unicode (−, ×, ·, →, ≤, ≥, ±, ², ³) y espacios \
+dentro de <mn> son válidos y NO son artefactos. \
+Un espacio no separable entre </math> y un símbolo (como %) es \
+formato intencional, no anomalía. \
+Un <img> tag con src= es válido, no es artefacto.
 </task>
 
 <output_format>

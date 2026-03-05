@@ -43,7 +43,7 @@ from .qti_response_parsers import (
 from .qti_transformer import (
     detect_encoding_errors,
     transform_to_qti,
-    verify_and_fix_encoding,
+    validate_no_encoding_errors_or_raise,
 )
 from .qti_xml_utils import (
     clean_qti_xml,
@@ -54,7 +54,7 @@ from .qti_xml_utils import (
 __all__ = [
     "transform_to_qti",
     "detect_encoding_errors",
-    "verify_and_fix_encoding",
+    "validate_no_encoding_errors_or_raise",
     "ENCODING_FIXES",
     "extract_correct_answer_from_qti",
     "update_correct_answer_in_qti_xml",

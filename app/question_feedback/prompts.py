@@ -19,7 +19,8 @@ CHILEAN_NUMBER_FORMAT_SECTION = """
 <chilean_number_format>
 IMPORTANTE: Este contenido usa formato numérico PAES (Chile):
 - Coma (,) = separador DECIMAL
-- Espacio = separador de MILES (no punto, no coma)
+- Espacio = separador de MILES (no punto, no coma). En MathML \
+<mn> usar &#160; (<mn>10&#160;000</mn>), no espacio normal.
 - Enteros de 4 dígitos pueden ir sin separador (e.g. 1000, 1500)
 
 Ejemplos de interpretación:
@@ -345,6 +346,16 @@ contaminar otros checks.
    - Errores tipográficos reales (no diferencias de estilo)
    - Caracteres mal codificados (excepto entidades HTML válidas: &#x00A1; etc.)
    - Expresiones matemáticas con errores de signos o exponentes
+   - Notación PAES en números:
+     * Decimal con coma (3,14), no punto (3.14)
+     * Miles con espacio en texto y &#160; dentro de <mn> (10&#160;000), no punto/coma
+     * En números de 5+ dígitos, ausencia de separador de miles cuenta como issue
+   - MathML estructural:
+     * Número grande no debe dividirse en múltiples <mn> con <mspace>
+     * Espacio normal dentro de <mn> cuenta como issue (debe ser &#160;)
+   - Entidades/codificación en QTI XML:
+     * Entidades HTML con nombre (&oacute;, &minus;) cuentan como issue
+     * Doble codificación (&amp;amp;) cuenta como issue
    - FAIL SOLO si hay errores objetivos de contenido
    - PASS si el contenido es legible y correcto
 
@@ -382,14 +393,21 @@ NO marcar como error:
 - Entidades HTML válidas (&#x00A1;, &#x00BF;, etc.)
 - Expresiones matemáticamente equivalentes (ej: "entero positivo" = "≥1")
 - Cálculos correctos en formato PAES (espacio=miles, coma=decimal)
+- Enteros de 4 dígitos sin separador (1000, 1500)
+- Números en atributos XML, URLs, identificadores y hashes
+- Coordenadas (x, y) donde la coma separa componentes
 - Diferencias de estilo o redacción que no afectan la corrección matemática
 - Descripciones de imágenes que son razonables aunque no pixel-perfect
+- Operadores (+, −, ×) dentro de <mn> si no cambian el valor matemático
 
 SÍ marcar como error:
 - Resultado numérico incorrecto en un cálculo
 - Respuesta marcada que no es la matemáticamente correcta
 - Feedback que llega a una conclusión opuesta a lo que demuestra
 - Contradicción factual clara entre texto e imagen
+- Punto decimal anglosajón o separador de miles incorrecto en números del contenido
+- Número grande dividido con <mspace> o <mn> fragmentados
+- Entidades HTML con nombre o doble codificación en QTI XML
 </constraints>
 
 <output_format>

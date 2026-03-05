@@ -157,6 +157,7 @@ def check_full_lesson_structure(html: str) -> list[str]:
     errors.extend(_gate_2_renderer_safety(html))
     errors.extend(check_decimal_notation(html))
     errors.extend(check_thousands_notation(html))
+    errors.extend(check_mn_notation(html))
 
     return errors
 
@@ -230,6 +231,25 @@ def check_thousands_notation(html: str) -> list[str]:
         f"Period used as thousands separator "
         f"(PAES uses space): {samples}{extra}",
     ]
+
+
+_MN_DOT_THOUSANDS_RE = re.compile(r"<mn>\d{1,3}\.\d{3}")
+_MN_REGULAR_SPACE_RE = re.compile(r"<mn>[^<]*\d \d")
+_MN_BARE_BIG_RE = re.compile(r"<mn>(\d{5,})</mn>")
+
+
+def check_mn_notation(html: str) -> list[str]:
+    """Check PAES number formatting inside <mn> tags."""
+    errors: list[str] = []
+    if _MN_DOT_THOUSANDS_RE.search(html):
+        errors.append("Dot as thousands separator in <mn>")
+    for m in _MN_REGULAR_SPACE_RE.finditer(html):
+        if "&#160;" not in m.group():
+            errors.append("Regular space in <mn> (use &#160;)")
+            break
+    if _MN_BARE_BIG_RE.search(html):
+        errors.append("5+ digit <mn> without thousands separator")
+    return errors
 
 
 def _gate_1_contract(html: str) -> list[str]:

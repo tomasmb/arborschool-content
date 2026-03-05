@@ -141,12 +141,16 @@ def _has_placeholder(html: str) -> bool:
 
 
 def _replace_placeholder(html: str, s3_url: str) -> str:
-    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL."""
-    return html.replace(
-        f'src="{_PLACEHOLDER_SRC}"',
-        f'src="{s3_url}"',
-        1,
-    )
+    """Replace IMAGE_PLACEHOLDER src with the actual S3 URL.
+
+    Handles both double-quote and single-quote variants that the
+    LLM may produce.
+    """
+    for q in ('"', "'"):
+        old = f"src={q}{_PLACEHOLDER_SRC}{q}"
+        if old in html:
+            return html.replace(old, f'src="{s3_url}"', 1)
+    return html
 
 
 def _build_file_id(
@@ -179,7 +183,7 @@ def _extract_section_text(html: str) -> str:
 # ------------------------------------------------------------------
 
 _PLACEHOLDER_IMG_RE = re.compile(
-    r'<p>\s*<img\s[^>]*src="IMAGE_PLACEHOLDER"[^>]*/>\s*</p>',
+    r'<p>\s*<img\s[^>]*src=["\']IMAGE_PLACEHOLDER["\'][^>]*/>\s*</p>',
     re.IGNORECASE,
 )
 
@@ -202,9 +206,10 @@ def strip_failed_image_placeholders(
         if _PLACEHOLDER_SRC not in section.html:
             continue
         section.html = _PLACEHOLDER_IMG_RE.sub("", section.html)
-        section.html = section.html.replace(
-            f'src="{_PLACEHOLDER_SRC}"', "",
-        )
+        for q in ('"', "'"):
+            section.html = section.html.replace(
+                f"src={q}{_PLACEHOLDER_SRC}{q}", "",
+            )
         stripped.append(section.block_name)
         logger.warning(
             "Stripped IMAGE_PLACEHOLDER from %s (image_failed)",

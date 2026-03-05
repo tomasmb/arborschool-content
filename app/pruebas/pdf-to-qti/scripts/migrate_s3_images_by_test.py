@@ -19,37 +19,24 @@ from typing import Any
 
 from dotenv import load_dotenv
 
-# Calculate project root and load env
+# scripts/ -> pdf-to-qti/ -> pruebas/ -> app/ -> repo root
 script_dir = Path(__file__).resolve().parent
 project_root = script_dir.parent.parent.parent.parent
+sys.path.insert(0, str(project_root))
+sys.path.insert(0, str(script_dir))
+
 env_file = project_root / ".env"
 if env_file.exists():
     load_dotenv(env_file)
 
-# Import utilities
-try:
-    from app.pruebas.pdf_to_qti.scripts.s3_migration_utils import (
-        copy_image_in_s3,
-        delete_image_from_s3,
-        get_s3_client,
-        list_images_in_prefix,
-        update_xml_urls,
-    )
-except ImportError:
-    # Fallback for direct script execution
-    from s3_migration_utils import (
-        copy_image_in_s3,
-        delete_image_from_s3,
-        get_s3_client,
-        list_images_in_prefix,
-        update_xml_urls,
-    )
-
-try:
-    from botocore.exceptions import ClientError
-except ImportError:
-    print("❌ boto3 not available. Install it with: pip install boto3")
-    sys.exit(1)
+from botocore.exceptions import ClientError
+from s3_migration_utils import (
+    copy_image_in_s3,
+    delete_image_from_s3,
+    get_s3_client,
+    list_images_in_prefix,
+    update_xml_urls,
+)
 
 from app.utils.paths import PRUEBAS_PROCESADAS_DIR
 

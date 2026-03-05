@@ -12,7 +12,10 @@ import logging
 import re
 
 from app.llm_clients import LLMResponse, OpenAIClient
-from app.mini_lessons.helpers import extract_enrichment_for_gate
+from app.mini_lessons.helpers import (
+    estimate_duration_minutes,
+    extract_enrichment_for_gate,
+)
 from app.mini_lessons.html_validator import (
     check_decimal_notation,
     check_filler_phrases,
@@ -46,6 +49,9 @@ logger = logging.getLogger(__name__)
 _MATH_CHECK_SECTIONS = {"worked-example"}
 _IMAGE_PLACEHOLDER = "IMAGE_PLACEHOLDER"
 _IMG_TAG_PATTERN = re.compile(r"<img\s[^>]*src=", re.IGNORECASE)
+_IMG_SRC_RE = re.compile(
+    r"""<img\s[^>]*src=["']([^"']+)["']""", re.IGNORECASE,
+)
 
 
 def _has_img_tag(html: str) -> bool:
@@ -224,17 +230,55 @@ class SectionValidator:
                 word_count=count_words(html),
                 image_description=section.image_description,
             )
-            if section.image_description and not _has_img_tag(retried.html):
-                retried.image_failed = True
-                logger.warning(
-                    "Retry of %s dropped <img> tag — "
-                    "marked image_failed",
-                    section.block_name,
-                )
+            retried = _transplant_image_url(
+                retried, section,
+            )
             return retried
         except Exception as exc:
             logger.warning("Section retry failed: %s", exc)
             return None
+
+
+def _transplant_image_url(
+    retried: LessonSection,
+    original: LessonSection,
+) -> LessonSection:
+    """Carry the real S3 image URL from *original* into *retried*.
+
+    When Phase 3 retries a section, the LLM regenerates HTML with a
+    fresh ``IMAGE_PLACEHOLDER``.  If Phase 2b already replaced the
+    placeholder with a real URL in *original*, transplant that URL
+    into *retried* so the image isn't lost.
+    """
+    if not original.image_description:
+        return retried
+
+    if not _has_img_tag(retried.html):
+        retried.image_failed = True
+        logger.warning(
+            "Retry of %s dropped <img> tag — marked image_failed",
+            retried.block_name,
+        )
+        return retried
+
+    if _IMAGE_PLACEHOLDER not in retried.html:
+        return retried
+
+    m = _IMG_SRC_RE.search(original.html)
+    original_url = m.group(1) if m else None
+    if original_url and original_url != _IMAGE_PLACEHOLDER:
+        for q in ('"', "'"):
+            old = f"src={q}{_IMAGE_PLACEHOLDER}{q}"
+            if old in retried.html:
+                retried.html = retried.html.replace(
+                    old, f'src="{original_url}"', 1,
+                )
+                break
+        logger.info(
+            "Transplanted image URL into retried %s",
+            retried.block_name,
+        )
+    return retried
 
 
 def _build_image_map(plan: LessonPlan) -> dict[str, ImagePlanEntry]:
@@ -262,8 +306,8 @@ def deterministic_section_checks(
     if word_count > hard_limit:
         errors.append(
             f"Word count {word_count} exceeds hard limit "
-            f"{hard_limit} (2x budget {budget}) for "
-            f"{section.block_name}",
+            f"{hard_limit} ({HARD_BUDGET_MULTIPLIER}x budget "
+            f"{budget}) for {section.block_name}",
         )
 
     text = re.sub(r"<[^>]+>", " ", section.html)
@@ -288,14 +332,6 @@ def deterministic_section_checks(
 # ===================================================================
 # Phase 4 — Assembly + Structural Gate
 # ===================================================================
-
-_EDUCATIONAL_WPM = 120
-
-
-def estimate_duration_minutes(html: str) -> float:
-    """Estimate reading time (~120 wpm for math-heavy educational content)."""
-    return round(count_words(html) / _EDUCATIONAL_WPM, 1)
-
 
 def assemble_lesson(
     sections: list[LessonSection],
@@ -338,52 +374,6 @@ def assemble_lesson(
         },
         warnings=warnings,
     ), full_html
-
-
-def build_lesson_meta(
-    atom_id: str,
-    template_type: str,
-    ctx: LessonContext,
-    plan: LessonPlan,
-    html: str = "",
-    sections: list[LessonSection] | None = None,
-) -> dict:
-    """Build the mini-class.meta.json content with provenance."""
-    from datetime import datetime, timezone
-
-    image_failures = [
-        s.block_name for s in (sections or [])
-        if s.image_failed
-    ]
-    meta: dict = {
-        "atom_id": atom_id,
-        "template_type": template_type,
-        "eje": ctx.eje,
-        "title": ctx.atom_title,
-        "has_prerequisite_refresh": plan.include_prerequisite_refresh,
-        "planned_images": [
-            e.target_section for e in plan.image_plan
-        ],
-        "image_failures": image_failures,
-        "provenance": {
-            "model": "gpt-5.1",
-            "reasoning_efforts": {
-                "planning": "medium",
-                "coherence_check": "low",
-                "section_generation_text": "medium",
-                "section_generation_math": "high",
-                "math_verification": "high",
-                "quality_gate": "high",
-            },
-            "generated_at": datetime.now(timezone.utc).isoformat(),
-            "pipeline_version": "2.1.0",
-        },
-    }
-    if html:
-        meta["estimated_duration_min"] = (
-            estimate_duration_minutes(html)
-        )
-    return meta
 
 
 # ===================================================================

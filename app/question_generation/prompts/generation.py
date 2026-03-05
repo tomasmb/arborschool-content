@@ -28,7 +28,8 @@ from app.question_generation.prompts.reference_examples import (
 _QTI_RULES = """\
 - El ítem DEBE tener identifier: "{atom_id}_Q{slot_index}"
 - Opción múltiple (MCQ) con EXACTAMENTE 4 opciones (A-D), 1 correcta
-- En español de Chile, notación PAES (separadores decimales chilenos)
+- Notación PAES (Chile): coma decimal (3,14), separador de miles \
+&#160; en <mn> (<mn>10&#160;000</mn>). NUNCA punto como miles.
 - Usa MathML nativo para TODA expresión matemática. NUNCA uses LaTeX.
   Cada <math> DEBE llevar xmlns explícito:
   <math xmlns="http://www.w3.org/1998/Math/MathML"><mrow>...</mrow></math>
