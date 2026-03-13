@@ -6,6 +6,7 @@ This module validates generated variants to ensure they:
 3. Have the same difficulty level
 4. Have a mathematically correct answer
 5. Have plausible distractors
+6. Are non-mechanizable (not solvable by rote pattern only)
 """
 
 import json
@@ -56,6 +57,7 @@ class VariantValidator:
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
+                non_mechanizable=False,
                 rejection_reason=f"XML inválido: {xml_error}",
             )
 
@@ -132,6 +134,10 @@ Verifica cuidadosamente:
 5. **VARIANTE DIFERENTE**: ¿Es suficientemente diferente de la original?
    - Debe tener al menos un cambio significativo (números diferentes, contexto diferente)
    - La respuesta correcta debe ser DIFERENTE a la original
+
+6. **NO MECANIZABLE**: ¿Evita resolución por receta memorizada?
+   - Debe cambiar al menos 2 ejes estructurales (forma, representación, distractor o secuencia)
+   - Debe exigir comprender el por qué del método
 </tarea>
 
 <formato_respuesta>
@@ -146,6 +152,8 @@ Responde en JSON:
   "distractores_plausibles": true/false,
   "razon_distractores": "Explicación breve...",
   "es_diferente": true/false,
+  "no_mecanizable": true/false,
+  "razon_no_mecanizable": "Explicación breve...",
   "veredicto": "APROBADA" o "RECHAZADA",
   "razon_rechazo": "Si es rechazada, explicar por qué..."
 }}
@@ -180,6 +188,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
+                non_mechanizable=False,
                 rejection_reason=f"Error de validación: {str(e)}",
             )
 
@@ -197,6 +206,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 answer_correct=data.get("respuesta_correcta", False),
                 calculation_steps=data.get("tu_calculo", ""),
                 distractors_plausible=data.get("distractores_plausibles", False),
+                non_mechanizable=data.get("no_mecanizable", False),
                 rejection_reason=data.get("razon_rechazo", ""),
             )
         except json.JSONDecodeError:
@@ -205,6 +215,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 concept_aligned=False,
                 difficulty_equal=False,
                 answer_correct=False,
+                non_mechanizable=False,
                 rejection_reason="No se pudo parsear respuesta de validación",
             )
 

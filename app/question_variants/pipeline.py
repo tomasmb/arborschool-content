@@ -24,10 +24,12 @@ from app.question_variants.models import (
     GenerationReport,
     PipelineConfig,
     SourceQuestion,
+    VariantBlueprint,
     VariantQuestion,
     VariantResult,
 )
 from app.question_variants.variant_generator import VariantGenerator
+from app.question_variants.variant_planner import VariantPlanner
 from app.question_variants.variant_validator import VariantValidator
 from app.utils.qti_extractor import parse_qti_xml
 
@@ -47,6 +49,7 @@ class VariantPipeline:
             config: Pipeline configuration. Uses defaults if not provided.
         """
         self.config = config or PipelineConfig()
+        self.planner = VariantPlanner(self.config)
         self.generator = VariantGenerator(self.config)
         self.validator = VariantValidator(self.config)
         self.feedback_pipeline = QuestionPipeline()
@@ -162,8 +165,16 @@ class VariantPipeline:
 
         report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
 
-        # Generate variants (raw QTI without feedback)
-        variants = self.generator.generate_variants(source, num_variants)
+        n = num_variants or self.config.variants_per_question
+
+        # Phase 1: plan hard, non-mechanizable variant blueprints
+        blueprints = self.planner.plan_variants(source, n)
+
+        # Save planning artifact for traceability/debugging
+        self._save_variant_plan(source, blueprints)
+
+        # Phase 2: generate variants (raw QTI without feedback)
+        variants = self.generator.generate_variants(source, n, blueprints=blueprints)
         report.total_generated = len(variants)
 
         if not variants:
@@ -224,6 +235,36 @@ class VariantPipeline:
         self._save_report(report)
 
         return report
+
+    def _save_variant_plan(self, source: SourceQuestion, blueprints: List[VariantBlueprint]) -> None:
+        """Persist planner output per source question."""
+        plan_path = os.path.join(
+            self.config.output_dir,
+            source.test_id,
+            source.question_id,
+            "variant_plan.json",
+        )
+        os.makedirs(os.path.dirname(plan_path), exist_ok=True)
+
+        payload = {
+            "source_question_id": source.question_id,
+            "source_test_id": source.test_id,
+            "variants_planned": len(blueprints),
+            "blueprints": [
+                {
+                    "variant_id": bp.variant_id,
+                    "scenario_description": bp.scenario_description,
+                    "non_mechanizable_axes": bp.non_mechanizable_axes,
+                    "required_reasoning": bp.required_reasoning,
+                    "difficulty_target": bp.difficulty_target,
+                    "requires_image": bp.requires_image,
+                    "image_description": bp.image_description,
+                }
+                for bp in blueprints
+            ],
+        }
+        with open(plan_path, "w", encoding="utf-8") as f:
+            json.dump(payload, f, ensure_ascii=False, indent=2)
 
     def _process_variant_through_pipeline(
         self, variant: VariantQuestion, source: SourceQuestion
@@ -298,6 +339,7 @@ class VariantPipeline:
                 "concept_aligned": variant.validation_result.concept_aligned,
                 "difficulty_equal": variant.validation_result.difficulty_equal,
                 "answer_correct": variant.validation_result.answer_correct,
+                "non_mechanizable": variant.validation_result.non_mechanizable,
                 "calculation_steps": variant.validation_result.calculation_steps,
                 "rejection_reason": variant.validation_result.rejection_reason,
             }

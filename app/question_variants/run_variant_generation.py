@@ -5,7 +5,7 @@ Usage:
     python -m app.assessment.run_variant_generation \\
         --source-test "prueba-invierno-2025" \\
         --questions "Q1,Q4,Q5" \\
-        --variants-per-question 3 \\
+        --variants-per-question 10 \\
         --output-dir "app/data/pruebas/alternativas"
 """
 
@@ -27,7 +27,12 @@ def main():
         help="Comma-separated list of question IDs to process (e.g., 'Q1,Q4,Q5'). If not specified, processes all questions.",
     )
 
-    parser.add_argument("--variants-per-question", type=int, default=3, help="Number of variants to generate per question (default: 3)")
+    parser.add_argument(
+        "--variants-per-question",
+        type=int,
+        default=10,
+        help="Number of variants to generate per question (default: 10)",
+    )
 
     parser.add_argument("--output-dir", default="app/data/pruebas/alternativas", help="Output directory for generated variants")
 

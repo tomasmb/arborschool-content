@@ -1,8 +1,8 @@
 """Variant question generator.
 
 This module generates pedagogically-sound variant questions from source
-exemplars using very restrictive prompts to ensure variants test the
-EXACT SAME concept with different numbers/context only.
+exemplars, guided by planning blueprints that enforce same-construct
+alignment with non-mechanizable structural variation.
 """
 
 import json
@@ -10,7 +10,12 @@ import re
 from typing import Any, Dict, List, Optional
 
 from app.llm_clients import load_default_gemini_service
-from app.question_variants.models import PipelineConfig, SourceQuestion, VariantQuestion
+from app.question_variants.models import (
+    PipelineConfig,
+    SourceQuestion,
+    VariantBlueprint,
+    VariantQuestion,
+)
 
 
 class VariantGenerator:
@@ -25,7 +30,12 @@ class VariantGenerator:
         self.config = config or PipelineConfig()
         self.service = load_default_gemini_service()
 
-    def generate_variants(self, source: SourceQuestion, num_variants: Optional[int] = None) -> List[VariantQuestion]:
+    def generate_variants(
+        self,
+        source: SourceQuestion,
+        num_variants: Optional[int] = None,
+        blueprints: Optional[List[VariantBlueprint]] = None,
+    ) -> List[VariantQuestion]:
         """Generate variant questions from a source question.
 
         Args:
@@ -38,7 +48,7 @@ class VariantGenerator:
         n = num_variants or self.config.variants_per_question
 
         # Build the restrictive prompt
-        prompt = self._build_generation_prompt(source, n)
+        prompt = self._build_generation_prompt(source, n, blueprints)
 
         print(f"  Generating {n} variants for {source.question_id}...")
 
@@ -51,13 +61,20 @@ class VariantGenerator:
             # Convert to VariantQuestion objects
             variants = []
             for i, vdata in enumerate(variants_data):
-                variant_id = f"{source.question_id}_v{i + 1}"
+                if blueprints and i < len(blueprints):
+                    variant_id = blueprints[i].variant_id
+                else:
+                    variant_id = f"{source.question_id}_v{i + 1}"
                 variant = VariantQuestion(
                     variant_id=variant_id,
                     source_question_id=source.question_id,
                     source_test_id=source.test_id,
                     qti_xml=vdata.get("qti_xml", ""),
-                    metadata=self._build_variant_metadata(source, vdata),
+                    metadata=self._build_variant_metadata(
+                        source,
+                        vdata,
+                        blueprints[i] if blueprints and i < len(blueprints) else None,
+                    ),
                 )
                 variants.append(variant)
 
@@ -71,7 +88,12 @@ class VariantGenerator:
             traceback.print_exc()
             return []
 
-    def _build_generation_prompt(self, source: SourceQuestion, n: int) -> str:
+    def _build_generation_prompt(
+        self,
+        source: SourceQuestion,
+        n: int,
+        blueprints: Optional[List[VariantBlueprint]] = None,
+    ) -> str:
         """Build the restrictive generation prompt."""
 
         # Extract atom info for context
@@ -92,6 +114,28 @@ class VariantGenerator:
                 "7. ESTA PREGUNTA CONTIENE UNA IMAGEN DECORATIVA (Support visual). "
                 "DEBES INCLUIR LA ETIQUETA <img ...> EXACTAMENTE IGUAL QUE EN LA "
                 "ORIGINAL dentro del texto."
+            )
+
+        blueprint_instruction = ""
+        if blueprints:
+            blueprint_payload = []
+            for bp in blueprints[:n]:
+                blueprint_payload.append(
+                    {
+                        "variant_id": bp.variant_id,
+                        "scenario_description": bp.scenario_description,
+                        "non_mechanizable_axes": bp.non_mechanizable_axes,
+                        "required_reasoning": bp.required_reasoning,
+                        "difficulty_target": bp.difficulty_target,
+                        "requires_image": bp.requires_image,
+                        "image_description": bp.image_description,
+                    }
+                )
+            blueprint_instruction = (
+                "8. DEBES respetar exactamente estos blueprints por variante "
+                "(mismo orden):\n"
+                f"{json.dumps(blueprint_payload, ensure_ascii=False, indent=2)}\n"
+                "Cada variante debe incorporar sus ejes no mecanizables."
             )
 
         prompt = f"""
@@ -115,6 +159,7 @@ NUNCA el concepto matemático evaluado.
 5. La respuesta correcta DEBE poder calcularse con el MISMO procedimiento
 6. Los distractores DEBEN representar errores plausibles (NO valores aleatorios)
 {image_instruction}
+{blueprint_instruction}
 </reglas_estrictas>
 
 <pregunta_original>
@@ -148,6 +193,7 @@ Genera exactamente {n} variantes. Cada variante DEBE:
 2. Mantener exactamente 4 opciones (A, B, C, D) con distractores plausibles
 3. Usar el MISMO formato QTI 3.0 que la original
 4. Incluir feedback educativo para cada opción siguiendo el estilo de la original
+5. Incorporar cambios estructurales no mecanizables (no solo cambio superficial)
 
 Para cada variante, genera:
 - El XML QTI 3.0 completo (similar al original pero con nuevos valores)
@@ -204,7 +250,12 @@ IMPORTANTE: El QTI XML debe:
                 print(f"  ⚠️ Failed to parse JSON response: {e}")
                 return []
 
-    def _build_variant_metadata(self, source: SourceQuestion, variant_data: Dict[str, Any]) -> Dict[str, Any]:
+    def _build_variant_metadata(
+        self,
+        source: SourceQuestion,
+        variant_data: Dict[str, Any],
+        blueprint: Optional[VariantBlueprint] = None,
+    ) -> Dict[str, Any]:
         """Build metadata for a variant, inheriting from source."""
 
         # Start with inherited atoms (same concept = same atoms)
@@ -221,5 +272,15 @@ IMPORTANTE: El QTI XML debe:
                 "change_description": variant_data.get("change_description", ""),
             },
         }
+        if blueprint:
+            metadata["planning_blueprint"] = {
+                "variant_id": blueprint.variant_id,
+                "scenario_description": blueprint.scenario_description,
+                "non_mechanizable_axes": blueprint.non_mechanizable_axes,
+                "required_reasoning": blueprint.required_reasoning,
+                "difficulty_target": blueprint.difficulty_target,
+                "requires_image": blueprint.requires_image,
+                "image_description": blueprint.image_description,
+            }
 
         return metadata

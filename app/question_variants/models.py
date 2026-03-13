@@ -76,6 +76,29 @@ class VariantQuestion:
 
 
 @dataclass
+class VariantBlueprint:
+    """A planning blueprint for a single hard variant.
+
+    Attributes:
+        variant_id: Stable planned id (e.g., "Q1_v1")
+        scenario_description: New scenario/context description
+        non_mechanizable_axes: Structural changes that prevent rote solving
+        required_reasoning: Why understanding is required (not recipe)
+        difficulty_target: Relative target ("equal_or_harder", etc.)
+        requires_image: Whether this variant needs an image to be solvable
+        image_description: Detailed image specification when required
+    """
+
+    variant_id: str
+    scenario_description: str
+    non_mechanizable_axes: List[str] = field(default_factory=list)
+    required_reasoning: str = ""
+    difficulty_target: str = "equal_or_harder"
+    requires_image: bool = False
+    image_description: str = ""
+
+
+@dataclass
 class ValidationResult:
     """Result of variant validation.
 
@@ -95,6 +118,7 @@ class ValidationResult:
     answer_correct: bool
     calculation_steps: str = ""
     distractors_plausible: bool = True
+    non_mechanizable: bool = True
     rejection_reason: str = ""
 
     @property
@@ -114,7 +138,7 @@ class PipelineConfig:
         output_dir: Directory for saving generated variants (by test)
     """
 
-    variants_per_question: int = 3
+    variants_per_question: int = 10
     temperature: float = 0.3  # Slight variation for diversity
     validate_variants: bool = True
     save_rejected: bool = True

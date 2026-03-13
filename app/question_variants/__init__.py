@@ -9,17 +9,21 @@ from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
     ValidationResult,
+    VariantBlueprint,
     VariantQuestion,
 )
 from app.question_variants.pipeline import VariantPipeline
 from app.question_variants.variant_generator import VariantGenerator
+from app.question_variants.variant_planner import VariantPlanner
 from app.question_variants.variant_validator import VariantValidator
 
 __all__ = [
     "SourceQuestion",
     "VariantQuestion",
+    "VariantBlueprint",
     "ValidationResult",
     "PipelineConfig",
+    "VariantPlanner",
     "VariantGenerator",
     "VariantValidator",
     "VariantPipeline",
