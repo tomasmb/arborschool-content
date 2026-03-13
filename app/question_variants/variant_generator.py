@@ -9,7 +9,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional
 
-from app.llm_clients import load_default_gemini_service
+from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -28,7 +28,10 @@ class VariantGenerator:
             config: Pipeline configuration. Uses defaults if not provided.
         """
         self.config = config or PipelineConfig()
-        self.service = load_default_gemini_service()
+        self.service = build_text_service(
+            self.config.generator_provider,
+            self.config.generator_model,
+        )
 
     def generate_variants(
         self,

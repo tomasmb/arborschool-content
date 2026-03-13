@@ -5,7 +5,7 @@ Fecha: 2026-03-11
 ## Objetivo
 
 Definir una estrategia de modelos para generar variantes no mecanizables
-(10 por pregunta) con validacion robusta de constructo, solucion e imagen.
+(N por pregunta; inicio N=10) con validacion robusta de constructo, solucion e imagen.
 
 ## Hallazgos clave
 
@@ -56,4 +56,3 @@ Por eso se recomienda benchmark en muestra controlada antes de corrida total.
 - https://ai.google.dev/models/gemini
 - https://ai.google.dev/gemini-api/docs/image-generation
 - https://ai.google.dev/gemini-api/docs/deprecations
-

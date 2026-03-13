@@ -10,7 +10,7 @@ import json
 import re
 from typing import Any, Dict, List, Optional
 
-from app.llm_clients import load_default_gemini_service
+from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantBlueprint
 
 
@@ -19,7 +19,10 @@ class VariantPlanner:
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         self.config = config or PipelineConfig()
-        self.service = load_default_gemini_service()
+        self.service = build_text_service(
+            self.config.planner_provider,
+            self.config.planner_model,
+        )
 
     def plan_variants(
         self,
@@ -160,4 +163,3 @@ Devuelve SOLO JSON:
                 )
             )
         return plans
-

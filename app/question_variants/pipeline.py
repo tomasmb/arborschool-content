@@ -186,7 +186,17 @@ class VariantPipeline:
         variant_results: dict[str, VariantResult] = {}
 
         for variant in variants:
-            result = self._process_variant_through_pipeline(variant, source)
+            if self.config.enable_feedback_pipeline:
+                result = self._process_variant_through_pipeline(variant, source)
+            else:
+                result = VariantResult(
+                    success=True,
+                    variant_id=variant.variant_id,
+                    qti_xml=variant.qti_xml,
+                    validation_details={
+                        "feedback_pipeline": "skipped_by_config",
+                    },
+                )
             variant_results[variant.variant_id] = result
 
             if result.success and result.qti_xml:
@@ -298,7 +308,11 @@ class VariantPipeline:
                 variant_id=variant.variant_id,
                 error=pipeline_result.error,
                 stage_failed=pipeline_result.stage_failed,
-                validation_details=pipeline_result.validation_details,
+                validation_details=(
+                    pipeline_result.feedback_review_details
+                    if hasattr(pipeline_result, "feedback_review_details")
+                    else None
+                ),
             )
 
         print(f"    ✅ {variant.variant_id} passed feedback pipeline")
@@ -306,7 +320,11 @@ class VariantPipeline:
             success=True,
             variant_id=variant.variant_id,
             qti_xml=pipeline_result.qti_xml_final,
-            validation_details=pipeline_result.validation_details,
+            validation_details=(
+                pipeline_result.feedback_review_details
+                if hasattr(pipeline_result, "feedback_review_details")
+                else None
+            ),
         )
 
     def _save_variant(

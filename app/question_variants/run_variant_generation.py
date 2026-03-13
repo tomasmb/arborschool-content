@@ -15,6 +15,8 @@ import sys
 from app.question_variants.models import PipelineConfig
 from app.question_variants.pipeline import VariantPipeline
 
+DEFAULT_RUN_OUTPUT_DIR = "app/data/.question_variants_runs/manual"
+
 
 def main():
     parser = argparse.ArgumentParser(description="Generate variant questions from finalized test questions.")
@@ -31,14 +33,29 @@ def main():
         "--variants-per-question",
         type=int,
         default=10,
-        help="Number of variants to generate per question (default: 10)",
+        help="Number of variants to generate per question (initial default: 10)",
     )
 
-    parser.add_argument("--output-dir", default="app/data/pruebas/alternativas", help="Output directory for generated variants")
+    parser.add_argument(
+        "--output-dir",
+        default=DEFAULT_RUN_OUTPUT_DIR,
+        help="Output directory for generated variants (default isolates ad-hoc runs from tracked data)",
+    )
 
     parser.add_argument("--skip-validation", action="store_true", help="Skip the validation phase (not recommended)")
+    parser.add_argument(
+        "--skip-feedback-pipeline",
+        action="store_true",
+        help="Skip feedback enrichment pipeline (useful when OpenAI feedback service is unavailable)",
+    )
 
     parser.add_argument("--temperature", type=float, default=0.3, help="LLM temperature for generation (default: 0.3)")
+    parser.add_argument("--planner-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for blueprint planning")
+    parser.add_argument("--planner-model", default=None, help="Optional explicit model for blueprint planning")
+    parser.add_argument("--generator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for variant generation")
+    parser.add_argument("--generator-model", default=None, help="Optional explicit model for variant generation")
+    parser.add_argument("--validator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for semantic validation")
+    parser.add_argument("--validator-model", default=None, help="Optional explicit model for semantic validation")
 
     args = parser.parse_args()
 
@@ -51,7 +68,14 @@ def main():
     config = PipelineConfig(
         variants_per_question=args.variants_per_question,
         temperature=args.temperature,
+        planner_provider=args.planner_provider,
+        planner_model=args.planner_model,
+        generator_provider=args.generator_provider,
+        generator_model=args.generator_model,
+        validator_provider=args.validator_provider,
+        validator_model=args.validator_model,
         validate_variants=not args.skip_validation,
+        enable_feedback_pipeline=not args.skip_feedback_pipeline,
         output_dir=args.output_dir,
     )
 

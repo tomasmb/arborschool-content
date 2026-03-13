@@ -5,7 +5,7 @@ Este documento define una estrategia para generar variantes de preguntas PAES qu
 - evalúen el mismo constructo que la pregunta fuente;
 - sean mas dificiles;
 - no sean mecanizables por receta/memoria;
-- escalen a 10 variantes por pregunta para 4 pruebas.
+- escalen a N variantes por pregunta para 4 pruebas (N configurable; inicio en 10).
 
 Fecha de referencia del documento: 2026-03-11.
 
@@ -26,7 +26,7 @@ Pasar desde variantes "isomorficas por cambio superficial" a variantes de mayor 
 
 - Insumo: preguntas finalizadas en `app/data/pruebas/finalizadas/`.
 - Cobertura objetivo: 4 pruebas.
-- Volumen objetivo inicial: 10 variantes por pregunta.
+- Volumen objetivo inicial: 10 variantes por pregunta (parametro inicial, no limite de diseno).
 - Modo de ejecucion: pipeline por fases con gates de validacion estrictos.
 
 ### 1.3 No-objetivos (por ahora)
@@ -63,13 +63,13 @@ Por cada pregunta `Qx`:
   - constructo fuente,
   - atom principal/secundarios,
   - limites de dificultad,
-  - 10 blueprints de variante.
+  - N blueprints de variante.
 - `image_plan.json`:
   - decision de uso de imagen por variante,
   - tipo de imagen,
   - prompt largo de generacion.
 - `variants_generated/`:
-  - 10 candidatos QTI.
+  - N candidatos QTI.
 - `validation_report.json`:
   - resultado por gate (constructo, dificultad, solucion, distractores, anti-memoria, imagen).
 - `approved/`:
@@ -82,7 +82,7 @@ Por cada pregunta `Qx`:
 ## 4.1 Fases
 
 1. Perfilado de pregunta fuente
-2. Planificacion de 10 variantes (blueprints)
+2. Planificacion de N variantes (blueprints)
 3. Enriquecimiento visual y generacion de imagen (cuando aplique)
 4. Generacion QTI de variantes
 5. Validacion multi-gate
@@ -203,7 +203,7 @@ Fallas criticas:
 ## 9.1 Muestra inicial
 
 - 20 preguntas (mezcla de las 4 pruebas, con y sin imagen).
-- 10 variantes objetivo por pregunta.
+- N variantes objetivo por pregunta (en el piloto inicial, N=10).
 - 200 variantes candidatas totales.
 
 ## 9.2 Protocolo

@@ -132,15 +132,31 @@ class PipelineConfig:
 
     Attributes:
         variants_per_question: Number of variants to generate per source question
+            (initial default is 10, but fully configurable)
         temperature: LLM temperature for generation (0.0 = deterministic)
+        planner_provider: Provider used for blueprint planning
+        planner_model: Optional explicit model for blueprint planning
+        generator_provider: Provider used for QTI variant generation
+        generator_model: Optional explicit model for QTI variant generation
+        validator_provider: Provider used for semantic gate validation
+        validator_model: Optional explicit model for semantic gate validation
         validate_variants: Whether to run validation phase
+        enable_feedback_pipeline: Whether to enrich variants with feedback pipeline
+            before semantic validation.
         save_rejected: Whether to save rejected variants for debugging
         output_dir: Directory for saving generated variants (by test)
     """
 
     variants_per_question: int = 10
     temperature: float = 0.3  # Slight variation for diversity
+    planner_provider: str = "gemini"
+    planner_model: Optional[str] = None
+    generator_provider: str = "gemini"
+    generator_model: Optional[str] = None
+    validator_provider: str = "gemini"
+    validator_model: Optional[str] = None
     validate_variants: bool = True
+    enable_feedback_pipeline: bool = True
     save_rejected: bool = True
     output_dir: str = "app/data/pruebas/alternativas"
 

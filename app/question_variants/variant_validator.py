@@ -13,7 +13,7 @@ import json
 import xml.etree.ElementTree as ET
 from typing import Optional
 
-from app.llm_clients import load_default_gemini_service
+from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -35,7 +35,10 @@ class VariantValidator:
             config: Pipeline configuration. Uses defaults if not provided.
         """
         self.config = config or PipelineConfig()
-        self.service = load_default_gemini_service()
+        self.service = build_text_service(
+            self.config.validator_provider,
+            self.config.validator_model,
+        )
 
     def validate(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Validate a variant question against its source.
@@ -246,6 +249,10 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
         for child in element:
             tag = child.tag.split("}")[-1].lower()
 
+            if tag in ("qti-feedback-inline", "feedbackinline", "qti-feedback-block", "feedbackblock"):
+                # Exclude solution/feedback blocks from semantic comparison of question text.
+                continue
+
             if tag == "math":
                 # Process MathML to readable text using shared utility
                 parts.append(process_mathml(child))
@@ -262,9 +269,40 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
         return " ".join(filter(None, parts))
 
     def _extract_choices(self, xml_content: str) -> list[str]:
-        """Extract choice texts from QTI XML, properly handling MathML."""
-        choices, _ = extract_choices_from_qti(xml_content)
-        return choices
+        """Extract choice texts from QTI XML, excluding embedded feedback nodes."""
+        try:
+            root = ET.fromstring(xml_content)
+            raw_choices = root.findall(".//{*}qti-simple-choice")
+            if not raw_choices:
+                raw_choices = root.findall(".//{*}simpleChoice")
+
+            choices: list[str] = []
+            for choice in raw_choices:
+                choices.append(self._choice_text_without_feedback(choice))
+            return choices
+        except Exception:
+            # Fallback to shared utility if custom extraction fails.
+            choices, _ = extract_choices_from_qti(xml_content)
+            return choices
+
+    def _choice_text_without_feedback(self, element: ET.Element) -> str:
+        """Extract visible choice text while ignoring feedback inline blocks."""
+        parts: list[str] = []
+        if element.text:
+            parts.append(element.text.strip())
+
+        for child in element:
+            tag = child.tag.split("}")[-1].lower()
+            if tag in ("qti-feedback-inline", "feedbackinline"):
+                continue
+            if tag == "math":
+                parts.append(process_mathml(child))
+            else:
+                parts.append(self._element_to_text(child))
+            if child.tail:
+                parts.append(child.tail.strip())
+
+        return " ".join(filter(None, parts))
 
     def _find_correct_answer(self, xml_content: str) -> str:
         """Find the correct answer from QTI XML, properly handling MathML."""

@@ -37,7 +37,7 @@ class FinalValidator:
     checking mathematical correctness, feedback quality, and content quality.
     """
 
-    DEFAULT_MODEL = "gpt-5.1"
+    DEFAULT_MODEL = "gpt-5.4"
 
     def __init__(
         self,
@@ -47,7 +47,7 @@ class FinalValidator:
         """Initialise the validator.
 
         Args:
-            model: OpenAI model to use. Defaults to gpt-5.1.
+            model: OpenAI model to use. Defaults to gpt-5.4.
             client: Pre-built client (DIP). When ``None`` the factory
                 ``load_default_openai_client()`` is used.
         """
