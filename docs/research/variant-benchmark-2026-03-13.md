@@ -71,21 +71,43 @@ No rechazó por corrección matemática en la muestra balanceada: `answer_correc
 Eso es consistente con la hipótesis de trabajo: el problema principal no es "resolver bien la
 cuenta", sino mantener el mismo constructo con dificultad controlada y sin mecanización.
 
-## Evidencia operacional adicional
+## Evidencia end-to-end adicional
 
-Se inició además una corrida end-to-end aislada en
-`app/data/.question_variants_runs/benchmark-2026-03-13/gemini-gemini/`.
+Se ejecutó una corrida aislada `Gemini->Gemini` en:
 
-La corrida no se usó como benchmark final en este turno porque su latencia fue alta, pero sí
-entregó señales útiles:
+- `app/data/.question_variants_runs/benchmark-2026-03-13/gemini-gemini/`
 
-- `Q1` produjo 3 variantes y sólo 2 aprobaron.
-- En `Q11` aparecieron fallas estructurales tempranas:
-  - SVG embebido inválido para el schema QTI.
-  - contaminación de opciones con texto de feedback.
+Resumen:
 
-Estas fallas refuerzan la necesidad de gates más duros y de separar benchmark de generación
-masiva full-run.
+- 15 variantes generadas
+- 5 aprobadas
+- 10 rechazadas
+- tasa de aprobación: 33,3%
+
+Distribución de gates persistidos:
+
+- constructo: 9 pass / 6 fail
+- dificultad: 8 pass / 7 fail
+- answer_correct: 8 pass / 7 fail
+- non_mechanizable: 15 pass / 0 fail
+- imagen: 10 `not_applicable`, 5 `not_implemented`
+
+Desglose por pregunta:
+
+- `Q1`: 2/3 aprobadas
+- `Q11`: 0/3 aprobadas
+- `Q12`: 2/3 aprobadas
+- `Q13`: 1/3 aprobadas
+- `Q14`: 0/3 aprobadas
+
+Además de los rechazos semánticos, la corrida mostró fallas estructurales concretas:
+
+- SVG embebido inválido para el schema QTI.
+- contaminación de opciones con texto de feedback.
+- variantes con referencia a gráficos que no quedaron realmente incluidos o descargables.
+
+Estas fallas refuerzan la necesidad de gates más duros y de mantener la generación masiva
+separada de la evidencia de benchmark.
 
 ## Recomendación
 
