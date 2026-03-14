@@ -44,7 +44,7 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
 
     for validation_path in sorted(output_dir.glob(f"{test_id}/Q*/**/validation_result.json")):
         variant_dir = validation_path.parent
-        question_id = variant_dir.parent.parent.parent.name
+        question_id = variant_dir.parent.parent.name
         payload = _load_json(validation_path)
         report["variants_seen"] += 1
         report["questions"][question_id]["variants_seen"] += 1
