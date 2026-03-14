@@ -6,7 +6,7 @@ Usage:
         --source-test "prueba-invierno-2025" \\
         --questions "Q1,Q4,Q5" \\
         --variants-per-question 10 \\
-        --output-dir "app/data/pruebas/alternativas"
+        --output-dir "app/data/pruebas/hard_variants"
 """
 
 import argparse
@@ -15,7 +15,7 @@ import sys
 from app.question_variants.models import PipelineConfig
 from app.question_variants.pipeline import VariantPipeline
 
-DEFAULT_RUN_OUTPUT_DIR = "app/data/.question_variants_runs/manual"
+DEFAULT_RUN_OUTPUT_DIR = "app/data/pruebas/hard_variants"
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
     parser.add_argument(
         "--output-dir",
         default=DEFAULT_RUN_OUTPUT_DIR,
-        help="Output directory for generated variants (default isolates ad-hoc runs from tracked data)",
+        help="Output directory for generated variants (default: app/data/pruebas/hard_variants)",
     )
 
     parser.add_argument("--skip-validation", action="store_true", help="Skip the validation phase (not recommended)")

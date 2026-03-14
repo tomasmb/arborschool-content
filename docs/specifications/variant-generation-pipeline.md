@@ -36,7 +36,7 @@ Crear variantes robustas, matemáticamente equivalentes y contextualmente simila
 3.  **Validación**:
     *   Sintaxis XML.
     *   Consistencia matemática (opcionalmente con ejecuciones de código o verificación lógica).
-4.  **Guardado**: Almacena en `app/data/pruebas/alternativas/` con estructura específica.
+4.  **Guardado**: Almacena en `app/data/pruebas/hard_variants/` con estructura específica.
 
 ---
 
@@ -61,10 +61,10 @@ python -m app.question_variants.run_variant_generation \
 
 ## 📂 Estructura de Salida
 
-Las variantes generadas se organizan en `app/data/pruebas/alternativas/`:
+Las variantes generadas se organizan en `app/data/pruebas/hard_variants/`:
 
 ```
-app/data/pruebas/alternativas/
+app/data/pruebas/hard_variants/
 └── [NombrePrueba]/
     └── [PreguntaID]/
         ├── approved/               # Variantes validadas y listas
@@ -76,6 +76,8 @@ app/data/pruebas/alternativas/
         ├── rejected/               # Fallaron validación (para debug)
         └── generation_report.json  # Resumen de ejecución
 ```
+
+La carpeta histórica anterior quedó renombrada a `app/data/pruebas/old_variants/`.
 
 ---
 

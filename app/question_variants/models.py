@@ -158,7 +158,7 @@ class PipelineConfig:
     validate_variants: bool = True
     enable_feedback_pipeline: bool = True
     save_rejected: bool = True
-    output_dir: str = "app/data/pruebas/alternativas"
+    output_dir: str = "app/data/pruebas/hard_variants"
 
 
 @dataclass

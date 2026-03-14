@@ -10,7 +10,7 @@ Confirmar con evidencia local la recomendación provisional:
 
 ## Corpus observado
 
-Baseline persistido en `app/data/pruebas/alternativas/prueba-invierno-2025`:
+Baseline persistido en `app/data/pruebas/old_variants/prueba-invierno-2025`:
 
 - 81 variantes observadas.
 - 23 aprobadas.
