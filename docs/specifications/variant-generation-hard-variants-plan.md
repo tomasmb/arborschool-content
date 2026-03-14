@@ -87,6 +87,7 @@ Por cada pregunta `Qx`:
 4. Generacion QTI de variantes
 5. Validacion multi-gate
 6. Seleccion final y export
+7. Futuro: proceso independiente de feedback sobre variantes ya aprobadas
 
 ## 4.2 Gates obligatorios
 
@@ -230,6 +231,8 @@ Fallas criticas:
 4. Agregar validador anti-memoria en `variant_validator.py`.
 5. Agregar modulo de validacion visual cruzada.
 6. Parametrizar `--variants-per-question 10` por defecto para la corrida nueva.
+7. TODO futuro: agregar pipeline separado de feedback/enrichment solo sobre
+   `hard_variants/approved/`, fuera del camino critico de generacion.
 
 ---
 

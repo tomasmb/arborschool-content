@@ -195,12 +195,11 @@ Genera exactamente {n} variantes. Cada variante DEBE:
 1. Tener una respuesta correcta DIFERENTE a la original (distintos números)
 2. Mantener exactamente 4 opciones (A, B, C, D) con distractores plausibles
 3. Usar el MISMO formato QTI 3.0 que la original
-4. Incluir feedback educativo para cada opción siguiendo el estilo de la original
-5. Incorporar cambios estructurales no mecanizables (no solo cambio superficial)
+4. Incorporar cambios estructurales no mecanizables (no solo cambio superficial)
+5. NO agregues bloques de feedback, solución, ni retroalimentación inline
 
 Para cada variante, genera:
 - El XML QTI 3.0 completo (similar al original pero con nuevos valores)
-- Feedback por opción explicando por qué es correcta/incorrecta
 - Una breve explicación del cambio realizado
 </tarea>
 
@@ -210,15 +209,6 @@ Responde con un JSON con esta estructura:
   "variants": [
     {{
       "qti_xml": "<qti-assessment-item ...>...</qti-assessment-item>",
-      "feedback": {{
-        "general_guidance": "Explicación general...",
-        "per_option_feedback": {{
-          "opcion_A_texto": "Feedback para A...",
-          "opcion_B_texto": "Feedback para B...",
-          "opcion_C_texto": "Feedback para C...",
-          "opcion_D_texto": "Feedback para D..."
-        }}
-      }},
       "change_description": "Cambié los valores de X a Y..."
     }}
   ]
@@ -266,7 +256,6 @@ IMPORTANTE: El QTI XML debe:
             "selected_atoms": source.atoms.copy(),
             "general_analysis": source.metadata.get("general_analysis", ""),
             "difficulty": source.difficulty.copy(),
-            "feedback": variant_data.get("feedback", {}),
             "validation": {},  # Will be filled in validation phase
             "habilidad_principal": source.metadata.get("habilidad_principal", {}),
             "source_info": {

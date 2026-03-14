@@ -37,6 +37,8 @@ Crear variantes robustas, matemáticamente equivalentes y contextualmente simila
     *   Sintaxis XML.
     *   Consistencia matemática (opcionalmente con ejecuciones de código o verificación lógica).
 4.  **Guardado**: Almacena en `app/data/pruebas/hard_variants/` con estructura específica.
+5.  **Futuro**: El feedback/enrichment pedagógico se ejecutará como proceso separado
+    sobre variantes ya aprobadas; no forma parte del camino crítico actual.
 
 ---
 
@@ -77,7 +79,9 @@ app/data/pruebas/hard_variants/
         └── generation_report.json  # Resumen de ejecución
 ```
 
-La carpeta histórica anterior quedó renombrada a `app/data/pruebas/old_variants/`.
+La carpeta `app/data/pruebas/alternativas/` corresponde al proceso de variantes para
+diagnóstico y se mantiene vigente. Este pipeline nuevo escribe por defecto en
+`app/data/pruebas/hard_variants/` como proceso independiente.
 
 ---
 

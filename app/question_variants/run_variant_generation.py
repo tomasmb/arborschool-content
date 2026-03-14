@@ -44,9 +44,9 @@ def main():
 
     parser.add_argument("--skip-validation", action="store_true", help="Skip the validation phase (not recommended)")
     parser.add_argument(
-        "--skip-feedback-pipeline",
+        "--enable-feedback-pipeline",
         action="store_true",
-        help="Skip feedback enrichment pipeline (useful when OpenAI feedback service is unavailable)",
+        help="Enable feedback enrichment as a later optional pass (disabled by default for hard variants)",
     )
 
     parser.add_argument("--temperature", type=float, default=0.3, help="LLM temperature for generation (default: 0.3)")
@@ -75,7 +75,7 @@ def main():
         validator_provider=args.validator_provider,
         validator_model=args.validator_model,
         validate_variants=not args.skip_validation,
-        enable_feedback_pipeline=not args.skip_feedback_pipeline,
+        enable_feedback_pipeline=args.enable_feedback_pipeline,
         output_dir=args.output_dir,
     )
 

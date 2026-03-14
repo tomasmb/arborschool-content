@@ -3,7 +3,7 @@
 This module orchestrates the full variant generation workflow:
 1. Load source questions from finalized tests
 2. Generate variants using VariantGenerator
-3. Enhance variants with feedback using QuestionPipeline
+3. Optionally enhance variants with feedback using QuestionPipeline
 4. Validate variants using VariantValidator (semantic checks)
 5. Save approved variants to output directory
 """
@@ -17,9 +17,7 @@ from dataclasses import asdict
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from app.question_feedback.pipeline import QuestionPipeline
 from app.question_generation.progress import report_progress
-from app.question_feedback.utils.image_utils import extract_image_urls
 from app.question_variants.models import (
     GenerationReport,
     PipelineConfig,
@@ -52,7 +50,11 @@ class VariantPipeline:
         self.planner = VariantPlanner(self.config)
         self.generator = VariantGenerator(self.config)
         self.validator = VariantValidator(self.config)
-        self.feedback_pipeline = QuestionPipeline()
+        self.feedback_pipeline = None
+        if self.config.enable_feedback_pipeline:
+            from app.question_feedback.pipeline import QuestionPipeline
+
+            self.feedback_pipeline = QuestionPipeline()
 
     def run(self, test_id: str, question_ids: Optional[List[str]] = None, num_variants: Optional[int] = None) -> List[GenerationReport]:
         """Run the variant generation pipeline.
@@ -155,7 +157,7 @@ class VariantPipeline:
 
         Pipeline flow for each variant:
         1. Generate raw variant QTI XML
-        2. Enhance with feedback via QuestionPipeline (includes XSD validation)
+        2. Optionally enrich with feedback via QuestionPipeline
         3. Validate semantics via VariantValidator (concept alignment, difficulty)
         4. Save only variants passing all validation stages
         """
@@ -181,7 +183,7 @@ class VariantPipeline:
             report.errors.append("No se pudieron generar variantes")
             return report
 
-        # Process each variant through feedback pipeline + semantic validation
+        # Process each variant through optional post-processing + semantic validation
         approved_variants: list[VariantQuestion] = []
         variant_results: dict[str, VariantResult] = {}
 
@@ -279,7 +281,7 @@ class VariantPipeline:
     def _process_variant_through_pipeline(
         self, variant: VariantQuestion, source: SourceQuestion
     ) -> VariantResult:
-        """Process a variant through the feedback enhancement pipeline.
+        """Process a variant through the optional feedback enhancement pipeline.
 
         Args:
             variant: The variant to process.
@@ -290,7 +292,17 @@ class VariantPipeline:
         """
         print(f"    📝 Processing {variant.variant_id} through feedback pipeline...")
 
+        if self.feedback_pipeline is None:
+            return VariantResult(
+                success=True,
+                variant_id=variant.variant_id,
+                qti_xml=variant.qti_xml,
+                validation_details={"feedback_pipeline": "disabled"},
+            )
+
         # Extract image URLs from variant QTI
+        from app.question_feedback.utils.image_utils import extract_image_urls
+
         image_urls = extract_image_urls(variant.qti_xml)
 
         # Run through feedback pipeline (enhancement + XSD + content validation)

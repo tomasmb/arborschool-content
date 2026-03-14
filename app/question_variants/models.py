@@ -22,7 +22,7 @@ class SourceQuestion:
         question_id: Unique identifier (e.g., "Q1")
         test_id: Test identifier (e.g., "prueba-invierno-2025")
         qti_xml: The raw QTI 3.0 XML content
-        metadata: The metadata_tags.json content including atoms, difficulty, feedback
+        metadata: The metadata_tags.json content including atoms and difficulty
         question_text: Extracted text from QTI for prompt context
         choices: List of choice texts
         correct_answer: The correct answer text
@@ -63,7 +63,7 @@ class VariantQuestion:
         source_question_id: Original question ID
         source_test_id: Original test ID
         qti_xml: Generated QTI 3.0 XML
-        metadata: Generated metadata (inherits atoms, updated feedback)
+        metadata: Generated metadata for the variant
         validation_result: Result of validation phase
     """
 
@@ -141,8 +141,9 @@ class PipelineConfig:
         validator_provider: Provider used for semantic gate validation
         validator_model: Optional explicit model for semantic gate validation
         validate_variants: Whether to run validation phase
-        enable_feedback_pipeline: Whether to enrich variants with feedback pipeline
-            before semantic validation.
+        enable_feedback_pipeline: Whether to enrich variants with feedback before
+            semantic validation. Disabled by default for the hard-variants pipeline;
+            feedback is planned as a later independent process.
         save_rejected: Whether to save rejected variants for debugging
         output_dir: Directory for saving generated variants (by test)
     """
@@ -156,19 +157,19 @@ class PipelineConfig:
     validator_provider: str = "gemini"
     validator_model: Optional[str] = None
     validate_variants: bool = True
-    enable_feedback_pipeline: bool = True
+    enable_feedback_pipeline: bool = False
     save_rejected: bool = True
     output_dir: str = "app/data/pruebas/hard_variants"
 
 
 @dataclass
 class VariantResult:
-    """Result of variant generation through the feedback pipeline.
+    """Result of variant generation through the optional feedback pipeline.
 
     Attributes:
         success: Whether variant passed all pipeline stages.
         variant_id: Unique identifier for the variant.
-        qti_xml: Final QTI XML with feedback (if successful).
+        qti_xml: Final QTI XML after optional post-processing.
         error: Error message if any stage failed.
         stage_failed: Name of the stage that failed (e.g., "feedback_enhancement").
         validation_details: Full validation details from pipeline.
