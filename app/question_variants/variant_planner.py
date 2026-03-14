@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import json
 import re
+import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
 from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantBlueprint
+from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
 
 
 class VariantPlanner:
@@ -51,6 +53,16 @@ class VariantPlanner:
     def _build_planning_prompt(self, source: SourceQuestion, n: int) -> str:
         diff = source.difficulty
         diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
+        structural_profile = self._build_structural_profile(source)
+        construct_contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+        )
+        visual_context = self._extract_visual_context(source.qti_xml)
+        evaluation_style = self._build_evaluation_style(source)
 
         atoms_desc = []
         for atom in source.primary_atoms:
@@ -75,6 +87,15 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
    - distractor dominante,
    - orden o dependencia de pasos.
 5. Debe exigir comprension del por que del metodo, no receta mecanica.
+6. Si la fuente evalua afirmaciones basadas en datos, la variante debe seguir
+   evaluando afirmaciones sobre un conjunto de datos explicito y autocontenido.
+7. Si la firma operacional es "direct_percentage_calculation", la variante debe
+   seguir siendo un calculo directo de porcentaje, no una modelacion de varios pasos.
+8. Para "direct_percentage_calculation", usa exactamente un porcentaje y una cantidad base.
+   No introduzcas área, largo/ancho, volumen ni cálculos intermedios.
+9. Respeta también la accion cognitiva y la estructura de solucion del contrato.
+   Ejemplo: "interpret_representation" no se puede convertir en "compute_value" puro;
+   "direct_single_step" no se puede convertir en "integrated_multi_step".
 </reglas>
 
 <pregunta_fuente>
@@ -82,6 +103,10 @@ ID: {source.question_id}
 Texto: {source.question_text}
 Opciones: {json.dumps(source.choices, ensure_ascii=False)}
 Respuesta correcta: {source.correct_answer}
+Invariantes estructurales: {json.dumps(structural_profile, ensure_ascii=False)}
+Contrato de constructo: {json.dumps(construct_contract, ensure_ascii=False)}
+Soporte visual fuente: {visual_context or 'N/A'}
+Estilo de evaluacion: {json.dumps(evaluation_style, ensure_ascii=False)}
 Concepto/atom principal:
 {atoms_text}
 Dificultad fuente: {diff_text}
@@ -90,6 +115,7 @@ Dificultad fuente: {diff_text}
 <task>
 Genera exactamente {n} blueprints para variantes.
 Cada blueprint debe ser distinto de los demas.
+Cada blueprint DEBE respetar las invariantes estructurales.
 </task>
 
 <formato_respuesta>
@@ -112,6 +138,45 @@ Devuelve SOLO JSON:
 }}
 </formato_respuesta>
 """
+
+    def _build_structural_profile(self, source: SourceQuestion) -> Dict[str, Any]:
+        profile = build_structural_profile(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
+        )
+        profile["requires_image"] = bool(source.image_urls)
+        profile["allows_new_visual_representation"] = bool(source.image_urls)
+        profile["must_preserve_error_analysis"] = profile["task_form"] == "error_analysis"
+        profile["allows_unknowns"] = profile["introduces_unknowns"]
+        return profile
+
+    def _extract_visual_context(self, qti_xml: str) -> str:
+        try:
+            root = ET.fromstring(qti_xml)
+        except ET.ParseError:
+            return ""
+
+        descriptions: list[str] = []
+        for element in root.findall(".//{*}img"):
+            alt = (element.attrib.get("alt") or "").strip()
+            if alt:
+                descriptions.append(alt)
+        for element in root.findall(".//{*}object"):
+            label = (element.attrib.get("aria-label") or element.attrib.get("label") or "").strip()
+            if label:
+                descriptions.append(label)
+        return " | ".join(descriptions)
+
+    def _build_evaluation_style(self, source: SourceQuestion) -> Dict[str, Any]:
+        atom_titles = [str(a.get("atom_title", "")).lower() for a in source.primary_atoms]
+        is_claim_evaluation = any("afirmaciones basadas en datos" in title for title in atom_titles)
+        return {
+            "claim_evaluation": is_claim_evaluation,
+            "expects_explicit_dataset": bool(source.image_urls) or is_claim_evaluation,
+        }
 
     def _parse_response(self, response: str) -> List[VariantBlueprint]:
         data = self._parse_json(response)

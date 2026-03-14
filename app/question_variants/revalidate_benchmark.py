@@ -55,8 +55,10 @@ def iter_variant_dirs(input_dir: Path, test_id: str, question_ids: list[str] | N
     for question_dir in sorted(base.glob("Q*")):
         if question_ids and question_dir.name not in question_ids:
             continue
+        variants_root = question_dir / "variants"
+        status_base = variants_root if variants_root.exists() else question_dir
         for status in ("approved", "rejected"):
-            status_dir = question_dir / status
+            status_dir = status_base / status
             if not status_dir.exists():
                 continue
             for variant_dir in sorted(status_dir.iterdir()):
@@ -108,7 +110,7 @@ def run_benchmark(
         per_question_counts: dict[str, int] = {}
         filtered_dirs: list[Path] = []
         for variant_dir in variant_dirs:
-            question_id = variant_dir.parent.parent.name
+            question_id = _question_id_from_variant_dir(variant_dir)
             used = per_question_counts.get(question_id, 0)
             if used >= max_variants_per_question:
                 continue
@@ -119,7 +121,7 @@ def run_benchmark(
         variant_dirs = variant_dirs[:max_variants]
 
     for index, variant_dir in enumerate(variant_dirs, start=1):
-        question_id = variant_dir.parent.parent.name
+        question_id = _question_id_from_variant_dir(variant_dir)
         source = sources.get(question_id)
         if source is None:
             continue
@@ -162,6 +164,14 @@ def run_benchmark(
     summary["gates"] = {name: dict(counter) for name, counter in summary["gates"].items()}
     summary["questions"] = dict(sorted(summary["questions"].items()))
     return summary
+
+
+def _question_id_from_variant_dir(variant_dir: Path) -> str:
+    if variant_dir.parent.name in {"approved", "rejected"}:
+        return variant_dir.parent.parent.name
+    if variant_dir.parent.parent.name in {"approved", "rejected"}:
+        return variant_dir.parent.parent.parent.name
+    return variant_dir.parent.parent.name
 
 
 def main() -> None:

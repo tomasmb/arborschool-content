@@ -10,6 +10,7 @@ This module validates generated variants to ensure they:
 """
 
 import json
+import re
 import xml.etree.ElementTree as ET
 from typing import Optional
 
@@ -21,6 +22,7 @@ from app.question_variants.models import (
     ValidationVerdict,
     VariantQuestion,
 )
+from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
 from app.utils.mathml_parser import process_mathml
 from app.utils.qti_extractor import extract_choices_from_qti, get_correct_answer_text
 
@@ -64,6 +66,28 @@ class VariantValidator:
                 rejection_reason=f"XML inválido: {xml_error}",
             )
 
+        visual_ref_ok, visual_ref_error = self._validate_visual_completeness(variant.qti_xml, source)
+        if not visual_ref_ok:
+            return ValidationResult(
+                verdict=ValidationVerdict.REJECTED,
+                concept_aligned=False,
+                difficulty_equal=False,
+                answer_correct=False,
+                non_mechanizable=False,
+                rejection_reason=visual_ref_error,
+            )
+
+        structural_ok, structural_error = self._validate_structural_alignment(variant.qti_xml, source)
+        if not structural_ok:
+            return ValidationResult(
+                verdict=ValidationVerdict.REJECTED,
+                concept_aligned=False,
+                difficulty_equal=False,
+                answer_correct=False,
+                non_mechanizable=False,
+                rejection_reason=structural_error,
+            )
+
         # Step 2: LLM-based validation
         return self._validate_with_llm(variant, source)
 
@@ -79,6 +103,158 @@ class VariantValidator:
             return True, ""
         except ET.ParseError as e:
             return False, str(e)
+
+    def _validate_visual_completeness(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
+        lowered = self._extract_question_text(xml_content).lower()
+        mentions_visual = any(
+            token in lowered
+            for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia", "tabla")
+        )
+        has_visual_tag = any(token in xml_content.lower() for token in ("<img", "<object", "<qti-object", "<table", "<qti-table"))
+
+        if mentions_visual and not has_visual_tag:
+            return False, (
+                "La variante está incompleta: menciona una figura, gráfico, diagrama, infografía o tabla "
+                "pero no incluye esa representación en el XML."
+            )
+
+        if not source.image_urls and mentions_visual:
+            return False, (
+                "La variante fue rechazada porque introduce soporte visual que no existe en la pregunta fuente, "
+                "alterando la forma de representación y arriesgando un ítem incompleto."
+            )
+
+        return True, ""
+
+    def _validate_structural_alignment(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
+        contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+        )
+        variant_contract = build_construct_contract(
+            self._extract_question_text(xml_content),
+            xml_content,
+            self._has_visual_support(xml_content),
+            source.primary_atoms,
+            source.metadata,
+        )
+        source_profile = self._build_structural_profile(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
+        )
+        variant_text = self._extract_question_text(xml_content)
+        variant_profile = self._build_structural_profile(
+            variant_text,
+            xml_content,
+            self._has_visual_support(xml_content),
+            source.primary_atoms,
+            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
+        )
+
+        if source_profile["task_form"] != variant_profile["task_form"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo: la forma de tarea cambió de "
+                f"{source_profile['task_form']} a {variant_profile['task_form']}."
+            )
+
+        if source_profile["must_not_introduce_algebraic_unknowns"] and variant_profile["introduces_unknowns"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo/dificultad: introduce incógnitas "
+                "algebraicas que no existen en la pregunta fuente."
+            )
+
+        if source_profile["operation_signature"] == "direct_percentage_calculation" and variant_profile["extra_base_quantity"]:
+            return False, (
+                "La variante fue rechazada por drift de dificultad: un cálculo directo de porcentaje "
+                "no puede introducir magnitudes adicionales que obliguen a un cálculo intermedio."
+            )
+
+        if source_profile["claim_evaluation"] and not variant_profile["claim_evaluation"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo: la fuente evalúa afirmaciones "
+                "basadas en datos y la variante dejó de hacerlo."
+            )
+
+        if source_profile["representation_interpretation"] and not variant_profile["representation_interpretation"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo: la fuente exige interpretar una "
+                "representación o relación entre magnitudes y la variante dejó de hacerlo."
+            )
+
+        if contract["representation_must_remain_primary"] and self._short_circuits_representation(xml_content):
+            return False, (
+                "La variante fue rechazada por drift de constructo: reemplaza la representación como evidencia "
+                "primaria por una tabla o listado explícito que permite responder sin interpretar la representación."
+            )
+
+        if self._must_preserve_cognitive_action(contract) and contract["cognitive_action"] != variant_contract["cognitive_action"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo: cambió la acción cognitiva dominante de "
+                f"{contract['cognitive_action']} a {variant_contract['cognitive_action']}."
+            )
+
+        if self._must_preserve_solution_structure(contract) and contract["solution_structure"] != variant_contract["solution_structure"]:
+            return False, (
+                "La variante fue rechazada por drift de dificultad/constructo: cambió la estructura de solución de "
+                f"{contract['solution_structure']} a {variant_contract['solution_structure']}."
+            )
+
+        if source_profile["requires_direct_computation"] and variant_profile["appears_multi_step"]:
+            return False, (
+                "La variante fue rechazada por drift de dificultad: la fuente exige un cálculo directo "
+                "y la variante parece convertirlo en una tarea de varios pasos."
+            )
+
+        if source_profile["expects_explicit_dataset"] and not variant_profile["has_explicit_dataset"]:
+            return False, (
+                "La variante fue rechazada porque no deja un conjunto de datos explícito y autocontenido, "
+                "a pesar de que la fuente sí depende de información visual o tabular."
+            )
+
+        return True, ""
+
+    def _build_structural_profile(
+        self,
+        question_text: str,
+        qti_xml: str,
+        has_visual_support: bool,
+        primary_atoms: list[dict],
+        main_skill: str,
+    ) -> dict[str, bool | str]:
+        return build_structural_profile(question_text, qti_xml, has_visual_support, primary_atoms, main_skill)
+
+    def _has_visual_support(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        return any(token in lowered for token in ("<img", "<object", "<qti-object", "<table", "<qti-table"))
+
+    def _short_circuits_representation(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        has_table = "<table" in lowered or "<qti-table" in lowered
+        numeric_density = len(re.findall(r"\d+(?:[.,]\d+)?", lowered))
+        return has_table and numeric_density >= 6
+
+    def _must_preserve_cognitive_action(self, contract: dict[str, object]) -> bool:
+        return str(contract.get("cognitive_action")) in {
+            "identify_error",
+            "interpret_representation",
+            "evaluate_claims",
+            "substitute_and_compute",
+        }
+
+    def _must_preserve_solution_structure(self, contract: dict[str, object]) -> bool:
+        return str(contract.get("solution_structure")) in {
+            "direct_single_step",
+            "representation_reading",
+            "data_to_claim_check",
+            "error_localization",
+            "equation_resolution",
+        }
 
     def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Use LLM to validate concept alignment, difficulty, and correctness."""
@@ -242,6 +418,22 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
     def _element_to_text(self, element: ET.Element) -> str:
         """Recursively extract text from an element, properly handling MathML."""
         parts = []
+        tag_name = element.tag.split("}")[-1].lower()
+
+        if tag_name == "img":
+            alt = element.attrib.get("alt", "").strip()
+            if alt:
+                parts.append(alt)
+            return " ".join(filter(None, parts))
+        if tag_name == "object":
+            label = (
+                element.attrib.get("aria-label", "").strip()
+                or element.attrib.get("label", "").strip()
+                or element.attrib.get("title", "").strip()
+            )
+            if label:
+                parts.append(label)
+            return " ".join(filter(None, parts))
 
         if element.text:
             parts.append(element.text.strip())

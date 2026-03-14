@@ -40,11 +40,17 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
             "imagen": Counter(),
         },
         "questions": defaultdict(lambda: {"variants_seen": 0, "approved": 0, "rejected": 0}),
+        "contracts": {
+            "task_form": defaultdict(lambda: {"variants_seen": 0, "approved": 0, "rejected": 0}),
+            "evidence_mode": defaultdict(lambda: {"variants_seen": 0, "approved": 0, "rejected": 0}),
+            "cognitive_action": defaultdict(lambda: {"variants_seen": 0, "approved": 0, "rejected": 0}),
+            "solution_structure": defaultdict(lambda: {"variants_seen": 0, "approved": 0, "rejected": 0}),
+        },
     }
 
     for validation_path in sorted(output_dir.glob(f"{test_id}/Q*/**/validation_result.json")):
         variant_dir = validation_path.parent
-        question_id = variant_dir.parent.parent.name
+        question_id = _question_id_from_variant_dir(variant_dir)
         payload = _load_json(validation_path)
         report["variants_seen"] += 1
         report["questions"][question_id]["variants_seen"] += 1
@@ -69,6 +75,12 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
         metadata_path = variant_dir / "metadata_tags.json"
         question_xml_path = variant_dir / "question.xml"
         if metadata_path.exists() and question_xml_path.exists():
+            metadata = _load_json(metadata_path)
+            contract = metadata.get("construct_contract", {})
+            _bump_contract_bucket(report["contracts"]["task_form"], str(contract.get("task_form") or "unknown"), is_approved)
+            _bump_contract_bucket(report["contracts"]["evidence_mode"], str(contract.get("evidence_mode") or "unknown"), is_approved)
+            _bump_contract_bucket(report["contracts"]["cognitive_action"], str(contract.get("cognitive_action") or "unknown"), is_approved)
+            _bump_contract_bucket(report["contracts"]["solution_structure"], str(contract.get("solution_structure") or "unknown"), is_approved)
             if _has_image_variant(metadata_path, question_xml_path):
                 report["gates"]["imagen"]["not_implemented"] += 1
             else:
@@ -78,7 +90,24 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
 
     report["questions"] = dict(sorted(report["questions"].items()))
     report["gates"] = {name: dict(counter) for name, counter in report["gates"].items()}
+    report["contracts"] = {
+        name: dict(sorted(bucket.items()))
+        for name, bucket in report["contracts"].items()
+    }
     return report
+
+
+def _question_id_from_variant_dir(variant_dir: Path) -> str:
+    if variant_dir.parent.name in {"approved", "rejected"}:
+        return variant_dir.parent.parent.name
+    if variant_dir.parent.parent.name in {"approved", "rejected"}:
+        return variant_dir.parent.parent.parent.name
+    return variant_dir.parent.parent.name
+
+
+def _bump_contract_bucket(bucket: defaultdict[str, dict[str, int]], key: str, is_approved: bool) -> None:
+    bucket[key]["variants_seen"] += 1
+    bucket[key]["approved" if is_approved else "rejected"] += 1
 
 
 def main() -> None:

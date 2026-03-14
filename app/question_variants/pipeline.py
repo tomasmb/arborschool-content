@@ -28,6 +28,7 @@ from app.question_variants.models import (
 )
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_planner import VariantPlanner
+from app.question_variants.structural_profile import build_construct_contract
 from app.question_variants.variant_validator import VariantValidator
 from app.utils.qti_extractor import parse_qti_xml
 
@@ -166,6 +167,7 @@ class VariantPipeline:
         print(f"{'─' * 40}")
 
         report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
+        self._save_source_snapshot(source)
 
         n = num_variants or self.config.variants_per_question
 
@@ -254,6 +256,7 @@ class VariantPipeline:
             self.config.output_dir,
             source.test_id,
             source.question_id,
+            "variants",
             "variant_plan.json",
         )
         os.makedirs(os.path.dirname(plan_path), exist_ok=True)
@@ -357,7 +360,7 @@ class VariantPipeline:
         # Build output path
         status = "rejected" if is_rejected else "approved"
         variant_path = os.path.join(
-            self.config.output_dir, source.test_id, source.question_id, status, variant.variant_id
+            self.config.output_dir, source.test_id, source.question_id, "variants", status, variant.variant_id
         )
 
         os.makedirs(variant_path, exist_ok=True)
@@ -413,12 +416,53 @@ class VariantPipeline:
     def _save_report(self, report: GenerationReport):
         """Save generation report."""
 
-        report_path = os.path.join(self.config.output_dir, report.source_test_id, report.source_question_id, "generation_report.json")
+        report_path = os.path.join(
+            self.config.output_dir,
+            report.source_test_id,
+            report.source_question_id,
+            "variants",
+            "generation_report.json",
+        )
 
         os.makedirs(os.path.dirname(report_path), exist_ok=True)
 
         with open(report_path, "w", encoding="utf-8") as f:
             json.dump(asdict(report), f, ensure_ascii=False, indent=2)
+
+    def _save_source_snapshot(self, source: SourceQuestion) -> None:
+        """Persist the original source question alongside its variants."""
+
+        source_path = os.path.join(
+            self.config.output_dir,
+            source.test_id,
+            source.question_id,
+            "source",
+        )
+        os.makedirs(source_path, exist_ok=True)
+
+        with open(os.path.join(source_path, "question.xml"), "w", encoding="utf-8") as f:
+            f.write(source.qti_xml)
+
+        with open(os.path.join(source_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
+            json.dump(source.metadata, f, ensure_ascii=False, indent=2)
+
+        source_info = {
+            "source_question_id": source.question_id,
+            "source_test_id": source.test_id,
+            "question_text": source.question_text,
+            "choices": source.choices,
+            "correct_answer": source.correct_answer,
+            "image_urls": source.image_urls,
+            "construct_contract": build_construct_contract(
+                source.question_text,
+                source.qti_xml,
+                bool(source.image_urls),
+                source.primary_atoms,
+                source.metadata,
+            ),
+        }
+        with open(os.path.join(source_path, "source_info.json"), "w", encoding="utf-8") as f:
+            json.dump(source_info, f, ensure_ascii=False, indent=2)
 
     def _print_summary(self, reports: List[GenerationReport]):
         """Print summary of pipeline run."""
