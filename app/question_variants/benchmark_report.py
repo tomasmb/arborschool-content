@@ -32,6 +32,7 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
         "approved": 0,
         "rejected": 0,
         "pipeline_failures": 0,
+        "rejection_reasons": Counter(),
         "gates": {
             "constructo": Counter(),
             "dificultad": Counter(),
@@ -66,6 +67,9 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
         else:
             report["rejected"] += 1
             report["questions"][question_id]["rejected"] += 1
+            reason = str((semantic or {}).get("rejection_reason") or "").strip()
+            if reason:
+                report["rejection_reasons"][reason] += 1
 
         report["gates"]["constructo"]["pass" if semantic.get("concept_aligned") else "fail"] += 1
         report["gates"]["dificultad"]["pass" if semantic.get("difficulty_equal") else "fail"] += 1
@@ -89,6 +93,7 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
             report["gates"]["imagen"]["unknown"] += 1
 
     report["questions"] = dict(sorted(report["questions"].items()))
+    report["rejection_reasons"] = dict(report["rejection_reasons"])
     report["gates"] = {name: dict(counter) for name, counter in report["gates"].items()}
     report["contracts"] = {
         name: dict(sorted(bucket.items()))
@@ -99,9 +104,15 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
 
 def _question_id_from_variant_dir(variant_dir: Path) -> str:
     if variant_dir.parent.name in {"approved", "rejected"}:
-        return variant_dir.parent.parent.name
+        variants_dir = variant_dir.parent.parent
+        if variants_dir.name == "variants":
+            return variants_dir.parent.name
+        return variants_dir.name
     if variant_dir.parent.parent.name in {"approved", "rejected"}:
-        return variant_dir.parent.parent.parent.name
+        question_dir = variant_dir.parent.parent.parent
+        if question_dir.name == "variants":
+            return question_dir.parent.name
+        return question_dir.name
     return variant_dir.parent.parent.name
 
 

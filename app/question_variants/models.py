@@ -134,6 +134,8 @@ class PipelineConfig:
         variants_per_question: Number of variants to generate per source question
             (initial default is 10, but fully configurable)
         temperature: LLM temperature for generation (0.0 = deterministic)
+        llm_request_timeout_seconds: Per-call timeout for variant LLM stages
+        llm_max_attempts: Max retry attempts for variant LLM stages
         planner_provider: Provider used for blueprint planning
         planner_model: Optional explicit model for blueprint planning
         generator_provider: Provider used for QTI variant generation
@@ -150,6 +152,8 @@ class PipelineConfig:
 
     variants_per_question: int = 10
     temperature: float = 0.3  # Slight variation for diversity
+    llm_request_timeout_seconds: int = 180
+    llm_max_attempts: int = 2
     planner_provider: str = "gemini"
     planner_model: Optional[str] = None
     generator_provider: str = "gemini"
@@ -195,6 +199,8 @@ class GenerationReport:
         total_rejected: Number that failed validation
         variants: List of approved variant IDs
         errors: Any errors encountered
+        stage_failures: Counts of failures by pipeline stage
+        rejection_reasons: Semantic rejection reasons collected during the run
     """
 
     source_question_id: str
@@ -204,3 +210,5 @@ class GenerationReport:
     total_rejected: int = 0
     variants: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
+    stage_failures: Dict[str, int] = field(default_factory=dict)
+    rejection_reasons: List[str] = field(default_factory=list)

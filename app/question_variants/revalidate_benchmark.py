@@ -95,6 +95,7 @@ def run_benchmark(
         "original_approved": 0,
         "original_rejected": 0,
         "agreement_with_original": Counter(),
+        "rejection_reasons": Counter(),
         "gates": {
             "constructo": Counter(),
             "dificultad": Counter(),
@@ -150,6 +151,8 @@ def run_benchmark(
         summary["approved" if revalidated_approved else "rejected"] += 1
         summary["questions"][question_id]["approved" if revalidated_approved else "rejected"] += 1
         summary["agreement_with_original"]["match" if revalidated_approved == original_approved else "mismatch"] += 1
+        if not revalidated_approved and result.rejection_reason:
+            summary["rejection_reasons"][result.rejection_reason] += 1
 
         summary["gates"]["constructo"]["pass" if result.concept_aligned else "fail"] += 1
         summary["gates"]["dificultad"]["pass" if result.difficulty_equal else "fail"] += 1
@@ -161,6 +164,7 @@ def run_benchmark(
             summary["gates"]["imagen"]["not_applicable"] += 1
 
     summary["agreement_with_original"] = dict(summary["agreement_with_original"])
+    summary["rejection_reasons"] = dict(summary["rejection_reasons"])
     summary["gates"] = {name: dict(counter) for name, counter in summary["gates"].items()}
     summary["questions"] = dict(sorted(summary["questions"].items()))
     return summary
@@ -168,9 +172,15 @@ def run_benchmark(
 
 def _question_id_from_variant_dir(variant_dir: Path) -> str:
     if variant_dir.parent.name in {"approved", "rejected"}:
-        return variant_dir.parent.parent.name
+        variants_dir = variant_dir.parent.parent
+        if variants_dir.name == "variants":
+            return variants_dir.parent.name
+        return variants_dir.name
     if variant_dir.parent.parent.name in {"approved", "rejected"}:
-        return variant_dir.parent.parent.parent.name
+        question_dir = variant_dir.parent.parent.parent
+        if question_dir.name == "variants":
+            return question_dir.parent.name
+        return question_dir.name
     return variant_dir.parent.parent.name
 
 

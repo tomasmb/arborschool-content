@@ -16,8 +16,11 @@ def build_construct_contract(
     has_visual_support: bool,
     primary_atoms: list[dict[str, Any]],
     metadata: dict[str, Any] | None = None,
+    choices: list[str] | None = None,
+    correct_answer: str = "",
 ) -> dict[str, Any]:
     metadata = metadata or {}
+    choices = choices or []
     main_skill = metadata.get("habilidad_principal", {}).get("habilidad_principal", "")
     profile = build_structural_profile(question_text, qti_xml, has_visual_support, primary_atoms, main_skill)
     difficulty = metadata.get("difficulty", {})
@@ -27,6 +30,11 @@ def build_construct_contract(
     representation_must_remain_primary = False
     cognitive_action = infer_cognitive_action(profile, primary_atoms, main_skill)
     solution_structure = infer_solution_structure(profile, primary_atoms, metadata)
+    distractor_archetypes = infer_distractor_archetypes(choices, correct_answer, profile, solution_structure)
+    correct_claim_archetype = infer_claim_archetype(correct_answer)
+    auxiliary_transformations = infer_auxiliary_transformations(question_text, metadata)
+    reference_relation_count = infer_reference_relation_count(question_text)
+    data_burden_score = infer_data_burden_score(question_text, profile)
 
     if profile["claim_evaluation"]:
         evidence_mode = "explicit_dataset_and_claims"
@@ -58,9 +66,15 @@ def build_construct_contract(
         "claim_evaluation": profile["claim_evaluation"],
         "cognitive_action": cognitive_action,
         "solution_structure": solution_structure,
+        "auxiliary_transformations": auxiliary_transformations,
+        "reference_relation_count": reference_relation_count,
+        "data_burden_score": data_burden_score,
         "evidence_mode": evidence_mode,
         "explicit_dataset_policy": explicit_dataset_policy,
         "representation_must_remain_primary": representation_must_remain_primary,
+        "must_preserve_distractor_logic": profile["claim_evaluation"],
+        "distractor_archetypes": distractor_archetypes,
+        "correct_claim_archetype": correct_claim_archetype,
         "hard_constraints": _build_hard_constraints(profile, has_visual_support),
     }
 
@@ -133,6 +147,9 @@ def _build_hard_constraints(profile: dict[str, bool | str], has_visual_support: 
     if profile["claim_evaluation"]:
         constraints.append("must_keep_claim_evaluation")
         constraints.append("must_include_explicit_dataset")
+        constraints.append("must_preserve_distractor_logic")
+    if profile["operation_signature"] == "trinomial_factorization":
+        constraints.append("must_preserve_standard_trinomial_form")
     if profile["representation_interpretation"]:
         constraints.append("must_keep_representation_as_primary_evidence")
     if profile["requires_direct_computation"]:
@@ -147,6 +164,8 @@ def infer_operation_signature(atom_titles: list[str], main_skill: str = "") -> s
     skill = str(main_skill or "").upper()
     if "afirmaciones basadas en datos" in atom_text:
         return "data_claim_evaluation"
+    if "división de potencias de igual base racional" in atom_text or "division de potencias de igual base racional" in atom_text:
+        return "property_justification"
     if "cálculo directo del porcentaje" in atom_text or "calculo directo del porcentaje" in atom_text:
         return "direct_percentage_calculation"
     if "aumentos porcentuales" in atom_text:
@@ -240,6 +259,8 @@ def infer_cognitive_action(
     skill = str(main_skill or "").upper()
     if profile["claim_evaluation"]:
         return "evaluate_claims"
+    if profile["operation_signature"] == "property_justification":
+        return "justify_property"
     if profile["representation_interpretation"] or skill == "REP":
         return "interpret_representation"
     if profile["task_form"] == "error_analysis":
@@ -266,6 +287,8 @@ def infer_solution_structure(
 
     if profile["claim_evaluation"]:
         return "data_to_claim_check"
+    if profile["operation_signature"] == "property_justification":
+        return "property_justification"
     if profile["representation_interpretation"]:
         return "representation_reading"
     if profile["task_form"] == "error_analysis":
@@ -276,11 +299,54 @@ def infer_solution_structure(
         return "formula_substitution"
     if "integrados" in atom_text or "perímetro y área" in atom_text or "perimetro y area" in atom_text:
         return "integrated_multi_step"
+    if "factorización" in atom_text or "factorizacion" in atom_text:
+        return "expression_factoring"
     if "múltiples pasos" in difficulty_analysis or "varios pasos" in difficulty_analysis or "proceso de dos pasos" in difficulty_analysis:
         return "guided_multi_step"
     if profile["requires_direct_computation"]:
         return "direct_single_step"
     return "routine_procedural"
+
+
+def infer_distractor_archetypes(
+    choices: list[str],
+    correct_answer: str,
+    profile: dict[str, bool | str],
+    solution_structure: str,
+) -> list[str]:
+    archetypes: list[str] = []
+    lowered_choices = [choice.lower() for choice in choices]
+    lowered_correct = correct_answer.lower()
+
+    if profile["claim_evaluation"]:
+        if any("en conjunto" in choice or "conjunto" in choice for choice in lowered_choices):
+            archetypes.append("combined_subgroups_vs_main_group")
+        if any("se debe realizar la operación" in choice or "se debe realizar la operacion" in choice for choice in lowered_choices):
+            archetypes.append("wrong_percentage_base_operation")
+        if any(choice != lowered_correct and "%" in choice for choice in lowered_choices):
+            archetypes.append("subgroup_vs_total_confusion")
+    elif profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}:
+        if any(choice.strip().isdigit() for choice in choices):
+            archetypes.extend(["increment_only", "base_plus_increment", "gross_overestimate"])
+    elif solution_structure in {"guided_multi_step", "data_to_claim_check"}:
+        archetypes.append("intermediate_result_confusion")
+
+    return archetypes
+
+
+def infer_claim_archetype(statement: str) -> str:
+    lowered = statement.lower().strip()
+    if not lowered:
+        return ""
+    if "la mayor" in lowered or "la principal" in lowered:
+        return "largest_subgroup_identification"
+    if "se debe realizar la operación" in lowered or "se debe realizar la operacion" in lowered:
+        return "operation_setup_claim"
+    if "en conjunto" in lowered:
+        return "combined_group_comparison"
+    if "%" in lowered and ("del total" in lowered or "del agua" in lowered or "del país" in lowered or "del pais" in lowered):
+        return "subgroup_percentage_as_total"
+    return "other_claim"
 
 
 def infer_visual_role(
@@ -324,3 +390,50 @@ def _asks_to_solve_unknown(text: str) -> bool:
         "¿cuál es z",
     )
     return any(marker in text for marker in solve_markers)
+
+
+def infer_auxiliary_transformations(question_text: str, metadata: dict[str, Any]) -> int:
+    text = question_text.lower()
+    analysis = str(metadata.get("general_analysis", "")).lower()
+    markers = (
+        "equivale",
+        "equivalente",
+        "convert",
+        "transform",
+        "promedio",
+        "media aritmética",
+        "media aritmetica",
+        "desviación",
+        "desviacion",
+        "cambio de unidad",
+        "conversión",
+        "conversion",
+    )
+    hits = sum(1 for marker in markers if marker in text or marker in analysis)
+    if hits == 0:
+        return 0
+    if hits <= 2:
+        return 1
+    if hits <= 4:
+        return 2
+    return 3
+
+
+def infer_reference_relation_count(question_text: str) -> int:
+    text = question_text.lower()
+    explicit_equalities = len(re.findall(r"\b1\s+[^\s]+\s*=\s*[\d.,]+", text))
+    generic_equalities = len(re.findall(r"\b[a-z]\s*=", text))
+    equivalence_markers = len(re.findall(r"\bequivale\b|\bequivalente\b", text))
+    return explicit_equalities + generic_equalities + equivalence_markers
+
+
+def infer_data_burden_score(question_text: str, profile: dict[str, bool | str]) -> int:
+    if profile["operation_signature"] != "descriptive_statistics":
+        return 0
+    text = question_text.lower()
+    numeric_tokens = len(re.findall(r"\d+(?:[.,]\d+)?", text))
+    word_counts = sum(
+        text.count(word)
+        for word in ("dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez")
+    )
+    return numeric_tokens + word_counts

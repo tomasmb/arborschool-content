@@ -50,6 +50,18 @@ def main():
     )
 
     parser.add_argument("--temperature", type=float, default=0.3, help="LLM temperature for generation (default: 0.3)")
+    parser.add_argument(
+        "--llm-timeout-seconds",
+        type=int,
+        default=180,
+        help="Per-call timeout for variant LLM stages (default: 180)",
+    )
+    parser.add_argument(
+        "--llm-max-attempts",
+        type=int,
+        default=2,
+        help="Retry attempts per variant LLM stage (default: 2)",
+    )
     parser.add_argument("--planner-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for blueprint planning")
     parser.add_argument("--planner-model", default=None, help="Optional explicit model for blueprint planning")
     parser.add_argument("--generator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for variant generation")
@@ -68,6 +80,8 @@ def main():
     config = PipelineConfig(
         variants_per_question=args.variants_per_question,
         temperature=args.temperature,
+        llm_request_timeout_seconds=args.llm_timeout_seconds,
+        llm_max_attempts=args.llm_max_attempts,
         planner_provider=args.planner_provider,
         planner_model=args.planner_model,
         generator_provider=args.generator_provider,

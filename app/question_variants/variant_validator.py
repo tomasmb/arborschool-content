@@ -22,11 +22,18 @@ from app.question_variants.models import (
     ValidationVerdict,
     VariantQuestion,
 )
+from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
+from app.question_variants.semantic_guardrails import (
+    adds_auxiliary_transformations,
+    adds_reference_load,
+    breaks_expected_distractor_logic,
+    failed_generator_self_check,
+    has_numeric_option_scale_outlier,
+    inflates_data_burden,
+    is_insufficiently_different,
+    repeats_claim_archetype,
+)
 from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
-from app.utils.mathml_parser import process_mathml
-from app.utils.qti_extractor import extract_choices_from_qti, get_correct_answer_text
-
-
 class VariantValidator:
     """Validates generated variant questions."""
 
@@ -40,6 +47,8 @@ class VariantValidator:
         self.service = build_text_service(
             self.config.validator_provider,
             self.config.validator_model,
+            timeout_seconds=self.config.llm_request_timeout_seconds,
+            max_attempts=self.config.llm_max_attempts,
         )
 
     def validate(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
@@ -76,7 +85,6 @@ class VariantValidator:
                 non_mechanizable=False,
                 rejection_reason=visual_ref_error,
             )
-
         structural_ok, structural_error = self._validate_structural_alignment(variant.qti_xml, source)
         if not structural_ok:
             return ValidationResult(
@@ -86,6 +94,17 @@ class VariantValidator:
                 answer_correct=False,
                 non_mechanizable=False,
                 rejection_reason=structural_error,
+            )
+
+        self_check_error = failed_generator_self_check(variant.metadata)
+        if self_check_error:
+            return ValidationResult(
+                verdict=ValidationVerdict.REJECTED,
+                concept_aligned=False,
+                difficulty_equal=False,
+                answer_correct=False,
+                non_mechanizable=False,
+                rejection_reason=self_check_error,
             )
 
         # Step 2: LLM-based validation
@@ -105,7 +124,7 @@ class VariantValidator:
             return False, str(e)
 
     def _validate_visual_completeness(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
-        lowered = self._extract_question_text(xml_content).lower()
+        lowered = extract_question_text(xml_content).lower()
         mentions_visual = any(
             token in lowered
             for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia", "tabla")
@@ -133,13 +152,17 @@ class VariantValidator:
             bool(source.image_urls),
             source.primary_atoms,
             source.metadata,
+            source.choices,
+            source.correct_answer,
         )
         variant_contract = build_construct_contract(
-            self._extract_question_text(xml_content),
+            extract_question_text(xml_content),
             xml_content,
             self._has_visual_support(xml_content),
             source.primary_atoms,
             source.metadata,
+            extract_choices(xml_content),
+            find_correct_answer(xml_content),
         )
         source_profile = self._build_structural_profile(
             source.question_text,
@@ -148,7 +171,7 @@ class VariantValidator:
             source.primary_atoms,
             source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
         )
-        variant_text = self._extract_question_text(xml_content)
+        variant_text = extract_question_text(xml_content)
         variant_profile = self._build_structural_profile(
             variant_text,
             xml_content,
@@ -173,6 +196,18 @@ class VariantValidator:
             return False, (
                 "La variante fue rechazada por drift de dificultad: un cálculo directo de porcentaje "
                 "no puede introducir magnitudes adicionales que obliguen a un cálculo intermedio."
+            )
+
+        if source_profile["operation_signature"] == "trinomial_factorization" and self._introduces_rational_expression(xml_content):
+            return False, (
+                "La variante fue rechazada por drift de constructo: una factorización de trinomio "
+                "no puede transformarse en simplificación de expresiones racionales o fracciones algebraicas."
+            )
+
+        if "must_preserve_standard_trinomial_form" in contract["hard_constraints"] and self._introduces_shifted_trinomial_form(xml_content):
+            return False, (
+                "La variante fue rechazada por drift de dificultad: una factorización rutinaria de trinomio "
+                "no debe reescribirse en formas desplazadas o equivalentes que agreguen expansión o cambio de variable."
             )
 
         if source_profile["claim_evaluation"] and not variant_profile["claim_evaluation"]:
@@ -205,10 +240,58 @@ class VariantValidator:
                 f"{contract['solution_structure']} a {variant_contract['solution_structure']}."
             )
 
+        if self._must_preserve_main_skill(contract) and contract["main_skill"] != variant_contract["main_skill"]:
+            return False, (
+                "La variante fue rechazada por drift de constructo: cambió la habilidad principal de "
+                f"{contract['main_skill']} a {variant_contract['main_skill']}."
+            )
+
         if source_profile["requires_direct_computation"] and variant_profile["appears_multi_step"]:
             return False, (
                 "La variante fue rechazada por drift de dificultad: la fuente exige un cálculo directo "
                 "y la variante parece convertirlo en una tarea de varios pasos."
+            )
+
+        if adds_auxiliary_transformations(contract, variant_contract):
+            return False, (
+                "La variante fue rechazada por drift de dificultad: agregó transformaciones auxiliares "
+                "o pasos intermedios que no están en la pregunta fuente."
+            )
+
+        if breaks_expected_distractor_logic(contract, variant_contract):
+            return False, (
+                "La variante fue rechazada por drift de calidad: perdió los arquetipos de distractor "
+                "necesarios para conservar la misma trampa conceptual de la fuente."
+            )
+
+        if adds_reference_load(contract, variant_contract):
+            return False, (
+                "La variante fue rechazada por drift de dificultad: agregó relaciones de referencia o "
+                "conversiones adicionales que no están en la pregunta fuente."
+            )
+
+        if inflates_data_burden(contract, variant_contract):
+            return False, (
+                "La variante fue rechazada por drift de dificultad: aumentó artificialmente la carga de datos "
+                "o frecuencias a procesar respecto de la fuente."
+            )
+
+        if repeats_claim_archetype(contract, variant_contract):
+            return False, (
+                "La variante fue rechazada por calidad insuficiente: repite el mismo tipo de afirmación verdadera "
+                "de la fuente en vez de variar la validación conceptual dentro del mismo constructo."
+            )
+
+        if has_numeric_option_scale_outlier(extract_choices(xml_content), find_correct_answer(xml_content)):
+            return False, (
+                "La variante fue rechazada por calidad de distractores: incluye opciones numéricas fuera de escala "
+                "respecto de la respuesta correcta."
+            )
+
+        if is_insufficiently_different(source.question_text, source.choices, variant_text, extract_choices(xml_content), contract):
+            return False, (
+                "La variante fue rechazada por calidad insuficiente: quedó demasiado cercana a la fuente "
+                "y no materializa suficiente variación estructural no mecanizable."
             )
 
         if source_profile["expects_explicit_dataset"] and not variant_profile["has_explicit_dataset"]:
@@ -239,6 +322,14 @@ class VariantValidator:
         numeric_density = len(re.findall(r"\d+(?:[.,]\d+)?", lowered))
         return has_table and numeric_density >= 6
 
+    def _introduces_rational_expression(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        return "<mfrac" in lowered or "≠" in lowered or "&#x2260;" in lowered or "dominio" in lowered
+
+    def _introduces_shifted_trinomial_form(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        return "<msup><mrow><mo>(</mo><mi>x</mi>" in lowered or "(x-" in lowered or "(x+" in lowered
+
     def _must_preserve_cognitive_action(self, contract: dict[str, object]) -> bool:
         return str(contract.get("cognitive_action")) in {
             "identify_error",
@@ -256,13 +347,16 @@ class VariantValidator:
             "equation_resolution",
         }
 
+    def _must_preserve_main_skill(self, contract: dict[str, object]) -> bool:
+        return str(contract.get("main_skill")) in {"ARG", "REP"}
+
     def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Use LLM to validate concept alignment, difficulty, and correctness."""
 
         # Extract variant text for easier reading
-        variant_text = self._extract_question_text(variant.qti_xml)
-        variant_choices = self._extract_choices(variant.qti_xml)
-        variant_correct = self._find_correct_answer(variant.qti_xml)
+        variant_text = extract_question_text(variant.qti_xml)
+        variant_choices = extract_choices(variant.qti_xml)
+        variant_correct = find_correct_answer(variant.qti_xml)
 
         prompt = f"""
 <role>
@@ -397,105 +491,3 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 non_mechanizable=False,
                 rejection_reason="No se pudo parsear respuesta de validación",
             )
-
-    def _extract_question_text(self, xml_content: str) -> str:
-        """Extract question text from QTI XML, properly handling MathML.
-
-        Delegates to shared utility with local helper for element-to-text conversion.
-        """
-        try:
-            root = ET.fromstring(xml_content)
-            # Find item body (use explicit 'is not None' to avoid Element truthiness bug)
-            item_body = root.find(".//{*}qti-item-body")
-            if item_body is None:
-                item_body = root.find(".//{*}itemBody")
-            if item_body is not None:
-                return self._element_to_text(item_body)
-            return ""
-        except Exception:
-            return ""
-
-    def _element_to_text(self, element: ET.Element) -> str:
-        """Recursively extract text from an element, properly handling MathML."""
-        parts = []
-        tag_name = element.tag.split("}")[-1].lower()
-
-        if tag_name == "img":
-            alt = element.attrib.get("alt", "").strip()
-            if alt:
-                parts.append(alt)
-            return " ".join(filter(None, parts))
-        if tag_name == "object":
-            label = (
-                element.attrib.get("aria-label", "").strip()
-                or element.attrib.get("label", "").strip()
-                or element.attrib.get("title", "").strip()
-            )
-            if label:
-                parts.append(label)
-            return " ".join(filter(None, parts))
-
-        if element.text:
-            parts.append(element.text.strip())
-
-        for child in element:
-            tag = child.tag.split("}")[-1].lower()
-
-            if tag in ("qti-feedback-inline", "feedbackinline", "qti-feedback-block", "feedbackblock"):
-                # Exclude solution/feedback blocks from semantic comparison of question text.
-                continue
-
-            if tag == "math":
-                # Process MathML to readable text using shared utility
-                parts.append(process_mathml(child))
-            elif tag in ("qti-simple-choice", "simplechoice"):
-                # Skip individual choices (we extract them separately)
-                pass
-            else:
-                # Include qti-prompt, qti-choice-interaction, and all other elements
-                parts.append(self._element_to_text(child))
-
-            if child.tail:
-                parts.append(child.tail.strip())
-
-        return " ".join(filter(None, parts))
-
-    def _extract_choices(self, xml_content: str) -> list[str]:
-        """Extract choice texts from QTI XML, excluding embedded feedback nodes."""
-        try:
-            root = ET.fromstring(xml_content)
-            raw_choices = root.findall(".//{*}qti-simple-choice")
-            if not raw_choices:
-                raw_choices = root.findall(".//{*}simpleChoice")
-
-            choices: list[str] = []
-            for choice in raw_choices:
-                choices.append(self._choice_text_without_feedback(choice))
-            return choices
-        except Exception:
-            # Fallback to shared utility if custom extraction fails.
-            choices, _ = extract_choices_from_qti(xml_content)
-            return choices
-
-    def _choice_text_without_feedback(self, element: ET.Element) -> str:
-        """Extract visible choice text while ignoring feedback inline blocks."""
-        parts: list[str] = []
-        if element.text:
-            parts.append(element.text.strip())
-
-        for child in element:
-            tag = child.tag.split("}")[-1].lower()
-            if tag in ("qti-feedback-inline", "feedbackinline"):
-                continue
-            if tag == "math":
-                parts.append(process_mathml(child))
-            else:
-                parts.append(self._element_to_text(child))
-            if child.tail:
-                parts.append(child.tail.strip())
-
-        return " ".join(filter(None, parts))
-
-    def _find_correct_answer(self, xml_content: str) -> str:
-        """Find the correct answer from QTI XML, properly handling MathML."""
-        return get_correct_answer_text(xml_content)

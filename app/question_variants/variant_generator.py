@@ -6,10 +6,10 @@ alignment with non-mechanizable structural variation.
 """
 
 import json
-import re
 import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
+from app.question_variants.generation_parsing import parse_generation_response
 from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import (
     PipelineConfig,
@@ -30,9 +30,12 @@ class VariantGenerator:
             config: Pipeline configuration. Uses defaults if not provided.
         """
         self.config = config or PipelineConfig()
+        self.last_error: str | None = None
         self.service = build_text_service(
             self.config.generator_provider,
             self.config.generator_model,
+            timeout_seconds=self.config.llm_request_timeout_seconds,
+            max_attempts=self.config.llm_max_attempts,
         )
 
     def generate_variants(
@@ -50,6 +53,7 @@ class VariantGenerator:
         Returns:
             List of generated variant questions (unvalidated)
         """
+        self.last_error = None
         n = num_variants or self.config.variants_per_question
 
         print(f"  Generating {n} variants for {source.question_id}...")
@@ -59,12 +63,7 @@ class VariantGenerator:
                 variants = self._generate_from_blueprints(source, blueprints[:n])
             else:
                 prompt = self._build_generation_prompt(source, n, None)
-                response = self.service.generate_text(
-                    prompt,
-                    response_mime_type="application/json",
-                    temperature=self.config.temperature,
-                )
-                variants_data = self._parse_response(response, source)
+                variants_data = self._generate_variant_payloads(prompt, source)
                 variants = self._to_variant_objects(source, variants_data, None)
 
             print(f"  ✅ Generated {len(variants)} variants")
@@ -72,6 +71,7 @@ class VariantGenerator:
 
         except Exception as e:
             print(f"  ❌ Error generating variants: {e}")
+            self.last_error = str(e)
             import traceback
 
             traceback.print_exc()
@@ -82,20 +82,40 @@ class VariantGenerator:
         for blueprint in blueprints:
             try:
                 prompt = self._build_generation_prompt(source, 1, [blueprint])
-                response = self.service.generate_text(
-                    prompt,
-                    response_mime_type="application/json",
-                    temperature=self.config.temperature,
-                )
-                variants_data = self._parse_response(response, source)
+                variants_data = self._generate_variant_payloads(prompt, source)
                 generated = self._to_variant_objects(source, variants_data[:1], [blueprint])
                 if generated:
                     variants.extend(generated)
                 else:
-                    print(f"  ⚠️ No se pudo parsear la variante {blueprint.variant_id}")
+                    self.last_error = f"No se pudo parsear la variante {blueprint.variant_id}"
+                    print(f"  ⚠️ {self.last_error}")
             except Exception as e:
+                self.last_error = str(e)
                 print(f"  ⚠️ Error generating {blueprint.variant_id}: {e}")
         return variants
+
+    def _generate_variant_payloads(self, prompt: str, source: SourceQuestion) -> List[Dict[str, Any]]:
+        response = self.service.generate_text(
+            prompt,
+            response_mime_type="application/json",
+            temperature=self.config.temperature,
+        )
+        variants_data = self._parse_response(response, source)
+        if variants_data:
+            return variants_data
+
+        retry_prompt = (
+            f"{prompt}\n\n<correccion_formato>\n"
+            "Tu respuesta anterior no fue parseable. Reintenta devolviendo SOLO JSON válido, "
+            "sin texto adicional, markdown ni explicación fuera del objeto JSON.\n"
+            "</correccion_formato>\n"
+        )
+        retry_response = self.service.generate_text(
+            retry_prompt,
+            response_mime_type="application/json",
+            temperature=0.1,
+        )
+        return self._parse_response(retry_response, source)
 
     def _to_variant_objects(
         self,
@@ -147,6 +167,8 @@ class VariantGenerator:
             bool(source.image_urls),
             source.primary_atoms,
             source.metadata,
+            source.choices,
+            source.correct_answer,
         )
         visual_context = self._extract_visual_context(source.qti_xml)
         evaluation_style = self._build_evaluation_style(source)
@@ -231,6 +253,34 @@ NUNCA el concepto matemático evaluado.
 13. Debes respetar la accion cognitiva y la estructura de solucion del contrato.
     No conviertas una tarea de interpretacion en una de calculo directo, ni una de un paso
     en una de varios pasos, ni una de sustitucion algebraica en una modelacion distinta.
+14. Si la firma operacional es "trinomial_factorization", la variante debe seguir siendo una pregunta
+    de factorizar un trinomio de la forma x^2 + bx + c en producto de dos binomios.
+    NO introduzcas cocientes algebraicos, simplificación de fracciones, restricciones de dominio ni expresiones racionales.
+15. Si el contrato exige "must_preserve_distractor_logic", cada distractor debe conservar el mismo
+    error conceptual dominante de la fuente. En preguntas de afirmaciones con porcentajes anidados,
+    verifica que las relaciones numéricas sigan haciendo plausibles los distractores que mezclan
+    porcentajes de distintos totales.
+16. Si el contrato exige "must_preserve_standard_trinomial_form", la expresión base debe seguir escrita
+    como un trinomio expandido x^2 + bx + c. NO la reescribas como (x-a)^2 + b(x-a) + c, ni como
+    expresión equivalente que obligue a expandir, reducir o hacer cambio de variable.
+17. NO aumentes la cantidad de transformaciones auxiliares respecto de la fuente. Si el contrato
+    indica 0 transformaciones auxiliares, la variante también debe resolverse sin conversiones,
+    sustituciones intermedias adicionales ni cambios de representación numérica.
+18. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error.
+    No reemplaces distractores conceptuales por valores arbitrarios ni por errores de otro tipo.
+19. NO aumentes la carga de relaciones de referencia de la fuente: no agregues múltiples equivalencias,
+    tasas de cambio o listados de referencia si la fuente sólo necesita una.
+20. Si la firma operacional es "descriptive_statistics", conserva una carga de datos comparable a la fuente.
+    No multipliques innecesariamente la cantidad de datos, repeticiones o frecuencias a procesar.
+21. Si las opciones son numéricas, cada distractor debe corresponder a un error concreto y explicable.
+    No uses valores arbitrarios o absurdos; mantén coherencia de escala con la respuesta correcta.
+22. Debes realizar de verdad al menos 2 ejes no mecanizables y poder declararlos explícitamente
+    en el self-check final.
+23. Si la tarea es "claim_evaluation", no basta con cambiar etiquetas o contexto. Debes cambiar
+    materialmente al menos dos de estos ejes: organización de la evidencia, afirmación verdadera objetivo,
+    base conceptual del distractor dominante, o formato de presentación de los datos.
+24. Si la tarea es "claim_evaluation", evita repetir exactamente el mismo arquetipo de afirmación verdadera
+    de la fuente; la variante debe validar otro tipo de afirmación correcta dentro del mismo conjunto de datos.
 {image_instruction}
 {blueprint_instruction}
 </reglas_estrictas>
@@ -292,6 +342,15 @@ Genera exactamente {n} variantes. Cada variante DEBE:
 Para cada variante, genera:
 - El XML QTI 3.0 completo (similar al original pero con nuevos valores)
 - Una breve explicación del cambio realizado
+- Un self-check breve del contrato:
+  - "task_form_preserved": true/false
+  - "evidence_mode_preserved": true/false
+  - "cognitive_action_preserved": true/false
+  - "solution_structure_preserved": true/false
+  - "auxiliary_transformations_preserved": true/false
+  - "distractor_logic_preserved": true/false
+  - "realized_non_mechanizable_axes": ["eje1", "eje2"]
+  - "main_risk_checked": "texto breve"
 </tarea>
 
 <formato_respuesta>
@@ -300,7 +359,17 @@ Responde con un JSON con esta estructura:
   "variants": [
     {{
       "qti_xml": "<qti-assessment-item ...>...</qti-assessment-item>",
-      "change_description": "Cambié los valores de X a Y..."
+      "change_description": "Cambié los valores de X a Y...",
+      "self_check": {{
+        "task_form_preserved": true,
+        "evidence_mode_preserved": true,
+        "cognitive_action_preserved": true,
+        "solution_structure_preserved": true,
+        "auxiliary_transformations_preserved": true,
+        "distractor_logic_preserved": true,
+        "realized_non_mechanizable_axes": ["representacion", "distractor_dominante"],
+        "main_risk_checked": "No reemplacé la representación por una tabla explícita."
+      }}
     }}
   ]
 }}
@@ -360,18 +429,10 @@ IMPORTANTE: El QTI XML debe:
 
     def _parse_response(self, response: str, source: SourceQuestion) -> List[Dict[str, Any]]:
         """Parse the LLM response into variant data."""
-        try:
-            data = json.loads(response)
-            return data.get("variants", [])
-        except json.JSONDecodeError as e:
-            # Try to fix common JSON issues
-            cleaned = re.sub(r'\\(?![/"\\\bfnrtu])', r"\\\\", response)
-            try:
-                data = json.loads(cleaned)
-                return data.get("variants", [])
-            except json.JSONDecodeError:
-                print(f"  ⚠️ Failed to parse JSON response: {e}")
-                return []
+        variants = parse_generation_response(response)
+        if not variants:
+            print("  ⚠️ Failed to parse JSON response")
+        return variants
 
     def _build_variant_metadata(
         self,
@@ -394,12 +455,15 @@ IMPORTANTE: El QTI XML debe:
                 bool(source.image_urls),
                 source.primary_atoms,
                 source.metadata,
+                source.choices,
+                source.correct_answer,
             ),
             "source_info": {
                 "source_question_id": source.question_id,
                 "source_test_id": source.test_id,
                 "change_description": variant_data.get("change_description", ""),
             },
+            "generator_self_check": variant_data.get("self_check", {}),
         }
         if blueprint:
             metadata["planning_blueprint"] = {

@@ -21,9 +21,13 @@ class VariantPlanner:
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         self.config = config or PipelineConfig()
+        self.last_error: str | None = None
+        self.used_fallback: bool = False
         self.service = build_text_service(
             self.config.planner_provider,
             self.config.planner_model,
+            timeout_seconds=self.config.llm_request_timeout_seconds,
+            max_attempts=self.config.llm_max_attempts,
         )
 
     def plan_variants(
@@ -31,6 +35,8 @@ class VariantPlanner:
         source: SourceQuestion,
         num_variants: Optional[int] = None,
     ) -> List[VariantBlueprint]:
+        self.last_error = None
+        self.used_fallback = False
         n = num_variants or self.config.variants_per_question
         prompt = self._build_planning_prompt(source, n)
         print(f"  Planning {n} hard variants for {source.question_id}...")
@@ -44,9 +50,12 @@ class VariantPlanner:
             plans = self._parse_response(response)
         except Exception as exc:
             print(f"  ⚠️ Planner failed, using fallback plans: {exc}")
+            self.last_error = str(exc)
+            self.used_fallback = True
             plans = []
 
         if not plans:
+            self.used_fallback = True
             return self._fallback_plans(source, n)
         return plans[:n]
 
@@ -60,6 +69,8 @@ class VariantPlanner:
             bool(source.image_urls),
             source.primary_atoms,
             source.metadata,
+            source.choices,
+            source.correct_answer,
         )
         visual_context = self._extract_visual_context(source.qti_xml)
         evaluation_style = self._build_evaluation_style(source)
@@ -96,6 +107,28 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
 9. Respeta también la accion cognitiva y la estructura de solucion del contrato.
    Ejemplo: "interpret_representation" no se puede convertir en "compute_value" puro;
    "direct_single_step" no se puede convertir en "integrated_multi_step".
+10. Si la firma operacional es "trinomial_factorization", la variante debe seguir preguntando por
+    una expresión equivalente factorizada de un trinomio. No introduzcas fracciones algebraicas,
+    simplificación de expresiones racionales ni nuevas restricciones de dominio.
+11. Si el contrato exige "must_preserve_distractor_logic", cada distractor debe seguir representando
+    el mismo error conceptual que en la fuente. No cambies números si eso destruye la plausibilidad
+    matemática del distractor o vuelve falsa la trampa conceptual.
+12. Si el contrato exige "must_preserve_standard_trinomial_form", mantén un trinomio expandido de la forma
+    x^2 + bx + c, sin reescrituras por cambio de variable, cuadrados desplazados ni formas equivalentes
+    que aumenten la dificultad procedimental.
+13. No aumentes la cantidad de transformaciones auxiliares respecto de la fuente
+    (por ejemplo, conversiones de unidad, cambio de representación numérica o pasos intermedios adicionales).
+14. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error
+    aunque cambien los valores o el contexto. No reemplaces distractores conceptuales por distractores aleatorios.
+15. Tampoco aumentes la carga de relaciones de referencia de la fuente: no agregues tablas de equivalencias,
+    múltiples tasas de conversión ni listados de referencias si la fuente no los necesita.
+16. Si la firma operacional es "descriptive_statistics", no aumentes artificialmente la cantidad de datos
+    o frecuencias a procesar; conserva la misma escala de carga de datos que en la fuente.
+17. Si la tarea es "claim_evaluation", no basta con renombrar categorías o porcentajes. Debes cambiar
+    materialmente al menos dos de estos ejes: organización de la evidencia, afirmación verdadera objetivo,
+    base conceptual del distractor dominante, o formato de presentación de los datos.
+18. Si la tarea es "claim_evaluation", evita repetir exactamente el mismo arquetipo de afirmación verdadera
+    de la fuente; la variante debe obligar a validar una verdad de otro tipo dentro del mismo constructo.
 </reglas>
 
 <pregunta_fuente>

@@ -7,7 +7,6 @@ This module orchestrates the full variant generation workflow:
 4. Validate variants using VariantValidator (semantic checks)
 5. Save approved variants to output directory
 """
-
 from __future__ import annotations
 
 import json
@@ -33,7 +32,6 @@ from app.question_variants.variant_validator import VariantValidator
 from app.utils.qti_extractor import parse_qti_xml
 
 logger = logging.getLogger(__name__)
-
 
 class VariantPipeline:
     """Orchestrates the variant generation pipeline."""
@@ -72,7 +70,6 @@ class VariantPipeline:
         print("PIPELINE: Generación de Variantes")
         print(f"Test: {test_id}")
         print(f"{'=' * 60}\n")
-
         # Load source questions
         sources = self._load_source_questions(test_id, question_ids)
 
@@ -173,6 +170,10 @@ class VariantPipeline:
 
         # Phase 1: plan hard, non-mechanizable variant blueprints
         blueprints = self.planner.plan_variants(source, n)
+        if self.planner.used_fallback:
+            report.stage_failures["planning_fallback"] = report.stage_failures.get("planning_fallback", 0) + 1
+        if self.planner.last_error:
+            report.errors.append(f"planner: {self.planner.last_error}")
 
         # Save planning artifact for traceability/debugging
         self._save_variant_plan(source, blueprints)
@@ -182,7 +183,11 @@ class VariantPipeline:
         report.total_generated = len(variants)
 
         if not variants:
+            report.stage_failures["generation"] = report.stage_failures.get("generation", 0) + 1
+            if self.generator.last_error:
+                report.errors.append(f"generator: {self.generator.last_error}")
             report.errors.append("No se pudieron generar variantes")
+            self._save_report(report)
             return report
 
         # Process each variant through optional post-processing + semantic validation
@@ -217,6 +222,9 @@ class VariantPipeline:
                         report.total_approved += 1
                     else:
                         report.total_rejected += 1
+                        report.stage_failures["semantic_validation"] = report.stage_failures.get("semantic_validation", 0) + 1
+                        if semantic_result.rejection_reason:
+                            report.rejection_reasons.append(semantic_result.rejection_reason)
                         logger.warning(
                             f"Variant {variant.variant_id} failed semantic validation: "
                             f"{semantic_result.rejection_reason}"
@@ -227,6 +235,10 @@ class VariantPipeline:
                     report.total_approved += 1
             else:
                 report.total_rejected += 1
+                stage_key = result.stage_failed or "pipeline"
+                report.stage_failures[stage_key] = report.stage_failures.get(stage_key, 0) + 1
+                if result.error:
+                    report.errors.append(f"{stage_key}: {result.error}")
                 logger.warning(
                     f"Variant {variant.variant_id} failed feedback pipeline: "
                     f"stage={result.stage_failed}, error={result.error}"
@@ -382,6 +394,9 @@ class VariantPipeline:
             "source_question_id": variant.source_question_id,
             "source_test_id": variant.source_test_id,
             "is_rejected": is_rejected,
+            "planning_blueprint": variant.metadata.get("planning_blueprint"),
+            "generator_self_check": variant.metadata.get("generator_self_check"),
+            "construct_contract": variant.metadata.get("construct_contract"),
         }
 
         os.makedirs(variant_path, exist_ok=True)
@@ -459,6 +474,8 @@ class VariantPipeline:
                 bool(source.image_urls),
                 source.primary_atoms,
                 source.metadata,
+                source.choices,
+                source.correct_answer,
             ),
         }
         with open(os.path.join(source_path, "source_info.json"), "w", encoding="utf-8") as f:
