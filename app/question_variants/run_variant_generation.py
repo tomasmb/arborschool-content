@@ -13,6 +13,7 @@ import argparse
 import sys
 
 from app.question_variants.models import PipelineConfig
+from app.question_variants.io.network_preflight import check_required_providers
 from app.question_variants.pipeline import VariantPipeline
 
 DEFAULT_RUN_OUTPUT_DIR = "app/data/pruebas/hard_variants"
@@ -66,8 +67,13 @@ def main():
     parser.add_argument("--planner-model", default=None, help="Optional explicit model for blueprint planning")
     parser.add_argument("--generator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for variant generation")
     parser.add_argument("--generator-model", default=None, help="Optional explicit model for variant generation")
-    parser.add_argument("--validator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for semantic validation")
+    parser.add_argument("--validator-provider", default="openai", choices=["gemini", "openai"], help="LLM provider for semantic validation")
     parser.add_argument("--validator-model", default=None, help="Optional explicit model for semantic validation")
+    parser.add_argument(
+        "--skip-network-preflight",
+        action="store_true",
+        help="Skip Python DNS preflight for configured providers (not recommended)",
+    )
 
     args = parser.parse_args()
 
@@ -92,6 +98,21 @@ def main():
         enable_feedback_pipeline=args.enable_feedback_pipeline,
         output_dir=args.output_dir,
     )
+
+    if not args.skip_network_preflight:
+        checks = check_required_providers(
+            [args.planner_provider, args.generator_provider, args.validator_provider]
+        )
+        failed = [check for check in checks if not check.ok]
+        if failed:
+            print("\n❌ Network preflight failed for configured providers:")
+            for check in failed:
+                print(f"  - {check.provider}: {check.error}")
+            print(
+                "\nEsto indica un problema de red/DNS en Python antes de llegar al modelo. "
+                "La corrida se aborta para evitar falsos diagnósticos del pipeline."
+            )
+            sys.exit(1)
 
     # Run pipeline
     pipeline = VariantPipeline(config)

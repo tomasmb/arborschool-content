@@ -9,6 +9,24 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from app.question_variants.contracts.contract_features import (
+    infer_argument_polarity,
+    infer_auxiliary_transformations,
+    infer_base_domain,
+    infer_claim_archetype,
+    infer_data_burden_score,
+    infer_formula_shape,
+    infer_justification_archetype,
+    infer_model_family,
+    infer_percentage_band,
+    infer_presentation_style,
+    infer_reference_relation_count,
+    infer_result_property_type,
+    infer_selection_load,
+    infer_statistic_target_domain,
+)
+from app.question_variants.contracts.family_catalog import resolve_family_spec
+
 
 def build_construct_contract(
     question_text: str,
@@ -32,9 +50,24 @@ def build_construct_contract(
     solution_structure = infer_solution_structure(profile, primary_atoms, metadata)
     distractor_archetypes = infer_distractor_archetypes(choices, correct_answer, profile, solution_structure)
     correct_claim_archetype = infer_claim_archetype(correct_answer)
+    correct_justification_archetype = infer_justification_archetype(correct_answer, profile)
     auxiliary_transformations = infer_auxiliary_transformations(question_text, metadata)
     reference_relation_count = infer_reference_relation_count(question_text)
     data_burden_score = infer_data_burden_score(question_text, profile)
+    formula_shape = infer_formula_shape(question_text, qti_xml, profile)
+    argument_polarity = infer_argument_polarity(question_text, profile)
+    model_family = infer_model_family(question_text, qti_xml, profile)
+    statistic_target_domain = infer_statistic_target_domain(question_text, profile)
+    percentage_band = infer_percentage_band(question_text, profile)
+    selection_load = infer_selection_load(question_text, qti_xml, profile)
+    base_domain = infer_base_domain(question_text, profile)
+    result_property_type = infer_result_property_type(question_text, profile)
+    presentation_style = infer_presentation_style(question_text, qti_xml, profile)
+
+    must_preserve_distractor_logic = profile["claim_evaluation"] or (
+        profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}
+        and bool(distractor_archetypes)
+    )
 
     if profile["claim_evaluation"]:
         evidence_mode = "explicit_dataset_and_claims"
@@ -53,6 +86,7 @@ def build_construct_contract(
     return {
         "primary_atoms": [atom.get("atom_id") for atom in primary_atoms],
         "primary_atom_titles": [atom.get("atom_title") for atom in primary_atoms],
+        "family_id": profile["family_id"],
         "main_skill": main_skill,
         "difficulty_level": difficulty.get("level", ""),
         "difficulty_score": difficulty.get("score"),
@@ -69,12 +103,22 @@ def build_construct_contract(
         "auxiliary_transformations": auxiliary_transformations,
         "reference_relation_count": reference_relation_count,
         "data_burden_score": data_burden_score,
+        "formula_shape": formula_shape,
+        "argument_polarity": argument_polarity,
+        "model_family": model_family,
+        "statistic_target_domain": statistic_target_domain,
+        "percentage_band": percentage_band,
+        "selection_load": selection_load,
+        "base_domain": base_domain,
+        "result_property_type": result_property_type,
+        "presentation_style": presentation_style,
         "evidence_mode": evidence_mode,
         "explicit_dataset_policy": explicit_dataset_policy,
         "representation_must_remain_primary": representation_must_remain_primary,
-        "must_preserve_distractor_logic": profile["claim_evaluation"],
+        "must_preserve_distractor_logic": must_preserve_distractor_logic,
         "distractor_archetypes": distractor_archetypes,
         "correct_claim_archetype": correct_claim_archetype,
+        "correct_justification_archetype": correct_justification_archetype,
         "hard_constraints": _build_hard_constraints(profile, has_visual_support),
     }
 
@@ -89,7 +133,9 @@ def build_structural_profile(
     text = question_text.lower()
     xml = qti_xml.lower()
     atom_titles = [str(a.get("atom_title", "")).lower() for a in primary_atoms]
+    atom_hints = _collect_atom_hints(primary_atoms)
     skill = str(main_skill or "").upper()
+    family_spec = resolve_family_spec(atom_hints, skill)
 
     asks_error_step = "¿en qué paso" in text or "en que paso" in text or "primer error" in text
     has_unknown = any(token in xml for token in ("<mi>x</mi>", "<mi>y</mi>", "<mi>z</mi>"))
@@ -100,7 +146,7 @@ def build_structural_profile(
         for marker in ("representación gráfica", "representacion grafica", "gráfico", "grafico", "pendiente")
     )
     requires_direct_computation = any("cálculo directo" in title or "calculo directo" in title for title in atom_titles)
-    operation_signature = infer_operation_signature(atom_titles, skill)
+    operation_signature = str(family_spec.get("operation_signature") or infer_operation_signature(atom_titles, skill))
     substitute_expression = (
         operation_signature == "algebraic_expression_evaluation"
         or ("ecuación:" in text or "equacion:" in text or "se utiliza la siguiente ecuación" in text or "se utiliza la siguiente expresion" in text)
@@ -115,14 +161,15 @@ def build_structural_profile(
             if asks_error_step
             else "solve_for_unknown"
             if asks_value_of_unknown or operation_signature == "linear_equation_resolution"
+            else "claim_evaluation"
+            if operation_signature in {"data_claim_evaluation", "argumentation_evaluation"} or claim_evaluation
             else "substitute_expression"
             if substitute_expression
-            else "claim_evaluation"
-            if claim_evaluation
             else "representation_interpretation"
-            if representation_interpretation
+            if representation_interpretation or operation_signature == "graph_interpretation"
             else "direct_resolution"
         ),
+        "family_id": str(family_spec.get("family_id") or ""),
         "operation_signature": operation_signature,
         "introduces_unknowns": has_unknown or asks_value_of_unknown,
         "must_not_introduce_algebraic_unknowns": not (has_unknown or asks_value_of_unknown),
@@ -147,6 +194,8 @@ def _build_hard_constraints(profile: dict[str, bool | str], has_visual_support: 
     if profile["claim_evaluation"]:
         constraints.append("must_keep_claim_evaluation")
         constraints.append("must_include_explicit_dataset")
+        constraints.append("must_preserve_distractor_logic")
+    if profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}:
         constraints.append("must_preserve_distractor_logic")
     if profile["operation_signature"] == "trinomial_factorization":
         constraints.append("must_preserve_standard_trinomial_form")
@@ -254,6 +303,12 @@ def infer_cognitive_action(
     primary_atoms: list[dict[str, Any]],
     main_skill: str,
 ) -> str:
+    family_spec = resolve_family_spec(
+        _collect_atom_hints(primary_atoms),
+        main_skill,
+    )
+    if family_spec.get("cognitive_action"):
+        return str(family_spec["cognitive_action"])
     atom_titles = [str(atom.get("atom_title", "")).lower() for atom in primary_atoms]
     atom_text = " ".join(atom_titles)
     skill = str(main_skill or "").upper()
@@ -281,6 +336,12 @@ def infer_solution_structure(
     primary_atoms: list[dict[str, Any]],
     metadata: dict[str, Any],
 ) -> str:
+    family_spec = resolve_family_spec(
+        _collect_atom_hints(primary_atoms),
+        str(metadata.get("habilidad_principal", {}).get("habilidad_principal", "")),
+    )
+    if family_spec.get("solution_structure"):
+        return str(family_spec["solution_structure"])
     atom_titles = [str(atom.get("atom_title", "")).lower() for atom in primary_atoms]
     atom_text = " ".join(atom_titles)
     difficulty_analysis = str(metadata.get("difficulty", {}).get("analysis", "")).lower()
@@ -334,21 +395,6 @@ def infer_distractor_archetypes(
     return archetypes
 
 
-def infer_claim_archetype(statement: str) -> str:
-    lowered = statement.lower().strip()
-    if not lowered:
-        return ""
-    if "la mayor" in lowered or "la principal" in lowered:
-        return "largest_subgroup_identification"
-    if "se debe realizar la operación" in lowered or "se debe realizar la operacion" in lowered:
-        return "operation_setup_claim"
-    if "en conjunto" in lowered:
-        return "combined_group_comparison"
-    if "%" in lowered and ("del total" in lowered or "del agua" in lowered or "del país" in lowered or "del pais" in lowered):
-        return "subgroup_percentage_as_total"
-    return "other_claim"
-
-
 def infer_visual_role(
     question_text: str,
     qti_xml: str,
@@ -392,48 +438,14 @@ def _asks_to_solve_unknown(text: str) -> bool:
     return any(marker in text for marker in solve_markers)
 
 
-def infer_auxiliary_transformations(question_text: str, metadata: dict[str, Any]) -> int:
-    text = question_text.lower()
-    analysis = str(metadata.get("general_analysis", "")).lower()
-    markers = (
-        "equivale",
-        "equivalente",
-        "convert",
-        "transform",
-        "promedio",
-        "media aritmética",
-        "media aritmetica",
-        "desviación",
-        "desviacion",
-        "cambio de unidad",
-        "conversión",
-        "conversion",
-    )
-    hits = sum(1 for marker in markers if marker in text or marker in analysis)
-    if hits == 0:
-        return 0
-    if hits <= 2:
-        return 1
-    if hits <= 4:
-        return 2
-    return 3
-
-
-def infer_reference_relation_count(question_text: str) -> int:
-    text = question_text.lower()
-    explicit_equalities = len(re.findall(r"\b1\s+[^\s]+\s*=\s*[\d.,]+", text))
-    generic_equalities = len(re.findall(r"\b[a-z]\s*=", text))
-    equivalence_markers = len(re.findall(r"\bequivale\b|\bequivalente\b", text))
-    return explicit_equalities + generic_equalities + equivalence_markers
-
-
-def infer_data_burden_score(question_text: str, profile: dict[str, bool | str]) -> int:
-    if profile["operation_signature"] != "descriptive_statistics":
-        return 0
-    text = question_text.lower()
-    numeric_tokens = len(re.findall(r"\d+(?:[.,]\d+)?", text))
-    word_counts = sum(
-        text.count(word)
-        for word in ("dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez")
-    )
-    return numeric_tokens + word_counts
+def _collect_atom_hints(primary_atoms: list[dict[str, Any]]) -> list[str]:
+    """Collect normalized atom titles and ids for family resolution."""
+    hints: list[str] = []
+    for atom in primary_atoms:
+        title = str(atom.get("atom_title", "")).strip().lower()
+        atom_id = str(atom.get("atom_id", "")).strip().lower()
+        if title:
+            hints.append(title)
+        if atom_id:
+            hints.append(atom_id)
+    return hints

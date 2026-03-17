@@ -23,17 +23,26 @@ from app.question_variants.models import (
     VariantQuestion,
 )
 from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
-from app.question_variants.semantic_guardrails import (
+from app.question_variants.contracts.semantic_guardrails import (
     adds_auxiliary_transformations,
     adds_reference_load,
     breaks_expected_distractor_logic,
     failed_generator_self_check,
+    has_equivalent_correct_choice,
+    has_semantic_contract_drift,
     has_numeric_option_scale_outlier,
     inflates_data_burden,
     is_insufficiently_different,
     repeats_claim_archetype,
 )
-from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
+from app.question_variants.contracts.preservation_policy import (
+    must_preserve_cognitive_action,
+    must_preserve_main_skill,
+    must_preserve_solution_structure,
+)
+from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
+
+
 class VariantValidator:
     """Validates generated variant questions."""
 
@@ -125,19 +134,20 @@ class VariantValidator:
 
     def _validate_visual_completeness(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
         lowered = extract_question_text(xml_content).lower()
-        mentions_visual = any(
-            token in lowered
-            for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia", "tabla")
+        mentions_image_like = any(
+            token in lowered for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia")
         )
-        has_visual_tag = any(token in xml_content.lower() for token in ("<img", "<object", "<qti-object", "<table", "<qti-table"))
+        mentions_table = "tabla" in lowered
+        has_image_tag = any(token in xml_content.lower() for token in ("<img", "<object", "<qti-object"))
+        has_table_tag = any(token in xml_content.lower() for token in ("<table", "<qti-table"))
 
-        if mentions_visual and not has_visual_tag:
+        if (mentions_image_like and not has_image_tag) or (mentions_table and not has_table_tag):
             return False, (
                 "La variante está incompleta: menciona una figura, gráfico, diagrama, infografía o tabla "
                 "pero no incluye esa representación en el XML."
             )
 
-        if not source.image_urls and mentions_visual:
+        if not source.image_urls and (mentions_image_like or has_image_tag):
             return False, (
                 "La variante fue rechazada porque introduce soporte visual que no existe en la pregunta fuente, "
                 "alterando la forma de representación y arriesgando un ítem incompleto."
@@ -228,19 +238,19 @@ class VariantValidator:
                 "primaria por una tabla o listado explícito que permite responder sin interpretar la representación."
             )
 
-        if self._must_preserve_cognitive_action(contract) and contract["cognitive_action"] != variant_contract["cognitive_action"]:
+        if must_preserve_cognitive_action(contract) and contract["cognitive_action"] != variant_contract["cognitive_action"]:
             return False, (
                 "La variante fue rechazada por drift de constructo: cambió la acción cognitiva dominante de "
                 f"{contract['cognitive_action']} a {variant_contract['cognitive_action']}."
             )
 
-        if self._must_preserve_solution_structure(contract) and contract["solution_structure"] != variant_contract["solution_structure"]:
+        if must_preserve_solution_structure(contract) and contract["solution_structure"] != variant_contract["solution_structure"]:
             return False, (
                 "La variante fue rechazada por drift de dificultad/constructo: cambió la estructura de solución de "
                 f"{contract['solution_structure']} a {variant_contract['solution_structure']}."
             )
 
-        if self._must_preserve_main_skill(contract) and contract["main_skill"] != variant_contract["main_skill"]:
+        if must_preserve_main_skill(contract) and contract["main_skill"] != variant_contract["main_skill"]:
             return False, (
                 "La variante fue rechazada por drift de constructo: cambió la habilidad principal de "
                 f"{contract['main_skill']} a {variant_contract['main_skill']}."
@@ -276,16 +286,26 @@ class VariantValidator:
                 "o frecuencias a procesar respecto de la fuente."
             )
 
+        semantic_contract_drift = has_semantic_contract_drift(contract, variant_contract)
+        if semantic_contract_drift:
+            return False, f"La variante fue rechazada por drift de constructo/dificultad: {semantic_contract_drift}"
+
         if repeats_claim_archetype(contract, variant_contract):
             return False, (
-                "La variante fue rechazada por calidad insuficiente: repite el mismo tipo de afirmación verdadera "
+                "La variante fue rechazada por calidad insuficiente: repite el mismo arquetipo semántico decisivo "
                 "de la fuente en vez de variar la validación conceptual dentro del mismo constructo."
             )
 
-        if has_numeric_option_scale_outlier(extract_choices(xml_content), find_correct_answer(xml_content)):
+        if has_numeric_option_scale_outlier(extract_choices(xml_content), find_correct_answer(xml_content), contract):
             return False, (
                 "La variante fue rechazada por calidad de distractores: incluye opciones numéricas fuera de escala "
                 "respecto de la respuesta correcta."
+            )
+
+        if has_equivalent_correct_choice(extract_choices(xml_content), find_correct_answer(xml_content), contract):
+            return False, (
+                "La variante fue rechazada porque tiene más de una opción equivalente correcta, "
+                "expresada con diferentes unidades o escalas."
             )
 
         if is_insufficiently_different(source.question_text, source.choices, variant_text, extract_choices(xml_content), contract):
@@ -329,26 +349,6 @@ class VariantValidator:
     def _introduces_shifted_trinomial_form(self, xml_content: str) -> bool:
         lowered = xml_content.lower()
         return "<msup><mrow><mo>(</mo><mi>x</mi>" in lowered or "(x-" in lowered or "(x+" in lowered
-
-    def _must_preserve_cognitive_action(self, contract: dict[str, object]) -> bool:
-        return str(contract.get("cognitive_action")) in {
-            "identify_error",
-            "interpret_representation",
-            "evaluate_claims",
-            "substitute_and_compute",
-        }
-
-    def _must_preserve_solution_structure(self, contract: dict[str, object]) -> bool:
-        return str(contract.get("solution_structure")) in {
-            "direct_single_step",
-            "representation_reading",
-            "data_to_claim_check",
-            "error_localization",
-            "equation_resolution",
-        }
-
-    def _must_preserve_main_skill(self, contract: dict[str, object]) -> bool:
-        return str(contract.get("main_skill")) in {"ARG", "REP"}
 
     def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
         """Use LLM to validate concept alignment, difficulty, and correctness."""

@@ -1,43 +1,29 @@
-"""Variant generation pipeline orchestrator.
-
-This module orchestrates the full variant generation workflow:
-1. Load source questions from finalized tests
-2. Generate variants using VariantGenerator
-3. Optionally enhance variants with feedback using QuestionPipeline
-4. Validate variants using VariantValidator (semantic checks)
-5. Save approved variants to output directory
-"""
+"""Variant generation pipeline orchestrator."""
 from __future__ import annotations
 
-import json
 import logging
-import os
-from dataclasses import asdict
-from datetime import datetime, timezone
 from typing import List, Optional
 
 from app.question_generation.progress import report_progress
+from app.question_variants.io.artifacts import save_report, save_source_snapshot, save_variant, save_variant_plan
 from app.question_variants.models import (
     GenerationReport,
     PipelineConfig,
     SourceQuestion,
-    VariantBlueprint,
     VariantQuestion,
     VariantResult,
 )
+from app.question_variants.io.source_loader import load_source_questions
+from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
+from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_planner import VariantPlanner
-from app.question_variants.structural_profile import build_construct_contract
 from app.question_variants.variant_validator import VariantValidator
-from app.utils.qti_extractor import parse_qti_xml
 
 logger = logging.getLogger(__name__)
 
 class VariantPipeline:
     """Orchestrates the variant generation pipeline."""
-
-    # Base path for finalized tests
-    FINALIZED_PATH = "app/data/pruebas/finalizadas"
 
     def __init__(self, config: Optional[PipelineConfig] = None):
         """Initialize the pipeline.
@@ -71,7 +57,7 @@ class VariantPipeline:
         print(f"Test: {test_id}")
         print(f"{'=' * 60}\n")
         # Load source questions
-        sources = self._load_source_questions(test_id, question_ids)
+        sources = load_source_questions(test_id, question_ids)
 
         if not sources:
             print("❌ No se encontraron preguntas para procesar.")
@@ -93,63 +79,6 @@ class VariantPipeline:
 
         return reports
 
-    def _load_source_questions(self, test_id: str, question_ids: Optional[List[str]] = None) -> List[SourceQuestion]:
-        """Load source questions from disk."""
-
-        test_path = os.path.join(self.FINALIZED_PATH, test_id, "qti")
-
-        if not os.path.exists(test_path):
-            print(f"❌ Test path not found: {test_path}")
-            return []
-
-        sources = []
-
-        # Get question directories
-        q_dirs = sorted(os.listdir(test_path))
-
-        for q_dir in q_dirs:
-            # Filter by question_ids if specified
-            if question_ids and q_dir not in question_ids:
-                continue
-
-            q_path = os.path.join(test_path, q_dir)
-
-            if not os.path.isdir(q_path):
-                continue
-
-            xml_path = os.path.join(q_path, "question.xml")
-            meta_path = os.path.join(q_path, "metadata_tags.json")
-
-            if not os.path.exists(xml_path) or not os.path.exists(meta_path):
-                print(f"  ⚠️ Skipping {q_dir}: missing files")
-                continue
-
-            # Load QTI XML
-            with open(xml_path, "r", encoding="utf-8") as f:
-                qti_xml = f.read()
-
-            # Load metadata
-            with open(meta_path, "r", encoding="utf-8") as f:
-                metadata = json.load(f)
-
-            # Extract text and choices from XML using shared utility
-            parsed = parse_qti_xml(qti_xml)
-
-            source = SourceQuestion(
-                question_id=q_dir,
-                test_id=test_id,
-                qti_xml=qti_xml,
-                metadata=metadata,
-                question_text=parsed.text,
-                choices=parsed.choices,
-                correct_answer=parsed.correct_answer_text or "",
-                image_urls=parsed.image_urls,
-            )
-
-            sources.append(source)
-
-        return sources
-
     def _process_question(self, source: SourceQuestion, num_variants: Optional[int] = None) -> GenerationReport:
         """Process a single source question.
 
@@ -164,21 +93,18 @@ class VariantPipeline:
         print(f"{'─' * 40}")
 
         report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
-        self._save_source_snapshot(source)
+        save_source_snapshot(self.config.output_dir, source)
 
         n = num_variants or self.config.variants_per_question
 
-        # Phase 1: plan hard, non-mechanizable variant blueprints
         blueprints = self.planner.plan_variants(source, n)
         if self.planner.used_fallback:
             report.stage_failures["planning_fallback"] = report.stage_failures.get("planning_fallback", 0) + 1
         if self.planner.last_error:
             report.errors.append(f"planner: {self.planner.last_error}")
 
-        # Save planning artifact for traceability/debugging
-        self._save_variant_plan(source, blueprints)
+        save_variant_plan(self.config.output_dir, source, blueprints)
 
-        # Phase 2: generate variants (raw QTI without feedback)
         variants = self.generator.generate_variants(source, n, blueprints=blueprints)
         report.total_generated = len(variants)
 
@@ -187,10 +113,9 @@ class VariantPipeline:
             if self.generator.last_error:
                 report.errors.append(f"generator: {self.generator.last_error}")
             report.errors.append("No se pudieron generar variantes")
-            self._save_report(report)
+            save_report(self.config.output_dir, report)
             return report
 
-        # Process each variant through optional post-processing + semantic validation
         approved_variants: list[VariantQuestion] = []
         variant_results: dict[str, VariantResult] = {}
 
@@ -211,6 +136,23 @@ class VariantPipeline:
             if result.success and result.qti_xml:
                 # Update variant with enriched QTI XML
                 variant.qti_xml = result.qti_xml
+                original_qti = variant.qti_xml
+                variant.qti_xml = normalize_variant_presentation(
+                    variant.qti_xml,
+                    str(variant.metadata.get("construct_contract", {}).get("operation_signature") or ""),
+                    str(variant.metadata.get("construct_contract", {}).get("task_form") or ""),
+                    str(variant.metadata.get("construct_contract", {}).get("selection_load") or "not_applicable"),
+                )
+                normalized_qti = variant.qti_xml
+                variant.qti_xml = repair_family_specific_qti(
+                    variant.qti_xml,
+                    variant.metadata.get("construct_contract", {}),
+                )
+                repaired_qti = variant.qti_xml
+                variant.metadata["postprocess_summary"] = {
+                    "presentation_normalized": normalized_qti != original_qti,
+                    "family_repaired": repaired_qti != normalized_qti,
+                }
 
                 # Run semantic validation (concept alignment, difficulty)
                 if self.config.validate_variants:
@@ -246,52 +188,32 @@ class VariantPipeline:
 
         # Save approved variants
         for variant in approved_variants:
-            self._save_variant(variant, source, variant_results.get(variant.variant_id))
+            save_variant(
+                self.config.output_dir,
+                variant,
+                source,
+                variant_results.get(variant.variant_id),
+                postprocess_summary=variant.metadata.get("postprocess_summary"),
+            )
             report.variants.append(variant.variant_id)
 
         # Save rejected variants if configured
         if self.config.save_rejected:
             rejected = [v for v in variants if v not in approved_variants]
             for variant in rejected:
-                self._save_variant(
-                    variant, source, variant_results.get(variant.variant_id), is_rejected=True
+                save_variant(
+                    self.config.output_dir,
+                    variant,
+                    source,
+                    variant_results.get(variant.variant_id),
+                    is_rejected=True,
+                    postprocess_summary=variant.metadata.get("postprocess_summary"),
                 )
 
         # Save report
-        self._save_report(report)
+        save_report(self.config.output_dir, report)
 
         return report
-
-    def _save_variant_plan(self, source: SourceQuestion, blueprints: List[VariantBlueprint]) -> None:
-        """Persist planner output per source question."""
-        plan_path = os.path.join(
-            self.config.output_dir,
-            source.test_id,
-            source.question_id,
-            "variants",
-            "variant_plan.json",
-        )
-        os.makedirs(os.path.dirname(plan_path), exist_ok=True)
-
-        payload = {
-            "source_question_id": source.question_id,
-            "source_test_id": source.test_id,
-            "variants_planned": len(blueprints),
-            "blueprints": [
-                {
-                    "variant_id": bp.variant_id,
-                    "scenario_description": bp.scenario_description,
-                    "non_mechanizable_axes": bp.non_mechanizable_axes,
-                    "required_reasoning": bp.required_reasoning,
-                    "difficulty_target": bp.difficulty_target,
-                    "requires_image": bp.requires_image,
-                    "image_description": bp.image_description,
-                }
-                for bp in blueprints
-            ],
-        }
-        with open(plan_path, "w", encoding="utf-8") as f:
-            json.dump(payload, f, ensure_ascii=False, indent=2)
 
     def _process_variant_through_pipeline(
         self, variant: VariantQuestion, source: SourceQuestion
@@ -353,133 +275,6 @@ class VariantPipeline:
                 else None
             ),
         )
-
-    def _save_variant(
-        self,
-        variant: VariantQuestion,
-        source: SourceQuestion,
-        pipeline_result: VariantResult | None = None,
-        is_rejected: bool = False,
-    ) -> None:
-        """Save a variant to disk.
-
-        Args:
-            variant: The variant to save.
-            source: The source question.
-            pipeline_result: Result from feedback pipeline (for validation_result.json).
-            is_rejected: Whether this variant was rejected.
-        """
-        # Build output path
-        status = "rejected" if is_rejected else "approved"
-        variant_path = os.path.join(
-            self.config.output_dir, source.test_id, source.question_id, "variants", status, variant.variant_id
-        )
-
-        os.makedirs(variant_path, exist_ok=True)
-
-        # Add semantic validation result to metadata (if available)
-        if variant.validation_result:
-            variant.metadata["semantic_validation"] = {
-                "verdict": variant.validation_result.verdict.value,
-                "concept_aligned": variant.validation_result.concept_aligned,
-                "difficulty_equal": variant.validation_result.difficulty_equal,
-                "answer_correct": variant.validation_result.answer_correct,
-                "non_mechanizable": variant.validation_result.non_mechanizable,
-                "calculation_steps": variant.validation_result.calculation_steps,
-                "rejection_reason": variant.validation_result.rejection_reason,
-            }
-
-        variant_info = {
-            "variant_id": variant.variant_id,
-            "source_question_id": variant.source_question_id,
-            "source_test_id": variant.source_test_id,
-            "is_rejected": is_rejected,
-            "planning_blueprint": variant.metadata.get("planning_blueprint"),
-            "generator_self_check": variant.metadata.get("generator_self_check"),
-            "construct_contract": variant.metadata.get("construct_contract"),
-        }
-
-        os.makedirs(variant_path, exist_ok=True)
-
-        # Save QTI XML (with feedback if pipeline passed)
-        with open(os.path.join(variant_path, "question.xml"), "w", encoding="utf-8") as f:
-            f.write(variant.qti_xml)
-
-        # Save metadata
-        with open(os.path.join(variant_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
-            json.dump(variant.metadata, f, ensure_ascii=False, indent=2)
-
-        # Save variant info
-        with open(os.path.join(variant_path, "variant_info.json"), "w", encoding="utf-8") as f:
-            json.dump(variant_info, f, ensure_ascii=False, indent=2)
-
-        # Save validation_result.json (pipeline validation details)
-        validation_data = {
-            "variant_id": variant.variant_id,
-            "pipeline_version": "2.0",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
-            "pipeline_success": pipeline_result.success if pipeline_result else None,
-            "pipeline_stage_failed": pipeline_result.stage_failed if pipeline_result else None,
-            "pipeline_error": pipeline_result.error if pipeline_result else None,
-            "pipeline_validation_details": pipeline_result.validation_details if pipeline_result else None,
-            "semantic_validation": variant.metadata.get("semantic_validation"),
-            "is_approved": not is_rejected,
-        }
-        with open(os.path.join(variant_path, "validation_result.json"), "w", encoding="utf-8") as f:
-            json.dump(validation_data, f, ensure_ascii=False, indent=2)
-
-    def _save_report(self, report: GenerationReport):
-        """Save generation report."""
-
-        report_path = os.path.join(
-            self.config.output_dir,
-            report.source_test_id,
-            report.source_question_id,
-            "variants",
-            "generation_report.json",
-        )
-
-        os.makedirs(os.path.dirname(report_path), exist_ok=True)
-
-        with open(report_path, "w", encoding="utf-8") as f:
-            json.dump(asdict(report), f, ensure_ascii=False, indent=2)
-
-    def _save_source_snapshot(self, source: SourceQuestion) -> None:
-        """Persist the original source question alongside its variants."""
-
-        source_path = os.path.join(
-            self.config.output_dir,
-            source.test_id,
-            source.question_id,
-            "source",
-        )
-        os.makedirs(source_path, exist_ok=True)
-
-        with open(os.path.join(source_path, "question.xml"), "w", encoding="utf-8") as f:
-            f.write(source.qti_xml)
-
-        with open(os.path.join(source_path, "metadata_tags.json"), "w", encoding="utf-8") as f:
-            json.dump(source.metadata, f, ensure_ascii=False, indent=2)
-
-        source_info = {
-            "source_question_id": source.question_id,
-            "source_test_id": source.test_id,
-            "question_text": source.question_text,
-            "choices": source.choices,
-            "correct_answer": source.correct_answer,
-            "image_urls": source.image_urls,
-            "construct_contract": build_construct_contract(
-                source.question_text,
-                source.qti_xml,
-                bool(source.image_urls),
-                source.primary_atoms,
-                source.metadata,
-                source.choices,
-                source.correct_answer,
-            ),
-        }
-        with open(os.path.join(source_path, "source_info.json"), "w", encoding="utf-8") as f:
-            json.dump(source_info, f, ensure_ascii=False, indent=2)
 
     def _print_summary(self, reports: List[GenerationReport]):
         """Print summary of pipeline run."""

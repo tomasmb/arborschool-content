@@ -141,6 +141,7 @@ class GeminiClient:
         thinking_level: str | None = None,
         response_mime_type: str | None = None,
         temperature: float | None = None,
+        request_timeout_seconds: float | None = None,
         **kwargs: Any,
     ) -> Any:
         """Generate text using google-generativeai."""
@@ -159,7 +160,8 @@ class GeminiClient:
         }
 
         # Use longer timeout for large prompts
-        request_options = {"timeout": 1200}  # 20 minutes (1200 seconds)
+        timeout_seconds = request_timeout_seconds or 1200
+        request_options = {"timeout": timeout_seconds}
         response = self._model.generate_content(
             prompt,
             generation_config=generation_config if generation_config else None,
@@ -243,6 +245,8 @@ class OpenAIClient:
         reasoning_effort: Optional[str] = None,
         response_mime_type: Optional[str] = None,
         temperature: float = 0.0,
+        request_timeout_seconds: float | None = None,
+        transport_max_attempts: int | None = None,
         **kwargs: Any,
     ) -> LLMResponse:
         """Call Chat Completions API, return ``LLMResponse(text, usage)``."""
@@ -272,7 +276,11 @@ class OpenAIClient:
         if response_mime_type == "application/json":
             data["response_format"] = {"type": "json_object"}
 
-        body = self._post_with_retry(data)
+        body = self._post_with_retry(
+            data,
+            request_timeout_seconds=request_timeout_seconds,
+            max_attempts=transport_max_attempts,
+        )
 
         text = body["choices"][0]["message"]["content"]
 
@@ -298,7 +306,11 @@ class OpenAIClient:
     # ------------------------------------------------------------------
 
     def _post_with_retry(
-        self, data: dict[str, Any],
+        self,
+        data: dict[str, Any],
+        *,
+        request_timeout_seconds: float | None = None,
+        max_attempts: int | None = None,
     ) -> dict[str, Any]:
         """POST to the completions API with exponential-backoff retry.
 
@@ -311,12 +323,14 @@ class OpenAIClient:
             "Content-Type": "application/json",
         }
 
-        for attempt in range(_RETRY_MAX_ATTEMPTS):
-            is_last = attempt == _RETRY_MAX_ATTEMPTS - 1
+        attempts = max_attempts or _RETRY_MAX_ATTEMPTS
+        timeout_seconds = request_timeout_seconds or 300
+        for attempt in range(attempts):
+            is_last = attempt == attempts - 1
             try:
                 resp = requests.post(
                     self._url, headers=headers,
-                    json=data, timeout=300,
+                    json=data, timeout=timeout_seconds,
                 )
                 if not is_last and _is_retryable_status(resp.status_code):
                     delay = _retry_delay(attempt, resp)
@@ -324,7 +338,7 @@ class OpenAIClient:
                         "HTTP %d (attempt %d/%d), "
                         "retrying in %.1fs",
                         resp.status_code,
-                        attempt + 1, _RETRY_MAX_ATTEMPTS,
+                        attempt + 1, attempts,
                         delay,
                     )
                     time.sleep(delay)
@@ -341,7 +355,7 @@ class OpenAIClient:
                 _logger.warning(
                     "%s (attempt %d/%d), retrying in %.1fs",
                     type(exc).__name__,
-                    attempt + 1, _RETRY_MAX_ATTEMPTS,
+                    attempt + 1, attempts,
                     delay,
                 )
                 time.sleep(delay)

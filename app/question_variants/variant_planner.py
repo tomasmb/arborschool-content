@@ -11,9 +11,11 @@ import re
 import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
+from app.question_variants.contracts.family_specs import build_family_prompt_rules
 from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantBlueprint
-from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
+from app.question_variants.prompt_context import build_prompt_source_snapshot
+from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
 
 
 class VariantPlanner:
@@ -73,14 +75,26 @@ class VariantPlanner:
             source.correct_answer,
         )
         visual_context = self._extract_visual_context(source.qti_xml)
-        evaluation_style = self._build_evaluation_style(source)
-
         atoms_desc = []
         for atom in source.primary_atoms:
             title = atom.get("atom_title", "N/A")
             reasoning = atom.get("reasoning", "")
             atoms_desc.append(f"- {title}: {reasoning}")
         atoms_text = "\n".join(atoms_desc) if atoms_desc else "- No atoms specified"
+        source_snapshot = build_prompt_source_snapshot(
+            question_id=source.question_id,
+            question_text=source.question_text,
+            choices=source.choices,
+            correct_answer=source.correct_answer,
+            difficulty_text=diff_text,
+            atoms_text=atoms_text,
+            construct_contract=construct_contract,
+            structural_profile=structural_profile,
+            visual_context=visual_context,
+        )
+        family_rules = "\n".join(
+            f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
+        )
 
         return f"""
 <role>
@@ -102,48 +116,21 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
    evaluando afirmaciones sobre un conjunto de datos explicito y autocontenido.
 7. Si la firma operacional es "direct_percentage_calculation", la variante debe
    seguir siendo un calculo directo de porcentaje, no una modelacion de varios pasos.
-8. Para "direct_percentage_calculation", usa exactamente un porcentaje y una cantidad base.
-   No introduzcas área, largo/ancho, volumen ni cálculos intermedios.
-9. Respeta también la accion cognitiva y la estructura de solucion del contrato.
+8. Respeta también la accion cognitiva y la estructura de solucion del contrato.
    Ejemplo: "interpret_representation" no se puede convertir en "compute_value" puro;
    "direct_single_step" no se puede convertir en "integrated_multi_step".
-10. Si la firma operacional es "trinomial_factorization", la variante debe seguir preguntando por
-    una expresión equivalente factorizada de un trinomio. No introduzcas fracciones algebraicas,
-    simplificación de expresiones racionales ni nuevas restricciones de dominio.
-11. Si el contrato exige "must_preserve_distractor_logic", cada distractor debe seguir representando
-    el mismo error conceptual que en la fuente. No cambies números si eso destruye la plausibilidad
-    matemática del distractor o vuelve falsa la trampa conceptual.
-12. Si el contrato exige "must_preserve_standard_trinomial_form", mantén un trinomio expandido de la forma
-    x^2 + bx + c, sin reescrituras por cambio de variable, cuadrados desplazados ni formas equivalentes
-    que aumenten la dificultad procedimental.
-13. No aumentes la cantidad de transformaciones auxiliares respecto de la fuente
+9. No aumentes la cantidad de transformaciones auxiliares respecto de la fuente
     (por ejemplo, conversiones de unidad, cambio de representación numérica o pasos intermedios adicionales).
-14. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error
+10. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error
     aunque cambien los valores o el contexto. No reemplaces distractores conceptuales por distractores aleatorios.
-15. Tampoco aumentes la carga de relaciones de referencia de la fuente: no agregues tablas de equivalencias,
+11. Tampoco aumentes la carga de relaciones de referencia de la fuente: no agregues tablas de equivalencias,
     múltiples tasas de conversión ni listados de referencias si la fuente no los necesita.
-16. Si la firma operacional es "descriptive_statistics", no aumentes artificialmente la cantidad de datos
+12. Si la firma operacional es "descriptive_statistics", no aumentes artificialmente la cantidad de datos
     o frecuencias a procesar; conserva la misma escala de carga de datos que en la fuente.
-17. Si la tarea es "claim_evaluation", no basta con renombrar categorías o porcentajes. Debes cambiar
-    materialmente al menos dos de estos ejes: organización de la evidencia, afirmación verdadera objetivo,
-    base conceptual del distractor dominante, o formato de presentación de los datos.
-18. Si la tarea es "claim_evaluation", evita repetir exactamente el mismo arquetipo de afirmación verdadera
-    de la fuente; la variante debe obligar a validar una verdad de otro tipo dentro del mismo constructo.
+{family_rules}
 </reglas>
 
-<pregunta_fuente>
-ID: {source.question_id}
-Texto: {source.question_text}
-Opciones: {json.dumps(source.choices, ensure_ascii=False)}
-Respuesta correcta: {source.correct_answer}
-Invariantes estructurales: {json.dumps(structural_profile, ensure_ascii=False)}
-Contrato de constructo: {json.dumps(construct_contract, ensure_ascii=False)}
-Soporte visual fuente: {visual_context or 'N/A'}
-Estilo de evaluacion: {json.dumps(evaluation_style, ensure_ascii=False)}
-Concepto/atom principal:
-{atoms_text}
-Dificultad fuente: {diff_text}
-</pregunta_fuente>
+{source_snapshot}
 
 <task>
 Genera exactamente {n} blueprints para variantes.
@@ -202,14 +189,6 @@ Devuelve SOLO JSON:
             if label:
                 descriptions.append(label)
         return " | ".join(descriptions)
-
-    def _build_evaluation_style(self, source: SourceQuestion) -> Dict[str, Any]:
-        atom_titles = [str(a.get("atom_title", "")).lower() for a in source.primary_atoms]
-        is_claim_evaluation = any("afirmaciones basadas en datos" in title for title in atom_titles)
-        return {
-            "claim_evaluation": is_claim_evaluation,
-            "expects_explicit_dataset": bool(source.image_urls) or is_claim_evaluation,
-        }
 
     def _parse_response(self, response: str) -> List[VariantBlueprint]:
         data = self._parse_json(response)

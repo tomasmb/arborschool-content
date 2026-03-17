@@ -59,10 +59,15 @@ class RetryingTextService:
 
     def _generate_once(self, prompt: str | list[Any], **kwargs: Any) -> str:
         result_queue: queue.Queue[tuple[bool, Any]] = queue.Queue(maxsize=1)
+        request_kwargs = {
+            "request_timeout_seconds": self.timeout_seconds,
+            "transport_max_attempts": 1,
+            **kwargs,
+        }
 
         def _run() -> None:
             try:
-                result_queue.put((True, self.wrapped.generate_text(prompt, **kwargs)))
+                result_queue.put((True, self.wrapped.generate_text(prompt, **request_kwargs)))
             except Exception as exc:  # pragma: no cover - thin transport wrapper
                 result_queue.put((False, exc))
 

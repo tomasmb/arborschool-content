@@ -12,6 +12,7 @@ from app.question_variants.models import (
     VariantBlueprint,
     VariantQuestion,
 )
+from app.question_variants.contracts import build_construct_contract, build_structural_profile
 from app.question_variants.pipeline import VariantPipeline
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_planner import VariantPlanner
@@ -27,4 +28,6 @@ __all__ = [
     "VariantGenerator",
     "VariantValidator",
     "VariantPipeline",
+    "build_construct_contract",
+    "build_structural_profile",
 ]

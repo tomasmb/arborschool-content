@@ -158,7 +158,7 @@ class PipelineConfig:
     planner_model: Optional[str] = None
     generator_provider: str = "gemini"
     generator_model: Optional[str] = None
-    validator_provider: str = "gemini"
+    validator_provider: str = "openai"
     validator_model: Optional[str] = None
     validate_variants: bool = True
     enable_feedback_pipeline: bool = False

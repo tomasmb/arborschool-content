@@ -9,7 +9,7 @@ import json
 import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
-from app.question_variants.generation_parsing import parse_generation_response
+from app.question_variants.contracts.family_specs import build_family_prompt_rules
 from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import (
     PipelineConfig,
@@ -17,8 +17,9 @@ from app.question_variants.models import (
     VariantBlueprint,
     VariantQuestion,
 )
-from app.question_variants.structural_profile import build_construct_contract, build_structural_profile
-
+from app.question_variants.prompt_context import build_prompt_source_snapshot
+from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
+from app.question_variants.postprocess.generation_parsing import parse_generation_response
 
 class VariantGenerator:
     """Generates variant questions from source exemplars."""
@@ -171,8 +172,6 @@ class VariantGenerator:
             source.correct_answer,
         )
         visual_context = self._extract_visual_context(source.qti_xml)
-        evaluation_style = self._build_evaluation_style(source)
-
         # Check for image info and add instruction if decorative
         image_info = source.metadata.get("image_info", {})
         image_instruction = ""
@@ -218,6 +217,21 @@ class VariantGenerator:
                 f"{json.dumps(blueprint_payload, ensure_ascii=False, indent=2)}\n"
                 "Cada variante debe incorporar sus ejes no mecanizables."
             )
+        source_snapshot = build_prompt_source_snapshot(
+            question_id=source.question_id,
+            question_text=source.question_text,
+            choices=source.choices,
+            correct_answer=source.correct_answer,
+            difficulty_text=diff_text,
+            atoms_text=atoms_text,
+            construct_contract=construct_contract,
+            structural_profile=structural_profile,
+            visual_context=visual_context,
+            include_qti_xml=source.qti_xml,
+        )
+        family_rules = "\n".join(
+            f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
+        )
 
         prompt = f"""
 <role>
@@ -241,90 +255,30 @@ NUNCA el concepto matemático evaluado.
 6. Los distractores DEBEN representar errores plausibles (NO valores aleatorios)
 7. DEBES respetar estas invariantes estructurales:
    {json.dumps(structural_profile, ensure_ascii=False)}
-8. Si la fuente es "error_analysis", la variante DEBE seguir preguntando por el primer error/paso incorrecto.
-9. Si la fuente no usa incógnitas algebraicas, NO puedes introducir x, y, z ni ecuaciones a resolver.
-10. Si la firma operacional es "direct_percentage_calculation", la variante DEBE seguir siendo
-    un cálculo directo de porcentaje de una cantidad, no un problema de varios pasos ni de interpretación abierta.
-11. Para "direct_percentage_calculation", usa exactamente un porcentaje y una cantidad base.
-    NO introduzcas área, largo/ancho, volumen ni cálculos intermedios.
-12. Debes respetar el contrato de constructo completo, especialmente el modo de evidencia.
+8. Si la fuente no usa incógnitas algebraicas, NO puedes introducir x, y, z ni ecuaciones a resolver.
+9. Debes respetar el contrato de constructo completo, especialmente el modo de evidencia.
     Si el contrato dice "representation_primary", NO reemplaces la interpretación de representación
     por una tabla o lista de datos que permita responder sin interpretar la representación.
-13. Debes respetar la accion cognitiva y la estructura de solucion del contrato.
+10. Debes respetar la accion cognitiva y la estructura de solucion del contrato.
     No conviertas una tarea de interpretacion en una de calculo directo, ni una de un paso
     en una de varios pasos, ni una de sustitucion algebraica en una modelacion distinta.
-14. Si la firma operacional es "trinomial_factorization", la variante debe seguir siendo una pregunta
-    de factorizar un trinomio de la forma x^2 + bx + c en producto de dos binomios.
-    NO introduzcas cocientes algebraicos, simplificación de fracciones, restricciones de dominio ni expresiones racionales.
-15. Si el contrato exige "must_preserve_distractor_logic", cada distractor debe conservar el mismo
-    error conceptual dominante de la fuente. En preguntas de afirmaciones con porcentajes anidados,
-    verifica que las relaciones numéricas sigan haciendo plausibles los distractores que mezclan
-    porcentajes de distintos totales.
-16. Si el contrato exige "must_preserve_standard_trinomial_form", la expresión base debe seguir escrita
-    como un trinomio expandido x^2 + bx + c. NO la reescribas como (x-a)^2 + b(x-a) + c, ni como
-    expresión equivalente que obligue a expandir, reducir o hacer cambio de variable.
-17. NO aumentes la cantidad de transformaciones auxiliares respecto de la fuente. Si el contrato
+11. NO aumentes la cantidad de transformaciones auxiliares respecto de la fuente. Si el contrato
     indica 0 transformaciones auxiliares, la variante también debe resolverse sin conversiones,
     sustituciones intermedias adicionales ni cambios de representación numérica.
-18. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error.
+12. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error.
     No reemplaces distractores conceptuales por valores arbitrarios ni por errores de otro tipo.
-19. NO aumentes la carga de relaciones de referencia de la fuente: no agregues múltiples equivalencias,
+13. NO aumentes la carga de relaciones de referencia de la fuente: no agregues múltiples equivalencias,
     tasas de cambio o listados de referencia si la fuente sólo necesita una.
-20. Si la firma operacional es "descriptive_statistics", conserva una carga de datos comparable a la fuente.
-    No multipliques innecesariamente la cantidad de datos, repeticiones o frecuencias a procesar.
-21. Si las opciones son numéricas, cada distractor debe corresponder a un error concreto y explicable.
+14. Si las opciones son numéricas, cada distractor debe corresponder a un error concreto y explicable.
     No uses valores arbitrarios o absurdos; mantén coherencia de escala con la respuesta correcta.
-22. Debes realizar de verdad al menos 2 ejes no mecanizables y poder declararlos explícitamente
+15. Debes realizar de verdad al menos 2 ejes no mecanizables y poder declararlos explícitamente
     en el self-check final.
-23. Si la tarea es "claim_evaluation", no basta con cambiar etiquetas o contexto. Debes cambiar
-    materialmente al menos dos de estos ejes: organización de la evidencia, afirmación verdadera objetivo,
-    base conceptual del distractor dominante, o formato de presentación de los datos.
-24. Si la tarea es "claim_evaluation", evita repetir exactamente el mismo arquetipo de afirmación verdadera
-    de la fuente; la variante debe validar otro tipo de afirmación correcta dentro del mismo conjunto de datos.
+{family_rules}
 {image_instruction}
 {blueprint_instruction}
 </reglas_estrictas>
 
-<pregunta_original>
-{source.qti_xml}
-</pregunta_original>
-
-<texto_pregunta>
-{source.question_text}
-</texto_pregunta>
-
-<opciones_originales>
-{json.dumps(source.choices, ensure_ascii=False)}
-</opciones_originales>
-
-<respuesta_correcta_original>
-{source.correct_answer}
-</respuesta_correcta_original>
-
-<concepto_evaluado>
-{atoms_text}
-</concepto_evaluado>
-
-<dificultad>
-{diff_text}
-Análisis: {diff.get("analysis", "N/A")}
-</dificultad>
-
-<invariantes_estructurales>
-{json.dumps(structural_profile, ensure_ascii=False, indent=2)}
-</invariantes_estructurales>
-
-<contrato_constructo>
-{json.dumps(construct_contract, ensure_ascii=False, indent=2)}
-</contrato_constructo>
-
-<soporte_visual_fuente>
-{visual_context or "N/A"}
-</soporte_visual_fuente>
-
-<estilo_evaluacion>
-{json.dumps(evaluation_style, ensure_ascii=False, indent=2)}
-</estilo_evaluacion>
+{source_snapshot}
 
 <tarea>
 Genera exactamente {n} variantes. Cada variante DEBE:
@@ -418,14 +372,6 @@ IMPORTANTE: El QTI XML debe:
             if label:
                 descriptions.append(label)
         return " | ".join(descriptions)
-
-    def _build_evaluation_style(self, source: SourceQuestion) -> Dict[str, Any]:
-        atom_titles = [str(a.get("atom_title", "")).lower() for a in source.primary_atoms]
-        is_claim_evaluation = any("afirmaciones basadas en datos" in title for title in atom_titles)
-        return {
-            "claim_evaluation": is_claim_evaluation,
-            "expects_explicit_dataset": bool(source.image_urls) or is_claim_evaluation,
-        }
 
     def _parse_response(self, response: str, source: SourceQuestion) -> List[Dict[str, Any]]:
         """Parse the LLM response into variant data."""
