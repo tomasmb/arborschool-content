@@ -398,9 +398,10 @@ Verifica cuidadosamente:
    - Debe requerir las mismas operaciones/habilidades
    - No puede ser más abstracta ni más concreta
 
-2. **DIFICULTAD IGUAL**: ¿Tiene el mismo nivel de dificultad?
-   - Misma cantidad de pasos
-   - Mismo nivel de complejidad numérica
+2. **DIFICULTAD ACEPTABLE**: ¿Mantiene la banda de dificultad objetivo?
+   - Debe ser igual o, si el diseño lo permite, levemente más difícil
+   - No puede subir de forma que cambie el tipo de razonamiento, la cantidad de pasos
+     o la complejidad estructural del ítem
 
 3. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
    - Resuelve el problema paso a paso
@@ -425,7 +426,7 @@ Responde en JSON:
 {{
   "concepto_alineado": true/false,
   "razon_concepto": "Explicación breve...",
-  "dificultad_igual": true/false,
+  "dificultad_aceptable": true/false,
   "razon_dificultad": "Explicación breve...",
   "respuesta_correcta": true/false,
   "tu_calculo": "Paso 1: ... Paso 2: ... Resultado: ...",
@@ -477,17 +478,32 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
         try:
             data = json.loads(response)
 
+            concept_aligned = data.get("concepto_alineado", False)
+            difficulty_acceptable = data.get("dificultad_aceptable", data.get("dificultad_igual", False))
+            answer_correct = data.get("respuesta_correcta", False)
+            rejection_reason = data.get("razon_rechazo", "")
             verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
+
+            if not answer_correct:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La respuesta marcada como correcta no coincide con la resolución matemática del ítem."
+                )
+            if not concept_aligned:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La variante no evalúa exactamente el mismo concepto matemático que la fuente."
+                )
 
             return ValidationResult(
                 verdict=verdict,
-                concept_aligned=data.get("concepto_alineado", False),
-                difficulty_equal=data.get("dificultad_igual", False),
-                answer_correct=data.get("respuesta_correcta", False),
+                concept_aligned=concept_aligned,
+                difficulty_equal=difficulty_acceptable,
+                answer_correct=answer_correct,
                 calculation_steps=data.get("tu_calculo", ""),
                 distractors_plausible=data.get("distractores_plausibles", False),
                 non_mechanizable=data.get("no_mecanizable", False),
-                rejection_reason=data.get("razon_rechazo", ""),
+                rejection_reason=rejection_reason,
             )
         except json.JSONDecodeError:
             return ValidationResult(

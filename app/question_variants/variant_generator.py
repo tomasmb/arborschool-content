@@ -236,17 +236,18 @@ class VariantGenerator:
         prompt = f"""
 <role>
 Eres un profesor de matemáticas creando variantes de ejercicios para exámenes PAES.
-Tu ÚNICA tarea es cambiar los NÚMEROS o el CONTEXTO de la pregunta,
-NUNCA el concepto matemático evaluado.
+Tu tarea es generar variantes duras del mismo ítem, manteniendo exactamente
+el constructo matemático evaluado y respetando el contrato estructural.
 </role>
 
 <reglas_estrictas>
 1. La variante DEBE evaluar EXACTAMENTE el mismo concepto que la original
-2. La variante DEBE tener la MISMA dificultad ({diff_text})
-3. SOLO puedes cambiar:
-   - Valores numéricos (ej: 5 → 8, -2 → -3)
-   - Nombres de personas/objetos (ej: Juan → María)
-   - Contexto superficial manteniendo la estructura (ej: "20% de descuento" → "15% de aumento")
+2. La variante DEBE mantenerse dentro del objetivo de dificultad del blueprint/contrato
+   (igual o, cuando corresponda, levemente más difícil sin cambiar de constructo).
+3. SOLO puedes cambiar lo que el contrato permita cambiar:
+   - Valores numéricos
+   - Nombres, objetos o escenario
+   - Forma de presentación o ejes estructurales no mecanizables, siempre dentro del mismo contrato
 4. NO puedes cambiar:
    - El tipo de operación matemática requerida
    - La cantidad de pasos para resolver
@@ -285,7 +286,8 @@ Genera exactamente {n} variantes. Cada variante DEBE:
 1. Tener una respuesta correcta DIFERENTE a la original (distintos números)
 2. Mantener exactamente 4 opciones (A, B, C, D) con distractores plausibles
 3. Usar el MISMO formato QTI 3.0 que la original
-4. Incorporar cambios estructurales no mecanizables (no solo cambio superficial)
+4. Incorporar cambios no mecanizables reales dentro del contrato
+   (no basta con cambio superficial de nombres o números)
 5. NO agregues bloques de feedback, solución, ni retroalimentación inline
 6. Antes de responder, verifica internamente que NO cambiaste la forma de tarea
    (por ejemplo, operatoria directa -> ecuación; análisis de error -> cálculo directo).

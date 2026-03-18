@@ -105,7 +105,9 @@ class ValidationResult:
     Attributes:
         verdict: APROBADA or RECHAZADA
         concept_aligned: Does it test the same concept?
-        difficulty_equal: Is difficulty the same?
+        difficulty_equal: Compatibility field; in the hard-variants pipeline this
+            means the difficulty is acceptable relative to the target contract
+            (same or slightly harder when the blueprint allows it).
         answer_correct: Is the marked answer mathematically correct?
         calculation_steps: Step-by-step calculation for verification
         distractors_plausible: Are distractors reasonable errors?
