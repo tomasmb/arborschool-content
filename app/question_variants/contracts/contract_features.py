@@ -6,6 +6,19 @@ import re
 from typing import Any
 
 
+def infer_response_mode(choices: list[str], correct_answer: str) -> str:
+    """Infer whether the item expects label selection or statement evaluation."""
+    normalized_choices = [choice.strip() for choice in choices if choice.strip()]
+    if not normalized_choices:
+        return "unknown"
+    sentence_like = sum(1 for choice in normalized_choices if len(choice.split()) >= 5 or choice.endswith("."))
+    if sentence_like >= max(2, len(normalized_choices) // 2):
+        return "statement_selection"
+    if all(len(choice.split()) <= 3 for choice in normalized_choices):
+        return "label_selection"
+    return "mixed_selection"
+
+
 def infer_claim_archetype(statement: str) -> str:
     lowered = statement.lower().strip()
     if not lowered:
@@ -235,6 +248,53 @@ def infer_result_property_type(question_text: str, profile: dict[str, bool | str
     if "múltiplo de" in text or "multiplo de" in text:
         return "multiple_of_base"
     return "other_result_property"
+
+
+def infer_measure_transition(question_text: str, profile: dict[str, bool | str]) -> str:
+    if profile["operation_signature"] != "geometry_measurement_application":
+        return "not_applicable"
+    text = question_text.lower()
+    target_text = text.split("¿")[-1] if "¿" in text else text
+    source_text = text[: len(text) - len(target_text)] if len(target_text) < len(text) else text
+
+    def detect_measure(segment: str) -> str:
+        if any(marker in segment for marker in ("perímetro", "perimetro", "circunferencia", "borde")):
+            return "perimeter"
+        if any(marker in segment for marker in ("área", "area", "superficie")):
+            return "area"
+        if any(marker in segment for marker in ("volumen", "capacidad")):
+            return "volume"
+        if any(marker in segment for marker in ("radio", "diámetro", "diametro", "lado", "cateto", "hipotenusa")):
+            return "length"
+        return "generic_measure"
+
+    source_measure = detect_measure(source_text)
+    target_measure = detect_measure(target_text)
+    return f"{source_measure}_to_{target_measure}"
+
+
+def infer_rate_reference_frame(correct_answer: str, profile: dict[str, bool | str]) -> str:
+    if profile["operation_signature"] != "parameter_interpretation":
+        return "not_applicable"
+    lowered = correct_answer.lower()
+    if re.search(r"por cada\s+(10|100)\s+", lowered):
+        return "grouped_reference"
+    if re.search(r"por cada\s+(1\s+)?(metro cuadrado|metros cuadrados|m2|m²|kilogramo|kilogramos|kg|litro|litros|l|watt|watts)\b", lowered):
+        return "unit_reference"
+    return "other_reference"
+
+
+def infer_parameter_statement_form(correct_answer: str, profile: dict[str, bool | str]) -> str:
+    if profile["operation_signature"] != "parameter_interpretation":
+        return "not_applicable"
+    lowered = correct_answer.lower()
+    if "por cada" in lowered:
+        return "literal_rate_statement"
+    if any(marker in lowered for marker in ("para ", "si ", "requiere", "se necesitan", "se necesita", "consume")):
+        return "contextual_case_statement"
+    if "veces" in lowered:
+        return "inverse_relation_statement"
+    return "other_statement"
 
 
 def infer_presentation_style(question_text: str, qti_xml: str, profile: dict[str, bool | str]) -> str:

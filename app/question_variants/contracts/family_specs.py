@@ -92,6 +92,12 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
             "No repitas el mismo marco interrogativo directo de la fuente; cambia la forma de presentación, por ejemplo a selección de afirmación, inferencia contextual o comparación breve."
         )
         rules.append(
+            "Si la fuente interpreta la tasa por cada 1 unidad, evita conservar exactamente ese mismo marco; prefiere una tasa equivalente sobre 10 o 100 unidades, o una afirmación contextual equivalente."
+        )
+        rules.append(
+            "Si la fuente formula la opción correcta como tasa literal ('por cada ...'), intenta mover la variante a una afirmación contextual equivalente, no a otra tasa verbal casi idéntica."
+        )
+        rules.append(
             "No incluyas dos opciones equivalentes expresadas en unidades distintas; debe existir una sola interpretación correcta del parámetro."
         )
     if op == "simple_probability":
@@ -123,6 +129,13 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         )
         rules.append(
             "No cambies entre área, perímetro, volumen o relación pitagórica si la fuente fijaba una de esas relaciones como núcleo."
+        )
+        rules.append(
+            "Si la fuente es una aplicación geométrica rutinaria, no repitas intacta la misma transición de medida conocida->pedida; cambia al menos la medida dada o la medida solicitada sin salir de la misma familia geométrica."
+        )
+    if op == "graph_interpretation":
+        rules.append(
+            "Conserva el mismo modo de respuesta del contrato: si la fuente pide identificar una etiqueta o categoría, no la conviertas en evaluación de afirmaciones largas."
         )
     if op in {"radical_operations", "polynomial_operations", "decimal_number_operations"}:
         rules.append(

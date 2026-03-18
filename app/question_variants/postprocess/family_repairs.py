@@ -13,6 +13,10 @@ NS = {"qti": "http://www.imsglobal.org/xsd/imsqtiasi_v3p0"}
 def repair_family_specific_qti(qti_xml: str, contract: dict[str, object]) -> str:
     """Apply deterministic family-specific repairs before semantic validation."""
     op = str(contract.get("operation_signature") or "")
+    if op == "graph_interpretation":
+        return _repair_graph_representation_mentions(qti_xml)
+    if op == "parameter_interpretation" and str(contract.get("presentation_style") or "") == "direct_parameter_prompt":
+        return _repair_parameter_interpretation_prompt(qti_xml)
     if op in {"direct_percentage_calculation", "percentage_increase_application"}:
         return _repair_percentage_choices(
             qti_xml,
@@ -32,6 +36,142 @@ def repair_family_specific_qti(qti_xml: str, contract: dict[str, object]) -> str
     ):
         return _repair_property_justification_choice(qti_xml, str(contract.get("result_property_type") or ""))
     return qti_xml
+
+
+def _repair_graph_representation_mentions(qti_xml: str) -> str:
+    try:
+        root = ET.fromstring(qti_xml)
+    except ET.ParseError:
+        return qti_xml
+
+    lowered = qti_xml.lower()
+    has_table = "<table" in lowered or "<qti-table" in lowered
+    has_image = any(token in lowered for token in ("<img", "<object", "<qti-object"))
+    if not has_table or has_image:
+        return qti_xml
+
+    replacements = {
+        "gráfico de dispersión": "registro de datos",
+        "grafico de dispersion": "registro de datos",
+        "gráfico": "registro",
+        "grafico": "registro",
+        "diagrama": "registro",
+        "infografía": "tabla",
+        "infografia": "tabla",
+        "tabla adjunta": "tabla incluida",
+    }
+    changed = False
+    for element in root.iter():
+        if element.text:
+            new_text = element.text
+            for old, new in replacements.items():
+                new_text = re.sub(old, new, new_text, flags=re.IGNORECASE)
+            if new_text != element.text:
+                element.text = new_text
+                changed = True
+        if element.tail:
+            new_tail = element.tail
+            for old, new in replacements.items():
+                new_tail = re.sub(old, new, new_tail, flags=re.IGNORECASE)
+            if new_tail != element.tail:
+                element.tail = new_tail
+                changed = True
+
+    return ET.tostring(root, encoding="unicode") if changed else qti_xml
+
+
+def _repair_parameter_interpretation_prompt(qti_xml: str) -> str:
+    try:
+        root = ET.fromstring(qti_xml)
+    except ET.ParseError:
+        return qti_xml
+
+    prompt = root.find(".//qti:qti-prompt", NS) or root.find(".//{*}qti-prompt")
+    replacement = "¿Cuál afirmación interpreta correctamente el significado del parámetro o coeficiente presentado en el modelo?"
+    changed = False
+    if prompt is not None:
+        prompt_text = "".join(prompt.itertext()).strip().lower()
+        if "cuál afirmación" in prompt_text or "cual afirmación" in prompt_text or "cual afirmacion" in prompt_text:
+            changed = False
+        else:
+            prompt.clear()
+            prompt.text = replacement
+            changed = True
+    else:
+        paragraphs = root.findall(".//qti:p", NS) or root.findall(".//{*}p")
+        for paragraph in reversed(paragraphs):
+            paragraph_text = "".join(paragraph.itertext()).strip()
+            lowered = paragraph_text.lower()
+            if "?" not in paragraph_text:
+                continue
+            if "cuál afirmación" in lowered or "cual afirmación" in lowered or "cual afirmacion" in lowered:
+                break
+            paragraph.clear()
+            paragraph.text = replacement
+            changed = True
+            break
+
+    _rescale_rate_reference_choices(root)
+    return ET.tostring(root, encoding="unicode")
+
+
+def _rescale_rate_reference_choices(root: ET.Element) -> None:
+    choice_nodes = root.findall(".//qti:qti-simple-choice", NS) or root.findall(".//{*}qti-simple-choice")
+    for choice in choice_nodes:
+        if choice.text:
+            rescaled = _rescale_rate_reference_text(choice.text)
+            if rescaled != choice.text:
+                choice.text = rescaled
+
+
+def _rescale_rate_reference_text(text: str) -> str:
+    pattern = re.compile(
+        r"(\d+(?:[.,]\d+)?)\s+(kilogramos|kilogramo|kg|mililitros|mililitro|ml|gramos|gramo|g|litros|litro|l)"
+        r"(\s+de\s+[a-záéíóúñ]+)?(?:\s+[a-záéíóúñ]+){0,3}\s+por cada\s+"
+        r"(?:(\d+(?:[.,]\d+)?)\s+)?"
+        r"(metro cuadrado|metros cuadrados|m2|m²|kilogramo|kilogramos|kg|litro|litros|l|watt|watts)\b"
+        r"(?:\s+de\s+[a-záéíóúñ]+)?",
+        flags=re.IGNORECASE,
+    )
+    match = pattern.search(text)
+    if not match:
+        return text
+    value = _parse_number(match.group(1))
+    if value is None:
+        return text
+    reference_amount = _parse_number(match.group(4) or "1") or 1
+    numerator_unit = match.group(2)
+    object_phrase = match.group(3) or ""
+    denominator_unit = match.group(5)
+    normalized_denominator = _normalize_grouped_denominator(denominator_unit, int(reference_amount))
+    replacement = (
+        f"para {_format_number(reference_amount)} {normalized_denominator} "
+        f"se necesitan {_format_number(value)} {numerator_unit}{object_phrase}"
+    )
+    start, end = match.span()
+    updated = text[:start] + replacement + text[end:]
+    return updated.replace("Que se necesitan para", "Que para").replace("que se necesitan para", "que para")
+
+
+def _normalize_grouped_denominator(unit: str, scale: int) -> str:
+    normalized = unit.lower()
+    plural_map = {
+        "metro cuadrado": "metros cuadrados",
+        "metros cuadrados": "metros cuadrados",
+        "m2": "m2",
+        "m²": "m²",
+        "kilogramo": "kilogramos",
+        "kilogramos": "kilogramos",
+        "kg": "kg",
+        "litro": "litros",
+        "litros": "litros",
+        "l": "l",
+        "watt": "watts",
+        "watts": "watts",
+    }
+    if scale == 1:
+        return unit
+    return plural_map.get(normalized, unit)
 
 
 def _repair_percentage_choices(

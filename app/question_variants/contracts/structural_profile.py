@@ -18,9 +18,13 @@ from app.question_variants.contracts.contract_features import (
     infer_formula_shape,
     infer_justification_archetype,
     infer_model_family,
+    infer_measure_transition,
     infer_percentage_band,
+    infer_parameter_statement_form,
     infer_presentation_style,
+    infer_response_mode,
     infer_reference_relation_count,
+    infer_rate_reference_frame,
     infer_result_property_type,
     infer_selection_load,
     infer_statistic_target_domain,
@@ -51,6 +55,7 @@ def build_construct_contract(
     distractor_archetypes = infer_distractor_archetypes(choices, correct_answer, profile, solution_structure)
     correct_claim_archetype = infer_claim_archetype(correct_answer)
     correct_justification_archetype = infer_justification_archetype(correct_answer, profile)
+    response_mode = infer_response_mode(choices, correct_answer)
     auxiliary_transformations = infer_auxiliary_transformations(question_text, metadata)
     reference_relation_count = infer_reference_relation_count(question_text)
     data_burden_score = infer_data_burden_score(question_text, profile)
@@ -62,6 +67,9 @@ def build_construct_contract(
     selection_load = infer_selection_load(question_text, qti_xml, profile)
     base_domain = infer_base_domain(question_text, profile)
     result_property_type = infer_result_property_type(question_text, profile)
+    measure_transition = infer_measure_transition(question_text, profile)
+    rate_reference_frame = infer_rate_reference_frame(correct_answer, profile)
+    parameter_statement_form = infer_parameter_statement_form(correct_answer, profile)
     presentation_style = infer_presentation_style(question_text, qti_xml, profile)
 
     must_preserve_distractor_logic = profile["claim_evaluation"] or (
@@ -111,7 +119,11 @@ def build_construct_contract(
         "selection_load": selection_load,
         "base_domain": base_domain,
         "result_property_type": result_property_type,
+        "measure_transition": measure_transition,
+        "rate_reference_frame": rate_reference_frame,
+        "parameter_statement_form": parameter_statement_form,
         "presentation_style": presentation_style,
+        "response_mode": response_mode,
         "evidence_mode": evidence_mode,
         "explicit_dataset_policy": explicit_dataset_policy,
         "representation_must_remain_primary": representation_must_remain_primary,
@@ -263,7 +275,19 @@ def has_explicit_dataset(text: str, xml: str) -> bool:
         "frecuencia",
         "datos",
     )
-    return any(marker in xml or marker in text for marker in dataset_markers)
+    lowered_text = text.lower()
+    lowered_xml = xml.lower()
+    has_coordinate_pairs = (
+        len(re.findall(r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)", text)) >= 2
+    )
+    has_labeled_value_list = (
+        len(re.findall(r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?", lowered_text)) >= 3
+    )
+    return (
+        any(marker in lowered_xml or marker in lowered_text for marker in dataset_markers)
+        or has_coordinate_pairs
+        or has_labeled_value_list
+    )
 
 
 def appears_multi_step(text: str) -> bool:

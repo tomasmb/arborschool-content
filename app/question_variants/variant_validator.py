@@ -141,7 +141,9 @@ class VariantValidator:
         has_image_tag = any(token in xml_content.lower() for token in ("<img", "<object", "<qti-object"))
         has_table_tag = any(token in xml_content.lower() for token in ("<table", "<qti-table"))
 
-        if (mentions_image_like and not has_image_tag) or (mentions_table and not has_table_tag):
+        has_textual_dataset_fallback = has_table_tag or self._has_explicit_textual_dataset(lowered)
+
+        if (mentions_image_like and not has_image_tag and not has_textual_dataset_fallback) or (mentions_table and not has_table_tag):
             return False, (
                 "La variante está incompleta: menciona una figura, gráfico, diagrama, infografía o tabla "
                 "pero no incluye esa representación en el XML."
@@ -341,6 +343,11 @@ class VariantValidator:
         has_table = "<table" in lowered or "<qti-table" in lowered
         numeric_density = len(re.findall(r"\d+(?:[.,]\d+)?", lowered))
         return has_table and numeric_density >= 6
+
+    def _has_explicit_textual_dataset(self, lowered_text: str) -> bool:
+        has_coordinate_pairs = len(re.findall(r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)", lowered_text)) >= 2
+        has_labeled_value_list = len(re.findall(r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?", lowered_text)) >= 3
+        return has_coordinate_pairs or has_labeled_value_list
 
     def _introduces_rational_expression(self, xml_content: str) -> bool:
         lowered = xml_content.lower()
