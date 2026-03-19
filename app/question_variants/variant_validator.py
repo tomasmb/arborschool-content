@@ -143,7 +143,9 @@ class VariantValidator:
 
         has_textual_dataset_fallback = has_table_tag or self._has_explicit_textual_dataset(lowered)
 
-        if (mentions_image_like and not has_image_tag and not has_textual_dataset_fallback) or (mentions_table and not has_table_tag):
+        if (mentions_image_like and not has_image_tag and not has_textual_dataset_fallback) or (
+            mentions_table and not has_table_tag and not has_textual_dataset_fallback
+        ):
             return False, (
                 "La variante está incompleta: menciona una figura, gráfico, diagrama, infografía o tabla "
                 "pero no incluye esa representación en el XML."

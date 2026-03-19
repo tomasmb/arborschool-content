@@ -35,6 +35,16 @@ STRUCTURAL_REGRESSION_CASES = [
         "expected_ok": True,
     },
     {
+        "name": "Q55 approved textual dataset fallback",
+        "test_id": "seleccion-regular-2026",
+        "question_id": "Q55",
+        "variant_xml_path": (
+            "app/data/pruebas/hard_variants/benchmarks/"
+            "sample-q55-gemini-180-v4/seleccion-regular-2026/Q55/variants/approved/Q55_v1/question.xml"
+        ),
+        "expected_ok": True,
+    },
+    {
         "name": "Q11 rejected affine substitution drift",
         "test_id": "Prueba-invierno-2025",
         "question_id": "Q11",
@@ -88,5 +98,15 @@ STRUCTURAL_REGRESSION_CASES = [
         ),
         "expected_ok": False,
         "reason_contains": "dominio estadístico objetivo",
+    },
+    {
+        "name": "Q30 rejected literal parameter rate form",
+        "test_id": "seleccion-regular-2026",
+        "question_id": "Q30",
+        "variant_xml_path": (
+            "app/data/pruebas/hard_variants/benchmarks/"
+            "sample-q30-gemini-180-v7/seleccion-regular-2026/Q30/variants/rejected/Q30_v1/question.xml"
+        ),
+        "expected_ok": False,
     },
 ]

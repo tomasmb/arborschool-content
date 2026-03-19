@@ -95,6 +95,7 @@ def save_variant(
             "verdict": variant.validation_result.verdict.value,
             "concept_aligned": variant.validation_result.concept_aligned,
             "difficulty_equal": variant.validation_result.difficulty_equal,
+            "difficulty_acceptable": variant.validation_result.difficulty_acceptable,
             "answer_correct": variant.validation_result.answer_correct,
             "non_mechanizable": variant.validation_result.non_mechanizable,
             "calculation_steps": variant.validation_result.calculation_steps,

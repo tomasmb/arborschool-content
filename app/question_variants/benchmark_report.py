@@ -24,6 +24,10 @@ def _has_image_variant(metadata_path: Path, question_xml_path: Path) -> bool:
     return "<img" in xml or "<qti-object" in xml or "<object" in xml
 
 
+def _difficulty_gate_pass(semantic: dict[str, Any]) -> bool:
+    return bool(semantic.get("difficulty_acceptable", semantic.get("difficulty_equal")))
+
+
 def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
     report: dict[str, Any] = {
         "output_dir": str(output_dir),
@@ -72,7 +76,7 @@ def build_report(output_dir: Path, test_id: str) -> dict[str, Any]:
                 report["rejection_reasons"][reason] += 1
 
         report["gates"]["constructo"]["pass" if semantic.get("concept_aligned") else "fail"] += 1
-        report["gates"]["dificultad"]["pass" if semantic.get("difficulty_equal") else "fail"] += 1
+        report["gates"]["dificultad"]["pass" if _difficulty_gate_pass(semantic) else "fail"] += 1
         report["gates"]["answer_correct"]["pass" if semantic.get("answer_correct") else "fail"] += 1
         report["gates"]["non_mechanizable"]["pass" if semantic.get("non_mechanizable") else "fail"] += 1
 

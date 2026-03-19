@@ -124,6 +124,11 @@ class ValidationResult:
     rejection_reason: str = ""
 
     @property
+    def difficulty_acceptable(self) -> bool:
+        """Preferred alias for the hard-variants difficulty gate semantics."""
+        return self.difficulty_equal
+
+    @property
     def is_approved(self) -> bool:
         return self.verdict == ValidationVerdict.APPROVED
 

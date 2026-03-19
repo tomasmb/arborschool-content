@@ -17,6 +17,10 @@ from app.utils.qti_extractor import parse_qti_xml
 FINALIZED_PATH = Path("app/data/pruebas/finalizadas")
 
 
+def _difficulty_gate_pass(result: VariantQuestion | Any) -> bool:
+    return bool(getattr(result, "difficulty_acceptable", getattr(result, "difficulty_equal", False)))
+
+
 def load_source_questions(test_id: str, question_ids: list[str] | None) -> dict[str, SourceQuestion]:
     test_path = FINALIZED_PATH / test_id / "qti"
     sources: dict[str, SourceQuestion] = {}
@@ -155,7 +159,7 @@ def run_benchmark(
             summary["rejection_reasons"][result.rejection_reason] += 1
 
         summary["gates"]["constructo"]["pass" if result.concept_aligned else "fail"] += 1
-        summary["gates"]["dificultad"]["pass" if result.difficulty_equal else "fail"] += 1
+        summary["gates"]["dificultad"]["pass" if _difficulty_gate_pass(result) else "fail"] += 1
         summary["gates"]["answer_correct"]["pass" if result.answer_correct else "fail"] += 1
         summary["gates"]["non_mechanizable"]["pass" if result.non_mechanizable else "fail"] += 1
         if source.image_urls:

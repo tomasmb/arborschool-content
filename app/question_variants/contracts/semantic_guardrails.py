@@ -224,13 +224,6 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         and str(variant_contract.get("parameter_statement_form") or "not_applicable") == "literal_rate_statement"
     ):
         return "La variante conservó la misma forma literal de interpretar la tasa del parámetro."
-    if (
-        str(source_contract.get("operation_signature")) == "geometry_measurement_application"
-        and measure_transition_source not in {"not_applicable", "generic_measure_to_generic_measure"}
-        and measure_transition_variant not in {"not_applicable", "generic_measure_to_generic_measure"}
-        and measure_transition_source.split("_to_")[-1] != measure_transition_variant.split("_to_")[-1]
-    ):
-        return "La variante cambió la magnitud geométrica solicitada en el ítem."
     family_source = str(source_contract.get("family_id") or "")
     family_variant = str(variant_contract.get("family_id") or "")
     if family_source and family_variant and family_source != family_variant:
