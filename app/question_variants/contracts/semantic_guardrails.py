@@ -135,11 +135,12 @@ def has_equivalent_correct_choice(
     """Detect multiple equivalent correct interpretations expressed with different units."""
     if str(contract.get("operation_signature")) != "parameter_interpretation":
         return False
+    normalized_correct = re.sub(r"\s+", "", correct_answer)
     correct_rate = _parse_rate_statement(correct_answer)
     if correct_rate is None:
         return False
     for choice in choices:
-        if choice == correct_answer:
+        if choice == correct_answer or re.sub(r"\s+", "", choice) == normalized_correct:
             continue
         parsed = _parse_rate_statement(choice)
         if parsed is None:
@@ -210,20 +211,18 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         == "direct_parameter_prompt"
     ):
         return "La variante conservó el mismo marco interrogativo directo para interpretar el parámetro."
-    rate_reference_source = str(source_contract.get("rate_reference_frame") or "not_applicable")
-    rate_reference_variant = str(variant_contract.get("rate_reference_frame") or "not_applicable")
     if (
         str(source_contract.get("operation_signature")) == "parameter_interpretation"
-        and rate_reference_source == "unit_reference"
-        and rate_reference_variant == "unit_reference"
+        and str(variant_contract.get("parameter_statement_form") or "not_applicable") == "comparative_difference_statement"
     ):
-        return "La variante conservó la misma referencia unitaria directa para interpretar la tasa del parámetro."
-    if (
-        str(source_contract.get("operation_signature")) == "parameter_interpretation"
-        and str(source_contract.get("parameter_statement_form") or "not_applicable") == "literal_rate_statement"
-        and str(variant_contract.get("parameter_statement_form") or "not_applicable") == "literal_rate_statement"
-    ):
-        return "La variante conservó la misma forma literal de interpretar la tasa del parámetro."
+        return (
+            "La variante reemplazó la interpretación directa del parámetro por una lectura comparativa "
+            "de diferencias entre dos casos."
+        )
+    extremum_source = str(source_contract.get("extremum_polarity") or "not_applicable")
+    extremum_variant = str(variant_contract.get("extremum_polarity") or "not_applicable")
+    if extremum_source != "not_applicable" and extremum_source != extremum_variant:
+        return "La variante cambió la polaridad del objetivo que se debe identificar en la representación."
     family_source = str(source_contract.get("family_id") or "")
     family_variant = str(variant_contract.get("family_id") or "")
     if family_source and family_variant and family_source != family_variant:
@@ -247,6 +246,14 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         and response_source != response_variant
     ):
         return "La variante cambió el modo de respuesta del ítem."
+    series_source = str(source_contract.get("representation_series_count") or "not_applicable")
+    series_variant = str(variant_contract.get("representation_series_count") or "not_applicable")
+    if (
+        str(source_contract.get("operation_signature")) == "graph_interpretation"
+        and series_source == "single_series"
+        and series_variant == "multiple_series"
+    ):
+        return "La variante agregó una segunda serie de datos y convirtió el ítem en una comparación más cargada que la fuente."
     return ""
 
 

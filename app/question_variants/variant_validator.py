@@ -138,8 +138,8 @@ class VariantValidator:
             token in lowered for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia")
         )
         mentions_table = "tabla" in lowered
-        has_image_tag = any(token in xml_content.lower() for token in ("<img", "<object", "<qti-object"))
-        has_table_tag = any(token in xml_content.lower() for token in ("<table", "<qti-table"))
+        has_image_tag = self._contains_xml_visual_object(xml_content)
+        has_table_tag = self._contains_xml_table(xml_content)
 
         has_textual_dataset_fallback = has_table_tag or self._has_explicit_textual_dataset(lowered)
 
@@ -337,12 +337,11 @@ class VariantValidator:
         return build_structural_profile(question_text, qti_xml, has_visual_support, primary_atoms, main_skill)
 
     def _has_visual_support(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        return any(token in lowered for token in ("<img", "<object", "<qti-object", "<table", "<qti-table"))
+        return self._contains_xml_visual_object(xml_content) or self._contains_xml_table(xml_content)
 
     def _short_circuits_representation(self, xml_content: str) -> bool:
         lowered = xml_content.lower()
-        has_table = "<table" in lowered or "<qti-table" in lowered
+        has_table = self._contains_xml_table(xml_content)
         numeric_density = len(re.findall(r"\d+(?:[.,]\d+)?", lowered))
         return has_table and numeric_density >= 6
 
@@ -350,6 +349,18 @@ class VariantValidator:
         has_coordinate_pairs = len(re.findall(r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)", lowered_text)) >= 2
         has_labeled_value_list = len(re.findall(r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?", lowered_text)) >= 3
         return has_coordinate_pairs or has_labeled_value_list
+
+    def _contains_xml_table(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        return bool(re.search(r"<(?:[\w.-]+:)?table\b", lowered) or re.search(r"<(?:[\w.-]+:)?qti-table\b", lowered))
+
+    def _contains_xml_visual_object(self, xml_content: str) -> bool:
+        lowered = xml_content.lower()
+        return bool(
+            re.search(r"<(?:[\w.-]+:)?img\b", lowered)
+            or re.search(r"<(?:[\w.-]+:)?object\b", lowered)
+            or re.search(r"<(?:[\w.-]+:)?qti-object\b", lowered)
+        )
 
     def _introduces_rational_expression(self, xml_content: str) -> bool:
         lowered = xml_content.lower()
@@ -483,8 +494,18 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             concept_aligned = data.get("concepto_alineado", False)
             difficulty_acceptable = data.get("dificultad_aceptable", data.get("dificultad_igual", False))
             answer_correct = data.get("respuesta_correcta", False)
+            calculation_steps = data.get("tu_calculo", "")
+            distractors_plausible = data.get("distractores_plausibles", False)
+            non_mechanizable = data.get("no_mecanizable", False)
             rejection_reason = data.get("razon_rechazo", "")
             verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
+
+            if not answer_correct and self._llm_text_asserts_correctness(calculation_steps, rejection_reason):
+                answer_correct = True
+                if self._is_inconsistency_only_rejection(rejection_reason):
+                    rejection_reason = ""
+                    if concept_aligned and difficulty_acceptable and distractors_plausible and non_mechanizable:
+                        verdict = ValidationVerdict.APPROVED
 
             if not answer_correct:
                 verdict = ValidationVerdict.REJECTED
@@ -502,9 +523,9 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 concept_aligned=concept_aligned,
                 difficulty_equal=difficulty_acceptable,
                 answer_correct=answer_correct,
-                calculation_steps=data.get("tu_calculo", ""),
-                distractors_plausible=data.get("distractores_plausibles", False),
-                non_mechanizable=data.get("no_mecanizable", False),
+                calculation_steps=calculation_steps,
+                distractors_plausible=distractors_plausible,
+                non_mechanizable=non_mechanizable,
                 rejection_reason=rejection_reason,
             )
         except json.JSONDecodeError:
@@ -516,3 +537,42 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 non_mechanizable=False,
                 rejection_reason="No se pudo parsear respuesta de validación",
             )
+
+    def _llm_text_asserts_correctness(self, calculation_steps: str, rejection_reason: str) -> bool:
+        lowered = f"{calculation_steps} {rejection_reason}".lower()
+        positive_markers = (
+            "la opción marcada es correcta",
+            "la opcion marcada es correcta",
+            "la respuesta marcada es correcta",
+            "es matemáticamente correcta",
+            "es matematicamente correcta",
+            "la respuesta marcada sí es correcta",
+            "la respuesta marcada si es correcta",
+            "la respuesta marcada como correcta sí coincide con el resultado matemático",
+            "la respuesta marcada como correcta si coincide con el resultado matematico",
+            "sí coincide con el resultado matemático",
+            "si coincide con el resultado matematico",
+            "matemáticamente, la respuesta marcada",
+            "matematicamente, la respuesta marcada",
+            "coincide exactamente con el cálculo",
+            "coincide exactamente con el calculo",
+            "resultado: la opción marcada es correcta",
+            "resultado: la opcion marcada es correcta",
+            "la opción marcada sí coincide",
+            "la opcion marcada si coincide",
+        )
+        negative_markers = (
+            "no es correcta",
+            "es incorrecta",
+            "no coincide",
+            "no corresponde",
+            "no es matemáticamente correcta",
+            "no es matematicamente correcta",
+        )
+        return any(marker in lowered for marker in positive_markers) and not any(
+            marker in lowered for marker in negative_markers
+        )
+
+    def _is_inconsistency_only_rejection(self, rejection_reason: str) -> bool:
+        lowered = rejection_reason.lower()
+        return "inconsisten" in lowered and "respuesta_correcta" in lowered

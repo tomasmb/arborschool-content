@@ -14,6 +14,8 @@ from app.question_variants.models import (
     VariantResult,
 )
 from app.question_variants.io.source_loader import load_source_questions
+from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
+from app.question_variants.contracts.structural_profile import build_construct_contract
 from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
 from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
 from app.question_variants.variant_generator import VariantGenerator
@@ -149,6 +151,15 @@ class VariantPipeline:
                     variant.metadata.get("construct_contract", {}),
                 )
                 repaired_qti = variant.qti_xml
+                variant.metadata["construct_contract"] = build_construct_contract(
+                    extract_question_text(variant.qti_xml),
+                    variant.qti_xml,
+                    self.validator._has_visual_support(variant.qti_xml),
+                    source.primary_atoms,
+                    source.metadata,
+                    extract_choices(variant.qti_xml),
+                    find_correct_answer(variant.qti_xml),
+                )
                 variant.metadata["postprocess_summary"] = {
                     "presentation_normalized": normalized_qti != original_qti,
                     "family_repaired": repaired_qti != normalized_qti,

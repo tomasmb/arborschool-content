@@ -100,6 +100,40 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "No incluyas dos opciones equivalentes expresadas en unidades distintas; debe existir una sola interpretación correcta del parámetro."
         )
+        rules.append(
+            "Cuando el parámetro representa una tasa, materializa al menos un eje no mecanizable como caso concreto verificable: la opción correcta debe describir una situación específica o decisión contextual, no sólo recitar la tasa."
+        )
+        rules.append(
+            "Si cambias la forma de pregunta, no basta con pasar de '¿Cómo se interpreta?' a '¿Cuál afirmación...?': el nuevo ítem debe apoyarse en un caso o escenario concreto que obligue a comprender el significado práctico del parámetro."
+        )
+        rules.append(
+            "No conviertas la interpretación directa del coeficiente en una comparación entre dos casos ('si dos personas difieren en...', 'una diferencia de ... implica ...'). Eso evalúa aplicación de variación, no el mismo foco interpretativo."
+        )
+        rules.append(
+            "Evita distractores puramente literales o simétricos del tipo 'es N veces'; prefiere distractores contextualizados que expresen una interpretación plausible pero incorrecta del mismo caso."
+        )
+        rules.append(
+            "Evita equivalencias demasiado obvias del tipo '100 unidades -> 4 unidades' como única novedad. Si usas un caso concreto, preséntalo como registro, nota operativa o situación aplicada, no como simple escalamiento mecánico."
+        )
+        rules.append(
+            "No fijes en el enunciado un caso estándar específico ('estanque de 1000 litros', 'paciente de 10 kg', etc.) para luego pedir la opción que solo calcula ese caso. Eso desplaza la tarea hacia aplicación directa del modelo."
+        )
+        rules.append(
+            "Si usas un registro o nota operativa, la comprensión debe seguir centrada en el significado del coeficiente y no en resolver un caso particular dado previamente en el enunciado."
+        )
+    if op == "linear_equation_resolution":
+        rules.append(
+            "No repitas la plantilla casi intacta 'relación por paquete/unidad + dato adicional fijo + total final -> ¿cuántos x?'. Cambia al menos la forma de preguntar o el rol contextual del dato adicional."
+        )
+        rules.append(
+            "Mantén una sola ecuación lineal del mismo tipo, pero usa un framing menos directo: por ejemplo subtotal/restante/cantidad complementaria, sin agregar pasos algebraicos nuevos."
+        )
+        rules.append(
+            "No conviertas la incógnita en una cantidad complementaria o 'lo que quedó faltando' si eso obliga a resolver x y luego hacer una sustracción adicional."
+        )
+        rules.append(
+            "Evita reutilizar exactamente el mismo valor numérico para la tasa del modelo y para el monto fijo o inicial del contexto; si hay coincidencias, la relación queda confusa aunque el cálculo siga siendo lineal."
+        )
     if op == "simple_probability":
         rules.append(
             "La variante debe mantener el mismo tipo de probabilidad simple: casos favorables sobre casos posibles o suma de eventos excluyentes."
@@ -136,6 +170,12 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
     if op == "graph_interpretation":
         rules.append(
             "Conserva el mismo modo de respuesta del contrato: si la fuente pide identificar una etiqueta o categoría, no la conviertas en evaluación de afirmaciones largas."
+        )
+        rules.append(
+            "Conserva la misma polaridad del objetivo en la representación: si la fuente pide el valor más bajo o la habilidad más débil, no la conviertas en identificar el valor más alto, y viceversa."
+        )
+        rules.append(
+            "No aumentes la cantidad de series o conjuntos comparados si la fuente solo representa una serie. Una fuente de serie única no debe transformarse en comparación entre dos momentos o grupos."
         )
     if op in {"radical_operations", "polynomial_operations", "decimal_number_operations"}:
         rules.append(

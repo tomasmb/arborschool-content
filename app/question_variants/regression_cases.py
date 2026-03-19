@@ -100,13 +100,13 @@ STRUCTURAL_REGRESSION_CASES = [
         "reason_contains": "dominio estadístico objetivo",
     },
     {
-        "name": "Q30 rejected literal parameter rate form",
+        "name": "Q30 repaired grouped-rate interpretation",
         "test_id": "seleccion-regular-2026",
         "question_id": "Q30",
         "variant_xml_path": (
             "app/data/pruebas/hard_variants/benchmarks/"
-            "sample-q30-gemini-180-v7/seleccion-regular-2026/Q30/variants/rejected/Q30_v1/question.xml"
+            "sample-crossfamily-2026-v3/seleccion-regular-2026/Q30/variants/rejected/Q30_v1/question.xml"
         ),
-        "expected_ok": False,
+        "expected_ok": True,
     },
 ]

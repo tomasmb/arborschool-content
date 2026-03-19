@@ -15,6 +15,7 @@ from app.question_variants.contracts.contract_features import (
     infer_base_domain,
     infer_claim_archetype,
     infer_data_burden_score,
+    infer_extremum_polarity,
     infer_formula_shape,
     infer_justification_archetype,
     infer_model_family,
@@ -25,6 +26,7 @@ from app.question_variants.contracts.contract_features import (
     infer_response_mode,
     infer_reference_relation_count,
     infer_rate_reference_frame,
+    infer_representation_series_count,
     infer_result_property_type,
     infer_selection_load,
     infer_statistic_target_domain,
@@ -70,7 +72,9 @@ def build_construct_contract(
     measure_transition = infer_measure_transition(question_text, profile)
     rate_reference_frame = infer_rate_reference_frame(correct_answer, profile)
     parameter_statement_form = infer_parameter_statement_form(correct_answer, profile)
+    extremum_polarity = infer_extremum_polarity(question_text, profile)
     presentation_style = infer_presentation_style(question_text, qti_xml, profile)
+    representation_series_count = infer_representation_series_count(question_text, qti_xml, profile)
 
     must_preserve_distractor_logic = profile["claim_evaluation"] or (
         profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}
@@ -122,7 +126,9 @@ def build_construct_contract(
         "measure_transition": measure_transition,
         "rate_reference_frame": rate_reference_frame,
         "parameter_statement_form": parameter_statement_form,
+        "extremum_polarity": extremum_polarity,
         "presentation_style": presentation_style,
+        "representation_series_count": representation_series_count,
         "response_mode": response_mode,
         "evidence_mode": evidence_mode,
         "explicit_dataset_policy": explicit_dataset_policy,
@@ -283,8 +289,12 @@ def has_explicit_dataset(text: str, xml: str) -> bool:
     has_labeled_value_list = (
         len(re.findall(r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?", lowered_text)) >= 3
     )
+    has_table_markup = bool(re.search(r"<(?:[a-z0-9]+:)?table\b", lowered_xml))
+    has_visual_markup = bool(re.search(r"<(?:[a-z0-9]+:)?(?:img|object)\b", lowered_xml))
     return (
         any(marker in lowered_xml or marker in lowered_text for marker in dataset_markers)
+        or has_table_markup
+        or has_visual_markup
         or has_coordinate_pairs
         or has_labeled_value_list
     )

@@ -226,14 +226,48 @@ Devuelve SOLO JSON:
                 return {}
 
     def _fallback_plans(self, source: SourceQuestion, n: int) -> List[VariantBlueprint]:
+        contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+            source.choices,
+            source.correct_answer,
+        )
+        operation_signature = str(contract.get("operation_signature") or "")
         plans: List[VariantBlueprint] = []
         for i in range(n):
+            scenario_description = f"Variante {i + 1} del mismo constructo con cambio estructural controlado."
+            non_mechanizable_axes = ["forma_pregunta", "distractor_dominante"]
+            required_reasoning = "Requiere justificar el metodo y evitar aplicacion mecanica."
+            if operation_signature == "parameter_interpretation":
+                scenario_description = (
+                    "La variante debe seguir interpretando directamente el coeficiente del modelo en un caso concreto "
+                    "o afirmación contextual única, sin comparar diferencias entre dos personas, objetos o situaciones."
+                )
+                non_mechanizable_axes = ["forma_pregunta", "distractor_dominante"]
+                required_reasoning = (
+                    "Obliga a comprender el significado práctico del coeficiente en un caso único o agrupado, "
+                    "sin convertirlo en una aplicación de variación entre dos casos."
+                )
+            elif operation_signature == "linear_equation_resolution":
+                scenario_description = (
+                    "La variante debe mantener una sola ecuación lineal contextualizada del mismo tipo, pero cambiar "
+                    "la forma de presentar el contexto o el rol del dato adicional fijo sin pedir una cantidad complementaria "
+                    "ni agregar un paso final extra después de resolver la incógnita."
+                )
+                non_mechanizable_axes = ["forma_pregunta", "distractor_dominante"]
+                required_reasoning = (
+                    "Exige distinguir correctamente el término fijo y la relación proporcional dentro de una sola "
+                    "ecuación lineal, manteniendo la misma dificultad algebraica y evitando plantillas casi idénticas."
+                )
             plans.append(
                 VariantBlueprint(
                     variant_id=f"{source.question_id}_v{i + 1}",
-                    scenario_description=f"Variante {i + 1} del mismo constructo con cambio estructural controlado.",
-                    non_mechanizable_axes=["forma_pregunta", "distractor_dominante"],
-                    required_reasoning="Requiere justificar el metodo y evitar aplicacion mecanica.",
+                    scenario_description=scenario_description,
+                    non_mechanizable_axes=non_mechanizable_axes,
+                    required_reasoning=required_reasoning,
                     difficulty_target="equal_or_harder",
                     requires_image=False,
                     image_description="",

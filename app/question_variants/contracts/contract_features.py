@@ -171,7 +171,37 @@ def infer_model_family(question_text: str, qti_xml: str, profile: dict[str, bool
             return "pythagorean_relation"
         return "geometry_measurement"
     if op == "parameter_interpretation":
-        if any(marker in lowered for marker in ("pendiente", "por cada", "tasa")):
+        rate_markers = (
+            "pendiente",
+            "por cada",
+            "tasa",
+            "aumenta",
+            "incrementa",
+            "incremento",
+            "consume",
+            "consumo",
+            "se necesitan",
+            "se necesita",
+            "se deben aplicar",
+            "se debe aplicar",
+            "costo total",
+            "costo",
+            "adicional",
+            "recorre",
+            "distancia",
+            "tiempo",
+            "horas",
+            "kilómetros",
+            "kilometros",
+            "km",
+            "metros cuadrados",
+            "m2",
+            "m²",
+            "kilogramos",
+            "kg",
+            "litros",
+        )
+        if any(marker in lowered for marker in rate_markers):
             return "rate_parameter_interpretation"
         if any(marker in lowered for marker in ("intercepto", "valor inicial", "cuando x = 0", "cuando x=0")):
             return "intercept_parameter_interpretation"
@@ -279,7 +309,10 @@ def infer_rate_reference_frame(correct_answer: str, profile: dict[str, bool | st
     lowered = correct_answer.lower()
     if re.search(r"por cada\s+(10|100)\s+", lowered):
         return "grouped_reference"
-    if re.search(r"por cada\s+(1\s+)?(metro cuadrado|metros cuadrados|m2|m²|kilogramo|kilogramos|kg|litro|litros|l|watt|watts)\b", lowered):
+    if re.search(
+        r"por cada\s+(1\s+)?(hora|horas|h|metro cuadrado|metros cuadrados|m2|m²|metro|metros|m|kilómetro|kilometro|kilómetros|kilometros|km|kilogramo|kilogramos|kg|litro|litros|l|watt|watts)\b",
+        lowered,
+    ):
         return "unit_reference"
     return "other_reference"
 
@@ -288,6 +321,8 @@ def infer_parameter_statement_form(correct_answer: str, profile: dict[str, bool 
     if profile["operation_signature"] != "parameter_interpretation":
         return "not_applicable"
     lowered = correct_answer.lower()
+    if "diferencia de" in lowered and "implica una diferencia" in lowered:
+        return "comparative_difference_statement"
     if "por cada" in lowered:
         return "literal_rate_statement"
     if any(marker in lowered for marker in ("para ", "si ", "requiere", "se necesitan", "se necesita", "consume")):
@@ -295,6 +330,19 @@ def infer_parameter_statement_form(correct_answer: str, profile: dict[str, bool 
     if "veces" in lowered:
         return "inverse_relation_statement"
     return "other_statement"
+
+
+def infer_extremum_polarity(question_text: str, profile: dict[str, bool | str]) -> str:
+    op = str(profile.get("operation_signature") or "")
+    task_form = str(profile.get("task_form") or "")
+    if op != "graph_interpretation" and task_form != "claim_evaluation":
+        return "not_applicable"
+    lowered = question_text.lower()
+    if any(marker in lowered for marker in ("más débil", "mas debil", "menor", "mínimo", "minimo", "más bajo", "mas bajo")):
+        return "minimum_target"
+    if any(marker in lowered for marker in ("más fuerte", "mas fuerte", "mayor", "máximo", "maximo", "más alto", "mas alto")):
+        return "maximum_target"
+    return "not_applicable"
 
 
 def infer_presentation_style(question_text: str, qti_xml: str, profile: dict[str, bool | str]) -> str:
@@ -355,3 +403,22 @@ def infer_presentation_style(question_text: str, qti_xml: str, profile: dict[str
     if has_equation:
         return "symbolic_formula_only"
     return "verbal_formula"
+
+
+def infer_representation_series_count(question_text: str, qti_xml: str, profile: dict[str, bool | str]) -> str:
+    if str(profile.get("operation_signature") or "") != "graph_interpretation":
+        return "not_applicable"
+    lowered = f"{question_text} {qti_xml}".lower()
+    dual_series_markers = (
+        "matutino",
+        "vespertino",
+        "serie 1",
+        "serie 2",
+        "grupo a",
+        "grupo b",
+        "hombres y mujeres",
+        "dos conjuntos",
+    )
+    if any(marker in lowered for marker in dual_series_markers):
+        return "multiple_series"
+    return "single_series"
