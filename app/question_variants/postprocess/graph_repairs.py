@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 
+from app.question_variants.postprocess.repair_utils import serialize_xml
+
 
 def repair_graph_representation_mentions(qti_xml: str, contract: dict[str, object] | None = None) -> str:
     try:
@@ -20,13 +22,13 @@ def repair_graph_representation_mentions(qti_xml: str, contract: dict[str, objec
     if not has_table and not has_image:
         changed = materialize_grouped_series_table(root) or changed
         changed = _materialize_bullet_series_table(root) or changed
-        lowered = ET.tostring(root, encoding="unicode").lower()
+        lowered = serialize_xml(root).lower()
         has_table = "<table" in lowered or "<qti-table" in lowered
         has_image = any(token in lowered for token in ("<img", "<object", "<qti-object"))
     if str(contract.get("representation_series_count") or "") == "single_series":
         changed = _collapse_to_single_series_table(root) or changed
     if not has_table or has_image:
-        return ET.tostring(root, encoding="unicode") if changed else qti_xml
+        return serialize_xml(root) if changed else qti_xml
 
     replacements = {
         "gráfico de dispersión": "registro de datos",
@@ -54,7 +56,7 @@ def repair_graph_representation_mentions(qti_xml: str, contract: dict[str, objec
                 element.tail = new_tail
                 changed = True
 
-    return ET.tostring(root, encoding="unicode") if changed else qti_xml
+    return serialize_xml(root) if changed else qti_xml
 
 
 def materialize_grouped_series_table(root: ET.Element) -> bool:

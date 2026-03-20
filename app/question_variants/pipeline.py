@@ -96,6 +96,15 @@ class VariantPipeline:
 
         report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
         save_source_snapshot(self.config.output_dir, source)
+        source_contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+            source.choices,
+            source.correct_answer,
+        )
 
         n = num_variants or self.config.variants_per_question
 
@@ -141,14 +150,14 @@ class VariantPipeline:
                 original_qti = variant.qti_xml
                 variant.qti_xml = normalize_variant_presentation(
                     variant.qti_xml,
-                    str(variant.metadata.get("construct_contract", {}).get("operation_signature") or ""),
-                    str(variant.metadata.get("construct_contract", {}).get("task_form") or ""),
-                    str(variant.metadata.get("construct_contract", {}).get("selection_load") or "not_applicable"),
+                    str(source_contract.get("operation_signature") or ""),
+                    str(source_contract.get("task_form") or ""),
+                    str(source_contract.get("selection_load") or "not_applicable"),
                 )
                 normalized_qti = variant.qti_xml
                 variant.qti_xml = repair_family_specific_qti(
                     variant.qti_xml,
-                    variant.metadata.get("construct_contract", {}),
+                    source_contract,
                 )
                 repaired_qti = variant.qti_xml
                 variant.metadata["construct_contract"] = build_construct_contract(

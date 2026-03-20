@@ -73,6 +73,23 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "La justificación correcta no puede repetir la misma receta verbal; cambia de verdad el dominio de la base, la propiedad final o el tipo de explicación decisiva."
         )
+        if str(contract.get("power_base_family") or "") == "ten_power_zero_composition":
+            rules.append(
+                "Si la fuente construye una potencia de 10 mediante botones o grupos de ceros, la variante debe seguir trabajando con base 10 y composición de ceros, no con otra base ni con factorización de otra potencia."
+            )
+            rules.append(
+                "Mantén el mismo mecanismo central: seleccionar una combinación de grupos de ceros que compone el exponente total."
+            )
+    if op == "ten_power_zero_composition":
+        rules.append(
+            "La variante debe seguir construyendo una potencia de 10 mediante combinación de grupos de ceros o botones equivalentes, no justificar propiedades generales de potencias."
+        )
+        rules.append(
+            "No cambies la tarea a una explicación verbal de reglas de exponentes; debe seguir siendo selección de la secuencia correcta de ingreso/composición."
+        )
+        rules.append(
+            "Para que no quede mecanizable, cambia la forma de presentación o el patrón de distractores, pero mantén base 10 y el recuento total de ceros como foco central."
+        )
     if op == "descriptive_statistics":
         rules.append(
             "Conserva una carga de datos comparable a la fuente y el mismo dominio estadístico objetivo."
@@ -148,6 +165,20 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         )
         rules.append(
             "No conviertas una razón directa o regla de tres en ecuación lineal, fórmula afín ni lectura puramente verbal sin relación entre magnitudes."
+        )
+        rules.append(
+            "Si la fuente expresa una condición que garantiza exactitud o divisibilidad, la variante debe seguir preguntando por una condición que garantice exactitud, no por el valor calculado final."
+        )
+        if str(contract.get("proportional_reasoning_mode") or "") == "divisibility_condition":
+            rules.append(
+                "Para condiciones de divisibilidad, no repitas la misma receta literal. Cambia la representación hacia un control operativo o registro, manteniendo la condición matemática equivalente."
+            )
+            rules.append(
+                "Los distractores deben repartirse entre un control demasiado exigente, uno insuficiente y uno desviado, sin incluir condiciones equivalentes a la correcta."
+            )
+    if op == "percentage_increase_application" and str(contract.get("percentage_change_pattern") or "") != "not_applicable":
+        rules.append(
+            "Conserva la misma polaridad y secuencia de cambios porcentuales de la fuente. Si la fuente combina alza y rebaja, la variante también debe combinar esos signos en el mismo orden."
         )
     if op == "algebraic_model_translation":
         rules.append(

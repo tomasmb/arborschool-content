@@ -377,6 +377,16 @@ class VariantValidator:
         variant_text = extract_question_text(variant.qti_xml)
         variant_choices = extract_choices(variant.qti_xml)
         variant_correct = find_correct_answer(variant.qti_xml)
+        source_contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+            source.choices,
+            source.correct_answer,
+        )
+        non_mechanizable_policy = self._build_non_mechanizable_policy(source_contract)
 
         prompt = f"""
 <role>
@@ -432,6 +442,7 @@ Verifica cuidadosamente:
 6. **NO MECANIZABLE**: ¿Evita resolución por receta memorizada?
    - Debe cambiar al menos 2 ejes estructurales (forma, representación, distractor o secuencia)
    - Debe exigir comprender el por qué del método
+   - Política específica para esta familia: {non_mechanizable_policy}
 </tarea>
 
 <formato_respuesta>
@@ -537,6 +548,26 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 non_mechanizable=False,
                 rejection_reason="No se pudo parsear respuesta de validación",
             )
+
+    def _build_non_mechanizable_policy(self, source_contract: dict[str, object]) -> str:
+        if (
+            str(source_contract.get("operation_signature")) == "direct_proportion_reasoning"
+            and str(source_contract.get("task_form")) == "direct_resolution"
+        ):
+            return (
+                "En esta familia rutinaria, puede ser aceptable cambiar solo 1 eje estructural fuerte "
+                "(por ejemplo, pasar a registro del caso o volver explícita la semántica de los distractores), "
+                "siempre que los distractores sean plausibles y la variante no sea solo cambio de números."
+            )
+        if str(source_contract.get("operation_signature")) == "parameter_interpretation":
+            return (
+                "En esta familia, no basta con reformular la tasa; la variante debe evitar una lectura literal "
+                "del coeficiente y empujar una interpretación operativa o contextual."
+            )
+        return (
+            "Mantén el criterio general: al menos 2 ejes estructurales relevantes o un cambio claramente "
+            "equivalente en profundidad, sin caer en simple reemplazo de números/contexto."
+        )
 
     def _llm_text_asserts_correctness(self, calculation_steps: str, rejection_reason: str) -> bool:
         lowered = f"{calculation_steps} {rejection_reason}".lower()

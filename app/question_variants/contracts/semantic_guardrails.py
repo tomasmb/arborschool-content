@@ -11,6 +11,11 @@ from app.question_variants.qti_validation_utils import surface_similarity
 def failed_generator_self_check(metadata: dict[str, Any]) -> str:
     """Return a rejection reason when the generator self-check already flags drift."""
     self_check = metadata.get("generator_self_check", {}) or {}
+    contract = metadata.get("construct_contract", {}) or {}
+    requires_two_axes = not (
+        str(contract.get("operation_signature")) == "direct_proportion_reasoning"
+        and str(contract.get("task_form")) == "direct_resolution"
+    )
     guarded_flags = {
         "task_form_preserved": "La variante reconoce que no preservó la forma de tarea.",
         "evidence_mode_preserved": "La variante reconoce que no preservó el modo de evidencia.",
@@ -23,7 +28,8 @@ def failed_generator_self_check(metadata: dict[str, Any]) -> str:
         if self_check.get(field) is False:
             return reason
     axes = self_check.get("realized_non_mechanizable_axes", []) or []
-    if axes and len([str(axis).strip() for axis in axes if str(axis).strip()]) < 2:
+    min_axes = 2 if requires_two_axes else 1
+    if axes and len([str(axis).strip() for axis in axes if str(axis).strip()]) < min_axes:
         return "La variante reconoce menos de dos ejes no mecanizables materializados."
     return ""
 
@@ -187,14 +193,30 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         variant_value = str(variant_contract.get(key) or "not_applicable")
         if source_value in guarded_values and source_value != variant_value:
             return reason
+    power_family_source = str(source_contract.get("power_base_family") or "not_applicable")
+    power_family_variant = str(variant_contract.get("power_base_family") or "not_applicable")
+    if power_family_source != "not_applicable" and power_family_source != power_family_variant:
+        return "La variante cambió la familia de potencias o el mecanismo composicional central del ítem."
     percentage_source = str(source_contract.get("percentage_band") or "not_applicable")
     percentage_variant = str(variant_contract.get("percentage_band") or "not_applicable")
     if percentage_source not in {"not_applicable", "unknown"} and percentage_source != percentage_variant:
         return "La variante cambió la banda de magnitud porcentual del ítem."
+    change_pattern_source = str(source_contract.get("percentage_change_pattern") or "not_applicable")
+    change_pattern_variant = str(variant_contract.get("percentage_change_pattern") or "not_applicable")
+    if change_pattern_source != "not_applicable" and change_pattern_source != change_pattern_variant:
+        return "La variante cambió la polaridad o secuencia de los cambios porcentuales del ítem."
     selection_source = str(source_contract.get("selection_load") or "not_applicable")
     selection_variant = str(variant_contract.get("selection_load") or "not_applicable")
     if selection_source != "not_applicable" and selection_source != selection_variant:
         return "La variante cambió la carga de selección de datos del ítem."
+    proportional_mode_source = str(source_contract.get("proportional_reasoning_mode") or "not_applicable")
+    proportional_mode_variant = str(variant_contract.get("proportional_reasoning_mode") or "not_applicable")
+    if (
+        str(source_contract.get("operation_signature")) == "direct_proportion_reasoning"
+        and proportional_mode_source != "not_applicable"
+        and proportional_mode_source != proportional_mode_variant
+    ):
+        return "La variante cambió el modo de razonamiento proporcional del ítem."
     measure_transition_source = str(source_contract.get("measure_transition") or "not_applicable")
     measure_transition_variant = str(variant_contract.get("measure_transition") or "not_applicable")
     if (
@@ -232,7 +254,8 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
     if (
         (
             str(source_contract.get("task_form")) == "substitute_expression"
-            or str(source_contract.get("operation_signature")) in {"direct_percentage_calculation", "percentage_increase_application"}
+            or str(source_contract.get("operation_signature"))
+            in {"direct_percentage_calculation", "percentage_increase_application", "ten_power_zero_composition"}
         )
         and presentation_source not in {"not_applicable", "verbal_formula"}
         and presentation_source == presentation_variant

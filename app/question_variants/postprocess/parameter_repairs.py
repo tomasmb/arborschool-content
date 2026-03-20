@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 
-from app.question_variants.postprocess.repair_utils import NS, format_number, parse_number
+from app.question_variants.postprocess.repair_utils import NS, format_number, parse_number, serialize_xml
 
 
 def repair_parameter_interpretation_prompt(qti_xml: str) -> str:
@@ -38,7 +38,7 @@ def repair_parameter_interpretation_prompt(qti_xml: str) -> str:
     _rewrite_parameter_choices_as_variation(root)
     _rewrite_parameter_choices_as_records(root)
     _ensure_choice_interaction_declarations(root)
-    return ET.tostring(root, encoding="unicode")
+    return serialize_xml(root)
 
 
 def _rescale_rate_reference_choices(root: ET.Element) -> None:
@@ -247,14 +247,14 @@ def _rewrite_parameter_choices_as_variation(root: ET.Element) -> None:
 
     replacements = {
         correct_id: (
-            f"Registro operativo: si {indep_label} aumenta en {step_text} {indep_unit}, "
-            f"{dep_label} debe aumentar en {delta_text} {dep_unit}."
+            f"Registro operativo: si {_with_article(indep_label, capitalized=False)} aumenta en {step_text} {indep_unit}, "
+            f"{_with_article(dep_label, capitalized=False)} debe aumentar en {delta_text} {dep_unit}."
         )
     }
     distractor_texts = [
-        f"Registro operativo: si {indep_label} aumenta en {step_text} {indep_unit}, {dep_label} debe aumentar en {wrong_scale} {dep_unit}.",
-        f"Registro operativo: si {indep_label} aumenta en {step_text} {indep_unit}, entonces {indep_label} es {delta_text} veces {dep_label}.",
-        f"Registro operativo: si {dep_label} aumenta en {step_text} {dep_unit}, entonces {indep_label} debe aumentar en {inverse_text} {indep_unit}.",
+        f"Registro operativo: si {_with_article(indep_label, capitalized=False)} aumenta en {step_text} {indep_unit}, {_with_article(dep_label, capitalized=False)} debe aumentar en {wrong_scale} {dep_unit}.",
+        f"Registro operativo: si {_with_article(indep_label, capitalized=False)} aumenta en {step_text} {indep_unit}, entonces {_with_article(indep_label, capitalized=False)} equivale a {delta_text} veces {_with_article(dep_label, capitalized=False)}.",
+        f"Registro operativo: si {_with_article(dep_label, capitalized=False)} aumenta en {step_text} {dep_unit}, entonces {_with_article(indep_label, capitalized=False)} debe aumentar en {inverse_text} {indep_unit}.",
     ]
     distractor_iter = iter(distractor_texts)
     for choice in choice_nodes:
@@ -288,6 +288,22 @@ def _extract_parameter_context(root: ET.Element) -> tuple[str, str, str, str, fl
             match.group("indep_unit").strip(),
             _clean_parameter_label(match.group("dep_label")),
             match.group("dep_unit").strip(),
+            coefficient,
+        )
+
+    match = re.search(
+        r"para calcular\s+(?P<dep_label>.+?)\s+seg[uú]n\s+(?P<indep_label>.+?)\s+en\s+(?P<indep_unit>[^()]+)",
+        normalized,
+    )
+    if match:
+        dep_label = _clean_parameter_label(match.group("dep_label").replace("los ", "").replace("las ", ""))
+        dep_unit_match = re.search(r"([a-záéíóúñ]+)\s+de\s+" + re.escape(dep_label), normalized)
+        dep_unit = dep_unit_match.group(1) if dep_unit_match else "unidades"
+        return (
+            _clean_parameter_label(match.group("indep_label")),
+            match.group("indep_unit").strip(),
+            dep_label,
+            dep_unit.strip(),
             coefficient,
         )
 
@@ -335,6 +351,17 @@ def _clean_parameter_label(label: str) -> str:
     cleaned = re.sub(r"\b[a-z]\b$", "", label.strip()).strip()
     cleaned = re.sub(r"\s+", " ", cleaned)
     return cleaned
+
+
+def _with_article(label: str, capitalized: bool = True) -> str:
+    cleaned = _clean_parameter_label(label)
+    lowered = cleaned.lower()
+    if lowered.startswith(("el ", "la ", "los ", "las ")):
+        return cleaned.capitalize() if capitalized else cleaned
+    feminine_markers = ("área", "area", "cantidad", "masa", "dosis", "distancia")
+    article = "la" if lowered.startswith(feminine_markers) else "el"
+    phrase = f"{article} {cleaned}"
+    return phrase.capitalize() if capitalized else phrase
 
 
 def _ensure_choice_interaction_declarations(root: ET.Element) -> None:

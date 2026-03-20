@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 
+from app.question_variants.postprocess.repair_utils import serialize_xml
+
 
 def repair_symbolic_formula_presentation(qti_xml: str) -> str:
     try:
@@ -42,7 +44,7 @@ def repair_symbolic_formula_presentation(qti_xml: str) -> str:
     index = list(item_body).index(equation_block)
     item_body.remove(equation_block)
     item_body.insert(index, replacement)
-    return ET.tostring(root, encoding="unicode")
+    return serialize_xml(root)
 
 
 def repair_property_justification_choice(qti_xml: str, result_property_type: str) -> str:
@@ -70,7 +72,7 @@ def repair_property_justification_choice(qti_xml: str, result_property_type: str
         if choice.attrib.get("identifier") == correct_identifier:
             choice.text = justification
             break
-    return ET.tostring(root, encoding="unicode")
+    return serialize_xml(root)
 
 
 def _build_formula_rule(math_text: str) -> str:

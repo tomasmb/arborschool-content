@@ -23,6 +23,17 @@ FAMILY_SPECS: list[dict[str, Any]] = [
         ),
     },
     {
+        "family_id": "ten_power_zero_composition",
+        "atom_markers": (),
+        "operation_signature": "ten_power_zero_composition",
+        "cognitive_action": "compute_value",
+        "solution_structure": "direct_single_step",
+        "prompt_rules": (
+            "La variante debe seguir construyendo una potencia de 10 mediante composición de ceros o botones equivalentes, no justificar propiedades generales de potencias.",
+            "Mantén base 10 y el foco en la secuencia correcta de ingreso/composición; cambia formato de registro o distractores, no el constructo.",
+        ),
+    },
+    {
         "family_id": "direct_percentage_calculation",
         "atom_markers": (
             "cálculo directo del porcentaje de una cantidad",

@@ -153,7 +153,9 @@ def infer_model_family(question_text: str, qti_xml: str, profile: dict[str, bool
         return "not_applicable"
     lowered = f"{question_text} {qti_xml}".lower()
     if op == "direct_proportion_reasoning":
-        if any(marker in lowered for marker in ("por cada", "por 1", "cada", "directamente proporcional")):
+        if ":" in lowered or "razón" in lowered or "razon" in lowered or "respectivamente" in lowered:
+            return "direct_proportion_setup"
+        if any(marker in lowered for marker in ("por cada", "por 1", "directamente proporcional")):
             return "ratio_table_or_unit_rate"
         return "direct_proportion_setup"
     if op in {"simple_probability", "conditional_probability"}:
@@ -227,19 +229,43 @@ def infer_statistic_target_domain(question_text: str, profile: dict[str, bool | 
 def infer_percentage_band(question_text: str, profile: dict[str, bool | str]) -> str:
     if profile["operation_signature"] not in {"direct_percentage_calculation", "percentage_increase_application"}:
         return "not_applicable"
-    match = re.search(r"(\d+(?:[.,]\d+)?)\s*%", question_text.lower())
-    if not match:
+    matches = re.findall(r"(\d+(?:[.,]\d+)?)\s*%", question_text.lower())
+    if not matches:
         return "unknown"
-    value = float(match.group(1).replace(",", "."))
-    if value <= 20:
+    value = max(float(match.replace(",", ".")) for match in matches)
+    if value <= 30:
         return "small"
     if value <= 80:
         return "medium"
     return "large"
 
 
+def infer_percentage_change_pattern(question_text: str, profile: dict[str, bool | str]) -> str:
+    if profile["operation_signature"] != "percentage_increase_application":
+        return "not_applicable"
+    text = re.sub(r"\s+", " ", question_text.lower())
+    percent_matches = list(re.finditer(r"(\d+(?:[.,]\d+)?)\s*%", text))
+    if len(percent_matches) < 2:
+        if any(token in text for token in ("rebaj", "descuent", "dismin", "caída", "caida", "pérdida", "perdida")):
+            return "single_decrease"
+        if any(token in text for token in ("aument", "increment", "alza", "recargo", "sub")):
+            return "single_increase"
+        return "not_applicable"
+
+    signs: list[str] = []
+    for match in percent_matches[:2]:
+        window = text[max(0, match.start() - 80) : min(len(text), match.start() + 40)]
+        if any(token in window for token in ("rebaj", "descuent", "dismin", "caída", "caida", "pérdida", "perdida")):
+            signs.append("decrease")
+        elif any(token in window for token in ("aument", "increment", "alza", "recargo", "sub")):
+            signs.append("increase")
+        else:
+            signs.append("unknown")
+    return "_then_".join(signs)
+
+
 def infer_base_domain(question_text: str, profile: dict[str, bool | str]) -> str:
-    if profile["operation_signature"] != "property_justification":
+    if profile["operation_signature"] not in {"property_justification", "ten_power_zero_composition"}:
         return "not_applicable"
     text = question_text.lower().replace(" ", "")
     fraction_match = re.search(r"\((\d+)\/(\d+)\)\^\(", text)
@@ -263,6 +289,19 @@ def infer_base_domain(question_text: str, profile: dict[str, bool | str]) -> str
         if value == 1:
             return "one"
     return "generic_base"
+
+
+def infer_power_base_family(question_text: str, profile: dict[str, bool | str]) -> str:
+    if profile["operation_signature"] not in {"property_justification", "ten_power_zero_composition"}:
+        return "not_applicable"
+    lowered = question_text.lower()
+    if any(marker in lowered for marker in ("[00]", "[000]", "00", "000", "ceros", "cero", "botones")) and any(
+        marker in lowered for marker in ("10^", "10 ", "10)", "número 1000", "numero 1000")
+    ):
+        return "ten_power_zero_composition"
+    if re.search(r"<msup><mn>2</mn>|2\^", question_text) or " 2 " in f" {lowered} ":
+        return "binary_power_composition"
+    return "generic_power_family"
 
 
 def infer_result_property_type(question_text: str, profile: dict[str, bool | str]) -> str:
@@ -373,6 +412,7 @@ def infer_presentation_style(question_text: str, qti_xml: str, profile: dict[str
         if has_list or any(
             marker in lowered
             for marker in (
+                "registro del caso",
                 "desglose",
                 "detalle",
                 "resumen",
@@ -422,3 +462,19 @@ def infer_representation_series_count(question_text: str, qti_xml: str, profile:
     if any(marker in lowered for marker in dual_series_markers):
         return "multiple_series"
     return "single_series"
+
+
+def infer_proportional_reasoning_mode(
+    question_text: str,
+    correct_answer: str,
+    profile: dict[str, bool | str],
+) -> str:
+    if str(profile.get("operation_signature") or "") != "direct_proportion_reasoning":
+        return "not_applicable"
+    lowered_question = question_text.lower()
+    lowered_answer = correct_answer.lower()
+    if any(marker in lowered_question for marker in ("garantiza", "condición", "condicion")) or "divisible" in lowered_answer:
+        return "divisibility_condition"
+    if any(token in correct_answer for token in ("<mfrac", "/", "÷")):
+        return "direct_quotient_expression"
+    return "generic_proportional_rule"

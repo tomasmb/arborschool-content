@@ -21,8 +21,11 @@ from app.question_variants.contracts.contract_features import (
     infer_model_family,
     infer_measure_transition,
     infer_percentage_band,
+    infer_percentage_change_pattern,
     infer_parameter_statement_form,
+    infer_power_base_family,
     infer_presentation_style,
+    infer_proportional_reasoning_mode,
     infer_response_mode,
     infer_reference_relation_count,
     infer_rate_reference_frame,
@@ -31,7 +34,7 @@ from app.question_variants.contracts.contract_features import (
     infer_selection_load,
     infer_statistic_target_domain,
 )
-from app.question_variants.contracts.family_catalog import resolve_family_spec
+from app.question_variants.contracts.family_catalog import get_family_spec_by_id, resolve_family_spec
 
 
 def build_construct_contract(
@@ -66,8 +69,10 @@ def build_construct_contract(
     model_family = infer_model_family(question_text, qti_xml, profile)
     statistic_target_domain = infer_statistic_target_domain(question_text, profile)
     percentage_band = infer_percentage_band(question_text, profile)
+    percentage_change_pattern = infer_percentage_change_pattern(question_text, profile)
     selection_load = infer_selection_load(question_text, qti_xml, profile)
     base_domain = infer_base_domain(question_text, profile)
+    power_base_family = infer_power_base_family(question_text, profile)
     result_property_type = infer_result_property_type(question_text, profile)
     measure_transition = infer_measure_transition(question_text, profile)
     rate_reference_frame = infer_rate_reference_frame(correct_answer, profile)
@@ -75,6 +80,7 @@ def build_construct_contract(
     extremum_polarity = infer_extremum_polarity(question_text, profile)
     presentation_style = infer_presentation_style(question_text, qti_xml, profile)
     representation_series_count = infer_representation_series_count(question_text, qti_xml, profile)
+    proportional_reasoning_mode = infer_proportional_reasoning_mode(question_text, correct_answer, profile)
 
     must_preserve_distractor_logic = profile["claim_evaluation"] or (
         profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}
@@ -120,8 +126,10 @@ def build_construct_contract(
         "model_family": model_family,
         "statistic_target_domain": statistic_target_domain,
         "percentage_band": percentage_band,
+        "percentage_change_pattern": percentage_change_pattern,
         "selection_load": selection_load,
         "base_domain": base_domain,
+        "power_base_family": power_base_family,
         "result_property_type": result_property_type,
         "measure_transition": measure_transition,
         "rate_reference_frame": rate_reference_frame,
@@ -129,6 +137,7 @@ def build_construct_contract(
         "extremum_polarity": extremum_polarity,
         "presentation_style": presentation_style,
         "representation_series_count": representation_series_count,
+        "proportional_reasoning_mode": proportional_reasoning_mode,
         "response_mode": response_mode,
         "evidence_mode": evidence_mode,
         "explicit_dataset_policy": explicit_dataset_policy,
@@ -154,6 +163,8 @@ def build_structural_profile(
     atom_hints = _collect_atom_hints(primary_atoms)
     skill = str(main_skill or "").upper()
     family_spec = resolve_family_spec(atom_hints, skill)
+    if looks_like_zero_button_composition(text, xml):
+        family_spec = get_family_spec_by_id("ten_power_zero_composition")
 
     asks_error_step = "¿en qué paso" in text or "en que paso" in text or "primer error" in text
     has_unknown = any(token in xml for token in ("<mi>x</mi>", "<mi>y</mi>", "<mi>z</mi>"))
@@ -260,6 +271,13 @@ def infer_operation_signature(atom_titles: list[str], main_skill: str = "") -> s
     return "generic_same_construct"
 
 
+def looks_like_zero_button_composition(text: str, xml: str) -> bool:
+    lowered = f"{text} {xml}".lower()
+    button_markers = ("[00]", "[000]", "00", "000", "botones", "ceros", "cero")
+    ten_markers = ("10^", "10 ", "10)", "número 1000", "numero 1000", "potencia de 10")
+    return any(marker in lowered for marker in button_markers) and any(marker in lowered for marker in ten_markers)
+
+
 def looks_like_claim_evaluation(text: str) -> bool:
     markers = ("afirmación", "afirmacion", "i.", "ii.", "iii.", "correcta", "incorrecta")
     hits = sum(1 for marker in markers if marker in text)
@@ -348,6 +366,8 @@ def infer_cognitive_action(
     skill = str(main_skill or "").upper()
     if profile["claim_evaluation"]:
         return "evaluate_claims"
+    if profile["operation_signature"] == "ten_power_zero_composition":
+        return "compute_value"
     if profile["operation_signature"] == "property_justification":
         return "justify_property"
     if profile["representation_interpretation"] or skill == "REP":
@@ -382,6 +402,8 @@ def infer_solution_structure(
 
     if profile["claim_evaluation"]:
         return "data_to_claim_check"
+    if profile["operation_signature"] == "ten_power_zero_composition":
+        return "direct_single_step"
     if profile["operation_signature"] == "property_justification":
         return "property_justification"
     if profile["representation_interpretation"]:

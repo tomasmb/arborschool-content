@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 import xml.etree.ElementTree as ET
 
-from app.question_variants.postprocess.repair_utils import NS, clone_element, format_number, parse_number
+from app.question_variants.postprocess.repair_utils import NS, clone_element, format_number, parse_number, serialize_xml
 from app.question_variants.qti_validation_utils import extract_question_text
 
 
@@ -24,10 +24,10 @@ def repair_linear_equation_variant(qti_xml: str) -> str:
 
     bundle_count, bundle_total, fixed_amount, target_amount = parsed
     if bundle_count == 0:
-        return ET.tostring(root, encoding="unicode")
+        return serialize_xml(root)
     rate = bundle_total / bundle_count
     if abs(rate) < 1e-9:
-        return ET.tostring(root, encoding="unicode")
+        return serialize_xml(root)
 
     correct_value = (target_amount - fixed_amount) / rate
     candidate_values = [fixed_amount / rate, target_amount / rate, (target_amount + fixed_amount) / rate]
@@ -35,17 +35,17 @@ def repair_linear_equation_variant(qti_xml: str) -> str:
     rounded_values: list[int] = []
     for value in values:
         if value <= 0 or abs(value - round(value)) > 1e-9:
-            return ET.tostring(root, encoding="unicode")
+            return serialize_xml(root)
         rounded_values.append(int(round(value)))
     if len(set(rounded_values)) != 4:
-        return ET.tostring(root, encoding="unicode")
+        return serialize_xml(root)
 
     choice_nodes = root.findall(".//qti:qti-simple-choice", NS) or root.findall(".//{*}qti-simple-choice")
     if len(choice_nodes) != 4:
-        return ET.tostring(root, encoding="unicode")
+        return serialize_xml(root)
     correct_id = _find_correct_identifier(root)
     if not correct_id:
-        return ET.tostring(root, encoding="unicode")
+        return serialize_xml(root)
 
     distractors = [str(value) for value in rounded_values[1:]]
     next_distractor = iter(distractors)
@@ -55,7 +55,7 @@ def repair_linear_equation_variant(qti_xml: str) -> str:
         else:
             choice.text = next(next_distractor)
 
-    return ET.tostring(root, encoding="unicode")
+    return serialize_xml(root)
 
 
 def _find_correct_identifier(root: ET.Element) -> str:

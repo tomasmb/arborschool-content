@@ -6,6 +6,11 @@ import re
 import xml.etree.ElementTree as ET
 
 NS = {"qti": "http://www.imsglobal.org/xsd/imsqtiasi_v3p0"}
+QTI_NS = "http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+MATHML_NS = "http://www.w3.org/1998/Math/MathML"
+
+ET.register_namespace("", QTI_NS)
+ET.register_namespace("m", MATHML_NS)
 
 
 def parse_number(text: str) -> float | None:
@@ -30,4 +35,8 @@ def format_number(value: float) -> str:
 
 
 def clone_element(element: ET.Element) -> ET.Element:
-    return ET.fromstring(ET.tostring(element, encoding="unicode"))
+    return ET.fromstring(serialize_xml(element))
+
+
+def serialize_xml(element: ET.Element) -> str:
+    return ET.tostring(element, encoding="unicode")

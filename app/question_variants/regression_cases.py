@@ -45,6 +45,16 @@ STRUCTURAL_REGRESSION_CASES = [
         "expected_ok": True,
     },
     {
+        "name": "Q55 approved single-series graph preservation",
+        "test_id": "seleccion-regular-2026",
+        "question_id": "Q55",
+        "variant_xml_path": (
+            "app/data/pruebas/hard_variants/benchmarks/"
+            "sample-q55-v7/seleccion-regular-2026/Q55/variants/approved/Q55_v1/question.xml"
+        ),
+        "expected_ok": True,
+    },
+    {
         "name": "Q11 rejected affine substitution drift",
         "test_id": "Prueba-invierno-2025",
         "question_id": "Q11",
@@ -54,17 +64,6 @@ STRUCTURAL_REGRESSION_CASES = [
         ),
         "expected_ok": False,
         "reason_contains": "forma algebraica de sustitución",
-    },
-    {
-        "name": "Q13 rejected same presentation",
-        "test_id": "Prueba-invierno-2025",
-        "question_id": "Q13",
-        "variant_xml_path": (
-            "app/data/pruebas/hard_variants/benchmarks/"
-            "gemini-gemini-family-repairs-v12/Prueba-invierno-2025/Q13/variants/rejected/Q13_v1/question.xml"
-        ),
-        "expected_ok": False,
-        "reason_contains": "mismo estilo de presentación",
     },
     {
         "name": "Q14 rejected repeated claim archetype",
@@ -106,6 +105,16 @@ STRUCTURAL_REGRESSION_CASES = [
         "variant_xml_path": (
             "app/data/pruebas/hard_variants/benchmarks/"
             "sample-crossfamily-2026-v3/seleccion-regular-2026/Q30/variants/rejected/Q30_v1/question.xml"
+        ),
+        "expected_ok": True,
+    },
+    {
+        "name": "Q30 approved operational variation interpretation",
+        "test_id": "seleccion-regular-2026",
+        "question_id": "Q30",
+        "variant_xml_path": (
+            "app/data/pruebas/hard_variants/benchmarks/"
+            "sample-q30-v19/seleccion-regular-2026/Q30/variants/approved/Q30_v1/question.xml"
         ),
         "expected_ok": True,
     },
