@@ -151,7 +151,7 @@ def main():
         llm_service_gemini = build_text_service("gemini")
         
         for report in reports:
-            q_id = report.question_id
+            q_id = report.source_question_id
             if not report.variants:
                 continue
                 
