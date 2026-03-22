@@ -170,6 +170,7 @@ class PipelineConfig:
     validate_variants: bool = True
     enable_feedback_pipeline: bool = False
     save_rejected: bool = True
+    max_retries_per_variant: int = 1  # Re-generate rejected variants with feedback
     output_dir: str = "app/data/pruebas/hard_variants"
 
 
@@ -215,6 +216,8 @@ class GenerationReport:
     total_generated: int = 0
     total_approved: int = 0
     total_rejected: int = 0
+    total_retried: int = 0
+    total_approved_on_retry: int = 0
     variants: List[str] = field(default_factory=list)
     errors: List[str] = field(default_factory=list)
     stage_failures: Dict[str, int] = field(default_factory=dict)

@@ -18,8 +18,9 @@ from app.question_variants.models import (
     VariantQuestion,
 )
 from app.question_variants.prompt_context import build_prompt_source_snapshot
-from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
+from app.question_variants.contracts.structural_profile import build_construct_contract
 from app.question_variants.postprocess.generation_parsing import parse_generation_response
+from app.question_variants.shared_helpers import build_source_structural_profile, extract_visual_context
 
 class VariantGenerator:
     """Generates variant questions from source exemplars."""
@@ -161,7 +162,7 @@ class VariantGenerator:
         # Get difficulty info
         diff = source.difficulty
         diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
-        structural_profile = self._build_structural_profile(source)
+        structural_profile = build_source_structural_profile(source)
         construct_contract = build_construct_contract(
             source.question_text,
             source.qti_xml,
@@ -171,7 +172,7 @@ class VariantGenerator:
             source.choices,
             source.correct_answer,
         )
-        visual_context = self._extract_visual_context(source.qti_xml)
+        visual_context = extract_visual_context(source.qti_xml)
         # Check for image info and add instruction if decorative
         image_info = source.metadata.get("image_info", {})
         image_instruction = ""
@@ -183,12 +184,11 @@ class VariantGenerator:
             )
         elif source.image_urls:
             image_instruction = (
-                "7. ESTA PREGUNTA DEPENDE DE SOPORTE VISUAL. La variante DEBE ser autocontenida: "
-                "debes incorporar los datos cuantitativos de la representación en texto visible o en una tabla "
-                "dentro del item-body, y preferir tabla/lista textual como representación primaria. "
-                "Puedes incluir <img>/<object>, pero NO dependas solo del alt ni de un placeholder. "
-                "NO puedes mencionar figura, diagrama, gráfico o infografía si no dejas también los datos explícitos "
-                "que permitan resolver la pregunta sin ambigüedad."
+                "7. ESTA PREGUNTA DEPENDE DE SOPORTE VISUAL. Si el contrato requiere interpretación de representación "
+                "(ej. gráficos, infografías, geometría), DEBES MANTENER la representación visual como evidencia primaria. "
+                "NO la reemplaces por una tabla o lista de texto explícita que evite la interpretación visual. "
+                "Para la nueva imagen, incluye una etiqueta <img src='requiere_nueva_imagen.png' alt='[DESCRIBE EXACTAMENTE "
+                "CÓMO DEBE DIBUJARSE LA NUEVA IMAGEN, CON TODOS LOS DATOS Y FORMAS NECESARIAS]'/>."
             )
         else:
             image_instruction = (
@@ -274,6 +274,11 @@ el constructo matemático evaluado y respetando el contrato estructural.
     No uses valores arbitrarios o absurdos; mantén coherencia de escala con la respuesta correcta.
 15. Debes realizar de verdad al menos 2 ejes no mecanizables y poder declararlos explícitamente
     en el self-check final.
+16. PROTECCIÓN CONTRA DRIFT DE CONSTRUCTO:
+    - NO cambies la polaridad argumentativa (ej. si la fuente pide refutar, no pidas justificar).
+    - NO cambies la polaridad extrema (si la fuente pide el "máximo/mayor", no pidas el "mínimo/menor").
+    - NO cambies el patrón de cambio porcentual (ej. aumento vs descuento deben mantenerse).
+    - NO modifiques la cantidad de series en un gráfico (si hay una serie, no agregues dos).
 {family_rules}
 {image_instruction}
 {blueprint_instruction}
@@ -344,36 +349,8 @@ IMPORTANTE: El QTI XML debe:
 """
         return prompt
 
-    def _build_structural_profile(self, source: SourceQuestion) -> Dict[str, Any]:
-        profile = build_structural_profile(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
-        )
-        profile["source_has_visual_support"] = bool(source.image_urls)
-        profile["allows_new_visual_representation"] = bool(source.image_urls)
-        profile["must_preserve_error_analysis"] = profile["task_form"] == "error_analysis"
-        profile["allows_unknowns"] = profile["introduces_unknowns"]
-        return profile
-
-    def _extract_visual_context(self, qti_xml: str) -> str:
-        try:
-            root = ET.fromstring(qti_xml)
-        except ET.ParseError:
-            return ""
-
-        descriptions: list[str] = []
-        for element in root.findall(".//{*}img"):
-            alt = (element.attrib.get("alt") or "").strip()
-            if alt:
-                descriptions.append(alt)
-        for element in root.findall(".//{*}object"):
-            label = (element.attrib.get("aria-label") or element.attrib.get("label") or "").strip()
-            if label:
-                descriptions.append(label)
-        return " | ".join(descriptions)
+    # _build_structural_profile and _extract_visual_context removed:
+    # now use shared_helpers.build_source_structural_profile and extract_visual_context
 
     def _parse_response(self, response: str, source: SourceQuestion) -> List[Dict[str, Any]]:
         """Parse the LLM response into variant data."""
@@ -425,3 +402,63 @@ IMPORTANTE: El QTI XML debe:
             }
 
         return metadata
+
+    def regenerate_with_feedback(
+        self,
+        source: SourceQuestion,
+        blueprint: VariantBlueprint,
+        rejection_reason: str,
+    ) -> Optional[VariantQuestion]:
+        """Re-generate a single variant using the rejection reason as feedback.
+
+        Args:
+            source: The source question.
+            blueprint: The original blueprint for this variant.
+            rejection_reason: Why the previous attempt was rejected.
+
+        Returns:
+            A new VariantQuestion if generation succeeds, None otherwise.
+        """
+        print(f"    🔄 Retrying {blueprint.variant_id} with rejection feedback...")
+
+        base_prompt = self._build_generation_prompt(source, 1, [blueprint])
+        feedback_section = f"""
+<feedback_del_intento_anterior>
+Tu variante anterior para el blueprint {blueprint.variant_id} fue RECHAZADA por la siguiente razón:
+
+"{rejection_reason}"
+
+DEBES corregir este problema específico en tu nuevo intento.
+Genera una variante que:
+1. Resuelva exactamente el problema descrito arriba
+2. Siga respetando todas las reglas del contrato y del blueprint
+3. Sea diferente de la variante rechazada
+</feedback_del_intento_anterior>
+"""
+        prompt_with_feedback = base_prompt + feedback_section
+
+        try:
+            response = self.service.generate_text(
+                prompt_with_feedback,
+                response_mime_type="application/json",
+                temperature=self.config.temperature + 0.1,  # Slight bump for diversity
+            )
+            variants_data = parse_generation_response(response)
+            if not variants_data:
+                print(f"    ⚠️ Retry failed to parse response for {blueprint.variant_id}")
+                return None
+
+            generated = self._to_variant_objects(source, variants_data[:1], [blueprint])
+            if generated:
+                variant = generated[0]
+                variant.metadata["retry_context"] = {
+                    "is_retry": True,
+                    "original_rejection_reason": rejection_reason,
+                }
+                print(f"    ✅ Retry generated new variant for {blueprint.variant_id}")
+                return variant
+            return None
+        except Exception as e:
+            print(f"    ⚠️ Retry error for {blueprint.variant_id}: {e}")
+            self.last_error = str(e)
+            return None

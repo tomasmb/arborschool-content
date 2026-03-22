@@ -15,7 +15,8 @@ from app.question_variants.contracts.family_specs import build_family_prompt_rul
 from app.question_variants.llm_service import build_text_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantBlueprint
 from app.question_variants.prompt_context import build_prompt_source_snapshot
-from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
+from app.question_variants.contracts.structural_profile import build_construct_contract
+from app.question_variants.shared_helpers import build_source_structural_profile, extract_visual_context
 
 
 class VariantPlanner:
@@ -64,7 +65,7 @@ class VariantPlanner:
     def _build_planning_prompt(self, source: SourceQuestion, n: int) -> str:
         diff = source.difficulty
         diff_text = f"{diff.get('level', 'Medium')} (score: {diff.get('score', 0.5)})"
-        structural_profile = self._build_structural_profile(source)
+        structural_profile = build_source_structural_profile(source)
         construct_contract = build_construct_contract(
             source.question_text,
             source.qti_xml,
@@ -74,7 +75,7 @@ class VariantPlanner:
             source.choices,
             source.correct_answer,
         )
-        visual_context = self._extract_visual_context(source.qti_xml)
+        visual_context = extract_visual_context(source.qti_xml)
         atoms_desc = []
         for atom in source.primary_atoms:
             title = atom.get("atom_title", "N/A")
@@ -159,36 +160,8 @@ Devuelve SOLO JSON:
 </formato_respuesta>
 """
 
-    def _build_structural_profile(self, source: SourceQuestion) -> Dict[str, Any]:
-        profile = build_structural_profile(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
-        )
-        profile["requires_image"] = bool(source.image_urls)
-        profile["allows_new_visual_representation"] = bool(source.image_urls)
-        profile["must_preserve_error_analysis"] = profile["task_form"] == "error_analysis"
-        profile["allows_unknowns"] = profile["introduces_unknowns"]
-        return profile
-
-    def _extract_visual_context(self, qti_xml: str) -> str:
-        try:
-            root = ET.fromstring(qti_xml)
-        except ET.ParseError:
-            return ""
-
-        descriptions: list[str] = []
-        for element in root.findall(".//{*}img"):
-            alt = (element.attrib.get("alt") or "").strip()
-            if alt:
-                descriptions.append(alt)
-        for element in root.findall(".//{*}object"):
-            label = (element.attrib.get("aria-label") or element.attrib.get("label") or "").strip()
-            if label:
-                descriptions.append(label)
-        return " | ".join(descriptions)
+    # _build_structural_profile and _extract_visual_context removed:
+    # now use shared_helpers.build_source_structural_profile and extract_visual_context
 
     def _parse_response(self, response: str) -> List[VariantBlueprint]:
         data = self._parse_json(response)

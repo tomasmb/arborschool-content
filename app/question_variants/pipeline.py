@@ -128,7 +128,14 @@ class VariantPipeline:
             return report
 
         approved_variants: list[VariantQuestion] = []
+        all_variants: list[VariantQuestion] = []  # Track all (for rejected save)
         variant_results: dict[str, VariantResult] = {}
+
+        # Map variant_id to blueprint for retry
+        blueprint_map: dict[str, VariantBlueprint] = {}
+        if blueprints:
+            for bp in blueprints:
+                blueprint_map[bp.variant_id] = bp
 
         for variant in variants:
             if self.config.enable_feedback_pipeline:
@@ -147,54 +154,49 @@ class VariantPipeline:
             if result.success and result.qti_xml:
                 # Update variant with enriched QTI XML
                 variant.qti_xml = result.qti_xml
-                original_qti = variant.qti_xml
-                variant.qti_xml = normalize_variant_presentation(
-                    variant.qti_xml,
-                    str(source_contract.get("operation_signature") or ""),
-                    str(source_contract.get("task_form") or ""),
-                    str(source_contract.get("selection_load") or "not_applicable"),
+                approved, rejection_reason = self._postprocess_and_validate(
+                    variant, source, source_contract, approved_variants, report,
                 )
-                normalized_qti = variant.qti_xml
-                variant.qti_xml = repair_family_specific_qti(
-                    variant.qti_xml,
-                    source_contract,
-                )
-                repaired_qti = variant.qti_xml
-                variant.metadata["construct_contract"] = build_construct_contract(
-                    extract_question_text(variant.qti_xml),
-                    variant.qti_xml,
-                    self.validator._has_visual_support(variant.qti_xml),
-                    source.primary_atoms,
-                    source.metadata,
-                    extract_choices(variant.qti_xml),
-                    find_correct_answer(variant.qti_xml),
-                )
-                variant.metadata["postprocess_summary"] = {
-                    "presentation_normalized": normalized_qti != original_qti,
-                    "family_repaired": repaired_qti != normalized_qti,
-                }
 
-                # Run semantic validation (concept alignment, difficulty)
-                if self.config.validate_variants:
-                    semantic_result = self.validator.validate(variant, source)
-                    variant.validation_result = semantic_result
-
-                    if semantic_result.is_approved:
-                        approved_variants.append(variant)
-                        report.total_approved += 1
-                    else:
-                        report.total_rejected += 1
-                        report.stage_failures["semantic_validation"] = report.stage_failures.get("semantic_validation", 0) + 1
-                        if semantic_result.rejection_reason:
-                            report.rejection_reasons.append(semantic_result.rejection_reason)
-                        logger.warning(
-                            f"Variant {variant.variant_id} failed semantic validation: "
-                            f"{semantic_result.rejection_reason}"
+                # Retry with feedback if rejected and has a blueprint
+                if (
+                    not approved
+                    and rejection_reason
+                    and self.config.max_retries_per_variant > 0
+                    and variant.variant_id in blueprint_map
+                ):
+                    bp = blueprint_map[variant.variant_id]
+                    for attempt in range(self.config.max_retries_per_variant):
+                        report.total_retried += 1
+                        retry_variant = self.generator.regenerate_with_feedback(
+                            source, bp, rejection_reason,
                         )
-                else:
-                    # Skip semantic validation
-                    approved_variants.append(variant)
-                    report.total_approved += 1
+                        if retry_variant is None:
+                            break
+                        all_variants.append(retry_variant)
+                        report.total_generated += 1
+                        # Run through feedback pipeline if enabled
+                        if self.config.enable_feedback_pipeline:
+                            retry_result = self._process_variant_through_pipeline(retry_variant, source)
+                        else:
+                            retry_result = VariantResult(
+                                success=True,
+                                variant_id=retry_variant.variant_id,
+                                qti_xml=retry_variant.qti_xml,
+                            )
+                        variant_results[retry_variant.variant_id + f"_retry{attempt+1}"] = retry_result
+                        if retry_result.success and retry_result.qti_xml:
+                            retry_variant.qti_xml = retry_result.qti_xml
+                            retry_approved, retry_rejection = self._postprocess_and_validate(
+                                retry_variant, source, source_contract, approved_variants, report,
+                            )
+                            if retry_approved:
+                                report.total_approved_on_retry += 1
+                                break
+                            rejection_reason = retry_rejection or rejection_reason
+                        else:
+                            break
+
             else:
                 report.total_rejected += 1
                 stage_key = result.stage_failed or "pipeline"
@@ -205,6 +207,8 @@ class VariantPipeline:
                     f"Variant {variant.variant_id} failed feedback pipeline: "
                     f"stage={result.stage_failed}, error={result.error}"
                 )
+
+            all_variants.append(variant)
 
         # Save approved variants
         for variant in approved_variants:
@@ -219,7 +223,7 @@ class VariantPipeline:
 
         # Save rejected variants if configured
         if self.config.save_rejected:
-            rejected = [v for v in variants if v not in approved_variants]
+            rejected = [v for v in all_variants if v not in approved_variants]
             for variant in rejected:
                 save_variant(
                     self.config.output_dir,
@@ -234,6 +238,91 @@ class VariantPipeline:
         save_report(self.config.output_dir, report)
 
         return report
+
+    def _postprocess_and_validate(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+        source_contract: dict,
+        approved_variants: list[VariantQuestion],
+        report: GenerationReport,
+    ) -> tuple[bool, str | None]:
+        """Postprocess and validate a single variant.
+
+        Returns:
+            Tuple of (is_approved, rejection_reason or None).
+        """
+        from app.question_variants.qti_validation_utils import surface_similarity
+
+        original_qti = variant.qti_xml
+        variant.qti_xml = normalize_variant_presentation(
+            variant.qti_xml,
+            str(source_contract.get("operation_signature") or ""),
+            str(source_contract.get("task_form") or ""),
+            str(source_contract.get("selection_load") or "not_applicable"),
+        )
+        normalized_qti = variant.qti_xml
+        variant.qti_xml = repair_family_specific_qti(
+            variant.qti_xml,
+            source_contract,
+        )
+        repaired_qti = variant.qti_xml
+        variant.metadata["construct_contract"] = build_construct_contract(
+            extract_question_text(variant.qti_xml),
+            variant.qti_xml,
+            self.validator._has_visual_support(variant.qti_xml),
+            source.primary_atoms,
+            source.metadata,
+            extract_choices(variant.qti_xml),
+            find_correct_answer(variant.qti_xml),
+        )
+        variant.metadata["postprocess_summary"] = {
+            "presentation_normalized": normalized_qti != original_qti,
+            "family_repaired": repaired_qti != normalized_qti,
+        }
+
+        # Run semantic validation (concept alignment, difficulty)
+        if self.config.validate_variants:
+            semantic_result = self.validator.validate(variant, source)
+            variant.validation_result = semantic_result
+
+            if semantic_result.is_approved:
+                # Inter-variant deduplication: check against already approved
+                variant_text = extract_question_text(variant.qti_xml)
+                for approved in approved_variants:
+                    approved_text = extract_question_text(approved.qti_xml)
+                    similarity = surface_similarity(variant_text, approved_text)
+                    if similarity > 0.85:
+                        report.total_rejected += 1
+                        reason = (
+                            f"Demasiado similar a {approved.variant_id} "
+                            f"(similitud={similarity:.2f}). Se necesita más diversidad."
+                        )
+                        report.rejection_reasons.append(reason)
+                        logger.warning(
+                            f"Variant {variant.variant_id} too similar to "
+                            f"{approved.variant_id}: {similarity:.2f}"
+                        )
+                        return False, reason
+
+                approved_variants.append(variant)
+                report.total_approved += 1
+                return True, None
+            else:
+                report.total_rejected += 1
+                report.stage_failures["semantic_validation"] = report.stage_failures.get("semantic_validation", 0) + 1
+                if semantic_result.rejection_reason:
+                    report.rejection_reasons.append(semantic_result.rejection_reason)
+                logger.warning(
+                    f"Variant {variant.variant_id} failed semantic validation: "
+                    f"{semantic_result.rejection_reason}"
+                )
+                return False, semantic_result.rejection_reason
+        else:
+            # Skip semantic validation
+            approved_variants.append(variant)
+            report.total_approved += 1
+            return True, None
 
     def _process_variant_through_pipeline(
         self, variant: VariantQuestion, source: SourceQuestion

@@ -10,8 +10,11 @@ This module validates generated variants to ensure they:
 """
 
 import json
+import logging
 import re
 import xml.etree.ElementTree as ET
+
+logger = logging.getLogger(__name__)
 from typing import Optional
 
 from app.question_variants.llm_service import build_text_service
@@ -422,9 +425,9 @@ Verifica cuidadosamente:
    - No puede ser más abstracta ni más concreta
 
 2. **DIFICULTAD ACEPTABLE**: ¿Mantiene la banda de dificultad objetivo?
-   - Debe ser igual o, si el diseño lo permite, levemente más difícil
-   - No puede subir de forma que cambie el tipo de razonamiento, la cantidad de pasos
-     o la complejidad estructural del ítem
+   - Debe ser igual o levemente más difícil para lograr la versión "dura" y no mecanizable.
+   - SE PERMITE y es esperado aumentar ligeramente la cantidad de pasos cognitivos o requerir un cálculo intermedio conceptual si esto sirve para des-mecanizar la pregunta.
+   - Solo rechaza si sube a una banda de dificultad completamente diferente (ej. si requiere materia universitaria o técnicas fuera del currículum escolar).
 
 3. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
    - Resuelve el problema paso a paso
@@ -512,11 +515,30 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
 
             if not answer_correct and self._llm_text_asserts_correctness(calculation_steps, rejection_reason):
-                answer_correct = True
-                if self._is_inconsistency_only_rejection(rejection_reason):
-                    rejection_reason = ""
-                    if concept_aligned and difficulty_acceptable and distractors_plausible and non_mechanizable:
-                        verdict = ValidationVerdict.APPROVED
+                # Safety check: don't override if the text contains qualifiers
+                # that suggest the LLM found issues despite correct math
+                combined = f"{calculation_steps} {rejection_reason}".lower()
+                qualifier_phrases = (
+                    "sin embargo", "pero no cumple", "no obstante",
+                    "a pesar de", "aunque la respuesta", "no mantiene",
+                    "no evalúa", "no evalua", "no cumple suficientemente",
+                )
+                has_qualifiers = any(q in combined for q in qualifier_phrases)
+                if not has_qualifiers:
+                    logger.info(
+                        "Overriding answer_correct=False → True based on LLM text "
+                        "asserting correctness (no contradictory qualifiers found)"
+                    )
+                    answer_correct = True
+                    if self._is_inconsistency_only_rejection(rejection_reason):
+                        rejection_reason = ""
+                        if concept_aligned and difficulty_acceptable and distractors_plausible and non_mechanizable:
+                            verdict = ValidationVerdict.APPROVED
+                else:
+                    logger.info(
+                        "Skipping answer_correct override: LLM text asserts correctness "
+                        "but contains qualifying phrases suggesting other issues"
+                    )
 
             if not answer_correct:
                 verdict = ValidationVerdict.REJECTED

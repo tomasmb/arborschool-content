@@ -9,7 +9,9 @@ from typing import Any, List, Optional, Union
 
 import requests
 from dotenv import load_dotenv
-from PIL import Image
+# PIL is imported lazily inside _pil_to_base64 to avoid breaking
+# text-only callers when Pillow is not installed or has arch issues.
+
 
 _logger = logging.getLogger(__name__)
 
@@ -226,8 +228,9 @@ class OpenAIClient:
         self._model = model
         self._url = "https://api.openai.com/v1/chat/completions"
 
-    def _pil_to_base64(self, pil_img: Image.Image) -> str:
+    def _pil_to_base64(self, pil_img: "Image.Image") -> str:
         """Convert a PIL image to a base64-encoded JPEG string."""
+        from PIL import Image  # Lazy import — only needed for multimodal calls
         buffered = io.BytesIO()
         if pil_img.mode in ("RGBA", "P"):
             pil_img = pil_img.convert("RGB")

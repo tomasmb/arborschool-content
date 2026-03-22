@@ -74,6 +74,12 @@ def main():
         action="store_true",
         help="Skip Python DNS preflight for configured providers (not recommended)",
     )
+    parser.add_argument(
+        "--max-retries",
+        type=int,
+        default=1,
+        help="Max retry attempts per rejected variant with feedback (default: 1, 0 to disable)",
+    )
 
     args = parser.parse_args()
 
@@ -96,6 +102,7 @@ def main():
         validator_model=args.validator_model,
         validate_variants=not args.skip_validation,
         enable_feedback_pipeline=args.enable_feedback_pipeline,
+        max_retries_per_variant=args.max_retries,
         output_dir=args.output_dir,
     )
 
@@ -125,6 +132,47 @@ def main():
         if total_approved == 0:
             print("\n⚠️ No se aprobó ninguna variante. Revisa los logs para más detalles.")
             sys.exit(1)
+
+        # Post-Processing: Generate images for approved variants
+        print(f"\n{'='*60}\nPIPELINE: Generación de Imágenes (Estrategia Dual)\n{'='*60}")
+        from app.question_variants.generate_variant_images import process_variant_images
+        from app.image_generation.core import ImageGenerationEngine
+        from app.llm_clients import load_default_openai_client
+        from app.question_variants.llm_service import build_text_service
+        from pathlib import Path
+        
+        # Load heavy LLM dependencies only if we need them
+        openai_client = load_default_openai_client()
+        image_engine = ImageGenerationEngine(
+            openai_client=openai_client,
+            gemini_image_client=None,
+        )
+        image_engine.ensure_gemini()
+        llm_service_gemini = build_text_service("gemini")
+        
+        for report in reports:
+            q_id = report.question_id
+            if not report.variants:
+                continue
+                
+            base_dir = Path(args.output_dir) / args.source_test / q_id / "variants" / "approved"
+            for variant_id in report.variants:
+                xml_path = base_dir / variant_id / "question.xml"
+                if not xml_path.exists():
+                    continue
+                
+                try:
+                    process_variant_images(
+                        test_id=args.source_test,
+                        question_id=q_id,
+                        variant_id=variant_id,
+                        xml_path=xml_path,
+                        engine=image_engine,
+                        llm_service=llm_service_gemini,
+                        dry_run=False,
+                    )
+                except Exception as e:
+                    print(f"❌ Falló la generación de imágenes para {variant_id}: {e}")
 
     except KeyboardInterrupt:
         print("\n\n⚠️ Interrumpido por el usuario.")
