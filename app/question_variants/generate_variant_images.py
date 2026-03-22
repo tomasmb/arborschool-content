@@ -446,14 +446,13 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(description="Generate images for hard variants")
     parser.add_argument("--test", required=True, help="Test ID (e.g. Prueba-invierno-2025)")
-    parser.add_argument("--question", required=True, help="Question ID (e.g. Q65)")
+    parser.add_argument("--question", help="Specific Question ID (e.g. Q65). Required if --all-approved is not set.")
+    parser.add_argument("--all-approved", action="store_true", help="Process all approved variants for the given test.")
     parser.add_argument("--dry-run", action="store_true", help="Classify only, don't generate")
     args = parser.parse_args()
 
-    base_dir = Path("app/data/pruebas/hard_variants") / args.test / args.question / "variants" / "approved"
-    if not base_dir.exists():
-        logger.error(f"Directory not found: {base_dir}")
-        sys.exit(1)
+    if not args.question and not args.all_approved:
+        parser.error("You must specify either --question or --all-approved")
 
     # Load LLM services
     openai_client = load_default_openai_client()
@@ -462,25 +461,42 @@ def main() -> None:
         gemini_image_client=None,
     )
     engine.ensure_gemini()
-
     llm_service = build_text_service("gemini")  # For classification & prompt expansion
 
-    for variant_dir in sorted(base_dir.iterdir()):
-        if not variant_dir.is_dir():
-            continue
-        xml_path = variant_dir / "question.xml"
-        if not xml_path.exists():
-            continue
+    base_test_dir = Path("app/data/pruebas/hard_variants") / args.test
+    if not base_test_dir.exists():
+        logger.error(f"Test directory not found: {base_test_dir}")
+        sys.exit(1)
+
+    questions_to_process = []
+    if args.all_approved:
+        questions_to_process = [d for d in base_test_dir.iterdir() if d.is_dir()]
+    else:
+        questions_to_process = [base_test_dir / args.question]
+
+    for q_dir in sorted(questions_to_process):
+        q_id = q_dir.name
+        approved_dir = q_dir / "variants" / "approved"
         
-        process_variant_images(
-            test_id=args.test,
-            question_id=args.question,
-            variant_id=variant_dir.name,
-            xml_path=xml_path,
-            engine=engine,
-            llm_service=llm_service,
-            dry_run=args.dry_run,
-        )
+        if not approved_dir.exists() or not approved_dir.is_dir():
+            continue
+            
+        for variant_dir in sorted(approved_dir.iterdir()):
+            if not variant_dir.is_dir():
+                continue
+            xml_path = variant_dir / "question.xml"
+            if not xml_path.exists():
+                continue
+            
+            process_variant_images(
+                test_id=args.test,
+                question_id=q_id,
+                variant_id=variant_dir.name,
+                xml_path=xml_path,
+                engine=engine,
+                llm_service=llm_service,
+                dry_run=args.dry_run,
+            )
 
 if __name__ == "__main__":
     main()

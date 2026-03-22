@@ -9,7 +9,7 @@ from app.question_variants.io.source_loader import load_source_questions
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantQuestion
 from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
 from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
-from app.question_variants.regression_cases import STRUCTURAL_REGRESSION_CASES
+from app.question_variants.scripts.regression_cases import STRUCTURAL_REGRESSION_CASES
 from app.question_variants.variant_validator import VariantValidator
 
 

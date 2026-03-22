@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from app.question_variants.contract_smoke_cases import CONTRACT_SMOKE_CASES
+from app.question_variants.scripts.contract_smoke_cases import CONTRACT_SMOKE_CASES
 from app.question_variants.contracts.structural_profile import build_construct_contract
 from app.question_variants.io.source_loader import load_source_questions
 
