@@ -12,6 +12,7 @@ from app.llm_clients import load_default_gemini_service, load_default_openai_cli
 
 DEFAULT_GEMINI_MODEL = "gemini-3.1-pro-preview"
 DEFAULT_OPENAI_MODEL = "gpt-5.4"
+_VALID_REASONING_LEVELS = {"none", "low", "medium", "high"}
 
 
 class TextService(Protocol):
@@ -19,6 +20,20 @@ class TextService(Protocol):
 
     def generate_text(self, prompt: str | list[Any], **kwargs: Any) -> str:
         """Return plain text response."""
+
+
+def build_reasoning_kwargs(provider: str, reasoning_level: str | None) -> dict[str, Any]:
+    """Map a shared reasoning level to provider-specific request kwargs."""
+    normalized_provider = provider.strip().lower()
+    normalized_level = (reasoning_level or "none").strip().lower()
+    if normalized_level not in _VALID_REASONING_LEVELS:
+        raise ValueError(f"Unsupported reasoning level: {reasoning_level}")
+
+    if normalized_provider == "openai":
+        return {"reasoning_effort": normalized_level}
+    if normalized_provider == "gemini":
+        return {"thinking_level": normalized_level}
+    raise ValueError(f"Unsupported LLM provider: {provider}")
 
 
 @dataclass

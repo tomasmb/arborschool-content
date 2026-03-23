@@ -5,6 +5,25 @@ from __future__ import annotations
 from typing import Any
 
 
+LOW_NON_MECHANIZABLE_FAMILIES = {
+    "direct_proportion_reasoning",
+    "direct_percentage_calculation",
+    "ten_power_zero_composition",
+    "algebraic_expression_evaluation",
+    "integer_operations",
+    "decimal_number_operations",
+    "rational_number_operations",
+    "simple_probability",
+}
+
+HIGH_NON_MECHANIZABLE_FAMILIES = {
+    "graph_interpretation",
+    "argumentation_evaluation",
+    "property_justification",
+    "algebraic_model_translation",
+}
+
+
 FAMILY_SPECS: list[dict[str, Any]] = [
     {
         "family_id": "property_justification",
@@ -448,3 +467,13 @@ def get_family_spec_by_id(family_id: str) -> dict[str, Any]:
         if spec["family_id"] == wanted:
             return dict(spec)
     return {}
+
+
+def infer_non_mechanizable_expectation(family_id: str) -> str:
+    """Return the expected non-mechanizability ceiling for a family."""
+    normalized = str(family_id or "").strip()
+    if normalized in LOW_NON_MECHANIZABLE_FAMILIES:
+        return "low"
+    if normalized in HIGH_NON_MECHANIZABLE_FAMILIES:
+        return "high"
+    return "medium"

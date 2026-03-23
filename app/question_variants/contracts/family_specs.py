@@ -53,6 +53,12 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "No basta con cambiar etiquetas o contexto: cambia de verdad la organización de la evidencia o el arquetipo de afirmación correcta."
         )
+        source_claim_archetype = str(contract.get("correct_claim_archetype") or "")
+        if source_claim_archetype and source_claim_archetype != "other_claim":
+            rules.append(
+                f"La afirmación correcta NO puede repetir el mismo arquetipo semántico de la fuente ({source_claim_archetype}). "
+                "Debes elegir un arquetipo distinto dentro del mismo constructo."
+            )
     if op in {"direct_percentage_calculation", "percentage_increase_application"}:
         rules.append(
             "Debe seguir siendo un aumento/cálculo porcentual directo, no una modelación de varios pasos ni una interpretación abierta."

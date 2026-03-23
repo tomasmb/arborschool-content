@@ -152,6 +152,8 @@ class GeminiClient:
             generation_config["temperature"] = temperature
         if response_mime_type:
             generation_config["response_mime_type"] = response_mime_type
+        if thinking_level and thinking_level != "none":
+            generation_config["thinking_level"] = thinking_level
 
         # Relax safety filters to avoid false positives in math questions
         safety_settings = {
@@ -164,12 +166,32 @@ class GeminiClient:
         # Use longer timeout for large prompts
         timeout_seconds = request_timeout_seconds or 1200
         request_options = {"timeout": timeout_seconds}
-        response = self._model.generate_content(
-            prompt,
-            generation_config=generation_config if generation_config else None,
-            request_options=request_options,
-            safety_settings=safety_settings,
-        )
+        config_payload = generation_config if generation_config else None
+        try:
+            response = self._model.generate_content(
+                prompt,
+                generation_config=config_payload,
+                request_options=request_options,
+                safety_settings=safety_settings,
+            )
+        except (TypeError, ValueError) as exc:
+            # Some SDK versions may not support thinking_level yet.
+            unsupported_thinking = (
+                "thinking_level" in generation_config
+                and "thinking_level" in str(exc)
+                and "generationconfig" in str(exc).lower()
+            )
+            if unsupported_thinking:
+                fallback_config = dict(generation_config)
+                fallback_config.pop("thinking_level", None)
+                response = self._model.generate_content(
+                    prompt,
+                    generation_config=fallback_config if fallback_config else None,
+                    request_options=request_options,
+                    safety_settings=safety_settings,
+                )
+            else:
+                raise
 
         # Handle cases where response might be filtered or blocked
         if not response.candidates or not response.candidates[0].content:
@@ -576,12 +598,13 @@ class GeminiService:
         **kwargs: Any,
     ) -> str:
         """Generate text via Gemini, falling back to OpenAI on 429."""
-        _ = thinking_level or self._config.thinking_level
+        effective_thinking_level = thinking_level or self._config.thinking_level
         request_kwargs: dict[str, Any] = {**kwargs}
         if response_mime_type is not None:
             request_kwargs["response_mime_type"] = response_mime_type
         if temperature is not None:
             request_kwargs["temperature"] = temperature
+        request_kwargs["thinking_level"] = effective_thinking_level
 
         try:
             resp = self._client.generate_text(

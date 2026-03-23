@@ -12,7 +12,7 @@ import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
 from app.question_variants.contracts.family_specs import build_family_prompt_rules
-from app.question_variants.llm_service import build_text_service
+from app.question_variants.llm_service import build_reasoning_kwargs, build_text_service
 from app.question_variants.models import PipelineConfig, SourceQuestion, VariantBlueprint
 from app.question_variants.prompt_context import build_prompt_source_snapshot
 from app.question_variants.contracts.structural_profile import build_construct_contract
@@ -49,6 +49,10 @@ class VariantPlanner:
                 prompt,
                 response_mime_type="application/json",
                 temperature=0.0,
+                **build_reasoning_kwargs(
+                    self.config.planner_provider,
+                    self.config.planner_reasoning_level,
+                ),
             )
             plans = self._parse_response(response)
         except Exception as exc:
@@ -96,6 +100,13 @@ class VariantPlanner:
         family_rules = "\n".join(
             f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
         )
+        min_axes = 1 if str(construct_contract.get("non_mechanizable_expectation") or "medium") == "low" else 2
+        axes_policy = (
+            "En esta familia intrínsecamente rutinaria, basta con materializar 1 eje estructural fuerte "
+            "si la variante no queda superficial, mejora o preserva distractores plausibles y no es solo cambio de números."
+            if min_axes == 1
+            else "Debes materializar al menos 2 ejes estructurales relevantes o un cambio equivalente en profundidad."
+        )
 
         return f"""
 <role>
@@ -107,11 +118,12 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
 1. Cada variante debe evaluar EXACTAMENTE el mismo constructo.
 2. La dificultad debe ser igual o ligeramente mayor, nunca menor.
 3. No se permite variante por solo cambio de numeros/contexto superficial.
-4. Cada variante debe cambiar al menos 2 ejes estructurales:
+4. Cada variante debe cambiar al menos {min_axes} eje(s) estructural(es) fuertes, según la familia:
    - representacion (tabla/grafico/texto/diagrama),
    - forma de pregunta (directa/inferencial),
    - distractor dominante,
    - orden o dependencia de pasos.
+   Política específica: {axes_policy}
 5. Debe exigir comprension del por que del metodo, no receta mecanica.
 6. Si la fuente evalua afirmaciones basadas en datos, la variante debe seguir
    evaluando afirmaciones sobre un conjunto de datos explicito y autocontenido.
@@ -209,10 +221,15 @@ Devuelve SOLO JSON:
             source.correct_answer,
         )
         operation_signature = str(contract.get("operation_signature") or "")
+        expectation = str(contract.get("non_mechanizable_expectation") or "medium")
         plans: List[VariantBlueprint] = []
         for i in range(n):
             scenario_description = f"Variante {i + 1} del mismo constructo con cambio estructural controlado."
-            non_mechanizable_axes = ["forma_pregunta", "distractor_dominante"]
+            non_mechanizable_axes = (
+                ["distractor_dominante"]
+                if expectation == "low"
+                else ["forma_pregunta", "distractor_dominante"]
+            )
             required_reasoning = "Requiere justificar el metodo y evitar aplicacion mecanica."
             if operation_signature == "parameter_interpretation":
                 scenario_description = (

@@ -111,10 +111,22 @@ def infer_data_burden_score(question_text: str, profile: dict[str, bool | str]) 
 def infer_formula_shape(question_text: str, qti_xml: str, profile: dict[str, bool | str]) -> str:
     if profile["task_form"] != "substitute_expression":
         return "not_applicable"
+    lowered = f"{question_text} {qti_xml}".lower()
     xml_lower = qti_xml.lower()
     math_text = re.sub(r"\s+", "", qti_xml)
     if "<mo>+</mo>" in xml_lower or "+" in math_text:
         return "affine_substitution"
+    verbal_multiplicative_patterns = (
+        "se obtiene multiplicando",
+        "se calcula multiplicando",
+        "resulta de multiplicar",
+        "es igual a multiplicar",
+        "multiplicando la cantidad",
+        "multiplicando el número",
+        "multiplicando el numero",
+    )
+    if any(pattern in lowered for pattern in verbal_multiplicative_patterns):
+        return "pure_multiplicative_substitution"
     if "<mo>&#183;</mo>" in xml_lower or "<mo>*</mo>" in xml_lower or "·" in qti_xml:
         return "pure_multiplicative_substitution"
     return "generic_substitution"

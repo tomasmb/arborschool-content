@@ -34,7 +34,11 @@ from app.question_variants.contracts.contract_features import (
     infer_selection_load,
     infer_statistic_target_domain,
 )
-from app.question_variants.contracts.family_catalog import get_family_spec_by_id, resolve_family_spec
+from app.question_variants.contracts.family_catalog import (
+    get_family_spec_by_id,
+    infer_non_mechanizable_expectation,
+    resolve_family_spec,
+)
 
 
 def build_construct_contract(
@@ -105,6 +109,7 @@ def build_construct_contract(
         "primary_atoms": [atom.get("atom_id") for atom in primary_atoms],
         "primary_atom_titles": [atom.get("atom_title") for atom in primary_atoms],
         "family_id": profile["family_id"],
+        "non_mechanizable_expectation": infer_non_mechanizable_expectation(str(profile["family_id"])),
         "main_skill": main_skill,
         "difficulty_level": difficulty.get("level", ""),
         "difficulty_score": difficulty.get("score"),

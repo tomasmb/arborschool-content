@@ -65,10 +65,28 @@ def main():
     )
     parser.add_argument("--planner-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for blueprint planning")
     parser.add_argument("--planner-model", default=None, help="Optional explicit model for blueprint planning")
+    parser.add_argument(
+        "--planner-reasoning-level",
+        default="high",
+        choices=["none", "low", "medium", "high"],
+        help="Reasoning level for blueprint planning (default: high)",
+    )
     parser.add_argument("--generator-provider", default="gemini", choices=["gemini", "openai"], help="LLM provider for variant generation")
     parser.add_argument("--generator-model", default=None, help="Optional explicit model for variant generation")
+    parser.add_argument(
+        "--generator-reasoning-level",
+        default="medium",
+        choices=["none", "low", "medium", "high"],
+        help="Reasoning level for variant generation (default: medium)",
+    )
     parser.add_argument("--validator-provider", default="openai", choices=["gemini", "openai"], help="LLM provider for semantic validation")
     parser.add_argument("--validator-model", default=None, help="Optional explicit model for semantic validation")
+    parser.add_argument(
+        "--validator-reasoning-level",
+        default="medium",
+        choices=["none", "low", "medium", "high"],
+        help="Reasoning level for semantic validation (default: medium)",
+    )
     parser.add_argument(
         "--skip-network-preflight",
         action="store_true",
@@ -96,10 +114,13 @@ def main():
         llm_max_attempts=args.llm_max_attempts,
         planner_provider=args.planner_provider,
         planner_model=args.planner_model,
+        planner_reasoning_level=args.planner_reasoning_level,
         generator_provider=args.generator_provider,
         generator_model=args.generator_model,
+        generator_reasoning_level=args.generator_reasoning_level,
         validator_provider=args.validator_provider,
         validator_model=args.validator_model,
+        validator_reasoning_level=args.validator_reasoning_level,
         validate_variants=not args.skip_validation,
         enable_feedback_pipeline=args.enable_feedback_pipeline,
         max_retries_per_variant=args.max_retries,

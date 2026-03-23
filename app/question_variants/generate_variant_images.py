@@ -20,6 +20,7 @@ from pathlib import Path
 
 from app.image_generation.core import ImageGenerationEngine
 from app.llm_clients import load_default_openai_client
+from app.question_variants.llm_service import build_reasoning_kwargs
 
 logging.basicConfig(
     level=logging.INFO,
@@ -29,6 +30,7 @@ logger = logging.getLogger(__name__)
 
 _S3_DOMAIN = "paes-question-images.s3"
 _S3_PATH_PREFIX = "images/hard-variants/"
+_IMAGE_TEXT_REASONING_LEVEL = "medium"
 
 
 def _is_placeholder_src(src: str) -> bool:
@@ -305,6 +307,7 @@ def _classify_image(alt_text: str, llm_service) -> tuple[str, dict]:
         prompt,
         response_mime_type="application/json",
         temperature=0.0,
+        **build_reasoning_kwargs("gemini", _IMAGE_TEXT_REASONING_LEVEL),
     )
     # TextService returns str directly
     text = raw.text if hasattr(raw, 'text') else str(raw)
@@ -317,7 +320,11 @@ def _classify_image(alt_text: str, llm_service) -> tuple[str, dict]:
 def _expand_prompt(alt_text: str, stem_text: str, llm_service) -> str:
     """Use LLM to expand alt text into an ultra-detailed image generation prompt."""
     prompt = EXPAND_PROMPT.format(alt_text=alt_text, stem_text=stem_text)
-    raw = llm_service.generate_text(prompt, temperature=0.3)
+    raw = llm_service.generate_text(
+        prompt,
+        temperature=0.3,
+        **build_reasoning_kwargs("gemini", _IMAGE_TEXT_REASONING_LEVEL),
+    )
     text = raw.text if hasattr(raw, 'text') else str(raw)
     return text.strip()
 

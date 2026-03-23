@@ -145,10 +145,13 @@ class PipelineConfig:
         llm_max_attempts: Max retry attempts for variant LLM stages
         planner_provider: Provider used for blueprint planning
         planner_model: Optional explicit model for blueprint planning
+        planner_reasoning_level: Reasoning intensity for blueprint planning
         generator_provider: Provider used for QTI variant generation
         generator_model: Optional explicit model for QTI variant generation
+        generator_reasoning_level: Reasoning intensity for QTI generation
         validator_provider: Provider used for semantic gate validation
         validator_model: Optional explicit model for semantic gate validation
+        validator_reasoning_level: Reasoning intensity for semantic validation
         validate_variants: Whether to run validation phase
         enable_feedback_pipeline: Whether to enrich variants with feedback before
             semantic validation. Disabled by default for the hard-variants pipeline;
@@ -163,10 +166,13 @@ class PipelineConfig:
     llm_max_attempts: int = 2
     planner_provider: str = "gemini"
     planner_model: Optional[str] = None
+    planner_reasoning_level: str = "high"
     generator_provider: str = "gemini"
     generator_model: Optional[str] = None
+    generator_reasoning_level: str = "medium"
     validator_provider: str = "openai"
     validator_model: Optional[str] = None
+    validator_reasoning_level: str = "medium"
     validate_variants: bool = True
     enable_feedback_pipeline: bool = False
     save_rejected: bool = True

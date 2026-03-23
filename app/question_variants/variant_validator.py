@@ -17,7 +17,7 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 from typing import Optional
 
-from app.question_variants.llm_service import build_text_service
+from app.question_variants.llm_service import build_reasoning_kwargs, build_text_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -36,6 +36,7 @@ from app.question_variants.contracts.semantic_guardrails import (
     has_numeric_option_scale_outlier,
     inflates_data_burden,
     is_insufficiently_different,
+    required_non_mechanizable_axes,
     repeats_claim_archetype,
 )
 from app.question_variants.contracts.preservation_policy import (
@@ -478,6 +479,10 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 prompt,
                 response_mime_type="application/json",
                 temperature=0.0,  # Deterministic for validation
+                **build_reasoning_kwargs(
+                    self.config.validator_provider,
+                    self.config.validator_reasoning_level,
+                ),
             )
 
             result = self._parse_validation_response(response)
@@ -572,22 +577,29 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             )
 
     def _build_non_mechanizable_policy(self, source_contract: dict[str, object]) -> str:
-        if (
-            str(source_contract.get("operation_signature")) == "direct_proportion_reasoning"
-            and str(source_contract.get("task_form")) == "direct_resolution"
-        ):
+        expectation = str(source_contract.get("non_mechanizable_expectation") or "medium")
+        min_axes = required_non_mechanizable_axes(source_contract)
+        family_id = str(source_contract.get("family_id") or "")
+
+        if expectation == "low":
             return (
-                "En esta familia rutinaria, puede ser aceptable cambiar solo 1 eje estructural fuerte "
-                "(por ejemplo, pasar a registro del caso o volver explícita la semántica de los distractores), "
-                "siempre que los distractores sean plausibles y la variante no sea solo cambio de números."
+                "En esta familia intrínsecamente rutinaria, puede ser aceptable materializar solo "
+                f"{min_axes} eje estructural fuerte, siempre que la variante no sea solo cambio de números, "
+                "mejore o preserve la calidad de distractores y no quede casi idéntica a la fuente."
             )
-        if str(source_contract.get("operation_signature")) == "parameter_interpretation":
+        if family_id == "parameter_interpretation":
             return (
                 "En esta familia, no basta con reformular la tasa; la variante debe evitar una lectura literal "
                 "del coeficiente y empujar una interpretación operativa o contextual."
             )
+        if expectation == "high":
+            return (
+                "En esta familia estructuralmente rica, sí debes exigir cambios profundos: al menos "
+                f"{min_axes} ejes estructurales relevantes o un cambio equivalente en profundidad, "
+                "sin caer en simple reemplazo de números o contexto."
+            )
         return (
-            "Mantén el criterio general: al menos 2 ejes estructurales relevantes o un cambio claramente "
+            f"Mantén el criterio general: al menos {min_axes} ejes estructurales relevantes o un cambio claramente "
             "equivalente en profundidad, sin caer en simple reemplazo de números/contexto."
         )
 

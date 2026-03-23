@@ -30,6 +30,7 @@ def main() -> None:
     validator = VariantValidator(PipelineConfig(validate_variants=True))
     source_map = load_source_map()
     failures: list[str] = []
+    executed_cases = 0
 
     for case in STRUCTURAL_REGRESSION_CASES:
         source_key = (case["test_id"], case["question_id"])
@@ -38,7 +39,17 @@ def main() -> None:
             failures.append(f"{case['name']}: source not found for {source_key}")
             continue
 
-        variant_xml = Path(case["variant_xml_path"]).read_text(encoding="utf-8")
+        variant_xml = source.qti_xml
+        replacements = case.get("replacements", []) or []
+        for old, new in replacements:
+            if old not in variant_xml:
+                failures.append(f"{case['name']}: replacement target not found: {old[:80]!r}")
+                variant_xml = ""
+                break
+            variant_xml = variant_xml.replace(old, new, 1)
+        if not variant_xml:
+            continue
+
         contract = source.metadata.get("construct_contract") or {}
         if not contract:
             from app.question_variants.contracts.structural_profile import build_construct_contract
@@ -62,6 +73,7 @@ def main() -> None:
         repaired_xml = repair_family_specific_qti(normalized_xml, contract)
 
         ok, reason = validator._validate_structural_alignment(repaired_xml, source)
+        executed_cases += 1
         expected_ok = bool(case["expected_ok"])
         if ok != expected_ok:
             failures.append(
@@ -82,7 +94,7 @@ def main() -> None:
         raise SystemExit(1)
 
     print("STRUCTURAL_REGRESSIONS_PASSED")
-    print(f"cases\t{len(STRUCTURAL_REGRESSION_CASES)}")
+    print(f"cases\t{executed_cases}")
 
 
 if __name__ == "__main__":

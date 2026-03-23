@@ -8,14 +8,18 @@ from typing import Any
 from app.question_variants.qti_validation_utils import surface_similarity
 
 
+def required_non_mechanizable_axes(contract: dict[str, Any]) -> int:
+    """Return the minimum structural axes expected for this family."""
+    expectation = str(contract.get("non_mechanizable_expectation") or "medium")
+    if expectation == "low":
+        return 1
+    return 2
+
+
 def failed_generator_self_check(metadata: dict[str, Any]) -> str:
     """Return a rejection reason when the generator self-check already flags drift."""
     self_check = metadata.get("generator_self_check", {}) or {}
     contract = metadata.get("construct_contract", {}) or {}
-    requires_two_axes = not (
-        str(contract.get("operation_signature")) == "direct_proportion_reasoning"
-        and str(contract.get("task_form")) == "direct_resolution"
-    )
     guarded_flags = {
         "task_form_preserved": "La variante reconoce que no preservó la forma de tarea.",
         "evidence_mode_preserved": "La variante reconoce que no preservó el modo de evidencia.",
@@ -28,9 +32,12 @@ def failed_generator_self_check(metadata: dict[str, Any]) -> str:
         if self_check.get(field) is False:
             return reason
     axes = self_check.get("realized_non_mechanizable_axes", []) or []
-    min_axes = 2 if requires_two_axes else 1
+    min_axes = required_non_mechanizable_axes(contract)
     if axes and len([str(axis).strip() for axis in axes if str(axis).strip()]) < min_axes:
-        return "La variante reconoce menos de dos ejes no mecanizables materializados."
+        return (
+            "La variante reconoce menos ejes no mecanizables materializados "
+            "de los exigidos para esta familia."
+        )
     return ""
 
 

@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 from typing import Any, Dict, List, Optional
 
 from app.question_variants.contracts.family_specs import build_family_prompt_rules
-from app.question_variants.llm_service import build_text_service
+from app.question_variants.llm_service import build_reasoning_kwargs, build_text_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -101,6 +101,10 @@ class VariantGenerator:
             prompt,
             response_mime_type="application/json",
             temperature=self.config.temperature,
+            **build_reasoning_kwargs(
+                self.config.generator_provider,
+                self.config.generator_reasoning_level,
+            ),
         )
         variants_data = self._parse_response(response, source)
         if variants_data:
@@ -116,6 +120,10 @@ class VariantGenerator:
             retry_prompt,
             response_mime_type="application/json",
             temperature=0.1,
+            **build_reasoning_kwargs(
+                self.config.generator_provider,
+                self.config.generator_reasoning_level,
+            ),
         )
         return self._parse_response(retry_response, source)
 
@@ -232,6 +240,20 @@ class VariantGenerator:
         family_rules = "\n".join(
             f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
         )
+        min_axes = 1 if str(construct_contract.get("non_mechanizable_expectation") or "medium") == "low" else 2
+        axes_policy = (
+            "En esta familia intrínsecamente rutinaria, puede bastar con 1 eje estructural fuerte si la variante no es superficial, "
+            "los distractores siguen siendo plausibles y la forma del ítem no queda casi idéntica."
+            if min_axes == 1
+            else "Debes materializar al menos 2 ejes estructurales relevantes o un cambio equivalente en profundidad."
+        )
+
+        hard_constraints = construct_contract.get('hard_constraints', [])
+        if hard_constraints:
+            constraints_list = "\n".join(f"    - {c}" for c in hard_constraints)
+            constraints_instruction = f"17. RESTRICCIONES DURAS DEL CONTRATO OBLIGATORIAS:\n{constraints_list}"
+        else:
+            constraints_instruction = ""
 
         prompt = f"""
 <role>
@@ -272,17 +294,20 @@ el constructo matemático evaluado y respetando el contrato estructural.
     tasas de cambio o listados de referencia si la fuente sólo necesita una.
 14. Si las opciones son numéricas, cada distractor debe corresponder a un error concreto y explicable.
     No uses valores arbitrarios o absurdos; mantén coherencia de escala con la respuesta correcta.
-15. Debes realizar de verdad al menos 2 ejes no mecanizables y poder declararlos explícitamente
+15. Debes realizar de verdad al menos {min_axes} eje(s) no mecanizable(s) y poder declararlos explícitamente
     en el self-check final.
+    Política específica: {axes_policy}
 16. PROTECCIÓN CONTRA DRIFT DE CONSTRUCTO:
     - NO cambies la polaridad argumentativa (ej. si la fuente pide refutar, no pidas justificar).
     - NO cambies la polaridad extrema (si la fuente pide el "máximo/mayor", no pidas el "mínimo/menor").
     - NO cambies el patrón de cambio porcentual (ej. aumento vs descuento deben mantenerse).
     - NO modifiques la cantidad de series en un gráfico (si hay una serie, no agregues dos).
 {family_rules}
+{constraints_instruction}
+</reglas_estrictas>
+
 {image_instruction}
 {blueprint_instruction}
-</reglas_estrictas>
 
 {source_snapshot}
 
@@ -339,6 +364,7 @@ Responde con un JSON con esta estructura:
 <restriccion_critica>
 IMPORTANTE: El QTI XML debe:
 - Usar namespace xmlns="http://www.imsglobal.org/xsd/imsqtiasi_v3p0"
+- INCLUIR OBLIGATORIAMENTE los atributos 'title' y 'timeDependent="false"' en la etiqueta raíz (ej. <qti-assessment-item title="Variante X" timeDependent="false"...>)
 - Tener un identifier único (diferente al original)
 - Mantener la estructura exacta de la pregunta original
 - Usar MathML para expresiones matemáticas si la original las usa
@@ -419,7 +445,16 @@ IMPORTANTE: El QTI XML debe:
         Returns:
             A new VariantQuestion if generation succeeds, None otherwise.
         """
-        print(f"    🔄 Retrying {blueprint.variant_id} with rejection feedback...")
+        # Escalate reasoning level for retries
+        levels = ["none", "low", "medium", "high"]
+        current_level = self.config.generator_reasoning_level
+        try:
+            current_idx = levels.index(current_level)
+            retry_level = levels[min(current_idx + 1, len(levels) - 1)]
+        except ValueError:
+            retry_level = current_level
+
+        print(f"    🔄 Retrying {blueprint.variant_id} (Reasoning bump: {current_level}->{retry_level})...")
 
         base_prompt = self._build_generation_prompt(source, 1, [blueprint])
         feedback_section = f"""
@@ -442,6 +477,10 @@ Genera una variante que:
                 prompt_with_feedback,
                 response_mime_type="application/json",
                 temperature=self.config.temperature + 0.1,  # Slight bump for diversity
+                **build_reasoning_kwargs(
+                    self.config.generator_provider,
+                    retry_level,
+                ),
             )
             variants_data = parse_generation_response(response)
             if not variants_data:
