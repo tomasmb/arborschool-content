@@ -87,6 +87,7 @@ class VariantBlueprint:
         difficulty_target: Relative target ("equal_or_harder", etc.)
         requires_image: Whether this variant needs an image to be solvable
         image_description: Detailed image specification when required
+        selected_shape_id: The specific Family-Constrained shape assigned.
     """
 
     variant_id: str
@@ -96,6 +97,7 @@ class VariantBlueprint:
     difficulty_target: str = "equal_or_harder"
     requires_image: bool = False
     image_description: str = ""
+    selected_shape_id: str = "standard_variant"
 
 
 @dataclass

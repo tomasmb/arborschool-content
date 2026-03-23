@@ -28,6 +28,7 @@ def save_variant_plan(output_dir: str, source: SourceQuestion, blueprints: list[
                 "difficulty_target": bp.difficulty_target,
                 "requires_image": bp.requires_image,
                 "image_description": bp.image_description,
+                "selected_shape_id": bp.selected_shape_id,
             }
             for bp in blueprints
         ],
@@ -109,6 +110,7 @@ def save_variant(
         "is_rejected": is_rejected,
         "planning_blueprint": variant.metadata.get("planning_blueprint"),
         "generator_self_check": variant.metadata.get("generator_self_check"),
+        "generator_declared_correct_identifier": variant.metadata.get("generator_declared_correct_identifier"),
         "construct_contract": variant.metadata.get("construct_contract"),
         "postprocess_summary": postprocess_summary or {},
     }

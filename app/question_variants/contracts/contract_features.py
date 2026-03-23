@@ -66,22 +66,16 @@ def infer_justification_archetype(statement: str, profile: dict[str, bool | str]
 
 def infer_auxiliary_transformations(question_text: str, metadata: dict[str, Any]) -> int:
     text = question_text.lower()
-    analysis = str(metadata.get("general_analysis", "")).lower()
-    markers = (
-        "equivale",
-        "equivalente",
-        "convert",
-        "transform",
-        "promedio",
-        "media aritmética",
-        "media aritmetica",
-        "desviación",
-        "desviacion",
-        "cambio de unidad",
-        "conversión",
-        "conversion",
+    marker_groups = (
+        ("unit_equivalence", ("equivale", "equivalente")),
+        ("unit_or_representation_change", ("convert", "transform", "cambio de unidad", "conversión", "conversion")),
+        ("average_statistic", ("promedio", "media aritmética", "media aritmetica")),
+        ("deviation_statistic", ("desviación", "desviacion")),
     )
-    hits = sum(1 for marker in markers if marker in text or marker in analysis)
+    hits = 0
+    for _, markers in marker_groups:
+        if any(marker in text for marker in markers):
+            hits += 1
     if hits == 0:
         return 0
     if hits <= 2:
@@ -118,14 +112,31 @@ def infer_formula_shape(question_text: str, qti_xml: str, profile: dict[str, boo
         return "affine_substitution"
     verbal_multiplicative_patterns = (
         "se obtiene multiplicando",
+        "se obtiene al multiplicar",
         "se calcula multiplicando",
+        "se calcula al multiplicar",
         "resulta de multiplicar",
         "es igual a multiplicar",
+        "se debe multiplicar",
+        "debe multiplicar",
+        "se multiplica la cantidad",
+        "multiplica la cantidad",
+        "la regla establece que se debe multiplicar",
+        "se utiliza la siguiente regla de cálculo",
+        "se utiliza la siguiente regla de calculo",
+        "regla de cálculo",
+        "regla de calculo",
         "multiplicando la cantidad",
         "multiplicando el número",
         "multiplicando el numero",
     )
     if any(pattern in lowered for pattern in verbal_multiplicative_patterns):
+        return "pure_multiplicative_substitution"
+    if (
+        any(marker in lowered for marker in ("multiplicar", "se multiplica", "producto", "por "))
+        and any(marker in lowered for marker in ("cantidad", "valor inicial", "medida en", "resultado en"))
+        and re.search(r"\d+(?:[.,]\d+)?", lowered)
+    ):
         return "pure_multiplicative_substitution"
     if "<mo>&#183;</mo>" in xml_lower or "<mo>*</mo>" in xml_lower or "·" in qti_xml:
         return "pure_multiplicative_substitution"

@@ -43,6 +43,72 @@ def find_correct_answer(xml_content: str) -> str:
     return get_correct_answer_text(xml_content)
 
 
+def validate_choice_interaction_integrity(xml_content: str) -> tuple[bool, str]:
+    """Validate that a choice-interaction item has a usable correct answer wiring."""
+    try:
+        root = ET.fromstring(xml_content)
+    except ET.ParseError as exc:
+        return False, f"XML inválido: {exc}"
+
+    interaction = root.find(".//{*}qti-choice-interaction")
+    if interaction is None:
+        interaction = root.find(".//{*}choiceInteraction")
+
+    choice_nodes = root.findall(".//{*}qti-simple-choice")
+    if not choice_nodes:
+        choice_nodes = root.findall(".//{*}simpleChoice")
+
+    # If the item is not a choice interaction, leave the rest of the pipeline alone.
+    if interaction is None and not choice_nodes:
+        return True, ""
+    if interaction is None:
+        return False, "La variante tiene alternativas, pero no incluye qti-choice-interaction."
+
+    response_identifier = interaction.attrib.get("response-identifier") or interaction.attrib.get("responseIdentifier")
+    if not response_identifier:
+        return False, "La variante no declara responseIdentifier en qti-choice-interaction."
+
+    if not choice_nodes:
+        return False, "La variante no incluye alternativas válidas dentro de qti-choice-interaction."
+
+    choice_ids = {
+        (choice.attrib.get("identifier") or "").strip()
+        for choice in choice_nodes
+        if (choice.attrib.get("identifier") or "").strip()
+    }
+    if not choice_ids:
+        return False, "La variante no declara identifiers válidos para las alternativas."
+
+    declaration = root.find(".//{*}qti-response-declaration")
+    if declaration is None:
+        declaration = root.find(".//{*}responseDeclaration")
+    if declaration is None:
+        return False, "La variante no incluye qti-response-declaration para marcar la respuesta correcta."
+
+    declaration_identifier = (declaration.attrib.get("identifier") or "").strip()
+    if not declaration_identifier:
+        return False, "La variante incluye qti-response-declaration, pero no declara identifier."
+    if declaration_identifier != response_identifier:
+        return False, "La variante tiene identifiers inconsistentes entre qti-choice-interaction y qti-response-declaration."
+
+    correct_response = declaration.find(".//{*}qti-correct-response")
+    if correct_response is None:
+        correct_response = declaration.find(".//{*}correctResponse")
+    if correct_response is None:
+        return False, "La variante no incluye qti-correct-response en la declaración de respuesta."
+
+    value_node = correct_response.find(".//{*}qti-value")
+    if value_node is None:
+        value_node = correct_response.find(".//{*}value")
+    correct_identifier = (value_node.text or "").strip() if value_node is not None and value_node.text else ""
+    if not correct_identifier:
+        return False, "La variante tiene qti-response-declaration, pero la respuesta correcta marcada está vacía."
+    if correct_identifier not in choice_ids:
+        return False, "La variante marca una respuesta correcta que no corresponde a ninguna alternativa."
+
+    return True, ""
+
+
 def surface_similarity(left: str, right: str) -> float:
     """Compute a relaxed similarity score for semantic guardrails."""
     return SequenceMatcher(None, _normalize_for_similarity(left), _normalize_for_similarity(right)).ratio()

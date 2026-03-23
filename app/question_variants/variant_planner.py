@@ -41,6 +41,15 @@ class VariantPlanner:
         self.last_error = None
         self.used_fallback = False
         n = num_variants or self.config.variants_per_question
+        construct_contract = build_construct_contract(
+            source.question_text,
+            source.qti_xml,
+            bool(source.image_urls),
+            source.primary_atoms,
+            source.metadata,
+            source.choices,
+            source.correct_answer,
+        )
         prompt = self._build_planning_prompt(source, n)
         print(f"  Planning {n} hard variants for {source.question_id}...")
 
@@ -54,7 +63,7 @@ class VariantPlanner:
                     self.config.planner_reasoning_level,
                 ),
             )
-            plans = self._parse_response(response)
+            plans = self._parse_response(response, construct_contract=construct_contract)
         except Exception as exc:
             print(f"  ⚠️ Planner failed, using fallback plans: {exc}")
             self.last_error = str(exc)
@@ -64,7 +73,7 @@ class VariantPlanner:
         if not plans:
             self.used_fallback = True
             return self._fallback_plans(source, n)
-        return plans[:n]
+        return self._repair_blueprints(plans[:n], construct_contract)
 
     def _build_planning_prompt(self, source: SourceQuestion, n: int) -> str:
         diff = source.difficulty
@@ -100,12 +109,48 @@ class VariantPlanner:
         family_rules = "\n".join(
             f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
         )
-        min_axes = 1 if str(construct_contract.get("non_mechanizable_expectation") or "medium") == "low" else 2
+        expectation = str(construct_contract.get("non_mechanizable_expectation") or "medium")
+        min_axes = 1 if expectation == "low" else 2
         axes_policy = (
             "En esta familia intrínsecamente rutinaria, basta con materializar 1 eje estructural fuerte "
             "si la variante no queda superficial, mejora o preserva distractores plausibles y no es solo cambio de números."
             if min_axes == 1
             else "Debes materializar al menos 2 ejes estructurales relevantes o un cambio equivalente en profundidad."
+        )
+
+        allowed_shapes = construct_contract.get("allowed_variant_shapes", [])
+        if allowed_shapes:
+            shapes_text = json.dumps(allowed_shapes, ensure_ascii=False, indent=2)
+            shapes_instruction = (
+                f"POLÍTICA DE SHAPES: Debes seleccionar una 'Variant Shape' permitida "
+                f"para cada variante de este catálogo:\n{shapes_text}\n"
+                f"Cada variante DEBE tener un 'shape_id' distinto si generas múltiples variantes. "
+                f"La 'scenario_description' de tu blueprint DEBE explicar cómo materializarás la Shape elegida y qué cambios obligatorios cubrirá."
+            )
+        else:
+            shapes_instruction = "No hay Variant Shapes específicas para esta familia. Utiliza el estándar de la familia."
+        hard_constraints = construct_contract.get("hard_constraints", []) or []
+        if "must_not_add_auxiliary_transformations" in hard_constraints:
+            auxiliary_policy = (
+                "No aumentes la cantidad de transformaciones auxiliares respecto de la fuente: "
+                "no propongas conversiones, equivalencias ni pasos intermedios adicionales."
+            )
+        elif expectation == "low":
+            auxiliary_policy = (
+                "Evita agregar transformaciones auxiliares gratuitas. Se permite, como máximo, "
+                "un paso intermedio breve si ayuda a des-mecanizar la variante sin cambiar el constructo "
+                "ni volverla de una banda de dificultad claramente distinta."
+            )
+        else:
+            auxiliary_policy = (
+                "Evita agregar transformaciones auxiliares gratuitas. Solo se permite un paso intermedio "
+                "corto y conceptualmente justificado si mejora la no-mecanizabilidad sin alterar el método central."
+            )
+        hard_constraints_instruction = (
+            "RESTRICCIONES DURAS DEL CONTRATO: no puedes proponer blueprints que violen estas restricciones:\n"
+            + "\n".join(f"- {constraint}" for constraint in hard_constraints)
+            if hard_constraints
+            else ""
         )
 
         return f"""
@@ -132,8 +177,7 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
 8. Respeta también la accion cognitiva y la estructura de solucion del contrato.
    Ejemplo: "interpret_representation" no se puede convertir en "compute_value" puro;
    "direct_single_step" no se puede convertir en "integrated_multi_step".
-9. No aumentes la cantidad de transformaciones auxiliares respecto de la fuente
-    (por ejemplo, conversiones de unidad, cambio de representación numérica o pasos intermedios adicionales).
+9. {auxiliary_policy}
 10. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error
     aunque cambien los valores o el contexto. No reemplaces distractores conceptuales por distractores aleatorios.
 11. Tampoco aumentes la carga de relaciones de referencia de la fuente: no agregues tablas de equivalencias,
@@ -141,6 +185,8 @@ Debes planificar variantes NO MECANIZABLES de una pregunta fuente.
 12. Si la firma operacional es "descriptive_statistics", no aumentes artificialmente la cantidad de datos
     o frecuencias a procesar; conserva la misma escala de carga de datos que en la fuente.
 {family_rules}
+{shapes_instruction}
+{hard_constraints_instruction}
 </reglas>
 
 {source_snapshot}
@@ -157,7 +203,8 @@ Devuelve SOLO JSON:
   "blueprints": [
     {{
       "variant_id": "{source.question_id}_v1",
-      "scenario_description": "contexto nuevo y que cambia",
+      "selected_shape_id": "ID_DE_LA_SHAPE_ELEGIDA_O_standard_variant",
+      "scenario_description": "Explicación de cómo este contexto materializa el Shape elegido...",
       "non_mechanizable_axes": [
         "representacion",
         "forma_pregunta"
@@ -175,14 +222,23 @@ Devuelve SOLO JSON:
     # _build_structural_profile and _extract_visual_context removed:
     # now use shared_helpers.build_source_structural_profile and extract_visual_context
 
-    def _parse_response(self, response: str) -> List[VariantBlueprint]:
+    def _parse_response(
+        self,
+        response: str,
+        *,
+        construct_contract: dict[str, Any] | None = None,
+    ) -> List[VariantBlueprint]:
         data = self._parse_json(response)
         raw_blueprints = data.get("blueprints", []) if isinstance(data, dict) else []
         result: List[VariantBlueprint] = []
+        allowed_shapes = construct_contract.get("allowed_variant_shapes", []) if construct_contract else []
         for idx, item in enumerate(raw_blueprints):
             if not isinstance(item, dict):
                 continue
             variant_id = str(item.get("variant_id") or f"planned_v{idx + 1}")
+            selected_shape_id = str(item.get("selected_shape_id", "standard_variant")).strip()
+            if selected_shape_id == "standard_variant" and allowed_shapes:
+                selected_shape_id = str(allowed_shapes[idx % len(allowed_shapes)].get("shape_id") or "standard_variant")
             result.append(
                 VariantBlueprint(
                     variant_id=variant_id,
@@ -196,6 +252,7 @@ Devuelve SOLO JSON:
                     difficulty_target=str(item.get("difficulty_target", "equal_or_harder")).strip(),
                     requires_image=bool(item.get("requires_image", False)),
                     image_description=str(item.get("image_description", "")).strip(),
+                    selected_shape_id=selected_shape_id,
                 )
             )
         return result
@@ -224,6 +281,10 @@ Devuelve SOLO JSON:
         expectation = str(contract.get("non_mechanizable_expectation") or "medium")
         plans: List[VariantBlueprint] = []
         for i in range(n):
+            allowed_shapes = contract.get("allowed_variant_shapes", []) or []
+            selected_shape_id = "standard_variant"
+            if allowed_shapes:
+                selected_shape_id = str(allowed_shapes[i % len(allowed_shapes)].get("shape_id") or "standard_variant")
             scenario_description = f"Variante {i + 1} del mismo constructo con cambio estructural controlado."
             non_mechanizable_axes = (
                 ["distractor_dominante"]
@@ -261,6 +322,67 @@ Devuelve SOLO JSON:
                     difficulty_target="equal_or_harder",
                     requires_image=False,
                     image_description="",
+                    selected_shape_id=selected_shape_id,
                 )
             )
-        return plans
+        return self._repair_blueprints(plans, contract)
+
+    def _repair_blueprints(
+        self,
+        blueprints: List[VariantBlueprint],
+        construct_contract: dict[str, Any],
+    ) -> List[VariantBlueprint]:
+        """Patch planner outputs that violate deterministic family constraints."""
+        family_id = str(construct_contract.get("family_id") or "")
+        hard_constraints = {str(item) for item in construct_contract.get("hard_constraints", [])}
+        forbids_aux_steps = "must_not_add_auxiliary_transformations" in hard_constraints
+        repaired: List[VariantBlueprint] = []
+
+        for blueprint in blueprints:
+            if (
+                forbids_aux_steps
+                and family_id in {"algebraic_expression_evaluation", "direct_proportion_reasoning"}
+                and self._mentions_auxiliary_conversion(blueprint.scenario_description)
+            ):
+                scenario_description = (
+                    "La variante debe mantener una sola sustitución o relación directa del mismo tipo de la fuente, "
+                    "cambiando la presentación a formato verbal o registro breve, pero sin equivalencias, conversiones "
+                    "ni pasos auxiliares adicionales."
+                )
+                required_reasoning = (
+                    "La comprensión exigida debe venir de interpretar correctamente la regla o relación principal "
+                    "en una nueva presentación, no de agregar una segunda conversión o transformación auxiliar."
+                )
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=scenario_description,
+                        non_mechanizable_axes=blueprint.non_mechanizable_axes,
+                        required_reasoning=required_reasoning,
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id=blueprint.selected_shape_id,
+                    )
+                )
+                continue
+            repaired.append(blueprint)
+        return repaired
+
+    def _mentions_auxiliary_conversion(self, text: str) -> bool:
+        lowered = str(text or "").lower()
+        markers = (
+            "equivale",
+            "equivalencia",
+            "conversión",
+            "conversion",
+            "convertir",
+            "pasa a",
+            "joule",
+            "kilojoule",
+            "kilogramo",
+            "gramo",
+            "miligram",
+            "kilocalor",
+        )
+        return any(marker in lowered for marker in markers)

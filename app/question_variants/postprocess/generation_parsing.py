@@ -107,4 +107,15 @@ def _extract_single_variant(text: str) -> dict[str, Any] | None:
         "qti_xml": qti_xml,
         "change_description": change_description,
         "self_check": self_check,
+        "correct_choice_identifier": _extract_string_field(text, "correct_choice_identifier"),
     }
+
+
+def _extract_string_field(text: str, field_name: str) -> str:
+    match = re.search(rf'"{re.escape(field_name)}"\s*:\s*"([\s\S]*?)"', text)
+    if not match:
+        return ""
+    try:
+        return json.loads(f'"{match.group(1)}"')
+    except json.JSONDecodeError:
+        return ""

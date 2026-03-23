@@ -366,11 +366,6 @@ def _with_article(label: str, capitalized: bool = True) -> str:
 
 def _ensure_choice_interaction_declarations(root: ET.Element) -> None:
     declaration = root.find(".//qti:qti-response-declaration", NS) or root.find(".//{*}qti-response-declaration")
-    if declaration is not None:
-        value_node = declaration.find(".//qti:qti-value", NS) or declaration.find(".//{*}qti-value")
-        if value_node is not None and (value_node.text or "").strip():
-            return
-
     interaction = root.find(".//qti:qti-choice-interaction", NS) or root.find(".//{*}qti-choice-interaction")
     if interaction is None:
         return
@@ -382,32 +377,12 @@ def _ensure_choice_interaction_declarations(root: ET.Element) -> None:
     )
     interaction.attrib["response-identifier" if "response-identifier" in interaction.attrib else "responseIdentifier"] = response_identifier
 
-    choice_nodes = interaction.findall(".//qti:qti-simple-choice", NS) or interaction.findall(".//{*}qti-simple-choice")
-    if not choice_nodes:
-        return
-    correct_identifier = choice_nodes[0].attrib.get("identifier", "ChoiceA")
-
     if declaration is None:
-        declaration = ET.Element("{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-response-declaration", {
-            "identifier": response_identifier,
-            "cardinality": "single",
-            "baseType": "identifier",
-        })
-        correct_response = ET.SubElement(declaration, "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-correct-response")
-        value_node = ET.SubElement(correct_response, "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-value")
-        value_node.text = correct_identifier
-        root.insert(0, declaration)
-    else:
-        declaration.attrib["identifier"] = response_identifier
-        declaration.attrib.setdefault("cardinality", "single")
-        declaration.attrib.setdefault("baseType", "identifier")
-        correct_response = declaration.find(".//qti:qti-correct-response", NS) or declaration.find(".//{*}qti-correct-response")
-        if correct_response is None:
-            correct_response = ET.SubElement(declaration, "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-correct-response")
-        value_node = correct_response.find(".//qti:qti-value", NS) or correct_response.find(".//{*}qti-value")
-        if value_node is None:
-            value_node = ET.SubElement(correct_response, "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-value")
-        value_node.text = correct_identifier
+        return
+
+    declaration.attrib["identifier"] = response_identifier
+    declaration.attrib.setdefault("cardinality", "single")
+    declaration.attrib.setdefault("baseType", "identifier")
 
 
 def _build_single_case_reference(ref_amount: str, ref_unit: str, subject: str) -> str:

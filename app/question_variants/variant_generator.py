@@ -217,6 +217,7 @@ class VariantGenerator:
                         "difficulty_target": bp.difficulty_target,
                         "requires_image": bp.requires_image,
                         "image_description": bp.image_description,
+                        "selected_shape_id": bp.selected_shape_id,
                     }
                 )
             blueprint_instruction = (
@@ -240,7 +241,8 @@ class VariantGenerator:
         family_rules = "\n".join(
             f"{idx}. {rule}" for idx, rule in enumerate(build_family_prompt_rules(construct_contract), start=8)
         )
-        min_axes = 1 if str(construct_contract.get("non_mechanizable_expectation") or "medium") == "low" else 2
+        expectation = str(construct_contract.get("non_mechanizable_expectation") or "medium")
+        min_axes = 1 if expectation == "low" else 2
         axes_policy = (
             "En esta familia intrínsecamente rutinaria, puede bastar con 1 eje estructural fuerte si la variante no es superficial, "
             "los distractores siguen siendo plausibles y la forma del ítem no queda casi idéntica."
@@ -249,11 +251,33 @@ class VariantGenerator:
         )
 
         hard_constraints = construct_contract.get('hard_constraints', [])
+        if "must_not_add_auxiliary_transformations" in hard_constraints:
+            auxiliary_policy = (
+                "NO agregues conversiones, equivalencias ni pasos intermedios adicionales respecto de la fuente."
+            )
+        elif expectation == "low":
+            auxiliary_policy = (
+                "Evita agregar transformaciones auxiliares gratuitas. Puedes introducir, como máximo, "
+                "un paso cognitivo o intermedio breve si ayuda a des-mecanizar sin cambiar el constructo "
+                "ni la banda de dificultad objetivo."
+            )
+        else:
+            auxiliary_policy = (
+                "Evita agregar transformaciones auxiliares gratuitas. Solo se permite un paso intermedio "
+                "corto y justificado si mejora la no-mecanizabilidad y conserva el mismo método central."
+            )
         if hard_constraints:
             constraints_list = "\n".join(f"    - {c}" for c in hard_constraints)
             constraints_instruction = f"17. RESTRICCIONES DURAS DEL CONTRATO OBLIGATORIAS:\n{constraints_list}"
         else:
             constraints_instruction = ""
+
+        shape_instruction = (
+            "18. POLÍTICA DE SHAPE (Family-Constrained): Usa el 'selected_shape_id' y la "
+            "'scenario_description' del blueprint como guía estructural principal. "
+            "Debes cubrir los cambios obligatorios de la Shape elegida y evitar sus cambios prohibidos. "
+            "Puedes ajustar la redacción superficial, pero no ignorar la lógica de transformación definida por esa Shape."
+        )
 
         prompt = f"""
 <role>
@@ -272,10 +296,12 @@ el constructo matemático evaluado y respetando el contrato estructural.
    - Forma de presentación o ejes estructurales no mecanizables, siempre dentro del mismo contrato
 4. NO puedes cambiar:
    - El tipo de operación matemática requerida
-   - La cantidad de pasos para resolver
+   - Sustancialmente la cantidad de pasos para resolver
    - El nivel de abstracción o complejidad
+   Se permite, solo cuando el contrato/familia lo admite, un paso cognitivo adicional breve
+   o un cálculo intermedio conceptual que des-mecanice el ítem sin cambiar el constructo.
 5. La respuesta correcta DEBE poder calcularse con el MISMO procedimiento
-6. Los distractores DEBEN representar errores plausibles (NO valores aleatorios)
+6. Los distractores DEBEN representar errores lógicos o procedimentales plausibles y documentados.
 7. DEBES respetar estas invariantes estructurales:
    {json.dumps(structural_profile, ensure_ascii=False)}
 8. Si la fuente no usa incógnitas algebraicas, NO puedes introducir x, y, z ni ecuaciones a resolver.
@@ -285,12 +311,14 @@ el constructo matemático evaluado y respetando el contrato estructural.
 10. Debes respetar la accion cognitiva y la estructura de solucion del contrato.
     No conviertas una tarea de interpretacion en una de calculo directo, ni una de un paso
     en una de varios pasos, ni una de sustitucion algebraica en una modelacion distinta.
-11. NO aumentes la cantidad de transformaciones auxiliares respecto de la fuente. Si el contrato
-    indica 0 transformaciones auxiliares, la variante también debe resolverse sin conversiones,
-    sustituciones intermedias adicionales ni cambios de representación numérica.
-12. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error.
+11. {auxiliary_policy}
+12. FORMA ALGEBRAICA (CRÍTICO): Si el contrato define la propiedad "formula_shape", tu variante DEBE preservar
+    esa misma forma algebraica o una formulación verbal estrictamente equivalente permitida por la familia.
+    Por ejemplo, no puedes cambiar una relación multiplicativa pura por una afín (y = mx + n) ni viceversa,
+    aunque sí puedes verbalizar una regla multiplicativa si la familia lo permite.
+13. Si el contrato incluye "distractor_archetypes", conserva esos mismos arquetipos de error.
     No reemplaces distractores conceptuales por valores arbitrarios ni por errores de otro tipo.
-13. NO aumentes la carga de relaciones de referencia de la fuente: no agregues múltiples equivalencias,
+14. NO aumentes la carga de relaciones de referencia de la fuente: no agregues múltiples equivalencias,
     tasas de cambio o listados de referencia si la fuente sólo necesita una.
 14. Si las opciones son numéricas, cada distractor debe corresponder a un error concreto y explicable.
     No uses valores arbitrarios o absurdos; mantén coherencia de escala con la respuesta correcta.
@@ -302,8 +330,11 @@ el constructo matemático evaluado y respetando el contrato estructural.
     - NO cambies la polaridad extrema (si la fuente pide el "máximo/mayor", no pidas el "mínimo/menor").
     - NO cambies el patrón de cambio porcentual (ej. aumento vs descuento deben mantenerse).
     - NO modifiques la cantidad de series en un gráfico (si hay una serie, no agregues dos).
+    - No cambies el dominio/subdominio estadístico o matemático evaluado por la pregunta.
+    - Solo modifica los datos en evaluación, no el tipo de conclusión.
 {family_rules}
 {constraints_instruction}
+{shape_instruction}
 </reglas_estrictas>
 
 {image_instruction}
@@ -324,9 +355,16 @@ Genera exactamente {n} variantes. Cada variante DEBE:
 7. Si usas soporte visual, deja los porcentajes, cantidades o relaciones también en texto visible.
 8. Si la fuente evalúa afirmaciones sobre datos, tu variante DEBE incluir un conjunto de datos explícito
    (tabla o lista estructurada) y las alternativas deben seguir siendo afirmaciones sobre esos datos.
+9. INTEGRIDAD QTI (CRÍTICA): Debes incluir obligatoriamente el bloque <responseDeclaration> al inicio del item, asegurando que <correctResponse><value>...</value></correctResponse> contenga exactamente la letra de la opción correcta. Si este bloque está ausente o vacío, la variante resultará inútil.
+9.b Además, en el JSON de salida debes declarar explícitamente "correct_choice_identifier" con el identifier exacto de la alternativa correcta (por ejemplo: "A", "B", "ChoiceC"). Debe coincidir con el XML.
+10. DISTRACTORES RAZONADOS (CRÍTICO): Inmediatamente antes de cada opción distractora en tu XML, DEBES escribir un comentario XML documentando qué error matemático específico representa ese distractor.
+    Ejemplo:
+    <!-- Distractor A: El estudiante asume un crecimiento lineal en vez de porcentual inverso -->
+    <simpleChoice identifier="A">...</simpleChoice>
+    NUNCA documentes ni etiquetes la opción correcta con comentarios como "correcta", "opción correcta" o equivalentes.
 
 Para cada variante, genera:
-- El XML QTI 3.0 completo (similar al original pero con nuevos valores)
+- El XML QTI 3.0 completo (similar al original pero con nuevos valores; los comentarios XML son solo andamiaje interno para distractores)
 - Una breve explicación del cambio realizado
 - Un self-check breve del contrato:
   - "task_form_preserved": true/false
@@ -345,6 +383,7 @@ Responde con un JSON con esta estructura:
   "variants": [
     {{
       "qti_xml": "<qti-assessment-item ...>...</qti-assessment-item>",
+      "correct_choice_identifier": "ChoiceB",
       "change_description": "Cambié los valores de X a Y...",
       "self_check": {{
         "task_form_preserved": true,
@@ -415,6 +454,7 @@ IMPORTANTE: El QTI XML debe:
                 "change_description": variant_data.get("change_description", ""),
             },
             "generator_self_check": variant_data.get("self_check", {}),
+            "generator_declared_correct_identifier": str(variant_data.get("correct_choice_identifier", "")).strip(),
         }
         if blueprint:
             metadata["planning_blueprint"] = {
@@ -425,6 +465,7 @@ IMPORTANTE: El QTI XML debe:
                 "difficulty_target": blueprint.difficulty_target,
                 "requires_image": blueprint.requires_image,
                 "image_description": blueprint.image_description,
+                "selected_shape_id": blueprint.selected_shape_id,
             }
 
         return metadata

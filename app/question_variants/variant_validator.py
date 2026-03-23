@@ -25,7 +25,12 @@ from app.question_variants.models import (
     ValidationVerdict,
     VariantQuestion,
 )
-from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
+from app.question_variants.qti_validation_utils import (
+    extract_choices,
+    extract_question_text,
+    find_correct_answer,
+    validate_choice_interaction_integrity,
+)
 from app.question_variants.contracts.semantic_guardrails import (
     adds_auxiliary_transformations,
     adds_reference_load,
@@ -38,6 +43,8 @@ from app.question_variants.contracts.semantic_guardrails import (
     is_insufficiently_different,
     required_non_mechanizable_axes,
     repeats_claim_archetype,
+    selected_shape_id_from_metadata,
+    violates_selected_shape,
 )
 from app.question_variants.contracts.preservation_policy import (
     must_preserve_cognitive_action,
@@ -88,6 +95,17 @@ class VariantValidator:
                 rejection_reason=f"XML inválido: {xml_error}",
             )
 
+        interaction_ok, interaction_error = self._validate_choice_interaction_integrity(variant.qti_xml)
+        if not interaction_ok:
+            return ValidationResult(
+                verdict=ValidationVerdict.REJECTED,
+                concept_aligned=False,
+                difficulty_equal=False,
+                answer_correct=False,
+                non_mechanizable=False,
+                rejection_reason=interaction_error,
+            )
+
         visual_ref_ok, visual_ref_error = self._validate_visual_completeness(variant.qti_xml, source)
         if not visual_ref_ok:
             return ValidationResult(
@@ -98,7 +116,7 @@ class VariantValidator:
                 non_mechanizable=False,
                 rejection_reason=visual_ref_error,
             )
-        structural_ok, structural_error = self._validate_structural_alignment(variant.qti_xml, source)
+        structural_ok, structural_error = self._validate_structural_alignment(variant.qti_xml, source, variant.metadata)
         if not structural_ok:
             return ValidationResult(
                 verdict=ValidationVerdict.REJECTED,
@@ -136,6 +154,10 @@ class VariantValidator:
         except ET.ParseError as e:
             return False, str(e)
 
+    def _validate_choice_interaction_integrity(self, xml_content: str) -> tuple[bool, str]:
+        """Validate deterministic QTI wiring before spending an LLM call."""
+        return validate_choice_interaction_integrity(xml_content)
+
     def _validate_visual_completeness(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
         lowered = extract_question_text(xml_content).lower()
         mentions_image_like = any(
@@ -163,7 +185,12 @@ class VariantValidator:
 
         return True, ""
 
-    def _validate_structural_alignment(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
+    def _validate_structural_alignment(
+        self,
+        xml_content: str,
+        source: SourceQuestion,
+        metadata: Optional[dict[str, object]] = None,
+    ) -> tuple[bool, str]:
         contract = build_construct_contract(
             source.question_text,
             source.qti_xml,
@@ -298,6 +325,10 @@ class VariantValidator:
         if semantic_contract_drift:
             return False, f"La variante fue rechazada por drift de constructo/dificultad: {semantic_contract_drift}"
 
+        shape_violation = violates_selected_shape(contract, variant_contract, metadata or {})
+        if shape_violation:
+            return False, shape_violation
+
         if repeats_claim_archetype(contract, variant_contract):
             return False, (
                 "La variante fue rechazada por calidad insuficiente: repite el mismo arquetipo semántico decisivo "
@@ -391,6 +422,14 @@ class VariantValidator:
             source.correct_answer,
         )
         non_mechanizable_policy = self._build_non_mechanizable_policy(source_contract)
+        min_axes = required_non_mechanizable_axes(source_contract)
+
+        selected_shape_id = selected_shape_id_from_metadata(variant.metadata)
+        shape_context = (
+            f"\nBlueprint estructural seleccionado: {selected_shape_id}."
+            if selected_shape_id and selected_shape_id != "standard_variant"
+            else ""
+        )
 
         prompt = f"""
 <role>
@@ -444,9 +483,9 @@ Verifica cuidadosamente:
    - La respuesta correcta debe ser DIFERENTE a la original
 
 6. **NO MECANIZABLE**: ¿Evita resolución por receta memorizada?
-   - Debe cambiar al menos 2 ejes estructurales (forma, representación, distractor o secuencia)
+   - Debe cambiar al menos {min_axes} eje(s) estructural(es) relevantes (forma, representación, distractor o secuencia), según la familia
    - Debe exigir comprender el por qué del método
-   - Política específica para esta familia: {non_mechanizable_policy}
+   - Política específica para esta familia: {non_mechanizable_policy}{shape_context}
 </tarea>
 
 <formato_respuesta>
@@ -515,6 +554,7 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
             answer_correct = data.get("respuesta_correcta", False)
             calculation_steps = data.get("tu_calculo", "")
             distractors_plausible = data.get("distractores_plausibles", False)
+            is_different = data.get("es_diferente", False)
             non_mechanizable = data.get("no_mecanizable", False)
             rejection_reason = data.get("razon_rechazo", "")
             verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
@@ -554,6 +594,26 @@ el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
                 verdict = ValidationVerdict.REJECTED
                 rejection_reason = rejection_reason or (
                     "La variante no evalúa exactamente el mismo concepto matemático que la fuente."
+                )
+            if not difficulty_acceptable:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La variante no mantiene una dificultad aceptable respecto del objetivo del ítem."
+                )
+            if not distractors_plausible:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La variante no mantiene distractores suficientemente plausibles."
+                )
+            if not is_different:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La variante no es suficientemente diferente de la fuente."
+                )
+            if not non_mechanizable:
+                verdict = ValidationVerdict.REJECTED
+                rejection_reason = rejection_reason or (
+                    "La variante no cumple suficientemente el criterio de no mecanizabilidad."
                 )
 
             return ValidationResult(

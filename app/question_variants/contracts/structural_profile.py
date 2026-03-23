@@ -109,6 +109,7 @@ def build_construct_contract(
         "primary_atoms": [atom.get("atom_id") for atom in primary_atoms],
         "primary_atom_titles": [atom.get("atom_title") for atom in primary_atoms],
         "family_id": profile["family_id"],
+        "allowed_variant_shapes": list(profile.get("allowed_variant_shapes", [])),
         "non_mechanizable_expectation": infer_non_mechanizable_expectation(str(profile["family_id"])),
         "main_skill": main_skill,
         "difficulty_level": difficulty.get("level", ""),
@@ -205,6 +206,7 @@ def build_structural_profile(
         ),
         "family_id": str(family_spec.get("family_id") or ""),
         "operation_signature": operation_signature,
+        "allowed_variant_shapes": list(family_spec.get("allowed_variant_shapes", [])),
         "introduces_unknowns": has_unknown or asks_value_of_unknown,
         "must_not_introduce_algebraic_unknowns": not (has_unknown or asks_value_of_unknown),
         "claim_evaluation": claim_evaluation,
@@ -231,6 +233,8 @@ def _build_hard_constraints(profile: dict[str, bool | str], has_visual_support: 
         constraints.append("must_preserve_distractor_logic")
     if profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}:
         constraints.append("must_preserve_distractor_logic")
+    if profile["operation_signature"] in {"algebraic_expression_evaluation", "direct_proportion_reasoning"}:
+        constraints.append("must_not_add_auxiliary_transformations")
     if profile["operation_signature"] == "trinomial_factorization":
         constraints.append("must_preserve_standard_trinomial_form")
     if profile["representation_interpretation"]:

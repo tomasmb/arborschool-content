@@ -68,15 +68,36 @@ def adds_auxiliary_transformations(source_contract: dict[str, Any], variant_cont
     variant_steps = int(variant_contract.get("auxiliary_transformations", 0) or 0)
     if variant_steps <= source_steps:
         return False
-    guarded_structures = {
-        "direct_single_step",
-        "formula_substitution",
-        "representation_reading",
-        "property_justification",
-        "equation_resolution",
-        "data_to_claim_check",
-    }
-    return str(source_contract.get("solution_structure")) in guarded_structures or source_steps == 0
+    delta = variant_steps - source_steps
+    expectation = str(source_contract.get("non_mechanizable_expectation") or "medium")
+    solution_structure = str(source_contract.get("solution_structure") or "")
+    operation_signature = str(source_contract.get("operation_signature") or "")
+    hard_constraints = {str(item) for item in source_contract.get("hard_constraints", [])}
+
+    # A small increase in steps can be acceptable in a hard-variants pipeline as long
+    # as it does not fundamentally alter the construct. We only reject automatically
+    # for families where extra steps short-circuit the intended evidence or when the
+    # increase is substantial.
+    always_guarded_structures = {"representation_reading", "data_to_claim_check", "property_justification"}
+    if solution_structure in always_guarded_structures:
+        return True
+
+    if delta >= 2:
+        return True
+
+    if (
+        "must_not_add_auxiliary_transformations" in hard_constraints
+        and operation_signature in {"algebraic_expression_evaluation", "direct_proportion_reasoning"}
+    ):
+        return False
+
+    if expectation == "low":
+        return False
+
+    if solution_structure == "direct_single_step" and source_steps == 0 and variant_steps >= 2:
+        return True
+
+    return False
 
 
 def breaks_expected_distractor_logic(source_contract: dict[str, Any], variant_contract: dict[str, Any]) -> bool:
@@ -163,6 +184,52 @@ def has_equivalent_correct_choice(
     return False
 
 
+def selected_shape_id_from_metadata(metadata: dict[str, Any]) -> str:
+    """Return the selected family shape attached to a generated variant."""
+    blueprint = metadata.get("planning_blueprint", {}) or metadata.get("blueprint", {}) or {}
+    return str(blueprint.get("selected_shape_id") or "standard_variant").strip()
+
+
+def violates_selected_shape(
+    source_contract: dict[str, Any],
+    variant_contract: dict[str, Any],
+    metadata: dict[str, Any],
+) -> str:
+    """Return a deterministic rejection reason when a chosen shape is violated."""
+    shape_id = selected_shape_id_from_metadata(metadata)
+    if not shape_id or shape_id == "standard_variant":
+        return ""
+
+    allowed_shapes = source_contract.get("allowed_variant_shapes", []) or []
+    allowed_shape_ids = {
+        str(shape.get("shape_id") or "").strip()
+        for shape in allowed_shapes
+        if str(shape.get("shape_id") or "").strip()
+    }
+    if allowed_shape_ids and shape_id not in allowed_shape_ids:
+        return "La variante fue generada con una shape no permitida para esta familia."
+
+    if shape_id == "error_analysis" and str(variant_contract.get("task_form") or "") != "error_analysis":
+        return "La variante no materializó la shape de análisis de error seleccionada."
+    if shape_id == "inverse_parameter_shift" and str(variant_contract.get("task_form") or "") != "solve_for_unknown":
+        return "La variante no materializó la shape de inversión de incógnita seleccionada."
+    if shape_id == "verbal_formula_rule" and str(variant_contract.get("presentation_style") or "") != "verbal_formula":
+        return "La variante no materializó la shape verbal de sustitución seleccionada."
+    if shape_id == "operational_statement" and str(variant_contract.get("parameter_statement_form") or "") not in {
+        "contextual_case_statement",
+        "inverse_relation_statement",
+    }:
+        return "La variante no materializó una afirmación operacional compatible con la shape seleccionada."
+    if shape_id == "claim_selection_prompt" and str(variant_contract.get("presentation_style") or "") != "claim_selection_prompt":
+        return "La variante no materializó la shape de selección de afirmaciones para interpretar el parámetro."
+    if shape_id == "single_series_visual_claim":
+        source_series = str(source_contract.get("representation_series_count") or "not_applicable")
+        variant_series = str(variant_contract.get("representation_series_count") or "not_applicable")
+        if source_series != variant_series:
+            return "La variante no respetó la shape visual de serie única seleccionada."
+    return ""
+
+
 def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contract: dict[str, Any]) -> str:
     comparisons = {
         "argument_polarity": (
@@ -198,6 +265,14 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
     for key, (reason, guarded_values) in comparisons.items():
         source_value = str(source_contract.get(key) or "not_applicable")
         variant_value = str(variant_contract.get(key) or "not_applicable")
+        if (
+            key == "formula_shape"
+            and str(source_contract.get("family_id") or "") == "algebraic_expression_evaluation"
+            and source_value == "pure_multiplicative_substitution"
+            and variant_value == "generic_substitution"
+            and str(variant_contract.get("presentation_style") or "") == "verbal_formula"
+        ):
+            continue
         if source_value in guarded_values and source_value != variant_value:
             return reason
     power_family_source = str(source_contract.get("power_base_family") or "not_applicable")
