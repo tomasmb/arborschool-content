@@ -366,6 +366,59 @@ Devuelve SOLO JSON:
                     )
                 )
                 continue
+            if (
+                family_id == "percentage_context_application"
+                and str(construct_contract.get("operation_signature") or "") == "percentage_increase_application"
+                and str(construct_contract.get("presentation_style") or "") == "plain_narrative"
+                and str(construct_contract.get("selection_load") or "") == "single_given_base"
+                and blueprint.selected_shape_id == "ledger_context"
+            ):
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe presentar un registro o nota contextual breve y luego pedir "
+                            "seleccionar la afirmación o resultado coherente con el aumento porcentual, "
+                            "en vez de repetir una pregunta directa por el valor final. Los distractores deben "
+                            "quedar en la misma escala de la respuesta correcta y representar errores plausibles "
+                            "de base, incremento o sobreestimación."
+                        ),
+                        non_mechanizable_axes=["forma_pregunta", "distractor_dominante"],
+                        required_reasoning=(
+                            "La comprensión debe venir de interpretar correctamente la base y el aumento porcentual "
+                            "dentro de un registro breve, descartando afirmaciones numéricas plausibles sin caer "
+                            "en una receta idéntica a la fuente."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id="decision_statement",
+                    )
+                )
+                continue
+            if family_id == "argumentation_evaluation" and blueprint.selected_shape_id == "false_claim_hunt":
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe reorganizar el dataset explícito en un formato distinto al de la fuente "
+                            "(por ejemplo tabla, registro o listado estructurado) y pedir seleccionar la afirmación "
+                            "correcta basada en un arquetipo semántico distinto al de la fuente. Las otras tres opciones "
+                            "deben conservar las trampas conceptuales del ítem original sin convertirlo en cálculo directo."
+                        ),
+                        non_mechanizable_axes=blueprint.non_mechanizable_axes,
+                        required_reasoning=(
+                            "El estudiante debe contrastar parte-todo, subgrupos y operaciones válidas sobre porcentajes "
+                            "a partir de una organización de evidencia nueva, distinguiendo un arquetipo de afirmación "
+                            "correcta distinto del original sin perder la lógica de distractores."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id="claim_archetype_switch",
+                    )
+                )
+                continue
             repaired.append(blueprint)
         return repaired
 

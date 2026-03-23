@@ -175,13 +175,25 @@ def build_structural_profile(
     asks_error_step = "¿en qué paso" in text or "en que paso" in text or "primer error" in text
     has_unknown = any(token in xml for token in ("<mi>x</mi>", "<mi>y</mi>", "<mi>z</mi>"))
     asks_value_of_unknown = _asks_to_solve_unknown(text)
-    claim_evaluation = any("afirmaciones basadas en datos" in title for title in atom_titles) or looks_like_claim_evaluation(text)
     representation_interpretation = skill == "REP" or any(
         marker in " ".join(atom_titles)
         for marker in ("representación gráfica", "representacion grafica", "gráfico", "grafico", "pendiente")
     )
     requires_direct_computation = any("cálculo directo" in title or "calculo directo" in title for title in atom_titles)
     operation_signature = str(family_spec.get("operation_signature") or infer_operation_signature(atom_titles, skill))
+    claim_evaluation = (
+        operation_signature in {"data_claim_evaluation", "argumentation_evaluation"}
+        or (
+            any("afirmaciones basadas en datos" in title for title in atom_titles) or looks_like_claim_evaluation(text)
+        )
+        and operation_signature
+        not in {
+            "direct_percentage_calculation",
+            "percentage_increase_application",
+            "direct_proportion_reasoning",
+            "parameter_interpretation",
+        }
+    )
     substitute_expression = (
         operation_signature == "algebraic_expression_evaluation"
         or ("ecuación:" in text or "equacion:" in text or "se utiliza la siguiente ecuación" in text or "se utiliza la siguiente expresion" in text)
@@ -197,7 +209,19 @@ def build_structural_profile(
             else "solve_for_unknown"
             if asks_value_of_unknown or operation_signature == "linear_equation_resolution"
             else "claim_evaluation"
-            if operation_signature in {"data_claim_evaluation", "argumentation_evaluation"} or claim_evaluation
+            if (
+                operation_signature in {"data_claim_evaluation", "argumentation_evaluation"}
+                or (
+                    claim_evaluation
+                    and operation_signature
+                    not in {
+                        "direct_percentage_calculation",
+                        "percentage_increase_application",
+                        "direct_proportion_reasoning",
+                        "parameter_interpretation",
+                    }
+                )
+            )
             else "substitute_expression"
             if substitute_expression
             else "representation_interpretation"
@@ -443,21 +467,63 @@ def infer_distractor_archetypes(
     archetypes: list[str] = []
     lowered_choices = [choice.lower() for choice in choices]
     lowered_correct = correct_answer.lower()
+    wrong_choices = [choice for choice in lowered_choices if choice != lowered_correct]
 
     if profile["claim_evaluation"]:
-        if any("en conjunto" in choice or "conjunto" in choice for choice in lowered_choices):
+        if any(
+            marker in choice
+            for choice in wrong_choices
+            for marker in ("en conjunto", "conjunto", "conjunta", "juntas", "sumadas", "al sumar")
+        ):
             archetypes.append("combined_subgroups_vs_main_group")
-        if any("se debe realizar la operación" in choice or "se debe realizar la operacion" in choice for choice in lowered_choices):
+        if any(
+            marker in choice
+            for choice in wrong_choices
+            for marker in (
+                "se debe realizar la operación",
+                "se debe realizar la operacion",
+                "se debe multiplicar",
+                "se debe dividir",
+                "se debe calcular multiplicando",
+            )
+        ):
             archetypes.append("wrong_percentage_base_operation")
-        if any(choice != lowered_correct and "%" in choice for choice in lowered_choices):
+        if any(
+            "%" in choice
+            and any(
+                marker in choice
+                for marker in (
+                    "del total",
+                    "del agua",
+                    "del país",
+                    "del pais",
+                    "total del país",
+                    "total del pais",
+                    "totales",
+                    "ingresos totales",
+                    "generación eléctrica total",
+                )
+            )
+            for choice in wrong_choices
+        ):
             archetypes.append("subgroup_vs_total_confusion")
     elif profile["operation_signature"] in {"direct_percentage_calculation", "percentage_increase_application"}:
-        if any(choice.strip().isdigit() for choice in choices):
+        if all(_extract_primary_numeric_value(choice) is not None for choice in choices):
             archetypes.extend(["increment_only", "base_plus_increment", "gross_overestimate"])
     elif solution_structure in {"guided_multi_step", "data_to_claim_check"}:
         archetypes.append("intermediate_result_confusion")
 
     return archetypes
+
+
+def _extract_primary_numeric_value(text: str) -> float | None:
+    match = re.search(r"\d+(?:[.,]\d+)?", text)
+    if not match:
+        return None
+    try:
+        return float(match.group(0).replace(",", "."))
+    except ValueError:
+        return None
 
 
 def infer_visual_role(

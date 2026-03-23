@@ -303,7 +303,7 @@ class VariantValidator:
                 "o pasos intermedios que no están en la pregunta fuente."
             )
 
-        if breaks_expected_distractor_logic(contract, variant_contract):
+        if breaks_expected_distractor_logic(contract, variant_contract, metadata or {}):
             return False, (
                 "La variante fue rechazada por drift de calidad: perdió los arquetipos de distractor "
                 "necesarios para conservar la misma trampa conceptual de la fuente."

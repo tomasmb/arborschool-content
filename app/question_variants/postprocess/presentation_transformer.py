@@ -69,13 +69,14 @@ def normalize_variant_presentation(
 
 
 def _build_percentage_summary(qti_xml: str) -> str:
-    text = re.sub(r"\s+", " ", qti_xml)
-    percent_match = re.search(r"(\d+(?:[.,]\d+)?)\s*%", text)
+    text = re.sub(r"\s+", " ", extract_question_text(qti_xml))
+    percent_matches = list(re.finditer(r"(\d+(?:[.,]\d+)?)\s*%", text))
     numbers = [match.group(0) for match in re.finditer(r"\d+(?:[.,]\d+)?", text)]
-    if not percent_match or len(numbers) < 2:
+    if len(percent_matches) != 1 or len(numbers) < 2:
         return ""
-    percent = percent_match.group(1)
-    base = next((value for value in numbers if value != percent), "")
+    percent = percent_matches[0].group(1)
+    base_candidates = [value for value in numbers if value != percent]
+    base = max(base_candidates, key=lambda value: len(value.replace(".", "").replace(",", "")), default="")
     if not base:
         return ""
     return f"Resumen de datos: valor inicial = {base}; aumento porcentual = {percent}%."
@@ -106,7 +107,8 @@ def _build_successive_percentage_summary(qti_xml: str) -> str:
 
 
 def _has_successive_percentage_changes(qti_xml: str) -> bool:
-    return len(re.findall(r"\d+(?:[.,]\d+)?\s*%", qti_xml)) >= 2
+    text = extract_question_text(qti_xml)
+    return len(re.findall(r"\d+(?:[.,]\d+)?\s*%", text)) >= 2
 
 
 def _infer_percentage_sign(text: str, position: int) -> str:

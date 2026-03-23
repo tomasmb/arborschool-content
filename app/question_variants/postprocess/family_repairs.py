@@ -7,6 +7,7 @@ import re
 from app.question_variants.postprocess.algebra_repairs import (
     repair_property_justification_choice,
     repair_symbolic_formula_presentation,
+    repair_verbal_formula_distractors,
 )
 from app.question_variants.postprocess.graph_repairs import repair_graph_representation_mentions
 from app.question_variants.postprocess.linear_repairs import repair_linear_equation_variant
@@ -18,13 +19,19 @@ from app.question_variants.postprocess.proportion_repairs import (
 )
 
 
-def repair_family_specific_qti(qti_xml: str, contract: dict[str, object]) -> str:
+def repair_family_specific_qti(
+    qti_xml: str,
+    contract: dict[str, object],
+    metadata: dict[str, object] | None = None,
+) -> str:
     """Apply deterministic family-specific repairs before semantic validation."""
     qti_xml = _normalize_math_tag_names(qti_xml)
     operation = str(contract.get("operation_signature") or "")
     task_form = str(contract.get("task_form") or "")
     presentation_style = str(contract.get("presentation_style") or "")
     model_family = str(contract.get("model_family") or "")
+    blueprint = ((metadata or {}).get("planning_blueprint", {}) or {}) if metadata else {}
+    selected_shape_id = str(blueprint.get("selected_shape_id") or "standard_variant")
 
     if operation == "graph_interpretation":
         return repair_graph_representation_mentions(qti_xml, contract)
@@ -42,9 +49,14 @@ def repair_family_specific_qti(qti_xml: str, contract: dict[str, object]) -> str
             operation,
             [str(item).strip() for item in contract.get("distractor_archetypes", []) if str(item).strip()],
             str(contract.get("percentage_band") or "unknown"),
+            selected_shape_id,
         )
-    if operation == "algebraic_expression_evaluation" and task_form == "substitute_expression" and presentation_style == "symbolic_formula_plus_reference":
-        return repair_symbolic_formula_presentation(qti_xml)
+    if operation == "algebraic_expression_evaluation" and task_form == "substitute_expression":
+        if presentation_style == "symbolic_formula_plus_reference":
+            qti_xml = repair_symbolic_formula_presentation(qti_xml)
+        if selected_shape_id == "verbal_formula_rule":
+            qti_xml = repair_verbal_formula_distractors(qti_xml)
+        return qti_xml
     if operation == "property_justification" and str(contract.get("correct_justification_archetype") or "") == "same_base_exponent_difference":
         return repair_property_justification_choice(qti_xml, str(contract.get("result_property_type") or ""))
     return qti_xml

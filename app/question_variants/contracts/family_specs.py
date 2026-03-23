@@ -53,6 +53,10 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "No basta con cambiar etiquetas o contexto: cambia de verdad la organización de la evidencia o el arquetipo de afirmación correcta."
         )
+        if str(contract.get("non_mechanizable_expectation") or "") == "high":
+            rules.append(
+                "En esta familia no basta con invertir la polaridad local de VERDADERA/FALSA: también debes cambiar el arquetipo central de la afirmación correcta o la forma de organizar la evidencia."
+            )
         source_claim_archetype = str(contract.get("correct_claim_archetype") or "")
         if source_claim_archetype and source_claim_archetype != "other_claim":
             rules.append(
@@ -68,6 +72,9 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         )
         rules.append(
             "Si la fuente entrega directamente la cantidad base, no conviertas la variante en una búsqueda entre varios registros, días o categorías."
+        )
+        rules.append(
+            "Si el objetivo es des-mecanizar una fuente muy directa, prefiere cambiar la forma de pregunta a selección de afirmación o consistencia contextual en vez de repetir otra pregunta literal por el valor final."
         )
         rules.append(
             "Los distractores numéricos deben ser plausibles y de la misma escala que la respuesta correcta."

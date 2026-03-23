@@ -266,6 +266,7 @@ class VariantPipeline:
         variant.qti_xml = repair_family_specific_qti(
             variant.qti_xml,
             source_contract,
+            variant.metadata,
         )
         repaired_qti = variant.qti_xml
         variant.qti_xml = apply_declared_correct_choice(

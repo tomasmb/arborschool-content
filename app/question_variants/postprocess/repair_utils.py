@@ -13,6 +13,30 @@ ET.register_namespace("", QTI_NS)
 ET.register_namespace("m", MATHML_NS)
 
 
+def normalized_tag_name(tag: str) -> str:
+    """Normalize XML tag names across namespaced, camelCase and qti-* variants."""
+    raw = tag.split("}", 1)[-1]
+    raw = raw.split(":", 1)[-1]
+    if raw.startswith("qti-"):
+        raw = raw[4:]
+    return re.sub(r"[-_]", "", raw).lower()
+
+
+def find_first_by_tag_name(root: ET.Element, *tag_names: str) -> ET.Element | None:
+    """Find the first descendant whose normalized tag matches any candidate."""
+    expected = {normalized_tag_name(tag) for tag in tag_names if tag}
+    for node in root.iter():
+        if normalized_tag_name(node.tag) in expected:
+            return node
+    return None
+
+
+def find_all_by_tag_name(root: ET.Element, *tag_names: str) -> list[ET.Element]:
+    """Find all descendants whose normalized tag matches any candidate."""
+    expected = {normalized_tag_name(tag) for tag in tag_names if tag}
+    return [node for node in root.iter() if normalized_tag_name(node.tag) in expected]
+
+
 def parse_number(text: str) -> float | None:
     cleaned = re.sub(r"[^0-9,.-]", "", text.replace("\xa0", ""))
     if not cleaned:
@@ -59,8 +83,8 @@ def ensure_choice_interaction_declarations(qti_xml: str) -> str:
     except ET.ParseError:
         return qti_xml
 
-    declaration = root.find(".//qti:qti-response-declaration", NS) or root.find(".//{*}qti-response-declaration")
-    interaction = root.find(".//qti:qti-choice-interaction", NS) or root.find(".//{*}qti-choice-interaction")
+    declaration = find_first_by_tag_name(root, "qti-response-declaration", "responseDeclaration")
+    interaction = find_first_by_tag_name(root, "qti-choice-interaction", "choiceInteraction")
     if interaction is None:
         return qti_xml
 
@@ -96,15 +120,11 @@ def apply_declared_correct_choice(qti_xml: str, correct_identifier: str) -> str:
     except ET.ParseError:
         return qti_xml
 
-    interaction = root.find(".//qti:qti-choice-interaction", NS) or root.find(".//{*}qti-choice-interaction")
-    if interaction is None:
-        interaction = root.find(".//{*}choiceInteraction")
+    interaction = find_first_by_tag_name(root, "qti-choice-interaction", "choiceInteraction")
     if interaction is None:
         return qti_xml
 
-    choice_nodes = interaction.findall(".//qti:qti-simple-choice", NS) or interaction.findall(".//{*}qti-simple-choice")
-    if not choice_nodes:
-        choice_nodes = interaction.findall(".//{*}simpleChoice")
+    choice_nodes = find_all_by_tag_name(interaction, "qti-simple-choice", "simpleChoice")
     choice_ids = {
         (choice.attrib.get("identifier") or "").strip()
         for choice in choice_nodes
@@ -121,9 +141,7 @@ def apply_declared_correct_choice(qti_xml: str, correct_identifier: str) -> str:
     )
     interaction.attrib["response-identifier" if "response-identifier" in interaction.attrib else "responseIdentifier"] = response_identifier
 
-    declaration = root.find(".//qti:qti-response-declaration", NS) or root.find(".//{*}qti-response-declaration")
-    if declaration is None:
-        declaration = root.find(".//{*}responseDeclaration")
+    declaration = find_first_by_tag_name(root, "qti-response-declaration", "responseDeclaration")
     if declaration is None:
         declaration = ET.Element(
             "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-response-declaration",
@@ -139,18 +157,14 @@ def apply_declared_correct_choice(qti_xml: str, correct_identifier: str) -> str:
         declaration.attrib.setdefault("cardinality", "single")
         declaration.attrib.setdefault("baseType", "identifier")
 
-    correct_response = declaration.find(".//qti:qti-correct-response", NS) or declaration.find(".//{*}qti-correct-response")
-    if correct_response is None:
-        correct_response = declaration.find(".//{*}correctResponse")
+    correct_response = find_first_by_tag_name(declaration, "qti-correct-response", "correctResponse")
     if correct_response is None:
         correct_response = ET.SubElement(
             declaration,
             "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-correct-response",
         )
 
-    value_node = correct_response.find(".//qti:qti-value", NS) or correct_response.find(".//{*}qti-value")
-    if value_node is None:
-        value_node = correct_response.find(".//{*}value")
+    value_node = find_first_by_tag_name(correct_response, "qti-value", "value")
     if value_node is None:
         value_node = ET.SubElement(correct_response, "{http://www.imsglobal.org/xsd/imsqtiasi_v3p0}qti-value")
     value_node.text = normalized_declared

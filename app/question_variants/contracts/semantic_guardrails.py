@@ -100,12 +100,32 @@ def adds_auxiliary_transformations(source_contract: dict[str, Any], variant_cont
     return False
 
 
-def breaks_expected_distractor_logic(source_contract: dict[str, Any], variant_contract: dict[str, Any]) -> bool:
+def breaks_expected_distractor_logic(
+    source_contract: dict[str, Any],
+    variant_contract: dict[str, Any],
+    metadata: dict[str, Any] | None = None,
+) -> bool:
     if not source_contract.get("must_preserve_distractor_logic"):
         return False
     source_archetypes = {str(item).strip() for item in source_contract.get("distractor_archetypes", []) if str(item).strip()}
     variant_archetypes = {str(item).strip() for item in variant_contract.get("distractor_archetypes", []) if str(item).strip()}
-    return bool(source_archetypes) and not source_archetypes.issubset(variant_archetypes)
+    if not source_archetypes:
+        return False
+
+    selected_shape_id = selected_shape_id_from_metadata(metadata or {})
+    if (
+        selected_shape_id in {"false_claim_hunt", "claim_archetype_switch"}
+        and str(source_contract.get("task_form") or "") == "claim_evaluation"
+    ):
+        promoted_archetype = _claim_archetype_to_distractor_alias(
+            str(variant_contract.get("correct_claim_archetype") or "")
+        )
+        required_archetypes = set(source_archetypes)
+        if promoted_archetype:
+            required_archetypes.discard(promoted_archetype)
+        return not required_archetypes.issubset(variant_archetypes)
+
+    return not source_archetypes.issubset(variant_archetypes)
 
 
 def adds_reference_load(source_contract: dict[str, Any], variant_contract: dict[str, Any]) -> bool:
@@ -188,6 +208,16 @@ def selected_shape_id_from_metadata(metadata: dict[str, Any]) -> str:
     """Return the selected family shape attached to a generated variant."""
     blueprint = metadata.get("planning_blueprint", {}) or metadata.get("blueprint", {}) or {}
     return str(blueprint.get("selected_shape_id") or "standard_variant").strip()
+
+
+def _claim_archetype_to_distractor_alias(claim_archetype: str) -> str:
+    aliases = {
+        "subgroup_percentage_as_total": "subgroup_vs_total_confusion",
+        "operation_setup_claim": "wrong_percentage_base_operation",
+        "combined_group_comparison": "combined_subgroups_vs_main_group",
+        "largest_subgroup_identification": "largest_subgroup_identification",
+    }
+    return aliases.get(claim_archetype.strip(), "")
 
 
 def violates_selected_shape(
@@ -333,6 +363,8 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         return "La variante cambió la familia estructural del ítem."
     presentation_source = str(source_contract.get("presentation_style") or "not_applicable")
     presentation_variant = str(variant_contract.get("presentation_style") or "not_applicable")
+    response_source = str(source_contract.get("response_mode") or "unknown")
+    response_variant = str(variant_contract.get("response_mode") or "unknown")
     if (
         (
             str(source_contract.get("task_form")) == "substitute_expression"
@@ -342,9 +374,12 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         and presentation_source not in {"not_applicable", "verbal_formula"}
         and presentation_source == presentation_variant
     ):
-        return "La variante conservó el mismo estilo de presentación del problema."
-    response_source = str(source_contract.get("response_mode") or "unknown")
-    response_variant = str(variant_contract.get("response_mode") or "unknown")
+        if not (
+            str(source_contract.get("operation_signature")) in {"direct_percentage_calculation", "percentage_increase_application"}
+            and response_source != response_variant
+            and response_variant == "statement_selection"
+        ):
+            return "La variante conservó el mismo estilo de presentación del problema."
     if (
         str(source_contract.get("operation_signature")) == "graph_interpretation"
         and response_source in {"label_selection", "statement_selection"}

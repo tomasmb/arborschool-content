@@ -25,9 +25,18 @@ def infer_claim_archetype(statement: str) -> str:
         return ""
     if "la mayor" in lowered or "la principal" in lowered:
         return "largest_subgroup_identification"
-    if "se debe realizar la operación" in lowered or "se debe realizar la operacion" in lowered:
+    if any(
+        marker in lowered
+        for marker in (
+            "se debe realizar la operación",
+            "se debe realizar la operacion",
+            "se debe multiplicar",
+            "se debe dividir",
+            "se debe calcular multiplicando",
+        )
+    ):
         return "operation_setup_claim"
-    if "en conjunto" in lowered:
+    if any(marker in lowered for marker in ("en conjunto", "conjunta", "juntas", "sumadas", "al sumar")):
         return "combined_group_comparison"
     if "%" in lowered and ("del total" in lowered or "del agua" in lowered or "del país" in lowered or "del pais" in lowered):
         return "subgroup_percentage_as_total"
@@ -284,6 +293,12 @@ def infer_percentage_change_pattern(question_text: str, profile: dict[str, bool 
             signs.append("increase")
         else:
             signs.append("unknown")
+    percent_values = [match.group(1).replace(",", ".") for match in percent_matches]
+    if len(set(percent_values)) == 1 and len(set(signs)) <= 1:
+        if signs[0] == "decrease":
+            return "single_decrease"
+        if signs[0] in {"increase", "unknown"}:
+            return "single_increase"
     return "_then_".join(signs)
 
 
