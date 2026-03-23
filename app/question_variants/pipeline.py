@@ -17,7 +17,11 @@ from app.question_variants.io.source_loader import load_source_questions
 from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
 from app.question_variants.contracts.structural_profile import build_construct_contract
 from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
-from app.question_variants.postprocess.repair_utils import apply_declared_correct_choice, strip_xml_comments
+from app.question_variants.postprocess.repair_utils import (
+    apply_declared_correct_choice,
+    normalize_named_entities,
+    strip_xml_comments,
+)
 from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
 from app.question_variants.variant_generator import VariantGenerator
 from app.question_variants.variant_planner import VariantPlanner
@@ -269,6 +273,8 @@ class VariantPipeline:
             variant.metadata,
         )
         repaired_qti = variant.qti_xml
+        variant.qti_xml = normalize_named_entities(variant.qti_xml)
+        entity_normalized_qti = variant.qti_xml
         variant.qti_xml = apply_declared_correct_choice(
             variant.qti_xml,
             str(variant.metadata.get("generator_declared_correct_identifier") or ""),
@@ -288,7 +294,8 @@ class VariantPipeline:
         variant.metadata["postprocess_summary"] = {
             "presentation_normalized": normalized_qti != original_qti,
             "family_repaired": repaired_qti != normalized_qti,
-            "correct_declaration_synced": declaration_synced_qti != repaired_qti,
+            "entities_normalized": entity_normalized_qti != repaired_qti,
+            "correct_declaration_synced": declaration_synced_qti != entity_normalized_qti,
             "comments_stripped": stripped_qti != declaration_synced_qti,
         }
 

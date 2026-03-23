@@ -15,6 +15,8 @@ from app.question_variants.postprocess.repair_utils import (
 )
 from app.question_variants.qti_validation_utils import extract_question_text
 
+NUMBER_PATTERN = r"\d{1,3}(?:[\s\u00a0]\d{3})*(?:[.,]\d+)?|\d+(?:[.,]\d+)?"
+
 
 def repair_percentage_choices(
     qti_xml: str,
@@ -57,7 +59,7 @@ def repair_percentage_choices(
     correct_value = (
         _calculate_percentage_increase_total(base_value, percent_value)
         if operation_signature == "percentage_increase_application"
-        else detected_correct_value
+        else _calculate_direct_percentage_total(base_value, percent_value)
     )
     if correct_value is None:
         return qti_xml
@@ -80,7 +82,7 @@ def repair_percentage_choices(
         identifier = choice.attrib.get("identifier", "")
         replacements[identifier] = correct_text if identifier == correct_id else next(next_distractor)[1]
     for choice in choice_nodes:
-        choice.text = replacements.get(choice.attrib.get("identifier", ""), choice.text or "")
+        _replace_choice_text(choice, replacements.get(choice.attrib.get("identifier", ""), "".join(choice.itertext())))
 
     if operation_signature == "percentage_increase_application" and _has_successive_percentage_changes(extract_question_text(qti_xml)):
         _rewrite_successive_change_context(root)
@@ -91,6 +93,7 @@ def repair_percentage_choices(
             root,
             choice_nodes,
             correct_id,
+            operation_signature,
             base_value,
             percent_value,
             correct_value,
@@ -108,7 +111,7 @@ def _find_correct_identifier(root: ET.Element) -> str:
 def _find_numeric_choice(choice_nodes: list[ET.Element], correct_id: str) -> float | None:
     for choice in choice_nodes:
         if choice.attrib.get("identifier") == correct_id:
-            return parse_number(choice.text or "")
+            return parse_number("".join(choice.itertext()))
     return None
 
 
@@ -127,7 +130,7 @@ def _extract_percentage_case(question_text: str, operation_signature: str) -> tu
 def _infer_percentage_case_from_base_and_correct(question_text: str, correct_value: float | None) -> tuple[float, float] | None:
     if correct_value is None:
         return None
-    number_tokens = [float(match.group(0).replace(",", ".")) for match in re.finditer(r"\d+(?:[.,]\d+)?", question_text)]
+    number_tokens = _extract_numeric_values(question_text)
     if not number_tokens:
         return None
     base_value = max(number_tokens)
@@ -158,7 +161,7 @@ def _build_percentage_distractors(
             percentage_band,
         )
     else:
-        candidates = [base_value, base_value + increment, increment * 2, correct_value + increment]
+        candidates = _build_direct_percentage_candidates(base_value, percent_value, correct_value)
 
     cleaned: list[tuple[str, str]] = []
     seen: set[str] = {format_number(correct_value)}
@@ -209,6 +212,20 @@ def _build_increase_candidates(
             ("gross_overestimate", correct_value + max(1, increment)),
         ]
     )
+    return candidates
+
+
+def _build_direct_percentage_candidates(
+    base_value: float,
+    percent_value: float,
+    correct_value: float,
+) -> list[tuple[str, float]]:
+    candidates = [
+        ("decimal_shift_low", max(1, correct_value / 10)),
+        ("ten_percent_anchor", max(1, base_value / 10)),
+        ("divide_by_percent_number", max(1, base_value / max(percent_value, 1))),
+        ("base_only", base_value),
+    ]
     return candidates
 
 
@@ -274,6 +291,7 @@ def _rewrite_decision_statement_variant(
     root: ET.Element,
     choice_nodes: list[ET.Element],
     correct_id: str,
+    operation_signature: str,
     base_value: float,
     percent_value: float,
     correct_value: float,
@@ -290,7 +308,11 @@ def _rewrite_decision_statement_variant(
     if prompt is None:
         prompt = ET.Element("qti-prompt")
         interaction.insert(0, prompt)
-    prompt.text = "¿Cuál de las siguientes afirmaciones describe correctamente el nuevo total?"
+    prompt.text = (
+        "¿Cuál de las siguientes afirmaciones describe correctamente el nuevo total?"
+        if operation_signature == "percentage_increase_application"
+        else "¿Cuál de las siguientes afirmaciones describe correctamente la parte porcentual calculada?"
+    )
 
     item_body = find_first_by_tag_name(root, "qti-item-body", "itemBody")
     if item_body is not None:
@@ -301,11 +323,14 @@ def _rewrite_decision_statement_variant(
                 item_body.remove(child)
 
         narrative = ET.Element("qti-p")
-        narrative.text = _build_decision_statement_context(base_value, unit_label, percent_label)
-        instruction = ET.Element("qti-p")
-        instruction.text = (
-            "Selecciona la afirmación que interpreta correctamente el aumento porcentual aplicado a esa cantidad."
+        narrative.text = _build_decision_statement_context(
+            operation_signature,
+            base_value,
+            unit_label,
+            percent_label,
         )
+        instruction = ET.Element("qti-p")
+        instruction.text = _build_decision_statement_instruction(operation_signature)
         children = list(item_body)
         insert_index = children.index(interaction) if interaction in children else len(children)
         item_body.insert(insert_index, narrative)
@@ -326,24 +351,39 @@ def _rewrite_decision_statement_variant(
         if not value:
             continue
         if identifier == correct_id:
-            choice.text = (
-                f"Se vendieron {format_number(increment_value)} {unit_label} más que antes, "
-                f"por lo que el total actualizado fue {format_number(correct_value)} {unit_label}."
-            )
+            if operation_signature == "percentage_increase_application":
+                _replace_choice_text(
+                    choice,
+                    f"Se vendieron {format_number(increment_value)} {unit_label} más que antes, "
+                    f"por lo que el total actualizado fue {format_number(correct_value)} {unit_label}.",
+                )
+            else:
+                _replace_choice_text(
+                    choice,
+                    f"El {percent_label or 'porcentaje solicitado'} de {format_number(base_value)} {unit_label} "
+                    f"equivale a {format_number(correct_value)} {unit_label}.",
+                )
             continue
         archetype, distractor_value = distractor_by_identifier.get(identifier, ("other", value))
-        choice.text = _build_percentage_statement_distractor(
-            archetype,
-            distractor_value,
-            unit_label,
-            percent_label,
-            increment_value,
-            base_value,
+        _replace_choice_text(
+            choice,
+            _build_percentage_statement_distractor(
+                archetype,
+                distractor_value,
+                unit_label,
+                percent_label,
+                increment_value,
+                base_value,
+                operation_signature,
+            ),
         )
 
 
 def _extract_context_unit(question_text: str) -> str:
     text = re.sub(r"\s+", " ", question_text)
+    lowered = text.lower()
+    if "$" in text or any(marker in lowered for marker in ("monto", "pesos", "dinero", "presupuesto", "costo", "precio")):
+        return "pesos"
     match = re.search(
         r"\d+(?:[.,]\d+)?\s+([a-záéíóúñ]+(?:\s+de\s+[a-záéíóúñ]+){0,3})",
         text.lower(),
@@ -371,8 +411,7 @@ def _extract_percentage_label(question_text: str, choice_nodes: list[ET.Element]
 
 
 def _extract_base_value(question_text: str) -> float | None:
-    numbers = [parse_number(match.group(0)) for match in re.finditer(r"\d+(?:[.,]\d+)?", question_text)]
-    candidates = [value for value in numbers if value is not None]
+    candidates = _extract_numeric_values(question_text)
     if not candidates:
         return None
     return max(candidates)
@@ -380,7 +419,7 @@ def _extract_base_value(question_text: str) -> float | None:
 
 def _extract_base_value_from_context(question_text: str, percent_value: float) -> float | None:
     scored_candidates: list[tuple[int, float]] = []
-    for match in re.finditer(r"\d+(?:[.,]\d+)?", question_text):
+    for match in re.finditer(NUMBER_PATTERN, question_text):
         value = parse_number(match.group(0))
         if value is None or value == percent_value:
             continue
@@ -427,6 +466,10 @@ def _calculate_percentage_increase_total(base_value: float, percent_value: float
     return round(base_value * (1 + percent_value / 100), 2)
 
 
+def _calculate_direct_percentage_total(base_value: float, percent_value: float) -> float:
+    return round(base_value * (percent_value / 100), 2)
+
+
 def _calculate_increment(base_value: float, percent_value: float) -> float:
     return round(base_value * percent_value / 100, 2)
 
@@ -438,7 +481,28 @@ def _build_percentage_statement_distractor(
     percent_label: str,
     increment_value: float,
     base_value: float,
+    operation_signature: str,
 ) -> str:
+    if operation_signature == "direct_percentage_calculation":
+        if archetype == "decimal_shift_low":
+            return (
+                f"Se movió una sola vez la coma decimal al calcular el {percent_label or 'porcentaje'}, "
+                f"por eso se obtuvo {distractor_value} {unit_label}."
+            )
+        if archetype == "ten_percent_anchor":
+            return (
+                f"Se tomó solo el 10 % de {format_number(base_value)} {unit_label} y se reportó "
+                f"{distractor_value} {unit_label}."
+            )
+        if archetype == "divide_by_percent_number":
+            return (
+                f"Se dividió {format_number(base_value)} entre {percent_label or 'el número del porcentaje'} "
+                f"y se concluyó que la parte correspondiente era {distractor_value} {unit_label}."
+            )
+        if archetype == "base_only":
+            return f"Se mantuvo la cantidad inicial y se indicó {distractor_value} {unit_label}."
+        return f"La parte porcentual se estimó como {distractor_value} {unit_label}."
+
     if archetype == "increment_only":
         return (
             f"Se calculó que el aumento equivalía a {format_number(increment_value)} {unit_label} "
@@ -460,7 +524,22 @@ def _build_percentage_statement_distractor(
     return f"El total actualizado sería {distractor_value} {unit_label}."
 
 
-def _build_decision_statement_context(base_value: float, unit_label: str, percent_label: str) -> str:
+def _build_decision_statement_context(
+    operation_signature: str,
+    base_value: float,
+    unit_label: str,
+    percent_label: str,
+) -> str:
+    if operation_signature == "direct_percentage_calculation":
+        if percent_label:
+            return (
+                f"En un registro breve se reportaron {format_number(base_value)} {unit_label}. "
+                f"Se pidió calcular el {percent_label} de esa cantidad."
+            )
+        return (
+            f"En un registro breve se reportaron {format_number(base_value)} {unit_label}. "
+            "Se pidió calcular el porcentaje solicitado de esa cantidad."
+        )
     if percent_label:
         return (
             f"En un registro breve se reportaron {format_number(base_value)} {unit_label}. "
@@ -470,6 +549,27 @@ def _build_decision_statement_context(base_value: float, unit_label: str, percen
         f"En un registro breve se reportaron {format_number(base_value)} {unit_label}. "
         "Luego se estimó un aumento porcentual respecto de esa cantidad."
     )
+
+
+def _build_decision_statement_instruction(operation_signature: str) -> str:
+    if operation_signature == "direct_percentage_calculation":
+        return "Selecciona la afirmación que interpreta correctamente el porcentaje calculado sobre esa cantidad."
+    return "Selecciona la afirmación que interpreta correctamente el aumento porcentual aplicado a esa cantidad."
+
+
+def _replace_choice_text(choice: ET.Element, text: str) -> None:
+    for child in list(choice):
+        choice.remove(child)
+    choice.text = text
+
+
+def _extract_numeric_values(text: str) -> list[float]:
+    values: list[float] = []
+    for match in re.finditer(NUMBER_PATTERN, text.replace("\xa0", " ")):
+        value = parse_number(match.group(0))
+        if value is not None:
+            values.append(value)
+    return values
 
 
 def _build_successive_change_summary(question_text: str) -> str:

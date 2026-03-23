@@ -303,6 +303,8 @@ FAMILY_SPECS: list[dict[str, Any]] = [
             "potencia de una potencia con base racional",
             "modelado de situaciones con potencias y raíces",
             "modelado de situaciones con potencias y raices",
+            "división de potencias de igual base racional",
+            "division de potencias de igual base racional",
         ),
         "operation_signature": "property_justification",
         "cognitive_action": "justify_property",

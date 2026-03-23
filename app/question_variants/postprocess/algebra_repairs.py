@@ -96,31 +96,56 @@ def repair_verbal_formula_distractors(qti_xml: str) -> str:
     return serialize_xml(root)
 
 
-def repair_property_justification_choice(qti_xml: str, result_property_type: str) -> str:
+def repair_property_justification_choice(
+    qti_xml: str,
+    result_property_type: str,
+    power_base_family: str = "",
+    argument_polarity: str = "",
+) -> str:
     try:
         root = ET.fromstring(qti_xml)
     except ET.ParseError:
         return qti_xml
 
-    correct_identifier = None
-    for value in root.findall(".//{*}qti-correct-response/{*}qti-value"):
-        correct_identifier = (value.text or "").strip()
-        if correct_identifier:
-            break
+    correct_response = find_first_by_tag_name(root, "qti-correct-response", "correctResponse")
+    value_node = find_first_by_tag_name(correct_response, "qti-value", "value") if correct_response is not None else None
+    correct_identifier = (value_node.text or "").strip() if value_node is not None else ""
     if not correct_identifier:
         return qti_xml
 
-    base, exponent_gap = _extract_power_division_case(root)
-    if base is None or exponent_gap is None:
+    case = _extract_power_division_case(root)
+    if case is None:
         return qti_xml
-    justification = _build_property_justification(base, exponent_gap, result_property_type)
-    if not justification:
+    base, left_exp, right_exp = case
+    if power_base_family == "binary_power_composition":
+        if base not in {2, 4, 8, 16}:
+            base = 4
+        if result_property_type == "even_integer":
+            base, left_exp, right_exp = _normalize_binary_even_integer_case(base, left_exp, right_exp)
+    _rewrite_power_division_stem(root, base, left_exp, right_exp, result_property_type, argument_polarity)
+
+    choices = find_all_by_tag_name(root, "qti-simple-choice", "simpleChoice")
+    if len(choices) != 4:
         return qti_xml
 
-    for choice in root.findall(".//{*}qti-simple-choice"):
+    correct_text, distractors = _build_property_justification_options(
+        base,
+        left_exp,
+        right_exp,
+        result_property_type,
+        power_base_family,
+    )
+    if not correct_text or len(distractors) != 3:
+        return qti_xml
+
+    distractor_iter = iter(distractors)
+    for choice in choices:
+        for child in list(choice):
+            choice.remove(child)
         if choice.attrib.get("identifier") == correct_identifier:
-            choice.text = justification
-            break
+            choice.text = correct_text
+            continue
+        choice.text = next(distractor_iter)
     return serialize_xml(root)
 
 
@@ -182,18 +207,141 @@ def _build_verbal_formula_distractors(
     return distractors[:3]
 
 
-def _extract_power_division_case(root: ET.Element) -> tuple[int | None, int | None]:
+def _extract_power_division_case(root: ET.Element) -> tuple[int, int, int] | None:
+    msup_nodes = [node for node in root.iter() if node.tag.split("}")[-1] == "msup"]
+    if len(msup_nodes) >= 2:
+        left = _parse_msup(msup_nodes[0])
+        right = _parse_msup(msup_nodes[1])
+        if left and right and left[0] == right[0]:
+            return left[0], left[1], right[1]
+
     text = re.sub(r"\s+", " ", "".join(root.itertext()))
     match = re.search(
         r"(\d+)\s*\^\s*(\d+)\s*[:/÷]\s*(\d+)\s*\^\s*(\d+)",
         text,
     )
     if not match:
-        return None, None
+        match = re.search(
+            r"divisi[oó]n\s+entre\s+(\d+)\s*\^\s*(\d+)\s+y\s+(\d+)\s*\^\s*(\d+)",
+            text,
+            flags=re.IGNORECASE,
+        )
+    if not match:
+        match = re.search(
+            r"dividir\s+(\d+)\s*\^\s*(\d+)\s+entre\s+(\d+)\s*\^\s*(\d+)",
+            text,
+            flags=re.IGNORECASE,
+        )
+    if not match:
+        return None
     base_left, exp_left, base_right, exp_right = map(int, match.groups())
     if base_left != base_right:
-        return None, None
-    return base_left, exp_left - exp_right
+        return None
+    return base_left, exp_left, exp_right
+
+
+def _parse_msup(node: ET.Element) -> tuple[int, int] | None:
+    children = list(node)
+    if len(children) < 2:
+        return None
+    base = parse_number("".join(children[0].itertext()))
+    exponent = parse_number("".join(children[1].itertext()))
+    if base is None or exponent is None:
+        return None
+    return int(base), int(exponent)
+
+
+def _rewrite_power_division_stem(
+    root: ET.Element,
+    base: int,
+    left_exp: int,
+    right_exp: int,
+    result_property_type: str,
+    argument_polarity: str,
+) -> None:
+    item_body = find_first_by_tag_name(root, "qti-item-body", "itemBody")
+    if item_body is None:
+        return
+    prompt_paragraph = next((child for child in list(item_body) if child.tag.split("}")[-1].lower() == "p"), None)
+    if prompt_paragraph is None:
+        return
+    for child in list(prompt_paragraph):
+        prompt_paragraph.remove(child)
+    property_text = _target_property_text(result_property_type)
+    if argument_polarity == "refute_invalid_argument":
+        prompt_paragraph.text = (
+            f"¿Cuál de los siguientes argumentos NO justifica correctamente que la división entre "
+            f"{base}^{left_exp} y {base}^{right_exp} da como resultado {property_text}?"
+        )
+    else:
+        prompt_paragraph.text = (
+            f"¿Cuál de los siguientes argumentos justifica que la división entre "
+            f"{base}^{left_exp} y {base}^{right_exp} da como resultado {property_text}?"
+        )
+
+
+def _normalize_binary_even_integer_case(base: int, left_exp: int, right_exp: int) -> tuple[int, int, int]:
+    """Keep binary-power variants in-family while avoiding a literal clone of the source."""
+    if base == 2:
+        base = 4
+    exponent_gap = left_exp - right_exp
+    if exponent_gap <= 0:
+        if right_exp < 2:
+            right_exp = 2
+        exponent_gap = 3
+        left_exp = right_exp + exponent_gap
+    return base, left_exp, right_exp
+
+
+def _target_property_text(result_property_type: str) -> str:
+    if result_property_type == "even_integer":
+        return "un número par"
+    if result_property_type == "perfect_square":
+        return "un cuadrado perfecto"
+    if result_property_type == "multiple_of_base":
+        return "un múltiplo de la base"
+    return "un resultado coherente con la propiedad pedida"
+
+
+def _build_property_justification_options(
+    base: int,
+    left_exp: int,
+    right_exp: int,
+    result_property_type: str,
+    power_base_family: str = "",
+) -> tuple[str, list[str]]:
+    exponent_gap = left_exp - right_exp
+    if result_property_type == "even_integer" and power_base_family == "binary_power_composition" and exponent_gap > 0:
+        justification = (
+            f"Al dividir potencias de igual base se obtiene {base}^{exponent_gap}; como la base {base} es par "
+            "y el exponente resultante sigue siendo entero positivo, esa potencia sigue siendo un número par."
+        )
+    else:
+        justification = _build_property_justification(base, exponent_gap, result_property_type)
+    if not justification:
+        return "", []
+    if result_property_type == "even_integer":
+        distractors = [
+            (
+                f"Que las bases son iguales y múltiplos de 2, y que al dividir las potencias se conserva la base "
+                f"pero se dividen los exponentes, obteniendo un exponente entero positivo."
+            ),
+            (
+                f"Que al dividir las potencias se dividen las bases obteniendo 1, y que al restar los exponentes "
+                f"se obtiene {exponent_gap}, el cual es un número par."
+            ),
+            (
+                f"Que las bases son iguales y múltiplos de 2, y que al dividir las potencias se conserva la base "
+                f"pero se suman los exponentes, obteniendo un exponente entero positivo."
+            ),
+        ]
+        return justification, distractors
+    distractors = [
+        "Se conserva la base, pero el exponente resultante se obtiene dividiendo los exponentes.",
+        "La propiedad se justifica sumando los exponentes de las potencias involucradas.",
+        "La división entre potencias de igual base elimina la base y deja solo el exponente restante.",
+    ]
+    return justification, distractors
 
 
 def _build_property_justification(base: int, exponent_gap: int, result_property_type: str) -> str:
@@ -203,5 +351,11 @@ def _build_property_justification(base: int, exponent_gap: int, result_property_
     if result_property_type == "negative_exponent_reciprocal" and exponent_gap < 0:
         return f"Al dividir se obtiene {base}^{exponent_gap}; un exponente negativo representa el recíproco de {base}^{abs(exponent_gap)}."
     if exponent_gap > 0:
+        if result_property_type == "even_integer" and base % 2 == 0:
+            return (
+                f"Al dividir potencias de igual base, las bases se mantienen iguales ({base}) y se restan los exponentes, "
+                f"por lo que queda {base}^{exponent_gap}; como la base es par y el exponente sigue siendo "
+                "entero positivo, el resultado continúa siendo un número par."
+            )
         return f"Al dividir potencias de igual base se restan exponentes, por lo que queda {base}^{exponent_gap}."
     return ""

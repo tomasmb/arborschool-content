@@ -367,6 +367,189 @@ Devuelve SOLO JSON:
                 )
                 continue
             if (
+                family_id == "direct_percentage_calculation"
+                and str(construct_contract.get("operation_signature") or "") == "direct_percentage_calculation"
+                and str(construct_contract.get("presentation_style") or "") == "plain_narrative"
+                and str(construct_contract.get("selection_load") or "") == "single_given_base"
+                and blueprint.selected_shape_id != "decision_statement"
+            ):
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe presentar un registro o nota contextual breve y luego pedir "
+                            "seleccionar la afirmación coherente con la parte porcentual calculada, "
+                            "en vez de repetir otra pregunta literal por el valor final. Los distractores deben "
+                            "quedar en la misma escala de la respuesta correcta y representar errores plausibles "
+                            "de coma decimal, ancla de 10 % o división incorrecta por el número del porcentaje."
+                        ),
+                        non_mechanizable_axes=["forma_pregunta", "distractor_dominante"],
+                        required_reasoning=(
+                            "La comprensión debe venir de interpretar correctamente la cantidad base y el porcentaje "
+                            "dentro de un registro breve, distinguiendo la parte porcentual correcta de errores "
+                            "plausibles de cálculo directo sin introducir magnitudes intermedias."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id="decision_statement",
+                    )
+                )
+                continue
+            if (
+                family_id == "algebraic_model_translation"
+                and str(construct_contract.get("task_form") or "") == "representation_interpretation"
+                and not construct_contract.get("requires_visual_support")
+                and (
+                    blueprint.requires_image
+                    or self._mentions_visual_support(blueprint.scenario_description)
+                    or self._mentions_visual_support(blueprint.required_reasoning)
+                )
+            ):
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe mantener una representación primaria simbólica o posicional sin agregar "
+                            "gráficos, tablas ni figuras nuevas. Puede presentar un número, expresión o registro breve "
+                            "y pedir seleccionar la descomposición o interpretación algebraica coherente."
+                        ),
+                        non_mechanizable_axes=["forma_pregunta", "representacion"],
+                        required_reasoning=(
+                            "La comprensión debe venir de leer correctamente la representación simbólica o posicional "
+                            "y vincularla con la expresión algebraica adecuada, sin reemplazarla por soporte visual."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=False,
+                        image_description="",
+                        selected_shape_id="model_to_context_match",
+                    )
+                )
+                continue
+            if (
+                family_id == "graph_interpretation"
+                and str(construct_contract.get("graph_rate_frame") or "") == "direct_slope_rate"
+                and (
+                    "invers" in blueprint.scenario_description.lower()
+                    or "invers" in blueprint.required_reasoning.lower()
+                    or "menor pendiente" in blueprint.scenario_description.lower()
+                    or "menor pendiente" in blueprint.required_reasoning.lower()
+                )
+            ):
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe seguir usando una representación gráfica donde la pendiente represente "
+                            "directamente la razón pedida. Si se pregunta por el mayor rendimiento o rapidez, la "
+                            "respuesta correcta debe corresponder a la recta de mayor pendiente dentro de la misma "
+                            "lectura de la representación."
+                        ),
+                        non_mechanizable_axes=blueprint.non_mechanizable_axes,
+                        required_reasoning=(
+                            "El estudiante debe interpretar correctamente qué magnitudes están en cada eje, "
+                            "manteniendo que la pendiente expresa directamente la razón buscada. La dificultad debe "
+                            "venir del foco de lectura o de distractores visuales plausibles, no de invertir la razón."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id=blueprint.selected_shape_id,
+                    )
+                )
+                continue
+            if (
+                family_id == "graph_interpretation"
+                and str(construct_contract.get("graph_rate_frame") or "") == "direct_slope_rate"
+                and str(construct_contract.get("response_mode") or "") == "label_selection"
+                and blueprint.selected_shape_id == "extremum_focus"
+            ):
+                repaired.append(
+                    VariantBlueprint(
+                        variant_id=blueprint.variant_id,
+                        scenario_description=(
+                            "La variante debe mantener un gráfico de una sola serie donde la pendiente represente "
+                            "directamente la razón pedida, pero cambiar la forma de respuesta a una afirmación breve "
+                            "sobre qué etiqueta corresponde al mayor rendimiento o a la mayor razón observada."
+                        ),
+                        non_mechanizable_axes=["representacion", "forma_pregunta"],
+                        required_reasoning=(
+                            "El estudiante debe interpretar la pendiente o el orden de razones dentro del gráfico "
+                            "y luego validar una afirmación breve sobre cuál etiqueta representa la mayor tasa, "
+                            "sin que baste repetir mecánicamente el mismo prompt de la fuente."
+                        ),
+                        difficulty_target=blueprint.difficulty_target,
+                        requires_image=blueprint.requires_image,
+                        image_description=blueprint.image_description,
+                        selected_shape_id="single_series_visual_claim",
+                    )
+                )
+                continue
+            if family_id == "property_justification":
+                selected_shape_id = blueprint.selected_shape_id
+                if (
+                    str(construct_contract.get("argument_polarity") or "") == "justify_valid_application"
+                    and selected_shape_id == "invalid_reason_detection"
+                ):
+                    selected_shape_id = "justification_statement_selection"
+                power_family = str(construct_contract.get("power_base_family") or "")
+                if power_family == "binary_power_composition" and (
+                    "mismo constructo" in blueprint.scenario_description.lower()
+                    or "potencias de igual base" not in blueprint.scenario_description.lower()
+                    or "inválida" in blueprint.scenario_description.lower()
+                    or "invalida" in blueprint.scenario_description.lower()
+                ):
+                    repaired.append(
+                        VariantBlueprint(
+                            variant_id=blueprint.variant_id,
+                            scenario_description=(
+                                "La variante debe seguir pidiendo una justificación válida para una división entre "
+                                "potencias de igual base dentro de la misma familia binaria del contrato "
+                                "(por ejemplo, base 4 u 8). El resultado debe conservar una propiedad equivalente "
+                                "a la fuente, como seguir siendo un número par."
+                            ),
+                            non_mechanizable_axes=blueprint.non_mechanizable_axes,
+                            required_reasoning=(
+                                "El estudiante debe usar la regla de conservar la base y restar exponentes, "
+                                "manteniendo una base de la misma familia binaria y justificando por qué el "
+                                "resultado preserva la propiedad pedida sin cambiar la polaridad del argumento."
+                            ),
+                            difficulty_target=blueprint.difficulty_target,
+                            requires_image=blueprint.requires_image,
+                            image_description=blueprint.image_description,
+                            selected_shape_id=selected_shape_id or "justification_statement_selection",
+                        )
+                    )
+                    continue
+                if (
+                    power_family == "binary_power_composition"
+                    and str(construct_contract.get("result_property_type") or "") == "even_integer"
+                ):
+                    repaired.append(
+                        VariantBlueprint(
+                            variant_id=blueprint.variant_id,
+                            scenario_description=(
+                                "La variante debe seguir pidiendo una justificación válida para una división entre "
+                                "potencias de igual base de la misma familia binaria, pero debe elegir exponentes "
+                                "positivos y una base binaria distinta de la fuente, de modo que la explicación "
+                                "correcta combine la resta de exponentes con la idea de que una potencia positiva "
+                                "de base par sigue siendo par."
+                            ),
+                            non_mechanizable_axes=blueprint.non_mechanizable_axes,
+                            required_reasoning=(
+                                "El estudiante debe reconocer la ley de división de potencias de igual base y, "
+                                "además, conectar el resultado con la paridad de una base par elevada a un "
+                                "exponente entero positivo. La justificación correcta no puede quedarse solo en "
+                                "copiar la misma receta verbal de la fuente."
+                            ),
+                            difficulty_target=blueprint.difficulty_target,
+                            requires_image=blueprint.requires_image,
+                            image_description=blueprint.image_description,
+                            selected_shape_id=selected_shape_id or "justification_statement_selection",
+                        )
+                    )
+                    continue
+            if (
                 family_id == "percentage_context_application"
                 and str(construct_contract.get("operation_signature") or "") == "percentage_increase_application"
                 and str(construct_contract.get("presentation_style") or "") == "plain_narrative"
@@ -438,4 +621,9 @@ Devuelve SOLO JSON:
             "miligram",
             "kilocalor",
         )
+        return any(marker in lowered for marker in markers)
+
+    def _mentions_visual_support(self, text: str) -> bool:
+        lowered = str(text or "").lower()
+        markers = ("gráfico", "grafico", "figura", "tabla", "diagrama", "barra", "línea", "linea")
         return any(marker in lowered for marker in markers)

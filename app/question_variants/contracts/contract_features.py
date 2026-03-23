@@ -333,11 +333,14 @@ def infer_power_base_family(question_text: str, profile: dict[str, bool | str]) 
     if profile["operation_signature"] not in {"property_justification", "ten_power_zero_composition"}:
         return "not_applicable"
     lowered = question_text.lower()
-    if any(marker in lowered for marker in ("[00]", "[000]", "00", "000", "ceros", "cero", "botones")) and any(
+    if any(
+        marker in lowered
+        for marker in ("[00]", "[000]", "botón", "boton", "botones", "tecla 00", "tecla 000", "grupo de ceros", "grupos de ceros")
+    ) and any(marker in lowered for marker in ("[00]", "[000]", "doble cero", "triple cero", "grupo de ceros", "grupos de ceros")) and any(
         marker in lowered for marker in ("10^", "10 ", "10)", "número 1000", "numero 1000")
     ):
         return "ten_power_zero_composition"
-    if re.search(r"<msup><mn>2</mn>|2\^", question_text) or " 2 " in f" {lowered} ":
+    if re.search(r"<msup><mn>(?:2|4|8|16)</mn>", question_text) or re.search(r"\b(?:2|4|8|16)\^", lowered):
         return "binary_power_composition"
     return "generic_power_family"
 
@@ -409,16 +412,64 @@ def infer_parameter_statement_form(correct_answer: str, profile: dict[str, bool 
     return "other_statement"
 
 
+def infer_graph_rate_frame(question_text: str, qti_xml: str, profile: dict[str, bool | str]) -> str:
+    if str(profile.get("operation_signature") or "") != "graph_interpretation":
+        return "not_applicable"
+    lowered_question = question_text.lower().replace("\xa0", " ")
+    lowered_xml = qti_xml.lower().replace("\xa0", " ")
+    requested = _extract_fraction_units(lowered_xml)
+    if requested is None:
+        return "not_applicable"
+    numerator_unit, denominator_unit = requested
+    axes = _extract_graph_axes(lowered_question)
+    if axes is None:
+        axes = _extract_graph_axes(lowered_xml)
+    if axes is None:
+        return "not_applicable"
+    vertical_unit, horizontal_unit = axes
+    if numerator_unit == vertical_unit and denominator_unit == horizontal_unit:
+        return "direct_slope_rate"
+    if numerator_unit == horizontal_unit and denominator_unit == vertical_unit:
+        return "inverse_slope_rate"
+    return "not_applicable"
+
+
 def infer_extremum_polarity(question_text: str, profile: dict[str, bool | str]) -> str:
     op = str(profile.get("operation_signature") or "")
     task_form = str(profile.get("task_form") or "")
     if op != "graph_interpretation" and task_form != "claim_evaluation":
         return "not_applicable"
     lowered = question_text.lower()
-    if any(marker in lowered for marker in ("más débil", "mas debil", "menor", "mínimo", "minimo", "más bajo", "mas bajo")):
+    focus_text = lowered.split("¿")[-1] if "¿" in lowered else lowered
+    if any(marker in focus_text for marker in ("más débil", "mas debil", "menor", "mínimo", "minimo", "más bajo", "mas bajo")):
         return "minimum_target"
-    if any(marker in lowered for marker in ("más fuerte", "mas fuerte", "mayor", "máximo", "maximo", "más alto", "mas alto")):
+    if any(marker in focus_text for marker in ("más fuerte", "mas fuerte", "mayor", "máximo", "maximo", "más alto", "mas alto")):
         return "maximum_target"
+    if op == "graph_interpretation":
+        if any(
+            marker in lowered
+            for marker in (
+                "mayor rendimiento",
+                "más rendimiento",
+                "mas rendimiento",
+                "mayor rapidez",
+                "más kilómetros por cada",
+                "mas kilometros por cada",
+            )
+        ):
+            return "maximum_target"
+        if any(
+            marker in lowered
+            for marker in (
+                "menor rendimiento",
+                "menos rendimiento",
+                "mínimo rendimiento",
+                "minimo rendimiento",
+                "menos kilómetros por cada",
+                "menos kilometros por cada",
+            )
+        ):
+            return "minimum_target"
     return "not_applicable"
 
 
@@ -516,3 +567,90 @@ def infer_proportional_reasoning_mode(
     if any(token in correct_answer for token in ("<mfrac", "/", "÷")):
         return "direct_quotient_expression"
     return "generic_proportional_rule"
+
+
+def _extract_fraction_units(text: str) -> tuple[str, str] | None:
+    compact = re.sub(r"\s+", " ", text)
+    math_match = re.search(
+        r"<mfrac>.*?(?:<mtext>|<mi>)([^<]+)(?:</mtext>|</mi>).*?(?:<mtext>|<mi>)([^<]+)(?:</mtext>|</mi>).*?</mfrac>",
+        compact,
+        re.DOTALL,
+    )
+    if math_match:
+        numerator = _normalize_unit_token(math_match.group(1))
+        denominator = _normalize_unit_token(math_match.group(2))
+        if numerator and denominator:
+            return numerator, denominator
+
+    text_match = re.search(
+        r"se expresa en [^(]*\(([^()/]+)\s*/\s*([^()]+)\)",
+        compact,
+    )
+    if text_match:
+        numerator = _normalize_unit_token(text_match.group(1))
+        denominator = _normalize_unit_token(text_match.group(2))
+        if numerator and denominator:
+            return numerator, denominator
+
+    verbal_match = re.search(
+        r"(kil[oó]metros?|km|litros?|horas?|minutos?|p[aá]ginas?)\s+por\s+(litros?|horas?|minutos?|l|h|min)",
+        compact,
+    )
+    if verbal_match:
+        numerator = _normalize_unit_token(verbal_match.group(1))
+        denominator = _normalize_unit_token(verbal_match.group(2))
+        if numerator and denominator:
+            return numerator, denominator
+    return None
+
+
+def _extract_graph_axes(text: str) -> tuple[str, str] | None:
+    compact = re.sub(r"\s+", " ", text)
+    vertical_windows = re.findall(r"([^.]{0,80})\(\s*eje vertical\s*\)", compact)
+    horizontal_windows = re.findall(r"([^.]{0,80})\(\s*eje horizontal\s*\)", compact)
+    if vertical_windows and horizontal_windows:
+        vertical = _normalize_unit_token(vertical_windows[-1])
+        horizontal = _normalize_unit_token(horizontal_windows[-1])
+        if vertical and horizontal and vertical != horizontal:
+            return vertical, horizontal
+
+    vertical_match = re.search(
+        r"eje vertical[^.:\n]*?\b(kil[oó]metros?|km|litros?|horas?|minutos?|l|h|min)\b",
+        compact,
+    )
+    horizontal_match = re.search(
+        r"eje horizontal[^.:\n]*?\b(kil[oó]metros?|km|litros?|horas?|minutos?|l|h|min)\b",
+        compact,
+    )
+    if vertical_match and horizontal_match:
+        vertical = _normalize_unit_token(vertical_match.group(1))
+        horizontal = _normalize_unit_token(horizontal_match.group(1))
+        if vertical and horizontal and vertical != horizontal:
+            return vertical, horizontal
+
+    function_match = re.search(
+        r"(?:se representa|se muestra|muestra)\s+(.{0,120}?)\s+en función de(?: la cantidad de)?\s+([^.;]+)",
+        compact,
+    )
+    if function_match:
+        vertical = _normalize_unit_token(function_match.group(1))
+        horizontal = _normalize_unit_token(function_match.group(2))
+        if vertical and horizontal:
+            return vertical, horizontal
+    return None
+
+
+def _normalize_unit_token(token: str) -> str:
+    normalized = token.strip().lower()
+    normalized = re.sub(r"[^a-záéíóúñ/]+", " ", normalized)
+    if any(marker in normalized for marker in ("kilómetro", "kilometro", "kilometros", "kilómetros")) or re.search(r"\bkm\b", normalized):
+        return "km"
+    if any(marker in normalized for marker in ("litro", "litros", "bencina", "gasolina")) or re.search(r"\bl\b", normalized):
+        return "l"
+    if any(marker in normalized for marker in ("hora", "horas")) or re.search(r"\b(?:h|hr)\b", normalized):
+        return "h"
+    if any(marker in normalized for marker in ("minuto", "minutos")) or re.search(r"\bmin\b", normalized):
+        return "min"
+    if any(marker in normalized for marker in ("página", "pagina", "páginas", "paginas")):
+        return "pages"
+    return ""

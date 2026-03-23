@@ -28,10 +28,21 @@ CONTRACT_SMOKE_CASES = [
         "test_id": "Prueba-invierno-2025",
         "question_id": "Q17",
         "expected": {
-            "family_id": "argumentation_evaluation",
-            "operation_signature": "argumentation_evaluation",
-            "cognitive_action": "evaluate_claims",
-            "solution_structure": "data_to_claim_check",
+            "family_id": "property_justification",
+            "operation_signature": "property_justification",
+            "cognitive_action": "justify_property",
+            "solution_structure": "property_justification",
+        },
+    },
+    {
+        "test_id": "Prueba-invierno-2025",
+        "question_id": "Q20",
+        "expected": {
+            "family_id": "algebraic_model_translation",
+            "operation_signature": "algebraic_model_translation",
+            "cognitive_action": "interpret_representation",
+            "solution_structure": "representation_reading",
+            "explicit_dataset_policy": "must_not_replace_representation",
         },
     },
     {
@@ -59,8 +70,10 @@ CONTRACT_SMOKE_CASES = [
         "question_id": "Q35",
         "expected": {
             "family_id": "graph_interpretation",
+            "operation_signature": "graph_interpretation",
             "cognitive_action": "interpret_representation",
             "solution_structure": "representation_reading",
+            "graph_rate_frame": "direct_slope_rate",
         },
     },
     {

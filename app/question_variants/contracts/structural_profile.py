@@ -17,6 +17,7 @@ from app.question_variants.contracts.contract_features import (
     infer_data_burden_score,
     infer_extremum_polarity,
     infer_formula_shape,
+    infer_graph_rate_frame,
     infer_justification_archetype,
     infer_model_family,
     infer_measure_transition,
@@ -84,6 +85,7 @@ def build_construct_contract(
     extremum_polarity = infer_extremum_polarity(question_text, profile)
     presentation_style = infer_presentation_style(question_text, qti_xml, profile)
     representation_series_count = infer_representation_series_count(question_text, qti_xml, profile)
+    graph_rate_frame = infer_graph_rate_frame(question_text, qti_xml, profile)
     proportional_reasoning_mode = infer_proportional_reasoning_mode(question_text, correct_answer, profile)
 
     must_preserve_distractor_logic = profile["claim_evaluation"] or (
@@ -143,6 +145,7 @@ def build_construct_contract(
         "extremum_polarity": extremum_polarity,
         "presentation_style": presentation_style,
         "representation_series_count": representation_series_count,
+        "graph_rate_frame": graph_rate_frame,
         "proportional_reasoning_mode": proportional_reasoning_mode,
         "response_mode": response_mode,
         "evidence_mode": evidence_mode,
@@ -171,6 +174,8 @@ def build_structural_profile(
     family_spec = resolve_family_spec(atom_hints, skill)
     if looks_like_zero_button_composition(text, xml):
         family_spec = get_family_spec_by_id("ten_power_zero_composition")
+    if looks_like_place_value_decomposition(text, xml):
+        family_spec = get_family_spec_by_id("algebraic_model_translation")
 
     asks_error_step = "¿en qué paso" in text or "en que paso" in text or "primer error" in text
     has_unknown = any(token in xml for token in ("<mi>x</mi>", "<mi>y</mi>", "<mi>z</mi>"))
@@ -192,6 +197,7 @@ def build_structural_profile(
             "percentage_increase_application",
             "direct_proportion_reasoning",
             "parameter_interpretation",
+            "graph_interpretation",
         }
     )
     substitute_expression = (
@@ -306,9 +312,58 @@ def infer_operation_signature(atom_titles: list[str], main_skill: str = "") -> s
 
 def looks_like_zero_button_composition(text: str, xml: str) -> bool:
     lowered = f"{text} {xml}".lower()
-    button_markers = ("[00]", "[000]", "00", "000", "botones", "ceros", "cero")
+    button_markers = (
+        "[00]",
+        "[000]",
+        "botón",
+        "boton",
+        "botones",
+        "tecla 00",
+        "tecla 000",
+        "atajo",
+        "grupo de ceros",
+        "grupos de ceros",
+    )
+    zero_group_markers = ("[00]", "[000]", "doble cero", "triple cero", "grupo de ceros", "grupos de ceros")
     ten_markers = ("10^", "10 ", "10)", "número 1000", "numero 1000", "potencia de 10")
-    return any(marker in lowered for marker in button_markers) and any(marker in lowered for marker in ten_markers)
+    return (
+        any(marker in lowered for marker in button_markers)
+        and any(marker in lowered for marker in zero_group_markers)
+        and any(marker in lowered for marker in ten_markers)
+    )
+
+
+def looks_like_place_value_decomposition(text: str, xml: str) -> bool:
+    lowered = f"{text} {xml}".lower()
+    decomposition_markers = (
+        "descomposición del número",
+        "descomposicion del numero",
+        "representa una descomposición",
+        "representa una descomposicion",
+        "descompone un número",
+        "descompone un numero",
+        "valor posicional",
+        "formato numérico estándar",
+        "formato numerico estandar",
+    )
+    power_ten_markers = ("10</mn>", "10&#160;", "10 ", "msup", "×10", "·10")
+    power_term_count = lowered.count("msup") + lowered.count("10^") + lowered.count("·10")
+    interpretation_markers = (
+        "potencias de 10",
+        "cantidad exacta",
+        "representa la cantidad",
+        "interpreta correctamente esta cantidad",
+        "descomposición polinómica",
+        "descomposicion polinomica",
+    )
+    return (
+        any(marker in lowered for marker in power_ten_markers)
+        and power_term_count >= 2
+        and (
+            any(marker in lowered for marker in decomposition_markers)
+            or any(marker in lowered for marker in interpretation_markers)
+        )
+    )
 
 
 def looks_like_claim_evaluation(text: str) -> bool:

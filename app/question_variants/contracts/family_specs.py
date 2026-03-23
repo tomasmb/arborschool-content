@@ -27,6 +27,10 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             'Si el contrato dice "representation_primary", no reemplaces la interpretación de representación por una tabla o lista que permita responder sin interpretarla.'
         )
+        if not contract.get("requires_visual_support"):
+            rules.append(
+                "Si la fuente no trae apoyo visual, no inventes gráficos, tablas o figuras nuevas. Mantén la representación primaria en texto estructurado, MathML o registro simbólico."
+            )
     if contract.get("must_preserve_distractor_logic"):
         rules.append(
             "Debes preservar los mismos arquetipos de distractor: no reemplaces trampas conceptuales por valores arbitrarios."
@@ -86,6 +90,11 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "La justificación correcta no puede repetir la misma receta verbal; cambia de verdad el dominio de la base, la propiedad final o el tipo de explicación decisiva."
         )
+        power_family = str(contract.get("power_base_family") or "not_applicable")
+        if power_family not in {"not_applicable", "generic_power_family"}:
+            rules.append(
+                f"Conserva la misma familia de base del contrato ({power_family}). No la reemplaces por otra base que cambie el mecanismo central de la justificación."
+            )
         if str(contract.get("power_base_family") or "") == "ten_power_zero_composition":
             rules.append(
                 "Si la fuente construye una potencia de 10 mediante botones o grupos de ceros, la variante debe seguir trabajando con base 10 y composición de ceros, no con otra base ni con factorización de otra potencia."
@@ -213,7 +222,7 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         )
     if op == "graph_interpretation":
         rules.append(
-            "Conserva el mismo modo de respuesta del contrato: si la fuente pide identificar una etiqueta o categoría, no la conviertas en evaluación de afirmaciones largas."
+            "Conserva el mismo modo de respuesta del contrato, salvo que la fuente sea una lectura de razón en gráfico y cambies a afirmaciones breves manteniendo la representación como evidencia primaria."
         )
         rules.append(
             "Conserva la misma polaridad del objetivo en la representación: si la fuente pide el valor más bajo o la habilidad más débil, no la conviertas en identificar el valor más alto, y viceversa."
@@ -221,6 +230,18 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "No aumentes la cantidad de series o conjuntos comparados si la fuente solo representa una serie. Una fuente de serie única no debe transformarse en comparación entre dos momentos o grupos."
         )
+        graph_rate_frame = str(contract.get("graph_rate_frame") or "not_applicable")
+        if graph_rate_frame == "direct_slope_rate":
+            rules.append(
+                "Si la razón pedida coincide con la pendiente directa del gráfico, no inviertas los ejes ni conviertas la interpretación en el inverso de la pendiente."
+            )
+            rules.append(
+                "En este caso sí puedes cambiar de etiqueta a afirmación breve si eso obliga a interpretar la pendiente o el orden de razones sin regalar la respuesta."
+            )
+        elif graph_rate_frame == "inverse_slope_rate":
+            rules.append(
+                "Si la razón pedida corresponde al inverso de la pendiente, conserva esa relación y no la conviertas en lectura directa de la pendiente."
+            )
     if op in {"radical_operations", "polynomial_operations", "decimal_number_operations"}:
         rules.append(
             "La variante debe seguir siendo una operatoria o transformación rutinaria de la misma familia simbólica, sin migrar a otro dominio matemático."

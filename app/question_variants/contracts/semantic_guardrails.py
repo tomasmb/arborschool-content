@@ -181,6 +181,28 @@ def has_numeric_option_scale_outlier(
     return False
 
 
+def reveals_choice_correctness(choices: list[str]) -> bool:
+    markers = (
+        "opción correcta",
+        "opcion correcta",
+        "alternativa correcta",
+        "respuesta correcta",
+        "registro correcto",
+        "control correcto",
+        "cantidad correcta",
+        "afirmación correcta",
+        "afirmacion correcta",
+        "opción incorrecta",
+        "opcion incorrecta",
+        "respuesta incorrecta",
+    )
+    for choice in choices:
+        lowered = str(choice or "").lower()
+        if any(marker in lowered for marker in markers):
+            return True
+    return False
+
+
 def has_equivalent_correct_choice(
     choices: list[str],
     correct_answer: str,
@@ -357,6 +379,10 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
     extremum_variant = str(variant_contract.get("extremum_polarity") or "not_applicable")
     if extremum_source != "not_applicable" and extremum_source != extremum_variant:
         return "La variante cambió la polaridad del objetivo que se debe identificar en la representación."
+    graph_rate_frame_source = str(source_contract.get("graph_rate_frame") or "not_applicable")
+    graph_rate_frame_variant = str(variant_contract.get("graph_rate_frame") or "not_applicable")
+    if graph_rate_frame_source != "not_applicable" and graph_rate_frame_source != graph_rate_frame_variant:
+        return "La variante cambió la relación entre la pendiente del gráfico y la razón que se debe interpretar."
     family_source = str(source_contract.get("family_id") or "")
     family_variant = str(variant_contract.get("family_id") or "")
     if family_source and family_variant and family_source != family_variant:
@@ -385,7 +411,12 @@ def has_semantic_contract_drift(source_contract: dict[str, Any], variant_contrac
         and response_source in {"label_selection", "statement_selection"}
         and response_source != response_variant
     ):
-        return "La variante cambió el modo de respuesta del ítem."
+        if not (
+            response_source == "label_selection"
+            and response_variant == "statement_selection"
+            and str(source_contract.get("graph_rate_frame") or "not_applicable") != "not_applicable"
+        ):
+            return "La variante cambió el modo de respuesta del ítem."
     series_source = str(source_contract.get("representation_series_count") or "not_applicable")
     series_variant = str(variant_contract.get("representation_series_count") or "not_applicable")
     if (

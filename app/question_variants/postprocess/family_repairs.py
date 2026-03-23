@@ -34,7 +34,7 @@ def repair_family_specific_qti(
     selected_shape_id = str(blueprint.get("selected_shape_id") or "standard_variant")
 
     if operation == "graph_interpretation":
-        return repair_graph_representation_mentions(qti_xml, contract)
+        return repair_graph_representation_mentions(qti_xml, contract, selected_shape_id)
     if operation == "parameter_interpretation" and presentation_style == "direct_parameter_prompt":
         return repair_parameter_interpretation_prompt(qti_xml)
     if operation == "direct_proportion_reasoning" and str(contract.get("proportional_reasoning_mode") or "") == "divisibility_condition":
@@ -58,7 +58,12 @@ def repair_family_specific_qti(
             qti_xml = repair_verbal_formula_distractors(qti_xml)
         return qti_xml
     if operation == "property_justification" and str(contract.get("correct_justification_archetype") or "") == "same_base_exponent_difference":
-        return repair_property_justification_choice(qti_xml, str(contract.get("result_property_type") or ""))
+        return repair_property_justification_choice(
+            qti_xml,
+            str(contract.get("result_property_type") or ""),
+            str(contract.get("power_base_family") or ""),
+            str(contract.get("argument_polarity") or ""),
+        )
     return qti_xml
 
 

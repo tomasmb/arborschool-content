@@ -12,6 +12,24 @@ MATHML_NS = "http://www.w3.org/1998/Math/MathML"
 ET.register_namespace("", QTI_NS)
 ET.register_namespace("m", MATHML_NS)
 
+HTML_NAMED_ENTITY_REPLACEMENTS = {
+    "&aacute;": "á",
+    "&eacute;": "é",
+    "&iacute;": "í",
+    "&oacute;": "ó",
+    "&uacute;": "ú",
+    "&Aacute;": "Á",
+    "&Eacute;": "É",
+    "&Iacute;": "Í",
+    "&Oacute;": "Ó",
+    "&Uacute;": "Ú",
+    "&ntilde;": "ñ",
+    "&Ntilde;": "Ñ",
+    "&iquest;": "¿",
+    "&iexcl;": "¡",
+    "&nbsp;": " ",
+}
+
 
 def normalized_tag_name(tag: str) -> str:
     """Normalize XML tag names across namespaced, camelCase and qti-* variants."""
@@ -69,6 +87,14 @@ def serialize_xml(element: ET.Element) -> str:
 def strip_xml_comments(qti_xml: str) -> str:
     """Remove XML comments from a QTI artifact before validation/persistence."""
     return re.sub(r"<!--.*?-->", "", qti_xml, flags=re.DOTALL)
+
+
+def normalize_named_entities(qti_xml: str) -> str:
+    """Replace HTML named entities that break XML parsing in generated artifacts."""
+    normalized = qti_xml
+    for entity, replacement in HTML_NAMED_ENTITY_REPLACEMENTS.items():
+        normalized = normalized.replace(entity, replacement)
+    return normalized
 
 
 def ensure_choice_interaction_declarations(qti_xml: str) -> str:

@@ -37,11 +37,12 @@ from app.question_variants.contracts.semantic_guardrails import (
     breaks_expected_distractor_logic,
     failed_generator_self_check,
     has_equivalent_correct_choice,
-    has_semantic_contract_drift,
     has_numeric_option_scale_outlier,
+    has_semantic_contract_drift,
     inflates_data_burden,
     is_insufficiently_different,
     required_non_mechanizable_axes,
+    reveals_choice_correctness,
     repeats_claim_archetype,
     selected_shape_id_from_metadata,
     violates_selected_shape,
@@ -345,6 +346,12 @@ class VariantValidator:
             return False, (
                 "La variante fue rechazada porque tiene más de una opción equivalente correcta, "
                 "expresada con diferentes unidades o escalas."
+            )
+
+        if reveals_choice_correctness(extract_choices(xml_content)):
+            return False, (
+                "La variante fue rechazada por integridad pedagógica: una o más alternativas delatan "
+                "explícitamente cuál sería la respuesta correcta o incorrecta."
             )
 
         if is_insufficiently_different(source.question_text, source.choices, variant_text, extract_choices(xml_content), contract):
