@@ -206,6 +206,12 @@ def build_family_prompt_rules(contract: dict[str, Any]) -> list[str]:
         rules.append(
             "La variante debe seguir evaluando traducción o interpretación algebraica del contexto, no resolución final del modelo."
         )
+        rules.append(
+            "No mezcles una consigna de descripciones o interpretaciones con opciones puramente simbólicas, ni una consigna de expresiones con opciones narrativas. La forma de pregunta y el tipo de alternativas deben ser coherentes."
+        )
+        rules.append(
+            "Si la fuente no tiene apoyo visual, no menciones figura, tabla, gráfico o imagen. Mantén la evidencia principal en texto, número, expresión o registro breve."
+        )
     if op == "isometry_transformations":
         rules.append(
             "La variante debe conservar el mismo foco en reconocer o aplicar una isometría, no derivar a cálculos geométricos adicionales."

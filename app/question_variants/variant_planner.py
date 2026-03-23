@@ -411,13 +411,15 @@ Devuelve SOLO JSON:
                         variant_id=blueprint.variant_id,
                         scenario_description=(
                             "La variante debe mantener una representación primaria simbólica o posicional sin agregar "
-                            "gráficos, tablas ni figuras nuevas. Puede presentar un número, expresión o registro breve "
-                            "y pedir seleccionar la descomposición o interpretación algebraica coherente."
+                            "gráficos, tablas ni figuras nuevas. Puede presentar una descomposición, expresión o "
+                            "registro breve y luego pedir seleccionar la descripción posicional o interpretación "
+                            "algebraica coherente, en vez de limitarse a otra pregunta literal por el número final."
                         ),
                         non_mechanizable_axes=["forma_pregunta", "representacion"],
                         required_reasoning=(
                             "La comprensión debe venir de leer correctamente la representación simbólica o posicional "
-                            "y vincularla con la expresión algebraica adecuada, sin reemplazarla por soporte visual."
+                            "y vincularla con una interpretación coherente de valor posicional o modelo, sin "
+                            "reemplazarla por soporte visual ni reducirla a un cálculo mecánico de escritura directa."
                         ),
                         difficulty_target=blueprint.difficulty_target,
                         requires_image=False,

@@ -21,6 +21,7 @@ from app.question_variants.postprocess.repair_utils import (
     apply_declared_correct_choice,
     canonicalize_qti_markup,
     normalize_named_entities,
+    strip_choice_identifier_mentions,
     strip_xml_comments,
 )
 from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
@@ -283,6 +284,8 @@ class VariantPipeline:
         declaration_synced_qti = variant.qti_xml
         variant.qti_xml = canonicalize_qti_markup(variant.qti_xml)
         canonical_qti = variant.qti_xml
+        variant.qti_xml = strip_choice_identifier_mentions(variant.qti_xml)
+        identifier_sanitized_qti = variant.qti_xml
         variant.qti_xml = strip_xml_comments(variant.qti_xml)
         stripped_qti = variant.qti_xml
         variant.metadata["construct_contract"] = build_construct_contract(
@@ -300,7 +303,8 @@ class VariantPipeline:
             "entities_normalized": entity_normalized_qti != repaired_qti,
             "correct_declaration_synced": declaration_synced_qti != entity_normalized_qti,
             "qti_canonicalized": canonical_qti != declaration_synced_qti,
-            "comments_stripped": stripped_qti != canonical_qti,
+            "choice_identifiers_stripped": identifier_sanitized_qti != canonical_qti,
+            "comments_stripped": stripped_qti != identifier_sanitized_qti,
         }
 
         # Run semantic validation (concept alignment, difficulty)

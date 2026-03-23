@@ -154,6 +154,50 @@ def strip_xml_comments(qti_xml: str) -> str:
     return re.sub(r"<!--.*?-->", "", qti_xml, flags=re.DOTALL)
 
 
+def strip_choice_identifier_mentions(qti_xml: str) -> str:
+    """Remove leaked Choice/option identifiers from visible prompt text."""
+    try:
+        root = ET.fromstring(qti_xml)
+    except ET.ParseError:
+        return qti_xml
+
+    patterns = (
+        (r"\b(?:la|el)\s+choice\s*[a-d]\b", "esa alternativa"),
+        (r"\b(?:la|el)\s+opci[oó]n\s*[a-d]\b", "esa alternativa"),
+        (r"\b(?:la|el)\s+alternativa\s*[a-d]\b", "esa alternativa"),
+        (r"\bchoice\s*[a-d]\b", "esa alternativa"),
+        (r"\bopci[oó]n\s*[a-d]\b", "esa alternativa"),
+        (r"\balternativa\s*[a-d]\b", "esa alternativa"),
+    )
+    changed = False
+    for element in root.iter():
+        if not isinstance(element.tag, str):
+            continue
+        local = element.tag.split("}")[-1]
+        if local not in {"p", "qti-prompt", "prompt", "div", "span"}:
+            continue
+        if element.text:
+            updated = element.text
+            for pattern, replacement in patterns:
+                updated = re.sub(pattern, replacement, updated, flags=re.IGNORECASE)
+            if re.search(r"\b(?:esa alternativa|una alternativa)\b.*\b(correcta|incorrecta)\b", updated, flags=re.IGNORECASE):
+                updated = "Selecciona la alternativa que corresponde correctamente al problema."
+            if updated != element.text:
+                element.text = updated
+                changed = True
+        if element.tail:
+            updated_tail = element.tail
+            for pattern, replacement in patterns:
+                updated_tail = re.sub(pattern, replacement, updated_tail, flags=re.IGNORECASE)
+            if re.search(r"\b(?:esa alternativa|una alternativa)\b.*\b(correcta|incorrecta)\b", updated_tail, flags=re.IGNORECASE):
+                updated_tail = ""
+            if updated_tail != element.tail:
+                element.tail = updated_tail
+                changed = True
+
+    return serialize_xml(root) if changed else qti_xml
+
+
 def normalize_named_entities(qti_xml: str) -> str:
     """Replace HTML named entities that break XML parsing in generated artifacts."""
     normalized = qti_xml

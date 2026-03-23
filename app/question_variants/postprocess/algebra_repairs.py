@@ -96,6 +96,180 @@ def repair_verbal_formula_distractors(qti_xml: str) -> str:
     return serialize_xml(root)
 
 
+def repair_algebraic_model_translation_prompt(
+    qti_xml: str,
+    selected_shape_id: str = "context_to_model_match",
+) -> str:
+    try:
+        root = ET.fromstring(qti_xml)
+    except ET.ParseError:
+        return qti_xml
+
+    lowered = qti_xml.lower()
+    has_visual_support = any(token in lowered for token in ("<img", "<object", "<table", "<qti-object", "<qti-table"))
+
+    interaction = find_first_by_tag_name(root, "qti-choice-interaction", "choiceInteraction")
+    if interaction is None:
+        return qti_xml
+
+    effective_shape = selected_shape_id
+    if _choices_look_symbolic(interaction):
+        effective_shape = "context_to_model_match"
+
+    prompt = find_first_by_tag_name(interaction, "qti-prompt", "prompt")
+    if prompt is None:
+        prompt = ET.Element("qti-prompt")
+        interaction.insert(0, prompt)
+
+    if effective_shape == "model_to_context_match":
+        prompt.text = "¿Cuál de las siguientes descripciones interpreta correctamente el modelo algebraico presentado?"
+        noun_replacement = "modelo"
+        phrase_replacement = "modelo presentado"
+        if _looks_like_place_value_model(root):
+            _rewrite_numeric_choices_as_place_value_descriptions(interaction)
+            _align_place_value_stem(root, interaction)
+    else:
+        prompt.text = "¿Cuál de las siguientes expresiones representa correctamente la situación descrita?"
+        noun_replacement = "registro"
+        phrase_replacement = "registro descrito"
+
+    if has_visual_support:
+        return serialize_xml(root)
+
+    replacements = [
+        (r"\bla\s+figura adjunta\b", f"el {phrase_replacement}"),
+        (r"\bla\s+tabla adjunta\b", f"el {phrase_replacement}"),
+        (r"\bla\s+imagen adjunta\b", f"el {phrase_replacement}"),
+        (r"\bel\s+gráfico adjunto\b", f"el {phrase_replacement}"),
+        (r"\bel\s+grafico adjunto\b", f"el {phrase_replacement}"),
+        (r"\bla\s+figura\b", f"el {noun_replacement}"),
+        (r"\bla\s+tabla\b", f"el {noun_replacement}"),
+        (r"\bla\s+imagen\b", f"el {noun_replacement}"),
+        (r"\bel\s+gráfico\b", f"el {noun_replacement}"),
+        (r"\bel\s+grafico\b", f"el {noun_replacement}"),
+        (r"\bel\s+diagrama\b", f"el {noun_replacement}"),
+        (r"\bla\s+infografía\b", "la representación del modelo" if noun_replacement == "modelo" else f"el {noun_replacement}"),
+        (r"\bla\s+infografia\b", "la representación del modelo" if noun_replacement == "modelo" else f"el {noun_replacement}"),
+        (r"\bfigura adjunta\b", phrase_replacement),
+        (r"\btabla adjunta\b", phrase_replacement),
+        (r"\bimagen adjunta\b", phrase_replacement),
+        (r"\bgráfico adjunto\b", phrase_replacement),
+        (r"\bgrafico adjunto\b", phrase_replacement),
+        (r"\bgráfico\b", noun_replacement),
+        (r"\bgrafico\b", noun_replacement),
+        (r"\bdiagrama\b", noun_replacement),
+        (r"\bfigura\b", noun_replacement),
+        (r"\bimagen\b", noun_replacement),
+        (r"\binfografía\b", noun_replacement),
+        (r"\binfografia\b", noun_replacement),
+        (r"\btabla\b", noun_replacement),
+    ]
+
+    changed = False
+    for element in root.iter():
+        if not isinstance(element.tag, str):
+            continue
+        local = element.tag.split("}")[-1]
+        if local not in {"p", "qti-prompt", "prompt", "div", "span"}:
+            continue
+        if element.text:
+            updated = element.text
+            for pattern, replacement in replacements:
+                updated = re.sub(pattern, replacement, updated, flags=re.IGNORECASE)
+            if updated != element.text:
+                element.text = updated
+                changed = True
+        if element.tail:
+            updated_tail = element.tail
+            for pattern, replacement in replacements:
+                updated_tail = re.sub(pattern, replacement, updated_tail, flags=re.IGNORECASE)
+            if updated_tail != element.tail:
+                element.tail = updated_tail
+                changed = True
+
+    return serialize_xml(root) if changed else serialize_xml(root)
+
+
+def _choices_look_symbolic(interaction: ET.Element) -> bool:
+    symbolic_choices = 0
+    choice_nodes = find_all_by_tag_name(interaction, "qti-simple-choice", "simpleChoice")
+    for choice in choice_nodes:
+        plain_text = re.sub(r"\s+", " ", "".join(choice.itertext())).strip().lower()
+        has_math = any(child.tag.split("}")[-1] == "math" for child in choice.iter())
+        has_symbolic_tokens = bool(
+            re.search(
+                r"(10\s*\^|\b[xyz]\b|[+*=÷·])",
+                plain_text,
+            )
+        )
+        if has_math or has_symbolic_tokens:
+            symbolic_choices += 1
+            continue
+        if re.search(r"\bexpresi[oó]n\b|\bmodelo\b|\bdescomposici[oó]n\b", plain_text):
+            symbolic_choices += 1
+    return symbolic_choices >= max(2, len(choice_nodes) // 2)
+
+
+def _looks_like_place_value_model(root: ET.Element) -> bool:
+    lowered = serialize_xml(root).lower()
+    return bool(re.search(r"(10</m:mn>|10\^|potencias?\s+de\s+10|msup)", lowered))
+
+
+def _rewrite_numeric_choices_as_place_value_descriptions(interaction: ET.Element) -> None:
+    for choice in find_all_by_tag_name(interaction, "qti-simple-choice", "simpleChoice"):
+        raw_text = re.sub(r"\s+", "", "".join(choice.itertext()))
+        if not raw_text.isdigit():
+            continue
+        description = _build_place_value_description(raw_text)
+        if not description:
+            continue
+        for child in list(choice):
+            choice.remove(child)
+        choice.text = description
+
+
+def _build_place_value_description(digits_text: str) -> str:
+    place_names_by_length = {
+        4: ["unidades de millar", "centenas", "decenas", "unidades"],
+        5: ["decenas de millar", "unidades de millar", "centenas", "decenas", "unidades"],
+        6: ["centenas de millar", "decenas de millar", "unidades de millar", "centenas", "decenas", "unidades"],
+    }
+    place_names = place_names_by_length.get(len(digits_text))
+    if not place_names:
+        return ""
+
+    pieces = [f"{digit} {place}" for digit, place in zip(digits_text, place_names, strict=False)]
+    if len(pieces) == 1:
+        joined = pieces[0]
+    else:
+        joined = ", ".join(pieces[:-1]) + f" y {pieces[-1]}"
+    return f"Representa un número con {joined}."
+
+
+def _align_place_value_stem(root: ET.Element, interaction: ET.Element) -> None:
+    item_body = find_first_by_tag_name(root, "qti-item-body", "itemBody")
+    if item_body is None:
+        return
+
+    for child in list(item_body):
+        if child is interaction:
+            continue
+        if child.tag.split("}")[-1] != "p":
+            continue
+        text = re.sub(r"\s+", " ", "".join(child.itertext())).strip().lower()
+        contains_math = any(grandchild.tag.split("}")[-1] == "math" for grandchild in child.iter())
+        if contains_math:
+            continue
+        if "¿cuál" in text or "cual" in text or "número" in text or "numero" in text:
+            item_body.remove(child)
+
+    instruction = ET.Element("qti-p")
+    instruction.text = "Selecciona la descripción de valor posicional que interpreta correctamente esa descomposición."
+    children = list(item_body)
+    insert_index = children.index(interaction) if interaction in children else len(children)
+    item_body.insert(insert_index, instruction)
+
+
 def repair_property_justification_choice(
     qti_xml: str,
     result_property_type: str,

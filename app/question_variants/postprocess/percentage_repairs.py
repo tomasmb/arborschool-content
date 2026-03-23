@@ -220,9 +220,13 @@ def _build_direct_percentage_candidates(
     percent_value: float,
     correct_value: float,
 ) -> list[tuple[str, float]]:
+    anchor_percent = 10.0
+    anchor_value = round(base_value * (anchor_percent / 100), 2)
+    if abs(anchor_value - correct_value) < 1e-9:
+        anchor_value = round(base_value * (1 / 100), 2)
     candidates = [
         ("decimal_shift_low", max(1, correct_value / 10)),
-        ("ten_percent_anchor", max(1, base_value / 10)),
+        ("ten_percent_anchor", max(1, anchor_value)),
         ("divide_by_percent_number", max(1, base_value / max(percent_value, 1))),
         ("base_only", base_value),
     ]
@@ -360,8 +364,9 @@ def _rewrite_decision_statement_variant(
             else:
                 _replace_choice_text(
                     choice,
-                    f"El {percent_label or 'porcentaje solicitado'} de {format_number(base_value)} {unit_label} "
-                    f"equivale a {format_number(correct_value)} {unit_label}.",
+                    f"Se afirma que el {percent_label or 'porcentaje solicitado'} de "
+                    f"{format_number(base_value)} {unit_label} equivale a "
+                    f"{format_number(correct_value)} {unit_label}, que es la parte porcentual pedida.",
                 )
             continue
         archetype, distractor_value = distractor_by_identifier.get(identifier, ("other", value))
@@ -486,21 +491,28 @@ def _build_percentage_statement_distractor(
     if operation_signature == "direct_percentage_calculation":
         if archetype == "decimal_shift_low":
             return (
-                f"Se movió una sola vez la coma decimal al calcular el {percent_label or 'porcentaje'}, "
-                f"por eso se obtuvo {distractor_value} {unit_label}."
+                f"Se afirma que el {percent_label or 'porcentaje solicitado'} de "
+                f"{format_number(base_value)} {unit_label} es {distractor_value} {unit_label}, "
+                "como si el porcentaje se hubiera interpretado como un decimal diez veces menor de lo debido."
             )
         if archetype == "ten_percent_anchor":
             return (
-                f"Se tomó solo el 10 % de {format_number(base_value)} {unit_label} y se reportó "
-                f"{distractor_value} {unit_label}."
+                f"Se afirma que el {percent_label or 'porcentaje solicitado'} de "
+                f"{format_number(base_value)} {unit_label} es {distractor_value} {unit_label}, "
+                "pero ese valor corresponde a quedarse solo con un 10 % de la base."
             )
         if archetype == "divide_by_percent_number":
             return (
-                f"Se dividió {format_number(base_value)} entre {percent_label or 'el número del porcentaje'} "
-                f"y se concluyó que la parte correspondiente era {distractor_value} {unit_label}."
+                f"Se afirma que el {percent_label or 'porcentaje solicitado'} de "
+                f"{format_number(base_value)} {unit_label} es {distractor_value} {unit_label}, "
+                "como si bastara dividir la cantidad base por el número del porcentaje."
             )
         if archetype == "base_only":
-            return f"Se mantuvo la cantidad inicial y se indicó {distractor_value} {unit_label}."
+            return (
+                f"Se afirma que el {percent_label or 'porcentaje solicitado'} de "
+                f"{format_number(base_value)} {unit_label} es {distractor_value} {unit_label}, "
+                "pero en realidad solo se repitió la cantidad base sin calcular la parte porcentual."
+            )
         return f"La parte porcentual se estimó como {distractor_value} {unit_label}."
 
     if archetype == "increment_only":

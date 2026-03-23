@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from app.question_variants.postprocess.algebra_repairs import (
+    repair_algebraic_model_translation_prompt,
     repair_property_justification_choice,
     repair_symbolic_formula_presentation,
     repair_verbal_formula_distractors,
@@ -34,7 +35,14 @@ def repair_family_specific_qti(
     selected_shape_id = str(blueprint.get("selected_shape_id") or "standard_variant")
 
     if operation == "graph_interpretation":
+        if (
+            str(contract.get("graph_rate_frame") or "") == "direct_slope_rate"
+            and str(contract.get("response_mode") or "") == "label_selection"
+        ):
+            selected_shape_id = "single_series_visual_claim"
         return repair_graph_representation_mentions(qti_xml, contract, selected_shape_id)
+    if operation == "algebraic_model_translation" and task_form == "representation_interpretation":
+        return repair_algebraic_model_translation_prompt(qti_xml, selected_shape_id)
     if operation == "parameter_interpretation" and presentation_style == "direct_parameter_prompt":
         return repair_parameter_interpretation_prompt(qti_xml)
     if operation == "direct_proportion_reasoning" and str(contract.get("proportional_reasoning_mode") or "") == "divisibility_condition":
