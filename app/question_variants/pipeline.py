@@ -19,6 +19,7 @@ from app.question_variants.contracts.structural_profile import build_construct_c
 from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
 from app.question_variants.postprocess.repair_utils import (
     apply_declared_correct_choice,
+    canonicalize_qti_markup,
     normalize_named_entities,
     strip_xml_comments,
 )
@@ -280,6 +281,8 @@ class VariantPipeline:
             str(variant.metadata.get("generator_declared_correct_identifier") or ""),
         )
         declaration_synced_qti = variant.qti_xml
+        variant.qti_xml = canonicalize_qti_markup(variant.qti_xml)
+        canonical_qti = variant.qti_xml
         variant.qti_xml = strip_xml_comments(variant.qti_xml)
         stripped_qti = variant.qti_xml
         variant.metadata["construct_contract"] = build_construct_contract(
@@ -296,7 +299,8 @@ class VariantPipeline:
             "family_repaired": repaired_qti != normalized_qti,
             "entities_normalized": entity_normalized_qti != repaired_qti,
             "correct_declaration_synced": declaration_synced_qti != entity_normalized_qti,
-            "comments_stripped": stripped_qti != declaration_synced_qti,
+            "qti_canonicalized": canonical_qti != declaration_synced_qti,
+            "comments_stripped": stripped_qti != canonical_qti,
         }
 
         # Run semantic validation (concept alignment, difficulty)
