@@ -130,14 +130,29 @@ def _replace_table_with_summary(item_body: ET.Element, summary: str) -> None:
         return
 
     summary_el = ET.Element("qti-p")
-    summary_el.text = summary or "Resumen de datos disponible en formato estructurado."
-    children = list(item_body)
+    summary_el.text = (
+        summary
+        or "Resumen de datos disponible en formato estructurado."
+    )
+
+    parent = _find_parent(item_body, table)
+    if parent is None:
+        return
+    children = list(parent)
     try:
         index = children.index(table)
+        parent.remove(table)
     except ValueError:
-        index = 0
-    item_body.remove(table)
-    item_body.insert(index, summary_el)
+        return
+    parent.insert(index, summary_el)
+
+
+def _find_parent(root: ET.Element, target: ET.Element) -> ET.Element | None:
+    """Find the direct parent of *target* within *root*."""
+    for parent in root.iter():
+        if target in list(parent):
+            return parent
+    return None
 
 
 def _rewrite_table_mentions(item_body: ET.Element) -> None:
