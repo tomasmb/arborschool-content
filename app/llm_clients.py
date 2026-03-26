@@ -9,7 +9,9 @@ from typing import Any, List, Optional, Union
 
 import requests
 from dotenv import load_dotenv
-from PIL import Image
+# PIL is imported lazily inside _pil_to_base64 to avoid breaking
+# text-only callers when Pillow is not installed or has arch issues.
+
 
 _logger = logging.getLogger(__name__)
 
@@ -141,6 +143,7 @@ class GeminiClient:
         thinking_level: str | None = None,
         response_mime_type: str | None = None,
         temperature: float | None = None,
+        request_timeout_seconds: float | None = None,
         **kwargs: Any,
     ) -> Any:
         """Generate text using google-generativeai."""
@@ -149,6 +152,8 @@ class GeminiClient:
             generation_config["temperature"] = temperature
         if response_mime_type:
             generation_config["response_mime_type"] = response_mime_type
+        if thinking_level and thinking_level != "none":
+            generation_config["thinking_level"] = thinking_level
 
         # Relax safety filters to avoid false positives in math questions
         safety_settings = {
@@ -159,13 +164,34 @@ class GeminiClient:
         }
 
         # Use longer timeout for large prompts
-        request_options = {"timeout": 1200}  # 20 minutes (1200 seconds)
-        response = self._model.generate_content(
-            prompt,
-            generation_config=generation_config if generation_config else None,
-            request_options=request_options,
-            safety_settings=safety_settings,
-        )
+        timeout_seconds = request_timeout_seconds or 1200
+        request_options = {"timeout": timeout_seconds}
+        config_payload = generation_config if generation_config else None
+        try:
+            response = self._model.generate_content(
+                prompt,
+                generation_config=config_payload,
+                request_options=request_options,
+                safety_settings=safety_settings,
+            )
+        except (TypeError, ValueError) as exc:
+            # Some SDK versions may not support thinking_level yet.
+            unsupported_thinking = (
+                "thinking_level" in generation_config
+                and "thinking_level" in str(exc)
+                and "generationconfig" in str(exc).lower()
+            )
+            if unsupported_thinking:
+                fallback_config = dict(generation_config)
+                fallback_config.pop("thinking_level", None)
+                response = self._model.generate_content(
+                    prompt,
+                    generation_config=fallback_config if fallback_config else None,
+                    request_options=request_options,
+                    safety_settings=safety_settings,
+                )
+            else:
+                raise
 
         # Handle cases where response might be filtered or blocked
         if not response.candidates or not response.candidates[0].content:
@@ -224,8 +250,9 @@ class OpenAIClient:
         self._model = model
         self._url = "https://api.openai.com/v1/chat/completions"
 
-    def _pil_to_base64(self, pil_img: Image.Image) -> str:
+    def _pil_to_base64(self, pil_img: "Image.Image") -> str:
         """Convert a PIL image to a base64-encoded JPEG string."""
+        from PIL import Image  # Lazy import — only needed for multimodal calls
         buffered = io.BytesIO()
         if pil_img.mode in ("RGBA", "P"):
             pil_img = pil_img.convert("RGB")
@@ -243,6 +270,8 @@ class OpenAIClient:
         reasoning_effort: Optional[str] = None,
         response_mime_type: Optional[str] = None,
         temperature: float = 0.0,
+        request_timeout_seconds: float | None = None,
+        transport_max_attempts: int | None = None,
         **kwargs: Any,
     ) -> LLMResponse:
         """Call Chat Completions API, return ``LLMResponse(text, usage)``."""
@@ -272,7 +301,11 @@ class OpenAIClient:
         if response_mime_type == "application/json":
             data["response_format"] = {"type": "json_object"}
 
-        body = self._post_with_retry(data)
+        body = self._post_with_retry(
+            data,
+            request_timeout_seconds=request_timeout_seconds,
+            max_attempts=transport_max_attempts,
+        )
 
         text = body["choices"][0]["message"]["content"]
 
@@ -298,7 +331,11 @@ class OpenAIClient:
     # ------------------------------------------------------------------
 
     def _post_with_retry(
-        self, data: dict[str, Any],
+        self,
+        data: dict[str, Any],
+        *,
+        request_timeout_seconds: float | None = None,
+        max_attempts: int | None = None,
     ) -> dict[str, Any]:
         """POST to the completions API with exponential-backoff retry.
 
@@ -311,12 +348,14 @@ class OpenAIClient:
             "Content-Type": "application/json",
         }
 
-        for attempt in range(_RETRY_MAX_ATTEMPTS):
-            is_last = attempt == _RETRY_MAX_ATTEMPTS - 1
+        attempts = max_attempts or _RETRY_MAX_ATTEMPTS
+        timeout_seconds = request_timeout_seconds or 300
+        for attempt in range(attempts):
+            is_last = attempt == attempts - 1
             try:
                 resp = requests.post(
                     self._url, headers=headers,
-                    json=data, timeout=300,
+                    json=data, timeout=timeout_seconds,
                 )
                 if not is_last and _is_retryable_status(resp.status_code):
                     delay = _retry_delay(attempt, resp)
@@ -324,7 +363,7 @@ class OpenAIClient:
                         "HTTP %d (attempt %d/%d), "
                         "retrying in %.1fs",
                         resp.status_code,
-                        attempt + 1, _RETRY_MAX_ATTEMPTS,
+                        attempt + 1, attempts,
                         delay,
                     )
                     time.sleep(delay)
@@ -341,7 +380,7 @@ class OpenAIClient:
                 _logger.warning(
                     "%s (attempt %d/%d), retrying in %.1fs",
                     type(exc).__name__,
-                    attempt + 1, _RETRY_MAX_ATTEMPTS,
+                    attempt + 1, attempts,
                     delay,
                 )
                 time.sleep(delay)
@@ -559,12 +598,13 @@ class GeminiService:
         **kwargs: Any,
     ) -> str:
         """Generate text via Gemini, falling back to OpenAI on 429."""
-        _ = thinking_level or self._config.thinking_level
+        effective_thinking_level = thinking_level or self._config.thinking_level
         request_kwargs: dict[str, Any] = {**kwargs}
         if response_mime_type is not None:
             request_kwargs["response_mime_type"] = response_mime_type
         if temperature is not None:
             request_kwargs["temperature"] = temperature
+        request_kwargs["thinking_level"] = effective_thinking_level
 
         try:
             resp = self._client.generate_text(

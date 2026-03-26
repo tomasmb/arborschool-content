@@ -27,7 +27,7 @@ class FeedbackReviewer:
     Used during enrichment to catch errors before final validation.
     """
 
-    DEFAULT_MODEL = "gpt-5.1"
+    DEFAULT_MODEL = "gpt-5.4"
 
     def __init__(
         self,
@@ -37,7 +37,7 @@ class FeedbackReviewer:
         """Initialize the reviewer.
 
         Args:
-            model: OpenAI model to use. Defaults to gpt-5.1.
+            model: OpenAI model to use. Defaults to gpt-5.4.
             api_key: OpenAI API key. Defaults to OPENAI_API_KEY env var.
         """
         load_dotenv()
