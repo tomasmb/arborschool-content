@@ -6,6 +6,11 @@ import json
 from pathlib import Path
 from typing import Any
 
+from app.question_generation.validation_checks import (
+    check_feedback_completeness,
+    check_paes_structure,
+    validate_qti_xml,
+)
 from app.question_variants.contracts.structural_profile import (
     build_construct_contract,
 )
@@ -98,11 +103,27 @@ def postprocess_variant(
 def run_deterministic_checks(
     variant: VariantQuestion,
     source: SourceQuestion,
+    *,
+    check_feedback: bool = False,
 ) -> tuple[bool, str]:
-    """Run the 3 deterministic pre-checks. Returns (ok, error)."""
+    """Run deterministic pre-checks on a variant. Returns (ok, error).
+
+    Checks (in order): XML parse, XSD schema, PAES structure,
+    choice-interaction integrity, visual completeness.
+    When *check_feedback* is True, also verifies feedback elements.
+    """
     xml_ok, xml_err = validate_xml(variant.qti_xml)
     if not xml_ok:
         return False, f"XML inválido: {xml_err}"
+
+    xsd_result = validate_qti_xml(variant.qti_xml)
+    if not xsd_result.get("valid", False):
+        xsd_err = xsd_result.get("validation_errors", "unknown")
+        return False, f"XSD inválido: {xsd_err}"
+
+    paes_errors = check_paes_structure(variant.qti_xml)
+    if paes_errors:
+        return False, "; ".join(paes_errors)
 
     wire_ok, wire_err = validate_choice_interaction_integrity(variant.qti_xml)
     if not wire_ok:
@@ -111,6 +132,11 @@ def run_deterministic_checks(
     vis_ok, vis_err = validate_visual_completeness(variant.qti_xml, source)
     if not vis_ok:
         return False, vis_err
+
+    if check_feedback:
+        fb_errors = check_feedback_completeness(variant.qti_xml)
+        if fb_errors:
+            return False, "; ".join(fb_errors)
 
     return True, ""
 
@@ -289,3 +315,132 @@ def apply_verdicts(
         else:
             rejected.append(v)
     return approved, rejected
+
+
+def submit_and_wait_batch(
+    submitter: Any,
+    requests: list[Any],
+    phase_name: str,
+    job_dir: Path,
+    state: dict[str, Any],
+    job_id: str,
+) -> list[Any]:
+    """5-state batch lifecycle with crash-safe checkpointing.
+
+    States: pending → file_uploaded → submitted → results_downloaded
+    → parsed.  Each transition is checkpointed so any crash is fully
+    recoverable without re-submitting or losing API spend.
+    """
+    import logging as _log
+    _logger = _log.getLogger(__name__)
+
+    ps = get_phase_state(state, phase_name)
+    st = ps.get("status", "pending")
+    meta = {
+        "pipeline": "variant", "phase": phase_name,
+        "job_id": job_id,
+    }
+
+    if st == "pending":
+        jsonl_path = job_dir / f"{phase_name}.jsonl"
+        submitter.write_jsonl(requests, jsonl_path)
+        fid = submitter.upload_file(jsonl_path)
+        update_phase_state(
+            state, job_dir, phase_name,
+            status="file_uploaded", file_id=fid,
+            request_count=len(requests),
+        )
+        ps = get_phase_state(state, phase_name)
+        st = "file_uploaded"
+
+    if st == "file_uploaded":
+        fid = ps.get("file_id", "")
+        orphan = submitter.find_orphan_batch(
+            file_id=fid, metadata_match=meta,
+        )
+        bid = (
+            orphan["id"] if orphan
+            else submitter.create_batch(fid, meta)
+        )
+        if orphan:
+            _logger.info("Re-attached orphan batch %s", bid)
+        update_phase_state(
+            state, job_dir, phase_name,
+            status="submitted", batch_id=bid,
+        )
+        ps = get_phase_state(state, phase_name)
+        st = "submitted"
+
+    if st == "submitted":
+        bid = ps.get("batch_id", "")
+        print(f"  Batch {bid} polling ({phase_name})...")
+        batch_obj = submitter.poll_until_done(bid)
+        if batch_obj.get("status") != "completed":
+            raise RuntimeError(
+                f"Batch {bid} ended: {batch_obj.get('status')}",
+            )
+        out_fid = batch_obj.get("output_file_id", "")
+        results_path = job_dir / f"{phase_name}_results.jsonl"
+        submitter.download_file(out_fid, results_path)
+        update_phase_state(
+            state, job_dir, phase_name,
+            status="results_downloaded",
+            results_jsonl=str(results_path),
+        )
+        ps = get_phase_state(state, phase_name)
+
+    results_path = Path(ps.get(
+        "results_jsonl",
+        str(job_dir / f"{phase_name}_results.jsonl"),
+    ))
+    return submitter.parse_results_file(results_path)
+
+
+def save_batch_results(
+    config: Any,
+    sources_map: dict[str, SourceQuestion],
+    approved: list[VariantQuestion],
+    rejected: list[VariantQuestion],
+    bps: dict[str, list[VariantBlueprint]],
+) -> list[GenerationReport]:
+    """Build reports and persist approved/rejected variants to disk."""
+    from app.question_variants.io.artifacts import (
+        save_report,
+        save_variant,
+    )
+
+    reports_by_q: dict[str, GenerationReport] = {}
+    for src in sources_map.values():
+        reports_by_q[src.question_id] = GenerationReport(
+            source_question_id=src.question_id,
+            source_test_id=src.test_id,
+        )
+
+    for v in approved:
+        r = reports_by_q.get(v.source_question_id)
+        src = sources_map.get(
+            f"{v.source_test_id}__{v.source_question_id}",
+        )
+        if r and src:
+            save_variant(config.output_dir, v, src, None)
+            r.variants.append(v.variant_id)
+            r.total_approved += 1
+
+    if config.save_rejected:
+        for v in rejected:
+            src = sources_map.get(
+                f"{v.source_test_id}__{v.source_question_id}",
+            )
+            if src:
+                save_variant(
+                    config.output_dir, v, src, None,
+                    is_rejected=True,
+                )
+
+    for r in reports_by_q.values():
+        k = f"{r.source_test_id}__{r.source_question_id}"
+        r.total_generated = len(bps.get(k, []))
+        r.total_rejected = r.total_generated - r.total_approved
+        save_report(config.output_dir, r)
+
+    return list(reports_by_q.values())

@@ -7,13 +7,18 @@ output is a list of BatchRequest objects ready for Batch API submission.
 
 from __future__ import annotations
 
+import json
+
+from app.question_feedback.prompts import FINAL_VALIDATION_PROMPT
+from app.question_feedback.schemas import FINAL_VALIDATION_SCHEMA
 from app.question_generation.batch_api import BatchRequest, build_text_messages
+from app.question_generation.prompts.validation import build_solvability_prompt
+from app.question_variants.generation_prompt import build_generation_prompt
 from app.question_variants.models import (
     SourceQuestion,
     VariantBlueprint,
     VariantQuestion,
 )
-from app.question_variants.generation_prompt import build_generation_prompt
 from app.question_variants.variant_planner import build_planning_prompt
 from app.question_variants.variant_validator import build_validation_prompt
 
@@ -85,6 +90,78 @@ def build_validation_request(
     prompt = build_validation_prompt(variant, source)
     custom_id = (
         f"val:{source.test_id}__{source.question_id}"
+        f"__{variant.variant_id}"
+    )
+    return BatchRequest(
+        custom_id=custom_id,
+        model=model,
+        messages=build_text_messages(prompt),
+        reasoning_effort="medium",
+        response_format={"type": "json_object"},
+        temperature=0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Phase 5 -- Solvability
+# ------------------------------------------------------------------
+
+
+def build_solvability_request(
+    variant: VariantQuestion,
+    model: str = _DEFAULT_MODEL,
+) -> BatchRequest:
+    """Build a BatchRequest for the solvability gate.
+
+    The LLM independently solves the question and returns its answer
+    so we can compare it to the declared correct option.
+    """
+    prompt = build_solvability_prompt(variant.qti_xml)
+    custom_id = (
+        f"solve:{variant.source_test_id}__{variant.source_question_id}"
+        f"__{variant.variant_id}"
+    )
+    return BatchRequest(
+        custom_id=custom_id,
+        model=model,
+        messages=build_text_messages(prompt),
+        reasoning_effort="medium",
+        response_format={"type": "json_object"},
+        temperature=0.0,
+    )
+
+
+# ------------------------------------------------------------------
+# Phase 7 -- Final Validation
+# ------------------------------------------------------------------
+
+
+def build_final_validation_request(
+    variant: VariantQuestion,
+    model: str = _DEFAULT_MODEL,
+    image_urls: list[str] | None = None,
+) -> BatchRequest:
+    """Build a BatchRequest for the final comprehensive validation.
+
+    Validates the enriched QTI XML (with feedback) for correctness,
+    feedback quality, content quality, and math validity.
+    """
+    images_section = (
+        "No hay imágenes adjuntas."
+        if not image_urls
+        else "\n".join(f"Imagen: {url}" for url in image_urls)
+    )
+    prompt = FINAL_VALIDATION_PROMPT.format(
+        qti_xml_with_feedback=variant.qti_xml,
+        images_section=images_section,
+    )
+    prompt += "\n\nRespuesta en formato JSON siguiendo este schema:\n"
+    prompt += json.dumps(
+        FINAL_VALIDATION_SCHEMA, indent=2, ensure_ascii=False,
+    )
+
+    custom_id = (
+        f"fval:{variant.source_test_id}__{variant.source_question_id}"
         f"__{variant.variant_id}"
     )
     return BatchRequest(

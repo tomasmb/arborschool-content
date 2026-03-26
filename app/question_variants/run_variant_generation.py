@@ -75,8 +75,13 @@ def _build_parser() -> argparse.ArgumentParser:
         help="LLM temperature for generation (default: 0.3)",
     )
     parser.add_argument(
-        "--max-retries", type=int, default=1,
-        help="Max retry attempts per rejected variant (default: 1)",
+        "--skip-enrichment", action="store_true",
+        help="Skip phases 5-7 (solvability, enrichment, "
+        "final validation). Useful for quick iterations.",
+    )
+    parser.add_argument(
+        "--enrichment-model", default="gpt-5.4",
+        help="Model for feedback enrichment (default: gpt-5.4)",
     )
     return parser
 
@@ -96,8 +101,9 @@ def main() -> None:
         batch_poll_interval=args.batch_poll_interval,
         job_id=args.job_id,
         validate_variants=not args.skip_validation,
-        max_retries_per_variant=args.max_retries,
         output_dir=args.output_dir,
+        skip_enrichment=args.skip_enrichment,
+        enrichment_model=args.enrichment_model,
     )
 
     if config.use_batch_api:

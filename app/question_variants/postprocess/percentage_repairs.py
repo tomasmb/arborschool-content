@@ -76,11 +76,17 @@ def repair_percentage_choices(
         return qti_xml
 
     replacements: dict[str, str] = {}
-    next_distractor = iter(distractors)
+    distractor_iter = iter(distractors)
     correct_text = format_number(correct_value)
     for choice in choice_nodes:
         identifier = choice.attrib.get("identifier", "")
-        replacements[identifier] = correct_text if identifier == correct_id else next(next_distractor)[1]
+        if identifier == correct_id:
+            replacements[identifier] = correct_text
+        else:
+            pair = next(distractor_iter, None)
+            if pair is None:
+                return qti_xml
+            replacements[identifier] = pair[1]
     for choice in choice_nodes:
         _replace_choice_text(choice, replacements.get(choice.attrib.get("identifier", ""), "".join(choice.itertext())))
 

@@ -116,7 +116,7 @@ def save_variant(
     }
     validation_data = {
         "variant_id": variant.variant_id,
-        "pipeline_version": "2.0",
+        "pipeline_version": "3.0",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "pipeline_success": pipeline_result.success if pipeline_result else None,
         "pipeline_stage_failed": pipeline_result.stage_failed if pipeline_result else None,

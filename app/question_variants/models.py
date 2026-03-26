@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 
 class ValidationVerdict(str, Enum):
@@ -32,24 +32,24 @@ class SourceQuestion:
     question_id: str
     test_id: str
     qti_xml: str
-    metadata: Dict[str, Any]
+    metadata: dict[str, Any]
     question_text: str = ""
-    choices: List[str] = field(default_factory=list)
+    choices: list[str] = field(default_factory=list)
     correct_answer: str = ""
-    image_urls: List[str] = field(default_factory=list)
+    image_urls: list[str] = field(default_factory=list)
 
     @property
-    def atoms(self) -> List[Dict[str, Any]]:
+    def atoms(self) -> list[dict[str, Any]]:
         """Get the selected atoms from metadata."""
         return self.metadata.get("selected_atoms", [])
 
     @property
-    def primary_atoms(self) -> List[Dict[str, Any]]:
+    def primary_atoms(self) -> list[dict[str, Any]]:
         """Get only primary atoms."""
         return [a for a in self.atoms if a.get("relevance") == "primary"]
 
     @property
-    def difficulty(self) -> Dict[str, Any]:
+    def difficulty(self) -> dict[str, Any]:
         """Get difficulty info from metadata."""
         return self.metadata.get("difficulty", {})
 
@@ -71,8 +71,8 @@ class VariantQuestion:
     source_question_id: str
     source_test_id: str
     qti_xml: str
-    metadata: Dict[str, Any] = field(default_factory=dict)
-    validation_result: Optional["ValidationResult"] = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+    validation_result: ValidationResult | None = None
 
 
 @dataclass
@@ -92,7 +92,7 @@ class VariantBlueprint:
 
     variant_id: str
     scenario_description: str
-    non_mechanizable_axes: List[str] = field(default_factory=list)
+    non_mechanizable_axes: list[str] = field(default_factory=list)
     required_reasoning: str = ""
     difficulty_target: str = "equal_or_harder"
     requires_image: bool = False
@@ -144,15 +144,19 @@ class PipelineConfig:
         temperature: LLM temperature for generation.
         llm_request_timeout_seconds: Per-call timeout for sync LLM stages.
         llm_max_attempts: Max retry attempts for sync LLM stages.
-        model: OpenAI model used for all LLM phases.
+        model: OpenAI model used for generation/validation (phases 1-5, 7).
         use_batch_api: When True, uses OpenAI Batch API (50% cost discount).
             When False, runs sync calls (for debugging / pilot).
         batch_poll_interval: Seconds between polls when waiting for a batch.
         job_id: Resume a previous batch run from this job ID.
-        validate_variants: Whether to run validation phase.
+        validate_variants: Whether to run Phase 4 (3-gate validation).
         save_rejected: Whether to save rejected variants for debugging.
-        max_retries_per_variant: Re-generate rejected variants with feedback.
         output_dir: Directory for saving generated variants (by test).
+        skip_enrichment: When True, skip phases 5-7 (solvability, enrichment,
+            final validation).  Useful for backward-compat or debugging.
+        enrichment_model: Model for feedback enrichment & review (Phase 6).
+        enrichment_max_workers: Max parallel threads for Phase 6.
+        enrichment_max_correction_retries: Correction retries in Phase 6.
     """
 
     variants_per_question: int = 10
@@ -162,11 +166,14 @@ class PipelineConfig:
     model: str = "gpt-5.1"
     use_batch_api: bool = True
     batch_poll_interval: int = 30
-    job_id: Optional[str] = None
+    job_id: str | None = None
     validate_variants: bool = True
     save_rejected: bool = True
-    max_retries_per_variant: int = 1
     output_dir: str = "app/data/pruebas/hard_variants"
+    skip_enrichment: bool = False
+    enrichment_model: str = "gpt-5.4"
+    enrichment_max_workers: int = 10
+    enrichment_max_correction_retries: int = 2
 
 
 @dataclass
@@ -187,7 +194,7 @@ class VariantResult:
     qti_xml: str | None = None
     error: str | None = None
     stage_failed: str | None = None
-    validation_details: Dict[str, Any] | None = None
+    validation_details: dict[str, Any] | None = None
 
 
 @dataclass
@@ -198,9 +205,12 @@ class GenerationReport:
         source_question_id: Original question ID
         source_test_id: Original test ID
         total_generated: Number of variants generated
-        total_approved: Number that passed validation
-        total_rejected: Number that failed validation
-        variants: List of approved variant IDs
+        total_approved: Number that passed all phases
+        total_rejected: Number that failed any phase
+        total_solvability_failed: Rejected by Phase 5 (solvability gate)
+        total_enrichment_failed: Rejected by Phase 6 (feedback enrichment)
+        total_final_validation_failed: Rejected by Phase 7 (final validation)
+        variants: List of final approved variant IDs
         errors: Any errors encountered
         stage_failures: Counts of failures by pipeline stage
         rejection_reasons: Semantic rejection reasons collected during the run
@@ -211,9 +221,10 @@ class GenerationReport:
     total_generated: int = 0
     total_approved: int = 0
     total_rejected: int = 0
-    total_retried: int = 0
-    total_approved_on_retry: int = 0
-    variants: List[str] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
-    stage_failures: Dict[str, int] = field(default_factory=dict)
-    rejection_reasons: List[str] = field(default_factory=list)
+    total_solvability_failed: int = 0
+    total_enrichment_failed: int = 0
+    total_final_validation_failed: int = 0
+    variants: list[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+    stage_failures: dict[str, int] = field(default_factory=dict)
+    rejection_reasons: list[str] = field(default_factory=list)

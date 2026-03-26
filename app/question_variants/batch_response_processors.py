@@ -6,9 +6,14 @@ domain objects, reusing the same parsing functions used by the sync path.
 
 from __future__ import annotations
 
+import json
 import logging
 from typing import Any
 
+from app.question_feedback.final_validation_parser import (
+    parse_final_validation_payload,
+)
+from app.question_feedback.models import ValidationResult as FinalValidationResult
 from app.question_generation.batch_api import BatchResponse
 from app.question_variants.batch_request_builders import (
     parse_variant_custom_id,
@@ -28,6 +33,7 @@ from app.question_variants.postprocess.generation_parsing import (
 )
 from app.question_variants.generation_prompt import build_variant_metadata
 from app.question_variants.variant_planner import parse_planning_response
+from app.question_variants.variant_solvability import parse_solvability_response
 from app.question_variants.variant_validator import parse_validation_json
 
 logger = logging.getLogger(__name__)
@@ -182,6 +188,119 @@ def process_validation_responses(
         len(results), approved, len(results) - approved,
     )
     return results
+
+
+# ------------------------------------------------------------------
+# Phase 5 -- Solvability
+# ------------------------------------------------------------------
+
+
+def process_solvability_responses(
+    responses: list[BatchResponse],
+    variants_by_id: dict[str, VariantQuestion],
+) -> dict[str, tuple[bool, str]]:
+    """Parse solvability batch responses.
+
+    Returns a dict mapping variant_id to (passed, reason).
+    """
+    results: dict[str, tuple[bool, str]] = {}
+    for resp in responses:
+        parsed = parse_variant_custom_id(resp.custom_id)
+        variant_id = parsed.get("variant_id", resp.custom_id)
+        variant = variants_by_id.get(variant_id)
+
+        if resp.error or not variant:
+            reason = resp.error or "variant not found"
+            logger.warning("Solve error for %s: %s", variant_id, reason)
+            results[variant_id] = (False, f"Batch API error: {reason}")
+            continue
+
+        results[variant_id] = parse_solvability_response(
+            resp.text, variant,
+        )
+
+    passed = sum(1 for ok, _ in results.values() if ok)
+    logger.info(
+        "Phase 5 parsed %d results: %d passed, %d failed",
+        len(results), passed, len(results) - passed,
+    )
+    return results
+
+
+# ------------------------------------------------------------------
+# Phase 7 -- Final Validation
+# ------------------------------------------------------------------
+
+
+def process_final_validation_responses(
+    responses: list[BatchResponse],
+) -> dict[str, FinalValidationResult]:
+    """Parse final-validation batch responses.
+
+    Returns a dict mapping variant_id to a ``FinalValidationResult``
+    (from ``app.question_feedback.models``).
+    """
+    results: dict[str, FinalValidationResult] = {}
+    for resp in responses:
+        parsed = parse_variant_custom_id(resp.custom_id)
+        variant_id = parsed.get("variant_id", resp.custom_id)
+
+        if resp.error:
+            logger.warning(
+                "Final-val error for %s: %s", variant_id, resp.error,
+            )
+            results[variant_id] = _error_final_result(resp.error)
+            continue
+
+        try:
+            payload = json.loads(resp.text)
+            results[variant_id] = parse_final_validation_payload(payload)
+        except (json.JSONDecodeError, Exception) as exc:
+            logger.warning(
+                "Final-val parse error for %s: %s", variant_id, exc,
+            )
+            results[variant_id] = _error_final_result(str(exc))
+
+    passed = sum(
+        1 for r in results.values()
+        if r.validation_result == "pass"
+    )
+    logger.info(
+        "Phase 7 parsed %d results: %d passed, %d failed",
+        len(results), passed, len(results) - passed,
+    )
+    return results
+
+
+def _error_final_result(error: str) -> FinalValidationResult:
+    """Build an error FinalValidationResult."""
+    from app.question_feedback.models import (
+        CheckResult,
+        CheckStatus,
+        ContentQualityCheck,
+        CorrectAnswerCheck,
+    )
+    fail_check = CheckResult(
+        status=CheckStatus.FAIL, issues=[error], reasoning=error,
+    )
+    return FinalValidationResult(
+        validation_result="fail",
+        correct_answer_check=CorrectAnswerCheck(
+            status=CheckStatus.FAIL,
+            expected_answer="", marked_answer="",
+            verification_steps="", issues=[error],
+        ),
+        feedback_check=fail_check,
+        content_quality_check=ContentQualityCheck(
+            status=CheckStatus.FAIL,
+        ),
+        image_check=CheckResult(
+            status=CheckStatus.NOT_APPLICABLE,
+            issues=[], reasoning="Skipped due to error",
+        ),
+        math_validity_check=fail_check,
+        overall_reasoning=f"Validation failed: {error}",
+    )
 
 
 # ------------------------------------------------------------------
