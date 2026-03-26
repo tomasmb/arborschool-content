@@ -192,6 +192,26 @@ def save_state(job_dir: Path, state: dict[str, Any]) -> None:
         json.dump(state, f, indent=2)
 
 
+def get_phase_state(
+    state: dict[str, Any], phase_name: str,
+) -> dict[str, Any]:
+    """Return the sub-state dict for a batch phase, creating if absent."""
+    phases = state.setdefault("phases", {})
+    return phases.setdefault(phase_name, {"status": "pending"})
+
+
+def update_phase_state(
+    state: dict[str, Any],
+    job_dir: Path,
+    phase_name: str,
+    **updates: Any,
+) -> None:
+    """Merge *updates* into the phase sub-state and persist."""
+    ps = get_phase_state(state, phase_name)
+    ps.update(updates)
+    save_state(job_dir, state)
+
+
 def save_json(path: Path, data: Any) -> None:
     """Write any JSON-serializable data to a file."""
     path.parent.mkdir(parents=True, exist_ok=True)

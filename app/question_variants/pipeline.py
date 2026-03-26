@@ -1,9 +1,4 @@
-"""Variant generation pipeline orchestrator.
-
-Two pipeline implementations:
-  - SyncVariantPipeline: sequential LLM calls (--no-batch debug mode)
-  - BatchVariantPipeline: OpenAI Batch API with checkpointed phases
-"""
+"""Variant generation pipeline: Sync and Batch implementations."""
 
 from __future__ import annotations
 
@@ -32,6 +27,7 @@ from app.question_variants.pipeline_helpers import (
     blueprint_to_dict,
     build_source_contract,
     dedup_variant,
+    get_phase_state,
     load_json,
     load_state,
     load_variants_json,
@@ -41,6 +37,7 @@ from app.question_variants.pipeline_helpers import (
     save_json,
     save_state,
     source_key,
+    update_phase_state,
     variant_to_dict,
 )
 
@@ -247,7 +244,9 @@ class BatchVariantPipeline:
 
         print(f"\n🔷 Phase 1: Planning {len(sources)} questions...")
         reqs = [build_plan_request(s, n, model) for s in sources]
-        resps = self._submit_and_wait(submitter, reqs, "plan", job_dir)
+        resps = self._submit_and_wait(
+            submitter, reqs, "plan", job_dir, state,
+        )
 
         sm = {source_key(s): s for s in sources}
         bps = process_plan_responses(resps, sm)
@@ -289,7 +288,9 @@ class BatchVariantPipeline:
                 reqs.append(build_generation_request(src, bp, model))
 
         print(f"\n🔷 Phase 2: Generating {len(reqs)} variants...")
-        resps = self._submit_and_wait(submitter, reqs, "generate", job_dir)
+        resps = self._submit_and_wait(
+            submitter, reqs, "generate", job_dir, state,
+        )
         raw = process_generation_responses(resps, sources_map, bps)
 
         save_json(job_dir / "raw_variants.json", [variant_to_dict(v) for v in raw])
@@ -342,7 +343,9 @@ class BatchVariantPipeline:
                 reqs.append(build_validation_request(v, src, model))
 
         print(f"\n🔷 Phase 4: Validating {len(reqs)} variants...")
-        resps = self._submit_and_wait(submitter, reqs, "validate", job_dir)
+        resps = self._submit_and_wait(
+            submitter, reqs, "validate", job_dir, state,
+        )
         verdicts = process_validation_responses(resps)
 
         save_json(job_dir / "verdicts.json", {
@@ -377,31 +380,77 @@ class BatchVariantPipeline:
         print(f"✅ Phase 4: {len(final)} approved, {len(rejected)} rejected")
         return final, rejected
 
-    # ---- Batch submission helper -------------------------------------
+    # ---- Batch submission helper (5-state checkpoint lifecycle) ------
 
     def _submit_and_wait(
         self, submitter: Any, requests: list[Any],
-        phase_name: str, job_dir: Path,
+        phase_name: str, job_dir: Path, state: dict,
     ) -> list[Any]:
-        """Write JSONL, upload, create batch, poll, download, parse."""
-        jsonl_path = job_dir / f"{phase_name}.jsonl"
-        submitter.write_jsonl(requests, jsonl_path)
-        file_id = submitter.upload_file(jsonl_path)
-        batch_id = submitter.create_batch(file_id, metadata={
+        """5-state batch lifecycle: pending → file_uploaded →
+        submitted → results_downloaded → parse.
+
+        Each transition is checkpointed so any crash is fully
+        recoverable without re-submitting or losing API spend.
+        """
+        ps = get_phase_state(state, phase_name)
+        st = ps.get("status", "pending")
+        meta = {
             "pipeline": "variant", "phase": phase_name,
             "job_id": self.job_id or "",
-        })
-        print(f"  Batch {batch_id} submitted ({len(requests)} requests)")
+        }
 
-        batch = submitter.poll_until_done(batch_id)
-        if batch.get("status") != "completed":
-            raise RuntimeError(
-                f"Batch {batch_id} ended: {batch.get('status')}",
+        if st == "pending":
+            jsonl_path = job_dir / f"{phase_name}.jsonl"
+            submitter.write_jsonl(requests, jsonl_path)
+            fid = submitter.upload_file(jsonl_path)
+            update_phase_state(
+                state, job_dir, phase_name,
+                status="file_uploaded", file_id=fid,
+                request_count=len(requests),
             )
+            ps = get_phase_state(state, phase_name)
+            st = "file_uploaded"
 
-        out_id = batch.get("output_file_id", "")
-        results_path = job_dir / f"{phase_name}_results.jsonl"
-        submitter.download_file(out_id, results_path)
+        if st == "file_uploaded":
+            fid = ps.get("file_id", "")
+            orphan = submitter.find_orphan_batch(
+                file_id=fid, metadata_match=meta,
+            )
+            bid = (
+                orphan["id"] if orphan
+                else submitter.create_batch(fid, meta)
+            )
+            if orphan:
+                logger.info("Re-attached orphan batch %s", bid)
+            update_phase_state(
+                state, job_dir, phase_name,
+                status="submitted", batch_id=bid,
+            )
+            ps = get_phase_state(state, phase_name)
+            st = "submitted"
+
+        if st == "submitted":
+            bid = ps.get("batch_id", "")
+            print(f"  Batch {bid} polling ({phase_name})...")
+            batch_obj = submitter.poll_until_done(bid)
+            if batch_obj.get("status") != "completed":
+                raise RuntimeError(
+                    f"Batch {bid} ended: {batch_obj.get('status')}",
+                )
+            out_fid = batch_obj.get("output_file_id", "")
+            results_path = job_dir / f"{phase_name}_results.jsonl"
+            submitter.download_file(out_fid, results_path)
+            update_phase_state(
+                state, job_dir, phase_name,
+                status="results_downloaded",
+                results_jsonl=str(results_path),
+            )
+            ps = get_phase_state(state, phase_name)
+
+        results_path = Path(ps.get(
+            "results_jsonl",
+            str(job_dir / f"{phase_name}_results.jsonl"),
+        ))
         return submitter.parse_results_file(results_path)
 
     # ---- Save results ------------------------------------------------
