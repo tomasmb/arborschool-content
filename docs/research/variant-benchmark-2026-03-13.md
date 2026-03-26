@@ -1,3 +1,8 @@
+> **Status: HISTORICAL** — This benchmark was run with the Gemini+OpenAI split
+> stack and the old 6-gate validator. The pipeline has since switched to
+> all-OpenAI gpt-5.1 with simplified 3-gate validation. Data is kept for
+> reference but does not reflect the current architecture.
+
 # Research: Controlled Variant Benchmark (2026-03-13)
 
 ## Objetivo

@@ -1,4 +1,10 @@
-"""Small provider-aware text generation adapter for variant pipelines."""
+"""Text generation adapter for variant pipeline sync mode.
+
+The main variant pipeline uses the Batch API and does NOT call this module.
+This is only used by:
+  - SyncVariantPipeline (--no-batch debug mode): OpenAI via OpenAITextService
+  - generate_variant_images.py: Gemini via build_text_service("gemini")
+"""
 
 from __future__ import annotations
 
@@ -8,11 +14,9 @@ import time
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-from app.llm_clients import load_default_gemini_service, load_default_openai_client
+from app.llm_clients import load_default_openai_client
 
-DEFAULT_GEMINI_MODEL = "gemini-3.1-pro-preview"
-DEFAULT_OPENAI_MODEL = "gpt-5.4"
-_VALID_REASONING_LEVELS = {"none", "low", "medium", "high"}
+DEFAULT_OPENAI_MODEL = "gpt-5.1"
 
 
 class TextService(Protocol):
@@ -20,20 +24,6 @@ class TextService(Protocol):
 
     def generate_text(self, prompt: str | list[Any], **kwargs: Any) -> str:
         """Return plain text response."""
-
-
-def build_reasoning_kwargs(provider: str, reasoning_level: str | None) -> dict[str, Any]:
-    """Map a shared reasoning level to provider-specific request kwargs."""
-    normalized_provider = provider.strip().lower()
-    normalized_level = (reasoning_level or "none").strip().lower()
-    if normalized_level not in _VALID_REASONING_LEVELS:
-        raise ValueError(f"Unsupported reasoning level: {reasoning_level}")
-
-    if normalized_provider == "openai":
-        return {"reasoning_effort": normalized_level}
-    if normalized_provider == "gemini":
-        return {"thinking_level": normalized_level}
-    raise ValueError(f"Unsupported LLM provider: {provider}")
 
 
 @dataclass
@@ -52,7 +42,7 @@ class OpenAITextService:
 
 @dataclass
 class RetryingTextService:
-    """Variant-scoped timeout and retry wrapper around a base text service."""
+    """Timeout and retry wrapper around a base text service."""
 
     wrapped: TextService
     timeout_seconds: int = 180
@@ -82,8 +72,10 @@ class RetryingTextService:
 
         def _run() -> None:
             try:
-                result_queue.put((True, self.wrapped.generate_text(prompt, **request_kwargs)))
-            except Exception as exc:  # pragma: no cover - thin transport wrapper
+                result_queue.put(
+                    (True, self.wrapped.generate_text(prompt, **request_kwargs)),
+                )
+            except Exception as exc:
                 result_queue.put((False, exc))
 
         worker = threading.Thread(target=_run, daemon=True)
@@ -93,12 +85,28 @@ class RetryingTextService:
             ok, payload = result_queue.get(timeout=self.timeout_seconds)
         except queue.Empty as exc:
             raise TimeoutError(
-                f"Variant LLM call exceeded {self.timeout_seconds}s timeout."
+                f"LLM call exceeded {self.timeout_seconds}s timeout.",
             ) from exc
 
         if ok:
             return str(payload)
         raise payload
+
+
+def build_reasoning_kwargs(
+    provider: str, reasoning_level: str | None,
+) -> dict[str, Any]:
+    """Map a reasoning level to provider-specific request kwargs.
+
+    Used only by generate_variant_images.py (Gemini path).
+    """
+    level = (reasoning_level or "none").strip().lower()
+    normalized = provider.strip().lower()
+    if normalized == "openai":
+        return {"reasoning_effort": level}
+    if normalized == "gemini":
+        return {"thinking_level": level}
+    raise ValueError(f"Unsupported provider: {provider}")
 
 
 def build_text_service(
@@ -108,27 +116,36 @@ def build_text_service(
     timeout_seconds: int = 180,
     max_attempts: int = 2,
 ) -> TextService:
-    """Create a provider-specific text service with a common interface."""
+    """Create a provider-specific text service.
 
-    normalized_provider = provider.strip().lower()
-    if normalized_provider == "gemini":
-        service = load_default_gemini_service() if model is None else load_default_gemini_service_for_model(model)
-        return RetryingTextService(service, timeout_seconds=timeout_seconds, max_attempts=max_attempts)
-    if normalized_provider == "openai":
+    - "openai": used by --no-batch sync mode for all variant phases.
+    - "gemini": used only by generate_variant_images.py.
+    """
+    normalized = provider.strip().lower()
+
+    if normalized == "openai":
         return RetryingTextService(
             OpenAITextService(model=model or DEFAULT_OPENAI_MODEL),
             timeout_seconds=timeout_seconds,
             max_attempts=max_attempts,
         )
+
+    if normalized == "gemini":
+        from app.llm_clients import load_default_gemini_service
+
+        service = load_default_gemini_service()
+        if model and service.config.model != model:
+            from app.llm_clients import GeminiConfig, GeminiService
+
+            service = GeminiService(GeminiConfig(
+                api_key=service.config.api_key,
+                model=model,
+                thinking_level=service.config.thinking_level,
+            ))
+        return RetryingTextService(
+            service,
+            timeout_seconds=timeout_seconds,
+            max_attempts=max_attempts,
+        )
+
     raise ValueError(f"Unsupported LLM provider: {provider}")
-
-
-def load_default_gemini_service_for_model(model: str) -> TextService:
-    """Construct a Gemini service pinned to a specific model."""
-    service = load_default_gemini_service()
-    if service.config.model == model:
-        return service
-
-    from app.llm_clients import GeminiConfig, GeminiService
-
-    return GeminiService(GeminiConfig(api_key=service.config.api_key, model=model, thinking_level=service.config.thinking_level))

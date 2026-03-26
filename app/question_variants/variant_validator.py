@@ -1,23 +1,24 @@
-"""Variant question validator.
+"""Variant question validator -- simplified 3-gate validation.
 
-This module validates generated variants to ensure they:
-1. Are valid QTI 3.0 XML
-2. Test the EXACT SAME concept as the original
-3. Have the same difficulty level
-4. Have a mathematically correct answer
-5. Have plausible distractors
-6. Are non-mechanizable (not solvable by rote pattern only)
+Deterministic pre-checks (no LLM cost):
+  1. Valid XML
+  2. Choice interaction integrity (QTI wiring)
+  3. Visual completeness (mentions figure/table -> must exist in XML)
+
+LLM semantic gates (3 essential):
+  1. respuesta_correcta -- is the marked answer mathematically correct?
+  2. concepto_alineado -- does it test the same atoms/concept?
+  3. es_diferente -- is it genuinely different from the original?
 """
+
+from __future__ import annotations
 
 import json
 import logging
 import re
 import xml.etree.ElementTree as ET
-
-logger = logging.getLogger(__name__)
 from typing import Optional
 
-from app.question_variants.llm_service import build_reasoning_kwargs, build_text_service
 from app.question_variants.models import (
     PipelineConfig,
     SourceQuestion,
@@ -31,415 +32,31 @@ from app.question_variants.qti_validation_utils import (
     find_correct_answer,
     validate_choice_interaction_integrity,
 )
-from app.question_variants.contracts.semantic_guardrails import (
-    adds_auxiliary_transformations,
-    adds_reference_load,
-    breaks_expected_distractor_logic,
-    failed_generator_self_check,
-    has_equivalent_correct_choice,
-    has_numeric_option_scale_outlier,
-    has_semantic_contract_drift,
-    inflates_data_burden,
-    is_insufficiently_different,
-    required_non_mechanizable_axes,
-    reveals_choice_correctness,
-    repeats_claim_archetype,
-    selected_shape_id_from_metadata,
-    violates_selected_shape,
-)
-from app.question_variants.contracts.preservation_policy import (
-    must_preserve_cognitive_action,
-    must_preserve_main_skill,
-    must_preserve_solution_structure,
-)
-from app.question_variants.contracts.structural_profile import build_construct_contract, build_structural_profile
+
+logger = logging.getLogger(__name__)
 
 
-class VariantValidator:
-    """Validates generated variant questions."""
+# ---------------------------------------------------------------------------
+# Pure functions -- shared by sync and batch paths (DRY)
+# ---------------------------------------------------------------------------
 
-    def __init__(self, config: Optional[PipelineConfig] = None):
-        """Initialize the validator.
 
-        Args:
-            config: Pipeline configuration. Uses defaults if not provided.
-        """
-        self.config = config or PipelineConfig()
-        self.service = build_text_service(
-            self.config.validator_provider,
-            self.config.validator_model,
-            timeout_seconds=self.config.llm_request_timeout_seconds,
-            max_attempts=self.config.llm_max_attempts,
-        )
+def build_validation_prompt(variant: VariantQuestion, source: SourceQuestion) -> str:
+    """Build the LLM validation prompt for a variant.
 
-    def validate(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
-        """Validate a variant question against its source.
+    Pure function with no side effects -- used by both the sync validator
+    and the batch request builders.
+    """
+    variant_text = extract_question_text(variant.qti_xml)
+    variant_choices = extract_choices(variant.qti_xml)
+    variant_correct = find_correct_answer(variant.qti_xml)
 
-        Args:
-            variant: The variant to validate
-            source: The original source question
+    atoms_json = json.dumps(
+        [a.get("atom_title") for a in source.primary_atoms],
+        ensure_ascii=False,
+    )
 
-        Returns:
-            ValidationResult with verdict and details
-        """
-        print(f"    Validating {variant.variant_id}...")
-
-        # Step 1: Basic XML validation
-        xml_valid, xml_error = self._validate_xml(variant.qti_xml)
-        if not xml_valid:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=f"XML inválido: {xml_error}",
-            )
-
-        interaction_ok, interaction_error = self._validate_choice_interaction_integrity(variant.qti_xml)
-        if not interaction_ok:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=interaction_error,
-            )
-
-        visual_ref_ok, visual_ref_error = self._validate_visual_completeness(variant.qti_xml, source)
-        if not visual_ref_ok:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=visual_ref_error,
-            )
-        structural_ok, structural_error = self._validate_structural_alignment(variant.qti_xml, source, variant.metadata)
-        if not structural_ok:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=structural_error,
-            )
-
-        self_check_error = failed_generator_self_check(variant.metadata)
-        if self_check_error:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=self_check_error,
-            )
-
-        # Step 2: LLM-based validation
-        return self._validate_with_llm(variant, source)
-
-    def _validate_xml(self, xml_content: str) -> tuple[bool, str]:
-        """Validate that the XML is parseable.
-
-        Returns:
-            Tuple of (is_valid, error_message)
-        """
-        try:
-            # Basic parse check
-            ET.fromstring(xml_content)
-            return True, ""
-        except ET.ParseError as e:
-            return False, str(e)
-
-    def _validate_choice_interaction_integrity(self, xml_content: str) -> tuple[bool, str]:
-        """Validate deterministic QTI wiring before spending an LLM call."""
-        return validate_choice_interaction_integrity(xml_content)
-
-    def _validate_visual_completeness(self, xml_content: str, source: SourceQuestion) -> tuple[bool, str]:
-        lowered = extract_question_text(xml_content).lower()
-        mentions_image_like = any(
-            token in lowered for token in ("figura", "gráfico", "grafico", "diagrama", "infografía", "infografia")
-        )
-        mentions_table = "tabla" in lowered
-        has_image_tag = self._contains_xml_visual_object(xml_content)
-        has_table_tag = self._contains_xml_table(xml_content)
-
-        has_textual_dataset_fallback = has_table_tag or self._has_explicit_textual_dataset(lowered)
-
-        if (mentions_image_like and not has_image_tag and not has_textual_dataset_fallback) or (
-            mentions_table and not has_table_tag and not has_textual_dataset_fallback
-        ):
-            return False, (
-                "La variante está incompleta: menciona una figura, gráfico, diagrama, infografía o tabla "
-                "pero no incluye esa representación en el XML."
-            )
-
-        if not source.image_urls and (mentions_image_like or has_image_tag):
-            return False, (
-                "La variante fue rechazada porque introduce soporte visual que no existe en la pregunta fuente, "
-                "alterando la forma de representación y arriesgando un ítem incompleto."
-            )
-
-        return True, ""
-
-    def _validate_structural_alignment(
-        self,
-        xml_content: str,
-        source: SourceQuestion,
-        metadata: Optional[dict[str, object]] = None,
-    ) -> tuple[bool, str]:
-        contract = build_construct_contract(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata,
-            source.choices,
-            source.correct_answer,
-        )
-        variant_contract = build_construct_contract(
-            extract_question_text(xml_content),
-            xml_content,
-            self._has_visual_support(xml_content),
-            source.primary_atoms,
-            source.metadata,
-            extract_choices(xml_content),
-            find_correct_answer(xml_content),
-        )
-        source_profile = self._build_structural_profile(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
-        )
-        variant_text = extract_question_text(xml_content)
-        variant_profile = self._build_structural_profile(
-            variant_text,
-            xml_content,
-            self._has_visual_support(xml_content),
-            source.primary_atoms,
-            source.metadata.get("habilidad_principal", {}).get("habilidad_principal", ""),
-        )
-
-        if source_profile["task_form"] != variant_profile["task_form"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo: la forma de tarea cambió de "
-                f"{source_profile['task_form']} a {variant_profile['task_form']}."
-            )
-
-        if source_profile["must_not_introduce_algebraic_unknowns"] and variant_profile["introduces_unknowns"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo/dificultad: introduce incógnitas "
-                "algebraicas que no existen en la pregunta fuente."
-            )
-
-        if source_profile["operation_signature"] == "direct_percentage_calculation" and variant_profile["extra_base_quantity"]:
-            return False, (
-                "La variante fue rechazada por drift de dificultad: un cálculo directo de porcentaje "
-                "no puede introducir magnitudes adicionales que obliguen a un cálculo intermedio."
-            )
-
-        if source_profile["operation_signature"] == "trinomial_factorization" and self._introduces_rational_expression(xml_content):
-            return False, (
-                "La variante fue rechazada por drift de constructo: una factorización de trinomio "
-                "no puede transformarse en simplificación de expresiones racionales o fracciones algebraicas."
-            )
-
-        if "must_preserve_standard_trinomial_form" in contract["hard_constraints"] and self._introduces_shifted_trinomial_form(xml_content):
-            return False, (
-                "La variante fue rechazada por drift de dificultad: una factorización rutinaria de trinomio "
-                "no debe reescribirse en formas desplazadas o equivalentes que agreguen expansión o cambio de variable."
-            )
-
-        if source_profile["claim_evaluation"] and not variant_profile["claim_evaluation"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo: la fuente evalúa afirmaciones "
-                "basadas en datos y la variante dejó de hacerlo."
-            )
-
-        if source_profile["representation_interpretation"] and not variant_profile["representation_interpretation"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo: la fuente exige interpretar una "
-                "representación o relación entre magnitudes y la variante dejó de hacerlo."
-            )
-
-        if contract["representation_must_remain_primary"] and self._short_circuits_representation(xml_content):
-            return False, (
-                "La variante fue rechazada por drift de constructo: reemplaza la representación como evidencia "
-                "primaria por una tabla o listado explícito que permite responder sin interpretar la representación."
-            )
-
-        if must_preserve_cognitive_action(contract) and contract["cognitive_action"] != variant_contract["cognitive_action"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo: cambió la acción cognitiva dominante de "
-                f"{contract['cognitive_action']} a {variant_contract['cognitive_action']}."
-            )
-
-        if must_preserve_solution_structure(contract) and contract["solution_structure"] != variant_contract["solution_structure"]:
-            return False, (
-                "La variante fue rechazada por drift de dificultad/constructo: cambió la estructura de solución de "
-                f"{contract['solution_structure']} a {variant_contract['solution_structure']}."
-            )
-
-        if must_preserve_main_skill(contract) and contract["main_skill"] != variant_contract["main_skill"]:
-            return False, (
-                "La variante fue rechazada por drift de constructo: cambió la habilidad principal de "
-                f"{contract['main_skill']} a {variant_contract['main_skill']}."
-            )
-
-        if source_profile["requires_direct_computation"] and variant_profile["appears_multi_step"]:
-            return False, (
-                "La variante fue rechazada por drift de dificultad: la fuente exige un cálculo directo "
-                "y la variante parece convertirlo en una tarea de varios pasos."
-            )
-
-        if adds_auxiliary_transformations(contract, variant_contract):
-            return False, (
-                "La variante fue rechazada por drift de dificultad: agregó transformaciones auxiliares "
-                "o pasos intermedios que no están en la pregunta fuente."
-            )
-
-        if breaks_expected_distractor_logic(contract, variant_contract, metadata or {}):
-            return False, (
-                "La variante fue rechazada por drift de calidad: perdió los arquetipos de distractor "
-                "necesarios para conservar la misma trampa conceptual de la fuente."
-            )
-
-        if adds_reference_load(contract, variant_contract):
-            return False, (
-                "La variante fue rechazada por drift de dificultad: agregó relaciones de referencia o "
-                "conversiones adicionales que no están en la pregunta fuente."
-            )
-
-        if inflates_data_burden(contract, variant_contract):
-            return False, (
-                "La variante fue rechazada por drift de dificultad: aumentó artificialmente la carga de datos "
-                "o frecuencias a procesar respecto de la fuente."
-            )
-
-        semantic_contract_drift = has_semantic_contract_drift(contract, variant_contract)
-        if semantic_contract_drift:
-            return False, f"La variante fue rechazada por drift de constructo/dificultad: {semantic_contract_drift}"
-
-        shape_violation = violates_selected_shape(contract, variant_contract, metadata or {})
-        if shape_violation:
-            return False, shape_violation
-
-        if repeats_claim_archetype(contract, variant_contract):
-            return False, (
-                "La variante fue rechazada por calidad insuficiente: repite el mismo arquetipo semántico decisivo "
-                "de la fuente en vez de variar la validación conceptual dentro del mismo constructo."
-            )
-
-        if has_numeric_option_scale_outlier(extract_choices(xml_content), find_correct_answer(xml_content), contract):
-            return False, (
-                "La variante fue rechazada por calidad de distractores: incluye opciones numéricas fuera de escala "
-                "respecto de la respuesta correcta."
-            )
-
-        if has_equivalent_correct_choice(extract_choices(xml_content), find_correct_answer(xml_content), contract):
-            return False, (
-                "La variante fue rechazada porque tiene más de una opción equivalente correcta, "
-                "expresada con diferentes unidades o escalas."
-            )
-
-        if reveals_choice_correctness(extract_choices(xml_content)):
-            return False, (
-                "La variante fue rechazada por integridad pedagógica: una o más alternativas delatan "
-                "explícitamente cuál sería la respuesta correcta o incorrecta."
-            )
-
-        if is_insufficiently_different(source.question_text, source.choices, variant_text, extract_choices(xml_content), contract):
-            return False, (
-                "La variante fue rechazada por calidad insuficiente: quedó demasiado cercana a la fuente "
-                "y no materializa suficiente variación estructural no mecanizable."
-            )
-
-        if source_profile["expects_explicit_dataset"] and not variant_profile["has_explicit_dataset"]:
-            return False, (
-                "La variante fue rechazada porque no deja un conjunto de datos explícito y autocontenido, "
-                "a pesar de que la fuente sí depende de información visual o tabular."
-            )
-
-        return True, ""
-
-    def _build_structural_profile(
-        self,
-        question_text: str,
-        qti_xml: str,
-        has_visual_support: bool,
-        primary_atoms: list[dict],
-        main_skill: str,
-    ) -> dict[str, bool | str]:
-        return build_structural_profile(question_text, qti_xml, has_visual_support, primary_atoms, main_skill)
-
-    def _has_visual_support(self, xml_content: str) -> bool:
-        return self._contains_xml_visual_object(xml_content) or self._contains_xml_table(xml_content)
-
-    def _short_circuits_representation(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        has_table = self._contains_xml_table(xml_content)
-        numeric_density = len(re.findall(r"\d+(?:[.,]\d+)?", lowered))
-        return has_table and numeric_density >= 6
-
-    def _has_explicit_textual_dataset(self, lowered_text: str) -> bool:
-        has_coordinate_pairs = len(re.findall(r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)", lowered_text)) >= 2
-        has_labeled_value_list = len(re.findall(r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?", lowered_text)) >= 3
-        return has_coordinate_pairs or has_labeled_value_list
-
-    def _contains_xml_table(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        return bool(re.search(r"<(?:[\w.-]+:)?table\b", lowered) or re.search(r"<(?:[\w.-]+:)?qti-table\b", lowered))
-
-    def _contains_xml_visual_object(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        return bool(
-            re.search(r"<(?:[\w.-]+:)?img\b", lowered)
-            or re.search(r"<(?:[\w.-]+:)?object\b", lowered)
-            or re.search(r"<(?:[\w.-]+:)?qti-object\b", lowered)
-        )
-
-    def _introduces_rational_expression(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        return "<mfrac" in lowered or "≠" in lowered or "&#x2260;" in lowered or "dominio" in lowered
-
-    def _introduces_shifted_trinomial_form(self, xml_content: str) -> bool:
-        lowered = xml_content.lower()
-        return "<msup><mrow><mo>(</mo><mi>x</mi>" in lowered or "(x-" in lowered or "(x+" in lowered
-
-    def _validate_with_llm(self, variant: VariantQuestion, source: SourceQuestion) -> ValidationResult:
-        """Use LLM to validate concept alignment, difficulty, and correctness."""
-
-        # Extract variant text for easier reading
-        variant_text = extract_question_text(variant.qti_xml)
-        variant_choices = extract_choices(variant.qti_xml)
-        variant_correct = find_correct_answer(variant.qti_xml)
-        source_contract = build_construct_contract(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata,
-            source.choices,
-            source.correct_answer,
-        )
-        non_mechanizable_policy = self._build_non_mechanizable_policy(source_contract)
-        min_axes = required_non_mechanizable_axes(source_contract)
-
-        selected_shape_id = selected_shape_id_from_metadata(variant.metadata)
-        shape_context = (
-            f"\nBlueprint estructural seleccionado: {selected_shape_id}."
-            if selected_shape_id and selected_shape_id != "standard_variant"
-            else ""
-        )
-
-        prompt = f"""
-<role>
+    return f"""<role>
 Eres un revisor de calidad de exámenes matemáticos PAES.
 Tu tarea es verificar que una variante generada automáticamente es válida.
 </role>
@@ -451,7 +68,7 @@ Opciones: {json.dumps(source.choices, ensure_ascii=False)}
 
 Respuesta correcta: {source.correct_answer}
 
-Concepto evaluado: {json.dumps([a.get("atom_title") for a in source.primary_atoms], ensure_ascii=False)}
+Concepto evaluado: {atoms_json}
 
 Dificultad: {source.difficulty.get("level", "Medium")}
 </pregunta_original>
@@ -465,50 +82,33 @@ Respuesta marcada como correcta: {variant_correct}
 </variante_a_validar>
 
 <tarea>
-Verifica cuidadosamente:
+Verifica cuidadosamente estos 3 criterios:
 
-1. **CONCEPTO ALINEADO**: ¿La variante evalúa EXACTAMENTE el mismo concepto matemático?
-   - Debe requerir las mismas operaciones/habilidades
-   - No puede ser más abstracta ni más concreta
+1. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
+   - Resuelve el problema paso a paso.
+   - Muestra tu cálculo completo.
+   - Verifica que tu resultado coincide con la opción marcada.
 
-2. **DIFICULTAD ACEPTABLE**: ¿Mantiene la banda de dificultad objetivo?
-   - Debe ser igual o levemente más difícil para lograr la versión "dura" y no mecanizable.
-   - SE PERMITE y es esperado aumentar ligeramente la cantidad de pasos cognitivos o requerir un cálculo intermedio conceptual si esto sirve para des-mecanizar la pregunta.
-   - Solo rechaza si sube a una banda de dificultad completamente diferente (ej. si requiere materia universitaria o técnicas fuera del currículum escolar).
+2. **CONCEPTO ALINEADO**: ¿La variante evalúa el mismo concepto matemático?
+   - Un estudiante necesita los mismos conocimientos matemáticos para resolver ambas.
+   - La variante puede presentar el concepto de forma diferente (distinto contexto,
+     distinta representación, distinto orden de pasos) siempre que el conocimiento
+     requerido sea el mismo.
 
-3. **RESPUESTA CORRECTA**: ¿La respuesta marcada como correcta ES realmente correcta?
-   - Resuelve el problema paso a paso
-   - Muestra tu cálculo completo
-   - Verifica que tu resultado coincide con la opción marcada
-
-4. **DISTRACTORES PLAUSIBLES**: ¿Los distractores representan errores comunes?
-   - No deben ser valores absurdos o aleatorios
-   - Deben ser errores que un estudiante podría cometer
-
-5. **VARIANTE DIFERENTE**: ¿Es suficientemente diferente de la original?
-   - Debe tener al menos un cambio significativo (números diferentes, contexto diferente)
-   - La respuesta correcta debe ser DIFERENTE a la original
-
-6. **NO MECANIZABLE**: ¿Evita resolución por receta memorizada?
-   - Debe cambiar al menos {min_axes} eje(s) estructural(es) relevantes (forma, representación, distractor o secuencia), según la familia
-   - Debe exigir comprender el por qué del método
-   - Política específica para esta familia: {non_mechanizable_policy}{shape_context}
+3. **ES DIFERENTE**: ¿Es una pregunta genuinamente diferente de la original?
+   - No basta con cambiar números: debe cambiar contexto, representación o forma.
+   - La respuesta correcta debe ser diferente a la de la original.
 </tarea>
 
 <formato_respuesta>
 Responde en JSON:
 {{
-  "concepto_alineado": true/false,
-  "razon_concepto": "Explicación breve...",
-  "dificultad_aceptable": true/false,
-  "razon_dificultad": "Explicación breve...",
   "respuesta_correcta": true/false,
   "tu_calculo": "Paso 1: ... Paso 2: ... Resultado: ...",
-  "distractores_plausibles": true/false,
-  "razon_distractores": "Explicación breve...",
+  "concepto_alineado": true/false,
+  "razon_concepto": "Explicación breve...",
   "es_diferente": true/false,
-  "no_mecanizable": true/false,
-  "razon_no_mecanizable": "Explicación breve...",
+  "razon_diferencia": "Explicación breve...",
   "veredicto": "APROBADA" o "RECHAZADA",
   "razon_rechazo": "Si es rechazada, explicar por qué..."
 }}
@@ -517,194 +117,226 @@ Responde en JSON:
 <regla_critica>
 Si la respuesta marcada como correcta NO es matemáticamente correcta,
 el veredicto DEBE ser "RECHAZADA" sin importar lo demás.
-</regla_critica>
-"""
+</regla_critica>"""
 
+
+def parse_validation_json(raw: str) -> ValidationResult:
+    """Parse LLM validation JSON into a ValidationResult.
+
+    Pure function -- shared by sync and batch paths.
+    """
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        return ValidationResult(
+            verdict=ValidationVerdict.REJECTED,
+            concept_aligned=False,
+            difficulty_equal=True,
+            answer_correct=False,
+            rejection_reason="No se pudo parsear respuesta de validación",
+        )
+
+    answer_correct = data.get("respuesta_correcta", False)
+    concept_aligned = data.get("concepto_alineado", False)
+    is_different = data.get("es_diferente", False)
+    calculation_steps = data.get("tu_calculo", "")
+    rejection_reason = data.get("razon_rechazo", "")
+
+    verdict_str = data.get("veredicto", "")
+    verdict = (
+        ValidationVerdict.APPROVED
+        if verdict_str == "APROBADA"
+        else ValidationVerdict.REJECTED
+    )
+
+    if not answer_correct:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La respuesta marcada como correcta no coincide "
+            "con la resolución matemática del ítem."
+        )
+    if not concept_aligned:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La variante no evalúa el mismo concepto "
+            "matemático que la fuente."
+        )
+    if not is_different:
+        verdict = ValidationVerdict.REJECTED
+        rejection_reason = rejection_reason or (
+            "La variante no es suficientemente diferente "
+            "de la fuente."
+        )
+
+    return ValidationResult(
+        verdict=verdict,
+        concept_aligned=concept_aligned,
+        difficulty_equal=True,
+        answer_correct=answer_correct,
+        calculation_steps=calculation_steps,
+        rejection_reason=rejection_reason,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Deterministic checks -- no LLM cost
+# ---------------------------------------------------------------------------
+
+
+def validate_xml(xml_content: str) -> tuple[bool, str]:
+    """Check that the XML is parseable."""
+    try:
+        ET.fromstring(xml_content)
+        return True, ""
+    except ET.ParseError as e:
+        return False, str(e)
+
+
+def validate_visual_completeness(
+    xml_content: str, source: SourceQuestion,
+) -> tuple[bool, str]:
+    """Reject variants that mention visuals but don't include them."""
+    lowered = extract_question_text(xml_content).lower()
+    image_tokens = (
+        "figura", "gráfico", "grafico",
+        "diagrama", "infografía", "infografia",
+    )
+    mentions_image = any(t in lowered for t in image_tokens)
+    mentions_table = "tabla" in lowered
+
+    has_img = _contains_xml_visual_object(xml_content)
+    has_table = _contains_xml_table(xml_content)
+    has_dataset = has_table or _has_explicit_textual_dataset(lowered)
+
+    if (mentions_image and not has_img and not has_dataset) or (
+        mentions_table and not has_table and not has_dataset
+    ):
+        return False, (
+            "La variante está incompleta: menciona una figura, "
+            "gráfico, diagrama, infografía o tabla pero no incluye "
+            "esa representación en el XML."
+        )
+
+    if not source.image_urls and (mentions_image or has_img):
+        return False, (
+            "La variante introduce soporte visual que no existe "
+            "en la pregunta fuente."
+        )
+
+    return True, ""
+
+
+# ---------------------------------------------------------------------------
+# XML helpers
+# ---------------------------------------------------------------------------
+
+
+def _contains_xml_visual_object(xml_content: str) -> bool:
+    lo = xml_content.lower()
+    return bool(
+        re.search(r"<(?:[\w.-]+:)?img\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?object\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?qti-object\b", lo)
+    )
+
+
+def _contains_xml_table(xml_content: str) -> bool:
+    lo = xml_content.lower()
+    return bool(
+        re.search(r"<(?:[\w.-]+:)?table\b", lo)
+        or re.search(r"<(?:[\w.-]+:)?qti-table\b", lo)
+    )
+
+
+def _has_explicit_textual_dataset(lowered_text: str) -> bool:
+    pairs = re.findall(
+        r"\(\s*\d+(?:[.,]\d+)?\s*,\s*\d+(?:[.,]\d+)?\s*\)",
+        lowered_text,
+    )
+    labels = re.findall(
+        r"[a-záéíóúñ][^:\n]{0,30}:\s*\d+(?:[.,]\d+)?",
+        lowered_text,
+    )
+    return len(pairs) >= 2 or len(labels) >= 3
+
+
+# ---------------------------------------------------------------------------
+# VariantValidator class -- sync path (used by --no-batch mode)
+# ---------------------------------------------------------------------------
+
+
+class VariantValidator:
+    """Validates generated variant questions (sync mode)."""
+
+    def __init__(self, config: Optional[PipelineConfig] = None):
+        self.config = config or PipelineConfig()
+        from app.question_variants.llm_service import build_text_service
+
+        self.service = build_text_service(
+            "openai",
+            self.config.model,
+            timeout_seconds=self.config.llm_request_timeout_seconds,
+            max_attempts=self.config.llm_max_attempts,
+        )
+
+    def validate(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+    ) -> ValidationResult:
+        """Run deterministic checks then LLM validation."""
+        print(f"    Validating {variant.variant_id}...")
+
+        xml_ok, xml_err = validate_xml(variant.qti_xml)
+        if not xml_ok:
+            return _rejected(f"XML inválido: {xml_err}")
+
+        wire_ok, wire_err = validate_choice_interaction_integrity(
+            variant.qti_xml,
+        )
+        if not wire_ok:
+            return _rejected(wire_err)
+
+        vis_ok, vis_err = validate_visual_completeness(
+            variant.qti_xml, source,
+        )
+        if not vis_ok:
+            return _rejected(vis_err)
+
+        return self._validate_with_llm(variant, source)
+
+    def _validate_with_llm(
+        self,
+        variant: VariantQuestion,
+        source: SourceQuestion,
+    ) -> ValidationResult:
+        """Call the LLM for semantic validation."""
+        prompt = build_validation_prompt(variant, source)
         try:
             response = self.service.generate_text(
                 prompt,
                 response_mime_type="application/json",
-                temperature=0.0,  # Deterministic for validation
-                **build_reasoning_kwargs(
-                    self.config.validator_provider,
-                    self.config.validator_reasoning_level,
-                ),
+                temperature=0.0,
+                reasoning_effort="medium",
             )
-
-            result = self._parse_validation_response(response)
-
+            result = parse_validation_json(response)
             if result.is_approved:
                 print(f"    ✅ {variant.variant_id} APROBADA")
             else:
-                print(f"    ❌ {variant.variant_id} RECHAZADA: {result.rejection_reason}")
-
+                reason = result.rejection_reason
+                print(f"    ❌ {variant.variant_id} RECHAZADA: {reason}")
             return result
-
         except Exception as e:
             print(f"    ⚠️ Error validating: {e}")
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason=f"Error de validación: {str(e)}",
-            )
+            return _rejected(f"Error de validación: {e}")
 
-    def _parse_validation_response(self, response: str) -> ValidationResult:
-        """Parse LLM validation response into ValidationResult."""
-        try:
-            data = json.loads(response)
 
-            concept_aligned = data.get("concepto_alineado", False)
-            difficulty_acceptable = data.get("dificultad_aceptable", data.get("dificultad_igual", False))
-            answer_correct = data.get("respuesta_correcta", False)
-            calculation_steps = data.get("tu_calculo", "")
-            distractors_plausible = data.get("distractores_plausibles", False)
-            is_different = data.get("es_diferente", False)
-            non_mechanizable = data.get("no_mecanizable", False)
-            rejection_reason = data.get("razon_rechazo", "")
-            verdict = ValidationVerdict.APPROVED if data.get("veredicto") == "APROBADA" else ValidationVerdict.REJECTED
-
-            if not answer_correct and self._llm_text_asserts_correctness(calculation_steps, rejection_reason):
-                # Safety check: don't override if the text contains qualifiers
-                # that suggest the LLM found issues despite correct math
-                combined = f"{calculation_steps} {rejection_reason}".lower()
-                qualifier_phrases = (
-                    "sin embargo", "pero no cumple", "no obstante",
-                    "a pesar de", "aunque la respuesta", "no mantiene",
-                    "no evalúa", "no evalua", "no cumple suficientemente",
-                )
-                has_qualifiers = any(q in combined for q in qualifier_phrases)
-                if not has_qualifiers:
-                    logger.info(
-                        "Overriding answer_correct=False → True based on LLM text "
-                        "asserting correctness (no contradictory qualifiers found)"
-                    )
-                    answer_correct = True
-                    if self._is_inconsistency_only_rejection(rejection_reason):
-                        rejection_reason = ""
-                        if concept_aligned and difficulty_acceptable and distractors_plausible and non_mechanizable:
-                            verdict = ValidationVerdict.APPROVED
-                else:
-                    logger.info(
-                        "Skipping answer_correct override: LLM text asserts correctness "
-                        "but contains qualifying phrases suggesting other issues"
-                    )
-
-            if not answer_correct:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La respuesta marcada como correcta no coincide con la resolución matemática del ítem."
-                )
-            if not concept_aligned:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La variante no evalúa exactamente el mismo concepto matemático que la fuente."
-                )
-            if not difficulty_acceptable:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La variante no mantiene una dificultad aceptable respecto del objetivo del ítem."
-                )
-            if not distractors_plausible:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La variante no mantiene distractores suficientemente plausibles."
-                )
-            if not is_different:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La variante no es suficientemente diferente de la fuente."
-                )
-            if not non_mechanizable:
-                verdict = ValidationVerdict.REJECTED
-                rejection_reason = rejection_reason or (
-                    "La variante no cumple suficientemente el criterio de no mecanizabilidad."
-                )
-
-            return ValidationResult(
-                verdict=verdict,
-                concept_aligned=concept_aligned,
-                difficulty_equal=difficulty_acceptable,
-                answer_correct=answer_correct,
-                calculation_steps=calculation_steps,
-                distractors_plausible=distractors_plausible,
-                non_mechanizable=non_mechanizable,
-                rejection_reason=rejection_reason,
-            )
-        except json.JSONDecodeError:
-            return ValidationResult(
-                verdict=ValidationVerdict.REJECTED,
-                concept_aligned=False,
-                difficulty_equal=False,
-                answer_correct=False,
-                non_mechanizable=False,
-                rejection_reason="No se pudo parsear respuesta de validación",
-            )
-
-    def _build_non_mechanizable_policy(self, source_contract: dict[str, object]) -> str:
-        expectation = str(source_contract.get("non_mechanizable_expectation") or "medium")
-        min_axes = required_non_mechanizable_axes(source_contract)
-        family_id = str(source_contract.get("family_id") or "")
-
-        if expectation == "low":
-            return (
-                "En esta familia intrínsecamente rutinaria, puede ser aceptable materializar solo "
-                f"{min_axes} eje estructural fuerte, siempre que la variante no sea solo cambio de números, "
-                "mejore o preserve la calidad de distractores y no quede casi idéntica a la fuente."
-            )
-        if family_id == "parameter_interpretation":
-            return (
-                "En esta familia, no basta con reformular la tasa; la variante debe evitar una lectura literal "
-                "del coeficiente y empujar una interpretación operativa o contextual."
-            )
-        if expectation == "high":
-            return (
-                "En esta familia estructuralmente rica, sí debes exigir cambios profundos: al menos "
-                f"{min_axes} ejes estructurales relevantes o un cambio equivalente en profundidad, "
-                "sin caer en simple reemplazo de números o contexto."
-            )
-        return (
-            f"Mantén el criterio general: al menos {min_axes} ejes estructurales relevantes o un cambio claramente "
-            "equivalente en profundidad, sin caer en simple reemplazo de números/contexto."
-        )
-
-    def _llm_text_asserts_correctness(self, calculation_steps: str, rejection_reason: str) -> bool:
-        lowered = f"{calculation_steps} {rejection_reason}".lower()
-        positive_markers = (
-            "la opción marcada es correcta",
-            "la opcion marcada es correcta",
-            "la respuesta marcada es correcta",
-            "es matemáticamente correcta",
-            "es matematicamente correcta",
-            "la respuesta marcada sí es correcta",
-            "la respuesta marcada si es correcta",
-            "la respuesta marcada como correcta sí coincide con el resultado matemático",
-            "la respuesta marcada como correcta si coincide con el resultado matematico",
-            "sí coincide con el resultado matemático",
-            "si coincide con el resultado matematico",
-            "matemáticamente, la respuesta marcada",
-            "matematicamente, la respuesta marcada",
-            "coincide exactamente con el cálculo",
-            "coincide exactamente con el calculo",
-            "resultado: la opción marcada es correcta",
-            "resultado: la opcion marcada es correcta",
-            "la opción marcada sí coincide",
-            "la opcion marcada si coincide",
-        )
-        negative_markers = (
-            "no es correcta",
-            "es incorrecta",
-            "no coincide",
-            "no corresponde",
-            "no es matemáticamente correcta",
-            "no es matematicamente correcta",
-        )
-        return any(marker in lowered for marker in positive_markers) and not any(
-            marker in lowered for marker in negative_markers
-        )
-
-    def _is_inconsistency_only_rejection(self, rejection_reason: str) -> bool:
-        lowered = rejection_reason.lower()
-        return "inconsisten" in lowered and "respuesta_correcta" in lowered
+def _rejected(reason: str) -> ValidationResult:
+    """Shorthand for a rejected ValidationResult."""
+    return ValidationResult(
+        verdict=ValidationVerdict.REJECTED,
+        concept_aligned=False,
+        difficulty_equal=True,
+        answer_correct=False,
+        rejection_reason=reason,
+    )

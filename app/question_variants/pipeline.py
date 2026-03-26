@@ -1,429 +1,450 @@
-"""Variant generation pipeline orchestrator."""
+"""Variant generation pipeline orchestrator.
+
+Two pipeline implementations:
+  - SyncVariantPipeline: sequential LLM calls (--no-batch debug mode)
+  - BatchVariantPipeline: OpenAI Batch API with checkpointed phases
+"""
+
 from __future__ import annotations
 
 import logging
-from typing import List, Optional
+import os
+import uuid
+from pathlib import Path
+from typing import Any
 
-from app.question_generation.progress import report_progress
-from app.question_variants.io.artifacts import save_report, save_source_snapshot, save_variant, save_variant_plan
+from app.question_variants.io.artifacts import (
+    save_report,
+    save_source_snapshot,
+    save_variant,
+    save_variant_plan,
+)
+from app.question_variants.io.source_loader import load_source_questions
 from app.question_variants.models import (
     GenerationReport,
     PipelineConfig,
     SourceQuestion,
+    VariantBlueprint,
     VariantQuestion,
-    VariantResult,
 )
-from app.question_variants.io.source_loader import load_source_questions
-from app.question_variants.qti_validation_utils import extract_choices, extract_question_text, find_correct_answer
-from app.question_variants.contracts.structural_profile import build_construct_contract
-from app.question_variants.postprocess.family_repairs import repair_family_specific_qti
-from app.question_variants.postprocess.repair_utils import (
-    apply_declared_correct_choice,
-    canonicalize_qti_markup,
-    normalize_named_entities,
-    strip_choice_identifier_mentions,
-    strip_xml_comments,
+from app.question_variants.pipeline_helpers import (
+    apply_verdicts,
+    blueprint_to_dict,
+    build_source_contract,
+    dedup_variant,
+    load_json,
+    load_state,
+    load_variants_json,
+    postprocess_variant,
+    print_summary,
+    run_deterministic_checks,
+    save_json,
+    save_state,
+    source_key,
+    variant_to_dict,
 )
-from app.question_variants.postprocess.presentation_transformer import normalize_variant_presentation
-from app.question_variants.variant_generator import VariantGenerator
-from app.question_variants.variant_planner import VariantPlanner
-from app.question_variants.variant_validator import VariantValidator
 
 logger = logging.getLogger(__name__)
 
-class VariantPipeline:
-    """Orchestrates the variant generation pipeline."""
 
-    def __init__(self, config: Optional[PipelineConfig] = None):
-        """Initialize the pipeline.
+# ------------------------------------------------------------------
+# SyncVariantPipeline (--no-batch debug / pilot mode)
+# ------------------------------------------------------------------
 
-        Args:
-            config: Pipeline configuration. Uses defaults if not provided.
-        """
-        self.config = config or PipelineConfig()
-        self.planner = VariantPlanner(self.config)
-        self.generator = VariantGenerator(self.config)
-        self.validator = VariantValidator(self.config)
-        self.feedback_pipeline = None
-        if self.config.enable_feedback_pipeline:
-            from app.question_feedback.pipeline import QuestionPipeline
 
-            self.feedback_pipeline = QuestionPipeline()
+class SyncVariantPipeline:
+    """Sequential LLM calls -- useful for debugging and pilot runs."""
 
-    def run(self, test_id: str, question_ids: Optional[List[str]] = None, num_variants: Optional[int] = None) -> List[GenerationReport]:
-        """Run the variant generation pipeline.
+    def __init__(self, config: PipelineConfig | None = None):
+        self.config = config or PipelineConfig(use_batch_api=False)
 
-        Args:
-            test_id: Test identifier (e.g., "prueba-invierno-2025")
-            question_ids: Specific question IDs to process. If None, processes all.
-            num_variants: Override for number of variants per question.
+    def run(
+        self,
+        test_id: str,
+        question_ids: list[str] | None = None,
+        num_variants: int | None = None,
+    ) -> list[GenerationReport]:
+        from app.question_variants.variant_generator import VariantGenerator
+        from app.question_variants.variant_planner import VariantPlanner
+        from app.question_variants.variant_validator import VariantValidator
 
-        Returns:
-            List of GenerationReport, one per source question.
-        """
         print(f"\n{'=' * 60}")
-        print("PIPELINE: Generación de Variantes")
-        print(f"Test: {test_id}")
+        print("PIPELINE SYNC: Generación de Variantes")
+        print(f"Test: {test_id} | model: {self.config.model}")
         print(f"{'=' * 60}\n")
-        # Load source questions
+
         sources = load_source_questions(test_id, question_ids)
-
         if not sources:
-            print("❌ No se encontraron preguntas para procesar.")
+            print("❌ No se encontraron preguntas.")
             return []
-
         print(f"📋 Cargadas {len(sources)} preguntas fuente\n")
 
-        reports = []
-        total = len(sources)
-        report_progress(0, total)
+        planner = VariantPlanner(self.config)
+        generator = VariantGenerator(self.config)
+        validator = VariantValidator(self.config)
 
-        for i, source in enumerate(sources):
-            report = self._process_question(source, num_variants)
+        reports: list[GenerationReport] = []
+        n = num_variants or self.config.variants_per_question
+        for src in sources:
+            report = self._process_question(
+                src, n, planner, generator, validator,
+            )
             reports.append(report)
-            report_progress(i + 1, total)
 
-        # Print summary
-        self._print_summary(reports)
-
+        print_summary(reports, self.config.output_dir)
         return reports
 
-    def _process_question(self, source: SourceQuestion, num_variants: Optional[int] = None) -> GenerationReport:
-        """Process a single source question.
-
-        Pipeline flow for each variant:
-        1. Generate raw variant QTI XML
-        2. Optionally enrich with feedback via QuestionPipeline
-        3. Validate semantics via VariantValidator (concept alignment, difficulty)
-        4. Save only variants passing all validation stages
-        """
+    def _process_question(
+        self,
+        source: SourceQuestion,
+        n: int,
+        planner: Any,
+        generator: Any,
+        validator: Any,
+    ) -> GenerationReport:
         print(f"\n{'─' * 40}")
         print(f"Procesando: {source.question_id}")
         print(f"{'─' * 40}")
 
-        report = GenerationReport(source_question_id=source.question_id, source_test_id=source.test_id)
-        save_source_snapshot(self.config.output_dir, source)
-        source_contract = build_construct_contract(
-            source.question_text,
-            source.qti_xml,
-            bool(source.image_urls),
-            source.primary_atoms,
-            source.metadata,
-            source.choices,
-            source.correct_answer,
+        report = GenerationReport(
+            source_question_id=source.question_id,
+            source_test_id=source.test_id,
         )
+        save_source_snapshot(self.config.output_dir, source)
+        contract = build_source_contract(source)
 
-        n = num_variants or self.config.variants_per_question
-
-        blueprints = self.planner.plan_variants(source, n)
-        if self.planner.used_fallback:
-            report.stage_failures["planning_fallback"] = report.stage_failures.get("planning_fallback", 0) + 1
-        if self.planner.last_error:
-            report.errors.append(f"planner: {self.planner.last_error}")
-
+        blueprints = planner.plan_variants(source, n)
         save_variant_plan(self.config.output_dir, source, blueprints)
 
-        variants = self.generator.generate_variants(source, n, blueprints=blueprints)
+        variants = generator.generate_variants(
+            source, n, blueprints=blueprints,
+        )
         report.total_generated = len(variants)
-
         if not variants:
-            report.stage_failures["generation"] = report.stage_failures.get("generation", 0) + 1
-            if self.generator.last_error:
-                report.errors.append(f"generator: {self.generator.last_error}")
             report.errors.append("No se pudieron generar variantes")
             save_report(self.config.output_dir, report)
             return report
 
-        approved_variants: list[VariantQuestion] = []
-        all_variants: list[VariantQuestion] = []  # Track all (for rejected save)
-        variant_results: dict[str, VariantResult] = {}
-
-        # Map variant_id to blueprint for retry
-        blueprint_map: dict[str, VariantBlueprint] = {}
-        if blueprints:
-            for bp in blueprints:
-                blueprint_map[bp.variant_id] = bp
-
+        approved: list[VariantQuestion] = []
         for variant in variants:
-            if self.config.enable_feedback_pipeline:
-                result = self._process_variant_through_pipeline(variant, source)
-            else:
-                result = VariantResult(
-                    success=True,
-                    variant_id=variant.variant_id,
-                    qti_xml=variant.qti_xml,
-                    validation_details={
-                        "feedback_pipeline": "skipped_by_config",
-                    },
-                )
-            variant_results[variant.variant_id] = result
+            postprocess_variant(variant, contract)
 
-            if result.success and result.qti_xml:
-                # Update variant with enriched QTI XML
-                variant.qti_xml = result.qti_xml
-                approved, rejection_reason = self._postprocess_and_validate(
-                    variant, source, source_contract, approved_variants, report,
-                )
-
-                # Retry with feedback if rejected and has a blueprint
-                if (
-                    not approved
-                    and rejection_reason
-                    and self.config.max_retries_per_variant > 0
-                    and variant.variant_id in blueprint_map
-                ):
-                    bp = blueprint_map[variant.variant_id]
-                    for attempt in range(self.config.max_retries_per_variant):
-                        report.total_retried += 1
-                        retry_variant = self.generator.regenerate_with_feedback(
-                            source, bp, rejection_reason,
+            if self.config.validate_variants:
+                result = validator.validate(variant, source)
+                variant.validation_result = result
+                if not result.is_approved:
+                    report.total_rejected += 1
+                    if result.rejection_reason:
+                        report.rejection_reasons.append(
+                            result.rejection_reason,
                         )
-                        if retry_variant is None:
-                            break
-                        all_variants.append(retry_variant)
-                        report.total_generated += 1
-                        # Run through feedback pipeline if enabled
-                        if self.config.enable_feedback_pipeline:
-                            retry_result = self._process_variant_through_pipeline(retry_variant, source)
-                        else:
-                            retry_result = VariantResult(
-                                success=True,
-                                variant_id=retry_variant.variant_id,
-                                qti_xml=retry_variant.qti_xml,
-                            )
-                        variant_results[retry_variant.variant_id + f"_retry{attempt+1}"] = retry_result
-                        if retry_result.success and retry_result.qti_xml:
-                            retry_variant.qti_xml = retry_result.qti_xml
-                            retry_approved, retry_rejection = self._postprocess_and_validate(
-                                retry_variant, source, source_contract, approved_variants, report,
-                            )
-                            if retry_approved:
-                                report.total_approved_on_retry += 1
-                                break
-                            rejection_reason = retry_rejection or rejection_reason
-                        else:
-                            break
+                    continue
 
-            else:
+            dup_ok, dup_reason = dedup_variant(variant, approved)
+            if not dup_ok:
                 report.total_rejected += 1
-                stage_key = result.stage_failed or "pipeline"
-                report.stage_failures[stage_key] = report.stage_failures.get(stage_key, 0) + 1
-                if result.error:
-                    report.errors.append(f"{stage_key}: {result.error}")
-                logger.warning(
-                    f"Variant {variant.variant_id} failed feedback pipeline: "
-                    f"stage={result.stage_failed}, error={result.error}"
-                )
+                report.rejection_reasons.append(dup_reason)
+                continue
 
-            all_variants.append(variant)
+            approved.append(variant)
+            report.total_approved += 1
 
-        # Save approved variants
-        for variant in approved_variants:
-            save_variant(
-                self.config.output_dir,
-                variant,
-                source,
-                variant_results.get(variant.variant_id),
-                postprocess_summary=variant.metadata.get("postprocess_summary"),
-            )
+        for variant in approved:
+            save_variant(self.config.output_dir, variant, source, None)
             report.variants.append(variant.variant_id)
 
-        # Save rejected variants if configured
         if self.config.save_rejected:
-            rejected = [v for v in all_variants if v not in approved_variants]
-            for variant in rejected:
+            for v in [v for v in variants if v not in approved]:
                 save_variant(
-                    self.config.output_dir,
-                    variant,
-                    source,
-                    variant_results.get(variant.variant_id),
+                    self.config.output_dir, v, source, None,
                     is_rejected=True,
-                    postprocess_summary=variant.metadata.get("postprocess_summary"),
                 )
 
-        # Save report
         save_report(self.config.output_dir, report)
-
         return report
 
-    def _postprocess_and_validate(
+
+# ------------------------------------------------------------------
+# BatchVariantPipeline (Batch API, checkpointed)
+# ------------------------------------------------------------------
+
+
+class BatchVariantPipeline:
+    """4-phase pipeline using OpenAI Batch API with checkpointing."""
+
+    def __init__(self, config: PipelineConfig | None = None):
+        self.config = config or PipelineConfig()
+        self.job_id = config.job_id if config else None
+        if not self.job_id:
+            self.job_id = uuid.uuid4().hex[:12]
+
+    def run(
         self,
-        variant: VariantQuestion,
-        source: SourceQuestion,
-        source_contract: dict,
-        approved_variants: list[VariantQuestion],
-        report: GenerationReport,
-    ) -> tuple[bool, str | None]:
-        """Postprocess and validate a single variant.
+        test_id: str,
+        question_ids: list[str] | None = None,
+        num_variants: int | None = None,
+    ) -> list[GenerationReport]:
+        from app.question_generation.batch_api import OpenAIBatchSubmitter
 
-        Returns:
-            Tuple of (is_approved, rejection_reason or None).
-        """
-        from app.question_variants.qti_validation_utils import surface_similarity
-
-        original_qti = variant.qti_xml
-        variant.qti_xml = normalize_variant_presentation(
-            variant.qti_xml,
-            str(source_contract.get("operation_signature") or ""),
-            str(source_contract.get("task_form") or ""),
-            str(source_contract.get("selection_load") or "not_applicable"),
-        )
-        normalized_qti = variant.qti_xml
-        variant.qti_xml = repair_family_specific_qti(
-            variant.qti_xml,
-            source_contract,
-            variant.metadata,
-        )
-        repaired_qti = variant.qti_xml
-        variant.qti_xml = normalize_named_entities(variant.qti_xml)
-        entity_normalized_qti = variant.qti_xml
-        variant.qti_xml = apply_declared_correct_choice(
-            variant.qti_xml,
-            str(variant.metadata.get("generator_declared_correct_identifier") or ""),
-        )
-        declaration_synced_qti = variant.qti_xml
-        variant.qti_xml = canonicalize_qti_markup(variant.qti_xml)
-        canonical_qti = variant.qti_xml
-        variant.qti_xml = strip_choice_identifier_mentions(variant.qti_xml)
-        identifier_sanitized_qti = variant.qti_xml
-        variant.qti_xml = strip_xml_comments(variant.qti_xml)
-        stripped_qti = variant.qti_xml
-        variant.metadata["construct_contract"] = build_construct_contract(
-            extract_question_text(variant.qti_xml),
-            variant.qti_xml,
-            self.validator._has_visual_support(variant.qti_xml),
-            source.primary_atoms,
-            source.metadata,
-            extract_choices(variant.qti_xml),
-            find_correct_answer(variant.qti_xml),
-        )
-        variant.metadata["postprocess_summary"] = {
-            "presentation_normalized": normalized_qti != original_qti,
-            "family_repaired": repaired_qti != normalized_qti,
-            "entities_normalized": entity_normalized_qti != repaired_qti,
-            "correct_declaration_synced": declaration_synced_qti != entity_normalized_qti,
-            "qti_canonicalized": canonical_qti != declaration_synced_qti,
-            "choice_identifiers_stripped": identifier_sanitized_qti != canonical_qti,
-            "comments_stripped": stripped_qti != identifier_sanitized_qti,
-        }
-
-        # Run semantic validation (concept alignment, difficulty)
-        if self.config.validate_variants:
-            semantic_result = self.validator.validate(variant, source)
-            variant.validation_result = semantic_result
-
-            if semantic_result.is_approved:
-                # Inter-variant deduplication: check against already approved
-                variant_text = extract_question_text(variant.qti_xml)
-                for approved in approved_variants:
-                    approved_text = extract_question_text(approved.qti_xml)
-                    similarity = surface_similarity(variant_text, approved_text)
-                    if similarity > 0.85:
-                        report.total_rejected += 1
-                        reason = (
-                            f"Demasiado similar a {approved.variant_id} "
-                            f"(similitud={similarity:.2f}). Se necesita más diversidad."
-                        )
-                        report.rejection_reasons.append(reason)
-                        logger.warning(
-                            f"Variant {variant.variant_id} too similar to "
-                            f"{approved.variant_id}: {similarity:.2f}"
-                        )
-                        return False, reason
-
-                approved_variants.append(variant)
-                report.total_approved += 1
-                return True, None
-            else:
-                report.total_rejected += 1
-                report.stage_failures["semantic_validation"] = report.stage_failures.get("semantic_validation", 0) + 1
-                if semantic_result.rejection_reason:
-                    report.rejection_reasons.append(semantic_result.rejection_reason)
-                logger.warning(
-                    f"Variant {variant.variant_id} failed semantic validation: "
-                    f"{semantic_result.rejection_reason}"
-                )
-                return False, semantic_result.rejection_reason
-        else:
-            # Skip semantic validation
-            approved_variants.append(variant)
-            report.total_approved += 1
-            return True, None
-
-    def _process_variant_through_pipeline(
-        self, variant: VariantQuestion, source: SourceQuestion
-    ) -> VariantResult:
-        """Process a variant through the optional feedback enhancement pipeline.
-
-        Args:
-            variant: The variant to process.
-            source: The source question (for context).
-
-        Returns:
-            VariantResult with success status and enriched QTI XML if successful.
-        """
-        print(f"    📝 Processing {variant.variant_id} through feedback pipeline...")
-
-        if self.feedback_pipeline is None:
-            return VariantResult(
-                success=True,
-                variant_id=variant.variant_id,
-                qti_xml=variant.qti_xml,
-                validation_details={"feedback_pipeline": "disabled"},
-            )
-
-        # Extract image URLs from variant QTI
-        from app.question_feedback.utils.image_utils import extract_image_urls
-
-        image_urls = extract_image_urls(variant.qti_xml)
-
-        # Run through feedback pipeline (enhancement + XSD + content validation)
-        pipeline_result = self.feedback_pipeline.process(
-            question_id=variant.variant_id,
-            qti_xml=variant.qti_xml,
-            image_urls=image_urls if image_urls else None,
-            output_dir=None,  # Don't save intermediate results
-        )
-
-        if not pipeline_result.success:
-            print(f"    ❌ {variant.variant_id} failed: {pipeline_result.stage_failed}")
-            return VariantResult(
-                success=False,
-                variant_id=variant.variant_id,
-                error=pipeline_result.error,
-                stage_failed=pipeline_result.stage_failed,
-                validation_details=(
-                    pipeline_result.feedback_review_details
-                    if hasattr(pipeline_result, "feedback_review_details")
-                    else None
-                ),
-            )
-
-        print(f"    ✅ {variant.variant_id} passed feedback pipeline")
-        return VariantResult(
-            success=True,
-            variant_id=variant.variant_id,
-            qti_xml=pipeline_result.qti_xml_final,
-            validation_details=(
-                pipeline_result.feedback_review_details
-                if hasattr(pipeline_result, "feedback_review_details")
-                else None
-            ),
-        )
-
-    def _print_summary(self, reports: List[GenerationReport]):
-        """Print summary of pipeline run."""
-
-        total_gen = sum(r.total_generated for r in reports)
-        total_app = sum(r.total_approved for r in reports)
-        total_rej = sum(r.total_rejected for r in reports)
+        n = num_variants or self.config.variants_per_question
+        model = self.config.model
 
         print(f"\n{'=' * 60}")
-        print("RESUMEN")
-        print(f"{'=' * 60}")
-        print(f"Preguntas procesadas: {len(reports)}")
-        print(f"Variantes generadas:  {total_gen}")
-        print(f"Variantes aprobadas:  {total_app} ({100 * total_app / total_gen:.1f}%)" if total_gen > 0 else "N/A")
-        print(f"Variantes rechazadas: {total_rej}")
-        print(f"\nOutput: {self.config.output_dir}")
+        print("PIPELINE BATCH: Generación de Variantes")
+        print(f"Test: {test_id} | model: {model} | job: {self.job_id}")
         print(f"{'=' * 60}\n")
+
+        api_key = os.environ.get("OPENAI_API_KEY", "")
+        if not api_key:
+            raise RuntimeError("OPENAI_API_KEY not set")
+
+        submitter = OpenAIBatchSubmitter(
+            api_key=api_key,
+            poll_interval=self.config.batch_poll_interval,
+        )
+
+        sources = load_source_questions(test_id, question_ids)
+        if not sources:
+            print("❌ No se encontraron preguntas.")
+            return []
+        print(f"📋 Cargadas {len(sources)} preguntas fuente")
+
+        sources_map = {source_key(s): s for s in sources}
+        contracts_map = {source_key(s): build_source_contract(s) for s in sources}
+        job_dir = Path(self.config.output_dir) / ".batch_runs" / self.job_id
+        state = load_state(job_dir)
+
+        bps = self._phase_plan(state, submitter, sources, n, model, job_dir)
+        raw = self._phase_generate(
+            state, submitter, sources_map, bps, model, job_dir,
+        )
+        valid, inv = self._phase_postprocess(raw, sources_map, contracts_map)
+        print(f"\n📦 Phase 3: {len(valid)} passed, {inv} filtered")
+
+        if self.config.validate_variants:
+            approved, rejected = self._phase_validate(
+                state, submitter, valid, sources_map, model, job_dir,
+            )
+        else:
+            approved, rejected = valid, []
+
+        reports = self._save_results(sources_map, approved, rejected, bps)
+        print_summary(reports, self.config.output_dir)
+        return reports
+
+    # ---- Phase 1: Plan -----------------------------------------------
+
+    def _phase_plan(
+        self, state: dict, submitter: Any,
+        sources: list[SourceQuestion], n: int, model: str, job_dir: Path,
+    ) -> dict[str, list[VariantBlueprint]]:
+        from app.question_variants.batch_request_builders import build_plan_request
+        from app.question_variants.batch_response_processors import process_plan_responses
+
+        if state.get("phase_1_plan") == "completed":
+            print("✅ Phase 1 (Plan) -- resuming from checkpoint")
+            return load_json(job_dir / "blueprints.json")
+
+        print(f"\n🔷 Phase 1: Planning {len(sources)} questions...")
+        reqs = [build_plan_request(s, n, model) for s in sources]
+        resps = self._submit_and_wait(submitter, reqs, "plan", job_dir)
+
+        sm = {source_key(s): s for s in sources}
+        bps = process_plan_responses(resps, sm)
+        for s in sources:
+            k = source_key(s)
+            save_source_snapshot(self.config.output_dir, s)
+            save_variant_plan(self.config.output_dir, s, bps.get(k, []))
+
+        save_json(job_dir / "blueprints.json", {
+            k: [blueprint_to_dict(b) for b in v] for k, v in bps.items()
+        })
+        state["phase_1_plan"] = "completed"
+        save_state(job_dir, state)
+        total = sum(len(v) for v in bps.values())
+        print(f"✅ Phase 1 done: {total} blueprints")
+        return bps
+
+    # ---- Phase 2: Generate -------------------------------------------
+
+    def _phase_generate(
+        self, state: dict, submitter: Any,
+        sources_map: dict[str, SourceQuestion],
+        bps: dict[str, list[VariantBlueprint]],
+        model: str, job_dir: Path,
+    ) -> list[VariantQuestion]:
+        from app.question_variants.batch_request_builders import build_generation_request
+        from app.question_variants.batch_response_processors import process_generation_responses
+
+        if state.get("phase_2_generate") == "completed":
+            print("✅ Phase 2 (Generate) -- resuming from checkpoint")
+            return load_variants_json(job_dir / "raw_variants.json")
+
+        reqs = []
+        for key, blueprints in bps.items():
+            src = sources_map.get(key)
+            if not src:
+                continue
+            for bp in blueprints:
+                reqs.append(build_generation_request(src, bp, model))
+
+        print(f"\n🔷 Phase 2: Generating {len(reqs)} variants...")
+        resps = self._submit_and_wait(submitter, reqs, "generate", job_dir)
+        raw = process_generation_responses(resps, sources_map, bps)
+
+        save_json(job_dir / "raw_variants.json", [variant_to_dict(v) for v in raw])
+        state["phase_2_generate"] = "completed"
+        save_state(job_dir, state)
+        print(f"✅ Phase 2 done: {len(raw)} variants parsed")
+        return raw
+
+    # ---- Phase 3: Postprocess + deterministic (local) ----------------
+
+    def _phase_postprocess(
+        self, variants: list[VariantQuestion],
+        sources_map: dict[str, SourceQuestion],
+        contracts_map: dict[str, dict[str, Any]],
+    ) -> tuple[list[VariantQuestion], int]:
+        valid, inv = [], 0
+        for v in variants:
+            k = f"{v.source_test_id}__{v.source_question_id}"
+            postprocess_variant(v, contracts_map.get(k, {}))
+            src = sources_map.get(k)
+            if src:
+                ok, _ = run_deterministic_checks(v, src)
+                if not ok:
+                    inv += 1
+                    continue
+            valid.append(v)
+        return valid, inv
+
+    # ---- Phase 4: Validate -------------------------------------------
+
+    def _phase_validate(
+        self, state: dict, submitter: Any,
+        variants: list[VariantQuestion],
+        sources_map: dict[str, SourceQuestion],
+        model: str, job_dir: Path,
+    ) -> tuple[list[VariantQuestion], list[VariantQuestion]]:
+        from app.question_variants.batch_request_builders import build_validation_request
+        from app.question_variants.batch_response_processors import process_validation_responses
+
+        if state.get("phase_4_validate") == "completed":
+            print("✅ Phase 4 (Validate) -- resuming from checkpoint")
+            verdicts = load_json(job_dir / "verdicts.json")
+            return apply_verdicts(variants, verdicts)
+
+        reqs = []
+        for v in variants:
+            k = f"{v.source_test_id}__{v.source_question_id}"
+            src = sources_map.get(k)
+            if src:
+                reqs.append(build_validation_request(v, src, model))
+
+        print(f"\n🔷 Phase 4: Validating {len(reqs)} variants...")
+        resps = self._submit_and_wait(submitter, reqs, "validate", job_dir)
+        verdicts = process_validation_responses(resps)
+
+        save_json(job_dir / "verdicts.json", {
+            k: {
+                "verdict": r.verdict.value,
+                "answer_correct": r.answer_correct,
+                "concept_aligned": r.concept_aligned,
+                "rejection_reason": r.rejection_reason,
+            }
+            for k, r in verdicts.items()
+        })
+        state["phase_4_validate"] = "completed"
+        save_state(job_dir, state)
+
+        approved, rejected = apply_verdicts(variants, verdicts)
+
+        # Inter-variant dedup within each source question
+        final: list[VariantQuestion] = []
+        by_src: dict[str, list[VariantQuestion]] = {}
+        for v in approved:
+            by_src.setdefault(v.source_question_id, []).append(v)
+        for group in by_src.values():
+            deduped: list[VariantQuestion] = []
+            for v in group:
+                ok, _ = dedup_variant(v, deduped)
+                if ok:
+                    deduped.append(v)
+                else:
+                    rejected.append(v)
+            final.extend(deduped)
+
+        print(f"✅ Phase 4: {len(final)} approved, {len(rejected)} rejected")
+        return final, rejected
+
+    # ---- Batch submission helper -------------------------------------
+
+    def _submit_and_wait(
+        self, submitter: Any, requests: list[Any],
+        phase_name: str, job_dir: Path,
+    ) -> list[Any]:
+        """Write JSONL, upload, create batch, poll, download, parse."""
+        jsonl_path = job_dir / f"{phase_name}.jsonl"
+        submitter.write_jsonl(requests, jsonl_path)
+        file_id = submitter.upload_file(jsonl_path)
+        batch_id = submitter.create_batch(file_id, metadata={
+            "pipeline": "variant", "phase": phase_name,
+            "job_id": self.job_id or "",
+        })
+        print(f"  Batch {batch_id} submitted ({len(requests)} requests)")
+
+        batch = submitter.poll_until_done(batch_id)
+        if batch.get("status") != "completed":
+            raise RuntimeError(
+                f"Batch {batch_id} ended: {batch.get('status')}",
+            )
+
+        out_id = batch.get("output_file_id", "")
+        results_path = job_dir / f"{phase_name}_results.jsonl"
+        submitter.download_file(out_id, results_path)
+        return submitter.parse_results_file(results_path)
+
+    # ---- Save results ------------------------------------------------
+
+    def _save_results(
+        self,
+        sources_map: dict[str, SourceQuestion],
+        approved: list[VariantQuestion],
+        rejected: list[VariantQuestion],
+        bps: dict[str, list[VariantBlueprint]],
+    ) -> list[GenerationReport]:
+        reports_by_q: dict[str, GenerationReport] = {}
+        for src in sources_map.values():
+            reports_by_q[src.question_id] = GenerationReport(
+                source_question_id=src.question_id,
+                source_test_id=src.test_id,
+            )
+
+        for v in approved:
+            r = reports_by_q.get(v.source_question_id)
+            src = sources_map.get(
+                f"{v.source_test_id}__{v.source_question_id}",
+            )
+            if r and src:
+                save_variant(self.config.output_dir, v, src, None)
+                r.variants.append(v.variant_id)
+                r.total_approved += 1
+
+        if self.config.save_rejected:
+            for v in rejected:
+                src = sources_map.get(
+                    f"{v.source_test_id}__{v.source_question_id}",
+                )
+                if src:
+                    save_variant(
+                        self.config.output_dir, v, src, None,
+                        is_rejected=True,
+                    )
+
+        for r in reports_by_q.values():
+            k = f"{r.source_test_id}__{r.source_question_id}"
+            r.total_generated = len(bps.get(k, []))
+            r.total_rejected = r.total_generated - r.total_approved
+            save_report(self.config.output_dir, r)
+
+        return list(reports_by_q.values())

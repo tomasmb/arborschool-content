@@ -1,3 +1,7 @@
+> **Status: SUPERSEDED** — The architecture switched to all-OpenAI gpt-5.1 via
+> Batch API and validation was simplified to 3 gates. See
+> `app/question_variants/README.md` for the current design.
+
 # Generacion de Variantes No Mecanizables (v1)
 
 Este documento define una estrategia para generar variantes de preguntas PAES que:

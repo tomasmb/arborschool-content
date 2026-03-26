@@ -140,45 +140,32 @@ class PipelineConfig:
     """Configuration for the variant generation pipeline.
 
     Attributes:
-        variants_per_question: Number of variants to generate per source question
-            (initial default is 10, but fully configurable)
-        temperature: LLM temperature for generation (0.0 = deterministic)
-        llm_request_timeout_seconds: Per-call timeout for variant LLM stages
-        llm_max_attempts: Max retry attempts for variant LLM stages
-        planner_provider: Provider used for blueprint planning
-        planner_model: Optional explicit model for blueprint planning
-        planner_reasoning_level: Reasoning intensity for blueprint planning
-        generator_provider: Provider used for QTI variant generation
-        generator_model: Optional explicit model for QTI variant generation
-        generator_reasoning_level: Reasoning intensity for QTI generation
-        validator_provider: Provider used for semantic gate validation
-        validator_model: Optional explicit model for semantic gate validation
-        validator_reasoning_level: Reasoning intensity for semantic validation
-        validate_variants: Whether to run validation phase
-        enable_feedback_pipeline: Whether to enrich variants with feedback before
-            semantic validation. Disabled by default for the hard-variants pipeline;
-            feedback is planned as a later independent process.
-        save_rejected: Whether to save rejected variants for debugging
-        output_dir: Directory for saving generated variants (by test)
+        variants_per_question: Number of variants to generate per source question.
+        temperature: LLM temperature for generation.
+        llm_request_timeout_seconds: Per-call timeout for sync LLM stages.
+        llm_max_attempts: Max retry attempts for sync LLM stages.
+        model: OpenAI model used for all LLM phases.
+        use_batch_api: When True, uses OpenAI Batch API (50% cost discount).
+            When False, runs sync calls (for debugging / pilot).
+        batch_poll_interval: Seconds between polls when waiting for a batch.
+        job_id: Resume a previous batch run from this job ID.
+        validate_variants: Whether to run validation phase.
+        save_rejected: Whether to save rejected variants for debugging.
+        max_retries_per_variant: Re-generate rejected variants with feedback.
+        output_dir: Directory for saving generated variants (by test).
     """
 
     variants_per_question: int = 10
-    temperature: float = 0.3  # Slight variation for diversity
+    temperature: float = 0.3
     llm_request_timeout_seconds: int = 180
     llm_max_attempts: int = 2
-    planner_provider: str = "gemini"
-    planner_model: Optional[str] = None
-    planner_reasoning_level: str = "high"
-    generator_provider: str = "gemini"
-    generator_model: Optional[str] = None
-    generator_reasoning_level: str = "medium"
-    validator_provider: str = "openai"
-    validator_model: Optional[str] = None
-    validator_reasoning_level: str = "medium"
+    model: str = "gpt-5.1"
+    use_batch_api: bool = True
+    batch_poll_interval: int = 30
+    job_id: Optional[str] = None
     validate_variants: bool = True
-    enable_feedback_pipeline: bool = False
     save_rejected: bool = True
-    max_retries_per_variant: int = 1  # Re-generate rejected variants with feedback
+    max_retries_per_variant: int = 1
     output_dir: str = "app/data/pruebas/hard_variants"
 
 
