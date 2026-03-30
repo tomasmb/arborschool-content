@@ -1,18 +1,14 @@
-"""generate_variant_images.py — Generate actual images for hard variants.
+"""generate_variant_images.py — Generate images for hard variants.
 
-Dual-strategy approach:
-  - Route A (chart/graph): LLM extracts data from alt → Matplotlib renders
-  - Route B (illustration): LLM expands alt into ultra-detailed prompt
-    → Gemini generates → OpenAI validates
+All images go through: LLM expands alt text into ultra-detailed prompt
+→ Gemini generates image → GPT-5.1 validates → S3 upload.
 
-Uses Gemini for image generation and GPT-5.1 vision for validation.
 Processes variants in parallel (ThreadPoolExecutor) for throughput.
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import logging
 import re
 import sys
@@ -44,46 +40,11 @@ def _is_placeholder_src(src: str) -> bool:
     """Return True if the image src is a placeholder (not a real S3 URL)."""
     return not src.startswith("http") or _S3_DOMAIN not in src
 
-# ─── Classification prompt ──────────────────────────────────────────
-
-CLASSIFY_PROMPT = """\
-Analiza esta descripción de imagen de un examen PAES y clasifícala.
-
-DESCRIPCIÓN:
-{alt_text}
-
-Clasifica en UNA de estas categorías:
-- "pie_chart" — gráfico circular / de torta
-- "bar_chart" — gráfico de barras
-- "line_chart" — gráfico de líneas
-- "boxplot" — diagrama de cajón
-- "dot_plot" — gráfico de puntos
-- "scatter_plot" — gráfico de dispersión  
-- "cartesian" — plano cartesiano con funciones/figuras geométricas
-- "geometric" — figuras geométricas (prismas, cubos, triángulos, etc.)
-- "illustration" — ilustración decorativa/contextual (cajas, objetos, escenas)
-
-Responde SOLO con JSON:
-{{"category": "...", "data": {{...}}}}
-
-Para gráficos (pie/bar/line/boxplot/dot/scatter):
-  "data" debe contener los valores numéricos extraídos, por ejemplo:
-  - pie_chart: {{"labels": ["A", "B"], "values": [60, 40]}}
-  - bar_chart: {{"labels": [...], "values": [...], "xlabel": "...", "ylabel": "..."}}
-  - line_chart: {{"x": [...], "y": [...], "xlabel": "...", "ylabel": "..."}}
-  - boxplot: {{"min": N, "q1": N, "median": N, "q3": N, "max": N, "xlabel": "..."}}
-  - dot_plot: {{"values": [2,2,3,3,3,...], "xlabel": "..."}}
-
-Para geometric/illustration/cartesian:
-  "data" debe ser {{"prompt_detail": "descripción expandida ultra-detallada"}}
-"""
-
-# ─── Ultra-detailed prompt expansion ────────────────────────────────
 
 EXPAND_PROMPT = """\
-Eres un director de arte de un examen estandarizado de matemáticas (PAES Chile).
-Tu trabajo es convertir descripciones cortas de imágenes en prompts ULTRA-DETALLADOS
-para que un modelo generativo de imágenes (Gemini) produzca exactamente lo necesario.
+Eres un director de arte de un examen estandarizado de matemáticas \
+(PAES Chile). Convierte esta descripción de imagen en un prompt \
+ULTRA-DETALLADO para Gemini.
 
 DESCRIPCIÓN ORIGINAL:
 {alt_text}
@@ -91,53 +52,33 @@ DESCRIPCIÓN ORIGINAL:
 CONTEXTO DE LA PREGUNTA:
 {stem_text}
 
-Genera un prompt de imagen extremadamente específico que incluya:
-1. COMPOSICIÓN: Dimensiones relativas, posición de cada elemento, distribución espacial
-2. ELEMENTOS VISUALES: Cada forma, línea, flecha, etiqueta con su posición exacta
-3. COLORES: Colores específicos para cada elemento (usar colores simples y contrastantes)
-4. TEXTO/ETIQUETAS: Texto exacto que debe aparecer, tamaño relativo, posición
-5. ESTILO: Fondo blanco, líneas negras gruesas, estilo de examen educativo profesional
-6. PROHIBICIONES: Sin título, sin bordes decorativos, sin watermarks, sin sombras 3D innecesarias
+Incluye:
+1. COMPOSICIÓN: Dimensiones, posición de cada elemento
+2. ELEMENTOS VISUALES: Formas, líneas, flechas, etiquetas exactas
+3. COLORES: Simples y contrastantes
+4. TEXTO/ETIQUETAS: Texto exacto, tamaño, posición
+5. ESTILO: Fondo blanco, líneas negras gruesas, estilo educativo
+6. PROHIBICIONES: Sin título, sin bordes decorativos, sin watermarks
 
-El prompt debe ser TAN DETALLADO que no haya ambigüedad sobre qué dibujar.
-Escribe el prompt en inglés para mejor resultado con Gemini.
-
-Responde SOLO con el prompt expandido, sin explicación adicional.
+Escribe el prompt en inglés. Responde SOLO con el prompt.
 """
 
 
-from app.question_variants._chart_renderers import MATPLOTLIB_RENDERERS
-
-
-# ─── Core logic ─────────────────────────────────────────────────────
-
 def _extract_stem_text(qti_xml: str) -> str:
     """Extract plain text from the QTI item body for context."""
-    match = re.search(r"<qti-item-body[^>]*>(.*?)</qti-item-body>", qti_xml, re.DOTALL)
+    match = re.search(
+        r"<qti-item-body[^>]*>(.*?)</qti-item-body>",
+        qti_xml, re.DOTALL,
+    )
     if match:
         return re.sub(r"<[^>]+>", " ", match.group(1)).strip()
     return ""
 
 
-def _classify_image(alt_text: str, llm_service) -> tuple[str, dict]:
-    """Use LLM to classify image type and extract data."""
-    prompt = CLASSIFY_PROMPT.format(alt_text=alt_text)
-    raw = llm_service.generate_text(
-        prompt,
-        response_mime_type="application/json",
-        temperature=0.0,
-        **build_reasoning_kwargs("gemini", _IMAGE_TEXT_REASONING_LEVEL),
-    )
-    # TextService returns str directly
-    text = raw.text if hasattr(raw, 'text') else str(raw)
-    result = json.loads(text)
-    category = result.get("category", "illustration")
-    data = result.get("data", {})
-    return category, data
-
-
-def _expand_prompt(alt_text: str, stem_text: str, llm_service) -> str:
-    """Use LLM to expand alt text into an ultra-detailed image generation prompt."""
+def _expand_prompt(
+    alt_text: str, stem_text: str, llm_service: Any,
+) -> str:
+    """Expand alt text into an ultra-detailed image prompt via LLM."""
     prompt = EXPAND_PROMPT.format(alt_text=alt_text, stem_text=stem_text)
     raw = llm_service.generate_text(
         prompt,
@@ -183,56 +124,38 @@ def process_variant_images(
         logger.info(f"\n  [img {idx}] src: {old_src}")
         logger.info(f"  [img {idx}] alt: {alt_text[:80]}...")
 
-        # Step 1: Classify
-        category, data = _classify_image(alt_text, llm_service)
-        logger.info(f"  [img {idx}] Category: {category}")
-
         if dry_run:
-            logger.info(f"  [img {idx}] Data: {json.dumps(data, ensure_ascii=False)[:200]}")
             continue
 
-        # Step 2: Generate
-        image_bytes: bytes | None = None
+        # Step 1: Expand alt text into detailed image prompt
+        expanded_prompt = _expand_prompt(alt_text, stem_text, llm_service)
+        logger.info(
+            "  [img %d] Prompt: %s...", idx, expanded_prompt[:120],
+        )
 
-        if category in MATPLOTLIB_RENDERERS:
-            # Route A: Matplotlib
-            logger.info(f"  [img {idx}] Using MATPLOTLIB for {category}")
-            try:
-                renderer = MATPLOTLIB_RENDERERS[category]
-                image_bytes = renderer(data)
-                logger.info(f"  [img {idx}] ✅ Matplotlib rendered ({len(image_bytes)} bytes)")
-            except Exception as e:
-                logger.error(f"  [img {idx}] Matplotlib failed: {e}")
-                # Fallback to Gemini
-                logger.info(f"  [img {idx}] Falling back to Gemini...")
-                expanded_prompt = _expand_prompt(alt_text, stem_text, llm_service)
-                image_bytes = engine.generate_validated_image(
-                    expanded_prompt, stem_text, max_retries=2,
-                )
-        else:
-            # Route B: Gemini with ultra-detailed prompt
-            logger.info(f"  [img {idx}] Using GEMINI with expanded prompt for {category}")
-            expanded_prompt = _expand_prompt(alt_text, stem_text, llm_service)
-            logger.info(f"  [img {idx}] Expanded prompt: {expanded_prompt[:120]}...")
-            image_bytes = engine.generate_validated_image(
-                expanded_prompt, stem_text, max_retries=2,
-            )
-
+        # Step 2: Generate image (Gemini) + validate (GPT-5.1)
+        image_bytes = engine.generate_validated_image(
+            expanded_prompt, stem_text, max_retries=2,
+        )
         if not image_bytes:
-            logger.error(f"  [img {idx}] ❌ Generation failed completely.")
+            logger.error(f"  [img {idx}] Generation failed.")
             continue
 
-        # Step 3: Upload to S3
-        existing = engine.check_s3_exists(file_id, _S3_PATH_PREFIX, test_id)
+        # Step 3: Upload to S3 (idempotent — reuses existing)
+        existing = engine.check_s3_exists(
+            file_id, _S3_PATH_PREFIX, test_id,
+        )
         if existing:
             s3_url = existing
             logger.info(f"  [img {idx}] S3 hit: {s3_url}")
         else:
-            s3_url = engine.upload_to_s3(image_bytes, file_id, _S3_PATH_PREFIX, test_id)
+            s3_url = engine.upload_to_s3(
+                image_bytes, file_id, _S3_PATH_PREFIX, test_id,
+            )
             if not s3_url:
-                logger.error(f"  [img {idx}] ❌ S3 upload failed.")
+                logger.error(f"  [img {idx}] S3 upload failed.")
                 continue
-            logger.info(f"  [img {idx}] ✅ Uploaded: {s3_url}")
+            logger.info(f"  [img {idx}] Uploaded: {s3_url}")
 
         # Step 4: Replace in XML
         old_tag = match.group(0)
